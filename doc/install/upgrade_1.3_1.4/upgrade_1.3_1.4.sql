@@ -1,0 +1,12 @@
+ALTER TABLE `leonardo_flights` ADD `cat` SMALLINT UNSIGNED DEFAULT '1' NOT NULL AFTER `ID` ,
+ADD `subcat` SMALLINT UNSIGNED DEFAULT '1' NOT NULL AFTER `cat` ;
+
+ALTER TABLE `leonardo_pilots` ADD `clubID` MEDIUMINT UNSIGNED NOT NULL AFTER `LastName` ,
+ADD `sponsorID` MEDIUMINT UNSIGNED NOT NULL AFTER `clubID` ;
+
+ALTER TABLE `leonardo_waypoints` ADD `link` VARCHAR( 255 ) NOT NULL ,
+ADD `description` VARCHAR( 255 ) NOT NULL ;
+
+ALTER TABLE `leonardo_waypoints` ADD `modifyDate` DATE DEFAULT '2005-09-01' NOT NULL 
+
+

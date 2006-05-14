@@ -1,0 +1,64 @@
+body {
+	background-color: #F3F3F3;
+	font-family: Georgia, Verdana, Arial, sans-serif;
+	font-size: small;
+}
+
+code {
+	background-color: #E5E5E5;
+	border: 1px dashed #009966;
+	display: block;
+	font-size: 12px;
+	padding: 10px;
+}
+
+h1 {
+	border-bottom: 1px solid #990000;
+	color: #CCCC33;
+	font-family: Georgia, Arial, Helvetica, sans-serif;
+	font-size: 200%;
+	text-align: right;
+}
+
+h3 {
+	color: #33CC66;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 150%;
+}
+
+.argument {
+	border-bottom: 1px dashed #000099;
+	font-style: italic;
+}
+
+.method {
+	background-color: #CCFFCC;
+	border-top: 3px solid #66FF33;
+	color: #663399;
+	font-size: 100%;
+	margin-top: 20px;
+	padding: 5px;
+}
+
+.property {
+	background-color: #66FF99;
+	border-top: 3px solid #00CC66;
+	color: #669900;
+	font-size: 100%;
+	margin-top: 20px;
+	padding: 5px;
+}
+
+.sep {
+	margin-bottom: 20px;
+	margin-top: 20px;
+	text-align: center;
+	width: 10%;
+}
+
+#constructor, #menu, #menuitem, #methods, #properties {
+	border-left: 5px solid;
+	color: #339999;
+	padding-left: 10px;
+	text-decoration: underline;
+}

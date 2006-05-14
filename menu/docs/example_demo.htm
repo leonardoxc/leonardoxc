@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Example Demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="../themes/classic/classic.css" />
+<link rel="stylesheet" type="text/css" href="docs.css" />
+<script type="text/javascript" src="../jsdomenu.js"></script>
+<script type="text/javascript" src="example.inc.js"></script>
+</head>
+<body onload="initjsDOMenu()">
+<p>
+Source code for creating menus in this page:
+</p>
+
+<pre><code>function createjsDOMenu() {
+  mainMenu = new jsDOMenu(120);
+  with (mainMenu) {
+    addMenuItem(new menuItem("Item 1", "", "example.htm"));
+    addMenuItem(new menuItem("Item 2", "item2", "example.htm"));
+    addMenuItem(new menuItem("-"));
+    addMenuItem(new menuItem("Item 3", "", "example.htm"));
+    addMenuItem(new menuItem("Item 4", "", "example.htm"));
+  }
+  subMenu = new jsDOMenu(140);
+  with (subMenu) {
+    addMenuItem(new menuItem("Item 1", "", "example.htm"));
+    addMenuItem(new menuItem("-"));
+    addMenuItem(new menuItem("Item 2", "", "example.htm"));
+    addMenuItem(new menuItem("-"));
+    addMenuItem(new menuItem("Item 3", "", "example.htm"));
+    addMenuItem(new menuItem("Item 4", "", "example.htm"));
+  }
+  mainMenu.items.item2.setSubMenu(subMenu);
+  setPopUpMenu(mainMenu);
+  activatePopUpMenuBy(0, 0);
+}</code></pre>
+</body>
+</html>

@@ -1,0 +1,13 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~                            jsDOMenu Upgrade                             ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upgrade from Version 1.2 or Version 1.2.x to Version 1.3
+
+The method signature for jsDOMenu() has been changed from:
+
+menuObj = new jsDOMenu(width, className, mode, alwaysVisible);
+
+to:
+
+menuObj = new jsDOMenu(width, mode, id, alwaysVisible, className);

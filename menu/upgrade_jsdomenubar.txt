@@ -1,0 +1,13 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~                           jsDOMenuBar Upgrade                           ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upgrade from Version 1.0 or Version 1.0.x to Version 1.1
+
+The method signature for jsDOMenuBar() has been changed from:
+
+menuBarObj = new jsDOMenuBar(mode, draggable, className, width, height);
+
+to:
+
+menuBarObj = new jsDOMenuBar(mode, id, draggable, className, width, height);

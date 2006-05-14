@@ -1,0 +1,1 @@
+<img src="http://pgforum.thenet.gr/templates/subSilver/images/logo_phpBB2.gif">

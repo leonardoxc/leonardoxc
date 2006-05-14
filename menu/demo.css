@@ -1,0 +1,21 @@
+body {
+	background-color: #F3F3F3;
+	font-family: Georgia, Verdana, Arial, sans-serif;
+	font-size: small;
+}
+
+code {
+	background-color: #E5E5E5;
+	border: 1px dashed #009966;
+	display: block;
+	font-size: 12px;
+	padding: 10px;
+}
+
+h1 {
+	border-bottom: 1px solid #990000;
+	color: #CCCC33;
+	font-family: Georgia, Arial, Helvetica, sans-serif;
+	font-size: 200%;
+	text-align: right;
+}

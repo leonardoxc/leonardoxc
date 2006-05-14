@@ -1,0 +1,254 @@
+<style type="text/css">
+<!--
+
+div#nav ul {
+	margin: 0px 0 12px 0;
+	padding: 0;
+	list-style: none inside;
+}
+div#nav ul li {
+	list-style: none;
+	text-align: center;
+	display: inline;
+	font: 11px Verdana,Arial,Helvetica,sans-serif;
+
+	margin: 2px 2px 2px 2px;
+}
+
+div#nav ul li a {
+	color: #000;
+	background-color: #F3F4EA;
+	text-decoration: none;
+
+	padding:4px 0px 4px 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 1px;
+
+	border-right: 2px solid  #52371F;
+	border-bottom: 2px solid #52371F;
+	height:auto;
+	display:inline;
+	float:left;
+	width:197px;
+}
+
+html>div #nav {
+	width:197px;
+	}
+
+div#nav ul li a:hover, 
+div#nav ul li.header a:hover,
+div#nav ul li a.on,
+div#nav ul li.header a.on {
+	background-color: #0F256A;
+	color: #FFF;
+}
+
+
+/* subnav list classes */
+div#subnav ul {
+	margin: 4px 0 12px 0;
+	padding: 0;
+}
+div#subnav ul li {
+	list-style: none;
+	text-align: center;
+	display: inline;
+	font: 11px Verdana,Arial,Helvetica,sans-serif;
+
+	margin: 2px 2px 2px 2px;
+}
+
+div#subnav ul li a {
+	color: #000;
+	background-color: #D7D8E5;
+	text-decoration: none;
+
+	/*padding:4px 8px 4px 8px;*/
+    padding:4px 0px 4px 0px;
+	margin-top: 1px;
+	margin-bottom: 0px;
+	margin-right: 1px;
+
+	border-right: 2px solid  #52371F;
+	border-bottom: 2px solid #52371F;
+
+
+	height:auto;
+
+	display:block;
+	float:left;
+
+	width: 147px;
+	
+}
+
+
+div#subnav ul li a:hover, 
+div#subnav ul li.header a:hover,
+div#subnav ul li a.on,
+div#subnav ul li.header a.on {
+	background-color: #0F256A;
+	color: #FFF;
+}
+
+#otherstuff {margin: 0; padding: 0; clear: both; border-top: 1px white solid; list-style: none inside; }
+#otherstuff li {width: 191px; float: left; background: #99c; border: solid white; border-width: 0 0 0 1px; text-align: center; }
+#otherstuff li:first-child {border: none; padding-left: 1px; }
+#otherstuff li a {
+display: block; width: 191px; 
+padding: 3px 0; 	
+border-right: 2px solid  #52371F;
+border-bottom: 2px solid #52371F;
+
+
+	color: #000;
+	background-color: #F3F4EA;
+	text-decoration: none;
+
+	
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 1px;
+
+	border-right: 2px solid  #52371F;
+	border-bottom: 2px solid #52371F;
+
+} 
+#otherstuff li a:hover {background: #9f9fd6; }
+-->
+</style>
+
+<script language="javascript">
+    function jumpToLeague(countryCode) {
+	  var leagueYear = document.navForm.leagueYear.value;
+	  var leagueCat  = document.navForm.leagueCat.value;
+      window.location = "{SHOW_LEAGUE_URL}"+"&country="+countryCode+"&year="+leagueYear+"&cat="+leagueCat;
+      return false;
+    }
+    function jumpToFlights(countryCode) {
+	  var flightsYear = document.navForm.flightsYear.value;
+	  var flightsCat  = document.navForm.flightsCat.value;
+      window.location = "{SHOW_FLIGHTS_URL}"+"&country="+countryCode+"&year="+flightsYear+"&cat="+flightsCat;
+      return false;
+    }
+    function jumpToTakeoffs(countryCode) {
+	  var takeoffsYear = 0;
+	  var takeoffsCat  = 0;
+      window.location = "{SHOW_TAKEOFFS_URL}"+"&country="+countryCode+"&year="+takeoffsYear+"&cat="+takeoffsCat;
+      return false;
+    }
+</script>
+
+<form name="navForm" method="post" action="">
+<table width="606" border="0" align="center" cellpadding="0" cellspacing="0" class=main_text>
+  <tr>
+    <td valign="top"><div align="center">
+      <p><strong>{#_INDEX_HEADER}<br>
+      </strong></p>
+    </div></td>
+  </tr>
+  <tr>
+    <td><div align="center">{#_INDEX_MESSAGE}</div></td>
+  </tr>
+  <tr>
+    <td height=10>&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top">
+  <div id="nav" align=center>
+        <ul>
+		  <li><a href="{LINK_SHOW_LAST_ADDED}">{#_MENU_SHOW_LAST_ADDED}</a></li>
+		  <li><a href="{LINK_SHOW_PILOTS}">{#_MENU_SHOW_PILOTS}</a></li>
+		  <li><a href="{LINK_SUBMIT_FLIGHT}">{#_MENU_SUBMIT_FLIGHT}</a></li>
+        </ul>
+    </div></td>
+  </tr>
+  <!-- BEGIN myMenu -->
+  <tr>
+    <td>
+      <div id="nav" align=center>
+        <ul>
+		  <li><a style="width:130px" href="{myMenu.LINK_MY_FLIGHTS}">{#_MENU_MY_FLIGHTS}</a></li>
+		  <li><a style="width:130px" href="{myMenu.LINK_MY_STATS}">{#_MENU_MY_STATS}</a></li>
+		  <li><a style="width:130px" href="{myMenu.LINK_MY_PROFILE}">{#_MENU_MY_PROFILE}</a></li>
+		  <li><a style="width:130px" href="{myMenu.LINK_MY_SETTINGS}">{#_MENU_MY_SETTINGS}</a></li>
+        </ul>
+    </div></td>
+  </tr>
+  <!-- END myMenu -->
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#D9F0C6"><div align="center" style=" z-index:-10; font-weight:bold ">{#_National_XC_Leagues_for}
+        
+          <select name="leagueYear" id="leagueYear">
+            <option value="0">{#_ALL_YEARS}</option>
+			{YEARS_OPTION}
+          </select>
+          <select name="leagueCat" id="leagueCat">
+            {CATS_OPTION}
+          </select>
+    </div></td>
+  </tr>
+  <tr>
+    <td align=center>
+      <div id="subnav" align=center>
+        <ul>
+		  <li><a href="javascript:jumpToLeague(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
+          <!-- BEGIN lg -->
+          <li><a href="{lg.link}">{lg.name}</a> </li>
+          <!-- END lg -->
+        </ul>
+    </div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#D9F0C6"><div align="center" style="font-weight:bold ">{#_Flights_per_Country}
+         <select name="flightsYear" id="flightsYear">
+		   <option value="0">{#_ALL_YEARS}</option>
+			{YEARS_OPTION}
+          </select>
+          <select name="flightsCat" id="flightsCat">
+      <option value="0">{#_ALL}</option>
+ 			{CATS_OPTION}
+	      </select> </div></td>
+  </tr>
+  <tr>
+    <td align=center>	<div id="subnav" align=center>
+		<ul>
+   <li><a href="javascript:jumpToFlights(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
+  <!-- BEGIN ct -->
+	<li><a href="{ct.link}">{ct.name} [{ct.flNum}]</a>	</li>
+      <!-- END ct -->
+		</ul>
+	</div>
+
+	</td>
+  </tr>
+  <tr>
+    <td align=center>&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#D9F0C6"><div align="center" style="font-weight:bold ">{#_Takeoffs_per_Country}   </div></td>
+  </tr>
+  <tr>
+    <td align=center>
+      <div id="subnav" align=center>
+        <ul>
+          <li><a href="javascript:jumpToTakeoffs(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
+          <!-- BEGIN tk -->
+          <li><a href="{tk.link}">{tk.name}</a> </li>
+          <!-- END tk -->
+        </ul>
+    </div></td>
+  </tr>
+  <tr>
+    <td align=center>&nbsp;</td>
+  </tr>
+</table>
+</form>

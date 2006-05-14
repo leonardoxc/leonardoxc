@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Example &#171; Documentation &#171; jsDOMenu &#171; Projects &#171; tohzhiqiang.per.sg</title>
+<link rel="stylesheet" type="text/css" href="docs.css" />
+</head>
+<body id="tohzhiqiang_per_sg">
+<h1>Example &#171; Documentation</h1>
+
+<p>
+<strong>Note:</strong> The example here is very simple to get you started. For more advanced 
+ones, view the <a href="../demo/index.htm" title="View the Demo page">
+Demo</a> page.
+</p>
+
+<h3>Example for jsDOMenu Version 1.3</h3>
+
+<p>
+Suppose you wish to make a two-level pop-up menu. Open jsdomenu.inc.js. You should see the following:
+</p>
+
+<pre><code>function createjsDOMenu() {
+	
+}</code></pre>
+
+<p>
+We define a main menu, and called it mainMenu:
+</p>
+
+<pre><code>mainMenu = new jsDOMenu(120);</code></pre>
+
+<p>
+Next, we add in some menu items and separators:
+
+</p>
+
+<pre><code>with (mainMenu) {
+  addMenuItem(new menuItem("Item 1", "", "example.htm"));
+  addMenuItem(new menuItem("Item 2", "item2", "example.htm"));
+  addMenuItem(new menuItem("-"));
+  addMenuItem(new menuItem("Item 3", "", "example.htm"));
+  addMenuItem(new menuItem("Item 4", "", "example.htm"));
+}</code></pre>
+
+<p>
+We assign a name "item2" to the second menu item for later use.
+</p>
+
+<p>
+Similarly, we define a submenu called subMenu, and add in some menu items and separators too:
+</p>
+
+<pre><code>subMenu = new jsDOMenu(140);
+with (subMenu) {
+  addMenuItem(new menuItem("Item 1", "", "example.htm"));
+  addMenuItem(new menuItem("-"));
+  addMenuItem(new menuItem("Item 2", "", "example.htm"));
+  addMenuItem(new menuItem("-"));
+  addMenuItem(new menuItem("Item 3", "", "example.htm"));
+  addMenuItem(new menuItem("Item 4", "", "example.htm"));
+}</code></pre>
+
+<p>
+
+We want the submenu to show up when the cursor is over the second menu item of the main menu. We make 
+use of the setSubMenu() method:
+</p>
+
+<pre><code>mainMenu.items.item2.setSubMenu(subMenu);</code></pre>
+
+<p>
+Next, set the pop-up menu to be the main menu:
+</p>
+
+<pre><code>setPopUpMenu(mainMenu);</code></pre>
+
+<p>
+Finally, we define how the pop-up menu should show/hide. Suppose we want it to show/hide by left 
+click:
+</p>
+
+<pre><code>activatePopUpMenuBy(0, 0);</code></pre>
+
+<p>
+View the <a href="example_demo.htm" title="Example Demo">example demo</a> based on the above codes.
+</p>
+
+<p class="back">
+<a href="./index.htm" title="Back to Documentation page">
+Back to Documentation</a>
+
+<hr />
+
+<p>
+Compiled on 16 January 2005.
+</p>
+
+<p>
+The latest version is available at <a href="http://www.tohzhiqiang.per.sg/projects/jsdomenu/docs/example.php" title="Latest version of Example">
+http://www.tohzhiqiang.per.sg/projects/jsdomenu/docs/example.php</a>.
+</p>
+</p>
+</html>

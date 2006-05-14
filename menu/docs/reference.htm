@@ -1,0 +1,1408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Reference &#171; Documentation &#171; jsDOMenu &#171; Projects &#171; tohzhiqiang.per.sg</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="docs.css" />
+</head>
+<body id="tohzhiqiang_per_sg">
+<h1>Reference &#171; Documentation</h1>
+
+<h3>Coding Reference for jsDOMenu Version 1.3</h3>
+
+<p>
+This reference describes the methods and fields available in jsDOMenu.
+</p>
+
+<ul>
+  <li><a href="#constructor" title="Go to global public constructors">
+  Global public constructors</a>
+  </li>
+  <li><a href="#menu" title="Go to public methods for jsDOMenu()">
+  Public methods for jsDOMenu()</a>
+  </li>
+  <li><a href="#menuitem" title='Go to public methods for menuObj.items["itemName"] (or menuObj.items.itemName)'>
+  Public methods for menuObj.items["itemName"] (or menuObj.items.itemName)</a>
+  </li>
+  <li><a href="#methods" title="Go to global public methods">
+  Global public methods</a>
+  </li>
+  <li><a href="#properties" title="Go to global public fields">
+  Global public fields</a>
+  </li>
+</ul>
+
+<h4 id="constructor">Global public constructors</h4>
+
+<h5 class="method">jsDOMenu()</h5>
+
+<p>
+Create a new menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj = new jsDOMenu(width, mode, id, alwaysVisible, className);</code></pre>
+
+<h4 class="section">Arguments</h4>
+
+<p>
+<span class="argument">width</span> - Required. Integer that specifies the width of the menu. Default 
+unit is "px".
+</p>
+
+<p>
+<span class="argument">mode</span> - Optional. String that specifies the mode of the menu. Defaults 
+to "cursor". Allowed values are "cursor", "absolute", "fixed", and "static". If the mode = "static", 
+you must also specify an unique id.
+</p>
+
+<p>
+A menu is a cursor menu if any of the following is true:
+</p>
+
+<ul>
+	<li>It is a main menu that shows at the position of the cursor, i.e., it is a pop-up main menu.
+	</li>
+	<li>It is a submenu and its main menu is a cursor menu.
+	</li>
+</ul>
+
+<p>
+A menu is an absolute menu if any of the following is true:
+</p>
+
+<ul>
+	<li>It is a main menu that is fixed at a particular position with respect to the <em>document</em>.
+	</li>
+	<li>It is a submenu and its main menu is an absolute or static menu.
+	</li>
+</ul>
+
+<p>
+A menu is a fixed menu if any of the following is true:
+</p>
+
+<ul>
+	<li>It is a main menu that is fixed at a particular position with respect to the <em>window</em>.
+	</li>
+	<li>It is a submenu and its main menu is a fixed menu.
+	</li>
+</ul>
+
+<p>
+A menu is a static menu if it is a main menu that is fixed at a particular position with respect 
+to the <em>document structure</em>.
+</p>
+
+<p>
+Do not confuse absolute menus with fixed menus. An absolute menu will move together with the page 
+when you scroll. If you scroll up/down enough, it will be totally out of view. On the other hand, 
+a fixed menu will not move with the page when you scroll. It will always be visible regardless of 
+how much you scroll (provided it is positioned within the window when the page loads).
+</p>
+
+<p>
+In addition, a static menu is fixed at a particular position with respect to the document 
+structure, i.e. the position of the menu will "flow" with the document when the browser is resized. 
+Thus, it is not required to call methods like setX(), moveTo(), etc to position the menu.
+</p>
+
+<p>
+<span class="argument">id</span> - Optional, except when mode = "static". String that specifies the 
+id of the element that will contain the menu. This argument is required when mode = "static". It is 
+recommended that the element you specify is an empty DIV tag. For example: 
+</p>
+
+<pre><code>&lt;div id="staticMenu"&gt;&lt;/div&gt;</code></pre>
+
+<p>
+Note that the id must be unique.
+</p>
+
+<p>
+<span class="argument">alwaysVisible</span> - Optional. Boolean that specifies whether the menu 
+is always visible. Defaults to false. If set to true, the menu will always be visible, 
+unless you execute its hide() method to hide it.
+</p>
+
+<p>
+<span class="argument">className</span> - Optional. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu. Defaults to 
+"jsdomenudiv". The class selector "jsdomenudiv" is defined in the theme file, e.g. classic.css.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The method signature for this constructor has been changed compared with the previous version 
+(v1.2.1).
+</p>
+
+<p>
+You can access the <abbr title="HyperText Markup Language">HTML</abbr> element object of the menu 
+using the menuObj field. For example, menuObj.menuObj.style holds the style object of the 
+<abbr title="HyperText Markup Language">HTML</abbr> element.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">menuItem()</h5>
+
+<p>
+Create a new menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuItemObj = new menuItem(displayText, itemName, actionOnClick, 
+                           enabled, className, classNameOver);</code></pre>
+                           
+<h4 class="section">Arguments</h4>
+
+<p>
+<span class="argument">displayText</span> - Required. String that specifies the text to be 
+displayed on the menu item. If displayText is "-", a menu separator will be created instead.
+</p>
+
+<p>
+<span class="argument">itemName</span> - Optional. String that specifies the name of the menu 
+item. Defaults to "" (no name). You should set this argument only if you need to reference 
+this menu item later on.
+</p>
+
+<p>
+<span class="argument">actionOnClick</span> - Optional. String that specifies the action 
+to be done when the menu item is being clicked. Defaults to "" (no action).
+</p>
+
+<p>
+There are two types of actions allowed:
+</p>
+
+<ul>
+	<li>Link: Loads a new page on click. The value of actionOnClick is a <abbr title="Uniform Resource Locator">URL</abbr>.
+	</li>
+	<li>Code: Execute Javascript code(s) on click. The value of actionOnClick is the code(s) to be 
+	executed.
+	</li>
+</ul>
+
+<p>
+To distinguish between the two types, prefix "link:" or "code:" respectively to the value. For 
+example, "code:alert('Hello World!');" instead "alert('Hello World!');". For links, prefixing 
+"link:" is optional, as any prefix other than "code:" will be intepreted as a link.
+</p>
+
+<p>
+<span class="argument">enabled</span> - Optional. Boolean that specifies whether the menu item 
+is enabled/disabled. Defaults to true. The default value can also be set using "".
+</p>
+
+<p>
+<span class="argument">className</span> - Optional. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu item. Defaults to 
+"jsdomenuitem". The default value can also be set using "". The class selector "jsdomenuitem" is 
+defined in the theme file, e.g. classic.css.
+</p>
+
+<p>
+<span class="argument">classNameOver</span> - Optional. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu item when the 
+cursor is over it. Defaults to "jsdomenuitemover". The default value can also be set using "". 
+The class selector "jsdomenuitemover" is defined in the theme file, e.g. classic.css.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+If you need to define any argument, you must also define the arguments before it. For 
+example, if you need to define the third argument, but not the second, you still need to set the 
+second argument to "" (default value).
+</p>
+
+<p>
+The following codes are equivalent to the above:
+</p>
+
+<pre><code>menuItemObj = new menuItem(displayText);
+menuItemObj.itemName = itemName;
+menuItemObj.actionOnClick = actionOnClick;
+menuItemObj.enabled = enabled;
+menuItemObj.className = className;
+menuItemObj.classNameOver = classNameOver;</code></pre>
+
+<p>
+You should only define the fields that need to be changed.
+</p>
+
+<hr class="sep" />
+
+<h4 id="menu">Public methods for jsDOMenu()</h4>
+
+<h5 class="method">addMenuItem()</h5>
+
+<p>
+Add a new menu item to the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.addMenuItem(menuItemObj);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">menuItemObj</span> - Required. Menu item that is going to be added to the 
+menu.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+You can access the <abbr title="HyperText Markup Language">HTML</abbr> element object of the menu 
+item using the items field. For example, menuObj.items["itemName"].style 
+(or menuObj.items.itemName.style) holds the style object of the 
+<abbr title="HyperText Markup Language">HTML</abbr> element, where "itemName" is the value of 
+itemName field of the menuItemObj added.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setClassName()</h5>
+
+<p>
+Set the class name of the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setClassName(className);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.menuObj.className = className;</code></pre>
+
+<hr class="sep" />
+
+<h5 class="method">setMode()</h5>
+
+<p>
+Set the mode of the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setMode(mode);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">mode</span> - Required. String that specifies the mode of the menu. 
+Allowed values are "cursor", "absolute", and "fixed".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+If you change the mode of any menu, it is recommended that you change the mode of all its submenus 
+as well.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setAlwaysVisible()</h5>
+
+<p>
+Set whether the menu is always visible.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setAlwaysVisible(alwaysVisible);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">alwaysVisible</span> - Required. Boolean that specifies whether the 
+menu is always visible. If set to true, the menu will always be visible, unless you execute 
+its hide() method to hide it.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.menuObj.alwaysVisible = alwaysVisible;</code></pre>
+
+<hr class="sep" />
+
+<h5 class="method">show()</h5>
+
+<p>
+Show the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.show();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.menuObj.style.visibility = "visible";</code></pre>
+
+<hr class="sep" />
+
+<h5 class="method">hide()</h5>
+
+<p>
+Hide the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.hide();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+-
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setX()</h5>
+
+<p>
+Set the x-coordinate of the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setX(x);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">x</span> - Required. Integer that specifies the x-coordinate of the 
+menu. Default unit is "px".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+-
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setY()</h5>
+
+<p>
+Set the y-coordinate of the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setY(y);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">y</span> - Required. Integer that specifies the y-coordinate of 
+the menu. Default unit is "px".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+-
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">moveTo()</h5>
+
+<p>
+Move the menu to the x-coordinate specified by the first argument and the y-coordinate 
+specified by the second argument.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.moveTo(x, y);</code></pre>
+
+<h4 class="section">Arguments</h4>
+
+<p>
+<span class="argument">x</span> - Required. Integer that specifies the x-coordinate of the 
+menu. Default unit is "px".
+</p>
+
+<p>
+<span class="argument">y</span> - Required. Integer that specifies the y-coordinate of the 
+menu. Default unit is "px".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+-
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">moveBy()</h5>
+<p>
+Move the menu towards left by the amount specified by the first argument, and away from top by 
+the amount specified by the second argument. If you want to move the menu towards right, or 
+away from bottom, specify a negative value respectively.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.moveBy(x, y);</code></pre>
+
+<h4 class="section">Arguments</h4>
+
+<p>
+<span class="argument">x</span> - Required. Integer that specifies how much left/right the menu 
+will move. Default unit is "px".
+</p>
+
+<p>
+<span class="argument">y</span> - Required. Integer that specifies how much top/bottom the menu 
+will move. Default unit is "px".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+-
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setAllExceptFilter()</h5>
+
+<p>
+Set the filter such that the menu will show up only if the region that is being clicked/right 
+clicked is <strong>not</strong> specified in the filter.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setAllExceptFilter(filter);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">filter</span> - Required. Array that specifies the regions where the 
+menu will <strong>not</strong> show up when clicked/right click. Each array element is made 
+up of two parts, separated by ".". The first part is any 
+<abbr title="HyperText Markup Language">HTML</abbr> tag, the second part is the id of the 
+tag. The "*" wildcard can be used.
+</p>
+
+<p>
+For example:
+</p>
+
+<pre><code>filter = new Array("A.*", "IMG.*");</code></pre>
+
+<p>
+means that the menu will show up if the region that is being clicked/right clicked is <strong>not</strong> 
+anchor tag (&lt;a&gt;) or image tag (&lt;img&gt;).
+</p>
+
+<pre><code>filter = new Array("*.nomenu");</code></pre>
+
+<p>
+means that the menu will show up if the region that is being clicked/right clicked is <strong>not</strong> 
+having id = "nomenu".
+</p>
+
+<pre><code>filter = new Array("P.nomenu");</code></pre>
+
+<p>
+means that the menu will show up if the region that is being clicked/right clicked is <strong>not</strong> 
+paragraph tag (&lt;p&gt;) having id = "nomenu".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The filter is case-insensitive. This method is used mainly for cursor menus. Calling this method will 
+also reset the noneExceptFilter field to an empty array.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setNoneExceptFilter()</h5>
+
+<p>
+Set the filter such that the menu will show up only if the region that is being clicked/right 
+clicked is specified in the filter.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setNoneExceptFilter(filter);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">filter</span> - Required. Array that specifies the regions where the 
+menu will show up when clicked/right click. Each array element is made up of two parts, 
+separated by ".". The first part is any <abbr title="HyperText Markup Language">HTML</abbr> tag, 
+the second part is the id of the tag. The "*" wildcard can be used.
+</p>
+
+<p>
+For example:
+</p>
+
+<pre><code>filter = new Array("A.*", "IMG.*");</code></pre>
+
+<p>
+means that the menu will show up only if the region that is being clicked/right clicked is 
+anchor tag (&lt;a&gt;) or image tag (&lt;img&gt;).
+</p>
+
+<pre><code>filter = new Array("*.menu");</code></pre>
+
+<p>
+means that the menu will show up only if the region that is being clicked/right clicked is 
+having id = "menu".
+</p>
+
+<pre><code>filter = new Array("P.menu");</code></pre>
+
+<p>
+means that the menu will show up if the region that is being clicked/right clicked is 
+paragraph tag (&lt;p&gt;) having id = "menu".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The filter is case-insensitive. This method is used mainly for cursor menus. Calling this method will 
+also reset the allExceptFilter field to an empty array.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setBorderWidth()</h5>
+
+<p>
+Set the border width of the menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.setBorderWidth(width);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">width</span> - Required. Integer that specifies the border width of 
+the menu. Default unit is "px".
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+<strong>This method may be deprecated in future versions. Therefore, try not to use it in this 
+version.</strong>
+</p>
+
+<p>
+It is recommended that you set the border width using stylesheet instead.
+</p>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.menuObj.style.borderWidth = width + "px";</code></pre>
+
+<hr class="sep" />
+
+<h4 id="menuitem">Public methods for menuObj.items["itemName"] (or menuObj.items.itemName)</h4>
+
+<h5 class="method">setClassName()</h5>
+
+<p>
+Set the class name of the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setClassName(className);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setClassName(className);</code></pre>
+
+<hr class="sep" />
+
+<h5 class="method">setClassNameOver()</h5>
+
+<p>
+Set the class name of the menu item when the cursor is over the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setClassNameOver(classNameOver);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">classNameOver</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the menu item when 
+the cursor is over the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setClassNameOver(classNameOver);</code></pre>
+
+<p>
+This method is not available if the menu item is a menu separator.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setDisplayText()</h5>
+
+<p>
+Set the display text of the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setDisplayText(displayText);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">displayText</span> - Required. String that specifies the text to 
+be displayed on the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setDisplayText(displayText);</code></pre>
+
+<p>
+This method is not available if the menu item is a menu separator.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setSubMenu()</h5>
+
+<p>
+Set the menu that will show up when the cursor is over the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setSubMenu(menuObj);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">menuObj</span> - Required. Menu that will show up when the cursor is 
+over the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setSubMenu(menuObj);</code></pre>
+
+<p>
+This method is not available if the menu item is a menu separator.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setArrowClassName()</h5>
+
+<p>
+Set the class name of the arrow.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setArrowClassName(className);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the arrow.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setArrowClassName(className);</code></pre>
+
+<p>
+This method is available only if the setSubMenu() method has been called to set a submenu 
+for the menu item.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setArrowClassNameOver()</h5>
+
+<p>
+Set the class name of the arrow when the cursor is over the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setArrowClassNameOver(className);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the arrow when 
+the cursor is over the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setArrowClassNameOver(className);</code></pre>
+
+<p>
+This method is available only if the setSubMenu() method has been called to set a submenu 
+for the menu item.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">showIcon()</h5>
+
+<p>
+Show the icon before the display text.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].showIcon(className, classNameOver);</code></pre>
+
+<h4 class="section">Arguments</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the icon.
+</p>
+
+<p>
+<span class="argument">classNameOver</span> - Optional. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the icon when the 
+cursor is over the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.showIcon(className, classNameOver);</code></pre>
+
+<p>
+This method is not available if the menu item is a menu separator.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setIconClassName()</h5>
+
+<p>
+Set the class name of the icon.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setIconClassName(className);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">className</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the icon.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setIconClassName(className);</code></pre>
+
+<p>
+This method is available only if the showIcon() method has been called to show the icon 
+before the display text.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setIconClassNameOver()</h5>
+
+<p>
+Set the class name of the icon when the cursor is over the menu item.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>menuObj.items["itemName"].setIconClassNameOver(classNameOver);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">classNameOver</span> - Required. String that specifies the 
+<abbr title="Cascading Style Sheets">CSS</abbr> class selector for the icon when 
+the cursor is over the menu item.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The following code is equivalent to the above:
+</p>
+
+<pre><code>menuObj.items.itemName.setIconClassNameOver(classNameOver);</code></pre>
+
+<p>
+This method is available only if the showIcon() method has been called to show the icon 
+before the display text.
+</p>
+
+<hr class="sep" />
+
+<h4 id="methods">Global public methods</h4>
+
+<h5 class="method">initjsDOMenu()</h5>
+
+<p>
+Method to call before creating the menus.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>initjsDOMenu();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method is attached to the body tag (&lt;body&gt;) as a onload event handler. Therefore, you 
+should not call this method again.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">createjsDOMenu()</h5>
+
+<p>
+Method that contains the codes to create and customize the menus.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>createjsDOMenu();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method is found in jsdomenu.inc.js. It will be called by the initjsDOMenu() method. Therefore, 
+you should not call this method again.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">setPopUpMenu()</h5>
+
+<p>
+Set the menu to be the pop-up menu.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>setPopUpMenu(menuObj);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">menuObj</span> - Required. Menu that specifies the pop-up menu.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method should be called only if you are using cursor menus.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">activatePopUpMenuBy()</h5>
+
+<p>
+Set how the pop-up menu is shown/hidden.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>activatePopUpMenuBy(showValue, hideValue);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">showValue</span> - Required. Integer that specifies how the pop-up 
+menu is shown.
+</p>
+
+<p>
+<span class="argument">hideValue</span> - Required. Integer that specifies how the pop-up 
+menu is hidden.
+</p>
+
+<p>
+Allowed values for showValue/hideValue are:
+</p>
+
+<ul>
+	<li>0: Shows/Hides the cursor menu by left click only.
+	</li>
+	<li>1: Shows/Hides the cursor menu by right click only.
+	</li>
+	<li>2: Shows/Hides the cursor menu by left or right click.
+	</li>
+</ul>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+Certain browsers (e.g. Opera) do not support the right click feature.
+</p>
+
+<p>
+This method should be called only if you are using cursor menus.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">hideAllMenus()</h5>
+
+<p>
+Hide all menus, except those with alwaysVisible = true.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>hideAllMenus();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method may be useful if you wish to control how the menus hide.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">hideCursorMenus()</h5>
+
+<p>
+Hide all menus with mode = "cursor", except those with alwaysVisible = true.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>hideCursorMenus();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method may be useful if you wish to control how the menus hide.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">hideVisibleMenus()</h5>
+
+<p>
+Hide all menus with mode = "absolute" or mode = "fixed", except those with 
+alwaysVisible = true.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>hideVisibleMenus();</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+None.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method may be useful if you wish to control how the menus hide.
+</p>
+
+<hr class="sep" />
+
+<h5 class="method">hideMenus()</h5>
+
+<p>
+Hide the menu and all its submenus.
+</p>
+
+<h4 class="section">Syntax</h4>
+
+<pre><code>hideMenus(menuObj);</code></pre>
+
+<h4 class="section">Argument</h4>
+
+<p>
+<span class="argument">menuObj</span> - Required. Menu that specifies the menu 
+and all its submenus to be hidden.
+</p>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+This method may be useful if you wish to control how the menus hide.
+</p>
+
+<hr class="sep" />
+
+<h4 id="properties">Global public fields</h4>
+
+<p>
+You can define the following global public fields in jsdomenu.config.js to override the default 
+values.
+</p>
+
+<h5 class="property">allExceptFilter</h5>
+
+<p>
+Array that specifies the regions where the menu will <strong>not</strong> show up if clicked/right 
+clicked. Each array element is made up of two parts, separated by ".". The first part is any 
+<abbr title="HyperText Markup Language">HTML</abbr> tag, the second part is the id of the tag. 
+The "*" wildcard can be used.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var allExceptFilter = new Array("A.*", 
+                                "BUTTON.*", 
+                                "IMG.*", 
+                                "INPUT.*", 
+                                "OBJECT.*", 
+                                "OPTION.*", 
+                                "SELECT.*", 
+                                "TEXTAREA.*");</code></pre>
+                                
+<h4 class="section">Remarks</h4>
+
+<p>
+If both allExceptFilter and noneExceptFilter are not empty, the value of allExceptFilter will be used.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">noneExceptFilter</h5>
+
+<p>
+Array that specifies the regions where the menu will show up if clicked/right clicked. 
+Each array element is made up of two parts, separated by ".". The first part is any 
+<abbr title="HyperText Markup Language">HTML</abbr> tag, the second part is the id of the tag. 
+The "*" wildcard can be used.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var noneExceptFilter = new Array();</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+If both allExceptFilter and noneExceptFilter are not empty, the value of allExceptFilter will be 
+used.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">menuClassName</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the menu.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var menuClassName = "jsdomenudiv";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenudiv" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">menuItemClassName</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the menu item.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var menuItemClassName = "jsdomenuitem";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenuitem" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">menuItemClassNameOver</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the menu item when the cursor is over it.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var menuItemClassNameOver = "jsdomenuitemover";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenuitemover" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">sepClassName</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the menu separator.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var sepClassName = "jsdomenusep";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenusep" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">arrowClassName</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the arrow.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var arrowClassName = "jsdomenuarrow";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenuarrow" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">arrowClassNameOver</h5>
+
+<p>
+String that specifies the <abbr title="Cascading Style Sheets">CSS</abbr> class selector 
+for the arrow when the cursor is over it.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var arrowClassNameOver = "jsdomenuarrowover";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+The class selector "jsdomenuarrowover" is defined in the theme file, e.g. classic.css.
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">menuMode</h5>
+
+<p>
+String that specifies the default mode of the menus.
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var menuMode = "cursor";</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+Allowed values are "cursor", "absolute", "fixed", and "static".
+</p>
+
+<hr class="sep" />
+
+<h5 class="property">menuBorderWidth</h5>
+
+<p>
+Integer that specifies the border width of the menu. Default unit is "px".
+</p>
+
+<h4 class="section">Default Value</h4>
+
+<pre><code>var menuBorderWidth = 2;</code></pre>
+
+<h4 class="section">Remarks</h4>
+
+<p>
+<strong>This field may be deprecated in future versions. Therefore, try not to use it in this 
+version.</strong>
+</p>
+
+<p>
+Safari will use the value of this field to render the menus when the page loads, and disregard 
+the value set in the stylesheet. Other Gecko-based browsers like Mozilla Firefox or Microsoft 
+Internet Explorer will use the value set in the stylesheet to render the menus when the page loads, 
+and disregard the value of this field.
+</p>
+
+<hr class="sep" />
+
+<p>
+View the <a href="example.htm" title="View an example">Example</a> page to see a simple 
+example of how to create jsDOMenu.
+
+</p>
+
+<p class="back">
+<a href="./index.htm" title="Back to Documentation page">
+Back to Documentation</a>
+</p>
+
+<hr />
+
+<p>
+Compiled on 16 January 2005.
+</p>
+
+<p>
+The latest version is available at <a href="http://www.tohzhiqiang.per.sg/projects/jsdomenu/docs/reference.php" title="Latest version of Reference">
+http://www.tohzhiqiang.per.sg/projects/jsdomenu/docs/reference.php</a>.
+</p>
+</body>
+</html>
