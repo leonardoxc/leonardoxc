@@ -23,6 +23,7 @@
 
   $query_str="";
   $legend=_MSG_MENU_CLUBS_MSG_;
+  /*
   if ($year && !$month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
 		$legend.=" <b>[ ".$year." ]</b> ";
@@ -36,7 +37,7 @@
   if (! $year ) {
 	$legend.=" <b>[ ALL TIMES ]</b> ";
   }
-  
+  */
   if ($country) {
 		$where_clause.=" AND  countryCode='".$country."' ";
 		$legend.=" (".$countries[$country].") | ";

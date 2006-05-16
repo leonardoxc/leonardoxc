@@ -25,21 +25,21 @@
   $legend=_MENU_TAKEOFFS;
   if ($year && !$month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		$legend.=" <b>[ ".$year." ]</b> ";
+		//$legend.=" <b>[ ".$year." ]</b> ";
 //		$query_str.="&year=".$year;
   }
   if ($year && $month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
-		$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
+		//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
 //		$query_str.="&year=".$year."&month=".$month;
   }
   if (! $year ) {
-	$legend.=" <b>[ ALL TIMES ]</b> ";
+	//$legend.=" <b>[ ALL TIMES ]</b> ";
   }
   
   if ($country) {
 		$where_clause.=" AND  countryCode='".$country."' ";
-		$legend.=" (".$countries[$country].") | ";
+		//$legend.=" (".$countries[$country].") | ";
   }    
 
   $sortDescArray=array("countryCode"=>_DATE_SORT, "FlightsNum"=>_NUMBER_OF_FLIGHTS, "max_distance"=>_SITE_RECORD_OPEN_DISTANCE  );

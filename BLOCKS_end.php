@@ -7,7 +7,7 @@
 
 	if ($handle = opendir($dir)) { 
 	   while (false !== ($file = readdir($handle))) { 
-		   if ( is_dir("$dir/$file") && $file!="."  && $file!=".." ) {
+		   if ( is_dir("$dir/$file") && $file!="."  && $file!=".." && strtolower($file)!="cvs") {
 				array_push($blocksList,$file);
 		   }
 	   } 

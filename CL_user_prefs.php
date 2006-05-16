@@ -25,13 +25,6 @@ class UserPrefs {
  }
 /*
  function getFromCookie() {
-	$cval=$_COOKIE['leonardo_user_prefs'];
-	if ($cval) {
-		$this=unserialize($cval); 
-		return true;
-	} else {
-		return false;
-	}
  }
 
  function setToCookie() {
@@ -45,34 +38,52 @@ class UserPrefs {
 
 
  function getFromCookie() {
-	$cval=$_COOKIE['leonardo_user_prefs'];
+ 	$cval=$_COOKIE['leonardo_user_prefs'];
+ 	
+ 	$major_version=substr(PHP_VERSION,0,1)+0; 	
 	if ($cval) {
-		preg_match_all("/&([^&=]*)=([^&=]*)/",$cval,$vars);
-		foreach ($vars[1] as $id=>$var_name ) {
-			$$var_name=$vars[2][$id];
+		if ($major_version>4)  {
+			preg_match_all("/&([^&=]*)=([^&=]*)/",$cval,$vars);
+			foreach ($vars[1] as $id=>$var_name ) {
+				$$var_name=$vars[2][$id];
+			}
+			$this->themeName =$themeName ;
+			$this->language =$language ;
+			$this->itemsPerPage =$itemsPerPage ;
+			$this->metricSystem =$metricSystem ;
+			$this->viewCountry=$viewCountry;
+			$this->viewCat=$viewCat;
+		} else {			
+			$newUserPrefs= unserialize($cval); 				
+			$this->themeName =$newUserPrefs->themeName ;
+			$this->language =$newUserPrefs->language ;
+			$this->itemsPerPage =$newUserPrefs->itemsPerPage ;
+			$this->metricSystem =$newUserPrefs->metricSystem ;
+			$this->viewCountry=$newUserPrefs->viewCountry;
+			$this->viewCat=$newUserPrefs->viewCat;
+
 		}
-		$this->themeName =$themeName ;
-		$this->language =$language ;
-		$this->itemsPerPage =$itemsPerPage ;
-		$this->metricSystem =$metricSystem ;
-		$this->viewCountry=$viewCountry;
-		$this->viewCat=$viewCat;
 		return true;
 	} else {
 		return false;
 	}
+
  }
 
  function setToCookie() {
-	 $cookieStr="&themeName=".$this->themeName.
-		"&language=".$this->language. 
-		"&itemsPerPage=".$this->itemsPerPage. 
-		"&metricSystem=".$this->metricSystem.
-		"&viewCountry=".$this->viewCountry.
-		"&viewCat=".$this->viewCat.
-		"&" ;
-
-	setcookie("leonardo_user_prefs",$cookieStr,time()+60*60*24*365,"/" );
+ 	 $major_version=substr(PHP_VERSION,0,1)+0; 	
+ 	 if ($major_version>4)  {
+		 $cookieStr="&themeName=".$this->themeName.
+			"&language=".$this->language. 
+			"&itemsPerPage=".$this->itemsPerPage. 
+			"&metricSystem=".$this->metricSystem.
+			"&viewCountry=".$this->viewCountry.
+			"&viewCat=".$this->viewCat.
+			"&" ;
+ 	 } else{
+		$cookieStr=serialize($this); 	 	
+ 	 }
+	 setcookie("leonardo_user_prefs",$cookieStr,time()+60*60*24*365,"/" );
  }
 
 }

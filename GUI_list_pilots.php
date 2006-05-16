@@ -30,19 +30,19 @@
   $legend="";
   if ($year && !$month) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		$legend.=" <b>[ ".$year." ]</b> ";
+		//$legend.=" <b>[ ".$year." ]</b> ";
   }
   if ($year && $month) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
-		$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
+		//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
   }
   if (! $year ) {
-	$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
+	//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
   }
   
   if ($country) {
 		$where_clause.=" AND  countryCode='".$country."' ";
-		if ($sortOrder!="dateAdded") $legend.=" (".$countries[$country].") | ";				
+		// if ($sortOrder!="dateAdded") $legend.=" (".$countries[$country].") | ";				
   }
 
   if ($countryCodeQuery || $country)   {

@@ -100,6 +100,27 @@ function open_tr() {
  $row_count++;
 }
 
+function openBox($title,$width=640,$bgcolor="#DCE4E4"){ ?>
+<table class="mainBox" width="<?=$width?>" align="center">
+<? if ($title) { ?>
+<tr>
+  <td  class="main_text" ><?=$title?>
+  </td>
+</tr>
+<? } ?>
+<tr>
+  	<td class="main_text" <? if ($bgcolor) echo "bgcolor='$bgcolor'"; ?> >
+<?
+}
+
+function closeBox(){
+?>
+  </td>
+</tr>
+</table>
+<?	
+}
+
 
 function close_tr(){
  echo "</TR>";

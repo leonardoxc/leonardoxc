@@ -88,7 +88,7 @@ function createjsDOMenu() {
     addMenuItem(new menuItem("<? echo _MENU_ALL_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"));
     addMenuItem(new menuItem("<? echo _MENU_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights"));
     addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
-    addMenuItem(new menuItem("<? echo _MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<? echo $module_name?>&op=list_clubs")); 	
+    // addMenuItem(new menuItem("<? echo _MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<? echo $module_name?>&op=list_clubs")); 	
     addMenuItem(new menuItem("<? echo _MENU_SHOW_PILOTS ?>", "", "?name=<? echo $module_name?>&op=list_pilots&comp=0"));
     addMenuItem(new menuItem("-"));
     addMenuItem(new menuItem("<? echo _MENU_SHOW_LAST_ADDED ?>", "", "?name=<? echo $module_name?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"));

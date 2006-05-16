@@ -93,27 +93,174 @@ require_once $moduleRelPath."/templates/".$PREFS->themeName."/style.php";
 if ($opMode==1) OpenTable();
 
 $Theme =new Theme();
-
 require_once $moduleRelPath."/BLOCKS_start.php";
-require_once $moduleRelPath."/MENU_menu.php";
+
+	   $noClubDisplay=1;
+	   if ($clubID) { 
+	   	   require_once  dirname(__FILE__)."/CL_club.php";
+		   $currentClub=new club($clubID);
+		   $clubName=$currentClub->getAttribute("name");			
+		   $noClubDisplay=0;
+		} else {			
+			$clubName="No Club";
+		}
 
 //
 // Show info box
 //  (if applicable)
-   if ($clubID || $country) {   
-	   open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
-	   echo "Display: ";
+   if (($clubID || $country) && 0) {   
+   	   openBox("",480);
+//	   open_inner_table();
+	   echo "<div align=center><b>Display: ";
 	   if ($clubID) { 
-		   require_once  dirname(__FILE__)."/CL_club.php";
-		   $currentClub=new club($clubID);
-		   $clubName=$currentClub->getAttribute("name");
-   		   echo "Club '$clubName' :: ";
+		   // require_once  dirname(__FILE__)."/CL_club.php";
+		   //$currentClub=new club($clubID);
+		   //$clubName=$currentClub->getAttribute("name");
+   		   echo "Club: '$clubName' :: ";
 			
 		}
-	   if ($country) echo "Country active :: ";
+	   if ($country) echo "Country: ".$countriesCodes[$country];
+	    echo "</b></div>";
+	   ?>   		   
+   		<div id="menu" >
+		<ul>
+			<li><a href="index.php">Return to default view</a></li>
+			<li><a href="about.php">About Us</a></li>
+			<li><a href="contact.php">Contact</a></li>
+			<li><a href="nonprofits.php">Non-Profits</a></li>			
+		</ul>
+
+		</div>
+   		   <?
 	   
-	   close_inner_table();
+	   closeBox();
+	   
 	}
+
+require_once $moduleRelPath."/MENU_menu.php";
+
+if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
+  $dateLegend="";
+  $allTimesDisplay=0;
+  if ($year && !$month ) {
+		$dateLegend.=$year;
+  }
+  if ($year && $month ) {
+		$dateLegend.=$monthList[$month-1]." ".$year;
+  }
+  if (! $year ) {
+	$dateLegend.=_ALL_TIMES;
+	$allTimesDisplay=1;
+  }
+  
+  $countryLegend="";
+  $allCountriesDisplay=0;
+  if ($country) {
+		$countryLegend=$countries[$country];
+  } else {
+  	$countryLegend=_WORLD_WIDE;
+  	$allCountriesDisplay=1;
+  }
+
+  
+  $pilotLegend="";
+  $allPilotsDisplay=0;
+  if ($pilotID) {	
+		$pilotLegend=getPilotRealName($pilotID);
+  } else {
+  	$pilotLegend="All Pilots";
+  	$allPilotsDisplay=1;
+  }
+
+  $takeoffLegend="";
+  $allTakeoffDisplay=0;  
+  if ($takeoffID) {
+		$takeoffLegend=getWaypointName($takeoffID);
+  } else {
+		$takeoffLegend="All takeoffs";
+		$allTakeoffDisplay=1;  
+  }
+
+  if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
+  else $isCompDisplay=0;
+
+  
+  $catLegend="";
+  $allCatDisplay=0;  
+
+  if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
+  
+  if ($cat) { 
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0>";
+		//$gliderCatList[$cat]
+  }	else {
+		$allCatDisplay=1;  
+		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0>";
+  }
+
+  
+  
+  	   openBox("","100%","#f5f5f5");
+  	   ?>
+  	   <div align="center">  	
+
+   	    <div class="menu1" >
+  	    <?
+  	    	echo "<b>$catLegend</b>";
+  	    	//if (!$allCatDisplay) 
+  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL'  border=0></a>";
+  	    ?>
+  	    </div>
+
+  	    <div class="menu1" ><img src='modules/leonardo/templates/basic/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <?
+  	    	echo "<b>$clubName</b>";
+  	    	if (!$noClubDisplay) 
+  	    		echo " <a href='?name=$module_name&clubID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL' align='absmiddle' border=0></a>";
+  	    ?>
+  	    </div>
+  	    
+  	    <div class="menu1" ><img src='modules/leonardo/templates/basic/img/icon_date.gif'  align="absmiddle" border=0>
+  	    <?
+  	    	echo "<b>$dateLegend</b>";
+  	    	if (!$allTimesDisplay) 
+  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL' align='absmiddle' border=0></a>";
+  	    ?>
+  	    </div>
+  	    
+  	    <div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  align="absmiddle" border=0>
+   	    <?
+  	    	echo "<b>$countryLegend</b>";
+  	    	if (!$allCountriesDisplay) 
+  	    		echo " <a href='?name=$module_name&country=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL' align='absmiddle' border=0></a>";
+  	    ?>
+		</div>
+  	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay ) { ?>
+		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_pilot.gif'  align="absmiddle" border=0>
+   	    <?
+  	    	echo "<b>$pilotLegend</b>";
+  	    	if (!$allPilotsDisplay) 
+  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL' align='absmiddle' border=0></a>";
+  	    ?>
+		</div>		
+  	    <? } ?>
+  	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay) { ?>
+		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_takeoff.gif'  align="absmiddle" border=0>
+   	    <?
+  	    	echo "<b>$takeoffLegend</b>";
+  	    	if (!$allTakeoffDisplay) 
+  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='Display ALL' align='absmiddle' border=0></a>";
+  	    ?>
+		</div>
+		<? } ?>  	    
+		<div class="menuLvl2"><a href='<?
+		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+		?>'><img src='modules/leonardo/templates/basic/img/icon_bookmark.gif'  align="absmiddle" border=0></a>
+		</div>
+  	   <?
+  	    closeBox();
+}
+
 //---------------------------------------------
 // MAIN SWITCH
 //---------------------------------------------

@@ -16,6 +16,7 @@
   }
 
   $legend="";
+ 
   $sortOrder=$_REQUEST["sortOrder"];
   if ( $sortOrder=="")  $sortOrder="DATE";
 
@@ -27,23 +28,24 @@
 
   $query_str="";
   $legend="";
+  $legend="<b>"._MENU_FLIGHTS."</b> ";
   if ($year && !$month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		$legend.=" <b>[ ".$year." ]</b> ";
+		//$legend.=" <b>[ ".$year." ]</b> ";
 //		$query_str.="&year=".$year;
   }
   if ($year && $month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
-		$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
+		// $legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
 //		$query_str.="&year=".$year."&month=".$month;
   }
   if (! $year ) {
-	$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
+	//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
   }
   
   if ($pilotID) {
 		$where_clause.=" AND userID='".$pilotID."' ";
-		$legend.="<a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;"._PILOT_FLIGHTS." | ";
+		// $legend.="<a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;"._PILOT_FLIGHTS." | ";
 		//$query_str.="&pilotID=".$pilotID;
   }
 
@@ -53,13 +55,13 @@
 
   if ($takeoffID) {
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
-		$legend.=" <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;".replace_spaces(getWaypointName($takeoffID))." | ";
+		// $legend.=" <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;".replace_spaces(getWaypointName($takeoffID))." | ";
 		// $query_str.="&takeoffName=".$takeoffName;
   }
 
   if ($country) {
 		$where_clause.=" AND  countryCode='".$country."' ";
-		if ($sortOrder!="dateAdded") $legend.=" ".replace_spaces($countries[$country])." | ";
+		// if ($sortOrder!="dateAdded") $legend.=" ".replace_spaces($countries[$country])." | ";
 		// $query_str.="&takeoffName=".$takeoffName;
   }
     
@@ -128,7 +130,8 @@
   }
 	
   //  $legend.=_SORTED_BY." ".$sortDesc;
-  $legend.="<img src='$moduleRelPath/img/icon_sort.png' border=0 align=absmiddle>&nbsp;".replace_spaces($sortDesc);
+//  $legend.=_SORTED_BY." <img src='$moduleRelPath/img/icon_sort.png' border=0 align=absmiddle>&nbsp;".replace_spaces($sortDesc);
+  $legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
   listFlights($res,$legend,	$query_str,$sortOrder);
 
 function printHeader($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str) {

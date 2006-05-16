@@ -236,5 +236,13 @@ p {
 	color: #003366;
 }
 
+
+.box { 
+  background-color: #FFFFFF;
+	border-right-width: 1px; border-bottom-width: 1px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	padding: 4px 4px 4px 3px;
+}
 /* Import the fancy styles for IE only (NS4.x doesn't use the @import function) */
 @import url("formIE.css");
