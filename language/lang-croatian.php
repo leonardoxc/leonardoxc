@@ -537,4 +537,14 @@ define("_Takeoffs_per_Country","Poletišta po državi");
 define("_INDEX_HEADER","Dobrodošli u Leonardo XC ligu");
 define("_INDEX_MESSAGE","Koristite &quot;Glavni izbornik&quot; za navigaciju ili koristite najèešæe opcije prikazane ispod.");
 
+//--------------------------------------------
+// NEW 
+//--------------------------------------------
+define("_MENU_SUMMARY_PAGE","First (Summary) Page");
+define("_Display_ALL","Display ALL");
+define("_Display_NONE","Display NONE");
+define("_Reset_to_default_view","Reset to default view");
+define("_No_Club","No Club");
+define("_This_is_the_URL_of_this_page","This is the URL of this page");
+define("_All_glider_types","All glider types");
 ?>

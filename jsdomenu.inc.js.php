@@ -196,7 +196,7 @@ function createjsDOMenu() {
   }
 
 <? if ( count($CONF_glider_types) > 1 ) { ?>
-  staticMenu7 = new jsDOMenu(210, "absolute");
+  staticMenu7 = new jsDOMenu(290, "absolute");
   with (staticMenu7) {
 		<? 
         $catLink="?name=".$module_name."&cat=0";
@@ -205,7 +205,7 @@ function createjsDOMenu() {
 			$tmpStyle="jsdomenubaritemoverICON";
 			$current_catImg=$catImg;
 		} else $tmpStyle="jsdomenubaritemICONS";
-		echo 'addMenuItem(new menuItem("'.$catImg.'",  "", "'.$catLink.'") ) ;';
+		echo 'addMenuItem(new menuItem("'.$catImg.' '._All_glider_types.'",  "", "'.$catLink.'") ) ;';
 
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
 		  $catLink="?name=".$module_name."&cat=".$tmpcat;
@@ -241,7 +241,7 @@ function createjsDOMenu() {
 
 	if (count($clubsList) >0 || count($apList) >0) {
 		echo 'addMenuItem(new menuItem("-"));';
-    	echo 'addMenuItem(new menuItem("Reset to default view","","?name='.$module_name.'&op=list_flights&clubID=0&ap=0"));';
+    	echo 'addMenuItem(new menuItem("'._Reset_to_default_view.'","","?name='.$module_name.'&op=list_flights&clubID=0&ap=0"));';
 	}
 ?>
   }

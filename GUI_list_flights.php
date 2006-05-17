@@ -206,6 +206,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
   <td width="72" bgcolor="<?=$Theme->color4?>"><div align=left><? echo _SHOW ?></div></td></tr>
 <?
    $i=1;
+   $currDate="";
    while ($row = mysql_fetch_assoc($res)) { 
      $is_private=$row["private"];
 
@@ -223,12 +224,21 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   else  $first_col_back_color="";
 	   echo  
 		"<TD $first_col_back_color ><div align=left>".($i-1+$startNum)."</div></TD>      
-	   <TD ".(($sortOrder=="DATE")?"bgcolor=".$sortRowBgColor:"").">
+	   <TD valign=top ".(($sortOrder=="DATE")?"bgcolor=".$sortRowBgColor:"").">
 			<div align=right>";
 	   
   	   if ( $days_from_submission <= 3 ) echo "<img src='".$moduleRelPath."/img/icon_new.png' >";		
 
-	   echo formatDate($row["DATE"])."</div></TD>".
+  	   	if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
+  	   		 $currDate=$row["DATE"];  	   		
+  	   		 $dateStr= formatDate($row["DATE"]);
+  	   		
+  	   	} else {
+  	   		$dateStr="";  	   		 
+  	   	}
+
+	   
+	   echo $dateStr."</div></TD>".
        "<TD width=300 colspan=2 valign=top ".(($sortOrder=="pilotName" || $sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
 			"<div align=left>".
 			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   

@@ -554,10 +554,21 @@ define("_M_PER_SEC","μ/δευτ");
 //--------------------------------------------
 
 define("_WORLD_WIDE","Παγκοσμίως");
-define("_National_XC_Leagues_for","Εθνικες κατατάξεις");
+define("_National_XC_Leagues_for","Εθνικές κατατάξεις");
 define("_Flights_per_Country","Πτήσεις ανα Χώρα");
 define("_Takeoffs_per_Country","Απογειώσεις Χωρών");
 define("_INDEX_HEADER","Καλώς ήλθατε στον Leonardo XC League");
 define("_INDEX_MESSAGE","Μπορείτε να χρησιμοποιήσετε το μενού απο πάνω ή να επιλέξετε τις πιο συνηθισμένες επιλογές παρακάτω");
+
+//--------------------------------------------
+// NEW 
+//--------------------------------------------
+define("_MENU_SUMMARY_PAGE","Πρώτη Σελίδα (Περίληψη)");
+define("_Display_ALL","Εμφάνιση ΟΛΩΝ");
+define("_Display_NONE","Εμφάνιση ΟΛΩΝ");
+define("_Reset_to_default_view","Επαναφορά της αρχικής εμφάνισης");
+define("_No_Club","Κανένα club/ομάδα");
+define("_This_is_the_URL_of_this_page","Το URL αυτής της σελίδας");
+define("_All_glider_types","Όλοι οι τύποι πτητικών συσκευών");
 
 ?>

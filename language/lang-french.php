@@ -541,4 +541,15 @@ define("_Takeoffs_per_Country","Décollages par pays");
 define("_INDEX_HEADER","Bienvenue dans Leonardo XC League");
 define("_INDEX_MESSAGE","Vous pouvez utiliser le &quot;Menu principal&quot; pour naviguer ou utiliser les choix de catégories présentés ci-dessous.");
 
+//--------------------------------------------
+// NEW 
+//--------------------------------------------
+define("_MENU_SUMMARY_PAGE","First (Summary) Page");
+define("_Display_ALL","Display ALL");
+define("_Display_NONE","Display NONE");
+define("_Reset_to_default_view","Reset to default view");
+define("_No_Club","No Club");
+define("_This_is_the_URL_of_this_page","This is the URL of this page");
+define("_All_glider_types","All glider types");
+
 ?>

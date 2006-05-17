@@ -546,4 +546,15 @@ define("_Takeoffs_per_Country","Descolagens por País");
 define("_INDEX_HEADER","Bem vindo à Liga XC Leonardo");
 define("_INDEX_MESSAGE","Utilize o menu principal para navegar ou as preferências a seguir.");
 
+//--------------------------------------------
+// NEW 
+//--------------------------------------------
+define("_MENU_SUMMARY_PAGE","First (Summary) Page");
+define("_Display_ALL","Display ALL");
+define("_Display_NONE","Display NONE");
+define("_Reset_to_default_view","Reset to default view");
+define("_No_Club","No Club");
+define("_This_is_the_URL_of_this_page","This is the URL of this page");
+define("_All_glider_types","All glider types");
+
 ?>
