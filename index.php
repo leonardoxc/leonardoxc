@@ -121,7 +121,16 @@ require_once $moduleRelPath."/BLOCKS_start.php";
 		}
 	   if ($country) echo "Country: ".$countriesCodes[$country];
 	    echo "</b></div>";
-	   ?>   		   
+	   ?>
+<style type="text/css">
+<!--
+.style1 {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+-->
+</style>
+   		   
    		<div id="menu" >
 		<ul>
 			<li><a href="index.php">Return to default view</a></li>
@@ -146,7 +155,7 @@ function toggleVisible(elId,pos_elId) {
 		MWJ_changeVisibility( elId , false );	
 		MWJ_changeSize( elId ,0,0);
 	} else {		
-		MWJ_changeSize( elId ,300,120);
+		MWJ_changeSize( elId ,300,"");
 		
 		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
 		MWJ_changePosition( elId,  oMC[0]  ,  oMC[1] + 28 , true );
@@ -165,10 +174,20 @@ function toggleVisible(elId,pos_elId) {
 	top:  0 px;
 	left: 0 px;
 
-	border-width:1px;
+/*	border-width:1px;
 	border-style:dashed;
 	border-color:#FF9933;
 	background-color:#E7F0D9;
+*/
+
+
+    background-color: #FFFFFF;
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	padding: 3px 3px 3px 3px;
+	margin-bottom:0px;
+
 
 	width:0px;
 	height:0px;
@@ -177,7 +196,44 @@ function toggleVisible(elId,pos_elId) {
 }
 -->
 </style>
+<div id="selectDateID" class="selectDate">
+<table width=100%>
+<tr>
+	<td height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
+	  </div></td>
+</tr>
+<tr>
+	<td height=30 class="main_text" bgcolor="#F0F3F7">
+	</td>
+</tr>
+</TABLE>
+</div>
 
+<div id="selectCountryID" class="selectDate">
+<table width=100%>
+<tr>
+	<td height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select Country
+	  </div></td>
+</tr>
+<tr>
+	<td class="main_text" bgcolor="#F0F3F7">
+<?
+		$num_of_pages=ceil($countriesNum/$desired_items_per_page);
+		//	echo "aprox num of pages: $num_of_pages [ $countriesNum ] <br>";
+		$i=0;
+		$ii=0;
+	    if (count($countriesNames)) {
+			foreach($countriesNames as $countryName) {
+				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a> :: ";
+				$i++;
+			}
+		}
+
+?>
+	</td>
+</tr>
+</TABLE>
+</div>
 <?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
   $dateLegend="";
@@ -262,7 +318,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    ?>
   	    </div>
   	    
-  	    <div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
+  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon');return false;"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
    	    <?
   	    	echo "<b>$countryLegend</b>";
   	    	if (!$allCountriesDisplay) 
@@ -292,18 +348,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
 		?>'><img src='modules/leonardo/templates/basic/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 		</div>
   	   <?   
-  	    closeBox();
-//  	    openBox("","100%","#f5f5f5");
-  	    ?>
-		<div id="selectDateID" class="selectDate">
-<table width=100>
-<tr><td height=110 bgcolor="#CC9900">aasasa
-</td></tr></TABLE>
-  	    </div>
-
-  	    <?
-  	    //closeBox();
-  	    
+  	    closeBox();  	    
 }
 
 //---------------------------------------------
