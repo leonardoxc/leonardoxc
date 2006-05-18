@@ -138,7 +138,47 @@ require_once $moduleRelPath."/BLOCKS_start.php";
 	}
 
 require_once $moduleRelPath."/MENU_menu.php";
+?>
+<script language="javascript" src="modules/leonardo/DHTML_functions.js"></script>
+<script language="javascript">
+function toggleVisible(elId,pos_elId) {	
+	if ( MWJ_getStyle( elId ,'visibility') == true ) {
+		MWJ_changeVisibility( elId , false );	
+		MWJ_changeSize( elId ,0,0);
+	} else {		
+		MWJ_changeSize( elId ,300,120);
+		
+		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
+		MWJ_changePosition( elId,  oMC[0]  ,  oMC[1] + 28 , true );
 
+		MWJ_changeVisibility( elId ,true );	
+	}
+}
+</script>
+
+<style type="text/css">
+<!--
+.selectDate {
+	display:block;
+	position:absolute;
+
+	top:  0 px;
+	left: 0 px;
+
+	border-width:1px;
+	border-style:dashed;
+	border-color:#FF9933;
+	background-color:#E7F0D9;
+
+	width:0px;
+	height:0px;
+	visibility:hidden;
+
+}
+-->
+</style>
+
+<?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
   $dateLegend="";
   $allTimesDisplay=0;
@@ -184,11 +224,11 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
   
   if ($cat) { 
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0 alt='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
 		//$gliderCatList[$cat]
   }	else {
 		$allCatDisplay=1;  
-		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0 alt='"._GLIDER_TYPE.": "._All_glider_types."'>";
+		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
   }
 
   
@@ -201,7 +241,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    <?
   	    	echo "<b>$catLegend</b>";
   	    	//if (!$allCatDisplay) 
-  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."'  border=0></a>";
+  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."'  border=0></a>";
   	    ?>
   	    </div>
 		<? if ($clubID) {  ?>
@@ -209,50 +249,61 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='?name=$module_name&clubID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&clubID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    <? } ?>
   	    
-  	    <div class="menu1" ><img src='modules/leonardo/templates/basic/img/icon_date.gif' alt='<?=_MENU_DATE?>' align="absmiddle" border=0>
+  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='modules/leonardo/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
   	    <?
   	    	echo "<b>$dateLegend</b>";
   	    	if (!$allTimesDisplay) 
-  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    
-  	    <div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  alt='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
+  	    <div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$countryLegend</b>";
   	    	if (!$allCountriesDisplay) 
-  	    		echo " <a href='?name=$module_name&country=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&country=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay ) { ?>
-		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_pilot.gif'  alt='<?=_PILOT?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$pilotLegend</b>";
   	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>		
   	    <? } ?>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay) { ?>
-		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_takeoff.gif' alt='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$takeoffLegend</b>";
   	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' alt='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
 		<? } ?>  	    
 		<div class="menuLvl2"><a href='<?
 		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
-		?>'><img src='modules/leonardo/templates/basic/img/icon_bookmark.gif' alt='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+		?>'><img src='modules/leonardo/templates/basic/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 		</div>
-  	   <?
+  	   <?   
   	    closeBox();
+//  	    openBox("","100%","#f5f5f5");
+  	    ?>
+		<div id="selectDateID" class="selectDate">
+<table width=100>
+<tr><td height=110 bgcolor="#CC9900">aasasa
+</td></tr></TABLE>
+  	    </div>
+
+  	    <?
+  	    //closeBox();
+  	    
 }
 
 //---------------------------------------------
