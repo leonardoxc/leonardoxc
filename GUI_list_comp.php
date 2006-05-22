@@ -81,7 +81,10 @@
 	 $extra_table_str.=",".$clubsPilotsTable;
   } else $extra_table_str.="";
   
-  echo "<table  class=main_text border=0 width=650 bgcolor=#EAF0E4><tr><td><div align=left><b> $legend </b></div></td></tr></table><br>";
+//  echo "<table  class=main_text border=0 width=650 bgcolor=#EAF0E4><tr><td><div align=left><b> $legend </b></div></td></tr></table><br>";
+  
+  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
+  
 
   $query = 'SELECT '.$flightsTable.'.ID, userID, username,  MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
   		. ' FROM '.$flightsTable.', '.$prefix.'_users' . $extra_table_str
@@ -190,15 +193,20 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global  $countHowMany;
 
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
-   open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
+   
+   
+   // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
+   // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
+   echo "<br><table class='listTable shadowBox' width='100%'><tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr><tr>";
+   
 
    $headerSelectedBgColor="#F2BC66";
    ?>
-   <td width="25" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
+   <td width="30" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
    <td bgcolor="<?=$Theme->color1?>"><div align=left><? echo _PILOT ?></div></td>
    <td width="100" bgcolor="<?=$Theme->color1?>"><div align=right><? echo $header ?></div></td>
    <? for ($ii=1;$ii<=$countHowMany;$ii++) { ?>
-   <td width="45" bgcolor="<?=$Theme->color1?>"><div align=right>#<? echo $ii?></div></td>
+   <td width="55" bgcolor="<?=$Theme->color1?>"><div align=right>#<? echo $ii?></div></td>
    <? }
 
 	  $i=1;
@@ -241,8 +249,8 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		}
 
    	}	
-	  
-   close_inner_table();       
+	 echo "</tr></td></table>"; 
+   //close_inner_table();       
 
 } //end function
 

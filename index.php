@@ -89,73 +89,44 @@ if ($opMode==3)
 	require_once $moduleRelPath."/GUI_header.php";
 
 if ($opMode==1) include("header.php");
-require_once $moduleRelPath."/templates/".$PREFS->themeName."/style.php";
+
+
+//require_once $moduleRelPath."/templates/".$PREFS->themeName."/style.php";
+?>
+
+<link href="<? echo $moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
+
+<?
 if ($opMode==1) OpenTable();
 
 $Theme =new Theme();
 require_once $moduleRelPath."/BLOCKS_start.php";
 
-	   $noClubDisplay=1;
-	   if ($clubID) { 
-	   	   require_once  dirname(__FILE__)."/CL_club.php";
-		   $currentClub=new club($clubID);
-		   $clubName=$currentClub->getAttribute("name");			
-		   $noClubDisplay=0;
-		} else {			
-			$clubName=_No_Club;
-		}
 
-//
-// Show info box
-//  (if applicable)
-   if (($clubID || $country) && 0) {   
-   	   openBox("",480);
-//	   open_inner_table();
-	   echo "<div align=center><b>Display: ";
-	   if ($clubID) { 
-		   // require_once  dirname(__FILE__)."/CL_club.php";
-		   //$currentClub=new club($clubID);
-		   //$clubName=$currentClub->getAttribute("name");
-   		   echo "Club: '$clubName' :: ";
-			
-		}
-	   if ($country) echo "Country: ".$countriesCodes[$country];
-	    echo "</b></div>";
-	   ?>
-<style type="text/css">
-<!--
-.style1 {
-	color: #FFFFFF;
-	font-weight: bold;
+
+$noClubDisplay=1;
+if ($clubID) { 
+   require_once  dirname(__FILE__)."/CL_club.php";
+   //$currentClub=new club($clubID);
+   //$clubName=$currentClub->getAttribute("name");			
+   $clubName=$clubsList[$clubID]['desc'];
+   $noClubDisplay=0;
+} else {			
+	$clubName=_No_Club;
 }
--->
-</style>
-   		   
-   		<div id="menu" >
-		<ul>
-			<li><a href="index.php">Return to default view</a></li>
-			<li><a href="about.php">About Us</a></li>
-			<li><a href="contact.php">Contact</a></li>
-			<li><a href="nonprofits.php">Non-Profits</a></li>			
-		</ul>
-
-		</div>
-   		   <?
-	   
-	   closeBox();
-	   
-	}
 
 require_once $moduleRelPath."/MENU_menu.php";
-?>
+
+if (0) { 
+	?>
 <script language="javascript" src="modules/leonardo/DHTML_functions.js"></script>
 <script language="javascript">
 function toggleVisible(elId,pos_elId) {	
 	if ( MWJ_getStyle( elId ,'visibility') == true ) {
 		MWJ_changeVisibility( elId , false );	
-		MWJ_changeSize( elId ,0,0);
+		MWJ_changeSize( elId ,1,1);
 	} else {		
-		MWJ_changeSize( elId ,300,"");
+		MWJ_changeSize( elId ,300,200);
 		
 		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
 		MWJ_changePosition( elId,  oMC[0]  ,  oMC[1] + 28 , true );
@@ -188,9 +159,15 @@ function toggleVisible(elId,pos_elId) {
 	padding: 3px 3px 3px 3px;
 	margin-bottom:0px;
 
-
-	width:0px;
-	height:0px;
+/*
+	width: auto;
+	height: auto;
+	min-width: 80px;
+	min-height: 35px; 
+*/
+	width:1px;
+	height:1px;
+	
 	visibility:hidden;
 
 }
@@ -235,6 +212,16 @@ function toggleVisible(elId,pos_elId) {
 </TABLE>
 </div>
 <?
+} else {
+?>
+<script language="javascript">
+	function toggleVisible(elId,pos_elId) {	
+		return true;
+	}
+</script>
+<?
+}
+
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
   $dateLegend="";
   $allTimesDisplay=0;
@@ -301,51 +288,51 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    ?>
   	    </div>
 		<? if ($clubID) {  ?>
-  	    <div class="menu1" ><img src='modules/leonardo/templates/basic/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/basic/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='?name=$module_name&clubID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    <? } ?>
   	    
-  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='modules/leonardo/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
+  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
   	    <?
   	    	echo "<b>$dateLegend</b>";
   	    	if (!$allTimesDisplay) 
-  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    
-  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon');return false;"><img src='modules/leonardo/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
+  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
    	    <?
   	    	echo "<b>$countryLegend</b>";
   	    	if (!$allCountriesDisplay) 
-  	    		echo " <a href='?name=$module_name&country=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay ) { ?>
-		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$pilotLegend</b>";
   	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>		
   	    <? } ?>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay) { ?>
-		<div class="menu1"><img src='modules/leonardo/templates/basic/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$takeoffLegend</b>";
   	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
 		<? } ?>  	    
 		<div class="menuLvl2"><a href='<?
 		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
-		?>'><img src='modules/leonardo/templates/basic/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+		?>'><img src='<?=$moduleRelPath?>/templates/basic/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 		</div>
   	   <?   
   	    closeBox();  	    

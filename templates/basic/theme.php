@@ -96,12 +96,14 @@ echo "</center>";
 function open_tr() {
  global $row_count;
  $bgcolor=(($row_count+1)%2)?"bgcolor=#DDDDDD":"";
- echo "<TR $bgcolor align=right>";
+ echo "<TR class=''$bgcolor align=right>";
+ //$rowNum=(($row_count+1)%2)?"1":"2";
+ // echo "<TR class='row$rowNum'>";
  $row_count++;
 }
 
 function openBox($title,$width=640,$bgcolor="#DCE4E4"){ ?>
-<table class="mainBox" width="<?=$width?>" align="center">
+<table cellpadding="0" cellspacing="0" class="mainBox" width="<?=$width?>" align="center">
 <? if ($title) { ?>
 <tr>
   <td  class="main_text" ><?=$title?>

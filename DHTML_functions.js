@@ -154,6 +154,7 @@ function MWJ_changeSize( oName, oWidth, oHeight, oFrame ) {
 	if( theDiv.resizeTo ) { theDiv.resizeTo( oWidth, oHeight ); }
 	theDiv.width = oWidth + oPix; theDiv.pixelWidth = oWidth;
 	theDiv.height = oHeight + oPix; theDiv.pixelHeight = oHeight;
+
 }
 function MWJ_changeClip( oName, oLeft, oTop, oBottom, oRight, oFrame ) {
 	var theDiv = MWJ_findObj( oName, oFrame ); if( !theDiv ) { return; }
