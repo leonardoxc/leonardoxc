@@ -96,7 +96,7 @@ echo "</center>";
 function open_tr() {
  global $row_count;
  $bgcolor=(($row_count+1)%2)?"bgcolor=#DDDDDD":"";
- echo "<TR class=''$bgcolor align=right>";
+ echo "<TR $bgcolor align=right>";
  //$rowNum=(($row_count+1)%2)?"1":"2";
  // echo "<TR class='row$rowNum'>";
  $row_count++;
