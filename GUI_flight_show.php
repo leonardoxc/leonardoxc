@@ -69,18 +69,23 @@ function showFlight($flightID) {
   }
 
   $flight->updateAll(0);
+  
+	$flightHours=$flight->DURATION/3600;
+	$openDistanceSpeed=formatSpeed($flight->LINEAR_DISTANCE/($flightHours*1000));
+	$maxDistanceSpeed=formatSpeed($flight->MAX_LINEAR_DISTANCE/($flightHours*1000));
+	$olcDistanceSpeed=formatSpeed($flight->FLIGHT_KM/($flightHours*1000));
 
   open_tr();
-	   echo "<TD width=7>&nbsp</td>";
+	   echo "<TD width=2>&nbsp</td>";
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
-   	   echo "<TD width=220><div align=".$Theme->table_cells_align.">".$location."&nbsp;
+   	   echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;
 		<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
 	   echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
   	   echo "</div></TD>";
 	   echo "<TD width=10>&nbsp</td>";
-	   echo "<TD width=140 bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._TAKEOFF_TIME."</div></TD>";
+	   echo "<TD width=180 bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._TAKEOFF_TIME."</div></TD>";
    	   echo "<TD width=120><div align=".$Theme->table_cells_align.">".sec2Time($flight->START_TIME)."</div></TD>";
-   	   echo "<TD width=7>&nbsp</td>";
+   	   echo "<TD width=2>&nbsp</td>";
   close_tr(); 
   open_tr();
 	   echo "<TD>&nbsp</td>";
@@ -94,7 +99,7 @@ function showFlight($flightID) {
   open_tr();
   	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OPEN_DISTANCE."</div></TD>";
-   	   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->LINEAR_DISTANCE)."</div></TD>";
+   	   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._DURATION."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".sec2Time($flight->DURATION)."</div></TD>";
@@ -104,7 +109,7 @@ function showFlight($flightID) {
 	  open_tr();
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._MAX_DISTANCE."</div></TD>";
-		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)."</div></TD>";
+		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)</div></TD>";
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORE_TYPE."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)."</div></TD>";
@@ -113,7 +118,7 @@ function showFlight($flightID) {
 	  open_tr();
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_DISTANCE."</div></TD>";
-		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->FLIGHT_KM)."</div></TD>";
+		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)</div></TD>";
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORING."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScore($flight->FLIGHT_POINTS)."</div></TD>";
