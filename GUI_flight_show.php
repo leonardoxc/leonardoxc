@@ -43,19 +43,30 @@ function showFlight($flightID) {
   <script language="javascript">
   
   function submitForm() {
-  //  document.geOptionsForm.selectAction.value=action;
-  // var task = document.getElementById("taskID");
-  var flightID= document.geOptionsForm.flightID.value;
-  //var form  = document.getElementById("geOptionsForm");
-  //var flightID= form.flightID.value;
+	  var flightID= document.geOptionsForm.flightID.value;
+	  var lineWidth= document.geOptionsForm.lineWidth.value;
+	  var lineColor= document.geOptionsForm.lineColor.value;
+	  var ex= document.geOptionsForm.ex.value;
+	
   
-  lineWidth=5;
-  lineColor="00ff00";
-  ex=3;
+//  lineWidth=1;
+//  lineColor="ff0000";
+//  ex=2;
   
-  window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex;
-  return false;
+	window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex;
+	return false;
 }
+
+function setSelectColor(theDiv) {
+	
+	oColour="#"+theDiv.options[theDiv.selectedIndex].value;
+	//oColour="#00ff00";
+	if( theDiv.style ) { theDiv = theDiv.style; } if( typeof( theDiv.bgColor ) != 'undefined' ) {
+		theDiv.bgColor = oColour; } else if( theDiv.backgroundColor ) { theDiv.backgroundColor = oColour; }
+	else { theDiv.background = oColour; }
+
+}
+
 </script>
 
   <style type="text/css">
@@ -81,50 +92,82 @@ function showFlight($flightID) {
 }
 -->
 </style>
-<form name="geOptionsForm" method="POST">
+
 <div id="geOptionsID" class="dropDownBox">
-<table width=100%>
+<form name="geOptionsForm" method="POST">
+<input type="hidden" name="flightID" value="<?=$flightID?>">
+<table width=100% cellpadding="2">
 <tr>
-	<td height=80 class="main_text" align="center">
+	<td colspan=2 class="main_text" align="left" valign="top">
+		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-30,0,0);return false;">
+		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a>
+	</td>
+</tr>
+<tr>
+	<td class="main_text" align="right">
+	Line Color
+	</td>
+	<td class="main_text" align="left">
+	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
+	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='0000FF' style='background-color: #0000FF'>&nbsp;&nbsp;&nbsp;</option>	
+	<option value='FFD700' style='background-color: #FFD700'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='FF1493' style='background-color: #FF1493'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='FFFFFF' style='background-color: #FFFFFF'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='FF4500' style='background-color: #FF4500'>&nbsp;&nbsp;&nbsp;</option>
+	<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>
+	
 
-	<input type="hidden" name="flightID" value="<?=$flightID?>">
-	Line Color: <select name="lineColor">
-	<option value='FF0000' style='background-color: #FF0000'>Red</option>
-	<option value='00FF00' style='background-color: #00FF00'>Green</option>
-	<option value='0000FF' style='background-color: #0000FF'>Blue</option>
-
-	</select> <br>
-	Line width:<select  name="lineWidth">	
-	<option value='1' >1</option>
-	<option value='2' >2</option>
-	<option value='3' >3</option>
-	<option value='4' >4</option>
-	<option value='5' >5</option>
 	</select> 
-	<br>
-	Exaggeration: 
+	</td>
+	
+</tr>
+<tr>
+	<td class="main_text" align="right">
+		Line width
+	</td>
+	<td class="main_text" align="left">
+		<select  name="lineWidth">	
+		<option value='1' >1</option>
+		<option value='2' selected >2</option>
+		<option value='3' >3</option>
+		<option value='4' >4</option>
+		<option value='5' >5</option>
+		</select> 
+	</td>
+</tr>
+<tr>
+	<td class="main_text" align="right">
+		Exaggeration
+	</td>
+	<td class="main_text" align="left">
 	<select name="ex">	
 	<option value='1' >1</option>
 	<option value='2' >2</option>
 	<option value='3' >3</option>
 	</select> 
-	
-	<br>
+	</td>
+</tr>
+<tr>
+	<td colspan=2 class="main_text" align="center">
 	<?
 	echo "<br><a href='javascript:submitForm()'>Display on Google Earth</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
 	?>
+
 	</td>
 </tr>
 </TABLE>
-</div>
 </form>
+</div>
+
   <?
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": <a href='?name=$module_name&op=list_flights&pilotID=".$flight->userID."'>".$flight->userName.
 					"</a> 
 					<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$flight->userID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
 			        "<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$flight->userID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>
-					&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",650,$flight->cat);
+					&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
 
   if (!$flight->active &&  (mktime() - datetime2UnixTimestamp($flight->dateAdded) > 5 ) )  {  //  5 secs
 		$flight->activateFlight();
@@ -158,108 +201,108 @@ function showFlight($flightID) {
 	$olcDistanceSpeed=formatSpeed($flight->FLIGHT_KM/($flightHours*1000));
 
   open_tr();
-	   echo "<TD width=2>&nbsp</td>";
+	 //  echo "<TD width=2>&nbsp</td>";
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
    	   echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;
 		<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
 	   echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
   	   echo "</div></TD>";
-	   echo "<TD width=10>&nbsp</td>";
+	   echo "<TD width=6>&nbsp</td>";
 	   echo "<TD width=180 bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._TAKEOFF_TIME."</div></TD>";
    	   echo "<TD width=120><div align=".$Theme->table_cells_align.">".sec2Time($flight->START_TIME)."</div></TD>";
-   	   echo "<TD width=2>&nbsp</td>";
+   	//   echo "<TD width=2>&nbsp</td>";
   close_tr(); 
   open_tr();
-	   echo "<TD>&nbsp</td>";
+	//   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._LANDING_LOCATION."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatLocation(getWaypointName($flight->landingID),$flight->landingVinicity,$landingRadious)."</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._LANDING_TIME."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".sec2Time($flight->END_TIME)."</div></TD>";
-   	   echo "<TD >&nbsp</td>";
+   	//   echo "<TD >&nbsp</td>";
   close_tr();
   open_tr();
-  	   echo "<TD>&nbsp</td>";
+  //	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OPEN_DISTANCE."</div></TD>";
    	   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._DURATION."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".sec2Time($flight->DURATION)."</div></TD>";
-	   echo "<TD>&nbsp</td>";
+//	   echo "<TD>&nbsp</td>";
   close_tr();
   if ( $scoringServerActive ) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._MAX_DISTANCE."</div></TD>";
 		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)</div></TD>";
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORE_TYPE."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)."</div></TD>";
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_DISTANCE."</div></TD>";
 		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)</div></TD>";
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORING."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScore($flight->FLIGHT_POINTS)."</div></TD>";
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   open_tr();
-  	   echo "<TD>&nbsp</td>";
+  	//   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MAX_SPEED."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatSpeed($flight->MAX_SPEED)."</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MAX_VARIO."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatVario($flight->MAX_VARIO)."</div></TD>";
-   	   echo "<TD>&nbsp</td>";
+ //  	   echo "<TD>&nbsp</td>";
   close_tr();
   open_tr();
-  	   echo "<TD>&nbsp</td>";
+  //	   echo "<TD>&nbsp</td>";
   	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MEAN_SPEED."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatSpeed($flight->MEAN_SPEED)."</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MIN_VARIO."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatVario($flight->MIN_VARIO)."</div></TD>";
-	   echo "<TD>&nbsp</td>";	  
+//	   echo "<TD>&nbsp</td>";	  
   close_tr();
   if ($flight->is3D()) {
     open_tr();
-	   echo "<TD>&nbsp</td>";
+	//   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._MAX_ALTITUDE."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MAX_ALT)."</div></TD>";
 	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._TAKEOFF_ALTITUDE."</div></TD>";
    	   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->TAKEOFF_ALT)."</div></TD>";
-  	   echo "<TD>&nbsp</td>";
+  	//   echo "<TD>&nbsp</td>";
 	  close_tr();
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._MIN_ALTITUDE."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MIN_ALT)."</div></TD>";
 		   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._ALTITUDE_GAIN."</div></TD>";
 		   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MAX_ALT-$flight->TAKEOFF_ALT)."</div></TD>";
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   open_tr();
-   	   echo "<TD>&nbsp</td>";
+   	//  echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
    	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
 		echo "<div id='geOptionsPos' style='float:right'><a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a> ";
-		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-90,200,100);return false;\">Options</a>)</div>";
+		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,150,125);return false;\">Options</a>)</div>";
 
 		echo "</TD>";
-	   echo "<TD>&nbsp</td>";
+	//   echo "<TD>&nbsp</td>";
   close_tr();
   if ( $flight->olcFilename  || ( $flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) ) $showOLCsubmit=1;
   else  $showOLCsubmit=0;
   if ( $enableOLCsubmission && $showOLCsubmit ) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">OLC</div></TD>";
 		   echo "<TD  colspan=4><div align=left>";
 			if ($flight->olcFilename) {
@@ -283,43 +326,43 @@ function showFlight($flightID) {
 			}
 			else  echo _CANNOT_BE_SUBMITTED;
 		   echo "</div></TD>";
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   if ($flight->comments) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._COMMENTS."</div></TD>";
 		   echo "<TD colspan=4><div align=left>".$flight->comments."</div></TD>";
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   if ($flight->linkURL) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._RELEVANT_PAGE."</div></TD>";
 		   echo "<TD colspan=4><div align=left><a href='".formatURL($flight->linkURL)."' target=_blank>".$flight->linkURL."</a></div></TD>";
-		   echo "<TD>&nbsp</td>";
+		//   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   if ($flight->glider) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._GLIDER."</div></TD>";
 		   echo "<TD colspan=4><div align=left>".$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".$gliderCatList[$flight->cat]."] </div></TD>";
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   if ($flight->photo1Filename) {
   open_tr();
-   	   echo "<TD>&nbsp</td>";
+   //	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._PHOTOS."</div></TD>";	  	   
    	   echo "<TD colspan=4><div align=left>";
     	  if ($flight->photo1Filename) 	echo "<a href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
     	  if ($flight->photo2Filename) 	echo "<a href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
     	  if ($flight->photo3Filename) 	echo "<a href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
 	   echo "</div></TD>";
-   	   echo "<TD>&nbsp</td>";
+   //	   echo "<TD>&nbsp</td>";
   close_tr();
   }
 
@@ -356,7 +399,7 @@ if ($xmlSitesLines) {
 
   if ($takeoffsNum) {
   open_tr();
-   	   echo "<TD>&nbsp</td>";
+   	  // echo "<TD>&nbsp</td>";
 	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
 	   echo "<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
 	   echo "<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0><br>"._FLYING_AREA_INFO;
@@ -372,7 +415,7 @@ if ($xmlSitesLines) {
 		echo "</td></tr></table>";
 
 	   echo "</div></TD>";
-   	   echo "<TD>&nbsp</td>";
+   //	   echo "<TD>&nbsp</td>";
   close_tr();
   }
 
@@ -380,7 +423,7 @@ if ($xmlSitesLines) {
 
   if (in_array($userID,$admin_users) ) {
 	  open_tr();
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._MORE_INFO."</div></TD>";	  	   
 		   echo "<TD colspan=4><div align=left>";
 
@@ -398,11 +441,11 @@ if ($xmlSitesLines) {
 			}
 
 		   echo "</div></TD>";
-		   echo "<TD>&nbsp</td>";
+	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
   open_tr();
-  echo "<td colspan=7><center>";
+  echo "<td colspan=5><center>";
 
 	  if (in_array($userID,$admin_users)) {
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";

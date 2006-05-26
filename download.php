@@ -36,10 +36,10 @@
 		$w=$_GET['w'];
 		$c=$_GET['c'];
 		$ex=$_GET['ex'];
-// echo "$w#$c#$ex#";
+
 		if (!$w) $w=2;
 		if (!$c) $c="ff0000";
-		if (!$ex) { echo "###"; $ex=1; }
+		if (!$ex) { $ex=1; }
 		
 		DEBUG("DL",1,"Will serve flight $flightID<BR>");
 

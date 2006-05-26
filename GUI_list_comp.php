@@ -170,14 +170,30 @@
   sortArrayBest("alt_gain",$countHowMany);
   sortArrayBest("olc_score",$countHowMany);
   sortArrayBest("triangleKm",$countHowMany); 
+?>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tabber.js"></script>
+<link rel="stylesheet" href="<?=$moduleRelPath ?>/example.css" TYPE="text/css" MEDIA="screen">
+<link rel="stylesheet" href="<?=$moduleRelPath ?>/example-print.css" TYPE="text/css" MEDIA="print">
 
-  listCategory(_OLC." (".$countHowMany." "._N_BEST_FLIGHTS.")",			_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");   echo "<br>";
-  listCategory(_FAI_TRIANGLE." (".$countHowMany." "._N_BEST_FLIGHTS.")",	_KILOMETERS,"triangleKm","formatDistance");   echo "<br>";
-  listCategory(_MENU_OPEN_DISTANCE." (".$countHowMany." "._N_BEST_FLIGHTS.")",_TOTAL_KM,"open_distance","formatDistance");   echo "<br>";
-  listCategory(_DURATION ." (".$countHowMany." "._N_BEST_FLIGHTS.")",		_TOTAL_DURATION,"duration","sec2Time"); echo "<br>";
-  listCategory(_ALTITUDE_GAIN." (".$countHowMany." "._N_BEST_FLIGHTS.")",	_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); echo "<br>";
+<script type="text/javascript">
+
+/* Optional: Temporarily hide the "tabber" class so it does not "flash"
+   on the page as plain HTML. After tabber runs, the class is changed
+   to "tabberlive" and it will appear. */
+
+document.write('<style type="text/css">.tabber{display:none;}<\/style>');
+</script>
+<div class="tabber">
+<?
+  listCategory(_OLC,			_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
+  listCategory(_FAI_TRIANGLE,	_KILOMETERS,"triangleKm","formatDistance");   
+  listCategory(_MENU_OPEN_DISTANCE,_TOTAL_KM,"open_distance","formatDistance");
+  listCategory(_DURATION,		_TOTAL_DURATION,"duration","sec2Time"); 
+  listCategory(_ALTITUDE_GAIN,	_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
   //  listPilots2($res,$legend,$query_str,$sortOrder,$is_comp);
-	
+?>
+</div>
+<?	
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
    global $pilotNames;
@@ -194,7 +210,9 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
    
+   echo "<div class='tabbertab' title='$legend'>";
    
+   $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
    // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
    // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
    echo "<br><table class='listTable shadowBox' width='100%'><tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr><tr>";
@@ -251,7 +269,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    	}	
 	 echo "</tr></td></table>"; 
    //close_inner_table();       
-
+	echo '</div>';
 } //end function
 
 ?>

@@ -234,13 +234,14 @@ var $maxPointNum=1000;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
 	}
 
-	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2.5) {
+	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2) {
 		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
 		//if (file_exists($this->getKMLFilename())) return;
-
+		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
+		
 		$filename=$this->getIGCFilename(0);  
 		$lines = file ($filename); 
 		if (!$lines) return;
@@ -297,7 +298,7 @@ var $maxPointNum=1000;
 $kml_file_contents.=
 "<Style>
     <LineStyle>
-      <color>".$lineColor."ff</color>
+      <color>".$KMLlineColor."</color>
       <width>$lineWidth</width>
     </LineStyle>
   </Style>
@@ -542,13 +543,13 @@ $kml_file_contents.=
 			if  (strlen($line)==0) continue;
 			if  ( $line{0}!='B' ) continue;
 			$Brecords++;
-			if  ( strlen($line) < 23 ) { 
+			if  ( strlen($line) <  23 ) { 
 				$lines[$i]{1}='X';
 				continue;
 			}
 			$neighboors=array();
 			$nextPointPos=$i;
-			for ($t1= 0 ;$t1 < $getPointsNum ;$t1++ ) {
+			for ($t1= 0 ;$t1 <  $getPointsNum ;$t1++ ) {
 				$thisPoint=new gpsPoint( trim($lines[$nextPointPos]) ,$this->timezone );
 				$neighboors[$t1] = $thisPoint;
 
