@@ -120,6 +120,18 @@ require_once $moduleRelPath."/MENU_menu.php";
 if (1) { 
 	?>
 <script language="javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
+<script language="javascript" src="<?=$moduleRelPath?>/prototype.js"></script>
+<script language="javascript">
+
+function toggleVisibleAjax(divID,divPos){
+	url='/<?=$moduleRelPath?>/EXT_filter.php';
+//	url='modules.php?name=leonardo&op=filter';
+	pars='';
+	
+	var myAjax = new Ajax.Updater(divID, url, {method:'get',parameters:pars});
+	toggleVisible(divID,divPos);
+}
+</script>
 
 <style type="text/css">
 <!--
@@ -282,7 +294,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    </div>
   	    <? } ?>
   	    
-  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
+  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisibleAjax('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
   	    <?
   	    	echo "<b>$dateLegend</b>";
   	    	if (!$allTimesDisplay) 
