@@ -282,3 +282,22 @@ function MWJ_monitorButton( oOb, oEvent, oHandler ) {
 		if( oHandler ) { oHandler( arguments[0], e, ( ( e < 2 ) ? 'left' : 'right' ), this ); }
 	}; oOb['MWJ_'+oEvent.toLowerCase()] = oHandler;
 }
+
+function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {	
+	if (!verOffset) verOffset=28;
+	if (!horOffset) horOffset=0;
+	if (!width) width=300;
+	if (!height)height=200;
+	
+	if ( MWJ_getStyle( elId ,'visibility') == true ) {
+		MWJ_changeVisibility( elId , false );	
+		MWJ_changeSize( elId ,1,1);
+	} else {		
+		MWJ_changeSize( elId ,width,height);
+		
+		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
+		MWJ_changePosition( elId,  oMC[0]+ horOffset ,  oMC[1] + verOffset , true );
+
+		MWJ_changeVisibility( elId ,true );	
+	}
+}

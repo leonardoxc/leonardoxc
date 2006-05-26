@@ -38,6 +38,88 @@ function showFlight($flightID) {
 				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
 
+  echo '<script language="javascript" src="$moduleRelPath/DHTML_functions.js"></script>'."\n";
+  ?>
+  <script language="javascript">
+  
+  function submitForm() {
+  //  document.geOptionsForm.selectAction.value=action;
+  // var task = document.getElementById("taskID");
+  var flightID= document.geOptionsForm.flightID.value;
+  //var form  = document.getElementById("geOptionsForm");
+  //var flightID= form.flightID.value;
+  
+  lineWidth=5;
+  lineColor="00ff00";
+  ex=3;
+  
+  window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex;
+  return false;
+}
+</script>
+
+  <style type="text/css">
+<!--
+.dropDownBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: 0px;
+	width:0px;
+	height:0px;
+	
+	visibility:hidden;
+
+    background-color: #FFFFFF;
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	padding: 3px 3px 3px 3px;
+	margin-bottom:0px;
+
+}
+-->
+</style>
+<form name="geOptionsForm" method="POST">
+<div id="geOptionsID" class="dropDownBox">
+<table width=100%>
+<tr>
+	<td height=80 class="main_text" align="center">
+
+	<input type="hidden" name="flightID" value="<?=$flightID?>">
+	Line Color: <select name="lineColor">
+	<option value='FF0000' style='background-color: #FF0000'>Red</option>
+	<option value='00FF00' style='background-color: #00FF00'>Green</option>
+	<option value='0000FF' style='background-color: #0000FF'>Blue</option>
+
+	</select> <br>
+	Line width:<select  name="lineWidth">	
+	<option value='1' >1</option>
+	<option value='2' >2</option>
+	<option value='3' >3</option>
+	<option value='4' >4</option>
+	<option value='5' >5</option>
+	</select> 
+	<br>
+	Exaggeration: 
+	<select name="ex">	
+	<option value='1' >1</option>
+	<option value='2' >2</option>
+	<option value='3' >3</option>
+	</select> 
+	
+	<br>
+	<?
+	echo "<br><a href='javascript:submitForm()'>Display on Google Earth</a><br>"; 
+	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
+	?>
+	</td>
+</tr>
+</TABLE>
+</div>
+</form>
+  <?
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": <a href='?name=$module_name&op=list_flights&pilotID=".$flight->userID."'>".$flight->userName.
 					"</a> 
 					<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$flight->userID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
@@ -166,9 +248,11 @@ function showFlight($flightID) {
   open_tr();
    	   echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
-   	   echo "<TD colspan=4><div align=left><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a>";
-		echo " :: <a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a>";
-		echo "</div></TD>";
+   	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
+		echo "<div id='geOptionsPos' style='float:right'><a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a> ";
+		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-90,200,100);return false;\">Options</a>)</div>";
+
+		echo "</TD>";
 	   echo "<TD>&nbsp</td>";
   close_tr();
   if ( $flight->olcFilename  || ( $flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) ) $showOLCsubmit=1;

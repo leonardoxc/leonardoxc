@@ -234,7 +234,7 @@ var $maxPointNum=1000;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
 	}
 
-	function createKMLfile() {
+	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2.5) {
 		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
@@ -265,7 +265,7 @@ var $maxPointNum=1000;
 <kml xmlns=\"http://earth.google.com/kml/2.0\">
 <Folder>
 <open>1</open>
-<Placemark>
+<Placemark >
 <name>".$this->filename."</name>
 <description><![CDATA[<table cellpadding=0 cellspacing=0>".
 "<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$fl_url'><b>"._See_more_details."</b></a></div></td></tr>".
@@ -297,8 +297,8 @@ var $maxPointNum=1000;
 $kml_file_contents.=
 "<Style>
     <LineStyle>
-      <color>ff0000ff</color>
-      <width>2.5</width>
+      <color>".$lineColor."ff</color>
+      <width>$lineWidth</width>
     </LineStyle>
   </Style>
 ";
@@ -320,7 +320,7 @@ $kml_file_contents.=
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$data_alt[$i]=$thisPoint->getAlt();				
 					if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
-					$kml_file_contents.=-$thisPoint->lon.",".$thisPoint->lat.",".$thisPoint->getAlt()." ";
+					$kml_file_contents.=-$thisPoint->lon.",".$thisPoint->lat.",".($thisPoint->getAlt()*$exaggeration)." ";
 					$i++;
 					if($i % 50==0) $kml_file_contents.="\n";
 			}

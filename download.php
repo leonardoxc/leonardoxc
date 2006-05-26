@@ -32,7 +32,15 @@
 
 		$flightID=$_REQUEST['flightID'];
 		$flightID=$flightID+0;
-
+		//echo $_SERVER['QUERY_STRING'];
+		$w=$_GET['w'];
+		$c=$_GET['c'];
+		$ex=$_GET['ex'];
+// echo "$w#$c#$ex#";
+		if (!$w) $w=2;
+		if (!$c) $c="ff0000";
+		if (!$ex) { echo "###"; $ex=1; }
+		
 		DEBUG("DL",1,"Will serve flight $flightID<BR>");
 
 		$flight=new flight();
@@ -41,7 +49,8 @@
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}
-		$xml=$flight->createKMLfile();
+		$xml=$flight->createKMLfile($c,$ex,$w);
+		//$xml=$flight->createKMLfile("ff0000",1,2);
 
 		$file_name=$flight->filename.".kml";	
 		DEBUG("DL",1,"KML Filepath= $file_path<BR>");

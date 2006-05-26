@@ -117,24 +117,9 @@ if ($clubID) {
 
 require_once $moduleRelPath."/MENU_menu.php";
 
-if (0) { 
+if (1) { 
 	?>
-<script language="javascript" src="modules/leonardo/DHTML_functions.js"></script>
-<script language="javascript">
-function toggleVisible(elId,pos_elId) {	
-	if ( MWJ_getStyle( elId ,'visibility') == true ) {
-		MWJ_changeVisibility( elId , false );	
-		MWJ_changeSize( elId ,1,1);
-	} else {		
-		MWJ_changeSize( elId ,300,200);
-		
-		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
-		MWJ_changePosition( elId,  oMC[0]  ,  oMC[1] + 28 , true );
-
-		MWJ_changeVisibility( elId ,true );	
-	}
-}
-</script>
+<script language="javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
 
 <style type="text/css">
 <!--
