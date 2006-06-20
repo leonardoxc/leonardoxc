@@ -20,7 +20,7 @@ return $ret;
 }
 
 //Routine to parse an IGC file
-function parseIgcFile($szFilename) {
+function parseIgcFile($szFilename,$exaggeration=1) {
   global $debug ;
   $oFile = fopen($szFilename, "r");
   $table=array();
@@ -42,7 +42,7 @@ function parseIgcFile($szFilename) {
                   $lonMin=parseB($aFields,18,19);
                   $lonSec=parseB($aFields,20,22);
                   $lonDir=parseB($aFields,23,23);
-                  $alt=parseB($aFields,30,34)+0;
+                  $alt=parseB($aFields,30,34)*$exaggeration;
                   $lat2=convdeg($latDeg,$latMin.".".$latSec,$latDir);
                   $lon2=convdeg($lonDeg,$lonMin.".".$lonSec,$lonDir);
                   if (!isset($lat1))
@@ -154,9 +154,9 @@ function LineString($name,$description,$coords,$color,$width) {
 }
 
 
-function kmlGetTrackAnalysis($file) {
+function kmlGetTrackAnalysis($file,$exaggeration=1) {
 $str="";
-$table=parseIgcFile($file);
+$table=parseIgcFile($file,$exaggeration);
 
 
 extract($table[0]);
@@ -649,11 +649,13 @@ $MinMax.=MajorPoint($timevariomin." MinVz : ".$variomin."m/s","", $coordvariomin
 //<kml xmlns="http://earth.google.com/kml/2.0">';
 
 $str='<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
-<Folder>
-  <name>'.$pilot.' '.$date.' '.$departure.' '.$arrival.'</name>
-  <description>
-  Log generated on http://www.parawing.net (converter by Man\'s)</description>
-  <open>1</open>
+  <Folder>
+  	<description>
+  	 Extra analysis generation by  Man\'s (http://www.parawing.net)
+  	</description>
+  </Folder>
+  
+  
       '.$FlightGeneralInformations.'
   <Folder>
   <name>Paths and Distances</name>
@@ -669,8 +671,8 @@ $str='<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
       '.$BG.'
       '.$BT.'
   </Folder>
-      '.$flightWayPoints.'
-</Folder>';
+      '.$flightWayPoints.' ';
+
 
 
 return $str;

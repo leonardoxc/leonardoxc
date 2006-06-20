@@ -42,7 +42,7 @@ function showFlight($flightID) {
   ?>
   <script language="javascript">
   
-  function submitForm() {
+  function submitForm(extendedInfo) {
 	  var flightID= document.geOptionsForm.flightID.value;
 	  var lineWidth= document.geOptionsForm.lineWidth.value;
 	  var lineColor= document.geOptionsForm.lineColor.value;
@@ -53,7 +53,7 @@ function showFlight($flightID) {
 //  lineColor="ff0000";
 //  ex=2;
   
-	window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex;
+	window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
 	return false;
 }
 
@@ -99,7 +99,7 @@ function setSelectColor(theDiv) {
 <table width=100% cellpadding="2">
 <tr>
 	<td colspan=2 class="main_text" align="left" valign="top">
-		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-30,0,0);return false;">
+		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
 		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a>
 	</td>
 </tr>
@@ -152,7 +152,8 @@ function setSelectColor(theDiv) {
 <tr>
 	<td colspan=2 class="main_text" align="center">
 	<?
-	echo "<br><a href='javascript:submitForm()'>Display on Google Earth</a><br>"; 
+	echo "<br><a href='javascript:submitForm(0)'>Display on Google Earth</a><br>"; 
+	echo "<br><a href='javascript:submitForm(1)'>Use 'parawing.net' Module</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
 	?>
 
@@ -293,7 +294,7 @@ function setSelectColor(theDiv) {
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
    	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
 		echo "<div id='geOptionsPos' style='float:right'><a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a> ";
-		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,150,125);return false;\">Options&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a>)</div>";
+		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,170,150);return false;\">Options&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a>)</div>";
 
 		echo "</TD>";
 	//   echo "<TD>&nbsp</td>";

@@ -125,8 +125,9 @@ if (1) {
 
 function toggleVisibleAjax(divID,divPos){
 	url='/<?=$moduleRelPath?>/EXT_filter.php';
+	url='modules.php';
 //	url='modules.php?name=leonardo&op=filter';
-	pars='';
+	pars='name=leonardo&op=filter';
 	
 	var myAjax = new Ajax.Updater(divID, url, {method:'get',parameters:pars});
 	toggleVisible(divID,divPos);
@@ -173,11 +174,56 @@ function toggleVisibleAjax(divID,divPos){
 <div id="selectDateID" class="selectDate">
 <table width=100%>
 <tr>
-	<td height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
 	  </div></td>
 </tr>
 <tr>
-	<td height=30 class="main_text" bgcolor="#F0F3F7">
+	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<strong>Recent</strong>
+	</td>
+	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<strong>Year</strong>
+	</td>
+	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<strong>Month</strong>
+	</td>
+</tr>
+<tr>
+	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	 
+   <? 
+	 $month_num=date("m");
+	 $year_num=date("Y");
+     for ($i=0;$i<8;$i++) {
+	    echo "<a href='?name=".($module_name.$query_str)."&year=".$year_num."&month=".$month_num."'>".($monthList[$month_num-1]." ".$year_num)."</a><br>";
+		$month_num--;
+		if ($month_num==0) { $year_num--; $month_num=12; }
+		$month_num=sprintf("%02s",$month_num);
+	 }
+	 
+?>
+</td>
+<td class="main_text" bgcolor="#F0F3F7" valign="top">
+<?  
+  
+//	echo 'addMenuItem(new menuItem("<b>'._ALL_YEARS.'</b>", "", "?name='.$module_name.'&year=0"));';	  
+	echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a><br>";		
+	for($i=date("Y");$i>=1998;$i--)  
+		echo "<a href='?name=$module_name&year=$i&month=0'>$i</a><br>";		
+?>
+</td>
+<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+<?
+//	echo 'addMenuItem(new menuItem("<b>'._ALL_THE_YEAR.'</b>", "", "?name='.$module_name.'&month=0"));';	  
+	$i=1;
+	foreach ($monthList as $monthName)  {		 
+		$k=sprintf("%02s",$i);
+		echo "<a href='?name=$module_name&month=$k'>$monthName</a><br>";		
+		$i++;
+	 }
+ ?>
+	
+	
 	</td>
 </tr>
 </TABLE>
@@ -186,20 +232,24 @@ function toggleVisibleAjax(divID,divPos){
 <div id="selectCountryID" class="selectDate">
 <table width=100%>
 <tr>
-	<td height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select Country
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select Country
 	  </div></td>
 </tr>
 <tr>
-	<td class="main_text" bgcolor="#F0F3F7">
+	<td class="main_text" bgcolor="#F0F3F7" valign='top'>
 <?
-		$num_of_pages=ceil($countriesNum/$desired_items_per_page);
-		//	echo "aprox num of pages: $num_of_pages [ $countriesNum ] <br>";
+		$countriesNum=count($countriesNames);
+		$num_of_rows=ceil($countriesNum/3);
+		//	echo "aprox num of pages: $$num_of_rows [ $countriesNum ] <br>";
 		$i=0;
 		$ii=0;
-	    if (count($countriesNames)) {
+	    if ($countriesNum) {
 			foreach($countriesNames as $countryName) {
-				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a> :: ";
+				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a><br>";
 				$i++;
+				if ($i % $num_of_rows==0) {
+					echo "</td><td class='main_text' bgcolor='#F0F3F7' valign='top'>";									
+				}
 			}
 		}
 
@@ -294,7 +344,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    </div>
   	    <? } ?>
   	    
-  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisibleAjax('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
+  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
   	    <?
   	    	echo "<b>$dateLegend</b>";
   	    	if (!$allTimesDisplay) 
@@ -302,7 +352,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    ?>
   	    </div>
   	    
-  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
+  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon',28,0,450,200);return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
    	    <?
   	    	echo "<b>$countryLegend</b>";
   	    	if (!$allCountriesDisplay) 

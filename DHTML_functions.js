@@ -286,8 +286,8 @@ function MWJ_monitorButton( oOb, oEvent, oHandler ) {
 function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {	
 	if (!verOffset) verOffset=28;
 	if (!horOffset) horOffset=0;
-	if (!width) width=300;
-	if (!height)height=200;
+	if (!width) width=330;
+	if (!height)height=220;
 	
 	if ( MWJ_getStyle( elId ,'visibility') == true ) {
 		MWJ_changeVisibility( elId , false );	

@@ -352,7 +352,11 @@ var $maxPointNum=1000;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
-		if ($extended) return kmlGetTrackAnalysis($this->getIGCFilename(0));
+		if ($extended) {
+			$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription()."</Placemark>";
+			$kml_file_contents.=kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
+			return $kml_file_contents;
+		}
 
 		//if (file_exists($this->getKMLFilename())) return;
 		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
@@ -361,6 +365,8 @@ var $maxPointNum=1000;
 		$lines = file ($filename); 
 		if (!$lines) return;
 		$i=0;
+
+		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription();
 
 		$kml_file_contents.=
 		"<Style>
@@ -395,11 +401,12 @@ var $maxPointNum=1000;
 		}
 
 		$kml_file_contents.="</coordinates>\n</LineString>";
-
+		$kml_file_contents.="</Placemark>";
+		
 		return $kml_file_contents;
 	}
 
-	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2) {
+	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
 		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
@@ -412,10 +419,8 @@ var $maxPointNum=1000;
 			"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>
 			<kml xmlns=\"http://earth.google.com/kml/2.0\">
 			<Folder>
-			<open>1</open>
-			<Placemark >
-			<name>".$this->filename."</name>".$this->kmlGetDescription();
-
+			<open>1</open>";
+			
 		/*<LookAt>
 			<longitude>-3.10135108046447</longitude>
 			<latitude>52.9733850011146</latitude>
@@ -424,8 +429,8 @@ var $maxPointNum=1000;
 			<heading>227.735584972338</heading>
 		</LookAt>*/
 
-	    $kml_file_contents.=$this->kmlGetTrack($lineColor,$exaggeration,$lineWidth);
-		$kml_file_contents.="</Placemark>";
+	    $kml_file_contents.=$this->kmlGetTrack($lineColor,$exaggeration,$lineWidth,$extendedInfo);
+		
 
 		// create the start and finish points
 		$kml_file_contents.=makeWaypointPlacemark($this->takeoffID);
