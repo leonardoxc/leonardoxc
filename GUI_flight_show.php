@@ -293,7 +293,7 @@ function setSelectColor(theDiv) {
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
    	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
 		echo "<div id='geOptionsPos' style='float:right'><a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a> ";
-		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,150,125);return false;\">Options</a>)</div>";
+		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,150,125);return false;\">Options&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a>)</div>";
 
 		echo "</TD>";
 	//   echo "<TD>&nbsp</td>";

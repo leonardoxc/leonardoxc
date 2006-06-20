@@ -12,6 +12,7 @@
 /************************************************************************/
 
 require_once dirname(__FILE__)."/CL_gpsPoint.php";
+require_once dirname(__FILE__)."/FN_kml.php";
 
 class flight {
 	var $cat=1;
@@ -234,19 +235,9 @@ var $maxPointNum=1000;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
 	}
 
-	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2) {
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
-		global $moduleRelPath,$baseInstallationPath;
-		global $langEncodings,$currentlang;
+   //require dirname(__FILE__)."/";
 
-		//if (file_exists($this->getKMLFilename())) return;
-		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
-		
-		$filename=$this->getIGCFilename(0);  
-		$lines = file ($filename); 
-		if (!$lines) return;
-		$i=0;
-
+	function kmlGetDescription() {
 		if ($this->takeoffVinicity > $takeoffRadious ) 
 			$location=getWaypointName($this->takeoffID,0)." [~".sprintf("%.1f",$this->takeoffVinicity/1000)." km]"; 
 		else $location=getWaypointName($this->takeoffID,0);
@@ -259,55 +250,131 @@ var $maxPointNum=1000;
 		//$fl_url=str_replace("&","&#38;",$this->getFlightLinkURL());
 		//$fl_url=str_replace("&nbsp;"," ",$fl_url);
 
-//UTF-8 or 
-//".$langEncodings[$currentlang]."
-		$kml_file_contents=
-"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>
-<kml xmlns=\"http://earth.google.com/kml/2.0\">
-<Folder>
-<open>1</open>
-<Placemark >
-<name>".$this->filename."</name>
-<description><![CDATA[<table cellpadding=0 cellspacing=0>".
-"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$fl_url'><b>"._See_more_details."</b></a></div></td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._PILOT."</td><td>  ".htmlspecialchars($this->userName)."</td></tr>".
-"<tr><td>"._TAKEOFF_LOCATION."</td><td> ".$location."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_TIME."</td><td>    ".formatDate($this->DATE,false)." - ".sec2Time($this->START_TIME,1)."</td></tr>".
-"<tr><td>"._LANDING_LOCATION."</td><td> ".$location_land."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._OPEN_DISTANCE."</td><td> ".formatDistance($this->LINEAR_DISTANCE,1)."</td></tr>".
-"<tr><td>"._DURATION."</td><td> ".sec2Time($this->DURATION,1)."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._OLC_SCORE_TYPE."</td><td> ".htmlspecialchars(formatOLCScoreType($this->BEST_FLIGHT_TYPE,false))."</td></tr>".
-"<tr><td>"._OLC_DISTANCE."</td><td> ".formatDistance($this->FLIGHT_KM,1)."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._OLC_SCORING."</td><td> ".sprintf("%.1f",$this->FLIGHT_POINTS)."</td></tr>".
-"<tr><td>"._MAX_SPEED."</td><td> ".formatSpeed($this->MAX_SPEED)."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._MAX_VARIO."</td><td> ".formatVario($this->MAX_VARIO)."</td></tr>".
-"<tr><td>"._MIN_VARIO."</td><td> ".formatVario($this->MIN_VARIO)."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._MAX_ALTITUDE."</td><td> ".formatAltitude($this->MAX_ALT)."</td></tr>".
-"<tr><td>"._MIN_ALTITUDE."</td><td> ".formatAltitude($this->MIN_ALT)."</td></tr>".
-"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_ALTITUDE."</td><td> ".formatAltitude($this->TAKEOFF_ALT)."</td></tr>".
-"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
-"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>".
-"</table>]]></description>";
-/*<LookAt>
-	<longitude>-3.10135108046447</longitude>
-	<latitude>52.9733850011146</latitude>
-	<range>3000</range>
-	<tilt>65</tilt>
-	<heading>227.735584972338</heading>
-</LookAt>*/
-$kml_file_contents.=
-"<Style>
-    <LineStyle>
-      <color>".$KMLlineColor."</color>
-      <width>$lineWidth</width>
-    </LineStyle>
-  </Style>
-";
+		$str="<description><![CDATA[<table cellpadding=0 cellspacing=0>".
+			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$fl_url'><b>"._See_more_details."</b></a></div></td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._PILOT."</td><td>  ".htmlspecialchars($this->userName)."</td></tr>".
+			"<tr><td>"._TAKEOFF_LOCATION."</td><td> ".$location."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_TIME."</td><td>    ".formatDate($this->DATE,false)." - ".sec2Time($this->START_TIME,1)."</td></tr>".
+			"<tr><td>"._LANDING_LOCATION."</td><td> ".$location_land."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._OPEN_DISTANCE."</td><td> ".formatDistance($this->LINEAR_DISTANCE,1)."</td></tr>".
+			"<tr><td>"._DURATION."</td><td> ".sec2Time($this->DURATION,1)."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._OLC_SCORE_TYPE."</td><td> ".htmlspecialchars(formatOLCScoreType($this->BEST_FLIGHT_TYPE,false))."</td></tr>".
+			"<tr><td>"._OLC_DISTANCE."</td><td> ".formatDistance($this->FLIGHT_KM,1)."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._OLC_SCORING."</td><td> ".sprintf("%.1f",$this->FLIGHT_POINTS)."</td></tr>".
+			"<tr><td>"._MAX_SPEED."</td><td> ".formatSpeed($this->MAX_SPEED)."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._MAX_VARIO."</td><td> ".formatVario($this->MAX_VARIO)."</td></tr>".
+			"<tr><td>"._MIN_VARIO."</td><td> ".formatVario($this->MIN_VARIO)."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._MAX_ALTITUDE."</td><td> ".formatAltitude($this->MAX_ALT)."</td></tr>".
+			"<tr><td>"._MIN_ALTITUDE."</td><td> ".formatAltitude($this->MIN_ALT)."</td></tr>".
+			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_ALTITUDE."</td><td> ".formatAltitude($this->TAKEOFF_ALT)."</td></tr>".
+			"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
+			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>".
+			"</table>]]></description>";
+		return $str;
+	}
 
-$kml_file_contents.=
-"<LineString>
-<altitudeMode>absolute</altitudeMode>
-<coordinates>";
+	function kmlGetTask(){
+		$kml_file_contents="";
+		$kml_file_contents.="<Folder>
+		<name>OLC Task</name>";
+		
+		$kml_file_contents.="<Placemark>
+		<name>OLC Task</name>
+		<LineStyle><color>ffff0000</color></LineStyle>
+		<LineString>
+		<altitudeMode>extrude</altitudeMode>
+		<coordinates>
+		";
+		
+		$icons=array(
+		1=>array("root://icons/palette-3.png",0,192),
+		2=>array("root://icons/palette-3.png",32,192),
+		3=>array("root://icons/palette-3.png",64,192),
+		4=>array("root://icons/palette-3.png",96,192),
+		5=>array("root://icons/palette-3.png",128,192) );
+		
+		$j=0;
+		for($i=1;$i<=5;$i++) {
+			$varname="turnpoint$i";
+			if ($this->{$varname}) {
+				$pointString=explode(" ",$this->{$varname});
+				// make this string 
+				// B1256514029151N02310255EA0000000486
+				// from N40:29.151 E23:10.255
+				preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$this->{$varname},$matches);
+		
+				$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
+				$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
+		
+				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
+					$matches[6],$matches[7],$matches[8],$matches[5] );
+		
+				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );			
+				$kml_file_contents.=-$newPoint->lon.",".$newPoint->lat.",0 ";
+		
+				$turnpointPlacemark[$j]="
+		<Placemark>
+				 <Style>
+				  <IconStyle>
+					<scale>0.4</scale>
+					<Icon>
+					  <href>".$icons[$j+1][0]."</href>
+					  <x>".$icons[$j+1][1]."</x>
+					  <y>".$icons[$j+1][2]."</y>
+					  <w>32</w>
+					  <h>32</h>
+					</Icon>
+				  </IconStyle>
+				</Style>
+		 <Point>
+			<coordinates>".(-$newPoint->lon).",".$newPoint->lat.",0</coordinates>
+		  </Point>
+		</Placemark>";
+				$j++;
+		
+			}
+		}
+		
+		$kml_file_contents.="
+		</coordinates>
+		</LineString>
+		</Placemark>";
+		
+		for ($i=0;$i<$j;$i++) 
+			$kml_file_contents.=$turnpointPlacemark[$i];
+		$kml_file_contents.="</Folder>";
+	
+		return $kml_file_contents;
+	}
+
+	function kmlGetTrack($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extended=1) {
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
+
+		if ($extended) return kmlGetTrackAnalysis($this->getIGCFilename(0));
+
+		//if (file_exists($this->getKMLFilename())) return;
+		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
+		
+		$filename=$this->getIGCFilename(0);  
+		$lines = file ($filename); 
+		if (!$lines) return;
+		$i=0;
+
+		$kml_file_contents.=
+		"<Style>
+			<LineStyle>
+			  <color>".$KMLlineColor."</color>
+			  <width>$lineWidth</width>
+			</LineStyle>
+		  </Style>
+		";
+
+		$kml_file_contents.=
+		"<LineString>
+		<altitudeMode>absolute</altitudeMode>
+		<coordinates>";
 
 		//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
 		// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
@@ -327,87 +394,49 @@ $kml_file_contents.=
 			}
 		}
 
-$kml_file_contents.=
-"</coordinates>
-</LineString>
-</Placemark>";
+		$kml_file_contents.="</coordinates>\n</LineString>";
 
-$kml_file_contents.=makeWaypointPlacemark($this->takeoffID);
-if ( $this->takeoffID!=$this->landingID)
-	$kml_file_contents.=makeWaypointPlacemark($this->landingID);
-
-$kml_file_contents.="<Folder>
-<name>OLC Task</name>";
-
-$kml_file_contents.="<Placemark>
-<name>OLC Task</name>
-<LineStyle><color>ffff0000</color></LineStyle>
-<LineString>
-<altitudeMode>extrude</altitudeMode>
-<coordinates>
-";
-
-$icons=array(
-1=>array("root://icons/palette-3.png",0,192),
-2=>array("root://icons/palette-3.png",32,192),
-3=>array("root://icons/palette-3.png",64,192),
-4=>array("root://icons/palette-3.png",96,192),
-5=>array("root://icons/palette-3.png",128,192) );
-
-$j=0;
-for($i=1;$i<=5;$i++) {
-	$varname="turnpoint$i";
-	if ($this->{$varname}) {
-		$pointString=explode(" ",$this->{$varname});
-		// make this string 
-		// B1256514029151N02310255EA0000000486
-		// from N40:29.151 E23:10.255
-		preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$this->{$varname},$matches);
-
-		$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
-		$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
-
-		$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
-			$matches[6],$matches[7],$matches[8],$matches[5] );
-
-		$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );			
-		$kml_file_contents.=-$newPoint->lon.",".$newPoint->lat.",0 ";
-
-		$turnpointPlacemark[$j]="
-<Placemark>
-		 <Style>
-		  <IconStyle>
-			<scale>0.4</scale>
-			<Icon>
-			  <href>".$icons[$j+1][0]."</href>
-			  <x>".$icons[$j+1][1]."</x>
-			  <y>".$icons[$j+1][2]."</y>
-			  <w>32</w>
-			  <h>32</h>
-			</Icon>
-		  </IconStyle>
-		</Style>
- <Point>
-    <coordinates>".(-$newPoint->lon).",".$newPoint->lat.",0</coordinates>
-  </Point>
-</Placemark>";
-		$j++;
-
+		return $kml_file_contents;
 	}
-}
 
-$kml_file_contents.="
-</coordinates>
-</LineString>
-</Placemark>";
+	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2) {
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
 
-for ($i=0;$i<$j;$i++) 
-	$kml_file_contents.=$turnpointPlacemark[$i];
-$kml_file_contents.="</Folder>";
+		//if (file_exists($this->getKMLFilename())) return;
 
-$kml_file_contents.=
-"</Folder>
-</kml>";
+		//UTF-8 or 
+		//".$langEncodings[$currentlang]."
+		$kml_file_contents=
+			"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>
+			<kml xmlns=\"http://earth.google.com/kml/2.0\">
+			<Folder>
+			<open>1</open>
+			<Placemark >
+			<name>".$this->filename."</name>".$this->kmlGetDescription();
+
+		/*<LookAt>
+			<longitude>-3.10135108046447</longitude>
+			<latitude>52.9733850011146</latitude>
+			<range>3000</range>
+			<tilt>65</tilt>
+			<heading>227.735584972338</heading>
+		</LookAt>*/
+
+	    $kml_file_contents.=$this->kmlGetTrack($lineColor,$exaggeration,$lineWidth);
+		$kml_file_contents.="</Placemark>";
+
+		// create the start and finish points
+		$kml_file_contents.=makeWaypointPlacemark($this->takeoffID);
+		if ( $this->takeoffID!=$this->landingID)
+			$kml_file_contents.=makeWaypointPlacemark($this->landingID);
+	
+		// create the OLC task
+		$kml_file_contents.=$this->kmlGetTask();
+
+		$kml_file_contents.="</Folder>\n</kml>";
+
 
 		return $kml_file_contents;
 	}

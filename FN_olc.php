@@ -38,6 +38,8 @@ function olcSubmit($flightID) {
 	$gid=urlencode($gid); // call sign
 
 	$fixedThings="spr=en&olc=holc-i&OLChelp=";
+	
+	
 	$region="GR";
 	$klasse=3; // paraglider open
 
