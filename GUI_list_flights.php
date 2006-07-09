@@ -96,15 +96,26 @@
   } else $extra_table_str="";
 
   if ($clubID)   {
-	 $where_clause.=" AND $flightsTable.userID=$clubsPilotsTable.pilotID AND $clubsPilotsTable.clubID=$clubID  ";
-	 $extra_table_str.=",".$clubsPilotsTable;
+	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			$clubsPilotsTable.clubID=$clubID  	 	AND 
+							$clubsTable.ID=$clubID AND
+							( ( $areasTakeoffsTable.areaID=$clubsTable.areaID AND 
+								$areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ) 
+							  OR ( $clubsTable.areaID=0 AND $areasTakeoffsTable.takeoffID=0)
+							) " ;
+							
+							//	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			//$clubsPilotsTable.clubID=$clubID  	 	" ;
+
+	 $extra_table_str.=",$clubsPilotsTable, $areasTakeoffsTable, $clubsTable	";
+// 	 $extra_table_str.=",$clubsPilotsTable	";
   } else $extra_table_str.="";
 
 
   $query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
   $res= $db->sql_query($query);
   if($res <= 0){   
-	 echo("<H3> Error in count items query!</H3>\n");
+	 echo("<H3> Error in count items query! $query</H3>\n");
      exit();
   }
 
@@ -114,11 +125,11 @@
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
   if ($pilotID>=0)
- 	 $query="SELECT * ,$flightsTable.ID as ID FROM $flightsTable,".$prefix."_users".$extra_table_str."  WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
+ 	 $query="SELECT * , $flightsTable.takeoffID as flight_takeoffID ,$flightsTable.ID as ID FROM $flightsTable,".$prefix."_users".$extra_table_str."  WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
 						$where_clause." ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage;
      
   else  {
-	 $query="SELECT * ,$flightsTable.ID as ID FROM $flightsTable ".$extra_table_str."  WHERE (1=1) ".
+	 $query="SELECT * , $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID FROM $flightsTable ".$extra_table_str."  WHERE (1=1) ".
 						$where_clause." ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
   }
   //  echo $query;
@@ -220,7 +231,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
      $is_private=$row["private"];
 
      $name=getPilotRealName($row["userID"]);
-	 $takeoffName=getWaypointName($row["takeoffID"]);
+	 $takeoffName=getWaypointName($row["flight_takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 

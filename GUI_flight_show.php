@@ -96,9 +96,9 @@ function setSelectColor(theDiv) {
 <div id="geOptionsID" class="dropDownBox">
 <form name="geOptionsForm" method="POST">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
-<table width=100% cellpadding="2">
+<table width=100% cellpadding="2" cellspacing="2">
 <tr>
-	<td colspan=2 class="main_text" align="left" valign="top">
+	<td colspan=2 class="main_text" align="right" valign="top" bgcolor="#819DD1">
 		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
 		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a>
 	</td>
@@ -293,8 +293,8 @@ function setSelectColor(theDiv) {
    	//  echo "<TD>&nbsp</td>";
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
    	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
-		echo "<div id='geOptionsPos' style='float:right'><a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Google Earth</a> ";
-		echo " (<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-30,170,150);return false;\">Options&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a>)</div>";
+		echo "<div id='geOptionsPos' style='float:right'>";
+		echo "<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,150);return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 
 		echo "</TD>";
 	//   echo "<TD>&nbsp</td>";

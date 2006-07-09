@@ -183,7 +183,7 @@
 
 document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 </script>
-<div class="tabber">
+<div class="tabber" id="compTabber">
 <?
   listCategory(_OLC,			_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
   listCategory(_FAI_TRIANGLE,	_KILOMETERS,"triangleKm","formatDistance");   
@@ -208,9 +208,14 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
    global  $countHowMany;
 
+   global    $tabID;
+	
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
+   if ($tabID ==  ($_GET['comp']+0) ) $defaultTabStr=" tabbertabdefault";
+   else  $defaultTabStr="";
    
-   echo "<div class='tabbertab' title='$legend'>";
+   $tabID++;
+   echo "<div class='tabbertab $defaultTabStr' title='$legend'>";
    
    $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
    // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);

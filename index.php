@@ -238,6 +238,7 @@ function toggleVisibleAjax(divID,divPos){
 <tr>
 	<td class="main_text" bgcolor="#F0F3F7" valign='top'>
 <?
+		list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 		$countriesNum=count($countriesNames);
 		$num_of_rows=ceil($countriesNum/3);
 		//	echo "aprox num of pages: $$num_of_rows [ $countriesNum ] <br>";
@@ -395,6 +396,12 @@ if ($op=="users") {
 	if ($opMode==2) require $moduleRelPath."/GUI_login.php";
 } else if ($op=="index_full") { 
 	require $moduleRelPath."/GUI_index_full.php";
+// Clubs - areas admin
+//--------------------------
+} else if ($op=="club_admin") { 
+	require $moduleRelPath."/GUI_club_admin.php";
+} else if ($op=="area_admin") { 
+	require $moduleRelPath."/GUI_area_admin.php";
 // Listing output
 //--------------------------
 } else if ($op=="list_clubs") { 
