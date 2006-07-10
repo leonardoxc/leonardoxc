@@ -233,4 +233,17 @@ function getBrowser() {
 		 closedir($current_dir);
 		 return $res;
 	}
+
+	function is_club_admin($userID,$clubID) {
+		global $clubsList;
+		if ($clubsList[$clubID]['adminID']==$userID) return 1;
+		else return 0;
+	}
+
+	function is_leo_admin($userID) {
+		global $admin_users;
+		if (in_array($userID,$admin_users)) return 1;
+		else return 0;
+	}
+
 ?>

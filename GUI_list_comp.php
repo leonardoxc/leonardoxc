@@ -77,10 +77,25 @@
   } else $extra_table_str="";
 
   if ($clubID)   {
-	 $where_clause.=" AND $flightsTable.userID=$clubsPilotsTable.pilotID AND $clubsPilotsTable.clubID=$clubID  ";
-	 $extra_table_str.=",".$clubsPilotsTable;
-  } else $extra_table_str.="";
-  
+	 $areaID=$clubsList[$clubID]['areaID'];
+  	 $addManual=$clubsList[$clubID]['addManual'];
+
+	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			$clubsPilotsTable.clubID=$clubID ";
+	$extra_table_str.=",$clubsPilotsTable ";
+
+	if ($areaID) {
+		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+	 	 $extra_table_str.=",$areasTakeoffsTable ";
+	}	
+	if ($addManual) {
+		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
+							AND $clubsFlightsTable.clubID=$clubID ";
+	 	 $extra_table_str.=",$clubsFlightsTable ";
+	}
+  } 
+
 //  echo "<table  class=main_text border=0 width=650 bgcolor=#EAF0E4><tr><td><div align=left><b> $legend </b></div></td></tr></table><br>";
   
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;

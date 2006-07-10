@@ -62,6 +62,13 @@ background-color:#C5D0ED;
 	padding:0;
 }
 
+.tableInfo{
+	background-color:#C7DFC4;
+	height:auto;
+	width:760px;
+	padding:5px;
+}
+
 .titleDiv {
 	float:left;
 	padding-left:5px;

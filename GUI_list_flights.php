@@ -96,20 +96,33 @@
   } else $extra_table_str="";
 
   if ($clubID)   {
-	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
-				 			$clubsPilotsTable.clubID=$clubID  	 	AND 
-							$clubsTable.ID=$clubID AND
-							( ( $areasTakeoffsTable.areaID=$clubsTable.areaID AND 
-								$areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ) 
-							  OR ( $clubsTable.areaID=0 AND $areasTakeoffsTable.takeoffID=0)
-							) " ;
-							
-							//	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
-				 			//$clubsPilotsTable.clubID=$clubID  	 	" ;
+	 $areaID=$clubsList[$clubID]['areaID'];
+  	 $addManual=$clubsList[$clubID]['addManual'];
 
-	 $extra_table_str.=",$clubsPilotsTable, $areasTakeoffsTable, $clubsTable	";
-// 	 $extra_table_str.=",$clubsPilotsTable	";
-  } else $extra_table_str.="";
+	 $add_remove_mode=$_GET['a_r'];
+
+	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			$clubsPilotsTable.clubID=$clubID ";
+	$extra_table_str.=",$clubsPilotsTable ";
+
+	if ($areaID) {
+		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+	 	 $extra_table_str.=",$areasTakeoffsTable ";
+	}
+
+	
+	if ($addManual) {
+		 $clubFlights=getClubFlightsID($clubID);
+
+		if (! $add_remove_mode ) { // select only spefici flights
+		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
+							AND $clubsFlightsTable.clubID=$clubID ";
+	 	 $extra_table_str.=",$clubsFlightsTable ";
+		}
+	}
+
+  } 
 
 
   $query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
@@ -132,7 +145,7 @@
 	 $query="SELECT * , $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID FROM $flightsTable ".$extra_table_str."  WHERE (1=1) ".
 						$where_clause." ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
   }
-  //  echo $query;
+  // echo $query;
   $res= $db->sql_query($query);
 
   if($res <= 0){
@@ -161,11 +174,45 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
    } 
 }
 
+?>
+<script language="javascript">
+
+function addClubFlight(clubID,flightID) {
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+//	url='modules.php';
+//	url='modules.php?name=leonardo&op=filter';
+	pars='op=add&clubID='+clubID+'&flightID='+flightID;
+	
+	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
+
+	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+	//toggleVisible(divID,divPos);
+}
+
+function removeClubFlight(clubID,flightID) {
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+//	url='modules.php';
+//	url='modules.php?name=leonardo&op=filter';
+	pars='op=remove&clubID='+clubID+'&flightID='+flightID;
+	
+	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
+
+	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+	//toggleVisible(divID,divPos);
+}
+</script>
+<?
+
 function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $Theme;
    global $module_name;
    global $takeoffRadious;
    global $userID;
+   global $clubID,$clubFlights,$clubsList, $add_remove_mode;
    global $moduleRelPath;
    global $admin_users;
    global $PREFS;
@@ -199,6 +246,19 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 
    $headerSelectedBgColor="#F2BC66";
   // openBox(
+
+   if ( $clubID  && (is_club_admin($clubID ,$userID) || is_leo_admin($userID))  )  {
+	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
+		if ( $clubsList[$clubID]['addManual'] ) {
+			if ($add_remove_mode)
+				echo "<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&a_r=0'>Return to normal view</a>";
+			else
+				echo "<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&a_r=1'>Add / remove flights</a>";
+
+		}
+		echo "<div id='updateDiv' style='display:block'></div>";
+	 	echo  "</div>";
+   }
    
 //   "<table class='main_text listTableTitle' width=100% cellpadding=0 cellspacing=0><tr><td>$legend</td><td valign=top width=400 align=right>$legendRight</td></tr></table>"
   echo  "<div class='tableTitle shadowBox'>
@@ -229,6 +289,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    $currDate="";
    while ($row = mysql_fetch_assoc($res)) { 
      $is_private=$row["private"];
+	 $flightID=$row['ID'];
 
      $name=getPilotRealName($row["userID"]);
 	 $takeoffName=getWaypointName($row["flight_takeoffID"]);
@@ -309,7 +370,25 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 		   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
 				echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 
 				echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width=16 height=16 border=0 align=bottom></a>"; 
-		   }			 
+		   }			
+
+			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode )  {
+ 				echo "<BR>";
+				if (in_array($flightID,$clubFlights ) ){
+					echo "<div id='fl_$flightID' style='display:inline'>
+<a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">
+<img src='".$moduleRelPath."/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom title='Remove flight from this league'></a>
+</div>
+";
+				} else {
+					echo "<div id='fl_$flightID' style='display:inline'>
+<a href=\"#\" onclick=\"addClubFlight($clubID,$flightID);return false;\">
+<img src='".$moduleRelPath."/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom title='Add flight to this league'></a>
+</div>
+";
+				}
+			
+			} 
 	   echo "</TD>";	  
   	   echo "</TR>";
    }  

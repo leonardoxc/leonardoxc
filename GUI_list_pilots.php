@@ -51,10 +51,25 @@
   } else $extra_table_str="";
 
   if ($clubID)   {
-	 $where_clause.=" AND $flightsTable.userID=$clubsPilotsTable.pilotID AND $clubsPilotsTable.clubID=$clubID  ";
-	 $extra_table_str.=",".$clubsPilotsTable;
-  } else $extra_table_str.="";
-  
+	 $areaID=$clubsList[$clubID]['areaID'];
+  	 $addManual=$clubsList[$clubID]['addManual'];
+
+	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			$clubsPilotsTable.clubID=$clubID ";
+	$extra_table_str.=",$clubsPilotsTable ";
+
+	if ($areaID) {
+		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+	 	 $extra_table_str.=",$areasTakeoffsTable ";
+	}	
+	if ($addManual) {
+		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
+							AND $clubsFlightsTable.clubID=$clubID ";
+	 	 $extra_table_str.=",$clubsFlightsTable ";
+	}
+  } 
+
   
  if (!$is_comp) {
 	

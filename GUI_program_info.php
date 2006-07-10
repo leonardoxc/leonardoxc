@@ -17,6 +17,8 @@
   ?>
 
 
+
+
   
 <div align="center"> 
   <p> 
@@ -37,6 +39,10 @@
     <tr> 
       <td><div align="right">SourceForge: </div></td>
       <td><a href="https://sourceforge.net/projects/leonardoserver/" target="_blank">https://sourceforge.net/projects/leonardoserver/</a></td>
+    </tr>
+    <tr>
+      <td><div align="right">GE extended Info Module </div></td>
+      <td><a href="http://www.parawing.net" target="_blank">Emmanuel Chabani aka Man's</a></td>
     </tr>
     <tr> 
       <td><div align="right">Graph Plotting: </div></td>
@@ -59,7 +65,8 @@
             pg Leonardo </a>::<br>
             <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish
       Leonardo</a> :: <a href="http://xc.parapente.com.ar/modules.php?name=leonardo&op=list_flights" target="_blank">Argentine
-      Leonardo</a></p>
+      Leonardo</a> :: <a href="http://www.xcportugal.com/modules.php?name=leonardo">Liga XC Portugal</a> ::
+      <a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></p>
       </div>
         <hr>        <p>Many thanks to: </p>                <p>        <strong>Hannes Krueger</strong>, for his GPLIGC and openGLIGCexplorer
           that gave me the initial idea<br>
@@ -68,9 +75,9 @@
           <strong>Alexander Caravitis</strong> - Greece, for Beta testing and
           Map creation</p>                <p><strong>Stein-Tore Erdal</strong> - Norway, for his excellent fightbook,
           another inspiration<br>
-          <a href="http://www.flightlog.org" target="_blank">http://www.flightlog.org</a><br>
-        </p>        
-        <p>Also many thanks to the following for providing translations, valuable 
+          <a href="http://www.flightlog.org" target="_blank">http://www.flightlog.org</a></p>
+          <p><strong>Emmanuel Chabani aka Man's </strong>for his Google Earth
+          extended info Module.</p>        <p>Also many thanks to the following for providing translations, valuable 
           feedback and beta testing:</p>
         <p><strong>Lucio Mazzi &amp; Benedetto Lo Tufo</strong> - Italy <br>
           <a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights</a></p>        <p><strong>Mark Graham</strong> - UK<br>
@@ -94,7 +101,9 @@
               <p><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=pilot_profile&pilotIDview=2747"><strong>Olympio
                   Faissol</strong></a> for the <strong>Brazilian</strong> translation<br>
                   <a href="http://ofaissol.blogspot.com" target="_blank">http://ofaissol.blogspot.com</a></p>
-              <p>&nbsp;</p>
+              <p>  <strong>Zeljko Vranic</strong> for the <strong>Croatian</strong> translation<br>
+                <br>        
+        <strong>Karolina Kociecka</strong> for the <strong>Polish</strong> translation</p>
               <hr></td>
     </tr>
   </table>

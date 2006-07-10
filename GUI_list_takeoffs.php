@@ -42,10 +42,26 @@
 		//$legend.=" (".$countries[$country].") | ";
   }    
 
-  if ($clubID) {  		
-		$where_clause.=" AND  $clubsPilotsTable.clubID='".$clubID."'  AND $clubsPilotsTable.pilotID=$flightsTable.userID ";		
-		$extra_tables=", $clubsPilotsTable ";
-  }  
+  if ($clubID)   {
+	 $areaID=$clubsList[$clubID]['areaID'];
+  	 $addManual=$clubsList[$clubID]['addManual'];
+
+	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+				 			$clubsPilotsTable.clubID=$clubID ";
+	$extra_table_str.=",$clubsPilotsTable ";
+
+	if ($areaID) {
+		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+	 	 $extra_table_str.=",$areasTakeoffsTable ";
+	}	
+	if ($addManual) {
+		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
+							AND $clubsFlightsTable.clubID=$clubID ";
+	 	 $extra_table_str.=",$clubsFlightsTable ";
+	}
+  } 
+
   
   $sortDescArray=array("countryCode"=>_DATE_SORT, "FlightsNum"=>_NUMBER_OF_FLIGHTS, "max_distance"=>_SITE_RECORD_OPEN_DISTANCE  );
  
@@ -62,7 +78,7 @@
 //-----------------------------------------------------------------------------------------------------------
 
   	$query="SELECT DISTINCT takeoffID, name, intName, countryCode, count(*) as FlightsNum, max(LINEAR_DISTANCE) as max_distance 
-  			FROM $flightsTable,$waypointsTable $extra_tables
+  			FROM $flightsTable,$waypointsTable $extra_table_str
   			WHERE $flightsTable.takeoffID=$waypointsTable.ID  
 			AND $flightsTable.userID<>0 ".$where_clause." 
 			GROUP BY takeoffID ORDER BY $sortOrderFinal ".$ord.",max_distance DESC";	

@@ -165,5 +165,23 @@ function getAddFlightErrMsg($result,$flightID) {
 	return $errMsg;	
 }
 
+function getClubFlightsID($clubID) {
+	global $db;
+	global $clubsFlightsTable ;
+
+  	$query="SELECT flightID FROM $clubsFlightsTable WHERE clubID=$clubID";
+	// echo $query;
+	$res= $db->sql_query($query);		
+    if($res <= 0){
+		// echo "No flights found for club ID $clubID<BR>";
+		return array();
+    }
+
+	$flightsID=array();
+	while ($row = $db->sql_fetchrow($res)) { 
+ 		 array_push($flightsID,$row["flightID"]);
+	}
+	return $flightsID;
+}
 
 ?>

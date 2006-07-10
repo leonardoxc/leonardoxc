@@ -5,12 +5,14 @@ function createjsDOMenu() {
     addMenuItem(new menuItem("<? echo _MENU_COMPETITION_LEAGUE ?>", "", "?name=<? echo $module_name?>&op=competition"));
     addMenuItem(new menuItem("-"));
     addMenuItem(new menuItem("<? echo _MENU_OLC ?>", "", "?name=<? echo $module_name?>&op=competition&comp=0"));
-    addMenuItem(new menuItem("<? echo _MENU_FAI_TRIANGLE ?>", "", "?name=<? echo $module_name?>&op=competition&comp=1"));
+    addMenuItem(new menuItem("<? echo _FAI_TRIANGLE ?>", "", "?name=<? echo $module_name?>&op=competition&comp=1"));
     addMenuItem(new menuItem("<? echo _MENU_OPEN_DISTANCE ?>", "", "?name=<? echo $module_name?>&op=competition&comp=2"));
   }
     
   staticMenu9 = new jsDOMenu(200, "absolute");
   with (staticMenu9) {
+    addMenuItem(new menuItem("<? echo _MENU_SHOW_PILOTS ?>", "", "?name=<? echo $module_name?>&op=list_pilots&comp=0"));
+	addMenuItem(new menuItem(".:: Pilot Statistics ::.","","",true,"jsdomenuitemDIV","jsdomenuitemDIV"));
     addMenuItem(new menuItem("<? echo _MENU_OLC ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"));
     addMenuItem(new menuItem("<? echo _MENU_OPEN_DISTANCE ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=bestDistance&comp=1"));
     addMenuItem(new menuItem("<? echo _MENU_DURATION ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=totalDuration&comp=1"));
@@ -21,9 +23,8 @@ function createjsDOMenu() {
   with (staticMenu3) {
     addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
     // addMenuItem(new menuItem("<? echo _MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<? echo $module_name?>&op=list_clubs")); 	
-    addMenuItem(new menuItem("<? echo _MENU_SHOW_PILOTS ?>", "", "?name=<? echo $module_name?>&op=list_pilots&comp=0"));
     <? if  (is_user($user) || $userID>0)  { ?>
-    addMenuItem(new menuItem("-"));
+	 addMenuItem(new menuItem("-"));
     addMenuItem(new menuItem("<? echo _MENU_MY_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&pilotID=<? echo $userID ?>&takeoffID=0&country=0&year=0&month=0"));
     addMenuItem(new menuItem("<? echo _MENU_MY_PROFILE ?>", "", "?name=<? echo $module_name?>&op=pilot_profile&pilotIDview=<? echo $userID ?>"));
     addMenuItem(new menuItem("<? echo _MENU_MY_STATS ?>", "", "?name=<? echo $module_name?>&op=pilot_profile_stats&pilotIDview=<? echo $userID ?>"));
@@ -123,14 +124,14 @@ function createjsDOMenu() {
     addMenuItem(new menuItem("<? echo _MENU_SUMMARY_PAGE ?>", "", "?name=<? echo $module_name?>&op=index_full"));
 <?	
 	if (count($clubsList) >0) {
-    	echo 'addMenuItem(new menuItem(".:: Clubs ::.","","",true,"jsdomenuitemDIV"));';
+    	echo 'addMenuItem(new menuItem(".:: Clubs ::.","","",true,"jsdomenuitemDIV","jsdomenuitemDIV"));';
 		foreach( $clubsList as $clubsItem) {
 	    	echo 'addMenuItem(new menuItem("'.$clubsItem['desc'].'","","?name='.$module_name.'&op=list_flights&clubID='.$clubsItem['id'].'"));';
 		}
 	}
 
 	if (count($apList) >0) {
-    	echo 'addMenuItem(new menuItem(".:: XC Leagues ::.","","",true,"jsdomenuitemDIV"));';
+    	echo 'addMenuItem(new menuItem(".:: XC Leagues ::.","","",true,"jsdomenuitemDIV","jsdomenuitemDIV"));';
 		foreach( $apList as $apName=>$apItem) {
 	    	echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","","?name='.$module_name.'&ap='.$apName.'"));';
 		}
@@ -159,7 +160,7 @@ function createjsDOMenu() {
     addMenuBarItem(new menuBarItem("<?=_MENU_MAIN_MENU?>", staticMenu3));
 	addMenuBarItem(new menuBarItem("<?=_MENU_FLIGHTS?>", staticMenu4));	
 /*	addMenuBarItem(new menuBarItem("<?=_MENU_COUNTRY?>", staticMenu1)); */
-    addMenuBarItem(new menuBarItem("<?=_MENU_STATISTICS?>", staticMenu9));   
+    addMenuBarItem(new menuBarItem("<?=_MENU_SHOW_PILOTS?>", staticMenu9));   
     addMenuBarItem(new menuBarItem("<?=_MENU_XCLEAGUE?>", staticMenu2));   
     <? if (in_array($userID,$admin_users)) { ?>
 	    addMenuBarItem(new menuBarItem("<b><?=_MENU_ADMIN?></b>", staticMenu5));   
