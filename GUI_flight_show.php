@@ -153,7 +153,7 @@ function setSelectColor(theDiv) {
 	<td colspan=2 class="main_text" align="center">
 	<?
 	echo "<br><a href='javascript:submitForm(0)'>Display on Google Earth</a><br>"; 
-	echo "<br><a href='javascript:submitForm(1)'>Use 'parawing.net' Module</a><br>"; 
+	echo "<br><a href='javascript:submitForm(1)'>Use Man's Module</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
 	?>
 
