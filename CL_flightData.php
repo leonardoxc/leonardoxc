@@ -235,9 +235,15 @@ var $maxPointNum=1000;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
 	}
 
+	function getFlightKML() {
+		global $baseInstallationPath,$module_name;
+		global $CONF_mainfile;
+		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=kml_trk&flightID=".$this->flightID;
+	}
+
    //require dirname(__FILE__)."/";
 
-	function kmlGetDescription() {
+	function kmlGetDescription($ext,$getFlightKML) {
 		if ($this->takeoffVinicity > $takeoffRadious ) 
 			$location=getWaypointName($this->takeoffID,0)." [~".sprintf("%.1f",$this->takeoffVinicity/1000)." km]"; 
 		else $location=getWaypointName($this->takeoffID,0);
@@ -268,8 +274,11 @@ var $maxPointNum=1000;
 			"<tr><td>"._MIN_ALTITUDE."</td><td> ".formatAltitude($this->MIN_ALT)."</td></tr>".
 			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_ALTITUDE."</td><td> ".formatAltitude($this->TAKEOFF_ALT)."</td></tr>".
 			"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
-			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>".
-			"</table>]]></description>";
+			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>";
+			if($ext) $str.=	"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>Extra analysis module by  Man\'s <a href='http://www.parawing.net'>GPS2GE V2.0</a></div></td></tr>";
+			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML&show_url=1'>URL of this KML file</div></td></tr>";	
+
+			$str.="</table>]]></description>";
 		return $str;
 	}
 
@@ -352,8 +361,9 @@ var $maxPointNum=1000;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
+		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 		if ($extended) {
-			$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription()."</Placemark>";
+			$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML)."</Placemark>";
 			$kml_file_contents.=kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
 			return $kml_file_contents;
 		}
@@ -366,7 +376,7 @@ var $maxPointNum=1000;
 		if (!$lines) return;
 		$i=0;
 
-		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription();
+		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 
 		$kml_file_contents.=
 		"<Style>

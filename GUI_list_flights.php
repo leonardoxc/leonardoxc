@@ -247,7 +247,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    $headerSelectedBgColor="#F2BC66";
   // openBox(
 
-   if ( $clubID  && (is_club_admin($clubID ,$userID) || is_leo_admin($userID))  )  {
+   if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {
 			if ($add_remove_mode)

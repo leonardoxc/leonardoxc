@@ -651,7 +651,7 @@ $MinMax.=MajorPoint($timevariomin." MinVz : ".$variomin."m/s","", $coordvariomin
 $str='<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
   <Folder>
   	<description>
-  	 Extra analysis generation by  Man\'s (http://www.parawing.net)
+  	 Extra analysis generation by  Man\'s GPS2GE V2.0 (http://www.parawing.net)
   	</description>
   </Folder>
   

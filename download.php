@@ -11,6 +11,13 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 	
+	if ($_GET["show_url"]) {
+		$link=substr("http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'],0,-11);
+		echo "The link to KML file is <br><a href='$link'>$link</a>";
+
+		return;
+	}
+
  	require_once "EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";
@@ -27,7 +34,7 @@
 
 	$type=$_REQUEST['type'];
 	if (!in_array($type,array("kml_trk","kml_wpt")) ) return;
-
+	
 	if ($type=="kml_trk") {
 
 		$flightID=$_REQUEST['flightID'];
