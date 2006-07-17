@@ -21,37 +21,37 @@ function createjsDOMenu() {
     
   staticMenu3 = new jsDOMenu(220, "absolute");
   with (staticMenu3) {
-    addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
     // addMenuItem(new menuItem("<? echo _MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<? echo $module_name?>&op=list_clubs")); 	
-    <? if  (is_user($user) || $userID>0)  { ?>
-	 addMenuItem(new menuItem("-"));
+  <? if  (is_user($user) || $userID>0)  { ?>
+    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FLIGHT ?>", "", "?name=<? echo $module_name?>&op=add_flight"));
+    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FROM_ZIP ?>", "", "?name=<? echo $module_name?>&op=add_from_zip"));
+	addMenuItem(new menuItem("-"));
     addMenuItem(new menuItem("<? echo _MENU_MY_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&pilotID=<? echo $userID ?>&takeoffID=0&country=0&year=0&month=0"));
     addMenuItem(new menuItem("<? echo _MENU_MY_PROFILE ?>", "", "?name=<? echo $module_name?>&op=pilot_profile&pilotIDview=<? echo $userID ?>"));
     addMenuItem(new menuItem("<? echo _MENU_MY_STATS ?>", "", "?name=<? echo $module_name?>&op=pilot_profile_stats&pilotIDview=<? echo $userID ?>"));
-	<? } ?>
-	 addMenuItem(new menuItem("-"));
+	addMenuItem(new menuItem("-"));
+  <? } ?>
 	 addMenuItem(new menuItem("<? echo _MENU_MY_SETTINGS ?>", "", "?name=<? echo $module_name?>&op=user_prefs"));
 	 addMenuItem(new menuItem("-"));
 	 addMenuItem(new menuItem("<? echo _FLIGHTS_STATS ?>", "", "?name=<? echo $module_name?>&op=stats"));
 	 addMenuItem(new menuItem("<? echo _PROJECT_INFO ?>", "", "?name=<? echo $module_name?>&op=program_info"));
   }
 
+
   staticMenu4 = new jsDOMenu(220, "absolute");
   with (staticMenu4) {
     addMenuItem(new menuItem("<? echo _MENU_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights"));
     addMenuItem(new menuItem("<? echo _MENU_SHOW_LAST_ADDED ?>", "", "?name=<? echo $module_name?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"));
     addMenuItem(new menuItem("<? echo _MENU_FILTER ?>", "", "?name=<? echo $module_name?>&op=filter"));
-    <? if  (is_user($user) || $userID>0)  { ?>
-    addMenuItem(new menuItem("-"));
-    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FLIGHT ?>", "", "?name=<? echo $module_name?>&op=add_flight"));
-    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FROM_ZIP ?>", "", "?name=<? echo $module_name?>&op=add_from_zip"));
-
-    <? } ?>
-	 addMenuItem(new menuItem("-"));
-     addMenuItem(new menuItem("<? echo _MENU_ALL_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"));
+	addMenuItem(new menuItem("-"));
+    addMenuItem(new menuItem("<? echo _MENU_ALL_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"));
 
   }
  
+  staticMenu10 = new jsDOMenu(220, "absolute");
+  with (staticMenu10) {
+    addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
+  }
 
  <? if (in_array($userID,$admin_users)) { ?>
  staticMenu5 = new jsDOMenu(150, "absolute");
@@ -158,7 +158,8 @@ function createjsDOMenu() {
     addMenuBarItem(new menuBarItem("<?=$current_catImg?>", staticMenu7,"", true,"","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 <? } // end if ?> 
     addMenuBarItem(new menuBarItem("<?=_MENU_MAIN_MENU?>", staticMenu3));
-	addMenuBarItem(new menuBarItem("<?=_MENU_FLIGHTS?>", staticMenu4));	
+	addMenuBarItem(new menuBarItem("<?=_MENU_FLIGHTS?>", staticMenu4));
+	addMenuBarItem(new menuBarItem("<?=_MENU_TAKEOFFS ?>", staticMenu10));
 /*	addMenuBarItem(new menuBarItem("<?=_MENU_COUNTRY?>", staticMenu1)); */
     addMenuBarItem(new menuBarItem("<?=_MENU_SHOW_PILOTS?>", staticMenu9));   
     addMenuBarItem(new menuBarItem("<?=_MENU_XCLEAGUE?>", staticMenu2));   

@@ -19,6 +19,7 @@
 
 
 
+
   
 <div align="center"> 
   <p> 
@@ -104,6 +105,7 @@
               <p>  <strong>Zeljko Vranic</strong> for the <strong>Croatian</strong> translation<br>
                 <br>        
         <strong>Karolina Kociecka</strong> for the <strong>Polish</strong> translation</p>
+              <p><a href="mailto:rohberg@vnet.hu"><strong>Zsolt Rohberg</strong></a>  for the <strong>Hungarian</strong> translation</p>
               <hr></td>
     </tr>
   </table>
