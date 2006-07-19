@@ -33,7 +33,7 @@
 	setDEBUGfromGET();
 
 	$type=$_REQUEST['type'];
-	if (!in_array($type,array("kml_trk","kml_wpt")) ) return;
+	if (!in_array($type,array("kml_trk","kml_wpt","sites")) ) return;
 	
 	if ($type=="kml_trk") {
 
@@ -68,8 +68,21 @@
 		
 		$xml=makeKMLwaypoint($waypointID);
 		$file_name=$waypointID.'.kml';
-	}
+	} else	if ($type=="sites") {
+		$sites=$_GET['sites'];
+		$sitesList=explode(",",$sites);
+		$xml='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
+		<kml xmlns="http://earth.google.com/kml/2.0">\n
+		<Folder>';
 
+		foreach($sitesList as $waypointID) {		
+			$xml.=makeWaypointPlacemark($waypointID);			
+		}
+		
+		$xml.="</Folder>\n</kml>\n";
+		$file_name="Leonardo site guide.kml";
+	
+	}
 
 		list($browser_agent,$browser_version)=getBrowser();
 

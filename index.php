@@ -140,8 +140,8 @@ function toggleVisibleAjax(divID,divPos){
 	display:block;
 	position:absolute;
 
-	top:  0 px;
-	left: 0 px;
+	top:  0px;
+	left: 0px;
 
 /*	border-width:1px;
 	border-style:dashed;
@@ -414,6 +414,8 @@ if ($op=="users") {
     require $moduleRelPath."/GUI_list_comp.php";
 } else if ($op=="list_takeoffs") {
 	require $moduleRelPath."/GUI_list_takeoffs.php";	
+} else if ($op=="sites") {
+	require $moduleRelPath."/GUI_sites.php";	
 //--------------------------
 // "Flight" related actions
 //--------------------------

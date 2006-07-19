@@ -15,7 +15,7 @@ function getTakeoffList() {
 	global $db;
 	global $flightsTable,$prefix;
 
-  	$query="SELECT DISTINCT takeoffID FROM $flightsTable";
+  	$query="SELECT DISTINCT takeoffID FROM $flightsTable WHERE takeoffID<>0";
 	// echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){

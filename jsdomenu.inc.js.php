@@ -50,6 +50,7 @@ function createjsDOMenu() {
  
   staticMenu10 = new jsDOMenu(220, "absolute");
   with (staticMenu10) {
+    addMenuItem(new menuItem("<? echo _MENU_SITES_GUIDE ?>", "", "?name=<? echo $module_name?>&op=sites")); 
     addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
   }
 
