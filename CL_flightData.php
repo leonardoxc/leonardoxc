@@ -568,7 +568,9 @@ var $maxPointNum=1000;
 
 //		$this->filename=urlencode(basename($filename));
 		$this->filename=basename($filename);
-	
+	$done=0;
+	$try_no_takeoff_detection=0;
+	while(!$done) {	
 		$lines = file ($filename); 
 
 		$linesNum =count($lines);
@@ -625,6 +627,10 @@ var $maxPointNum=1000;
 			 	$pointOK=0;
 				DEBUG("IGC",8,"[$Brecords-$p] Distance <0.5 m <br>");
 				$REJ_T_distance++;
+
+				// we dont go through the other tests
+				$lines[$i]{1}='X';
+				continue;
 				//echo $T_distance[1]."*<br>";
 			}
 			if ( abs ($mean_speed - $T_speed[1] ) > 40 ) { // diff more than 40 km/h
@@ -652,7 +658,7 @@ var $maxPointNum=1000;
 			if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
 				// echo "V";
 			}
-			if ( $p<5 ) { // first 10 points need special care 
+			if ( $p<5 && ! $try_no_takeoff_detection) { // first 10 points need special care 
 				DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." <br>");
 				if ( abs($T_speed[1])  > ($this->maxAllowedSpeed *0.3) ) {  $pointOK=0;	$REJ_max_speed_start++;
 					// echo "s"; 
@@ -670,11 +676,7 @@ var $maxPointNum=1000;
 
 		}
 
-		//	 
-		if ($p==0)  {
-			echo "NO VALID POINTS FOUND";
-			return 0; // no valid points found
-		}
+
 		DEBUG("IGC",1,"REJ: [$REJ_T_distance] <0.5 distance<br>");
 		DEBUG("IGC",1,"REJ: [$REJ_T_zero_time_diff] zero_time_diff<br>");
 		DEBUG("IGC",1,"REJ: [$REJ_T_mean_speed] mean_speed diff >40km/h<br>");
@@ -685,6 +687,16 @@ var $maxPointNum=1000;
 		DEBUG("IGC",1,"REJ: [$REJ_max_vario_start] >max_vario_start<br>");
 
 		DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
+			if ($p>0) $done=1;
+			else if (!$try_no_takeoff_detection) $try_no_takeoff_detection=1;
+			else $done=1;
+		} // while not done
+
+		//	 
+		if ($p==0)  {
+			echo "NO VALID POINTS FOUND";
+			return 0; // no valid points found
+		}
 
 		$mod=0;
 		if ($p > $this->maxPointNum ){
@@ -705,12 +717,12 @@ var $maxPointNum=1000;
 			if  (strlen($line)==0) continue;
 			
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
-				if ($alreadyInPoints && $points>0) {
+				if ($alreadyInPoints && $points>0 && $prevPoint->gpsTime < 86200) {
+					// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track					
 					$stopReadingPoints=1;
 					DEBUG("IGC",1,"[$points] $line<br>");
 					DEBUG("IGC",1,"[$points] Found a new track (NEW HFDTE)<br>");
-				}
-				else {
+				} else {
 
 					$this->DATE=substr($line,5,6);
 					$yr_last=substr($this->DATE,4,2);

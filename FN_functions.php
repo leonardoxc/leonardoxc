@@ -245,5 +245,23 @@ function getBrowser() {
 		if (in_array($userID,$admin_users)) return 1;
 		else return 0;
 	}
+	
+	# Compares versions of software
+	# versions must must use the format ' x.y.z... ' 
+	# where (x, y, z) are numbers in [0-9]
+	function check_version($currentversion, $requiredversion)
+	{
+		list($majorC, $minorC, $editC) = split('[/.-]', $currentversion);
+		list($majorR, $minorR, $editR) = split('[/.-]', $requiredversion);
+		
+		if ($majorC > $majorR) return true;
+		if ($majorC < $majorR) return false;
+		// same major - check ninor
+		if ($minorC > $minorR) return true;
+		if ($minorC < $minorR) return false;
+		// and same minor
+		if ($editC  >= $editR)  return true;
+		return false;
+	}
 
 ?>
