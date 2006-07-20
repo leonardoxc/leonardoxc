@@ -217,7 +217,7 @@ function  makeKMLwaypoint($waypointID) {
 	return $xml_text;
 }
 
-function  makeWaypointPlacemark($waypointID) {	
+function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {	
 	global $db, $waypointsTable;
 	global $baseInstallationPath,$module_name,$flightsTable,$countries,$CONF_mainfile;
 
@@ -285,8 +285,9 @@ $xml_text='<Placemark>
     <coordinates>'.(-$wpInfo->lon).','.$wpInfo->lat.',0</coordinates>
   </Point>
 </Placemark>';
-	
-	return $xml_text;
+	if ($returnCountryCode) {
+		return array($xml_text,$wpInfo->countryCode);
+	} else return $xml_text;
 
 }
 ?>

@@ -73,10 +73,22 @@
 		$sitesList=explode(",",$sites);
 		$xml='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
 		<kml xmlns="http://earth.google.com/kml/2.0">\n
-		<Folder>';
+		<Folder>
+		<name>Leonardo Site List</name>';
 
 		foreach($sitesList as $waypointID) {		
-			$xml.=makeWaypointPlacemark($waypointID);			
+			list($xml_str,$countryCode)=makeWaypointPlacemark($waypointID,1);
+			if (!is_array($takeoffs[$countryCode]) ) $takeoffs[$countryCode]=array();
+			array_push($takeoffs[$countryCode],$xml_str);
+
+		}
+
+		foreach($takeoffs as $countryCode=>$countrySites) {		
+			$xml.="<Folder>\n<name>".$countries[$countryCode]."</name>\n";
+			foreach ($countrySites as $siteXml) {
+				$xml.=$siteXml;
+			}
+			$xml.="</Folder>";
 		}
 		
 		$xml.="</Folder>\n</kml>\n";

@@ -125,25 +125,45 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 }
 
  
- open_inner_table(_FILTER_PAGE_TITLE,760); echo "<tr><td>";
+// open_inner_table(_FILTER_PAGE_TITLE,760); echo "<tr><td>";
 
 ?>
 
 <script language='javascript' src='<? echo $moduleRelPath ?>/autocomplete.js'></script>
+
 <form name="formFilter" method="post" action="">
-  <br>
-  <table class=main_text width="720"  border="0" align="center" cellpadding="1" cellspacing="1">
-    <tr> 
-      <td width="205" bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_TAKEOFF ?></strong></span></div></td>
-      <td width="352">
-	  
-	  <INPUT TYPE="button" NAME="right" VALUE="Clear this list" ONCLICK="removeAllOptions(document.forms[0]['copy2']);">	  </td>
+  <div class='tableHeader shadowBox' width=650>
+   <div class='titleDiv'>Site Guide</div>
+  </div>
+
+  <table class="listTable shadowBox" style="width:650px" width="650"  border="0" align="center" cellpadding="5" cellspacing="1">
+    <tr bgcolor="#CCD0E3"> 
+      <td width="273" valign="top">
+          <p align="left"><strong>Search Options</strong><br />
+            <select name="FILTER_takeoff1_select" size="10" id="FILTER_takeoff1_select"  style="display:none">
+                         
+            <? 
+					for($k=0;$k<count($takeoffs);$k++) {
+ 					    $sel=($takeoffsID[$k]==$FILTER_takeoff1_select)?"selected":"";
+						echo "<option value='".$takeoffsID[$k]."' $sel>".$takeoffs[$k]."</option>\n";
+					}
+				?>
+            </select>
+        </p>
+        </td>
+      <td width="10">&nbsp;</td>
+      <td>
+	    <p><strong>Below is the list of selected sites.</strong></p>      </td>
     </tr>
-    <tr> 
-      <td valign="top"><div align="right">
-        <p>
-          <? echo _SELECT_COUNTRY ?>
-          <select name="country_select" id="country_select" onchange="selectCountry()">
+    <tr>
+      <td valign="top" bgcolor="#EAF0E6"><p align="left">Search site by name<br />
+  (give at least 2 letters) <br />
+  <input type="text" name="input1" value="" onKeyUp="autoComplete(this,'FILTER_takeoff1_select','text',false)" />
+      </p>
+        <p align="left"><strong>or </strong></p>
+        <p align="left">Select the sites of a specific country</p>
+        <p align="left">
+          <select name="country_select" id="select" onChange="selectCountry()">
             <option></option>
             <? 
 					for($k=0;$k<count($countriesCodes);$k++) {
@@ -152,40 +172,26 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 					}
 				?>
           </select>
-          <br />
-            Search site by name<br />
-          (give at least 2 letters) <br />
-          <input type="text" name="input1" value="" onkeyup="autoComplete(this,'FILTER_takeoff1_select','text',false)" />
-          <br />
-          <select name="FILTER_takeoff1_select" size="10" id="FILTER_takeoff1_select"  >
-           
-            <? 
-					for($k=0;$k<count($takeoffs);$k++) {
- 					    $sel=($takeoffsID[$k]==$FILTER_takeoff1_select)?"selected":"";
-						echo "<option value='".$takeoffsID[$k]."' $sel>".$takeoffs[$k]."</option>\n";
-					}
-				?>
+        </p></td>
+      <td>&nbsp;</td>
+      <td bgcolor="#DDE3E8"><p>Click &quot;See the selected sites&quot; to open
+          these sites in Google Earth </p>
+        <p>
+          <input type="button" name="right" value="Clear this list" onClick="removeAllOptions(document.forms[0]['copy2']);">
+        </p>
+        <p>
+          <select name="copy2" size="10" multiple="multiple">
           </select>
-          </p>
-      </div></td>
-      <td rowspan="2" valign="top">
-        <select name="copy2" size="10" multiple="multiple">
-      </select></td>
-    </tr>
-
-    <tr> 
-      <td><div align="right"></div></td>
-    </tr>
-    <tr> 
-      <td colspan="2"><div align="center"> 
-          <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites"
-		  ONCLICK="seeSites('<? echo "$moduleRelPath/";?>');">
-          &nbsp;</div></td>
+        </p>
+        <p>
+          <input type="button" name="SubmitButton" id="SubmitButton3" value="See the selected sites"
+		  onClick="seeSites('<? echo "$moduleRelPath/";?>');">
+        </p></td>
     </tr>
   </table>
-  <p>&nbsp;</p>
+
 </form>
 <? 
-  close_inner_table();  
+ // close_inner_table();  
 
 ?>

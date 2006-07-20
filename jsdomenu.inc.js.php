@@ -71,11 +71,11 @@ function createjsDOMenu() {
   }
  <? } ?>
 
-  staticMenu = new jsDOMenuBar("static", "staticMenuPos",false,"jsdomenubardiv",480<? 
+  staticMenu = new jsDOMenuBar("static", "staticMenuPos",false,"jsdomenubardiv",530<? 
 	$addedMenuWidth=0;
 	// $addedMenuWidth=count($availableLanguages)*18;
 	// $addedMenuWidth+=(count($CONF_glider_types)+1)*18;
-    if (in_array($userID,$admin_users)) $addedMenuWidth+=120;
+    if (in_array($userID,$admin_users)) $addedMenuWidth+=130;
 	echo "+".$addedMenuWidth; 
   ?>);
   

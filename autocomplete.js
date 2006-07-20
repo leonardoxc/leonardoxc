@@ -38,7 +38,9 @@
 // -------------------------------------------------------------------
 
 function seeSites(relPath) {
-	select=document.forms[0]['copy2'];
+//	select=document.forms[0]['copy2'];
+	var select=MWJ_findObj("copy2");
+
 	var site_list = [];
 	for (var i = 0; i < select.options.length; i++) {
 		  site_list.push(select.options[i]['value']);

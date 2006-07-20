@@ -20,6 +20,7 @@
 
 
 
+
   
 <div align="center"> 
   <p> 
@@ -60,15 +61,37 @@
     <tr> 
       <td colspan="2"><div align="center">
         <hr>
-        <p><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
-            pg Leonardo</a> :: <a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">Italian
-            Leonardo</a> :: <a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek
-            pg Leonardo </a>::<br>
-            <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish
-      Leonardo</a> :: <a href="http://xc.parapente.com.ar/modules.php?name=leonardo&op=list_flights" target="_blank">Argentine
-      Leonardo</a> :: <a href="http://www.xcportugal.com/modules.php?name=leonardo">Liga XC Portugal</a> ::
-      <a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></p>
-      </div>
+        <p align="left"><strong>Leonardo Installations </strong></p>
+        <ul><li>
+            <div align="left"><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
+                    Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">Italian Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://xc.parapente.com.ar/modules.php?name=leonardo&op=list_flights" target="_blank">Argentine Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://xc.ciclone.com.br/xc/modules.php?name=leonardo&op=list_flights" target="_blank">Brazilian Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></div>
+          </li>
+        </ul>
+        </div>
         <hr>        <p>Many thanks to: </p>                <p>        <strong>Hannes Krueger</strong>, for his GPLIGC and openGLIGCexplorer
           that gave me the initial idea<br>
           <a href="http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php" target="_blank">http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php</a></p>                <p><strong>Kostas 'GUS' Proitsakis</strong> - Greece, for Beta testing

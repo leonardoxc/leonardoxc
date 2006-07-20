@@ -62,6 +62,13 @@ background-color:#C5D0ED;
 	padding:0;
 }
 
+.tableHeader {
+	background-color:#C0C9DA;
+	height:22px;
+	margin-bottom:3px;
+	padding:0;
+}
+
 .tableInfo{
 	background-color:#C7DFC4;
 	height:auto;
