@@ -549,5 +549,24 @@ define("_This_is_the_URL_of_this_page","This is the URL of this page");
 define("_All_glider_types","All glider types");
 
 define("_MENU_SITES_GUIDE","Flying Sites Guide");
+define("Site_Guide","Site Guide");
+ /*
+
+Search_Options
+Below_is_the_list_of_selected_sites
+
+Search site by name
+(give at least 2 letters) 
+
+Click "See the selected sites" to open these sites in Google Earth 
+
+or 
+
+Select the sites of a specific country
+
+Clear this list
+
+See the selected sites
+*/
 
 ?>
