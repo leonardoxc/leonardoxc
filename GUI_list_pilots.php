@@ -41,7 +41,7 @@
   }
   
   if ($country) {
-		$where_clause.=" AND  countryCode='".$country."' ";
+		$where_clause.=" AND  $waypointsTable.countryCode='".$country."' ";
 		// if ($sortOrder!="dateAdded") $legend.=" (".$countries[$country].") | ";				
   }
 
@@ -124,15 +124,15 @@
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
 
- $query = 'SELECT DISTINCT userID, username,  max( LINEAR_DISTANCE ) AS bestDistance,'
+ $query = 'SELECT DISTINCT userID, username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
-        . ' FROM '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
-        . ' WHERE private=0 AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
+        . ' FROM '.$pilotsTable.', '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
+        . ' WHERE private=0 AND '.$pilotsTable.'.pilotID='.$prefix.'_users.user_id AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' GROUP BY userID'
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
 	
@@ -235,6 +235,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 			"<div align=left>".
 			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
 			"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
+			getNationalityDescription($row["countryCode"],1,0).
 			"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
 			"</div></TD>". 	   			   			   
    	           "<TD ".(($sortOrder=="totalFlights")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["totalFlights"]."</div></TD> 	 

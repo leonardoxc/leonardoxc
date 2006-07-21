@@ -39,9 +39,15 @@ function olcSubmit($flightID) {
 
 	$fixedThings="spr=en&olc=holc-i&OLChelp=";
 	
-	
-	$region="GR";
-	$klasse=3; // paraglider open
+	// $region="GR";
+	$takeoffWaypoint=new waypoint($flight->takeoffID);
+	$takeoffWaypoint->getFromDB();
+	$region=strtoupper($takeoffWaypoint->countryCode);
+
+	if ($flight->cat==1)	$klasse=3; // paraglider open
+	else if ($flight->cat==2)	$klasse=1; // flex FAI cat 1
+	else if ($flight->cat==4)	$klasse=2; // rigid FAI cat 5
+	else $klasse=3; // paraglider open - default 
 
 
 	// now get flight data
@@ -246,8 +252,16 @@ function olcRemove($flightID) {
 	$geb=urlencode($geb);  // birth date
 	
 	$fixedThings="spr=en&olc=holc-i&OLChelp=";
-	$region="GR";
-	$klasse=3; // paraglider open
+
+	// $region="GR";
+	$takeoffWaypoint=new waypoint($flight->takeoffID);
+	$takeoffWaypoint->getFromDB();
+	$region=strtoupper($takeoffWaypoint->countryCode);
+
+	if ($flight->cat==1)	$klasse=3; // paraglider open
+	else if ($flight->cat==2)	$klasse=1; // flex FAI cat 1
+	else if ($flight->cat==4)	$klasse=2; // rigid FAI cat 5
+	else $klasse=3; // paraglider open - default 
 
 
 	// now get flight data

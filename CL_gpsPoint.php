@@ -246,7 +246,7 @@ return "<waypoint>
 
 
 		$query.=" $waypointsTable 
-					   ( $fl_id_1 name ,intName, lat,lon, type, location ,intLocation ,CountryCode , link, description ) 
+					   ( $fl_id_1 name ,intName, lat,lon, type, location ,intLocation ,countryCode , link, description ) 
 				VALUES ( $fl_id_2 '".prep_for_DB($this->name)."', '".prep_for_DB($this->intName) ."', ".$this->lat .", ".$this->lon." , ".$this->type.", 
 						'".prep_for_DB($this->location)."', '".prep_for_DB($this->intLocation )."', '".prep_for_DB($this->countryCode) .
 						"' , '".prep_for_DB($this->link )."' , '".prep_for_DB($this->description) ."'  )";

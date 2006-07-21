@@ -64,11 +64,12 @@ function getUsedGliders($userID) {
 	return $gliders;
 }
 
-function getPilotRealName($pilotIDview) {
+function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage;
+	global $countries;
 
-	$query="SELECT CONCAT(FirstName,' ',LastName) as realName FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
+	$query="SELECT CONCAT(FirstName,' ',LastName) as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
 	$res= $db->sql_query($query);
 	// echo $query;
 
@@ -76,7 +77,8 @@ function getPilotRealName($pilotIDview) {
 		$pilot = mysql_fetch_assoc($res);
 		$realName=$pilot['realName'];
 		if (strlen ($realName)>1 && $currentlang==$nativeLanguage) { // else realname is no good
-			return $realName; 
+			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
+			else return $realName; 
 		}
 	} 
 
@@ -99,7 +101,9 @@ function getPilotRealName($pilotIDview) {
 			$realName=$row["username"];
 		}
 	}
-	return $realName;
+
+	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
+	else return $realName; 
 }
 
 function getPilotPhotoRelFilename($pilotID,$icon=0) {
@@ -126,5 +130,30 @@ function getPilotStatsFilename($pilotID,$num) {
 	global $flightsAbsPath;
 	return $flightsAbsPath."/".$pilotID."/PilotStats_$num.png";
 }
+
+function getNationalityDescription($cCode,$img=1,$text=1) {
+	global 	$moduleRelPath,$countries;	
+	$cCode=strtolower($cCode);
+	if (strlen($cCode) !=2) return "";
+
+	if ($img) $imgStr="<img src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='".$countries[strtoupper($cCode)]."'>";
+	if ($text) $textStr=$countries[strtoupper($cCode)];
+	return "$imgStr $textStr";
+}
+
+function getNationalityDropDown($cCode) {
+	global $countries;
+	$str="<Select name='countriesList'>";
+	$str.="<option value=''></option>\n";
+	foreach ($countries as $countrycode=>$countryName) {
+		if ( strtolower($countrycode)==strtolower($cCode) ) $sel=" selected"; 
+		else $sel="";
+		$str.="<option value='$countrycode' $sel>$countryName</option>\n";
+	}
+	$str.='</Select>';
+	return $str;
+}
+
+
 
 ?>

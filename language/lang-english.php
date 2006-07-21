@@ -547,4 +547,7 @@ define("_Reset_to_default_view","Reset to default view");
 define("_No_Club","No Club");
 define("_This_is_the_URL_of_this_page","This is the URL of this page");
 define("_All_glider_types","All glider types");
+
+define("_MENU_SITES_GUIDE","Flying Sites Guide");
+
 ?>

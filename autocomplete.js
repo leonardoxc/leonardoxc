@@ -37,9 +37,8 @@
 //                 supported in IE (possible future Netscape).
 // -------------------------------------------------------------------
 
-function seeSites(relPath) {
-//	select=document.forms[0]['copy2'];
-	var select=MWJ_findObj("copy2");
+function seeSites(relPath,listName) {
+	var select=MWJ_findObj(listName);
 
 	var site_list = [];
 	for (var i = 0; i < select.options.length; i++) {
@@ -52,54 +51,16 @@ function seeSites(relPath) {
 	return false;
 }
 
-/*
-function submitForm(action) {
-  document.SelectFlights.selectAction.value=action;
-
-  var task = document.getElementById("taskID");
-  var taskID= document.SelectFlights.taskID.value;
-
-//  var form  = document.forms[0];
-  var form  = document.SelectFlights;
-  var elems = form.elements;
-  var fids  = [];
-
-  var current;
-
-  for (var i=0; i<elems.length; i++) {
-	current = elems[i];
-
-	if (current.name.substring(0, 12) == 'selectFlight' && current.checked) {
-	  fids.push(current.name.substring(12));
-	}
-  }
-
-  filename="";  
-  if (action==1) op="?op=flights_compare";
-  else	if (action==2) op="?op=flights_animate";
-  else	if (action==3) {
-	filename="download.php";
-	op="?type=kml_trk_multi";
-  } else	if (action==4) {
-	filename="download.php";
-	op="?type=kml_anim_multi";
-  }  
-
-  window.location = filename+op+"&taskID="+taskID+"&fs="+fids.toString();
-  return false;
-}
-*/
-
 function selectCountry() {
-	var select=MWJ_findObj("FILTER_takeoff1_select");
+	var select=MWJ_findObj("takeoffList");
 	var selectC=MWJ_findObj("country_select");
 	
 	countryCode=selectC.options[selectC.selectedIndex]['value'];
 	
-	removeAllOptions(document.forms[0]['copy2']);
+	removeAllOptions(document.forms[0]['selectedSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i]['text'].toUpperCase().indexOf(countryCode) ==0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['copy2']);
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['selectedSitesList']);
 			found=true; 
 //			break;
 		}
@@ -111,38 +72,13 @@ function autoComplete (field, selectName, property, forcematch) {
 	var select=MWJ_findObj(selectName);
 	if (field.value.length<2) return;
 	
-	var found = false;
-	removeAllOptions(document.forms[0]['copy2']);
+	removeAllOptions(document.forms[0]['selectedSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) >=0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['copy2']);
-			found=true; 
-//			break;
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['selectedSitesList']);
 		}
 	}
-return;
-	if (found) { select.selectedIndex = i; }
-	else { select.selectedIndex = -1; }
-	
-	if (field.createTextRange) {
-		if (forcematch && !found) {
-			field.value=field.value.substring(0,field.value.length-1); 
-			return;
-		}
-		
-		var cursorKeys ="8;46;37;38;39;40;33;34;35;36;45;";
-		if (cursorKeys.indexOf(event.keyCode+";") == -1) {
-			var r1 = field.createTextRange();
-			var oldValue = r1.text;
-			var newValue = found ? select.options[i][property] : oldValue;
-			if (newValue != field.value) {
-				field.value = newValue;
-				var rNew = field.createTextRange();
-				rNew.moveStart('character', oldValue.length) ;
-				rNew.select();
-			}
-		}
-	}
+
 }
 
 // HISTORY

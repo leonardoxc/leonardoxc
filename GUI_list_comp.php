@@ -71,7 +71,7 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
 
   if ($country) {
-		$where_clause.=" AND countryCode='".$country."' ";
+		$where_clause.=" AND $waypointsTable.countryCode='".$country."' ";
 		$where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
 		$extra_table_str=",".$waypointsTable;
   } else $extra_table_str="";
@@ -125,8 +125,9 @@
    
    while ($row = mysql_fetch_assoc($res)) { 
 
-     $name=getPilotRealName($row["userID"]);
-	 $pilotNames[$row["userID"]]=str_replace(" ","&nbsp;",$name);	 
+     $name=getPilotRealName($row["userID"],1);
+	 // $pilotNames[$row["userID"]]=str_replace(" ","&nbsp;",$name);	 
+	 $pilotNames[$row["userID"]]=$name;
 
 	 if  ( $row["BEST_FLIGHT_TYPE"] == "FAI_TRIANGLE" ) {
 		if ( ! is_array ($triangleKm[$row["userID"]] ) )  $triangleKm[$row["userID"]]=array();
@@ -258,7 +259,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 	     $i++;
 		 open_tr();
 		 echo "<TD $bg><div align=left>".($i-1+$startNum)."</div></TD>"; 	
-	     echo "<TD $bg><div align=left>".
+	     echo "<TD nowrap $bg ><div align=left>".
 				"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
 			    "<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>&nbsp;".
 		 	   	"<a href='?name=$module_name&op=list_flights&pilotID=".$pilotID."'>".$pilotNames[$pilotID]."</a>".

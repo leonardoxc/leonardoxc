@@ -75,7 +75,13 @@
     <td>&nbsp;</td>
   </tr>
   <tr> 
-    <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
+    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDescription($pilot['countryCode']); ?>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?> 
         (<? echo _dd_mm_yy ?>) </div></td>
     <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Birthdate'] ?>
     </td>

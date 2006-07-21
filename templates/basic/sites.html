@@ -1,0 +1,52 @@
+
+<script language='javascript' src='{MODULE_REL_PATH}/autocomplete.js'></script>
+
+<form name="formFilter" method="post" action="">
+  <div class='tableHeader shadowBox' width="650">
+   <div class='titleDiv'>Site Guide</div>
+  </div>
+
+  <table class="listTable shadowBox" style="width:650px" width="650"  border="0" align="center" cellpadding="5" cellspacing="1">
+    <tr bgcolor="#CCD0E3">
+      <td width="273" valign="top">
+        <p align="left">
+        <strong>Search Options</strong><br />
+        <select name="takeoffList" size="10" id="takeoffList"  style="display:none">
+            {TAKEOFF_OPTION_LIST}             
+        </select></td>
+      <td width="10">&nbsp;</td>
+      <td>
+        <p><strong>Below is the list of selected sites.</strong></p></td>
+    </tr>
+    <tr>
+      <td valign="top" bgcolor="#EAF0E6"><p align="left">Search site by name<br />
+        (give at least 2 letters) <br />
+        <input type="text" name="input1" value="" onKeyUp="autoComplete(this,'takeoffList','text',false)" />
+        </p>
+          <p align="left"><strong>or </strong></p>
+          <p align="left">Select the sites of a specific country</p>
+          <p align="left">
+            <select name="country_select" id="select" onChange="selectCountry()">
+              <option></option>
+              
+			{COUNTRIES_OPTION_LIST}	
+          
+            </select>
+        </p></td>
+      <td>&nbsp;</td>
+      <td bgcolor="#DDE3E8"><p>Click &quot;See the selected sites&quot; to open
+          these sites in Google Earth </p>
+          <p>
+            <input type="button" name="right" value="Clear this list" onClick="removeAllOptions(document.forms[0]['selectedSitesList']);">
+          </p>
+          <p>
+            <select name="selectedSitesList" size="10" multiple="multiple">
+            </select>
+          </p>
+          <p>
+            <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites"
+		  onClick="seeSites('{MODULE_REL_PATH}','selectedSitesList');">
+        </p></td>
+    </tr>
+  </table>
+</form>

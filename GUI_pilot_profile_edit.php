@@ -50,6 +50,7 @@
    $query="UPDATE $pilotsTable SET
    		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
+		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
@@ -167,6 +168,12 @@
       </td>
       <td>&nbsp;</td>
     </tr>
+  <tr> 
+    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDropDown($pilot['countryCode']); ?>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
           (<? echo _dd_mm_yy ?>) </div></td>
