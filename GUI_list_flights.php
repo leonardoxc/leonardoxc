@@ -1,6 +1,6 @@
 <? 
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                                */
+/* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
@@ -175,6 +175,8 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
 }
 
 ?>
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
 <script language="javascript">
 
 function addClubFlight(clubID,flightID) {
@@ -204,7 +206,40 @@ function removeClubFlight(clubID,flightID) {
 	div.innerHTML=newHTML;
 	//toggleVisible(divID,divPos);
 }
+
+// Here's a second demo tip object. Feel free to delete it if you're not using it!
+// I've included a tip header here in this template, %3% is the header text and %4% is
+// now the main text. As you can see you can basically format your tips any way you want.
+// This tip also includes mouse event handlers to show a second-level tip, just like in
+// the body of the page below, so you can nest tips within tips, and a 'tipStick' of 0 so
+// it never follows the mouse.
+var staticTip = new TipObj('staticTip');
+with (staticTip)
+{
+ // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
+  '<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0">' +
+  '<tr><td bgcolor="#009999" align="center" height="*" class="tipClass">'+
+	"<a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0></a><br>"+
+	"<a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0></a>"+
+	<?  if ($opMode==2)  { ?>// phpbb only 
+	"<br><a href='/privmsg.php?mode=post&u=%3%'><img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"+
+    <? } ?>
+
+	'</td></tr>' +
+  '</table></td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
+
+
+
 </script>
+<div id="staticTipLayer" style="position: absolute; z-index: 10000; visibility: hidden;
+ left: 0px; top: 0px; width: 10px">&nbsp;</div>
 <?
 
 function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
@@ -346,7 +381,8 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 			if ($opMode==2) // phpbb only 
 				echo "<a href='/privmsg.php?mode=post&u=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"; 
 
-			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
+//			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
+			echo "&nbsp;<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 250, '".$row["userID"]."')\"  onmouseout=\"staticTip.hide()\">$name</a>".
 		"</div>".
 		"<div align=right>".
 		//    "</div></TD>". 	   

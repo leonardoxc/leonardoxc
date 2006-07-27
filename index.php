@@ -121,7 +121,28 @@ if (1) {
 	?>
 <script language="javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
 <script language="javascript" src="<?=$moduleRelPath?>/prototype.js"></script>
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/supernote.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath ?>/supernote.css" />
+
 <script language="javascript">
+
+var supernote = new SuperNote('supernote',  { hideDelay: 100 });
+
+// Available config options are:
+//allowNesting: true/false    // Whether to allow triggers within triggers.
+//cssProp: 'visibility'       // CSS property used to show/hide notes and values.
+//cssVis: 'inherit'
+//cssHid: 'hidden'
+//IESelectBoxFix: true/false  // Enables the IFRAME select-box-covering fix.
+//showDelay: 0                // Millisecond delays.
+//hideDelay: 500
+//animInSpeed: 0.1            // Animation speeds, from 0.0 to 1.0; 1.0 disables.
+//animOutSpeed: 0.1
+
+// You can pass several to your "new SuperNote()" command like so:
+//{ name: value, name2: value2, name3: value3 }
+
 
 function toggleVisibleAjax(divID,divPos){
 	url='/<?=$moduleRelPath?>/EXT_filter.php';
@@ -134,44 +155,8 @@ function toggleVisibleAjax(divID,divPos){
 }
 </script>
 
-<style type="text/css">
-<!--
-.selectDate {
-	display:block;
-	position:absolute;
-
-	top:  0px;
-	left: 0px;
-
-/*	border-width:1px;
-	border-style:dashed;
-	border-color:#FF9933;
-	background-color:#E7F0D9;
-*/
-
-
-    background-color: #FFFFFF;
-	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
-	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
-	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
-	padding: 3px 3px 3px 3px;
-	margin-bottom:0px;
-
-/*
-	width: auto;
-	height: auto;
-	min-width: 80px;
-	min-height: 35px; 
-*/
-	width:1px;
-	height:1px;
-	
-	visibility:hidden;
-
-}
--->
-</style>
-<div id="selectDateID" class="selectDate">
+<div id="supernote-note-selDate" class="snp-triggeroffset notedefault" style="width:300px">
+<a name="selDate"></a>
 <table width=100%>
 <tr>
 	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
@@ -229,7 +214,8 @@ function toggleVisibleAjax(divID,divPos){
 </TABLE>
 </div>
 
-<div id="selectCountryID" class="selectDate">
+<div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:300px">
+<a name="selCountry"></a>
 <table width=100%>
 <tr>
 	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select Country
@@ -345,17 +331,21 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    </div>
   	    <? } ?>
   	    
-  	    <div id="selectDateIcon" class="menu1" ><a href="#" onclick="toggleVisible('selectDateID','selectDateIcon');return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0></a>
-  	    <?
-  	    	echo "<b>$dateLegend</b>";
-  	    	if (!$allTimesDisplay) 
-  	    		echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	    ?>
+  	    <div class="menu1" >
+			<a href="#selDate" class="supernote-hover-selDate">
+			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
+  	    	<?
+  	    		echo "<b>$dateLegend</b></a>";
+  	    		if (!$allTimesDisplay) 
+  	    			echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	  		?>
   	    </div>
   	    
-  	    <div id="selectCountryIcon" class="menu1"><a href="#" onclick="toggleVisible('selectCountryID','selectCountryIcon',28,0,450,200);return false;"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0></a>
+  	    <div class="menu1">
+			<a href="#selCountry" class="supernote-hover-selCountry">
+			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
    	    <?
-  	    	echo "<b>$countryLegend</b>";
+  	    	echo "<b>$countryLegend</b></a>";
   	    	if (!$allCountriesDisplay) 
   	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>

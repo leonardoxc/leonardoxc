@@ -244,7 +244,7 @@ function setVar($varname,$value) {
 
 require_once dirname(__FILE__)."/CL_user_prefs.php";
 $PREFS=new userPrefs();
-if (! $PREFS->getFromCookie() ) {
+if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) {
 	// echo "NO user prefs cookie found : puting default values<br>";
 	$PREFS->themeName= $CONF_defaultThemeName;
 	$PREFS->language=$nativeLanguage;
@@ -266,6 +266,9 @@ if (isset($_REQUEST['updatePrefs'])) {// submit form
 	$PREFS->viewCountry=$_POST['PREFS_viewCountry'];
 	$_SESSION["country"]= $PREFS->viewCountry;
 }
+
+if ( !is_dir(dirname(__FILE__)."/templates/".$PREFS->themeName) || !$PREFS->themeName )
+	$PREFS->themeName=$CONF_defaultThemeName;
 
 $PREFS->setToCookie();
 
