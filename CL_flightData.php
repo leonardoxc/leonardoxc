@@ -583,13 +583,13 @@ var $maxPointNum=1000;
 		$p=0;
 		$Brecords=0;
 		$getPointsNum=5 ; // + 4 points + this one 
-		for($i=0;$i<count($lines)-10 ;$i++) {		
+		for($i=0;$i< count($lines)-10 ;$i++) {		
 			$pointOK=1;
 			$line=trim($lines[$i]);
 			if  (strlen($line)==0) continue;
 			if  ( $line{0}!='B' ) continue;
 			$Brecords++;
-			if  ( strlen($line) <  23 ) { 
+			if  ( strlen($line)  < 23 ) { 
 				$lines[$i]{1}='X';
 				continue;
 			}
@@ -717,11 +717,13 @@ var $maxPointNum=1000;
 			if  (strlen($line)==0) continue;
 			
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
-				if ($alreadyInPoints && $points>0 && $prevPoint->gpsTime < 86200) {
-					// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track					
-					$stopReadingPoints=1;
-					DEBUG("IGC",1,"[$points] $line<br>");
-					DEBUG("IGC",1,"[$points] Found a new track (NEW HFDTE)<br>");
+				if ( $alreadyInPoints && $points>0 ) {
+					if ( $prevPoint->gpsTime < 86200 ) {
+						// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track					
+						$stopReadingPoints=1;
+						DEBUG("IGC",1,"[$points] $line<br>");
+						DEBUG("IGC",1,"[$points] Found a new track (NEW HFDTE)<br>");
+					}
 				} else {
 
 					$this->DATE=substr($line,5,6);

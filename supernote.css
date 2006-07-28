@@ -13,7 +13,7 @@
 /*width: 10em;*/
 }
 .notedefault {
- padding: 3px;
+ padding: 1px;
  border: 1px solid #369;
  background-color: #69C;
  color: white;
@@ -53,4 +53,7 @@
 }
 .snb-pinned .note-close {
  visibility: inherit;
+}
+.note_link {
+ text-decoration: none;
 }

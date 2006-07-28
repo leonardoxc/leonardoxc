@@ -157,7 +157,7 @@ function toggleVisibleAjax(divID,divPos){
 
 <div id="supernote-note-selDate" class="snp-triggeroffset notedefault" style="width:300px">
 <a name="selDate"></a>
-<table width=100%>
+<table width=100%  cellpadding="2" cellspacing="0">
 <tr>
 	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
 	  </div></td>
@@ -332,7 +332,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    <? } ?>
   	    
   	    <div class="menu1" >
-			<a href="#selDate" class="supernote-hover-selDate">
+			<a href="#selDate" class="supernote-hover-selDate note_link">
 			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
   	    	<?
   	    		echo "<b>$dateLegend</b></a>";
@@ -342,7 +342,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    </div>
   	    
   	    <div class="menu1">
-			<a href="#selCountry" class="supernote-hover-selCountry">
+			<a href="#selCountry" class="supernote-hover-selCountry note_link">
 			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$countryLegend</b></a>";
