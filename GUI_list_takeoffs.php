@@ -90,8 +90,48 @@
     }
 
   listTakeoffs($res,$legend,$query_str,$sortOrder);
+?>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script language="javascript">
+
+var takeoffTip = new TipObj('takeoffTip');
+with (takeoffTip)
+{
+ // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
+  '<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0" bgcolor="#F4F8E2" class="tipClass main_text">' +
+  '<tr><td bgcolor="#DCDBCA" align=center> .:: <? echo _TAKEOFF ?>: <b>%4%</b> ::. </td></tr>'+
+  '<tr><td align="left">'+
+  
+  	//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
+		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%3%'><? echo  _SHOW_FLIGHTS ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=show_waypoint&waypointIDview=%3%'><? echo _SITE_INFO  ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+
+	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%3%'><? echo _Navigate_with_Google_Earth ?></a>"+
+
+	'</td></tr>' +
+  '</table></td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
 
 
+</script>
+
+<div id="takeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
+ left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
+<?
 function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
   global $Theme,$module_name;
@@ -125,14 +165,19 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
    $legendRight="";
 
    $headerSelectedBgColor="#F2BC66";
-   open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
+     echo  "<div class='tableTitle shadowBox'>
+   <div class='titleDiv'>$legend</div>
+   <div class='pagesDiv'>$legendRight</div>
+   </div>" ;
+   //open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
   ?>
+  <table class='listTable shadowBox' width="100%">
   <td width="25" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
  <?
 
    printHeaderTakeoffs(120,$headerSelectedBgColor,$Theme->color0,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
    printHeaderTakeoffs(0,$headerSelectedBgColor,$Theme->color2,$sortOrder,"intName",_TAKEOFF,$query_str) ;
-   printHeaderTakeoffs(120,$headerSelectedBgColor,$Theme->color3,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
+   printHeaderTakeoffs(80,$headerSelectedBgColor,$Theme->color3,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
    printHeaderTakeoffs(100,$headerSelectedBgColor,$Theme->color4,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$query_str) ;
 
 ?>
@@ -164,16 +209,20 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 		echo "<TD valign=top>$country_str</TD>";
 
 		echo "<TD ".(($sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
-			 "<div align=left>".
-			 "<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-			 "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>&nbsp;".
-			 "<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>".$takeoffName."</a>".			
-			 "</div></TD>";
-  		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]." (<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>"._SHOW_FLIGHTS."</a>)</div></TD>	";
+			 "<div align=left>";
+			 
+//			 "<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+//			 "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>&nbsp;".
+//			 "<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>".$takeoffName."</a>".			
+ 			echo "<a href='#' onmouseover=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+
+		echo "</div></TD>";
+  		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]."</div></TD>	";
 	   	echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["max_distance"])."</div></TD>	";
   	 close_tr();
    }     
-   close_inner_table();       
+//   close_inner_table();       
+   echo "</table>";
    mysql_freeResult($res);
 }
 

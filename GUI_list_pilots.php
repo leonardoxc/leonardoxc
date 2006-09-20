@@ -142,7 +142,46 @@
       echo("<H3>"._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();
     }
+?>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script language="javascript">
+var staticTip = new TipObj('staticTip');
+with (staticTip)
+{
+ // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
+  '<tr><td><table bgcolor="#F4F8E2" cellpadding="3" cellspacing="1" width="100%" border="0" class="tipClass main_text">' +
+  '<tr><td bgcolor="#DCDBCA" align=center class="main_text"><b>%4%</b></td></tr>'+
+  '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><? echo _Pilot_Profile ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
 
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%3%&takeoffID=0&country=0&cat=0&clubID=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><? echo _flights_stats ?></a>"+
+
+	<?  if ($opMode==2)  { ?>// phpbb only 
+	'</td></tr>'+
+    '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align='absmiddle'> <a href='/privmsg.php?mode=post&u=%3%'><? echo "PM" ?></a>"+
+    <? } ?>
+
+	'</td></tr>' +
+  '</table></td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
+
+</script>
+<div id="staticTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
+ left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<?
     listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
 
 function printHeaderPilotsTotals($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
@@ -150,21 +189,23 @@ function printHeaderPilotsTotals($width,$headerSelectedBgColor,$headerUnselected
   global $Theme,$module_name;
   if ($is_comp) {
 	  if ($sortOrder==$fieldName) { 
-	   echo "<td width='$width' bgcolor='$headerSelectedBgColor'>
-			<div class='whiteLetter' align=left>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></div></td>";
+  	   echo "<td width='$width'  class='activeSortHeader'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></td>";
+
+//	   echo "<td width='$width'  bgcolor='$headerSelectedBgColor'>
+//			<div class='whiteLetter' align=left>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></div></td>";
 	  } else {  
-	   echo "<td width='$width' bgcolor='$headerUnselectedBgColor'>
-			<div align=left>$fieldDesc</div></td>";
+	 
+	   echo "<td width='$width' class='inactiveSortHeader'>$fieldDesc</td>";
+	//   echo "<td width='$width' bgcolor='$headerUnselectedBgColor'>
+	//		<div align=left>$fieldDesc</div></td>";
 	   } 
   } else {
 	  if ($sortOrder==$fieldName) { 
-	   echo "<td width='$width' bgcolor='$headerSelectedBgColor'>
-			<div class='whiteLetter' align=left>
-			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></a></div></td>";
+	   echo "<td width='$width' class='activeSortHeader'>
+			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></a></td>";
 	  } else {  
-	   echo "<td width='$width' bgcolor='$headerUnselectedBgColor'>
-			<div align=left>
-			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc</a></div></td>";
+	   echo "<td width='$width' class='inactiveSortHeader'>
+			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
 	   } 
   }
 }
@@ -200,11 +241,18 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	 if ($endNum>$itemsNum) $endNum=$itemsNum;
 	 $legendRight.=" [ ".($startNum+1)."-".$endNum." "._from." ".$itemsNum ." ]";
    
-   open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
+ //  open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
+   echo  "<div class='tableTitle shadowBox'>
+   <div class='titleDiv'>$legend</div>
+   <div class='pagesDiv'>$legendRight</div>
+   </div>" ;
 
    $headerSelectedBgColor="#F2BC66";
+   
    ?>
-   <td width="25" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
+    <table class='listTable shadowBox' width="100%">
+	<tr> 
+   <td width="25" class='inactiveSortHeader alRight'><? echo _NUM ?></td>
    <?
    printHeaderPilotsTotals(190,$headerSelectedBgColor,$Theme->color0,$sortOrder,"pilotName",_PILOT,$query_str,$is_comp);
    printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color1,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$query_str,$is_comp);
@@ -232,11 +280,13 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	 open_tr();
 	   echo "  <TD><div align=left>".($i-1+$startNum)."</div></TD> 	   
 		       <TD ".(($sortOrder=="pilotName")?"bgcolor=".$sortRowBgColor:"").">".
-			"<div align=left>".
-			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
-			"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
-			getNationalityDescription($row["countryCode"],1,0).
-			"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
+			"<div align=left>";
+			
+	//		"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
+	//		"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
+		echo	getNationalityDescription($row["countryCode"],1,0);
+		//	"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
+			echo "<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"staticTip.hide()\">$name</a>".
 			"</div></TD>". 	   			   			   
    	           "<TD ".(($sortOrder=="totalFlights")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["totalFlights"]."</div></TD> 	 
  		       <TD ".(($sortOrder=="bestDistance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["bestDistance"])."</div></TD> ";
@@ -250,7 +300,8 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    	          ";	 							   			   
   	 close_tr();
    }     
-   close_inner_table();       
+  // close_inner_table();       
+  echo "</table>";
    mysql_freeResult($res);
 }
 

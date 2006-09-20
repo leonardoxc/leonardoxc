@@ -174,7 +174,7 @@ function toggleVisibleAjax(divID,divPos){
 	</td>
 </tr>
 <tr>
-	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<td class="main_text sp" bgcolor="#F0F3F7"  valign="top">
 	 
    <? 
 	 $month_num=date("m");
@@ -188,7 +188,7 @@ function toggleVisibleAjax(divID,divPos){
 	 
 ?>
 </td>
-<td class="main_text" bgcolor="#F0F3F7" valign="top">
+<td class="main_text sp" bgcolor="#F0F3F7" valign="top">
 <?  
   
 //	echo 'addMenuItem(new menuItem("<b>'._ALL_YEARS.'</b>", "", "?name='.$module_name.'&year=0"));';	  
@@ -197,7 +197,7 @@ function toggleVisibleAjax(divID,divPos){
 		echo "<a href='?name=$module_name&year=$i&month=0'>$i</a><br>";		
 ?>
 </td>
-<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+<td class="main_text sp" bgcolor="#F0F3F7"  valign="top">
 <?
 //	echo 'addMenuItem(new menuItem("<b>'._ALL_THE_YEAR.'</b>", "", "?name='.$module_name.'&month=0"));';	  
 	$i=1;
@@ -214,7 +214,7 @@ function toggleVisibleAjax(divID,divPos){
 </TABLE>
 </div>
 
-<div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:300px">
+<div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:550px">
 <a name="selCountry"></a>
 <table width=100%>
 <tr>
@@ -222,7 +222,7 @@ function toggleVisibleAjax(divID,divPos){
 	  </div></td>
 </tr>
 <tr>
-	<td class="main_text" bgcolor="#F0F3F7" valign='top'>
+	<td class="main_text sp2" bgcolor="#F0F3F7" valign='top'>
 <?
 		list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 		$countriesNum=count($countriesNames);
@@ -235,7 +235,7 @@ function toggleVisibleAjax(divID,divPos){
 				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a><br>";
 				$i++;
 				if ($i % $num_of_rows==0) {
-					echo "</td><td class='main_text' bgcolor='#F0F3F7' valign='top'>";									
+					echo "</td><td class='main_text sp2' bgcolor='#F0F3F7' valign='top'>";									
 				}
 			}
 		}

@@ -158,22 +158,6 @@
   $legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
   listFlights($res,$legend,	$query_str,$sortOrder);
 
-function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
-  global $moduleRelPath;
-  global $Theme,$module_name;
-
-  if ($width==0) $widthStr="";
-  else  $widthStr="width='".$width."'";
-
-  if ($sortOrder==$fieldName) { 
-   echo "<td class='activeSortHeader' $widthStr>	
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></td>";
-  } else {  
-   echo "<td class='inactiveSortHeader' $widthStr>
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
-   } 
-}
-
 ?>
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
@@ -217,13 +201,24 @@ var staticTip = new TipObj('staticTip');
 with (staticTip)
 {
  // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
- template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
-  '<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0">' +
-  '<tr><td bgcolor="#009999" align="center" height="*" class="tipClass">'+
-	"<a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0></a><br>"+
-	"<a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0></a>"+
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
+  '<tr><td><table bgcolor="#F4F8E2" cellpadding="3" cellspacing="1" width="100%" border="0" class="tipClass main_text">' +
+  '<tr><td bgcolor="#DCDBCA" align=center class="main_text"><b>%4%</b></td></tr>'+
+  '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><? echo _Pilot_Profile ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%3%&takeoffID=0&country=0&cat=0&clubID=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><? echo _flights_stats ?></a>"+
+
 	<?  if ($opMode==2)  { ?>// phpbb only 
-	"<br><a href='/privmsg.php?mode=post&u=%3%'><img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align='absmiddle'> <a href='/privmsg.php?mode=post&u=%3%'><? echo "PM" ?></a>"+
     <? } ?>
 
 	'</td></tr>' +
@@ -235,12 +230,60 @@ with (staticTip)
  doFades = false;
 }
 
+var takeoffTip = new TipObj('takeoffTip');
+with (takeoffTip)
+{
+ // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
+  '<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0" bgcolor="#F4F8E2" class="tipClass main_text">' +
+  '<tr><td bgcolor="#DCDBCA" align=center> .:: <? echo _TAKEOFF ?>: <b>%4%</b> ::. </td></tr>'+
+  '<tr><td align="left">'+
+  
+  	//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
+		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%3%'><? echo  _See_flights_near_this_point ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=show_waypoint&waypointIDview=%3%'><? echo _SITE_INFO  ?></a>"+
+	'</td></tr>'+
+    '<tr><td align="left">'+
+
+	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%3%'><? echo _Navigate_with_Google_Earth ?></a>"+
+
+	'</td></tr>' +
+  '</table></td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
 
 
 </script>
-<div id="staticTipLayer" style="position: absolute; z-index: 10000; visibility: hidden;
+<div id="staticTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
+ left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<div id="takeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
  left: 0px; top: 0px; width: 10px">&nbsp;</div>
 <?
+
+function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
+  global $moduleRelPath;
+  global $Theme,$module_name;
+
+  if ($width==0) $widthStr="";
+  else  $widthStr="width='".$width."'";
+
+  if ($sortOrder==$fieldName) { 
+   echo "<td class='activeSortHeader' $widthStr>	
+		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></td>";
+  } else {  
+   echo "<td class='inactiveSortHeader' $widthStr>
+		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
+   } 
+}
 
 function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $Theme;
@@ -375,23 +418,25 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   $olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
 	   echo $dateStr."</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
-			"<div align=left>".
-			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-			"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>";
-			if ($opMode==2) // phpbb only 
-				echo "<a href='/privmsg.php?mode=post&u=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"; 
+			"<div align=left>";
+//			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+//			"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>";
+//			if ($opMode==2) // phpbb only 
+//				echo "<a href='/privmsg.php?mode=post&u=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"; 
 
 //			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
-			echo "&nbsp;<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 250, '".$row["userID"]."')\"  onmouseout=\"staticTip.hide()\">$name</a>".
+//			echo "&nbsp;";
+			echo "<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"staticTip.hide()\">$name</a>".
 		"</div>".
-		"<div align=right>".
+		"<div align=right>";
 		//    "</div></TD>". 	   
 	   // "<TD ".(($sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
 		//	"<div align=left>".
-			"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
-			"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-			"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
-
+		
+		//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
+		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
+			echo "<a href='#' onmouseover=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD ".$sortArrayStr["DURATION"].">$duration</TD>".
 	   "<TD ".$sortArrayStr["LINEAR_DISTANCE"].">$linearDistance</TD>".
