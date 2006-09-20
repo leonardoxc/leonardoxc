@@ -426,7 +426,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 
 //			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
 //			echo "&nbsp;";
-			echo "<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"staticTip.hide()\">$name</a>".
+			echo "<a href=\"javascript:staticTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','$name' )\" onclick=\"staticTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"staticTip.hide()\">$name</a>".
 		"</div>".
 		"<div align=right>";
 		//    "</div></TD>". 	   
@@ -436,7 +436,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 		//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
 		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
 	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
-			echo "<a href='#' onmouseover=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
+			echo "<a href=\"javascript:takeoffTip.newTip('inline', -40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD ".$sortArrayStr["DURATION"].">$duration</TD>".
 	   "<TD ".$sortArrayStr["LINEAR_DISTANCE"].">$linearDistance</TD>".

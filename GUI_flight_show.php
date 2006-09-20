@@ -82,29 +82,34 @@ function setSelectColor(theDiv) {
 	
 	visibility:hidden;
 
-    background-color: #FFFFFF;
+    background-color: #000000;
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
-	padding: 3px 3px 3px 3px;
+	padding: 1px 1px 1px 1px;
 	margin-bottom:0px;
 
 }
 -->
 </style>
-
-<div id="geOptionsID" class="dropDownBox">
 <form name="geOptionsForm" method="POST">
+<div id="geOptionsID" class="dropDownBox">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
-<table width=100% cellpadding="2" cellspacing="2">
+
+<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="100%" border="1">
+<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0" bgcolor="#F4F8E2" class="tipClass main_text">
+
 <tr>
-	<td colspan=2 class="main_text" align="right" valign="top" bgcolor="#819DD1">
+	<td class="main_text" align="right" valign="top" bgcolor="#DCDBCA">
 		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
 		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a>
 	</td>
 </tr>
+
+<tr><td align="left">
+<table width=100% cellpadding="2" cellspacing="0" bgcolor="#F4F8E2" >
 <tr>
-	<td class="main_text" align="right">
+	<td class="main_text" align="right" >
 	Line Color
 	</td>
 	<td class="main_text" align="left">
@@ -160,9 +165,12 @@ function setSelectColor(theDiv) {
 	</td>
 </tr>
 </TABLE>
-</form>
-</div>
 
+</td></tr>
+</table></td></tr></table>
+
+</div>
+</form>
   <?
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": <a href='?name=$module_name&op=list_flights&pilotID=".$flight->userID."'>".$flight->userName.
 					"</a> 
@@ -447,8 +455,16 @@ if ($xmlSitesLines) {
   }
   open_tr();
   echo "<td colspan=5><center>";
+  ?>
+  <script language="javascript">
+	 function add_takeoff(lat,lon,id) {	 
+		 document.getElementById('addTakeoffDiv').innerHTML = "<iframe width=700 height=450 src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat="+lat+"&lon="+lon+"&takeoffID="+id+"'></iframe>";
+	 }
+  </script>
+  
+  <?
 
-	  if (in_array($userID,$admin_users)) {
+	  if (in_array($userID,$admin_users) ) {
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
@@ -456,6 +472,9 @@ if ($xmlSitesLines) {
 	
 
 		echo "<a href='?name=".$module_name."&op=add_waypoint&lat=".$firstPoint->lat."&lon=".$firstPoint->lon."&takeoffID=".$flight->takeoffID."'>"._ADD_WAYPOINT."</a> <br> ";
+		
+		echo "<div id='addTakeoffDiv'>#THE DIV #</div><a href='javascript:add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")'>##"._ADD_WAYPOINT."</a> <br> ";
+
 		@include dirname(__FILE__)."/site/admin_takeoff_info.php";
 	  }
 	  
