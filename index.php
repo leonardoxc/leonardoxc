@@ -159,22 +159,22 @@ function toggleVisibleAjax(divID,divPos){
 <a name="selDate"></a>
 <table width=100%  cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select time period
-	  </div></td>
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div class="style1" align="center"><strong>Select time period
+	  </strong></div></td>
 </tr>
 <tr>
-	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<td class="tableBox" valign="top">
 	<strong>Recent</strong>
 	</td>
-	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<td class="tableBox" valign="top">
 	<strong>Year</strong>
 	</td>
-	<td class="main_text" bgcolor="#F0F3F7"  valign="top">
+	<td class="tableBox" valign="top">
 	<strong>Month</strong>
 	</td>
 </tr>
 <tr>
-	<td class="main_text sp" bgcolor="#F0F3F7"  valign="top">
+	<td class="tableBox sp" valign="top">
 	 
    <? 
 	 $month_num=date("m");
@@ -188,7 +188,7 @@ function toggleVisibleAjax(divID,divPos){
 	 
 ?>
 </td>
-<td class="main_text sp" bgcolor="#F0F3F7" valign="top">
+<td class="tableBox sp" valign="top">
 <?  
   
 //	echo 'addMenuItem(new menuItem("<b>'._ALL_YEARS.'</b>", "", "?name='.$module_name.'&year=0"));';	  
@@ -197,7 +197,7 @@ function toggleVisibleAjax(divID,divPos){
 		echo "<a href='?name=$module_name&year=$i&month=0'>$i</a><br>";		
 ?>
 </td>
-<td class="main_text sp" bgcolor="#F0F3F7"  valign="top">
+<td class="tableBox sp" valign="top">
 <?
 //	echo 'addMenuItem(new menuItem("<b>'._ALL_THE_YEAR.'</b>", "", "?name='.$module_name.'&month=0"));';	  
 	$i=1;
@@ -208,7 +208,6 @@ function toggleVisibleAjax(divID,divPos){
 	 }
  ?>
 	
-	
 	</td>
 </tr>
 </TABLE>
@@ -216,13 +215,13 @@ function toggleVisibleAjax(divID,divPos){
 
 <div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:550px">
 <a name="selCountry"></a>
-<table width=100%>
+<table width=100% cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1">Select Country
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong>Select Country</strong>
 	  </div></td>
 </tr>
 <tr>
-	<td class="main_text sp2" bgcolor="#F0F3F7" valign='top'>
+	<td class="tableBox sp2" valign='top'>
 <?
 		list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 		$countriesNum=count($countriesNames);
@@ -235,7 +234,7 @@ function toggleVisibleAjax(divID,divPos){
 				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a><br>";
 				$i++;
 				if ($i % $num_of_rows==0) {
-					echo "</td><td class='main_text sp2' bgcolor='#F0F3F7' valign='top'>";									
+					echo "</td><td class='tableBox sp2' valign='top'>";									
 				}
 			}
 		}

@@ -99,8 +99,9 @@
 	 $areaID=$clubsList[$clubID]['areaID'];
   	 $addManual=$clubsList[$clubID]['addManual'];
 
-	 $add_remove_mode=$_GET['a_r'];
-
+	 $add_remove_mode=$_GET['a_r']+0;
+	 $query_str.="&a_r=$add_remove_mode";
+	 
 	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
 				 			$clubsPilotsTable.clubID=$clubID ";
 	$extra_table_str.=",$clubsPilotsTable ";

@@ -3,11 +3,10 @@
 require_once dirname(__FILE__)."/nusoap.php";
 
 require_once dirname(__FILE__)."/../config_op_mode.php";
-require_once dirname(__FILE__)."/../config_admin_email.php";
+require_once dirname(__FILE__)."/../config_admin.php";
 
 $server = new soap_server;
 $server->register('uploadFile');
-$server->register('registerServer');
 
 function uploadFile($sitePass,$remoteFile,$localFile) {
 	global $CONF_SitePassword;	
@@ -30,23 +29,8 @@ function uploadFile($sitePass,$remoteFile,$localFile) {
 	return 1;
 }
 
-function registerServer($installType,$url,$adminEmail,$sitePass) {
-	global $CONF_isMasterServer;	
-	if (!$CONF_isMasterServer)	return new soap_fault('Client','','Not a Master server');
-
-	$fileStr="$installType#$url#$adminEmail#$sitePass\n";
-	$filename=dirname(__FILE__)."/clientServers.txt";
-    if (!$handle = fopen($filename, 'a'))  
-		return new soap_fault('Client','',"Cannot open file ($filename)");
-
-	if (fwrite($handle, $fileStr)===FALSE) 
-		return new soap_fault('Client','',"Cannot write to file ($filename)");
-		
-    fclose($handle); 
-	return 1;
-}
+@include_once dirname(__FILE__)."/op_addons.php";
 
 $server->service($HTTP_RAW_POST_DATA);
-
 
 ?>
