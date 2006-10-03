@@ -128,7 +128,7 @@ function formatLocation($name,$vinicity,$radious) {
 		$res_name=$name."&nbsp;[~".sprintf("%.1f",$dis)."]"; 
 //		$res_name=$name."&nbsp;[~".sprintf("%.1f",$vinicity/1000)."&nbsp;km]"; 
  else $res_name=$name;
- return '<font color=#884400>'.$res_name.'</font>';
+ return $res_name;
 }
 
 
@@ -310,4 +310,84 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	return $page_string;
 }
 
+function makePilotPopup() {
+	global $moduleRelPath,$module_name,$opMode;
+	ob_start();
+
+?>
+<script language="javascript">
+var pilotTip = new TipObj('pilotTip');
+with (pilotTip)
+{
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
+  '<tr><td class="infoBoxHeader">%4%</td></tr>'+
+  '<tr><td class="infoBox">'+
+  "<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><? echo _Pilot_Profile ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%3%&takeoffID=0&country=0&cat=0&clubID=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><? echo _flights_stats ?></a>"+
+
+	<?  if ($opMode==2)  { ?>// phpbb only 
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align='absmiddle'> <a href='/privmsg.php?mode=post&u=%3%'><? echo "PM" ?></a>"+
+    <? } ?>
+
+	'</td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
+</script>
+<div id="pilotTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<?
+	$c=ob_get_contents();
+	ob_end_clean();
+	return  $c;
+}
+
+function makeTakeoffPopup($ext=0,$userID=0) {
+	global $moduleRelPath,$module_name,$opMode;
+	ob_start();
+
+?>
+<script language="javascript">
+var takeoffTip = new TipObj('takeoffTip');
+with (takeoffTip)
+{
+ template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
+  '<tr><td class="infoBoxHeader">%4%</td></tr>'+
+  '<tr><td class="infoBox">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%3%&year=0&month=0&pilotID=0&country=0&cat=0&clubID=0'><? echo  _See_flights_near_this_point ?></a>"+
+	'</td></tr>'+
+    '<tr><td  class="infoBox">'+
+	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=show_waypoint&waypointIDview=%3%'><? echo _SITE_INFO  ?></a>"+
+	'</td></tr>'+
+    '<tr><td  class="infoBox">'+
+	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%3%'><? echo _Navigate_with_Google_Earth ?></a>"+
+	<? if ( $ext && is_leo_admin($userID) ) { ?>
+    '</td></tr><tr><td class="infoBox adminBox">'+
+	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:nop()' onclick='add_takeoff(%5%,%6%,%3%)'><?=_ADD_WAYPOINT?></a>"+
+	<? } ?>
+	'</td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
+</script>
+<div id="takeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<?
+	$c=ob_get_contents();
+	ob_end_clean();
+	return  $c;
+}
 ?>

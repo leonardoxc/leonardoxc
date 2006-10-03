@@ -25,15 +25,16 @@ function showFlight($flightID) {
 
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
-  if ( $flight->userID!=$userID && ! in_array($userID,$admin_users) && $flight->private) {
+  if ( $flight->userID!=$userID && ! is_leo_admin($userID) && $flight->private) {
 		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
   }
 
   $flight->incViews();
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
+  $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
   $opString="";
-  if ( $flight->userID==$userID || in_array($userID,$admin_users) )
+  if ( $flight->userID==$userID || is_leo_admin($userID) )
 		$opString="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
@@ -69,6 +70,26 @@ function setSelectColor(theDiv) {
 
 </script>
 
+<script language="javascript">
+	 function add_takeoff(lat,lon,id) {	 
+		 takeoffTip.hide();
+		 
+		 document.getElementById('addTakeoffDiv').innerHTML = "<iframe width=410 height=320 frameborder=0 style='border-width:0px' src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat="+lat+"&lon="+lon+"&takeoffID="+id+"'></iframe>";
+		 toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
+	 }
+</script>
+  
+<div id="takeoffAddID" class="dropDownBox">
+<table width="100%" >
+<tr><td class="infoBoxHeader">
+<div align="left" style="display:inline; float:left; clear:left;">Register Takeoff</div>
+<div align="right" style="display:inline; float:right; clear:right;">
+<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;">
+<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+</td></tr></table>
+<div id='addTakeoffDiv'></div>
+</div>
+
   <style type="text/css">
 <!--
 .dropDownBox {
@@ -82,10 +103,10 @@ function setSelectColor(theDiv) {
 	
 	visibility:hidden;
 
-    background-color: #000000;
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	background-color:#EEEEEE;
 	padding: 1px 1px 1px 1px;
 	margin-bottom:0px;
 
@@ -96,23 +117,20 @@ function setSelectColor(theDiv) {
 <div id="geOptionsID" class="dropDownBox">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
 
-<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="100%" border="1">
-<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0" bgcolor="#F4F8E2" class="tipClass main_text">
-
+<table bgcolor="#55555" cellpadding="0" cellspacing="0" width="100%" border="0">
 <tr>
-	<td class="main_text" align="right" valign="top" bgcolor="#DCDBCA">
+<td  colspan=2 class="tableBox" style="background-color:#CC6666">
+<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
+	<div align="right" style="display:inline; float:right; clear:right;">
 		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
-		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a>
-	</td>
+		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+</td>
 </tr>
-
-<tr><td align="left">
-<table width=100% cellpadding="2" cellspacing="0" bgcolor="#F4F8E2" >
 <tr>
-	<td class="main_text" align="right" >
+	<td class="tableBox" align="right">
 	Line Color
 	</td>
-	<td class="main_text" align="left">
+	<td class="tableBox">
 	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
 	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
@@ -129,10 +147,10 @@ function setSelectColor(theDiv) {
 	
 </tr>
 <tr>
-	<td class="main_text" align="right">
+	<td class="tableBox" align="right">
 		Line width
 	</td>
-	<td class="main_text" align="left">
+	<td class="tableBox" align="left">
 		<select  name="lineWidth">	
 		<option value='1' >1</option>
 		<option value='2' selected >2</option>
@@ -143,10 +161,10 @@ function setSelectColor(theDiv) {
 	</td>
 </tr>
 <tr>
-	<td class="main_text" align="right">
+	<td class="tableBox"align="right">
 		Exaggeration
 	</td>
-	<td class="main_text" align="left">
+	<td class="tableBox" align="left">
 	<select name="ex">	
 	<option value='1' >1</option>
 	<option value='2' >2</option>
@@ -155,10 +173,16 @@ function setSelectColor(theDiv) {
 	</td>
 </tr>
 <tr>
-	<td colspan=2 class="main_text" align="center">
+	<td colspan=2 class="tableBox" align="center">
 	<?
-	echo "<br><a href='javascript:submitForm(0)'>Display on Google Earth</a><br>"; 
-	echo "<br><a href='javascript:submitForm(1)'>Use Man's Module</a><br>"; 
+	echo "<a href='javascript:submitForm(0)'>Display on Google Earth</a><br>"; 
+	?>
+	</td>
+</tr>
+<tr>
+	<td colspan=2 class="tableBox" align="center">
+<?
+	echo "<a href='javascript:submitForm(1)'>Use Man's Module</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
 	?>
 
@@ -166,18 +190,19 @@ function setSelectColor(theDiv) {
 </tr>
 </TABLE>
 
-</td></tr>
-</table></td></tr></table>
 
 </div>
 </form>
-  <?
-  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": <a href='?name=$module_name&op=list_flights&pilotID=".$flight->userID."'>".$flight->userName.
-					"</a> 
-					<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$flight->userID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
-			        "<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$flight->userID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>
-					&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<? echo makePilotPopup(); ?>
+<? echo maketakeoffPopup(1,$userID); ?>
+<?
+  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": ".
+	  "<a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".$flight->userName."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
+	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
+?>
 
+<?
   if (!$flight->active &&  (mktime() - datetime2UnixTimestamp($flight->dateAdded) > 5 ) )  {  //  5 secs
 		$flight->activateFlight();
   } else if (!$flight->active) {
@@ -212,10 +237,11 @@ function setSelectColor(theDiv) {
   open_tr();
 	 //  echo "<TD width=2>&nbsp</td>";
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
-   	   echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;
-		<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
-	   echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
-  	   echo "</div></TD>";
+   	  // echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;	   
+		//<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
+		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','$location',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a></div></TD>";
+	 //  echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
+  	 //  echo "</div></TD>";
 	   echo "<TD width=6>&nbsp</td>";
 	   echo "<TD width=180 bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._TAKEOFF_TIME."</div></TD>";
    	   echo "<TD width=120><div align=".$Theme->table_cells_align.">".sec2Time($flight->START_TIME)."</div></TD>";
@@ -302,7 +328,7 @@ function setSelectColor(theDiv) {
 	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
    	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
 		echo "<div id='geOptionsPos' style='float:right'>";
-		echo "<a href='#' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,150);return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
+		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,150);return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 
 		echo "</TD>";
 	//   echo "<TD>&nbsp</td>";
@@ -375,7 +401,7 @@ function setSelectColor(theDiv) {
   close_tr();
   }
 
-  $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+  
 
 	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
 	$xmlSitesLines=getHTTPpage($getXMLurl);
@@ -455,15 +481,6 @@ if ($xmlSitesLines) {
   }
   open_tr();
   echo "<td colspan=5><center>";
-  ?>
-  <script language="javascript">
-	 function add_takeoff(lat,lon,id) {	 
-		 document.getElementById('addTakeoffDiv').innerHTML = "<iframe width=700 height=450 src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat="+lat+"&lon="+lon+"&takeoffID="+id+"'></iframe>";
-	 }
-  </script>
-  
-  <?
-
 	  if (in_array($userID,$admin_users) ) {
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
@@ -473,7 +490,7 @@ if ($xmlSitesLines) {
 
 		echo "<a href='?name=".$module_name."&op=add_waypoint&lat=".$firstPoint->lat."&lon=".$firstPoint->lon."&takeoffID=".$flight->takeoffID."'>"._ADD_WAYPOINT."</a> <br> ";
 		
-		echo "<div id='addTakeoffDiv'>#THE DIV #</div><a href='javascript:add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")'>##"._ADD_WAYPOINT."</a> <br> ";
+		echo "<a href='javascript:add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")'>"._ADD_WAYPOINT."</a> <br> ";
 
 		@include dirname(__FILE__)."/site/admin_takeoff_info.php";
 	  }

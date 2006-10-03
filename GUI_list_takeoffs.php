@@ -92,45 +92,7 @@
   listTakeoffs($res,$legend,$query_str,$sortOrder);
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
-<script language="javascript">
-
-var takeoffTip = new TipObj('takeoffTip');
-with (takeoffTip)
-{
- // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
- template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
-  '<tr><td><table cellpadding="3" cellspacing="1" width="100%" border="0" bgcolor="#F4F8E2" class="tipClass main_text">' +
-  '<tr><td bgcolor="#DCDBCA" align=center> .:: <? echo _TAKEOFF ?>: <b>%4%</b> ::. </td></tr>'+
-  '<tr><td align="left">'+
-  
-  	//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
-		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
-
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%3%'><? echo  _SHOW_FLIGHTS ?></a>"+
-	'</td></tr>'+
-    '<tr><td align="left">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=show_waypoint&waypointIDview=%3%'><? echo _SITE_INFO  ?></a>"+
-	'</td></tr>'+
-    '<tr><td align="left">'+
-
-	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%3%'><? echo _Navigate_with_Google_Earth ?></a>"+
-
-	'</td></tr>' +
-  '</table></td></tr></table>';
-
- tipStick = 0;
- showDelay = 0;
- hideDelay = 0;
- doFades = false;
-}
-
-
-</script>
-
-<div id="takeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
- left: 0px; top: 0px; width: 10px">&nbsp;</div>
-
+<? echo makeTakeoffPopup(); ?>
 <?
 function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
@@ -214,7 +176,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 //			 "<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
 //			 "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>&nbsp;".
 //			 "<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>".$takeoffName."</a>".			
- 			echo "<a href='#' onmouseover=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+ 			echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
 
 		echo "</div></TD>";
   		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]."</div></TD>	";

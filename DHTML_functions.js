@@ -301,3 +301,7 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 		MWJ_changeVisibility( elId ,true );	
 	}
 }
+
+function nop()
+{
+}

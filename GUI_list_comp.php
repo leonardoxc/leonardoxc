@@ -199,6 +199,8 @@
 
 document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 </script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<? echo makePilotPopup();  ?>
 <div class="tabber" id="compTabber">
 <?
   listCategory(_OLC,			_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
@@ -260,9 +262,12 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 open_tr();
 		 echo "<TD $bg><div align=left>".($i-1+$startNum)."</div></TD>"; 	
 	     echo "<TD nowrap $bg ><div align=left>".
-				"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
-			    "<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>&nbsp;".
-		 	   	"<a href='?name=$module_name&op=list_flights&pilotID=".$pilotID."'>".$pilotNames[$pilotID]."</a>".
+				//"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
+			    //"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>&nbsp;".
+				
+		"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".$pilotNames[$pilotID]."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
+				
+//		 	   	"<a href='?name=$module_name&op=list_flights&pilotID=".$pilotID."'>".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";
 		 if ($formatFunction) $outVal=$formatFunction($pilotArray["SUM"]);
 		 else $outVal=$pilotArray["SUM"];

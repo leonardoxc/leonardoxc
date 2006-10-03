@@ -51,7 +51,7 @@
 
 		if ( $waypt->putToDB(0) ) {
 	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";								
-		 	echo "<a href='?name=$module_name&op=list_flights'>RETURN to flights</a>"; 
+		 	//echo "<a href='?name=$module_name&op=list_flights'>RETURN to flights</a>"; 
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 
@@ -80,8 +80,8 @@
   </style>
   <?
 
-  open_inner_table(_ADD_WAYPOINT,650,"icon_pin.png"); 
-  echo "<tr><td>";	
+ // open_inner_table(_ADD_WAYPOINT,450,"icon_pin.png"); 
+ // echo "<tr><td>";	
 
 
 	// get info from leonardo server around the world !!!
@@ -130,40 +130,51 @@
 
       <form name="form1" method="post" action="">
 
-        <table width="600" border="0" align="center" cellpadding="2" class=main_text>
+        <table width=350 border="0" align="center" cellpadding="2" class="shadowBox main_text">
           <tr>
-            <td width=200 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="wname" type="text" id="wname" size="40">
+            <td width=100 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name</font></div></td>
+            <td width=150 bgcolor="#E3E7F2"><font color="#003366">
+              <input name="wname" type="text" id="wname" size="25">
               <input name="type" type="hidden" id="type" value="1000">
             </font></td>
+            <td colspan="2" bgcolor="#CFE2CF"><input type="submit" name="Submit" value="<? echo _ADD_WAYPOINT ?>" />
+              <input type="hidden" name="addWaypoint" value="1" /></td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">International
             Name</font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intName" type="text" id="intName" size="40">
+              <input name="intName" type="text" id="intName" size="25">
             </font></td>
+            <td colspan="2" bgcolor="#E3E7F2">&nbsp;</td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region</font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="location" type="text" id="location" size="40">
+              <input name="location" type="text" id="location" size="25">
             </font></td>
+            <td bgcolor="#CFE2CF"><font color="#003366">lat</font></td>
+            <td bgcolor="#E3E7F2">
+              <input name="lat" type="text" id="lat" value='<? echo $waypointLat?>' size="10" />
+            </td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">International
             Region</font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intLocation" type="text" id="intLocation" size="40">
+              <input name="intLocation" type="text" id="intLocation" size="25">
+            </font></td>
+            <td bgcolor="#CFE2CF"><font color="#003366">lon</font></td>
+            <td bgcolor="#E3E7F2"><font color="#003366">
+              <input name="lon" type="text" id="lon" value='<? echo $waypointLon?>' size="8" />
             </font></td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Country
             Code</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-		    <select name="countryCode">
-				<? 				
+            <td colspan="3" bgcolor="#E3E7F2"><font color="#003366">
+              <select name="countryCode">
+                <? 				
 					foreach ($countries as $key => $value) {
 						if ($nearestCountryCode==$key) $sel=" selected ";
 						else $sel="";		
@@ -171,46 +182,26 @@
 					}
 								
 				?>
-		    </select>
-            </font></td>
-          </tr>
-          <tr>
-            <td width="199" bgcolor="#CFE2CF">
-            <div align="right"><font color="#003366">lat</font></div></td>
-            <td width="277" bgcolor="#E3E7F2"><font color="#003366">
-              <input name="lat" type="text" id="lat" value='<? echo $waypointLat?>'>
-            </font></td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">lon</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="lon" type="text" id="lon" value='<? echo $waypointLon?>'>
+              </select>
             </font></td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Relevant URL</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="link" type="text" id="link" size="60" >
+            <td colspan="3" bgcolor="#E3E7F2"><font color="#003366">
+              <input name="link" type="text" id="link" size="45" >
             </font></td>
           </tr>
           <tr>
             <td valign="top" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Description</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <textarea name="description" cols="60" rows="5" id="description"></textarea>
+            <td colspan="3" bgcolor="#E3E7F2"><font color="#003366">
+              <textarea name="description" cols="35" rows="4" id="description"></textarea>
             </font></td>
-          </tr>
-
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"></div></td>
-            <td bgcolor="#E3E7F2">
-				<input type="submit" name="Submit" value="<? echo _ADD_WAYPOINT ?>">
-				<input type="hidden" name="addWaypoint" value="1"></td>
           </tr>
         </table>
 </form>
     
 
 <?
-  echo "</td></tr>";
-  close_inner_table();
+//  echo "</td></tr>";
+//  close_inner_table();
 ?>

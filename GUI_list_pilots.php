@@ -144,43 +144,8 @@
     }
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
-<script language="javascript">
-var staticTip = new TipObj('staticTip');
-with (staticTip)
-{
- // I'm using tables here for legacy NS4 support, but feel free to use styled DIVs.
- template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="1">' +
-  '<tr><td><table bgcolor="#F4F8E2" cellpadding="3" cellspacing="1" width="100%" border="0" class="tipClass main_text">' +
-  '<tr><td bgcolor="#DCDBCA" align=center class="main_text"><b>%4%</b></td></tr>'+
-  '<tr><td align="left">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview=%3%'><? echo _Pilot_Profile ?></a>"+
-	'</td></tr>'+
-    '<tr><td align="left">'+
+<? echo makePilotPopup() ?>
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%3%&takeoffID=0&country=0&cat=0&clubID=0'><? echo _PILOT_FLIGHTS ?></a>"+
-	'</td></tr>'+
-    '<tr><td align="left">'+
-
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=%3%'><? echo _flights_stats ?></a>"+
-
-	<?  if ($opMode==2)  { ?>// phpbb only 
-	'</td></tr>'+
-    '<tr><td align="left">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align='absmiddle'> <a href='/privmsg.php?mode=post&u=%3%'><? echo "PM" ?></a>"+
-    <? } ?>
-
-	'</td></tr>' +
-  '</table></td></tr></table>';
-
- tipStick = 0;
- showDelay = 0;
- hideDelay = 0;
- doFades = false;
-}
-
-</script>
-<div id="staticTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden;
- left: 0px; top: 0px; width: 10px">&nbsp;</div>
 <?
     listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
 
@@ -286,7 +251,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	//		"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
 		echo	getNationalityDescription($row["countryCode"],1,0);
 		//	"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
-			echo "<a href='#' onmouseover=\"staticTip.newTip('inline', 0, 0, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"staticTip.hide()\">$name</a>".
+			echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', -5, -5, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 			"</div></TD>". 	   			   			   
    	           "<TD ".(($sortOrder=="totalFlights")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["totalFlights"]."</div></TD> 	 
  		       <TD ".(($sortOrder=="bestDistance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["bestDistance"])."</div></TD> ";
