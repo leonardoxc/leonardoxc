@@ -124,6 +124,10 @@ background-color:#C5D0ED;
 	vertical-align:top;
 }
 
+table.listTable tr:hover {
+	background-color:#F6EF80;
+}
+
 .headerRow { 
 	text-align:right;
 	color:#003366;

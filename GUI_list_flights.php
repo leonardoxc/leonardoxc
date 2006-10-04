@@ -139,14 +139,18 @@
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
   if ($pilotID>=0)
- 	 $query="SELECT * , $flightsTable.takeoffID as flight_takeoffID ,$flightsTable.ID as ID FROM $flightsTable,".$prefix."_users".$extra_table_str."  WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
-						$where_clause." ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage;
+ 	 $query="SELECT * , ".$pilotsTable.".countryCode as pilotCountryCode, $flightsTable.takeoffID as flight_takeoffID ,$flightsTable.ID as ID 
+			FROM $pilotsTable, $flightsTable,".$prefix."_users".$extra_table_str." 
+			WHERE ".$pilotsTable.".pilotID=".$prefix."_users.user_id  AND ".$flightsTable.".userID=".$prefix."_users.user_id ".$where_clause." 
+			ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage;
      
   else  {
-	 $query="SELECT * , $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID FROM $flightsTable ".$extra_table_str."  WHERE (1=1) ".
-						$where_clause." ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
+	 $query="SELECT * , ".$pilotsTable.".countryCode as pilotCountryCode,  $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID 
+			FROM $pilotsTable, $flightsTable ".$extra_table_str."  
+			WHERE ".$pilotsTable.".pilotID=".$prefix."_users.user_id  ".$where_clause." 
+			ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
   }
-  // echo $query;
+ //  echo $query;
   $res= $db->sql_query($query);
 
   if($res <= 0){
@@ -297,6 +301,8 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 $flightID=$row['ID'];
 
      $name=getPilotRealName($row["userID"]);
+     $name=str_replace("&#039;","'",$name);
+
 	 $takeoffName=getWaypointName($row["flight_takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
@@ -353,7 +359,9 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 
 //			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
 //			echo "&nbsp;";
-			echo "<a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
+//echo "#".$row["countryCode"]."#";
+			echo  getNationalityDescription($row["pilotCountryCode"],1,0);
+			echo " <a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>".
 		"<div align=right>";
 		//    "</div></TD>". 	   

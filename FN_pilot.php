@@ -101,7 +101,6 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 			$realName=$row["username"];
 		}
 	}
-
 	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
 	else return $realName; 
 }

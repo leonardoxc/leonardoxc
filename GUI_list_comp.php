@@ -127,7 +127,9 @@
 
      $name=getPilotRealName($row["userID"],1);
 	 // $pilotNames[$row["userID"]]=str_replace(" ","&nbsp;",$name);	 
+	 $name=str_replace("&#039;","'",$name); 
 	 $pilotNames[$row["userID"]]=$name;
+
 
 	 if  ( $row["BEST_FLIGHT_TYPE"] == "FAI_TRIANGLE" ) {
 		if ( ! is_array ($triangleKm[$row["userID"]] ) )  $triangleKm[$row["userID"]]=array();
@@ -265,7 +267,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 				//"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
 			    //"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>&nbsp;".
 				
-		"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".$pilotNames[$pilotID]."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
+		"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				
 //		 	   	"<a href='?name=$module_name&op=list_flights&pilotID=".$pilotID."'>".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";

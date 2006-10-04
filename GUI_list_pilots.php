@@ -235,6 +235,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    while ($row = mysql_fetch_assoc($res)) { 
 
     $name=getPilotRealName($row["userID"]);
+    $name=str_replace("&#039;","'",$name);
 
 	$mean_duration=$row["totalDuration"]/$row["totalFlights"];
 	$mean_distance=$row["totalDistance"]/$row["totalFlights"];
@@ -251,7 +252,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	//		"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
 		echo	getNationalityDescription($row["countryCode"],1,0);
 		//	"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
-			echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', -5, -5, 200, '".$row["userID"]."','$name' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
+			echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', -5, -5, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 			"</div></TD>". 	   			   			   
    	           "<TD ".(($sortOrder=="totalFlights")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["totalFlights"]."</div></TD> 	 
  		       <TD ".(($sortOrder=="bestDistance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["bestDistance"])."</div></TD> ";
