@@ -94,96 +94,79 @@
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
 <? echo makeTakeoffPopup(); ?>
 <?
-function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str) {
+function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
   global $Theme,$module_name;
 
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
 
+  if ($fieldName=="intName") $alignClass="alLeft";
+  else $alignClass="";
+
   if ($sortOrder==$fieldName) { 
-   echo "<td $widthStr bgcolor='$headerSelectedBgColor'>
-		<div class='whiteLetter' align=left>
-		<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div></td>";
+   echo "<td $widthStr  class='SortHeader activeSortHeader $alignClass'>
+			<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
+		</td>";
   } else {  
-   echo "<td $widthStr bgcolor='$headerUnselectedBgColor'>
-		<div align=left>
-		<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</div></td>";
+	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
    } 
 }
 
 function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
-   global $Theme;
-   global $module_name;
-   global $takeoffRadious;
-   global $userID;
-   global $moduleRelPath;
-   global $admin_users;
-   global $PREFS;
+   global $Theme, $module_name, $takeoffRadious, $userID, $moduleRelPath;
+   global $admin_users, $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
-   global $currentlang,$nativeLanguage,$opMode;
-   global $countries;
+   global $currentlang,$nativeLanguage,$opMode, $countries;
 	 
    $legendRight="";
-
    $headerSelectedBgColor="#F2BC66";
-     echo  "<div class='tableTitle shadowBox'>
+
+   echo  "<div class='tableTitle shadowBox'>
    <div class='titleDiv'>$legend</div>
    <div class='pagesDiv'>$legendRight</div>
    </div>" ;
-   //open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
+
   ?>
-  <table class='listTable shadowBox' width="100%">
-  <td width="25" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
- <?
-
-   printHeaderTakeoffs(120,$headerSelectedBgColor,$Theme->color0,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
-   printHeaderTakeoffs(0,$headerSelectedBgColor,$Theme->color2,$sortOrder,"intName",_TAKEOFF,$query_str) ;
-   printHeaderTakeoffs(80,$headerSelectedBgColor,$Theme->color3,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
-   printHeaderTakeoffs(100,$headerSelectedBgColor,$Theme->color4,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$query_str) ;
-
-?>
-</tr>
+  <table class='listTable' width="100%" cellpadding="2" cellspacing="0">
+  <tr>
+  	<td width="25" class='SortHeader'><? echo _NUM ?></td>
+ 	<?
+		printHeaderTakeoffs(120,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
+		printHeaderTakeoffs(0,$sortOrder,"intName",_TAKEOFF,$query_str) ;
+		printHeaderTakeoffs(80,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
+		printHeaderTakeoffs(100,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$query_str) ;
+	?>
+	</tr>
 <?
+   	$currCountry="";
+   	$i=1;
+	while ($row = mysql_fetch_assoc($res)) {  
+		$takeoffName=selectWaypointName($row["name"],$row["intName"],$row["countryCode"]);	
+		$sortRowClass="l_row1";
+		if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
+			$currCountry=$countries[$row["countryCode"]] ;
+			$country_str= "<a href='?name=$module_name&op=list_flights&country=".$row["countryCode"]."&takeoffID=0'>".$currCountry."</a>";
 
-   $currCountry="";
-   $i=1;
-   while ($row = mysql_fetch_assoc($res)) { 
-  
-	 $takeoffName=selectWaypointName($row["name"],$row["intName"],$row["countryCode"]);	
-	 //	 $sortRowBgColor=($i%2)?"#CCCACA":"#E7E9ED"; 
-     $sortRowBgColor="#E7E9ED"; 
-     $bgcolor="";
-	if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
-		$currCountry=$countries[$row["countryCode"]] ;
-		$country_str= "<div align=left>".
-			"<a href='?name=$module_name&op=list_flights&country=".$row["countryCode"]."&takeoffID=0'>".$currCountry."</a>". 	   
-		    "</div>";
-		if ($sortOrder=='CountryCode') $bgcolor="bgcolor=#DDDDDD"; 
-		else $bgcolor=($i%2)?"bgcolor=#DDDDDD":"";
-	} else {
-		$country_str="";
-	}
+			if ($sortOrder=='CountryCode') $sortRowClass="l_row2";
+			else $sortRowClass=($i%2)?"l_row1":"l_row2"; 
+		} else {
+			$country_str="";
+		}
 
-	 $i++;
-	 echo "<TR $bgcolor align=right>";	
-	   	echo "<TD $first_col_back_color ><div align=left>".($i-1+$startNum)."</div></TD>      ";
-		echo "<TD valign=top>$country_str</TD>";
+		$i++;
+		echo "<TR class='$sortRowClass'>";	
+	   	echo "<TD>".($i-1+$startNum)."</TD>";
+		echo "<TD>$country_str</TD>";
 
-		echo "<TD ".(($sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
-			 "<div align=left>";
-			 
-//			 "<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-//			 "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>&nbsp;".
-//			 "<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>".$takeoffName."</a>".			
- 			echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
-
+		echo "<TD class='alLeft'><div align=left>";
+		echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
 		echo "</div></TD>";
-  		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]."</div></TD>	";
-	   	echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["max_distance"])."</div></TD>	";
-  	 close_tr();
+
+  		echo "<TD>".$row["FlightsNum"]."</TD>";
+	   	echo "<TD>".formatDistanceOpen($row["max_distance"])."</TD>";
+		echo "</TR>";
    }     
-//   close_inner_table();       
    echo "</table>";
    mysql_freeResult($res);
 }
