@@ -61,12 +61,19 @@ line-height: 1.3em;
 font-weight:bold;
 background-color:#C5D0ED;
 }
+
 .tableTitle {
-	background-color:#D5D4C1;
+	background-color:#FCF9EE;
 	height:22px;
 	width:760px;
 	margin-bottom:3px;
 	padding:0;
+
+	
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 2px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #DEC870; border-left-color: #E2E2E2;
+
 }
 
 .tableHeader {
@@ -100,6 +107,12 @@ background-color:#C5D0ED;
 	padding:3px;
 }
 
+
+.listTableTitle {
+	background-color:#E4EDE7;
+	padding:3px;
+}
+
 .listTable {
 	text-align:left;
 	width:760px;
@@ -110,23 +123,47 @@ background-color:#C5D0ED;
 	border-style:solid;
 	border-color:#999999;
 }
-
-.listTableTitle {
-	background-color:#E4EDE7;
-	padding:3px;
-}
 	
 .listTable a {
-	color:#003366;
+	color:#333366;
 }
 
 .listTable TD {
 	vertical-align:top;
+	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
+	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+	
 }
+
+.SortHeader {
+	background-color:#458DDC;
+	vertical-align:top;
+	border-top-color:#6AA2DF; border-top-width:3px; border-top-style:solid;
+	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+	border-bottom-width:0;
+	border-right-width:0px;
+
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:normal;
+	text-align:right;
+	text-decoration:none;
+}
+.activeSortHeader {
+	background-color:#F8C90C;
+	border-top-color:#FDECB3; border-top-width:3px; border-top-style:solid;
+}
+
+.SortHeader a, .SortHeader a:visited { color:#FFFFFF; }
+.activeSortHeader a, .activeSortHeader a:visited { color:#444444; }
+
+
 
 table.listTable tr:hover {
 	background-color:#F6EF80;
 }
+
+
 
 .headerRow { 
 	text-align:right;
@@ -137,32 +174,20 @@ table.listTable tr:hover {
 	text-align:right;
 }
 
-.l_row1 { 
-	text-align:right;
-	background-color:#DDDDDD;
-}
-
-.l_row1Sorted { 
-	text-align:right;
-	background-color:#CCCACA;
-}
-
-.l_row2 { 
-	text-align:right;
-	background-color:#EDEEF1;
-}
-
-
-/* */
-.activeSortHeader {
-	background-color:#F8C90C;
-	color:#FFFFFF;
+.alLeft{ 
 	text-align:left;
 }
-.inactiveSortHeader {
-	background-color:#C5D0E1;
-	text-align:left;
-}
+
+.compFirstPlace  { text-align:right;background-color:#F5D523; }
+.compSecondPlace { text-align:right;background-color:#F5F073 ;}
+.compThirdPlace { text-align:right;background-color:#F3F0A5 ;}
+		 
+.l_row1 { 	text-align:right; background-color:#F9F9F9; }
+.l_row2 { 	text-align:right; background-color:#EDEEF1; }
+
+.l_row1Sorted { text-align:right; background-color:#d6d6d6; }
+
+
 
 .shadowBox {
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;

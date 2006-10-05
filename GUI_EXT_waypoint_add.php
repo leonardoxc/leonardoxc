@@ -166,7 +166,7 @@
             </font></td>
             <td bgcolor="#CFE2CF"><font color="#003366">lon</font></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="lon" type="text" id="lon" value='<? echo $waypointLon?>' size="8" />
+              <input name="lon" type="text" id="lon" value='<? echo $waypointLon?>' size="10" />
             </font></td>
           </tr>
           <tr>

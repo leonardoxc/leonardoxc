@@ -149,30 +149,32 @@
 <?
     listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
 
-function printHeaderPilotsTotals($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
-  global $moduleRelPath;
-  global $Theme,$module_name;
-  if ($is_comp) {
-	  if ($sortOrder==$fieldName) { 
-  	   echo "<td width='$width'  class='activeSortHeader'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></td>";
-
-//	   echo "<td width='$width'  bgcolor='$headerSelectedBgColor'>
-//			<div class='whiteLetter' align=left>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></div></td>";
-	  } else {  
-	 
-	   echo "<td width='$width' class='inactiveSortHeader'>$fieldDesc</td>";
-	//   echo "<td width='$width' bgcolor='$headerUnselectedBgColor'>
-	//		<div align=left>$fieldDesc</div></td>";
-	   } 
-  } else {
-	  if ($sortOrder==$fieldName) { 
-	   echo "<td width='$width' class='activeSortHeader'>
-			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0></a></td>";
-	  } else {  
-	   echo "<td width='$width' class='inactiveSortHeader'>
-			<a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
-	   } 
-  }
+function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
+	global $moduleRelPath;
+	global $Theme,$module_name;
+	
+	if ($width==0) $widthStr="";
+    else  $widthStr="width='".$width."'";
+  
+	$cList="SortHeader";   
+	$img="";
+	if ($sortOrder==$fieldName) {
+		$cList.=" activeSortHeader";
+		$img="<img src='$moduleRelPath/img/icon_arrow_down.png' border=0>";
+	}
+	if ($fieldName=="pilotName") { 
+		$cList.=" alLeft";
+		$align="left";
+	} else  {
+		$cList.=" alRight";
+		$align="right";
+	}
+	
+	if ($is_comp) {
+		echo "<td $widthStr align=$align class='$cList'><div align=$align>$fieldDesc$img</div></td>";
+	} else {
+		echo "<td $widthStr align=$align class='$cList'><a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc$img</a></td>";
+	}
 }
 
 function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_comp=0) {
@@ -185,52 +187,36 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 
    global $currentlang,$nativeLanguage;
 
-   $legendRight="";   
-   if ($pagesNum>1) {
-	 if  ($page_num>1 ) 
-		 $legendRight.="<a href='?name=$module_name&op=$op&sortOrder=$sortOrder$query_str&page_num=".($page_num-1)."'><<</a>&nbsp;";
-	 else $legendRight.="<<&nbsp;";
-   
-   for ($k=1;$k<=$pagesNum;$k++) {
-		 if  ($k!=$page_num) 
-			 $legendRight.="<a href='?name=$module_name&op=$op&sortOrder=$sortOrder$query_str&page_num=$k'>$k</a>&nbsp;";
-	 	 else  $legendRight.="$k&nbsp;";
+	$legendRight=generate_flights_pagination("?name=$module_name&op=$op&sortOrder=$sortOrder$query_str", 
+											 $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
-   } 
-	 if  ($page_num<$pagesNum) 
-		 $legendRight.="<a href='?name=$module_name&op=$op&sortOrder=$sortOrder$query_str&page_num=".($page_num+1)."'>>></a>&nbsp;";
-	 else $legendRight.=">>&nbsp;";
+	$endNum=$startNum+$PREFS->itemsPerPage;
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
 
-   }
-	 $endNum=$startNum+$PREFS->itemsPerPage;
-	 if ($endNum>$itemsNum) $endNum=$itemsNum;
-	 $legendRight.=" [ ".($startNum+1)."-".$endNum." "._from." ".$itemsNum ." ]";
-   
- //  open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750);
    echo  "<div class='tableTitle shadowBox'>
    <div class='titleDiv'>$legend</div>
    <div class='pagesDiv'>$legendRight</div>
    </div>" ;
-
-   $headerSelectedBgColor="#F2BC66";
    
    ?>
-    <table class='listTable shadowBox' width="100%">
+    <table class='listTable' width="100%"  cellpadding="2" cellspacing="0">
 	<tr> 
-   <td width="25" class='inactiveSortHeader alRight'><? echo _NUM ?></td>
+		<td width="25" class='SortHeader'><? echo _NUM ?></td>
    <?
-   printHeaderPilotsTotals(190,$headerSelectedBgColor,$Theme->color0,$sortOrder,"pilotName",_PILOT,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color1,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color2,$sortOrder,"bestDistance",_BEST_DISTANCE,$query_str,$is_comp);
-   if (!is_comp) printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color2,$sortOrder,"mean_distance",_MEAN_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color2,$sortOrder,"totalDistance",_TOTAL_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color3,$sortOrder,"totalDuration",_TOTAL_DURATION_OF_FLIGHTS,$query_str,$is_comp);
-   if (!is_comp) printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color3,$sortOrder,"mean_duration",_MEAN_DURATION,$query_str,$is_comp);
-
-   if (!is_comp) printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color5,$sortOrder,"totalOlcKm",_TOTAL_OLC_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color5,$sortOrder,"totalOlcPoints",_TOTAL_OLC_SCORE,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$headerSelectedBgColor,$Theme->color5,$sortOrder,"bestOlcScore",_BEST_OLC_SCORE,$query_str,$is_comp);
-
+   printHeaderPilotsTotals(0,$sortOrder,"pilotName",_PILOT,$query_str,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$query_str,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"bestDistance",_BEST_DISTANCE,$query_str,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_distance",_MEAN_KM,$query_str,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"totalDistance",_TOTAL_KM,$query_str,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"totalDuration",_TOTAL_DURATION_OF_FLIGHTS,$query_str,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_duration",_MEAN_DURATION,$query_str,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"totalOlcKm",_TOTAL_OLC_KM,$query_str,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"totalOlcPoints",_TOTAL_OLC_SCORE,$query_str,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"bestOlcScore",_BEST_OLC_SCORE,$query_str,$is_comp);
+   echo "</tr>";
+   
    $i=1;
    while ($row = mysql_fetch_assoc($res)) { 
 
@@ -240,34 +226,30 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	$mean_duration=$row["totalDuration"]/$row["totalFlights"];
 	$mean_distance=$row["totalDistance"]/$row["totalFlights"];
 
-    $sortRowBgColor=($i%2)?"#CCCACA":"#E7E9ED"; 
+	$sortRowClass=($i%2)?"l_row1":"l_row2"; 
     $i++;
 
-	 open_tr();
-	   echo "  <TD><div align=left>".($i-1+$startNum)."</div></TD> 	   
-		       <TD ".(($sortOrder=="pilotName")?"bgcolor=".$sortRowBgColor:"").">".
-			"<div align=left>";
+	echo "\n\n<tr class='$sortRowClass'>";
+	echo "<TD>".($i-1+$startNum)."</TD>";
+	echo "<TD><div align=left>";
+
+	echo getNationalityDescription($row["countryCode"],1,0);
+	echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline',-5,-5,200,'".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  
+		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
 			
-	//		"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
-	//		"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a> ".
-		echo	getNationalityDescription($row["countryCode"],1,0);
-		//	"<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
-			echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', -5, -5, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
-			"</div></TD>". 	   			   			   
-   	           "<TD ".(($sortOrder=="totalFlights")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["totalFlights"]."</div></TD> 	 
- 		       <TD ".(($sortOrder=="bestDistance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["bestDistance"])."</div></TD> ";
-  	   if (!is_comp) echo "  <TD ".(($sortOrder=="mean_distance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($mean_distance)."</div></TD> 	";
-   	   echo "  <TD ".(($sortOrder=="totalDistance")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["totalDistance"])."</div></TD>
-   	           <TD ".(($sortOrder=="totalDuration")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".sec2Time($row["totalDuration"])."</div></TD>";
-   	   if (!is_comp) echo "  <TD ".(($sortOrder=="mean_duration")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".sec2Time($mean_duration)."</div></TD>";
-	   if (!is_comp) echo "  <TD ".(($sortOrder=="totalOlcKm")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOLC($row["totalOlcKm"])."</div></TD>";
-       echo "  <TD ".(($sortOrder=="totalOlcPoints")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatOLCScore($row["totalOlcPoints"])."</div></TD> 	
-               <TD ".(($sortOrder=="bestOlcScore")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatOLCScore($row["bestOlcScore"])."</div></TD> 	
-   	          ";	 							   			   
-  	 close_tr();
+	 echo "<TD>".$row["totalFlights"]."</TD>". 	 
+ 	      "<TD>".formatDistanceOpen($row["bestDistance"])."</TD>";
+  	 if (!is_comp) echo " <TD>".formatDistanceOpen($mean_distance)."</TD>";
+     echo "<TD>".formatDistanceOpen($row["totalDistance"])."</TD>".
+   	      "<TD>".sec2Time($row["totalDuration"])."</TD>";
+     if (!is_comp) echo "<TD>".sec2Time($mean_duration)."</TD>";
+	 if (!is_comp) echo "<TD>".formatDistanceOLC($row["totalOlcKm"])."</TD>";
+     echo "<TD>".formatOLCScore($row["totalOlcPoints"])."</TD>".
+          "<TD>".formatOLCScore($row["bestOlcScore"])."</TD>";	 							   			   
+  	 echo "</TR>";
    }     
-  // close_inner_table();       
-  echo "</table>";
+
+   echo "</table>";
    mysql_freeResult($res);
 }
 

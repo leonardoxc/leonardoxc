@@ -302,6 +302,17 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 	}
 }
 
+function toggleVisibility(elId) {	
+//	if ( MWJ_getStyle( elId ,'visibility') == true ) {
+		if ( MWJ_getStyle( elId ,'display') == "block") {
+		MWJ_changeDisplay(elId,"none");
+//		MWJ_changeVisibility( elId , false );	
+	} else {		
+			MWJ_changeDisplay(elId,"block");
+//		MWJ_changeVisibility( elId ,true );	
+	}
+}
+
 function nop()
 {
 }

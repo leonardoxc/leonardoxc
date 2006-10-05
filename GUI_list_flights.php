@@ -207,11 +207,14 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
 
+  if ($fieldName=="pilotName") $alignClass="alLeft";
+  else $alignClass="";
+  
   if ($sortOrder==$fieldName) { 
-   echo "<td class='activeSortHeader' $widthStr>	
+   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	
 		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></td>";
   } else {  
-   echo "<td class='inactiveSortHeader' $widthStr>
+   echo "<td class='SortHeader $alignClass' $widthStr>
 		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
    } 
 }
@@ -246,15 +249,13 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 
    }
 
-      $legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+	 $legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	 $endNum=$startNum+$PREFS->itemsPerPage;
 	 if ($endNum>$itemsNum) $endNum=$itemsNum;
 	 $legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
 	 if ($itemsNum==0) $legendRight="[ 0 ]";
 	 
-   $headerSelectedBgColor="#F2BC66";
-  // openBox(
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
@@ -269,30 +270,26 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 	echo  "</div>";
    }
    
-//   "<table class='main_text listTableTitle' width=100% cellpadding=0 cellspacing=0><tr><td>$legend</td><td valign=top width=400 align=right>$legendRight</td></tr></table>"
-  echo  "<div class='tableTitle shadowBox'>
+  echo  "<div class='tableTitle'>
    <div class='titleDiv'>$legend</div>
    <div class='pagesDiv'>$legendRight</div>
    </div>" ;
-  // ,750,"#ffffff");
- //  openBox($legendRight,750);
-   // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td valign=top width=400 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",750,-1);
   ?>
-  	<table class='listTable shadowBox' width="100%">
+  	<table class='listTable' width="100%" cellpadding="2" cellspacing="0">
 	<tr> 
-
-  <td  class='inactiveSortHeader alRight' width="25" bgcolor="<?=$Theme->color1?>"><? echo _NUM ?></td>
- <?
-   printHeader(80,$sortOrder,"DATE",_DATE_SORT,$query_str) ;
-   printHeader(160,$sortOrder,"pilotName",_PILOT,$query_str) ;
-   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$query_str) ;
-   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
-   printHeader(65,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
-   printHeader(65,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
-   printHeader(40,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
-?>
-  <td width="18" class='inactiveSortHeader'>&nbsp;</td>
-  <td width="72" class='inactiveSortHeader'><div align=left><? echo _SHOW ?></div></td></tr>
+	  <td class='SortHeader' width="25"><? echo _NUM ?></td>
+		 <?
+		   printHeader(70,$sortOrder,"DATE",_DATE_SORT,$query_str) ;
+		   printHeader(160,$sortOrder,"pilotName",_PILOT,$query_str) ;
+		   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$query_str) ;
+		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
+		   printHeader(65,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
+		   printHeader(65,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
+		   printHeader(40,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
+		?>
+	  <td width="18" class='SortHeader'>&nbsp;</td>
+	  <td width="72" class='SortHeader alLeft'><? echo _SHOW ?></td>
+  </tr>
 <?
    $i=1;
    $currDate="";
@@ -306,87 +303,54 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 $takeoffName=getWaypointName($row["flight_takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
-
-	 $sortRowBgColor=($i%2)?"#CCCACA":"#E7E9ED"; 
 	 
-	 $sortRowClassSorted=($i%2)?"l_row1Sorted":"l_row2"; 
-	 $sortRowClass=($i%2)?"l_row1":"l_row2"; 
-	 
-	 
-	 global $sortDescArray;
-	 foreach($sortDescArray as $sOrder=>$sName) {
-	 	if ( $sOrder==$sortOrder ) $sortArrayStr[$sOrder]=" class='$sortRowClassSorted' ";
-	 	else $sortArrayStr[$sOrder]="";
-	 	
-	 }
-	 
+	 $sortRowClass=($i%2)?"l_row1":"l_row2"; 	 
 	 $i++;
-	 // open_tr();
 	 echo "\n\n<tr class='$sortRowClass'>";
 	   $days_from_submission =	floor( ( mktime() - datetime2UnixTimestamp($row["dateAdded"]) ) / 86400 );  // 60*60*24 sec per day
 
 	   if ( $is_private ) $first_col_back_color=" bgcolor=#33dd33 ";
 	   else  $first_col_back_color="";
-	   echo  
-		"<TD $first_col_back_color class='alRight' >".($i-1+$startNum)."</TD>      
-	   <TD valign=top ".(($sortOrder=="DATE")?"bgcolor=".$sortRowBgColor:"").">
-			<div align=right>";
-	   
-  	   
-
-  	   	if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
+	   	   
+  	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
   	   		 $currDate=$row["DATE"];  	   		
   	   		 $dateStr= formatDate($row["DATE"]);
   	   		
-  	   	} else {
-  	   		$dateStr="";  	   		 
-  	   	}
-
+  	   } else {
+  	   		$dateStr="&nbsp;";  	   		 
+  	   }
   	   if ( $days_from_submission <= 3 ) $dateStr.="<img src='".$moduleRelPath."/img/icon_new.png' >";			
   	   
-
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
 	   $olcDistance=formatDistanceOpen($row["FLIGHT_KM"]);
 	   $olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
-	   echo $dateStr."</div></TD>".
+	   
+	   echo "<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
+	   echo "<TD><div align=right>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
-			"<div align=left>";
-//			"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-//			"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>";
-//			if ($opMode==2) // phpbb only 
-//				echo "<a href='/privmsg.php?mode=post&u=".$row["userID"]."'><img src='".$moduleRelPath."/img/icon_user.gif' alt='PM this user' width=16 height=16 border=0 align=bottom></a>"; 
-
-//			echo "&nbsp;<a href='?name=$module_name&op=list_flights&pilotID=".$row["userID"]."'>$name</a>".
-//			echo "&nbsp;";
-//echo "#".$row["countryCode"]."#";
-			echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-			echo " <a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
+		"<div align=left>";
+		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
+		echo " <a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>".
 		"<div align=right>";
-		//    "</div></TD>". 	   
-	   // "<TD ".(($sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
-		//	"<div align=left>".
-		
-		//echo 		"<a href='?name=$module_name&op=list_flights&takeoffID=".$row["takeoffID"]."'>$takeoffNameFrm</a>&nbsp;".			
-		//	"<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
-	//		"<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$row["takeoffID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>".
-			echo "<a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
+		echo "<a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
-	   "<TD ".$sortArrayStr["DURATION"].">$duration</TD>".
-	   "<TD ".$sortArrayStr["LINEAR_DISTANCE"].">$linearDistance</TD>".
-	   "<TD ".$sortArrayStr["FLIGHT_KM"].">$olcDistance</TD>".
-	   "<TD ".$sortArrayStr["FLIGHT_POINTS"].">$olcScore</TD>".
-	   "<td><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
-	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
-		   	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
+	   "<TD>$duration</TD>".
+	   "<TD>$linearDistance</TD>".
+	   "<TD>$olcDistance</TD>".
+	   "<TD>$olcScore</TD>".
+	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
+	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0 valign=top></a>";
+	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top></a>";
 	
-	  	   if ($row["photo1Filename"]) echo "<img src='".$moduleRelPath."/img/photo_icon.jpg' width=16 height=16>";
-	  	   else echo "<img src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
-		   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
-				echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 
-				echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width=16 height=16 border=0 align=bottom></a>"; 
-		   }			
+	   if ($row["photo1Filename"]) echo "<img src='".$moduleRelPath."/img/photo_icon.jpg' width=16 height=16 valign=top>";
+	   else echo "<img src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
+	   
+	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
+			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 
+			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width=16 height=16 border=0 align=bottom></a>"; 
+	   }			
 
 			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode )  {
  				echo "<BR>";
@@ -408,9 +372,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   echo "</TD>";	  
   	   echo "</TR>";
    }  
-   echo "</table>"  ;
-   //  close_inner_table();       
-   // closeBox();       
+   echo "</table>"  ;      
    mysql_freeResult($res);
 }
 

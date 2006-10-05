@@ -39,8 +39,9 @@ function showFlight($flightID) {
 				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
 
-  echo '<script language="javascript" src="$moduleRelPath/DHTML_functions.js"></script>'."\n";
+ 
   ?>
+  <script language="javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
   <script language="javascript">
   
   function submitForm(extendedInfo) {
@@ -73,8 +74,15 @@ function setSelectColor(theDiv) {
 <script language="javascript">
 	 function add_takeoff(lat,lon,id) {	 
 		 takeoffTip.hide();
-		 
+		 document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";		 
 		 document.getElementById('addTakeoffDiv').innerHTML = "<iframe width=410 height=320 frameborder=0 style='border-width:0px' src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat="+lat+"&lon="+lon+"&takeoffID="+id+"'></iframe>";
+		 toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
+	 }
+	 
+	 function edit_takeoff(id) {	 
+		 takeoffTip.hide();
+		 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";
+		 document.getElementById('addTakeoffDiv').innerHTML = "<iframe width=410 height=320 frameborder=0 style='border-width:0px' src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit="+id+"'></iframe>";
 		 toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
 	 }
 </script>
@@ -82,7 +90,7 @@ function setSelectColor(theDiv) {
 <div id="takeoffAddID" class="dropDownBox">
 <table width="100%" >
 <tr><td class="infoBoxHeader">
-<div align="left" style="display:inline; float:left; clear:left;">Register Takeoff</div>
+<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
 <div align="right" style="display:inline; float:right; clear:right;">
 <a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;">
 <img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
@@ -460,19 +468,20 @@ if ($xmlSitesLines) {
 	  open_tr();
 	//	   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._MORE_INFO."</div></TD>";	  	   
-		   echo "<TD colspan=4><div align=left>";
+		   echo "<TD colspan=4 ><div align=left>";
 
 		   echo "<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
 		   echo "<b>DATE ADDED:</b> ".$flight->dateAdded."<br>";
 		  	// DEBUG MANOLIS
-			 processIGC($flight->getIGCFilename());
+			// processIGC($flight->getIGCFilename());
 			// display the trunpoints
 			//echo "<hr> ";
 			//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
 			if ($CONF_show_DBG_XML) {
-				echo "<hr>";
+				echo "<div id=xmlOutputShow style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML from paragliding365.com</a></div>";
+				echo "<div id=xmlOutput style='display:none'><hr>";
 				echo "XML from paragliding365.com<br>";
-				echo "<pre>$xmlSites</pre>";
+				echo "<pre>$xmlSites</pre></div>";
 			}
 
 		   echo "</div></TD>";
@@ -485,12 +494,10 @@ if ($xmlSitesLines) {
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
 	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
-		echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> | ";
+		echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
 	
 
-		echo "<a href='?name=".$module_name."&op=add_waypoint&lat=".$firstPoint->lat."&lon=".$firstPoint->lon."&takeoffID=".$flight->takeoffID."'>"._ADD_WAYPOINT."</a> <br> ";
-		
-		echo "<a href='javascript:add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")'>"._ADD_WAYPOINT."</a> <br> ";
+		//echo "<a href='?name=".$module_name."&op=add_waypoint&lat=".$firstPoint->lat."&lon=".$firstPoint->lon."&takeoffID=".$flight->takeoffID."'>"._ADD_WAYPOINT."</a> <br> ";		
 
 		@include dirname(__FILE__)."/site/admin_takeoff_info.php";
 	  }

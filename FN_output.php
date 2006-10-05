@@ -375,6 +375,10 @@ with (takeoffTip)
 	<? if ( $ext && is_leo_admin($userID) ) { ?>
     '</td></tr><tr><td class="infoBox adminBox">'+
 	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:nop()' onclick='add_takeoff(%5%,%6%,%3%)'><?=_ADD_WAYPOINT?></a>"+
+
+     '</td></tr><tr><td class="infoBox adminBox">'+
+	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:nop()' onclick='edit_takeoff(%3%)'><?=_EDIT_WAYPOINT?></a>"+
+
 	<? } ?>
 	'</td></tr></table>';
 

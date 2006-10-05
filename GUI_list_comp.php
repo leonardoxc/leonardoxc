@@ -125,8 +125,7 @@
    
    while ($row = mysql_fetch_assoc($res)) { 
 
-     $name=getPilotRealName($row["userID"],1);
-	 // $pilotNames[$row["userID"]]=str_replace(" ","&nbsp;",$name);	 
+     $name=getPilotRealName($row["userID"],1); 
 	 $name=str_replace("&#039;","'",$name); 
 	 $pilotNames[$row["userID"]]=$name;
 
@@ -210,7 +209,6 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
   listCategory(_MENU_OPEN_DISTANCE,_TOTAL_KM,"open_distance","formatDistance");
   listCategory(_DURATION,		_TOTAL_DURATION,"duration","sec2Time"); 
   listCategory(_ALTITUDE_GAIN,	_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
-  //  listPilots2($res,$legend,$query_str,$sortOrder,$is_comp);
 ?>
 </div>
 <?	
@@ -238,43 +236,46 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    echo "<div class='tabbertab $defaultTabStr' title='$legend'>";
    
    $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
-   // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
-   // open_inner_table("<table class=main_text width=100%><tr><td>$legend</td><td width=250 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",650);
-   echo "<br><table class='listTable shadowBox' width='100%'><tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr><tr>";
+   echo "<br><table class='listTable' width='100%' cellpadding='2' cellspacing='0'>
+   			<tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr>";
    
-
-   $headerSelectedBgColor="#F2BC66";
    ?>
-   <td width="30" bgcolor="<?=$Theme->color1?>"><div align=left><? echo _NUM ?></div></td>
-   <td bgcolor="<?=$Theme->color1?>"><div align=left><? echo _PILOT ?></div></td>
-   <td width="100" bgcolor="<?=$Theme->color1?>"><div align=right><? echo $header ?></div></td>
+   <tr>
+   <td class="SortHeader" width="30"><? echo _NUM ?></td>
+   <td class="SortHeader"><div align=left><? echo _PILOT ?></div></td>
+   <td class="SortHeader" width="100"><? echo $header ?></td>
    <? for ($ii=1;$ii<=$countHowMany;$ii++) { ?>
-   <td width="55" bgcolor="<?=$Theme->color1?>"><div align=right>#<? echo $ii?></div></td>
+   <td class="SortHeader" width="55">#<? echo $ii?></td>
    <? }
 
 	  $i=1;
    	  foreach (${$arrayName} as $pilotID=>$pilotArray) {
   		 if ($i>$CONF_compItemsPerPage) break;
 
+
+		 $sortRowClass=($i%2)?"l_row1":"l_row2"; 
 		 if ($i==1) $bg=" bgcolor=#F5D523 ";
  		 else if ($i==2) $bg=" bgcolor=#F5F073 ";
  		 else if ($i==3) $bg=" bgcolor=#F3F0A5 ";
-		 else $bg="";
+
+ 		 if ($i==1) $bg=" class='compFirstPlace'";
+ 		 else if ($i==2) $bg=" class='compSecondPlace'";
+ 		 else if ($i==3) $bg=" class='compThirdPlace'";
+
+		 else $bg=" class='$sortRowClass'";
+		 
+	     
 	     $i++;
-		 open_tr();
-		 echo "<TD $bg><div align=left>".($i-1+$startNum)."</div></TD>"; 	
-	     echo "<TD nowrap $bg ><div align=left>".
-				//"<a href='?name=$module_name&op=pilot_profile&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>". 	   
-			    //"<a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$pilotID."'><img src='".$moduleRelPath."/img/icon_stats.gif' border=0></a>&nbsp;".
-				
-		"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
-				
-//		 	   	"<a href='?name=$module_name&op=list_flights&pilotID=".$pilotID."'>".$pilotNames[$pilotID]."</a>".
+		 echo "<TR $bg>";
+		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
+	     echo "<TD nowrap><div align=left>".
+				"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".
+					str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";
 		 if ($formatFunction) $outVal=$formatFunction($pilotArray["SUM"]);
 		 else $outVal=$pilotArray["SUM"];
-   	      echo "<TD $bg><div align=right>".$outVal."</div></TD>"; 	 
-		  $pilotArray["SUM"]=0;
+   	     echo "<TD>".$outVal."</TD>"; 	 
+		 $pilotArray["SUM"]=0;
 
 		$k=0;
 		foreach ($pilotArray as $flightID=>$val) {
@@ -282,21 +283,20 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 
-			if ($val) echo "<TD $bg><div align=right><a href='?name=$module_name&op=show_flight&flightID=".$flightID."'>".$outVal."</a></div></TD>"; 	 		  
-			else echo "<TD $bg><div align=right>".$outVal."</div></TD>"; 	 		  
+			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."'>".$outVal."</a></TD>"; 	 		  
+			else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;
 		}
 
 		if ($k!=$countHowMany) {
 			for($j=$k;$j<$countHowMany;$j++) {
-				echo "<TD $bg><div align=right>-</div></TD>"; 	 		  
+				echo "<TD>-</TD>"; 	 		  
 			}
 		}
 
    	}	
-	 echo "</tr></td></table>"; 
-   //close_inner_table();       
+	echo "</tr></td></table>"; 
 	echo '</div>';
 } //end function
 
