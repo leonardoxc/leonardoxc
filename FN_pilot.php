@@ -68,6 +68,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage;
 	global $countries;
+	global $CONF_phpbb_realname_field;
 
 	$query="SELECT CONCAT(FirstName,' ',LastName) as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
 	$res= $db->sql_query($query);
@@ -95,10 +96,10 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 		}
 		
 	} else { // phpBB
-		$res= $db->sql_query("SELECT username FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT $CONF_phpbb_realname_field FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
 		if ($res) {
 			$row= mysql_fetch_assoc($res);
-			$realName=$row["username"];
+			$realName=$row["$CONF_phpbb_realname_field"];
 		}
 	}
 	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 

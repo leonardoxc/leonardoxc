@@ -1,0 +1,12 @@
+
+PROBLEMS 
+--------
+
+v. 1.6.01
+---------
+- GE problem with greek 
+- on integra does not use the 11px fonts of template
+- on integra the <a href> is not underlined as it should be.
+
+- Must add many more LANG constants
+- When filter is active there should be an icon displayng that !

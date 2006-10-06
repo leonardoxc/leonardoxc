@@ -132,7 +132,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
   <tr>
   	<td width="25" class='SortHeader'><? echo _NUM ?></td>
  	<?
-		printHeaderTakeoffs(120,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
+		printHeaderTakeoffs(100,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
 		printHeaderTakeoffs(0,$sortOrder,"intName",_TAKEOFF,$query_str) ;
 		printHeaderTakeoffs(80,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
 		printHeaderTakeoffs(100,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$query_str) ;
@@ -151,7 +151,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 			if ($sortOrder=='CountryCode') $sortRowClass="l_row2";
 			else $sortRowClass=($i%2)?"l_row1":"l_row2"; 
 		} else {
-			$country_str="";
+			$country_str="&nbsp;";
 		}
 
 		$i++;

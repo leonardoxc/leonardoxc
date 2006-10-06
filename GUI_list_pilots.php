@@ -221,7 +221,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    while ($row = mysql_fetch_assoc($res)) { 
 
     $name=getPilotRealName($row["userID"]);
-    $name=str_replace("&#039;","'",$name);
+    $name=prepare_for_js($name);
 
 	$mean_duration=$row["totalDuration"]/$row["totalFlights"];
 	$mean_distance=$row["totalDistance"]/$row["totalFlights"];

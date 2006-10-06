@@ -147,7 +147,7 @@ require_once dirname(__FILE__)."/config_version.php";
  // the name of the table holding the flights....
  // you should probably not change that unless you have 
  // many leonardo servers sharing the same database
-  $CONF_tables_prefix="leonardo";
+ $CONF_tables_prefix="leonardo";
  $flightsTable	=  $CONF_tables_prefix."_flights";
  $pilotsTable	=  $CONF_tables_prefix."_pilots";
  $mapsTable		=  $CONF_tables_prefix."_maps";
@@ -158,6 +158,10 @@ require_once dirname(__FILE__)."/config_version.php";
 
  $areasTable	=  $CONF_tables_prefix."_areas";
  $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";
+ 
+ $CONF_phpbb_realname_field="username";
+ // if you are running phpbb2 with the realanme mod , uncomment this instead
+ $CONF_phpbb_realname_field="user_realname";
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.

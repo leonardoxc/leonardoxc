@@ -394,4 +394,10 @@ with (takeoffTip)
 	ob_end_clean();
 	return  $c;
 }
+
+function prepare_for_js($name) {
+	$name=str_replace("&#039;","'",$name); 
+	$name=str_replace("\"","'",$name); 
+	return $name;
+}
 ?>

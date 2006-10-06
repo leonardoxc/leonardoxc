@@ -60,7 +60,7 @@
   }
 
   if ($country) {
-		$where_clause.=" AND  countryCode='".$country."' ";
+		$where_clause.=" AND  $waypointsTable.countryCode='".$country."' ";
 		// if ($sortOrder!="dateAdded") $legend.=" ".replace_spaces($countries[$country])." | ";
 		// $query_str.="&takeoffName=".$takeoffName;
   }
@@ -298,9 +298,9 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 $flightID=$row['ID'];
 
      $name=getPilotRealName($row["userID"]);
-     $name=str_replace("&#039;","'",$name);
+	 $name=prepare_for_js($name);
 
-	 $takeoffName=getWaypointName($row["flight_takeoffID"]);
+	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"]) );
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 	 

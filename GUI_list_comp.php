@@ -126,7 +126,7 @@
    while ($row = mysql_fetch_assoc($res)) { 
 
      $name=getPilotRealName($row["userID"],1); 
-	 $name=str_replace("&#039;","'",$name); 
+	 $name=prepare_for_js($name);
 	 $pilotNames[$row["userID"]]=$name;
 
 
