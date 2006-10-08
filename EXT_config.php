@@ -1,4 +1,5 @@
-<? 
+<?php
+
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -11,51 +12,52 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-//	$currentlang="english";
-	$currentlang=$PREFS->language;
-	$lang=$currentlang;
-	$language=$currentlang;
+$currentlang=$lang=$language=$PREFS->language;		// "english"
 
-	
-	if ( $opMode==2) {
-		require_once "language/lang-".$currentlang.".php";
-		define('IN_PHPBB', true);
-		$phpbb_root_path = '../../';
-		$prefix="phpbb";
-	
-		require($phpbb_root_path . 'extension.inc');
-		require($phpbb_root_path . 'common.'.$phpEx);
-	} else if ( $opMode==1) {
-		$newlang=$currentlang;
-		$inside_mod =1;
-		define('INSIDE_MOD',1);
-		require_once("../../mainfile.php");
+switch ($opMode)
+{
+case 1:
+	$newlang=$currentlang;
+	$inside_mod=1;
+	define('INSIDE_MOD',1);
+	require_once '../../mainfile.php';
+	$tmpDir=dirname(__FILE__);								// re-set $module_name;
+	$tmpParts=split('/',str_replace("\\",'/',$tmpDir));
+	$module_name=$tmpParts[count($tmpParts)-1];
+	break;
 
-		// re-set $module_name;
-		$tmpDir=dirname(__FILE__);
-		$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-		$module_name=$tmpParts[count($tmpParts)-1];
-	}  else if ( $opMode==3) {
-		$newlang=$currentlang;
-		$inside_mod =1;
-		define('INSIDE_MOD',1);
-		require_once("mainfile.php");
+case 2:
+	require_once 'language/lang-'.$currentlang.'.php';
+	define('IN_PHPBB',true);
+	$phpbb_root_path='../../';
+	$prefix='phpbb';
+	require $phpbb_root_path.'extension.inc';
+	require $phpbb_root_path.'common.'.$phpEx;
+	break;
 
-		// re-set $module_name;
-		$tmpDir=dirname(__FILE__);
-		$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-		$module_name=$tmpParts[count($tmpParts)-1];
+case 3:
+	$newlang=$currentlang;
+	$inside_mod=1;
+	define('INSIDE_MOD',1);
+	require_once 'mainfile.php';
+	$tmpDir=dirname(__FILE__);								// re-set $module_name;
+	$tmpParts=split('/',str_replace("\\",'/',$tmpDir));
+	$module_name=$tmpParts[count($tmpParts)-1];
+	break;
+}
+
+$baseInstallationPath='';
+
+if (count($parts=explode('/',$_SERVER['REQUEST_URI']))>1)
+{
+	for ($i=1; $i<count($parts); $i++)
+	{
+		if ($parts[$i-1]=='modules')
+			break;
+
+		if ($parts[$i-1]!='')
+			$baseInstallationPath.='/'.$parts[$i-1];
 	}
-
-	$baseInstallationPath="";
-	$parts=explode("/",$_SERVER['REQUEST_URI']);
-
-	if ( count($parts)>1 )  {
-		for($i=1;$i<count($parts);$i++) {
-		   if ($parts[$i-1]=="modules") break;
-		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
-		}
-	}
-
+}
 
 ?>
