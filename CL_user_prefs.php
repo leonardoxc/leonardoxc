@@ -1,4 +1,5 @@
-<?
+<?php
+
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -21,7 +22,7 @@ class UserPrefs {
  var $metricSystem=1;
 
  function UserPrefs() {
-	
+
  }
 /*
  function getFromCookie() {
@@ -33,14 +34,14 @@ class UserPrefs {
  }
 */
 // Attention if the above code gives errors, comment it and uncoment the
-// code below. By doing so ALL users of Leonardo will have to delete the 
+// code below. By doing so ALL users of Leonardo will have to delete the
 // "leonardo_user_prefs" cookie from their browsers the first time they use it
 
 
  function getFromCookie() {
- 	$cval=$_COOKIE['leonardo_user_prefs'];
- 	
- 	$major_version=substr(PHP_VERSION,0,1)+0; 	
+ 	$cval=$_COOKIE['leonardo_user_prefs'];							// to do: verify existance first!
+
+ 	$major_version=substr(PHP_VERSION,0,1)+0;
 	if ($cval) {
 		if ($major_version>4)  {
 			preg_match_all("/&([^&=]*)=([^&=]*)/",$cval,$vars);
@@ -53,8 +54,8 @@ class UserPrefs {
 			$this->metricSystem =$metricSystem ;
 			$this->viewCountry=$viewCountry;
 			$this->viewCat=$viewCat;
-		} else {			
-			$newUserPrefs= unserialize($cval); 				
+		} else {
+			$newUserPrefs= unserialize($cval); 						// to do: handle unserialize error (old cookie version)
 			$this->themeName =$newUserPrefs->themeName ;
 			$this->language =$newUserPrefs->language ;
 			$this->itemsPerPage =$newUserPrefs->itemsPerPage ;
@@ -71,17 +72,17 @@ class UserPrefs {
  }
 
  function setToCookie() {
- 	 $major_version=substr(PHP_VERSION,0,1)+0; 	
+ 	 $major_version=substr(PHP_VERSION,0,1)+0;
  	 if ($major_version>4)  {
 		 $cookieStr="&themeName=".$this->themeName.
-			"&language=".$this->language. 
-			"&itemsPerPage=".$this->itemsPerPage. 
+			"&language=".$this->language.
+			"&itemsPerPage=".$this->itemsPerPage.
 			"&metricSystem=".$this->metricSystem.
 			"&viewCountry=".$this->viewCountry.
 			"&viewCat=".$this->viewCat.
 			"&" ;
  	 } else{
-		$cookieStr=serialize($this); 	 	
+		$cookieStr=serialize($this);
  	 }
 	 setcookie("leonardo_user_prefs",$cookieStr,time()+60*60*24*365,"/" );
  }
