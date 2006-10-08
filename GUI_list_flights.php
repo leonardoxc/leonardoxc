@@ -10,7 +10,8 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+  require_once dirname(__FILE__)."/FN_brands.php";
+  
   function replace_spaces($str) {
 		return str_replace(" ","&nbsp;",$str);
   }
@@ -288,7 +289,8 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 		   printHeader(40,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
-	  <td width="72" class='SortHeader alLeft'><? echo _SHOW ?></td>
+  	  <td width="50" class='SortHeader'>&nbsp;</td>
+	  <td width="52" class='SortHeader alLeft'><? echo _SHOW ?></td>
   </tr>
 <?
    $i=1;
@@ -325,15 +327,22 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
 	   $olcDistance=formatDistanceOpen($row["FLIGHT_KM"]);
 	   $olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
+	   $gliderType=$row["cat"]; // 1=pg 2=hg flex 4=hg rigid 8=glider
+
+//	   $brandID=sprintf("%03d",rand(1,8));
+	   $brandID=guessBrandID($gliderType,$row['glider']);
+	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' border=0>";
+	   else $gliderBrandImg="&nbsp;";
 	   
 	   echo "<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
 	   echo "<TD><div align=right>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div align=left>";
+		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		echo " <a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
-		"</div>".
-		"<div align=right>";
+		"</div>";
+		echo "<div align=right>";
 		echo "<a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD>$duration</TD>".
@@ -341,19 +350,24 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   "<TD>$olcDistance</TD>".
 	   "<TD>$olcScore</TD>".
 	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
-	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0 valign=top></a>";
+
+   	   "<TD>$gliderBrandImg</td>".
+
+	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top></a>";
 	
-	   if ($row["photo1Filename"]) echo "<img src='".$moduleRelPath."/img/photo_icon.jpg' width=16 height=16 valign=top>";
+	   if ($row["photo1Filename"]) echo "<img src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
 	   else echo "<img src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
-	   
+
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
 			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 
 			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width=16 height=16 border=0 align=bottom></a>"; 
 	   }			
 
+				
+
 			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode )  {
- 				echo "<BR>";
+				echo "<BR>";	   
 				if (in_array($flightID,$clubFlights ) ){
 					echo "<div id='fl_$flightID' style='display:inline'>
 <a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">
@@ -366,9 +380,10 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 <img src='".$moduleRelPath."/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom title='Add flight to this league'></a>
 </div>
 ";
-				}
-			
+				}				
 			} 
+			
+
 	   echo "</TD>";	  
   	   echo "</TR>";
    }  

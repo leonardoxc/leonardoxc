@@ -1,5 +1,4 @@
-<?php
-
+<?
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -22,7 +21,7 @@ class UserPrefs {
  var $metricSystem=1;
 
  function UserPrefs() {
-
+	
  }
 /*
  function getFromCookie() {
@@ -34,7 +33,7 @@ class UserPrefs {
  }
 */
 // Attention if the above code gives errors, comment it and uncoment the
-// code below. By doing so ALL users of Leonardo will have to delete the
+// code below. By doing so ALL users of Leonardo will have to delete the 
 // "leonardo_user_prefs" cookie from their browsers the first time they use it
 
 
@@ -72,11 +71,11 @@ class UserPrefs {
  }
 
  function setToCookie() {
- 	 $major_version=substr(PHP_VERSION,0,1)+0;
+ 	 $major_version=substr(PHP_VERSION,0,1)+0; 	
  	 if ($major_version>4)  {
 		 $cookieStr="&themeName=".$this->themeName.
-			"&language=".$this->language.
-			"&itemsPerPage=".$this->itemsPerPage.
+			"&language=".$this->language. 
+			"&itemsPerPage=".$this->itemsPerPage. 
 			"&metricSystem=".$this->metricSystem.
 			"&viewCountry=".$this->viewCountry.
 			"&viewCat=".$this->viewCat.

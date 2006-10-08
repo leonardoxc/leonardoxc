@@ -1,0 +1,1 @@
+ALTER TABLE `leonardo_flights` ADD `gliderBrandID` SMALLINT UNSIGNED NOT NULL AFTER `glider` ;

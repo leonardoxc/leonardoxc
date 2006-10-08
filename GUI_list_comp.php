@@ -14,6 +14,7 @@
 //-----------------------------------------------------------------------
 //-----------------------  list pilots ---------------------------------
 //-----------------------------------------------------------------------
+  require_once dirname(__FILE__)."/FN_brands.php";
 
 
   $sortOrder=$_REQUEST["sortOrder"];
@@ -96,12 +97,13 @@
 	}
   } 
 
-//  echo "<table  class=main_text border=0 width=650 bgcolor=#EAF0E4><tr><td><div align=left><b> $legend </b></div></td></tr></table><br>";
-  
+ 
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
   
 
-  $query = 'SELECT '.$flightsTable.'.ID, userID, username,  MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
+  $query = 'SELECT '.$flightsTable.'.ID, userID, username, 
+  				 gliderBrandID,glider,cat,
+  				 MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
   		. ' FROM '.$flightsTable.', '.$prefix.'_users' . $extra_table_str
         . ' WHERE (userID!=0 AND  private=0) AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' ';
@@ -122,34 +124,53 @@
    $olc_score=array();
    
    $pilotNames=array();
+   $pilotGliders=array();   
+   $pilotGlidersMax=array();
    
    while ($row = mysql_fetch_assoc($res)) { 
+	 $uID=$row["userID"];
 
-     $name=getPilotRealName($row["userID"],1); 
-	 $name=prepare_for_js($name);
-	 $pilotNames[$row["userID"]]=$name;
+	 if (!isset($pilotNames[$uID])){
+		 $name=getPilotRealName($uID,1); 
+		 $name=prepare_for_js($name);
+		 $pilotNames[$uID]=$name;
 
+	 } 
+	 
+	 $brandID=guessBrandID($row['cat'],$row['glider']);
+	 if ($brandID) {
+		 if ( ! is_array($pilotGliders[$uID]) ) $pilotGliders[$uID]=array();
+		 $pilotGliders[$uID][$brandID]++;
+	 }
 
+	 
 	 if  ( $row["BEST_FLIGHT_TYPE"] == "FAI_TRIANGLE" ) {
-		if ( ! is_array ($triangleKm[$row["userID"]] ) )  $triangleKm[$row["userID"]]=array();
-	 	$triangleKm[$row["userID"]][$row["ID"]]=$row["FLIGHT_KM"]; 
+		if ( ! is_array ($triangleKm[$uID] ) )  $triangleKm[$uID]=array();
+	 	$triangleKm[$uID][$row["ID"]]=$row["FLIGHT_KM"]; 
 	}
 
-	 if  (! is_array ($duration[$row["userID"]] )) $duration[$row["userID"]]=array();
-	 $duration[$row["userID"]][$row["ID"]]=$row["DURATION"]; 
-	 if  (! is_array ($open_distance[$row["userID"]] )) $open_distance[$row["userID"]]=array();
-	 $open_distance[$row["userID"]][$row["ID"]]=$row["LINEAR_DISTANCE"];
-	 if  (! is_array ($max_alt[$row["userID"]] )) $max_alt[$row["userID"]]=array();
-	 $max_alt[$row["userID"]][$row["ID"]]=$row["MAX_ALT"];
+	 if  (! is_array ($duration[$uID] )) $duration[$uID]=array();
+	 $duration[$uID][$row["ID"]]=$row["DURATION"]; 
+	 if  (! is_array ($open_distance[$uID] )) $open_distance[$uID]=array();
+	 $open_distance[$uID][$row["ID"]]=$row["LINEAR_DISTANCE"];
+	 if  (! is_array ($max_alt[$uID] )) $max_alt[$uID]=array();
+	 $max_alt[$uID][$row["ID"]]=$row["MAX_ALT"];
 	 $gain=$row["MAX_ALT"]- $row["TAKEOFF_ALT"];
-	 if  (! is_array ($alt_gain[$row["userID"]] )) $alt_gain[$row["userID"]]=array();
-	 $alt_gain[$row["userID"]][$row["ID"]]=$gain;
-	 if  (! is_array ($olc_score[$row["userID"]] )) $olc_score[$row["userID"]]=array();
-	 $olc_score[$row["userID"]][$row["ID"]]=$row["FLIGHT_POINTS"];
+	 if  (! is_array ($alt_gain[$uID] )) $alt_gain[$uID]=array();
+	 $alt_gain[$uID][$row["ID"]]=$gain;
+	 if  (! is_array ($olc_score[$uID] )) $olc_score[$uID]=array();
+	 $olc_score[$uID][$row["ID"]]=$row["FLIGHT_POINTS"];
 	 
      $i++;
   } 
-  // echo "#".$i."#";
+
+  // find the glider that was used most by each pilot
+  foreach ( $pilotGliders as $pID=>$gliderArray) {
+	  arsort($gliderArray);
+	  $tmpArr=array_keys($gliderArray);
+	  $pilotGlidersMax[$pID]= $tmpArr[0];
+  }
+	  // echo "#".$i."#";
 
   function cmp ($a1, $b1) { 
    $a=$a1["SUM"];
@@ -214,7 +235,7 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 <?	
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
-   global $pilotNames;
+   global $pilotNames,$pilotGlidersMax;
    
    global $Theme;
    global $module_name;
@@ -222,7 +243,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
    global $CONF_compItemsPerPage;
    global $page_num,$pagesNum,$startNum,$itemsNum;
-   global $op;
+   global $op,$cat;
 
    global  $countHowMany;
 
@@ -237,16 +258,19 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    
    $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
    echo "<br><table class='listTable' width='100%' cellpadding='2' cellspacing='0'>
-   			<tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr>";
+   			<tr><td class='tableTitleExtra' colspan='".($countHowMany+4)."'>$legend</td></tr>";
    
    ?>
    <tr>
    <td class="SortHeader" width="30"><? echo _NUM ?></td>
    <td class="SortHeader"><div align=left><? echo _PILOT ?></div></td>
-   <td class="SortHeader" width="100"><? echo $header ?></td>
+   <td class="SortHeader" width="70"><? echo $header ?></td>
    <? for ($ii=1;$ii<=$countHowMany;$ii++) { ?>
    <td class="SortHeader" width="55">#<? echo $ii?></td>
-   <? }
+   <? } ?>
+   <td class="SortHeader" width="50">&nbsp;</td>
+   </tr>
+   <? 
 
 	  $i=1;
    	  foreach (${$arrayName} as $pilotID=>$pilotArray) {
@@ -254,21 +278,20 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
 
 		 $sortRowClass=($i%2)?"l_row1":"l_row2"; 
-		 if ($i==1) $bg=" bgcolor=#F5D523 ";
- 		 else if ($i==2) $bg=" bgcolor=#F5F073 ";
- 		 else if ($i==3) $bg=" bgcolor=#F3F0A5 ";
-
  		 if ($i==1) $bg=" class='compFirstPlace'";
  		 else if ($i==2) $bg=" class='compSecondPlace'";
  		 else if ($i==3) $bg=" class='compThirdPlace'";
-
 		 else $bg=" class='$sortRowClass'";
 		 
-	     
+	 	 $brandID=$pilotGlidersMax[$pilotID]+0;
+		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' border=0 align=abs_middle>";
+//		 if ($brandID) 
+//		 else $gliderBrandImg="&nbsp;";
+		 	     
 	     $i++;
 		 echo "<TR $bg>";
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
-	     echo "<TD nowrap><div align=left>".
+	     echo "<TD nowrap><div align=left>".		 
 				"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 0, 200, '".$pilotID."','".
 					str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";
@@ -295,8 +318,10 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			}
 		}
 
+		echo "<td>$gliderBrandImg</td>";
    	}	
-	echo "</tr></td></table>"; 
+
+	echo "</table>"; 
 	echo '</div>';
 } //end function
 

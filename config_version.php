@@ -1,5 +1,4 @@
-<?php
-
+<? 
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -11,18 +10,17 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
-	$CONF_version='1.5.02';
-	$CONF_releaseDate='2006/05/11';
-
+  $CONF_version="1.5.02";
+  $CONF_releaseDate="2006/05/11";
 /************************************************************************
  ChangeLog
- 1.5.02 ( release date 2006/05/11)
+ 1.5.02 ( release date 2006/05/11) 
  - Fixed the SOAP op.php uploadFile
  - Put also the mrsid windows binaries in the zip file
- - CL_user_prefs.php -> included the new cookie system for PHP5
+ - CL_user_prefs.php -> included the new cookie system for PHP5 
 
- 1.5.01 ( release date 2006/03/14)
+ 1.5.01 ( release date 2006/03/14) 
+
+
 ************************************************************************/
-
 ?>

@@ -107,6 +107,21 @@ background-color:#C5D0ED;
 	padding:3px;
 }
 
+.flightOpDiv {
+	float:left;
+	padding-left:5px;
+	width:auto; 
+	margin:0px 0px 0px 0px;
+	padding:3px;
+}
+.brandDiv {
+	float:right;
+	width:auto; 
+	padding-right:5px;
+	margin:0px 0px 0px 0px;
+	text-align:right;
+	padding:3px;
+}
 
 .listTableTitle {
 	background-color:#E4EDE7;
