@@ -1,4 +1,5 @@
-<? 
+<?php
+
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -12,18 +13,20 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-  open_inner_table("",750);
-  echo "<tr><td>"; 
+open_inner_table('',750);
+echo '<tr><td>';
 
-		list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
-		$countriesNum=count($countriesNames);
+list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
+$countriesNum=count($countriesNames);
 
-		$i=0;
-		foreach($countriesNames as $countryName) {
-			echo '<a href="?name='.$module_name.'&country='.$countriesCodes[$i].'">'.$countryName.'</a> :: ';
-			$i++;
-		}
+$i=0;
+foreach ($countriesNames as $countryName)
+{
+	echo '<a href="?name='.$module_name.'&country='.$countriesCodes[$i].'">'.$countryName.'</a> :: ';
+	++$i;
+}
 
-  echo "</td></tr>";
-  close_inner_table();
+echo '</td></tr>';
+close_inner_table();
+
 ?>

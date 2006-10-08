@@ -1,4 +1,5 @@
-<? 
+<?php
+
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
@@ -11,10 +12,10 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	$tmpDir=dirname(__FILE__);
-	$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-	$module_name=$tmpParts[count($tmpParts)-1];
-	$moduleAbsPath=dirname(__FILE__);
-	$moduleRelPath=".";
+$tmpDir			=dirname(__FILE__);
+$tmpParts		=split('/',str_replace("\\",'/',$tmpDir));
+$module_name	=$tmpParts[count($tmpParts)-1];
+$moduleAbsPath	=dirname(__FILE__);
+$moduleRelPath	='.';
 
 ?>
