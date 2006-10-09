@@ -159,18 +159,17 @@ function toggleVisibleAjax(divID,divPos){
 <a name="selDate"></a>
 <table width=100%  cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div class="style1" align="center"><strong>Select time period
-	  </strong></div></td>
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div class="style1" align="center"><strong><?=_SELECT_DATE?></strong></div></td>
 </tr>
 <tr>
 	<td class="tableBox" valign="top">
 	<strong>Recent</strong>
 	</td>
 	<td class="tableBox" valign="top">
-	<strong>Year</strong>
+	<strong><?=_YEAR?></strong>
 	</td>
 	<td class="tableBox" valign="top">
-	<strong>Month</strong>
+	<strong><?=_MONTH?></strong>
 	</td>
 </tr>
 <tr>
@@ -212,20 +211,52 @@ function toggleVisibleAjax(divID,divPos){
 </tr>
 </TABLE>
 </div>
-
-<div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:550px">
-<a name="selCountry"></a>
-<table width=100% cellpadding="2" cellspacing="0">
-<tr>
-	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong>Select Country</strong>
-	  </div></td>
-</tr>
-<tr>
-	<td class="tableBox sp2" valign='top'>
 <?
+
 		list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 		$countriesNum=count($countriesNames);
-		$num_of_rows=ceil($countriesNum/3);
+		$num_of_cols=ceil($countriesNum/15);
+		$num_of_rows=ceil($countriesNum/$num_of_cols);
+
+		$countriesDivWidth=140;
+		$countriesDivWidthTot=$countriesDivWidth*$num_of_cols;
+		// echo "#$countriesNum#$num_of_cols#$num_of_rows#";
+?>
+<div id="supernote-note-selCountry" class="snp-triggeroffset notedefault" style="width:<?=$countriesDivWidthTot?>px">
+<a name="selCountry"></a>
+<table class="tableBox" width=100% cellpadding="2" cellspacing="0">
+<tr>
+	<td colspan=<?=$num_of_cols?> height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_SELECT_COUNTRY?></strong>
+	  </div></td>
+</tr>
+<? 
+$ii=0;
+if ($countriesNum) {
+	for( $r=0;$r<$num_of_rows;$r++) {
+		$sortRowClass=($ii%2)?"l_row1":"l_row2"; 	
+		$ii++; 
+		echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
+		for( $c=0;$c<$num_of_cols;$c++) {
+			echo "<td style='width:<?=$countriesDivWidth?>px'>";
+
+			//compute which to show
+			//echo "c=$c r=$r i=$i<br>";
+			$i= $c * $num_of_rows +( $r % $num_of_rows);
+			if ($i<$countriesNum) {
+				$countryName=$countriesNames[$i];
+				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>";
+			}	 
+			else echo "&nbsp;";
+
+			echo "</td>";
+		}
+		echo '</tr>';
+	}
+} else {
+?>
+<tr>
+	<td class="tableBox sp2" valign='top' style="width:<?=$countriesDivWidth?>px">
+<?
 		//	echo "aprox num of pages: $$num_of_rows [ $countriesNum ] <br>";
 		$i=0;
 		$ii=0;
@@ -233,15 +264,17 @@ function toggleVisibleAjax(divID,divPos){
 			foreach($countriesNames as $countryName) {
 				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a><br>";
 				$i++;
-				if ($i % $num_of_rows==0) {
-					echo "</td><td class='tableBox sp2' valign='top'>";									
+				if ($i % $num_of_rows==0 && $i<$countriesNum) {
+					echo "</td><td class='tableBox sp2' valign='top' style='width:<?=$countriesDivWidth?>px'>";									
 				}
+				
 			}
 		}
 
 ?>
 	</td>
 </tr>
+<? } //else ?>
 </TABLE>
 </div>
 <?

@@ -141,12 +141,16 @@ background-color:#C5D0ED;
 	
 .listTable a {
 	color:#333366;
+	text-decoration:underline;
 }
 
 .listTable TD {
 	vertical-align:top;
 	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
 	
 }
 

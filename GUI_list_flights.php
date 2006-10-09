@@ -286,7 +286,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
 		   printHeader(65,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
 		   printHeader(65,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
-		   printHeader(40,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
+		   printHeader(60,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
   	  <td width="50" class='SortHeader'>&nbsp;</td>
@@ -329,6 +329,17 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   $olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
 	   $gliderType=$row["cat"]; // 1=pg 2=hg flex 4=hg rigid 8=glider
 
+		// get the OLC score type
+		$olcScoreType=$row['BEST_FLIGHT_TYPE'];
+		if ($olcScoreType=="FREE_FLIGHT") {
+			$olcScoreTypeImg="icon_turnpoints.gif";
+		} else if ($olcScoreType=="FREE_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_free.gif";
+		} else if ($olcScoreType=="FAI_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_fai.gif";
+		} else { 
+			$olcScoreTypeImg="photo_icon_blank.gif";
+		}
 //	   $brandID=sprintf("%03d",rand(1,8));
 	   $brandID=guessBrandID($gliderType,$row['glider']);
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' border=0>";
@@ -348,8 +359,9 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	   "<TD>$duration</TD>".
 	   "<TD>$linearDistance</TD>".
 	   "<TD>$olcDistance</TD>".
-	   "<TD>$olcScore</TD>".
-	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
+	   "<TD nowrap>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' border=0 align='top'></TD>".
+	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0>
+			</td>".
 
    	   "<TD>$gliderBrandImg</td>".
 
