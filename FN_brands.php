@@ -17,7 +17,7 @@ function guessBrandID($gliderType,$gliderDesc){
 	if (!is_array($brandsList[$gliderType]) ) return 0;
 	
 	foreach($brandsList[$gliderType] as $brandID=>$brandName) {
-		if (  ! ( strpos(strtolower($gliderDesc),strtolower($brandName) ) === false ) ) {
+		if (  ! ( strpos(strtolower(str_replace(" ","",$gliderDesc)),strtolower($brandName) ) === false ) ) {
 			return $brandID;
 		}
 	
@@ -37,7 +37,14 @@ function guessBrandID($gliderType,$gliderDesc){
 	"UP",
 	"SOL",
 	"Gradient",
-	"FreeX"
+	"FreeX",
+	"ProDesign",
+	"MacPara",
+	"UTurn",
+	"Apco",
+	"Woc",
+	"Windtech",
+	"Sky"
  );
  /*
  $__brandsList=array(
