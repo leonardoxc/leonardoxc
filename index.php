@@ -237,7 +237,7 @@ if ($countriesNum) {
 		$ii++; 
 		echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
 		for( $c=0;$c<$num_of_cols;$c++) {
-			echo "<td style='width:<?=$countriesDivWidth?>px'>";
+			echo "<td style='width:".$countriesDivWidth."px'>";
 
 			//compute which to show
 			//echo "c=$c r=$r i=$i<br>";
