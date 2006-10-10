@@ -90,11 +90,9 @@ if ($opMode==3)
 
 if ($opMode==1) include("header.php");
 
-
-//require_once $moduleRelPath."/templates/".$PREFS->themeName."/style.php";
 ?>
 
-<link href="<? echo $moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
+<link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
 
 <?
 if ($opMode==1) OpenTable();
@@ -116,14 +114,10 @@ if ($clubID) {
 }
 
 require_once $moduleRelPath."/MENU_menu.php";
-
-if (1) { 
-	?>
-<script language="javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
-<script language="javascript" src="<?=$moduleRelPath?>/prototype.js"></script>
-
-<script type="text/javascript" src="<?=$moduleRelPath ?>/supernote.js"></script>
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath ?>/supernote.css" />
+?>
+<script type="text/javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/supernote.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/supernote.css" />
 
 <script language="javascript">
 
@@ -142,8 +136,11 @@ var supernote = new SuperNote('supernote',  { hideDelay: 100 });
 
 // You can pass several to your "new SuperNote()" command like so:
 //{ name: value, name2: value2, name3: value3 }
+</script>
 
-
+<? if (0) {  ?>
+<script language="javascript" src="<?=$moduleRelPath?>/prototype.js"></script>
+<script language="javascript">
 function toggleVisibleAjax(divID,divPos){
 	url='/<?=$moduleRelPath?>/EXT_filter.php';
 	url='modules.php';
@@ -154,6 +151,15 @@ function toggleVisibleAjax(divID,divPos){
 	toggleVisible(divID,divPos);
 }
 </script>
+<? } else if (0) { ?>
+<script language="javascript">
+	function toggleVisible(elId,pos_elId) {	
+		return true;
+	}
+</script>
+<? } ?>
+
+
 
 <div id="supernote-note-selDate" class="snp-triggeroffset notedefault" style="width:300px">
 <a name="selDate"></a>
@@ -277,17 +283,8 @@ if ($countriesNum) {
 <? } //else ?>
 </TABLE>
 </div>
-<?
-} else {
-?>
-<script language="javascript">
-	function toggleVisible(elId,pos_elId) {	
-		return true;
-	}
-</script>
-<?
-}
 
+<?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
   $dateLegend="";
   $allTimesDisplay=0;

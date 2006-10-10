@@ -190,6 +190,12 @@ Time to launch from landing
 		}
 	}
 
+	function fillFromArray($ar){
+		foreach ($ar as $name=>$val){
+			$this->{$name}=$val;
+		}
+	}
+
 	function getFromDB() {
 		global $db,$waypointsTable;
 		$res= $db->sql_query("SELECT * FROM $waypointsTable WHERE ID=".$this->waypointID );

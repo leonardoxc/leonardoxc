@@ -227,7 +227,10 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 window.location = "<? echo  $redirectUrl ?>"
 </script>
 <? } ?>
-<script language='javascript' src='<? echo $moduleRelPath ?>/cal/popcalendar.js.php?module_name=<? echo $module_name ?>'></script>
+<script language='javascript'>
+	var imgDir = 'modules/<?=$module_name ?>/cal/';
+</script>
+<script language='javascript' src='<? echo $moduleRelPath ?>/cal/popcalendar.js'></script>
 
 <form name="formFilter" method="post" action="">
   <br>

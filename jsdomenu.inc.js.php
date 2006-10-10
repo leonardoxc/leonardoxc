@@ -2,56 +2,56 @@ function createjsDOMenu() {
 	
   staticMenu2 = new jsDOMenu(200, "absolute");
   with (staticMenu2) {
-    addMenuItem(new menuItem("<? echo _MENU_COMPETITION_LEAGUE ?>", "", "?name=<? echo $module_name?>&op=competition"));
+    addMenuItem(new menuItem("<?=_MENU_COMPETITION_LEAGUE ?>", "", "?name=<?=$module_name?>&op=competition"));
     addMenuItem(new menuItem("-"));
-    addMenuItem(new menuItem("<? echo _MENU_OLC ?>", "", "?name=<? echo $module_name?>&op=competition&comp=0"));
-    addMenuItem(new menuItem("<? echo _FAI_TRIANGLE ?>", "", "?name=<? echo $module_name?>&op=competition&comp=1"));
-    addMenuItem(new menuItem("<? echo _MENU_OPEN_DISTANCE ?>", "", "?name=<? echo $module_name?>&op=competition&comp=2"));
+    addMenuItem(new menuItem("<?=_MENU_OLC ?>", "", "?name=<?=$module_name?>&op=competition&comp=0"));
+    addMenuItem(new menuItem("<?=_FAI_TRIANGLE ?>", "", "?name=<?=$module_name?>&op=competition&comp=1"));
+    addMenuItem(new menuItem("<?=_MENU_OPEN_DISTANCE ?>", "", "?name=<?=$module_name?>&op=competition&comp=2"));
   }
     
   staticMenu9 = new jsDOMenu(200, "absolute");
   with (staticMenu9) {
-    addMenuItem(new menuItem("<? echo _MENU_SHOW_PILOTS ?>", "", "?name=<? echo $module_name?>&op=list_pilots&comp=0"));
+    addMenuItem(new menuItem("<?=_MENU_SHOW_PILOTS ?>", "", "?name=<?=$module_name?>&op=list_pilots&comp=0"));
 	addMenuItem(new menuItem(".:: Pilot Statistics ::.","","",true,"jsdomenuitemDIV","jsdomenuitemDIV"));
-    addMenuItem(new menuItem("<? echo _MENU_OLC ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"));
-    addMenuItem(new menuItem("<? echo _MENU_OPEN_DISTANCE ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=bestDistance&comp=1"));
-    addMenuItem(new menuItem("<? echo _MENU_DURATION ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=totalDuration&comp=1"));
-    addMenuItem(new menuItem("<? echo _MENU_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_pilots&sortOrder=totalFlights&comp=1"));
+    addMenuItem(new menuItem("<?=_MENU_OLC ?>", "", "?name=<?=$module_name?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"));
+    addMenuItem(new menuItem("<?=_MENU_OPEN_DISTANCE ?>", "", "?name=<?=$module_name?>&op=list_pilots&sortOrder=bestDistance&comp=1"));
+    addMenuItem(new menuItem("<?=_MENU_DURATION ?>", "", "?name=<?=$module_name?>&op=list_pilots&sortOrder=totalDuration&comp=1"));
+    addMenuItem(new menuItem("<?=_MENU_FLIGHTS ?>", "", "?name=<?=$module_name?>&op=list_pilots&sortOrder=totalFlights&comp=1"));
   }
     
   staticMenu3 = new jsDOMenu(220, "absolute");
   with (staticMenu3) {
-    // addMenuItem(new menuItem("<? echo _MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<? echo $module_name?>&op=list_clubs")); 	
+    // addMenuItem(new menuItem("<?=_MSG_MENU_CLUBS_MSG_ ?>", "", "?name=<?=$module_name?>&op=list_clubs")); 	
   <? if  (is_user($user) || $userID>0)  { ?>
-    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FLIGHT ?>", "", "?name=<? echo $module_name?>&op=add_flight"));
-    addMenuItem(new menuItem("<? echo _MENU_SUBMIT_FROM_ZIP ?>", "", "?name=<? echo $module_name?>&op=add_from_zip"));
+    addMenuItem(new menuItem("<?=_MENU_SUBMIT_FLIGHT ?>", "", "?name=<?=$module_name?>&op=add_flight"));
+    addMenuItem(new menuItem("<?=_MENU_SUBMIT_FROM_ZIP ?>", "", "?name=<?=$module_name?>&op=add_from_zip"));
 	addMenuItem(new menuItem("-"));
-    addMenuItem(new menuItem("<? echo _MENU_MY_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&pilotID=<? echo $userID ?>&takeoffID=0&country=0&year=0&month=0"));
-    addMenuItem(new menuItem("<? echo _MENU_MY_PROFILE ?>", "", "?name=<? echo $module_name?>&op=pilot_profile&pilotIDview=<? echo $userID ?>"));
-    addMenuItem(new menuItem("<? echo _MENU_MY_STATS ?>", "", "?name=<? echo $module_name?>&op=pilot_profile_stats&pilotIDview=<? echo $userID ?>"));
+    addMenuItem(new menuItem("<?=_MENU_MY_FLIGHTS ?>", "", "?name=<?=$module_name?>&op=list_flights&pilotID=<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"));
+    addMenuItem(new menuItem("<?=_MENU_MY_PROFILE ?>", "", "?name=<?=$module_name?>&op=pilot_profile&pilotIDview=<?=$userID ?>"));
+    addMenuItem(new menuItem("<?=_MENU_MY_STATS ?>", "", "?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=<?=$userID ?>"));
 	addMenuItem(new menuItem("-"));
   <? } ?>
-	 addMenuItem(new menuItem("<? echo _MENU_MY_SETTINGS ?>", "", "?name=<? echo $module_name?>&op=user_prefs"));
+	 addMenuItem(new menuItem("<?=_MENU_MY_SETTINGS ?>", "", "?name=<?=$module_name?>&op=user_prefs"));
 	 addMenuItem(new menuItem("-"));
-	 addMenuItem(new menuItem("<? echo _FLIGHTS_STATS ?>", "", "?name=<? echo $module_name?>&op=stats"));
-	 addMenuItem(new menuItem("<? echo _PROJECT_INFO ?>", "", "?name=<? echo $module_name?>&op=program_info"));
+	 addMenuItem(new menuItem("<?=_FLIGHTS_STATS ?>", "", "?name=<?=$module_name?>&op=stats"));
+	 addMenuItem(new menuItem("<?=_PROJECT_INFO ?>", "", "?name=<?=$module_name?>&op=program_info"));
   }
 
 
   staticMenu4 = new jsDOMenu(220, "absolute");
   with (staticMenu4) {
-    addMenuItem(new menuItem("<? echo _MENU_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights"));
-    addMenuItem(new menuItem("<? echo _MENU_SHOW_LAST_ADDED ?>", "", "?name=<? echo $module_name?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"));
-    addMenuItem(new menuItem("<? echo _MENU_FILTER ?>", "", "?name=<? echo $module_name?>&op=filter"));
+    addMenuItem(new menuItem("<?=_MENU_FLIGHTS ?>", "", "?name=<?=$module_name?>&op=list_flights"));
+    addMenuItem(new menuItem("<?=_MENU_SHOW_LAST_ADDED ?>", "", "?name=<?=$module_name?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"));
+    addMenuItem(new menuItem("<?=_MENU_FILTER ?>", "", "?name=<?=$module_name?>&op=filter"));
 	addMenuItem(new menuItem("-"));
-    addMenuItem(new menuItem("<? echo _MENU_ALL_FLIGHTS ?>", "", "?name=<? echo $module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"));
+    addMenuItem(new menuItem("<?=_MENU_ALL_FLIGHTS ?>", "", "?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"));
 
   }
  
   staticMenu10 = new jsDOMenu(220, "absolute");
   with (staticMenu10) {
-    addMenuItem(new menuItem("<? echo _MENU_SITES_GUIDE ?>", "", "?name=<? echo $module_name?>&op=sites")); 
-    addMenuItem(new menuItem("<? echo _MENU_TAKEOFFS ?>", "", "?name=<? echo $module_name?>&op=list_takeoffs")); 
+    addMenuItem(new menuItem("<?=_MENU_SITES_GUIDE ?>", "", "?name=<?=$module_name?>&op=sites")); 
+    addMenuItem(new menuItem("<?=_MENU_TAKEOFFS ?>", "", "?name=<?=$module_name?>&op=list_takeoffs")); 
   }
 
  <? if (in_array($userID,$admin_users)) { ?>
@@ -70,14 +70,6 @@ function createjsDOMenu() {
 	<? } ?>
   }
  <? } ?>
-
-  staticMenu = new jsDOMenuBar("static", "staticMenuPos",false,"jsdomenubardiv",530<? 
-	$addedMenuWidth=0;
-	// $addedMenuWidth=count($availableLanguages)*18;
-	// $addedMenuWidth+=(count($CONF_glider_types)+1)*18;
-    if (in_array($userID,$admin_users)) $addedMenuWidth+=130;
-	echo "+".$addedMenuWidth; 
-  ?>);
   
   staticMenu6 = new jsDOMenu(150, "absolute");
   with (staticMenu6) {
@@ -122,7 +114,7 @@ function createjsDOMenu() {
 
   staticMenu8 = new jsDOMenu(300, "absolute");
   with (staticMenu8) {
-    addMenuItem(new menuItem("<? echo _MENU_SUMMARY_PAGE ?>", "", "?name=<? echo $module_name?>&op=index_full"));
+    addMenuItem(new menuItem("<?=_MENU_SUMMARY_PAGE ?>", "", "?name=<?=$module_name?>&op=index_full"));
 <?	
 	if (count($clubsList) >0) {
     	echo 'addMenuItem(new menuItem(".:: Clubs ::.","","",true,"jsdomenuitemDIV","jsdomenuitemDIV"));';
@@ -150,6 +142,15 @@ function createjsDOMenu() {
 	  $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' border=0>";
 //	  echo 'addMenuItem(new menuItem("'.$iconImg.'", "", "'.$iconLink.'") ) ; ';
 ?>
+
+  staticMenu = new jsDOMenuBar("static", "staticMenuPos",false,"jsdomenubardiv",530<? 
+	$addedMenuWidth=0;
+	// $addedMenuWidth=count($availableLanguages)*18;
+	// $addedMenuWidth+=(count($CONF_glider_types)+1)*18;
+    if (in_array($userID,$admin_users)) $addedMenuWidth+=130;
+//	echo "+".$addedMenuWidth; 
+	echo "+230";
+  ?>);
   
 
   with (staticMenu) {
