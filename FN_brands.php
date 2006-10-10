@@ -36,15 +36,31 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Swing",
 	"UP",
 	"SOL",
-	"Gradient",
+	"Gradient",	//10 
 	"FreeX",
 	"ProDesign",
 	"MacPara",
 	"UTurn",
-	"Apco",
+	"Apco",		//15
 	"Woc",
 	"Windtech",
-	"Sky"
+	"Sky",
+
+	"Ozone",
+	"Aerodyne", //20
+	"Aircross"
+	"Paratech"
+	"Dudek",
+	"Firebird",
+	"FlightDesign", // 25 
+	"Niviuk",
+	"Independence"
+
+	// to be added
+//	"FlyingPlanet", // not found
+//	"ADG",      // not found
+//	"Axis",    // not found  
+
  );
  /*
  $__brandsList=array(
