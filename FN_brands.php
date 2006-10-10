@@ -48,8 +48,8 @@ function guessBrandID($gliderType,$gliderDesc){
 
 	"Ozone",
 	"Aerodyne", //20
-	"Aircross"
-	"Paratech"
+	"Aircross",
+	"Paratech",
 	"Dudek",
 	"Firebird",
 	"FlightDesign", // 25 
