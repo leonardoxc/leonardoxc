@@ -31,7 +31,7 @@ function getPilotList() {
 
 	$pilots=array();
 	$pilotsID=array();
-	while ($row = mysql_fetch_assoc($res)) {
+	while ($row = $db->sql_fetchrow($res)) {
 		$name =getPilotRealName($row["userID"]);
 		$pnames[$row["userID"]]=$name;
 	}
@@ -58,7 +58,7 @@ function getUsedGliders($userID) {
     }
 
 	$gliders=array();
-	while ($row = mysql_fetch_assoc($res)) { 
+	while ($row = $db->sql_fetchrow($res)) { 
 			array_push($gliders,$row["glider"] );
 	}
 	return $gliders;
@@ -75,7 +75,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	// echo $query;
 
 	if ($res) {
-		$pilot = mysql_fetch_assoc($res);
+		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
 		if (strlen ($realName)>1 && $currentlang==$nativeLanguage) { // else realname is no good
 			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
@@ -86,19 +86,18 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
     if ($opMode==1) { // phpNuke 
 		$res= $db->sql_query("SELECT username,name FROM ".$prefix."_users WHERE user_id=".$pilotIDview ); 
 		if ($res) {
-			$row= mysql_fetch_assoc($res);
+			$row= $db->sql_fetchrow($res);
 			if ($currentlang!=$nativeLanguage) { 
 				 $realName=$row["username"]; 
 			} else {
 				 if ($row["name"]!='') $realName=$row["name"];
 				 else $realName=$row["username"];
 			}
-		}
-		
+		}		
 	} else { // phpBB
 		$res= $db->sql_query("SELECT $CONF_phpbb_realname_field FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
 		if ($res) {
-			$row= mysql_fetch_assoc($res);
+			$row= $db->sql_fetchrow($res);
 			$realName=$row["$CONF_phpbb_realname_field"];
 		}
 	}

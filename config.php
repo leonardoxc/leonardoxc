@@ -161,7 +161,7 @@ require_once dirname(__FILE__)."/config_version.php";
  
  $CONF_phpbb_realname_field="username";
  // if you are running phpbb2 with the realanme mod , uncomment this instead
- $CONF_phpbb_realname_field="user_realname";
+// $CONF_phpbb_realname_field="user_realname";
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.

@@ -32,22 +32,18 @@
   $legend="<b>"._MENU_FLIGHTS."</b> ";
   if ($year && !$month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		//$legend.=" <b>[ ".$year." ]</b> ";
-//		$query_str.="&year=".$year;
   }
   if ($year && $month ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
-		// $legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
-//		$query_str.="&year=".$year."&month=".$month;
   }
   if (! $year ) {
 	//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
   }
   
-  if ($pilotID) {
-		$where_clause.=" AND userID='".$pilotID."' ";
-		// $legend.="<a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;"._PILOT_FLIGHTS." | ";
-		//$query_str.="&pilotID=".$pilotID;
+  if ($pilotID!=0) {
+		$where_clause.=" AND userID='".$pilotID."' ";		
+  } else {  // 0 means all flights BUT not test ones 
+		$where_clause.=" AND userID>0 ";		
   }
 
   if ( ! ($pilotID>0 && $pilotID==$userID ) && !in_array($userID,$admin_users) ) {
@@ -56,17 +52,12 @@
 
   if ($takeoffID) {
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
-		// $legend.=" <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/img/icon_x.png' border=0></a>&nbsp;".replace_spaces(getWaypointName($takeoffID))." | ";
-		// $query_str.="&takeoffName=".$takeoffName;
   }
 
   if ($country) {
 		$where_clause.=" AND  $waypointsTable.countryCode='".$country."' ";
-		// if ($sortOrder!="dateAdded") $legend.=" ".replace_spaces($countries[$country])." | ";
-		// $query_str.="&takeoffName=".$takeoffName;
   }
     
-
   if ($sortOrder=="dateAdded" && $year ) $sortOrder="DATE";
 
   $sortDescArray=array("DATE"=>_DATE_SORT,"pilotName"=>_PILOT_NAME, "takeoffID"=>_TAKEOFF,
@@ -77,14 +68,23 @@
   $ord="DESC";
 
   $sortOrderFinal=$sortOrder;
+
+  $where_clause2="";
+  $extra_table_str2="";
   if ($sortOrder=="pilotName") { 
-	 if ($opMode==1) $sortOrderFinal="CONCAT(name,username) ";
-	 else $sortOrderFinal="username";
-    $ord="ASC";
-  }   else if ($sortOrder=="dateAdded") { 
+	 if ($opMode==1) { 
+		$sortOrderFinal="CONCAT(name,username) ";
+	 } else {
+		$sortOrderFinal=$CONF_phpbb_realname_field;
+	 }
+	 $where_clause2="  AND ".$flightsTable.".userID=".$prefix."_users.user_id ";
+	 $extra_table_str2=",".$prefix."_users";
+
+     $ord="ASC";
+  }  else if ($sortOrder=="dateAdded") { 
 	 $where_clause=" AND DATE_SUB(NOW(),INTERVAL 5 DAY) <  dateAdded  ";
   }  else if ($sortOrder=="DATE") { 
-		$sortOrderFinal="DATE DESC, FLIGHT_POINTS ";
+	 $sortOrderFinal="DATE DESC, FLIGHT_POINTS ";
   }
   $filter_clause=$_SESSION["filter_clause"];
   if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
@@ -128,30 +128,37 @@
 
 
   $query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
+  // echo "#count query#$query<BR>";
   $res= $db->sql_query($query);
   if($res <= 0){   
 	 echo("<H3> Error in count items query! $query</H3>\n");
      exit();
   }
 
-  $row = mysql_fetch_assoc($res);
+  $row = $db->sql_fetchrow($res);
   $itemsNum=$row["itemNum"];   
 
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
-  if ($pilotID>=0)
+/*
+  if ($pilotID>=0 && 0) {
  	 $query="SELECT * , ".$pilotsTable.".countryCode as pilotCountryCode, $flightsTable.takeoffID as flight_takeoffID ,$flightsTable.ID as ID 
-			FROM $pilotsTable, $flightsTable,".$prefix."_users".$extra_table_str." 
+			FROM $pilotsTable, $flightsTable,".$prefix."_users $extra_table_str
 			WHERE ".$pilotsTable.".pilotID=".$prefix."_users.user_id  AND ".$flightsTable.".userID=".$prefix."_users.user_id ".$where_clause." 
 			ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage;
      
-  else  {
+  } else  {
 	 $query="SELECT * , ".$pilotsTable.".countryCode as pilotCountryCode,  $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID 
-			FROM $pilotsTable, $flightsTable ".$extra_table_str."  
+			FROM $pilotsTable, $flightsTable $extra_table_str
 			WHERE ".$pilotsTable.".pilotID=".$prefix."_users.user_id  ".$where_clause." 
 			ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
   }
- //  echo $query;
+*/
+	$query="SELECT * , $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID 
+		FROM $flightsTable $extra_table_str $extra_table_str2
+		WHERE (1=1) $where_clause $where_clause2
+		ORDER BY $sortOrderFinal $ord LIMIT $startNum,".$PREFS->itemsPerPage ;
+  // echo $query;
   $res= $db->sql_query($query);
 
   if($res <= 0){
@@ -159,43 +166,10 @@
      exit();
   }
 	
-  //  $legend.=_SORTED_BY." ".$sortDesc;
-//  $legend.=_SORTED_BY." <img src='$moduleRelPath/img/icon_sort.png' border=0 align=absmiddle>&nbsp;".replace_spaces($sortDesc);
   $legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
   listFlights($res,$legend,	$query_str,$sortOrder);
 
 ?>
-
-<script language="javascript">
-
-function addClubFlight(clubID,flightID) {
-	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
-//	url='modules.php';
-//	url='modules.php?name=leonardo&op=filter';
-	pars='op=add&clubID='+clubID+'&flightID='+flightID;
-	
-	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom></a>";
-	div=MWJ_findObj('fl_'+flightID);
-	div.innerHTML=newHTML;
-	//toggleVisible(divID,divPos);
-}
-
-function removeClubFlight(clubID,flightID) {
-	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
-//	url='modules.php';
-//	url='modules.php?name=leonardo&op=filter';
-	pars='op=remove&clubID='+clubID+'&flightID='+flightID;
-	
-	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom></a>";
-	div=MWJ_findObj('fl_'+flightID);
-	div.innerHTML=newHTML;
-	//toggleVisible(divID,divPos);
-}
-</script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
@@ -221,7 +195,7 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
 }
 
 function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
-   global $Theme;
+   global $db,$Theme;
    global $module_name;
    global $takeoffRadious;
    global $userID;
@@ -232,24 +206,6 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
    
-   $legendRight="";   
-   if ($pagesNum>1) {
-	 if  ($page_num>1 ) 
-		 $legendRight.="<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&page_num=".($page_num-1)."'><<</a>&nbsp;";
-	 else $legendRight.="<<&nbsp;";
-   
-   for ($k=1;$k<=$pagesNum;$k++) {
-		 if  ($k!=$page_num) 
-			 $legendRight.="<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&page_num=$k'>$k</a>&nbsp;";
-	 	 else  $legendRight.="$k&nbsp;";
-
-   } 
-	 if  ($page_num<$pagesNum) 
-		 $legendRight.="<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&page_num=".($page_num+1)."'>>></a>&nbsp;";
-	 else $legendRight.=">>&nbsp;";
-
-   }
-
 	 $legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	 $endNum=$startNum+$PREFS->itemsPerPage;
@@ -259,6 +215,34 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 	 
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
+?>
+<script language="javascript">
+
+function addClubFlight(clubID,flightID) {
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	pars='op=add&clubID='+clubID+'&flightID='+flightID;
+	
+	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
+
+	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+	//toggleVisible(divID,divPos);
+}
+
+function removeClubFlight(clubID,flightID) {
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	pars='op=remove&clubID='+clubID+'&flightID='+flightID;
+	
+	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
+
+	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+	//toggleVisible(divID,divPos);
+}
+</script>
+<?
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {
 			if ($add_remove_mode)
@@ -295,11 +279,11 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 <?
    $i=1;
    $currDate="";
-   while ($row = mysql_fetch_assoc($res)) { 
+   while ($row = $db->sql_fetchrow($res)) { 
      $is_private=$row["private"];
 	 $flightID=$row['ID'];
 
-     $name=getPilotRealName($row["userID"]);
+     $name=getPilotRealName($row["userID"],1);
 	 $name=prepare_for_js($name);
 
 	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"]) );
@@ -340,7 +324,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 		} else { 
 			$olcScoreTypeImg="photo_icon_blank.gif";
 		}
-//	   $brandID=sprintf("%03d",rand(1,8));
+
 	   $brandID=guessBrandID($gliderType,$row['glider']);
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' border=0>";
 	   else $gliderBrandImg="&nbsp;";
@@ -400,7 +384,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
   	   echo "</TR>";
    }  
    echo "</table>"  ;      
-   mysql_freeResult($res);
+   $db->sql_freeresult($res);
 }
 
 
