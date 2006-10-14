@@ -132,16 +132,6 @@ function formatLocation($name,$vinicity,$radious) {
 }
 
 
-function addFlightError($errMsg) {
-	open_inner_table(_SUBMIT_FLIGHT_ERROR,600);
-	open_tr();
-		echo "<br><br><center>";
-		echo $errMsg;
-		echo "</center><br><br><br>";
-	close_inner_table();
-	exitPage();
-}
-
 function datetime2UnixTimestamp($datestamp) {
     if ($datestamp!=0) {
         list($date, $time)=split(" ", $datestamp);

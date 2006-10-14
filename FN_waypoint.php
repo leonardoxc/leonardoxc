@@ -24,7 +24,7 @@ function getTakeoffList() {
 
 	$takeoffs=array();
 	$takeoffsID=array();
-	while ($row = mysql_fetch_assoc($res)) { 
+	while ($row = $db->sql_fetchrow($res)) { 
  		 $tnames[$row["takeoffID"]]=getWaypointName($row["takeoffID"],-1,1);
 	}
 	if (!empty($tnames)) {
@@ -85,7 +85,7 @@ function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	$countriesCodes=array();
 	$countriesNames=array();
 	$countriesFlightsNum=array();
-	while ($row = mysql_fetch_assoc($res)) { 
+	while ($row = $db->sql_fetchrow($res)) { 
 		$countriesN[$row["countryCode"]]= $countries[$row["countryCode"]];
 		$countriesFNum[$row["countryCode"]]= $row["FlightsNum"];
 	}
@@ -120,7 +120,7 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 
 	$waypoints=array();
 	$i=0;
-    while ($row = mysql_fetch_assoc($res)) { 
+    while ($row = $db->sql_fetchrow($res)) { 
 	  $waypoints[$i]=new gpsPoint();
  	  $waypoints[$i]->waypointID=$row["ID"];
 	  $waypoints[$i]->name=$row["name"];
@@ -131,7 +131,7 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
   	  $i++;	  
     }     
 
-    mysql_freeResult($res);
+    $db->sql_freeresult($res);
 	return $waypoints;
 }
 
@@ -146,8 +146,8 @@ function getWaypointName($ID,$forceIntl=-1,$countryFirst=0) {
 	$res= $db->sql_query($query);			
 	if($res <= 0) return "UNKNOWN";
 	
-	$row = mysql_fetch_assoc($res) ;
-	mysql_freeResult($res);
+	$row = $db->sql_fetchrow($res) ;
+	$db->sql_freeresult($res);
 
 	$tname=selectWaypointName($row["name"],$row["intName"],$row["countryCode"],$forceIntl);
 
@@ -233,7 +233,7 @@ function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {
 	 $res= $db->sql_query($query);
 	 if($res > 0){
 		$flightNum=mysql_num_rows($res);
-		$row = mysql_fetch_assoc($res);
+		$row = $db->sql_fetchrow($res);
 	
 		$siteRecordLink="<a href='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['ID']."'>".
 			formatDistance($row['record_km'],1)."</a>";

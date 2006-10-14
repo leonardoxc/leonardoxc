@@ -90,7 +90,7 @@ function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgCo
 }
 
 function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
-   global $Theme;
+   global $db,$Theme;
    global $module_name;
    global $takeoffRadious;
    global $userID;
@@ -120,7 +120,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 
    $currCountry="";
    $i=1;
-   while ($row = mysql_fetch_assoc($res)) { 
+   while ($row = $db->sql_fetchrow($res)) { 
   
 	 $takeoffName=$row["name"];	
 	 //	 $sortRowBgColor=($i%2)?"#CCCACA":"#E7E9ED"; 
@@ -153,7 +153,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
   	 close_tr();
    }     
    close_inner_table();       
-   mysql_freeResult($res);
+   $db->sql_freeresult($res);
 }
 
 ?>

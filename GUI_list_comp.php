@@ -65,7 +65,7 @@
      exit();
   }
 
-  $row = mysql_fetch_assoc($res);
+  $row = $db->sql_fetchrow($res);
   $itemsNum=$row["itemNum"];   
 
   $startNum=($page_num-1)*$CONF_compItemsPerPage;
@@ -127,7 +127,7 @@
    $pilotGliders=array();   
    $pilotGlidersMax=array();
    
-   while ($row = mysql_fetch_assoc($res)) { 
+   while ($row = $db->sql_fetchrow($res)) { 
 	 $uID=$row["userID"];
 
 	 if (!isset($pilotNames[$uID])){

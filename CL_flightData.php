@@ -498,10 +498,14 @@ var $maxPointNum=1000;
 							$lastPoint->gpsTime+=$day_offset;
 							 continue;
 						}	
-						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;						
-						$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
-						$data_vario[$i] =($thisPoint->getAlt() - $lastPoint->getAlt() ) / $deltaseconds;
-
+						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;	
+						if ($deltaseconds) {
+							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
+							$data_vario[$i] =($thisPoint->getAlt() - $lastPoint->getAlt() ) / $deltaseconds;
+						} else {
+							$speed =0;
+							$data_vario[$i]=0;
+						}
 						// sanity checks	
 						if ( $speed > $this->maxAllowedSpeed ) continue;
 						if ( $data_vario[$i]  > $this->maxAllowedVario ) continue;
@@ -561,15 +565,13 @@ var $maxPointNum=1000;
 	}
 
 	function getFlightFromIGC($filename) {
+	set_time_limit (100);
+	$this->resetData();
+	$this->setAllowedParams();
+	$this->filename=basename($filename);
 	
-		set_time_limit (100);
-		$this->resetData();
-		$this->setAllowedParams();
-
-//		$this->filename=urlencode(basename($filename));
-		$this->filename=basename($filename);
 	$done=0;
-	$try_no_takeoff_detection=0;
+	$try_no_takeoff_detection=0;	
 	while(!$done) {	
 		$lines = file ($filename); 
 
@@ -688,9 +690,16 @@ var $maxPointNum=1000;
 
 		DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
 			if ($p>0) $done=1;
-			else if (!$try_no_takeoff_detection) $try_no_takeoff_detection=1;
+			else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
+				$lines = file ($filename); 
+				$done=1;
+				$garminSpecialCase=1;
+				$p=$Brecords;
+			} else if (	!$try_no_takeoff_detection ) {
+				$try_no_takeoff_detection=1; 
+			}
 			else $done=1;
-		} // while not done
+	} // while not done
 
 		//	 
 		if ($p==0)  {
@@ -798,7 +807,7 @@ var $maxPointNum=1000;
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
 					// sanity checks	
-					if ( $deltaseconds == 0 ) {  continue; }
+					if ( $deltaseconds == 0 && !$garminSpecialCase) {  continue; }
 					if ( $alt    > $this->maxAllowedHeight ) {  continue; }
 					if ( abs($speed)  > $this->maxAllowedSpeed ) {  continue; }
 					if ( abs($vario)  > $this->maxAllowedVario ) {  continue; }
@@ -1000,7 +1009,7 @@ var $maxPointNum=1000;
 		 exit();
 	  }
 		
-	  $row = mysql_fetch_assoc($res);
+	  $row = $db->sql_fetchrow($res);
 	  
 		$this->flightID=$flightID;
 		$name=getPilotRealName($row["userID"]);
@@ -1061,7 +1070,7 @@ var $maxPointNum=1000;
 		$this->olcFilename=$row["olcFilename"];
 		$this->olcDateSubmited =$row["olcDateSubmited"];
 		
-	  	mysql_freeResult($res);
+	  	$db->sql_freeresult($res);
 		$this->updateTakeoffLanding();	
 	}
 
@@ -1361,7 +1370,7 @@ var $maxPointNum=1000;
 		$res= $db->sql_query($query);
 		if ($res<=0) return 0; // no duplicate found
 
-		$row = mysql_fetch_assoc($res);
+		$row = $db->sql_fetchrow($res);
 		return $row["ID"]; // found duplicate retrun the ID; 
 	}
 
@@ -1372,7 +1381,7 @@ var $maxPointNum=1000;
 		$res= $db->sql_query($query);
 		if ($res<=0) return 0; // no duplicate found
 
-		$row = mysql_fetch_assoc($res);
+		$row = $db->sql_fetchrow($res);
 		return $row["ID"]; // found duplicate retrun the ID; 
 	}
 
@@ -1385,7 +1394,7 @@ var $maxPointNum=1000;
 		$res= $db->sql_query($query);
 		if ($res<=0) return array("","","","",""); // no pilot olc data
 
-		$row = mysql_fetch_assoc($res);
+		$row = $db->sql_fetchrow($res);
 		return array($row["olcBirthDate"],$row["olcFirstName"],$row["olcLastName"],
 					 $row["olcCallSign"],$row["olcFilenameSuffix"] );
 		
@@ -1401,7 +1410,7 @@ var $maxPointNum=1000;
 		$res= $db->sql_query($query);
 		if ($res<=0) return 0; // no duplicate found
 
-		$row = mysql_fetch_assoc($res);
+		$row = $db->sql_fetchrow($res);
 		return $row["num"]; // found duplicate retrun the ID; 
 	}
 	

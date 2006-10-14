@@ -55,6 +55,17 @@
 
 	?>
 
+<script language="JavaScript">
+function setValue(obj)
+{		
+	var n = obj.selectedIndex;    // Which menu item is selected
+	var val = obj[n].text;        // Return string value of menu item
+
+	gl=MWJ_findObj("glider");
+	gl.value=val;
+	// document.inputForm.glider.value = value;
+}
+</script>
  
   <form action="" enctype="multipart/form-data" method="post">	
   <input type="hidden" name="changeFlight" value=1>
@@ -104,8 +115,23 @@
     <tr>
       <td><div align="right" class="style2"><font face="Verdana, Arial, Helvetica, sans-serif"><? echo _GLIDER ?></font></div></td>
       <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="glider" type="text" id="glider2" size="50" value="<? echo  $flight->glider ?>">
-      </font></td>
+        <input name="glider" type="text" size="30" value="<? echo  $flight->glider ?>">
+      </font>       
+		<? 
+			$gliders=  getUsedGliders($flight->userID) ;
+			if (count($gliders)) { ?>
+				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
+					<option></option>
+					<? 
+						foreach($gliders as $selGlider) {
+							if ( $flight->glider == $selGlider) $glSel="selected";
+							else $glSel="";
+							echo "<option $glSel>".$selGlider."</option>\n";
+						}
+					?>
+				</select>
+			<? } ?>
+	  </td>
     </tr>
     <tr>
       <td><div align="right" class="style2"><? echo _RELEVANT_PAGE ?></div></td>

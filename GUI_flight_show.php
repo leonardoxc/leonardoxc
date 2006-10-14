@@ -238,10 +238,16 @@ function setSelectColor(theDiv) {
   $flight->updateAll(0);
   
 	$flightHours=$flight->DURATION/3600;
-	$openDistanceSpeed=formatSpeed($flight->LINEAR_DISTANCE/($flightHours*1000));
-	$maxDistanceSpeed=formatSpeed($flight->MAX_LINEAR_DISTANCE/($flightHours*1000));
-	$olcDistanceSpeed=formatSpeed($flight->FLIGHT_KM/($flightHours*1000));
-
+	if ($flightHours) {
+		$openDistanceSpeed=formatSpeed($flight->LINEAR_DISTANCE/($flightHours*1000));
+		$maxDistanceSpeed=formatSpeed($flight->MAX_LINEAR_DISTANCE/($flightHours*1000));
+		$olcDistanceSpeed=formatSpeed($flight->FLIGHT_KM/($flightHours*1000));
+	} else {
+		$openDistanceSpeed=0;
+		$maxDistanceSpeed=0;
+		$olcDistanceSpeed=0;	
+	}
+	
   open_tr();
 	 //  echo "<TD width=2>&nbsp</td>";
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";

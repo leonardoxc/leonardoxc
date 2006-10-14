@@ -63,7 +63,7 @@ class club {
 		     return;
 	    }
 
-	    $clubInfo = mysql_fetch_assoc($res);
+	    $clubInfo = $db->sql_fetchrow($res);
 		foreach ($this->valuesArray as $valStr) {
 			$this->$valStr=$clubInfo["$valStr"];					
 		}

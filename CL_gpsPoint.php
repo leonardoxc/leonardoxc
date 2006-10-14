@@ -203,7 +203,7 @@ Time to launch from landing
 		     return;
 	    }
 
-	    $wpInfo = mysql_fetch_assoc($res);
+	    $wpInfo = $db->sql_fetchrow($res);
 
 		$this->lat =$wpInfo['lat'];
 		$this->lon =$wpInfo['lon'];

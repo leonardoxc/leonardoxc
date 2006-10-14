@@ -39,6 +39,23 @@ function addTestFlightFromURL($filename_url) {
 	addFlightFromFile($filename_tmp,0,-1,1);
 }
  
+function checkTrackFileName($filename) {
+	$suffix=strtolower(substr($filename,-3));
+	if (in_array($suffix ,array("igc")) ) return 1;
+	else return 0;
+	
+}
+
+function addFlightError($errMsg) {
+	open_inner_table(_SUBMIT_FLIGHT_ERROR,600);
+	open_tr();
+		echo "<br><br><center>";
+		echo $errMsg;
+		echo "</center><br><br><br>";
+	close_inner_table();
+	exitPage();
+}
+
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="") {
 	global $flightsAbsPath,$CONF_default_cat_add ;
 
@@ -57,6 +74,10 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
 
+	//  we must cope with some cases here
+	//  1. more flights in the igc
+	//  2. garmin saved paths -> zero time difference
+	
 	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) 			
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
 	
@@ -75,7 +96,7 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		// else the glider will be found from the igc file 
 		
 		$flight->linkURL=$_REQUEST["linkURL"];
-		if ( substr($flight->linkURL,0,7) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
+		if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 	}
 
 	// move the flight to corresponding year
@@ -131,8 +152,6 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->putFlightToDB(1); // update
 */
 
-	// echo "<img src='?name=$module_name&op=postAddFlight&flightID=".$flight->flightID."' width=1 height=1 border=0 alt=''>";
-	// echo "Flight ID=".$flight->flightID."<br>";
 	return array(1,$flight->flightID); // ALL OK;
 }
 

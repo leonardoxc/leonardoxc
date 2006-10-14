@@ -17,6 +17,18 @@
 
  if ($datafile=='') {   
 ?>
+<script language="JavaScript">
+function setValue(obj)
+{		
+	var n = obj.selectedIndex;    // Which menu item is selected
+	var val = obj[n].text;        // Return string value of menu item
+
+	gl=MWJ_findObj("glider");
+	gl.value=val;
+	// document.inputForm.glider.value = value;
+}
+</script>
+
   <form name="inputForm" action="" enctype="multipart/form-data" method="post" >	
   <table class=main_text  width="600" height="400" border="0" align="center" cellpadding="4" cellspacing="2" >
     <tr>
@@ -69,20 +81,12 @@
     </tr>
     <tr>
       <td><div align="right" class="styleItalic"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_GLIDER ?></font></div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td>
         <input name="glider" type="text" id="glider" size="30">
-      </font>
-		<script language="JavaScript">
-		function setValue(value)
-		{
-		document.inputForm.glider.value = value;
-		}
-		</script>
-
 		<? 
 			$gliders=  getUsedGliders($userID) ;
 			if (count($gliders)) { ?>
-				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this.value);">			
+				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
 					<option></option>
 					<? 
 						foreach($gliders as $selGlider) {
@@ -152,14 +156,17 @@
 	checkPath($flightsAbsPath."/".$flights_user_id);
 	move_uploaded_file($_FILES['datafile']['tmp_name'], $flightsAbsPath."/".$flights_user_id."/".$_FILES['datafile']['name'] );
 	$filename=$flightsAbsPath."/".$flights_user_id."/".$_FILES['datafile']['name'];
-		echo $filename;
-	if (!$filename) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+
+	// 	echo $filename;
+	if (!$_FILES['datafile']['name']) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+	
 	list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat) ;
 	if ( $result !=1 ) {	
+		// we must log the failure for debuging purposes
+		@unlink($filename);
 		$errMsg=getAddFlightErrMsg($result,$flightID);
 		addFlightError($errMsg);	
 	} else {
-		echo "<img src='?name=$module_name&op=postAddFlight&flightID=".$flightID."' width=1 height=1 border=0 alt=''>";			
 		?>  	 
 		  <p align="center"><span class="style111"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_YOUR_FLIGHT_HAS_BEEN_SUBMITTED ?></font></span> <br>
 		  <br>

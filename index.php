@@ -16,6 +16,8 @@ if ( file_exists(dirname(__FILE__)."/install.php") ) {
 	exit;
 }
 
+$pageStart=getmicrotime();
+
 @session_start();
 
 $module_name = basename(dirname(__FILE__));				
@@ -342,64 +344,68 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	   openBox("","100%","#f5f5f5");
   	   ?>
   	   <div align="center">  	
-
+		<? if ($_SESSION["filter_clause"]) {  ?>
+   	    <div class="menu1" ><a href="?name=<?=$module_name?>&op=filter"><img 
+		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
+		</div>
+		<? } ?>
    	    <div class="menu1" >
   	    <?
   	    	echo "<b>$catLegend</b>";
   	    	//if (!$allCatDisplay) 
-  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/basic/img/icon_remove.gif' title='"._Display_ALL."'  border=0></a>";
+  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/$PREFS->themeName/img/icon_remove.gif' title='"._Display_ALL."'  border=0></a>";
   	    ?>
   	    </div>
 		<? if ($clubID) {  ?>
-  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/basic/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    <? } ?>
   	    
   	    <div class="menu1" >
 			<a href="#selDate" class="supernote-hover-selDate note_link">
-			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
+			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
   	    	<?
   	    		echo "<b>$dateLegend</b></a>";
   	    		if (!$allTimesDisplay) 
-  	    			echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    			echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	  		?>
   	    </div>
   	    
   	    <div class="menu1">
 			<a href="#selCountry" class="supernote-hover-selCountry note_link">
-			<img src='<?=$moduleRelPath?>/templates/basic/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
+			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$countryLegend</b></a>";
   	    	if (!$allCountriesDisplay) 
-  	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay ) { ?>
-		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$pilotLegend</b>";
   	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>		
   	    <? } ?>
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay) { ?>
-		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/basic/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
+		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$takeoffLegend</b>";
   	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/templates/basic/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
 		<? } ?>  	    
 		<div class="menuLvl2"><a href='<?
 		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
-		?>'><img src='<?=$moduleRelPath?>/templates/basic/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 		</div>
   	   <?   
   	    closeBox();  	    
@@ -520,6 +526,26 @@ exitPage(0);
 
 function exitPage($exitNow=1){
    global $module_name,$opMode,$noFooterMenu,$moduleRelPath,$PREFS;
+   global $sqlQueriesDebug,$sqlFetchTime;
+   global $pageStart;
+   
+   $sqlQueriesTime=0;
+   $i=0;
+   foreach ($sqlQueriesDebug as $tm) {
+      $sqlQueriesTime+=$tm;
+	  $i++;
+   }
+   echo "<hr> total sql query time: $sqlQueriesTime secs in $i queries <hr>";
+   
+   
+   $sqlQueriesTime=0;
+   $i=0;
+   foreach ($sqlFetchTime as $tm) {
+      $sqlQueriesTime+=$tm;
+	  $i++;
+   }
+   echo "<hr> total sql fetch time: $sqlQueriesTime secs in $i fetches <hr>";
+
    echo "<br>";
    if (!$noFooterMenu ) {
 	 echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
@@ -535,6 +561,10 @@ function exitPage($exitNow=1){
 	if ($opMode==3) 
 		require_once $moduleRelPath."/GUI_footer.php";
 
+   $pageEnd=getmicrotime();
+   $pageTime=$pageEnd-$pageStart;
+   echo "PAGE CREATION: $pageTime secs<BR>";
+	
    if ($exitNow) exit;
 }
 

@@ -199,7 +199,7 @@ class flightMap extends rasterUTM_Map {
 
 			//echo  " FLIGHT ## $this->UTMzoneUpLeft , $this->MAP_TOP , $this->MAP_LEFT , $this->MAP_BOTTOM , $this->MAP_RIGHT <BR>" ;
 			if($res <= 0){  echo("<H3> Error in getting maps query! </H3>\n");  }
-			while ($row = mysql_fetch_assoc($res)) { 			
+			while ($row = $db->sql_fetchrow($res)) { 			
 				$filename=$row["filename"];
 				$leftX	=$row["leftX"];
 				$topY	=$row["topY"];

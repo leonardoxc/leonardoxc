@@ -118,7 +118,7 @@
      exit();
   }
 
-  $row = mysql_fetch_assoc($res);
+  $row = $db->sql_fetchrow($res);
   $itemsNum=$row["itemNum"];   
 
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
@@ -178,7 +178,7 @@ function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_
 }
 
 function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_comp=0) {
-   global $Theme;
+   global $db,$Theme;
    global $module_name;
    global $moduleRelPath;
    global $PREFS;
@@ -218,7 +218,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    echo "</tr>";
    
    $i=1;
-   while ($row = mysql_fetch_assoc($res)) { 
+   while ($row = $db->sql_fetchrow($res)) { 
 
     $name=getPilotRealName($row["userID"]);
     $name=prepare_for_js($name);
@@ -250,7 +250,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    }     
 
    echo "</table>";
-   mysql_freeResult($res);
+   $db->sql_freeresult($res);
 }
 
 

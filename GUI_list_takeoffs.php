@@ -114,7 +114,7 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 }
 
 function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
-   global $Theme, $module_name, $takeoffRadious, $userID, $moduleRelPath;
+   global $db,$Theme, $module_name, $takeoffRadious, $userID, $moduleRelPath;
    global $admin_users, $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode, $countries;
@@ -141,7 +141,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 <?
    	$currCountry="";
    	$i=1;
-	while ($row = mysql_fetch_assoc($res)) {  
+	while ($row = $db->sql_fetchrow($res)) {  
 		$takeoffName=selectWaypointName($row["name"],$row["intName"],$row["countryCode"]);	
 		$sortRowClass="l_row1";
 		if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
@@ -168,7 +168,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 		echo "</TR>";
    }     
    echo "</table>";
-   mysql_freeResult($res);
+   $db->sql_freeresult($res);
 }
 
 ?>
