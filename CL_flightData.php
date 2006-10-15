@@ -573,8 +573,8 @@ var $maxPointNum=1000;
 	$done=0;
 	$try_no_takeoff_detection=0;	
 	while(!$done) {	
+	
 		$lines = file ($filename); 
-
 		$linesNum =count($lines);
 		DEBUG("IGC",1,"File has total $linesNum lines<br>");
 		$points=0;
@@ -631,7 +631,9 @@ var $maxPointNum=1000;
 				$REJ_T_distance++;
 
 				// we dont go through the other tests
+				echo "{$lines[$i]} =>";
 				$lines[$i]{1}='X';
+				echo "{$lines[$i]}<br>";
 				continue;
 				//echo $T_distance[1]."*<br>";
 			}
@@ -689,16 +691,22 @@ var $maxPointNum=1000;
 		DEBUG("IGC",1,"REJ: [$REJ_max_vario_start] >max_vario_start<br>");
 
 		DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
-			if ($p>0) $done=1;
-			else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
-				$lines = file ($filename); 
-				$done=1;
-				$garminSpecialCase=1;
-				$p=$Brecords;
-			} else if (	!$try_no_takeoff_detection ) {
-				$try_no_takeoff_detection=1; 
-			}
-			else $done=1;
+		
+		if ($p>0) {
+			$done=1;
+		} else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
+			$lines = file ($filename); 
+			$done=1;
+			$garminSpecialCase=1;
+			$p=$Brecords;
+			DEBUG("IGC",1,"Many Stopped points, it is a Garmin Special Case<br>");
+		} else if (	!$try_no_takeoff_detection ) {
+			$try_no_takeoff_detection=1; 
+			DEBUG("IGC",1,"Will try no_takeoff_detection<br>");
+		} else { 
+			$done=1;
+		}
+		
 	} // while not done
 
 		//	 
@@ -779,6 +787,7 @@ var $maxPointNum=1000;
 					$lastPoint->gpsTime+=$day_offset;
 
 					$time_diff= $lastPoint->getTime() - $prevPoint->getTime() ;
+					echo "time diff: $time_diff # $line<br>";
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
                     		// $day_offset = 86400; // if time seems to have gone backwards, add a day
 							DEBUG("IGC",1,"[$points] $line<br>");
