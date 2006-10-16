@@ -120,7 +120,11 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 
 	$waypoints=array();
 	$i=0;
-    while ($row = $db->sql_fetchrow($res)) { 
+//    while ($row = $db->sql_fetchrow($res)) { 
+	//$rows=$db->sql_fetchrowset($res);
+	
+    while ($row = mysql_fetch_assoc($res)) { 
+	//foreach($rows as $row) {
 	  $waypoints[$i]=new gpsPoint();
  	  $waypoints[$i]->waypointID=$row["ID"];
 	  $waypoints[$i]->name=$row["name"];

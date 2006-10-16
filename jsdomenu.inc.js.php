@@ -75,9 +75,10 @@ function createjsDOMenu() {
   with (staticMenu6) {
 <? 
 
-	foreach( $availableLanguages as $tmpLang) {
+	foreach( $availableLanguages as $tmpLang) {	
+	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
 	  $flagLink="?name=".$module_name."&lng=".$tmpLang;
-	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' border=0>&nbsp;$tmpLang";
+	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' border=0>&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
 		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' border=0>";
 	  }
@@ -148,8 +149,8 @@ function createjsDOMenu() {
 	// $addedMenuWidth=count($availableLanguages)*18;
 	// $addedMenuWidth+=(count($CONF_glider_types)+1)*18;
     if (in_array($userID,$admin_users)) $addedMenuWidth+=130;
-//	echo "+".$addedMenuWidth; 
-	echo "+230";
+	echo "+".$addedMenuWidth; 
+	// echo "+230";
   ?>);
   
 

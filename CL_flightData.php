@@ -631,9 +631,9 @@ var $maxPointNum=1000;
 				$REJ_T_distance++;
 
 				// we dont go through the other tests
-				echo "{$lines[$i]} =>";
+				//echo "{$lines[$i]} =>";
 				$lines[$i]{1}='X';
-				echo "{$lines[$i]}<br>";
+				//echo "{$lines[$i]}<br>";
 				continue;
 				//echo $T_distance[1]."*<br>";
 			}
@@ -651,7 +651,7 @@ var $maxPointNum=1000;
 				$pointOK=0; 
 				$REJ_T_zero_time_diff++;
 				DEBUG("IGC",8,"[$Brecords-$p] No time Diff<br>");
-		   }
+			}
 			if ( $T_alt[1]   > $this->maxAllowedHeight ) {  $pointOK=0;	$REJ_max_alt++; }
 			if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) { 
 				 $pointOK=0; 
@@ -663,11 +663,16 @@ var $maxPointNum=1000;
 				// echo "V";
 			}
 			if ( $p<5 && ! $try_no_takeoff_detection) { // first 10 points need special care 
-				DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." <br>");
-				if ( abs($T_speed[1])  > ($this->maxAllowedSpeed *0.3) ) {  $pointOK=0;	$REJ_max_speed_start++;
+				$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
+				DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." max:$takeoffMaxSpeed<br>");
+				if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {  
+					$pointOK=0;	
+					$REJ_max_speed_start++;
 					// echo "s"; 
 				}
-				if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.3) ) {  $pointOK=0; $REJ_max_vario_start++;
+				if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.4) ) {  
+					$pointOK=0; 
+					$REJ_max_vario_start++;
 					//echo "v"; 
 				}
 			}
@@ -727,6 +732,10 @@ var $maxPointNum=1000;
 		$day_offset =0;
 		$foundNewTrack=0;
 
+		$slow_points=0;
+		$slow_points_dt=0;
+		$stillOnGround=1;
+		
 		foreach($lines as $line) {
 			if ($foundNewTrack) break;
 			$outputLine=$line;
@@ -756,16 +765,18 @@ var $maxPointNum=1000;
 			} else if (strtoupper(substr($line,0,13)) =="HFTZOTIMEZONE" ) {  // HFTZOTimezone:3 OR HFTZOTimezone:-8  
 				$this->timezone=substr($line,14)+0;
 				// echo $this->timezone."#^^";
-			} else if (strtoupper(substr($line,2,13)) =="GTYGLIDERTYPE" ) {  // HOGTYGLIDERTYPE: Gradient Bliss 26  OR  HPGTYGliderType:Gradient Nevada 
+			} else if (strtoupper(substr($line,2,13)) =="GTYGLIDERTYPE" ) {  
+				// HOGTYGLIDERTYPE: Gradient Bliss 26  OR  HPGTYGliderType:Gradient Nevada 
 				$this->glider=trim(substr($line,16));
-//				HFGTYGLIDERTYPE
-//              HOGTYGLIDERTYPE
+				// HFGTYGLIDERTYPE
+				// HOGTYGLIDERTYPE
 			} else 	if ($line{0}=='B' ) {
 				if ($stopReadingPoints ) continue;
 				if ($line{1}=='X') continue ; // MARKED BAD from BEFORE 
 				if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
+				
 				if  ($points==0)  { // first point 
-									
+									echo "######## first point <br>";
 					$firstPoint=new gpsPoint($line,$this->timezone);
 					if ($this->timezone==1000) { // no timezone in the file
 						// echo "calc timezone<br>";
@@ -787,7 +798,7 @@ var $maxPointNum=1000;
 					$lastPoint->gpsTime+=$day_offset;
 
 					$time_diff= $lastPoint->getTime() - $prevPoint->getTime() ;
-					echo "time diff: $time_diff # $line<br>";
+					// echo "time diff: $time_diff # $line<br>";
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
                     		// $day_offset = 86400; // if time seems to have gone backwards, add a day
 							DEBUG("IGC",1,"[$points] $line<br>");
@@ -815,6 +826,46 @@ var $maxPointNum=1000;
 					$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
+					if ( ($fast_points>5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
+						$stillOnGround=0;
+						DEBUG("IGC",1,"[$points] $line<br>");
+						DEBUG("IGC",1,"[$points] Found Takeoff <br>");
+					}
+									
+					if ($stillOnGround) { //takeoff scan
+						if ($speed > 15 ) {					
+							$fast_points++;		
+							$fast_points_dt+=$deltaseconds;	
+							DEBUG("IGC",1,"[$points] $line<br>");
+							DEBUG("IGC",1,"[$points] Found a fast speed point <br>");																
+						} else {
+							DEBUG("IGC",1,"[$points] $line<br>");
+							DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");																
+
+							$fast_points=0;
+							$fast_points_dt=0;
+						}		
+						$points=0;						
+						continue;			
+					} else { //landing  scan
+						if ($speed < 5 ) {					
+							$slow_points++;		
+							$slow_points_dt+=$deltaseconds;	
+							DEBUG("IGC",1,"[$points] $line<br>");
+							DEBUG("IGC",1,"[$points] Found a slow speed point <br>");																
+						} else {
+							$slow_points=0;
+							$slow_points_dt=0;
+						}
+					}					
+
+
+					if ($slow_points>5 || $slow_points_dt>300) { // found landing 5 stopped points or 5 mins (300 secs)
+						$foundNewTrack=1;
+						DEBUG("IGC",1,"[$points] $line<br>");
+						DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
+					}
+					
 					// sanity checks	
 					if ( $deltaseconds == 0 && !$garminSpecialCase) {  continue; }
 					if ( $alt    > $this->maxAllowedHeight ) {  continue; }
