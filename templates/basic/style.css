@@ -177,6 +177,11 @@ background-color:#C5D0ED;
 .activeSortHeader a, .activeSortHeader a:visited { color:#444444; }
 
 
+.attentionLink  a, .attentionLink  a:visited {
+	font-weight:bold;
+	color:#FF3300;
+}
+
 
 table.listTable tr:hover {
 	background-color:#F6EF80;

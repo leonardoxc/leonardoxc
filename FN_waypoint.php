@@ -85,7 +85,8 @@ function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	$countriesCodes=array();
 	$countriesNames=array();
 	$countriesFlightsNum=array();
-	while ($row = $db->sql_fetchrow($res)) { 
+//	while ($row = $db->sql_fetchrow($res)) { 
+	while ($row = mysql_fetch_array($res)) { 
 		$countriesN[$row["countryCode"]]= $countries[$row["countryCode"]];
 		$countriesFNum[$row["countryCode"]]= $row["FlightsNum"];
 	}
