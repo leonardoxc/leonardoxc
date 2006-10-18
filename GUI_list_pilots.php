@@ -234,7 +234,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	echo "<TD><div align=left>";
 
 	echo getNationalityDescription($row["countryCode"],1,0);
-	echo "<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline',-5,-5,200,'".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  
+	echo "<a href=\"javascript:pilotTip.newTip('inline',-5,-5,200,'".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  
 		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
 			
 	 echo "<TD>".$row["totalFlights"]."</TD>". 	 

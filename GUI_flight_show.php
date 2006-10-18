@@ -103,7 +103,7 @@ function add_takeoff(lat,lon,id) {
 function edit_takeoff(id) {	 
 	 takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit="+id+"';
+ 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
  }
 </script>
@@ -235,7 +235,7 @@ function edit_takeoff(id) {
 
 <?
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": ".
-	  "<a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".$flight->userName."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
+	  "<a href=\"javascript:pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".$flight->userName."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
 	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
 ?>
 
@@ -282,12 +282,11 @@ function edit_takeoff(id) {
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
    	  // echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;	   
 		//<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
-		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','$location',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
+		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','$location',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
 		
 		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
-			echo "<div class='attentionLink'><a href=\"javascript:nop()\" 
-			onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'
-			 onclick=\"user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\"  ><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
+			echo "<div class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
+			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
 		}
 		echo "</div></TD>";
 	 //  echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";

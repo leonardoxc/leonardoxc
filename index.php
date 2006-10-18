@@ -385,7 +385,7 @@ function exitPage($exitNow=1){
    global $module_name,$opMode,$noFooterMenu,$moduleRelPath,$PREFS;
    global $sqlQueriesDebug,$sqlFetchTime;
    global $pageStart;
-   
+   /*
    $sqlQueriesTime=0;
    $i=0;
    foreach ($sqlQueriesDebug as $tm) {
@@ -402,6 +402,7 @@ function exitPage($exitNow=1){
 	  $i++;
    }
    echo "<hr> total sql fetch time: $sqlQueriesTime secs in $i fetches <hr>";
+*/
 
    echo "<br>";
    if (!$noFooterMenu ) {

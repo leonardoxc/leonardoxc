@@ -364,10 +364,10 @@ with (takeoffTip)
 	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%3%'><? echo _Navigate_with_Google_Earth ?></a>"+
 	<? if ( $ext && is_leo_admin($userID) ) { ?>
     '</td></tr><tr><td class="infoBox adminBox">'+
-	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:nop()' onclick='add_takeoff(%5%,%6%,%3%)'><?=_ADD_WAYPOINT?></a>"+
+	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:add_takeoff(%5%,%6%,%3%)'><?=_ADD_WAYPOINT?></a>"+
 
      '</td></tr><tr><td class="infoBox adminBox">'+
-	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:nop()' onclick='edit_takeoff(%3%)'><?=_EDIT_WAYPOINT?></a>"+
+	 "<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='javascript:edit_takeoff(%3%)'><?=_EDIT_WAYPOINT?></a>"+
 
 	<? } ?>
 	'</td></tr></table>';

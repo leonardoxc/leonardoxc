@@ -335,10 +335,10 @@ function removeClubFlight(clubID,flightID) {
 		"<div align=left>";
 		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:nop()\" onclick=\"pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
+		echo " <a href=\"javascript:pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>";
 		echo "<div align=right>";
-		echo "<a href=\"javascript:nop()\" onclick=\"takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
+		echo "<a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD>$duration</TD>".
 	   "<TD>$linearDistance</TD>".
