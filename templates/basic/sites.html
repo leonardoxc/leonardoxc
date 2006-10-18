@@ -1,5 +1,33 @@
 
 <script language='javascript' src='{MODULE_REL_PATH}/autocomplete.js'></script>
+<script language='javascript' src='{MODULE_REL_PATH}/tipster.js'></script>
+
+<script language='javascript'>
+var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
+with (unknownTakeoffTip)
+{
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
+  '<tr><td class="infoBoxHeader" style="width:%2%px">%3%</td></tr>'+
+  '<tr><td class="infoBox" style="width:%2%px">%4%</td></tr></table>';
+
+// tipStick = 1;
+ showDelay = 0;
+ hideDelay = 2;
+ tipStick = 0.2;
+ doFades = false;
+ 
+ tips.africa = new Array(5, 5, 300, 'Africa','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+  tips.europe = new Array(5, 5, 300, 'Europe','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.asia = new Array(5, 5, 300, 'Asia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.australia= new Array(5, 5, 300, 'Australia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.n_america= new Array(5, 5, 300, 'North/Central America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
+ tips.s_america= new Array(5, 5, 300, 'South America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
+
+
+}
+</script>
+<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
 
 <form name="formFilter" method="post" action="">
   <div class='tableHeader shadowBox' width="650">
@@ -47,6 +75,24 @@
             <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites"
 		  onClick="seeSites('{MODULE_REL_PATH}/','selectedSitesList');">
         </p></td>
+    </tr>
+    <tr>
+      <td colspan="3" valign="top">
+	  <img src="{MODULE_REL_PATH}/img/worldmap.gif" width="710" height="400" border="0" usemap="#world" />
+<map name="world" id="world">
+<area shape="poly" coords="342,196" href="#" /><area shape="poly" coords="372,276,391,270,401,251,410,236,410,216,411,205,422,195,432,182,433,174,423,174,412,164,402,151,401,146,396,135,395,130,381,126,373,126,360,130,350,120,338,118,321,120,311,134,298,150,299,167,306,181,316,190,337,186,344,188,351,193,353,203,358,215,358,228,355,238,361,254,366,267" href="#" 
+ onmouseover='unknownTakeoffTip.show("africa")'  onmouseout='unknownTakeoffTip.hide()'
+/>
+<area shape="poly" coords="203,321,189,320,185,301,191,260,193,240,173,213,174,199,179,183,185,176,198,176,211,178,221,186,233,196,242,203,261,213,256,230,250,249,236,261,227,276,217,276,219,285,210,286,203,291,200,308" href="#"
+
+ onmouseover='unknownTakeoffTip.show("s_america")'  onmouseout='unknownTakeoffTip.hide()'
+  />
+<area shape="poly" coords="315,61" href="#" /><area shape="poly" coords="324,119,315,116,316,102,327,103,326,94,314,86,319,73,328,70,335,84,343,84,348,78,349,73,345,71,343,63,374,45,385,44,401,46,410,49,409,52,400,54,401,58,408,58,419,52,433,84,427,90,414,96,408,96,399,96,393,97,391,105,391,110,384,111,380,114,381,120,373,117,369,108,361,101,357,99,362,105,366,111,366,116,357,116,359,111,354,103,348,103,339,103,333,109,330,116" href="#"
+ onmouseover='unknownTakeoffTip.show("europe")'  onmouseout='unknownTakeoffTip.hide()'
+  />
+</map>
+	  
+	  &nbsp;</td>
     </tr>
   </table>
 </form>
