@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
  	require_once "EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";
@@ -37,7 +38,7 @@
 <NetworkLink>
   <name>Leonrdo Live Tracking </name>
   <open>1</open>
-  <description>Live tracking of </description>
+  <description>Live tracking </description>
   <Url>
     <href>http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos</href>
     <refreshMode>onInterval</refreshMode>
@@ -50,14 +51,8 @@
 </kml>';
 		
 	} else	if ( $op=="pos" ) {
-/*		$lat=$_GET['lat']+0;
-		$lon=-$_GET['lon']+0;
 
-		$firstPoint=new gpsPoint();
-		$firstPoint->lat=$lat;
-		$firstPoint->lon=$lon;
-*/
-		 $query="SELECT * FROM  leonardo_live_tmp ORDER BY time desc LIMIT 10 ";
+		$query="SELECT * FROM  leonardo_live_data ORDER BY time desc LIMIT 10 ";
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
@@ -67,49 +62,29 @@
 
 		$XML_str="NO DATA - ERROR";
 		while  ($row = mysql_fetch_assoc($res)) { 
-			$time  =$row["time"];
-			$phone =$row["phone"];
-			$msg   =$row["msg"];
-			// !P03384852N<<091083W<<214<<0<<169
-			if ( preg_match("/\!P03(.+)<<(.+)<<(.+)<<(.+)<<(.+)/",$msg,$matches))  {
-				$lat=$matches[1];
-				$lon=$matches[2];
-				$alt=$matches[3];
-				$speed=$matches[4];
-				$cog=$matches[5];
+			$ip	  =$row["ip"];
+			$time =$row["time"];
+			$username =$row["username"];
+			$passwd =$row["passwd"];
+			$lat =$row["lat"];
+			$lon =$row["lon"];
+			$alt =$row["alt"];
+			$sog =$row["sog"];
+			$cog =$row["cog"];
+			
 
-				$d=substr($lat,0,2);
-				$m=substr($lat,2,2);
-				$s=substr($lat,4,2);
-				$orientation=strtolower(substr($lat,6,1));
-
-				$lat=$d+($m+$s/100)/60 ;
-				if ($orientation=='s') $lat=-$lat;
-
+			$thisPoint=new gpsPoint();
+			$thisPoint->lat=$lat;
+			$thisPoint->lon=$lon;
+			
+			$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
+			substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
+			$XML_str="$time  :: $alt m, $sog km/h, cog:$cog";
 				
-				// now lon (West/East)
-				$d=substr($lon,0,2);
-				$m=substr($lon,2,2);
-				$s=substr($lon,4,2);
-				$orientation=strtolower(substr($lon,6,1));
-
-				// $lon=$d+$m/100;//  + $s/60000
-				$lon=$d+($m+$s/100)/60;
-				if ($orientation=='w') $lon=-$lon;
-
-				$thisPoint=new gpsPoint();
-				$thisPoint->lat=$lat;
-				$thisPoint->lon=$lon;
-				
-				$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
-				substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
-				$XML_str="$time  :: $phone :: $msg -> $lat , $lon , $alt, $speed , $cog";
-				
-				break;
-			}
+			break;
 			
 		} // end while 
-		$xml=makeKMLpoint($lat,$lon,"Last known Position $time");
+		$xml=makeKMLpoint($lat,$lon,$XML_str);
 		
 		// echo $XML_str;
 		// send_XML($XML_str);
