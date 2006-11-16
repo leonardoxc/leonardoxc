@@ -105,22 +105,28 @@ class gpsPoint {
 		return	utm(-$this->lon,$this->lat);
 	}
 
-	function getLatMinDec() {
+	function getLatMinDec($compact=0) {
 		 $coord_tmp =$this->lat; 		
 		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
 		 else $i=ceil($coord_tmp); 		
 
-		 $f=abs(($coord_tmp-$i)*60); 
-		 return sprintf("%s %d° %06.5f'\n", (($i>=0)?"N":"S"),abs($i), $f);
+		 $f=abs(($coord_tmp-$i)*60);
+		 if ($compact) 
+			 return sprintf("%02d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($i>=0)?"N":"S");
+		 else
+			 return sprintf("%s %d° %06.5f'\n", (($i>=0)?"N":"S"),abs($i), $f);
 	}
 
-	function getLonMinDec() {
+	function getLonMinDec($compact=0) {
 		 $coord_tmp=-$this->lon;
 		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
 		 else $i=ceil($coord_tmp); 		
 
 		 $f=abs(($coord_tmp-$i)*60); 
-		 return sprintf("%s %d° %06.5f'\n", (($i>=0)?"E":"W"),abs($i), $f);
+		 if ($compact) 
+			 return sprintf("%03d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($i>=0)?"E":"W");
+		 else
+		 	return sprintf("%s %d° %06.5f'\n", (($i>=0)?"E":"W"),abs($i), $f);
 	}
 
 	function getLatDMS() {
@@ -143,6 +149,26 @@ class gpsPoint {
 		 return sprintf("%s %d° %02d' %02.1f\"", (($i>=0)?"E":"W"),abs($i), floor($minutes),$seconds);
 
 	}
+
+	function to_IGC_Record() {
+		// make this string 
+		// B125651 4029151N 02310255E A00000 00486
+		// from N40:29.151 E23:10.255
+		$latStr=$this->getLatMinDec(1);
+		$lonStr=$this->getLonMinDec(1);
+
+		$h=floor($this->gpsTime/3600);
+		$m=floor( ($this->gpsTime%3600) / 60 );
+		$s=$this->gpsTime%60;
+
+		
+		$pointString=sprintf("B%02d%02d%02d%8s%8sA%05d%05d",
+			$h,$m,$s,
+			$latStr,$lonStr,
+			$this->varioAlt, $this->gpsAlt );
+	
+		return $pointString;
+	}		
 
 
 }	 // end class gpsPoint

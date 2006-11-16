@@ -12,6 +12,8 @@
 /************************************************************************/
  
 function getHTTPpage($url,$timeout=5) {
+	return fetchURL($url,$timeout);
+
 	preg_match("/^(http:\/\/)?([^\/]+)/i", $url, $matches);
 	$ServerHostName= $matches[2]; 
 	$pos = strpos( $ServerHostName,":"); 
@@ -22,15 +24,51 @@ function getHTTPpage($url,$timeout=5) {
 	}
 
 	// echo "#".$ScoringServerHostName."#". $ScoringServerPort ."#";
-	$fp = @fsockopen ($ServerHostName, $ServerPort, $errno, $errstr, 3); 
-	if (!$fp) return 0;
+	$fp = @fsockopen ($ServerHostName, $ServerPort, $errno, $errstr, $timeout); 
+	if (!$fp) { return 0; }
 	else fclose ($fp); 
-
-	set_time_limit ($timeout);
 	
 	$contents = file($url); 
-	set_time_limit(180);
+	//	set_time_limit(180);
 	return $contents ;
+}
+
+function fetchURL( $url, $timeout=5) {
+   $url_parsed = parse_url($url);
+   $host = $url_parsed["host"];
+   $port = $url_parsed["port"];
+   if ($port==0)
+       $port = 80;
+   $path = $url_parsed["path"];
+   if ($url_parsed["query"] != "")
+       $path .= "?".$url_parsed["query"];
+
+   $out = "GET $path HTTP/1.0\r\nHost: $host\r\n\r\n";
+
+   $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
+   if (!$fp) { return 0; }
+
+   stream_set_timeout($fp,$timeout);
+
+   if (fwrite($fp, $out)) {
+	   $body = false;
+	   while (!feof($fp)) {
+		   if ( ! $s = fgets($fp, 1024) ) { 
+				//echo "#"; 
+				break; 
+			}
+		   if ( $body )
+			   $in .= $s;
+		   if ( $s == "\r\n" )
+			   $body = true;
+	   }
+   }  else {
+	//echo "$";
+   }
+
+   fclose($fp);
+  
+   return $in;
 }
 
 function splitLines($line) {
