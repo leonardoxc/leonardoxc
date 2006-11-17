@@ -182,12 +182,14 @@ background-color:#C5D0ED;
 	color:#FF3300;
 }
 
-
-table.listTable tr:hover {
-	background-color:#F6EF80;
+/*
+table.listTable tr {
+   behavior: url('/modules/leonardo/templates/basic/hover.htc');
 }
-
-
+*/
+table.listTable tr:hover , table.listTable tr.hover {
+   background-color:#F6EF80;
+}
 
 .headerRow { 
 	text-align:right;

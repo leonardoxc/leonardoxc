@@ -45,7 +45,6 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Woc",
 	"Windtech",
 	"Sky",
-
 	"Ozone",
 	"Aerodyne", //20
 	"Aircross",
@@ -54,12 +53,12 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Firebird",
 	"FlightDesign", // 25 
 	"Niviuk",
-	"Independence"
-
+	"Independence",
+	"Axis", 
 	// to be added
 //	"FlyingPlanet", // not found
 //	"ADG",      // not found
-//	"Axis",    // not found  
+
 
  );
  /*

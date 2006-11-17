@@ -11,7 +11,13 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+?>
+<style type = "text/css">
+table.listTable tr {
+   behavior: url('<? echo $moduleRelPath?>/hover.htc');
+}
+</style>
+<?
 define ('MAIN_BG','#EDEEF1');   // more light blue
 $imagesPrefix=$moduleRelPath."/img/";
 global $imagesPrefix;
