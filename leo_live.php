@@ -84,7 +84,7 @@
 			
 		} // end while 
 		$name=$user;
-		$xml=makeKMLpoint($lat,$lon,$name,$XML_str);
+		$xml=makeKMLpoint($lat,$lon,$alt,$name,$XML_str);
 		
 		// echo $XML_str;
 		// send_XML($XML_str);
@@ -105,6 +105,8 @@
 
 		$XML_str="NO DATA - ERROR";
 		$i=0;
+		
+		//$xml.=makeKMLtrack("ff0000",1,2,$res) ;
 		while  ($row = mysql_fetch_assoc($res)) { 
 			$ip	  =$row["ip"];
 			$time =$row["time"];
@@ -117,8 +119,36 @@
 			$cog =$row["cog"];
 			
 
-			if ($i==0) $xml.= "<name>LeoLive for $user ($time)</name>";
+			if ($i==0) { 
+			
+				$xml.= "<name>LeoLive for $user ($time)</name>";
 
+
+				$lineColor="ff0000";
+				$lineWidth=2;
+				$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
+		
+				$i=0;
+
+				$kml_file_contents.=
+				"<Placemark >\n<name>Leo Live </name>
+				  <Style>
+					<LineStyle>
+					  <color>".$KMLlineColor."</color>
+					  <width>$lineWidth</width>
+					</LineStyle>
+				  </Style>
+				";
+		
+				$kml_file_contents.=
+				"<LineString>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>";
+		
+			}
+			
+			
+			
 			$thisPoint=new gpsPoint();
 			$thisPoint->lat=$lat;
 			$thisPoint->lon=$lon;
@@ -129,10 +159,17 @@
 			$XML_str="$timeStr $alt m, $sog km/h";				
 
 			$name=$user;
-			$xml.=makeKMLpoint($lat,$lon,"",$XML_str,2,0.4);
+			$xml.=makeKMLpoint($lat,$lon,$alt,"",$XML_str,2,0.2);
+						
+
+
+			$kml_file_contents.=$lon.",".$lat.",".$alt." ";
+			if($i % 50==0) $kml_file_contents.="\n";
+		
 			$i++;
 		} // end while 
-		$xml.="</Folder></kml>";
+		$kml_file_contents.="</coordinates>\n</LineString>\n</Placemark>";
+		$xml.="$kml_file_contents.\n</Folder></kml>";
 
 	}  else if ($op=="igc") {
 		$user=$_GET['user'];
@@ -180,7 +217,7 @@
 
 			$thisPoint=new gpsPoint();
 			$thisPoint->lat=$lat;
-			$thisPoint->lon=$lon;
+			$thisPoint->lon=-$lon;
 
 			$thisPoint->gpsAlt=$alt;
 			$thisPoint->gpsTime=$tm %(3600*24);
@@ -250,7 +287,7 @@
 		echo $XML_str;	
 	}
 
-	function makeKMLpoint($lat,$lon,$name="",$desc="",$iconNum=1,$scale=0.800000011920929) {
+	function makeKMLpoint($lat,$lon,$alt,$name="",$desc="",$iconNum=1,$scale=0.800000011920929) {
 
     	$icons = array (1 => array ("root://icons/palette-2.png", 224, 224), 
 2 => array ("root://icons/palette-4.png", 0, 160),
@@ -274,13 +311,63 @@
 				  </Icon>
 				</IconStyle>
 			  </Style>".
-       "<Point>
-			 <extrude>1</extrude>
-		      <tessellate>1</tessellate>
-		      <altitudeMode>relativeToGround</altitudeMode>
-          <coordinates>". $lon.",".$lat.",0</coordinates>
+       "<Point> ".
+//"		 <extrude>1</extrude>".
+"		      <tessellate>1</tessellate>".
+//"		      <altitudeMode>relativeToGround</altitudeMode>".
+"		      <altitudeMode>absolute</altitudeMode>".
+"          <coordinates>". $lon.",".$lat.",$alt</coordinates>
         </Point>
       </Placemark>";
 	  return $res;
+	}
+	
+	
+	function makeKMLtrack($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$res) {
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
+
+		//if (file_exists($this->getKMLFilename())) return;
+		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
+		
+		$i=0;
+
+		$kml_file_contents.="<Placemark >\n<name>Leo Live </name>";
+
+		$kml_file_contents.=
+		"<Style>
+			<LineStyle>
+			  <color>".$KMLlineColor."</color>
+			  <width>$lineWidth</width>
+			</LineStyle>
+		  </Style>
+		";
+
+		$kml_file_contents.=
+		"<LineString>
+		<altitudeMode>absolute</altitudeMode>
+		<coordinates>";
+
+		while  ($row = mysql_fetch_assoc($res)) { 
+			$ip	  =$row["ip"];
+			$time =$row["time"];
+			$username =$row["username"];
+			$passwd =$row["passwd"];
+			$lat =$row["lat"];
+			$lon =$row["lon"];
+			$alt =$row["alt"];
+			$sog =$row["sog"];
+			$cog =$row["cog"];
+			
+
+			$kml_file_contents.=$lon.",".$lat.",".$alt." ";
+			$i++;
+			if($i % 50==0) $kml_file_contents.="\n";
+		}
+
+		$kml_file_contents.="</coordinates>\n</LineString>";
+		$kml_file_contents.="</Placemark>";
+		return 		$kml_file_contents;
 	}
 ?>
