@@ -141,7 +141,7 @@ var supernote = new SuperNote('supernote',  { hideDelay: 100 });
 </script>
 
 <?
-if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition"))) {
+if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {
   require_once dirname(__FILE__)."/MENU_dates.php";
   require_once dirname(__FILE__)."/MENU_countries.php";
   

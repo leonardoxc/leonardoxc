@@ -235,7 +235,7 @@ function edit_takeoff(id) {
 
 <?
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": ".
-	  "<a href=\"javascript:pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".$flight->userName."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
+	  "<a href=\"javascript:pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
 	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
 ?>
 
@@ -282,7 +282,7 @@ function edit_takeoff(id) {
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
    	  // echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;	   
 		//<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
-		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','$location',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
+		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
 		
 		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
 			echo "<div class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
@@ -450,12 +450,78 @@ function edit_takeoff(id) {
   close_tr();
   }
 
+//-------------------------------------------------------------------
+// get from paraglidingearth.com
+//-------------------------------------------------------------------
+
+
+	$getXMLurl="http://www.paraglidingearth.com/takeoff_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&distance=50&limit=5";
+	$xmlSites1=getHTTPpage($getXMLurl);
+
+if ($xmlSites1) {
+	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
+	$xmlDoc = new MiniXMLDoc();
+	$xmlDoc->fromString($xmlSites1);
+	$xmlArray1 = $xmlDoc->toArray();
+	$takeoffsNum=0;
+	$takoffsList=array();
+    // print_r($xmlArray1);
+	if (is_array($xmlArray1['search'])) {
+		if (is_array($xmlArray1['search']['takeoff'][0])) 
+			$arrayToUse=$xmlArray1['search']['takeoff'];
+		else
+			$arrayToUse=$xmlArray1['search'];
+	} else 
+		$arrayToUse=0;
+
+	if ($arrayToUse) {
+		foreach ($arrayToUse as $flightareaNum=>$flightarea) {
+			 if ( $flightareaNum!=="_num" && $flightarea['name']) {
+					$distance=$flightarea['distance']; 
+					if ($distance>50000) continue;
+					if ($flightarea['area']!='not specified') $areaStr=" - ".$flightarea['area'];
+					else $areaStr="";
+
+					$takoffsList[$takeoffsNum]= "<a href='".$flightarea['pe_link']."' target=_blank>".$flightarea['name']."$areaStr (".$flightarea['countryCode'].") [~".formatDistance($distance,1)."]</a>";
+					$takeoffsNum++;
+					if ($takeoffsNum==5) break;
+			}
+		}
+  }
+  if ($takeoffsNum) {
+  open_tr();
+   	  // echo "<TD>&nbsp</td>";
+	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
+	   echo "<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
+	   echo "<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0><br>"._FLYING_AREA_INFO;
+	   echo "</a>";
+	   echo "</div></TD>";	  	   
+   	   echo "<TD colspan=4><div align=left>";
+
+	   	echo "<table width=100% class=main_text><tr><td valign=top align=left>";
+		echo "<ul>";
+			foreach ($takoffsList as $takeoffLink) echo "<li>$takeoffLink";
+		echo "</ul>";
+  	    //	  echo "<a href='http://www.paragliding365.com/paragliding_sites_kml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>Google Earth Flying area 50km radius from paragliding365.com</a><br>";
+		echo "</td></tr></table>";
+
+	   echo "</div></TD>";
+   //	   echo "<TD>&nbsp</td>";
+  close_tr();
+  }
+
+} // if we have content
+
   
+//-------------------------------------------------------------------
+// get from paragliding365.com
+//-------------------------------------------------------------------
+
 
 	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
-	$xmlSitesLines=getHTTPpage($getXMLurl);
-if ($xmlSitesLines) {
-	$xmlSites=implode(" ",$xmlSitesLines);		
+	$xmlSites=getHTTPpage($getXMLurl);
+
+if ($xmlSites) {
 	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites);
@@ -505,6 +571,8 @@ if ($xmlSitesLines) {
 
 } // if we have content
 
+
+
   if (in_array($userID,$admin_users) ) {
 	  open_tr();
 	//	   echo "<TD>&nbsp</td>";
@@ -522,7 +590,7 @@ if ($xmlSitesLines) {
 				echo "<div id=xmlOutputShow style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML from paragliding365.com</a></div>";
 				echo "<div id=xmlOutput style='display:none'><hr>";
 				echo "XML from paragliding365.com<br>";
-				echo "<pre>$xmlSites</pre></div>";
+				echo "<pre>$xmlSites1</pre><hr><pre>$xmlSites</pre></div>";
 			}
 
 		   echo "</div></TD>";

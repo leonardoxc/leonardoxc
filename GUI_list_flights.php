@@ -46,10 +46,6 @@
 		$where_clause.=" AND userID>0 ";		
   }
 
-  if ( ! ($pilotID>0 && $pilotID==$userID ) && !in_array($userID,$admin_users) ) {
-		$where_clause.=" AND private=0 ";
-  }
-
   if ($takeoffID) {
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
   }
@@ -86,6 +82,11 @@
   }  else if ($sortOrder=="DATE") { 
 	 $sortOrderFinal="DATE DESC, FLIGHT_POINTS ";
   }
+
+  if ( ! ($pilotID>0 && $pilotID==$userID ) && !in_array($userID,$admin_users) ) {
+		$where_clause.=" AND private=0 ";
+  }
+
   $filter_clause=$_SESSION["filter_clause"];
   if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
   else $countryCodeQuery=1;
@@ -128,7 +129,7 @@
 
 
   $query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
-  // echo "#count query#$query<BR>";
+  //  echo "#count query#$query<BR>";
   $res= $db->sql_query($query);
   if($res <= 0){   
 	 echo("<H3> Error in count items query! $query</H3>\n");
@@ -338,7 +339,7 @@ function removeClubFlight(clubID,flightID) {
 		echo " <a href=\"javascript:pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>";
 		echo "<div align=right>";
-		echo "<a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
+		echo "<a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD>$duration</TD>".
 	   "<TD>$linearDistance</TD>".

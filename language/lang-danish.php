@@ -350,7 +350,7 @@ define("_Flying_Stuff","Flyvemæssige ting");
 define("_note_place_and_date","hvis relevant angiv sted, land og dato");
 define("_Flying_Since","Har fløjet siden");
 define("_Pilot_Licence","Pilot licens");
-define("_Paragliding_training","Paragliding intsruktion");
+define("_Paragliding_training","Paragliding instruktion");
 define("_Favorite_Location","Favorit sted");
 define("_Usual_Location","Normalt sted");
 define("_Best_Flying_Memory","Bedste flyveoplevelse");
@@ -529,7 +529,7 @@ define("_M_PER_SEC","m/s");
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","World Wide");
+define("_WORLD_WIDE","Hele verden");
 define("_National_XC_Leagues_for","National XC liga for");
 define("_Flights_per_Country","Flyvninger per land");
 define("_Takeoffs_per_Country","Startsteder per land");
@@ -539,7 +539,7 @@ define("_INDEX_MESSAGE","Du kan bruge &quot;Hovedmenu&quot; til at navigere elle
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","Første (opsummering) side");
+define("_MENU_SUMMARY_PAGE","Oversigt");
 define("_Display_ALL","Vis ALLE");
 define("_Display_NONE","Vis INGEN");
 define("_Reset_to_default_view","Reset til standard visning");

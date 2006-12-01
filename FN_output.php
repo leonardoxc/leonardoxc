@@ -128,6 +128,8 @@ function formatLocation($name,$vinicity,$radious) {
 		$res_name=$name."&nbsp;[~".sprintf("%.1f",$dis)."]"; 
 //		$res_name=$name."&nbsp;[~".sprintf("%.1f",$vinicity/1000)."&nbsp;km]"; 
  else $res_name=$name;
+
+ $res_name=str_replace("&#039;","'",$res_name);
  return $res_name;
 }
 

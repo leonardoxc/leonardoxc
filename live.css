@@ -1,0 +1,52 @@
+body , p, table, td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-style: normal;
+	text-align:justify;
+}
+
+h1 {
+	font-size: 14pt;
+}
+
+h2,h3 {
+	font-size: 11pt;
+	font-weight:bold;
+	border-bottom:#CC3333 3px solid;	
+	width:  760px;
+	display:block;
+}
+
+a:link, a:visited {
+	text-decoration:underline;
+	color:#006699;
+}
+
+a:hover {
+	background-color:#FFCC66;
+}
+
+.small {
+	font-size: 7pt;
+	font-style: normal;
+}
+
+.header1 {
+background-color:#CCCCFF;
+}
+
+.list_tracks td {
+	border: 1px solid #aaaaaa;
+}
+
+.list_tracks th {
+	border: 1px solid #888888;
+	background-color:#99CCFF;
+}
+
+.row1 {
+	background-color:#FFFFFF;
+}
+.row2 {
+	background-color:#F0F0F5;
+}

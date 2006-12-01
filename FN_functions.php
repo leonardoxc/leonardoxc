@@ -1,6 +1,6 @@
 <? 
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                                */
+/* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
@@ -45,7 +45,7 @@ function fetchURL( $url, $timeout=5) {
 
    $out = "GET $path HTTP/1.0\r\nHost: $host\r\n\r\n";
 
-   $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
+   $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
    if (!$fp) { return 0; }
 
    stream_set_timeout($fp,$timeout);

@@ -21,6 +21,8 @@
 
 
 
+
+
   
 <div align="center"> 
   <p> 
@@ -129,6 +131,9 @@
                 <br>        
         <strong>Karolina Kociecka</strong> for the <strong>Polish</strong> translation</p>
               <p><a href="http://www.felhout.hu/erd/egyeb/introduction.html" target="_blank"><strong>Zsolt Rohberg</strong></a>  for the <strong>Hungarian</strong> translation</p>
+              <p><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=5393" target="_blank"><strong>Rado
+              Voglar</strong></a> for the <strong>Slovenian</strong> translation </p>
+              <p> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </p>
               <hr></td>
     </tr>
   </table>

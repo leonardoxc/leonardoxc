@@ -98,18 +98,49 @@
 			 echo("<H3> Error in query! $query </H3>\n");
 			 exit();
 		 }
+		 
+		 
+		 $iconNum=2;
+		 $scale=0.2;
+
+    	$icons = array (1 => array ("root://icons/palette-2.png", 224, 224), 
+2 => array ("root://icons/palette-4.png", 0, 160),
+3 => array ("root://icons/palette-3.png", 64, 192), 
+4 => array ("root://icons/palette-3.png", 96, 192), 
+5 => array ("root://icons/palette-3.png", 128, 192) );
+
 		$xml= '<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
 <kml xmlns="http://earth.google.com/kml/2.0">
 <Folder>
+			  <Style id="markerPoint">
+				<IconStyle>
+				  <scale>'.$scale.'</scale>
+				  <Icon>
+					<href>'.$icons[$iconNum][0].'</href>
+					<x>'.$icons[$iconNum][1].'</x>
+					<y>'.$icons[$iconNum][2].'</y>
+					<w>32</w>
+					<h>32</h>
+				  </Icon>
+				</IconStyle>
+				<LabelStyle>
+					<scale>0.7</scale>
+				</LabelStyle>
+			  </Style>
 ';
 
 		$XML_str="NO DATA - ERROR";
 		$i=0;
 		
 		//$xml.=makeKMLtrack("ff0000",1,2,$res) ;
+		$last_printed_tm=0;
+		$last_printed_timeString=0;
+		$last_alt=-999;
+		
 		while  ($row = mysql_fetch_assoc($res)) { 
 			$ip	  =$row["ip"];
 			$time =$row["time"];
+			$tm=$row['tm'];
 			$username =$row["username"];
 			$passwd =$row["passwd"];
 			$lat =$row["lat"];
@@ -121,7 +152,9 @@
 
 			if ($i==0) { 
 			
-				$xml.= "<name>LeoLive for $user ($time)</name>";
+				$xml.= "<name>LeoLive for $user</name>
+				<description><![CDATA[($time)]]></description>
+				<Folder><name>Time Markers</name>";
 
 
 				$lineColor="ff0000";
@@ -131,7 +164,8 @@
 				$i=0;
 
 				$kml_file_contents.=
-				"<Placemark >\n<name>Leo Live </name>
+				"<Placemark >
+				  <name>Track Line</name>				  
 				  <Style>
 					<LineStyle>
 					  <color>".$KMLlineColor."</color>
@@ -147,20 +181,35 @@
 		
 			}
 			
-			
-			
-			$thisPoint=new gpsPoint();
-			$thisPoint->lat=$lat;
-			$thisPoint->lon=$lon;
-
-			$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
-			substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
-			$timeStr=substr($time,11);
-			$XML_str="$timeStr $alt m, $sog km/h";				
-
-			$name=$user;
-			$xml.=makeKMLpoint($lat,$lon,$alt,"",$XML_str,2,0.2);
-						
+			$dt=$tm - $last_printed_tm;
+			if ( ($dt) > 56 ) {  
+				
+				$thisPoint=new gpsPoint();
+				$thisPoint->lat=$lat;
+				$thisPoint->lon=$lon;
+				if ($last_alt==-999) 
+					$vario=0;
+				else 
+					$vario=sprintf("%0.1f",($alt-$last_alt)/$dt);
+					
+				$last_printed_tm=$tm;
+				$last_alt=$alt;
+				
+				$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
+				substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
+				$timeStr=substr($time,11);
+				$XML_str="<br>$alt m , $sog km/h<br>1 min average vario : $vario m/sec";
+	
+				$name=$user;
+				
+				if ( ( $tm - $last_printed_timeString ) > 60*10-4 ) { // 10 minutes
+					$timeStr1=substr($timeStr,0,5);
+					$last_printed_timeString=$tm;
+				} else {
+					$timeStr1="";
+				}
+				$xml.=makeKMLpoint($lat,$lon,$alt,$timeStr1,$timeStr." ".$XML_str);
+			}						
 
 
 			$kml_file_contents.=$lon.",".$lat.",".$alt." ";
@@ -169,7 +218,7 @@
 			$i++;
 		} // end while 
 		$kml_file_contents.="</coordinates>\n</LineString>\n</Placemark>";
-		$xml.="$kml_file_contents.\n</Folder></kml>";
+		$xml.="\n</Folder>$kml_file_contents</Folder></kml>";
 
 	}  else if ($op=="igc") {
 		$user=$_GET['user'];
@@ -287,38 +336,21 @@
 		echo $XML_str;	
 	}
 
-	function makeKMLpoint($lat,$lon,$alt,$name="",$desc="",$iconNum=1,$scale=0.800000011920929) {
+	function makeKMLpoint($lat,$lon,$alt,$name="",$desc="") {
 
-    	$icons = array (1 => array ("root://icons/palette-2.png", 224, 224), 
-2 => array ("root://icons/palette-4.png", 0, 160),
-3 => array ("root://icons/palette-3.png", 64, 192), 
-4 => array ("root://icons/palette-3.png", 96, 192), 
-5 => array ("root://icons/palette-3.png", 128, 192) );
-
-      $res = "
-      <Placemark>
-      		 <name><![CDATA[$name]]></name>
-			  <description><![CDATA[$desc]]></description>
-			  <Style>
-				<IconStyle>
-				  <scale>$scale</scale>
-				  <Icon>
-					<href>".$icons[$iconNum][0]."</href>
-					<x>".$icons[$iconNum][1]."</x>
-					<y>".$icons[$iconNum][2]."</y>
-					<w>32</w>
-					<h>32</h>
-				  </Icon>
-				</IconStyle>
-			  </Style>".
-       "<Point> ".
+      $res = 
+"<Placemark>".
+"  <name><![CDATA[$name]]></name>".
+"  <description><![CDATA[$desc]]></description>".
+"  <styleUrl>#markerPoint</styleUrl>
+  <Point> ".
 //"		 <extrude>1</extrude>".
-"		      <tessellate>1</tessellate>".
+"      <tessellate>1</tessellate>".
 //"		      <altitudeMode>relativeToGround</altitudeMode>".
-"		      <altitudeMode>absolute</altitudeMode>".
-"          <coordinates>". $lon.",".$lat.",$alt</coordinates>
-        </Point>
-      </Placemark>";
+"      <altitudeMode>absolute</altitudeMode>".
+"      <coordinates>". $lon.",".$lat.",$alt</coordinates>
+  </Point>
+</Placemark>";
 	  return $res;
 	}
 	
