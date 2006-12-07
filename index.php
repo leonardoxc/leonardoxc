@@ -47,6 +47,7 @@ require_once $moduleRelPath."/FN_output.php";
 require_once $moduleRelPath."/CL_flightData.php";
 require_once $moduleRelPath."/templates/".$PREFS->themeName."/theme.php";
 
+
 if ($opMode==1 ) { // phpnuke 
 	$user = $_REQUEST['user'];
 	if ( is_user($user)) {
@@ -123,7 +124,7 @@ require_once $moduleRelPath."/MENU_menu.php";
 
 <script language="javascript">
 
-var supernote = new SuperNote('supernote',  { hideDelay: 100 });
+ var supernote = new SuperNote('supernote',  { hideDelay: 100 });
 
 // Available config options are:
 //allowNesting: true/false    // Whether to allow triggers within triggers.
@@ -222,7 +223,18 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    ?>
   	    </div>
   	    <? } ?>
-  	    
+  	    <ul id="nav">
+			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0><? echo "<b>$countryLegend</b>" ?></a>
+				<ul>				
+				 <?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?>
+				</ul>			
+			</li>
+			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "<b>$dateLegend</b>";?></a>
+				<ul>
+				 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
+				</ul>
+			</li>
+		</ul>
   	    <div class="menu1" >
 			<a href="#selDate" class="supernote-hover-selDate note_link">
 			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
@@ -422,7 +434,7 @@ function exitPage($exitNow=1){
    $pageEnd=getmicrotime();
    $pageTime=$pageEnd-$pageStart;
    echo "PAGE CREATION: $pageTime secs<BR>";
-	
+		
    if ($exitNow) exit;
 }
 

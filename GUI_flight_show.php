@@ -71,7 +71,7 @@ function setSelectColor(theDiv) {
 	else { theDiv.background = oColour; }
 
 }
-
+/*
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
 with (unknownTakeoffTip)
 {
@@ -87,8 +87,9 @@ with (unknownTakeoffTip)
 
  tipStick = 0.2;
 }
+*/
 </script>
-<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 1000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 <? if ( is_leo_admin($userID) ) { ?>
@@ -234,6 +235,7 @@ function edit_takeoff(id) {
 </form>
 
 <?
+
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": ".
 	  "<a href=\"javascript:pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
 	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);

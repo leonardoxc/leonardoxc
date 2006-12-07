@@ -1,0 +1,12 @@
+<PUBLIC:ATTACH EVENT="onmouseover" ONEVENT="DoMenuHover()" />
+<PUBLIC:ATTACH EVENT="onmouseout"  ONEVENT="RestoreMenuHover()" />
+<SCRIPT LANGUAGE="JScript">
+function DoMenuHover()
+  { element.className += ' sfhover';
+  }
+
+function RestoreMenuHover()
+  { element.className = element.className.replace(/\bsfhover\b/,'');
+  }
+
+</SCRIPT>

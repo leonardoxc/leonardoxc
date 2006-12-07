@@ -40,7 +40,7 @@
   <open>1</open>
   <description>User '.$user.' was last seen at</description>
   <Url>
-    <href><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.']]></href>
+    <href><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&amp;user='.$user.']]></href>
     <refreshMode>onInterval</refreshMode>
     <refreshInterval>10</refreshInterval>
     <viewRefreshMode>onStop</viewRefreshMode>

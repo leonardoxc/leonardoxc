@@ -18,6 +18,7 @@ table.listTable tr {
 }
 </style>
 <?
+
 define ('MAIN_BG','#EDEEF1');   // more light blue
 $imagesPrefix=$moduleRelPath."/img/";
 global $imagesPrefix;
