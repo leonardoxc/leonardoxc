@@ -1,0 +1,114 @@
+
+
+#dropMenu, #dropMenu ul {
+	float: left;
+	width: auto;
+
+	list-style: none;
+	line-height: 1;
+	background-color:#E4ECF0;
+	
+	font-weight: bold;
+	padding: 0;
+	border: solid #eda;
+	border-width: 1px 1px;
+	margin: 0 0 0.3em 0;
+/* margin:0;*/
+}
+
+#dropMenu a {
+	width:auto;
+	display: block;		
+	color: #7C6240;
+	text-decoration: none;
+	padding:0;
+}
+
+/* the top items a */
+#dropMenu li {
+	font-size:11px;
+	font-weight:bold;
+
+	width:13em;
+	white-space:nowrap;
+
+	float:left;
+	padding-right:0em;
+	padding-left:0em;
+	
+	border: solid #eda;
+	border-width: 0px 0.5px;
+}
+
+/* the top items a */
+#dropMenu li a {
+	border:none;
+	height:1.3em;
+	height:16px;
+
+	vertical-align:middle;
+	text-align:center;
+	
+	padding-top:0.25em;
+	padding-bottom:0.25em;
+	padding-right:0.1em;
+	padding-left:0.1em;
+
+}
+
+
+/* redefine the "a" for the dropdonwn container */
+#dropMenu li ul a {
+	border:none;
+	height:auto;	
+	vertical-align:middle;
+	text-align:left;	
+	padding:0.1em;
+}
+
+/* the dropdown container*/
+#dropMenu li ul {
+	position: absolute;
+	left: -999em;
+
+	text-align:left;
+	height: auto;
+
+	width:460px;
+	
+
+	font-weight: normal;
+	border-width:1px;
+	margin: 0;
+	padding:0;
+
+	/* for ie6 and lower */
+	margin-left:-6.5em;
+}
+
+/* this is not seen by ie6 - */
+#dropMenu>li ul{  margin-left:0em; }
+
+#dropMenu li ul ul {
+/*	margin: -1.75em 0 0 14em;*/
+margin-top: -1.75em ;
+margin-left:18em;
+
+}
+
+
+#dropMenu li:hover ul ul, #dropMenu li.sfhover ul ul {
+	position: absolute;
+	left: -999em;
+	width:460px;
+}
+
+#dropMenu li:hover ul, #dropMenu li li:hover ul, #dropMenu li.sfhover ul, #dropMenu li li.sfhover ul {	
+	left: auto;
+	width:auto;
+}
+
+#dropMenu li:hover, #dropMenu li.sfhover, li ul a:hover {
+	background: #eda;
+}
+

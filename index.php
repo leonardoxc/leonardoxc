@@ -119,12 +119,14 @@ if ($clubID) {
 require_once $moduleRelPath."/MENU_menu.php";
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
+<? if (0) { ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/supernote.js"></script>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/supernote.css" />
 
 <script language="javascript">
 
  var supernote = new SuperNote('supernote',  { hideDelay: 100 });
+
 
 // Available config options are:
 //allowNesting: true/false    // Whether to allow triggers within triggers.
@@ -140,11 +142,11 @@ require_once $moduleRelPath."/MENU_menu.php";
 // You can pass several to your "new SuperNote()" command like so:
 //{ name: value, name2: value2, name3: value3 }
 </script>
-
+<? } ?>
 <?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {
-  require_once dirname(__FILE__)."/MENU_dates.php";
-  require_once dirname(__FILE__)."/MENU_countries.php";
+  //require_once dirname(__FILE__)."/MENU_dates.php";
+  //require_once dirname(__FILE__)."/MENU_countries.php";
   
   $dateLegend="";
   $allTimesDisplay=0;
@@ -223,18 +225,20 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    ?>
   	    </div>
   	    <? } ?>
-  	    <ul id="nav">
-			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0><? echo "<b>$countryLegend</b>" ?></a>
-				<ul>				
+		<? $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; ?>
+  	    <ul id="dropMenu">
+			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0><? echo "<b>$countryLegend</b>" ?> <?=$arrDownImg; ?></a>
+				<ul >				
 				 <?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?>
 				</ul>			
 			</li>
-			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "<b>$dateLegend</b>";?></a>
+			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "<b>$dateLegend</b>";?> <? echo $arrDownImg; ?></a>
 				<ul>
 				 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 				</ul>
 			</li>
 		</ul>
+<? if (0) {?>
   	    <div class="menu1" >
 			<a href="#selDate" class="supernote-hover-selDate note_link">
 			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
@@ -254,6 +258,8 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
   	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
+<? } ?>
+
   	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay ) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?

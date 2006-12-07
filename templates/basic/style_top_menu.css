@@ -67,11 +67,11 @@ padding-left:0.2em;
 /* the dropdown items */
 #nav li ul a {
 	border:none;
-font-weight:normal;
-text-align:left;
+	font-weight:normal;
+	text-align:left;
 	
 padding-top:0.3em;
-padding-bottom:0.3em;
+padding-bottom:0.2em;
 padding-right:0.1em;
 padding-left:0.6em;
 }
@@ -148,9 +148,33 @@ margin-left:18em;
 
 
 
-#nav hr {
+#nav li ul .hr2 {
 	height:3px;
 	color:#FF9933;
+	padding:0;
+	margin:0;
+}
+
+#nav li ul .li_space {
+	height:1px;
+	padding:0;
+	margin:0;
+	background-color:#FF9933;
+}
+
+#nav li ul .li_h1 {
+	padding:3px;
+	padding-left:1em;
+	margin:0;
+background-color:#F0FBEF;
+
+	border-top-width:1px;
+	border-top-color:#9193AC;
+	border-top-style:dashed;
+	
+	border-bottom-width:1px;
+	border-bottom-color:#9193AC;
+	border-bottom-style:dashed;
 }
 #nav .smallItem , .smallItem{
 	width:30px;

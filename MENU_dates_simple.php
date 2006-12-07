@@ -14,10 +14,11 @@
 /************************************************************************/
 
 ?>
-<div style="width:300px">
-<table width=100%  cellpadding="2" cellspacing="0">
+
+<table width="400" cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan=3 height=25 class="main_text" bgcolor="#40798C"><div class="style1" align="center"><strong><?=_SELECT_DATE?></strong></div></td>
+	<td colspan=3 height=25 class="main_text" bgcolor="#40798C">
+<div class="style1" align="center"><strong><?=_SELECT_DATE?></strong></div></td>
 </tr>
 <tr>
 	<td class="tableBox" valign="top">
@@ -31,14 +32,14 @@
 	</td>
 </tr>
 <tr>
-	<td class="tableBox sp" valign="top">
+	<td class="tableBox " valign="top">
 	 
    <? 
 	 $month_num=date("m");
 	 $year_num=date("Y");
      for ($i=0;$i<8;$i++) {
 	    echo "<a href='?name=".($module_name.$query_str)."&year=".$year_num."&month=".
-				$month_num."'>".($monthList[$month_num-1]." ".$year_num)."</a><br>";
+				$month_num."'>".($monthList[$month_num-1]." ".$year_num)."</a>";
 		$month_num--;
 		if ($month_num==0) { 
 			$year_num--; 
@@ -48,23 +49,22 @@
 	 }	 
 	?>
 	</td>
-	<td class="tableBox sp" valign="top">
+	<td class="tableBox sp " valign="top">
 	<?  
-		echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a><br>";		
+		echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
 		for($i=date("Y");$i>=1998;$i--)  
-			echo "<a href='?name=$module_name&year=$i&month=0'>$i</a><br>";		
+			echo "<a href='?name=$module_name&year=$i&month=0'>$i</a>";		
 	?>
 	</td>
-	<td class="tableBox sp" valign="top">
+	<td class="tableBox " valign="top">
 	<?
 		$i=1;
 		foreach ($monthList as $monthName)  {		 
 			$k=sprintf("%02s",$i);
-			echo "<a href='?name=$module_name&month=$k'>$monthName</a><br>";		
+			echo "<a href='?name=$module_name&month=$k'>$monthName</a>";		
 			$i++;
 		 }
 	?>
 	</td>
 </tr>
 </TABLE>
-</div>

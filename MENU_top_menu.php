@@ -41,14 +41,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		<li><a href="?name=<?=$module_name?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
 <?	
 	if (count($clubsList) >0) {
-		echo "<li>.:: Clubs ::.</li>\n";
+		echo "<li class='li_h1'>.:: Clubs ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			echo "<li><a href='?name=".$module_name."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
 		}
 	}
 
 	if (count($apList) >0) {
-		echo "<li>.:: XC Leagues ::.</li>\n";
+		echo "<li class='li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
 			echo "<li><a href='?name=$module_name&ap=$apName'>".$apItem['desc']."</a></li>\n";
 	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","","?name='.$module_name.'&ap='.$apName.'"));';
@@ -120,7 +120,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
   		<? if (is_user($user) || $userID>0)  { ?>
 		<li><a href="?name=<?=$module_name?>&op=add_flight"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=add_from_zip"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=pilot_profile&pilotIDview=<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
@@ -153,7 +153,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 <li><a href="#"><?=_MENU_SHOW_PILOTS." ".$arrDownImg?></a>
 	<ul>
 		<li><a href="?name=<?=$module_name?>&op=list_pilots&comp=0"><?=_MENU_SHOW_PILOTS ?></a></li>
-		<li><a href="#">.:: Pilot Statistics ::.</a></li>
+		<li class='li_h1'>.:: Pilot Statistics ::.</li>
 		<li><a href="?name=<?=$module_name?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"><?=_MENU_OLC ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=list_pilots&sortOrder=bestDistance&comp=1"><?=_MENU_OPEN_DISTANCE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=list_pilots&sortOrder=totalDuration&comp=1"><?=_MENU_DURATION ?></a></li>
