@@ -333,13 +333,13 @@ function removeClubFlight(clubID,flightID) {
 	   echo "<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
 	   echo "<TD><div align=right>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
-		"<div align=left>";
+		"<div align=left id='p_$i'>";
 		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:pilotTip.newTip('inline', -40, -40, 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
+		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>";
-		echo "<div align=right>";
-		echo "<a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
+		echo "<div align=right id='t_$i'>";
+		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD>$duration</TD>".
 	   "<TD>$linearDistance</TD>".

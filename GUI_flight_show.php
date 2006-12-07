@@ -236,8 +236,8 @@ function edit_takeoff(id) {
 
 <?
 
-  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>"._PILOT.": ".
-	  "<a href=\"javascript:pilotTip.newTip('inline', -20, -5, 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
+  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td id='pilot_pos'>"._PILOT.": ".
+	  "<a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'pilot_pos', 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
 	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
 ?>
 
@@ -284,7 +284,7 @@ function edit_takeoff(id) {
 	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
    	  // echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;	   
 		//<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
-		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',-40,-40, 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
+		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
 		
 		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
 			echo "<div class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 

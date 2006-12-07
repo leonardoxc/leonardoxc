@@ -159,8 +159,14 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 	   	echo "<TD>".($i-1+$startNum)."</TD>";
 		echo "<TD>$country_str</TD>";
 
-		echo "<TD class='alLeft'><div align=left>";
-		echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 0, 250, '".$row["takeoffID"]."','$takeoffName')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+$takeoffNameSafe=str_replace("'","\'",$takeoffName);
+$takeoffNameSafe=str_replace('"','\"',$takeoffNameSafe);
+$takeoffNameSafe=htmlspecialchars($takeoffName); 
+
+		echo "<TD class='alLeft'><div align=left id='t_$i'>";
+	//	echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 13, 't_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+		echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 13, 't_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffNameSafe)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+		
 		echo "</div></TD>";
 
   		echo "<TD>".$row["FlightsNum"]."</TD>";

@@ -231,10 +231,10 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 
 	echo "\n\n<tr class='$sortRowClass'>";
 	echo "<TD>".($i-1+$startNum)."</TD>";
-	echo "<TD><div align=left>";
+	echo "<TD><div align=left id='p_$i'>";
 
 	echo getNationalityDescription($row["countryCode"],1,0);
-	echo "<a href=\"javascript:pilotTip.newTip('inline',-5,-5,200,'".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  
+	echo "<a href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  
 		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
 			
 	 echo "<TD>".$row["totalFlights"]."</TD>". 	 
