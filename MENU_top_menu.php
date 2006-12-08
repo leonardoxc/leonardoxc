@@ -1,4 +1,4 @@
-
+<? if (0) { ?>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 
 sfHover = function() {
@@ -18,6 +18,7 @@ sfHover = function() {
 // if (window.attachEvent) window.attachEvent("onload", sfHover);
 
 //--><!]]></script>
+<? } ?>
 
 <ul id="nav">
 
@@ -56,7 +57,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 	}
 
 	if (count($clubsList) >0 || count($apList) >0) {
-		echo "<li><hr></li>\n";
+		echo "<li class='li_space'></li>\n";
 		echo "<li><a href='?name=$module_name&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
 	}
 ?>
@@ -70,13 +71,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 	  $flagLink="?name=".$module_name."&lng=".$tmpLang;
 	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' valign='middle' border=0>&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
-		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' valign='middle' border=0>";
+		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."' valign='middle' border=0>";
 	  }
 	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
 	} 
 ?>
 <li class="smallItem short"><a class="smallItem"  href='#'><?=$current_flagImg?></a>
 	<ul class="short" >
+		<li class="li_h1 short_li_h1"><?=_LANGUAGE?></li>
 		<? echo $langLiStr ?>
 	</ul>
 </li>
@@ -124,10 +126,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=pilot_profile&pilotIDview=<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview=<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<? } ?>
 		<li><a href="?name=<?=$module_name?>&op=user_prefs"><?=_MENU_MY_SETTINGS ?></a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=stats"><?=_FLIGHTS_STATS ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=program_info"><?=_PROJECT_INFO ?></a></li>
 	</ul>
@@ -138,7 +140,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		<li><a href="?name=<?=$module_name?>&op=list_flights"><?=_MENU_FLIGHTS ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=filter"><?=_MENU_FILTER ?></a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"><?=_MENU_ALL_FLIGHTS ?></a></li>
 	</ul>
 </li>
@@ -164,7 +166,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 <li><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul>
 		<li><a href="?name=<?=$module_name?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
@@ -175,11 +177,11 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 <li><a href="#"><b><?=_MENU_ADMIN." ".$arrDownImg?></b></a>
 	<ul>
 		<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
-		<li><a href="">-</a></li>
+		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Find flights with unknown takeoffs</a></li>
 		<li><a href="">-</a></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
-		<li><hr></li>
+		<li class='li_space'></li>
 		<?  if ($DBGlvl==0)  { ?>
 		<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
 		<? } else { ?>

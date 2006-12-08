@@ -137,6 +137,10 @@ margin-left:18em;
 	padding:0px;
 }
 
+#nav li ul .short_li_h1 {
+width:135px;
+}
+
 #nav .short li a{
 	width:150px;
 	font-weight:normal;
