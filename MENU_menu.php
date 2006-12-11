@@ -33,6 +33,6 @@
 <?
 	require_once dirname(__FILE__)."/MENU_top_menu.php";
  } ?>
-<div class="main_text" align=center style="clear:both;">
+<div class="main_text" align="left" style="clear:both;">
 <a name="top_of_page"></a>
-<div id="staticMenuPos" align=left></div>
+<div id="staticMenuPos" align="left"></div>

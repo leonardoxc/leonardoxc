@@ -25,7 +25,7 @@ sfHover = function() {
 <? 
 
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
-	// http://www.htmldog.com/articles/suckerfish/dropdowns/
+// http://www.htmldog.com/articles/suckerfish/dropdowns/
 // http://www.htmldog.com/articles/suckerfish/dropdowns/example/
 
 //also 
@@ -61,6 +61,22 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		echo "<li><a href='?name=$module_name&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
 	}
 ?>
+
+<? if (in_array($userID,$admin_users) ) { ?>
+		<li class='li_h1'>----- <?=_MENU_ADMIN?> -----</li>
+		<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
+		<li class='li_space'></li>
+		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Find flights with unknown takeoffs</a></li>
+		<li class='li_space'></li>
+		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
+		<li class='li_space'></li>
+		<?  if ($DBGlvl==0)  { ?>
+		<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
+		<? } else { ?>
+		<li><a href="?name=<?=$module_name?>&DBGlvl=0">Deactivate DEBUG</a></li>
+		<? } ?>
+<? } ?>
+
 	</ul>
 </li>
 
@@ -85,7 +101,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
   
 
 <? 
- if ( count($CONF_glider_types) > 1 ) { 
+ if ( count($CONF_glider_types) > 1  && 0) { 
 		$catLiStr="";
 
         $catLink="?name=".$module_name."&cat=0";
@@ -172,24 +188,5 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
 	</ul>
 </li>
-
-<? if (in_array($userID,$admin_users) && 0) { ?>
-<li><a href="#"><b><?=_MENU_ADMIN." ".$arrDownImg?></b></a>
-	<ul>
-		<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
-		<li class='li_space'></li>
-		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Find flights with unknown takeoffs</a></li>
-		<li><a href="">-</a></li>
-		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
-		<li class='li_space'></li>
-		<?  if ($DBGlvl==0)  { ?>
-		<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
-		<? } else { ?>
-		<li><a href="?name=<?=$module_name?>&DBGlvl=0">Deactivate DEBUG</a></li>
-		<? } ?>
-	</ul>
-</li>
-<? } ?>
-	
 		
 </ul>

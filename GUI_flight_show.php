@@ -71,25 +71,25 @@ function setSelectColor(theDiv) {
 	else { theDiv.background = oColour; }
 
 }
-/*
+
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
 with (unknownTakeoffTip)
 {
-  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
-  '<tr><td class="infoBoxHeader" style="width:%2%px">%3%</td></tr>'+
-  '<tr><td class="infoBox" style="width:%2%px">%4%</td></tr></table>';
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr>'+
+  '<tr><td class="infoBox" style="width:%3%px">%5%</td></tr></table>';
 
 // tipStick = 1;
  showDelay = 0;
  hideDelay = 2;
  doFades = false;
- tips.floating = new Array(5, 5, 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
+ tips.floating = new Array(220, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
 
- tipStick = 0.2;
+ tipStick = 0;
 }
-*/
+
 </script>
-<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 1000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 <? if ( is_leo_admin($userID) ) { ?>
@@ -287,7 +287,7 @@ function edit_takeoff(id) {
 		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
 		
 		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
-			echo "<div class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
+			echo "<div id='attentionLinkPos' class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
 			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
 		}
 		echo "</div></TD>";

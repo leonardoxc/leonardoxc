@@ -167,8 +167,20 @@
      exit();
   }
 	
-  $legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
-  listFlights($res,$legend,	$query_str,$sortOrder);
+	$legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
+	$legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+
+	$endNum=$startNum+$PREFS->itemsPerPage;
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+
+	echo  "<div class='tableTitle'>
+	<div class='titleDiv'>$legend</div>
+	<div class='pagesDiv'>$legendRight</div>
+	</div>" ;
+	require_once dirname(__FILE__)."/MENU_second_menu.php";
+	listFlights($res,$legend,	$query_str,$sortOrder);
 
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
@@ -206,17 +218,11 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
-   
-	 $legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
-
-	 $endNum=$startNum+$PREFS->itemsPerPage;
-	 if ($endNum>$itemsNum) $endNum=$itemsNum;
-	 $legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
-	 if ($itemsNum==0) $legendRight="[ 0 ]";
-	 
+   	 
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/prototype.js"></script>
 <script language="javascript">
 
 function addClubFlight(clubID,flightID) {
@@ -256,10 +262,7 @@ function removeClubFlight(clubID,flightID) {
 	 	echo  "</div>";
    }
    
-  echo  "<div class='tableTitle'>
-   <div class='titleDiv'>$legend</div>
-   <div class='pagesDiv'>$legendRight</div>
-   </div>" ;
+
   ?>
   	<table class='listTable' width="100%" cellpadding="2" cellspacing="0">
 	<tr> 

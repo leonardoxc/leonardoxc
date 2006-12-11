@@ -6,9 +6,9 @@
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
 with (unknownTakeoffTip)
 {
-  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%2%" border="0">' +
-  '<tr><td class="infoBoxHeader" style="width:%2%px">%3%</td></tr>'+
-  '<tr><td class="infoBox" style="width:%2%px">%4%</td></tr></table>';
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr>'+
+  '<tr><td class="infoBox" style="width:%3%px">%5%</td></tr></table>';
 
 // tipStick = 1;
  showDelay = 0;
@@ -16,12 +16,12 @@ with (unknownTakeoffTip)
  tipStick = 0.2;
  doFades = false;
  
- tips.africa = new Array(5, 5, 300, 'Africa','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
-  tips.europe = new Array(5, 5, 300, 'Europe','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.asia = new Array(5, 5, 300, 'Asia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.australia= new Array(5, 5, 300, 'Australia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.n_america= new Array(5, 5, 300, 'North/Central America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
- tips.s_america= new Array(5, 5, 300, 'South America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
+ tips.africa = new Array(5, 5, "map", 300, 'Africa','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+  tips.europe = new Array(5, 5, "map",300, 'Europe','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.asia = new Array(5, 5, "map",300, 'Asia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.australia= new Array(5, 5, "map",300, 'Australia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
+ tips.n_america= new Array(5, 5, "map",300, 'North/Central America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
+ tips.s_america= new Array(5, 5, "map",300, 'South America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
 
 
 }
@@ -30,7 +30,7 @@ with (unknownTakeoffTip)
 
 
 <form name="formFilter" method="post" action="">
-  <div class='tableHeader shadowBox' width="650">
+  <div class='tableTitle shadowBox'>
    <div class='titleDiv'>{#Site_Guide}</div>
   </div>
 
@@ -78,7 +78,7 @@ with (unknownTakeoffTip)
     </tr>
     <tr>
       <td colspan="3" valign="top">
-	  <img src="{MODULE_REL_PATH}/img/worldmap.gif" width="710" height="400" border="0" usemap="#world" />
+	  <img  id="map" src="{MODULE_REL_PATH}/img/worldmap.gif" width="710" height="400" border="0" usemap="#world" />
 <map name="world" id="world">
 <area shape="poly" coords="342,196" href="#" /><area shape="poly" coords="372,276,391,270,401,251,410,236,410,216,411,205,422,195,432,182,433,174,423,174,412,164,402,151,401,146,396,135,395,130,381,126,373,126,360,130,350,120,338,118,321,120,311,134,298,150,299,167,306,181,316,190,337,186,344,188,351,193,353,203,358,215,358,228,355,238,361,254,366,267" href="#" 
  onmouseover='unknownTakeoffTip.show("africa")'  onmouseout='unknownTakeoffTip.hide()'

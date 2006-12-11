@@ -147,6 +147,21 @@
 <? echo makePilotPopup() ?>
 
 <?
+
+	$legendRight=generate_flights_pagination("?name=$module_name&op=$op&sortOrder=$sortOrder$query_str", 
+											 $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+
+	$endNum=$startNum+$PREFS->itemsPerPage;
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+
+   echo  "<div class='tableTitle shadowBox'>
+   <div class='titleDiv'>$legend</div>
+   <div class='pagesDiv'>$legendRight</div>
+   </div>" ;
+	require_once dirname(__FILE__)."/MENU_second_menu.php";
+
     listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
 
 function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
@@ -187,29 +202,23 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 
    global $currentlang,$nativeLanguage;
 
-	$legendRight=generate_flights_pagination("?name=$module_name&op=$op&sortOrder=$sortOrder$query_str", 
-											 $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
-
-	$endNum=$startNum+$PREFS->itemsPerPage;
-	if ($endNum>$itemsNum) $endNum=$itemsNum;
-	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
-	if ($itemsNum==0) $legendRight="[ 0 ]";
-
-   echo  "<div class='tableTitle shadowBox'>
-   <div class='titleDiv'>$legend</div>
-   <div class='pagesDiv'>$legendRight</div>
-   </div>" ;
    
    ?>
     <table class='listTable' width="100%"  cellpadding="2" cellspacing="0">
 	<tr> 
 		<td width="25" class='SortHeader'><? echo _NUM ?></td>
    <?
+	// was _TOTAL_KM -> bug
+	if ($PREFS->metricSystem==1) {
+		$OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._KM;
+	} else  {
+		$OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._MI;
+	}
    printHeaderPilotsTotals(0,$sortOrder,"pilotName",_PILOT,$query_str,$is_comp);
    printHeaderPilotsTotals(60,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$query_str,$is_comp);
    printHeaderPilotsTotals(80,$sortOrder,"bestDistance",_BEST_DISTANCE,$query_str,$is_comp);
    if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_distance",_MEAN_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(80,$sortOrder,"totalDistance",_TOTAL_KM,$query_str,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"totalDistance",$OPEN_DISTANCE_str,$query_str,$is_comp);
    printHeaderPilotsTotals(80,$sortOrder,"totalDuration",_TOTAL_DURATION_OF_FLIGHTS,$query_str,$is_comp);
    if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_duration",_MEAN_DURATION,$query_str,$is_comp);
    if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"totalOlcKm",_TOTAL_OLC_KM,$query_str,$is_comp);

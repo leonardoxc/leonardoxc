@@ -88,6 +88,12 @@
 		echo "no takeoffs found<br>";
 		return ;
     }
+	$legendRight="";
+   echo  "<div class='tableTitle shadowBox'>
+   <div class='titleDiv'>$legend</div>
+   <div class='pagesDiv'>$legendRight</div>
+   </div>" ;
+	require_once dirname(__FILE__)."/MENU_second_menu.php";
 
   listTakeoffs($res,$legend,$query_str,$sortOrder);
 ?>
@@ -119,13 +125,8 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode, $countries;
 	 
-   $legendRight="";
+   
    $headerSelectedBgColor="#F2BC66";
-
-   echo  "<div class='tableTitle shadowBox'>
-   <div class='titleDiv'>$legend</div>
-   <div class='pagesDiv'>$legendRight</div>
-   </div>" ;
 
   ?>
   <table class='listTable' width="100%" cellpadding="2" cellspacing="0">
@@ -165,7 +166,7 @@ $takeoffNameSafe=htmlspecialchars($takeoffName);
 
 		echo "<TD class='alLeft'><div align=left id='t_$i'>";
 	//	echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 13, 't_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
-		echo "<a href='javascript:nop()' onclick=\"takeoffTip.newTip('inline', 0, 13, 't_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffNameSafe)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
+		echo "<a href=\"javascript:takeoffTip.newTip('inline', 0, 13, 't_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffNameSafe)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffName</a>";
 		
 		echo "</div></TD>";
 

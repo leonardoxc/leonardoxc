@@ -163,7 +163,8 @@ ToPt.position = function(forcePos) { with (this)
 
  // manolis hack!
  // set mx and my to the positioning element x and y values
-
+mX=0;
+mY=0;
  posEl=getRef(t[2]);
  posArr=MWJ_getPosition(posEl);
  mX=posArr[0];

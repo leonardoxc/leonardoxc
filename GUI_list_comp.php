@@ -99,7 +99,7 @@
 
  
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
-  
+  require_once dirname(__FILE__)."/MENU_second_menu.php";
 
   $query = 'SELECT '.$flightsTable.'.ID, userID, username, 
   				 gliderBrandID,glider,cat,
@@ -209,6 +209,9 @@
   sortArrayBest("olc_score",$countHowMany);
   sortArrayBest("triangleKm",$countHowMany); 
 ?>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<? echo makePilotPopup();  ?>
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/tabber.js"></script>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/example.css" TYPE="text/css" MEDIA="screen">
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/example-print.css" TYPE="text/css" MEDIA="print">
@@ -221,15 +224,24 @@
 
 document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 </script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
-<? echo makePilotPopup();  ?>
+
 <div class="tabber" id="compTabber">
 <?
-  listCategory(_OLC,			_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
-  listCategory(_FAI_TRIANGLE,	_KILOMETERS,"triangleKm","formatDistance");   
-  listCategory(_MENU_OPEN_DISTANCE,_TOTAL_KM,"open_distance","formatDistance");
-  listCategory(_DURATION,		_TOTAL_DURATION,"duration","sec2Time"); 
-  listCategory(_ALTITUDE_GAIN,	_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
+	// was _KILOMETERS -> bug
+	// and _TOTAL_KM
+	if ($PREFS->metricSystem==1) {
+		$FAI_TRIANGLE_str=_KM;
+		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._KM;
+	} else  {
+		$FAI_TRIANGLE_str=_MI;
+		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._MI;
+	}
+
+  listCategory(_OLC,				_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
+  listCategory(_FAI_TRIANGLE, 		$FAI_TRIANGLE_str ,"triangleKm","formatDistance");   
+  listCategory(_MENU_OPEN_DISTANCE,	$MENU_OPEN_DISTANCE_str,"open_distance","formatDistance");
+  listCategory(_DURATION,			_TOTAL_DURATION,"duration","sec2Time"); 
+  listCategory(_ALTITUDE_GAIN,		_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
 ?>
 </div>
 <?	
@@ -292,7 +304,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 echo "<TR $bg>";
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
 	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
-				"<a href='javascript:nop()' onclick=\"pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
+				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";
 		 if ($formatFunction) $outVal=$formatFunction($pilotArray["SUM"]);

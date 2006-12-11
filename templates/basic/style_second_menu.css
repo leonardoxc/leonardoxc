@@ -10,10 +10,12 @@
 	
 	font-weight: bold;
 	padding: 0;
+/*
 	border: solid #eda;
 	border-width: 1px 1px;
-	margin: 0 0 0.3em 0;
-/* margin:0;*/
+*/
+/*	margin: 0 0 0.3em 0;*/
+ margin:0;
 }
 
 #dropMenu a {
@@ -36,8 +38,11 @@
 	padding-right:0em;
 	padding-left:0em;
 	
-	border: solid #eda;
-	border-width: 0px 0.5px;
+	border: solid #CA9F2A;
+	border-width: 1px 1px;
+
+	margin-left:2px;
+	margin-right:2px;
 }
 
 /* the top items a */
@@ -53,6 +58,7 @@
 	padding-bottom:0.25em;
 	padding-right:0.1em;
 	padding-left:0.1em;
+
 
 }
 
@@ -74,8 +80,6 @@
 	text-align:left;
 	height: auto;
 
-	width:460px;
-	
 
 	font-weight: normal;
 	border-width:1px;
@@ -83,7 +87,7 @@
 	padding:0;
 
 	/* for ie6 and lower */
-	margin-left:-6.5em;
+	margin-left:0em;
 }
 
 /* this is not seen by ie6 - */
@@ -98,9 +102,7 @@ margin-left:18em;
 
 
 #dropMenu li:hover ul ul, #dropMenu li.sfhover ul ul {
-	position: absolute;
 	left: -999em;
-	width:460px;
 }
 
 #dropMenu li:hover ul, #dropMenu li li:hover ul, #dropMenu li.sfhover ul, #dropMenu li li.sfhover ul {	
@@ -112,3 +114,8 @@ margin-left:18em;
 	background: #eda;
 }
 
+#dropMenu .smallItem , .smallItem{
+	width:32px;
+	height:17px;
+	vertical-align:middle;
+}

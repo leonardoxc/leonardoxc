@@ -339,7 +339,7 @@ with (pilotTip)
 }
 </script>
 <div id="pilotTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; 
-visibility: hidden; left: 0px; top: 0px; width: 10px"></div>
+visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 <?
 	$c=ob_get_contents();
 	ob_end_clean();

@@ -776,7 +776,7 @@ var $maxPointNum=1000;
 				if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
 				
 				if  ($points==0)  { // first point 
-									echo "######## first point <br>";
+					//				echo "######## first point <br>";
 					$firstPoint=new gpsPoint($line,$this->timezone);
 					if ($this->timezone==1000) { // no timezone in the file
 						// echo "calc timezone<br>";
@@ -826,46 +826,49 @@ var $maxPointNum=1000;
 					$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
-					if ( ($fast_points>5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
-						$stillOnGround=0;
-						DEBUG("IGC",1,"[$points] $line<br>");
-						DEBUG("IGC",1,"[$points] Found Takeoff <br>");
-					}
-									
-					if ($stillOnGround) { //takeoff scan
-						if ($speed > 15 ) {					
-							$fast_points++;		
-							$fast_points_dt+=$deltaseconds;	
+					if (!$garminSpecialCase) {
+						if ( ($fast_points>5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
+							$stillOnGround=0;
 							DEBUG("IGC",1,"[$points] $line<br>");
-							DEBUG("IGC",1,"[$points] Found a fast speed point <br>");																
-						} else {
-							DEBUG("IGC",1,"[$points] $line<br>");
-							DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");																
-
-							$fast_points=0;
-							$fast_points_dt=0;
-						}		
-						$points=0;						
-						continue;			
-					} else { //landing  scan
-						if ($speed < 5 ) {					
-							$slow_points++;		
-							$slow_points_dt+=$deltaseconds;	
-							DEBUG("IGC",1,"[$points] $line<br>");
-							DEBUG("IGC",1,"[$points] Found a slow speed point <br>");																
-						} else {
-							$slow_points=0;
-							$slow_points_dt=0;
+							DEBUG("IGC",1,"[$points] Found Takeoff <br>");
 						}
+										
+						if ($stillOnGround) { //takeoff scan
+							if ($speed > 15 ) {					
+								$fast_points++;		
+								$fast_points_dt+=$deltaseconds;	
+								DEBUG("IGC",1,"[$points] $line<br>");
+								DEBUG("IGC",1,"[$points] Found a fast speed point <br>");																
+							} else {
+								DEBUG("IGC",1,"[$points] $line<br>");
+								DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");																
+	
+								$fast_points=0;
+								$fast_points_dt=0;
+							}		
+							$points=0;						
+							continue;			
+						} else { //landing  scan
+							if ($speed < 5 ) {					
+								$slow_points++;		
+								$slow_points_dt+=$deltaseconds;	
+								DEBUG("IGC",1,"[$points] $line<br>");
+								DEBUG("IGC",1,"[$points] Found a slow speed point <br>");																
+							} else {
+								$slow_points=0;
+								$slow_points_dt=0;
+							}
+						}					
+	
+	
+						if ($slow_points>5 || $slow_points_dt>300) { // found landing 5 stopped points or 5 mins (300 secs)
+							$foundNewTrack=1;
+							DEBUG("IGC",1,"[$points] $line<br>");
+							DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
+						}
+
 					}					
 
-
-					if ($slow_points>5 || $slow_points_dt>300) { // found landing 5 stopped points or 5 mins (300 secs)
-						$foundNewTrack=1;
-						DEBUG("IGC",1,"[$points] $line<br>");
-						DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
-					}
-					
 					// sanity checks	
 					if ( $deltaseconds == 0 && !$garminSpecialCase) {  continue; }
 					if ( $alt    > $this->maxAllowedHeight ) {  continue; }
