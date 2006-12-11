@@ -1,12 +1,12 @@
 <style type="text/css">
 <!--
 
-div#nav ul {
+div#b_nav ul {
 	margin: 0px 0 12px 0;
 	padding: 0;
 	list-style: none inside;
 }
-div#nav ul li {
+div#b_nav ul li {
 	list-style: none;
 	text-align: center;
 	display: inline;
@@ -15,46 +15,48 @@ div#nav ul li {
 	margin: 2px 2px 2px 2px;
 }
 
-div#nav ul li a {
+div#b_nav ul li a {
 	color: #000;
-	background-color: #F3F4EA;
+	background-color: #DAE4E6;
 	text-decoration: none;
 
 	padding:4px 0px 4px 0px;
 	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-bottom: 4px;
 	margin-right: 1px;
 
-	border-right: 2px solid  #52371F;
-	border-bottom: 2px solid #52371F;
+	border-right: 1px solid  #52371F;
+	border-bottom: 1px solid #52371F;
 	height:auto;
 	display:inline;
 	float:left;
 	width:197px;
+	width:24%;
 }
 
-html>div #nav {
+html>div #b_nav {
 	width:197px;
-	}
+	width:30%;
+}
 
-div#nav ul li a:hover, 
-div#nav ul li.header a:hover,
-div#nav ul li a.on,
-div#nav ul li.header a.on {
+div#b_nav ul li a:hover, 
+div#b_nav ul li.header a:hover,
+div#b_nav ul li a.on,
+div#b_nav ul li.header a.on {
 	background-color: #0F256A;
 	color: #FFF;
 }
 
 
 /* subnav list classes */
-div#subnav ul {
+div#subnav, div#subnav ul {
 	margin: 4px 0 12px 0;
 	padding: 0;
 }
 div#subnav ul li {
 	list-style: none;
-	text-align: center;
-	display: inline;
+	text-align: left;
+	
 	font: 11px Verdana,Arial,Helvetica,sans-serif;
 
 	margin: 2px 2px 2px 2px;
@@ -62,25 +64,32 @@ div#subnav ul li {
 
 div#subnav ul li a {
 	color: #000;
-	background-color: #D7D8E5;
-	text-decoration: none;
+	background-color: #F0F4F1;
+	text-decoration:none;
 
 	/*padding:4px 8px 4px 8px;*/
-    padding:4px 0px 4px 0px;
-	margin-top: 1px;
+    padding :2px 2px 2px 6px;
+
+	margin-top: 0px;
 	margin-bottom: 0px;
 	margin-right: 1px;
 
 	border-right: 2px solid  #52371F;
 	border-bottom: 2px solid #52371F;
 
-
+	border: 1px solid  #D6D6D6;
+	border:0;	
+	border-right: 1px solid  #D6D6D6;
+	border-bottom: 1px solid #D6D6D6;
+	
+	
 	height:auto;
-
 	display:block;
-	float:left;
 
-	width: 147px;
+	
+	
+	width:240px;
+	
 	
 }
 
@@ -92,6 +101,15 @@ div#subnav ul li.header a.on {
 	background-color: #0F256A;
 	color: #FFF;
 }
+
+.catHeader {
+	/*background-color:#E2DEB4;*/
+	font-weight:bold;
+	padding: 3px;
+	border-bottom-width:2px;
+	border-bottom-color:#FFCC66;	
+}
+
 
 #otherstuff {margin: 0; padding: 0; clear: both; border-top: 1px white solid; list-style: none inside; }
 #otherstuff li {width: 191px; float: left; background: #99c; border: solid white; border-width: 0 0 0 1px; text-align: center; }
@@ -142,23 +160,24 @@ border-bottom: 2px solid #52371F;
 </script>
 
 <form name="navForm" method="post" action="">
-<table width="606" border="0" align="center" cellpadding="0" cellspacing="0" class=main_text>
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0" class=main_text>
   <tr>
-    <td valign="top"><div align="center">
+    <td colspan="3" valign="top"><div align="center">
       <p><strong>{#_INDEX_HEADER}<br>
       </strong></p>
     </div></td>
   </tr>
   <tr>
-    <td><div align="center">{#_INDEX_MESSAGE}</div></td>
+    <td colspan="3"><div align="center">{#_INDEX_MESSAGE}</div></td>
   </tr>
   <tr>
-    <td height=10>&nbsp;</td>
+    <td height=10 colspan="3">&nbsp;</td>
   </tr>
   <tr>
-    <td valign="top">
-  <div id="nav" align=center>
+    <td colspan="3" align="center" valign="top">
+  <div id="b_nav" align=center>
         <ul>
+		  <li><a href="{LINK_SITES_GUIDE}">{#_MENU_SITES_GUIDE}</a></li>
 		  <li><a href="{LINK_SHOW_LAST_ADDED}">{#_MENU_SHOW_LAST_ADDED}</a></li>
 		  <li><a href="{LINK_SHOW_PILOTS}">{#_MENU_SHOW_PILOTS}</a></li>
 		  <li><a href="{LINK_SUBMIT_FLIGHT}">{#_MENU_SUBMIT_FLIGHT}</a></li>
@@ -167,88 +186,94 @@ border-bottom: 2px solid #52371F;
   </tr>
   <!-- BEGIN myMenu -->
   <tr>
-    <td>
-      <div id="nav" align=center>
+    <td colspan="3" align="center">
+      <div id="b_nav" align=center>
         <ul>
-		  <li><a style="width:130px" href="{myMenu.LINK_MY_FLIGHTS}">{#_MENU_MY_FLIGHTS}</a></li>
-		  <li><a style="width:130px" href="{myMenu.LINK_MY_STATS}">{#_MENU_MY_STATS}</a></li>
-		  <li><a style="width:130px" href="{myMenu.LINK_MY_PROFILE}">{#_MENU_MY_PROFILE}</a></li>
-		  <li><a style="width:130px" href="{myMenu.LINK_MY_SETTINGS}">{#_MENU_MY_SETTINGS}</a></li>
+		  <li><a href="{myMenu.LINK_MY_FLIGHTS}">{#_MENU_MY_FLIGHTS}</a></li>
+		  <li><a href="{myMenu.LINK_MY_STATS}">{#_MENU_MY_STATS}</a></li>
+		  <li><a href="{myMenu.LINK_MY_PROFILE}">{#_MENU_MY_PROFILE}</a></li>
+		  <li><a href="{myMenu.LINK_MY_SETTINGS}">{#_MENU_MY_SETTINGS}</a></li>
         </ul>
     </div></td>
   </tr>
   <!-- END myMenu -->
   <tr>
-    <td>&nbsp;</td>
+    <td colspan="3">&nbsp;</td>
   </tr>
   <tr>
-    <td bgcolor="#D9F0C6"><div align="center" style=" z-index:-10; font-weight:bold ">{#_National_XC_Leagues_for}
-        
-          <select name="leagueYear" id="leagueYear">
-            <option value="0">{#_ALL_YEARS}</option>
+    <td width="33%" class="catHeader">{#_National_XC_Leagues_for} <br />
+    <select name="leagueYear" id="leagueYear">
+      <option value="0">{#_ALL_YEARS}</option>
 			{YEARS_OPTION}
           </select>
-          <select name="leagueCat" id="leagueCat">
+      <select name="leagueCat" id="leagueCat">
             {CATS_OPTION}
-          </select>
-    </div></td>
+          </select>    </td>
+    <td width="33%" class="catHeader">{#_Flights_per_Country} <br />
+      <select name="flightsYear" id="flightsYear">
+        <option value="0">{#_ALL_YEARS}</option>
+        
+			{YEARS_OPTION}
+          
+      </select>
+      <select name="flightsCat" id="flightsCat">
+        <option value="0">{#_ALL}</option>
+        
+ 			{CATS_OPTION}
+	      
+      </select></td>
+    <td width="33%" valign="bottom" class="catHeader">{#_Takeoffs_per_Country}</td>
   </tr>
   <tr>
     <td align=center>
       <div id="subnav" align=center>
         <ul>
 		  <li><a href="javascript:jumpToLeague(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
-          <!-- BEGIN lg -->
+		  {lgStr}
+          <!-- BEGIN lg1 -->
           <li><a href="{lg.link}">{lg.name}</a> </li>
-          <!-- END lg -->
+          <!-- END lg1 -->
         </ul>
     </div></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td bgcolor="#D9F0C6"><div align="center" style="font-weight:bold ">{#_Flights_per_Country}
-         <select name="flightsYear" id="flightsYear">
-		   <option value="0">{#_ALL_YEARS}</option>
-			{YEARS_OPTION}
-          </select>
-          <select name="flightsCat" id="flightsCat">
-      <option value="0">{#_ALL}</option>
- 			{CATS_OPTION}
-	      </select> </div></td>
-  </tr>
-  <tr>
-    <td align=center>	<div id="subnav" align=center>
+    <td align=center><div id="subnav" align=center>
 		<ul>
    <li><a href="javascript:jumpToFlights(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
-  <!-- BEGIN ct -->
+    {ctStr}
+  <!-- BEGIN ct1 -->
 	<li><a href="{ct.link}">{ct.name} [{ct.flNum}]</a>	</li>
-      <!-- END ct -->
+      <!-- END ct1 -->
 		</ul>
-	</div>
-
-	</td>
-  </tr>
-  <tr>
-    <td align=center>&nbsp;</td>
-  </tr>
-  <tr>
-    <td bgcolor="#D9F0C6"><div align="center" style="font-weight:bold ">{#_Takeoffs_per_Country}   </div></td>
-  </tr>
-  <tr>
-    <td align=center>
-      <div id="subnav" align=center>
+	</div></td>
+    <td align=center><div id="subnav">
         <ul>
           <li><a href="javascript:jumpToTakeoffs(0)"><strong>{#_WORLD_WIDE}</strong></a> </li>
-          <!-- BEGIN tk -->
+		   {tkStr}
+          <!-- BEGIN tk1 -->
           <li><a href="{tk.link}">{tk.name}</a> </li>
-          <!-- END tk -->
+          <!-- END tk1 -->
         </ul>
     </div></td>
   </tr>
   <tr>
-    <td align=center>&nbsp;</td>
+    <td colspan="3">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" class="catHeader">&nbsp;</td></tr>
+  <tr>
+    <td colspan="3" align=center>		</td>
+  </tr>
+  <tr>
+    <td colspan="3" align=center>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" class="catHeader">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" align=center>
+ </td>
+  </tr>
+  <tr>
+    <td colspan="3" align=center>&nbsp;</td>
   </tr>
 </table>
 </form>

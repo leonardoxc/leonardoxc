@@ -22,9 +22,19 @@
 
 	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 	$countriesNum=count($countriesNames);
+	require_once dirname(__FILE__)."/FN_areas.php";
 
 	$i=0;
 	foreach($countriesNames as $countryName) {
+	
+		$continentNum=$countries2continent[$countriesCodes[$i]];
+		$lgStrings[$continentNum].="<li><a href='javascript:jumpToLeague(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
+		
+		
+		$ctStrings[$continentNum].="<li><a href='javascript:jumpToFlights(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
+
+		$tkStrings[$continentNum].="<li><a href='javascript:jumpToTakeoffs(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
+
 		$Ltemplate->assign_block_vars('lg', array(	 	
 			'link'=> "javascript:jumpToLeague('".$countriesCodes[$i]."')",
 			'name'=>$countryName
@@ -44,6 +54,14 @@
 		$i++;
 	}
 
+	$lgStr="";
+	for($c=1;$c<=6;$c++) {
+		$lgStr.="<li> ".$continents[$c]."<ul>\n".$lgStrings[$c]."</ul></li>";
+		$ctStr.="<li> ".$continents[$c]."<ul>\n".$ctStrings[$c]."</ul></li>";
+		$tkStr.="<li> ".$continents[$c]."<ul>\n".$tkStrings[$c]."</ul></li>";
+	}
+	
+	
 	$sel_years="";
 	for($i=date("Y");$i>=2000;$i--) {
 		 if($i==date("Y")) $sel=" selected";
@@ -65,10 +83,14 @@
 			'LINK_MY_SETTINGS'=>"?name=$module_name&op=user_prefs",
 		));
 	}
-	$Ltemplate->assign_vars( array(	 	
+	$Ltemplate->assign_vars( array(	 
+		'lgStr'=>$lgStr,
+		'ctStr'=>$ctStr,
+		'tkStr'=>$tkStr,
 		'YEARS_OPTION'=>$sel_years,
 		'CATS_OPTION'=>$sel_cat,
 
+		'LINK_SITES_GUIDE'=>"?name=$module_name&op=sites",
 		'LINK_SHOW_LAST_ADDED'=>"?name=$module_name&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0",
 		'LINK_SHOW_PILOTS'    =>"?name=$module_name&op=list_pilots&comp=0",
 		'LINK_SUBMIT_FLIGHT'  =>"?name=$module_name&op=add_flight",
