@@ -24,38 +24,48 @@
 	$tblWidth=$num_of_cols*150;
 
 ?>
-<table class="tableBox" width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
+<table class="dropDownBox" width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
 <tr>
-	<td colspan=<?=$num_of_cols?> height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_SELECT_COUNTRY?></strong>
+	<td colspan=<?=$num_of_cols ?> height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_SELECT_COUNTRY?> <?=_OR?></strong>
 	  </div></td>
 </tr>
 <tr>
-	<td colspan=<?=$num_of_cols?> height=25 class="main_text" bgcolor="#BCD1AD"><div align="center" class="style1"><a  style='text-align:center' href='?name=<?=$module_name?>&country=0'><strong><?=_Display_ALL?></strong></a>
-    </div></td>
+	<td colspan=<?=$num_of_cols ?> height=20  class="main_text" bgcolor="#E7F8E2" ><div align="center" class="style1"><strong><a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&country=0'><?=_Display_ALL?></a></strong></div>
+	</td>
 </tr>
 <? 
+require_once dirname(__FILE__)."/FN_areas.php";
+
+echo "\n\n<tr style='text-align:left'><td>";
+//echo "<ul id='countriesList'>\n";
+
 $ii=0;
 if ($countriesNum) {
 	for( $r=0;$r<$num_of_rows;$r++) {
 		$sortRowClass=($ii%2)?"l_row1":"l_row2"; 	
 		$ii++; 
-		echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
+		//echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
 		for( $c=0;$c<$num_of_cols;$c++) {
-			echo "<td style='width:".$countriesDivWidth."px'>";
+			//echo "<td style='width:".$countriesDivWidth."px'>";
 
 			//compute which to show
 			//echo "c=$c r=$r i=$i<br>";
 			$i= $c * $num_of_rows +( $r % $num_of_rows);
 			if ($i<$countriesNum) {
 				$countryName=$countriesNames[$i];
-				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>";
+				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>\n";
 			}	 
 			else echo "&nbsp;";
 
-			echo "</td>";
+			//echo "</td>";
 		}
-		echo '</tr>';
+		//echo '</tr>';
 	}
 } 
+echo "</ul>";
+echo "</td></tr>";
 ?>
+<tr>
+	<td colspan=<? echo $num_of_cols ; ?> height=8 class="main_text" ></td>
+</tr>
 </TABLE>

@@ -133,18 +133,18 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		<? 
 			
 			if ($country) {
-				$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+				$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
 			} else {
 				$countryFlagImg="<img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_country.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 			}
 		?>
   	    <ul id="dropMenu">
-			<li><a href="#"><?=$countryFlagImg?> <? echo "<b>$countryLegend</b>" ?> <?=$arrDownImg; ?></a>
+			<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <?=$arrDownImg; ?></a>
 				<ul >				
 				 <?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?>
 				</ul>			
 			</li>
-			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "<b>$dateLegend</b>";?> <? echo $arrDownImg; ?></a>
+			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
 				<ul>
 				 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 				</ul>
@@ -155,7 +155,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 			<a href="#selDate" class="supernote-hover-selDate note_link">
 			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
   	    	<?
-  	    		echo "<b>$dateLegend</b></a>";
+  	    		echo "$dateLegend</a>";
   	    		if (!$allTimesDisplay) 
   	    			echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	  		?>
@@ -165,7 +165,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 			<a href="#selCountry" class="supernote-hover-selCountry note_link">
 			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
    	    <?
-  	    	echo "<b>$countryLegend</b></a>";
+  	    	echo "$countryLegend</a>";
   	    	if (!$allCountriesDisplay) 
   	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
@@ -201,7 +201,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		</div>
 		<? } ?>  	
   	    <div class="menu1" >
-		<a  ref='<?
+		<a  href='<?
 		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 

@@ -9,7 +9,7 @@ width: 760px;
 	line-height: 1;
 	background-color:#E4ECF0;
 	
-	font-weight: bold;
+	
 	padding: 0;
 	border: solid #eda;
 	border-width: 1px 1px;
@@ -23,6 +23,7 @@ width: 760px;
 	
 		
 	color: #7C6240;
+	color: #000022;
 	text-decoration: none;
 	
 padding-top:0.25em;
@@ -37,7 +38,7 @@ padding:0;
 #nav li {
 
 font-size:11px;
-font-weight:bold;
+
 
 	float: left;
 	padding: 0;
@@ -103,6 +104,7 @@ padding-left:0.6em;
 	padding-right:2px;
 	padding-bottom:2px;
 	background-color:#8A83A9;
+z-index:20000;
 }
 
 #nav li li {
@@ -133,7 +135,8 @@ margin-left:18em;
 }
 
 #nav li:hover, #nav li.sfhover {
-	background: #eda;
+/*	background: #eda;*/
+	background-color:#F6EF80;
 }
 
 

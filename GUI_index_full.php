@@ -30,6 +30,8 @@
 		$continentNum=$countries2continent[$countriesCodes[$i]];
 		$lgStrings[$continentNum].="<li><a href='javascript:jumpToLeague(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
 		
+
+
 		
 		$ctStrings[$continentNum].="<li><a href='javascript:jumpToFlights(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
 
@@ -54,19 +56,44 @@
 		$i++;
 	}
 
-	$lgStr="";
+
+$lgStr='<div id="vnav">
+<ul>
+  <li><a href="javascript:jumpToLeague(0)"><b>'._WORLD_WIDE.'</b></a></li>
+   
+';
+$ctStr='<div id="vnav">
+<ul>
+  <li><a href="javascript:jumpToFlights(0)"><b>'._WORLD_WIDE.'</b></a></li>
+';
+$tkStr='<div id="vnav">
+<ul>
+  <li><a href="javascript:jumpToTakeoffs(0)"><b>'._WORLD_WIDE.'</b></a></li>
+';
+
 	for($c=1;$c<=6;$c++) {
-		$lgStr.="<li> ".$continents[$c]."<ul>\n".$lgStrings[$c]."</ul></li>";
-		$ctStr.="<li> ".$continents[$c]."<ul>\n".$ctStrings[$c]."</ul></li>";
-		$tkStr.="<li> ".$continents[$c]."<ul>\n".$tkStrings[$c]."</ul></li>";
+		if ($lgStrings[$c]) $lgStr.="<li> <a href='#'>".$continents[$c]."</a><ul>\n".$lgStrings[$c]."</ul></li>";
+		if ($ctStrings[$c]) $ctStr.="<li> <a href='#'>".$continents[$c]."</a><ul>\n".$ctStrings[$c]."</ul></li>";
+		if ($tkStrings[$c]) $tkStr.="<li> <a href='#'>".$continents[$c]."</a><ul>\n".$tkStrings[$c]."</ul></li>";
 	}
-	
+
+$lgStr.='
+</ul>
+</div>';
+
+$ctStr.='
+</ul>
+</div>';
+
+$tkStr.='
+</ul>
+</div>';
 	
 	$sel_years="";
 	for($i=date("Y");$i>=2000;$i--) {
 		 if($i==date("Y")) $sel=" selected";
 		 else $sel="";
-		 $sel_years.="<option $sel>$i</option>\n";
+		 $sel_years.="<option value='$i' $sel>$i</option>\n";
 	}
 
 	$sel_cat="";
@@ -101,4 +128,5 @@
 	));
 
    	$Ltemplate->pparse('body');
+	$noFooterMenu=1;
 ?>

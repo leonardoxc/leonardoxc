@@ -20,9 +20,10 @@
 	if ( $opMode==2) {
 		require_once "language/lang-".$currentlang.".php";
 		define('IN_PHPBB', true);
-		$phpbb_root_path = '../../';
+		$phpbb_root_path = dirname(__FILE__).'/../../';
+		//WAS
+		// 		$phpbb_root_path = '../../';
 		$prefix="phpbb";
-	
 		require($phpbb_root_path . 'extension.inc');
 		require($phpbb_root_path . 'common.'.$phpEx);
 	} else if ( $opMode==1) {

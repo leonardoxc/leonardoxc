@@ -315,6 +315,7 @@
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private",false); // required for certain browsers 
 
+$file_name="kml.kml";
 		header("Content-type: $attachmentMIME");
 		//header("Content-Disposition: attachment; filename=\"$kml_file_name\"", true);
 		header('Content-Disposition: inline; filename="' . htmlspecialchars($file_name) . '"');

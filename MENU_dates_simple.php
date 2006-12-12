@@ -15,10 +15,17 @@
 
 ?>
 
-<table width="400" cellpadding="2" cellspacing="0">
+<table class="dropDownBox" width="300" cellpadding="2" cellspacing="0">
 <tr>
 	<td colspan=3 height=25 class="main_text" bgcolor="#40798C">
-<div class="style1" align="center"><strong><?=_SELECT_DATE?></strong></div></td>
+		<div class="style1" align="center"><strong><?=_SELECT_DATE?> <?=_OR?></strong></div>
+	</td>
+	
+</tr>
+<tr>
+	<td colspan=3 height=20 class="main_text" bgcolor="#E7F8E2">
+		<div align="center" class="style1"><strong><a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0'><?=_ALL_YEARS?></a></strong></div>
+	</td>
 </tr>
 <tr>
 	<td class="tableBox" valign="top">
@@ -32,7 +39,7 @@
 	</td>
 </tr>
 <tr>
-	<td class="tableBox " valign="top">
+	<td valign="top">
 	 
    <? 
 	 $month_num=date("m");
@@ -49,14 +56,14 @@
 	 }	 
 	?>
 	</td>
-	<td class="tableBox sp " valign="top">
+	<td class="sp " valign="top">
 	<?  
-		echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
+		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
 		for($i=date("Y");$i>=1998;$i--)  
 			echo "<a href='?name=$module_name&year=$i&month=0'>$i</a>";		
 	?>
 	</td>
-	<td class="tableBox " valign="top">
+	<td valign="top">
 	<?
 		$i=1;
 		foreach ($monthList as $monthName)  {		 
