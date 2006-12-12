@@ -33,20 +33,22 @@
 	<td colspan=<?=$num_of_cols ?> height=20  class="main_text" bgcolor="#E7F8E2" ><div align="center" class="style1"><strong><a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&country=0'><?=_Display_ALL?></a></strong></div>
 	</td>
 </tr>
-<? 
-require_once dirname(__FILE__)."/FN_areas.php";
 
-echo "\n\n<tr style='text-align:left'><td>";
-//echo "<ul id='countriesList'>\n";
+<? 
+//require_once dirname(__FILE__)."/FN_areas.php";
+
+//echo "\n\n<tr style='text-align:left'><td>";
+//echo "<div ><ul id='countriesList'>\n";
 
 $ii=0;
 if ($countriesNum) {
 	for( $r=0;$r<$num_of_rows;$r++) {
 		$sortRowClass=($ii%2)?"l_row1":"l_row2"; 	
 		$ii++; 
-		//echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
+		echo "\n\n<tr class='$sortRowClass' style='text-align:left'>";
 		for( $c=0;$c<$num_of_cols;$c++) {
-			//echo "<td style='width:".$countriesDivWidth."px'>";
+			//	echo "<td style='width:".$countriesDivWidth."px'>";
+			echo "<td style='width:auto; padding-right:5px'>";
 
 			//compute which to show
 			//echo "c=$c r=$r i=$i<br>";
@@ -57,13 +59,13 @@ if ($countriesNum) {
 			}	 
 			else echo "&nbsp;";
 
-			//echo "</td>";
+			echo "</td>";
 		}
-		//echo '</tr>';
+		echo '</tr>';
 	}
 } 
-echo "</ul>";
-echo "</td></tr>";
+//echo "</ul></div>";
+//echo "</td></tr>";
 ?>
 <tr>
 	<td colspan=<? echo $num_of_cols ; ?> height=8 class="main_text" ></td>

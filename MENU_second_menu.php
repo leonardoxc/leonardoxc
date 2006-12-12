@@ -135,13 +135,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 			if ($country) {
 				$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
 			} else {
-				$countryFlagImg="<img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_country.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+				//$countryFlagImg="<img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_country.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+				$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 			}
 		?>
   	    <ul id="dropMenu">
 			<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <?=$arrDownImg; ?></a>
-				<ul >				
-				 <?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?>
+				<ul>				
+				 <li><?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?></li>
 				</ul>			
 			</li>
 			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>

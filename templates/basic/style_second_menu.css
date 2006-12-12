@@ -30,13 +30,15 @@
 #dropMenu li {
 	font-size:11px;
 
+	width:8em;
 
-	width:13em;
+	text-align:left;
+	
 	white-space:nowrap;
 
 	float:left;
-	padding-right:0em;
-	padding-left:0em;
+	padding-right:0.3em;
+	padding-left:0.3em;
 	
 	border: solid #CA9F2A;
 	border-width: 1px 1px;
@@ -45,6 +47,12 @@
 	margin-right:2px;
 }
 
+#dropMenu>li {
+width:auto;
+
+}
+
+
 /* the top items a */
 #dropMenu li a {
 	border:none;
@@ -52,13 +60,15 @@
 	height:16px;
 
 	vertical-align:middle;
-	text-align:center;
+	text-align:left;
 	
 	padding-top:0.25em;
 	padding-bottom:0.25em;
 	padding-right:0.1em;
 	padding-left:0.1em;
+width:auto;
 }
+
 
 /* redefine the "a" for the dropdonwn container */
 #dropMenu li ul a {
@@ -73,6 +83,7 @@
 #dropMenu li ul {
 	position: absolute;
 	left: -999em;
+	
 
 	text-align:left;
 	height: auto;
@@ -85,10 +96,12 @@
 
 	/* for ie6 and lower */
 	margin-left:0em;
+	display:block;
 }
 
 /* this is not seen by ie6 - */
 #dropMenu>li ul{  margin-left:0em; }
+
 
 #dropMenu li ul ul {
 /*	margin: -1.75em 0 0 14em;*/
@@ -97,6 +110,20 @@ margin-left:18em;
 
 }
 
+/* needed in order to display ul inside the dropdown*/
+#dropMenu li ul li , #dropMenu li ul li ul {
+	position: relative;
+	left:auto;
+	display:block;
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+/* needed in order to display ul inside the dropdown*/
+#dropMenu li:hover ul li ul{
+	left: auto;
+}
 
 #dropMenu li:hover ul ul, #dropMenu li.sfhover ul ul {
 	left: -999em;

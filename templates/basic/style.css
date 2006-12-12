@@ -355,13 +355,16 @@ text-align:center;
 }
 
 
-#countriesList, #countriesList ul { /* all lists */
+#countriesList, #countriesList ul {
 		padding: 0;
 		margin: 0;
-		list-style: none;
-		float : left;
-		width : 10em;
+		width : auto;
+	
+		background-color:#339999;
+}
 
-		/*background-color:#e0e0e0;*/
-		z-index:1;
-	}
+#countriesList li , #countriesList li a{
+	background-color:#FF6699;
+	list-style:circle;
+	border:1px;
+}
