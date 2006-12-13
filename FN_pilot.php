@@ -135,9 +135,9 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 	$cCode=strtolower($cCode);
 	if (strlen($cCode) !=2) return "";
 
-	if ($img) $imgStr="<img src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='".$countries[strtoupper($cCode)]."'>";
+	if ($img) $imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='".$countries[strtoupper($cCode)]."'>";
 	if ($text) $textStr=$countries[strtoupper($cCode)];
-	return "$imgStr $textStr";
+	return "$imgStr$textStr";
 }
 
 function getNationalityDropDown($cCode) {

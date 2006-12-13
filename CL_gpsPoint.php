@@ -246,6 +246,7 @@ Time to launch from landing
 
 	function exportXML() {
 return "<waypoint>
+<id>".htmlspecialchars($this->waypointID)."</id>
 <name>".htmlspecialchars($this->name)."</name>
 <intName>".htmlspecialchars($this->intName)."</intName>
 <location>".htmlspecialchars($this->location)."</location>

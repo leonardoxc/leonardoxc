@@ -75,8 +75,10 @@ background-color:#C5D0ED;
 	font-weight:bold;
 	background-color:#FCF9EE;
 	background-color:	#C7DBF5;
-
+/* blue*/
 	background-color:#458DDC;
+/* norad */
+	background-color:#7faad9;
 color:#FFFFFF;
 	border-right-width: 2px; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 1px;
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
@@ -101,11 +103,16 @@ html>body .tableTitle {
 	height:25px;
 
     background-color: #E3EEFB;
+/*norad */
+    background-color: #FFFFFF;
+/*
 	border-right-width: 1px; border-bottom-width: 1px; border-top-width: 0px; border-left-width: 1px;
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+*/
+border:0;
 	padding: 1px 3px 3px 1px;
-	margin-bottom:5px;
+	margin-bottom:10px;
 	width:760px;
 }
 
@@ -183,7 +190,7 @@ html>body .mainBox {
 }
 
 .listTable TD {
-	vertical-align:top;
+	vertical-align:middle;
 	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
 
@@ -194,6 +201,10 @@ html>body .mainBox {
 
 .SortHeader {
 	background-color:#458DDC;
+	/*norad*/
+	background-color:#7faad9;
+	font-weight:bold;
+
 	vertical-align:top;
 	border-top-color:#6AA2DF; border-top-width:3px; border-top-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
@@ -202,7 +213,9 @@ html>body .mainBox {
 
 	color:#FFFFFF;
 	font-size:11px;
-	font-weight:normal;
+	vertical-align:bottom;
+
+
 	text-align:right;
 	text-decoration:none;
 }
@@ -329,10 +342,12 @@ text-align:center;
 .menu1 { 
     display:block;
     float:left;
-	background-color: #E4ECF0;
+	background-color: #f6f5fa;
 	border-width: 1px; 
 	border-style: solid; 
-	border-color: #CA9F2A; 
+	border-color: #CA9F2A;
+	/*norad*/ 
+	border-color: #d3cfe4;
 	padding: 3px 3px 3px 3px;
 	margin-left:2px;
 	margin-right:2px;
@@ -368,3 +383,25 @@ text-align:center;
 	list-style:circle;
 	border:1px;
 }
+
+.takeoffLink a {
+color: #6b6b8d;
+color: #8b8bad;
+font-size:10px;
+}
+
+
+/* for the flight list screen */
+.pilotLink a {
+color:#000066;
+}
+
+.listIcons {
+margin-right:1px;
+}
+
+.flagIcon {
+margin-right:0.5em;
+vertical-align:middle;
+}
+

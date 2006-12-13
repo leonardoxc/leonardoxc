@@ -106,7 +106,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 		} 	
 ?>
 
-<ul id="nav" style="width:35px; height:22px; border: 1px solid #CA9F2A;" >
+<ul id="nav" style="width:35px; height:22px; border: 1px solid #d3cfe4;" >
 <li class="smallItem"><a class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
 	<ul>
 	<? echo $catLiStr;?>

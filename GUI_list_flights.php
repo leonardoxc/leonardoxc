@@ -309,7 +309,7 @@ function removeClubFlight(clubID,flightID) {
   	   } else {
   	   		$dateStr="&nbsp;";  	   		 
   	   }
-  	   if ( $days_from_submission <= 3 ) $dateStr.="<img src='".$moduleRelPath."/img/icon_new.png' >";			
+  	   if ( $days_from_submission <= 3 ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' >";			
   	   
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
@@ -336,12 +336,12 @@ function removeClubFlight(clubID,flightID) {
 	   echo "<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
 	   echo "<TD><div align=right>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
-		"<div align=left id='p_$i'>";
+		"<div align=left id='p_$i' class='pilotLink'>";
 		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
 		"</div>";
-		echo "<div align=right id='t_$i'>";
+		echo "<div align=right id='t_$i' class='takeoffLink'>";
 		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
 			"</div></TD>".
 	   "<TD>$duration</TD>".
@@ -353,11 +353,11 @@ function removeClubFlight(clubID,flightID) {
 
    	   "<TD>$gliderBrandImg</td>".
 
-	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top></a>";
-	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top></a>";
+	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'></a>";
+	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."'></a>";
 	
-	   if ($row["photo1Filename"]) echo "<img src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
-	   else echo "<img src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
+	   if ($row["photo1Filename"]) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
+	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
 
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
 			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 

@@ -53,12 +53,12 @@
       <td><a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph Copyright (C) 2001,2002,2003 Johan Persson</a></td>
     </tr>
     <tr> 
-      <td><div align="right">Dropdown menu:</div></td>
-      <td><a href="http://www.tohzhiqiang.per.sg/projects/jsdomenu/" target="_blank">jsDOMenu Copyright (C) 2003 - 2005 Toh Zhiqiang</a></td>
-    </tr>
-    <tr> 
       <td><div align="right"><? echo _VERSION ?>: </div></td>
       <td><? echo "$CONF_version (released $CONF_releaseDate)"; ?> </td>
+    </tr>
+    <tr>
+      <td><div align="right">Design:</div></td>
+      <td>Alexander Caravitis</td>
     </tr>
     <tr> 
       <td colspan="2"><div align="center">
@@ -78,7 +78,7 @@
             <div align="left"><a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></div>
           </li>
           <li>
-            <div align="left"><a href="http://xc.parapente.com.ar/modules.php?name=leonardo&op=list_flights" target="_blank">Argentine Leonardo</a></div>
+            <div align="left"><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></div>
           </li>
           <li>
             <div align="left"><a href="http://xc.ciclone.com.br/xc/modules.php?name=leonardo&op=list_flights" target="_blank">Brazilian Leonardo</a></div>
@@ -111,7 +111,7 @@
               Yucer</strong> - Turkey<br>
               <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.ypforum.com/modules.php?name=leonardo&amp;op=list_flights</a></p>        
         <p><strong>Ale Spitznagel</strong> - Argentine<br>
-          <a href="http://xc.parapente.com.ar/modules.php?name=leonardo&op=list_flights" target="_blank">http://xc.parapente.com.ar/modules.php?name=leonardo&amp;op=list_flights</a></p>
+          <a href="http://www.argentinaxc.com.ar" target="_blank">http://www.argentinaxc.com.ar</a></p>
         <p><em>I need to <strong>specially</strong> thank the following people 
           for their spontaneous answer to my call for translators.</em></p>
         <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=202">Paulo Reis</a></strong> for the <strong>Portuguese</strong> translation</p>

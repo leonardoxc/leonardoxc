@@ -6,7 +6,7 @@
 
 	list-style: none;
 	line-height: 1;
-	background-color:#E4ECF0;
+	background-color:#f6f5fa;
 	
 	padding: 0;
 /*
@@ -41,6 +41,8 @@
 	padding-left:0.3em;
 	
 	border: solid #CA9F2A;
+	/*norad */
+	border: solid #d3cfe4;
 	border-width: 1px 1px;
 
 	margin-left:2px;
@@ -136,7 +138,8 @@ margin-left:18em;
 
 #dropMenu li:hover, #dropMenu li.sfhover, li ul a:hover {
 /*	background: #eda;*/
-	background-color:#F6EF80;
+/*	background-color:#F6EF80;*/
+	background-color:#F8C90C;
 }
 
 #dropMenu .smallItem , .smallItem{
