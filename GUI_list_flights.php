@@ -199,11 +199,13 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   else $alignClass="";
   
   if ($sortOrder==$fieldName) { 
-   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></td>";
+   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
+		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10>
+		</td>\n";
   } else {  
    echo "<td class='SortHeader $alignClass' $widthStr>
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a></td>";
+		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a>
+		</td>\n";
    } 
 }
 
@@ -296,7 +298,7 @@ function removeClubFlight(clubID,flightID) {
 	 
 	 $sortRowClass=($i%2)?"l_row1":"l_row2"; 	 
 	 $i++;
-	 echo "\n\n<tr class='$sortRowClass'>";
+	 echo "\n\n<tr class='$sortRowClass'>\n";
 	   $days_from_submission =	floor( ( mktime() - datetime2UnixTimestamp($row["dateAdded"]) ) / 86400 );  // 60*60*24 sec per day
 
 	   if ( $is_private ) $first_col_back_color=" bgcolor=#33dd33 ";
@@ -333,7 +335,7 @@ function removeClubFlight(clubID,flightID) {
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' border=0>";
 	   else $gliderBrandImg="&nbsp;";
 	   
-	   echo "<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
+	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
 	   echo "<TD><div align=right>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div align=left id='p_$i' class='pilotLink'>";
@@ -348,10 +350,8 @@ function removeClubFlight(clubID,flightID) {
 	   "<TD>$linearDistance</TD>".
 	   "<TD>$olcDistance</TD>".
 	   "<TD nowrap>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' border=0 align='top'></TD>".
-	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0>
-			</td>".
-
-   	   "<TD>$gliderBrandImg</td>".
+	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
+   	   "\n\t<TD>$gliderBrandImg</td>".
 
 	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."'></a>";
@@ -384,10 +384,10 @@ function removeClubFlight(clubID,flightID) {
 			} 
 			
 
-	   echo "</TD>";	  
+	   echo "</TD>\n";	  
   	   echo "</TR>";
    }  
-   echo "</table>"  ;      
+   echo "</table>\n\n"  ;      
    $db->sql_freeresult($res);
 }
 

@@ -118,7 +118,7 @@ if ($clubID) {
 
 require_once $moduleRelPath."/MENU_menu.php";
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath?>/DHTML_functions.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <? if (0) { ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/supernote.js"></script>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/supernote.css" />
@@ -294,11 +294,9 @@ function exitPage($exitNow=1){
    if ($opMode==1) {   
 		CloseTable();
 		include("footer.php");
-   }
-
-	if ($opMode==3) 
+   } else if ($opMode==3) {
 		require_once $moduleRelPath."/GUI_footer.php";
-
+   }
    //$pageEnd=getmicrotime();
    //$pageTime=$pageEnd-$pageStart;
    // echo "PAGE CREATION: $pageTime secs<BR>";

@@ -2,22 +2,21 @@
 
 #nav, #nav ul {
 	float: left;
-/*	width: 36em;*/
-width: 760px;
+	width: 760px;
 
 	list-style: none;
-	line-height: 1;
+	line-height: 1em;
 	background-color:#f6f5fa;
 	
-	
 	padding: 0;
-	/*border: solid #eda;*/
-	/*norad */
 	border: solid #d3cfe4;
-
 	border-width: 1px 1px;
 	margin: 0 0 0.3em 0;
-/* margin:0;*/
+}
+#nav ul {
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 }
 
 #nav a {
@@ -39,13 +38,12 @@ padding:0;
 }
 
 #nav li {
-
-font-size:11px;
-
+	font-size:11px;
 
 	float: left;
 	padding: 0;
 	width: 12.5em;
+	height:22px;
 	
 	/*border: solid #eda;*/
 	/*norad*/
@@ -63,9 +61,9 @@ font-size:11px;
 /* the top items*/
 #nav li a {
 	border:none;
-	height:1.3em;
-	height:16px;
-	
+	height:1.5em;	
+	height:22px;
+
 	vertical-align:middle;
 	text-align:center;
 	
@@ -75,6 +73,9 @@ padding-right:0.2em;
 padding-left:0.2em;
 
 }
+#nav>li a {
+	height:18px;
+}
 
 /* the dropdown items */
 #nav li ul a {
@@ -82,8 +83,10 @@ padding-left:0.2em;
 	font-weight:normal;
 	text-align:left;
 	
+	height:16px;
+
 padding-top:0.3em;
-padding-bottom:0.2em;
+padding-bottom:0;
 padding-right:0.1em;
 padding-left:0.6em;
 }
@@ -94,30 +97,20 @@ padding-left:0.6em;
 	position: absolute;
 	left: -999em;
 	
-
-	height: auto;
 	width: 18em;
+	height: auto;
 
-/*	
-	width:auto;
-*/	
-	
 	font-weight: normal;
-/*	border-width: 0.25em;*/
-	border-width: 1px ;
 	margin: 0;
-
-	padding-right:2px;
-	padding-bottom:2px;
-	background-color:#8A83A9;
-z-index:20000;
+	padding:0;
+	background-color:#FFFFFF;
 }
 
 #nav li li {
 	padding-right: 1em;
 	width: 17em;
-	border:none;
-	background:white;
+	border:0;
+	background-color:#FFFFFF;
 }
 
 #nav li ul a {
@@ -147,35 +140,6 @@ margin-left:18em;
 }
 
 
-
-#nav .short ul {
-	width:12em;
-}
-
-#nav .short li {
-	width:12em;
-	padding:0px;
-}
-
-
-
-#nav .short li a{
-	width:11.7em;
-	font-weight:normal;
-	padding-top:0em;
-	padding-bottom:0em;
-	padding-right:0.1em;
-	padding-left:0.2em;
-}
-
-
-
-#nav li ul .hr2 {
-	height:3px;
-	color:#FF9933;
-	padding:0;
-	margin:0;
-}
 
 #nav li ul .li_space ,#nav li .li_space ,  .li_space{
 	width: 18em;
@@ -212,16 +176,38 @@ margin-left:18em;
 /* this is not seen by ie6 - */
 #nav>li  ul .li_h1 { width: 16.8em; }
 
-#nav li ul .short_li_h1 {
+
+
+#nav .short ul {
 	width:12em;
 }
 
+#nav .short li {
+	width:12em;
+	padding:0px;
+	height:auto;
+}
+
+#nav .short li a{
+	width:11.7em;
+	height:auto;
+	font-weight:normal;
+
+	padding-top:0em;
+	padding-bottom:0em;
+	padding-right:0.1em;
+	padding-left:0.2em;
+}
+
+
+#nav li ul .short_li_h1 {	width:12em; }
 /* this is not seen by ie6 - */
 #nav>li  ul .short_li_h1  { width: 10.8em; }
 
-#nav .smallItem , .smallItem{
+#nav .smallItem , .smallItem {
 	width:32px;
-	height:17px;
+	height:22px;
 	vertical-align:middle;
-	
+padding-bottom:0;
+margin-bottom:0;
 }

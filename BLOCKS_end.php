@@ -1,5 +1,6 @@
-</td>
-    <td valign=top>
+
+	</td>
+    <td valign=top>		
 <?
 	// render right side blocks
 	$dir=dirname(__FILE__)."/blocks";
@@ -16,13 +17,14 @@
 
 	if (count($blocksList))	 {
 		sort($blocksList);
-		foreach ($blocksList as $thisBlock) 
+		foreach ($blocksList as $thisBlock) {
 			renderBlock($thisBlock);
+		}
 	}
 
 function renderBlock($thisBlock) {
 	global $op;
-	require_once dirname(__FILE__)."/blocks/$thisBlock/config.php";
+	require dirname(__FILE__)."/blocks/$thisBlock/config.php";
 	if (!$blockActive) return;
 	if ( !in_array($op,$blockShow) && count($blockShow) ) return;
 
@@ -33,6 +35,6 @@ function renderBlock($thisBlock) {
 	echo "<BR>";
 }
 ?>
-</td>
+	</td>
   </tr>
 </table>

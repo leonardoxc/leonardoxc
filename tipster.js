@@ -1,20 +1,12 @@
 /*
-
 TIPSTER v3.1 RC (c) 2001-2006 Angus Turnbull, http://www.twinhelix.com
 Altering this notice or redistributing this file is prohibited.
-
 */
-
-
-
 // This is the full, commented script file, to use for reference purposes or if you feel
 // like tweaking anything. I used the "CodeTrimmer" utility availble from my site
 // (under 'Miscellaneous' scripts) to trim the comments out of this JS file.
 
-
-
 // *** COMMON CROSS-BROWSER COMPATIBILITY CODE ***
-
 
 // This is taken from the "Modular Layer API" available on my site.
 // See that for the readme if you are extending this part of the script.
@@ -73,10 +65,6 @@ page.scrollY=function() { with (this) return MS ? db('scrollTop') : win.pageYOff
 
 
 
-
-
-
-
 // *** MAIN TIP OBJECT CLASS ***
 
 function TipObj(myName)
@@ -116,34 +104,7 @@ TipObj.list = {};
 var ToPt = TipObj.prototype;
 
 
-
-
-
 // *** TIP MOUSE HANDLER FUNCTIONS ***
-
-/*
-// Track and record the mouse positiong and page scroll co-ordinates.
-ToPt.track = function(evt) { with (this)
-{
- // A quick patch to stop IE dying with the script in the <head>.
- if (!isIE || document.body)
- {
-  // Reference the correct event object.
-  evt=evt||window.event;
-
-  // Figure out the mouse co-ordinates and call the position function.
-  // Also set sX and sY as the scroll position of the document.
-  sX = page.scrollX();
-  sY = page.scrollY();
-  mX = evt.pageX || sX + evt.clientX || 0;
-  mY = evt.pageY || sY + evt.clientY || 0;
-
-  // If we've set tip tracking, call the position function.
-  if (tipStick == 1) position();
- }
-}};
-*/
-
 
 // Called onmousemove by track() and also by show() to reposition the active tip.
 // Passing 'true' forces a complete reposition regardless of tip type.
@@ -367,36 +328,3 @@ ToPt.fade = function() { with (this)
  }
 }};
 
-
-
-
-
-
-
-//  manolis 
-// causes great flickering !!!
-
-// *** PAGE EVENTS ***
-
-
-// Capture the onmousemove event so tips can follow the mouse, and pass to all tip objects.
-// Back up old events first!
-/*
-var tipOR=window.onresize, nsWinW=window.innerWidth, nsWinH=window.innerHeight;
-document.tipMM = document.onmousemove;
-
-if (isNS4) document.captureEvents(Event.MOUSEMOVE);
-document.onmousemove = function(evt)
-{
- for (var t in TipObj.list) TipObj.list[t].track(evt);
- return document.tipMM?document.tipMM(evt):(isNS4?document.routeEvent(evt):true);
-};
-
-// Handle NS4 resizing error, don't worry about Opera 5/6 as they can't run this anyway.
-window.onresize = function()
-{
- if (tipOR) tipOR();
- if (isNS4 && (nsWinW!=innerWidth || nsWinH!=innerHeight)) location.reload();
-};
-
-*/

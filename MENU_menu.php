@@ -25,11 +25,6 @@
 <? } else { ?>
 	<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_second_menu.css">
 	<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">
-	<style type = "text/css">
-	#vnav li, #nav li , #dropMenu li {
-	   behavior: url('<? echo $moduleRelPath?>/topmenu.htc');
-	}
-	</style>
 <?
 	require_once dirname(__FILE__)."/MENU_top_menu.php";
  } ?>

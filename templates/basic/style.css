@@ -242,7 +242,7 @@ table.listTable tr {
    behavior: url('/modules/leonardo/templates/basic/hover.htc');
 }
 */
-table.listTable tr:hover , table.listTable tr.hover {
+table.listTable tr:hover , table.listTable tr.sfhover {
    background-color:#F6EF80;
 }
 
@@ -388,7 +388,7 @@ text-align:center;
 	border:1px;
 }
 
-.takeoffLink a {
+.takeoffLink a, .takeoffLink a:visited {
 color: #6b6b8d;
 color: #8b8bad;
 font-size:10px;
@@ -409,3 +409,22 @@ margin-right:0.5em;
 vertical-align:middle;
 }
 
+
+.numeration {
+display:inline;
+}
+.numeration a, .numeration a:visited {
+color:#FFFFFF;
+}
+
+.numeration a, .numeration a:visited {
+color:#FFFFFF;
+}
+/* for the active page num in the numeration */
+.activePageNum {
+	display:inline;
+	color:#ffea00;
+	font-weight:bold;
+	font-size:1.1em;
+	vertical-align:bottom;
+}

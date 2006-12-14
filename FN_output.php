@@ -233,7 +233,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 		for($i = 1; $i < $init_page_max + 1; $i++)
 		{
 			// $page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>' : '<a href="' . append_sid($base_url . "&amp;start=" . ( ( $i - 1 ) * $per_page ) ) . '">' . $i . '</a>';
-			$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>' : '<a href="' . append_sid($base_url . "&amp;page_num=".$i ) . '">' . $i . '</a>';
+			$page_string .= ( $i == $on_page ) ? '<div class="activePageNum">' . $i . '</div>' : '<a href="' . append_sid($base_url . "&amp;page_num=".$i ) . '">' . $i . '</a>';
 			if ( $i <  $init_page_max )
 			{
 				$page_string .= ", ";
@@ -257,7 +257,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 				//for($i = $init_page_min - 1; $i < $init_page_max + 2; $i++)
 				for($i = $init_page_min - $from_middle; $i < $init_page_max + ($from_middle + 1); $i++)
 				{
-					$page_string .= ($i == $on_page) ? '<b>' . $i . '</b>' : '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">'.$i. '</a>';
+					$page_string .= ($i == $on_page) ? '<div class="activePageNum">' . $i . '</div>' : '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">'.$i. '</a>';
 					//if ( $i <  $init_page_max + 1 )
 					if ( $i <  $init_page_max + $from_middle )
 					{
@@ -276,7 +276,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 			//for($i = $total_pages - 2; $i < $total_pages + 1; $i++)
 			for($i = $total_pages - ($begin_end - 1); $i < $total_pages + 1; $i++)
 			{
-				$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>'  : '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">' . $i . '</a>';
+				$page_string .= ( $i == $on_page ) ? '<div class="activePageNum">' . $i . '</div>'  : '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">' . $i . '</a>';
 				if( $i <  $total_pages )
 					$page_string .= ", ";
 			}
@@ -284,7 +284,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	} else {
 		for($i = 1; $i < $total_pages + 1; $i++)
 		{
-			$page_string .= ( $i == $on_page ) ? '<b>' . $i . '</b>' : '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">'.$i.'</a>';
+			$page_string .= ( $i == $on_page ) ? '<div class="activePageNum">' . $i . '</div>': '<a href="' . append_sid($base_url . "&amp;page_num=$i").'">'.$i.'</a>';
 			if ( $i <  $total_pages )
 				$page_string .= ', ';
 		}
@@ -293,12 +293,12 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	if ( $add_prevnext_text )
 	{
 		if ( $on_page > 1 )
-			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '"><<</a>&nbsp;&nbsp;'.$page_string;
+			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '">«</a>&nbsp;&nbsp;'.$page_string;
 
 		if ( $on_page < $total_pages )
-			$page_string .= '&nbsp;&nbsp;<a href="' . append_sid($base_url . "&amp;page_num=" . ($on_page+1)   ) . '">>></a>';
+			$page_string .= '&nbsp;&nbsp;<a href="' . append_sid($base_url . "&amp;page_num=" . ($on_page+1)   ) . '">»</a>';
 	}
-
+	$page_string = '<div class="numeration">'.$page_string.'</div>';
 	return $page_string;
 }
 

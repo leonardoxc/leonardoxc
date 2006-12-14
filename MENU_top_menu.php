@@ -25,6 +25,7 @@ sfHover = function() {
 <? 
 
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 // http://www.htmldog.com/articles/suckerfish/dropdowns/
 // http://www.htmldog.com/articles/suckerfish/dropdowns/example/
 

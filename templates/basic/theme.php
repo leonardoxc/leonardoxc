@@ -12,11 +12,13 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 ?>
+<!--[if IE]>
 <style type = "text/css">
-table.listTable tr {
-   behavior: url('<? echo $moduleRelPath?>/hover.htc');
-}
+	#vnav li, #nav li , #dropMenu li , table.listTable tr {
+	   behavior: url('<? echo $moduleRelPath?>/hover.htc');
+	}
 </style>
+<![endif]-->
 <?
 
 define ('MAIN_BG','#EDEEF1');   // more light blue

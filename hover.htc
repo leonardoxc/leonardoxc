@@ -2,11 +2,11 @@
 <PUBLIC:ATTACH EVENT="onmouseout"  ONEVENT="RestoreHover()" />
 <SCRIPT LANGUAGE="JScript">
 function DoHover()
-  { element.className += ' hover';
+  { element.className += ' sfhover';
   }
 
 function RestoreHover()
-  { element.className = element.className.replace(/\bhover\b/,'');
+  { element.className = element.className.replace(/\bsfhover\b/,'');
   }
 
 </SCRIPT>

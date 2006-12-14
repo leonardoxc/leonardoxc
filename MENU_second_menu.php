@@ -82,6 +82,7 @@
 
 <? 
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 
  if ( count($CONF_glider_types) > 1 ) { 
 		$catLiStr="";
