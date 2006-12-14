@@ -22,6 +22,15 @@ if (isset($name)) {
 // $currentlang=$nativeLanguage;
 setVarFromRequest("lng",$nativeLanguage); 
 $currentlang=$lng;
+
+setVarFromRequest("ap",0);
+if ($ap) {
+	$leonardo_header=$apList[$ap]['header'];
+	setVar("lng",$apList[$ap]['lang']);
+	$currentlang=$lng;
+	//echo "!$currentlang!";
+} else $leonardo_header="basic";
+
 require_once("mainfile.php");
 $module = 1;
 $prefix="phpbb";
@@ -34,9 +43,15 @@ $lang['ENCODING']= $langEncodings[$currentlang];
 // set page title 
 $page_title = 'LEONARDO'; 
 
+$tplSuffixStr='';
+if ($CONF_use_own_template) {
+	require_once "modules/$name/CL_template.php";
+	// our own page header 
+	$tplSuffixStr='_leonardo';
+}
 
-// standard page header 
-include($phpbb_root_path . 'includes/page_header.'.$phpEx); 
+include($phpbb_root_path . 'includes/page_header'.$tplSuffixStr.'.'.$phpEx); 
+
 
 $name=$_GET['name'];
 if (isset($name)) {
@@ -58,6 +73,7 @@ if (isset($name)) {
 }
 
 // standard page footer 
-include($phpbb_root_path . 'includes/page_tail.'.$phpEx); 
+include($phpbb_root_path . 'includes/page_tail'.$tplSuffixStr.'.'.$phpEx); 
+
 
 ?>

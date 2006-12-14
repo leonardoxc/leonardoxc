@@ -12,7 +12,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	require $moduleRelPath."/CL_template.php";
+	require_once $moduleRelPath."/CL_template.php";
 	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 
 	$Ltemplate ->set_filenames(array(

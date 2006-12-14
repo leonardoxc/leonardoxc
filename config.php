@@ -18,6 +18,10 @@ require_once dirname(__FILE__)."/config_version.php";
 // 3 = standalone -- still work in progress
  $opMode= 2; 
 
+ // if it is a phpbb module we can use our own template 
+ // and not the onw of the forum 
+ $CONF_use_own_template=1;
+ 
  // admin_users 
  // put in this array the userID of the users you want ot grand admin status
  // YOU MUST PUT AT LEAST ONE ADMIN USER

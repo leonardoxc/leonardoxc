@@ -269,7 +269,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    echo "<div class='tabbertab $defaultTabStr' title='$legend'>";
    
    $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
-   echo "<br><table class='listTable' width='100%' cellpadding='2' cellspacing='0'>
+   echo "<br><table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($countHowMany+4)."'>$legend</td></tr>";
    
    ?>

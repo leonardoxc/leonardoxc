@@ -1,4 +1,4 @@
-/* $Id: example.css,v 1.1 2006/05/26 15:33:19 manolis Exp $ */
+/* $Id: example.css,v 1.2 2006/12/14 00:55:05 manolis Exp $ */
 
 /*--------------------------------------------------
   REQUIRED to hide the non-active tab content.
@@ -27,7 +27,7 @@ ul.tabbernav
  margin:0;
  padding: 3px 0;
  border-bottom: 1px solid #778;
- font: bold 12px Verdana, sans-serif;
+ font: bold 12px Verdana, sans-serif; 
 }
 
 ul.tabbernav li
