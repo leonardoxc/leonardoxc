@@ -79,6 +79,9 @@ width:auto;
 	text-decoration: none;
 }
 
+#dropMenu>li a {
+	height:17px;
+}
 
 /* redefine the "a" for the dropdonwn container */
 #dropMenu li ul a {

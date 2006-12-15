@@ -178,7 +178,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 	</ul>
 </li>
 
-<li><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
+<li class="lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul>
 		<li><a href="?name=<?=$module_name?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
 		<li class='li_space'></li>

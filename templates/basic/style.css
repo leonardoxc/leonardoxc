@@ -1,4 +1,4 @@
-.title {
+sory.title {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	color: #003366;
@@ -64,7 +64,6 @@ background-color:#C5D0ED;
 
 
 .tableTitle {
-
 	display:block;
 	height:22px;
 
@@ -73,17 +72,14 @@ background-color:#C5D0ED;
 	padding-left:5px;
 
 	font-weight:bold;
-	background-color:#FCF9EE;
-	background-color:	#C7DBF5;
-/* blue*/
-	background-color:#458DDC;
-/* norad */
 	background-color:#7faad9;
-color:#FFFFFF;
+	color:#FFFFFF;
+
 	border-right-width: 2px; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 1px;
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #DEC870; border-left-color: #E2E2E2;
-
+/*norad*/
+border:0;
 	width:760px;
 
 }
@@ -188,6 +184,8 @@ The main table that holds the list of flights/pilots/takeoffs
 	border:1px;
 	border-style:solid;
 	border-color:#999999;
+/*norad*/
+	border:0;
 }
 	
 .listTable a, .listTable a:visited  {
@@ -199,6 +197,9 @@ The main table that holds the list of flights/pilots/takeoffs
 	vertical-align:middle;
 	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+/*norad*/
+	border:0;
+	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
 }
 
 
@@ -250,12 +251,15 @@ width:745px;
 
 	vertical-align:top;
 	border:0;
-	border-top-color:#6AA2DF; border-top-width:3px; border-top-style:solid;
+	border-top-color:#6AA2DF; border-top-width:0px; border-top-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+	border:0;
 
 	color:#FFFFFF;
-	font-size:11px;
-	vertical-align:bottom;
+	font-size:10px;
+
+	padding:3px;
+	padding-top:0px;
 
 	text-align:right;
 	text-decoration:none;
@@ -267,8 +271,6 @@ width:745px;
 
 .SortHeader a, .SortHeader a:visited { color:#FFFFFF; }
 .activeSortHeader a, .activeSortHeader a:visited { color:#444444; }
-
-
 
 
 
@@ -374,8 +376,6 @@ text-align:center;
 	background-color: #f6f5fa;
 	border-width: 1px; 
 	border-style: solid; 
-	border-color: #CA9F2A;
-	/*norad*/ 
 	border-color: #d3cfe4;
 	padding: 3px 3px 3px 3px;
 	margin-left:2px;
@@ -383,7 +383,6 @@ text-align:center;
 	margin-bottom:0px;
 	margin-top:0px;
 }
-
 
 .menuLvl2 { 
     display:block;

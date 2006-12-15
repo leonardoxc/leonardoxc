@@ -56,6 +56,17 @@ $ip=$_SERVER['REMOTE_ADDR'];
 $port=date("Yz");
 
 // $port=$_SERVER['REMOTE_PORT'];
+log_msg("^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+log_msg(date("y/m/d H:m:s")." ".$ip." \n");
+log_msg("POST VARIABLES------------\n");
+foreach($_POST as $pname=>$pval) {
+	log_msg($pname."=".$pval."\n");
+}
+log_msg("GET VARIABLES------------\n");
+foreach($_GET as $pname=>$pval) {
+	log_msg($pname."=".$pval."\n");
+}
+log_msg("------------------------\n");
 
 if ($lat!=0 || $lon !=0) {
 	$query="INSERT INTO leonardo_live_data (ip,port,tm,username,passwd,lat,lon,alt,sog,cog) 
@@ -70,6 +81,21 @@ if ($lat!=0 || $lon !=0) {
 	}	
 	echo "OK";
 } else {
-	echo "Zero coordinates: will not log them";
+	// echo "Zero coordinates: will not log them";
+	echo "OK";
+}
+
+function log_msg($somecontent ) {
+	$filename=dirname(__FILE__)."/leo_live_track.txt";
+	if (!$handle = fopen($filename, 'a')) {
+		 echo "Cannot open file ($filename)";
+		return 0;	
+	}
+	if (fwrite($handle, $somecontent) === FALSE) {
+		echo "Cannot write to file ($filename)";
+		return 0;
+	}
+	fclose($handle);
+	return 1;
 }
 ?>

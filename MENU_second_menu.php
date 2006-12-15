@@ -107,13 +107,12 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 		} 	
 ?>
 
-<ul id="nav" style="width:35px; height:22px; border: 1px solid #d3cfe4;" >
+<ul id="nav" style="width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
 <li class="smallItem"><a class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
 	<ul>
 	<? echo $catLiStr;?>
 	</ul>
 </li>
-
 </ul>
 <?
 } // end if 
