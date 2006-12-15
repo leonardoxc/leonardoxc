@@ -173,6 +173,12 @@ html>body .mainBox {
 	padding:3px;
 }
 
+
+/*-------------------------------------
+
+The main table that holds the list of flights/pilots/takeoffs 
+
+----------------------------------*/
 .listTable {
 	text-align:left;
 	width:760px;
@@ -184,7 +190,7 @@ html>body .mainBox {
 	border-color:#999999;
 }
 	
-.listTable a {
+.listTable a, .listTable a:visited  {
 	color:#333366;
 	text-decoration:underline;
 }
@@ -193,32 +199,63 @@ html>body .mainBox {
 	vertical-align:middle;
 	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
-
-	font-size:11px;
-	font-family:Verdana, Arial, Helvetica, sans-serif;	
 }
+
+
+/* some styles for the listTable items */
+.distance   { color:#4400aa; text-align:right; }
+.dateString { color:#224488; text-align:right; }
+.OLCScore   { color:#224488; text-align:right; }
+.listIcons { margin-right:1px; }
+.flagIcon { margin-right:0.5em; vertical-align:middle; }
+.numeration { display:inline; }
+.numeration  a, .numeration  a:visited { color:#FFFFFF; }
+.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }
+.pilotLink,   .pilotLink   a, .pilotLink   a:visited { color:#000066; text-align:left; }
+
+/* for the active page num in the numeration */
+.activePageNum {
+	display:inline;
+	color:#ffea00;
+	font-weight:bold;
+	font-size:1.1em;
+	vertical-align:bottom;
+}
+
+/*
+we put the behaviour file for ie
+table.listTable tr {
+   behavior: url('/modules/leonardo/templates/basic/hover.htc');
+}
+*/
+table.listTable tr:hover , table.listTable tr.sfhover {
+   background-color:#F6EF80;
+}
+
+
+/*------------------------
+ End of listTable rtelated items
+------------------------*/
 
 /*  listTable for tabber needs to be 15 px less*/
 .listTableTabber {
 width:745px;
 }
 
+
 .SortHeader {
-	background-color:#458DDC;
 	/*norad*/
 	background-color:#7faad9;
 	font-weight:bold;
 
 	vertical-align:top;
+	border:0;
 	border-top-color:#6AA2DF; border-top-width:3px; border-top-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
-	border-bottom-width:0;
-	border-right-width:0px;
 
 	color:#FFFFFF;
 	font-size:11px;
 	vertical-align:bottom;
-
 
 	text-align:right;
 	text-decoration:none;
@@ -232,19 +269,15 @@ width:745px;
 .activeSortHeader a, .activeSortHeader a:visited { color:#444444; }
 
 
+
+
+
 .attentionLink  a, .attentionLink  a:visited {
 	font-weight:bold;
 	color:#FF3300;
 }
 
-/*
-table.listTable tr {
-   behavior: url('/modules/leonardo/templates/basic/hover.htc');
-}
-*/
-table.listTable tr:hover , table.listTable tr.sfhover {
-   background-color:#F6EF80;
-}
+
 
 .headerRow { 
 	text-align:right;
@@ -269,6 +302,9 @@ table.listTable tr:hover , table.listTable tr.sfhover {
 .l_row1Sorted { text-align:right; background-color:#d6d6d6; }
 
 
+/*-----------------------------------
+	Define some kind of boxes - containers
+-----------------------------------*/
 
 .shadowBox {
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
@@ -305,17 +341,6 @@ table.listTable tr:hover , table.listTable tr.sfhover {
 	font-size:11px;
 	text-decoration:none;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
-}
-
-.dropDownBox {
-	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
-	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
-	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
-
-	font-size:11px;
-	text-decoration:none;
-	
-	background-color:#F8F8F8;
 }
 
 
@@ -374,12 +399,35 @@ text-align:center;
 }
 
 
+
+.dropDownBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	font-size:11px;
+	text-decoration:none;
+	background-color:#F8F8F8;
+	background-color:#FFFFFF;
+}
+
+.dropDownBoxH2 {
+	background-color:#E7F8E2;
+	font-weight:bold;
+	text-decoration:underline;
+	text-align:center; 
+}
+
+table.dropDownBox td {
+	width:auto; padding-right:5px; 
+}
+
+/* for the second drop down menu - testing  */
 #countriesList, #countriesList ul {
-		padding: 0;
-		margin: 0;
-		width : auto;
-	
-		background-color:#339999;
+	padding: 0;
+	margin: 0;
+	width : auto;	
+	background-color:#339999;
 }
 
 #countriesList li , #countriesList li a{
@@ -388,43 +436,4 @@ text-align:center;
 	border:1px;
 }
 
-.takeoffLink a, .takeoffLink a:visited {
-color: #6b6b8d;
-color: #8b8bad;
-font-size:10px;
-}
 
-
-/* for the flight list screen */
-.pilotLink a {
-color:#000066;
-}
-
-.listIcons {
-margin-right:1px;
-}
-
-.flagIcon {
-margin-right:0.5em;
-vertical-align:middle;
-}
-
-
-.numeration {
-display:inline;
-}
-.numeration a, .numeration a:visited {
-color:#FFFFFF;
-}
-
-.numeration a, .numeration a:visited {
-color:#FFFFFF;
-}
-/* for the active page num in the numeration */
-.activePageNum {
-	display:inline;
-	color:#ffea00;
-	font-weight:bold;
-	font-size:1.1em;
-	vertical-align:bottom;
-}

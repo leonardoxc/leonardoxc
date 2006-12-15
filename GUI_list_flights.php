@@ -336,20 +336,20 @@ function removeClubFlight(clubID,flightID) {
 	   else $gliderBrandImg="&nbsp;";
 	   
 	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
-	   echo "<TD><div align=right>$dateStr</div></TD>".
+	   echo "<TD class='dateString'>$dateStr</TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
-		"<div align=left id='p_$i' class='pilotLink'>";
+		"<div id='p_$i' class='pilotLink'>";
 		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>".
-		"</div>";
-		echo "<div align=right id='t_$i' class='takeoffLink'>";
-		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>".
-			"</div></TD>".
+		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		echo "</div>";
+		echo "<div id='t_$i' class='takeoffLink'>";
+		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
+		echo "</div></TD>".
 	   "<TD>$duration</TD>".
-	   "<TD>$linearDistance</TD>".
-	   "<TD>$olcDistance</TD>".
-	   "<TD nowrap>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' border=0 align='top'></TD>".
+	   "<TD class='distance'>$linearDistance</TD>".
+	   "<TD class='distance'>$olcDistance</TD>".
+	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' border=0 align='top'></TD>".
 	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
    	   "\n\t<TD>$gliderBrandImg</td>".
 

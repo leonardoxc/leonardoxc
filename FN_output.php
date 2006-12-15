@@ -32,9 +32,10 @@ function formatURL($linkURL) {
 function formatDate($date,$html_output=true) {
   // from 2002-07-14 -> 14/07/2004
   $dt_str=sprintf("%02d/%02d/%4d",substr($date,8,2),substr($date,5,2),substr($date,0,4));
-  if ($html_output)
-    return '<font color=#224488>'.$dt_str.'</font>';
-  else return $dt_str;
+  return $dt_str;
+  //if ($html_output)
+  //  return '<font color=#224488>'.$dt_str.'</font>';
+  //else return $dt_str;
 }
 
 function formatOLCScoreType($type,$html_output=true) {
@@ -63,7 +64,8 @@ function formatDistance($distance,$showUnits=false) { // in meters
 }
 
 function formatDistanceOpen($distance,$showKm=true) { // in meters
-	return '<font color=#4400aa>'.formatDistance($distance,$showKm).'</font>';
+	return  formatDistance($distance,$showKm);
+	// return '<font color=#4400aa>'.formatDistance($distance,$showKm).'</font>';
 }
 
 function formatDistanceOLC($distance,$showKm=true) { // in meters
@@ -73,8 +75,9 @@ function formatDistanceOLC($distance,$showKm=true) { // in meters
 
 
 function formatOLCScore($score,$html_output=true) { 
-	if ($html_output) return '<font color=#0000ff>'.sprintf("%.1f",$score).'</font>';
-	else return sprintf("%.1f",$score);
+	return sprintf("%.1f",$score);
+	//if ($html_output) return '<font color=#0000ff>'.sprintf("%.1f",$score).'</font>';
+	//else return sprintf("%.1f",$score);
 }
 
 function formatAltitude($alt) { 

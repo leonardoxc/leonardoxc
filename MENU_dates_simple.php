@@ -23,8 +23,10 @@
 	
 </tr>
 <tr>
-	<td colspan=3 height=20 class="main_text" bgcolor="#E7F8E2">
-		<div align="center" class="style1"><strong><a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0'><?=_ALL_YEARS?></a></strong></div>
+	<td colspan=3 height=20 class="dropDownBoxH2" >
+		<div class="dropDownBoxH2">
+			<a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0'><?=_ALL_YEARS?></a>
+		</div>
 	</td>
 </tr>
 <tr>

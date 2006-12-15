@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.1 2006/12/14 00:55:05 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.2 2006/12/15 00:33:45 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -65,10 +65,10 @@ if ( $board_config['gzip_compress'] && 0 )
 // Parse and show the overall header.
 //
 
-$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName.'/tpl');
+$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 
 $Ltemplate->set_filenames(array(
-	'overall_header' => 'overall_header.html' )
+	'overall_header' => 'tpl/overall_header.html' )
 );
 
 //

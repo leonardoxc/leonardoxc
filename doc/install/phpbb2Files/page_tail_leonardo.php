@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_tail_leonardo.php,v 1.1 2006/12/14 00:55:05 manolis Exp $
+ *   $Id: page_tail_leonardo.php,v 1.2 2006/12/15 00:33:45 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -25,7 +25,7 @@ if ( !defined('IN_PHPBB') )
 	die('Hacking attempt');
 }
 
-$Ltemplate->set_filenames(array('overall_footer' => 'overall_footer.html'));
+$Ltemplate->set_filenames(array('overall_footer' => 'tpl/overall_footer.html'));
 $Ltemplate->pparse('overall_footer');
 
 // Close our DB connection.

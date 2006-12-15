@@ -17,6 +17,7 @@
  margin:0;
 }
 
+/*
 #dropMenu a {
 	width:auto;
 	display: block;		
@@ -25,6 +26,7 @@
 	text-decoration: none;
 	padding:0;
 }
+*/
 
 /* the top items a */
 #dropMenu li {
@@ -70,6 +72,11 @@ width:auto;
 	padding-left:0.1em;
 white-space:nowrap;
 width:auto;
+
+	
+	display: block;	
+	color: #000022;
+	text-decoration: none;
 }
 
 
