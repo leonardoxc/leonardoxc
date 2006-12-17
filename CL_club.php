@@ -11,6 +11,97 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+/*
+
+A  "NAC /club / group" is a list of pilots
+
+Group types: regarding membership
+
+1) a pilot must be added/deleted manually to the group 
+	Procedure :	Pilots can 
+	a) request addition from the group admin
+	b) add themsleves automatically to open groups
+	c) be addded by the admin with no request and no way of declining 
+	d) be addded by the admin with no request BUT with the option of declining / accepting
+	
+2) - a pilot can be added automatically to the group by any /all of the following
+	a) nationallity
+	b) membership to another group
+	c) submitting a flight which is any /all of the following
+		1) in a given county
+		2) in a given area
+		3) in a given takeoff
+		4) in a given date - period
+		
+		
+		
+EVENTS / LEAGUES / CATEGORIES / COMPETITIONS
+
+An event may be linked to 
+1) Time : Year, Months , Dates, Periods,
+2) Groups/ clubs
+
+
+A group/club can have many events (or categories)
+
+
+An event may include/exclude flights based on
+
+1) Takeoff or area
+2) Glider Category
+3) Pilot experience
+4) Date ( ie weekends)
+5) Male / Female
+6) Age
+7) lat / lon of takeoff 
+8) various metrics of the flight  like :
+	1) Free distance
+	2) Free Triangle
+	3) FAI triangle
+	4) OLC turnpoints
+	5) Out and return
+	7) duration
+9) Brand of Glider
+
+The  include/exclude can be 
+1) automatic with no way tha pilot can decide
+2) The club admin decides
+3) the pilot decides
+
+
+
+An event may have its own scoring formula
+
+Inputs to the formula  will be 
+1) Takeoff or area
+2) Glider Category
+3) Pilot experience
+4) Date ( ie weekends)
+5) Male / Female
+6) Age
+7) lat / lon of takeoff 
+8) various metrics of the flight  like :
+	1) Free distance
+	2) Free Triangle
+	3) FAI triangle
+	4) OLC turnpoints
+	5) Out and return
+	6) Height
+	7) duration
+	8) Mean speed
+	9) Max speed
+	10) turnpoints reached
+	11) distance form last turnpoint
+	12) Time
+	
+
+
+OR use the stantard Leonardo scoring and layout 
+
+
+*/
+
+
 class club {
 	var $ID;
 	var $name;

@@ -26,10 +26,15 @@ $currentlang=$lng;
 setVarFromRequest("ap",0);
 if ($ap) {
 	$leonardo_header=$apList[$ap]['header'];
-	setVar("lng",$apList[$ap]['lang']);
-	$currentlang=$lng;
+	setVar("clubID",$apList[$ap]['club']);
 	//echo "!$currentlang!";
 } else $leonardo_header="basic";
+
+// only the first time we get there do we se the language
+if ($_GET['ap']) {
+	setVar("lng",$apList[$ap]['lang']);
+	$currentlang=$lng;
+}
 
 require_once("mainfile.php");
 $module = 1;

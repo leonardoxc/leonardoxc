@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.2 2006/12/15 00:33:45 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.3 2006/12/17 21:12:38 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -91,13 +91,21 @@ else
 	$l_login_logout = $lang['Login']; 
 }
 
+
+$tplPath=$moduleRelPath.'/templates/'.$PREFS->themeName.'/tpl';
+
+if ($ap) { // a league
+	$topCustomLogo=$apList[$ap]['desc'];
+} else {
+	$topCustomLogo='';
+}
+
 $s_last_visit = ( $userdata['session_logged_in'] ) ? create_date($board_config['default_dateformat'], $userdata['user_lastvisit'], $board_config['board_timezone']) : '';
 
 // Format Timezone. We are unable to use array_pop here, because of PHP3 compatibility
 $l_timezone = explode('.', $board_config['board_timezone']);
 $l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0) ? $lang[sprintf('%.1f', $board_config['board_timezone'])] : $lang[number_format($board_config['board_timezone'])];
 
-$tplPath=$moduleRelPath.'/templates/'.$PREFS->themeName.'/tpl';
 //
 // The following assigns all _common_ variables that may be used at any point
 // in a template.
@@ -138,6 +146,7 @@ $Ltemplate->assign_vars(array(
 	'S_LOGIN_ACTION' => append_sid('login.'.$phpEx),
 
 	'T_PATH' => $tplPath.'/',
+	'TOP_CUSTOM_LOGO'=>$topCustomLogo,
 	
 	'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
 	'U_INDEX' => append_sid('index.'.$phpEx),
