@@ -108,9 +108,10 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 	
 	if ( MWJ_getStyle( elId ,'visibility') == true ) {
 		MWJ_changeVisibility( elId , false );	
-		MWJ_changeSize( elId ,1,1);
+		MWJ_changePosition( elId,  -999 ,  0 , true );
+	//	MWJ_changeSize( elId ,1,1);
 	} else {		
-		MWJ_changeSize( elId ,width,height);
+		//MWJ_changeSize( elId ,width,height);
 		
 		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
 		MWJ_changePosition( elId,  oMC[0]+ horOffset ,  oMC[1] + verOffset , true );
@@ -118,6 +119,7 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 		MWJ_changeVisibility( elId ,true );	
 	}
 }
+
 function toggleVisibility(elId) {	
 //	if ( MWJ_getStyle( elId ,'visibility') == true ) {
 		if ( MWJ_getStyle( elId ,'display') == "block") {

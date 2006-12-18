@@ -1,0 +1,209 @@
+<style type="text/css">
+<!--
+
+.flightShowBoxHeader {
+	display:block;
+	clear:both;
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	/* MORE black */
+	/*	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;*/
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	height:22px;
+
+	margin-bottom:0px;
+	margin-top:12px;
+
+	padding:0;
+	padding-left:5px;
+	padding-right:5px;
+	
+	font-weight:bold;
+	background-color:#7faad9;
+	color:#FFFFFF;
+	width:760px;
+}
+
+html>body .flightShowBoxHeader {
+	width:747px;
+}
+
+.flightShowBox {
+	display:block;
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	/* MORE black */
+	/*	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;*/
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	font-size:11px;
+	text-decoration:none;
+	text-align:left;
+	background-color:#FFFFFF;	
+	
+	padding:0;
+	margin:0;
+	width:760px;
+	clear:both;
+}
+html>body .flightShowBox {
+	width:760px;
+}
+
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+.googleEarthDropDown { width:170px; }
+.takeoffOptionsDropDown {width:410px; }
+
+-->
+</style>
+<div class='flightShowBoxHeader'>
+	<div id='pilot_pos' class='titleDiv'>{legend}</div>
+	<div class='pagesDiv'>{legendRight}</div>
+</div>
+<table align="center"  cellpadding="0" cellspacing="0" class="flightShowBox" width=760>
+  <tbody>
+    <tr>
+      <td valign="top"><table width="100%" border="0" align="left" cellpadding="3">
+        <tr>
+          <td width="300" valign="top"><table class=main_text width="300" border="0" cellpadding="3">
+            <tr>
+              <td width="88"><div align="left">{#_TAKEOFF_LOCATION}</div></td>
+              <td width="291">{TAKEOFF_TIME}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><div align="left">{TAKEOFF_LOCATION}</div></td>
+            </tr>
+            <tr>
+              <td>{#_LANDING_LOCATION}</td>
+              <td>{LANDING_TIME}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><div align="left">{LANDING_LOCATION}</div></td>
+            </tr>
+          </table></td>
+          <td width="280" rowspan="2" valign="top"><table class="main_text shadowBox" width="280" border="0" cellpadding="0">
+            <tr>
+              <td >{#_DURATION}</td>
+              <td width="100"><div align="right">{LINEAR_DISTANCE}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_MAX_VARIO}</div></td>
+              <td><div align="right">{MAX_VARIO}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_MIN_VARIO}</div></td>
+              <td><div align="right">{MIN_VARIO}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MAX_ALTITUDE}</td>
+              <td><div align="right">{MAX_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MIN_ALTITUDE}</td>
+              <td><div align="right">{MIN_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_TAKEOFF_ALTITUDE}</td>
+              <td><div align="right">{TAKEOFF_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_ALTITUDE_GAIN}</td>
+              <td><div align="right">{ALTITUDE_GAIN}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MAX_SPEED}</td>
+              <td><div align="right">{MAX_SPEED}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MEAN_SPEED}</td>
+              <td><div align="right">{MEAN_SPEED}</div></td>
+            </tr>
+          </table></td>
+          <td width="140" rowspan="2" align="right" valign="top"><table class="main_text shadowBox" width="140" border="0" cellpadding="3">
+            <tr>
+              <td ><div align="center">{#_FLIGHT_FILE}</div></td>
+            </tr>
+            <tr>
+              <td><div align="right"><a href="asd">IGC</a></div></td>
+            </tr>
+            <tr>
+              <td><div id="geOptionsPos" style="float: right;"><a href="javascript:nop()" onClick="toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;">Google Earth&nbsp;<img src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
+            </tr>
+			</table>
+			<table class="main_text shadowBox" width="140" border="0" cellpadding="3">
+            <tr>
+              <td>{#_FLYING_AREA_INFO}</td>
+            </tr>
+            <tr>
+              <td><div align="right"><a href="http://www.paraglidingearth.com/en-html/sites_around.php?lng=23.169&amp;lat=40.4876666667&amp;dist=20" target="_blank"><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
+              </a></div></td>
+            </tr>
+            <tr>
+              <td><div align="right"><a href="http://www.paragliding365.com/paragliding_sites.html?longitude=23.169&amp;latitude=40.4876666667&amp;radius=50" target="_blank"><img src="{M_PATH}/img/paraglider365logo.gif" border="0"><br>
+              </a></div></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td valign="top"><table class="main_text shadowBox" width="297" border="0" cellpadding="0">
+            <tr>
+              <td width="149"><div align="left">{#_OPEN_DISTANCE}</div></td>
+              <td width="142"><div align="right">{LINEAR_DISTANCE}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_MAX_DISTANCE}</div></td>
+              <td><div align="right">{MAX_DISTANCE}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_OLC_DISTANCE}</div></td>
+              <td><div align="right">{OLC_KM}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_OLC_SCORING}</div></td>
+              <td><div align="right">{OLC_KM}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_OLC_SCORE_TYPE}</div></td>
+              <td><div align="right">{OLC_TYPE}</div></td>
+            </tr>
+          </table></td>
+        </tr>
+      </table>
+	</td>
+    </tr>
+    <tr>
+      <td ><div align="left">{#_MORE_INFO}{ADMIN_PANEL}</div>
+	  </td>
+    </tr>
+    <tr>
+      <td ><div align="center">
+	  {MAP_IMG}{CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
+              </div>
+		</td>
+    </tr>
+  </tbody>
+</table>

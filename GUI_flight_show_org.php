@@ -11,12 +11,17 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	require_once $moduleRelPath."/CL_template.php";
-	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
+showFlight($flightID);  
 
-	$Ltemplate ->set_filenames(array(
-		'body' => 'flight_show.html'));
-
+function showFlight($flightID) {
+  global $Theme;
+  global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+  global $moduleRelPath;
+  global $userID,$admin_users;
+  global $enableOLCsubmission ,$scoringServerActive;
+  global $gliderCatList;
+  global $PREFS;
+  global $CONF_show_DBG_XML;
 
   $flightID+=0;
   $flight=new flight();
@@ -29,41 +34,58 @@
   $flight->incViews();
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
   $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+  $opString="";
+  if ( $flight->userID==$userID || is_leo_admin($userID) )
+		$opString="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
+				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+
 
  
   ?>
   <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>
-<script language="javascript">
-function submitForm(extendedInfo) {
-	var flightID= document.geOptionsForm.flightID.value;
-	var lineWidth= document.geOptionsForm.lineWidth.value;
-	var lineColor= document.geOptionsForm.lineColor.value;
-	var ex= document.geOptionsForm.ex.value;  
+  <script language="javascript">
+  
+  function submitForm(extendedInfo) {
+	  var flightID= document.geOptionsForm.flightID.value;
+	  var lineWidth= document.geOptionsForm.lineWidth.value;
+	  var lineColor= document.geOptionsForm.lineColor.value;
+	  var ex= document.geOptionsForm.ex.value;
+	
+  
+//  lineWidth=1;
+//  lineColor="ff0000";
+//  ex=2;
+  
 	window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
 	return false;
 }
 
 function setSelectColor(theDiv) {
+	
 	oColour="#"+theDiv.options[theDiv.selectedIndex].value;
 	//oColour="#00ff00";
 	if( theDiv.style ) { theDiv = theDiv.style; } if( typeof( theDiv.bgColor ) != 'undefined' ) {
 		theDiv.bgColor = oColour; } else if( theDiv.backgroundColor ) { theDiv.backgroundColor = oColour; }
 	else { theDiv.background = oColour; }
+
 }
 
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
 with (unknownTakeoffTip)
 {
-	template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
-	'<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr>'+
-	'<tr><td class="infoBox" style="width:%3%px">%5%</td></tr></table>';
-	showDelay = 0;
-	hideDelay = 2;
-	doFades = false;
-	tips.floating = new Array(220, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
-	tipStick = 0;
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr>'+
+  '<tr><td class="infoBox" style="width:%3%px">%5%</td></tr></table>';
+
+// tipStick = 1;
+ showDelay = 0;
+ hideDelay = 2;
+ doFades = false;
+ tips.floating = new Array(220, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
+
+ tipStick = 0;
 }
 
 </script>
@@ -107,7 +129,34 @@ function edit_takeoff(id) {
 <iframe id="addTakeoffFrame" width=410 height="320" frameborder=0 style='border-width:0px'></iframe></div>
 </div>
 
+<style type="text/css">
+<!--
+.dropBox {
+	display:block;
+	position:absolute;
 
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+.googleEarthDropDown { width:170px; }
+.takeoffOptionsDropDown {width:410px; }
+
+-->
+</style>
 
 <form name="geOptionsForm" method="POST">
 <div id="geOptionsID" class="dropBox googleEarthDropDown">
@@ -181,22 +230,10 @@ function edit_takeoff(id) {
 </form>
 
 <?
-  $legendRight="";
-  if ( $flight->userID==$userID || is_leo_admin($userID) )
-		$legendRight="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
-				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
-$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> "._PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'pilot_pos', 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
-	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
-
-$Ltemplate->assign_vars(array(
-'legend'=>$legend,
-'legendRight'=>$legendRight,
-));
-  /* open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td id='pilot_pos'>"._PILOT.": ".
+  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td id='pilot_pos'>"._PILOT.": ".
 	  "<a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'pilot_pos', 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
 	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
-	*/
 ?>
 
 <?
@@ -237,76 +274,114 @@ $Ltemplate->assign_vars(array(
 		$olcDistanceSpeed=0;	
 	}
 	
-
-	$takeoffLink="<div id='takeoffAddPos'><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
+  open_tr();
+	 //  echo "<TD width=2>&nbsp</td>";
+	   echo "<TD width=140 bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._TAKEOFF_LOCATION."</div></TD>";
+   	  // echo "<TD width=200><div align=".$Theme->table_cells_align.">".$location."&nbsp;	   
+		//<a href='?name=$module_name&op=show_waypoint&waypointIDview=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>";
+		echo "<TD width=200><div id='takeoffAddPos' align=".$Theme->table_cells_align."><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
 		
-	if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
-		$takeoffLink.="<div id='attentionLinkPos' class='attentionLink'><a
-			 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
-			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img
-			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img 
-			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
-	}
-	$takeoffLink.="</div>";
-
-
-$Ltemplate->assign_vars(array(
-	'TAKEOFF_LOCATION'=>$takeoffLink,
-	'TAKEOFF_TIME'=>sec2Time($flight->START_TIME),
-	'LANDING_LOCATION'=>formatLocation(getWaypointName($flight->landingID),$flight->landingVinicity,$landingRadious),
-	'LANDING_TIME'=>sec2Time($flight->END_TIME),
-	'LINEAR_DISTANCE'=>formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)",
-	'DURATION'=>sec2Time($flight->DURATION),
-));
-
-if ( $scoringServerActive ) {
-	$Ltemplate->assign_vars(array(
-		'MAX_DISTANCE'=>formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)",		
-		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE),
-		'OLC_KM'=>formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)",
-		'OLC_SCORE'=>formatOLCScore($flight->FLIGHT_POINTS),
-	));
-} else {
-	$Ltemplate->assign_vars(array(
-		'MAX_DISTANCE'=>0,		
-		'OLC_TYPE'=>0,
-		'OLC_KM'=>0,
-		'OLC_SCORE'=>0,
-	));
-}
-
-$Ltemplate->assign_vars(array(
-	'MAX_SPEED'=>formatSpeed($flight->MAX_SPEED),
-    'MAX_VARIO'=>formatVario($flight->MAX_VARIO),  
-   	'MEAN_SPEED'=>formatSpeed($flight->MEAN_SPEED),
-   	'MIN_VARIO'=>formatVario($flight->MIN_VARIO),
-));	
-
-if ($flight->is3D()) {
-	$Ltemplate->assign_vars(array(
-		'MAX_ALT'=>formatAltitude($flight->MAX_ALT),
-		'TAKEOFF_ALT'=>formatAltitude($flight->TAKEOFF_ALT),
-		'MIN_ALT'=>formatAltitude($flight->MIN_ALT),
-		'ALTITUDE_GAIN'=>formatAltitude($flight->MAX_ALT-$flight->TAKEOFF_ALT),
-	));
-} else {
-	$Ltemplate->assign_vars(array(
-		'MAX_ALT'=>0,
-		'TAKEOFF_ALT'=>0,
-		'MIN_ALT'=>0,
-		'ALTITUDE_GAIN'=>0,
-	));
-}
- 
-
-	 /* 	 $flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
+		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
+			echo "<div id='attentionLinkPos' class='attentionLink'><a href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
+			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
+		}
+		echo "</div></TD>";
+	 //  echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$flight->takeoffID."'><img src='".$moduleRelPath."/img/gearth_icon.png' border=0></a>";
+  	 //  echo "</div></TD>";
+	   echo "<TD width=6>&nbsp</td>";
+	   echo "<TD width=180 bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._TAKEOFF_TIME."</div></TD>";
+   	   echo "<TD width=120><div align=".$Theme->table_cells_align.">".sec2Time($flight->START_TIME)."</div></TD>";
+   	//   echo "<TD width=2>&nbsp</td>";
+  close_tr(); 
+  open_tr();
+	//   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._LANDING_LOCATION."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatLocation(getWaypointName($flight->landingID),$flight->landingVinicity,$landingRadious)."</div></TD>";
+	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._LANDING_TIME."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".sec2Time($flight->END_TIME)."</div></TD>";
+   	//   echo "<TD >&nbsp</td>";
+  close_tr();
+  open_tr();
+  //	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OPEN_DISTANCE."</div></TD>";
+   	   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)</div></TD>";
+	   echo "<TD>&nbsp</td>";
+	   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._DURATION."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".sec2Time($flight->DURATION)."</div></TD>";
+//	   echo "<TD>&nbsp</td>";
+  close_tr();
+  if ( $scoringServerActive ) {
+	  open_tr();
+		//   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._MAX_DISTANCE."</div></TD>";
+		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)</div></TD>";
+		   echo "<TD>&nbsp</td>";
+		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORE_TYPE."</div></TD>";
+		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)."</div></TD>";
+	//	   echo "<TD>&nbsp</td>";
+	  close_tr();
+	  open_tr();
+		//   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_DISTANCE."</div></TD>";
+		   echo "<TD ><div align=".$Theme->table_cells_align.">".formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)</div></TD>";
+		   echo "<TD>&nbsp</td>";
+		   echo "<TD  bgcolor=".$Theme->color5."><div align=".$Theme->table_cells_align.">"._OLC_SCORING."</div></TD>";
+		   echo "<TD><div align=".$Theme->table_cells_align.">".formatOLCScore($flight->FLIGHT_POINTS)."</div></TD>";
+		//   echo "<TD>&nbsp</td>";
+	  close_tr();
+  }
+  open_tr();
+  	//   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MAX_SPEED."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatSpeed($flight->MAX_SPEED)."</div></TD>";
+	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MAX_VARIO."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatVario($flight->MAX_VARIO)."</div></TD>";
+ //  	   echo "<TD>&nbsp</td>";
+  close_tr();
+  open_tr();
+  //	   echo "<TD>&nbsp</td>";
+  	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MEAN_SPEED."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatSpeed($flight->MEAN_SPEED)."</div></TD>";
+	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=#B6F4A8><div align=".$Theme->table_cells_align.">"._MIN_VARIO."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatVario($flight->MIN_VARIO)."</div></TD>";
+//	   echo "<TD>&nbsp</td>";	  
+  close_tr();
+  if ($flight->is3D()) {
+    open_tr();
+	//   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._MAX_ALTITUDE."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MAX_ALT)."</div></TD>";
+	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._TAKEOFF_ALTITUDE."</div></TD>";
+   	   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->TAKEOFF_ALT)."</div></TD>";
+  	//   echo "<TD>&nbsp</td>";
+	  close_tr();
+	  open_tr();
+		//   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._MIN_ALTITUDE."</div></TD>";
+		   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MIN_ALT)."</div></TD>";
+		   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color3."><div align=".$Theme->table_cells_align.">"._ALTITUDE_GAIN."</div></TD>";
+		   echo "<TD><div align=".$Theme->table_cells_align.">".formatAltitude($flight->MAX_ALT-$flight->TAKEOFF_ALT)."</div></TD>";
+		//   echo "<TD>&nbsp</td>";
+	  close_tr();
+  }
+  open_tr();
+   	//  echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">"._FLIGHT_FILE."</div></TD>";
+   	   echo "<TD colspan=4><div style='float:left'><a href='".$flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
 		echo "<div id='geOptionsPos' style='float:right'>";
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
-*/
 
+		echo "</TD>";
+	//   echo "<TD>&nbsp</td>";
+  close_tr();
   if ( $flight->olcFilename  || ( $flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) ) $showOLCsubmit=1;
   else  $showOLCsubmit=0;
-  if ( $enableOLCsubmission && $showOLCsubmit && 0) {
+  if ( $enableOLCsubmission && $showOLCsubmit ) {
 	  open_tr();
 		//   echo "<TD>&nbsp</td>";
 		   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">OLC</div></TD>";
@@ -335,33 +410,42 @@ if ($flight->is3D()) {
 	//	   echo "<TD>&nbsp</td>";
 	  close_tr();
   }
-
-if ($flight->comments) {
-	//	_COMMENTS
-	 $comments=$flight->comments;
-}
-
-if ($flight->linkURL) {
-	// _RELEVANT_PAGE
-	$linkURL="<a href='".formatURL($flight->linkURL)."' target=_blank>".$flight->linkURL."</a>";
-}
-
-if ($flight->glider) {
-	//_GLIDER
-	$glider=$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
-	$gliderCatList[$flight->cat]."] ";
-} 
-  
-if ($flight->photo1Filename) {
-	// _PHOTOS  	  
-	if ($flight->photo1Filename) 	
-		$photo1="<a href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
-	if ($flight->photo2Filename) 	
-		$photo2="<a href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
-	if ($flight->photo3Filename) 	
-		$photo3="<a href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
-	  
-}
+  if ($flight->comments) {
+	  open_tr();
+	//	   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._COMMENTS."</div></TD>";
+		   echo "<TD colspan=4><div align=left>".$flight->comments."</div></TD>";
+	//	   echo "<TD>&nbsp</td>";
+	  close_tr();
+  }
+  if ($flight->linkURL) {
+	  open_tr();
+		//   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._RELEVANT_PAGE."</div></TD>";
+		   echo "<TD colspan=4><div align=left><a href='".formatURL($flight->linkURL)."' target=_blank>".$flight->linkURL."</a></div></TD>";
+		//   echo "<TD>&nbsp</td>";
+	  close_tr();
+  }
+  if ($flight->glider) {
+	  open_tr();
+	//	   echo "<TD>&nbsp</td>";
+		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._GLIDER."</div></TD>";
+		   echo "<TD colspan=4><div align=left>".$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".$gliderCatList[$flight->cat]."] </div></TD>";
+	//	   echo "<TD>&nbsp</td>";
+	  close_tr();
+  }
+  if ($flight->photo1Filename) {
+  open_tr();
+   //	   echo "<TD>&nbsp</td>";
+	   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._PHOTOS."</div></TD>";	  	   
+   	   echo "<TD colspan=4><div align=left>";
+    	  if ($flight->photo1Filename) 	echo "<a href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
+    	  if ($flight->photo2Filename) 	echo "<a href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
+    	  if ($flight->photo3Filename) 	echo "<a href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
+	   echo "</div></TD>";
+   //	   echo "<TD>&nbsp</td>";
+  close_tr();
+  }
 
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
@@ -371,7 +455,7 @@ if ($flight->photo1Filename) {
 	$getXMLurl="http://www.paraglidingearth.com/takeoff_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&distance=50&limit=5";
 	$xmlSites1=getHTTPpage($getXMLurl);
 
-if ($xmlSites1 &&0) {
+if ($xmlSites1) {
 	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites1);
@@ -401,7 +485,7 @@ if ($xmlSites1 &&0) {
 			}
 		}
   }
-  if ($takeoffsNum && 0) {
+  if ($takeoffsNum) {
   open_tr();
    	  // echo "<TD>&nbsp</td>";
 	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
@@ -434,7 +518,7 @@ if ($xmlSites1 &&0) {
 	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
 	$xmlSites=getHTTPpage($getXMLurl);
 
-if ($xmlSites && 0) {
+if ($xmlSites) {
 	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites);
@@ -460,7 +544,7 @@ if ($xmlSites && 0) {
 			}
 		}
 
-  if ($takeoffsNum &&0 ) {
+  if ($takeoffsNum) {
   open_tr();
    	  // echo "<TD>&nbsp</td>";
 	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
@@ -486,58 +570,54 @@ if ($xmlSites && 0) {
 
 
 
-if (in_array($userID,$admin_users) ) {
-	$adminPanel="<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
-	$adminPanel.="<b>DATE ADDED:</b> ".$flight->dateAdded."<br>";
-	// DEBUG MANOLIS
-	// processIGC($flight->getIGCFilename());
-	// display the trunpoints
-	//echo "<hr> ";
-	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
-	if ($CONF_show_DBG_XML) {
-		$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
-		$adminPanel.="<div id=xmlOutput style='display:none'><hr>";
-		$adminPanel.="XML from paragliding365.com<br>";
-		$adminPanel.="<pre>$xmlSites1</pre><hr><pre>$xmlSites</pre></div>";
-	}
-		
-	$adminPanel.="<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
-	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
+  if (in_array($userID,$admin_users) ) {
+	  open_tr();
+		   echo "<TD bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">"._MORE_INFO."</div></TD>";	  	   
+		   echo "<TD colspan=4 ><div align=left>";
 
-	//@include dirname(__FILE__)."/site/admin_takeoff_info.php";
-	//$adminPanel.="</div>";
-}
-
-
-if ( is_file($flight->getMapFilename() ) )
-	$mapImg="<br><img src='".$flight->getMapRelPath()."' border=0>";	
-
-if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
-	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2="<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
-if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
-
-
-$Ltemplate->assign_vars(array(
-	'M_PATH'=> $moduleRelPath,
-	'T_PATH'=> $moduleRelPath.'/templates/'.$PREFS->themeName,
+		   echo "<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
+		   echo "<b>DATE ADDED:</b> ".$flight->dateAdded."<br>";
+		  	// DEBUG MANOLIS
+			// processIGC($flight->getIGCFilename());
+			// display the trunpoints
+			//echo "<hr> ";
+			//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
+			if ($CONF_show_DBG_XML) {
+				echo "<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
+				echo "<div id=xmlOutput style='display:none'><hr>";
+				echo "XML from paragliding365.com<br>";
+				echo "<pre>$xmlSites1</pre><hr><pre>$xmlSites</pre></div>";
+			}
+			
+		echo "<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
+		echo "<div id='adminPanel' style='display:none; text-align:center;'><hr>";
+	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
+	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
+	  	echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
+		echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
 	
-	'ADMIN_PANEL'=>$adminPanel,
-	'MAP_IMG'=>$mapImg,
-	'CHART_IMG1'=>$chart1,
-	'CHART_IMG2'=>$chart2,
-	'CHART_IMG3'=>$chart3,
-	'CHART_IMG4'=>$chart4,		
-));
-
-$Ltemplate->pparse('body');
+		@include dirname(__FILE__)."/site/admin_takeoff_info.php";
+		echo "</div>";
+		echo "</div></TD>";
+	  close_tr();
+  }
+  open_tr();
+  echo "<td colspan=5><div align='center' style='background-color:#EEEEEE;'>"; 
+	  if ( is_file($flight->getMapFilename() ) )
+	  	echo "<br><img src='".$flight->getMapRelPath()."' border=0>";	
+  	
+      if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
+      	echo "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
+	  if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
+	  	echo "<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
+	  if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
+	  	echo "<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
+	  if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
+	  	echo "<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
+  echo "</div></td>";
+  close_tr();
+	
+  close_inner_table();   
+}
 
 ?>

@@ -1,6 +1,6 @@
 <? 
 
-		echo '<div style=" background-color:#DDEEE1 ">';
+		echo '<div style=" background-color:#E9D8D1; margin-top:5px; border-top-width:1px;  border-top-style:solid;">';
 		echo "<a href='http://www.flightlog.org/fl.html?rqtid=6&x=".-$firstPoint->lon."&y=".$firstPoint->lat."' target=_blank>flightlog.org</a> | ";
 
 		echo "<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>paragliding365.com</a> | ";

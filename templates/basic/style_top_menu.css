@@ -3,6 +3,7 @@
 #nav, #nav ul {
 	float: left;
 	width: 760px;
+	clear:both;
 
 	list-style: none;
 	line-height: 1em;
