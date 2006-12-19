@@ -355,11 +355,11 @@ if ($flight->glider) {
 if ($flight->photo1Filename) {
 	// _PHOTOS  	  
 	if ($flight->photo1Filename) 	
-		$photo1="<a href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
+		$photo1="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
 	if ($flight->photo2Filename) 	
-		$photo2="<a href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
+		$photo2="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
 	if ($flight->photo3Filename) 	
-		$photo3="<a href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
+		$photo3="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
 	  
 }
 
@@ -536,6 +536,11 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
+	'images'=>$photo1.$photo2.$photo3,
+	'comments'=>$comments,
+	'linkURL'=>$linkURL,
+	'glider'=>$glider,
+
 ));
 
 $Ltemplate->pparse('body');
