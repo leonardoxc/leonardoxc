@@ -315,6 +315,12 @@ width:745px;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 }
 
+.shadowBox th {
+	background-color:#7FAAD9;
+	color:#FFFFFF;
+	padding:3px;
+}
+
 .infoBox { 
 	border-left-color:#DADADA; border-left-width:8px; border-left-style:solid;
 	border-right-color:#CCCCCC; border-right-width:3px; border-right-style:solid;

@@ -10,7 +10,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+    require_once dirname(__FILE__)."/FN_brands.php";
 	require_once $moduleRelPath."/CL_template.php";
 	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 
@@ -95,9 +95,9 @@ function edit_takeoff(id) {
 	 }
 </script>
 
-<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown">
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
 <table width="100%" >
-<tr><td class="infoBoxHeader" style="width:400px">
+<tr><td class="infoBoxHeader" style="width:400px;">
 <div align="left" style="display:block; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
 <div align="right" style="display:inline; float:right; clear:right;">
 <a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;">
@@ -110,7 +110,7 @@ function edit_takeoff(id) {
 
 
 <form name="geOptionsForm" method="POST">
-<div id="geOptionsID" class="dropBox googleEarthDropDown">
+<div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
 
 <table bgcolor="#EEEEEE" cellpadding="0" cellspacing="0" width="100%" border="0" >
@@ -260,9 +260,19 @@ $Ltemplate->assign_vars(array(
 ));
 
 if ( $scoringServerActive ) {
+		$olcScoreType=$flight->BEST_FLIGHT_TYPE;
+		if ($olcScoreType=="FREE_FLIGHT") {
+			$olcScoreTypeImg="icon_turnpoints.gif";
+		} else if ($olcScoreType=="FREE_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_free.gif";
+		} else if ($olcScoreType=="FAI_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_fai.gif";
+		} else { 
+			$olcScoreTypeImg="photo_icon_blank.gif";
+		}
 	$Ltemplate->assign_vars(array(
 		'MAX_DISTANCE'=>formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)",		
-		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE),
+		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." <img src='$moduleRelPath/img/$olcScoreTypeImg' align='absmiddle'>",
 		'OLC_KM'=>formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)",
 		'OLC_SCORE'=>formatOLCScore($flight->FLIGHT_POINTS),
 	));
@@ -299,7 +309,7 @@ if ($flight->is3D()) {
 }
  
 
-	 /* 	 $flight->getIGCRelPath()."'>".$flight->filename."</a></div>";
+/* 	$flight->filename
 		echo "<div id='geOptionsPos' style='float:right'>";
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 */
@@ -337,19 +347,20 @@ if ($flight->is3D()) {
   }
 
 if ($flight->comments) {
-	//	_COMMENTS
 	 $comments=$flight->comments;
 }
 
 if ($flight->linkURL) {
-	// _RELEVANT_PAGE
 	$linkURL="<a href='".formatURL($flight->linkURL)."' target=_blank>".$flight->linkURL."</a>";
 }
 
 if ($flight->glider) {
-	//_GLIDER
-	$glider=$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
-	$gliderCatList[$flight->cat]."] ";
+ 	$brandID=guessBrandID($flight->cat,$flight->glider);
+	if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$flight->cat/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
+	else $gliderBrandImg="";
+
+	$glider=$gliderBrandImg.$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
+	$gliderCatList[$flight->cat]." ]";
 } 
   
 if ($flight->photo1Filename) {
@@ -371,7 +382,7 @@ if ($flight->photo1Filename) {
 	$getXMLurl="http://www.paraglidingearth.com/takeoff_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&distance=50&limit=5";
 	$xmlSites1=getHTTPpage($getXMLurl);
 
-if ($xmlSites1 &&0) {
+if ($xmlSites1 ) {
 	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites1);
@@ -401,28 +412,16 @@ if ($xmlSites1 &&0) {
 			}
 		}
   }
-  if ($takeoffsNum && 0) {
-  open_tr();
-   	  // echo "<TD>&nbsp</td>";
-	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
-	   echo "<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
-	   echo "<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0><br>"._FLYING_AREA_INFO;
-	   echo "</a>";
-	   echo "</div></TD>";	  	   
-   	   echo "<TD colspan=4><div align=left>";
 
-	   	echo "<table width=100% class=main_text><tr><td valign=top align=left>";
-		echo "<ul>";
-			foreach ($takoffsList as $takeoffLink) echo "<li>$takeoffLink";
-		echo "</ul>";
-  	    //	  echo "<a href='http://www.paragliding365.com/paragliding_sites_kml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>Google Earth Flying area 50km radius from paragliding365.com</a><br>";
-		echo "</td></tr></table>";
-
-	   echo "</div></TD>";
-   //	   echo "<TD>&nbsp</td>";
-  close_tr();
+  if ($takeoffsNum ) {
+		$linkToInfoHdr1="<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
+	    $linkToInfoHdr1.="<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
+		
+		$linkToInfoStr1="<ul>";
+		foreach ($takoffsList as $takeoffLink)  
+				$linkToInfoStr1.="<li>$takeoffLink";
+		$linkToInfoStr1.="</ul>";
   }
-
 } // if we have content
 
   
@@ -434,7 +433,7 @@ if ($xmlSites1 &&0) {
 	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
 	$xmlSites=getHTTPpage($getXMLurl);
 
-if ($xmlSites && 0) {
+if ($xmlSites ) {
 	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites);
@@ -460,26 +459,15 @@ if ($xmlSites && 0) {
 			}
 		}
 
-  if ($takeoffsNum &&0 ) {
-  open_tr();
-   	  // echo "<TD>&nbsp</td>";
-	   echo "<TD valign=top bgcolor=".$Theme->color0."><div align=".$Theme->table_cells_align.">";;
-	   echo "<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
-	   echo "<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0><br>"._FLYING_AREA_INFO;
-	   echo "</a>";
-	   echo "</div></TD>";	  	   
-   	   echo "<TD colspan=4><div align=left>";
-
-	   	echo "<table width=100% class=main_text><tr><td valign=top align=left>";
-		echo "<ul>";
-			foreach ($takoffsList as $takeoffLink) echo "<li>$takeoffLink";
-		echo "</ul>";
-  	    //	  echo "<a href='http://www.paragliding365.com/paragliding_sites_kml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>Google Earth Flying area 50km radius from paragliding365.com</a><br>";
-		echo "</td></tr></table>";
-
-	   echo "</div></TD>";
-   //	   echo "<TD>&nbsp</td>";
-  close_tr();
+  if ($takeoffsNum ) {
+		$linkToInfoHdr2="<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
+		$linkToInfoHdr2.="<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0> "._FLYING_AREA_INFO;
+		$linkToInfoHdr2.="</a>";
+		
+		$linkToInfoStr2.="<ul>";
+		foreach ($takoffsList as $takeoffLink)  
+				$linkToInfoStr2.="<li>$takeoffLink";
+		$linkToInfoStr2.="</ul>";
   }
 
 } // if we have content
@@ -509,7 +497,6 @@ if (in_array($userID,$admin_users) ) {
 	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
 
 	//@include dirname(__FILE__)."/site/admin_takeoff_info.php";
-	//$adminPanel.="</div>";
 }
 
 
@@ -536,10 +523,16 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
-	'images'=>$photo1.$photo2.$photo3,
+	'images'=>"<div  style='clear:right;'>".$photo1.$photo2.$photo3."</div>",
 	'comments'=>$comments,
 	'linkURL'=>$linkURL,
 	'glider'=>$glider,
+	'igcPath'=> $flight->getIGCRelPath(),
+
+	'linkToInfoHdr1'=>$linkToInfoHdr1,
+	'linkToInfoHdr2'=>$linkToInfoHdr2,
+	'linkToInfoStr1'=>$linkToInfoHdr1.$linkToInfoStr1.$linkToInfoHdr2.$linkToInfoStr2,
+	'linkToInfoStr2'=>$linkToInfoStr2,
 
 ));
 

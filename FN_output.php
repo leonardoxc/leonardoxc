@@ -60,7 +60,7 @@ function formatDistance($distance,$showUnits=false) { // in meters
 		$units=_KM;
 	}
 	// return sprintf("%.2f km",$distance/1000);
-	return sprintf("%.2f %s",$dis,($showUnits)?$units:"");
+	return sprintf("%.1f %s",$dis,($showUnits)?$units:"");
 }
 
 function formatDistanceOpen($distance,$showKm=true) { // in meters
@@ -103,7 +103,7 @@ function formatSpeed($speed) { // in km/h
 	} else { 
 		$units=_KM_PER_HR;
 	}
-	return '<font color=#880000>'.sprintf("%.2f %s",$speed,$units).'</font>';
+	return '<font color=#880000>'.sprintf("%.1f %s",$speed,$units).'</font>';
 }
 
 function formatVario($vario) { // in m/sec
