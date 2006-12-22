@@ -228,7 +228,7 @@ function edit_takeoff(id) {
 		$flight->putFlightToDB(1); // 1== UPDATE
   }
 
-//  $flight->updateAll(0);
+  $flight->updateAll(0);
   
 	$flightHours=$flight->DURATION/3600;
 	if ($flightHours) {

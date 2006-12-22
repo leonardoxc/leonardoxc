@@ -24,7 +24,11 @@ function days2YearsMonths($days) {
    return array($years,$months);
 }
 
-function formatURL($linkURL) {
+function formatURL($linkURL,$numChars=0) {
+	if ($numChars>0) {
+		 if (strlen($linkURL) > $numChars - 3 )
+		 $linkURL=substr($linkURL,0,$numChars)."...";
+	}
 	if ( substr($linkURL,0,7) == "http://" ) return $linkURL;
 	else return "http://".$linkURL;
 }

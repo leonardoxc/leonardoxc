@@ -1,16 +1,38 @@
 <style type="text/css">
 <!--
+.borderTop {
+	border-top:1px solid #cccccc;
+}
+
+.mapDiv{ 
+	padding-top:4px;
+	padding-bottom:20px;
+}
+.mapDiv2col { 
+	clear:none; width:610px; display:block; float:left;
+	padding-top:4px;
+	padding-bottom:20px;
+}
+
+.imgDiv{
+	display:none; clear:none; width:0;
+}
+
+.imgDiv2col{
+	clear:none; width:150px; display:block; float:right; padding-left:0px; vertical-align:top;
+	text-align:right;
+}
 
 .imgPanel {
 	width:auto;
-display:block;
+	display:block;
 }
 
 .imgBox {
 	width:auto;
 	display:block;
-	float:left;
-	clear:none;
+	float:right;
+	clear:both;
 	background-color:#F5F7F9;
 	padding:3px;
 	margin:3px;
@@ -23,14 +45,20 @@ fieldset.legendBox {
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 
-	padding:0 1em .5em 1em; 	
+	padding:0 1em .5em 0.4em; 	
 	margin-bottom:0.5em;
+	margin-right:5px;
+	margin-left:5px;
 	text-align:left;
+	background-color:#f4f4f4;
 }
 .legendBox legend {
 	border:1px outset #E2E2E2;
-	padding:0 0.3em 0 0.3em;
+	padding:0.2em 1.2em 0.2em 1.2em;
 	margin:0;
+	color:#000000;
+	font-weight:bold;
+	background-color:#D9E9F1;
 }
 
 
@@ -46,14 +74,14 @@ fieldset.legendBox {
 	height:22px;
 
 	margin-bottom:0px;
-	margin-top:20px;
+	margin-top:0px;
 
 	padding:0;
 	padding-left:5px;
 	padding-right:5px;
 	
 	font-weight:bold;
-	background-color:#7faad9;
+	background-color:#7FAAD9;
 	color:#FFFFFF;
 	width:760px;
 }
@@ -63,14 +91,8 @@ html>body .flightShowBoxHeader {
 }
 
 .flightShowBox {
-
-	display:block;
-	border-style: solid; 
-	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
-	/* MORE black */
-	/*	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;*/
-	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
-border:none;
+	/*display:block;*/
+	border:none;
 
 	font-size:11px;
 	text-decoration:none;
@@ -82,6 +104,8 @@ border:none;
 	width:760px;
 	clear:both;
 }
+
+
 html>body .flightShowBox {
 	width:760px;
 }
@@ -91,13 +115,18 @@ html>body .flightShowBox {
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 	background-color:#f4f4f4;
+	background-color:#fbfbfb;
 }
 
 .flightShadowBox  th {
-	background-color:#7FAAD9;
-	color:#FFFFFF;
+	background-color:#D9E9F1;
+	color:#222255;
 	padding:3px;
 }
+
+.col1 th { 	background-color:#F1EAD9; }
+.col2 th {	background-color:#D9DBF1; }
+.col3 th { 	background-color:#E0F1D9; }
 
 .dropBox {
 	display:block;
@@ -143,30 +172,30 @@ html>body .flightShowBox {
 	<div id='pilot_pos' class='titleDiv'>{legend}</div>
 	<div class='pagesDiv'>{legendRight}</div>
 </div>
-<table align="center"  cellpadding="0" cellspacing="0" class="flightShowBox" width=760>
+<table align="center"  cellpadding="0" cellspacing="0" class="flightShowBox" width="760">
   <tbody>
     <tr>
-      <td width="894" valign="top"><table width="100%" border="0" align="left" cellpadding="3">
+      <td align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0">
         <tr>
-          <td width="300" valign="top"><table  class="main_text flightShadowBox" width="300" border="0" cellpadding="0">
+          <td width="300"  valign="top"><table  class="main_text flightShadowBox col1" width="300" border="0" cellpadding="0">
             <tr>
               <th colspan="2">Takeoff Info</th>
             </tr>
             <tr>
-              <td width="88"><div align="left">{#_TAKEOFF_LOCATION}</div></td>
-              <td width="291">{TAKEOFF_TIME}</td>
+              <td width="200"><div align="left">{#_TAKEOFF_LOCATION}</div></td>
+              <td width="100"><div align="right">{TAKEOFF_TIME}</div></td>
             </tr>
             <tr>
-              <td colspan="2"><div align="left">{TAKEOFF_LOCATION}</div></td>
+              <td colspan="2" height=29><div align="left">{TAKEOFF_LOCATION}</div></td>
             </tr>
             <tr>
-              <td>{#_LANDING_LOCATION}</td>
-              <td>{LANDING_TIME}</td>
+              <td class='borderTop'>{#_LANDING_LOCATION}</td>
+              <td class='borderTop'><div align="right">{LANDING_TIME}</div></td>
             </tr>
             <tr>
-              <td colspan="2"><div align="left">{LANDING_LOCATION}</div></td>
+              <td colspan="2" height=29><div align="left">{LANDING_LOCATION}</div></td>
             </tr>
-          </table>            <table class="main_text flightShadowBox" width="300" border="0" cellpadding="0" style="margin-top:8px;">
+          </table>            <table class="main_text flightShadowBox col1" width="300" border="0" cellpadding="0" style="margin-top:8px;">
               <tr>
                 <th colspan="2">XC Info</th>
               </tr>
@@ -191,26 +220,37 @@ html>body .flightShowBox {
                 <td><div align="right">{OLC_TYPE}</div></td>
               </tr>
             </table></td>
-          <td width="270" valign="top"><table class="main_text flightShadowBox" width="270" border="0" cellpadding="0">
+          <td width="270" valign="top">
+			<table class="main_text flightShadowBox col2" width="270" border="0" cellpadding="0" style='clear:left;'>
+            <tr>
+              <th height=22>{#_GLIDER} {gliderCat} </th>
+            </tr>
+            <tr>
+              <td><div align="left" style='height:28px;'>
+                <div align="center">{glider}</div>
+              </div></td>
+            </tr>
+          </table>
+			<table class="main_text flightShadowBox col2" width="270" border="0" cellpadding="0" style="margin-top:8px;">
             <tr>
               <th colspan="2">Flight Info</th>
             </tr>
 
             <tr>
               <td >{#_DURATION}</td>
-              <td width="90"><div align="right">{DURATION}</div></td>
+              <td width="70"><div align="right">{DURATION}</div></td>
             </tr>
             <tr>
-              <td><div align="left">{#_MAX_VARIO}</div></td>
-              <td><div align="right">{MAX_VARIO}</div></td>
+              <td class='borderTop'><div align="left">{#_MAX_VARIO}</div></td>
+              <td class='borderTop'><div align="right">{MAX_VARIO}</div></td>
             </tr>
             <tr>
               <td><div align="left">{#_MIN_VARIO}</div></td>
               <td><div align="right">{MIN_VARIO}</div></td>
             </tr>
             <tr>
-              <td>{#_MAX_ALTITUDE}</td>
-              <td><div align="right">{MAX_ALT}</div></td>
+              <td class='borderTop'>{#_MAX_ALTITUDE}</td>
+              <td class='borderTop'><div align="right">{MAX_ALT}</div></td>
             </tr>
             <tr>
               <td>{#_MIN_ALTITUDE}</td>
@@ -225,8 +265,8 @@ html>body .flightShowBox {
               <td><div align="right">{ALTITUDE_GAIN}</div></td>
             </tr>
             <tr>
-              <td>{#_MAX_SPEED}</td>
-              <td><div align="right">{MAX_SPEED}</div></td>
+              <td class='borderTop'>{#_MAX_SPEED}</td>
+              <td class='borderTop'><div align="right">{MAX_SPEED}</div></td>
             </tr>
             <tr>
               <td>{#_MEAN_SPEED}</td>
@@ -234,66 +274,60 @@ html>body .flightShowBox {
             </tr>
           </table></td>
           <td align="right" valign="top">
-			<table class="main_text flightShadowBox" width="170" border="0" cellpadding="3">
+			<table class="main_text flightShadowBox col3" width="170" border="0" cellpadding="0">
             <tr>
-              <th ><div align="center">{#_FLIGHT_FILE}</div></th>
+              <th height="22"><div align="center">{#_FLIGHT_FILE}</div></th>
             </tr>
             <tr>
-              <td><div id="geOptionsPos" style="float: right;"><a href="{igcPath}" target="_blank">IGC</a> :: <a href="javascript:nop()" onClick="toggleVisible('geOptionsID','geOptionsPos',14,-40,170,'auto');return false;">Google
+              <td><div aling=center id="geOptionsPos" style="height:28px; text-align:center"><a href="{igcPath}" target="_blank">IGC</a> :: 
+					<a href="javascript:nop()" onClick="toggleVisible('geOptionsID','geOptionsPos',14,-40,170,'auto');return false;">Google
                     Earth&nbsp;<img src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
             </tr>
 			</table>
-			<table class="main_text flightShadowBox" width="170" border="0" cellpadding="3" style="margin-top:8px;">
+			<table class="main_text flightShadowBox col3" width="170" border="0" cellpadding="3" style='margin-top:8px;'>
+            <tr>
+              <th >{#_RELEVANT_PAGE}</th>
+            </tr>
+            <tr>
+              <td height=19><div align="right">{linkURL}</div></td>
+            </tr>
+          </table>
+			<table class="main_text flightShadowBox col3" width="170" border="0" cellpadding="3" style="margin-top:8px;">
             <tr>
               <th>{#_FLYING_AREA_INFO}</th>
             </tr>
             <tr>
-              <td><div id="takeoffArea111Pos" align="right"><a href="javascript:nop()" onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,170,'auto');return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
+              <td valign="middle" height="39"><div id="takeoffArea111Pos" align="right"><a href="javascript:nop()" onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,170,'auto');return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
               </a></div></td>
             </tr>
             <tr>
-              <td><div id="takeoffArea1Pos" align="right"><a href="javascript:nop()" onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,170,'auto');return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0"><br>
+              <td valign="middle" height="40"><div id="takeoffArea1Pos" align="right"><a href="javascript:nop()" onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,170,'auto');return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0"><br>
               </a></div></td>
             </tr>
-          </table></td>
+          </table>
+		</td>
         </tr>
-        <tr>
-          <td valign="top"><table class="main_text flightShadowBox" width="300" border="0" cellpadding="0" style='clear:left;'>
-            <tr>
-              <th colspan="2">{#_GLIDER}</th>
-            </tr>
-            <tr>
-              <td width="120"><div align="left">{#_GLIDER}</div></td>
-              <td width="180"><div align="right">{glider}</div></td>
-            </tr>
-            <tr>
-              <td ><div align="left">{#_RELEVANT_PAGE}</div></td>
-              <td ><div align="right">{linkURL}</div></td>
-            </tr>
-          </table></td>
-          <td colspan="2" align="left" valign="top">{images} </td>
-          </tr>
       </table>
 	</td>
     </tr>
+<!-- BEGIN COMMENTS -->
     <tr>
       <td >
-<!-- 
-<fieldset class="legendBox"><legend>{#_RELEVANT_PAGE}</legend>{linkURL}</fieldset>
-<fieldset class="legendBox"><legend>{#_GLIDER}</legend>{glider}</fieldset>
--->
 		<fieldset class="legendBox"><legend>{#_COMMENTS}</legend>{comments}</fieldset>
 	  </td>
     </tr>
+<!-- END COMMENTS -->
+<!-- BEGIN ADMIN_PANEL -->
     <tr>
-      <td ><div align="center">{#_MORE_INFO} {ADMIN_PANEL}</div></td>
+      <td ><fieldset class="legendBox"><legend>{#_MORE_INFO}</legend><div align="center">{ADMIN_PANEL}</div></fieldset></td>
     </tr>
+<!-- END ADMIN_PANEL -->
     <tr>
-      <td ><div align="center">
-	  {MAP_IMG}{CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
-<br>
-<br>
+      <td align="center" >
+		  <div align=center class="mapDiv{2col}">
+			{MAP_IMG}{CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
           </div>
+		  <div class="imgDiv{2col}">{images}</div>
 		</td>
     </tr>
   </tbody>

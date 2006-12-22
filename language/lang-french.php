@@ -61,7 +61,7 @@ define("_TRY_AGAIN","Veuillez réessayer plus tard");
 define("_TAKEOFF_LOCATION","Décollage");
 define("_TAKEOFF_TIME","Heure du décollage");
 define("_LANDING_LOCATION","Atterrissage");
-define("_LANDING_TIME","Heure d'atterrissage");
+define("_LANDING_TIME","Heure d\'atterrissage");
 define("_OPEN_DISTANCE","Distance Linéaire");
 define("_MAX_DISTANCE","Distance Maximum");
 define("_OLC_SCORE_TYPE","Type de score OLC");
@@ -74,7 +74,7 @@ define("_MIN_VARIO","Vario Minimum");
 define("_MAX_ALTITUDE","Altitude Maximum (ASL)");
 define("_TAKEOFF_ALTITUDE","Altitude de Décollage (ASL)");
 define("_MIN_ALTITUDE","Altitude Minimum (ASL)");
-define("_ALTITUDE_GAIN","Gain d'Altitude");
+define("_ALTITUDE_GAIN","Gain d\'Altitude");
 define("_FLIGHT_FILE","Fichier de vol");
 define("_COMMENTS","Commentaires");
 define("_RELEVANT_PAGE","Adresse URL correspondante");
@@ -110,11 +110,11 @@ define("_DATE_ADDED","Derniers ajouts");
 
 define("_SORTED_BY","Trier par:");
 define("_ALL_YEARS","Toutes les années");
-define("_SELECT_YEAR_MONTH","Selectionner l'année (et le mois)");
+define("_SELECT_YEAR_MONTH","Selectionner l\'année (et le mois)");
 define("_ALL","Tout");
 define("_ALL_PILOTS","Afficher tous les pilotes");
 define("_ALL_TAKEOFFS","Afficher tous les décollages");
-define("_ALL_THE_YEAR","Toute l'année");
+define("_ALL_THE_YEAR","Toute l\'année");
 
 // add flight
 define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Vous n'avez pas fourni de fichier de vol");
