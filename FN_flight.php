@@ -57,7 +57,7 @@ function addFlightError($errMsg) {
 }
 
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="") {
-	global $flightsAbsPath,$CONF_default_cat_add ;
+	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 
 	set_time_limit (120);
 
@@ -113,31 +113,19 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	
 	rename($tmpIGCPath, $flight->getIGCFilename() );
 	
-    if ($calledFromForm) {	
-		$photo1Filename=$_FILES['photo1Filename']['name'];
-		$photo2Filename=$_FILES['photo2Filename']['name'];
-		$photo3Filename=$_FILES['photo3Filename']['name'];
-		if ($photo1Filename) {		
-			if ( move_uploaded_file($_FILES['photo1Filename']['tmp_name'],$flightsAbsPath."/".$userID."/photos/".$flight->getYear()."/".$photo1Filename ) ) {
-				$flight->photo1Filename=$photo1Filename;
-				resizeJPG(120,120, $flight->getPhotoFilename(1), $flight->getPhotoFilename(1).".icon.jpg", 15);
-				resizeJPG(800,800, $flight->getPhotoFilename(1), $flight->getPhotoFilename(1), 15);
+    if ($calledFromForm) {		
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";
+			if ($_FILES[$var_name]['name'] ) {  
+				$flight->$var_name=$_FILES[$var_name]['name'];
+				if ( move_uploaded_file($_FILES[$var_name]['tmp_name'],  $flight->getPhotoFilename($i) ) ) {
+					resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+					resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+				} else { //upload not successfull
+					$flight->$var_name="";
+				}
 			}
-		} 
-		if ($photo2Filename) {
-			if ( move_uploaded_file($_FILES['photo2Filename']['tmp_name'],$flightsAbsPath."/".$userID."/photos/".$flight->getYear()."/".$photo2Filename ) ) {
-				$flight->photo2Filename=$photo2Filename;
-				resizeJPG(120,120, $flight->getPhotoFilename(2), $flight->getPhotoFilename(2).".icon.jpg", 15);
-				resizeJPG(800,800, $flight->getPhotoFilename(2), $flight->getPhotoFilename(2), 15);
-			}
-		}
-		if ($photo3Filename) {		
-			if ( move_uploaded_file($_FILES['photo3Filename']['tmp_name'],$flightsAbsPath."/".$userID."/photos/".$flight->getYear()."/".$photo3Filename ) ) {
-				$flight->photo3Filename=$photo3Filename;
-				resizeJPG(120,120, $flight->getPhotoFilename(3), $flight->getPhotoFilename(3).".icon.jpg", 15);
-				resizeJPG(800,800, $flight->getPhotoFilename(3), $flight->getPhotoFilename(3), 15);
-			}
-		}
+		}  
     } // took care of photos
 
 	$flight->putFlightToDB(0);

@@ -1201,6 +1201,7 @@ var $maxPointNum=1000;
 	function deleteFlight() {
  		global $db;
 		global $flightsTable;
+		global $CONF_photosPerFlight;
 
 		$query="DELETE from $flightsTable  WHERE ID=".$this->flightID." ";
 		// echo $query;
@@ -1228,7 +1229,7 @@ var $maxPointNum=1000;
 		@unlink($this->getChartFilename("vario",2)); 
 		@unlink($this->getChartFilename("takeoff_distance",2)); 		
 
-		for($i=1;$i<=3;$i++) {
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$this->deletePhoto($i);
 		}
 

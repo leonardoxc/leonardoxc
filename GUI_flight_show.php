@@ -111,7 +111,7 @@ function edit_takeoff(id) {
 <img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 </td></tr></table>
 <div id='addTakeoffDiv'>
-<iframe id="addTakeoffFrame" width="100%" height="320" frameborder=0 style='border-width:0px'></iframe></div>
+<iframe id="addTakeoffFrame" width="100" height="120" frameborder=0 style='border-width:0px'></iframe></div>
 </div>
 
 
@@ -372,22 +372,70 @@ $gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' a
 $gliderCatList[$flight->cat]." ]";
  
 $images="";
-if ($flight->photo1Filename) {
-	// _PHOTOS  	  
-	if ($flight->photo1Filename) 	
-		$photo1="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(1)."' target=_blank><img src='".$flight->getPhotoRelPath(1).".icon.jpg' border=0></a>";
+for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
+	$photoFilename="photo".$photoNum."Filename";
+	if ($flight->$photoFilename) {
+		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+	}
+		
+		/*
+				$photo1="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum)."' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
 	if ($flight->photo2Filename) 	
 		$photo2="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
 	if ($flight->photo3Filename) 	
 		$photo3="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
 	$images=$photo1.$photo2.$photo3;
+	*/
 }
 
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
 //-------------------------------------------------------------------
+	$takoffsList=getExtrernalServerTakeoffs(1,$firstPoint->lat,-$firstPoint->lon,50,5);
+	
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr1="<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
+	    $linkToInfoHdr1.="<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
+		
+		$linkToInfoStr1="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				$distance=$takeoffItem['distance']; 
+				if ($takeoffItem['area']!='not specified')
+					$areaStr=" - ".$takeoffItem['area'];
+				else 
+					$areaStr="";
 
+				$takeoffLink="<a href='".$takeoffItem['url']."' target=_blank>".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
 
+				$linkToInfoStr1.="<li>$takeoffLink";
+		}
+		$linkToInfoStr1.="</ul>";
+  }
+
+//-------------------------------------------------------------------
+// get from paragliding365.com
+//-------------------------------------------------------------------
+  	$takoffsList=getExtrernalServerTakeoffs(2,$firstPoint->lat,-$firstPoint->lon,50,5);
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr2="<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
+		$linkToInfoHdr2.="<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
+			
+		$linkToInfoStr2="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				if ($takeoffItem['area']!='not specified')	$areaStr=" - ".$takeoffItem['area'];
+				else $areaStr="";
+				$linkToInfoStr2.="<li><a href='".$takeoffItem['url']."' target=_blank>".
+									$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].
+									") [~".formatDistance($takeoffItem['distance'],1)."]</a>";
+		}
+		$linkToInfoStr2.="</ul>";
+  }
+ 
+  
+  
+  
+if (0) {	
 	$getXMLurl="http://www.paraglidingearth.com/takeoff_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&distance=50&limit=5";
 	$xmlSites1=getHTTPpage($getXMLurl);
 
@@ -434,11 +482,12 @@ if ($xmlSites1 ) {
 } // if we have content
 
   
+  }
 //-------------------------------------------------------------------
 // get from paragliding365.com
 //-------------------------------------------------------------------
 
-
+if (0) {
 	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
 	$xmlSites=getHTTPpage($getXMLurl);
 
@@ -456,6 +505,7 @@ if ($xmlSites ) {
 		else
 			$arrayToUse=$xmlArray['root']['flightareas'];
 	} else $arrayToUse=0;
+
 
 	if ($arrayToUse)
 		foreach ($arrayToUse as $flightareaNum=>$flightarea) {
@@ -481,6 +531,7 @@ if ($xmlSites ) {
 
 } // if we have content
 
+}
 
 $adminPanel="";
 if (in_array($userID,$admin_users) ) {

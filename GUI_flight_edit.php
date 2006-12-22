@@ -27,7 +27,7 @@
 		if ($_REQUEST['is_private']=="1")  $flight->private=1; 
 		else $flight->private=0;
 
-		 for($i=1;$i<=3;$i++) {
+		 for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			if ($_REQUEST["photo".$i."Delete"]=="1") {		// DELETE photo
 				$flight->deletePhoto($i);
@@ -35,8 +35,8 @@
 				$flight->deletePhoto($i);  //first delete old
 				$flight->$var_name=$_FILES[$var_name]['name'];
 				if ( move_uploaded_file($_FILES[$var_name]['tmp_name'],  $flight->getPhotoFilename($i) ) ) {
-					resizeJPG(120,120, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-					resizeJPG(800,800, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+					resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+					resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
 				} else { //upload not successfull
 					$flight->$var_name="";
 				}
@@ -139,7 +139,7 @@ function setValue(obj)
         http://<input name="linkURL" type="text" id="linkURL" size="50" value="<? echo  $flight->linkURL ?>">
       </font></td>
     </tr>
-	<? for($i=1;$i<=3;$i++) {
+	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 		$var_name="photo".$i."Filename";
 	?>
     <tr>

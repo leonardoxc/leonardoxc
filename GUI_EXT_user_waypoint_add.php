@@ -43,7 +43,7 @@
 		$waypt->type=$_POST['type'];
 		$waypt->lat=$_POST['lat'];
 		$waypt->lon=$_POST['lon'];
-		$waypt->location=$_POST['location'];
+		$waypt->location=$_POST['wlocation'];
 		$waypt->intLocation=$_POST['intLocation'];
 		$waypt->countryCode=$_POST['countryCode'];
 		$waypt->link=$_POST['link'];
@@ -126,17 +126,71 @@
 		echo "<hr>";
 
 	}
-?> 
+	
+	$takoffsList=getExtrernalServerTakeoffs(1,$waypointLat,-$waypointLon,20,5);
+	
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr1="<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0>";
+		
+		$linkToInfoStr1="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				$distance=$takeoffItem['distance']; 
+				if ($takeoffItem['area']!='not specified')
+					$areaStr=" - ".$takeoffItem['area'];
+				else 
+					$areaStr="";
+					
+				$jsStr="fillInForm('".$takeoffItem['name']."','".$takeoffItem['area']."','".$takeoffItem['countryCode']."');";
+				
+				$takeoffLink="<a href=\"javascript:$jsStr\">".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
 
+				$linkToInfoStr1.="<li>$takeoffLink";
+		}
+		$linkToInfoStr1.="</ul>";
+  }
+?> 
+<script language="javascript">
+function MWJ_findObj( oName, oFrame, oDoc ) {
+	if( !oDoc ) { if( oFrame ) { oDoc = oFrame.document; } else { oDoc = window.document; } }
+	if( oDoc[oName] ) { return oDoc[oName]; } if( oDoc.all && oDoc.all[oName] ) { return oDoc.all[oName]; }
+	if( oDoc.getElementById && oDoc.getElementById(oName) ) { return oDoc.getElementById(oName); }
+	for( var x = 0; x < oDoc.forms.length; x++ ) { if( oDoc.forms[x][oName] ) { return oDoc.forms[x][oName]; } }
+	for( var x = 0; x < oDoc.anchors.length; x++ ) { if( oDoc.anchors[x].name == oName ) { return oDoc.anchors[x]; } }
+	for( var x = 0; document.layers && x < oDoc.layers.length; x++ ) {
+		var theOb = MWJ_findObj( oName, null, oDoc.layers[x].document ); if( theOb ) { return theOb; } }
+	if( !oFrame && window[oName] ) { return window[oName]; } if( oFrame && oFrame[oName] ) { return oFrame[oName]; }
+	for( var x = 0; oFrame && oFrame.frames && x < oFrame.frames.length; x++ ) {
+		var theOb = MWJ_findObj( oName, oFrame.frames[x], oFrame.frames[x].document ); if( theOb ) { return theOb; } }
+	return null;
+}
+
+function fillInForm(name,area,countrycode){
+	a=MWJ_findObj("wname");
+	a.value=name;
+	a=MWJ_findObj("intName");
+	a.value=name;
+	a=MWJ_findObj("wlocation");
+	a.value=area;
+	a=MWJ_findObj("intLocation");
+	a.value=area;
+	a=MWJ_findObj("countryCode");
+	a.value=countrycode;
+}
+</script>
       <form name="form1" method="post" action="">
 
-        <table width=350 border="0" align="center" cellpadding="2" class="shadowBox main_text">
+        <table width=600 border="0" align="center" cellpadding="2" class="shadowBox main_text">
           <tr>
-            <td width=100 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
+            <td width=91 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name</font></div></td>
+            <td width="277" bgcolor="#E3E7F2"><font color="#003366">
               <input name="wname" type="text" id="wname" size="25">
               <input name="type" type="hidden" id="type" value="1000">
             </font></td>
+            <td width="182" rowspan="8" valign="top">
+			<? echo $linkToInfoHdr1.$linkToInfoStr1;
+			
+			?>
+			&nbsp;</td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">International
@@ -148,7 +202,7 @@
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region</font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="location" type="text" id="location" size="25">
+              <input name="wlocation" type="text" id="wlocation" size="25">
             </font></td>
           </tr>
           <tr>
@@ -196,8 +250,3 @@
         </table>
 </form>
     
-
-<?
-//  echo "</td></tr>";
-//  close_inner_table();
-?>

@@ -103,23 +103,14 @@ function setValue(obj)
         http://<input name="linkURL" type="text" id="linkURL" size="50" value="">
       </font></td>
     </tr>
+	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) { ?>
     <tr>
-      <td><div align="right" class="styleItalic"><?=_PHOTO?> #1</div></td>
+      <td><div align="right" class="styleItalic"><? echo _PHOTO." #$i"; ?></div></td>
       <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="photo1Filename" type="file" size="50">
+        <input name="photo<?=$i?>Filename" type="file" size="50">
       </font></td>
     </tr>
- 	<tr>
-      <td><div align="right" class="styleItalic"><?=_PHOTO?> #2</div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="photo2Filename" type="file" size="50">
-      </font></td>
-    </tr> <tr>
-      <td><div align="right" class="styleItalic"><?=_PHOTO?> #3</div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="photo3Filename" type="file" size="50">
-      </font></td>
-    </tr>
+	<? } ?>
 	 <tr>
       <td><div align="right" class="styleItalic"></div></td>
       <td>  <div align="center" class="style222">

@@ -302,6 +302,7 @@ function getBrowser() {
 		return false;
 	}
 
+	/*  gets as string the normal screen output of php file  */
 	function get_include_contents($filename) {
 		if (is_file($filename)) {
 			ob_start();
@@ -311,5 +312,117 @@ function getBrowser() {
 			return $contents;
 		}
 		return "";
+	}
+	
+	function getExtrernalServerTakeoffs($serverID,$lat,$lon,$limitKm,$limitNum ) {
+		$takeoffServers=array(
+			1=>array(
+				/* calling  method */
+				"callUrl"=>"http://www.paraglidingearth.com/takeoff_around.php?",
+				"latArg"=>"lat",
+				"lonArg"=>"lng",
+				"limitKmArg"=>"distance",
+				"limitNumArg"=>"limit",
+				/* parsing of results */
+				"XML_name"=>"name",
+				"XML_distance"=>"distance",
+				"XML_area"=>"area",
+				"XML_countryCode"=>"countryCode",
+				"XML_url"=>"pe_link",
+				"XML_lat"=>"lat",
+				"XML_lon"=>"lng",
+				),
+			2=>array(
+				/* calling  method */
+				"callUrl"=>"http://www.paragliding365.com/paragliding_sites_xml.html?type=mini&",
+				"latArg"=>"latitude",
+				"lonArg"=>"longitude",
+				"limitKmArg"=>"radius",
+				"limitNumArg"=>"notused",
+				/* parsing of results */
+				"XML_name"=>"name",
+				"XML_distance"=>"distance",
+				"XML_area"=>"location",
+				"XML_countryCode"=>"iso",
+				"XML_url"=>"link",						
+				"XML_lat"=>"lat",
+				"XML_lon"=>"lng",
+			)
+			
+
+		);	
+				
+		
+		$getXMLurl=$takeoffServers[$serverID]["callUrl"].
+					$takeoffServers[$serverID]["latArg"]."=$lat&".
+					$takeoffServers[$serverID]["lonArg"]."=$lon&".
+					$takeoffServers[$serverID]["limitKmArg"]."=$limitKm&".
+					$takeoffServers[$serverID]["limitNumArg"]."=$limitNum";
+		
+		//echo 	$getXMLurl;
+		
+		$xmlSites=getHTTPpage($getXMLurl);		
+		if ($xmlSites) {
+			require_once dirname(__FILE__).'/miniXML/minixml.inc.php';
+			$xmlDoc = new MiniXMLDoc();
+			$xmlDoc->fromString($xmlSites);
+			$xmlArray = $xmlDoc->toArray();
+
+			$takeoffsNum=0;
+			$takoffsList=array();
+			// print_r($xmlArray);
+			
+			if ($serverID==1) { // paraglidingearth.com
+				if (is_array($xmlArray['search'])) {
+					if (is_array($xmlArray['search']['takeoff'][0])) 
+						$arrayToUse=$xmlArray['search']['takeoff'];
+					else
+						$arrayToUse=$xmlArray['search'];
+				} else {
+					$arrayToUse=0;
+				}
+			} else if ($serverID==2) { //paragliding365.com
+				if ($xmlArray['root']['flightareas']['flightarea']) {
+					if ( is_array($xmlArray['root']['flightareas']['flightarea'][0] ) )
+						$arrayToUse=$xmlArray['root']['flightareas']['flightarea'];
+					else
+						$arrayToUse=$xmlArray['root']['flightareas'];
+				} else $arrayToUse=0;
+			} else {
+				$arrayToUse=0;
+			}
+	
+			$takoffsList=array();
+			$takeoffsNum=0;
+			if ($arrayToUse) {
+			//echo "#";
+			//print_r($arrayToUse);
+				foreach ($arrayToUse as $flightareaNum=>$flightarea) {
+					$XML_name=$takeoffServers[$serverID]["XML_name"];
+					$XML_distance=$takeoffServers[$serverID]["XML_distance"];
+					$XML_area=$takeoffServers[$serverID]["XML_area"];
+					$XML_countryCode=$takeoffServers[$serverID]["XML_countryCode"];
+					$XML_url=$takeoffServers[$serverID]["XML_url"];
+					$XML_lat=$takeoffServers[$serverID]["XML_lat"];
+					$XML_lon=$takeoffServers[$serverID]["XML_lon"];
+					if ( $flightareaNum!=="_num" && $flightarea[$XML_name]) {		
+							$distance=$flightarea[$XML_distance]; 
+							if ($distance>$limitKm*10000) continue;
+							$takoffsList[$takeoffsNum]['distance']=$flightarea[$XML_distance]; 
+							$takoffsList[$takeoffsNum]['name']=$flightarea[$XML_name]; 
+							$takoffsList[$takeoffsNum]['area']=$flightarea[$XML_area]; 
+							$takoffsList[$takeoffsNum]['countryCode']=$flightarea[$XML_countryCode]; 
+							$takoffsList[$takeoffsNum]['url']=$flightarea[$XML_url]; 
+							$takoffsList[$takeoffsNum]['lat']=$flightarea[$XML_lat]; 
+							$takoffsList[$takeoffsNum]['lon']=$flightarea[$XML_lon]; 
+							$takeoffsNum++;
+							if ($takeoffsNum==$limitNum) break;
+					}
+				}
+		  }
+		  return $takoffsList;
+		} // if we have content
+		return array();
+	
 	}
 ?>

@@ -220,7 +220,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
-   	 
+   global $CONF_photosPerFlight;   	 
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
@@ -356,7 +356,13 @@ function removeClubFlight(clubID,flightID) {
 	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."'></a>";
 	
-	   if ($row["photo1Filename"]) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
+		$photos_exist=0;
+		for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
+			if ($row["photo".$photo_i."Filename"]) { 
+				$photos_exist=1; break; 
+			}
+		}	
+	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
 	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
 
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users

@@ -187,7 +187,8 @@ require_once dirname(__FILE__)."/config_version.php";
  $CONF_countHowManyFlightsInComp=6;
 
  $CONF_showProfilesToGuests=1;
-
+ $CONF_photosPerFlight=3;
+ 
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wind FAI5",8=>"Glider" );
 // $CONF_glider_types=array(1=>"Paraglider");
