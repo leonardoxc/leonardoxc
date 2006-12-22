@@ -62,7 +62,7 @@ with (unknownTakeoffTip)
 	showDelay = 0;
 	hideDelay = 2;
 	doFades = false;
-	tips.floating = new Array(220, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
+	tips.floating = new Array(150, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
 	tipStick = 0;
 }
 
@@ -76,14 +76,18 @@ function add_takeoff(lat,lon,id) {
 	takeoffTip.hide();
 	document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
 	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
-	toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
+	 MWJ_changeSize('addTakeoffFrame',410,320);
+	 MWJ_changeSize( 'takeoffAddID', 410,350 );
+	toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
 }
 	 
 function edit_takeoff(id) {	 
 	 takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
  	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
-	 toggleVisible('takeoffAddID','takeoffAddPos',14,-150,410,320);
+	 MWJ_changeSize('addTakeoffFrame',410,320);
+	 MWJ_changeSize( 'takeoffAddID', 410,350 );
+	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
  }
 </script>
 <? }  ?>
@@ -91,26 +95,30 @@ function edit_takeoff(id) {
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
 		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		toggleVisible('takeoffAddID','takeoffAddPos',30,-150,410,320);
+		MWJ_changeSize('addTakeoffFrame',610,320);
+		MWJ_changeSize( 'takeoffAddID', 610,350 );
+		toggleVisible('takeoffAddID','takeoffAddPos',30,0,610,320);
+
 	 }
 </script>
 
 <div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
 <table width="100%" >
-<tr><td class="infoBoxHeader" style="width:400px;">
+<tr><td class="infoBoxHeader" >
 <div align="left" style="display:block; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
 <div align="right" style="display:inline; float:right; clear:right;">
 <a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;">
 <img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 </td></tr></table>
 <div id='addTakeoffDiv'>
-<iframe id="addTakeoffFrame" width=410 height="320" frameborder=0 style='border-width:0px'></iframe></div>
+<iframe id="addTakeoffFrame" width="100%" height="320" frameborder=0 style='border-width:0px'></iframe></div>
 </div>
 
 
 
-<form name="geOptionsForm" method="POST">
+
 <div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
+<form name="geOptionsForm" method="POST">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
 
 <table bgcolor="#EEEEEE" cellpadding="0" cellspacing="0" width="100%" border="0" >
@@ -176,30 +184,26 @@ function edit_takeoff(id) {
 </tr>
 </TABLE>
 
-
-</div>
 </form>
-
+</div>
 <?
-  $legendRight="";
-  if ( $flight->userID==$userID || is_leo_admin($userID) )
+	$legendRight="";
+	if ( $flight->userID==$userID || is_leo_admin($userID) )
 		$legendRight="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
-$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> "._PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'pilot_pos', 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
-	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
+	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
+			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
+			$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".
+			$flight->userName."</a>&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
 
-$Ltemplate->assign_vars(array(
-'legend'=>$legend,
-'legendRight'=>$legendRight,
-));
-  /* open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td id='pilot_pos'>"._PILOT.": ".
-	  "<a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'pilot_pos', 200, '".$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".$flight->userName."</a>".
-	"&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE)."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",740,$flight->cat);
-	*/
-?>
+	$Ltemplate->assign_vars(array(
+		'legend'=>$legend,
+		'legendRight'=>$legendRight,
+	));
 
-<?
+
+
   if (!$flight->active &&  (mktime() - datetime2UnixTimestamp($flight->dateAdded) > 5 ) )  {  //  5 secs
 		$flight->activateFlight();
   } else if (!$flight->active) {
@@ -224,7 +228,7 @@ $Ltemplate->assign_vars(array(
 		$flight->putFlightToDB(1); // 1== UPDATE
   }
 
-  $flight->updateAll(0);
+//  $flight->updateAll(0);
   
 	$flightHours=$flight->DURATION/3600;
 	if ($flightHours) {
@@ -350,8 +354,10 @@ if ($flight->comments) {
 	 $comments=$flight->comments;
 }
 
+$linkURL=_N_A;
 if ($flight->linkURL) {
-	$linkURL="<a href='".formatURL($flight->linkURL)."' target=_blank>".$flight->linkURL."</a>";
+	$linkURL="<a href='".formatURL($flight->linkURL,0)."' title='".formatURL($flight->linkURL,0)."' target=_blank>".
+		formatURL($flight->linkURL,15)."</a>";
 }
 
 if ($flight->glider) {
@@ -359,10 +365,13 @@ if ($flight->glider) {
 	if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$flight->cat/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
 	else $gliderBrandImg="";
 
-	$glider=$gliderBrandImg.$flight->glider." [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
-	$gliderCatList[$flight->cat]." ]";
-} 
-  
+	$glider=$gliderBrandImg.$flight->glider;
+}
+
+$gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
+$gliderCatList[$flight->cat]." ]";
+ 
+$images="";
 if ($flight->photo1Filename) {
 	// _PHOTOS  	  
 	if ($flight->photo1Filename) 	
@@ -371,7 +380,7 @@ if ($flight->photo1Filename) {
 		$photo2="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
 	if ($flight->photo3Filename) 	
 		$photo3="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
-	  
+	$images=$photo1.$photo2.$photo3;
 }
 
 //-------------------------------------------------------------------
@@ -473,10 +482,10 @@ if ($xmlSites ) {
 } // if we have content
 
 
-
+$adminPanel="";
 if (in_array($userID,$admin_users) ) {
 	$adminPanel="<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
-	$adminPanel.="<b>DATE ADDED:</b> ".$flight->dateAdded."<br>";
+	$adminPanel.="<b>DATE ADDED:</b> ".$flight->dateAdded." :: ";
 	// DEBUG MANOLIS
 	// processIGC($flight->getIGCFilename());
 	// display the trunpoints
@@ -496,12 +505,12 @@ if (in_array($userID,$admin_users) ) {
 	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
 	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
 
-	//@include dirname(__FILE__)."/site/admin_takeoff_info.php";
+	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
 
 if ( is_file($flight->getMapFilename() ) )
-	$mapImg="<br><img src='".$flight->getMapRelPath()."' border=0>";	
+	$mapImg="<img src='".$flight->getMapRelPath()."' border=0>";	
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
 	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
@@ -523,10 +532,12 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
-	'images'=>"<div  style='clear:right;'>".$photo1.$photo2.$photo3."</div>",
+	'images'=>$images,
+	'2col'=>($images?"2col":""),
 	'comments'=>$comments,
 	'linkURL'=>$linkURL,
 	'glider'=>$glider,
+	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
 
 	'linkToInfoHdr1'=>$linkToInfoHdr1,
@@ -535,6 +546,14 @@ $Ltemplate->assign_vars(array(
 	'linkToInfoStr2'=>$linkToInfoStr2,
 
 ));
+
+if ($comments) {
+   	$Ltemplate->assign_block_vars('COMMENTS', array() );
+}
+
+if ($adminPanel) {
+   	$Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
+}
 
 $Ltemplate->pparse('body');
 
