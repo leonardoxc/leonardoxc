@@ -245,6 +245,9 @@ Time to launch from landing
     }
 
 	function exportXML() {
+		global $baseInstallationPath, $CONF_mainfile, $module_name;
+		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_waypoint&waypointIDview=".$this->waypointID);
+	
 return "<waypoint>
 <id>".htmlspecialchars($this->waypointID)."</id>
 <name>".htmlspecialchars($this->name)."</name>
@@ -256,6 +259,7 @@ return "<waypoint>
 <lat>".htmlspecialchars($this->lat)."</lat>
 <lon>".htmlspecialchars(-$this->lon)."</lon>
 <link>".htmlspecialchars($this->link)."</link>
+<displayLink>".$link."</displayLink>
 <description>".htmlspecialchars($this->description)."</description>
 <modifyDate>".htmlspecialchars($this->modifyDate)."</modifyDate>
 </waypoint>";

@@ -289,7 +289,9 @@ function exitPage($exitNow=1){
 	 echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
    }
    echo "</div>";  
-
+   
+   DEBUG_END();
+   
    require_once $moduleRelPath."/BLOCKS_end.php";
    if ($opMode==1) {   
 		CloseTable();

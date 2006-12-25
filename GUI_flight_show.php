@@ -230,6 +230,8 @@ function edit_takeoff(id) {
 
   $flight->updateAll(0);
   
+  DEBUG_END(); // flush debug here
+	
 	$flightHours=$flight->DURATION/3600;
 	if ($flightHours) {
 		$openDistanceSpeed=formatSpeed($flight->LINEAR_DISTANCE/($flightHours*1000));

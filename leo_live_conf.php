@@ -75,12 +75,36 @@ if ($_POST['formPosted']==1) { // create config
 	}
 }
 ?>
-<p><strong>STEP 3)</strong> Copy this file to 
-
-
- e:\others\Pilot\Config\<strong>ConfigGeneral.xml</strong></p>
+<p><strong>STEP 3)</strong></p>
+<ul>
+  <li> Copy this file to 
+    
+    
+    e:\others\Pilot\Config\<strong>ConfigGeneral.xml</strong></li>
+  <li>Get <a href="live/leonardo.zip">Leonardo.zip</a> unzip it and put the folder &quot;leonardo&quot; in e:\others\Pilot\Config\</li>
+</ul>
 <p>Now each time you run &quot;<strong>Pilot</strong>&quot; from your smart phone
   your gps position<br> 
   will be send to <strong>LeoLive</strong> at the intervals that you have specified.</p>
+<p>&nbsp;</p>
+<p><strong>Best and tried sequence :</strong></p>
+<p>1) Enable bluetooth on the mobile</p>
+<p>2) Open GPS and let it aquire singals</p>
+<p>3) Run &quot;pilot&quot; and select &quot;agree&quot; on the copyright message</p>
+<p>4) Wait until you are presented with the  selection of GPRS connection to use. Select the correct one</p>
+<p>5) if you plan not to use &quot;pilot&quot; for navigation, press the &quot;Red&quot; button to put &quot;pilot&quot; into the background (saves battery) </p>
+<p>6) dont forget to close &quot;pilot&quot; after the flight in order to avoid extra GPRS costs. </p>
+<p></p>
+<p><strong>Common errors/mistakes</strong></p>
+<p>1) Forget to enable bluetooth <strong>before</strong> running &quot;pilot&quot;. In order to be 100% sure, reboot the phone. This may not be nessacary<br />
+for your phone. Some phones/gps combos need it.</p>
+<p>2) You dont wait till the &quot;GPRS selection&quot; and put the phone in your pocket. The &quot;selection&quot; will timeout and no data will be transmitted. </p>
+<p></p>
+<p><strong>Problems in the field </strong></p>
+<p>1) All your online friends callling you on the phone while trying to launch in nil wind and asking you why is it taking you so long to takeoff !!! </p>
+<p> </p>
+<p><strong>NOTE:</strong></p>
+<p><strong> ******** Important ******** </strong>Whenever you run &quot;pilot&quot; it erases your incoming SMS messages. <br />
+Please copy important SMS to other folder before runing </p>
 <p>&nbsp;</p>
 <p><a href="leo_live_list.php"><strong>RETURN TO LIVE TRACKS </strong></a></p>

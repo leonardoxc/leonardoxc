@@ -248,8 +248,18 @@ function getBrowser() {
 	}
 
 	function DEBUG($debugCat,$debugLevel,$msg ) {
-		global $DBGcat,$DBGlvl;
-		if ( ($DBGcat == $debugCat || $DBGcat=='' ) && $DBGlvl & $debugLevel  ) echo $msg;
+		global $DBGcat,$DBGlvl,$DEBUG_OUTPUT;
+		if ( ($DBGcat == $debugCat || $DBGcat=='' ) && $DBGlvl & $debugLevel  ) 
+			$DEBUG_OUTPUT.=$msg;
+	}
+	
+	function DEBUG_END() {
+		global $DEBUG_OUTPUT;
+		if ($DEBUG_OUTPUT) { 
+			echo "<div id='debugTitleDiv'><STRONG><a href='javascript:toggleVisibility(\"debugDiv\");'>DEBUG OUTPUT</a></STRONG></div>";
+			echo "<div id='debugDiv'$DEBUG_OUTPUT</div>";
+			$DEBUG_OUTPUT="";
+		}
 	}
 
 	function setDEBUGfromGET(){

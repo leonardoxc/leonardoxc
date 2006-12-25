@@ -446,3 +446,21 @@ table.dropDownBox td {
 }
 
 
+#debugTitleDiv , #debugDiv {
+	font-family:"Courier New", Courier, monospace;
+	font-size:10px;
+	color:#000000;
+/*	position:absolute;
+	top:0;
+	left:0;*/
+	padding:4px;
+	border:1px solid #F1D8C5;
+	background-color:#EEF0EE;
+	display:block;
+	width:100px;
+}
+#debugDiv {
+/*	top:25;*/
+	display:none;	
+	width:auto;
+}

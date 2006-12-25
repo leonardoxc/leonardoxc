@@ -476,7 +476,7 @@ var $maxPointNum=1000;
 		if (!$lines) return;
 		$i=0;
 		$day_offset =0; 
-
+		
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;				
@@ -485,6 +485,12 @@ var $maxPointNum=1000;
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$thisPoint->gpsTime+=$day_offset;
 					$data_time[$i]=sec2Time($thisPoint->getTime(),1);
+					
+					// check for start of flight 
+					if ($thisPoint->getTime()<$this->START_TIME) continue;
+					// check for end of flight 
+					if ($thisPoint->getTime()>$this->END_TIME) continue;
+					
 					$data_alt[$i]=$thisPoint->getAlt();				
 					if ( $data_alt[$i] > $this->maxAllowedHeight ) continue;
 
