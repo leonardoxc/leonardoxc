@@ -32,7 +32,15 @@ a:hover {
 }
 
 .header1 {
-background-color:#CCCCFF;
+background-color:#B2E4F4;
+}
+.header2 {
+background-color:#F3F6D8;
+}
+
+
+.all_tracks {
+	display:none;
 }
 
 .list_tracks td {

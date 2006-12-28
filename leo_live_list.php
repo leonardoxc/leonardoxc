@@ -27,12 +27,16 @@ setDEBUGfromGET();
 ?><head>
 <link href="live.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><style type="text/css">
+
+
 <!--
 body {
 	background-color: #EDF3F1;
 }
 -->
-</style><title>Leonardo Live !</title></head>
+</style>
+<script language="javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
+<title>Leonardo Live !</title></head>
 
 
 <p><img src="live/logo.jpg" width="574" height="94"></p>
@@ -46,6 +50,11 @@ $trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
 $op=$_GET['op'];
 if (!$op) $op="list";
 if ($op=="list") {
+
+		// get all the waypoints into memory
+		if (count($waypoints)==0) 
+			$waypoints=getWaypoints();
+
 	$query="SELECT username,lat,lon,alt,sog,cog, max(tm) as last_tm FROM  leonardo_live_data GROUP BY username ORDER BY last_tm desc";
 	//echo $query;
 	$res= $db->sql_query($query);
@@ -54,38 +63,11 @@ if ($op=="list") {
 		exit();
 	}
 	echo "<table border=1 cellpadding=3>";
-	echo "<tr><th>Username</th><th>Last seen at</th><th>lat</th><th>lon</th><th>altitude</th><th>speed</th><th>course</th></tr>";
+	echo "<tr><th>Username</th><th>Last seen at</th><th>Location</th><th>lat</th><th>lon</th><th>altitude</th><th>speed</th><th>course</th></tr>";
 	while  ($row = mysql_fetch_assoc($res)) { 
-		$ip	  =$row["ip"];
-		$time =$row["time"];
 		$username =$row["username"];
-		$lat =$row["lat"];
-		$lon =$row["lon"];
-		$alt =$row["alt"];
-		$sog =$row["sog"];
-		$cog =$row["cog"];
-		$tm=$row['last_tm'];
-		
-		$last_time=date("d-m-Y H:i:s",$tm);
-		$cogStr=getCogDescr($cog);
-	
-		$thisPoint=new gpsPoint();
-		$thisPoint->lat=$lat;
-		$thisPoint->lon=$lon;
-		
-		$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
-		substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
-		$XML_str="$time  :: $alt m, $sog km/h, cog:$cog";
-		echo "<tr class='header1'>";
-		echo "<td><b>$username</b></td>";
-		echo "<td><a title='Click here to LIVE track this user' href='$trackURL?user=$username'>$last_time</a></td>";
-		echo "<td>$lat</td>";
-		echo "<td>$lon</td>";
-		echo "<td>$alt m</td>";
-		echo "<td>$sog km/h</td>";
-		echo "<td>$cogStr ($cog&deg;)</td>";
-		echo "</tr>";	
-	
+		getUserInfoShort($username);
+
 		// now display all the teracks from this user !!!	
 		$query="SELECT *, count(*) as points_num, max(tm) as tm_max, min(tm) as tm_min FROM  leonardo_live_data 
 					WHERE username='$username' GROUP BY port ORDER BY tm desc";
@@ -95,7 +77,7 @@ if ($op=="list") {
 			echo("<H3> Error in query! $query </H3>\n");
 			exit();
 		}
-		echo "<tr><td>&nbsp;</td><td colspan=8>";
+		echo "<tr><td colspan=10 align=right><div align=right>";
 	
 		echo "<table  cellpadding='4' class='list_tracks'>";
 		echo "<tr><th>Date</th><th>Start</th><th>End</th><th># of Points</th><th>Interval</th><th>Duration</th><th>ACTIONS</th></tr>";
@@ -127,20 +109,29 @@ if ($op=="list") {
 			$cogStr=getCogDescr($cog);
 
 			if (time()-$tm_max <= 300 && $i==0) { // last point was within 5 mins
-				$live_now="<img src='live/live_now.gif' border=0 align=middle>";
+				$live_now="<img src='live/live_now.gif' border=0 align=middle><br>";
 			} else $live_now="";
 
+			if ($i==3) {
+				echo "<tr class='$row'><td colspan=7><div align='right'><a href='javascript:toggleVisibility(\"showMore_$username\")'>See all live tracks of $username</a></div></td></tr>";
+				echo "</table><table  align=right cellpadding='4' class='list_tracks all_tracks' id='showMore_$username'>";
+			}
 			$row="row".(($i%2)+1);
-			echo "<tr class='$row'><td>$live_now$start_date</td><td>$start_time</td><td>$end_time</td><td><div align=right>$points_num</div></td><td>$interval secs</td><td>$d</td>";
-			echo "<td>";
+			echo "<tr class='$row'><td>$live_now$start_date</td><td>$start_time</td>
+<td>$end_time</td>
+<td width='90'><div align=right>$points_num</div></td>
+<td width='60'>$interval secs</td><td>$d</td>";
+			echo "<td >";
 			echo "<a href='$trackURL?op=track&user=$username&port=$port'>Google Earth</a> :: ";
-			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a>";
+			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a> :: ";
+			//if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
+			//else echo "wait till landing";
 			echo "</td></tr>";
 			$i++;
 		}
 		echo "</table>";
 	
-		echo "</td></tr>";
+		echo "</div></td></tr>";
 	
 	} // end while 
 	
@@ -157,4 +148,84 @@ function getCogDescr($cog){
 	return $dirs[$i];
 }
 
+function getUserInfoShort($username) {
+	global $waypoints,$db;
+	global $trackURL;
+
+	if (count($waypoints)==0) 
+			$waypoints=getWaypoints();
+
+	$query="SELECT * FROM  leonardo_live_data
+			WHERE username='$username' 
+			ORDER BY tm desc LIMIT 1";
+	//echo $query;
+	$res= $db->sql_query($query);
+	if($res <= 0){
+		echo("<H3> Error in query! $query </H3>\n");
+		return 0;;
+	}
+	if  ($row = mysql_fetch_assoc($res)) { 
+		$ip	  =$row["ip"];
+		$time =$row["time"];
+		$username =$row["username"];
+		$lat =$row["lat"];
+		$lon =$row["lon"];
+		$alt =$row["alt"];
+		$sog =$row["sog"];
+		$cog =$row["cog"];
+		$tm=$row['tm'];
+		
+		$last_time=date("d-m-Y H:i:s",$tm);
+		$cogStr=getCogDescr($cog);
+	
+		$thisPoint=new gpsPoint();
+		$thisPoint->lat=$lat;
+		$thisPoint->lon=-$lon;
+		
+		// is this user live ?  300 secs -> 5 mins 
+		if (time()-$tm <= 300 ) { // last point was within 5 mins
+				$liveStr="This user is LIVE. Click here to LIVE track him/her in Google Earth";
+				$live_now="<img src='live/live_now.gif' border=0 align=middle> ";
+		} else { 
+				$liveStr="This user is not LIVE. Click here to see his/her last known position in Google Earth ";
+				$live_now="";
+		}
+
+		// find the nearest  waypoint
+		$takeoffIDTmp=0;
+		$minTakeoffDistance=10000000;
+		$i=0;
+
+		foreach($waypoints as $waypoint) {
+		   $takeoff_distance = $thisPoint->calcDistance($waypoint);
+		   if ( $takeoff_distance < $minTakeoffDistance ) {
+				$minTakeoffDistance = $takeoff_distance;
+				$takeoffIDTmp=$waypoint->waypointID;
+		   }
+			$i++;
+		}
+		$nearestWaypoint=new waypoint($takeoffIDTmp);
+		$nearestWaypoint->getFromDB();
+
+
+		$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
+		substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
+		$XML_str="$time  :: $alt m, $sog km/h, cog:$cog";
+		echo "<tr class='header1'>";
+		echo "<td><b>$username</b></td>";
+		echo "<td><strong>$last_time</strong></td>";
+		echo "<td>".$nearestWaypoint->intName." - ".$nearestWaypoint->countryCode." [ ~ ".sprintf("%.1f",$minTakeoffDistance/1000)." km] ";
+		echo "<td>$lat</td>";
+		echo "<td>$lon</td>";
+		echo "<td>$alt m</td>";
+		echo "<td>$sog km/h</td>";
+		echo "<td>$cogStr ($cog&deg;)</td>";
+		echo "</tr>";	
+
+		echo "<tr class='header2'><td colspan='8'><a title='$liveStr' href='$trackURL?user=$username'>$live_now$liveStr</a></td></tr>";
+	} else {
+		echo "No results found";
+		return 0;
+	}
+}
 ?>

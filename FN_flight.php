@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
 define("ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE",-1);
 define("ADD_FLIGHT_ERR_NO_SUCH_FILE",-2);
 define("ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC",-3);
@@ -56,7 +57,24 @@ function addFlightError($errMsg) {
 	exitPage();
 }
 
-function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="") {
+function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider) {
+
+	require_once dirname(__FILE__)."/soap/IXR_Library.inc.php";
+	$client = new IXR_Client($serverURL);
+
+	//echo "$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider #<BR>";
+
+	if ( ! $client->query('flights.submit',$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider ) ) {
+		echo 'submitFlightToServer: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+		return $client->getErrorCode();
+	} else {
+		$flightID= $client->getResponse();
+		echo 'Flight was submited with id '.$flightID;
+	}
+	return 1;
+}
+
+function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="") {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 
 	set_time_limit (120);
@@ -73,6 +91,7 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->userID=$userID;
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
+	$flight->glider=$glider;
 
 	//  we must cope with some cases here
 	//  1. more flights in the igc

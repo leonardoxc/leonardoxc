@@ -172,6 +172,72 @@ function flights_find($arg) {
 
 }
 
+function flights_submit($args) {
+ /*return IXR_Error(222, "test1");
+	require_once dirname(__FILE__)."/CL_flightData.php";
+	require_once dirname(__FILE__)."/FN_functions.php";	
+	require_once dirname(__FILE__)."/FN_UTM.php";
+	require_once dirname(__FILE__)."/FN_waypoint.php";	
+	require_once dirname(__FILE__)."/FN_output.php";
+	require_once dirname(__FILE__)."/FN_pilot.php";
+*/
+	require_once dirname(__FILE__)."/FN_flight.php";
+
+	$username=$args[0];
+	$passwd=$args[1];
+	$igcURL=$args[2];
+	$igcFilename=$args[3];
+	$private=$args[4];
+	$cat=$args[5];
+	$linkURL=$args[6];
+	$comments=$args[7];
+	$glider=$args[8];
+
+	global $db,$prefix;
+	$sql = "SELECT user_id, username, user_password 
+			FROM ".$prefix."_users	WHERE username = '$username'";
+	if ( !($result = $db->sql_query($sql)) ) {
+		return  new IXR_Error(200, "Error in obtaining userdata for $username");
+	}
+	
+	$passwdProblems=0;
+	if( $row = $db->sql_fetchrow($result) ) {
+		if( md5($passwd) != $row['user_password'] ) $passwdProblems=1;
+	} else 	$passwdProblems=1;
+	
+	if ($passwdProblems) {
+		return  new IXR_Error(201, "Error in password for $username");
+	}
+
+
+	$userID=$row['user_id'];
+ 
+	$filename = dirname(__FILE__)."/flights/".$igcFilename;
+	if (!$handle = fopen($filename, 'w')) { 
+		return  new IXR_Error(202, "Cannot open file ($filename)");
+	} 
+
+	$igcStr=fetchURL(html_entity_decode($igcURL),10); // timeout 10 secs
+	if (!$igcStr) {
+		return  new IXR_Error(203, "Cannot get igcURL ($igcURL)");
+	}
+
+	if (!fwrite($handle,$igcStr)) { 
+		return  new IXR_Error(204, "Cannot write to file ($filename)");
+	} 		
+	@fclose($handle); 
+
+	list($errCode,$flightID)=addFlightFromFile($filename,0,	$userID,$private,$cat,$linkURL,$comments,$glider) ;
+	if ($errCode==1) { // all ok 
+		return $flightID;
+	} else {
+
+		$errStr=htmlspecialchars(getAddFlightErrMsg($errCode,$flightID) ) ;
+		return  new IXR_Error(500,$errStr );
+	}
+
+}
+
 /* Create the server and map the XML-RPC method names to the relevant functions */
 $server = new IXR_Server(array(
     'test.getTime' => 'getTime',
@@ -179,7 +245,8 @@ $server = new IXR_Server(array(
     'test.addArray' => 'addArray',
 	'test.findTakeoff'=>'findTakeoff',
 	'takeoffs.getAll'=>'takeoffs_findAll',
-	'flights.find'=>'flights_find'
+	'flights.find'=>'flights_find',
+	'flights.submit'=>'flights_submit',
 ));
 
 ?>

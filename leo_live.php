@@ -220,6 +220,38 @@
 		$kml_file_contents.="</coordinates>\n</LineString>\n</Placemark>";
 		$xml.="\n</Folder>$kml_file_contents</Folder></kml>";
 
+	}  else if ($op=="submit") {
+		// get some basic info
+		$username=$_GET['user'];
+		$port=$_GET['port'];
+		$query="SELECT * FROM  leonardo_live_data WHERE username='$username' AND port='$port' ORDER BY tm ASC LIMIT 1";
+		//echo $query;
+		$res= $db->sql_query($query);
+		if($res <= 0){
+			 echo("<H3> Error in query! $query </H3>\n");
+			 return 0;
+		}
+
+		$serverURL="http://pgforum.thenet.gr/modules/leonardo/op2.php";
+		if ( $row = mysql_fetch_assoc($res) ) {
+			$trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
+			$tm=$row["tm"];
+			$passwd =$row["passwd"];
+
+			$igcURL=htmlspecialchars( "$trackURL?op=igc&user=$username&port=$port");
+			$igcFilename= htmlspecialchars(date("Y-m-d H-i-s",$tm).".igc" );
+	
+			$private=0;
+			$cat=0;
+			$linkURL=0;
+			$comments=0;
+			$glider=0;
+			submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider);
+		}	else {
+			echo "Cannot get DATA for user $username<br>";		
+		}
+		exit;
+
 	}  else if ($op=="igc") {
 		$user=$_GET['user'];
 		$port=$_GET['port'];
@@ -282,7 +314,7 @@
 		} // end while
 
 		$file_name="$user $time.igc";
-		header("Pragma: public"); // required
+	 	header("Pragma: public"); // required
 		header("Expires: 0");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private",false); // required for certain browsers 
