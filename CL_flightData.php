@@ -952,7 +952,7 @@ var $maxPointNum=1000;
 			return 0;
 		} else fclose ($fp); 
 
-		set_time_limit (240);
+		set_time_limit (240);	
 		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1);
 
 		// $IGCwebPath=rawurlencode($IGCwebPath);

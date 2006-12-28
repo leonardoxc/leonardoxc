@@ -232,7 +232,7 @@
 			 return 0;
 		}
 
-		$serverURL="http://pgforum.thenet.gr/modules/leonardo/op2.php";
+		$serverURL="http://pgforum.thenet.gr/modules/leonardo/op.php";
 		if ( $row = mysql_fetch_assoc($res) ) {
 			$trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
 			$tm=$row["tm"];
@@ -242,7 +242,7 @@
 			$igcFilename= htmlspecialchars(date("Y-m-d H-i-s",$tm).".igc" );
 	
 			$private=0;
-			$cat=0;
+			$cat=-1;
 			$linkURL=0;
 			$comments=0;
 			$glider=0;

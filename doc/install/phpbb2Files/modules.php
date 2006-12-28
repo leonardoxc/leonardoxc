@@ -19,6 +19,10 @@ if (isset($name)) {
     die ("Sorry, you can't access this file directly.");
 }
 
+require_once("mainfile.php");
+$module = 1;
+$prefix="phpbb";
+
 // $currentlang=$nativeLanguage;
 setVarFromRequest("lng",$nativeLanguage); 
 $currentlang=$lng;
@@ -36,10 +40,6 @@ if ($_GET['ap']) {
 	$currentlang=$lng;
 }
 
-require_once("mainfile.php");
-$module = 1;
-$prefix="phpbb";
-
 // standard session management 
 $userdata = session_pagestart($user_ip, PAGE_LEONARDO); 
 init_userprefs($userdata); 
@@ -50,7 +50,7 @@ $page_title = 'LEONARDO';
 
 $tplSuffixStr='';
 if ($CONF_use_own_template) {
-	require_once "modules/$name/CL_template.php";
+	require_once "modules/$module_name/CL_template.php";
 	// our own page header 
 	$tplSuffixStr='_leonardo';
 }

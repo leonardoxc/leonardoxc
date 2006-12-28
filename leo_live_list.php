@@ -124,8 +124,8 @@ if ($op=="list") {
 			echo "<td >";
 			echo "<a href='$trackURL?op=track&user=$username&port=$port'>Google Earth</a> :: ";
 			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a> :: ";
-			//if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
-			//else echo "wait till landing";
+			if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
+			else echo "wait till landing";
 			echo "</td></tr>";
 			$i++;
 		}

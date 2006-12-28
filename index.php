@@ -251,6 +251,8 @@ if ($op=="users") {
     $noFooterMenu=1;
 } else if ($op=="filter") {
   require $moduleRelPath."/GUI_filter.php";
+} else if ($op=="rss_conf") {
+  require $moduleRelPath."/GUI_rss_conf.php";
 } else if ($op=="stats") {
   require $moduleRelPath."/GUI_stats.php";
 } else if ($op=="program_info") {

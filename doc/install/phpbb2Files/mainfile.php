@@ -45,11 +45,9 @@ if ($phpver >= 41) {
     $PHP_SELF = $_SERVER['PHP_SELF'];
 }
 
-
 if (!ini_get("register_globals")) {
     import_request_variables('GPC');
 }
-
 
 foreach ($_GET as $secvalue) {
     if ((eregi("<[^>]*script*\"?[^>]*>", $secvalue)) ||
@@ -72,7 +70,6 @@ foreach ($_POST as $secvalue) {
         die();
     }
 }
-
 
 
 if (eregi("mainfile.php",$PHP_SELF)) {

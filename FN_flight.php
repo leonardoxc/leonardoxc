@@ -61,7 +61,7 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 
 	require_once dirname(__FILE__)."/soap/IXR_Library.inc.php";
 	$client = new IXR_Client($serverURL);
-
+	// $client->debug=true;
 	//echo "$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider #<BR>";
 
 	if ( ! $client->query('flights.submit',$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider ) ) {

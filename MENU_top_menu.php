@@ -41,6 +41,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 <li class="smallItem"><a class="smallItem" href='#'><?=$iconImg?></a>
 	<ul>
 		<li><a href="?name=<?=$module_name?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
+		<li><a href="?name=<?=$module_name?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	if (count($clubsList) >0) {
 		echo "<li class='li_h1'>.:: Clubs ::.</li>\n";

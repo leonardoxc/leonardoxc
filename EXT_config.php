@@ -48,6 +48,7 @@
 		$module_name=$tmpParts[count($tmpParts)-1];
 	}
 
+
 	$baseInstallationPath="";
 	$parts=explode("/",$_SERVER['REQUEST_URI']);
 
@@ -58,5 +59,7 @@
 		}
 	}
 
+ $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
+ $OLCScoringServerPassword="mypasswd";
 
 ?>
