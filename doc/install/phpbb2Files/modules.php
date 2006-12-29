@@ -26,19 +26,33 @@ $prefix="phpbb";
 // $currentlang=$nativeLanguage;
 setVarFromRequest("lng",$nativeLanguage); 
 $currentlang=$lng;
-
+/*
 setVarFromRequest("ap",0);
 if ($ap) {
 	$leonardo_header=$apList[$ap]['header'];
 	setVar("clubID",$apList[$ap]['club']);
 	//echo "!$currentlang!";
 } else $leonardo_header="basic";
+*/
+setVarFromRequest("clubID",0);
 
 // only the first time we get there do we se the language
+/* 
 if ($_GET['ap']) {
 	setVar("lng",$apList[$ap]['lang']);
 	$currentlang=$lng;
 }
+*/
+if ($_GET['clubID']) { // some things we do when first in club
+
+	if ( is_array($clubsList[$clubID]['gliderCat']) ) {
+		setVar("cat",0);
+	}
+	setVar("lng",$clubsList[$clubID]['lang']);
+	$currentlang=$lng;
+}
+
+
 
 // standard session management 
 $userdata = session_pagestart($user_ip, PAGE_LEONARDO); 

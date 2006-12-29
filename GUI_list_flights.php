@@ -51,7 +51,7 @@
   }
 
   if ($country) {
-		$where_clause.=" AND  $waypointsTable.countryCode='".$country."' ";
+		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
   }
     
   if ($sortOrder=="dateAdded" && $year ) $sortOrder="DATE";
@@ -92,42 +92,21 @@
   else $countryCodeQuery=1;
 
   $where_clause.=$filter_clause;
-  if ($countryCodeQuery || $country)   {
-	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
-	 $extra_table_str=",".$waypointsTable;
-  } else $extra_table_str="";
 
   if ($clubID)   {
-	 $areaID=$clubsList[$clubID]['areaID'];
-  	 $addManual=$clubsList[$clubID]['addManual'];
-
-	 $add_remove_mode=$_GET['a_r']+0;
+  	 $add_remove_mode=$_GET['a_r']+0;
 	 $query_str.="&a_r=$add_remove_mode";
-	 
-	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
-				 			$clubsPilotsTable.clubID=$clubID ";
-	$extra_table_str.=",$clubsPilotsTable ";
 
-	if ($areaID) {
-		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
-							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
-	 	 $extra_table_str.=",$areasTakeoffsTable ";
-	}
-
-	
-	if ($addManual) {
-		 $clubFlights=getClubFlightsID($clubID);
-
-		if (! $add_remove_mode ) { // select only spefici flights
-		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
-							AND $clubsFlightsTable.clubID=$clubID ";
-	 	 $extra_table_str.=",$clubsFlightsTable ";
-		}
-	}
-
+	 require dirname(__FILE__)."/INC_club_where_clause.php";
   } 
 
+  if ($countryCodeQuery || $country)   {
+	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+	 $extra_table_str.=",".$waypointsTable;
+  } else $extra_table_str.="";
 
+  $where_clause.=$where_clause_country;
+  
   $query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
   //  echo "#count query#$query<BR>";
   $res= $db->sql_query($query);

@@ -20,9 +20,14 @@
 
  $is_comp=$comp;
 
- if ($cat==0 && $is_comp) $cat=1;
- if ($cat==0) $where_clause="";
- else $where_clause=" AND cat=$cat ";
+ if ($cat==0 && $is_comp) {  
+	 if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
+		$cat=$clubsList[$clubID]['gliderCat'][0];
+	 } else $cat=1;
+ }
+ 
+ if ($cat==0) $where_clause.="";
+ else $where_clause.=" AND cat=$cat ";
 
  $page_num=$_REQUEST["page_num"]+0;
  if ($page_num==0)  $page_num=1;
@@ -41,17 +46,14 @@
   }
   
   if ($country) {
-		$where_clause.=" AND  $waypointsTable.countryCode='".$country."' ";
-		// if ($sortOrder!="dateAdded") $legend.=" (".$countries[$country].") | ";				
+		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
+			
   }
 
-  if ($countryCodeQuery || $country)   {
-		 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
-		 $extra_table_str=",".$waypointsTable;
-  } else $extra_table_str="";
 
   if ($clubID)   {
-	 $areaID=$clubsList[$clubID]['areaID'];
+	 require dirname(__FILE__)."/INC_club_where_clause.php";
+	/* $areaID=$clubsList[$clubID]['areaID'];
   	 $addManual=$clubsList[$clubID]['addManual'];
 
 	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
@@ -68,7 +70,12 @@
 							AND $clubsFlightsTable.clubID=$clubID ";
 	 	 $extra_table_str.=",$clubsFlightsTable ";
 	}
+	*/
   } 
+  if ($countryCodeQuery || $country)   {
+	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+	 $extra_table_str.=",".$waypointsTable;
+  } else $extra_table_str.="";
 
   
  if (!$is_comp) {
@@ -111,6 +118,12 @@
   $query_str.="&comp=".$is_comp;
 
 
+  if (! $pilotTableQuery ) { // we have NOT already put the pilot table in -> do it now 
+  	$extra_table_str.=", $pilotsTable ";
+	$where_clause.=" AND ".$pilotsTable.".pilotID=$flightsTable.userID";
+  }
+  $where_clause.=$where_clause_country;
+   
  $query="SELECT count(DISTINCT userID) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (userID!=0 AND  private=0) ".$where_clause." ";
  $res= $db->sql_query($query);
   if($res <= 0){   
@@ -124,6 +137,8 @@
   $startNum=($page_num-1)*$PREFS->itemsPerPage;
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
 
+
+  
  $query = 'SELECT DISTINCT userID, username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
@@ -131,13 +146,13 @@
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
-        . ' FROM '.$pilotsTable.', '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
-        . ' WHERE private=0 AND '.$pilotsTable.'.pilotID='.$prefix.'_users.user_id AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
+        . ' FROM  '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
+        . ' WHERE private=0  AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' GROUP BY userID'
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
 	
 	$res= $db->sql_query($query);
-		
+		// echo $query;
     if($res <= 0){
       echo("<H3>"._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();

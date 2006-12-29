@@ -38,10 +38,12 @@ require_once dirname(__FILE__)."/config_version.php";
 
  $CONF_main_page="index_full";
 
+/*
  $apList=array(
  	"mx"=>array("desc"=>"Mexican XC League","lang"=>"mexican","theme"=>"mx","club"=>1,"header"=>"mx") ,
 	"gr"=>array("desc"=>"Greek XC League","lang"=>"greek","theme"=>"gr","club"=>3, "header"=>"gr") ,
  );
+*/
 
  // club config
  @include_once dirname(__FILE__)."/config_clubs.php"; 

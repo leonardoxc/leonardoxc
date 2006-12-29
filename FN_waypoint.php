@@ -70,11 +70,20 @@ function getAreasTakeoffs($areaID) {
 function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	global $db;
 	global $flightsTable,$waypointsTable,$prefix,$moduleRelPath,$countries;	
+	global $clubsList;
 
 	$where_clause="";
+	if ($clubID) {
+		if ( is_array($clubsList[$clubID]['countryCodes']) ) {			
+			foreach ($clubsList[$clubID]['countryCodes'] as $cCode ) {
+				$where_clause.=" AND countryCode='$cCode' ";
+			}
+		}	
+	}	
+	
   	$query="SELECT DISTINCT countryCode, count(*) as FlightsNum FROM $flightsTable,$waypointsTable  WHERE 
 				$flightsTable.takeoffID=$waypointsTable.ID  
-				AND $flightsTable.userID<>0 
+				AND $flightsTable.userID<>0 $where_clause
 				GROUP BY countryCode ORDER BY countryCode ASC";	
 //	 echo $query;
 	$res= $db->sql_query($query);		

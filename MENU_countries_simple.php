@@ -13,8 +13,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
-	$countriesNum=count($countriesNames);
+	
 	$num_of_cols=ceil($countriesNum/15);
 	$num_of_rows=ceil($countriesNum/$num_of_cols);
 

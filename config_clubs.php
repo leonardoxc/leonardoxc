@@ -3,12 +3,14 @@
  $clubsList=array(
  	1=>array(	"desc"=>"Broken Thermal Club",
 				"id"=>1,
+				"lang"=>"mexican",
 				"areaID"=>0,
 				"addManual"=>1,
 				"adminID"=>76,
 		    ) ,
 	2=>array(	"desc"=>"Tea Club ",
 				"id"=>2,
+				"lang"=>"mexican",
 				"areaID"=>0,
 				"addManual"=>1,
 				"adminID"=>76,
@@ -16,6 +18,7 @@
 
 	3=>array(	"desc"=>"Greece 2006 XC league",
 				"id"=>3,
+				"lang"=>"greek",
 				"areaID"=>0,
 				"addManual"=>0,
 				"adminID"=>76,
@@ -28,6 +31,8 @@
 
 				"countryCodes"=>array("gr"),
 				"pilotNationality"=>array("gr"),
+				"gliderCat"=>array(1,2),
+				
 				"startYear"=>"2006",
 				"startMonth"=>"0",
 				"startDay"=>"0",

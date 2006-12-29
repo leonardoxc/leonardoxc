@@ -38,11 +38,13 @@
   }
   
   if ($country) {
-		$where_clause.=" AND  countryCode='".$country."' ";
+		$where_clause_country.=" AND  ".$waypointsTable.".countryCode='".$country."' ";
 		//$legend.=" (".$countries[$country].") | ";
   }    
 
   if ($clubID)   {
+   require dirname(__FILE__)."/INC_club_where_clause.php";
+   /*
 	 $areaID=$clubsList[$clubID]['areaID'];
   	 $addManual=$clubsList[$clubID]['addManual'];
 
@@ -59,9 +61,15 @@
 		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
 							AND $clubsFlightsTable.clubID=$clubID ";
 	 	 $extra_table_str.=",$clubsFlightsTable ";
-	}
+	}*/
   } 
-
+  
+  /* not needed -->  is included by default in this list
+  if ($countryCodeQuery || $country)   {
+	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+	 $extra_table_str.=",".$waypointsTable;
+  } else $extra_table_str.="";
+*/
   
   $sortDescArray=array("countryCode"=>_DATE_SORT, "FlightsNum"=>_NUMBER_OF_FLIGHTS, "max_distance"=>_SITE_RECORD_OPEN_DISTANCE  );
  
@@ -75,14 +83,15 @@
   $where_clause.=$filter_clause;
 
 
+ $where_clause.=$where_clause_country;
 //-----------------------------------------------------------------------------------------------------------
 
-  	$query="SELECT DISTINCT takeoffID, name, intName, countryCode, count(*) as FlightsNum, max(LINEAR_DISTANCE) as max_distance 
+  	$query="SELECT DISTINCT takeoffID, name, intName, ".$waypointsTable.".countryCode, count(*) as FlightsNum, max(LINEAR_DISTANCE) as max_distance 
   			FROM $flightsTable,$waypointsTable $extra_table_str
   			WHERE $flightsTable.takeoffID=$waypointsTable.ID  
 			AND $flightsTable.userID<>0 ".$where_clause." 
 			GROUP BY takeoffID ORDER BY $sortOrderFinal ".$ord.",max_distance DESC";	
-    // echo $query;
+   // echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){
 		echo "no takeoffs found<br>";

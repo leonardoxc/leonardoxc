@@ -13,7 +13,6 @@
 /************************************************************************/
 
 
-
   //require_once dirname(__FILE__)."/MENU_dates.php";
   //require_once dirname(__FILE__)."/MENU_countries.php";
   
@@ -54,23 +53,6 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-  
-  $catLegend="";
-  $allCatDisplay=0;  
-
-  if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
-  
-  if ($cat) { 
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
-		//$gliderCatList[$cat]
-  }	else {
-		$allCatDisplay=1;  
-		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
-  }
-
-  
-
-  	  // openBox("","100%","#f5f5f5");
   	   ?>
 	   <div class="mainBox" align="left">  	
   	
@@ -81,30 +63,73 @@
 		<? } ?>
 
 <? 
+
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 
- if ( count($CONF_glider_types) > 1 ) { 
-		$catLiStr="";
 
-        $catLink="?name=".$module_name."&cat=0";
+  $catLegend="";
+  $allCatDisplay=0;  
+
+
+
+if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
+	if (($isCompDisplay || $op=="competition") && !$cat) { 
+		$cat=$clubsList[$clubID]['gliderCat'][0];
+	}
+	
+	if (!$cat) {
+		// $cat=$clubsList[$clubID]['gliderCat'][0];		
+	}
+	
+	$catLiStr="";
+
+	if (count($clubsList[$clubID]['gliderCat']) >1 ) {
+		$catLink="?name=".$module_name."&cat=0";
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
-		if ($cat==0) { 
-			$tmpStyle="jsdomenubaritemoverICON";
-			$current_catImg=$catImg;
-		} else $tmpStyle="jsdomenubaritemICONS";
-		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
+		if ($cat==0) $current_catImg=$catImg;
+		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";	
+	} else {
+		$cat=$clubsList[$clubID]['gliderCat'][0];
+	}
+	
+	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
+		  $catLink="?name=".$module_name."&cat=".$c_gliderCat;
+		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
+		  if ($cat==$tmpcat) $current_catImg=$catImg;
+		  
+		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$c_gliderCat]."</a></li>\n";
+		
+	}		
+} else {
 
+	if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
+	  
+	if ( count($CONF_glider_types) > 1 ) { 
+		$catLiStr="";
+	
+		$catLink="?name=".$module_name."&cat=0";
+		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
+		if ($cat==0) $current_catImg=$catImg;
+		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
+	
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
 		  $catLink="?name=".$module_name."&cat=".$tmpcat;
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
-		  if ($cat==$tmpcat) { 
-			$tmpStyle="jsdomenubaritemoverICON";
-			$current_catImg=$catImg;
-		  }
-		  else $tmpStyle="jsdomenubaritemICONS";
+		  if ($cat==$tmpcat) $current_catImg=$catImg;
+		  
 		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$tmpcat]."</a></li>\n";
 		} 	
+	}
+}
+
+ if ($cat) { 
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
+		//$gliderCatList[$cat]
+  }	else {
+		$allCatDisplay=1;  
+		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
+  }
 ?>
 
 <ul id="nav" style="width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
@@ -115,63 +140,37 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 </li>
 </ul>
 <?
-} // end if 
+
 ?> 
-
-
-
-<? if (0) { ?>
-   	    <div class="menu1" >
-  	    <?
-  	    	echo "<b>$catLegend</b>";
-  	    	//if (!$allCatDisplay) 
-  	    	//	echo "<a href='?name=$module_name&cat=0'><img src='modules/leonardo/templates/$PREFS->themeName/img/icon_remove.gif' title='"._Display_ALL."'  border=0></a>";
-  	    ?>
-  	    </div>
-<? } ?>
-
-		<? 
-			
-			if ($country) {
-				$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
-			} else {
-				//$countryFlagImg="<img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_country.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
-				$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
-			}
-		?>
-  	    <ul id="dropMenu">
-			<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <?=$arrDownImg; ?></a>
-				<ul>				
-				 <li><?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?></li>
-				</ul>			
-			</li>
-			<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
-				<ul>
-				 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
-				</ul>
-			</li>
+<? 
+	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList(0,0,$clubID);
+	$countriesNum=count($countriesNames);
+	if ($countriesNum==1)  {
+		$country=$countriesCodes[0];
+		$countryLegend=$countries[$country];
+	}
+	if ($country) {
+		$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
+	} else {
+		$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+	}
+?>
+<ul id="dropMenu">
+	<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
+		<? if ($countriesNum>1) { ?>
+		<ul>				
+		 <li><?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?></li>
+		</ul>			
+		<? } ?>
+	</li>
+	
+	<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
+		<ul>
+		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 		</ul>
-<? if (0) {?>
-  	    <div class="menu1" >
-			<a href="#selDate" class="supernote-hover-selDate note_link">
-			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0>
-  	    	<?
-  	    		echo "$dateLegend</a>";
-  	    		if (!$allTimesDisplay) 
-  	    			echo " <a href='?name=$module_name&year=0&month=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	  		?>
-  	    </div>
-  	    
-  	    <div class="menu1">
-			<a href="#selCountry" class="supernote-hover-selCountry note_link">
-			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_country.gif'  title='<?=_MENU_COUNTRY?>' align="absmiddle" border=0>
-   	    <?
-  	    	echo "$countryLegend</a>";
-  	    	if (!$allCountriesDisplay) 
-  	    		echo " <a href='?name=$module_name&country=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	    ?>
-		</div>
-<? } ?>
+	</li>
+</ul>
+
 
 		<? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
@@ -209,7 +208,3 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 </div>
 
 </div>
-  	   <?   
-  	   // closeBox();  	    
-
-?>

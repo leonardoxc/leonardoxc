@@ -22,7 +22,11 @@
 
   $legend=_LEAGUE_RESULTS." ";
 
-  if ($cat==0) $cat=1;
+  if ($cat==0) { 
+	if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
+		$cat=$clubsList[$clubID]['gliderCat'][0];
+	} else $cat=1;  	
+  }
   $where_clause=" AND cat=$cat ";
   $legend.=" :: ".$gliderCatList[$cat]." ";
 
@@ -72,13 +76,12 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
 
   if ($country) {
-		$where_clause.=" AND $waypointsTable.countryCode='".$country."' ";
-		$where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
-		$extra_table_str=",".$waypointsTable;
-  } else $extra_table_str="";
+		$where_clause_country.=" AND $waypointsTable.countryCode='".$country."' ";
+  }
 
   if ($clubID)   {
-	 $areaID=$clubsList[$clubID]['areaID'];
+	 require dirname(__FILE__)."/INC_club_where_clause.php";
+/*	 $areaID=$clubsList[$clubID]['areaID'];
   	 $addManual=$clubsList[$clubID]['addManual'];
 
 	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
@@ -95,21 +98,28 @@
 							AND $clubsFlightsTable.clubID=$clubID ";
 	 	 $extra_table_str.=",$clubsFlightsTable ";
 	}
+	*/
   } 
+  
+  if ($countryCodeQuery || $country)   {
+	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+	 $extra_table_str.=",".$waypointsTable;
+  } else $extra_table_str.="";
 
- 
+  $where_clause.=$where_clause_country;
+  
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
   require_once dirname(__FILE__)."/MENU_second_menu.php";
 
   $query = 'SELECT '.$flightsTable.'.ID, userID, username, 
-  				 gliderBrandID,glider,cat,
+  				 gliderBrandID,'.$flightsTable.'.glider as glider,cat,
   				 MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
   		. ' FROM '.$flightsTable.', '.$prefix.'_users' . $extra_table_str
         . ' WHERE (userID!=0 AND  private=0) AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' ';
 
    $res= $db->sql_query($query);
-		
+	//	echo $query;
    if($res <= 0){
       echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();

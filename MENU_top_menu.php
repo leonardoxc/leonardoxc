@@ -44,9 +44,17 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 		<li><a href="?name=<?=$module_name?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	if (count($clubsList) >0) {
-		echo "<li class='li_h1'>.:: Clubs ::.</li>\n";
+		echo "<li class='li_h1'>.:: Clubs / Leagues::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
-			echo "<li><a href='?name=".$module_name."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
+			else $a_class="";
+			echo "<li $a_class><a $a_class href='?name=".$module_name."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+			if (  $clubsItem['id'] == $clubID && 
+					(  ( $clubID  && (is_club_admin($userID,$clubID) )  || is_leo_admin($userID))  	)	 
+			    )  {  ?>
+				<li style='background-color:#FF9933'><a href="?name=<?=$module_name?>&op=club_admin&club_to_admin_id=<?=$clubID?>"><img 
+				src="<?=$moduleRelPath?>/img/icon_arrow_up.png" border=0 align="absmiddle" /> Administer this Club</a></li>		
+			<? } 
 		}
 	}
 
@@ -64,7 +72,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 	}
 ?>
 
-<? if (in_array($userID,$admin_users) ) { ?>
+
+<? if ( is_leo_admin($userID) )  {  ?>
 		<li class='li_h1'>----- <?=_MENU_ADMIN?> -----</li>
 		<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
 		<li class='li_space'></li>
@@ -135,6 +144,16 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 
 <li><a href="#"><?=_MENU_MAIN_MENU." ".$arrDownImg?></a>
 	<ul>
+		<? if ( $CONF_use_own_template ) { // we must put register/login menut items ?>
+			<? 	if (! $userID) { ?>
+			<li><a href="/login.php"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>
+			<li><a href="profile.php?mode=register"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
+			<? } else { // user alredy logged in  ?>
+			<li><a href="/login.php?logout=true"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
+			
+			<? } ?>
+			<li class='li_space'></li>
+		<? } ?>
   		<? if (is_user($user) || $userID>0)  { ?>
 		<li><a href="?name=<?=$module_name?>&op=add_flight"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=add_from_zip"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>

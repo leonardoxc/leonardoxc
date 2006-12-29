@@ -325,7 +325,7 @@ with (pilotTip)
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%4%&takeoffID=0&country=0&cat=0&clubID=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID=%4%&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
@@ -365,7 +365,7 @@ with (takeoffTip)
  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
   '<tr><td class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%4%&year=0&month=0&pilotID=0&country=0&cat=0&clubID=0'><? echo  _See_flights_near_this_point ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=list_flights&takeoffID=%4%&year=0&month=0&pilotID=0&country=0&cat=0'><? echo  _See_flights_near_this_point ?></a>"+
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
 	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='?name=<?=$module_name?>&op=show_waypoint&waypointIDview=%4%'><? echo _SITE_INFO  ?></a>"+
