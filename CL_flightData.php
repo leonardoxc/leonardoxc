@@ -1371,13 +1371,12 @@ var $maxPointNum=1000;
 			list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 			if (!count($data_time) ) return; // empty timeseries
 
-			if (is_dir($moduleRelPath) ) $pre=$moduleRelPath."/";
-			else $pre="";
-			require_once $pre."graph/jpgraph_gradient.php";
-			require_once $pre."graph/jpgraph_plotmark.inc" ;
+
+			require_once dirname(__FILE__)."/lib/graph/jpgraph_gradient.php";
+			require_once dirname(__FILE__)."/lib/graph/jpgraph_plotmark.inc" ;
 	
-			require_once $pre."graph/jpgraph.php";
-			require_once $pre."graph/jpgraph_line.php";
+			require_once dirname(__FILE__)."/lib/graph/jpgraph.php";
+			require_once dirname(__FILE__)."/lib/graph/jpgraph_line.php";
 
 
 			$this->plotGraph("Height (m)",$data_time,$data_alt,$alt_img_filename);

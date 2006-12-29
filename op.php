@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__)."/soap/IXR_Library.inc.php";
+require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 
 
 require_once dirname(__FILE__)."/config_op_mode.php";

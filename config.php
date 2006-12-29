@@ -283,6 +283,9 @@ if ( !is_dir(dirname(__FILE__)."/templates/".$PREFS->themeName) || !$PREFS->them
 
 $PREFS->setToCookie();
 
+$themeRelPath=$moduleRelPath."/templates/".$PREFS->themeName;
+$themeAbsPath=dirname(__FILE__)."/templates/".$PREFS->themeName;
+
 //-----------------------------------------------------------------------------
 // DO EDIT BELOW THIS LINE
 //-----------------------------------------------------------------------------

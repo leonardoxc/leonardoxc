@@ -24,14 +24,12 @@
      array_push ($yvalues ,$totCount );
    }
 
-	if (is_dir($moduleRelPath) ) $pre=$moduleRelPath."/";
-	else $pre="";
-	require_once $pre."graph/jpgraph_gradient.php";
-	require_once $pre."graph/jpgraph_plotmark.inc" ;
+	require_once dirname(__FILE__)."/lib/graph/jpgraph_gradient.php";
+	require_once dirname(__FILE__)."/lib/graph/jpgraph_plotmark.inc" ;
 
-	require_once $pre."graph/jpgraph.php";
-	require_once $pre."graph/jpgraph_line.php";
-	require_once $pre."graph/jpgraph_bar.php";
+	require_once dirname(__FILE__)."/lib/graph/jpgraph.php";
+	require_once dirname(__FILE__)."/lib/graph/jpgraph_line.php";
+	require_once dirname(__FILE__)."/lib/graph/jpgraph_bar.php";
 
 	$graph = new Graph(600,300,"auto");    
 	$graph->SetScale("textlin");

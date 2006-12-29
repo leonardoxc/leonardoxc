@@ -106,7 +106,7 @@
 
   listTakeoffs($res,$legend,$query_str,$sortOrder);
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makeTakeoffPopup(); ?>
 <?
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {

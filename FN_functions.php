@@ -372,7 +372,7 @@ function getBrowser() {
 		
 		$xmlSites=getHTTPpage($getXMLurl);		
 		if ($xmlSites) {
-			require_once dirname(__FILE__).'/miniXML/minixml.inc.php';
+			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 			$xmlDoc = new MiniXMLDoc();
 			$xmlDoc->fromString($xmlSites);
 			$xmlArray = $xmlDoc->toArray();

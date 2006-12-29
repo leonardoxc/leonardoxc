@@ -105,7 +105,7 @@
 		 echo $fl."<br>";
 		$contents = implode("\n",file($fl)); 
 
-		require_once $moduleRelPath.'/miniXML/minixml.inc.php';
+		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 		$xmlDoc = new MiniXMLDoc();
 		$xmlDoc->fromString($contents);
 		$xmlArray=$xmlDoc->toArray();

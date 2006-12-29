@@ -228,9 +228,9 @@ window.location = "<? echo  $redirectUrl ?>"
 </script>
 <? } ?>
 <script language='javascript'>
-	var imgDir = 'modules/<?=$module_name ?>/cal/';
+	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
 </script>
-<script language='javascript' src='<? echo $moduleRelPath ?>/cal/popcalendar.js'></script>
+<script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
 <form name="formFilter" method="post" action="">
   <br>

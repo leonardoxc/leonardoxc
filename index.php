@@ -119,30 +119,6 @@ if ($clubID) {
 require_once $moduleRelPath."/MENU_menu.php";
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
-<? if (0) { ?>
-<script type="text/javascript" src="<?=$moduleRelPath?>/supernote.js"></script>
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/supernote.css" />
-
-<script language="javascript">
-
- var supernote = new SuperNote('supernote',  { hideDelay: 100 });
-
-
-// Available config options are:
-//allowNesting: true/false    // Whether to allow triggers within triggers.
-//cssProp: 'visibility'       // CSS property used to show/hide notes and values.
-//cssVis: 'inherit'
-//cssHid: 'hidden'
-//IESelectBoxFix: true/false  // Enables the IFRAME select-box-covering fix.
-//showDelay: 0                // Millisecond delays.
-//hideDelay: 500
-//animInSpeed: 0.1            // Animation speeds, from 0.0 to 1.0; 1.0 disables.
-//animOutSpeed: 0.1
-
-// You can pass several to your "new SuperNote()" command like so:
-//{ name: value, name2: value2, name3: value3 }
-</script>
-<? } ?>
 <?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {
  // require_once dirname(__FILE__)."/MENU_second_menu.php";

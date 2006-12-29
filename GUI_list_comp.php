@@ -219,12 +219,12 @@
   sortArrayBest("olc_score",$countHowMany);
   sortArrayBest("triangleKm",$countHowMany); 
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup();  ?>
 
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tabber.js"></script>
-<link rel="stylesheet" href="<?=$moduleRelPath ?>/example.css" TYPE="text/css" MEDIA="screen">
-<link rel="stylesheet" href="<?=$moduleRelPath ?>/example-print.css" TYPE="text/css" MEDIA="print">
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tabber.js"></script>
+<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber.css" TYPE="text/css" MEDIA="screen">
+<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber-print.css" TYPE="text/css" MEDIA="print">
 
 <script type="text/javascript">
 

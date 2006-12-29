@@ -32,7 +32,7 @@
 	$encoding="iso-8859-1";
 
 	if ($op=="getKML") {
-		require_once('miniXML/minixml.inc.php');
+		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 		$XML_str="<result>\n";
 		$XML_path=$_GET['KMLfile'];
 		$XML_str.="<debug>Processing $XML_path</debug>\n";
@@ -59,7 +59,7 @@ $foundPoints=0;
 
 		echo "Found $foundPoints points<br>";
 $foundPoints =0;
-		require_once $moduleRelPath.'/miniXML/minixml.inc.php';
+		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 		$parsedDoc = new MiniXMLDoc();
 		$parsedDoc->fromString($lines);
 		$rootEl =& $parsedDoc->getRoot();

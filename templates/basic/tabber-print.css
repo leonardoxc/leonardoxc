@@ -1,0 +1,8 @@
+/* $Id: tabber-print.css,v 1.1 2006/12/29 22:34:36 manolis Exp $ */
+/* When printing, hide the tab navigation list
+   and don't use any other styles
+*/
+
+.tabbernav {
+ display:none;
+}

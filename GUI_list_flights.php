@@ -162,7 +162,7 @@
 	listFlights($res,$legend,	$query_str,$sortOrder);
 
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
 <?
@@ -203,7 +203,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/prototype.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
 <script language="javascript">
 
 function addClubFlight(clubID,flightID) {

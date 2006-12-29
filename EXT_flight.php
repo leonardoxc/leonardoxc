@@ -186,7 +186,7 @@
 
 	} // list_flights
 	else	if ($op=="submit_flight") {
-		require_once('miniXML/minixml.inc.php');
+		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 		$XML_str="<result>\n";
 		$XML_path=$_GET['XMLform'];
 		$XML_str.="<debug>Getting submit info from $XML_path</debug>\n";

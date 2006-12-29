@@ -158,7 +158,7 @@
       exit();
     }
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup() ?>
 
 <?

@@ -42,7 +42,7 @@ function showFlight($flightID) {
 
  
   ?>
-  <script type="text/javascript" src="<?=$moduleRelPath ?>/tipster.js"></script>
+  <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>
   <script language="javascript">
@@ -456,7 +456,7 @@ function edit_takeoff(id) {
 	$xmlSites1=getHTTPpage($getXMLurl);
 
 if ($xmlSites1) {
-	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
+	require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites1);
 	$xmlArray1 = $xmlDoc->toArray();
@@ -519,7 +519,7 @@ if ($xmlSites1) {
 	$xmlSites=getHTTPpage($getXMLurl);
 
 if ($xmlSites) {
-	require_once $moduleRelPath.'/miniXML/minixml.inc.php';
+	require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 	$xmlDoc = new MiniXMLDoc();
 	$xmlDoc->fromString($xmlSites);
 	$xmlArray = $xmlDoc->toArray();
