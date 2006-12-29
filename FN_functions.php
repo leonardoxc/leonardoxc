@@ -324,6 +324,7 @@ function getBrowser() {
 	}
 	
 	function getExtrernalServerTakeoffs($serverID,$lat,$lon,$limitKm,$limitNum ) {
+		global $xmlSites;
 		$takeoffServers=array(
 			1=>array(
 				/* calling  method */

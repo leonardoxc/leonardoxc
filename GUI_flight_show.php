@@ -379,16 +379,7 @@ for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 	if ($flight->$photoFilename) {
 		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
 				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
-	}
-		
-		/*
-				$photo1="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum)."' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
-	if ($flight->photo2Filename) 	
-		$photo2="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(2)."' target=_blank><img src='".$flight->getPhotoRelPath(2).".icon.jpg' border=0></a>";
-	if ($flight->photo3Filename) 	
-		$photo3="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath(3)."' target=_blank><img src='".$flight->getPhotoRelPath(3).".icon.jpg' border=0></a>";
-	$images=$photo1.$photo2.$photo3;
-	*/
+	}		
 }
 
 //-------------------------------------------------------------------
@@ -414,7 +405,7 @@ for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 		}
 		$linkToInfoStr1.="</ul>";
   }
-
+  $xmlSites1=str_replace("<","&lt;",$xmlSites);
 //-------------------------------------------------------------------
 // get from paragliding365.com
 //-------------------------------------------------------------------
@@ -433,108 +424,8 @@ for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 		}
 		$linkToInfoStr2.="</ul>";
   }
- 
+  $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
-  
-  
-if (0) {	
-	$getXMLurl="http://www.paraglidingearth.com/takeoff_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&distance=50&limit=5";
-	$xmlSites1=getHTTPpage($getXMLurl);
-
-if ($xmlSites1 ) {
-	require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
-	$xmlDoc = new MiniXMLDoc();
-	$xmlDoc->fromString($xmlSites1);
-	$xmlArray1 = $xmlDoc->toArray();
-	$takeoffsNum=0;
-	$takoffsList=array();
-    // print_r($xmlArray1);
-	if (is_array($xmlArray1['search'])) {
-		if (is_array($xmlArray1['search']['takeoff'][0])) 
-			$arrayToUse=$xmlArray1['search']['takeoff'];
-		else
-			$arrayToUse=$xmlArray1['search'];
-	} else 
-		$arrayToUse=0;
-
-	if ($arrayToUse) {
-		foreach ($arrayToUse as $flightareaNum=>$flightarea) {
-			 if ( $flightareaNum!=="_num" && $flightarea['name']) {
-					$distance=$flightarea['distance']; 
-					if ($distance>50000) continue;
-					if ($flightarea['area']!='not specified') $areaStr=" - ".$flightarea['area'];
-					else $areaStr="";
-
-					$takoffsList[$takeoffsNum]= "<a href='".$flightarea['pe_link']."' target=_blank>".$flightarea['name']."$areaStr (".$flightarea['countryCode'].") [~".formatDistance($distance,1)."]</a>";
-					$takeoffsNum++;
-					if ($takeoffsNum==5) break;
-			}
-		}
-  }
-
-  if ($takeoffsNum ) {
-		$linkToInfoHdr1="<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
-	    $linkToInfoHdr1.="<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
-		
-		$linkToInfoStr1="<ul>";
-		foreach ($takoffsList as $takeoffLink)  
-				$linkToInfoStr1.="<li>$takeoffLink";
-		$linkToInfoStr1.="</ul>";
-  }
-} // if we have content
-
-  
-  }
-//-------------------------------------------------------------------
-// get from paragliding365.com
-//-------------------------------------------------------------------
-
-if (0) {
-	$getXMLurl="http://www.paragliding365.com/paragliding_sites_xml.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50&type=mini";
-	$xmlSites=getHTTPpage($getXMLurl);
-
-if ($xmlSites ) {
-	require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
-	$xmlDoc = new MiniXMLDoc();
-	$xmlDoc->fromString($xmlSites);
-	$xmlArray = $xmlDoc->toArray();
-	$takeoffsNum=0;
-	$takoffsList=array();
-
-	if ($xmlArray['root']['flightareas']['flightarea']) {
-		if ( is_array($xmlArray['root']['flightareas']['flightarea'][0] ) )
-			$arrayToUse=$xmlArray['root']['flightareas']['flightarea'];
-		else
-			$arrayToUse=$xmlArray['root']['flightareas'];
-	} else $arrayToUse=0;
-
-
-	if ($arrayToUse)
-		foreach ($arrayToUse as $flightareaNum=>$flightarea) {
-			 if ( $flightareaNum!=="_num") {
-					$distance=$flightarea['distance']+0; 
-					if ($distance>50000) continue;
-					$takoffsList[$takeoffsNum]= "<a href='".$flightarea['link']."' target=_blank>".$flightarea['name']." - ".$flightarea['location']." (".$flightarea['iso'].") [~".formatDistance($distance,1)."]</a>";
-					$takeoffsNum++;
-					if ($takeoffsNum==5) break;
-			}
-		}
-
-  if ($takeoffsNum ) {
-		$linkToInfoHdr2="<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
-		$linkToInfoHdr2.="<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0> "._FLYING_AREA_INFO;
-		$linkToInfoHdr2.="</a>";
-		
-		$linkToInfoStr2.="<ul>";
-		foreach ($takoffsList as $takeoffLink)  
-				$linkToInfoStr2.="<li>$takeoffLink";
-		$linkToInfoStr2.="</ul>";
-  }
-
-} // if we have content
-
-}
-
 $adminPanel="";
 if (in_array($userID,$admin_users) ) {
 	$adminPanel="<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
@@ -546,12 +437,16 @@ if (in_array($userID,$admin_users) ) {
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
 	if ($CONF_show_DBG_XML) {
 		$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
-		$adminPanel.="<div id=xmlOutput style='display:none'><hr>";
-		$adminPanel.="XML from paragliding365.com<br>";
-		$adminPanel.="<pre>$xmlSites1</pre><hr><pre>$xmlSites</pre></div>";
 	}
 		
 	$adminPanel.="<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
+	
+	if ($CONF_show_DBG_XML) {
+		$adminPanel.="<div id=xmlOutput style='display:none; text-align:left;'><hr>";
+		$adminPanel.="XML from paraglidingEarth.com<br>";
+		$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre></div>";
+	}
+	
 	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
 	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
 	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
