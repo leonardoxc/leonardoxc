@@ -269,12 +269,11 @@ function getBrowser() {
 	}
 
 	function getAvailableThemes() {
-		global $moduleAbsPath;
 		 $res=array();
-		 $dir=$moduleAbsPath."/templates";
+		 $dir=dirname(__FILE__)."/templates";
 		 $current_dir = opendir($dir);
 		 while($entryname = readdir($current_dir)){
-			if( is_dir($dir ."/".$entryname) && ($entryname != "." and $entryname!="..")){
+			if( is_dir($dir ."/".$entryname) && ($entryname != "." and $entryname!=".." and strtolower($entryname)!="cvs" )){
 			   array_push($res,$entryname);
 			}
 		 }
