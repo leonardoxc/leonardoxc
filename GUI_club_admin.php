@@ -11,155 +11,130 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-$areaID=$_GET['areaID']+0;
-
 $pilotsList=array();
 $pilotsID=array();
-list($pilotsList,$pilotsID)=getPilotList();
-list($takeoffs,$takeoffsID)=getTakeoffList();
-list($countriesCodes,$countriesNames)=getCountriesList();
 
-if ( $_REQUEST["addTakeoffForm"] ) { // form submitted
+//list($takeoffs,$takeoffsID)=getTakeoffList();
+//list($countriesCodes,$countriesNames)=getCountriesList();
 
-	$takeoffToAdd=$_POST['takeoff_select']+0;
+if ($_POST['formPosted']) {
+	$add_pilot_id=$_POST['add_pilot_id']+0;
+	$action=$_POST['AdminAction'];
 	
-	$query="INSERT INTO $areasTakeoffsTable	(areaID,takeoffID) VALUES ($areaID,$takeoffToAdd)" ;
-	// echo $query;
-	$res= $db->sql_query($query);		
-    if($res <= 0){
-		echo "Problem in inserting takeoff to area";		
-    } else {
-		echo "Takeoff added to area<br>";
+	if ($add_pilot_id) $action="add_pilot";
+
+	if ( $action=="add_pilot" ) {		
+		$pilotName=getPilotRealName($add_pilot_id);
+		$resText="Pilot Name: $pilotName -> ";
+		if ($pilotName) {
+			$query="INSERT INTO $clubsPilotsTable (clubID,pilotID) VALUES ($clubID,$add_pilot_id )";
+			$res= $db->sql_query($query);
+			if($res <= 0){   
+				$resText.="This pilot is already in the club";
+			} $resText.="Pilot added ";
+		} else {
+			$resText.="No such pilot ID ";
+		}
+	} else if ( $action=="remove_pilot" ) {
+		$pilotToRemove=$_POST['pilotToRemove'];
+		$query="DELETE FROM $clubsPilotsTable WHERE clubID=$clubID AND pilotID=$pilotToRemove";
+		$res= $db->sql_query($query);
+		if($res <= 0){   
+			$resText.="<H3> Error in removing pilot ! $query</H3>\n";
+		} else $resText.="Pilot removed ";
 	}
-	
-} else { // form not submitted
-	// copy session variables (if any) to local variables
-		
 }
 
- echo "<BR>";
- open_inner_table("Administer CLub/League",730,"icon_home.gif"); echo "<tr><td>";
- if ($_REQUEST["FILTER_dateType"])  { 
-	echo "<center><a href='?name=".$module_name."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
-	// echo "<a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
- }
-
 ?>
+<script language="javascript">
 
-<form name="formFilter" method="post" action="">
-  <br>
-  <table class=main_text width="564"  border="0" align="center" cellpadding="1" cellspacing="1">
-    <tr> 
-      <td width="205" bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_PILOT ?></strong></span></div></td>
-      <td width="352">&nbsp;</td>
-    </tr>
-    <tr> 
-      <td><div align="right"><? echo _THE_PILOT ?> </div></td>
-      <td> <script language="JavaScript">
-		function setVal(value1)
-		{
-			if (value1=='=') { 
-				document.formFilter.FILTER_pilot2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_pilot2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_pilot3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_pilot3_select_op.value = '<? echo _IS ?>';
-			} else {
-				document.formFilter.FILTER_pilot2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_pilot2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_pilot3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_pilot3_select_op.value = '<? echo _IS_NOT ?>';
-			}
-		}
 
-		function setVal2(value1)
-		{
-			if (value1=='=') { 
-				document.formFilter.FILTER_takeoff2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_takeoff2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_takeoff3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_takeoff3_select_op.value = '<? echo _IS ?>';
-			} else {
-				document.formFilter.FILTER_takeoff2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_takeoff2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_takeoff3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_takeoff3_select_op.value = '<? echo _IS_NOT ?>';
-			}
-		}		
+function addClubPilot() {
+	// clubID,pilotID;
+	document.clubAdmin.AdminAction.value="add_pilot";
 
-		function setVal3(value1)
-		{
-			if (value1=='=') { 
-				document.formFilter.FILTER_country2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_country2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_country3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_country3_select_op.value = '<? echo _IS ?>';
-			} else {
-				document.formFilter.FILTER_country2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_country2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_country3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_country3_select_op.value = '<? echo _IS_NOT ?>';
-			}
-		}		
-		</script>
-		  <select name="FILTER_pilot1_select" id="FILTER_pilot1_select">
-          <option></option>
-          <? 
-					for($k=0;$k<count($pilotsList);$k++) {
-						$sel=($pilotsID[$k]==$FILTER_pilot1_select)?"selected":"";
-						echo "<option value='".$pilotsID[$k]."' $sel>".$pilotsList[$k]."</option>\n";
-					}
-				?>
-        </select> </td>
-    </tr>
-    <tr> 
-      <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_TAKEOFF ?></strong></span></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td><div align="right"><? echo _THE_TAKEOFF ?> </div></td>
-      <td><select name="takeoff_select" id="takeoff_select">
-          <option></option>
-          <? 
-					for($k=0;$k<count($takeoffs);$k++) {
- 					    $sel=($takeoffsID[$k]==$FILTER_takeoff1_select)?"selected":"";
-						echo "<option value='".$takeoffsID[$k]."' $sel>".$takeoffs[$k]."</option>\n";
-					}
-				?>
-        </select> </td>
-    </tr>
-<tr> 
-      <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_COUNTRY ?></strong></span></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td><div align="right"><? echo _THE_COUNTRY  ?> </div></td>
-      <td><select name="FILTER_country1_select" id="FILTER_country1_select">
-          <option></option>
-          <? 
-					for($k=0;$k<count($countriesCodes);$k++) {
- 					    $sel=($countriesCodes[$k]==$FILTER_country1_select)?"selected":"";
-						echo "<option value='".$countriesCodes[$k]."' $sel>".$countriesNames[$k]." (".$countriesCodes[$k].")</option>\n";
-					}
-				?>
-        </select> </td>
-    </tr>
-    <tr> 
-      <td><div align="right"></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td colspan="2"><div align="center"> 
-          <input type="submit" name="SubmitButton" id="SubmitButton" value="<? echo _ADD_TAKEOFF_TO_AREA ?>">
-		  <input type="hidden" name="addTakeoffForm" value="1" />
-          &nbsp; 
+	document.clubAdmin.submit();
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	pars='op=add_pilot&clubID='+clubID+'&flightID='+flightID;
+	
+	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
 
-      </div></td>
-    </tr>
-  </table>
-  <p>&nbsp;</p>
+	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+	
+	//toggleVisible(divID,divPos);
+}
+
+function removeClubPilot(pilotID) {
+	document.clubAdmin.pilotToRemove.value=pilotID;
+	document.clubAdmin.AdminAction.value="remove_pilot";
+	document.clubAdmin.submit();
+	
+	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	pars='op=remove_pilot&clubID='+clubID+'&pilotID='+pilotID;
+	
+//	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
+
+//	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom></a>";
+//	div=MWJ_findObj('pl_'+pilotID);
+//	toggleVisible(div,divPos);
+	MWJ_changeDisplay('pl_'+pilotID,"none");
+//	div.innerHTML=newHTML;
+	//toggleVisible(divID,divPos);
+}
+</script>
+
+<?
+	$legend="Administer CLub/League";
+	echo  "<div class='tableTitle'>
+	<div class='titleDiv'>$legend</div>
+	<div class='pagesDiv'>$legendRight</div>
+	</div>" ;
+	if ($resText) {
+		echo "<div id='updateDiv' style='display:block; background-color:#EBE6DA;padding:5px; font-weight:bold;'>$resText</div>";
+	}
+?>
+<form name="clubAdmin" method="post" action="">
+<table width="100%" border="0" cellpadding="3" class="main_text">
+  <tr>
+    <td><p>
+      <label>
+        <input name="add_pilot_id" type="text" id="add_pilot_id" />
+      </label>
+      pilotID to add </p>
+      <p>
+        <label>
+        <input name="Add pilot" type="button" id="Add pilot" value="Add pilot" onclick="javascript:addClubPilot();"/>
+        </label>
+      </p>
+      <p><strong>Pilots in the club </strong></p>
+      <?
   
+	//echo "<BR>";
+	//open_inner_table("Administer CLub/League",730,"icon_home.gif"); echo "<tr><td>";
+
+	list($pilots,$pilotsID)=getPilotList($clubID);
+	$i=0;
+	foreach ($pilots as $pilotName ){
+		$pilotID=$pilotsID[$i++];
+		echo "<div id='pl_$pilotID'>$pilotName ($pilotID) : <a href='javascript:removeClubPilot($pilotID);'>Remove pilot</a></div>"; 
+	}
+?></td>
+    <td><p>
+      <label></label>
+    </p>      </td>
+  </tr>
+</table>
+
+
+
+<input name="formPosted" type="hidden" value="1" />
+<input name="AdminAction" type="hidden" value="0" />
+<input name="pilotToRemove" type="hidden" value="0" />
+
 </form>
-<table>
+
 <?
 
   list($takeoffs,$takeoffsID)=getAreasTakeoffs($areaID);
@@ -167,13 +142,13 @@ if ( $_REQUEST["addTakeoffForm"] ) { // form submitted
   $i=0;
   foreach ($takeoffs as $name) {
 	  $takeoffID=$takeoffsID[$i];
-	  echo "<tr><td>$name</td><td><a href='GUI_area_remove_takeoff?areaId=$areaID&takeoffID=$takeoffID'>remove Takeoff from area</a></td></tr><br>";
+	//  echo "<tr><td>$name</td><td><a href='GUI_area_remove_takeoff?areaId=$areaID&takeoffID=$takeoffID'>remove Takeoff from area</a></td></tr>";
 	  $i++;
   }
-  
+  //echo "</td></tr>";
 ?>
-  </table>
 <?
-  close_inner_table();  
+  /// close_inner_table();  
 
 ?>
+</div>

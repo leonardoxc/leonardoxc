@@ -27,8 +27,9 @@
 
 
 	$op=$_GET['op'];
-	$clubID=$_GET['clubID'];
-	$flightID=$_GET['flightID'];
+	$clubID=$_GET['clubID']+0;
+	$flightID=$_GET['flightID']+0;
+	$pilotID=$_GET['pilotID']+0;
 	if ($op=='add'){	
 		  $query="INSERT INTO $clubsFlightsTable (clubID,flightID) VALUES ($clubID,$flightID )";
 		  $res= $db->sql_query($query);

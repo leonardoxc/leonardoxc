@@ -13,14 +13,21 @@
 
 
 //------------------- PILOT RELATED FUNCTIONS ----------------------------
-function getPilotList() {
+function getPilotList($clubID=0) {
 	global $db;
 	global $flightsTable,$prefix;
+	global	$clubsPilotsTable, $pilotsTable ;
 	global $nativeLanguage,$currentlang,$opMode;
 	
-  	$query="SELECT DISTINCT userID, ".(($opMode==1)?"name,":"")." username FROM $flightsTable,".$prefix."_users  WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
+	if ($clubID) {
+		$query="SELECT *, $clubsPilotsTable.pilotID as userID FROM  $clubsPilotsTable, $pilotsTable  
+  			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID AND $clubsPilotsTable.clubID=$clubID";
+	} else {
+	  	$query="SELECT DISTINCT userID, ".(($opMode==1)?"name,":"")." username FROM $flightsTable,".$prefix."_users 
+			 WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
 			""; //"ORDER BY ".(($opMode==1)?"name,":"")." username ";
-
+	}
+	
 	// echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){
