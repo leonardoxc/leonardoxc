@@ -12,11 +12,13 @@ mrsid_maps/area2 etc.
 
 then run from the unix command line:
 
-nohup ./index.php &
+nohup php ./index.php &
 
 this will put the command on the background (it takes some time) 
 and start generating tiles on the mrsid_tiles/directory
 
+Repeat this proccess by editing the index.php file and changing $zoomFactor variable 
+( at the top of the file ) to values 2, 4, 8  
 
 Once done you should prepare a maps directory in the modules/leonardo/  dir,  
 containing the mrsid_tiles/ files.
