@@ -81,6 +81,29 @@ function securityCheck($sitePass) {
 	return 1;	
 }
 
+function flights_count($arg) {
+	global $db,$flightsTable;
+	$sitePass=$arg[0];
+	$from_tm=$arg[1];
+	$limit=	$arg[2];
+
+	if ( ! securityCheck($sitePass) ) return  new IXR_Error(4000, 'Access Denied');;
+
+	$where_clause="AND dateAdded >= FROM_UNIXTIME(".$tm.") "; 
+	
+	if ($limit) $lim=" LIMIT 1,$limit ";
+	else  $lim="";
+
+	$query="SELECT count() as flights_num FROM $flightsTable WHERE private=0 $where_clause ORDER BY dateAdded DESC $lim ";
+	//echo $query;
+	$res= $db->sql_query($query);
+	if($res <= 0) return  new IXR_Error(4000, 'Error in query! '.$query);
+		
+	$row = mysql_fetch_assoc($res);
+	$flights_num=$row['flights_num'];
+	return $flights_num; 
+}
+
 function flights_find($arg) {
 		global $db,$flightsTable;
 		global $baseInstallationPath,$module_name,$takeoffRadious;
@@ -160,6 +183,11 @@ function flights_find($arg) {
 
 }
 
+
+// this runs on the master so that slaves can upload flights
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
+// more security needed!!!!!!!!!!!!!!!!!!!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!
 function flights_submit($args) {
 	require_once dirname(__FILE__)."/FN_flight.php";
 
@@ -217,7 +245,7 @@ function flights_submit($args) {
 
 }
 
-
+// this runs on the slave servers so that the master can upload updates
 function uploadFile($arg) {
 	$sitePass=$arg[0];
 	$remoteFile=$arg[1];
@@ -225,7 +253,7 @@ function uploadFile($arg) {
 
 	global $CONF_SitePassword;	
 
-	if ($sitePass!=$CONF_SitePassword) return  new IXR_Error(4000, "Access denied");
+	if ( ! securityCheck($sitePass) ) return  new IXR_Error(4000, 'Access Denied');;
 
 	if ( ($fileStr=@file_get_contents($remoteFile)) === FALSE) 
 		return  new IXR_Error(4001, "Cant access file ($remoteFile) to upload");	
@@ -244,17 +272,32 @@ function uploadFile($arg) {
 	return 1;
 }
 
+function server_info($arg) {
+	$sitePass=$arg[0];
+	global $CONF_SitePassword;	
+	global $CONF_version,$CONF_releaseDate, $opMode, $CONF_isMasterServer, $CONF_admin_email
+	
+	if ( ! securityCheck($sitePass) ) return  new IXR_Error(4000, 'Access Denied');;
+	return array($CONF_version,$CONF_releaseDate, $opMode, $CONF_isMasterServer, $CONF_admin_email);
+}
+
+
+// this function runs only on the Master Server to register slave servers
 function registerSlave($arg) {
 	$installType=$arg[0];
-	$url=$arg[1];
-	$adminEmail=$arg[2];
-	$sitePass=$arg[3];
+	$leonardo_version=arg[1];
+	$url=$arg[2];
+	$url_base=$arg[3];
+	$url_op=$arg[4];
+	$adminEmail=$arg[5];
+	$sitePass=$arg[6];
 
 	global $CONF_isMasterServer;	
 	if (!$CONF_isMasterServer)	
 		return new IXR_Error(5001, "Not a Master server");	
 
-	$fileStr="$installType#$url#$adminEmail#$sitePass\n";
+
+	$fileStr="$installType#$leonardo_version#$url#$adminEmail#$sitePass\n";
 	$filename=dirname(__FILE__)."/clientServers.txt";
     if (!$handle = fopen($filename, 'a'))  
 		return new IXR_Error(5002, "Cannot open file ($filename)");	
@@ -268,11 +311,13 @@ function registerSlave($arg) {
 
 /* Create the server and map the XML-RPC method names to the relevant functions */
 $server = new IXR_Server(array(
+	'server.info'=>'server_info',
 	'server.uploadFile'=>'uploadFile',
 	'server.registerSlave'=>'registerSlave',
 	'takeoffs.findTakeoff'=>'findTakeoff',
 	'takeoffs.getAll'=>'takeoffs_findAll',
 	'flights.find'=>'flights_find',
+	'flights.count'=>'flights_count',
 	'flights.submit'=>'flights_submit',
 ));
 

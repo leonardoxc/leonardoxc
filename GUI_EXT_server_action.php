@@ -25,7 +25,7 @@ $server->getFromDB();
 echo $server->url_op;
 echo "<BR>$action<br>";
 
-list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(30,30);
+list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(40,22);
 echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
 
 

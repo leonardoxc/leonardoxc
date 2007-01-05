@@ -24,3 +24,5 @@ ALTER TABLE `leonardo_servers` ADD `leonardo_version` VARCHAR( 20 ) NOT NULL AFT
 
 ALTER TABLE `leonardo_servers` CHANGE `type` `installation_type` SMALLINT UNSIGNED NOT NULL DEFAULT '2';
 
+ALTER TABLE `leonardo_servers` ADD `url` VARCHAR( 255 ) NOT NULL AFTER `leonardo_version` ;
+

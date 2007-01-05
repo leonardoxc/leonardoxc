@@ -402,11 +402,11 @@ function getBrowser() {
 				$arrayToUse=0;
 			}
 	
-			$takoffsList=array();
+			$takeoffsList=array();
 			$takeoffsNum=0;
 			if ($arrayToUse) {
-			//echo "#";
-			//print_r($arrayToUse);
+				//echo "#";
+				//print_r($arrayToUse);
 				foreach ($arrayToUse as $flightareaNum=>$flightarea) {
 					$XML_name=$takeoffServers[$serverID]["XML_name"];
 					$XML_distance=$takeoffServers[$serverID]["XML_distance"];
@@ -415,22 +415,23 @@ function getBrowser() {
 					$XML_url=$takeoffServers[$serverID]["XML_url"];
 					$XML_lat=$takeoffServers[$serverID]["XML_lat"];
 					$XML_lon=$takeoffServers[$serverID]["XML_lon"];
-					if ( $flightareaNum!=="_num" && $flightarea[$XML_name]) {		
+					if ( $flightareaNum!=="_num" && $flightarea[$XML_name]) {							
 							$distance=$flightarea[$XML_distance]; 
-							if ($distance>$limitKm*10000) continue;
-							$takoffsList[$takeoffsNum]['distance']=$flightarea[$XML_distance]; 
-							$takoffsList[$takeoffsNum]['name']=$flightarea[$XML_name]; 
-							$takoffsList[$takeoffsNum]['area']=$flightarea[$XML_area]; 
-							$takoffsList[$takeoffsNum]['countryCode']=$flightarea[$XML_countryCode]; 
-							$takoffsList[$takeoffsNum]['url']=$flightarea[$XML_url]; 
-							$takoffsList[$takeoffsNum]['lat']=$flightarea[$XML_lat]; 
-							$takoffsList[$takeoffsNum]['lon']=$flightarea[$XML_lon]; 
+							if ($distance>$limitKm*1000) continue;
+							$takeoffsList[$takeoffsNum]['distance']=$flightarea[$XML_distance]; 
+							$takeoffsList[$takeoffsNum]['name']=$flightarea[$XML_name]; 
+							$takeoffsList[$takeoffsNum]['area']=$flightarea[$XML_area]; 
+							$takeoffsList[$takeoffsNum]['countryCode']=$flightarea[$XML_countryCode]; 
+							$takeoffsList[$takeoffsNum]['url']=$flightarea[$XML_url]; 
+							$takeoffsList[$takeoffsNum]['lat']=$flightarea[$XML_lat]; 
+							$takeoffsList[$takeoffsNum]['lon']=$flightarea[$XML_lon]; 
 							$takeoffsNum++;
 							if ($takeoffsNum==$limitNum) break;
 					}
 				}
 		  }
-		  return $takoffsList;
+
+		  return $takeoffsList;
 		} // if we have content
 		return array();
 	

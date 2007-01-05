@@ -54,7 +54,7 @@ foreach ($servers as $server) {
 		if ( $server->waypoint_countries ) $wpt.=" (".$server->waypoint_countries.")";
 	} else $wpt="NO";
 
-	$url="<a href='".$server->url_base."' target='_blank'>".substr($server->url_base,0,50)."...</a>";
+	$url="<a href='http://".$server->url."' target='_blank'>".substr($server->url_base,0,50)."...</a>";
 
 	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1);'>Info</a> :: <a href='javascript:serverAction(".$server->ID.",2);'>Takeoffs</a> :: <a href='javascript:serverAction(".$server->ID.",3);'>Flights</a></td>".
 			"<td>".$server->ID."</td><td>".$url."</td><td>".$server->leonardo_version."</td><td>".

@@ -18,6 +18,12 @@ require_once dirname(__FILE__)."/config_version.php";
 // 3 = standalone -- still work in progress
  $opMode= 2; 
 
+ // Here we define which server Id is the master server of the leonardo Network
+ $CONF_master_server_id=1;
+
+ // Our server ID -> usually 0 for non network operation
+ $CONF_server_id=0;
+ 
  // if it is a phpbb module we can use our own template 
  // and not the onw of the forum 
  $CONF_use_own_template=1;

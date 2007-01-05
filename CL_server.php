@@ -18,6 +18,7 @@ class Server {
 	var $isLeo ;
 	var $installation_type;
 	var $leonardo_version;
+	var $url;
 	var $url_base;
 	var $url_op;
 	var $admin_email;
@@ -33,7 +34,7 @@ class Server {
 		if ($id!="") {
 			$this->ID=$id;
 		}
-	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url_base",
+	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
 			"url_op","admin_email","site_pass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
@@ -47,10 +48,11 @@ class Server {
     }
 
 	function findTakeoff($lat,$lon) {
+		require_once dirname(__FILE__)."/CL_gpsPoint.php";
 		list($version,$sub_version,$revision)=$this->version();
 		if ($version>=2) { // new rpc method
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
-			require_once dirname(__FILE__)."/CL_gpsPoint.php";	
+	
 			$serverURL="http://".$this->url_op;
 			$client = new IXR_Client($serverURL);
 			// $client->debug=true;
@@ -59,20 +61,84 @@ class Server {
 				echo 'findTakeoff: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return array(0,-1);  // $client->getErrorCode();
 			} else {
-				$nearestWaypoint=new waypoint();	
-				$nearestWaypoint=new gpsPoint();	
-				list($nearestWaypoint,$minTakeoffDistance)= $client->getResponse();
-echo "^".$nearestWaypoint->name;
+				list( $nearestWaypoint,$minTakeoffDistance)= $client->getResponse();
+				$nearestWaypoint=(object) $nearestWaypoint;
 				return array($nearestWaypoint,$minTakeoffDistance);
 			}
 
 
-		} else {
+		} else if ($version==1 && $sub_version >=4) { // use EXT_takeoff.php method
+			require_once dirname(__FILE__)."/FN_functions.php";
+			$serverURL="http://".$this->url_base."/EXT_takeoff.php?op=find_wpt&lat=$lat&lon=$lon";
+			$contents=fetchURL($serverURL);
+			if (!$contents) {
+				echo "SERVER at: ".$this->url_base." is NOT ACTIVE<br>"; 
+				return array(0,-1);
+			}
+	
+			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
+			$xmlDoc = new MiniXMLDoc();
+			$xmlDoc->fromString($contents);
+			$xmlArray=$xmlDoc->toArray();
 
+			$wpt=new waypoint();
+			
+			$wpt->waypointID=$xmlArray[search][waypoint][name];
+			$wpt->name		=$xmlArray[search][waypoint][name];
+			$wpt->intName	=$xmlArray[search][waypoint][intName];
+			$wpt->location	=$xmlArray[search][waypoint][location];
+			$wpt->intLocation=$xmlArray[search][waypoint][intLocation];
+			$wpt->type		=$xmlArray[search][waypoint][type];
+			$wpt->countryCode=$xmlArray[search][waypoint][countryCode];
+			$wpt->lat		=$xmlArray[search][waypoint][lat];
+			$wpt->lon		=$xmlArray[search][waypoint][lon];
+			$wpt->link		=$xmlArray[search][waypoint][link];
+			$wpt->description=$xmlArray[search][waypoint][description];
+			$wpt->modifyDate=$xmlArray[search][waypoint][modifyDate];
+			
+			$distance=$xmlArray[search][distance];
+			
+			return array($wpt,$distance);
+		} else if ( $version==0 && !$this->isLeo ) { // we are dealing with 'alien' servers
+			require_once dirname(__FILE__)."/FN_functions.php";
+			//the installation_type in this case point to the ID of the alien server			
+			$takeoffsList=getExtrernalServerTakeoffs($this->installation_type,$lat,$lon,1000,1);			
+			$wpt=new waypoint();
+			$distance=$takeoffsList[0]['distance'];
 
+			$wpt->intName=$takeoffsList[0]['name'];
+			$wpt->name=$takeoffsList[0]['name'];
+			$wpt->location=$takeoffsList[0]['area'];
+			$wpt->intLocation=$takeoffsList[0]['area'];
+			$wpt->countryCode=$takeoffsList[0]['countryCode'];
+			$wpt->link=$takeoffsList[0]['url'];
+			$wpt->lat=$takeoffsList[0]['lat'];
+			$wpt->lon=$takeoffsList[0]['lon'];
+			
+			return array($wpt,$distance);
 		}
 		
 	}
+	
+	function registerServerToMaster() {
+		require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
+		$masterServer=new Server($CONF_master_server_id);
+		$masterServer->getFromDB();
+		
+		$masterServerURL="http://".$masterServer->url_op;	
+		$thisServerURL="http://".$this->url_op;
+		$client = new IXR_Client($masterServerURL);
+		// $client->debug=true;
+	
+		if ( ! $client->query('server.registerSlave',$this->site_pass, $lat, $lon ) ) {
+			echo 'registerSlave: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+			return 0;  // $client->getErrorCode();
+		} else {
+			$newServerID= $client->getResponse();
+			return $newServerID;
+		}
+	}
+	
 	function getServers() {
 		global $db,$serversTable;
 		$res= $db->sql_query("SELECT * FROM $serversTable order BY ID");
