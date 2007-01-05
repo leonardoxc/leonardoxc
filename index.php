@@ -222,18 +222,17 @@ if ($op=="users") {
 //--------------------------
 } else if ($op=="admin") {
 	require $moduleRelPath."/GUI_admin.php";
-} else if ($op=="reg_stats") {
-	require $moduleRelPath."/registration_stats.php";
-    $noFooterMenu=1;
+} else if ($op=="servers_manage") {
+	require $moduleRelPath."/GUI_servers_manage.php";
 } else if ($op=="filter") {
-  require $moduleRelPath."/GUI_filter.php";
+	require $moduleRelPath."/GUI_filter.php";
 } else if ($op=="rss_conf") {
-  $noFooterMenu=1;
-  require $moduleRelPath."/GUI_rss_conf.php";
+	$noFooterMenu=1;
+	require $moduleRelPath."/GUI_rss_conf.php";
 } else if ($op=="stats") {
-  require $moduleRelPath."/GUI_stats.php";
+	require $moduleRelPath."/GUI_stats.php";
 } else if ($op=="program_info") {
-  require $moduleRelPath."/GUI_program_info.php";
+	require $moduleRelPath."/GUI_program_info.php";
 } 
 	
 exitPage(0);

@@ -1,22 +1,32 @@
-<? 
+<?  
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
 /* http://sourceforge.net/projects/leonardoserver                       */
-/* http://leonardo.thenet.gr                                            */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+require_once dirname(__FILE__)."/EXT_config_pre.php";
+require_once dirname(__FILE__)."/config.php";
+require_once dirname(__FILE__)."/EXT_config.php";
+
+require_once dirname(__FILE__)."/CL_server.php";
+require_once dirname(__FILE__)."/FN_waypoint.php";	
+
+$id=$_GET['id']+0;
+$action=$_GET['action'];
+$server=new Server($id);
+$server->getFromDB();
+
+echo $server->url_op;
+echo "<BR>$action<br>";
+
+list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(30,30);
+echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
+
+
 ?>
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_second_menu.css">
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">
-
-<? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>
-
-<div class="main_text" align="left" style="clear:both;">
-<a name="top_of_page"></a>
-<div id="staticMenuPos" align="left"></div>

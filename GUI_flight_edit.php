@@ -145,18 +145,17 @@ function setValue(obj)
     <tr>
       <td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo $i?></div></td>
       <td><? if ( $flight->$var_name) { ?>
-			<table width="100%"  border="0" cellspacing="2" cellpadding="2">
+			<table width="100%"  border="0" cellspacing="0" cellpadding="2" class="main_text">
 				<tr>
 				  <td width="120"><img src="<? echo $flight->getPhotoRelPath($i).".icon.jpg"; ?>" border=0></td>
 				  <td ><div align="center">
-				    <p><? echo _DELETE_PHOTO ?>
-				      <input type="checkbox" name="photo<? echo $i?>Delete" value="1"></p>
-				    <p>	 <strong><? echo _OR ?> </strong><br> <? echo _NEW_PHOTO ?>
+				    <? echo _DELETE_PHOTO ?>
+				      <input type="checkbox" name="photo<? echo $i?>Delete" value="1">
+				    	 <br><br><strong><? echo _OR ?> </strong><br><br> <? echo _NEW_PHOTO ?>
 					  <input name="photo<? echo $i?>Filename" type="file" size="30">					
-					</p>
 				  </div></td>
 				</tr>
-	    </table><p> <? } else {?>     
+	    </table> <? } else {?>     
         <input name="photo<? echo $i?>Filename" type="file" size="30">
 		<? } ?>
       </td>

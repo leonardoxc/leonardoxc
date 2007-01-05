@@ -49,6 +49,8 @@ function findTakeoff($args) {
 
 	$nearestWaypoint=new waypoint($takeoffIDTmp);
 	$nearestWaypoint->getFromDB();
+
+	// echo "&^".$nearestWaypoint->name."&";
 	
 	return array($nearestWaypoint,$minTakeoffDistance);
 /*

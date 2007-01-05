@@ -210,6 +210,27 @@ The main table that holds the list of flights/pilots/takeoffs
 }
 
 
+.simpleTable {
+	text-align:left;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #003366;
+	border:1px solid #555555;
+border:0;
+}
+	
+.simpleTable a, .simpleTable a:visited  {
+	color:#333366;
+	text-decoration:underline;
+}
+
+.simpleTable TD, .simpleTable TH {
+	vertical-align:middle;
+	border-bottom:1px solid #555555;
+	border-right:1px solid #555555;
+}
+
+
 /* some styles for the listTable items */
 .distance   { color:#4400aa; text-align:right; }
 .dateString { color:#224488; text-align:right; }

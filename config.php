@@ -161,6 +161,7 @@ require_once dirname(__FILE__)."/config_version.php";
  $clubsTable	=  $CONF_tables_prefix."_clubs";
  $clubsPilotsTable	=  $CONF_tables_prefix."_clubs_pilots";
  $clubsFlightsTable	=  $CONF_tables_prefix."_clubs_flights";
+ $serversTable	=  $CONF_tables_prefix."_servers";
 
  $areasTable	=  $CONF_tables_prefix."_areas";
  $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";
@@ -189,7 +190,9 @@ require_once dirname(__FILE__)."/config_version.php";
  $CONF_countHowManyFlightsInComp=6;
 
  $CONF_showProfilesToGuests=1;
- $CONF_photosPerFlight=3;
+
+ // Max is 6 
+ $CONF_photosPerFlight=6;
  
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wind FAI5",8=>"Glider" );
