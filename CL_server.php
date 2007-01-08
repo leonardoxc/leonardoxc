@@ -40,6 +40,36 @@ class Server {
 		$this->gotValues=0;
 	}
 
+	function uploadFile($filename,$remoteFilename) {
+			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
+	
+			$serverURL="http://".$this->url_op;
+			$client = new IXR_Client($serverURL);
+			// $client->debug=true;
+		
+			if ( ($fileStr=@file_get_contents($filename)) === FALSE) {
+				echo 'uploadFileInline: Error, cannot get contents of '.$filename;
+				return 0;
+			}
+
+			$fileStr_base64=base64_encode($fileStr);
+			if ( ! $client->query('server.uploadFileInline',$this->site_pass, $fileStr_base64,$remoteFilename) ) {
+				echo 'uploadFileInline: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+				return 0; 
+			} else {
+				return 1;
+			}
+	}
+
+	function sendOPfiles($arg) {
+		$res=0;
+		foreach (glob("OP_*.php") as $filename) {
+			$res+=uploadFile(dirname(__FILE__)."/".$filename,$filename);
+		}	
+		//return number of files uploaded
+		return $res;
+	}
+
 	function version() {
 		if ($this->isLeo) {
 			list($version,$sub_version,$revision)=explode(".",$this->leonardo_version);
@@ -70,12 +100,13 @@ class Server {
 		} else if ($version==1 && $sub_version >=4) { // use EXT_takeoff.php method
 			require_once dirname(__FILE__)."/FN_functions.php";
 			$serverURL="http://".$this->url_base."/EXT_takeoff.php?op=find_wpt&lat=$lat&lon=$lon";
+			//echo $serverURL;
 			$contents=fetchURL($serverURL);
 			if (!$contents) {
 				echo "SERVER at: ".$this->url_base." is NOT ACTIVE<br>"; 
 				return array(0,-1);
 			}
-	
+			//echo $contents;
 			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 			$xmlDoc = new MiniXMLDoc();
 			$xmlDoc->fromString($contents);

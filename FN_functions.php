@@ -43,7 +43,8 @@ function fetchURL( $url, $timeout=5) {
    if ($url_parsed["query"] != "")
        $path .= "?".$url_parsed["query"];
 
-   $out = "GET $path HTTP/1.0\r\nHost: $host\r\n\r\n";
+   $out = "GET $path HTTP/1.0\r\nHost: $host\r\n";
+   $out.= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0\r\n\r\n";
 
    $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
    if (!$fp) { return 0; }
