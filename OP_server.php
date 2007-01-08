@@ -76,6 +76,16 @@ function server_info($arg) {
 }
 
 
+$serverFunctions['server.module_info']='server_module_info';
+function server_module_info($arg) {
+	$sitePass=$arg[0];
+	global $CONF_SitePassword;	
+	global $CONF_version,$CONF_releaseDate, $opMode, $CONF_isMasterServer, $CONF_admin_email;
+	
+	if ( ! securityCheck($sitePass) ) return  new IXR_Error(4000, 'Access Denied');
+	return array($CONF_version,$CONF_releaseDate, $opMode, $CONF_isMasterServer, $CONF_admin_email);
+}
+
 // this function runs only on the Master Server to register slave servers
 $serverFunctions['server.registerSlave']='registerSlave';
 function registerSlave($arg) {

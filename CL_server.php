@@ -48,7 +48,7 @@ class Server {
 			// $client->debug=true;
 		
 			if ( ($fileStr=@file_get_contents($filename)) === FALSE) {
-				echo 'uploadFileInline: Error, cannot get contents of '.$filename;
+				echo 'uploadFile: Error, cannot get contents of '.$filename;
 				return 0;
 			}
 
@@ -76,7 +76,24 @@ class Server {
 			return array($version,$sub_version,$revision);
 		} else return array(0,0,0);
     }
+	
+	function getInfo() {
+		require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 
+		$serverURL="http://".$this->url_op;
+		$client = new IXR_Client($serverURL);
+		// $client->debug=true;
+	
+		if ( ! $client->query('server.info') ) {
+			echo 'server: info '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+			return 0;  // $client->getErrorCode();
+		} else {
+			$info= $client->getResponse();
+			return $info;
+		}
+
+	}
+	
 	function findTakeoff($lat,$lon) {
 		require_once dirname(__FILE__)."/CL_gpsPoint.php";
 		list($version,$sub_version,$revision)=$this->version();

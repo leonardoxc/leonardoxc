@@ -22,11 +22,28 @@ $action=$_GET['action'];
 $server=new Server($id);
 $server->getFromDB();
 
-echo $server->url_op;
-echo "<BR>$action<br>";
 
-list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(40,22);
-echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
+if ($action==1) { // server info 
+	list($server_version,$server_releaseDate, $server_opMode, $server_isMasterServer, $server_admin_email)=$server->getInfo();
+	echo "Leonardo version: $server_version<br>
+		version releaseDate:	$server_releaseDate<br>
+		opMode: $server_opMode<br>
+		isMasterServer: $server_isMasterServer<br>
+		admin_email: $server_admin_email<br>";
+} else if ($action==2) {
+
+
+} else if ($action==3) { //flights 
+
+
+
+} else if ($action==4) { //test
+	echo $server->url_op;
+	echo "<BR>$action<br>";
+	
+	list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(40,22);
+	echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
+}
 
 
 ?>
