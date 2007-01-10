@@ -29,6 +29,7 @@ class Server {
 
 	var $valuesArray;
 	var $gotValues;
+	var $DEBUG;
 
 	function Server($id="") {
 		if ($id!="") {
@@ -38,6 +39,7 @@ class Server {
 			"url_op","admin_email","site_pass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
+		$this->DEBUG=0;
 	}
 
 	function uploadFile($filename,$remoteFilename) {
@@ -45,7 +47,7 @@ class Server {
 	
 			$serverURL="http://".$this->url_op;
 			$client = new IXR_Client($serverURL);
-			// $client->debug=true;
+			if ($this->DEBUG) $client->debug=true;
 		
 			if ( ($fileStr=@file_get_contents($filename)) === FALSE) {
 				echo 'uploadFile: Error, cannot get contents of '.$filename;
@@ -54,17 +56,17 @@ class Server {
 
 			$fileStr_base64=base64_encode($fileStr);
 			if ( ! $client->query('server.uploadFileInline',$this->site_pass, $fileStr_base64,$remoteFilename) ) {
-				echo 'uploadFileInline: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+				echo 'uploadFile: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return 0; 
 			} else {
 				return 1;
 			}
 	}
 
-	function sendOPfiles($arg) {
+	function sendOPfiles() {
 		$res=0;
 		foreach (glob("OP_*.php") as $filename) {
-			$res+=uploadFile(dirname(__FILE__)."/".$filename,$filename);
+			$res+=$this->uploadFile(dirname(__FILE__)."/".$filename,$filename);
 		}	
 		//return number of files uploaded
 		return $res;
@@ -82,7 +84,7 @@ class Server {
 
 		$serverURL="http://".$this->url_op;
 		$client = new IXR_Client($serverURL);
-		// $client->debug=true;
+		if ($this->DEBUG) $client->debug=true;
 	
 		if ( ! $client->query('server.info') ) {
 			echo 'server: info '.$client->getErrorCode()." -> ".$client->getErrorMessage();
@@ -93,7 +95,23 @@ class Server {
 		}
 
 	}
+	function getTakeoffs($tm) {
+			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
+			$serverURL="http://".$this->url_op;
+			$client = new IXR_Client($serverURL);
+			if ($this->DEBUG) $client->debug=true;
+
+			$onlyTakeoffs=1;
+			if ( ! $client->query('takeoffs.getTakeoffs',$this->site_pass, $tm ,$onlyTakeoffs) ) {
+				echo 'getTakeoffs: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+				return array(0,array());  // $client->getErrorCode();
+			} else {
+				list($takeoffsListNum,$takeoffsList)= $client->getResponse();
+				return $takeoffsList;
+			}
+	}
+
 	function findTakeoff($lat,$lon) {
 		require_once dirname(__FILE__)."/CL_gpsPoint.php";
 		list($version,$sub_version,$revision)=$this->version();
@@ -102,7 +120,7 @@ class Server {
 	
 			$serverURL="http://".$this->url_op;
 			$client = new IXR_Client($serverURL);
-			// $client->debug=true;
+			if ($this->DEBUG) $client->debug=true;
 		
 			if ( ! $client->query('takeoffs.findTakeoff',$this->site_pass, $lat, $lon ) ) {
 				echo 'findTakeoff: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
@@ -176,7 +194,7 @@ class Server {
 		$masterServerURL="http://".$masterServer->url_op;	
 		$thisServerURL="http://".$this->url_op;
 		$client = new IXR_Client($masterServerURL);
-		// $client->debug=true;
+		if ($this->DEBUG) $client->debug=true;
 	
 		if ( ! $client->query('server.registerSlave',$this->site_pass, $lat, $lon ) ) {
 			echo 'registerSlave: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();

@@ -47,14 +47,15 @@ function findTakeoff($args) {
 }
 
 
-$serverFunctions['takeoffs.getAll']='takeoffs_findAll';
-function takeoffs_findAll($arg) {
+$serverFunctions['takeoffs.getTakeoffs']='takeoffs_getTakeoffs';
+function takeoffs_getTakeoffs($arg) {
 	$sitePass=$arg[0];
-	
+	$tm=$arg[1];
+	$onlyTakeoffs=$arg[2];
+
 	if ( ! securityCheck($sitePass) )  return  new IXR_Error(4000, 'Access Denied');
 
-	if (count($waypoints)==0) 
-		$waypoints=getWaypoints();
+	$waypoints=getWaypoints($tm,$onlyTakeoffs);
 	return array(count($waypoints),$waypoints);
 }
 

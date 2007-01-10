@@ -56,7 +56,9 @@ foreach ($servers as $server) {
 
 	$url="<a href='http://".$server->url."' target='_blank'>".substr($server->url_base,0,50)."...</a>";
 
-	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1);'>Info</a> :: <a href='javascript:serverAction(".$server->ID.",2);'>Takeoffs</a> :: <a href='javascript:serverAction(".$server->ID.",3);'>Flights</a></td>".
+	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1);'>Info</a> :: <a href='javascript:serverAction(".$server->ID.",2);'>Takeoffs</a> 
+		:: <a href='javascript:serverAction(".$server->ID.",3);'>Flights</a> :: <a href='javascript:serverAction(".$server->ID.",4);'>Update OP files</a>
+		:: <a href='javascript:serverAction(".$server->ID.",99);'>Test</a></td>".
 			"<td>".$server->ID."</td><td>".$url."</td><td>".$server->leonardo_version."</td><td>".
 			$server->is_active."</td><td>".$wpt."</td><td>".$server->isLeo."</td><td>".$type."</td><td></td></tr>";
 

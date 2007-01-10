@@ -22,6 +22,9 @@ $action=$_GET['action'];
 $server=new Server($id);
 $server->getFromDB();
 
+// se to 1 for debug
+$server->DEBUG=0;
+
 
 if ($action==1) { // server info 
 	list($server_version,$server_releaseDate, $server_opMode, $server_isMasterServer, $server_admin_email)=$server->getInfo();
@@ -31,13 +34,20 @@ if ($action==1) { // server info
 		isMasterServer: $server_isMasterServer<br>
 		admin_email: $server_admin_email<br>";
 } else if ($action==2) {
-
+	$takeoffsList=$server->getTakeoffs(0); // takeoffs from time 0
+	echo "<HR>Takeoff list<hr>";
+	foreach($takeoffsList as $takeoff){
+		$takeoff=(object) $takeoff;
+		echo "#".urldecode($takeoff->intName)."<BR>";
+	}
 
 } else if ($action==3) { //flights 
 
+} else if ($action==4) { //send op files
+	$files_send=$server->sendOPfiles(); 
+	echo "Send $files_send files to slave server <BR>";
 
-
-} else if ($action==4) { //test
+} else if ($action==99) { //test
 	echo $server->url_op;
 	echo "<BR>$action<br>";
 	

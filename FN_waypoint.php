@@ -137,7 +137,7 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 	//foreach($rows as $row) {
 	  $waypoints[$i]=new gpsPoint();
  	  $waypoints[$i]->waypointID=$row["ID"];
-	  $waypoints[$i]->name=$row["name"];
+	  $waypoints[$i]->name=urlencode($row["name"]);
 	  $waypoints[$i]->intName=$row["intName"];
    	  $waypoints[$i]->lat=$row["lat"];
    	  $waypoints[$i]->lon=$row["lon"];
