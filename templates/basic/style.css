@@ -230,6 +230,11 @@ border:0;
 	border-right:1px solid #555555;
 }
 
+.sitesTable TD, .sitesTable TH {
+	vertical-align:top;
+	border-bottom:1px solid #555555;
+	border-right:1px solid #555555;
+}
 
 /* some styles for the listTable items */
 .distance   { color:#4400aa; text-align:right; }

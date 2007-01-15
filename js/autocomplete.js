@@ -51,6 +51,23 @@ function seeSites(relPath,listName) {
 	return false;
 }
 
+function selCountry(countryCode) {
+	var select=MWJ_findObj("takeoffList");
+	
+	removeAllOptions(document.forms[0]['availableSitesList']);
+	putOption('------ Available Takeoffs -------',0,document.forms[0]['availableSitesList']);
+	for (var i = 0; i < select.options.length; i++) {
+		if (select.options[i]['text'].toUpperCase().indexOf(countryCode) ==0 ) {
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['availableSitesList']);
+			found=true; 
+//			break;
+		}
+	}
+    setSize(selectedList,availableList);
+	MWJ_changeVisibility( 'takeoffID' ,false);	
+}
+
+
 function selectCountry() {
 	var select=MWJ_findObj("takeoffList");
 	var selectC=MWJ_findObj("country_select");
@@ -72,12 +89,14 @@ function autoComplete (field, selectName, property, forcematch) {
 	var select=MWJ_findObj(selectName);
 	if (field.value.length<2) return;
 	
-	removeAllOptions(document.forms[0]['selectedSitesList']);
+	removeAllOptions(document.forms[0]['availableSitesList']);
+    putOption('------ Available Takeoffs -------',0,document.forms[0]['availableSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) >=0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['selectedSitesList']);
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['availableSitesList']);
 		}
 	}
+    setSize(selectedList,availableList);
 
 }
 

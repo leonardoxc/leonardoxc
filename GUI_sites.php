@@ -36,10 +36,36 @@
 		 $TAKEOFF_OPTION_LIST.="<option value='".$takeoffsID[$k]."' $sel>".$takeoffs[$k]."</option>\n";
 	}
 
+	
+	$countriesNum=count($countriesNames);
+	require_once dirname(__FILE__)."/FN_areas.php";
+
+	$i=0;
+	foreach($countriesNames as $countryName) {
+		$continentNum=$countries2continent[$countriesCodes[$i]];
+		$tkStrings[$continentNum].="<li><a href='javascript:selCountry(\"".$countriesCodes[$i]."\") '>$countryName </a></li>\n";
+		$i++;
+	}
+/*
+1=>"Europe ",
+2=>"South America ",
+3=>"North & Central America ",
+4=>"Africa ",
+5=>"Asia ",
+6=>"Oceania "*/
+	for($continentNum=1;$continentNum<=6;$continentNum++) {
+		$continentString=$tkStrings[$continentNum];
+		$Ltemplate->assign_vars( array(	 	
+			'continent_'.$continentNum=>"<ul><li><a href='#'><strong>".$continents[$continentNum]."</strong></a></li>".$continentString."<ul>"
+		) );
+	}
+
 	$Ltemplate->assign_vars( array(	 	
 		'TAKEOFF_OPTION_LIST'=>$TAKEOFF_OPTION_LIST,
 		'COUNTRIES_OPTION_LIST'=>$COUNTRIES_OPTION_LIST,
 		'MODULE_REL_PATH'=>$moduleRelPath,
+		'MODULE_NAME'=>$module_name,
+		'TEMPLATE_REL_PATH'=>$moduleRelPath."/templates/".$PREFS->themeName ,
 	));
 
    	$Ltemplate->pparse('body');

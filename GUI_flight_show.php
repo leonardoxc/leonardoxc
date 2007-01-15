@@ -456,7 +456,6 @@ if (in_array($userID,$admin_users) ) {
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
-
 if ( is_file($flight->getMapFilename() ) )
 	$mapImg="<img src='".$flight->getMapRelPath()."' border=0>";	
 

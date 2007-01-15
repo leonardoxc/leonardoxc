@@ -1,14 +1,218 @@
+<style type="text/css">
+<!--
+.continent_div {
+	display:none;
+}
+
+#vnav, #vnav ul { /* all lists */
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	float : left;
+	width : 10em;
+	z-index:-1;
+}
+
+#vnav {
+	margin-left:10px;
+	padding-bottom:20px;
+}
+
+
+#vnav li { /* all list items */
+	position : relative;
+	float : left;
+	line-height : 1.25em;
+	margin-bottom : -1px;
+	width: 10em;
+}
+
+#vnav li a {
+	width: 11em;
+	w\idth : 10em;
+	display : block;
+			
+	padding : 0 0.3em;
+
+	font-size:11px;
+	color : black;
+	font-weight : normal;
+	text-decoration : none;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: #ccc #888 #555 #bbb;
+	margin: 0;
+
+	padding: 2px 6px;
+
+	background-color:#ECEFF2;
+	z-index:-1;
+}
+
+
+#vnav li a:hover {
+	color : white;
+	background-color : black;
+}
+
+
+
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+
+.takeoffOptionsDropDown {width:410px; }
+
+
+-->
+</style>
 
 <script language='javascript' src='{MODULE_REL_PATH}/js/autocomplete.js'></script>
 <script language='javascript' src='{MODULE_REL_PATH}/js/tipster.js'></script>
 
 <script language='javascript'>
-var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
-with (unknownTakeoffTip)
+
+function takeoffDetails() {
+		var wIndex = availableList.selectedIndex;
+		if(wIndex  <= 0)  return;
+
+		wID=availableList.options[wIndex]['value'];
+//		wID=1;
+		document.getElementById('takeoffFrame').src='modules/{MODULE_NAME}/GUI_EXT_waypoint_details.php?wID='+wID;		
+		MWJ_changeSize('takeoffFrame',605,320);
+		MWJ_changeSize('takeoffID', 605,350 );
+
+		oMC = MWJ_getPosition( MWJ_findObj('takeoffPos') );
+		MWJ_changePosition( 'takeoffID',  oMC[0]-10  ,  oMC[1] + 0 , true );
+
+		//MWJ_changeDisplay('takeoffID',"block");
+		MWJ_changeVisibility( 'takeoffID' ,true );	
+		//toggleVisible('takeoffID','takeoffPos',30,0,610,320);
+}
+
+var selectedList;
+var availableList;
+function createListObjects(){
+    availableList = document.getElementById("availableSitesList");
+    selectedList = document.getElementById("selectedSitesList");
+}
+
+/* I've set up two global object variables in the createListObjects() method—one 
+for the available options and one for the user-selected options. 
+The code calls the createListObjects() method from the onLoad event of the body tag so that you 
+can later access the properties and methods of the objects anywhere in the script.
+ Next, add the methods that move a single option between the lists.
+*/
+
+function delAttribute(){
+   var selIndex = selectedList.selectedIndex;
+   if(selIndex <= 0)
+      return;
+   availableList.appendChild(
+      selectedList.options.item(selIndex))
+   selectNone(selectedList,availableList);
+   setSize(availableList,selectedList);
+	MWJ_changeVisibility( 'takeoffID' ,false);	
+}
+function addAttribute(){
+   var addIndex = availableList.selectedIndex;
+   if(addIndex <= 0)
+      return;
+   selectedList.appendChild( 
+      availableList.options.item(addIndex));
+   selectNone(selectedList,availableList);
+   setSize(selectedList,availableList);
+	MWJ_changeVisibility( 'takeoffID' ,false);	
+}
+
+function delAll(){
+    var len = selectedList.length -1;
+    for(i=len; i>0; i--){
+        availableList.appendChild(selectedList.item(i));
+    }
+    selectNone(selectedList,availableList);
+    setSize(selectedList,availableList);
+   	MWJ_changeVisibility( 'takeoffID' ,false);	
+}
+
+function addAll(){
+    var len = availableList.length -1;
+    for(i=len; i>0; i--){
+        selectedList.appendChild(availableList.item(i));
+    }
+    selectNone(selectedList,availableList);
+    setSize(selectedList,availableList);
+	MWJ_changeVisibility( 'takeoffID' ,false);	    
+}
+
+
+function setSize(list1,list2){
+    list1.size = getSize(list1);
+    list2.size = getSize(list2);
+}
+
+function selectNone(list1,list2){
+    list1.selectedIndex = -1;
+    list2.selectedIndex = -1;
+    addIndex = -1;
+    selIndex = -1;
+}
+
+function getSize(list){
+    /* Mozilla ignores whitespace, 
+       IE doesn't - count the elements 
+       in the list */
+    var len = list.childNodes.length;
+    var nsLen = 0;
+    //nodeType returns 1 for elements
+    for(i=0; i<len; i++){
+        if(list.childNodes.item(i).nodeType==1)
+            nsLen++;
+    }
+    if(nsLen<2)
+        return 2;
+    else
+        return nsLen;
+}
+
+
+function showContinent(cID) {
+	for(i=1;i<=6;i++) {
+		divName="continent_"+i;
+		if (i==cID) {
+			MWJ_changeDisplay(divName,"block");
+		} else {
+			MWJ_changeDisplay(divName,"none");
+		}
+	}
+	MWJ_changeVisibility( 'takeoffID' ,false);	
+	//continentTip.show('c'+cID);
+}
+
+var continentTip = new TipObj('continentTip');
+with (continentTip)
 {
   template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
-  '<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr>'+
-  '<tr><td class="infoBox" style="width:%3%px">%5%</td></tr></table>';
+  '<tr><td class="infoBoxHeader" style="width:%3%px">%4%</td></tr></table>';
 
 // tipStick = 1;
  showDelay = 0;
@@ -16,17 +220,29 @@ with (unknownTakeoffTip)
  tipStick = 0.2;
  doFades = false;
  
- tips.africa = new Array(5, 5, "map", 300, 'Africa','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
-  tips.europe = new Array(5, 5, "map",300, 'Europe','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.asia = new Array(5, 5, "map",300, 'Asia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.australia= new Array(5, 5, "map",300, 'Australia','If you do know from which <bR>takeoff/launch this flight began<br> please click to fill it in !');
- tips.n_america= new Array(5, 5, "map",300, 'North/Central America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
- tips.s_america= new Array(5, 5, "map",300, 'South America','If you do know from which <bR>takeoff/launch this flight began<br>  please click to fill it in !');
-
-
+ tips.c4 = new Array(0, -23, "map", 400, 'Africa');
+ tips.c1 = new Array(0, -23, "map",400, 'Europe');
+ tips.c5 = new Array(0, -23, "map",400, 'Asia');
+ tips.c6= new Array(0,-23, "map",400, 'Australia');
+ tips.c3= new Array(0, -23, "map",400, 'North/Central America');
+ tips.c2= new Array(0, -23, "map",400, 'South America');
 }
+
 </script>
-<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
+<div id="takeoffID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+<table width="100%" >
+<tr><td class="infoBoxHeader" >
+<div align="left" style="display:block; float:left; clear:left;" id="takeoffTitle">Takeoff Details</div>
+<div align="right" style="display:inline; float:right; clear:right;">
+<a href='#' onclick="toggleVisible('takeoffID','takeoffPos',14,-20,0,0);return false;">
+<img src='{TEMPLATE_REL_PATH}/img/exit.png' border=0></a></div>
+</td></tr></table>
+<div id='takeoffDiv'>
+<iframe id="takeoffFrame" width="605" height="auto" frameborder=0 style='border-width:0px'></iframe></div>
+</div>
+
+<div id="continentTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 <form name="formFilter" method="post" action="">
@@ -34,24 +250,92 @@ with (unknownTakeoffTip)
    <div class='titleDiv'>{#Site_Guide}</div>
   </div>
 
-  <table class="listTable shadowBox" style="width:650px" width="650"  border="0" align="center" cellpadding="5" cellspacing="1">
+  <table class="simpleTable sitesTable" style="width:760px;" width="760"  border="0" align="center" cellpadding="5" cellspacing="1">
     <tr bgcolor="#CCD0E3">
-      <td width="273" valign="top">
+      <td width="400" valign="top">
         <p align="left">
         <strong>{#Search_Options}</strong><br />
         <select name="takeoffList" size="10" id="takeoffList"  style="display:none">
             {TAKEOFF_OPTION_LIST}             
         </select></td>
-      <td width="10">&nbsp;</td>
+    
       <td>
         <p><strong>{#Below_is_the_list_of_selected_sites}</strong></p></td>
     </tr>
     <tr>
-      <td valign="top" bgcolor="#EAF0E6"><p align="left">Search site by name<br />
-        (give at least 2 letters) <br />
-        <input type="text" name="input1" value="" onKeyUp="autoComplete(this,'takeoffList','text',false)" />
-        </p>
-          <p align="left"><strong>or </strong></p>
+      <td valign="top" bgcolor="#EAF0E6">
+<br><br><img id="map" src="{MODULE_REL_PATH}/img/world_map.gif" width="400" height="181" border="0" usemap="#Map">
+	      <map name="Map">
+            <area shape="poly" coords="181,67,166,82,172,100,184,100,196,106,199,127,208,151,220,148,232,124,229,112,244,94,220,76,208,67,196,64"
+href="javascript:showContinent(4);" 
+onmouseover='continentTip.show("c4");'
+onmouseout='continentTip.hide();'
+alt="Africa">
+            <area shape="poly" coords="313,142,316,154,334,148,349,160,358,145,352,121,337,109,322,130" 
+href="javascript:showContinent(6);" 
+onmouseover='continentTip.show("c6");'
+onmouseout='continentTip.hide();'
+alt="Australia">
+
+            <area shape="poly" coords="100,103,97,121,109,136,106,172,115,169,136,142,148,118,124,100,106,94" 
+href="javascript:showContinent(2);"
+onmouseover='continentTip.show("c2");'
+onmouseout='continentTip.hide();'
+alt="SouthAmerica">
+
+            <area shape="poly" coords="100,103,91,88,82,79,85,73,97,73,100,64,109,55,115,52,127,49,118,34,103,31,97,43,85,37,88,31,103,25,103,16,76,16,58,28,37,22,7,22,7,37,22,34,40,40,52,52,55,67,67,82,82,91,91,97"
+href="javascript:showContinent(3);" 
+onmouseover='continentTip.show("c3");'  
+onmouseout='continentTip.hide();'
+alt="NorthCentralAmerica">
+
+            <area shape="poly" coords="181,64,175,55,181,52,178,46,178,37,187,43,196,43,205,34,193,37,199,28,217,22,232,22,223,34,232,37,232,49,220,49,217,58,217,61,208,58,199,55,190,58" 
+href="javascript:showContinent(1);"
+onmouseover='continentTip.show("c1");'
+onmouseout='continentTip.hide();'
+alt="Europe">
+
+            <area shape="poly" coords="217,73,238,88,253,85,244,76,238,70,250,76,265,79,271,97,286,85,301,97,313,103,313,88,322,76,325,61,337,58,352,40,382,31,394,25,328,22,310,13,283,16,256,25,244,28,235,25,235,40,235,49,223,52,223,70" 
+href="javascript:showContinent(5);"
+onmouseover='continentTip.show("c5");' 
+onmouseout='continentTip.hide();'
+alt="Asia">
+          </map>	  
+
+
+<br><br>
+<div id="vnav" style="display:block; float:left">
+<div id="continent_1" class="continent_div">{continent_1}</div>
+<div id="continent_2" class="continent_div">{continent_2}</div>
+<div id="continent_3" class="continent_div">{continent_3}</div>
+<div id="continent_4" class="continent_div">{continent_4}</div>
+<div id="continent_5" class="continent_div">{continent_5}</div>
+<div id="continent_6" class="continent_div">{continent_6}</div>
+</div>
+
+<div style="display:block; width:250px;float:right">
+  <p>
+      <select name="availableSitesList" id="availableSitesList" size="2"  multiple="multiple" onChange="takeoffDetails()">
+            <option value="0" >------ Available Takeoffs -------</option>
+        </select>		
+      <br>
+		    <input type="button" onclick="addAll();" value=">>">
+            <input name="button" type="button" onclick="addAttribute();" value=">">
+  
+          <br>
+			<div id='takeoffPos'></div>
+            You can move all availabe takeoffs to the selected list on the right
+            panel by using &gt;&gt; or the selected one by using &gt;</p>
+  <hr>
+  <p>Search site by name<br />
+(give at least 2 letters) <br />
+<input type="text" name="input1" value="" onKeyUp="autoComplete(this,'takeoffList','text',false)" />
+</p>
+</div>
+<div style="display:none">
+        <p align="left">&nbsp;</p>
+     
+        <p align="left"><strong>or </strong></p>
           <p align="left">Select the sites of a specific country</p>
           <p align="left">
             <select name="country_select" id="select" onChange="selectCountry()">
@@ -60,39 +344,35 @@ with (unknownTakeoffTip)
 			{COUNTRIES_OPTION_LIST}	
           
             </select>
-        </p></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#DDE3E8"><p>Click &quot;See the selected sites&quot; to open
-          these sites in Google Earth </p>
-          <p>
-            <input type="button" name="right" value="Clear this list" onClick="removeAllOptions(document.forms[0]['selectedSitesList']);">
-          </p>
-          <p>
-            <select name="selectedSitesList" size="10" multiple="multiple">
+        </p>
+</div>
+	</td>
+
+      <td valign="top" bgcolor="#DDE3E8">
+   <p align="left">Click &quot;See the selected sites&quot; to open
+        these sites in Google Earth </p>
+		<p>
+            <input type="button" name="clearSelected" value="Clear this list" onClick="removeAllOptions(document.forms[0]['selectedSitesList']);">
+        </p>
+        <p>
+            <select name="selectedSitesList"  id="selectedSitesList" size="15" multiple="multiple">
             </select>
           </p>
           <p>
-            <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites"
+            <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites in Google Earth"
 		  onClick="seeSites('{MODULE_REL_PATH}/','selectedSitesList');">
-        </p></td>
+      </p>	  </td>
     </tr>
     <tr>
-      <td colspan="3" valign="top">
-	  <img  id="map" src="{MODULE_REL_PATH}/img/worldmap.gif" width="710" height="400" border="0" usemap="#world" />
-<map name="world" id="world">
-<area shape="poly" coords="342,196" href="#" /><area shape="poly" coords="372,276,391,270,401,251,410,236,410,216,411,205,422,195,432,182,433,174,423,174,412,164,402,151,401,146,396,135,395,130,381,126,373,126,360,130,350,120,338,118,321,120,311,134,298,150,299,167,306,181,316,190,337,186,344,188,351,193,353,203,358,215,358,228,355,238,361,254,366,267" href="#" 
- onmouseover='unknownTakeoffTip.show("africa")'  onmouseout='unknownTakeoffTip.hide()'
-/>
-<area shape="poly" coords="203,321,189,320,185,301,191,260,193,240,173,213,174,199,179,183,185,176,198,176,211,178,221,186,233,196,242,203,261,213,256,230,250,249,236,261,227,276,217,276,219,285,210,286,203,291,200,308" href="#"
-
- onmouseover='unknownTakeoffTip.show("s_america")'  onmouseout='unknownTakeoffTip.hide()'
-  />
-<area shape="poly" coords="315,61" href="#" /><area shape="poly" coords="324,119,315,116,316,102,327,103,326,94,314,86,319,73,328,70,335,84,343,84,348,78,349,73,345,71,343,63,374,45,385,44,401,46,410,49,409,52,400,54,401,58,408,58,419,52,433,84,427,90,414,96,408,96,399,96,393,97,391,105,391,110,384,111,380,114,381,120,373,117,369,108,361,101,357,99,362,105,366,111,366,116,357,116,359,111,354,103,348,103,339,103,333,109,330,116" href="#"
- onmouseover='unknownTakeoffTip.show("europe")'  onmouseout='unknownTakeoffTip.hide()'
-  />
-</map>
-	  
-	  &nbsp;</td>
+      <td colspan="2" valign="top">   
+	    <p></p>
+      <p>&nbsp;</p>
+</td>
     </tr>
   </table>
 </form>
+
+<script language="javascript">
+MWJ_changeDisplay("continent_1","block");
+createListObjects();
+</script>
