@@ -62,4 +62,7 @@
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
 
+ session_start();
+ $userID = $_SESSION['userID'];
+
 ?>

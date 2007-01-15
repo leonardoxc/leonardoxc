@@ -1,5 +1,5 @@
 <? 
-require_once ABS_INCLUDE_PATH."include.db.php";
+// require_once ABS_INCLUDE_PATH."include.db.php";
 
 
 /* 
@@ -20,7 +20,7 @@ ItemType - on an item that is of type :
 ItemID - the item 
 ServerItemID - the server of the item -> those 2 define an item in the distributed DB network
 
-Action  - what the user does 
+ActionID  - what the user does 
 1  => add
 2  => edit
 4  => delete
@@ -31,6 +31,9 @@ Action  - what the user does
 128=>
 256=>
 512=>
+
+ActionXML - XML that describes the action so it
+			 can be reproduced later/in another server
 
 Modifier
 0=> nothing special
@@ -133,30 +136,46 @@ $actionIDs=array(
 
 );
 
-class Logger {    
-	
+class Logger { 
+	var $transactionID ;
+	var $actionTime ;
+	var $userID  ;
+	var $effectiveUserID  ;
+	var $ItemType; 
+	var $ItemID ;
+	var $ServerItemID ;
+	var $ActionID  ;
+	var $ActionXML;
+	var $Modifier;
+	var $ModifierID ;
+	var $ServerModifierID ;
+	var $Result ;
+	var $ResultDescription ;
+
 	function Logger() {
 	}
 
-	function put($user_id,$comp_id,$task_id,$other_id,$other_type,$action,$action_cat,$details,$status){
-		// echo "	user_id,$comp_id,$task_id,$other_id,$other_type,$action,$action_cat,$details,$status <br>";
-
+	function put(){
 		global $db, $logTable, $userID;
-		$details=addslashes($details);
-		$DBvars=array('user_id','comp_id','task_id','other_id','other_type','action','action_cat','details','status');
+	
+		$this->ActionXML=addslashes($this->ActionXML);
+		$DBvars=array(	'actionTime',	'userID',	'effectiveUserID',
+	'ItemType',	'ItemID',	'ServerItemID',	'ActionID',	'ActionXML',
+	'Modifier',	'ModifierID',	'ServerModifierID',	'Result',	'ResultDescription' );
 
+		$this->actionTime=time();
+		$this->effectiveUserID=$userID;
+		
 		foreach ($DBvars as $varName) {
 				$vars_list.="$varName,";
-				$values_list.="'".$$varName."',";
+				$values_list.="'".$this->$varName."',";
 		}
 
-//		$vars_list=substr($vars_list,0,-1);
-//		$values_list=substr($values_list,0,-1);
-		$vars_list.="ip, effective_user_id, time";
-		$values_list.="'".$_SERVER['REMOTE_ADDR']."',".($userID+0).",".time();
+		$vars_list=substr($vars_list,0,-1);
+		$values_list=substr($values_list,0,-1);
 
-		$query = "INSERT into $logTable ($vars_list ) VALUES($values_list)";
-		// echo $query;
+		$query = "INSERT into $logTable ($vars_list ) VALUES ($values_list)";
+		 echo $query;
 		$res = $db->sql_query($query);
 		if ($res) return $db->sql_nextid();
 		else { 

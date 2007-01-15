@@ -168,6 +168,7 @@ require_once dirname(__FILE__)."/config_version.php";
  $clubsPilotsTable	=  $CONF_tables_prefix."_clubs_pilots";
  $clubsFlightsTable	=  $CONF_tables_prefix."_clubs_flights";
  $serversTable	=  $CONF_tables_prefix."_servers";
+ $logTable		=  $CONF_tables_prefix."_log";
 
  $areasTable	=  $CONF_tables_prefix."_areas";
  $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";

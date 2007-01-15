@@ -67,6 +67,8 @@ if ($opMode==1 ) { // phpnuke
 	}
 }
 
+$_SESSION['userID']=$userID;
+
 // DEBUG
 setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0);

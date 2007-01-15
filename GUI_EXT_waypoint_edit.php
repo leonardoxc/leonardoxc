@@ -28,6 +28,7 @@
 	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	
+	echo "# $userID #";
     if (! in_array($userID,$admin_users)) {
 		// return;
     }

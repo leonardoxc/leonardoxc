@@ -10,6 +10,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+require_once dirname(__FILE__)."/CL_actionLogger.php";
 
 class gpsPoint {
 	var $waypointID;
@@ -267,7 +268,7 @@ return "<waypoint>
 	}
 
 	function putToDB($update=0) {
-		global $db,$waypointsTable;
+		global $db,$waypointsTable,$CONF_server_id,$userID;
 
 		if ($update) {
 			$query="REPLACE INTO ";		
@@ -289,6 +290,27 @@ return "<waypoint>
 						"' , '".prep_for_DB($this->link )."' , '".prep_for_DB($this->description) ."'  )";
 		// echo $query;
 	    $res= $db->sql_query($query);
+		
+		if (!$update) $this->waypointID=mysql_insert_id();
+
+		$log=new Logger();
+		$log->userID  	=$userID;
+		$log->ItemType	=4 ; // waypoint; 
+		$log->ItemID	= $this->waypointID;
+		$log->ServerItemID	=$CONF_server_id ;
+		$log->ActionID  =$update?2:1;  //1  => add  2  => edit;
+		$log->ActionXML	=$this->exportXML();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = ($res<=0)?0:1;
+		$log->ResultDescription ="";
+		
+		if (!$log->put()) { 
+			echo "Problem in logger<BR>";
+		}
+		
+		
 	    if($res <= 0){
 		  echo "Error putting waypount to DB<BR>";
 		  return 0;
