@@ -258,7 +258,7 @@ function getBrowser() {
 		global $DEBUG_OUTPUT;
 		if ($DEBUG_OUTPUT) { 
 			echo "<div id='debugTitleDiv'><STRONG><a href='javascript:toggleVisibility(\"debugDiv\");'>DEBUG OUTPUT</a></STRONG></div>";
-			echo "<div id='debugDiv'$DEBUG_OUTPUT</div>";
+			echo "<div id='debugDiv'>$DEBUG_OUTPUT</div>";
 			$DEBUG_OUTPUT="";
 		}
 	}

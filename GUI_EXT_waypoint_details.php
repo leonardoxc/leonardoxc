@@ -12,11 +12,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	$waypointIDview=$_GET['wID']+0;
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
-
 	require_once dirname(__FILE__)."/CL_flightData.php";
 	require_once dirname(__FILE__)."/FN_functions.php";	
 	require_once dirname(__FILE__)."/FN_UTM.php";
@@ -39,6 +37,8 @@
   </style>
 <script language="javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <?
+	$waypointIDview=$_GET['wID']+0;
+
   $wpInfo =new waypoint($waypointIDview );
   $wpInfo->getFromDB();
   

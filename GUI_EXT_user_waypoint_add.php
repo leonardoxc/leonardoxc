@@ -50,8 +50,8 @@
 		$waypt->description=$_POST['description'];
 
 		if ( $waypt->putToDB(0) ) {
-	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";								
-		 	//echo "<a href='?name=$module_name&op=list_flights'>RETURN to flights</a>"; 
+	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";		
+			echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 						
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 
@@ -74,10 +74,16 @@
 
 	//echo $nearestCountryCode."^^";
   ?>
-  <style type="text/css">
-  body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
-  body {margin:0px}
-  </style>
+<style type="text/css">
+	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
+	 body {margin:0px}
+	.box {
+		 background-color:#F4F0D5;
+		 border:1px solid #555555;
+		padding:3px; 
+		margin-bottom:5px;
+	}
+</style>
   <?
 
  // open_inner_table(_ADD_WAYPOINT,450,"icon_pin.png"); 
@@ -140,13 +146,35 @@
 				else 
 					$areaStr="";
 					
-				$jsStr="fillInForm('".$takeoffItem['name']."','".$takeoffItem['area']."','".$takeoffItem['countryCode']."');";
-				
+				$jsStr="fillInForm('".addslashes($takeoffItem['name'])."','".addslashes($takeoffItem['area'])."','".addslashes($takeoffItem['countryCode'])."');";
+
 				$takeoffLink="<a href=\"javascript:$jsStr\">".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
 
 				$linkToInfoStr1.="<li>$takeoffLink";
 		}
 		$linkToInfoStr1.="</ul>";
+  }
+
+	$takoffsList=getExtrernalServerTakeoffs(2,$waypointLat,-$waypointLon,20,5);
+	
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr2="<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0>";
+		
+		$linkToInfoStr2="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				$distance=$takeoffItem['distance']; 
+				if ($takeoffItem['area']!='not specified')
+					$areaStr=" - ".$takeoffItem['area'];
+				else 
+					$areaStr="";
+					
+				$jsStr="fillInForm('".addslashes($takeoffItem['name'])."','".addslashes($takeoffItem['area'])."','".addslashes($takeoffItem['countryCode'])."');";
+				
+				$takeoffLink="<a href=\"javascript:$jsStr\">".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
+
+				$linkToInfoStr2.="<li>$takeoffLink";
+		}
+		$linkToInfoStr2.="</ul>";
   }
 ?> 
 <script language="javascript">
@@ -179,42 +207,49 @@ function fillInForm(name,area,countrycode){
 </script>
       <form name="form1" method="post" action="">
 
-        <table width=600 border="0" align="center" cellpadding="2" class="shadowBox main_text">
+        <table width=700 border="0" align="center" cellpadding="2" class="shadowBox main_text">
           <tr>
-            <td width=91 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name</font></div></td>
-            <td width="277" bgcolor="#E3E7F2"><font color="#003366">
-              <input name="wname" type="text" id="wname" size="25">
+            <td width=120 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br>
+            (in Local Language) </font></div></td>
+            <td  bgcolor="#E3E7F2"><font color="#003366">
+              <input name="wname" type="text" id="wname" size="30">
               <input name="type" type="hidden" id="type" value="1000">
             </font></td>
-            <td width="182" rowspan="8" valign="top">
-			<? echo $linkToInfoHdr1.$linkToInfoStr1;
+            <td width="250" rowspan="8" valign="top">
+				<div class="box">If you see the lauch name below you can click on it to auto-fill the fields to the left.
+				</div>
+			<?
+				echo $linkToInfoHdr1.$linkToInfoStr1;
+				echo $linkToInfoHdr2.$linkToInfoStr2;	
 			
 			?>
+				
 			&nbsp;</td>
           </tr>
           <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">International
-            Name</font></div></td>
+            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br>
+            (in English) </font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intName" type="text" id="intName" size="25">
+              <input name="intName" type="text" id="intName" size="30">
             </font></td>
           </tr>
           <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region</font></div></td>
+            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br>
+            (In Local Language) </font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="wlocation" type="text" id="wlocation" size="25">
+              <input name="wlocation" type="text" id="wlocation" size="30">
             </font></td>
           </tr>
           <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">International
-            Region</font></div></td>
+            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br>
+            (In English)</font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intLocation" type="text" id="intLocation" size="25">
+              <input name="intLocation" type="text" id="intLocation" size="30">
             </font></td>
           </tr>
           <tr>
             <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Country
-            Code</font></div></td>
+            </font></div></td>
             <td bgcolor="#E3E7F2"><font color="#003366">
               <select name="countryCode">
                 <? 				

@@ -89,16 +89,25 @@ function edit_takeoff(id) {
 	 MWJ_changeSize( 'takeoffAddID', 410,350 );
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
  }
+
+function delete_takeoff(id) {	 
+	 takeoffTip.hide();
+	 document.getElementById('takeoffBoxTitle').innerHTML = "Delete Takeoff";		 
+ 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
+	 MWJ_changeSize('addTakeoffFrame',410,220);
+	 MWJ_changeSize( 'takeoffAddID', 410,250 );
+	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,220);
+ }
+
 </script>
 <? }  ?>
 <script language="javascript">
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
 		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		MWJ_changeSize('addTakeoffFrame',610,320);
-		MWJ_changeSize( 'takeoffAddID', 610,350 );
-		toggleVisible('takeoffAddID','takeoffAddPos',30,0,610,320);
-
+		MWJ_changeSize('addTakeoffFrame',705,320);
+		MWJ_changeSize( 'takeoffAddID', 705,350 );
+		toggleVisible('takeoffAddID','takeoffAddPos',30,0,705,320);
 	 }
 </script>
 

@@ -557,7 +557,7 @@ var $maxPointNum=1000;
 	}
 
 	function getNextPointPos($pointArray,$currentPos){
-		for($i=$currentPos+1;$i<count($pointArray);$i++) {
+		for($i=$currentPos+1; $i < count($pointArray);$i++) {
 			if ($pointArray[$i]{0}=='B') return $i;
 		}
 		return $i;

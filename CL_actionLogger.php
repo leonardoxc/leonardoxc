@@ -175,7 +175,7 @@ class Logger {
 		$values_list=substr($values_list,0,-1);
 
 		$query = "INSERT into $logTable ($vars_list ) VALUES ($values_list)";
-		 echo $query;
+		// echo $query;
 		$res = $db->sql_query($query);
 		if ($res) return $db->sql_nextid();
 		else { 

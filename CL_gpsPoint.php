@@ -267,6 +267,54 @@ return "<waypoint>
 	
 	}
 
+	function delete() {
+		global $userID,$CONF_server_id,$waypointsTable ,$db,$flightsTable;
+		// we get the info from db in order to log it
+		if (!$this->name) $this->getFromDB() ;
+
+		$query="DELETE from $waypointsTable  WHERE ID=".$this->waypointID." ";
+		$res= $db->sql_query($query);
+
+		$log=new Logger();
+		$log->userID  	=$userID;
+		$log->ItemType	=4 ; // waypoint; 
+		$log->ItemID	= $this->waypointID;
+		$log->ServerItemID	=$CONF_server_id ;
+		$log->ActionID  =4;  //4  =>delete
+		$log->ActionXML	=$this->exportXML();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = ($res<=0)?0:1;
+		$log->ResultDescription ="";
+		
+		if (!$log->put()) { 
+			echo "Problem in logger<BR>";
+		}
+
+	    if($res <= 0){
+		  echo "Error deleting waypoint from DB<BR>";
+		  return 0;
+	    }
+		
+
+		$query="SELECT ID FROM $flightsTable WHERE takeoffID=".$this->waypointID." OR landingID=".$this->waypointID." ";
+		// echo $query;
+		$res= $db->sql_query($query);	
+	    if($res <= 0){
+		  echo "Error getting flights with deleted waypoint <BR>";
+		  return 0;
+	    }		
+		$waypoints=getWaypoints();
+		while(  $row = $db->sql_fetchrow($res)) {
+			$flightID=$row['ID'];
+			$flight=new flight();
+			$flight->getFlightFromDB($flightID);
+			$flight->updateTakeoffLanding($waypoints);
+		}
+		return 1;		
+	}
+
 	function putToDB($update=0) {
 		global $db,$waypointsTable,$CONF_server_id,$userID;
 

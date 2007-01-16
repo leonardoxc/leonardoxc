@@ -51,7 +51,7 @@
 
 		if ( $waypt->putToDB(0) ) {
 	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";								
-		 	//echo "<a href='?name=$module_name&op=list_flights'>RETURN to flights</a>"; 
+			echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 

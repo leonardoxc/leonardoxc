@@ -44,3 +44,6 @@ CREATE TABLE `leonardo_log` (
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
 ) TYPE=MyISAM   ;
+
+
+ALTER TABLE `leonardo_waypoints` CHANGE `description` `description` TEXT NOT NULL DEFAULT '' ;
