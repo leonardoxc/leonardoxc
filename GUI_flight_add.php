@@ -10,7 +10,53 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+?>
+<style type="text/css">
+<!--
+.box {
+	 background-color:#F4F0D5;
+	 border:1px solid #555555;
+	padding:3px; 
+	margin-bottom:5px;
+}
 
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+.takeoffOptionsDropDown {width:410px; }
+
+-->
+</style>
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='addTakeoffDiv'>
+		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
+</div>
+<?
  $datafile=$_FILES['datafile']['name'];
  open_inner_table( _SUBMIT_FLIGHT,650,"icon_add.png");
  echo "<tr><td>";
@@ -158,6 +204,34 @@ function setValue(obj)
 		$errMsg=getAddFlightErrMsg($result,$flightID);
 		addFlightError($errMsg);	
 	} else {
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+
+		if ($flight->takeoffVinicity > $takeoffRadious*2 ) {
+?>
+<script language="javascript">
+	 function user_add_takeoff(lat,lon,id) {	 
+		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
+		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?refresh=0&lat='+lat+'&lon='+lon+'&takeoffID='+id;		
+		MWJ_changeSize('addTakeoffFrame',720,345);
+		MWJ_changeSize( 'takeoffAddID', 725,365 );
+		toggleVisible('takeoffAddID','takeoffAddPos',-10,-50,725,435);
+	 }
+</script>
+
+
+
+
+<?
+			$firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);
+			$takeoffLink="<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle> 
+The takeoff/launch of your flight is not registered in Leonardo. <img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br>
+This is nothing to worry about, but you can easily provide this info <br>by clicking on the 'Register Takeoff' link below.
+<br> If you are not sure about some of the information is OK to skip this step. <br><BR> <a
+				 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\">Register Takeoff</a><div id='takeoffAddPos'></div></div>";
+			echo $takeoffLink;
+		}
+			
 		?>  	 
 		  <p align="center"><span class="style111"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_YOUR_FLIGHT_HAS_BEEN_SUBMITTED ?></font></span> <br>
 		  <br>

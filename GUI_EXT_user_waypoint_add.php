@@ -57,8 +57,10 @@
 			  }
 		  </script>
 		<?
-	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";			
-			echo "<a href='javascript:refreshParent();'>RETURN </a>"; 	
+	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";
+			$refresh=1;
+			if ($_GET['refresh']==0) $refresh=0;
+			if ($refresh) echo "<a href='javascript:refreshParent();'>RETURN </a>"; 	
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 
@@ -187,7 +189,7 @@
   }
 ?> 
 <script language="javascript">
-function MWJ_findObj2( oName, oFrame, oDoc ) {
+function MWJ_findObj( oName, oFrame, oDoc ) {
 	if( !oDoc ) { if( oFrame ) { oDoc = oFrame.document; } else { oDoc = window.document; } }
 	if( oDoc[oName] ) { return oDoc[oName]; } if( oDoc.all && oDoc.all[oName] ) { return oDoc.all[oName]; }
 	if( oDoc.getElementById && oDoc.getElementById(oName) ) { return oDoc.getElementById(oName); }

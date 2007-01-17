@@ -19,17 +19,20 @@ echo "<BR>";
 <script language="javascript">
 
 function updateRssURL() {
-	cCode=MWJ_findObj("country_select").value;
-	olcScore=MWJ_findObj("olc_score_select").value;
-	itemNum=MWJ_findObj("item_num").value;
+	var	cCode=MWJ_findObj("country_select").value;
+	var olcScore=MWJ_findObj("olc_score_select").value;
+	var	itemNumC=MWJ_findObj("item_num_select").value;
 
-	a1="country="+cCode;
-	a2="&olcScore="+olcScore;
-	a3="&c="+itemNum;
+	var	a1="country="+cCode;
+	var	a2="&olcScore="+olcScore;
+	var	a3="&c=";
+	a3=a3.concat(itemNumC);
 
-	rss_url="<?=$rss_url_base?>?"+a1+a2+a3;
-	rss_link="<a href='"+rss_url+"' target='_blank'>"+rss_url+"</a>";
-	MWJ_changeContents('rss_url',rss_link);
+	var base='<?=$rss_url_base?>?';
+	var rss_url= base.concat(a1,a2,a3);
+	var rss_link="<a href='"+rss_url+"' target='_blank'>"+rss_url+"</a>";
+
+    MWJ_changeContents('rss_url',rss_link);
 }
 
 </script>
@@ -62,13 +65,13 @@ function updateRssURL() {
       <td><div align="right"><strong>#
               of items </strong></div></td>
       <td>
-        <select name="item_num" id="item_num" onChange="updateRssURL()">
-          <option></option>
-          <option>10</option>
-          <option>20</option>
-          <option>30</option>
-          <option>40</option>
-          <option>50</option>
+        <select name="item_num_select" id="item_num_select" onChange="updateRssURL()">
+          <option value="0"></option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
       </select></td>
     </tr>
     <tr>
