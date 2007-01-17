@@ -32,10 +32,9 @@
     }
 	$waypointLat=$_REQUEST['lat']+0;
 	$waypointLon=$_REQUEST['lon']+0;
-
-
-
-	if ( $_POST['addWaypoint']==1 ) { // ADD waypoint
+ 
+	$postForm=$_GET['postForm'];
+	if ( $_POST['addWaypoint']==1 && $postForm==1) { // ADD waypoint
 		$waypt=new waypoint(0);
 		
 		$waypt->name=$_POST['wname'];
@@ -50,8 +49,16 @@
 		$waypt->description=$_POST['description'];
 
 		if ( $waypt->putToDB(0) ) {
-	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";		
-			echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 						
+		?>
+		  <script language="javascript">
+			  function refreshParent() {
+				  topWinRef=top.location.href;
+				  top.window.location.href=topWinRef;
+			  }
+		  </script>
+		<?
+	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";			
+			echo "<a href='javascript:refreshParent();'>RETURN </a>"; 	
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 
@@ -74,15 +81,17 @@
 
 	//echo $nearestCountryCode."^^";
   ?>
+
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
-	 body {margin:0px}
+	 body {margin:0px; background-color:#E9E9E9}
 	.box {
 		 background-color:#F4F0D5;
 		 border:1px solid #555555;
 		padding:3px; 
 		margin-bottom:5px;
 	}
+	.boxTop {margin:0; }
 </style>
   <?
 
@@ -178,7 +187,7 @@
   }
 ?> 
 <script language="javascript">
-function MWJ_findObj( oName, oFrame, oDoc ) {
+function MWJ_findObj2( oName, oFrame, oDoc ) {
 	if( !oDoc ) { if( oFrame ) { oDoc = oFrame.document; } else { oDoc = window.document; } }
 	if( oDoc[oName] ) { return oDoc[oName]; } if( oDoc.all && oDoc.all[oName] ) { return oDoc.all[oName]; }
 	if( oDoc.getElementById && oDoc.getElementById(oName) ) { return oDoc.getElementById(oName); }
@@ -205,54 +214,55 @@ function fillInForm(name,area,countrycode){
 	a.value=countrycode;
 }
 </script>
-      <form name="form1" method="post" action="">
+      <form name="form1" method="post" action="GUI_EXT_user_waypoint_add.php?postForm=<? echo ($_GET['postForm']+1); ?>" >
 
-        <table width=700 border="0" align="center" cellpadding="2" class="shadowBox main_text">
+        <table width="700" border="0" align="center">
           <tr>
-            <td width=120 bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br>
-            (in Local Language) </font></div></td>
-            <td  bgcolor="#E3E7F2"><font color="#003366">
-              <input name="wname" type="text" id="wname" size="30">
-              <input name="type" type="hidden" id="type" value="1000">
-            </font></td>
-            <td width="250" rowspan="8" valign="top">
-				<div class="box">If you see the lauch name below you can click on it to auto-fill the fields to the left.
-				</div>
-			<?
+            <td><div class="box boxTop"><img src="img/icon_help.png" width="16" height="16" align="absmiddle" /> You can enter the takeoff infomation if you know it. If not sure it is OK to close this window </div></td>
+          </tr>
+          <tr>
+            <td><table width="700" border="0" align="center" cellpadding="2" class="shadowBox main_text">
+              <tr>
+                <td width="120" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br />
+                (in Local Language) </font></div></td>
+                <td  bgcolor="#E3E7F2"><font color="#003366">
+                  <input name="wname" type="text" id="wname" size="30" />
+                  <input name="type" type="hidden" id="type" value="1000" />
+                </font></td>
+                <td width="250" rowspan="8" valign="top"><div class="box">If you see the lauch name below you can click on it to auto-fill the fields to the left. </div>
+                    <?
 				echo $linkToInfoHdr1.$linkToInfoStr1;
 				echo $linkToInfoHdr2.$linkToInfoStr2;	
 			
 			?>
-				
-			&nbsp;</td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br>
-            (in English) </font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intName" type="text" id="intName" size="30">
-            </font></td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br>
-            (In Local Language) </font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="wlocation" type="text" id="wlocation" size="30">
-            </font></td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br>
-            (In English)</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="intLocation" type="text" id="intLocation" size="30">
-            </font></td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Country
-            </font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <select name="countryCode">
-                <? 				
+                  &nbsp;</td>
+              </tr>
+              <tr>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br />
+                  (in English) </font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <input name="intName" type="text" id="intName" size="30" />
+                </font></td>
+              </tr>
+              <tr>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br />
+                  (In Local Language) </font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <input name="wlocation" type="text" id="wlocation" size="30" />
+                </font></td>
+              </tr>
+              <tr>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br />
+                  (In English)</font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <input name="intLocation" type="text" id="intLocation" size="30" />
+                </font></td>
+              </tr>
+              <tr>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Country </font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <select name="countryCode">
+                    <? 				
 					foreach ($countries as $key => $value) {
 						if ($nearestCountryCode==$key) $sel=" selected ";
 						else $sel="";		
@@ -260,28 +270,29 @@ function fillInForm(name,area,countrycode){
 					}
 								
 				?>
-              </select>
-            </font></td>
-          </tr>
-          <tr>
-            <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Relevant URL</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <input name="link" type="text" id="link" size="45" >
-            </font></td>
-          </tr>
-          <tr>
-            <td valign="top" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Description</font></div></td>
-            <td bgcolor="#E3E7F2"><font color="#003366">
-              <textarea name="description" cols="35" rows="4" id="description"></textarea>
-            </font></td>
-          </tr>
-          <tr>
-            <td valign="top" bgcolor="#CFE2CF">&nbsp;</td>
-            <td bgcolor="#E3E7F2"><input type="submit" name="Submit" value="<? echo _ADD_WAYPOINT ?>" />
-              <input type="hidden" name="addWaypoint" value="1" />
-              <input name="lat" type="hidden" id="lat" value='<? echo $waypointLat?>' />
-              <input name="lon" type="hidden" id="lon" value='<? echo $waypointLon?>'  /></td>
+                  </select>
+                </font></td>
+              </tr>
+              <tr>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Relevant URL</font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <input name="link" type="text" id="link" size="45">
+                </font></td>
+              </tr>
+              <tr>
+                <td valign="top" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Description</font></div></td>
+                <td bgcolor="#E3E7F2"><font color="#003366">
+                  <textarea name="description" cols="35" rows="4" id="description"></textarea>
+                </font></td>
+              </tr>
+              <tr>
+                <td valign="top" bgcolor="#CFE2CF">&nbsp;</td>
+                <td bgcolor="#E3E7F2"><input type="submit" name="Submit" value="<? echo _ADD_WAYPOINT ?>" />
+                    <input type="hidden" name="addWaypoint" value="1" />
+                    <input name="lat" type="hidden" id="lat" value='<? echo $waypointLat?>' />
+                    <input name="lon" type="hidden" id="lon" value='<? echo $waypointLon?>'></td>
+              </tr>
+            </table></td>
           </tr>
         </table>
-</form>
-    
+        </form>    

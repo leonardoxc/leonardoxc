@@ -50,8 +50,16 @@
 		$waypt->description=$_POST['description'];
 
 		if ( $waypt->putToDB(0) ) {
+		?>
+		  <script language="javascript">
+			  function refreshParent() {
+				  topWinRef=top.location.href;
+				  top.window.location.href=topWinRef;
+			  }
+		  </script>
+		<?
 	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";								
-			echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 
+		 	echo "<a href='javascript:refreshParent();'>RETURN </a>"; 
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 

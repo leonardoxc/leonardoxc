@@ -105,22 +105,22 @@ function delete_takeoff(id) {
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
 		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		MWJ_changeSize('addTakeoffFrame',705,320);
-		MWJ_changeSize( 'takeoffAddID', 705,350 );
-		toggleVisible('takeoffAddID','takeoffAddPos',30,0,705,320);
+		MWJ_changeSize('addTakeoffFrame',720,345);
+		MWJ_changeSize( 'takeoffAddID', 725,365 );
+		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,435);
 	 }
 </script>
 
 <div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
-<table width="100%" >
-<tr><td class="infoBoxHeader" >
-<div align="left" style="display:block; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
-<div align="right" style="display:inline; float:right; clear:right;">
-<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;">
-<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-</td></tr></table>
-<div id='addTakeoffDiv'>
-<iframe id="addTakeoffFrame" width="100" height="120" frameborder=0 style='border-width:0px'></iframe></div>
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='addTakeoffDiv'>
+		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
 </div>
 
 

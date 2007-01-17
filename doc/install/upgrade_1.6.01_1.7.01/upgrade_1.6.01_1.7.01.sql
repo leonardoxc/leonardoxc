@@ -47,3 +47,4 @@ CREATE TABLE `leonardo_log` (
 
 
 ALTER TABLE `leonardo_waypoints` CHANGE `description` `description` TEXT NOT NULL DEFAULT '' ;
+

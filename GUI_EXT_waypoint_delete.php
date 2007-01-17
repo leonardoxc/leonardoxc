@@ -45,8 +45,16 @@
 	if ( $_POST['deleteWaypoint']==1 ) { // CHANGE waypoint
 		$waypt=new waypoint($waypointIDdelete);
 		if ( $waypt->delete() ) {
+		?>
+		  <script language="javascript">
+			  function refreshParent() {
+				  topWinRef=top.location.href;
+				  top.window.location.href=topWinRef;
+			  }
+		  </script>
+		<?
 			 echo "<center>"._THE_TAKEOFF_HAS_BEEN_DELETED."<br><br>";
-			 echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 
+			 echo "<a href='javascript:refreshParent();'>RETURN </a>"; 
 			 echo "<br></center>";
 		} else echo("<H3> Error in deleting waypoint  from DB! </H3>\n");			
 	} else {

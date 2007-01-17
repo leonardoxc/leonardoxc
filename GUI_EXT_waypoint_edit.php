@@ -55,8 +55,16 @@
 		$waypt->description=$_POST['description'];
 
 		if ( $waypt->putToDB(1) ) {
+		?>
+		  <script language="javascript">
+			  function refreshParent() {
+				  topWinRef=top.location.href;
+				  top.window.location.href=topWinRef;
+			  }
+		  </script>
+		<?
 			 echo "<center>"._THE_CHANGES_HAVE_BEEN_APPLIED."<br><br>";
-			 echo "<a href='javascript:parent.window.location.reload(true);'>RETURN </a>"; 
+			 echo "<a href='javascript:refreshParent();'>RETURN </a>"; 
 			 echo "<br></center>";
 		} else echo("<H3> Error in puting waypoint info into DB! </H3>\n");			
 	} else {
