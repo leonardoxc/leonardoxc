@@ -1,5 +1,5 @@
 <? 
-
+		global $firstPoint;
 		echo '<div style=" background-color:#E9D8D1; margin-top:5px; border-top-width:1px;  border-top-style:solid;">';
 		echo "<a href='http://www.flightlog.org/fl.html?rqtid=6&x=".-$firstPoint->lon."&y=".$firstPoint->lat."' target=_blank>flightlog.org</a> | ";
 

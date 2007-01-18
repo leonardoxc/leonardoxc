@@ -1078,7 +1078,9 @@ var $maxPointNum=1000;
 		 exit();
 	  }
 		
-	  $row = $db->sql_fetchrow($res);
+	  if (! $row = $db->sql_fetchrow($res) ) {
+		  return 0;	  
+	  }
 	  
 		$this->flightID=$flightID;
 		$name=getPilotRealName($row["userID"]);
@@ -1140,7 +1142,8 @@ var $maxPointNum=1000;
 		$this->olcDateSubmited =$row["olcDateSubmited"];
 		
 	  	$db->sql_freeresult($res);
-		$this->updateTakeoffLanding();	
+		$this->updateTakeoffLanding();
+		return 1;	
 	}
 
 	function updateTakeoffLanding($waypoints=array()) {

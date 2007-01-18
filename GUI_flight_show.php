@@ -20,7 +20,11 @@
 
   $flightID+=0;
   $flight=new flight();
-  $flight->getFlightFromDB($flightID);
+  if ( ! $flight->getFlightFromDB($flightID) ) {
+  	echo "<br><div align='center'>No such flight exists</div><br><BR>";
+	return;  
+  }
+  
   if ( $flight->private && $flight->userID!=$userID && ! is_leo_admin($userID) ) {
 		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
@@ -102,6 +106,14 @@ function delete_takeoff(id) {
 </script>
 <? }  ?>
 <script language="javascript">
+	function set_flight_bounds(id) {
+		MWJ_changeContents('takeoffBoxTitle',"Set Start - Stop time for flight");
+		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_flight_set_bounds.php?flightID='+id;		
+		MWJ_changeSize('addTakeoffFrame',740,395);
+		MWJ_changeSize( 'takeoffAddID', 745,415 );
+		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
+	}
+	
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
 		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
@@ -198,7 +210,7 @@ function delete_takeoff(id) {
 <?
 	$legendRight="";
 	if ( $flight->userID==$userID || is_leo_admin($userID) )
-		$legendRight="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
+		$legendRight="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> <a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
