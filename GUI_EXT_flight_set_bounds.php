@@ -105,31 +105,43 @@
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
 	
- if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
- 	$chart1= $flight->getChartRelPath("alt",$PREFS->metricSystem);
+	$flight->updateCharts(1,1); // force update, raw charts
+
+ if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem,1))) 
+ 	$chart1= $flight->getChartRelPath("alt",$PREFS->metricSystem,1);
 //	$chart1= "<img width='600' height='120' src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2=$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem);
+if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem,1)) )
+	$chart2=$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem,1);
 //	$chart2="<img width='600' height='120' src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3=$flight->getChartRelPath("speed",$PREFS->metricSystem);
+if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem,1)) )
+	$chart3=$flight->getChartRelPath("speed",$PREFS->metricSystem,1);
 //	$chart3="<img width='600' height='120' src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
 if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4=$flight->getChartRelPath("vario",$PREFS->metricSystem);
+	$chart4=$flight->getChartRelPath("vario",$PREFS->metricSystem,1);
 //	$chart4="<img width='600' height='120' src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
 if ($chart1) { // thereis altitude -> select alt, vario, and check for speed graph if present
 	$img1=$chart1; // alt
-	$img2=$chart4; // cario
-	if ($chart3) $img3=$chart3; // speed
-	else $img3=$chart2; // takeoff distance
+	$title1="Height";
+	$img2=$chart4; // vario
+	$title2="Vario";
+	if ($chart3)  {
+		$img3=$chart3; // speed
+		$title3="Speed";
+	} else {
+		$img3=$chart2; // takeoff distance
+		$title3="Takeoff Distance";
+	}
 } else { // no alt , no vario !!
 	// if speed is present
 	if ($chart3) {
 		 $img1=$chart3; // speed
+	  	 $title1="Speed";
  		 $img2=$chart2; // takeoff distance
+		 $title2="Takeoff Distance";
 	} else { // only takeoff distance present
 	 		 $img1=$chart2; // takeoff distance
+			 $title2="Takeoff Distance";
 	}
 }
 
@@ -178,9 +190,13 @@ function fillInForm(name,area,countrycode){
 			  <div style="position: absolute; top: 14px; left: 579px; z-index: 100; height:89px; width:2px; background-color:#FF0000;" 
               id="timeLine2"></div>
 
-			  <div style="position: absolute; top: 98px; left: 42px; z-index: 50; height:5px; width:539px; background-color:#0000ff;" 
-              id="timeBar"></div>
+			  <div style="position: absolute; top: 98px; left: 42px; z-index: 50; height:5px; font-size:4px; line-height:5px; width:539px; background-color:#0000ff; border:0; padding:0;" 
+              id="timeBar" ></div>
 			  
+			  <div style="position: absolute; float:right; right:20px; top: 1px; z-index: 50; padding-right:4px; text-align:right;
+						 height:12px; width:130px; border:0px solid #777777; background-color:#F2F599;" 
+              id="timeBar"><?=$title1?></div>
+
               <img style="position: absolute; top: 0px; left:0px; z-index: 0; cursor: crosshair;" 
               id="imggraphs" src="<?=$img1?>" onclick="SetTimer(event)" alt="graphs" 
               title="Click to set Time" border="0" 
@@ -191,12 +207,12 @@ function fillInForm(name,area,countrycode){
               <p>&nbsp;              </p>
               <p>
                 <div align="right">
-                  <input name="timeSel" id="timeSel" type="radio" value="1" checked="checked" />
+                  <input name="timeSel" type="radio" value="1" checked="checked" />
                   Start Time
                   <input name="timeText1" type="text" id="timeText1" size="5" maxlength="5" />
               </div>
              	<div align="right">
-             	  <input name="timeSel" id="timeSel" type="radio" value="2" />
+             	  <input name="timeSel" type="radio" value="2" />
              	  End Time
                   <input name="timeText2" type="text" id="timeText2" size="5" maxlength="5" />
               </div>
@@ -208,10 +224,20 @@ function fillInForm(name,area,countrycode){
                 </p></td>
           </tr>
           <tr>
-            <td bgcolor="#E3E7F2"><img src="<?=$img2?>" alt="graphs" border="0" height="120" width="600"></td>
+            <td bgcolor="#E3E7F2">
+			 <div style="position: relative; width: 600px; height:120px;"> 
+			  <div style="position: absolute; float:right; right:20px; top: 1px; z-index: 50; padding-right:4px; text-align:right;
+						 height:12px; width:130px; border:0px solid #777777; background-color:#F2F599;"  id="timeBar"><?=$title2?>
+			  </div>
+			<img src="<?=$img2?>" alt="graphs" border="0" height="120" width="600">
+			</div></td>
           </tr>
           <tr>
-            <td bgcolor="#E3E7F2"><img src="<?=$img3?>" alt="graphs" border="0" height="120" width="600"></td>
+            <td bgcolor="#E3E7F2"> <div style="position: relative; width: 600px; height:120px;"> 
+			  <div style="position: absolute; float:right; right:20px; top: 1px; z-index: 50; padding-right:4px; text-align:right;
+						 height:12px; width:130px; border:0px solid #777777; background-color:#F2F599;"  id="timeBar"><?=$title3?>
+			  </div><img src="<?=$img3?>" alt="graphs" border="0" height="120" width="600">
+			</div></td>
           </tr>
         </table>
 
@@ -227,8 +253,8 @@ function fillInForm(name,area,countrycode){
 	var timeLine=new Array();
 	timeLine[1] = document.getElementById("timeLine1").style;
 	timeLine[2] = document.getElementById("timeLine2").style;
-	timeBar=document.getElementById("timeBar").style;
-	timeBarObj=document.getElementById("timeBar");
+	var timeBar=document.getElementById("timeBar").style;
+	var timeBarObj=document.getElementById("timeBar");
 	
 	var marginLeft=40;
 	var marginRight=19;
@@ -237,33 +263,35 @@ function fillInForm(name,area,countrycode){
 	   ct=ct/60;
 	   h=Math.floor(ct/60);
   	   if (h<10) h="0"+h;
-	   m=ct % 60;
+	   m=Math.floor(ct % 60);
 	   if (m<10) m="0"+m;
 	   return h+":"+m;
 	}
 	
 	function MWJ_changeSize( oName, oWidth, oHeight, oFrame ) {
-	var theDiv = MWJ_findObj( oName, oFrame ); if( !theDiv ) { return; }
-	if( theDiv.style ) { theDiv = theDiv.style; } var oPix = document.childNodes ? 'px' : 0;
-	if( theDiv.resizeTo ) { theDiv.resizeTo( oWidth, oHeight ); }
-	theDiv.width = oWidth + oPix; theDiv.pixelWidth = oWidth;
-	theDiv.height = oHeight + oPix; theDiv.pixelHeight = oHeight;
-
-}
+		var theDiv = MWJ_findObj( oName, oFrame ); if( !theDiv ) { return; }
+		if( theDiv.style ) { theDiv = theDiv.style; }
+		 var oPix = document.childNodes ? 'px' : 0;		
+		 if( theDiv.resizeTo ) { theDiv.resizeTo( oWidth, oHeight ); }
+		theDiv.width = oWidth + oPix; theDiv.pixelWidth = oWidth;
+		theDiv.height = oHeight + oPix; theDiv.pixelHeight = oHeight;
+	}
 
   function DisplayCrosshair(i){ // i=1 for the start , 2 end 	 
 	   var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime)
 	   timeLine[i].left = marginLeft + Temp  + "px";
 	   
 	   if (i==1) { 
-		   	timeBar.left=timeLine[i].left;
-			newWidth=( Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[2] / EndTime) - Temp  )  ;
-			MWJ_changeSize("timeBar",newWidth,5);
+		   	timeBar.left=marginLeft + Temp  + "px"; //timeLine[i].left;
+			var newWidth=( Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[2] / EndTime) - Temp  )  ;
+			timeBar.width=newWidth+"px";
+			//MWJ_changeSize("timeBar",newWidth,5);
 	   } else {
 			newWidth=( Temp - Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[1] / EndTime)  )  ;
-			MWJ_changeSize("timeBar",newWidth,5);	   
+			timeBar.width=newWidth+"px";
+			// MWJ_changeSize("timeBar",newWidth,5);	   
 	   }
-//   	   if (i==2) timeBar.left=timeLine[i].left ;
+
 	   timeText=document.getElementById("timeText"+i);
 	   timeText.value=getCurrentTime(StartTime + CurrTime[i]);
  }
@@ -272,11 +300,6 @@ function getCheckedValue(radioObj) {
 	if(!radioObj)
 		return "";
 	var radioLength = radioObj.length;
-	if(radioLength == undefined)
-		if(radioObj.checked)
-			return radioObj.value;
-		else
-			return "";
 	for(var ii = 0; ii < radioLength; ii++) {
 		if(radioObj[ii].checked) {
 			return radioObj[ii].value;
@@ -311,6 +334,5 @@ function SetTimer(evt) {
   CurrTime[2] = EndTime;
   DisplayCrosshair(1);
   DisplayCrosshair(2);
-  
-  
+    
 </script>

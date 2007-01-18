@@ -187,10 +187,12 @@ var $maxPointNum=1000;
 		else $suffix="";
 		return $flightsWebPath."/".$this->userID."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";  
 	}    
-	function getChartRelPath($chartType,$unitSystem=1) {
+	function getChartRelPath($chartType,$unitSystem=1,$rawChart=0) {
 		global $flightsWebPath;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
+		if ($rawChart) $suffix.=".raw";
+		else $suffix.="";
 		return $flightsWebPath."/".$this->userID."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";  
 	} 
 	function getPhotoRelPath($photoNum) {
@@ -217,10 +219,14 @@ var $maxPointNum=1000;
 		else $suffix="";
 		return $flightsAbsPath."/".$this->userID."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";  
 	}    
-	function getChartFilename($chartType,$unitSystem=1) {
+	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
 		global $flightsAbsPath;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
+
+		if ($rawChart) $suffix.=".raw";
+		else $suffix.="";
+
 		return $flightsAbsPath."/".$this->userID."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";  
 	} 
 	function getPhotoFilename($photoNum) {
@@ -241,6 +247,19 @@ var $maxPointNum=1000;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=kml_trk&flightID=".$this->flightID;
 	}
 
+	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $flightsAbsPath;
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+	}
+	
+	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $flightsWebPath;
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+	}
    //require dirname(__FILE__)."/";
 
 	function kmlGetDescription($ext,$getFlightKML) {
@@ -533,6 +552,68 @@ var $maxPointNum=1000;
 		return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance);
 	}
 
+  function getRawValues($forceRefresh=0, $getAlsoXY=0) {
+    $this->setAllowedParams();
+
+    $data_time = array ();
+    $data_alt = array ();
+    $data_speed = array ();
+    $data_vario = array ();
+    $data_takeoff_distance = array ();
+    $data_X =array();
+    $data_Y =array();
+
+	if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) 	$this->storeIGCvalues(); // if no file exists do the proccess now
+
+    $lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
+    if (!$lines) return;
+    $i = 0;
+
+	// first 3 lines of pointsFile is reserved for info
+	for($k=0;$k< count($lines);$k++){
+		$line = trim($lines[$k]);
+		if (strlen($line) == 0) continue;
+		  
+		eval($line);
+		  
+	//	if ($alt > $this->maxAllowedHeight)  continue;
+    //    if ($speed > $this->maxAllowedSpeed) continue;
+    //    if (abs($vario) > $this->maxAllowedVario) continue;
+
+		if  ( $time<$lastPointTime ) continue;		
+		$lastPointTime=$time;
+
+        if ($time_in_secs) $data_time[$i] = $time;
+        else $data_time[$i] = sec2Time($time, 1);
+				
+        $data_alt[$i] = $alt;
+        $data_speed[$i] = $speed;
+        $data_vario[$i] = $vario;
+        if ($getAlsoXY) {
+          $data_X[$i]=-$lon;
+          $data_Y[$i]=$lat;
+        }
+
+        if ($i > 0) {
+			// $t_dis=gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) ;
+			// $data_takeoff_distance[$i] = $t_dis/1000; //gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) /1000;		
+			$data_takeoff_distance[$i]=$dis;
+        } else {
+			$data_takeoff_distance[$i] = 0;
+			$firstLat=$lat;
+			$firstLon=$lon;
+		}
+		
+        $i ++;
+    } //end for loop
+    
+    if ($getAlsoXY)
+      return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance,$data_X,$data_Y);
+    else
+      return array ($data_time, $data_alt, $data_speed, $data_vario, $data_takeoff_distance);
+
+  }
+
 	function getXYValues() {
 		global $flightsAbsPath;
 
@@ -554,6 +635,155 @@ var $maxPointNum=1000;
 			} 
 		}
 		return array($data_X,$data_Y);
+	}
+
+	function storeIGCvalues() {
+		global $flightsAbsPath;
+
+		$data_time =array();
+		$data_alt =array();
+		$data_speed =array();
+		$data_vario =array();
+		$data_takeoff_distance=array();
+
+		$filename=$this->getIGCFilename(0);  
+		$lines = @file ($filename); 
+		if (!$lines) return;
+
+		$i=0;
+		$day_offset =0; 
+		
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;				
+			if ($line{0}=='B') {
+					if  ( strlen($line) < 23 ) 	continue;
+					$thisPoint=new gpsPoint($line,$this->timezone);
+					$thisPoint->gpsTime+=$day_offset;
+					// $goodPoints[$i]['time']=sec2Time($thisPoint->getTime(),1);
+					$goodPoints[$i]['time']=$thisPoint->getTime();
+					$goodPoints[$i]['lon']=$thisPoint->lon;
+					$goodPoints[$i]['lat']=$thisPoint->lat;
+					
+					$goodPoints[$i]['alt']=$thisPoint->getAlt();				
+
+					if ($i>0) {						
+						$tmp = $lastPoint->calcDistance($thisPoint);			
+						if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 3600 )  { // more than 1 hour
+                    		$day_offset = 86400; // if time seems to have gone backwards, add a day
+		                    $thisPoint->gpsTime += 86400;
+        		        } else if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 0 ) {
+							$lastPoint=new gpsPoint($line,$this->timezone);
+							$lastPoint->gpsTime+=$day_offset;
+							continue;
+						}	
+						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;	
+						if ($deltaseconds) {
+							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
+							$goodPoints[$i]['vario'] =($thisPoint->getAlt() - $lastPoint->getAlt() ) / $deltaseconds;
+						} else {
+							$speed =0;
+							$data_vario[$i]=0;
+						}
+
+						$goodPoints[$i]['speed']=$speed;
+						$goodPoints[$i]['dis']=  $takeoffPoint->calcDistance($thisPoint) /1000;
+					}	else  {
+						$goodPoints[$i]['speed']=0;
+						$goodPoints[$i]['vario']=0;
+						$takeoffPoint=new gpsPoint($line,$this->timezone);
+						$goodPoints[$i]['dis']=0;
+					}
+					$lastPoint=new gpsPoint($line,$this->timezone);
+					$lastPoint->gpsTime+=$day_offset;
+
+					$i++;
+			} 
+		}
+	
+		$pointsNum=count($goodPoints);
+//echo "pointsNum : $pointsNum<br>";
+		//$min_time=floor($takeoffPoint->getTime()/60)*60;
+		//$max_time=ceil($lastPoint->getTime()/60)*60;
+//	echo "max / min time: $max_time $min_time<BR>"; 
+		$min_time=floor($goodPoints[0]['time']/60)*60;
+		$max_time=ceil($goodPoints[$pointsNum-1]['time']/60)*60;
+
+		//echo "max / min time: $max_time $min_time<BR>"; 
+
+		$interval=20;
+		$k=0;
+		for($i=$min_time;$i<=$max_time;$i=$i+$interval) {
+			$normPoints[$k]=array();
+			$normPoints[$k]['timeText']=sec2time($i);
+			$normPoints[$k]['time']=$i;		
+	//		array_push($data_time_norm,sec2time($i) );
+	//		array_push($data_time_norm_secs,$i );
+			$k++;
+		}
+	
+		$org_array_pos=0;
+		foreach($normPoints as $norm_array_pos=>$normPoint) { // for each point  in the timeline
+			$timeval=$normPoint['time'];
+			if ( $goodPoints[$org_array_pos]['time'] >= $timeval && $org_array_pos< count($goodPoints)  && 
+				!($org_array_pos==0 && $goodPoints[0]['time'] < $timeval)   ) {  
+	
+				$normPoints[$norm_array_pos]['lon']=$goodPoints[$org_array_pos]['lon'];
+				$normPoints[$norm_array_pos]['lat']=$goodPoints[$org_array_pos]['lat'];
+	
+				$normPoints[$norm_array_pos]['speed']=$goodPoints[$org_array_pos]['speed'];
+				$normPoints[$norm_array_pos]['vario']=$goodPoints[$org_array_pos]['vario'];
+				$normPoints[$norm_array_pos]['alt']=$goodPoints[$org_array_pos]['alt'];
+				$normPoints[$norm_array_pos]['dis']=$goodPoints[$org_array_pos]['dis'];
+				// if ($normPoints[$norm_array_pos]['alt']==0) $normPoints[$norm_array_pos]['alt']="-";
+				
+				while ($goodPoints[$org_array_pos]['time'] <  $timeval + $interval  && ($org_array_pos)< count($goodPoints) ) {
+					$org_array_pos++;
+				}
+			} else {
+				if ($norm_array_pos ) {
+					$normPoints[$norm_array_pos]['lon']=$normPoints[$norm_array_pos-1]['lon'];
+					$normPoints[$norm_array_pos]['lat']=$normPoints[$norm_array_pos-1]['lat'];
+					$normPoints[$norm_array_pos]['speed']=$normPoints[$norm_array_pos-1]['speed'];
+					$normPoints[$norm_array_pos]['vario']=$normPoints[$norm_array_pos-1]['vario'];
+					$normPoints[$norm_array_pos]['alt']=$normPoints[$norm_array_pos-1]['alt'];
+					$normPoints[$norm_array_pos]['dis']=$normPoints[$norm_array_pos-1]['dis'];
+				}	else {
+					$normPoints[$norm_array_pos]['lon']=$goodPoints[0]['lon'];
+					$normPoints[$norm_array_pos]['lat']=$goodPoints[0]['lat'];
+					$normPoints[$norm_array_pos]['speed']=$goodPoints[0]['speed'];
+					$normPoints[$norm_array_pos]['vario']=$goodPoints[0]['vario'];
+					$normPoints[$norm_array_pos]['alt']=$goodPoints[0]['alt'];
+					$normPoints[$norm_array_pos]['dis']=$goodPoints[0]['dis'];
+				}
+	/*
+				if ($org_array_pos>0) {
+					$normPoints[$norm_array_pos]['speed']="-";
+					$normPoints[$norm_array_pos]['vario']="-";
+					$normPoints[$norm_array_pos]['alt']="-";
+				} 
+	*/
+			}
+	
+	
+		} // end foreach 
+
+		// now write it to file
+		$outputBuffer="";
+		
+		foreach ($normPoints as $point) {
+			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
+			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
+		}
+		$path_igc = dirname($this->getPointsFilename(1));
+		if (!is_dir($path_igc)) @mkdir($path_igc, 0755);
+		
+		// write saned IGC file
+		$handle = fopen($this->getPointsFilename(1), "w");
+		fwrite($handle, $outputBuffer);
+		fclose($handle);
+		return 1;
+
 	}
 
 	function getNextPointPos($pointArray,$currentPos){
@@ -1228,15 +1458,14 @@ var $maxPointNum=1000;
 		@unlink($this->getIGCFilename(1) ); 
 		@unlink($this->getMapFilename() ); 
 
-		@unlink($this->getChartFilename("alt") ); 
-		@unlink($this->getChartFilename("speed") ); 
-		@unlink($this->getChartFilename("vario") ); 
-		@unlink($this->getChartFilename("takeoff_distance") ); 		
-
-		@unlink($this->getChartFilename("alt",2) ); 
-		@unlink($this->getChartFilename("speed",2) ); 
-		@unlink($this->getChartFilename("vario",2)); 
-		@unlink($this->getChartFilename("takeoff_distance",2)); 		
+		for ($metric_system=0;$metric_system<=1;$metric_system++) {
+			for ($raw=0;$raw<=1;$raw++) {
+				@unlink($this->getChartFilename("alt",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("speed",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("vario",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("takeoff_distance",$metric_system,$raw) ); 		
+			}
+		}
 
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$this->deletePhoto($i);
@@ -1352,19 +1581,19 @@ var $maxPointNum=1000;
 	    $this->updateCharts($forceRefresh);
 	}
 
-    function updateCharts($forceRefresh=0) {
+    function updateCharts($forceRefresh=0,$rawCharts=0) {
 		global $moduleRelPath,$chartsActive;
 		if (!$chartsActive ) return 0;
 
-	 	$alt_img_filename=$this->getChartFilename("alt"); 
-		$speed_img_filename=$this->getChartFilename("speed"); 
-		$vario_img_filename=$this->getChartFilename("vario"); 
-		$takeoff_distance_img_filename=$this->getChartFilename("takeoff_distance");  
+	 	$alt_img_filename=$this->getChartFilename("alt",1,$rawCharts); 
+		$speed_img_filename=$this->getChartFilename("speed",1,$rawCharts); 
+		$vario_img_filename=$this->getChartFilename("vario",1,$rawCharts); 
+		$takeoff_distance_img_filename=$this->getChartFilename("takeoff_distance",1,$rawCharts);  
 	
- 		$alt_img_filename2=$this->getChartFilename("alt",2); 
-		$speed_img_filename2=$this->getChartFilename("speed",2); 
-		$vario_img_filename2=$this->getChartFilename("vario",2); 
-		$takeoff_distance_img_filename2=$this->getChartFilename("takeoff_distance",2);  
+ 		$alt_img_filename2=$this->getChartFilename("alt",2,$rawCharts); 
+		$speed_img_filename2=$this->getChartFilename("speed",2,$rawCharts); 
+		$vario_img_filename2=$this->getChartFilename("vario",2,$rawCharts); 
+		$takeoff_distance_img_filename2=$this->getChartFilename("takeoff_distance",2,$rawCharts);  
 
 		if ( !is_file($alt_img_filename) ||  !is_file($speed_img_filename) ||  
 			 !is_file($vario_img_filename) ||  !is_file($takeoff_distance_img_filename) || 
@@ -1372,6 +1601,11 @@ var $maxPointNum=1000;
 			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||  $forceRefresh) {
 	
 			list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
+			if ($rawCharts) 
+				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getRawValues($forceRefresh);
+			else	
+				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
+
 			if (!count($data_time) ) return; // empty timeseries
 
 
@@ -1382,10 +1616,10 @@ var $maxPointNum=1000;
 			require_once dirname(__FILE__)."/lib/graph/jpgraph_line.php";
 
 
-			$this->plotGraph("Height (m)",$data_time,$data_alt,$alt_img_filename);
-			$this->plotGraph("Speed (km/h)",$data_time,$data_speed,$speed_img_filename);
-			$this->plotGraph("Vario (m/sec)",$data_time,$data_vario,$vario_img_filename);
-			$this->plotGraph("Takeoff distance (km)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename);	
+			$this->plotGraph("Height (m)",$data_time,$data_alt,$alt_img_filename,$rawCharts);
+			$this->plotGraph("Speed (km/h)",$data_time,$data_speed,$speed_img_filename,$rawCharts);
+			$this->plotGraph("Vario (m/sec)",$data_time,$data_vario,$vario_img_filename,$rawCharts);
+			$this->plotGraph("Takeoff distance (km)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename,$rawCharts);	
 
 			// now make the miles/ feet versions!!!
 			// convert the arrays
@@ -1398,40 +1632,70 @@ var $maxPointNum=1000;
 				$data_takeoff_distance[$idx]=$data_takeoff_distance[$idx]*0.62;
 			}
 
-			$this->plotGraph("Height (feet)",$data_time,$data_alt,$alt_img_filename2);
-			$this->plotGraph("Speed (mph)",$data_time,$data_speed,$speed_img_filename2);
-			$this->plotGraph("Vario (fpm)",$data_time,$data_vario,$vario_img_filename2);
-			$this->plotGraph("Takeoff distance (miles)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename2);	
+			$this->plotGraph("Height (feet)",$data_time,$data_alt,$alt_img_filename2,$rawCharts);
+			$this->plotGraph("Speed (mph)",$data_time,$data_speed,$speed_img_filename2,$rawCharts);
+			$this->plotGraph("Vario (fpm)",$data_time,$data_vario,$vario_img_filename2,$rawCharts);
+			$this->plotGraph("Takeoff distance (miles)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename2,$rawCharts);	
 
 		}
 
 	}
 
-	function plotGraph($title,$data_time,$yvalues,$img_filename) {
+	function plotGraph($title,$data_time,$yvalues,$img_filename,$raw=0) {
 		if (count($data_time)==0) {
 			$data_time[0]=0;
 			$yvalues[0]=0;
 		}
+		if ($raw) {
+			$graphWidth=600;
+			$graphHeight=120;
+			$mLeft=40;
+			$mRight=20;
+			$mTop=13;
+			$mBottom=23;
+			$titleSize=8;
+			$labelSize=6;
 
-		$graph = new Graph(600,200,"auto");    
+		}	else {
+			$graphWidth=600;
+			$graphHeight=200;
+			$mLeft=40;
+			$mRight=20;
+			$mTop=20;
+			$mBottom=30;
+
+			$titleSize=10;
+			$labelSize=8;
+		}
+
+		$graph = new Graph($graphWidth,$graphHeight,"auto");    
+		//$graph->SetScale("textlin",min($yvalues),max($yvalues));
 		$graph->SetScale("textlin");
-		
-		//$graph->title->SetFont(FF_ARIAL,FS_NORMAL,10); 
-		//$graph->legend->SetFont(FF_ARIAL,FS_NORMAL,8); 
-		//$graph->xaxis->SetFont(FF_ARIAL,FS_NORMAL,8); 
+
+		if ($raw) {
+			$graph->title->SetFont(FF_FONT1,FS_NORMAL,$titleSize); 
+			$graph->legend->SetFont(FF_FONT1,FS_NORMAL,$titleSize); 
+			$graph->xaxis->SetFont(FF_FONT1,FS_NORMAL,$labelSize); 
+		}
+
 		$graph->SetMarginColor("#C8C8D4");	
-		$graph->img->SetMargin(40,20,20,30);
-		$graph->title->Set($title);
-		$graph->xaxis->SetTextTickInterval((count($data_time)/600)*60);
+		// #DAE4E6
+
+//echo "max:".max($yvalues)."<BR>";
+		$lineplot=new LinePlot($yvalues);
+		$graph->Add($lineplot);
+
+		$graph->img->SetMargin($mLeft,$mRight,$mTop,$mBottom);
+		if (!$raw) $graph->title->Set($title);
+		$graph->xaxis->SetTextTickInterval((count($data_time)/($graphWidth-$mLeft-$mRight))*60-1);
 		$graph->xaxis->SetTextLabelInterval(1);
 		$graph->xaxis->SetTickLabels($data_time);
 		$graph->xaxis->SetPos("min");
-	
+
 		$graph->xgrid->Show();
 		$graph->xgrid->SetLineStyle('dashed');
 		
-		$lineplot=new LinePlot($yvalues);
-		$graph->Add($lineplot);
+
 		$graph->Stroke($img_filename);
 	}
 
