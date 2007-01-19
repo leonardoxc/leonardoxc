@@ -16,5 +16,6 @@
 	$module_name=$tmpParts[count($tmpParts)-1];
 	$moduleAbsPath=dirname(__FILE__);
 	$moduleRelPath=".";
+	
 
 ?>

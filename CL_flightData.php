@@ -35,7 +35,8 @@ class flight {
 	var $landingID=0;
 	var $landingVinicity=0;
 	
-
+	var $forceBounds=0;
+	
 var $timezone=0;
 
 var $DATE;
@@ -127,6 +128,11 @@ var $maxPointNum=1000;
 		$this->LAST_POINT="";
 	}
 
+	function checkBound($time){
+		if ($time >= $this->START_TIME &&  $time <= $this->END_TIME ) return 1;
+		return 0;
+	}
+	
 	function is3D() {
 		if ( $this->MAX_ALT ==0 && $this->MIN_ALT == 0 ) return false;
 		else return true;
@@ -570,7 +576,7 @@ var $maxPointNum=1000;
     $i = 0;
 
 	// first 3 lines of pointsFile is reserved for info
-	for($k=0;$k< count($lines);$k++){
+	for($k=3;$k< count($lines);$k++){
 		$line = trim($lines[$k]);
 		if (strlen($line) == 0) continue;
 		  
@@ -636,7 +642,17 @@ var $maxPointNum=1000;
 		}
 		return array($data_X,$data_Y);
 	}
-
+	
+	function getRawHeader(){
+		$handle = fopen($this->getPointsFilename(1), "r"); 
+		$l=array();
+		$l[0]= fgets($handle, 4096); 
+		$l[1]= fgets($handle, 4096); 
+		$l[2]= fgets($handle, 4096); 
+		fclose ($handle); 
+		return $l;
+	}
+	
 	function storeIGCvalues() {
 		global $flightsAbsPath;
 
@@ -652,10 +668,30 @@ var $maxPointNum=1000;
 
 		$i=0;
 		$day_offset =0; 
+
+		$currentDate=0;
+		$prevDate=0;
 		
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;		
+
+			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
+					$dt=substr($line,5,6);
+					$yr_last=substr($dt,4,2);
+					// case of YY=0 (1 digit) HFDTE08070 
+					if ($yr_last=="0") $yr_last="00";
+					if ($yr_last > 80 ) $yr="19".$yr_last;
+					else $yr="20".$yr_last;
+					
+					$prevDate=$currentDate;					
+					$currentDate=mktime(0,0,0,substr($dt,2,2),substr($dt,0,2),$yr);
+					//echo "DATE cahnge : $currentDate  $prevDate <BR>";
+					if ($prevDate>0 && ($currentDate-$prevDate)>86400) { // more than one day 
+						break;
+					}
+			}
+			
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
 					$thisPoint=new gpsPoint($line,$this->timezone);
@@ -668,8 +704,21 @@ var $maxPointNum=1000;
 					$goodPoints[$i]['alt']=$thisPoint->getAlt();				
 
 					if ($i>0) {						
-						$tmp = $lastPoint->calcDistance($thisPoint);			
-						if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 3600 )  { // more than 1 hour
+						$tmp = $lastPoint->calcDistance($thisPoint);		
+						
+					$time_diff=  $thisPoint->getTime() - $lastPoint->getTime()  ;
+					
+					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
+						continue;
+        		    } else 	if ( $time_diff < 0  )  {  // CHANGING DAY , means the flight is at night
+						array_pop($goodPoints);
+						break;
+        		    } else 	if (  $time_diff > $this->max_allowed_time_gap *4 )  {  // found time gap
+						array_pop($goodPoints);
+						break;		
+					}
+						
+					/*	if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 3600 )  { // more than 1 hour
                     		$day_offset = 86400; // if time seems to have gone backwards, add a day
 		                    $thisPoint->gpsTime += 86400;
         		        } else if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 0 ) {
@@ -677,6 +726,8 @@ var $maxPointNum=1000;
 							$lastPoint->gpsTime+=$day_offset;
 							continue;
 						}	
+						*/
+						
 						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;	
 						if ($deltaseconds) {
 							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
@@ -700,16 +751,13 @@ var $maxPointNum=1000;
 					$i++;
 			} 
 		}
-	
+							
 		$pointsNum=count($goodPoints);
-//echo "pointsNum : $pointsNum<br>";
-		//$min_time=floor($takeoffPoint->getTime()/60)*60;
-		//$max_time=ceil($lastPoint->getTime()/60)*60;
-//	echo "max / min time: $max_time $min_time<BR>"; 
+	
+		//echo "pointsNum : $pointsNum<br>";
 		$min_time=floor($goodPoints[0]['time']/60)*60;
 		$max_time=ceil($goodPoints[$pointsNum-1]['time']/60)*60;
-
-		//echo "max / min time: $max_time $min_time<BR>"; 
+		// echo "max / min time: $max_time $min_time<BR>"; 
 
 		$interval=20;
 		$k=0;
@@ -717,8 +765,6 @@ var $maxPointNum=1000;
 			$normPoints[$k]=array();
 			$normPoints[$k]['timeText']=sec2time($i);
 			$normPoints[$k]['time']=$i;		
-	//		array_push($data_time_norm,sec2time($i) );
-	//		array_push($data_time_norm_secs,$i );
 			$k++;
 		}
 	
@@ -769,7 +815,7 @@ var $maxPointNum=1000;
 		} // end foreach 
 
 		// now write it to file
-		$outputBuffer="";
+		$outputBuffer='$min_time='.$min_time.';$max_time='.$max_time.";\n\n\n";
 		
 		foreach ($normPoints as $point) {
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
@@ -802,7 +848,15 @@ var $maxPointNum=1000;
 
 	function getFlightFromIGC($filename) {
 	set_time_limit (100);
+	if ($this->forceBounds) {
+		$startTime=$this->START_TIME;
+		$endTime=$this->END_TIME;
+	}
 	$this->resetData();
+	if ($this->forceBounds) {
+		$this->START_TIME=$startTime;
+		$this->END_TIME=$endTime;
+	}
 	$this->setAllowedParams();
 	$this->filename=basename($filename);
 	
@@ -898,7 +952,7 @@ var $maxPointNum=1000;
 			if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
 				// echo "V";
 			}
-			if ( $p<5 && ! $try_no_takeoff_detection) { // first 10 points need special care 
+			if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care 
 				$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
 				DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." max:$takeoffMaxSpeed<br>");
 				if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {  
@@ -1011,6 +1065,7 @@ var $maxPointNum=1000;
 				if ($line{1}=='X') continue ; // MARKED BAD from BEFORE 
 				if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
 				
+
 				if  ($points==0)  { // first point 
 					//				echo "######## first point <br>";
 					$firstPoint=new gpsPoint($line,$this->timezone);
@@ -1023,16 +1078,23 @@ var $maxPointNum=1000;
 
 					// sanity checks	
 					if ( $firstPoint->getAlt()  > $this->maxAllowedHeight ) continue;
+					// echo "times: ".$firstPoint->gpsTime.", ".$firstPoint->getTime()." start_time: ".$this->START_TIME ."<BR> ";
+					if ( $this->forceBounds && ! $this->checkBound($firstPoint->getTime() ) ) continue; // not inside time window
 
 					$this->FIRST_POINT=$line;
 					$this->TAKEOFF_ALT= $firstPoint->getAlt();
 					$this->MIN_ALT= $firstPoint->getAlt();
-					$this->START_TIME = $firstPoint->getTime();
+					if ( ! $this->forceBounds) $this->START_TIME = $firstPoint->getTime();
 					$prevPoint=new gpsPoint($line,$this->timezone);
 				} else  {					
 					$lastPoint=new gpsPoint($line,$this->timezone);
 					$lastPoint->gpsTime+=$day_offset;
 
+					if ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() ) ) {
+						 $lastPoint=$prevPoint; 
+						 continue; // not inside time window
+					}
+					
 					$time_diff= $lastPoint->getTime() - $prevPoint->getTime() ;
 					// echo "time diff: $time_diff # $line<br>";
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
@@ -1047,11 +1109,17 @@ var $maxPointNum=1000;
 						DEBUG("IGC",1,"[$points] Flight at night ????<br>");
 						continue;	
         		    } else 	if (  $time_diff > $this->max_allowed_time_gap  )  {  // found time gap
-						$lastPoint=$prevPoint;
-						$foundNewTrack=1;
-						DEBUG("IGC",1,"[$points] $line<br>");
-						DEBUG("IGC",1,"[$points] Found a new track (Time diff of $time_diff secs)<br>");
-						continue;	
+						// if we are forceBounds check to see if inside window
+						if ( ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() )  ) || !$this->forceBounds ) { 
+							// not inside time window  OR not checking go ahead				
+							$lastPoint=$prevPoint;
+							$foundNewTrack=1;
+							DEBUG("IGC",1,"[$points] $line<br>");
+							DEBUG("IGC",1,"[$points] Found a new track (Time diff of $time_diff secs)<br>");
+							continue;	
+						} else { // inside the window, forced to continue 
+						
+						}
 					}
 				
 					$this->LAST_POINT=$line;
@@ -1062,7 +1130,7 @@ var $maxPointNum=1000;
 					$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
-					if (!$garminSpecialCase) {
+					if (!$garminSpecialCase && ! $this->forceBounds) {
 						if ( ($fast_points>5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
 							$stillOnGround=0;
 							DEBUG("IGC",1,"[$points] $line<br>");
@@ -1110,7 +1178,7 @@ var $maxPointNum=1000;
 					if ( $alt    > $this->maxAllowedHeight ) {  continue; }
 					if ( abs($speed)  > $this->maxAllowedSpeed ) {  continue; }
 					if ( abs($vario)  > $this->maxAllowedVario ) {  continue; }
-					
+
 					$takeoffDistance=$lastPoint->calcDistance($firstPoint);
 					if ($takeoffDistance > $this->LINEAR_DISTANCE )  $this->LINEAR_DISTANCE=$takeoffDistance;
 					
@@ -1125,7 +1193,7 @@ var $maxPointNum=1000;
 					// UPDATE MIN-MAX VARIO											
 					if ($vario > $this->MAX_VARIO) $this->MAX_VARIO=$vario;
 					if ($vario < $this->MIN_VARIO) $this->MIN_VARIO=$vario;
-					
+
 					// end computing					
 					$prevPoint=new gpsPoint($line,$this->timezone);
 					$prevPoint->gpsTime+=$day_offset;
@@ -1681,13 +1749,17 @@ var $maxPointNum=1000;
 		$graph->SetMarginColor("#C8C8D4");	
 		// #DAE4E6
 
-//echo "max:".max($yvalues)."<BR>";
+		// echo "$title -> max:".max($yvalues)." min: ".min($yvalues)." data_time_num: ".count($data_time)."<BR>";
 		$lineplot=new LinePlot($yvalues);
 		$graph->Add($lineplot);
 
 		$graph->img->SetMargin($mLeft,$mRight,$mTop,$mBottom);
 		if (!$raw) $graph->title->Set($title);
-		$graph->xaxis->SetTextTickInterval((count($data_time)/($graphWidth-$mLeft-$mRight))*60-1);
+		
+		$textTickInterval=floor((count($data_time)/($graphWidth-$mLeft-$mRight))*60-1);
+		if ($textTickInterval<=0 ) $textTickInterval=1;
+		
+		$graph->xaxis->SetTextTickInterval($textTickInterval);
 		$graph->xaxis->SetTextLabelInterval(1);
 		$graph->xaxis->SetTickLabels($data_time);
 		$graph->xaxis->SetPos("min");
