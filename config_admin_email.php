@@ -1,1 +1,0 @@
-<? $CONF_admin_email="andread@thenet.gr"; $CONF_SitePassword="fligj04ljkfndfjkb923kjfng"; ?>

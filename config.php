@@ -10,14 +10,19 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-require_once dirname(__FILE__)."/config_version.php";
+
+// This file contains default values and is overwritten on new updates -installs
+// Dont edit this file, edit site/config_custom.php instead
+
+require_once dirname(__FILE__)."/site/config_version.php";
 
 // opMode 
 // 1 = PHPnuke module
 // 2 = phbb2 module
 // 3 = standalone -- still work in progress
  $opMode= 2; 
-
+ require_once dirname(__FILE__)."/site/config_op_mode.php";
+  
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;
 
@@ -26,14 +31,14 @@ require_once dirname(__FILE__)."/config_version.php";
  
  // if it is a phpbb module we can use our own template 
  // and not the onw of the forum 
- $CONF_use_own_template=1;
+ $CONF_use_own_template=0;
  
  // admin_users 
  // put in this array the userID of the users you want ot grand admin status
  // YOU MUST PUT AT LEAST ONE ADMIN USER
 
- $admin_users=array(2,96,76,95,228);
- @include_once dirname(__FILE__)."/config_admin_users.php"; 
+ $admin_users=array();
+ @include_once dirname(__FILE__)."/site/config_admin_users.php"; 
 
  // mod_users 
  // put in this array the userID of the users you want ot grand mod status
@@ -41,18 +46,13 @@ require_once dirname(__FILE__)."/config_version.php";
  $mod_users=array();
 
  $CONF_admin_email="your_mail@nowhere.com";
-
+ require_once dirname(__FILE__)."/site/config_admin_email.php"; 
+ 
  $CONF_main_page="index_full";
 
-/*
- $apList=array(
- 	"mx"=>array("desc"=>"Mexican XC League","lang"=>"mexican","theme"=>"mx","club"=>1,"header"=>"mx") ,
-	"gr"=>array("desc"=>"Greek XC League","lang"=>"greek","theme"=>"gr","club"=>3, "header"=>"gr") ,
- );
-*/
-
  // club config
- @include_once dirname(__FILE__)."/config_clubs.php"; 
+ $clubsList=array();
+ @include_once dirname(__FILE__)."/site/config_clubs.php"; 
 
  // define the path where the maps reside
  // use this if you have the maps stored 
@@ -306,4 +306,5 @@ $themeAbsPath=dirname(__FILE__)."/templates/".$PREFS->themeName;
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
 
+ @include_once dirname(__FILE__)."/site/config_custom.php";
 ?>

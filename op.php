@@ -14,8 +14,8 @@
 require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 
 
-require_once dirname(__FILE__)."/config_op_mode.php";
-require_once dirname(__FILE__)."/config_admin_email.php";
+require_once dirname(__FILE__)."/site/config_op_mode.php";
+require_once dirname(__FILE__)."/site/config_admin_email.php";
 
 require_once dirname(__FILE__)."/EXT_config_pre.php";
 require_once dirname(__FILE__)."/config.php";
