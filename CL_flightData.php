@@ -1749,7 +1749,13 @@ var $maxPointNum=1000;
 		$graph->SetMarginColor("#C8C8D4");	
 		// #DAE4E6
 
-		// echo "$title -> max:".max($yvalues)." min: ".min($yvalues)." data_time_num: ".count($data_time)."<BR>";
+		// if only one point  add it twice ! 
+		// we should nt be here at the first place !
+		if (count($data_time)==1) {
+			$yvalues[]=$yvalues[0];
+			$data_time[]=$data_time[0];
+		}
+		//echo "$title -> max:".max($yvalues)." min: ".min($yvalues)." data_time_num: ".count($data_time)."<BR>";
 		$lineplot=new LinePlot($yvalues);
 		$graph->Add($lineplot);
 
