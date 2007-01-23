@@ -25,7 +25,7 @@ sfHover = function() {
 <? 
 
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' height='7' alt='select' border='0' \>";
 // http://www.htmldog.com/articles/suckerfish/dropdowns/
 // http://www.htmldog.com/articles/suckerfish/dropdowns/example/
 
@@ -34,7 +34,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 // http://www.cssplay.co.uk/menus/final_drop.html
 
 	 $iconLink="?name=".$module_name."&op=index_full";
-	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' border=0>";
+	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
 
@@ -95,9 +95,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
 	  $flagLink="?name=".$module_name."&lng=".$tmpLang;
-	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' valign='middle' border=0>&nbsp;$tmpLangStr";
+	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' \>&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
-		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."' valign='middle' border=0>";
+		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
 	  }
 	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
 	} 

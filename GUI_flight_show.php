@@ -221,7 +221,7 @@ function delete_takeoff(id) {
 
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
-			$flight->userID."','".str_replace("'","\'",$flight->userName)."' )\"  onmouseout=\"pilotTip.hide()\">".
+			$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
 			$flight->userName."</a>&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
 	
 	$Ltemplate->assign_vars(array(

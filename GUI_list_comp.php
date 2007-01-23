@@ -315,7 +315,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
 	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
 				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
-					str_replace("'","\'",$pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
+					addslashes($pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";
 		 if ($formatFunction) $outVal=$formatFunction($pilotArray["SUM"]);
 		 else $outVal=$pilotArray["SUM"];

@@ -179,7 +179,7 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   
   if ($sortOrder==$fieldName) { 
    echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10>
+		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
 		</td>\n";
   } else {  
    echo "<td class='SortHeader $alignClass' $widthStr>
@@ -200,6 +200,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
    global $CONF_photosPerFlight;   	 
+   global $gliderCatList;
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
@@ -290,7 +291,7 @@ function removeClubFlight(clubID,flightID) {
   	   } else {
   	   		$dateStr="&nbsp;";  	   		 
   	   }
-  	   if ( $days_from_submission <= 3 ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' >";			
+  	   if ( $days_from_submission <= 3 ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' width='31' height='12' />";			
   	   
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
@@ -311,7 +312,7 @@ function removeClubFlight(clubID,flightID) {
 		}
 
 	   $brandID=guessBrandID($gliderType,$row['glider']);
-	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' border=0>";
+	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
 	   else $gliderBrandImg="&nbsp;";
 	   
 	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
@@ -320,20 +321,20 @@ function removeClubFlight(clubID,flightID) {
 		"<div id='p_$i' class='pilotLink'>";
 		
 		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".str_replace("'","\'",$name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		echo "</div>";
 		echo "<div id='t_$i' class='takeoffLink'>";
-		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".str_replace("'","\'",$takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
+		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".addslashes($takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
 		echo "</div></TD>".
 	   "<TD>$duration</TD>".
 	   "<TD class='distance'>$linearDistance</TD>".
 	   "<TD class='distance'>$olcDistance</TD>".
-	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' border=0 align='top'></TD>".
-	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' border=0></td>".
+	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' /></TD>".
+	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
    	   "\n\t<TD>$gliderBrandImg</td>".
 
-	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'></a>";
-	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."'></a>";
+	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 	
 		$photos_exist=0;
 		for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
@@ -341,12 +342,12 @@ function removeClubFlight(clubID,flightID) {
 				$photos_exist=1; break; 
 			}
 		}	
-	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width=16 height=16 valign=top>";
-	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width=16 height=16>";
+	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' valign='top' />";
+	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
-			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width=16 height=16 border=0 align=bottom></a>"; 
-			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width=16 height=16 border=0 align=bottom></a>"; 
+			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
+			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width='16' height='16' border='0' align='bottom' /></a>"; 
 	   }			
 
 				
