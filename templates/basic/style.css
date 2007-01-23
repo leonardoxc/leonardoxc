@@ -14,11 +14,26 @@ sory.title {
 	font-size: 11px;
 	color: #ffffff;
 }
-.main_text {
+
+.main_text , .main_text td , .main_text th , .main_text div {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
+}
+
+.main_text { 
 	color: #003366;
 }
+
+
+/* various styles for time,distance,score etc...
+*/
+.time_style {  color:#702440; }
+.score_type_style {  color:#004466; }
+.distance_style {  color:#ff0000;  font-weight:bold;}
+.altitude_style {  color:#008800; }
+.speed_style {  color:#880000; }
+.vario_style {  color:#000844; }
+
 
 .sp {
 line-height: 1.5em;
@@ -241,7 +256,9 @@ border:0;
 .dateString { color:#224488; text-align:right; }
 .OLCScore   { color:#224488; text-align:right; }
 .listIcons { margin-right:1px; }
-.flagIcon { margin-right:0.5em; vertical-align:middle; }
+
+.flagIcon { margin-right:0.5em; vertical-align:middle; text-decoration:none; border: 0 none;  }
+
 .numeration { display:inline; }
 .numeration  a, .numeration  a:visited { color:#FFFFFF; }
 .takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }

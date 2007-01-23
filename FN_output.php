@@ -15,7 +15,7 @@ function sec2Time($secs,$no_seconds=false) {
   if ($no_seconds)
     return sprintf("%d:%02d",$secs/3600,($secs%3600)/60);
   else 
-    return '<font color=#702440>'.sprintf("%d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60).'</font>';
+    return '<span class="time_style">'.sprintf("%d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60).'</span>';
 }
 
 function days2YearsMonths($days) {
@@ -48,7 +48,7 @@ function formatOLCScoreType($type,$html_output=true) {
 	else if ($type=="FREE_TRIANGLE") $ret=_FREE_TRIANGLE;
 	else if ($type=="FAI_TRIANGLE") $ret=_FAI_TRIANGLE;
 	if ($html_output)
-		return '<font color=#004466>'.$ret.'</font>';
+		return '<span class="score_type_style">'.$ret.'</span>';
 	else return $ret;
 }
 
@@ -73,7 +73,7 @@ function formatDistanceOpen($distance,$showKm=true) { // in meters
 }
 
 function formatDistanceOLC($distance,$showKm=true) { // in meters
-	return '<font color=#ff0000><strong>'.formatDistance($distance,$showKm).'</strong></font>';
+	return '<span class="distance_style">'.formatDistance($distance,$showKm).'</span>';
 }
 
 
@@ -94,7 +94,7 @@ function formatAltitude($alt) {
 	} else { 
 		$units=_M;
 	}
-	return '<font color=#008800>'.sprintf("%d %s",$alt,$units).'</font>';
+	return '<span class="altitude_style">'.sprintf("%d %s",$alt,$units).'</span>';
 }
 
 function formatSpeed($speed) { // in km/h
@@ -107,7 +107,7 @@ function formatSpeed($speed) { // in km/h
 	} else { 
 		$units=_KM_PER_HR;
 	}
-	return '<font color=#880000>'.sprintf("%.1f %s",$speed,$units).'</font>';
+	return '<span class="speed_style">'.sprintf("%.1f %s",$speed,$units).'</span>';
 }
 
 function formatVario($vario) { // in m/sec
@@ -117,10 +117,10 @@ function formatVario($vario) { // in m/sec
 	if ($PREFS->metricSystem==2) { 
 		$vario=$vario*3.28*60; // feet /min
 		$units=_FPM;
-		return '<font color=#000844>'.sprintf("%.0f %s",$vario,$units).'</font>';
+		return '<span class="vario_style">'.sprintf("%.0f %s",$vario,$units).'</span>';
 	} else { 
 		$units=_M_PER_SEC;
-		return '<font color=#000844>'.sprintf("%.1f %s",$vario,$units).'</font>';
+		return '<span class="vario_style">'.sprintf("%.1f %s",$vario,$units).'</span>';
 	}
 
 }

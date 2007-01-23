@@ -260,7 +260,7 @@ function removeClubFlight(clubID,flightID) {
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
   	  <td width="50" class='SortHeader'>&nbsp;</td>
-	  <td width="52" class='SortHeader alLeft'><? echo _SHOW ?></td>
+	  <td width="82" class='SortHeader alLeft'><? echo _SHOW ?></td>
   </tr>
 <?
    $i=1;
@@ -320,7 +320,7 @@ function removeClubFlight(clubID,flightID) {
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		
-		echo  getNationalityDescription($row["pilotCountryCode"],1,0);
+		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		echo "</div>";
 		echo "<div id='t_$i' class='takeoffLink'>";
