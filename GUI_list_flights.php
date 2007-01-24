@@ -200,7 +200,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
    global $CONF_photosPerFlight;   	 
-   global $gliderCatList;
+   global $gliderCatList,$brandsList;
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
@@ -314,6 +314,10 @@ function removeClubFlight(clubID,flightID) {
 	   $brandID=guessBrandID($gliderType,$row['glider']);
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
 	   else $gliderBrandImg="&nbsp;";
+
+	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
+			title='".$brandsList[$gliderType][$brandID]."' border='0' />";
+	   else $gliderBrandImg="&nbsp;";
 	   
 	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
 	   echo "<TD class='dateString'>$dateStr</TD>".
@@ -331,7 +335,7 @@ function removeClubFlight(clubID,flightID) {
 	   "<TD class='distance'>$olcDistance</TD>".
 	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' /></TD>".
 	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
-   	   "\n\t<TD>$gliderBrandImg</td>".
+   	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>".
 
 	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";

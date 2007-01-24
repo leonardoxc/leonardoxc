@@ -33,8 +33,7 @@
 	$waypointLat=$_REQUEST['lat']+0;
 	$waypointLon=$_REQUEST['lon']+0;
  
-	$postForm=$_GET['postForm'];
-	if ( $_POST['addWaypoint']==1 && $postForm==1) { // ADD waypoint
+	if ( $_POST['addWaypoint']==1 ) { // ADD waypoint
 		$waypt=new waypoint(0);
 		
 		$waypt->name=$_POST['wname'];
@@ -58,9 +57,7 @@
 		  </script>
 		<?
 	 		echo "<div align=center><BR><BR>"._WAYPOINT_ADDED."<BR><BR>";
-			$refresh=1;
-			if ($_GET['refresh']==0) $refresh=0;
-			if ($refresh) echo "<a href='javascript:refreshParent();'>RETURN </a>"; 	
+			echo "<a href='javascript:refreshParent();'>Update flight takeoff and RETURN </a>"; 	
 			echo "<br></div>";
 		} else  echo("<H3> Error in inserting waypoint info query! </H3>\n");		
 
@@ -96,53 +93,6 @@
 	.boxTop {margin:0; }
 </style>
   <?
-
- // open_inner_table(_ADD_WAYPOINT,450,"icon_pin.png"); 
- // echo "<tr><td>";	
-
-
-	// get info from leonardo server around the world !!!
-    // $leonardoServers=array("www.paraglidingforum.com","www.sky.gr","www.vololibero.net","xc.parapente.com.ar","www.ypforum.com","parablog.com.ar","www.heidel.com.ar");
-    $leonardoServers=array();
-	foreach ($leonardoServers as $leonardoServer) {
-		getWaypointInfo($leonardoServer,$waypointLat,$waypointLon);
-	}
-
-	function getWaypointInfo($leonardoServer,$lat,$lon) {
-		global $moduleRelPath;
-		echo "Trying server : $leonardoServer<br>";
-		$fp = @fsockopen ($leonardoServer,80, $errno, $errstr, 3); 
-		if (!$fp)  { 
-			echo "SERVER $leonardoServer NOT ACTIVE"; 
-			return 0;
-		} else fclose ($fp); 
-
-
-		$fl= "http://$leonardoServer/modules/leonardo/EXT_takeoff.php?op=find_wpt&lat=$lat&lon=$lon";
-		 echo $fl."<br>";
-		$contents = implode("\n",file($fl)); 
-
-		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
-		$xmlDoc = new MiniXMLDoc();
-		$xmlDoc->fromString($contents);
-		$xmlArray=$xmlDoc->toArray();
-
-		echo "Name: ".$xmlArray[search][waypoint][name]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][intName]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][location]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][intLocation]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][type]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][countryCode]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][lat]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][lon]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][link]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][description]."#<BR>";
-		echo "Name: ".$xmlArray[search][waypoint][modifyDate]."#<BR>";
-		echo "Name: ".$xmlArray[search][distance]."#<BR>";
-
-		echo "<hr>";
-
-	}
 	
 	$takoffsList=getExtrernalServerTakeoffs(1,$waypointLat,-$waypointLon,20,5);
 	
@@ -216,7 +166,7 @@ function fillInForm(name,area,countrycode){
 	a.value=countrycode;
 }
 </script>
-      <form name="form1" method="post" action="GUI_EXT_user_waypoint_add.php?postForm=<? echo ($_GET['postForm']+1); ?>" >
+      <form name="form1" method="post" action="GUI_EXT_user_waypoint_add.php" >
 
         <table width="700" border="0" align="center">
           <tr>

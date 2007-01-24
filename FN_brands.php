@@ -31,7 +31,7 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Airwave",
 	"Gin",
 	"Icaro",
-	"Nova",
+	"Nova", // 005
 	"Skywalk",
 	"Swing",
 	"UP",
@@ -55,11 +55,25 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Niviuk",
 	"Independence",
 	"Axis", 
+	"Aeros", //29
+	"Edel",  //30
+	"ITV",
+	"Nervunes",
+	"Pegas",
+	"Perche",
+	"Trekking", // 35 
+	"XiX",
 	// to be added
 //	"FlyingPlanet", // not found
 //	"ADG",      // not found
 
-
+/*
+needs updating!
+021.gif Aircross
+025.gif FlightDesign
+026.gif Niviuk
+028.gif Axis
+*/
  );
  /*
  $__brandsList=array(
