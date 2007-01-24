@@ -80,6 +80,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
 		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 		<li><a href="?name=<?=$module_name?>&op=servers_manage">Manage Leonardo Servers</a></li>
+		<li><a href="?name=<?=$module_name?>&op=admin_logs">Administer the Logs</a></li>
 		<?  if ($DBGlvl==0)  { ?>
 		<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
 		<? } else { ?>

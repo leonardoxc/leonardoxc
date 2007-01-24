@@ -224,6 +224,8 @@ if ($op=="users") {
 //--------------------------
 } else if ($op=="admin") {
 	require $moduleRelPath."/GUI_admin.php";
+} else if ($op=="admin_logs") {
+	require $moduleRelPath."/GUI_admin_logs.php";
 } else if ($op=="servers_manage") {
 	require $moduleRelPath."/GUI_servers_manage.php";
 } else if ($op=="filter") {

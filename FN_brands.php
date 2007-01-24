@@ -67,13 +67,7 @@ function guessBrandID($gliderType,$gliderDesc){
 //	"FlyingPlanet", // not found
 //	"ADG",      // not found
 
-/*
-needs updating!
-021.gif Aircross
-025.gif FlightDesign
-026.gif Niviuk
-028.gif Axis
-*/
+
  );
  /*
  $__brandsList=array(

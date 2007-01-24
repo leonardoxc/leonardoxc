@@ -136,6 +136,24 @@ $actionIDs=array(
 
 );
 
+$itemTypes=array(
+1 => "Flight",
+2 => "Pilot",
+4 => "Waypoint",
+8 => "NAC / Club  / Group",
+16=> "League / Event ",
+32=> "Area  ",
+);
+
+$actionTypes=array(
+1  => "Add",
+2  => "Edit",
+4  => "Delete",
+8  => "Score  (flight only)",
+16 => "Create charts (flight only)",
+32 => "Create Map (flight only)",
+);
+
 class Logger { 
 	var $transactionID ;
 	var $actionTime ;
@@ -155,6 +173,16 @@ class Logger {
 	function Logger() {
 	}
 
+	function getItemDescription($it) {
+		global 	$itemTypes;
+		return $itemTypes[$it];
+	}
+	
+	function getActionDescription($act) {
+		global 	$actionTypes;
+		return $actionTypes[$act];
+	}
+	
 	function put(){
 		global $db, $logTable, $userID;
 	
