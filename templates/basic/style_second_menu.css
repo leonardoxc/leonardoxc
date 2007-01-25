@@ -158,3 +158,8 @@ margin-left:18em;
 	height:17px;
 	vertical-align:middle;
 }
+
+
+#dropMenu li:hover, #dropMenu li.hover {
+  position:static;
+} 

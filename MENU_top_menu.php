@@ -1,4 +1,15 @@
-<? if (0) { ?>
+<? 
+/*
+the doctype should be  (quirks mode )
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
+
+not (standards mode)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+*/
+
+
+if (0) { ?>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 
 sfHover = function() {
@@ -12,13 +23,24 @@ sfHover = function() {
 			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
 		}
 	}
+
 }
 
 // done through htc files
-// if (window.attachEvent) window.attachEvent("onload", sfHover);
+ if (window.attachEvent) window.attachEvent("onload", sfHover);
 
 //--><!]]></script>
+<? } else { ?>
+<!--[if IE ]>
+<style type = "text/css">
+	#vnav li, #nav li , #dropMenu li , table.listTable tr {
+	   behavior: url('<? echo $moduleRelPath?>/hover.htc');
+	}
+</style>
+<![endif]-->
 <? } ?>
+
+
 
 <ul id="nav">
 

@@ -11,21 +11,6 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-/*
-the doctype should be  (quirks mode )
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
-not (standards mode)
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-*/
-?>
-<!--[if lt IE 7 ]>
-<style type = "text/css">
-	#vnav li, #nav li , #dropMenu li , table.listTable tr {
-	   behavior: url('<? echo $moduleRelPath?>/hover.htc');
-	}
-</style>
-<![endif]-->
-<?
 
 define ('MAIN_BG','#EDEEF1');   // more light blue
 $imagesPrefix=$moduleRelPath."/img/";
