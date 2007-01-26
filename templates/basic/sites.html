@@ -245,7 +245,7 @@ with (continentTip)
 <div id="continentTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
-<form name="formFilter" method="post" action="">
+<form name="sitesSelect" method="post" action="">
   <div class='tableTitle shadowBox'>
    <div class='titleDiv'>{#Site_Guide}</div>
   </div>
@@ -352,7 +352,7 @@ alt="Asia">
    <p align="left">Click &quot;See the selected sites&quot; to open
         these sites in Google Earth </p>
 		<p>
-            <input type="button" name="clearSelected" value="Clear this list" onClick="removeAllOptions(document.forms[0]['selectedSitesList']);">
+            <input type="button" name="clearSelected" value="Clear this list" onClick="removeAllOptions(document.forms['sitesSelect']['selectedSitesList']);">
         </p>
         <p>
             <select name="selectedSitesList"  id="selectedSitesList" size="15" multiple="multiple">

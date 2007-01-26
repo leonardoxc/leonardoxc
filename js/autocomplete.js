@@ -54,11 +54,11 @@ function seeSites(relPath,listName) {
 function selCountry(countryCode) {
 	var select=MWJ_findObj("takeoffList");
 	
-	removeAllOptions(document.forms[0]['availableSitesList']);
-	putOption('------ Available Takeoffs -------',0,document.forms[0]['availableSitesList']);
+	removeAllOptions(document.forms['sitesSelect']['availableSitesList']);
+	putOption('------ Available Takeoffs -------',0,document.forms['sitesSelect']['availableSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i]['text'].toUpperCase().indexOf(countryCode) ==0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['availableSitesList']);
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms['sitesSelect']['availableSitesList']);
 			found=true; 
 //			break;
 		}
@@ -74,10 +74,10 @@ function selectCountry() {
 	
 	countryCode=selectC.options[selectC.selectedIndex]['value'];
 	
-	removeAllOptions(document.forms[0]['selectedSitesList']);
+	removeAllOptions(document.forms['sitesSelect']['selectedSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i]['text'].toUpperCase().indexOf(countryCode) ==0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['selectedSitesList']);
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms['sitesSelect']['selectedSitesList']);
 			found=true; 
 //			break;
 		}
@@ -89,11 +89,11 @@ function autoComplete (field, selectName, property, forcematch) {
 	var select=MWJ_findObj(selectName);
 	if (field.value.length<2) return;
 	
-	removeAllOptions(document.forms[0]['availableSitesList']);
-    putOption('------ Available Takeoffs -------',0,document.forms[0]['availableSitesList']);
+	removeAllOptions(document.forms['sitesSelect']['availableSitesList']);
+    putOption('------ Available Takeoffs -------',0,document.forms['sitesSelect']['availableSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i][property].toUpperCase().indexOf(field.value.toUpperCase()) >=0 ) {
-			putOption(select.options[i]['text'],select.options[i]['value'],document.forms[0]['availableSitesList']);
+			putOption(select.options[i]['text'],select.options[i]['value'],document.forms['sitesSelect']['availableSitesList']);
 		}
 	}
     setSize(selectedList,availableList);

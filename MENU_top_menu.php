@@ -60,13 +60,33 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
 
-<li class="smallItem"><a class="smallItem" href='#'><?=$iconImg?></a>
-	<ul>
+<li class="smallItem long"><a class="smallItem" href='#'><?=$iconImg?></a>
+	<ul class="long">
+
+<? if ( is_leo_admin($userID) )  {  ?>
+		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
+			<ul>
+				<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
+				<li class='li_space long'></li>
+				<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
+				<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
+				<li><a href="?name=<?=$module_name?>&op=servers_manage">Manage Leonardo Servers</a></li>
+				<li><a href="?name=<?=$module_name?>&op=admin_logs">Administer the Logs</a></li>
+				<li><a href="?name=<?=$module_name?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
+				<?  if ($DBGlvl==0)  { ?>
+				<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
+				<? } else { ?>
+				<li><a href="?name=<?=$module_name?>&DBGlvl=0">Deactivate DEBUG</a></li>
+				<? } ?>
+			</ul>
+		</li>
+<? } ?>
+
 		<li><a href="?name=<?=$module_name?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	if (count($clubsList) >0) {
-		echo "<li class='li_h1'>.:: Clubs / Leagues::.</li>\n";
+		echo "<li class='li_h1 long_li_h1'>.:: Clubs / Leagues::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
@@ -81,7 +101,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	}
 
 	if (count($apList) >0) {
-		echo "<li class='li_h1'>.:: XC Leagues ::.</li>\n";
+		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
 			echo "<li><a href='?name=$module_name&ap=$apName'>".$apItem['desc']."</a></li>\n";
 	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","","?name='.$module_name.'&ap='.$apName.'"));';
@@ -89,28 +109,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	}
 
 	if (count($clubsList) >0 || count($apList) >0) {
-		echo "<li class='li_space'></li>\n";
+		echo "<li class='li_space long'></li>\n";
 		echo "<li><a href='?name=$module_name&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
 	}
 ?>
-
-
-<? if ( is_leo_admin($userID) )  {  ?>
-		<li class='li_h1'>----- <?=_MENU_ADMIN?> -----</li>
-		<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
-		<li class='li_space'></li>
-		<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
-		<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
-		<li><a href="?name=<?=$module_name?>&op=servers_manage">Manage Leonardo Servers</a></li>
-		<li><a href="?name=<?=$module_name?>&op=admin_logs">Administer the Logs</a></li>
-		<li><a href="?name=<?=$module_name?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
-		<?  if ($DBGlvl==0)  { ?>
-		<li><a href="?name=<?=$module_name?>&DBGlvl=255">Activate DEBUG</a></li>
-		<? } else { ?>
-		<li><a href="?name=<?=$module_name?>&DBGlvl=0">Deactivate DEBUG</a></li>
-		<? } ?>
-<? } ?>
-
 	</ul>
 </li>
 
@@ -119,7 +121,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
 	  $flagLink="?name=".$module_name."&lng=".$tmpLang;
-	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' \>&nbsp;$tmpLangStr";
+	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
 		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
 	  }
@@ -133,40 +135,6 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	</ul>
 </li>
   
-
-<? 
- if ( count($CONF_glider_types) > 1  && 0) { 
-		$catLiStr="";
-
-        $catLink="?name=".$module_name."&cat=0";
-		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
-		if ($cat==0) { 
-			$tmpStyle="jsdomenubaritemoverICON";
-			$current_catImg=$catImg;
-		} else $tmpStyle="jsdomenubaritemICONS";
-		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
-
-		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
-		  $catLink="?name=".$module_name."&cat=".$tmpcat;
-		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
-		  if ($cat==$tmpcat) { 
-			$tmpStyle="jsdomenubaritemoverICON";
-			$current_catImg=$catImg;
-		  }
-		  else $tmpStyle="jsdomenubaritemICONS";
-		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$tmpcat]."</a></li>\n";
-		} 	
-?>
-<li class="smallItem"><a class="smallItem" href='#'><?=$current_catImg?></a>
-	<ul>
-	<? echo $catLiStr;?>
-	</ul>
-</li>
-<?
-} // end if 
-?> 
-
-
 <li><a href="#"><?=_MENU_MAIN_MENU." ".$arrDownImg?></a>
 	<ul>
 		<? if ( $CONF_use_own_template ) { // we must put register/login menut items ?>
