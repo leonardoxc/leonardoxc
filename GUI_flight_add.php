@@ -58,7 +58,7 @@
 </div>
 <?
  $datafile=$_FILES['datafile']['name'];
- open_inner_table( _SUBMIT_FLIGHT,650,"icon_add.png");
+ open_inner_table( _SUBMIT_FLIGHT,750,"icon_add.png");
  echo "<tr><td>";
 
  if ($datafile=='') {   
@@ -76,20 +76,18 @@ function setValue(obj)
 </script>
 
   <form name="inputForm" action="" enctype="multipart/form-data" method="post" >	
-  <table class=main_text  width="600" height="400" border="0" align="center" cellpadding="4" cellspacing="2" >
+  <table class=main_text  width="700" height="400" border="0" align="center" cellpadding="4" cellspacing="2" >
     <tr>
-      <td colspan="2"><div align="center" class="style111"><strong><?=_SUBMIT_FLIGHT?> </strong></div>      
+      <td colspan="3"><div align="center" class="style111"><strong><?=_SUBMIT_FLIGHT?> </strong></div>      
         <div align="center" class="style222"><?=_ONLY_THE_IGC_FILE_IS_NEEDED?></div></td>
     </tr>
     <tr>
       <td width="211" valign="top"><div align="right" class="styleItalic"><?=_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT?></div></td>
-      <td width="451" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="datafile" type="file" size="50">
-      </font></td>
+      <td colspan="2" valign="top"><input name="datafile" type="file" size="50"></td>
     </tr>
     <tr>
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
-      <td  valign="top"><select name="gliderCat">        
+      <td width="208"  valign="top"><select name="gliderCat">        
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -99,35 +97,34 @@ function setValue(obj)
 			}
 		?>
 	  </select></td>
-    </tr>
-	<? if ($enablePrivateFlights) { ?>
-    <tr>
-      <td width="211" valign="top"><div align="right" class="styleItalic"><?=_MAKE_THIS_FLIGHT_PRIVATE ?></div></td>
-      <td width="451" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
-
+      <td width="249"  valign="top"><? if ($enablePrivateFlights) { ?>
+		<span class="styleItalic">
+        <?=_MAKE_THIS_FLIGHT_PRIVATE ?>
+      </span>
         <input type="checkbox" name="is_private" value="1">
-      </font></td>
+		<? } ?>
+		</td>
     </tr>
-	<? } ?>
+	
 	<? if ( in_array($userID,$admin_users)) { ?>
     <tr>
       <td width="211" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
-      <td width="451" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td colspan="2" valign="top">
         <input name="insert_as_user_id" type="text" size="10">
-      </font></td>
+		</td>
     </tr>
  	<? }?>
     <tr>
-      <td valign="middle"><div align="right" class="styleItalic"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_COMMENTS_FOR_THE_FLIGHT?>
+      <td valign="middle"><div align="right" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
 	  <span class="styleSmallRed"><br>
-        <?=_NOTE_TAKEOFF_NAME ?></span> </font></div></td>
-      <td valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
+        <?=_NOTE_TAKEOFF_NAME ?></span></div></td>
+      <td colspan="2" valign="top">
         <textarea name="comments" cols="60" rows="4"></textarea>
-      </font></td>
+		</td>
     </tr>
     <tr>
-      <td><div align="right" class="styleItalic"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_GLIDER ?></font></div></td>
-      <td>
+      <td><div align="right" class="styleItalic"><?=_GLIDER ?></div></td>
+      <td colspan="2">
         <input name="glider" type="text" id="glider" size="30">
 		<? 
 			$gliders=  getUsedGliders($userID) ;
@@ -145,33 +142,31 @@ function setValue(obj)
     </tr>
     <tr>
       <td><div align="right" class="styleItalic"><?=_RELEVANT_PAGE ?> </div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td colspan="2">
         http://<input name="linkURL" type="text" id="linkURL" size="50" value="">
-      </font></td>
+		</td>
     </tr>
 	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) { ?>
     <tr>
       <td><div align="right" class="styleItalic"><? echo _PHOTO." #$i"; ?></div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td colspan="2">
         <input name="photo<?=$i?>Filename" type="file" size="50">
-      </font></td>
+	  </td>
     </tr>
 	<? } ?>
 	 <tr>
       <td><div align="right" class="styleItalic"></div></td>
-      <td>  <div align="center" class="style222">
+      <td colspan="2">  <div align="center" class="style222">
         <div align="left"><?=_PHOTOS_GUIDELINES?></div>
       </div></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><p><font face="Verdana, Arial, Helvetica, sans-serif">
-          <input name="submit" type="submit" value="<?=_PRESS_HERE_TO_SUBMIT_THE_FLIGHT ?>">
-</font></p>
+      <td colspan="2"><p><input name="submit" type="submit" value="<?=_PRESS_HERE_TO_SUBMIT_THE_FLIGHT ?>"></p>
       </td>
     </tr>
     <tr>
-      <td colspan=2><div align="center" class="smallLetter"><em><?=_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE ?> 
+      <td colspan=3><div align="center" class="smallLetter"><em><?=_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE ?> 
 	<a href="?name=<?=$module_name?>&op=add_from_zip"><?=_PRESS_HERE ?> </a></em></div></td>
     </tr>
   </table>
