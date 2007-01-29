@@ -55,7 +55,9 @@ function selCountry(countryCode) {
 	var select=MWJ_findObj("takeoffList");
 	
 	removeAllOptions(document.forms['sitesSelect']['availableSitesList']);
-	putOption('------ Available Takeoffs -------',0,document.forms['sitesSelect']['availableSitesList']);
+	var availableSitesListInitVal=MWJ_findObj("availableSitesListInitVal").value;
+	putOption(availableSitesListInitVal,0,document.forms['sitesSelect']['availableSitesList']);
+//		putOption('------ Available Takeoffs -------',0,document.forms['sitesSelect']['availableSitesList']);
 	for (var i = 0; i < select.options.length; i++) {
 		if (select.options[i]['text'].toUpperCase().indexOf(countryCode) ==0 ) {
 			putOption(select.options[i]['text'],select.options[i]['value'],document.forms['sitesSelect']['availableSitesList']);

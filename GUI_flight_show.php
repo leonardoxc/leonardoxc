@@ -66,7 +66,7 @@ with (unknownTakeoffTip)
 	showDelay = 0;
 	hideDelay = 2;
 	doFades = false;
-	tips.floating = new Array(150, 5, "attentionLinkPos", 350, 'This flight has an uknown Takeoff','If you do know from which takeoff/launch this flight began please click to fill it in !');
+	tips.floating = new Array(150, 5, "attentionLinkPos", 350, '<?=_unknown_takeoff_tooltip_1?>','<?=_unknown_takeoff_tooltip_2?>');
 	tipStick = 0;
 }
 
@@ -78,7 +78,7 @@ with (unknownTakeoffTip)
 <script language="javascript">
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
-	document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
+	document.getElementById('takeoffBoxTitle').innerHTML = "<?=_ADD_WAYPOINT?>";	
 	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,320);
 	 MWJ_changeSize( 'takeoffAddID', 410,350 );
@@ -115,18 +115,18 @@ function delete_takeoff(id) {
 	}
 	
 	 function user_add_takeoff(lat,lon,id) {	 
-		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
+		MWJ_changeContents('takeoffBoxTitle',"<?=_ADD_WAYPOINT?>");
 		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		MWJ_changeSize('addTakeoffFrame',720,345);
-		MWJ_changeSize( 'takeoffAddID', 725,365 );
-		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,435);
+		MWJ_changeSize('addTakeoffFrame',720,380);
+		MWJ_changeSize( 'takeoffAddID', 725,400 );
+		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,455);
 	 }
 </script>
 
 <div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
 	<table width="100%" cellpadding="0" cellspacing="0">
 	<tr><td class="infoBoxHeader" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Register Takeoff</div>
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle"><?=_ADD_WAYPOINT?></div>
 	<div align="right" style="display:inline; float:right; clear:right;">
 	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 	</td></tr></table>
@@ -153,7 +153,7 @@ function delete_takeoff(id) {
 </tr>
 <tr >
 	<td class="infoBox" align>
-	Line Color
+	<?=_Line_Color?>
 	</td>
 	<td class="tableBox">
 	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
@@ -173,7 +173,7 @@ function delete_takeoff(id) {
 </tr>
 <tr>
 	<td class="infoBox" align="right">
-		Line width
+		<?=_Line_width?>
 	</td>
 	<td class="tableBox" align="left">
 		<select  name="lineWidth">	
@@ -190,14 +190,14 @@ function delete_takeoff(id) {
 <tr>
 	<td colspan=2 class="infoBox">
 	<?
-	echo "<a href='javascript:submitForm(0)'>Display on Google Earth</a><br>"; 
+	echo "<a href='javascript:submitForm(0)'>"._Display_on_Google_Earth."</a><br>"; 
 	?>
 	</td>
 </tr>
 <tr>
 	<td colspan=2 class="infoBox">
 <?
-	echo "<a href='javascript:submitForm(1)'>Use Man's Module</a><br>"; 
+	echo "<a href='javascript:submitForm(1)'>"._Use_Man_s_Module."</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
 	?>
 
@@ -277,7 +277,7 @@ function delete_takeoff(id) {
 		$takeoffLink.="<div id='attentionLinkPos' class='attentionLink'><a
 			 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
 			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img
-			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>".Unknown_takeoff."<img 
+			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>"._Unknown_takeoff."<img 
 			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
 	}
 	$takeoffLink.="</div>";
@@ -455,8 +455,8 @@ for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
   
 $adminPanel="";
 if (in_array($userID,$admin_users) ) {
-	$adminPanel="<b>TIMES VIEWED:</b> ".$flight->timesViewed."  ";
-	$adminPanel.="<b>DATE ADDED:</b> ".$flight->dateAdded." :: ";
+	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
+	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 	// DEBUG MANOLIS
 	// processIGC($flight->getIGCFilename());
 	// display the trunpoints

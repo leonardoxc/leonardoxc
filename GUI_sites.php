@@ -66,6 +66,7 @@
 		'MODULE_REL_PATH'=>$moduleRelPath,
 		'MODULE_NAME'=>$module_name,
 		'TEMPLATE_REL_PATH'=>$moduleRelPath."/templates/".$PREFS->themeName ,
+		'LANG'=>$currentlang,
 	));
 
    	$Ltemplate->pparse('body');

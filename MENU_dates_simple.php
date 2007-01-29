@@ -31,7 +31,7 @@
 </tr>
 <tr>
 	<td class="tableBox" valign="top">
-		<strong>Recent</strong>
+		<strong><?=_Recent?></strong>
 	</td>
 	<td class="tableBox" valign="top">
 		<strong><?=_YEAR?></strong>

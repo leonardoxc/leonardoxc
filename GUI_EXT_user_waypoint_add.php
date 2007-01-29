@@ -170,18 +170,20 @@ function fillInForm(name,area,countrycode){
 
         <table width="700" border="0" align="center">
           <tr>
-            <td><div class="box boxTop"><img src="img/icon_help.png" width="16" height="16" align="absmiddle" /> You can enter the takeoff infomation if you know it. If not sure it is OK to close this window </div></td>
+            <td><div class="box boxTop"><img src="img/icon_help.png" width="16" height="16" align="absmiddle" /><?=_takeoff_add_help_1?><br />
+                <img src="img/icon_help.png" width="16" height="16" align="absmiddle" /><?=_takeoff_add_help_2?><br />
+            </div></td>
           </tr>
           <tr>
             <td><table width="700" border="0" align="center" cellpadding="2" class="shadowBox main_text">
               <tr>
-                <td width="120" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br />
-                (in Local Language) </font></div></td>
+                <td width="120" bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_Takeoff_Name?><br />
+                (<?=_In_Local_Language?>) </font></div></td>
                 <td  bgcolor="#E3E7F2"><font color="#003366">
                   <input name="wname" type="text" id="wname" size="30" />
                   <input name="type" type="hidden" id="type" value="1000" />
                 </font></td>
-                <td width="250" rowspan="8" valign="top"><div class="box">If you see the lauch name below you can click on it to auto-fill the fields to the left. </div>
+                <td width="250" rowspan="8" valign="top"><div class="box"><?=_takeoff_add_help_3?></div>
                     <?
 				echo $linkToInfoHdr1.$linkToInfoStr1;
 				echo $linkToInfoHdr2.$linkToInfoStr2;	
@@ -190,28 +192,28 @@ function fillInForm(name,area,countrycode){
                   &nbsp;</td>
               </tr>
               <tr>
-                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Name<br />
-                  (in English) </font></div></td>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_Takeoff_Name?><br />
+                  (<?=_In_English?>) </font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <input name="intName" type="text" id="intName" size="30" />
                 </font></td>
               </tr>
               <tr>
-                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br />
-                  (In Local Language) </font></div></td>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_SITE_REGION?><br />
+                  (<?=_In_Local_Language?>) </font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <input name="wlocation" type="text" id="wlocation" size="30" />
                 </font></td>
               </tr>
               <tr>
-                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Region<br />
-                  (In English)</font></div></td>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_SITE_REGION?><br />
+                  (<?=_In_English?>)</font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <input name="intLocation" type="text" id="intLocation" size="30" />
                 </font></td>
               </tr>
               <tr>
-                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Country </font></div></td>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_COUNTRY?> </font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <select name="countryCode">
                     <? 				
@@ -226,13 +228,13 @@ function fillInForm(name,area,countrycode){
                 </font></td>
               </tr>
               <tr>
-                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366">Relevant URL</font></div></td>
+                <td bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_RELEVANT_PAGE?></font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <input name="link" type="text" id="link" size="45">
                 </font></td>
               </tr>
               <tr>
-                <td valign="top" bgcolor="#CFE2CF"><div align="right"><font color="#003366">Description</font></div></td>
+                <td valign="top" bgcolor="#CFE2CF"><div align="right"><font color="#003366"><?=_SITE_DESCR?></font></div></td>
                 <td bgcolor="#E3E7F2"><font color="#003366">
                   <textarea name="description" cols="35" rows="4" id="description"></textarea>
                 </font></td>

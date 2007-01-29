@@ -24,6 +24,7 @@
 	require_once dirname(__FILE__)."/FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
+	
 	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	

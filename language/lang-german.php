@@ -534,13 +534,14 @@ define("_M_PER_SEC","m/sec");
 //--------------------------------------------
 
 define("_WORLD_WIDE","Weltweit");
-define("_National_XC_Leagues_for","Nationale XC Ligen f?r");
+define("_National_XC_Leagues_for","Nationale XC Ligen für");
 define("_Flights_per_Country","Fl?ge je Land");
 define("_Takeoffs_per_Country","Starts je Land");
 define("_INDEX_HEADER","Willkommen zur Leonardo XC Liga");
 define("_INDEX_MESSAGE","Du kannst das Hauptmenu zur Navigation nutzen oder die unten angezeigten Favoriten.");
 
-define("_Best_flights_for ","Besten Fl?ge f?r ");
+define("_Best_flights_for","Besten Flüge für ");
+
 define("_Latest_flights","Latest flights");
 define("_FLIGHTS_STATS","Flugstatistik"); 
 

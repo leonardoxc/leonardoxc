@@ -22,12 +22,12 @@
 
 */
 $continents=array(
-1=>"Europe ",
-2=>"South America ",
-3=>"North & Central America ",
-4=>"Africa ",
-5=>"Asia ",
-6=>"Oceania "
+1=>_Europe,
+2=>_South_America,
+3=>_North_Central_America ,
+4=>_Africa ,
+5=>_Asia ,
+6=>_Australia
 );
 
 $countries2continent=array(

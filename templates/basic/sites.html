@@ -97,7 +97,7 @@ function takeoffDetails() {
 
 		wID=availableList.options[wIndex]['value'];
 //		wID=1;
-		document.getElementById('takeoffFrame').src='modules/{MODULE_NAME}/GUI_EXT_waypoint_details.php?wID='+wID;		
+		document.getElementById('takeoffFrame').src='modules/{MODULE_NAME}/GUI_EXT_waypoint_details.php?wID='+wID+'&lang={LANG}';
 		MWJ_changeSize('takeoffFrame',605,320);
 		MWJ_changeSize('takeoffID', 605,350 );
 
@@ -220,12 +220,12 @@ with (continentTip)
  tipStick = 0.2;
  doFades = false;
  
- tips.c4 = new Array(0, -23, "map", 400, 'Africa');
- tips.c1 = new Array(0, -23, "map",400, 'Europe');
- tips.c5 = new Array(0, -23, "map",400, 'Asia');
- tips.c6= new Array(0,-23, "map",400, 'Australia');
- tips.c3= new Array(0, -23, "map",400, 'North/Central America');
- tips.c2= new Array(0, -23, "map",400, 'South America');
+ tips.c4 = new Array(0, -23, "map", 400, '{#_Africa}');
+ tips.c1 = new Array(0, -23, "map",400, '{#_Europe}');
+ tips.c5 = new Array(0, -23, "map",400, '{#_Asia}');
+ tips.c6= new Array(0,-23, "map",400, '{#_Australia}');
+ tips.c3= new Array(0, -23, "map",400, '{#_North_Central_America}');
+ tips.c2= new Array(0, -23, "map",400, '{#_South_America}');
 }
 
 </script>
@@ -233,7 +233,7 @@ with (continentTip)
 <div id="takeoffID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
 <table width="100%" >
 <tr><td class="infoBoxHeader" >
-<div align="left" style="display:block; float:left; clear:left;" id="takeoffTitle">Takeoff Details</div>
+<div align="left" style="display:block; float:left; clear:left;" id="takeoffTitle">{#_Takeoff_Details}</div>
 <div align="right" style="display:inline; float:right; clear:right;">
 <a href='#' onclick="toggleVisible('takeoffID','takeoffPos',14,-20,0,0);return false;">
 <img src='{TEMPLATE_REL_PATH}/img/exit.png' border=0></a></div>
@@ -247,20 +247,20 @@ with (continentTip)
 
 <form name="sitesSelect" method="post" action="">
   <div class='tableTitle shadowBox'>
-   <div class='titleDiv'>{#Site_Guide}</div>
+   <div class='titleDiv'>{#_Site_Guide}</div>
   </div>
 
   <table class="simpleTable sitesTable" style="width:760px;" width="760"  border="0" align="center" cellpadding="5" cellspacing="1">
     <tr bgcolor="#CCD0E3">
       <td width="400" valign="top">
         <p align="left">
-        <strong>{#Search_Options}</strong><br />
+        <strong>{#_Search_Options}</strong><br />
         <select name="takeoffList" size="10" id="takeoffList"  style="display:none">
             {TAKEOFF_OPTION_LIST}             
         </select></td>
     
       <td>
-        <p><strong>{#Below_is_the_list_of_selected_sites}</strong></p></td>
+        <p><strong>{#_Below_is_the_list_of_selected_sites}</strong></p></td>
     </tr>
     <tr>
       <td valign="top" bgcolor="#EAF0E6">
@@ -314,21 +314,20 @@ alt="Asia">
 </div>
 
 <div style="display:block; width:250px;float:right">
-  <p>
+  <p><input type="hidden" id="availableSitesListInitVal" value="------ {#_Available_Takeoffs} -------" />
       <select name="availableSitesList" id="availableSitesList" size="2"  multiple="multiple" onChange="takeoffDetails()">
-            <option value="0" >------ Available Takeoffs -------</option>
+            <option value="0" >------ {#_Available_Takeoffs} -------</option>
         </select>		
       <br>
 		    <input type="button" onclick="addAll();" value=">>">
             <input name="button" type="button" onclick="addAttribute();" value=">">
   
           <br>
-			<div id='takeoffPos'></div>
-            You can move all availabe takeoffs to the selected list on the right
-            panel by using &gt;&gt; or the selected one by using &gt;</p>
+		  <div id='takeoffPos'></div>
+            {#_takeoff_move_instructions_1}</p>
   <hr>
-  <p>Search site by name<br />
-(give at least 2 letters) <br />
+  <p>{#_Search_site_by_name}<br />
+({#_give_at_least_2_letters}) <br />
 <input type="text" name="input1" value="" onKeyUp="autoComplete(this,'takeoffList','text',false)" />
 </p>
 </div>
@@ -349,17 +348,15 @@ alt="Asia">
 	</td>
 
       <td valign="top" bgcolor="#DDE3E8">
-   <p align="left">Click &quot;See the selected sites&quot; to open
-        these sites in Google Earth </p>
-		<p>
-            <input type="button" name="clearSelected" value="Clear this list" onClick="removeAllOptions(document.forms['sitesSelect']['selectedSitesList']);">
+   <p align="left">
+     <input type="button" name="clearSelected" value="{#_Clear_this_list}" onClick="removeAllOptions(document.forms['sitesSelect']['selectedSitesList']);">
         </p>
-        <p>
+		<p>
             <select name="selectedSitesList"  id="selectedSitesList" size="15" multiple="multiple">
             </select>
-          </p>
+        </p>
           <p>
-            <input type="button" name="SubmitButton" id="SubmitButton" value="See the selected sites in Google Earth"
+            <input type="button" name="SubmitButton" id="SubmitButton" value="{#_See_the_selected_sites_in_Google_Earth}"
 		  onClick="seeSites('{MODULE_REL_PATH}/','selectedSitesList');">
       </p>	  </td>
     </tr>
