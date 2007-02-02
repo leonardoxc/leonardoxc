@@ -503,8 +503,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Helyi rekord<br>(szabadtáv)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Siklórepülõ típus");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Siklóernyõ',2=>'Rugalmas szárny FAI1',4=>'Merevszárny FAI5',8=>'Vitorlázórepülõ');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

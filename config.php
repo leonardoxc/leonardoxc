@@ -202,7 +202,8 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $CONF_photosPerFlight=6;
  
  // Available Types and subtypes of Gliders
- $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wind FAI5",8=>"Glider");
+ $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
+				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
 // $CONF_glider_types=array(1=>"Paraglider");
  $CONF_default_cat_view=0; // pg
  $CONF_default_cat_add=1; //  the default category for submitting new flights 

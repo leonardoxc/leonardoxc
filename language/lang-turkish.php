@@ -558,8 +558,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","En iyi Mesafesi<br>(Açýk Mesafe)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Uçuþ aracý");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Yamaçparaþütü',2=>'YelkenKanat (esnek tip)',4=>'YelkenKanat (sert tip)',8=>'Planör'); 
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

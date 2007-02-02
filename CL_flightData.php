@@ -101,6 +101,18 @@ var $maxPointNum=1000;
 			$this->maxAllowedSpeed=300;
 			$this->maxAllowedVario=20;
 			$this->maxAllowedHeight=9000;
+		} else if ($this->cat==16 ) { // paramotor
+			$this->maxAllowedSpeed=120;
+			$this->maxAllowedVario=13;
+			$this->maxAllowedHeight=9000;
+		} else if ($this->cat==32 ) { // trike
+			$this->maxAllowedSpeed=120;
+			$this->maxAllowedVario=13;
+			$this->maxAllowedHeight=9000;
+		} else if ($this->cat==64 ) { // other powered flight 
+			$this->maxAllowedSpeed=400;
+			$this->maxAllowedVario=20;
+			$this->maxAllowedHeight=15000;
 		}
 
 	}

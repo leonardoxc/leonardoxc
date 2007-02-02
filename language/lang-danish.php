@@ -496,8 +496,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Flyvested rekord<br>(fri distance)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Glider type");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Paraglider',2=>'Flex wing FAI1',4=>'Rigid wing FAI5',8=>'Glider');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

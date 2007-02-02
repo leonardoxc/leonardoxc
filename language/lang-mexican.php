@@ -505,8 +505,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record del lugar<br>(distancia libre)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Tipo de ala");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Parapente',2=>'Ala flexible FAI1',4=>'Ala rígida FAI5',8=>'Planeador');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

@@ -498,8 +498,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Rekord miejsca<br>(dystans po prostej)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Rodzaj skrzyd³a");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Paralotnia',2=>'Lotnia FAI1',4=>'Skrzyd³o sztywne FAI5',8=>'Szybowiec');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

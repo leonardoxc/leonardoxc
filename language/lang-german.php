@@ -500,8 +500,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Fluggebietsrekord<br>(offene Distanz)");
 
 define("_GLIDER_TYPE","Fluggerätetyp"); 
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Gleitschirm',2=>'Flex wing FAI1',4=>'Starfl?gler FAI5',8=>'Drachen'); 
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

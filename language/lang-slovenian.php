@@ -507,6 +507,7 @@ define("_GLIDER_TYPE","Vrsta krila");
 function setGliderCats() {
 global  $gliderCatList;
 $gliderCatList=array(1=>'Jadralno padalo',2=>'Zmaj FAI1',4=>'Zmaj, trdokrilec FAI5',8=>'Jadralno letalo');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

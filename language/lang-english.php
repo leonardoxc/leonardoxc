@@ -497,8 +497,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Site Record<br>(open distance)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Glider type");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Paraglider',2=>'Flex wing FAI1',4=>'Rigid wing FAI5',8=>'Glider');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

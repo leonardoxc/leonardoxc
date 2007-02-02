@@ -502,8 +502,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","Рекорд места<br>(открытая дальность)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Тип ЛА");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Параплан',2=>'Дельтаплан FAI1',4=>'Жесткое крыло FAI5',8=>'Планер');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

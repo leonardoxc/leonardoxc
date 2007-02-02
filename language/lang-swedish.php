@@ -501,8 +501,9 @@ define("_SITE_RECORD_OPEN_DISTANCE","startplatsrekord<br>(öppen distans)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Farkosttyp");
 function setGliderCats() {
-	global  $gliderCatList;
+	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Flygskärm',2=>'Hängglidare-FAI1',4=>'Stel vinge FAI5',8=>'Segelflygplan');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 

@@ -520,8 +520,10 @@ define("_SITE_RECORD_OPEN_DISTANCE","Ρεκόρ απογείωσης<br>(ανοιχτή απόσταση)");
 //--------------------------------------------
 define("_GLIDER_TYPE","Τύπος πτητικής μηχανής");
 function setGliderCats() {
-	global  $gliderCatList;
-	$gliderCatList=array(1=>'Παραπέντε',2=>'Αετός FAI1',4=>'Αετός FAI5',8=>'Ανεμόπτερο');
+	global  $CONF_glider_types,$gliderCatList;
+	$gliderCatList=array(1=>'Παραπέντε',2=>'Αετός FAI1',4=>'Αετός FAI5',8=>'Ανεμόπτερο',
+						16=>'Παραμοτέρ',32=>'Trike',64=>'Μηχανοκίνητη πτήση');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
 
@@ -569,7 +571,7 @@ define("_Display_NONE","Εμφάνιση ΟΛΩΝ");
 define("_Reset_to_default_view","Επαναφορά της αρχικής εμφάνισης");
 define("_No_Club","Κανένα club/ομάδα");
 define("_This_is_the_URL_of_this_page","Το URL αυτής της σελίδας");
-define("_All_glider_types","Όλοι οι τύποι πτητικών συσκευών");
+define("_All_glider_types","Όλες οι πτητικές συσκευές");
 
 
 define("_MENU_SITES_GUIDE","Οδηγός απογειώσεων");
