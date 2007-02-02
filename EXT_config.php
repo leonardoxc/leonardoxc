@@ -11,8 +11,12 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-//	$currentlang="english";
-	$currentlang=$PREFS->language;
+	//	$currentlang="english";
+	@session_start();
+	setVarFromRequest("lng",$PREFS->language); 
+	$currentlang=$lng;
+
+	//	$currentlang=$PREFS->language;
 	$lang=$currentlang;
 	$language=$currentlang;
 

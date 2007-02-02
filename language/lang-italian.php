@@ -559,4 +559,57 @@ define("_No_Club","No Club");
 define("_This_is_the_URL_of_this_page","This is the URL of this page");
 define("_All_glider_types","All glider types");
 
+define("_MENU_SITES_GUIDE","Flying Sites Guide");
+define("_Site_Guide","Site Guide");
+
+define("_Search_Options","Search Options");
+define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
+define("_Clear_this_list","Clear this list");
+define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
+define("_Available_Takeoffs","Available Takeoffs");
+define("_Search_site_by_name","Search site by name");
+define("_give_at_least_2_letters","give at least 2 letters");
+define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
+define("_Takeoff_Details","Takeoff Details");
+
+
+define("_Takeoff_Info","Takeoff Info");
+define("_XC_Info","XC Info");
+define("_Flight_Info","Flight Info");
+
+define("_MENU_LOGOUT","Logout");
+define("_MENU_LOGIN","Login");
+define("_MENU_REGISTER","Open an account");
+
+
+define("_Africa","Africa");
+define("_Europe","Europe");
+define("_Asia","Asia");
+define("_Australia","Australia");
+define("_North_Central_America","North/Central America");
+define("_South_America","South America");
+
+define("_Recent","Recent");
+
+
+define("_Unknown_takeoff","Unknown takeoff");
+define("_Display_on_Google_Earth","Display on Google Earth");
+define("_Use_Man_s_Module","Use Man's Module");
+define("_Line_Color","Line Color");
+define("_Line_width","Line width");
+define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
+define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
+define("_EDIT_WAYPOINT","Edit Takeoff Info");
+define("_DELETE_WAYPOINT","Delete Takeoff");
+define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
+define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
+define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
+define("_Takeoff_Name","Takeoff Name");
+define("_In_Local_Language","In Local Language");
+define("_In_English","In English");
+
 ?>

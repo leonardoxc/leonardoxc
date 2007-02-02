@@ -571,4 +571,58 @@ define("_No_Club","Κανένα club/ομάδα");
 define("_This_is_the_URL_of_this_page","Το URL αυτής της σελίδας");
 define("_All_glider_types","Όλοι οι τύποι πτητικών συσκευών");
 
+
+define("_MENU_SITES_GUIDE","Οδηγός απογειώσεων");
+define("_Site_Guide","Οδηγός απογειώσεων");
+
+define("_Search_Options","Αναζήτηση");
+define("_Below_is_the_list_of_selected_sites","Λίστα των επιλεγμένων απογειώσεων");
+define("_Clear_this_list","Καθαρισμός της λίστας");
+define("_See_the_selected_sites_in_Google_Earth","Ανοιγμα των επιλεγμένων στο Google Earth");
+define("_Available_Takeoffs","Διαθέσιμες απογειώσεις");
+define("_Search_site_by_name","Αναζήτηση με όνομα");
+define("_give_at_least_2_letters","δώστε τουλάχιστον 2 γράμματα");
+define("_takeoff_move_instructions_1","Μετακινήστε τις όλες τις διαθέσιμες απογειώσεις στην λίστα δεξιά με το >> ή μόνο την επιλεγμένη με το > ");
+define("_Takeoff_Details","Στοιχεία απογείωσης");
+
+
+define("_Takeoff_Info","Πληροφορίες απογείωσης");
+define("_XC_Info","Πληροφορίες XC");
+define("_Flight_Info","Πληροφορίες Πτήσης");
+
+define("_MENU_LOGOUT","Αποσύνδεση");
+define("_MENU_LOGIN","Είσοδος");
+define("_MENU_REGISTER","¶νοιγμα λογαριασμού");
+
+
+define("_Africa","Αφρική");
+define("_Europe","Ευρώπη");
+define("_Asia","Ασία");
+define("_Australia","Αυστραλία");
+define("_North_Central_America","Βόρεια/Κεντρική Αμερική");
+define("_South_America","Νότια Αμερική");
+
+define("_Recent","Πρόσφατα");
+
+
+define("_Unknown_takeoff","¶γνωστη απογείωση");
+define("_Display_on_Google_Earth","¶νοιγμα στο Google Earth");
+define("_Use_Man_s_Module","Με το Man's Module (αναλυτική απεικόνιση)");
+define("_Line_Color","Χρώμα γραμμής");
+define("_Line_width","Πάχος γραμμής");
+define("_unknown_takeoff_tooltip_1","Η πτήση αυτή ξεκίνησε από μη καταχωρημένη απογείωση");
+define("_unknown_takeoff_tooltip_2","Έαν ξέρετε το ονομα της απογείωσης πατήστε για να το συμπληρώσετε !");
+define("_EDIT_WAYPOINT","Αλλαγή στοιχείων απογείωσης");
+define("_DELETE_WAYPOINT","Διαγραφή απογείωσης");
+define("_SUBMISION_DATE","Ημ/νια υποβολής"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Αριθμός προβολών"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","Μπορείτε να εισάγετε τις πληροφορίες για αυτήν την απογείωση εάν τις γνωρίζετε. Εάν όχι κλείστε το παράθυρο αυτό");
+define("_takeoff_add_help_2","Έάν η απογείωση που φαίνεται (Πάνω απο το 'άγνωστη απογείωση') είναι η σωστή τότε <strong>δεν πρέπει να την ξαναβάλετε</strong>. Απλώς κλείστε το παράθυρο αυτό.");
+define("_takeoff_add_help_3","Έάν δείτε το σωστό όνομα της απογείωσης κατω απο εδω πατήστε πάνω του για να συμπληρωθούν αυτόματα τα πεδία στα αριστερά.");
+define("_Takeoff_Name","Όνομα απογείωσης");
+define("_In_Local_Language","Στα ελληνικά");
+define("_In_English","Στα αγγλικά");
+
 ?>

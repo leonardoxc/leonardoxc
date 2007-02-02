@@ -10,7 +10,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+	
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
@@ -26,7 +26,7 @@
 	setDEBUGfromGET();
 	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
-	
+
     if (! in_array($userID,$admin_users)) {
 //		return;
     }
