@@ -240,6 +240,12 @@ $waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 $flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
+if ($opMode!=2) {
+	function append_sid($a,$b) {
+		return $a.$b;
+	}
+}
+
 function setVarFromRequest($varname,$def_value) {
 	global $$varname; 
     // echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname."<BR>";
