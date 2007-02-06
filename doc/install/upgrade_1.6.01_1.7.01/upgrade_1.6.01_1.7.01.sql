@@ -26,6 +26,8 @@ ALTER TABLE `leonardo_servers` CHANGE `type` `installation_type` SMALLINT UNSIGN
 
 ALTER TABLE `leonardo_servers` ADD `url` VARCHAR( 255 ) NOT NULL AFTER `leonardo_version` ;
 
+ALTER TABLE `leonardo_flights` ADD `gliderBrandID` SMALLINT UNSIGNED NOT NULL AFTER `glider` ;
+
 
 CREATE TABLE `leonardo_log` (
   `transactionID` bigint(20) unsigned NOT NULL auto_increment,

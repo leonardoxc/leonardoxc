@@ -23,7 +23,7 @@ $server=new Server($id);
 $server->getFromDB();
 
 // se to 1 for debug
-$server->DEBUG=0;
+$server->DEBUG=1;
 
 
 if ($action==1) { // server info 

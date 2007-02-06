@@ -496,7 +496,10 @@ class IXR_Client {
         $request  = "POST {$this->path} HTTP/1.0$r";
         $request .= "Host: {$this->server}$r";
         $request .= "Content-Type: text/xml$r";
-        $request .= "User-Agent: {$this->useragent}$r";
+        //$request .= "User-Agent: {$this->useragent}$r";
+	    $request .= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0$r";
+		$request .= "Referer: http://{$this->server}{$this->path}$r";
+
         $request .= "Content-length: {$length}$r$r";
         $request .= $xml;
         // Now send the request

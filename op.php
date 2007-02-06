@@ -31,8 +31,7 @@ $moduleRelPath="modules/".$module_name;
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 function securityCheck($sitePass) {
-	global $CONF_SitePassword;	
-    return 1;
+	global $CONF_SitePassword;
 	if ( $sitePass!=$CONF_SitePassword || !$sitePass) return 0;
 	return 1;	
 }
