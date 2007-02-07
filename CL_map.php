@@ -80,7 +80,8 @@ class rasterUTM_Map {
 			$this->img = @imagecreatefromjpeg($this->rasterFilename);		
 			if (!$this->img ) {  // failed to open jpeg
 				$this->pixelWidth=0;
-				$this->pixelHeight=0;		
+				$this->pixelHeight=0;	
+				// DEBUG("MAP",1,"jpg not found: ".$this->rasterFilename);	
 			} else {				
 				$this->pixelWidth=imagesx($this->img);
 				$this->pixelHeight=imagesy($this->img);		
@@ -208,9 +209,11 @@ class flightMap extends rasterUTM_Map {
 				$UTMzone=$row["UTMzone"];
 				$pixelHeight=$row["pixelHeight"];
 				$pixelWidth=$row["pixelWidth"];
+				$filename=ltrim($filename,"\/");
 				$filenameParts=explode("/",$filename); 
 				$lon=0;
 				$lat=substr($filenameParts[2],0,2);
+				
 				if ( strtolower (substr($filenameParts[2],2,1) ) == 's' ) $lat=-$lat;
 				// 28_5/UTM34/35n/N-34-35_009_011.jpg
 				list($UTMzone2,$UTMlatZone)=getUTMzone($lon, $lat);
@@ -219,17 +222,16 @@ class flightMap extends rasterUTM_Map {
 				//echo " GOT ------> $UTMzone  , $UTMlatZone , $topY , $leftX, $bottomY , $rightX , $filename <br>";
 				// echo " LOOKING --> $pointUTMzone $pointX , $pointY<br>";
 
-$lz1=getInvLatUTMzone($UTMlatZone);
-$lz2=getInvLatUTMzone($pointUTMlatZone) ;
+				$lz1=getInvLatUTMzone($UTMlatZone);
+				$lz2=getInvLatUTMzone($pointUTMlatZone) ;
+				// DEBUG("MAP",8,"lz1=$lz1 , lz2=$lz2 <BR>");
 				if (	$lz1!=$lz2 && $lz1!=($lz2+1) && $lz1!=($lz2-1)) { 
-//DEBUG("MAP",64,"NOT equal<br>");
- continue; 
-}
-else { 
-DEBUG("MAP",8,"Tile UTMlatZone=$UTMlatZone, ($lz1,$lz2) looking for $pointUTMlatZone #$filename <br>");
-
-//DEBUG("MAP",8,"Correct UTMlatZone<br>");
- }
+					//DEBUG("MAP",64,"NOT equal<br>");
+					 continue; 
+				} else { 
+					DEBUG("MAP",8,"Tile UTMlatZone=$UTMlatZone, ($lz1,$lz2) looking for $pointUTMlatZone #$filename <br>");				
+					//DEBUG("MAP",8,"Correct UTMlatZone<br>");
+				}
 
 				//	find the map that has the upper left corner of the flight's rectangle
 				if ( $UTMzone == $pointUTMzone ) {

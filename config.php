@@ -274,6 +274,14 @@ function setVar($varname,$value) {
 	 // $_REQUEST[$varname]=$$varname;
 }
 
+// you should probably set  $OLCScoringServerPath to the same server 
+// you have leonardo
+$OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
+$OLCScoringServerPassword="mypasswd";
+
+// we over ride the config values with our custom ones here 
+@include_once dirname(__FILE__)."/site/config_custom.php";
+ 
 require_once dirname(__FILE__)."/CL_user_prefs.php";
 $PREFS=new userPrefs();
 if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) {
@@ -307,14 +315,5 @@ $PREFS->setToCookie();
 $themeRelPath=$moduleRelPath."/templates/".$PREFS->themeName;
 $themeAbsPath=dirname(__FILE__)."/templates/".$PREFS->themeName;
 
-//-----------------------------------------------------------------------------
-// DO EDIT BELOW THIS LINE
-//-----------------------------------------------------------------------------
 
- // you should probably set  $OLCScoringServerPath to the same server 
- // you have leonardo
- $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
- $OLCScoringServerPassword="mypasswd";
-
- @include_once dirname(__FILE__)."/site/config_custom.php";
 ?>
