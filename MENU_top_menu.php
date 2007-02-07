@@ -121,6 +121,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
 	  $flagLink="?name=".$module_name."&lng=".$tmpLang;
+ 	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
 	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
 		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
