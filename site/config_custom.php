@@ -15,7 +15,7 @@
 // 1 = PHPnuke module
 // 2 = phbb2 module
 // 3 = standalone -- still work in progress
- $opMode= 2; 
+ $opMode= 3; 
 
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;
@@ -34,10 +34,6 @@
 
  $CONF_main_page="index_full";
 
- // define the path where the maps reside
- // use this if you have the maps stored 
- // on the local server in a directory called maps/
- $mapsPath=dirname(__FILE__)."/maps";
 
  // the native language of the server
  $nativeLanguage="english";

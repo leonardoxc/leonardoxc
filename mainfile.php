@@ -79,11 +79,11 @@ if (eregi("mainfile.php",$PHP_SELF)) {
     die();
 }
 
-include dirname(__FILE__)."/config.php";
+require_once dirname(__FILE__)."/config.php";
 
-include dirname(__FILE__)."/includes/db.php";
-include dirname(__FILE__)."/includes/functions.php";
-include dirname(__FILE__)."/includes/common.php";
+require_once dirname(__FILE__)."/includes/db.php";
+require_once dirname(__FILE__)."/includes/functions.php";
+require_once dirname(__FILE__)."/includes/common.php";
 
 if (isset($_SESSION['user_id'])) {
   $userdata['user_id']  = $_SESSION['user_id'];

@@ -227,10 +227,14 @@ if ( count($parts)>1 )  {
 if (!isset($module_name))  {
 	if (isset($_GET['name'])) $module_name=$_GET['name'];
 	else $module_name="leonardo";
+
 	$moduleAbsPath=dirname(__FILE__);
 	if ($opMode==3) $moduleRelPath="./";
 	else  $moduleRelPath="modules/".$module_name;
 }
+
+if ($opMode==3) $moduleRelPath="./";
+
 $flightsRelPath="flights";
 $waypointsRelPath="waypoints";
 
@@ -241,7 +245,7 @@ $flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 if ($opMode!=2) {
-	function append_sid($a,$b) {
+	function append_sid($a,$b="") {
 		return $a.$b;
 	}
 }

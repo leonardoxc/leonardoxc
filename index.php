@@ -25,7 +25,7 @@ $module_name = basename(dirname(__FILE__));
 //$moduleAbsPath=dirname(__FILE__);
 $moduleRelPath="modules/".$module_name;
 
-require_once $moduleRelPath."/config.php";
+require_once dirname(__FILE__)."/config.php";
 setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
 require_once("mainfile.php");
@@ -36,16 +36,16 @@ if (!eregi("modules.php", $_SERVER['PHP_SELF']) && ($opMode==1 || $opMode==2) ) 
 
 $pagetitle = _PAGE_TITLE;
 
-require_once $moduleRelPath."/language/lang-".$currentlang.".php";
-require_once $moduleRelPath."/language/countries-".$currentlang.".php";
-require_once $moduleRelPath."/FN_UTM.php";
-require_once $moduleRelPath."/FN_functions.php";	
-require_once $moduleRelPath."/FN_waypoint.php";	
-require_once $moduleRelPath."/FN_pilot.php";	
-require_once $moduleRelPath."/FN_flight.php";	
-require_once $moduleRelPath."/FN_output.php";
-require_once $moduleRelPath."/CL_flightData.php";
-require_once $moduleRelPath."/templates/".$PREFS->themeName."/theme.php";
+require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
+require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
+require_once dirname(__FILE__)."/FN_UTM.php";
+require_once dirname(__FILE__)."/FN_functions.php";	
+require_once dirname(__FILE__)."/FN_waypoint.php";	
+require_once dirname(__FILE__)."/FN_pilot.php";	
+require_once dirname(__FILE__)."/FN_flight.php";	
+require_once dirname(__FILE__)."/FN_output.php";
+require_once dirname(__FILE__)."/CL_flightData.php";
+require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
 
 if ($opMode==1 ) { // phpnuke 
@@ -91,7 +91,7 @@ if ($op=="main") $op=$CONF_main_page;
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 
 if ($opMode==3) 
-	require_once $moduleRelPath."/GUI_header.php";
+	require_once dirname(__FILE__)."/GUI_header.php";
 
 if ($opMode==1) include("header.php");
 
@@ -103,7 +103,7 @@ if ($opMode==1) include("header.php");
 if ($opMode==1) OpenTable();
 
 $Theme =new Theme();
-require_once $moduleRelPath."/BLOCKS_start.php";
+require_once dirname(__FILE__)."/BLOCKS_start.php";
 
 
 
@@ -118,7 +118,7 @@ if ($clubID) {
 	$clubName=_No_Club;
 }
 
-require_once $moduleRelPath."/MENU_menu.php";
+require_once dirname(__FILE__)."/MENU_menu.php";
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <?

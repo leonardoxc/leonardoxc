@@ -1,17 +1,11 @@
 <?php
 
-
-$dbhost = '';
-$dbname = '';
-$dbuser = '';
-$dbpasswd = ''
-
 // DO NOT EDIT BELLOW THIS LINE 
 $dbms = 'mysql';
-$prefix = 'leonardo';
+require_once dirname(__FILE__)."/../site/config_db.php";
 $table_prefix = $prefix.'_';
 $user_prefix  = $prefix ;
-$users_table= "leonardo_users";
+$users_table= $table_prefix."_users";
 
 require_once dirname(__FILE__)."/mysql.php";
 
