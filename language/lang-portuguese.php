@@ -97,7 +97,7 @@ define("_FLYING_AREA_INFO","Informação do local de voo");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","^Cima");
 // list flight
 define("_PILOT_FLIGHTS","Voos do piloto");

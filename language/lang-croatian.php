@@ -1,4 +1,4 @@
-<?php
+<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1250"></head><? }?><?php
 
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
@@ -90,7 +90,7 @@ define("_FLYING_AREA_INFO","Informacije o letačkom području");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Povratak na vrh");
 // list flight
 define("_PILOT_FLIGHTS","Letovi pilota");

@@ -94,7 +94,7 @@ define("_FLYING_AREA_INFO","Infos sur la zone de vol");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Serveur Leonardo XC");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Haut de page");
 // list flight
 define("_PILOT_FLIGHTS","Vols du pilote");

@@ -1,4 +1,4 @@
-<?php
+<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2"></head><? }?><?php
 
 /**************************************************************************/
 /* Hungarian language translation by                                        */
@@ -95,7 +95,7 @@ define("_FLYING_AREA_INFO","Repülési terület infók");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Vissza a lap tetejére");
 // list flight
 define("_PILOT_FLIGHTS","Pilóta repülései");

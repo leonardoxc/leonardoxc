@@ -1,7 +1,4 @@
-<? if (1==2) { ?>
-<head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9"></head>
-<? } ?>
-<?php
+<? if (0) { ?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9"></head><? } ?><?php
 /**************************************************************************/
 /* Turkish language translation by Ali Yucer   (yucer_ali@hotmail.com)    */
 /**************************************************************************/
@@ -102,7 +99,7 @@ define("_FLYING_AREA_INFO","Flying area info");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","En Üste dön");
 // list flight
 define("_PILOT_FLIGHTS","Pilot'un uçuşları");

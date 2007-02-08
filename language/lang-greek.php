@@ -92,7 +92,7 @@ define("_FLYING_AREA_INFO","Απογειώσεις περιοχής");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Ελληνικός XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Επιστροφή στην αρχή");
 // list flight
 define("_PILOT_FLIGHTS","Πτήσεις πιλότου");

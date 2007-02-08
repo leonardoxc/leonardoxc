@@ -91,7 +91,7 @@ define("_FLYING_AREA_INFO","Informacja o miejscu");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Serwer Leonardo XC");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Do góry");
 // list flight
 define("_PILOT_FLIGHTS","Wszystkie loty");

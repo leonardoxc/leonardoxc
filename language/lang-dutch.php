@@ -1,4 +1,5 @@
-<?php
+<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></head><? }?><?php
+
 /**************************************************************************/
 /* Dutch language translation by                    	                  */
 /* Ardy Brouwer (fly2high@xs4all.nl)				                      */
@@ -94,7 +95,7 @@ define("_FLYING_AREA_INFO","Vlieggebied Info");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Naar Boven");
 // list flight
 define("_PILOT_FLIGHTS","Vluchten van Piloot");

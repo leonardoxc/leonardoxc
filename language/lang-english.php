@@ -90,7 +90,7 @@ define("_FLYING_AREA_INFO","Flying area info");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC server");
+define("_PAGE_TITLE","Leonardo XC");
 define("_RETURN_TO_TOP","Return to top");
 // list flight
 define("_PILOT_FLIGHTS","Pilot's Flights");
