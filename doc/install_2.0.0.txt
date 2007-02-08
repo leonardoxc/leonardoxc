@@ -1,0 +1,165 @@
+/************************************************************************/
+/* Leonardo: Gliding XC Server				                */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
+/* http://leonardo.thenet.gr                                            */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
+
+--------------------------------------------------------------------------
+  INSTALLATION
+--------------------------------------------------------------------------
+
+Prerequisites in order to install Leonardo
+
+1. PHP
+2. Mysql
+3. PHP Nuke OR phpBB running
+4. GD 2.0 or higher installed in PHP (most free hosting dont offer that)
+5. Ability to compile and execute C programs in the web server
+6. 1 -5 Gb Hard disk space on the webserver for the SAT Maps
+   (For greece, using a 14m/pixel map, 2.5 Gb were needed)
+7. Lots of Bandwidth
+8. Good CPU on the Webserver
+9. Lots of Memory on the webserver (512 Mininum 1 Gb recommended)
+10. Basic - indermediate computer skills.
+
+
+--------------------------------------------------------------------------
+ AUTO INSTALLATION
+--------------------------------------------------------------------------
+
+- STEP 1. Unzip the files
+  Unzip the files and place the files and directories to 
+  modules/leonardo on the diretory of your phpBB or phpNuke installation.
+  If you have installed phpBB on dir phpbb/ then the files should go to 
+  phpbb/modules/leonardo. If you installing as a phpNuke module 
+  use the modules/ directory of phpNuke.
+
+- STEP 2.  Run the auto installer. at
+ http://www.yourdomain.com/path_to_phpbb_or_nuke/modules/leonardo/install.php
+ and follow the on-screen instructions.
+
+- DONE Delete the install.php file
+
+
+--------------------------------------------------------------------------
+ MANUAL INSTALLATION
+--------------------------------------------------------------------------
+
+
+- STEP 1. Unzip the files
+  Unzip the files and place the files and directories to 
+  modules/leonardo on the diretory of your phpBB or phpNuke installation.
+  If you have installed phpBB on dir phpbb/ then the files should go to 
+  phpbb/modules/leonardo. If you installing as a phpNuke module 
+  use the modules/ directory of phpNuke.
+
+
+- STEP 2. Create the tables
+  Execute the file "leonardo.sql"  (found in the sql directory)
+  to the sql server you are using. You can do this from the command 
+  line interface (mysql) or using a web based tool (like phpmyAdmin)
+
+  Execute the file "waypoints.sql"  in the same way as above. This will 
+  add the coordinates of 3800 major world cities to get you started.
+
+
+- STEP 3. Edit the config files in modules/leonardo/site/
+
+   DON NOT EDIT modules/leonardo/config.php ,your changes will be overriden
+
+   The 3 variables that you NEED to change are
+   1)  $opMode  ( in file modules/leonardo/site/config_op_mode.php )
+	1 = for use with a PHPnuke portal
+	2 = for use with a phBB2 forum
+
+   2) $admin_users ( in file modules/leonardo/site/config_admin_users.php )
+	-> set this to the user id's (from the phpnuke/phpbb table of users) 
+                 that will have admin previledges
+
+
+   You should deside which users will be admins for leonardo.
+   those users will have the rights to delete any flight, modify any flight, 
+   regenerate the maps and charts for any flight etc. Lets say that you are 
+   user "admin" on your forum and want to put yourself in the $admin_users.
+   Go to "MembersList " where all the members of your forum are displayed and
+   search for "admin" When you find it and put the mouse cursor over "admin" 
+   a link will be displayed in the bottom of the browser something like 
+   "http://yoursite.com/profile.php?mode=viewprofile&u=230" Note the "u=230" ,
+   so the user ID of user "admin" is 230 so put
+       $admin_users=array(230);
+   if you wish to add another user (lets say with user id 132) you should make this :
+       $admin_users=array(230,132); 
+
+
+
+- STEP 4. check the permissions for the OLC Scoring script
+  1. go to dir modules/leonardo/server
+
+  You should have access to your web server in a shell and check this directory has permissions to write.
+
+- STEP 5. 
+    If you are	using phpNuke: 
+	1) Activate the leonardo module from the phpHNuke administration panel
+	2) Edit  file /includes/meta.php of the phpnuke base directory.
+
+	around line 23-25 replace :
+echo "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset="._CHARSET."\">\n";
+	with:
+
+// Leonardo begin : correct encoding
+global $langEncodings,$lng;
+$activeCharset=$langEncodings[$lng];
+if (!$activeCharset) $activeCharset=_CHARSET;
+
+echo "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=".$activeCharset."\">\n";
+// Leonardo end
+
+	
+
+    If you are	using phpBB2:
+	1) Copy the files install/phpbb2Files/modules.php and install/phpbb2Files/mainfile.php 
+	to the root folder of your phpBB2 installation ( par example: phpbb/ )
+
+	2) Open the file includes/constants.php  in your phpBB directory
+	   Find 
+		define('PAGE_GROUPCP', -11);
+	   After that add 
+		define('PAGE_LEONARDO', -1045);
+	   Save the File
+
+ 
+- STEP 6. Have fun. The URL of Leonardo to show all flights would be something like: 
+     http://www.yoursite.com/path_to_phpbb_or_phpNuke/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0
+
+
+--------------------------------------------------------------------------
+  MAP MAKING
+--------------------------------------------------------------------------
+
+See file docs/maps/Maps_howto_auto.txt 
+
+
+--------------------------------------------------------------------------
+  F.A.Q.
+--------------------------------------------------------------------------
+
+See file docs/faq.txt 
+
+
+
+
+
+
+
+
+
+
+
+

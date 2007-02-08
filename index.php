@@ -34,8 +34,6 @@ if (!eregi("modules.php", $_SERVER['PHP_SELF']) && ($opMode==1 || $opMode==2) ) 
     die ("You can't access this file directly...");
 }
 
-$pagetitle = _PAGE_TITLE;
-
 require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 require_once dirname(__FILE__)."/FN_UTM.php";
@@ -47,6 +45,7 @@ require_once dirname(__FILE__)."/FN_output.php";
 require_once dirname(__FILE__)."/CL_flightData.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
+$pagetitle = _PAGE_TITLE;
 
 if ($opMode==1 ) { // phpnuke 
 	$user = $_REQUEST['user'];
