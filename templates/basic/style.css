@@ -20,9 +20,8 @@ sory.title {
 	font-size: 11px;
 }
 
-.main_text { 
-	color: #003366;
-}
+.main_text { color: #003366; }
+.main_text a:link, a:active, a:visited , a:hover { text-decoration:underline; }
 
 
 /* various styles for time,distance,score etc...

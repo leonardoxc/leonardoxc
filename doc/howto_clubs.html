@@ -1,0 +1,60 @@
+<h1>Clubs Howto</h1>
+
+<p>&nbsp;</p>
+<h2>How clubs work / what features are present</h2>
+<p><br />
+The clubs feature work like this: </p>
+<p>1) The pilot submits his flight as usual to leonardo, there is no difference at this stage.</p>
+<p>2) The flight is displayed in the &quot;main&quot;   leoanrdo, and counted in the general scoring / xc league.</p>
+<p>3) If the pilot is a member of a club (or more clubs) his flight will also appear in the scoring/league <br />
+of his club. There is the option for clubs not to count each amd every flight of their members <br />
+but give the club admin the possibility to add/delete flights manually. See <strong>&quot;addManual</strong>&quot; option below. </p>
+<p>This is the basic functionallity that is present at the moment.</p>
+<h2>Things/features to be done</h2>
+<ul>
+  <li><strong>noSpecificMembers</strong>: If set to 1 the club admin will not have to add pilots manually. Instead pilots will automatically belong to a club based on some criteria (nationalty or DHV category of their glider etc...) </li>
+  <li><strong>defaultDisplayTheme </strong>A club may have a totally different apearance by using a diefferent theme.</li>
+  <li>    <strong>countryCodes</strong> Flights will be included only if done in specific countries</li>
+  <li>    <strong>pilotNationality</strong> Pilots will become automatically members of the club only if of specific natianality/nationalities</li>
+  <li>    <strong>gliderCat</strong> Flights will be included only if done with specific DHV category gliders</li>
+  <li>    <strong>Start - End period :</strong> Only flights during a period will be counted </li>
+</ul>
+<p>&nbsp;</p>
+<h2>Configuration</h2>
+<p>Edit file site/config_clubs.php
+  
+  There are the club definitions. 
+  Here is a typical entry:</p>
+<pre> 
+1=&gt;array(	
+ &quot;desc&quot;=&gt;&quot;Broken Thermal Club&quot;,
+ &quot;id&quot;=&gt;1,
+ &quot;lang&quot;=&gt;&quot;mexican&quot;,
+ &quot;areaID&quot;=&gt;0,
+ &quot;addManual&quot;=&gt;1,
+ &quot;adminID&quot;=&gt;76,
+ ) ,</pre>
+<p>&nbsp;</p>
+<p><strong>1=&gt;array( <br />
+</strong>1 is the club ID, no clubs can have the same ID. <br />
+    <strong><br />    &quot;desc&quot;=&gt;&quot;Broken Thermal Club&quot;,</strong><br /> 
+      The description that will apear on the menu. Try to be brief, and not exceed 40-50 letters.</p>
+<p><strong>&quot;id&quot;=&gt;1,<br />
+</strong>The Id of the club as before </p>
+<p><strong> &quot;lang&quot;=&gt;&quot;mexican&quot;,<br />
+  </strong>The default language that will be displayed.<br />
+    Different clubs can have different default languages,usefule in a multinational leonardo server </p>
+<p><strong>&quot;areaID&quot;=&gt;0,<br />
+</strong>Not used at the moment, leave it 0. It will be used when there is possibility to define Areas as <br />
+a group of takeoffs and restrain the club fligths to takeoffs of this area </p>
+<p><strong> &quot;addManual&quot;=&gt;1,</strong><br />
+The most imporant setting: If is set to 0, all the flights that are submited to leonardo by club<br />
+members are counted in the club league. <br />
+If set to 1, a member must submit his flight to leonardo, but wont be automatically added to the club.<br />
+The admin must manually add the flight via a special interface. </p>
+<p><strong> &quot;adminID&quot;=&gt;76,</strong><br />
+The user id of the administrator of this club. The club admin can add/remove pilots to the club<br />
+and if &quot;addManual&quot; (see above ) is set to 1 he can also add/delete flights for the club. </p>
+<p>&nbsp;</p>
+<p>You can add as many entries as this , each with a different clubID. </p>
+<p>&nbsp;</p>
