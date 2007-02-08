@@ -11,12 +11,6 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-// opMode 
-// 1 = PHPnuke module
-// 2 = phbb2 module
-// 3 = standalone -- still work in progress
- $opMode= 3; 
-
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;
 
