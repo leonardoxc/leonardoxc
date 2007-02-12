@@ -11,6 +11,33 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
+function getTakeoffsCountryContinent() {
+	global $db;
+	global $flightsTable,$waypointsTable,$prefix;
+	require_once dirname(__FILE__)."/FN_areas.php";
+
+  	$query="SELECT DISTINCT takeoffID, $waypointsTable.countryCode 
+			FROM $flightsTable,$waypointsTable WHERE takeoffID<>0 AND $waypointsTable.ID=$flightsTable.takeoffID";
+	// echo $query;
+	$res= $db->sql_query($query);		
+    if($res <= 0){
+		return array( array (),array ());
+    }
+
+	$takeoffsCountry=array();
+	$takeoffsContinent=array();
+	while ($row = $db->sql_fetchrow($res)) { 
+		$id=$row["takeoffID"];
+		$countryCode=$row["countryCode"];
+		$takeoffsCountry[$id]=$countryCode;
+		$takeoffsContinent[$id]=$countries2continent[$countryCode];
+	}
+
+	return array($takeoffsCountry,$takeoffsContinent);
+
+}
+
 function getTakeoffList() {
 	global $db;
 	global $flightsTable,$prefix;

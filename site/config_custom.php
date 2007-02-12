@@ -95,7 +95,7 @@
  // Debug leave it 0
  $CONF_show_DBG_XML=1;
 
- $CONF_countHowManyFlightsInComp=6;
+ $CONF_countHowManyFlightsInComp=3;
 
  $CONF_showProfilesToGuests=1;
 

@@ -16,7 +16,12 @@ if ( file_exists(dirname(__FILE__)."/install.php") ) {
 	exit;
 }
 
-// $pageStart=getmicrotime();
+function leo_getmicrotime() {
+   list($usec, $sec) = explode(" ", microtime());
+   return ((float)$usec + (float)$sec);
+}
+
+$pageStart=leo_getmicrotime();
 
 @session_start();
 
@@ -151,6 +156,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_list_pilots.php";
 } else if ($op=="competition") {
     require $moduleRelPath."/GUI_list_comp.php";
+} else if ($op=="comp") {
+    require $moduleRelPath."/GUI_list_comp_custom.php";
 } else if ($op=="list_takeoffs") {
 	require $moduleRelPath."/GUI_list_takeoffs.php";	
 } else if ($op=="sites") {
@@ -248,7 +255,8 @@ function exitPage($exitNow=1){
    global $module_name,$opMode,$noFooterMenu,$moduleRelPath,$PREFS;
    global $sqlQueriesDebug,$sqlFetchTime;
    global $pageStart;
-   /*
+ 
+  /*
    $sqlQueriesTime=0;
    $i=0;
    foreach ($sqlQueriesDebug as $tm) {
@@ -272,7 +280,10 @@ function exitPage($exitNow=1){
 	 echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
    }
    echo "</div>";  
-   
+
+   $pageEnd=leo_getmicrotime();
+   $pageTime=$pageEnd-$pageStart;
+   DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
    DEBUG_END();
    
    require_once $moduleRelPath."/BLOCKS_end.php";
@@ -282,9 +293,7 @@ function exitPage($exitNow=1){
    } else if ($opMode==3) {
 		require_once $moduleRelPath."/GUI_footer.php";
    }
-   //$pageEnd=getmicrotime();
-   //$pageTime=$pageEnd-$pageStart;
-   // echo "PAGE CREATION: $pageTime secs<BR>";
+   
 		
    if ($exitNow) exit;
 }

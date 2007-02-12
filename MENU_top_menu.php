@@ -194,6 +194,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 <li class="lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul>
+		<? if (0) { ?><li><a href="?name=<?=$module_name?>&op=comp"><?=_MENU_OLC ?> GERMAN</a></li><? }?>
 		<li><a href="?name=<?=$module_name?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
 		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
