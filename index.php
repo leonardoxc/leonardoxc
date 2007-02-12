@@ -234,6 +234,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_admin_logs.php";
 } else if ($op=="admin_takeoffs") {
 	require $moduleRelPath."/GUI_admin_takeoffs.php";
+} else if ($op=="validation_review") {
+	require $moduleRelPath."/GUI_validation_review.php";
 } else if ($op=="servers_manage") {
 	require $moduleRelPath."/GUI_servers_manage.php";
 } else if ($op=="filter") {

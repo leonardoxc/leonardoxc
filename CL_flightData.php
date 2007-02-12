@@ -37,6 +37,9 @@ class flight {
 	
 	var $forceBounds=0;
 	
+	var $validated=0;
+	var $grecord=0;
+	
 var $timezone=0;
 
 var $DATE;
@@ -1237,13 +1240,29 @@ var $maxPointNum=1000;
 		return 1;	
 	} // end function getFlightFromIGC()
 
+	function validate() {
+		global $CONF_valdation_server_url;
+		global $baseInstallationPath;
 
+		set_time_limit (240);	
+		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
+		$fl= $CONF_valdation_server_url."?file=".$IGCwebPath;
+		DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
+		$contents =	split("\n",fetchURL($fl,30));
+		if (!$contents) return 0;
+
+		foreach ( $contents as $line) echo $line."<BR>";
+		return $res;
+	}
+	
 	function getOLCscore() {
 		global $OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
 		global $baseInstallationPath;
 
 		if (! $scoringServerActive) return 0;
 
+
+/*
 		// check if scorring server is respoding (timeout = 5 secs)
  	    //get hostname from  $OLCScoringServerPath first
 		preg_match("/^(http:\/\/)?([^\/]+)/i", $OLCScoringServerPath, $matches);
@@ -1261,18 +1280,20 @@ var $maxPointNum=1000;
 			// echo "SERVER NOT ACTIVE"; 
 			return 0;
 		} else fclose ($fp); 
-
+*/
 		set_time_limit (240);	
-		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1);
+		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1); // score saned file
 
-		// $IGCwebPath=rawurlencode($IGCwebPath);
 		$fl= $OLCScoringServerPath."?pass=".$OLCScoringServerPassword."&file=".$IGCwebPath;
 		DEBUG("OLC_SCORE",1,"Will use URL: $fl<BR>");
-		$contents = file($fl); 
-
+		//$contents = file($fl); 
+		$contents =	split("\n",fetchURL($fl,20));
+		if (!$contents) return;
+				
 		$turnpointNum=1;
 		foreach(  $contents  as $line) {	
-			DEBUG("OLC_SCORE",1,"LINE: $line<BR>");
+			if (!$line) continue;		
+			DEBUG("OLC_SCORE",1,"LINE: $line<BR>\n");
 			$var_name  = strtok($line,' '); 
 			$var_value = strtok(' '); 
 			if ($var_name{0}=='p') {
@@ -1287,7 +1308,7 @@ var $maxPointNum=1000;
 				$turnpointNum++;
 			};
 			$this->$var_name=trim($var_value);
-			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>");
+			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
 		}		
 		$this->FLIGHT_KM=$this->FLIGHT_KM*1000;
 	}
@@ -1400,6 +1421,9 @@ var $maxPointNum=1000;
 		$this->subcat=$row["subcat"];		
 		$this->active=$row["active"];		
 		$this->private=$row["private"];		
+
+		$this->validated=$row["validated"];		
+		$this->grecord=$row["grecord"];		
 
 		$this->timesViewed=$row["timesViewed"];		
 		$this->dateAdded=$row["dateAdded"];		
@@ -1573,6 +1597,7 @@ var $maxPointNum=1000;
 
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,active, private ,
+		validated,grecord,
 		comments, glider, linkURL, timesViewed,
 		photo1Filename,photo2Filename,photo3Filename,
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
@@ -1599,6 +1624,7 @@ var $maxPointNum=1000;
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->active, $this->private,
+		$this->validated,$this->grecord,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		'$this->photo1Filename','$this->photo2Filename','$this->photo3Filename',
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,

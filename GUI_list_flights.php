@@ -199,7 +199,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
-   global $CONF_photosPerFlight;   	 
+   global $CONF_photosPerFlight,$CONF_use_validation;   	 
    global $gliderCatList,$brandsList;
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
@@ -349,6 +349,18 @@ function removeClubFlight(clubID,flightID) {
 	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' valign='top' />";
 	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
+		if ($CONF_use_validation) {
+			$isValidated=$row['validated'];
+			if ($isValidated==-1) $vImg="icon_valid_nok.gif";
+			else if ($isValidated==0) $vImg="icon_valid_unknown.gif";
+			else if ($isValidated==1) $vImg="icon_valid_ok.gif";
+			$valStr="<img class='listIcons' src='".$moduleRelPath."/img/$vImg' width='16' height='16' border='0' />";
+			if (in_array($userID,$admin_users)) 
+				$valStr="<a href='?name=$module_name&op=validation_review&flightID=".$row["ID"]."'>$valStr</a>";
+
+			echo $valStr;
+		}
+		
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
 			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
 			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width='16' height='16' border='0' align='bottom' /></a>"; 

@@ -11,28 +11,6 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
  
-function getHTTPpage($url,$timeout=5) {
-	return fetchURL($url,$timeout);
-
-	preg_match("/^(http:\/\/)?([^\/]+)/i", $url, $matches);
-	$ServerHostName= $matches[2]; 
-	$pos = strpos( $ServerHostName,":"); 
-	if ($pos === false) $ServerPort=80;
-	else  { 
-		$ServerPort= substr($ServerHostName,$pos+1);
-		$ServerHostName=substr($ServerHostName,0,$pos);
-	}
-
-	// echo "#".$ScoringServerHostName."#". $ScoringServerPort ."#";
-	$fp = @fsockopen ($ServerHostName, $ServerPort, $errno, $errstr, $timeout); 
-	if (!$fp) { return 0; }
-	else fclose ($fp); 
-	
-	$contents = file($url); 
-	//	set_time_limit(180);
-	return $contents ;
-}
-
 function fetchURL( $url, $timeout=5) {
    $url_parsed = parse_url($url);
    $host = $url_parsed["host"];
@@ -372,7 +350,7 @@ function getBrowser() {
 		
 		//echo 	$getXMLurl;
 		
-		$xmlSites=getHTTPpage($getXMLurl);		
+		$xmlSites=fetchURL($getXMLurl);		
 		if ($xmlSites) {
 			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 			$xmlDoc = new MiniXMLDoc();

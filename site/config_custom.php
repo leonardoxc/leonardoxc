@@ -69,6 +69,10 @@
  // set $scoringServerActive=0 to disable the scoring.
  $enableOLCsubmission=1;
 
+ // validate against the G-record
+ $CONF_use_validation=1;
+
+ $CONF_valdation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate.php";
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
  // set $scoringServerActive=0 to disable the scoring.

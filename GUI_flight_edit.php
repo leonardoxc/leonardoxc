@@ -86,17 +86,50 @@ function setValue(obj)
     </tr>
     <tr>
       <td  valign="top"><div align="right" class="style2"> <? echo _GLIDER_TYPE ?></div></td>
-      <td  valign="top"><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0><select name="gliderCat">        
-      	<?
-			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
-
-				if ($flight->cat==$gl_id) $is_type_sel ="selected";
-				else $is_type_sel ="";
-				echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
-			}
-		?>
-	  </select></td>
+      <td  valign="top"><b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
+           <select name="gliderCat">
+           <?
+				foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
+					if ($flight->cat==$gl_id) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
+				}
+			?>
+			</select>
+		</b>
+	</td>
     </tr>
+	<? if ($CONF_use_validation && in_array($userID,$admin_users) ) {?>
+    <tr>
+      <td  valign="top"><div align="right">Validation</div></td>
+      <td  valign="top">
+	 	  <table class=main_text width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top">
+				G Record <select name="grecord">
+				<?
+					echo "<option $is_type_sel value='1'>Valid</option>\n";
+				 	echo "<option $is_type_sel value='-1'>Invalid or N/A</option>\n";
+				  	echo "<option $is_type_sel value='0'>Unknown</option>\n";
+				?>
+				</select>
+
+				Validation <select name="grecord">
+				<?
+					echo "<option $is_type_sel value='1'>Valid</option>\n";
+				 	echo "<option $is_type_sel value='-1'>Invalid or N/A</option>\n";
+				  	echo "<option $is_type_sel value='0'>Unknown</option>\n";
+				?>
+				</select>
+				
+				<a href=''>Revalidate</a>
+				<? $flight->validate(); ?>
+			</td>
+			</tr>
+			</table>	  
+	  </td>
+    </tr>
+	<? } ?>
     <tr>
       <td  valign="top"><div align="right" class="style2"><? echo _THE_DATE." - "._TAKEOFF ?></div></td>
       <td  valign="top"><b><? echo  formatDate($flight->DATE)." - ".getWaypointName($flight->takeoffID) ?></b></td>
@@ -130,8 +163,7 @@ function setValue(obj)
 						}
 					?>
 				</select>
-			<? } ?>
-	  </td>
+			<? } ?>	  </td>
     </tr>
     <tr>
       <td><div align="right" class="style2"><? echo _RELEVANT_PAGE ?></div></td>
@@ -157,8 +189,7 @@ function setValue(obj)
 				</tr>
 	    </table> <? } else {?>     
         <input name="photo<? echo $i?>Filename" type="file" size="30">
-		<? } ?>
-      </td>
+		<? } ?>      </td>
     </tr>
 	<? } // end for ?>
 	 <tr>
@@ -171,8 +202,7 @@ function setValue(obj)
       <td>&nbsp;</td>
       <td><p><font face="Verdana, Arial, Helvetica, sans-serif">
           <input name="submit" type="submit" value="<? echo _PRESS_HERE_TO_CHANGE_THE_FLIGHT ?>">
-</font></p>
-      </td>
+</font></p>      </td>
     </tr>
   </table>
   
