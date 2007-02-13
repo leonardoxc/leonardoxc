@@ -15,9 +15,9 @@ $servers=Server::getServers();
 
 ?>
 <script language="javascript">
-function serverAction(id,action) {	 	
+function serverAction(id,action,DBGlvl) {	 	
 	//document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
-	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_server_action.php?id='+id+'&action='+action;
+	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
 	//MWJ_changeSize('addTakeoffFrame',410,320);
 	//MWJ_changeSize( 'takeoffAddID', 410,350 );
 	// toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
@@ -56,9 +56,9 @@ foreach ($servers as $server) {
 
 	$url="<a href='http://".$server->url."' target='_blank'>".substr($server->url_base,0,50)."...</a>";
 
-	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1);'>Info</a> :: <a href='javascript:serverAction(".$server->ID.",2);'>Takeoffs</a> 
-		:: <a href='javascript:serverAction(".$server->ID.",3);'>Flights</a> :: <a href='javascript:serverAction(".$server->ID.",4);'>Update OP files</a>
-		:: <a href='javascript:serverAction(".$server->ID.",99);'>Test</a></td>".
+	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a> :: <a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a> 
+		:: <a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a> :: <a href='javascript:serverAction(".$server->ID.",4,$DBGlvl);'>Update OP files</a>
+		:: <a href='javascript:serverAction(".$server->ID.",99,$DBGlvl);'>Test</a></td>".
 			"<td>".$server->ID."</td><td>".$url."</td><td>".$server->leonardo_version."</td><td>".
 			$server->is_active."</td><td>".$wpt."</td><td>".$server->isLeo."</td><td>".$type."</td><td></td></tr>";
 

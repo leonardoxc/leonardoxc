@@ -122,10 +122,11 @@ padding-left:0.6em;
 	w\idth: 17em;
 }
 
+/* the second level menu  container */
 #nav li ul ul {
 /*	margin: -1.75em 0 0 14em;*/
 margin-top: -1.75em ;
-margin-left:18em;
+margin-left:8em;
 }
 
 

@@ -86,7 +86,7 @@ class Server {
 		$client = new IXR_Client($serverURL);
 		if ($this->DEBUG) $client->debug=true;
 	
-		if ( ! $client->query('server.info') ) {
+		if ( ! $client->query('server.info',$this->site_pass) ) {
 			echo 'server: info '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 			return 0;  // $client->getErrorCode();
 		} else {

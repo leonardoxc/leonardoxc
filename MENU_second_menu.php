@@ -53,11 +53,11 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-  	   ?>
-	   <div class="mainBox" align="left">  	
+?>
+<div class="mainBox" align="left">  	
   	
 		<? if ($_SESSION["filter_clause"]) {  ?>
-   	    <div class="menu1" ><a href="?name=<?=$module_name?>&op=filter"><img 
+   	    <div class="menu1" style="clear:none; float:left;" ><a href="?name=<?=$module_name?>&op=filter"><img 
 		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
 		</div>
 		<? } ?>
@@ -132,7 +132,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
   }
 ?>
 
-<ul id="nav" style="width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
 <li class="smallItem"><a class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
 	<ul>
 	<? echo $catLiStr;?>
@@ -204,7 +204,6 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		<a  href='<?
 		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
-
-</div>
+		</div>
 
 </div>

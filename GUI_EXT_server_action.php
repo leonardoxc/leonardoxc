@@ -19,20 +19,26 @@ require_once dirname(__FILE__)."/FN_waypoint.php";
 
 $id=$_GET['id']+0;
 $action=$_GET['action'];
+$DBGlvl=$_GET['DBGlvl'];
 $server=new Server($id);
 $server->getFromDB();
 
 // se to 1 for debug
-$server->DEBUG=1;
+if ($DBGlvl) $server->DEBUG=1;
 
 
 if ($action==1) { // server info 
-	list($server_version,$server_releaseDate, $server_opMode, $server_isMasterServer, $server_admin_email)=$server->getInfo();
+	list($server_version,$server_releaseDate, $server_opMode,
+		 $server_isMasterServer, $server_admin_email,
+		 $php_version, $mysql_server_info ,$mysql_client_info )=$server->getInfo();
 	echo "Leonardo version: $server_version<br>
 		version releaseDate:	$server_releaseDate<br>
 		opMode: $server_opMode<br>
 		isMasterServer: $server_isMasterServer<br>
-		admin_email: $server_admin_email<br>";
+		admin_email: $server_admin_email<br>
+		php_version: $php_version<br>
+		mysql_server_info: $mysql_server_info<BR>
+		mysql_client_info: $mysql_client_info<BR>";
 } else if ($action==2) {
 	$takeoffsList=$server->getTakeoffs(0); // takeoffs from time 0
 	echo "<HR>Takeoff list<hr>";

@@ -4,7 +4,7 @@
 // Description:	Bar plot extension for JpGraph
 // Created: 	2001-01-08
 // Author:	Johan Persson (johanp@aditus.nu)
-// Ver:		$Id: jpgraph_bar.php,v 1.1 2006/12/29 22:35:12 manolis Exp $
+// Ver:		$Id: jpgraph_bar.php,v 1.2 2007/02/13 16:04:00 manolis Exp $
 //
 // License:	This code is released under QPL
 // Copyright (C) 2001,2002,2003 Johan Persson
@@ -458,7 +458,7 @@ class GroupBarPlot extends BarPlot {
     function Legend(&$graph) {
 	$n = count($this->plots);
 	for($i=0; $i < $n; ++$i) {
-	    $c = get_class($this->plots[$i]);
+	    $c = strtolower(get_class($this->plots[$i]));
 	    $sc = is_subclass_of($this->plots[$i],'barplot');
 	    if( $c !== 'barplot' && !$sc ) {
 		JpGraphError::Raise('One of the objects submitted to GroupBar is not a BarPlot. Make sure that you create the Group Bar plot from an array of BarPlot or AccBarPlot objects.');

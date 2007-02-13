@@ -48,6 +48,7 @@ require_once dirname(__FILE__)."/FN_pilot.php";
 require_once dirname(__FILE__)."/FN_flight.php";	
 require_once dirname(__FILE__)."/FN_output.php";
 require_once dirname(__FILE__)."/CL_flightData.php";
+require_once dirname(__FILE__)."/CL_statsLogger.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
 $pagetitle = _PAGE_TITLE;
@@ -232,6 +233,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_admin.php";
 } else if ($op=="admin_logs") {
 	require $moduleRelPath."/GUI_admin_logs.php";
+} else if ($op=="admin_stats") {
+	require $moduleRelPath."/GUI_admin_stats.php";
 } else if ($op=="admin_takeoffs") {
 	require $moduleRelPath."/GUI_admin_takeoffs.php";
 } else if ($op=="validation_review") {
@@ -295,7 +298,8 @@ function exitPage($exitNow=1){
    } else if ($opMode==3) {
 		require_once $moduleRelPath."/GUI_footer.php";
    }
-   
+  
+   statsLogger::Log($pageTime);
 		
    if ($exitNow) exit;
 }

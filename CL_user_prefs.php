@@ -20,22 +20,12 @@ class UserPrefs {
  var $itemsPerPage=35;
  var $metricSystem=1;
 
+ var $visitorID=0;
+ var $sessionID=0;
+
  function UserPrefs() {
 	
  }
-/*
- function getFromCookie() {
- }
-
- function setToCookie() {
-	$cval=serialize($this);
-	setcookie("leonardo_user_prefs",$cval,time()+60*60*24*365,"/" );
- }
-*/
-// Attention if the above code gives errors, comment it and uncoment the
-// code below. By doing so ALL users of Leonardo will have to delete the 
-// "leonardo_user_prefs" cookie from their browsers the first time they use it
-
 
  function getFromCookie() {
  	$cval=$_COOKIE['leonardo_user_prefs'];							// to do: verify existance first!
@@ -52,7 +42,7 @@ class UserPrefs {
 			$this->itemsPerPage =$itemsPerPage ;
 			$this->metricSystem =$metricSystem ;
 			$this->viewCountry=$viewCountry;
-			$this->viewCat=$viewCat;
+			$this->viewCat=$viewCat;			
 		} else {
 			$newUserPrefs= unserialize($cval); 						// to do: handle unserialize error (old cookie version)
 			$this->themeName =$newUserPrefs->themeName ;
@@ -61,8 +51,16 @@ class UserPrefs {
 			$this->metricSystem =$newUserPrefs->metricSystem ;
 			$this->viewCountry=$newUserPrefs->viewCountry;
 			$this->viewCat=$newUserPrefs->viewCat;
-
+			$visitorID=$newUserPrefs->visitorID;
 		}
+
+		$sessionID=$_COOKIE['leonardo_session'];
+		// $visitorID gets set form the cookie !
+		$rNum=sprintf("%010d%04d",time(),rand(1,9999));		
+		if ( !$visitorID ) $visitorID = $rNum;
+		if ( !$sessionID ) $sessionID = $rNum;
+		$this->visitorID=$visitorID;
+		$this->sessionID=$sessionID;
 		return true;
 	} else {
 		return false;
@@ -79,11 +77,14 @@ class UserPrefs {
 			"&metricSystem=".$this->metricSystem.
 			"&viewCountry=".$this->viewCountry.
 			"&viewCat=".$this->viewCat.
+			"&visitorID=".$this->visitorID.
 			"&" ;
  	 } else{
 		$cookieStr=serialize($this);
  	 }
 	 setcookie("leonardo_user_prefs",$cookieStr,time()+60*60*24*365,"/" );
+	 setcookie("leonardo_session",$this->sessionID, 0 , "/");  // Session Cookie - ends on browser close!
+
  }
 
 }
