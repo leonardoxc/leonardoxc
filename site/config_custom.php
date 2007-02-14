@@ -37,6 +37,7 @@
  // http://www.google.com/apis/maps/signup.html
  // else leave it blank
  $CONF_google_maps_api_key="";
+ $CONF_google_maps_api_key="ABQIAAAAX8dZ6sFifmmWXGOjKHGxPhTjzsUiTe7EptkEoRMcB5oNJjdn9BRtnm44EUCFh4qu4TVmu34mpoR-Wg";
 
  // If you have a waypoint database that has names in another language
  // than english but you want to diplay waypoint names in english 
@@ -49,6 +50,11 @@
  // set to 0 if you dont know what a map server is ...
  // ... but you will not have the track plotted on the map 
  $mapServerActive=1;
+
+ // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
+ $CONF_google_maps_track=1;
+ $CONF_google_maps_track_order=1; // will apear in the second tab
+ $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 
  // set to 1 if you have an scoring server running
  // set to 0 if you dont know what a scoring server is ...

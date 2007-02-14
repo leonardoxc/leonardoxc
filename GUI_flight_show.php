@@ -483,8 +483,51 @@ if (in_array($userID,$admin_users) ) {
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
+// add support for google maps
+// see the config options 
+$localMap="";
+$googleMap="";
 if ( is_file($flight->getMapFilename() ) )
-	$mapImg="<img src='".$flight->getMapRelPath()."' border=0>";	
+		$localMap="<img src='".$flight->getMapRelPath()."' border=0>";	
+
+if ( $CONF_google_maps_track==1) {
+	$flight->createGPXfile();
+
+	if ( $CONF_google_maps_api_key  )
+		 $googleMap="<div style='display:block; width:760px; height:420px;'><iframe align='left'
+		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
+		$flight->flightID."&file=/".$flight->getGPXRelPath()."&zoom=3'
+		  TITLE='Google Map' width='760px' height='420px'
+		  scrolling='no' frameborder='0'>
+		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
+		</iframe></div>";
+
+	if ($CONF_google_maps_track_only==1) { // use only google maps,  discard the local map server
+		$mapImg=$googleMap; 
+	} else { // use tabber 
+		$defaultTabStr1="";
+		$defaultTabStr2="";
+		if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
+		else $defaultTabStr1=" tabbertabdefault";
+
+$mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
+<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
+<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
+<script type='text/javascript'>
+document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
+</script>
+<div class='tabber' id='mapTabber'>
+ <div class='tabbertab $defaultTabStr1' title='Map'>
+	$localMap
+ </div>
+ <div class='tabbertab $defaultTabStr2' title='GoogleMap'>
+	$googleMap
+ </div>
+</div>";
+	}
+} else { // only static map 
+	$mapImg=$localMap;	
+}
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
 	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";

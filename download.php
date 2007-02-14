@@ -62,6 +62,16 @@
 
 		$file_name=$flight->filename.".kml";	
 		DEBUG("DL",1,"KML Filepath= $file_path<BR>");
+	} else if ($type=="gpx_trk") {
+		$flightID=$_REQUEST['flightID'];
+		$flightID=$flightID+0;
+		//echo $_SERVER['QUERY_STRING'];
+		DEBUG("DL",1,"Will serve flight $flightID<BR>");
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+		$xml=$flight->createGPXfile();
+		$file_name=$flight->filename.".xml";
+		DEBUG("DL",1,"GPX Filepath= $file_path<BR>");
 	} else 	if ($type=="kml_wpt") {		
 		$waypointID=$_REQUEST['wptID'];
 		$waypointID=$waypointID+0;

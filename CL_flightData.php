@@ -202,6 +202,11 @@ var $maxPointNum=1000;
 		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";  
 	}
 
+	function getGPXRelPath() {
+		global $flightsWebPath;
+		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";  
+	}
+
 	function getMapRelPath($num=0) {
 		global $flightsWebPath;
 		if ($num) $suffix="3d";
@@ -232,6 +237,11 @@ var $maxPointNum=1000;
 	function getKMLFilename() {
 		global $flightsAbsPath;
 		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".kml";  
+	}
+
+	function getGPXFilename() {
+		global $flightsAbsPath;
+		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".xml";  
 	}
 
 	function getMapFilename($num=0) {
@@ -266,6 +276,12 @@ var $maxPointNum=1000;
 		global $baseInstallationPath,$module_name;
 		global $CONF_mainfile;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=kml_trk&flightID=".$this->flightID;
+	}
+
+	function getFlightGPX() {
+		global $baseInstallationPath,$module_name;
+		global $CONF_mainfile;
+		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=gpx_trk&flightID=".$this->flightID;
 	}
 
 	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
@@ -456,6 +472,39 @@ var $maxPointNum=1000;
 		return $kml_file_contents;
 	}
 
+	function gpxGetTrack() {
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
+
+		// $getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
+
+		$filename=$this->getIGCFilename(0);  
+		$lines = file ($filename); 
+		if (!$lines) return;
+		$i=0;
+		$kml_file_contents="<trk>\n
+<name>Leonardo track</name>
+<desc>Leonardo track</desc>
+	<trkseg>\n";
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;				
+			if ($line{0}=='B') {
+					if  ( strlen($line) < 23 ) 	continue;
+					$thisPoint=new gpsPoint($line,$this->timezone);
+					$data_alt[$i]=$thisPoint->getAlt();				
+					if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
+					$kml_file_contents.='<trkpt lat="'.$thisPoint->lat.'" lon="'.-$thisPoint->lon.'">'."\n";
+					$kml_file_contents.="  <ele>".$thisPoint->getAlt()."</ele>\n</trkpt>\n";
+					$i++;
+					//	if($i % 50==0) $kml_file_contents.="\n";
+			}
+		}		
+		$kml_file_contents.="</trkseg>\n</trk>\n";
+		return $kml_file_contents;
+	}
+
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
 		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
@@ -494,6 +543,48 @@ var $maxPointNum=1000;
 
 
 		return $kml_file_contents;
+	}
+
+	function createGPXfile($returnAlsoXML=0) {
+
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
+
+		if (file_exists($this->getGPXFilename()) && 0 ) {
+			if (!$returnAlsoXML) return 1;
+			$xml_file_contents=file_get_contents( $this->getGPXFilename() );
+			return $xml_file_contents;
+		}
+
+		$xml_file_contents=
+'<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="byHand" version="1.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+';
+			
+	    $xml_file_contents.=$this->gpxGetTrack();
+		
+
+		// create the start and finish points
+//		$xml_file_contents.=makeWaypointPlacemark($this->takeoffID);
+//		if ( $this->takeoffID!=$this->landingID)
+//			$xml_file_contents.=makeWaypointPlacemark($this->landingID);
+	
+		// create the OLC task
+		// $xml_file_contents.=$this->kmlGetTask();
+
+		$xml_file_contents.="</gpx>";
+
+		// write to file
+		$handle = fopen($this->getGPXFilename(), "w");
+		fwrite($handle, $xml_file_contents);
+		fclose($handle);
+
+		// return the xml
+		if ($returnAlsoXML)		return $xml_file_contents;
+		else return 1;
 	}
 
 	function getAltValues() {
