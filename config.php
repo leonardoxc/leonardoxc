@@ -287,6 +287,7 @@ $OLCScoringServerPassword="mypasswd";
 
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
+@include_once dirname(__FILE__)."/site/config_ranks.php";
  
 require_once dirname(__FILE__)."/CL_user_prefs.php";
 $PREFS=new userPrefs();

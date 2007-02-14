@@ -13,6 +13,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+if ($datesMenu!='years') {
 ?>
 
 <table class="dropDownBox" width="300" cellpadding="2" cellspacing="0">
@@ -77,3 +78,25 @@
 	</td>
 </tr>
 </TABLE>
+<? } else { ?>
+
+<table class="dropDownBox" width="150" cellpadding="2" cellspacing="0">
+<tr>
+	<td class="tableBox" valign="top">
+		<strong><?=_YEAR?></strong>
+	</td>
+</tr>
+<tr>
+	<td class="sp " valign="top">
+	<?  
+		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
+		for($i=date("Y");$i>=$startYear;$i--)  
+			echo "<a href='?name=$module_name&year=$i&month=0'>$i</a>";		
+	?>
+	<a style='text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0'><?=_ALL_YEARS?></a>
+	</td>
+</tr>
+</TABLE>
+
+
+<? } ?>

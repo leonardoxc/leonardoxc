@@ -72,6 +72,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
   $allCatDisplay=0;  
 
 
+if ( ! $dontShowCatSelection ) { 
 
 if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
 	if (($isCompDisplay || $op=="competition") && !$cat) { 
@@ -131,7 +132,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
   }
 ?>
-
+<div id="nav2">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
 <li class="smallItem"><a class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
 	<ul>
@@ -139,10 +140,12 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	</ul>
 </li>
 </ul>
-<?
-
-?> 
+</div>
 <? 
+} // end of  $dontShowCatSelection  if 
+
+
+if (! $dontShowCountriesSelection ) {
 	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList(0,0,$clubID);
 	$countriesNum=count($countriesNames);
 	if ($countriesNum==1)  {
@@ -154,8 +157,10 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	} else {
 		$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 	}
+}	
 ?>
 <ul id="dropMenu">
+<? if (! $dontShowCountriesSelection ) { ?>
 	<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
 		<? if ($countriesNum>1) { ?>
 		<ul>				
@@ -163,7 +168,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		</ul>			
 		<? } ?>
 	</li>
-	
+<? } ?>	
 	<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
 		<ul>
 		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
@@ -171,8 +176,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	</li>
 </ul>
 
-
-		<? if ($clubID) {  ?>
+<? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
   	    	echo "<b>$clubName</b>";
@@ -201,8 +205,14 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		</div>
 		<? } ?>  	
   	    <div class="menu1" >
-		<a  href='<?
-		echo "?name=$module_name&op=$op&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+		<? // display this url 	
+			$thisURL="?name=$module_name&op=$op";
+			if ($op=="comp") 
+				$thisURL.="&rank=$rank&subrank=$subrank&year=$year";
+			else
+				$thisURL.="&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+		?>
+		<a  href='<? echo $thisURL;
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
 		</div>
 

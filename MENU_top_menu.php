@@ -11,19 +11,22 @@ not (standards mode)
 
 if (0) { ?>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
-
 sfHover = function() {
 	var sfEls = document.getElementById("nav").getElementsByTagName("LI");	
 	for (var i=0; i<sfEls.length; i++) {
-	
-		sfEls[i].onmouseover=function() {
-			this.className+=" sfhover";
-		}
-		sfEls[i].onmouseout=function() {
-			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
-		}
+		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
 	}
-
+	var sfEls = document.getElementById("dropMenu").getElementsByTagName("LI");	
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+	}
+	var sfEls = document.getElementById("nav2").getElementsByTagName("LI");	
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+	}
 }
 
 // done through htc files
@@ -203,6 +206,15 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
+		<? 
+			if ( count($ranksList) ) {
+				echo "<li class='li_h1'>.:: National Rankings ::.</li>";
+				foreach($ranksList as $rankID=>$rankArray) {
+					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1'>".$rankArray['name']."</a></li>";
+				
+				}			
+			}
+		?>
 	</ul>
 </li>
 		

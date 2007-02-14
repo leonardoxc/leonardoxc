@@ -90,6 +90,8 @@ setVarFromRequest("op",$CONF_main_page);
 setVarFromRequest("cat",$PREFS->viewCat);
 setVarFromRequest("subcat","pg");
 setVarFromRequest("comp",0);
+setVarFromRequest("rank",0);
+setVarFromRequest("subrank",0);
 setVarFromRequest("clubID",0);
 
 if ($op=="main") $op=$CONF_main_page;
@@ -158,7 +160,7 @@ if ($op=="users") {
 } else if ($op=="competition") {
     require $moduleRelPath."/GUI_list_comp.php";
 } else if ($op=="comp") {
-    require $moduleRelPath."/GUI_list_comp_custom.php";
+    require $moduleRelPath."/GUI_comp.php";
 } else if ($op=="list_takeoffs") {
 	require $moduleRelPath."/GUI_list_takeoffs.php";	
 } else if ($op=="sites") {
