@@ -494,10 +494,10 @@ if ( $CONF_google_maps_track==1) {
 	$flight->createGPXfile();
 
 	if ( $CONF_google_maps_api_key  )
-		 $googleMap="<div style='display:block; width:760px; height:420px;'><iframe align='left'
+		 $googleMap="<div style='display:block; width:750px; height:460px;'><iframe align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
 		$flight->flightID."&file=/".$flight->getGPXRelPath()."&zoom=3'
-		  TITLE='Google Map' width='760px' height='420px'
+		  TITLE='Google Map' width='750px' height='460px'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 		</iframe></div>";
@@ -520,7 +520,7 @@ document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
  <div class='tabbertab $defaultTabStr1' title='Map'>
 	$localMap
  </div>
- <div class='tabbertab $defaultTabStr2' title='GoogleMap'>
+ <div class='tabbertab $defaultTabStr2' style='width:750px' title='GoogleMap'>
 	$googleMap
  </div>
 </div>";
@@ -528,6 +528,11 @@ document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
 } else { // only static map 
 	$mapImg=$localMap;	
 }
+
+ // if google maps are present put photos lower down
+if ($googleMap ) $margin="imgDiv2colmargin";
+else  $margin="";
+
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
 	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
@@ -551,6 +556,7 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG4'=>$chart4,		
 	'images'=>$images,
 	'2col'=>($images?"2col":""),
+	'margin'=>$margin,
 	'comments'=>$comments,
 	'linkURL'=>$linkURL,
 	'glider'=>$glider,

@@ -37,8 +37,11 @@
  // http://www.google.com/apis/maps/signup.html
  // else leave it blank
  $CONF_google_maps_api_key="";
- $CONF_google_maps_api_key="ABQIAAAAX8dZ6sFifmmWXGOjKHGxPhTjzsUiTe7EptkEoRMcB5oNJjdn9BRtnm44EUCFh4qu4TVmu34mpoR-Wg";
-
+ if ($_SERVER['SERVER_NAME']=='pgforum.thenet.gr') 
+ 	$CONF_google_maps_api_key="ABQIAAAAX8dZ6sFifmmWXGOjKHGxPhTjzsUiTe7EptkEoRMcB5oNJjdn9BRtnm44EUCFh4qu4TVmu34mpoR-Wg";
+ else if ($_SERVER['SERVER_NAME']=='pgforum.home') 
+	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BReKpwmJUF9SRfvHw89FQlWBLDdWBRvaCZXB3H2e8Qqb1i64X_5ypyNFQ";
+ 
  // If you have a waypoint database that has names in another language
  // than english but you want to diplay waypoint names in english 
  // set this to 1 to force that
@@ -52,7 +55,7 @@
  $mapServerActive=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
- $CONF_google_maps_track=1;
+ $CONF_google_maps_track=0;
  $CONF_google_maps_track_order=1; // will apear in the second tab
  $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 

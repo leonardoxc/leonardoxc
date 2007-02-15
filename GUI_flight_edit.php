@@ -21,6 +21,8 @@
 		 $flight->cat=$_REQUEST["gliderCat"];
 		 $flight->glider=$_REQUEST["glider"];
 		 $flight->comments=$_REQUEST["comments"];
+		 //echo $flight->comments."<HR><HR>";
+		 //exit;
 		 $flight->linkURL=$_REQUEST["linkURL"];
   		 if ( substr($flight->linkURL,0,7) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
@@ -142,7 +144,7 @@ function setValue(obj)
     <tr>
       <td valign="middle"><div align="right" class="style2"><font face="Verdana, Arial, Helvetica, sans-serif"><? echo _COMMENTS_FOR_THE_FLIGHT ?></font></div></td>
       <td valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
-        <textarea name="comments" cols="60" rows="4"><? echo  $flight->comments ?></textarea>
+        <textarea name="comments" cols="60" rows="5"><? echo  $flight->comments ?></textarea>
       </font></td>
     </tr>
     <tr>

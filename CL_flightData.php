@@ -484,15 +484,27 @@ var $maxPointNum=1000;
 		if (!$lines) return;
 		$i=0;
 		$kml_file_contents="<trk>\n
-<name>Leonardo track</name>
+<name>".htmlspecialchars($this->userName)."</name>
 <desc>Leonardo track</desc>
 	<trkseg>\n";
+	
+		$min_lat=1000;
+		$max_lat=-1000;
+		$min_lon=1000;
+		$max_lon=-1000;
+	
+		
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;				
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
 					$thisPoint=new gpsPoint($line,$this->timezone);
+					if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
+					if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
+					if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
+					if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
+
 					$data_alt[$i]=$thisPoint->getAlt();				
 					if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
 					$kml_file_contents.='<trkpt lat="'.$thisPoint->lat.'" lon="'.-$thisPoint->lon.'">'."\n";
@@ -501,7 +513,9 @@ var $maxPointNum=1000;
 					//	if($i % 50==0) $kml_file_contents.="\n";
 			}
 		}		
-		$kml_file_contents.="</trkseg>\n</trk>\n";
+
+		$kml_file_contents.="</trkseg>\n</trk>\n<bounds minlat=\"$min_lat\" minlon=\"".$min_lon."\" maxlat=\"$max_lat\" maxlon=\"".$max_lon."\" />\n";
+		//echo "</trkseg>\n</trk>\n<bounds minLat=\"$min_lat\" minlon=\"$min_lon\" maxLat=\"$max_lat\" maxlon=\"$max_lon\" />\n";
 		return $kml_file_contents;
 	}
 

@@ -18,8 +18,8 @@
 
 function setMonths() {
 	global  $monthList;
-	$monthList=array('January','February','March','April','May','June',
-					'July','August','September','October','November','December');
+	$monthList=array('Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                    'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie');
 }
 setMonths();
 
@@ -503,7 +503,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record Site<br>(open distance)");
 define("_GLIDER_TYPE","Model Parapanta");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Paraglider',2=>'Flex wing FAI1',4=>'Rigid wing FAI5',8=>'Glider');
+	$gliderCatList=array(1=>'Parapanta',2=>'Aripa flexibila FAI1',4=>'Aripa rigida FAI5',8=>'Aripa');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();

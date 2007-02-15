@@ -93,8 +93,6 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
 <? } else { ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!-- arch-tag: f0db8795-3291-41bc-a66e-def764bfc8ef
-     (do not change this comment) -->
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
   <head>
     <title>Gmap GPS Track Plotting</title>
@@ -106,27 +104,38 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
     <script src="<?=$moduleRelPath?>/js/google_maps/colors.js" type="text/javascript"></script>
     <style type="text/css">
 	  .style1 { background-image:url(http://pgforum.thenet.gr/modules/leonardo/templates/basic/tpl/p19_logo.gif); width:142px; height:37px;}
+
       #map { 
-             height: 400px;
-             border: 2px solid #000;
-             margin-right: 260px;
-             margin-left: 10px; }
-      #info { position: absolute;
-              top: 10px;
-              right: 5px;
-              width: 200px;
-              font-size: 80%;
+             height: 450px;
+			 width:500px;
+             border: 1px solid #000;
+         /*    margin-right: 165px;
+             margin-left: 0px; 
+			 margin-top: 0px; 
+			 */
+	 }
+			 
+      #info { 
+	  		  position:absolute;
+              top: 8px;
+              right: 0px;
+              width: 150px;
+              font-size: 11px;
+			  
               border: 1px solid #000;
-              padding-left: 1em;
-              padding-right: 1em;
+              padding-left: 0.5em;
+              padding-right: 0.5em;
               font-family: Helvetica, Arial, sans-serif;
              }
+
+	.controls { margin: 0; padding: 0; font-size: 11px; text-align: left;  width: 100%;}
+	.controls button { font-size: 11px;	margin:0px;	padding:0px;	border:1px solid darkred; background-color: #eee;}
+	* html .controls button { margin: 0 2px 0 0px;  line-height: 12px; }
+
       #title { text-align: center;
                font-family: Helvetica, Arial, sans-serif;
              }
-      #intro {height: 250px;
-              font-size: 80%;
-              font-family: Helvetica, Arial, sans-serif;}
+
       .desc { text-align: center; }
       .info img { float: left; }
       #zselect { padding-top: 1em; }
@@ -177,7 +186,7 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
                 } else {
                     zoom = 4;
                 }
-
+				var fname=vals["file"];
                 showtracks(vals["file"], zoom);
             }
         }
@@ -229,6 +238,7 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
         }
     }
 
+	var gpxContents;
     // Display all of the tracks from a GPX file at the specified
     // zoom level. Input from the UI determines whether we will
     // animate the track or display it statically.
@@ -242,6 +252,7 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
         // Setup function to center and zoom the map appropriately
         // to display the tracks
         var f_setup = function(gpx, f_next) {
+		  gpxContents=gpx;
           var bounds = get_bounds(gpx);
           var cx, cy;
 
@@ -252,6 +263,8 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
               var node = gpxGetElements(gpx, "trkpt")[0];
               cx = parseFloat(node.getAttribute("lon"));
               cy = parseFloat(node.getAttribute("lat"));
+		  // cy=0;
+		   cx=0;
           }
 
           map.setMapType(G_MAP_TYPE);
@@ -265,10 +278,13 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
               zoom = best_zoom(bounds, document.getElementById("map"));
 
           // Ballistic zoom or normal zoom?
-          if(cbox && cbox.checked)
+          if(cbox && cbox.checked )
               boom_zoom(map, zoom, 2500, function(){f_next(gpx);});
           else {
               map.zoomTo(zoom);
+			 //  map.centerAndZoom(new GPoint(23.1625, 40.47465), 5);
+			 //   map.recenterOrPanToLatLng(new GPoint(23.1625, 40.47465));
+			 // map.centerAndZoom(new GPoint(cx, cy),4);
               setTimeout(function(){f_next(gpx);}, 2500);
           }
         }
@@ -321,16 +337,60 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
             fetch_gpx(file, function(gpx) { f_setup(gpx, f_animate); });
     }
 
+        function gpx_animate(gpx) {
+          try {
+              map.setMapType(G_SATELLITE_TYPE);
+          } catch (error) {
+              map.setMapType(_SATELLITE_TYPE);
+          }
+
+          var segs = gpxGetElements(gpx, "trkseg");
+          var segnum = 0;
+          var n = colors.length;
+          function animation () {
+              fcancel = animate_segment(segs[segnum], map, 
+                              {'scale' : speed_mult, 
+                               'skip' : 2,
+                               'color' : colors[segnum%n],
+                               'zcolor' : maxZ,
+                               'fdone' : function (){
+                                             segnum++; 
+                                             if(segnum < segs.length)
+                                                 animation();
+                                             else
+                                                 alert("Animation done");
+                                         }});
+          }
+
+          animation();
+        };
     //]]>
     </script>
   </head>
-  <body onload="initialize(new GPoint(-95, 38))">
+  <body onLoad="initialize(new GPoint(-95, 38))">
 	<div id="control" class="style1"></div>
 	<div id="map"></div>
     <div id="info">
 
-      <p>Select animation speed:</p>
       <form>
+	  
+	  	  <fieldset class="controls">
+				<legend>Control</legend>
+				<button class="navbutt" onclick="IncPos(0)" title="Goto First">|&lt;</button>
+				<button class="navbutt" onclick="IncPos(-1)" title="Goto Previous">&lt;</button>
+				<button class="navbutt" onclick='showtracks(fname, 5);' title="Normal Speed">Play</button>
+				<button class="navbutt" onclick="ToggleTimer()">Stop</button>
+
+				<button class="navbutt" onclick="IncPos(1)" title="Goto Next">&gt;</button>
+				<button class="navbutt" onclick="IncPos(0)" title="Goto Last">&gt;|</button>
+			  </fieldset>
+
+			  <fieldset class="controls">
+				<legend>Animation Speed:</legend>
+				<button onclick="TimeStep/=1.5; StartTimer();" title="Slower">- Slower</button>&nbsp;
+				<button onclick="TimeStep*=1.5; StartTimer();" title="Faster">+ Faster</button>
+			  </fieldset> 
+			  
         <select id="speed" name="speed" size="1"
 	  onchange="set_speed_mult(this.options[this.selectedIndex].value)">
           <option value="0">no animation</option>
@@ -366,13 +426,12 @@ GDownloadUrl("/data.xml", function(data, responseCode) {
         <span>&quot;Ballistic&quot; zoom (try it)</span>
         </div>
       </form>
-      <p>Animation/plotting will start  when you select the link. Use the STOP button to cancel the animation:</p>
+      
       <ul>
-	<li><a href="javascript:showtracks('/bikecommute.xml', 3)">Bike
-        commute 2</a></li>
+		<li><a href="javascript:showtracks('/bikecommute.xml', 3)">Bike commute 2</a></li>
       </ul>
       <form>
-        <input type="button" value="STOP ANIMATION" onclick="if(fcancel) fcancel()" />
+        <input type="button" value="STOP ANIMATION" onClick="if(fcancel) fcancel()" />
       </form>
     </div>
   </body>
