@@ -206,6 +206,10 @@ var $maxPointNum=1000;
 		global $flightsWebPath;
 		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";  
 	}
+	function getPolylineRelPath() {
+		global $flightsWebPath;
+		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";  
+	}
 
 	function getMapRelPath($num=0) {
 		global $flightsWebPath;
@@ -242,6 +246,10 @@ var $maxPointNum=1000;
 	function getGPXFilename() {
 		global $flightsAbsPath;
 		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".xml";  
+	}
+	function getPolylineFilename() {	
+		global $flightsAbsPath;
+		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".poly.txt";  
 	}
 
 	function getMapFilename($num=0) {
@@ -517,6 +525,60 @@ var $maxPointNum=1000;
 		$kml_file_contents.="</trkseg>\n</trk>\n<bounds minlat=\"$min_lat\" minlon=\"".$min_lon."\" maxlat=\"$max_lat\" maxlon=\"".$max_lon."\" />\n";
 		//echo "</trkseg>\n</trk>\n<bounds minLat=\"$min_lat\" minlon=\"$min_lon\" maxLat=\"$max_lat\" maxlon=\"$max_lon\" />\n";
 		return $kml_file_contents;
+	}
+
+	function createEncodedPolyline() {
+		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $moduleRelPath,$baseInstallationPath;
+		global $langEncodings,$currentlang;
+
+		// $getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
+//		if ( is_file($this->getPolylineFilename() ) return ;
+
+		$filename=$this->getIGCFilename(0);  
+		$lines = file ($filename); 
+		if (!$lines) return;
+		$i=0;
+		$kml_file_contents="";
+	
+		$min_lat=1000;
+		$max_lat=-1000;
+		$min_lon=1000;
+		$max_lon=-1000;
+	
+		$prevLat=0;
+		$prevLon=0;
+		
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;				
+			if ($line{0}=='B') {
+					if  ( strlen($line) < 23 ) 	continue;
+					$thisPoint=new gpsPoint($line,$this->timezone);
+					$lat=$thisPoint->lat;
+					$lon=-$thisPoint->lon;
+					if ($i==0) $ln="$lat|$lon|Takeoff|Takeoff\n";
+
+					if ( $lat  > $max_lat )  $max_lat =$lat  ;
+					if ( $lat  < $min_lat )  $min_lat =$lat  ;
+					if ( $lon  > $max_lon )  $max_lon =$lon  ;
+					if ( $lon  < $min_lon )  $min_lon =$lon  ;
+
+					$kml_file_contents.=encodeNumber($lat-$prevLat).encodeNumber($lon-$prevLon);					
+					$levels.="B";
+					$prevLat=$lat;
+					$prevLon=$lon;
+
+					$i++;
+			}
+		}		
+		$ln.="$lat|$lon|Landing|Landing\n";
+		$ln.="$min_lat,$max_lat,$min_lon,$max_lon\n";
+		// write to file
+		$handle = fopen($this->getPolylineFilename(), "w");
+		fwrite($handle, $ln.$kml_file_contents."\n".$levels);
+		fclose($handle);
+		return 1;
 	}
 
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {

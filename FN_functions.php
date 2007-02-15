@@ -420,4 +420,23 @@ function getBrowser() {
 		global $baseInstallationPath, $module_name, $opMode,$CONF_mainfile;
 		return "/$baseInstallationPath/$CONF_mainfile?name=$module_name";
 	}
+
+	// google maps polyline encoding
+	function encodeNumber($num) {
+		//    printf("%f = ", $num);
+		$sgn_num = (int)($num * 100000);
+		$sgn_num = ($sgn_num<<1);
+		if ($num<0) {
+			$sgn_num = ~$sgn_num;
+		}
+	
+		while ($sgn_num >= 0x20) {
+			$t = ( 0x20 | ($sgn_num & 0x1f)) + 63;
+			$res.=sprintf("%c", $t);
+			$sgn_num >>= 5;
+		}
+		$t = $sgn_num + 63;
+		return $res.sprintf("%c", $t);
+	}
+
 ?>

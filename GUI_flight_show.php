@@ -491,12 +491,13 @@ if ( is_file($flight->getMapFilename() ) )
 		$localMap="<img src='".$flight->getMapRelPath()."' border=0>";	
 
 if ( $CONF_google_maps_track==1) {
-	$flight->createGPXfile();
+	// $flight->createGPXfile();
+	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  )
 		 $googleMap="<div style='display:block; width:750px; height:460px;'><iframe align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
-		$flight->flightID."&file=/".$flight->getGPXRelPath()."&zoom=3'
+		$flight->flightID."&file=/".$flight->getPolylineRelPath()."&zoom=3'
 		  TITLE='Google Map' width='750px' height='460px'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
