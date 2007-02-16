@@ -28,25 +28,28 @@
 		if (!$handle = fopen($igcFilename, 'w')) exit; 
 	    if (!fwrite($handle, $cont))    exit; 
 		fclose ($handle); 
-
+		$ok=0;
 		$validatePrograms =array("ValiGpsDump.exe","valig7to.exe");
 		foreach($validatePrograms as $valProgram) {
 			@chmod ($path."/validate/$valProgram", 0755);  
 			$cmd="cd $path ; validate/$valProgram ".$igcFilename;
 			DEBUG("cmd=$cmd");
-			echo "CMD: $cmd\n";
+			//echo "CMD: $cmd\n";
 			exec($cmd,$output,$res);
 			
-			echo "RESULT: $res<BR>";
+			//echo "RESULT: $res<BR>";
 			DEBUG("result has ".count($output)." lines");
 			foreach($output as $line) {
-				echo $line."\n";
+				//echo $line."\n";
 			}
-			
+
+			// ok found the correct val program
+			if ($ok) break;
 		}
 		
-		// @unlink($igcFilename);
-
+		@unlink($igcFilename);
+		if ($ok) echo "OK";
+		else echo "NOK";
 }
 
 function DEBUG($msg) {

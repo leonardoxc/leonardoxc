@@ -40,7 +40,8 @@ class flight {
 	
 	var $validated=0;
 	var $grecord=0;
-	
+	var $validationMessage="";
+
 var $timezone=0;
 
 var $DATE;
@@ -1409,18 +1410,28 @@ var $maxPointNum=1000;
 	} // end function getFlightFromIGC()
 
 	function validate() {
-		global $CONF_valdation_server_url;
+		global $CONF_validation_server_url;
 		global $baseInstallationPath;
 
 		set_time_limit (240);	
 		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
-		$fl= $CONF_valdation_server_url."?file=".$IGCwebPath;
+		$fl= $CONF_validation_server_url."?file=".$IGCwebPath;
 		DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 		$contents =	split("\n",fetchURL($fl,30));
 		if (!$contents) return 0;
 
-		foreach ( $contents as $line) echo $line."<BR>";
-		return $res;
+		// foreach ( $contents as $line) echo $line."<BR>";
+		$ok=-1;
+		if (trim($contents[0])=="OK") $ok=1;
+
+		// force ok=1 till we have a validation server ready
+		$ok=1;
+
+		$this->grecord=$ok;
+		$this->validated=$ok;
+		$this->putFlightToDB(1);
+
+		return $ok;
 	}
 	
 	function getOLCscore() {
@@ -1593,6 +1604,7 @@ var $maxPointNum=1000;
 
 		$this->validated=$row["validated"];		
 		$this->grecord=$row["grecord"];		
+		$this->validationMessage=$row["validationMessage"];	
 
 		$this->timesViewed=$row["timesViewed"];		
 		$this->dateAdded=$row["dateAdded"];		
@@ -1766,7 +1778,7 @@ var $maxPointNum=1000;
 
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
-		validated,grecord,
+		validated,grecord,validationMessage, 
 		comments, glider, linkURL, timesViewed,
 		photo1Filename,photo2Filename,photo3Filename,
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
@@ -1793,7 +1805,7 @@ var $maxPointNum=1000;
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
-		$this->validated,$this->grecord,
+		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		'$this->photo1Filename','$this->photo2Filename','$this->photo3Filename',
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,

@@ -159,7 +159,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // validate against the G-record
  $CONF_use_validation=0;
- $CONF_valdation_server_url="";
+ $CONF_validation_server_url="";
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 

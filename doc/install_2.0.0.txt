@@ -122,6 +122,16 @@ echo "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=".$activeCh
 // Leonardo end
 
 	
+if the line reads 
+$metastring = "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html;charset="._CHARSET."\">\n";
+
+then put :
+// Leonardo begin : correct encoding
+global $langEncodings,$lng;
+$activeCharset=$langEncodings[$lng];
+if (!$activeCharset) $activeCharset=_CHARSET;
+$metastring = "<META HTTP-EQUIV=\"Content-Type\" CONTENT=\"text/html; charset=".$activeCharset."\">\n";
+// Leonardo end 
 
     If you are	using phpBB2:
 	1) Copy the files install/phpbb2Files/modules.php and install/phpbb2Files/mainfile.php 

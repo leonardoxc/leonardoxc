@@ -146,10 +146,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	<ul>
 		<? if ( $CONF_use_own_template ) { // we must put register/login menut items ?>
 			<? 	if ( $userID <=0 ) { ?>
-			<li><a href="/login.php?redirect=modules.php&name=leonardo"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>
+			<li><a href="login.php?redirect=modules.php&name=leonardo"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>
 			<li><a href="profile.php?mode=register"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
 			<? } else { // user alredy logged in  ?>
-			<li><a href="/login.php?logout=true"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
+			<li><a href="login.php?logout=true"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
 			
 			<? } ?>
 			<li class='li_space'></li>

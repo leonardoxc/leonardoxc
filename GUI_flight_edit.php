@@ -18,9 +18,12 @@
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
-		 $flight->cat=$_REQUEST["gliderCat"];
- 		 $flight->category=$_REQUEST["category"];
+		 $flight->cat=$_REQUEST["gliderCat"]+0;
+ 		 $flight->category=$_REQUEST["category"]+0;
 		 $flight->glider=$_REQUEST["glider"];
+		 $flight->grecord=$_REQUEST["grecord"]+0;
+		 $flight->validated=$_REQUEST["validated"]+0;
+
 		 $flight->comments=$_REQUEST["comments"];
 		 //echo $flight->comments."<HR><HR>";
 		 //exit;
@@ -55,7 +58,11 @@
 		 echo "</center>";
 		 close_inner_table();
 	} else { // show the form
+// 
 
+	if ( ($_GET['checkg']+0)==1) {
+		$grecord_res="[ G-record checking result: ".$flight->validate()." ]";		
+	}
 	?>
 
 <script language="JavaScript">
@@ -80,52 +87,79 @@ fieldset.legendBox {
 	margin-right:5px;
 	margin-left:5px;
 	text-align:left;
-	background-color:#f4f4f4;
+	background-color:#ffffff;
 }
 .legendBox legend {
 	border:1px outset #E2E2E2;
 	padding:0.2em 1.2em 0.2em 1.2em;
 	margin:0;
 	color:#000000;
-	font-weight:bold;
-	background-color:#D9E9F1;
+	font-weight:normal;
+	background-color:#F5E9CB;
 }
+
+.legend2 legend {	background-color: #D6E5F6 }
+.legend3 legend {	background-color: #D7F5CB }
+
 </style>
  
   <form action="" enctype="multipart/form-data" method="post">	
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
   <?  open_inner_table(_CHANGE_FLIGHT_DATA,730,"change_icon.png"); echo "<tr><td>"; ?>
-  <table class=main_text width="100%" border="0" align="center" cellpadding="5" cellspacing="3" bgcolor="#EFF0F5" >
+  <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
+<? if ($enablePrivateFlights) { ?>
     <tr>
-      <td width="170" valign="top"><div align="right" class="style2"><? echo _PILOT_NAME ?></div></td>
-      <td valign="top">
-        <table class=main_text width="100%"  border="0" cellspacing="0" cellpadding="0">
+      <td colspan=2 valign="top">        
+		<div align="right">
+              <input type="checkbox" name="is_private" value="1" <? echo ($flight->private)?"checked":"" ?> >
+             <? echo  _IS_PRIVATE ?>    
+		</div>         
+		</td>
+    </tr>
+<? } ?>
+    <tr>
+      <td colspan="2"  valign="top">
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><b><? echo  $flight->userName ?></b></td>
-            <td width="170"><? if ($enablePrivateFlights) { ?><input type="checkbox" name="is_private" value="1" <? echo ($flight->private)?"checked":"" ?> >
-            <? echo  _IS_PRIVATE ?><? } ?></td>
+            <td>
+			<fieldset class="legendBox">
+			<legend><? echo _PILOT_NAME ?></legend>
+			<div align="left">
+			<b><? echo $flight->userName ?></b>
+			</b>	  </div>
+			</fieldset>	
+			</td>
+            <td>
+				<fieldset class="legendBox">
+				<legend><? echo _THE_DATE." - "._TAKEOFF ?></legend>
+				<div align="left">
+				<b><? echo  formatDate($flight->DATE)." - ".getWaypointName($flight->takeoffID) ?></b>
+				</b>	  </div>
+				</fieldset>	
+			</td>
+            <td>
+				<fieldset class="legendBox">
+				<legend><? echo _IGC_FILE_OF_THE_FLIGHT ?></legend>
+				<div align="left">
+				<b><? echo  $flight->filename ?></b>
+				</b>	  </div>
+				</fieldset>	
+			</td>
           </tr>
-        </table></td>
-    </tr>
-	    <tr>
-      <td  valign="top"><div align="right" class="style2"><? echo _THE_DATE." - "._TAKEOFF ?></div></td>
-      <td  valign="top"><b><? echo  formatDate($flight->DATE)." - ".getWaypointName($flight->takeoffID) ?></b></td>
-    </tr>
-    <tr>
-      <td  valign="top"><div align="right" class="style2"><? echo _IGC_FILE_OF_THE_FLIGHT ?></div></td>
-      <td  valign="top"><b><? echo  $flight->filename ?></b></td>
+        </table>    
+</td>
     </tr>
     <tr>
       <td colspan="2"  valign="top">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td>	    <fieldset class="legendBox">
-	    <legend><? echo _GLIDER_TYPE ?></legend>
-	  <div align="left">
-	  <b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
-           <select name="gliderCat">
+            <td>	    <fieldset class="legendBox legend2">
+		    <legend><? echo _GLIDER_TYPE ?></legend>
+			<div align="left">
+		    <b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
+            <select name="gliderCat">
            <?
 				foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 					if ($flight->cat==$gl_id) $is_type_sel ="selected";
@@ -137,7 +171,7 @@ fieldset.legendBox {
 		</b>	  </div>
 	    </fieldset>			</td>
             <td>
-			   <fieldset class="legendBox"><legend><? echo _GLIDER ?></legend>
+			   <fieldset class="legendBox legend2"><legend><? echo _GLIDER ?></legend>
 	  <div align="left">
      <input name="glider" type="text" size="30" value="<? echo  $flight->glider ?>">
          
@@ -155,10 +189,10 @@ fieldset.legendBox {
 					?>
 				</select>
 			<? } ?>	
-				    </div>
+		       </div>
 	  </fieldset>			</td>
             <td>
-			   <fieldset class="legendBox">
+			   <fieldset class="legendBox legend2">
 	    <legend><? echo _CATEGORY ?></legend>
 	  <div align="left">	  
            <select name="category">
@@ -180,33 +214,49 @@ fieldset.legendBox {
 	<? if ($CONF_use_validation && in_array($userID,$admin_users) ) {?>
     <tr>
       <td colspan="2"  valign="top">
-	    <fieldset class="legendBox">
+	    <fieldset class="legendBox legend2">
 	    <legend><? echo "Validation" ?></legend>
 	  <div align="left">
 	 	  <table class=main_text width="100%"  border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
-				G Record <select name="grecord">
+				G Record: 
 				<?
-					echo "<option $is_type_sel value='1'>Valid</option>\n";
-				 	echo "<option $is_type_sel value='-1'>Invalid or N/A</option>\n";
-				  	echo "<option $is_type_sel value='0'>Unknown</option>\n";
-				?>
-				</select>
+					if ($flight->grecord==0) $flight->validate();
 
-				Validation <select name="grecord">
+					if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
+					else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
+					else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
+					
+					$valStr="$vStr <img class='listIcons' src='".$moduleRelPath."/img/$vImg' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
+					echo $valStr;
+				
+/*
+					if ($flight->grecord==1) $grecord_sel_1="selected";
+					else if ($flight->grecord==-1) $grecord_sel_2="selected";
+					else if ($flight->grecord==0) $grecord_sel_3="selected";
+					echo "<option $grecord_sel_1 value='1'>Valid</option>\n";
+				 	echo "<option $grecord_sel_2 value='-1'>Invalid or N/A</option>\n";
+				  	echo "<option $grecord_sel_3 value='0'>Not yet processed</option>\n";
+*/
+				?>
+				<input type="hidden" name="grecord" value="<?=$flight->grecord?>">
+				<a href='?name=<?=$module_name?>&op=edit_flight&flightID=<?=$flight->flightID?>&checkg=1'>Re-check G-record</a>&nbsp;&nbsp;
+				Validation <select name="validated">
 				<?
-					echo "<option $is_type_sel value='1'>Valid</option>\n";
-				 	echo "<option $is_type_sel value='-1'>Invalid or N/A</option>\n";
-				  	echo "<option $is_type_sel value='0'>Unknown</option>\n";
+					if ($flight->validated==1) $val_sel_1="selected";
+					else if ($flight->validated==-1) $val_sel_2="selected";
+					else if ($flight->validated==0) $val_sel_3="selected";
+					echo "<option $val_sel_1 value='1'>Valid</option>\n";
+				 	echo "<option $val_sel_2 value='-1'>Invalid</option>\n";
+				  	echo "<option $val_sel_3 value='0'>Not yet processed</option>\n";
 				?>
 				</select>
 				
-				<a href=''>Revalidate</a>
-				<? // $flight->validate(); ?>			</td>
+				<? echo $grecord_res ?>			</td>
 			</tr>
 		</table>	
-		   </div>
+	    </div>
 	    </fieldset></td>
     </tr>
 	<? } ?>
@@ -214,14 +264,14 @@ fieldset.legendBox {
 
     <tr>
       <td colspan="2" valign="middle">
-	  <fieldset class="legendBox"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
+	  <fieldset class="legendBox legend3"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
 	  <div align="left">
-	    <textarea name="comments" cols="90" rows="5"><? echo  $flight->comments ?></textarea>
+	    <textarea name="comments" cols="100" rows="5"><? echo  $flight->comments ?></textarea>
 	    </div>
 	  </fieldset>	</td>
     </tr>
     <tr>
-      <td colspan="2"><fieldset class="legendBox">
+      <td colspan="2"><fieldset class="legendBox legend3">
       <legend><? echo _RELEVANT_PAGE ?></legend>
 	  <div align="left">
 			http://<input name="linkURL" type="text" id="linkURL" size="90" value="<? echo  $flight->linkURL ?>">

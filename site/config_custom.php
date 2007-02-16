@@ -55,7 +55,7 @@
  $mapServerActive=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
- $CONF_google_maps_track=1;
+ $CONF_google_maps_track=0;
  $CONF_google_maps_track_order=1; // will apear in the second tab
  $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 
@@ -81,7 +81,7 @@
  // validate against the G-record
  $CONF_use_validation=1;
 
- $CONF_valdation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate.php";
+ $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate.php";
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
  // set $scoringServerActive=0 to disable the scoring.
