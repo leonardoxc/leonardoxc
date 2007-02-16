@@ -272,7 +272,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Введите имя<br>файла IGC");
 define("_NOTE_TAKEOFF_NAME","Пожалуйста, укажите название старта и страну");
 define("_COMMENTS_FOR_THE_FLIGHT","Комментарии к полету");
 define("_PHOTO","Фото");
-define("_PHOTOS_GUIDELINES","Фотографии должны быть в формате jpg и меньше 100 КБ");
+define("_PHOTOS_GUIDELINES","Фотографии должны быть в формате jpg и меньше ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Нажмите сюда для загрузки полета");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Вы хотите добавить сразу несколько полетов?");
 define("_PRESS_HERE","Нажмите сюда");

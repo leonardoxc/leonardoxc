@@ -213,7 +213,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // Max is 6 
  $CONF_photosPerFlight=6;
+ $CONF_max_photo_size=3000; // 3000 Kb
  
+ $CONF_default_category=2;
+ $CONF_category_types =array(1=>"Sport",2=>"Open",3=>"Tandem");
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
 				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );

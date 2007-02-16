@@ -291,7 +291,7 @@ define("_NOTE_TAKEOFF_NAME","<font size=1>Kalkýþ Pistinin adýný veya ülkeyi
 yazabilirsiniz</font>");
 define("_COMMENTS_FOR_THE_FLIGHT","Uçuþ yorumlarý");
 define("_PHOTO","Fotoðraf");
-define("_PHOTOS_GUIDELINES","Fotoðraflar JPG ve 100kb den küçük olmalý.");
+define("_PHOTOS_GUIDELINES","Fotoðraflar JPG ve  den küçük olmalý.");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Kaydý Gönder");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Birden fazla ucus kaydi 
 girmek istiyormusunuz ?");

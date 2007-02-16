@@ -272,7 +272,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Υποβάλετε το αρχείο<br>IGC της πτή
 define("_NOTE_TAKEOFF_NAME","Αναφέρετε την ονομασία της απογείωσης");
 define("_COMMENTS_FOR_THE_FLIGHT","Σχόλια για την πτήση");
 define("_PHOTO","Φωτογραφία");
-define("_PHOTOS_GUIDELINES","Οι φωτογραφίες πρέπει να είναι jpg και μέχρι 100kb");
+define("_PHOTOS_GUIDELINES","Οι φωτογραφίες πρέπει να είναι jpg και μέχρι ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Πατήστε εδώ για υποβολή της πτήσης");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Εχετε πολλές πτήσεις σε ένα αρχείο zip ?");
 define("_PRESS_HERE","Πατήστε εδώ");

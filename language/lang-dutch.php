@@ -273,7 +273,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Laadt<br>IGC bestand van vlucht");
 define("_NOTE_TAKEOFF_NAME","Geef startplaats, naam locatie en land aan");
 define("_COMMENTS_FOR_THE_FLIGHT","Opmerkingen over vlucht");
 define("_PHOTO","Foto");
-define("_PHOTOS_GUIDELINES","Foto's moeten in .JPG en kleiner dan 100Kb");
+define("_PHOTOS_GUIDELINES","Foto's moeten in .JPG en kleiner dan ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Klik hier om vlucht te declareren");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Wilt u meerdere vluchten tegelijk declareren ?");
 define("_PRESS_HERE","Klik hier");

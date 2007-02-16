@@ -15,11 +15,13 @@
 //-----------------------  custom league --------------------------------
 //-----------------------------------------------------------------------
 	// Some config
+	// tandem , category=3
 	$cat=1; // pg
 	// $year=2007; // flights from 1.10.2006 00:00 UTC - 30.09.2007
 	if ($year)
   		$where_clause=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
 	$where_clause.=" AND cat=$cat ";
+	$where_clause.=" AND category=3 ";
 	$query = 'SELECT '.$flightsTable.'.ID, userID, username, takeoffID ,
   				 gliderBrandID,'.$flightsTable.'.glider as glider,cat,
   				 MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '

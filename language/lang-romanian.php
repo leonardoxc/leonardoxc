@@ -268,7 +268,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Inregistreaza fisierul <br>IGC al 
 define("_NOTE_TAKEOFF_NAME","Va rugam notati tara si numele locatiei de decolare");
 define("_COMMENTS_FOR_THE_FLIGHT","Comentarii despre zbor");
 define("_PHOTO","Foto");
-define("_PHOTOS_GUIDELINES","Fotografiile trebuie sa fie in format jpg si mai mici de 100Kb");
+define("_PHOTOS_GUIDELINES","Fotografiile trebuie sa fie in format jpg si mai mici de ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Apasati aici pentru a inregistra zborul");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Doriti sa inregistrati mai multe zboruri deodata ?");
 define("_PRESS_HERE","Apasati aici");

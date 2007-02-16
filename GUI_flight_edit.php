@@ -19,6 +19,7 @@
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
 		 $flight->cat=$_REQUEST["gliderCat"];
+ 		 $flight->category=$_REQUEST["category"];
 		 $flight->glider=$_REQUEST["glider"];
 		 $flight->comments=$_REQUEST["comments"];
 		 //echo $flight->comments."<HR><HR>";
@@ -68,12 +69,34 @@ function setValue(obj)
 	// document.inputForm.glider.value = value;
 }
 </script>
+<style type="text/css">
+fieldset.legendBox { 
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	padding:0 1em .5em 0.4em; 	
+	margin-bottom:0.5em;
+	margin-right:5px;
+	margin-left:5px;
+	text-align:left;
+	background-color:#f4f4f4;
+}
+.legendBox legend {
+	border:1px outset #E2E2E2;
+	padding:0.2em 1.2em 0.2em 1.2em;
+	margin:0;
+	color:#000000;
+	font-weight:bold;
+	background-color:#D9E9F1;
+}
+</style>
  
   <form action="" enctype="multipart/form-data" method="post">	
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
-  <?  open_inner_table(_CHANGE_FLIGHT_DATA,650,"change_icon.png"); echo "<tr><td>"; ?>
-  <table class=main_text width="100%" border="0" align="center" cellpadding="5" cellspacing="3" bgcolor="#FBFCEF" >
+  <?  open_inner_table(_CHANGE_FLIGHT_DATA,730,"change_icon.png"); echo "<tr><td>"; ?>
+  <table class=main_text width="100%" border="0" align="center" cellpadding="5" cellspacing="3" bgcolor="#EFF0F5" >
 
     <tr>
       <td width="170" valign="top"><div align="right" class="style2"><? echo _PILOT_NAME ?></div></td>
@@ -86,9 +109,22 @@ function setValue(obj)
           </tr>
         </table></td>
     </tr>
+	    <tr>
+      <td  valign="top"><div align="right" class="style2"><? echo _THE_DATE." - "._TAKEOFF ?></div></td>
+      <td  valign="top"><b><? echo  formatDate($flight->DATE)." - ".getWaypointName($flight->takeoffID) ?></b></td>
+    </tr>
     <tr>
-      <td  valign="top"><div align="right" class="style2"> <? echo _GLIDER_TYPE ?></div></td>
-      <td  valign="top"><b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
+      <td  valign="top"><div align="right" class="style2"><? echo _IGC_FILE_OF_THE_FLIGHT ?></div></td>
+      <td  valign="top"><b><? echo  $flight->filename ?></b></td>
+    </tr>
+    <tr>
+      <td colspan="2"  valign="top">
+	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td>	    <fieldset class="legendBox">
+	    <legend><? echo _GLIDER_TYPE ?></legend>
+	  <div align="left">
+	  <b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
            <select name="gliderCat">
            <?
 				foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
@@ -97,14 +133,56 @@ function setValue(obj)
 					echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
 				}
 			?>
-			</select>
-		</b>
-	</td>
+		</select>
+		</b>	  </div>
+	    </fieldset>			</td>
+            <td>
+			   <fieldset class="legendBox"><legend><? echo _GLIDER ?></legend>
+	  <div align="left">
+     <input name="glider" type="text" size="30" value="<? echo  $flight->glider ?>">
+         
+		<? 
+			$gliders=  getUsedGliders($flight->userID) ;
+			if (count($gliders)) { ?>
+				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
+					<option></option>
+					<? 
+						foreach($gliders as $selGlider) {
+							if ( $flight->glider == $selGlider) $glSel="selected";
+							else $glSel="";
+							echo "<option $glSel>".$selGlider."</option>\n";
+						}
+					?>
+				</select>
+			<? } ?>	
+				    </div>
+	  </fieldset>			</td>
+            <td>
+			   <fieldset class="legendBox">
+	    <legend><? echo _CATEGORY ?></legend>
+	  <div align="left">	  
+           <select name="category">
+           <?
+				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+					if ($flight->category==$gl_id) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+				}
+			?>
+		</select>
+			  </div>
+	    </fieldset>	
+			
+			</td>
+          </tr>
+        </table>		</td>
     </tr>
 	<? if ($CONF_use_validation && in_array($userID,$admin_users) ) {?>
     <tr>
-      <td  valign="top"><div align="right">Validation</div></td>
-      <td  valign="top">
+      <td colspan="2"  valign="top">
+	    <fieldset class="legendBox">
+	    <legend><? echo "Validation" ?></legend>
+	  <div align="left">
 	 	  <table class=main_text width="100%"  border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top">
@@ -125,60 +203,39 @@ function setValue(obj)
 				</select>
 				
 				<a href=''>Revalidate</a>
-				<? $flight->validate(); ?>
-			</td>
+				<? // $flight->validate(); ?>			</td>
 			</tr>
-			</table>	  
-	  </td>
+		</table>	
+		   </div>
+	    </fieldset></td>
     </tr>
 	<? } ?>
-    <tr>
-      <td  valign="top"><div align="right" class="style2"><? echo _THE_DATE." - "._TAKEOFF ?></div></td>
-      <td  valign="top"><b><? echo  formatDate($flight->DATE)." - ".getWaypointName($flight->takeoffID) ?></b></td>
-    </tr>
-    <tr>
-      <td  valign="top"><div align="right" class="style2"><? echo _IGC_FILE_OF_THE_FLIGHT ?></div></td>
-      <td  valign="top"><b><? echo  $flight->filename ?></b></td>
-    </tr>
+
 
     <tr>
-      <td valign="middle"><div align="right" class="style2"><font face="Verdana, Arial, Helvetica, sans-serif"><? echo _COMMENTS_FOR_THE_FLIGHT ?></font></div></td>
-      <td valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
-        <textarea name="comments" cols="60" rows="5"><? echo  $flight->comments ?></textarea>
-      </font></td>
+      <td colspan="2" valign="middle">
+	  <fieldset class="legendBox"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
+	  <div align="left">
+	    <textarea name="comments" cols="90" rows="5"><? echo  $flight->comments ?></textarea>
+	    </div>
+	  </fieldset>	</td>
     </tr>
     <tr>
-      <td><div align="right" class="style2"><font face="Verdana, Arial, Helvetica, sans-serif"><? echo _GLIDER ?></font></div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="glider" type="text" size="30" value="<? echo  $flight->glider ?>">
-      </font>       
-		<? 
-			$gliders=  getUsedGliders($flight->userID) ;
-			if (count($gliders)) { ?>
-				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
-					<option></option>
-					<? 
-						foreach($gliders as $selGlider) {
-							if ( $flight->glider == $selGlider) $glSel="selected";
-							else $glSel="";
-							echo "<option $glSel>".$selGlider."</option>\n";
-						}
-					?>
-				</select>
-			<? } ?>	  </td>
-    </tr>
-    <tr>
-      <td><div align="right" class="style2"><? echo _RELEVANT_PAGE ?></div></td>
-      <td><font face="Verdana, Arial, Helvetica, sans-serif">
-        http://<input name="linkURL" type="text" id="linkURL" size="50" value="<? echo  $flight->linkURL ?>">
-      </font></td>
+      <td colspan="2"><fieldset class="legendBox">
+      <legend><? echo _RELEVANT_PAGE ?></legend>
+	  <div align="left">
+			http://<input name="linkURL" type="text" id="linkURL" size="90" value="<? echo  $flight->linkURL ?>">
+	    </div>
+	  </fieldset></td>
     </tr>
 	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 		$var_name="photo".$i."Filename";
 	?>
     <tr>
       <td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo $i?></div></td>
-      <td><? if ( $flight->$var_name) { ?>
+      <td>
+	  
+	  		<? if ( $flight->$var_name) { ?>
 			<table width="100%"  border="0" cellspacing="0" cellpadding="2" class="main_text">
 				<tr>
 				  <td width="120"><img src="<? echo $flight->getPhotoRelPath($i).".icon.jpg"; ?>" border=0></td>
@@ -197,7 +254,7 @@ function setValue(obj)
 	 <tr>
       <td><div align="right" class="style2"></div></td>
       <td>  <div align="center" class="style222">
-        <div align="left"><? echo _PHOTOS_GUIDELINES ?></div>
+        <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb'; ?></div>
       </div></td>
     </tr>
     <tr>

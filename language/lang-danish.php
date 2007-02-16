@@ -268,7 +268,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Indsend<br>flyvningens IGC fil");
 define("_NOTE_TAKEOFF_NAME","Bemærk venligst navn og lokation på startstedet og landet");
 define("_COMMENTS_FOR_THE_FLIGHT","Kommentarer til flyvningen");
 define("_PHOTO","Billede");
-define("_PHOTOS_GUIDELINES","Billeder skal være i jpg format og mindre end 100kB");
+define("_PHOTOS_GUIDELINES","Billeder skal være i jpg format og mindre end ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Klik her for at indsende flyvningen");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Vil du indsende flere flyvninger samtidigt?");
 define("_PRESS_HERE","Klik her");

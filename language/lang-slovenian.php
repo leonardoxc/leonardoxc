@@ -268,7 +268,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Predlo¾i <br>IGC datoteko leta");
 define("_NOTE_TAKEOFF_NAME","Prosim, zapi¹i ime in dr¾avo vzleti¹èa");
 define("_COMMENTS_FOR_THE_FLIGHT","Komentarji za ta let");
 define("_PHOTO","Fotografija");
-define("_PHOTOS_GUIDELINES","Fotografije naj bodo v jpg formatu in manj¹e od 100k");
+define("_PHOTOS_GUIDELINES","Fotografije naj bodo v jpg formatu in manj¹e od ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Za nalagnje leta klikni tukaj");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","®eli¹ predlo¾iti veè letov naenkrat?");
 define("_PRESS_HERE","Klikni tukaj");

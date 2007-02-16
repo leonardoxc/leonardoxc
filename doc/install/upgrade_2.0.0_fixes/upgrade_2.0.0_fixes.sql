@@ -22,3 +22,6 @@ CREATE TABLE `leonardo_stats` (
   `browser_version` char(10) NOT NULL default '',
   KEY `tm` (`tm`,`year`,`month`,`day`)
 ) ENGINE=MyISAM ;
+
+
+ALTER TABLE `leonardo_flights` ADD `category` SMALLINT UNSIGNED NOT NULL DEFAULT '2' AFTER `subcat` ;

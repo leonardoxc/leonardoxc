@@ -268,7 +268,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Submit the<br>IGC file of the flig
 define("_NOTE_TAKEOFF_NAME","Please note the takeoff name location and country");
 define("_COMMENTS_FOR_THE_FLIGHT","Comments for the flight");
 define("_PHOTO","Photo");
-define("_PHOTOS_GUIDELINES","Photos should be in jpg format and smaller than 100Kb");
+define("_PHOTOS_GUIDELINES","Photos should be in jpg format and smaller than ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Press here to submit the flight");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Do you want to submit many flights at once ?");
 define("_PRESS_HERE","Click here");

@@ -269,7 +269,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Prze¶lij plik<br>IGC");
 define("_NOTE_TAKEOFF_NAME","Podaj nazwê startowiska i kraj");
 define("_COMMENTS_FOR_THE_FLIGHT","Komentarz");
 define("_PHOTO","Zdjêcie");
-define("_PHOTOS_GUIDELINES","Zdjêcia powinny byæ w formacie jpg i nie wiêksze ni¿ 100Kb");
+define("_PHOTOS_GUIDELINES","Zdjêcia powinny byæ w formacie jpg i nie wiêksze ni¿ ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Kliknij, aby przes³aæ lot");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Chcesz przes³aæ kilka lotów za jednym razem?");
 define("_PRESS_HERE","Kliknij");

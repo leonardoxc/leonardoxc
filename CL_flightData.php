@@ -17,6 +17,7 @@ require_once dirname(__FILE__)."/FN_kml.php";
 class flight {
 	var $cat=1;
 	var $subcat=1;
+	var $category=2; // 1=sport , 2=open ,3=tandem
 	var $active;
 	var $timesViewed;
 	var $dateAdded;
@@ -1585,7 +1586,8 @@ var $maxPointNum=1000;
 		$this->userName=$name;		 
 
 		$this->cat=$row["cat"];		
-		$this->subcat=$row["subcat"];		
+		$this->subcat=$row["subcat"];	
+		$this->category=$row["category"];		
 		$this->active=$row["active"];		
 		$this->private=$row["private"];		
 
@@ -1763,7 +1765,7 @@ var $maxPointNum=1000;
 		}
 
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
-		cat,subcat,active, private ,
+		cat,subcat,category,active, private ,
 		validated,grecord,
 		comments, glider, linkURL, timesViewed,
 		photo1Filename,photo2Filename,photo3Filename,
@@ -1790,7 +1792,7 @@ var $maxPointNum=1000;
 		olcRefNum,olcFilename,olcDateSubmited
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
-		$this->cat,$this->subcat,$this->active, $this->private,
+		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated,$this->grecord,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		'$this->photo1Filename','$this->photo2Filename','$this->photo3Filename',

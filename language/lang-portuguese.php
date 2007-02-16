@@ -275,7 +275,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Enviar o<br>ficheiro IGC do voo");
 define("_NOTE_TAKEOFF_NAME","Por favor escreva o nome da descolagem e país");
 define("_COMMENTS_FOR_THE_FLIGHT","Comentários sobre o voo");
 define("_PHOTO","Foto");
-define("_PHOTOS_GUIDELINES","As fotos devem estar em formato jpg e com um tamhno inferior a 100Kb");
+define("_PHOTOS_GUIDELINES","As fotos devem estar em formato jpg e com um tamhno inferior a ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Carregar aqui para enviar o voo");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","¿Pretende enviar diversos voos em simultâneo?");
 define("_PRESS_HERE","Carregar aqui");

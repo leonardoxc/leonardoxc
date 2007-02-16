@@ -12,7 +12,8 @@
 /************************************************************************/
 
    $res= $db->sql_query($query);
-	//	echo $query;
+	//echo $query;
+
    if($res <= 0){
       echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();
@@ -87,7 +88,8 @@ while ($row = $db->sql_fetchrow($res)) {
 			if ($i==$countHowMany &&  $countHowMany!=0) break;
 		}
 
-		if (!$nationalFlights) { // find first national flight ID and replace the last flight in the list
+		if (!$nationalFlights &&  $i==$countHowMany) { // find first national flight ID and replace the last flight in the list
+		//echo "<HR><HR>no national flight found ";
 			foreach ($flightsArray as $flightID=>$flight) {
 				if ($flight['country']=='DE') { 
 					$nationalFlights++;
@@ -99,7 +101,8 @@ while ($row = $db->sql_fetchrow($res)) {
 			}
 		}
 
-		if (!$nationalFlights) { // there are no national flights -> delete last flight from list
+		if (!$nationalFlights && $i==$countHowMany) { // there are no national flights -> delete last flight from list
+			//	echo "<HR>no national flight found will delete last flight<BR>";
 			$bestSUM-=$lastVal;
 			unset($pilots[$pilotID][$category]['flights'][$countHowMany-1]);
 		}

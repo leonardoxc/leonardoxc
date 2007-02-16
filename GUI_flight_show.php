@@ -495,10 +495,10 @@ if ( $CONF_google_maps_track==1) {
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  )
-		 $googleMap="<div style='display:block; width:750px; height:460px;'><iframe align='left'
+		 $googleMap="<div style='display:block; width:755px; height:520px;'><iframe align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
-		$flight->flightID."&file=/".$flight->getPolylineRelPath()."&zoom=3'
-		  TITLE='Google Map' width='750px' height='460px'
+		$flight->flightID."&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
+		  TITLE='Google Map' width='755px' height='520px'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 		</iframe></div>";
@@ -515,7 +515,6 @@ $mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></scri
 <link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
 <link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
 <script type='text/javascript'>
-document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
 </script>
 <div class='tabber' id='mapTabber'>
  <div class='tabbertab $defaultTabStr1' title='Map'>
@@ -531,8 +530,11 @@ document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
 }
 
  // if google maps are present put photos lower down
-if ($googleMap ) $margin="imgDiv2colmargin";
-else  $margin="";
+if ($googleMap ) {
+	$margin="imgDiv2colmargin";
+	if ($localMap)  // we use tabs so put some more space down
+		$margin="imgDiv2colmarginTabbed";
+} else  $margin="";
 
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 

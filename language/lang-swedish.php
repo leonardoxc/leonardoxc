@@ -272,7 +272,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Skicka in<br>IGC-filen för flyget"
 define("_NOTE_TAKEOFF_NAME","Var god notera startplatsens namn, plats och land");
 define("_COMMENTS_FOR_THE_FLIGHT","Kommentarer till flyget");
 define("_PHOTO","Bild");
-define("_PHOTOS_GUIDELINES","Bilder skall var i jpg format och mindre än 100Kb");
+define("_PHOTOS_GUIDELINES","Bilder skall var i jpg format och mindre än ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Tryck här för att skicka in flyget");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Vill du skicka in många flyg på en gång?");
 define("_PRESS_HERE","Klicka här");

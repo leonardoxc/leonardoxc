@@ -9,10 +9,17 @@
       var htmls = [];
       var i = 0;
 
+      var background = [];
+          background["green"]  = "img/pin_1.png";
+          background["red"]  = "img/pin_2.png";
 
       // A function to create the marker and set up the event window
-      function createMarker(point,name,html) {
-        var marker = new GMarker(point);
+      function createMarker(point,name,html,ba) {      
+//	  	var mylabel = {"url":overlay[ov], "anchor":new GLatLng(4,4), "size":new GSize(12,12)};
+//        var Icon = new GIcon(G_DEFAULT_ICON, background[ba], mylabel);
+		        var Icon = new GIcon(G_DEFAULT_ICON, background[ba]);
+        var marker = new GMarker(point,Icon,{title:name});
+//        var marker = new GMarker(point,{title:name});
         GEvent.addListener(marker, "click", function() {
           marker.openInfoWindowHtml(html);
         });
@@ -34,13 +41,15 @@
 
       // create the map
       var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
-		//GMap2.setMapType( G_HYBRID_MAP);
       map.addControl(new GLargeMapControl());
       map.addControl(new GMapTypeControl());
-      map.setCenter(new GLatLng( -45.458619,100), 4);
+      map.setCenter(new GLatLng(0,0), 4);
 
       var side_bar_html = "";
       
+	  var center_lat;
+	  var center_lon;
+
 	  process_polyline   = function(doc) {
         // === split the document into lines ===
         lines = doc.split("\n");
@@ -50,12 +59,12 @@
         var min_lon = parseFloat(parts[2]);
         var max_lon = parseFloat(parts[3]);
 
-		var center_lat=(max_lat+min_lat)/2;
-		var center_lon=(max_lon+min_lon)/2;
-		zoom=compute_zoom(max_lat,min_lat,max_lon,min_lon,document.getElementById("map"));
+		center_lat=(max_lat+min_lat)/2;
+		center_lon=(max_lon+min_lon)/2;
+			
+		var bounds = new GLatLngBounds(new GLatLng(min_lon,min_lat ),new GLatLng(max_lon,max_lat));
+		zoom=map.getBoundsZoomLevel(bounds);	
 		map.setCenter(new GLatLng( center_lat,center_lon), zoom);
-
-//		map.centerAndZoom(new GPoint(center_lat, center_lon), 8);
 
 		process_waypoints();
 		var encodedPolyline = new GPolyline.fromEncoded({
@@ -69,6 +78,7 @@
 		map.addOverlay(encodedPolyline);
 
 	   }
+	   
       // === Define the function thats going to process the text file ===
       function process_waypoints(){
         for (var i=0; i<2; i++) {
@@ -81,23 +91,17 @@
             var label = parts[3];
             var point = new GLatLng(lat,lng);
             // create the marker
-            var marker = createMarker(point,label,html);
+			var bg;
+			if (i==0) bg="green";
+			else bg="red";
+            var marker = createMarker(point,label,html,bg);
             map.addOverlay(marker);
           }
         }
         // put the assembled side_bar_html contents into the side_bar div
-        document.getElementById("side_bar").innerHTML = side_bar_html;
-      /*   
-          // ===== determine the zoom level from the bounds =====
-          map.setZoom(map.getBoundsZoomLevel(bounds));
-
-          // ===== determine the centre from the bounds ======
-          var clat = (bounds.getNorthEast().lat() + bounds.getSouthWest().lat()) /2;
-          var clng = (bounds.getNorthEast().lng() + bounds.getSouthWest().lng()) /2;
-          map.setCenter(new GLatLng(clat,clng));
-*/
-      }          
-          
+		var curHtml=document.getElementById("side_bar").innerHTML;
+        document.getElementById("side_bar").innerHTML =  curHtml + side_bar_html;
+      }                   
 	 //fname is derevied from args
       GDownloadUrl(fname, process_polyline);
     }
@@ -110,21 +114,6 @@
     // http://www.commchurch.freeserve.co.uk/   
     // http://www.econym.demon.co.uk/googlemaps/
 
-function compute_zoom(maxX,minX,maxY,minY, mnode) {
-    var width = mnode.offsetWidth;
-    var height = mnode.offsetHeight;
-
-    var dlat = Math.abs(maxY - minY);
-    var dlon = Math.abs(maxX - minX);
-    if(dlat == 0 && dlon == 0)
-        return 4;
- 
-    // Center latitude in radians
-    var clat = Math.PI*(minY + maxY)/360.;
-
-    var C = 0.0000107288;
-    var z0 = Math.ceil(Math.log(dlat/(C*height))/Math.LN2) + 1 ;
-    var z1 = Math.ceil(Math.log(dlon/(C*width*Math.cos(clat)))/Math.LN2) + 1;
-
-    return (z1 > z0) ? z1 : z0;
+function zoomToFlight() {
+	map.setCenter(new GLatLng( center_lat,center_lon), zoom);
 }

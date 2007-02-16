@@ -270,7 +270,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Übertrage das<br>IGC File des Flug
 define("_NOTE_TAKEOFF_NAME","Bitte beachte den Namen des Startplatzes /-gebietes und das Land");
 define("_COMMENTS_FOR_THE_FLIGHT","Kommentare zum Flug");
 define("_PHOTO","Foto");
-define("_PHOTOS_GUIDELINES","Fotos sollten im jpg Format und kleiner als 100kb sein");
+define("_PHOTOS_GUIDELINES","Fotos sollten im jpg Format und kleiner als  sein");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Hier clicken um den Flug einzureichen");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Möchtest Du mehrere Flüge auf einmal einreichen ?");
 define("_PRESS_HERE","Hier clicken");

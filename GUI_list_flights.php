@@ -333,8 +333,19 @@ function removeClubFlight(clubID,flightID) {
 	   "<TD>$duration</TD>".
 	   "<TD class='distance'>$linearDistance</TD>".
 	   "<TD class='distance'>$olcDistance</TD>".
-	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' /></TD>".
-	   "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
+	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' />";
+
+		if ($CONF_use_validation) {
+			$isValidated=$row['validated'];
+			if ($isValidated==-1) $vImg="icon_valid_nok.gif";
+			else if ($isValidated==0) $vImg="icon_valid_unknown.gif";
+			else if ($isValidated==1) $vImg="icon_valid_ok.gif";
+			
+			$valStr="<img class='listIcons' src='".$moduleRelPath."/img/$vImg' width='12' height='12' border='0' />";
+			echo $valStr;
+		}
+	   echo "</TD>";
+	   echo "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
    	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>".
 
 	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
@@ -349,17 +360,6 @@ function removeClubFlight(clubID,flightID) {
 	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' valign='top' />";
 	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
-		if ($CONF_use_validation) {
-			$isValidated=$row['validated'];
-			if ($isValidated==-1) $vImg="icon_valid_nok.gif";
-			else if ($isValidated==0) $vImg="icon_valid_unknown.gif";
-			else if ($isValidated==1) $vImg="icon_valid_ok.gif";
-			$valStr="<img class='listIcons' src='".$moduleRelPath."/img/$vImg' width='16' height='16' border='0' />";
-			if (in_array($userID,$admin_users)) 
-				$valStr="<a href='?name=$module_name&op=validation_review&flightID=".$row["ID"]."'>$valStr</a>";
-
-			echo $valStr;
-		}
 		
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
 			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 

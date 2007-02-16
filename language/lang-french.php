@@ -272,7 +272,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Charger le <br>fichier IGC du vol"
 define("_NOTE_TAKEOFF_NAME","Veuillez noter the nom, emplacement et pays du décollage");
 define("_COMMENTS_FOR_THE_FLIGHT","Commentaires sur le vol");
 define("_PHOTO","Photo");
-define("_PHOTOS_GUIDELINES","Les photos doivent être au format jpg et faire moins de 100Kb");
+define("_PHOTOS_GUIDELINES","Les photos doivent être au format jpg et faire moins de ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Cliquez ici pour charger le vol");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Voulez-vous charger beaucoup de vols à la fois ?");
 define("_PRESS_HERE","Cliquez ici");

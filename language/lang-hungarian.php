@@ -273,7 +273,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Add meg a repülés<br>IGC fájlját")
 define("_NOTE_TAKEOFF_NAME","Írd be legalább a starthely helyének nevét és az országot");
 define("_COMMENTS_FOR_THE_FLIGHT","Megjegyzések a repüléshez");
 define("_PHOTO","Fotó");
-define("_PHOTOS_GUIDELINES","A fotók jpg formátumúak legyenek és kisebbek, mint 100 KB");
+define("_PHOTOS_GUIDELINES","A fotók jpg formátumúak legyenek és kisebbek, mint ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","A repülés beküldéséhez ezt nyomd meg");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Több repülést szeretnél egyszerre beküldeni ?");
 define("_PRESS_HERE","Kattints ide!");
