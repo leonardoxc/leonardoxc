@@ -114,6 +114,7 @@
     // http://www.commchurch.freeserve.co.uk/   
     // http://www.econym.demon.co.uk/googlemaps/
 
+
 function zoomToFlight() {
 	map.setCenter(new GLatLng( center_lat,center_lon), zoom);
 }

@@ -21,7 +21,7 @@
 
 
 ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <title>Google Maps</title>
 <style type="text/css">
@@ -95,7 +95,7 @@ fieldset.legendBox {
 <script src="http://maps.google.com/maps?file=api&v=1&key=<? echo $CONF_google_maps_api_key ?>&amp;v=2" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
 </head>
-<body onunload="GUnload()">
+<body  onUnload="GUnload()">
 
 <? if (0) { ?>
 <div id="control" class="style1"><b><? $_SERVER['SERVER_NAME']?></b></div>
@@ -130,17 +130,21 @@ if(window.location.search) {
 		var item = params[i].split("=");
 		vals[item[0]] = item[1];
 	}
-
+	var zoom=4;
 	if(vals["file"]) {
 		if(vals["zoom"]) {
-			zoom = parseInt(vals["zoom"]);
+		 	zoom = parseInt(vals["zoom"]);
 		} else {
-			zoom = 4;
+		 	zoom = 4;
 		}
 		var fname=vals["file"];  
 		fname=fname.replace("\/\/","\/");
 	}
 }
 var relpath="<?=$moduleRelPath?>";
+
 </script>
+<? if (1) { ?>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
+<? }?>
+</body>
