@@ -76,12 +76,26 @@
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
  // set $scoringServerActive=0 to disable the scoring.
- $enableOLCsubmission=1;
+ $enableOLCsubmission=0;
 
  // validate against the G-record
  $CONF_use_validation=1;
 
  $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate.php";
+ 
+ // Membership of NAC (National Airsport Control, also referred as National Aero Club)
+ $CONF_NAC_list=array(
+	1=>array("name"=>"DHV",
+	 "id_input_method"=>"external",
+	 "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
+	 // use this for production 
+	 // "input_url"=>"/admin/odb/page.php?id=check_membership&callingfield=NACmemberID",
+	)							
+ );
+ $CONF_use_NAC=1; 
+ 
+
+ 
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
  // set $scoringServerActive=0 to disable the scoring.

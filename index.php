@@ -133,6 +133,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
  // require_once dirname(__FILE__)."/MENU_second_menu.php";
 }
 
+		 
 //---------------------------------------------
 // MAIN SWITCH
 //---------------------------------------------
@@ -233,6 +234,8 @@ if ($op=="users") {
 //--------------------------
 } else if ($op=="admin") {
 	require $moduleRelPath."/GUI_admin.php";
+} else if ($op=="admin_test") {
+	require $moduleRelPath."/GUI_admin_test.php";
 } else if ($op=="admin_logs") {
 	require $moduleRelPath."/GUI_admin_logs.php";
 } else if ($op=="admin_stats") {

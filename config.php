@@ -154,12 +154,17 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
  // set $scoringServerActive=0 to disable the scoring.
- $enableOLCsubmission=1;
+ $enableOLCsubmission=0;
 
 
  // validate against the G-record
  $CONF_use_validation=0;
  $CONF_validation_server_url="";
+ 
+ 
+ // Membership of NAC (National Airsport Control, also referred as National Aero Club)
+ $CONF_NAC_list=array();
+ $CONF_use_NAC=0;
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 

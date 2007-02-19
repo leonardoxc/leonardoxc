@@ -36,7 +36,7 @@
   $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=$pilotIDview'>"._pilot_stats."</a>";
   if ( $pilotIDview == $userID || in_array($userID,$admin_users)  ) {
 	  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
-      $legendRight.=" | <a href='?name=$module_name&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
+      if ($enableOLCsubmission) $legendRight.=" | <a href='?name=$module_name&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
   }
   else $legendRight.="";
   
@@ -52,7 +52,7 @@
     <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
     <td width=150 valign="top" bgcolor="#F5F5F5"> <? echo $pilot['FirstName'] ?></td>
     <td width =3>&nbsp;</td>
-    <td colspan="2" rowspan="7" valign="top">
+    <td colspan="2" rowspan="8" valign="top">
         <? 
 	  	if ($pilot['PilotPhoto']>0) {
 		?>
@@ -64,27 +64,32 @@
 		</div>
 		<?		
 		}
-	  ?>
-      
-    </td>
+	  ?>    </td>
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['LastName'] ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['LastName'] ?>    </td>
     <td>&nbsp;</td>
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDescription($pilot['countryCode']); ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDescription($pilot['countryCode']); ?>    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" bgcolor="#E9EDF5"><? if ($CONF_use_NAC) {?><div align="right"><? echo _MEMBER_OF ?></div><? } ?></td>
+    <td valign="top" bgcolor="#F5F5F5"><? if ($CONF_use_NAC) {
+			echo $CONF_NAC_list[$pilot['NACid']] ['name'];
+			echo " [ MemberID: ";
+			echo $pilot['NACmemberID']." ]";;
+		} ?>
+	</td>
     <td>&nbsp;</td>
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?> 
         (<? echo _dd_mm_yy ?>) </div></td>
-    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Birthdate'] ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Birthdate'] ?>    </td>
     <td>&nbsp;</td>
   </tr>
   <tr> 
@@ -99,8 +104,7 @@
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Occupation?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['Occupation'] ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['Occupation'] ?>    </td>
     <td>&nbsp;</td>
   </tr>
   <tr> 
@@ -124,8 +128,7 @@
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['FlyingSince'] ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['FlyingSince'] ?>    </td>
     <td>&nbsp;</td>
     <td width="150" valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Distance_Record?></div></td>
     <td width="150" valign="top" bgcolor="#F5F5F5"><? echo $pilot['personalDistance'] ?></td>
@@ -153,8 +156,7 @@
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Usual_Location?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['UsualLocation'] ?> 
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['UsualLocation'] ?>    </td>
     <td>&nbsp;</td>
     <td valign="top" bgcolor="#E9EDF5"><div align="right"></div></td>
     <td>&nbsp;</td>

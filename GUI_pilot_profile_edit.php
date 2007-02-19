@@ -47,10 +47,16 @@
 		else $PilotPhoto=0;
 	}
 	
+	$NACid=$_POST['NACid']+0;
+	$NACmemberID=$_POST['NACmemberID']+0;
+	if ($NACmemberID<=0) $NACid=0;
+	
    $query="UPDATE $pilotsTable SET
    		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
 		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
+		`NACid` = $NACid,
+		`NACmemberID` = $NACmemberID,
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
@@ -146,7 +152,7 @@
 			<input name="FirstName" type="hidden" value="<? echo $pilot['FirstName'] ?>" > 
 			<? } ?></td>
       <td width =3>&nbsp;</td>
-      <td colspan="2" rowspan="5" valign="top"> <div align="center"><strong><? echo _Photo ?></strong><br>
+      <td colspan="2" rowspan="6" valign="top"> <div align="center"><strong><? echo _Photo ?></strong><br>
           <? 
 	  	if ($pilot['PilotPhoto']>0) {
 			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
@@ -164,21 +170,72 @@
 			<? } else { ?>
 			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled> 
 			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" > 
-			<? } ?>
-      </td>
+			<? } ?>      </td>
       <td>&nbsp;</td>
     </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDropDown($pilot['countryCode']); ?>
-    </td>
+    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDropDown($pilot['countryCode']); ?>    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" bgcolor="#E9EDF5"><? if ($CONF_use_NAC) {?><div align="right"><? echo _MEMBER_OF ?></div><? } ?></td>
+    <td valign="top" >
+	<? if ($CONF_use_NAC) {
+				foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+					$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
+					$list2.="NAC_id_input_method[$NACid]  = '".$NAC['id_input_method']."';\n";
+				}
+	?>
+	<script language="javascript">
+	   var NAC_input_url= [];
+	   var NAC_id_input_method= [];
+	   var NACid=0;
+	   <?=$list1.$list2 ?>
+
+		function changeNAC() {
+			mid=MWJ_findObj("NACmemberID");
+			mid.value="";
+			
+			sl=MWJ_findObj("NACid");
+			NACid= sl.selectedIndex;    // Which menu item is selected
+			if (NACid==0) {
+				MWJ_changeDisplay("mID","none");		
+			} else {		
+				MWJ_changeDisplay("mID","block");
+			}
+			
+		}	
+		function setID() {	
+			if 	(NACid>0) {
+				window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
+			}
+		}
+	</script>
+	<?
+			echo "<select name='NACid' id='NACid' onchange='changeNAC(this)'>";
+			echo "<option value='0'></option>";
+			foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+				if ($pilot['NACid']==$NACid) $sel=" selected ";
+				else $sel="";
+				echo "<option $sel value='$NACid'>".$NAC['name']."</option>\n";
+				
+			}
+	
+			echo "</select>";
+			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"block")."'>";
+			echo "Member ID: <input size='6' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";
+			echo "<a href='#' onclick=\"setID();return false;\">Enter ID</a></div>";
+		} else { ?>
+	<input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
+	<input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />
+		<? } ?>	</td>
     <td>&nbsp;</td>
   </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
           (<? echo _dd_mm_yy ?>) </div></td>
-      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120"> 
-      </td>
+      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
@@ -193,8 +250,7 @@
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Occupation?></div></td>
-      <td> <input name="Occupation" type="text" value="<? echo $pilot['Occupation'] ?>" size="25" maxlength="120"> 
-      </td>
+      <td> <input name="Occupation" type="text" value="<? echo $pilot['Occupation'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
       <td colspan="2" bgcolor="#E9EDF5"> <div align="center"><? echo _Upload_new_photo_or_change_old ?>
 	  </div></td>
@@ -217,8 +273,7 @@
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
-      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120"> 
-      </td>
+      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
       <td width="150" bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Distance_Record?></div></td>
       <td width="150"> <input name="personalDistance" type="text" value="<? echo $pilot['personalDistance'] ?>" size="25" maxlength="120"></td>
@@ -246,8 +301,7 @@
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Usual_Location?></div></td>
-      <td> <input name="UsualLocation" type="text" value="<? echo $pilot['UsualLocation'] ?>" size="25" maxlength="120"> 
-      </td>
+      <td> <input name="UsualLocation" type="text" value="<? echo $pilot['UsualLocation'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
       <td bgcolor="#E9EDF5"><div align="right"></div></td>
       <td>&nbsp;</td>
