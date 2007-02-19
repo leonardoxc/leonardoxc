@@ -194,10 +194,10 @@
 	   <?=$list1.$list2 ?>
 
 		function changeNAC() {
-			mid=MWJ_findObj("NACmemberID");
+			var mid=MWJ_findObj("NACmemberID");
 			mid.value="";
 			
-			sl=MWJ_findObj("NACid");
+			var sl=MWJ_findObj("NACid");
 			NACid= sl.selectedIndex;    // Which menu item is selected
 			if (NACid==0) {
 				MWJ_changeDisplay("mID","none");		
@@ -211,6 +211,7 @@
 				window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
 			}
 		}
+
 	</script>
 	<?
 			echo "<select name='NACid' id='NACid' onchange='changeNAC(this)'>";
@@ -423,3 +424,7 @@
   echo "</td></tr>"; 
   close_inner_table();
 ?>
+<script language="javascript">
+		var sl0=MWJ_findObj("NACid");
+		NACid= sl0.selectedIndex;    // Which menu item is selected
+</script>

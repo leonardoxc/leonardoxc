@@ -97,9 +97,10 @@ setVarFromRequest("clubID",0);
 if ($op=="main") $op=$CONF_main_page;
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 
-if ($opMode==3) 
+if ($opMode==3)  // stand alone
 	require_once dirname(__FILE__)."/GUI_header.php";
 
+// phpnuke
 if ($opMode==1) include("header.php");
 
 ?>
@@ -142,6 +143,8 @@ if ($op=="users") {
 	if ($opMode==3) require $moduleRelPath."/USERS_index.php";
 } else if ($op=="login") { 
 	if ($opMode==2) require $moduleRelPath."/GUI_login.php";
+} else if ($op=="register") { 
+	if ($opMode==2) require $moduleRelPath."/GUI_register.php";
 } else if ($op=="index_full") { 
 	require $moduleRelPath."/GUI_index_full.php";
 // Clubs - areas admin

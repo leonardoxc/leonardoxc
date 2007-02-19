@@ -21,6 +21,9 @@
  // and not the onw of the forum 
  $CONF_use_own_template=1;
  
+ // for phpbb when  $CONF_use_own_template=1;
+ $CONF_use_own_login=1;
+ 
  // mod_users 
  // put in this array the userID of the users you want ot grand mod status
  // You can leave this blank

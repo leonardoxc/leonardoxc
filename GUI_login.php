@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.1 2006/05/14 22:59:45 manolis Exp $
+ *   $Id: GUI_login.php,v 1.2 2007/02/19 22:38:21 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -41,9 +41,11 @@
 define("IN_LOGIN", true);
 
 define('IN_PHPBB', true);
+
 $phpbb_root_path = './';
-include($phpbb_root_path . 'extension.inc');
-include($phpbb_root_path . 'common.'.$phpEx);
+//require_once($phpbb_root_path . 'extension.inc');
+//require_once($phpbb_root_path . 'common.'.$phpEx);
+
 
 //
 // Set page ID for session management
@@ -96,8 +98,12 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 
 					if( $session_id )
 					{
-						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo";
-						redirect(append_sid($url, true));
+						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo&op=pilot_profile";
+												
+						?>
+						<script language="javascript">window.location="<?=$url?>"; </script>
+						<? 
+						// redirect(append_sid($url, true));
 					}
 					else
 					{
@@ -114,7 +120,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 						message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
 					}
 
-					$template->assign_vars(array(
+					$Ltemplate->assign_vars(array(
 						'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 					);
 
@@ -134,7 +140,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 				message_die(GENERAL_ERROR, 'Tried to redirect to potentially insecure url.');
 			}
 
-			$template->assign_vars(array(
+			$Ltemplate->assign_vars(array(
 				'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 			);
 
@@ -154,16 +160,24 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		{
 			$url = (!empty($HTTP_POST_VARS['redirect'])) ? htmlspecialchars($HTTP_POST_VARS['redirect']) : htmlspecialchars($HTTP_GET_VARS['redirect']);
 			$url = str_replace('&amp;', '&', $url);
+			?>
+			<script language="javascript">window.location="<?=$url?>"; </script>
+			<?
 			redirect(append_sid($url, true));
 		}
 		else
 		{
-			redirect(append_sid("modules.php?name=leonardo&op=list_flights", true));
+			$url="$CONF_mainfile?name=$module_name&op=$CONF_main_page";
+			// redirect(append_sid("CONF_mainfile?name=$module_name&op=$CONF_main_page", true));
+			?>
+			<script language="javascript">window.location="<?=$url?>"; </script>
+			<?
+
 		}
 	}
 	else
 	{
-		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo";
+		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "CONF_mainfile?name=$module_name&op=$CONF_main_page";
 		redirect(append_sid($url, true));
 	}
 }
@@ -176,11 +190,14 @@ else
 	if( !$userdata['session_logged_in'] || (isset($HTTP_GET_VARS['admin']) && $userdata['session_logged_in'] && $userdata['user_level'] == ADMIN))
 	{
 		$page_title = $lang['Login'];
-//		include($phpbb_root_path . 'includes/page_header.'.$phpEx);
-
-		$template->set_filenames(array(
-			'body' => 'login_body.tpl')
+		
+		require_once $moduleRelPath."/CL_template.php";
+		$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
+	
+		$Ltemplate ->set_filenames(array(
+			'body' => 'tpl/login.html')
 		);
+
 
 		if( isset($HTTP_POST_VARS['redirect']) || isset($HTTP_GET_VARS['redirect']) )
 		{
@@ -225,18 +242,18 @@ else
 		$s_hidden_fields .= (isset($HTTP_GET_VARS['admin'])) ? '<input type="hidden" name="admin" value="1" />' : '';
 
 // 		make_jumpbox('viewforum.'.$phpEx, $forum_id);
-		$template->assign_vars(array(
+		$Ltemplate->assign_vars(array(
 			'USERNAME' => $username,
 
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
-			'L_SEND_PASSWORD' => $lang['Forgotten_password'],
+			'L_SEND_PASSWORD' => _Forgotten_password,
 
 			'U_SEND_PASSWORD' => append_sid("profile.$phpEx?mode=sendpassword"),
 
 			'S_HIDDEN_FIELDS' => $s_hidden_fields)
 		);
 
-		$template->pparse('body');
+		$Ltemplate->pparse('body');
 
 		// include($phpbb_root_path . 'includes/page_tail.'.$phpEx);
 	}
