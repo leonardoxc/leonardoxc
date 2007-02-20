@@ -18,7 +18,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 	border:1px solid #888888; COLOR: #000000;
 	FONT-FAMILY: Verdana, Tahoma;
 	FONT-SIZE: 11px;
-	WIDTH: 140px;
+	WIDTH: 150px;
 	MARGIN: 0px;
 	BACKGROUND: #FFFFFF url('{IMG_PATH}icon_user.gif') no-repeat 1px 1px;
 	padding-left:18px; vertical-align:middle; padding-right:2px; padding-top:3px; padding-bottom:2px; background-color:#FFFFFF
@@ -30,7 +30,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 	BORDER-STYLE: solid;
 	BORDER-COLOR: #888888;
 	BORDER-WIDTH: 1px;
-	WIDTH: 140px;
+	WIDTH: 150px;
 	PADDING: 3px 2px 2px 2px;
 	MARGIN: 0px;
 	VERTICAL-ALIGN: middle;
@@ -39,21 +39,14 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 .submitButton {
 BORDER: 0px solid #FFFFFF; BACKGROUND: url('{IMG_PATH}bg_submitButton.gif') no-repeat; 
 HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
-MARGIN: 0px; padding-top: 3px; padding-bottom: 15px; ALIGN: center; vertical-align:middle;
+MARGIN: 0px; padding-top: 3px; padding-bottom: 3px; ALIGN: center; vertical-align:middle;
 text-align:center;
 }
-
 .tborder {	background-color: #FFFFFF; 	color: #000000; border: 1px solid #6393DF; }
-.submitButton1 {BORDER: 0px solid #FFFFFF; BACKGROUND: url('{IMG_PATH}bg_submitButton.gif') no-repeat; 
-HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
-MARGIN: 0px; padding-top: 3px; padding-bottom: 15px; ALIGN: center; vertical-align:middle;
-text-align:center;
-}
-
 -->
 </style>
  
-<form action="{S_LOGIN_ACTION}" method="post" target="_top">
+<form  id="loginform" name="loginform" action="{S_LOGIN_ACTION}" method="post" >
 
 
 
@@ -62,44 +55,13 @@ text-align:center;
 	<th height="25" class="thHead" nowrap="nowrap">{#_ENTER_PASSWORD}</th>
   </tr>
   <tr> 
-	<td class="row1"><table border="0" cellpadding="3" cellspacing="1" width="100%">
-		  <tr> 
-			<td colspan="2" align="center">&nbsp;</td>
-		  </tr>
-		  <tr> 
-			<td width="45%" align="right"><span class="gen">{#_USERNAME}:</span></td>
-			<td> 
-			  <input type="text" name="username" size="25" maxlength="40" value="{USERNAME}" />
-			</td>
-		  </tr>
-		  <tr> 
-			<td align="right"><span class="gen">{#_PASSWORD}:</span></td>
-			<td> 
-			  <input type="password" name="password" size="25" maxlength="32" />
-			</td>
-		  </tr>
-		  <tr align="center"> 
-			<td colspan="2"><span class="gen">{#_AUTO_LOGIN}: <input type="checkbox" name="autologin" /></span></td>
-		  </tr>
-		  <tr align="center"> 
-			<td colspan="2">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="mainoption" value="{#_MENU_LOGIN}" /></td>
-		  </tr>
-		  <tr align="center">
-		    <td colspan="2"><span class="gensmall"><a href="{U_SEND_PASSWORD}" class="gensmall">{#_SEND_PASSWORD}</a></span></td>
-	      </tr>
-		  <tr align="center">
-		    <td colspan="2">&nbsp;</td>
-	      </tr>
-		  <tr align="center"> 
-			<td colspan="2"><span class="alertMsg"><a href="mailto:{adminMail}" target="_self">{#_PROBLEMS_HELP}</a></span></td>
-		  </tr>
-		</table></td>
+	<td class="row1">&nbsp;</td>
   </tr>
 </table>
 
 
 
- <table align="center"  cellpadding="0" cellspacing="0" class="tborder">
+ <table width=250 align="center"  cellpadding="0" cellspacing="0" class="tborder">
    <tbody><tr class="tcat">
 	<td align="left" width="1"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
 	<td align="left" width="1"><img src="{IMG_PATH}icon_blockarrow.gif" height="8" width="8"></td>
@@ -124,7 +86,7 @@ text-align:center;
 		      
 		  </div></td>
 		<td class="smalltext"><div align="right">
-		  <input name="Submit" value="{#_MENU_LOGIN}" class="submitButton1" type="submit">
+		  <input name="login" value="{#_MENU_LOGIN}" class="submitButton" type="submit">
 		  </div></td>
 	  </tr>
 	  <tr valign="middle">
@@ -133,7 +95,7 @@ text-align:center;
 	</tbody></table>		
       <div align="center">
         <script language="Javascript">
-	document.loginform.loginemail.focus();
+			document.loginform.username.focus();
 	    </script>
 	    </div></td>
   </tr>

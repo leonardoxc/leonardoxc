@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.4 2007/02/20 16:51:26 manolis Exp $
+ *   $Id: GUI_login.php,v 1.5 2007/02/20 22:29:56 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -39,18 +39,17 @@
 // board is shut down
 //
 define("IN_LOGIN", true);
-
 define('IN_PHPBB', true);
 
 $phpbb_root_path = './';
 //require_once($phpbb_root_path . 'extension.inc');
 //require_once($phpbb_root_path . 'common.'.$phpEx);
 
-
 //
 // Set page ID for session management
 //
-$userdata = session_pagestart($user_ip, PAGE_LOGIN);
+// $userdata = session_pagestart($user_ip, PAGE_LOGIN);
+
 init_userprefs($userdata);
 //
 // End session management
@@ -261,7 +260,11 @@ else
 	}
 	else
 	{
-		redirect(append_sid("modules.php?name=leonardo&op=list_flights", true));
+			$url="$CONF_mainfile?name=$module_name&op=$CONF_main_page";
+			// redirect(append_sid("CONF_mainfile?name=$module_name&op=$CONF_main_page", true));
+			?>
+			<script language="javascript">window.location="<?=$url?>"; </script>
+			<?
 	}
 
 }
