@@ -58,7 +58,7 @@
  $mapServerActive=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
- $CONF_google_maps_track=1;
+ $CONF_google_maps_track=0;
  $CONF_google_maps_track_order=1; // will apear in the second tab
  $CONF_google_maps_track_only=1;  // use only google maps,  discard the local map server
 

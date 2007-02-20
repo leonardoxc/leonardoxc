@@ -45,7 +45,7 @@ function submitForm(extendedInfo) {
 	var lineWidth= document.geOptionsForm.lineWidth.value;
 	var lineColor= document.geOptionsForm.lineColor.value;
 	var ex= document.geOptionsForm.ex.value;  
-	window.location = "<?=$moduleRelPath?>/download.php?type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
+	window.location = "<?=$moduleRelPath?>/download.php?lang=<?=$lng?>&type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
 	return false;
 }
 

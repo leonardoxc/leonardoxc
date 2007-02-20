@@ -592,11 +592,12 @@ var $maxPointNum=1000;
 
 		//UTF-8 or 
 		//".$langEncodings[$currentlang]."
-		$kml_file_contents=
-			"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>
-			<kml xmlns=\"http://earth.google.com/kml/2.0\">
-			<Folder>
-			<open>1</open>";
+$kml_file_contents=
+"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>".
+//"<?xml version='1.0' encoding='UTF-8'? >".
+"<kml xmlns=\"http://earth.google.com/kml/2.0\">
+<Folder>
+<open>1</open>";
 			
 		/*<LookAt>
 			<longitude>-3.10135108046447</longitude>
