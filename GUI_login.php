@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.3 2007/02/20 11:26:37 manolis Exp $
+ *   $Id: GUI_login.php,v 1.4 2007/02/20 16:51:26 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -246,6 +246,7 @@ else
 		$Ltemplate->assign_vars(array(
 			'USERNAME' => $username,
 			'adminMail'=> $CONF_admin_email,
+			'IMG_PATH'=>$moduleRelPath."/img/",
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
 			'L_SEND_PASSWORD' => _Forgotten_password,
 

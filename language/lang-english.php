@@ -621,6 +621,6 @@ define("_MemberID","Member ID");
 define("_EnterID","Enter ID");
 define("_Clubs_Leagues","Clubs / Leagues");
 define("_Pilot_Statistics","Pilot Statistics");
-define("_National Rankings","National Rankings");
+define("_National_Rankings","National Rankings");
 
 ?>
