@@ -80,7 +80,7 @@
     <td valign="top" bgcolor="#E9EDF5"><? if ($CONF_use_NAC) {?><div align="right"><? echo _MEMBER_OF ?></div><? } ?></td>
     <td valign="top" bgcolor="#F5F5F5"><? if ($CONF_use_NAC) {
 			echo $CONF_NAC_list[$pilot['NACid']] ['name'];
-			echo " [ MemberID: ";
+			echo " [ "._MemberID.": ";
 			echo $pilot['NACmemberID']." ]";;
 		} ?>
 	</td>

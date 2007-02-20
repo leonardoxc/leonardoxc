@@ -193,7 +193,7 @@ fieldset.legendBox {
 	  </fieldset>			</td>
             <td>
 			   <fieldset class="legendBox legend2">
-	    <legend><? echo _CATEGORY ?></legend>
+	    <legend><? echo _Category ?></legend>
 	  <div align="left">	  
            <select name="category">
            <?

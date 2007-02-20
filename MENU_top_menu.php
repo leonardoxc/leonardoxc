@@ -92,7 +92,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="?name=<?=$module_name?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	if (count($clubsList) >0) {
-		echo "<li class='li_h1 long_li_h1'>.:: Clubs / Leagues::.</li>\n";
+		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
@@ -214,8 +214,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
 		<? 
 			if ( count($ranksList) ) {
-				echo "<li class='li_h1'>.:: National Rankings ::.</li>";
+				echo "<li class='li_h1'>.:: "._National_Rankings." ::.</li>";
 				foreach($ranksList as $rankID=>$rankArray) {
+					$rname=$rankArray['name'];
+					if ($rankArray['name']==$lng) $rname=$rankArray['name'];
 					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1'>".$rankArray['name']."</a></li>";
 				
 				}			

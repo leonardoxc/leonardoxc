@@ -136,7 +136,7 @@ function removeClubPilot(pilotID) {
 </form>
 
 <?
-
+/*
   list($takeoffs,$takeoffsID)=getAreasTakeoffs($areaID);
 
   $i=0;
@@ -146,9 +146,6 @@ function removeClubPilot(pilotID) {
 	  $i++;
   }
   //echo "</td></tr>";
-?>
-<?
-  /// close_inner_table();  
-
+*/
 ?>
 </div>

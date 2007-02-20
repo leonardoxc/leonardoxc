@@ -97,6 +97,9 @@ setVarFromRequest("clubID",0);
 if ($op=="main") $op=$CONF_main_page;
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 
+if ($op=="login") {  // do some output buffering so that cookies can be set later on
+	ob_start();
+}
 if ($opMode==3)  // stand alone
 	require_once dirname(__FILE__)."/GUI_header.php";
 
@@ -142,6 +145,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
 if ($op=="users") { 
 	if ($opMode==3) require $moduleRelPath."/USERS_index.php";
 } else if ($op=="login") { 
+	$noFooterMenu=1;
 	if ($opMode==2) require $moduleRelPath."/GUI_login.php";
 } else if ($op=="register") { 
 	if ($opMode==2) require $moduleRelPath."/GUI_register.php";

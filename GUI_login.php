@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.2 2007/02/19 22:38:21 manolis Exp $
+ *   $Id: GUI_login.php,v 1.3 2007/02/20 11:26:37 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -124,9 +124,9 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 						'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 					);
 
-					$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
-
-					message_die(GENERAL_MESSAGE, $message);
+					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"?name=$module_name&op=login\">", '</a>') .
+					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="?name='.$module_name.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+					echo "$message";
 				}
 			}
 		}
@@ -144,9 +144,11 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 				'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 			);
 
-			$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
-
-			message_die(GENERAL_MESSAGE, $message);
+//			$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
+			$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"?name=$module_name&op=login\">", '</a>') .
+			 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="?name='.$module_name.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+			echo "$message";
+			//message_die(GENERAL_MESSAGE, $message);
 		}
 	}
 	else if( ( isset($HTTP_GET_VARS['logout']) || isset($HTTP_POST_VARS['logout']) ) && $userdata['session_logged_in'] )
@@ -172,7 +174,6 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 			?>
 			<script language="javascript">window.location="<?=$url?>"; </script>
 			<?
-
 		}
 	}
 	else
@@ -244,7 +245,7 @@ else
 // 		make_jumpbox('viewforum.'.$phpEx, $forum_id);
 		$Ltemplate->assign_vars(array(
 			'USERNAME' => $username,
-
+			'adminMail'=> $CONF_admin_email,
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
 			'L_SEND_PASSWORD' => _Forgotten_password,
 

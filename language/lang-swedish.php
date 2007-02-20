@@ -607,4 +607,27 @@ define("_Takeoff_Name","Takeoff Name");
 define("_In_Local_Language","In Local Language");
 define("_In_English","In English");
 
+// New on 2007/02/20 - login screen
+define("_ENTER_PASSWORD","Please enter your username and password to log in.");
+define("_SEND_PASSWORD","I forgot my password");
+define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
+define("_AUTO_LOGIN","Log me on automatically each visit");
+define("_USERNAME","Username");
+define("_PASSWORD","Password");
+define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+
+define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
+define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+// end 2007/02/20
+
+define("_Category","Category");
+define("_MEMBER_OF","Member of");
+define("_MemberID","Member ID");
+define("_EnterID","Enter ID");
+define("_Clubs_Leagues","Clubs / Leagues");
+define("_Pilot_Statistics","Pilot Statistics");
+define("_National_Rankings","National Rankings");
+
+
+
 ?>

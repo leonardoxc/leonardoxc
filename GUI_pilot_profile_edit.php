@@ -225,8 +225,8 @@
 	
 			echo "</select>";
 			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"block")."'>";
-			echo "Member ID: <input size='6' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";
-			echo "<a href='#' onclick=\"setID();return false;\">Enter ID</a></div>";
+			echo _MemberID.": <input size='6' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";
+			echo "<a href='#' onclick=\"setID();return false;\">"._EnterID."</a></div>";
 		} else { ?>
 	<input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
 	<input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />

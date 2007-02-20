@@ -97,7 +97,7 @@ function setValue(obj)
 			}
 		?>
 	  </select></td>
-      <td width="160"  valign="top"><? echo "Category"; ?> <select name="category">
+      <td width="160"  valign="top"><? echo _Category; ?> <select name="category">
 		<? 
 			foreach ( $CONF_category_types as $gl_id=>$gl_type) {
 					if ($CONF_default_category==$gl_id) $is_type_sel ="selected";

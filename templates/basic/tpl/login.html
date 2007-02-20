@@ -1,8 +1,8 @@
 <style type="text/css">
 <!--
-.style1 {
+.alertMsg a{
 	color: #FF0000;
-	font-size: small;
+	font-size: 11px;
 }
 -->
 </style>
@@ -36,7 +36,7 @@
 			<td colspan="2"><span class="gen">{#_AUTO_LOGIN}: <input type="checkbox" name="autologin" /></span></td>
 		  </tr>
 		  <tr align="center"> 
-			<td colspan="2">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="mainoption" value="{#_LOGIN}" /></td>
+			<td colspan="2">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="mainoption" value="{#_MENU_LOGIN}" /></td>
 		  </tr>
 		  <tr align="center">
 		    <td colspan="2"><span class="gensmall"><a href="{U_SEND_PASSWORD}" class="gensmall">{#_SEND_PASSWORD}</a></span></td>
@@ -45,7 +45,7 @@
 		    <td colspan="2">&nbsp;</td>
 	      </tr>
 		  <tr align="center"> 
-			<td colspan="2"><span class="style1">If you have problems to log in <a href="" target="_self">report them here</a>. </span></td>
+			<td colspan="2"><span class="alertMsg"><a href="mailto:{adminMail}" target="_self">{#_PROBLEMS_HELP}</a></span></td>
 		  </tr>
 		</table></td>
   </tr>
