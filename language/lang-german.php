@@ -2,6 +2,7 @@
 /**************************************************************************/
 /*  German language translation by                                        */
 /*  Torsen (www.paraglider365.com                                         */
+/*  Reviewed at 2007/02/21 from Peter Wild (peter@die-wilden.net)         */
 /**************************************************************************/
 /************************************************************************/
 /* Leonardo: Gliding XC Server					        */
@@ -30,7 +31,7 @@ setMonths();
 // output.php
 //--------------------------------------------
 define("_FREE_FLIGHT","Freier Flug");
-define("_FREE_TRIANGLE","Freies Dreieck");
+define("_FREE_TRIANGLE","Flaches Dreieck");
 define("_FAI_TRIANGLE","FAI Dreieck");
 
 define("_SUBMIT_FLIGHT_ERROR","Bei der Übermittlung des Fluges ist ein Fehler aufgetreten");
@@ -42,8 +43,8 @@ define("_NUMBER_OF_FLIGHTS","Anzahl Flüge");
 define("_BEST_DISTANCE","Beste Distanz");
 define("_MEAN_KM","Durchschnittliche # Kilometer pro Flug");
 define("_TOTAL_KM","Summe Flugkilometer");
-define("_TOTAL_DURATION_OF_FLIGHTS","Summe Flugdauer");
-define("_MEAN_DURATION","Durschnittliche Flugdauer");
+define("_TOTAL_DURATION_OF_FLIGHTS","Summe Flugstunden");
+define("_MEAN_DURATION","Durschnittliche Flugstunden");
 define("_TOTAL_OLC_KM","Summe OLC Distanz");
 define("_TOTAL_OLC_SCORE","Summe OLC Punktzahl");
 define("_BEST_OLC_SCORE","Beste OLC Punktzahl");
@@ -74,10 +75,10 @@ define("_MAX_ALTITUDE","Grösste Höhe (über NN)");
 define("_TAKEOFF_ALTITUDE","Start Höhe (über NN)");
 define("_MIN_ALTITUDE","Minimale Höhe (ner NN)");
 define("_ALTITUDE_GAIN","Höhen Zugewinn");
-define("_FLIGHT_FILE","FLug Datei");
+define("_FLIGHT_FILE","Flug Datei");
 define("_COMMENTS","Kommentare");
 define("_RELEVANT_PAGE","relevante Webseiten URL");
-define("_GLIDER","Drachentyp"); 
+define("_GLIDER","Gerät"); 
 define("_PHOTOS","Fotos");
 define("_MORE_INFO","Extras");
 define("_UPDATE_DATA","Daten aktualisieren");
@@ -113,7 +114,7 @@ define("_SELECT_YEAR_MONTH","Jahr (und Monat) auswählen");
 define("_ALL","Alle");
 define("_ALL_PILOTS","Alle Piloten anzeigen");
 define("_ALL_TAKEOFFS","Alle Starts anzeigen");
-define("_ALL_THE_YEAR","Alle JAhre anzeigen");
+define("_ALL_THE_YEAR","Alle Jahre anzeigen");
 
 // add flight
 define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Du hast keine Datei angegeben");
@@ -152,10 +153,10 @@ define("_MAP_CREATION","Karten Erstellung");
 define("_PROJECT_INFO","Projekt Info");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Hauptmenue");
+define("_MENU_MAIN_MENU","Piloten");
 define("_MENU_DATE","Datum auswählen");
 define("_MENU_COUNTRY","Land auswählen");
-define("_MENU_XCLEAGUE","XC League");
+define("_MENU_XCLEAGUE","Wertung");
 define("_MENU_ADMIN","Admin");
 
 define("_MENU_COMPETITION_LEAGUE","League - Alle Kategorien");
@@ -164,7 +165,7 @@ define("_MENU_OPEN_DISTANCE","Offene Distanz");
 define("_MENU_DURATION","Dauer");
 define("_MENU_ALL_FLIGHTS","Alle Flüge anzeigen");
 define("_MENU_FLIGHTS","Flüge");
-define("_MENU_TAKEOFFS","Starts");
+define("_MENU_TAKEOFFS","Startplatz");
 define("_MENU_FILTER","Filter");
 define("_MENU_MY_FLIGHTS","Meine Flüge");
 define("_MENU_MY_PROFILE","Mein Profil");
@@ -172,7 +173,7 @@ define("_MENU_MY_STATS","Meine Statistik");
 define("_MENU_MY_SETTINGS","Meine Einstellungen"); 
 define("_MENU_SUBMIT_FLIGHT","Flüge einreichen");
 define("_MENU_SUBMIT_FROM_ZIP","Flüge mittels ZIP einreichen");
-define("_MENU_SHOW_PILOTS","Piloten");
+define("_MENU_SHOW_PILOTS","Statistik");
 define("_MENU_SHOW_LAST_ADDED","Letzte Einreichungen anzeigen");
 
 define("_SELECT_YEAR","Jahr auswählen");
@@ -214,7 +215,7 @@ define("_NO","NEIN");
 // competition.php
 //--------------------------------------------
 
-define("_LEAGUE_RESULTS","League Ergebnis");
+define("_LEAGUE_RESULTS","Rank");
 define("_N_BEST_FLIGHTS"," beste Flüge");
 define("_OLC","OLC");
 define("_OLC_TOTAL_SCORE","OLC Gesamtpunkte");
@@ -363,7 +364,7 @@ define("_Hours_Flown","Anzahl Flugstunden");
 define("_Hours_Per_Year","Flugstunden pro Jahr");
 
 define("_Equipment_Stuff","Ausrüstungsangaben");
-define("_Glider","Drachentyp"); 
+define("_Glider","Gerät"); 
 define("_Harness","Gurtzeug");
 define("_Reserve_chute","Rettungsschirm");
 define("_Camera","Kamera");
@@ -501,7 +502,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Fluggebietsrekord<br>(offene Distanz)");
 define("_GLIDER_TYPE","Fluggerätetyp"); 
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Gleitschirm',2=>'Flex wing FAI1',4=>'Starfl?gler FAI5',8=>'Drachen'); 
+	$gliderCatList=array(1=>'Gleitschirm',2=>'Flex wing FAI1',4=>'Starflügler FAI5',8=>'Drachen'); 
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -536,7 +537,7 @@ define("_M_PER_SEC","m/sec");
 
 define("_WORLD_WIDE","Weltweit");
 define("_National_XC_Leagues_for","Nationale XC Ligen für");
-define("_Flights_per_Country","Fl?ge je Land");
+define("_Flights_per_Country","Flüge je Land");
 define("_Takeoffs_per_Country","Starts je Land");
 define("_INDEX_HEADER","Willkommen zur Leonardo XC Liga");
 define("_INDEX_MESSAGE","Du kannst das Hauptmenu zur Navigation nutzen oder die unten angezeigten Favoriten.");
@@ -550,35 +551,35 @@ define("_FLIGHTS_STATS","Flugstatistik");
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","First (Summary) Page");
-define("_Display_ALL","Display ALL");
-define("_Display_NONE","Display NONE");
-define("_Reset_to_default_view","Reset to default view");
-define("_No_Club","No Club");
-define("_This_is_the_URL_of_this_page","This is the URL of this page");
-define("_All_glider_types","All glider types");
+define("_MENU_SUMMARY_PAGE","Zusammenfassung");
+define("_Display_ALL","Alle Anzeigen");
+define("_Display_NONE","Keine Anzeigen");
+define("_Reset_to_default_view","Standardeinstellungen wiederherstellen");
+define("_No_Club","Kein Club");
+define("_This_is_the_URL_of_this_page","Zur Favoriten hinzufügen");
+define("_All_glider_types","Alle Geräte");
 
-define("_MENU_SITES_GUIDE","Flying Sites Guide");
-define("_Site_Guide","Site Guide");
+define("_MENU_SITES_GUIDE","Startplatz Fuhrer");
+define("_Site_Guide","Startplatz Fuhrer");
 
-define("_Search_Options","Search Options");
-define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
-define("_Clear_this_list","Clear this list");
-define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
-define("_Available_Takeoffs","Available Takeoffs");
-define("_Search_site_by_name","Search site by name");
-define("_give_at_least_2_letters","give at least 2 letters");
-define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
-define("_Takeoff_Details","Takeoff Details");
+define("_Search_Options","Suchoptionen");
+define("_Below_is_the_list_of_selected_sites","Ausgewählte Startplätze");
+define("_Clear_this_list","Liste löschen");
+define("_See_the_selected_sites_in_Google_Earth","Ausgewählte Sites in Google Earth ansehen");
+define("_Available_Takeoffs","Verfügbare Startplätze");
+define("_Search_site_by_name","Startplatz Suche");
+define("_give_at_least_2_letters","mind. 2 Buchstäbe!");
+define("_takeoff_move_instructions_1","Alle Startplätze zum Auswahl-Liste mit >> oder einzeln Startpläte mit > ");
+define("_Takeoff_Details","Startplatz Details");
 
 
-define("_Takeoff_Info","Takeoff Info");
+define("_Takeoff_Info","Startplatz Info");
 define("_XC_Info","XC Info");
-define("_Flight_Info","Flight Info");
+define("_Flight_Info","Flug Info");
 
 define("_MENU_LOGOUT","Logout");
 define("_MENU_LOGIN","Login");
-define("_MENU_REGISTER","Open an account");
+define("_MENU_REGISTER","Registrieren");
 
 
 define("_Africa","Africa");
@@ -590,46 +591,46 @@ define("_South_America","South America");
 
 define("_Recent","Recent");
 
-define("_Unknown_takeoff","Unknown takeoff");
-define("_Display_on_Google_Earth","Display on Google Earth");
-define("_Use_Man_s_Module","Use Man's Module");
-define("_Line_Color","Line Color");
-define("_Line_width","Line width");
-define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
-define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
-define("_EDIT_WAYPOINT","Edit Takeoff Info");
-define("_DELETE_WAYPOINT","Delete Takeoff");
-define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+define("_Unknown_takeoff","Unbekannte Startplatz");
+define("_Display_on_Google_Earth","Mit Google Earth anzeigen");
+define("_Use_Man_s_Module","Berechnen mit Man's Module?");
+define("_Line_Color","Trackfarbe");
+define("_Line_width","Trackbreite");
+define("_unknown_takeoff_tooltip_1","Unbekannte Startplatz");
+define("_unknown_takeoff_tooltip_2","Falls Startplatz bekannt, bitte Ausfullen!");
+define("_EDIT_WAYPOINT","Startplatz Info editieren");
+define("_DELETE_WAYPOINT","Startplatz löschen");
+define("_SUBMISION_DATE","Hochgeladen an"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Anzahl Aufrufe"); // the times that this flight havs been viewed
 
 
-define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
-define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
-define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
-define("_Takeoff_Name","Takeoff Name");
-define("_In_Local_Language","In Local Language");
-define("_In_English","In English");
+define("_takeoff_add_help_1","Falls Startplatz bekannt, bitte Ausfullen, sonst kann diese Fenster geschlossen werden.");
+define("_takeoff_add_help_2","Falls richtige Startplatz Angeziege, bitte diese Fenster schliessen - es mus nicht nochmal eingetragen werden.");
+define("_takeoff_add_help_3","Falls der Startplatzname unten erscheint, kann es per Mausklick ausgewählt und übernommen werden.");
+define("_Takeoff_Name","Startplatzname");
+define("_In_Local_Language","Startplatzname (Ortssprache)");
+define("_In_English","Startplatzname (englisch)");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Please enter your username and password to log in.");
-define("_SEND_PASSWORD","I forgot my password");
-define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
-define("_AUTO_LOGIN","Log me on automatically each visit");
-define("_USERNAME","Username");
-define("_PASSWORD","Password");
-define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+define("_ENTER_PASSWORD","Einloggen mit Benutzername und Kennwort.");
+define("_SEND_PASSWORD","Ich habe mein Kennwort vergessen");
+define("_ERROR_LOGIN","Benutzername und/oder Kennwort falsch.");
+define("_AUTO_LOGIN","Automatische Benutzeranmeldung");
+define("_USERNAME","Benutzername");
+define("_PASSWORD","Kennwort");
+define("_PROBLEMS_HELP","Bei Anmeldeprobleme, bitte Kontaktaufnahme mit dem Administrator");
 
-define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
-define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+define("_LOGIN_TRY_AGAIN","%sHier%s klicken zum nochmal probieren.");
+define("_LOGIN_RETURN","%sHier%s klicken für den Startseite");
 // end 2007/02/20
 
 define("_Category","Category");
-define("_MEMBER_OF","Member of");
-define("_MemberID","Member ID");
-define("_EnterID","Enter ID");
-define("_Clubs_Leagues","Clubs / Leagues");
-define("_Pilot_Statistics","Pilot Statistics");
-define("_National_Rankings","National Rankings");
+define("_MEMBER_OF","Mitglied von");
+define("_MemberID","Mitgliedsnummer");
+define("_EnterID","Mitgliedsnummer automatisch holen");
+define("_Clubs_Leagues","Vereine / Leagues");
+define("_Pilot_Statistics","Pilot Statistik");
+define("_National_Rankings","National Wertung");
 
 
 ?>
