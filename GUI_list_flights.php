@@ -162,6 +162,12 @@
 	listFlights($res,$legend,	$query_str,$sortOrder);
 
 ?>
+<style type="text/css">
+TR .newDate {
+	background-image:url(<?=$themeRelPath?>/img/bg_row.gif);
+	background-repeat:repeat-x;
+}
+</style>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
@@ -278,7 +284,7 @@ function removeClubFlight(clubID,flightID) {
 	 
 	 $sortRowClass=($i%2)?"l_row1":"l_row2"; 	 
 	 $i++;
-	 echo "\n\n<tr class='$sortRowClass'>\n";
+
 	   $days_from_submission =	floor( ( mktime() - datetime2UnixTimestamp($row["dateAdded"]) ) / 86400 );  // 60*60*24 sec per day
 
 	   if ( $is_private ) $first_col_back_color=" bgcolor=#33dd33 ";
@@ -287,12 +293,15 @@ function removeClubFlight(clubID,flightID) {
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
   	   		 $currDate=$row["DATE"];  	   		
   	   		 $dateStr= formatDate($row["DATE"]);
-  	   		
+			$rowStr=" newDate ";  	   		
   	   } else {
-  	   		$dateStr="&nbsp;";  	   		 
+  	   		$dateStr="&nbsp;";  
+			$rowStr="";
   	   }
   	   if ( $days_from_submission <= 3 ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' width='31' height='12' />";			
   	   
+		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
+
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
 	   $olcDistance=formatDistanceOpen($row["FLIGHT_KM"]);
@@ -316,11 +325,12 @@ function removeClubFlight(clubID,flightID) {
 	   else $gliderBrandImg="&nbsp;";
 
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
-			title='".$brandsList[$gliderType][$brandID]."' border='0' />";
+			title='".$row['glider']."' border='0' />";
+		//$brandsList[$gliderType][$brandID]
 	   else $gliderBrandImg="&nbsp;";
 	   
 	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
-	   echo "<TD class='dateString'>$dateStr</TD>".
+	   echo "<TD class='dateString' valign='top'>$dateStr</TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		

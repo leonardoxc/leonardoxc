@@ -206,7 +206,7 @@ The main table that holds the list of flights/pilots/takeoffs
 	border-style:solid;
 	border-color:#999999;
 /*norad*/
-	border:0;
+/*	border:0; */
 }
 	
 .listTable a, .listTable a:visited  {
@@ -216,11 +216,13 @@ The main table that holds the list of flights/pilots/takeoffs
 
 .listTable TD {
 	vertical-align:middle;
-	border-bottom-color:#CCCCCC; border-bottom-width:1px; border-bottom-style:solid;
+	border:0;
+	border-bottom-color:#DDDDDD; border-bottom-width:1px; border-bottom-style:solid;
 	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
 /*norad*/
-	border:0;
+	/*border:0;
 	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
+*/
 }
 
 
