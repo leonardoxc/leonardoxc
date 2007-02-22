@@ -1,0 +1,16 @@
+<?php
+
+/**
+ * D E M O - About
+ * 
+ * 1. I have chosen cyrillic charsets because it's more than 5 Russian encodings.
+ * 2. Because everyone in Europe have cyrillica in Windows
+ * 
+ * Sometimes it can happen that you will not see what I wanted you to see, you will have
+ * to find and install Russian font with cyrillica letters, but I think Arial has them.
+ * 
+ * @copyright Copyright Mikolaj Jedrzejak (c) 2003-2004
+ * @version 1.0 2004-07-28 00:34
+ **/
+ 
+?>

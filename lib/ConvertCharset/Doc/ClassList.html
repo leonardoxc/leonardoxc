@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>HelpGenerator Menu</title>
+<link rel="stylesheet" type="text/css" href="styles/interface.css"/>
+<link rel="stylesheet" type="text/css" href="tools/xtree.css"/>
+<script src="tools/classTree.js"></script>
+</head>
+<body bgcolor="#FFFFFF" topmargin="1" leftmargin="1" rightmargin="1" bottommargin="1">
+<a href="FileTree.html">Files</a> - Classes: <a href="ClassTree.html">Tree</a> - <a href="ClassList.html">List</a> - <a href="FunctionList.html">Functions</a>
+<div class="separator"></div>
+<script language="Javascript">
+
+if (document.getElementById) {
+  var tree = new WebFXTree('Class List', 'tools/Legend.html');
+  tree.setBehavior('classic');
+  tree.openIcon = 'images/help-book.gif';
+  tree.icon = 'images/help-book.gif';
+
+
+
+	var classConvertCharset = new WebFXTreeItem('ConvertCharset (ConvertCharset.class.php)', 'class.ConvertCharset.html');
+	classConvertCharset.openIcon = 'images/class.gif';
+	classConvertCharset.icon = 'images/class.gif';
+	tree.add(classConvertCharset);
+  
+ 
+  document.write(tree);
+}
+</script>
+<div class="separator"></div>
+</body>
+</html>

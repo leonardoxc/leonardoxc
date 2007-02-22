@@ -23,6 +23,8 @@
 	require_once "FN_pilot.php";
 	setDEBUGfromGET();
 
+	setVarFromRequest("lng",$PREFS->language); 
+
 	$count = ( isset($HTTP_GET_VARS['c']) ) ? intval($HTTP_GET_VARS['c']) : 15;
 	$count = ( $count == 0 ) ? 15 : $count;
 	$count = ( $count > 50 ) ? 50 : $count;
@@ -36,7 +38,11 @@
 
 	if (!in_array($op,array("latest")) ) return;
 
-	$encoding="iso-8859-1";
+	// $encoding="iso-8859-1";
+	//$encoding="utf-8";
+	$encoding=$langEncodings[$lng];
+
+	//require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 
 	if ($op=="latest") {
 		 $where_clause="";
@@ -130,6 +136,11 @@ $desc
 		</channel>
 		</rss>
 		";
+
+		//$NewEncoding = new ConvertCharset;
+		//$FromCharset=$langEncodings[$currentlang];
+		//$RSS_str = $NewEncoding->Convert($RSS_str, $FromCharset, "utf-8", $Entities);
+
 
 		if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
 		{

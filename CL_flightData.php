@@ -588,13 +588,14 @@ var $maxPointNum=1000;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
+		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 		//if (file_exists($this->getKMLFilename())) return;
 
 		//UTF-8 or 
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
-"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'?>".
-//"<?xml version='1.0' encoding='UTF-8'? >".
+//"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >".
+"<?xml version='1.0' encoding='UTF-8'?>".
 "<kml xmlns=\"http://earth.google.com/kml/2.0\">
 <Folder>
 <open>1</open>";
@@ -620,6 +621,9 @@ $kml_file_contents=
 
 		$kml_file_contents.="</Folder>\n</kml>";
 
+		$NewEncoding = new ConvertCharset;
+		$FromCharset=$langEncodings[$currentlang];
+		$kml_file_contents = $NewEncoding->Convert($kml_file_contents, $FromCharset, "utf-8", $Entities);
 
 		return $kml_file_contents;
 	}

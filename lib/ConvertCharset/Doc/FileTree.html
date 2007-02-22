@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>HelpGenerator Menu</title>
+<link rel="stylesheet" type="text/css" href="styles/interface.css"/>
+<link rel="stylesheet" type="text/css" href="tools/xtree.css"/>
+<script src="tools/classTree.js"></script>
+</head>
+<body bgcolor="#FFFFFF" topmargin="1" leftmargin="1" rightmargin="1" bottommargin="1">
+<a href="FileTree.html">Files</a> - Classes: <a href="ClassTree.html">Tree</a> - <a href="ClassList.html">List</a> - <a href="FunctionList.html">Functions</a>
+<div class="separator"></div>
+<script language="Javascript">
+
+if (document.getElementById) {
+
+  var tree = new WebFXTree('PHPEdit Help Index', 'tools/Legend.html');
+  tree.setBehavior('classic');
+  tree.openIcon = 'images/help-book.gif';
+  tree.icon = 'images/help-book.gif';
+
+	var fileIDAPTOLB = new WebFXTreeItem('!How to Upgrade', 'file.!How to Upgrade.html');
+	fileIDAPTOLB.openIcon = 'images/file.png';
+	fileIDAPTOLB.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAPTOLB);
+		
+	var fileIDAJIOLB = new WebFXTreeItem('ConvertCharset.class.php', 'file.ConvertCharset.class.php.html');
+	fileIDAJIOLB.openIcon = 'images/file.png';
+	fileIDAJIOLB.icon = 'images/file.png';
+
+    
+    	var class_fileIDAZIOLB_ConvertCharset = new WebFXTreeItem('ConvertCharset', 'class.ConvertCharset.html');
+    	class_fileIDAZIOLB_ConvertCharset.openIcon = 'images/class.gif';
+    	class_fileIDAZIOLB_ConvertCharset.icon = 'images/class.gif';
+    	fileIDAJIOLB.add(class_fileIDAZIOLB_ConvertCharset);
+    
+			tree.add(fileIDAJIOLB);
+		
+	var fileIDAWTOLB = new WebFXTreeItem('Demo - About', 'file.Demo - About.html');
+	fileIDAWTOLB.openIcon = 'images/file.png';
+	fileIDAWTOLB.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAWTOLB);
+		
+	var fileIDAGUOLB = new WebFXTreeItem('License', 'file.License.html');
+	fileIDAGUOLB.openIcon = 'images/file.png';
+	fileIDAGUOLB.icon = 'images/file.png';
+
+    
+			tree.add(fileIDAGUOLB);
+		
+	var fileIDA5UOLB = new WebFXTreeItem('Thans To', 'file.Thans To.html');
+	fileIDA5UOLB.openIcon = 'images/file.png';
+	fileIDA5UOLB.icon = 'images/file.png';
+
+    
+			tree.add(fileIDA5UOLB);
+		
+  document.write(tree);
+}
+</script>
+<div class="separator"></div>
+</body>
+</html>
