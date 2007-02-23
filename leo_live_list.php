@@ -45,6 +45,56 @@ body {
   <BR>
   <a href="leo_live_rss.php"><img src="img/rss.gif" width="31" height="15" border="0" align="absmiddle"> RSS Feed HERE (Copy - Paste
   Link into your RSS Reader)</a></p>
+  
+  <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
+
+<script language="javascript">
+	 function submitWindow(user,port,i) {	 
+		MWJ_changeContents('takeoffBoxTitle',"Submit");
+		document.getElementById('addTakeoffFrame').src='leo_live_submit.php?user='+user+'&port='+port;		
+		MWJ_changeSize('addTakeoffFrame',265,150);
+		MWJ_changeSize( 'takeoffAddID', 270,170 );
+		toggleVisible('takeoffAddID','pos'+i,20,0,725,455);
+	 }
+</script>
+<style type="text/css">
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+}
+
+.takeoffOptionsDropDown {width:410px; }
+</style>
+
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle"><?=_ADD_WAYPOINT?></div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='addTakeoffDiv'>
+		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
+</div>
+
 <?
 $trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
 $op=$_GET['op'];
@@ -124,7 +174,8 @@ if ($op=="list") {
 			echo "<td >";
 			echo "<a href='$trackURL?op=track&user=$username&port=$port'>Google Earth</a> :: ";
 			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a> :: ";
-			if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
+		// 	if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
+			if (! $live_now) echo "<a id='pos$i' href='javascript:submitWindow(\"$username\",$port,$i)'>Submit to Leonardo</a>";
 			else echo "wait till landing";
 			echo "</td></tr>";
 			$i++;

@@ -233,6 +233,7 @@
 		}
 
 		$serverURL="http://pgforum.thenet.gr/modules/leonardo/op.php";
+		$serverURL="http://pgforum.home/modules/leonardo/op.php";
 		if ( $row = mysql_fetch_assoc($res) ) {
 			$trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
 			$tm=$row["tm"];

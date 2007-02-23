@@ -73,7 +73,7 @@ function getUsedGliders($userID) {
 
 function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
-	global $currentlang,$nativeLanguage;
+	global $currentlang,$nativeLanguage,$langEncodings;
 	global $countries;
 	global $CONF_phpbb_realname_field;
 
@@ -81,9 +81,15 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	$res= $db->sql_query($query);
 	// echo $query;
 
+
+	// Get real name from leonardo_pilots
+	// 
+	// we must make sure the name can be displayed in the $currentlang encoding
+	// 
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
+					
 		if (strlen ($realName)>1 && $currentlang==$nativeLanguage) { // else realname is no good
 			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
 			else return $realName; 
