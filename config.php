@@ -268,6 +268,8 @@ $waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 $flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
+$CONF_abs_path=dirname(__FILE__);
+
 if ($opMode!=2) {
 	function append_sid($a,$b="") {
 		return $a.$b;

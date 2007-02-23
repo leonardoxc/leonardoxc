@@ -217,8 +217,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				echo "<li class='li_h1'>.:: "._National_Rankings." ::.</li>";
 				foreach($ranksList as $rankID=>$rankArray) {
 					$rname=$rankArray['name'];
-					if ($rankArray['name']==$lng) $rname=$rankArray['name'];
-					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1'>".$rankArray['name']."</a></li>";
+					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
+					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1'>".$rname."</a></li>";
 				
 				}			
 			}

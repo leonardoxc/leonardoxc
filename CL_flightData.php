@@ -1416,21 +1416,30 @@ $kml_file_contents=
 
 	function validate() {
 		global $CONF_validation_server_url;
-		global $baseInstallationPath;
+		global $baseInstallationPath,$CONF_abs_path;
+
+		global $alreadyValidatedInPage;
+		if ($alreadyValidatedInPage) return;
+		$alreadyValidatedInPage=1;
 
 		set_time_limit (240);	
-		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
-		$fl= $CONF_validation_server_url."?file=".$IGCwebPath;
-		DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
-		$contents =	split("\n",fetchURL($fl,30));
-		if (!$contents) return 0;
-
-		// foreach ( $contents as $line) echo $line."<BR>";
-		$ok=-1;
-		if (trim($contents[0])=="OK") $ok=1;
+		$customValidationCodeFile=dirname(__FILE__)."/site/CODE_validate_custom.php";
+		if ( file_exists($customValidationCodeFile) ) { // we expect the result on $ok
+			include $customValidationCodeFile;
+		} else { //standard leoanrdo validation -> the server not yet working 
+			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
+			$fl= $CONF_validation_server_url."?file=".$IGCwebPath;
+			DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
+			$contents =	split("\n",fetchURL($fl,30));
+			if (!$contents) return 0;
+	
+			// foreach ( $contents as $line) echo $line."<BR>";
+			$ok=-1;
+			if (trim($contents[0])=="OK") $ok=1;
+		}
 
 		// force ok=1 till we have a validation server ready
-		$ok=1;
+		// $ok=1;
 
 		$this->grecord=$ok;
 		$this->validated=$ok;

@@ -1,0 +1,15 @@
+Add support for initial question for unknown hosts.
+
+This is not as simple as it seems, and may require some thought. It may
+pose serious security problems. In principle one might use -O and the
+appropriate options to disable host checking, but then we wouldn't be
+notified of changes.
+
+OTOH, if we are, what should we do? Fail? That we already do (albeit without
+explanatory messages, true). Ask the user? He may not know anything about
+the remote host. Accept? Then we won't notice possible break-ins.
+
+Possibly the best option is to just fail as we already do and let the
+programmer/service installer take care of it.
+
+A note explaining how to deal with the issue should and MUST be added.
