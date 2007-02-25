@@ -51,11 +51,11 @@ body {
 
 <script language="javascript">
 	 function submitWindow(user,port,i) {	 
-		MWJ_changeContents('takeoffBoxTitle',"Submit");
+		//MWJ_changeContents('takeoffBoxTitle',"Submit");
 		document.getElementById('addTakeoffFrame').src='leo_live_submit.php?user='+user+'&port='+port;		
-		MWJ_changeSize('addTakeoffFrame',265,150);
-		MWJ_changeSize( 'takeoffAddID', 270,170 );
-		toggleVisible('takeoffAddID','pos'+i,20,0,725,455);
+		MWJ_changeSize('addTakeoffFrame',450,238);
+		MWJ_changeSize( 'takeoffAddID', 450,238 );
+		toggleVisible('takeoffAddID','pos'+i,20,-322,725,455);
 	 }
 </script>
 <style type="text/css">
@@ -76,24 +76,15 @@ body {
 	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 	
 	background-color:#FFFFFF;
-	padding: 1px 1px 1px 1px;
-	margin-bottom:0px;
+	padding: 0;
+	margin:0;
 }
 
 .takeoffOptionsDropDown {width:410px; }
 </style>
 
-<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
-	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr><td class="infoBoxHeader" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle"><?=_ADD_WAYPOINT?></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-	</td></tr></table>
-	<div id='addTakeoffDiv'>
-		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
-	</div>
-</div>
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;"><iframe 
+name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe></div>
 
 <?
 $trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
@@ -114,6 +105,7 @@ if ($op=="list") {
 	}
 	echo "<table border=1 cellpadding=3>";
 	echo "<tr><th>Username</th><th>Last seen at</th><th>Location</th><th>lat</th><th>lon</th><th>altitude</th><th>speed</th><th>course</th></tr>";
+	$j=0;
 	while  ($row = mysql_fetch_assoc($res)) { 
 		$username =$row["username"];
 		getUserInfoShort($username);
@@ -175,10 +167,11 @@ if ($op=="list") {
 			echo "<a href='$trackURL?op=track&user=$username&port=$port'>Google Earth</a> :: ";
 			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a> :: ";
 		// 	if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
-			if (! $live_now) echo "<a id='pos$i' href='javascript:submitWindow(\"$username\",$port,$i)'>Submit to Leonardo</a>";
+			if (! $live_now) echo "<a id='pos$j' href='javascript:submitWindow(\"$username\",$port,$j)'>Submit to Leonardo</a>";
 			else echo "wait till landing";
 			echo "</td></tr>";
 			$i++;
+			$j++;
 		}
 		echo "</table>";
 	

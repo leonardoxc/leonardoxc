@@ -64,7 +64,13 @@ $servers=array(
 } else {		
 	
 ?>
-
+<head>
+<script language="javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
+<script language="javascript" >
+function closeWin() {
+  top.window.toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);
+}
+</script>
 <style type="text/css">
 <!--
 .alertMsg a{
@@ -112,57 +118,95 @@ text-align:center;
 .tborder {	background-color: #FFFFFF; 	color: #000000; border: 1px solid #6393DF; }
 
 body, form{ margin:0; padding:0}
+.smalltext1 {	font-size: 90%; FONT-SIZE: 11px;
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+}
+.smalltext2 {	font-size: 90%; FONT-SIZE: 11px;
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+}
+.smalltext3 {	font-size: 90%; FONT-SIZE: 11px;
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+}
+.smalltext4 {	font-size: 90%; FONT-SIZE: 11px;
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+}
+.submitButton1 {BORDER: 1px solid #FFFFFF; 
+HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
+MARGIN: 0px; padding-top: 3px; padding-bottom: 3px; ALIGN: center; vertical-align:middle;
+text-align:center;
+}
 -->
 </style>
-
- 
+</head> 
+<body >
 <form  id="loginform" name="loginform" method="post" >
-<table width=250 align="center"  cellpadding="0" cellspacing="0" class="tborder">
+<table width="450" height=100% align="center"  cellpadding="0" cellspacing="0" class="tborder">
    <tbody><tr class="tcat">
 	<td align="left" width="1"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
 	<td align="left" width="11">&nbsp;</td>
-	<td width="242" align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Submit track to Leonardo at </font></strong></span></td>
-	<td align="right" width="36"><span class="smalltext">&nbsp;</span></td>
+	<td width=402 align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Submit track to Leonardo  </font></strong></span></td>
+	<td align="right" width="36"><div align=right class="smalltext"><a href='#' onclick="closeWin();"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div></td>
   </tr>
   <tr>
 	<td colspan="4" bgcolor="#f5f5f5"><table border="0" cellpadding="2" cellspacing="1" width="100%">
 	  <tbody>
 	    <tr>
-	      <td colspan="2" class="smalltext"><select name="serverID">
+	      <td colspan="4" class="smalltext">Password of the tracklog:<span class="smalltext1">
+	        <input name="user2" class="logintext" value="" type="text" />
+	      </span></td>
+	      </tr>
+	    
+	    <tr>
+	      <td colspan="4" class="smalltext">Submit at 
+	        <select name="serverID">
   	          <option value="99">pgforum.home</option>
    	          <option value="98">pgforum.thenet.gr</option>
 	          <option value="1">sky.gr</option>
 	          <option value="2">paraglidingforum.com</option>
 	          <option value="3">LIGA PORTUGUESA DE VOO LIVRE </option>
 	          <option value="4">XC Brasil</option>
-	          </select>
-	        </td>
+	          </select>	        </td>
 	      </tr>
 	    <tr>
-		<td class="smalltext" width="46%"><span class="gen">Username</span>:</td>
-		<td width="54%"><input name="user" class="logintext" value="" type="text"></td>
+		<td class="smalltext" width="230"><span class="gen">Username</span>:</td>
+		<td ><input name="user" class="logintext" value="" type="text"></td>
+	    <td ><span class="smalltext2"><span class="gen">Password<span class="smalltext3">:</span></span></span></td>
+	    <td ><input name="pass" class="loginpassword" value="" type="text" /></td>
+	    </tr>
+	  <tr>
+	    <td class="smalltext">Type of Glider: </td>
+	    <td><select name="select">
+	      <option value="1" selected="selected">Paraglider</option>
+	      <option value="2">Hanglider Flex</option>
+	      <option value="4">Hanglider Rigid</option>
+	      </select>	    </td>
+	    <td><span class="smalltext4">Glider:</span></td>
+	    <td><input name="pass2" class="loginpassword" value="" type="text" /></td>
 	  </tr>
 	  <tr>
-		<td class="smalltext"><span class="gen">Password</span>:</td>
-		<td><input name="pass" class="loginpassword" value="" type="password"></td>
-		</tr>
-
+	    <td class="smalltext">Comments</td>
+	    <td colspan="3"><textarea name="textarea" cols="40" rows="3"></textarea></td>
+	    </tr>
 	  <tr>
-		<td class="smalltext">&nbsp;</td>
-		<td class="smalltext"><div align="right">
-			<input name=formSubmit value=1 type=hidden />
-			<input name=username value="<?=$_GET['user']?>" type=hidden />
-			<input name=port value="<?=$_GET['port']+0?>" type=hidden />
-		  <input name="login" value="Submit" class="submitButton" type="submit">
-		  </div></td>
-	  </tr>
+	    <td class="smalltext">Relevant URL </td>
+	    <td colspan="3"><input name="pass22" type="text" class="loginpassword" value="" size="100" />
+	      <input name=formSubmit value=1 type=hidden />
+          <input name=username value="<?=$_GET['user']?>" type=hidden />
+          <input name=port value="<?=$_GET['port']+0?>" type=hidden />
+          <input name="login" value="Submit" class="submitButton1" type="submit" /></td>
+	    </tr>
 	</tbody></table>		
       <div align="center">
         <script language="Javascript">
-			document.loginform.username.focus();
+			//document.loginform.username.focus();
 	    </script>
 	    </div></td>
   </tr>
 </table> 
 </form>
+</body>
 <? } ?>
