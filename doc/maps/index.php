@@ -4,12 +4,24 @@ $FORCE_CREATE=0;
 $DEBUG=0;
 
 $zoomFactor=1; 
-// values  1  2  4  8 16
+
 // if original file is 28.5   m/pixel
+// values  1  2  4  8 16
+// 1 -> 28.5 m/pixel
 // 2 -> 57 m/pixel
 // 4 -> 114 m/pixel 
 // 8 -> 228 m/pixel 
- 
+// 16 -> 456 m/pixel 
+
+// if original file is 14.25   m/pixel
+// values  1  2  4  8 16 32
+// 1 -> 14.25 m/pixel
+// 2 -> 28.5 m/pixel
+// 4 -> 57 m/pixel
+// 8 -> 114 m/pixel 
+// 16 -> 228 m/pixel 
+// 32 -> 456 m/pixel 
+
 
 process_all_maps( dirname(__FILE__)."/mrsid_maps",1,0); 
 

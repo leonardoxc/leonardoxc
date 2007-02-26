@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-$ok=-1;
+$ok=0;
 
 // first upload the igc to the server
 $IGCabsPath=$CONF_abs_path."/".$this->getIGCRelPath(0); // validate original file
@@ -45,13 +45,13 @@ $fl="http://vali.glidingcontest.org:81/cgi-bin/vali-gps.cgi?get=$tmpFilename&yea
 DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 $contents =	split("\n",fetchURL($fl,30));
 
-$ok=-1;
+$ok=0; // not yet proccessed 
 if ($contents) {	
-	$ok=0;
+	$ok=-1; // invalid 
 	foreach ( $contents as $line) {
 		DEBUG("VALIDATE_IGC",1,"valRes: $line<BR>");
 		if (substr($line,0,20)=="ValiGPS: IGC file OK") {
-			$ok=1;
+			$ok=1; // valid
 			break;
 		}
 	}

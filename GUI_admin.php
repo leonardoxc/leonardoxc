@@ -184,10 +184,14 @@ echo "</ul><br><br>";
 						$pixelWidth=$matches[3];
 						$pixelHeight=$matches[4];
 						$metersPerPixel=($right-$left) / $pixelWidth ;
-						if ( $metersPerPixel < 22)  $metersPerPixel=17.25;
-						else  if ( $metersPerPixel < 33)  $metersPerPixel=28.5;
+						if ( $metersPerPixel < 22)  $metersPerPixel=14.25;
+						else  if ( $metersPerPixel < 37)  $metersPerPixel=28.5;
+						else  if ( $metersPerPixel < 80)  $metersPerPixel=57;
+						else  if ( $metersPerPixel < 180)  $metersPerPixel=114;
+						else  if ( $metersPerPixel < 300)  $metersPerPixel=228;
+						else  if ( $metersPerPixel < 600)  $metersPerPixel=456;
 						else $metersPerPixel=round($metersPerPixel);
-						// 17.25  , 28.5 , 57 , 114 , 228 
+						// 14.25  , 28.5 , 57 , 114 , 228 , 456
  
 					} 
 					

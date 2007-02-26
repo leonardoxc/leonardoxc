@@ -23,6 +23,7 @@
 
 
 
+
   
 <div align="center"> 
   <p> 
@@ -81,6 +82,9 @@
             <div align="left"><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></div>
           </li>
           <li>
+			 <div align="left"><a href="http://www.foroparapente.com/modules.php?name=leonardo&op=list_flights" target="_blank">Chilian Leonardo</a></div>
+		  </li>
+          <li>
             <div align="left"><a href="http://xc.ciclone.com.br/xc/modules.php?name=leonardo&op=list_flights" target="_blank">Brazilian Leonardo</a></div>
           </li>
           <li>
@@ -134,6 +138,8 @@
               <p><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=5393" target="_blank"><strong>Rado
               Voglar</strong></a> for the <strong>Slovenian</strong> translation </p>
               <p> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </p>
+              <p> <a href="http://para-nimbus.xhost.ro/" target="_blank"><strong>Ciprian
+                    Chis</strong></a> for the <strong>Romanian</strong> translation</p>
               <hr></td>
     </tr>
   </table>
