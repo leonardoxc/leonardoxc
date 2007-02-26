@@ -139,6 +139,9 @@
  $CONF_default_cat_view=0; // pg
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
 
+ // The top 'dates' menu  will have years starting from $CONF_StartYear
+ $CONF_StartYear=2007;
+
  // you should probably set  $OLCScoringServerPath to the same server 
  // you have leonardo
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";

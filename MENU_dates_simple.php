@@ -62,7 +62,7 @@ if ($datesMenu!='years') {
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
-		for($i=date("Y");$i>=1998;$i--)  
+		for($i=date("Y");$i>=$CONF_StartYear;$i--)  
 			echo "<a href='?name=$module_name&year=$i&month=0'>$i</a>";		
 	?>
 	</td>

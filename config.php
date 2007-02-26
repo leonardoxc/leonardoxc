@@ -232,6 +232,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $CONF_default_cat_view=0; // pg
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
 
+ // The top 'dates' menu  will have years starting from $CONF_StartYear
+ $CONF_StartYear=1998;
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
