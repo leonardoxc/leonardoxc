@@ -430,55 +430,102 @@ var $maxPointNum=1000;
 		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 		if ($extended) {
 			$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML)."</Placemark>";
-			$kml_file_contents.=kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
+			kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
+			$kml_file_contents.="
+<NetworkLink>
+  <name>Extended analysis</name>
+  <visibility>1</visibility>
+  <open>1</open>
+  <description> Extra analysis generation by  Man\'s GPS2GE V2.0 (http://www.parawing.net)</description>
+  <refreshVisibility>0</refreshVisibility>
+  <flyToView>0</flyToView>
+  <Link>
+	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".man.kmz</href>
+  </Link>
+</NetworkLink>";
+
 			return $kml_file_contents;
 		}
-
-		//if (file_exists($this->getKMLFilename())) return;
-		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
 		
-		$filename=$this->getIGCFilename(0);  
-		$lines = file ($filename); 
-		if (!$lines) return;
-		$i=0;
 
-		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 
+		$kmzFile=$this->getIGCFilename(0).".kmz";
+		$kmlTempFile=$this->getIGCFilename(0).".kml";
+
+		if ( !file_exists($kmzFile) ) { // create the kmz file containg the points only
+
+			$filename=$this->getIGCFilename(0);  
+			$lines = file ($filename); 
+			if ( $lines) {
+				$i=0;
+		
+	$str="<?xml version='1.0' encoding='UTF-8'?>\n".
+	"<kml xmlns=\"http://earth.google.com/kml/2.0\">\n";
+	
+				$str.="<Placemark >\n<name>Tracklog</name>\n".
+				" <styleUrl>Tracklog.kml#igcTrackLine</styleUrl>
+				<LineString>				
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>\n";
+		
+				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
+				// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
+				$str=str_replace("&nbsp;"," ",$str);
+		
+				foreach($lines as $line) {
+					$line=trim($line);
+					if  (strlen($line)==0) continue;				
+					if ($line{0}=='B') {
+							if  ( strlen($line) < 23 ) 	continue;
+							$thisPoint=new gpsPoint($line,$this->timezone);
+							$data_alt[$i]=$thisPoint->getAlt();				
+							if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
+							$str.=-$thisPoint->lon.",".$thisPoint->lat.",".($thisPoint->getAlt()*$exaggeration)." ";
+							$i++;
+							if($i % 50==0) $str.="\n";
+					}
+				}
+		
+				$str.="</coordinates>\n</LineString>\n";
+				$str.="</Placemark>\n</kml>";
+	
+				writeFile($kmlTempFile,$str);
+				// zip the file 
+				require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+				$archive = new PclZip($kmzFile);
+				$v_list = $archive->create($kmlTempFile, PCLZIP_OPT_REMOVE_ALL_PATH);
+				@unlink($kmlTempFile);
+			}
+		}
+
+		
+		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
 		$kml_file_contents.=
-		"<Style>
+		"<Style ID='igcTrackLine'>
 			<LineStyle>
 			  <color>".$KMLlineColor."</color>
 			  <width>$lineWidth</width>
 			</LineStyle>
 		  </Style>
 		";
+		$kml_file_contents.="<Folder>\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
+//		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 
-		$kml_file_contents.=
-		"<LineString>
-		<altitudeMode>absolute</altitudeMode>
-		<coordinates>";
+			$kml_file_contents.="
+<NetworkLink>
+  <name>Tracklog</name>
+  <visibility>1</visibility>
+  <open>0</open> 
+  <refreshVisibility>0</refreshVisibility>
+  <flyToView>0</flyToView>
+  <Link>
+	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kmz</href>
+  </Link>
+</NetworkLink>";
 
-		//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
-		// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
-		$kml_file_contents=str_replace("&nbsp;"," ",$kml_file_contents);
+		$kml_file_contents.="</Folder>";
 
-		foreach($lines as $line) {
-			$line=trim($line);
-			if  (strlen($line)==0) continue;				
-			if ($line{0}=='B') {
-					if  ( strlen($line) < 23 ) 	continue;
-					$thisPoint=new gpsPoint($line,$this->timezone);
-					$data_alt[$i]=$thisPoint->getAlt();				
-					if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
-					$kml_file_contents.=-$thisPoint->lon.",".$thisPoint->lat.",".($thisPoint->getAlt()*$exaggeration)." ";
-					$i++;
-					if($i % 50==0) $kml_file_contents.="\n";
-			}
-		}
 
-		$kml_file_contents.="</coordinates>\n</LineString>";
-		$kml_file_contents.="</Placemark>";
-		
 		return $kml_file_contents;
 	}
 
@@ -597,7 +644,8 @@ $kml_file_contents=
 //"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >".
 "<?xml version='1.0' encoding='UTF-8'?>".
 "<kml xmlns=\"http://earth.google.com/kml/2.0\">
-<Folder>
+<Document>
+<name>Tracklog</name>
 <open>1</open>";
 			
 		/*<LookAt>
@@ -619,7 +667,7 @@ $kml_file_contents=
 		// create the OLC task
 		$kml_file_contents.=$this->kmlGetTask();
 
-		$kml_file_contents.="</Folder>\n</kml>";
+		$kml_file_contents.="</Document>\n</kml>";
 
 		$NewEncoding = new ConvertCharset;
 		$FromCharset=$langEncodings[$currentlang];

@@ -94,10 +94,11 @@ fieldset.legendBox {
 </style>
 <script src="http://maps.google.com/maps?file=api&v=1&key=<? echo $CONF_google_maps_api_key ?>&amp;v=2" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/pdmarker.js" type="text/javascript"></script>
 </head>
 <body  onUnload="GUnload()">
 
-<? if (0) { ?>
+<? if (1) { ?>
 <div id="control" class="style1"><b><? $_SERVER['SERVER_NAME']?></b></div>
 <a href="javascript:moveit()">move it </a>
 
@@ -143,8 +144,17 @@ if(window.location.search) {
 }
 var relpath="<?=$moduleRelPath?>";
 
+
+function moveit(){
+	var pt = marker.getPoint();
+	var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)
+	marker.setPoint(newpos);
+	//map.setCenter(newpos, 17-5);
+}
+
+
+
 </script>
-<? if (1) { ?>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
-<? }?>
+
 </body>

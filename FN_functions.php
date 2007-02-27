@@ -439,4 +439,11 @@ function getBrowser() {
 		return $res.sprintf("%c", $t);
 	}
 
+function  writeFile($filename,$str){
+	if (! $fp=fopen($filename,"w") ) return 0;
+    if (!fwrite($fp,$str)) return 0;
+	fclose($fp);
+	return 1;
+}
+
 ?>

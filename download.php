@@ -36,6 +36,9 @@
 	if (!in_array($type,array("kml_trk","kml_wpt","sites")) ) return;
 	
 	if ($type=="kml_trk") {
+		$moduleRelPath="modules/".$module_name;
+		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 		$flightID=$_REQUEST['flightID'];
 		$flightID=$flightID+0;

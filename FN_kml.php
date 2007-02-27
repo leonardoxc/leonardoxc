@@ -156,6 +156,11 @@ function LineString($name,$description,$coords,$color,$width) {
 
 function kmlGetTrackAnalysis($file,$exaggeration=1) {
 $str="";
+$kmlTempFile=$file.".man.kml";
+$kmzFile=$file.".man.kmz";
+if ( is_file($kmzFile) ) return;
+
+
 $table=parseIgcFile($file,$exaggeration);
 
 
@@ -648,14 +653,11 @@ $MinMax.=MajorPoint($timevariomin." MinVz : ".$variomin."m/s","", $coordvariomin
 //$str='<?xml version="1.0" encoding="UTF-8" ? >
 //<kml xmlns="http://earth.google.com/kml/2.0">';
 
-$str='<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
-  <Folder>
-  	<description>
-  	 Extra analysis generation by  Man\'s GPS2GE V2.0 (http://www.parawing.net)
-  	</description>
-  </Folder>
-  
-  
+$str=
+"<?xml version='1.0' encoding='UTF-8'?>".
+"<kml xmlns=\"http://earth.google.com/kml/2.0\">".
+'<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
+<Folder>
       '.$FlightGeneralInformations.'
   <Folder>
   <name>Paths and Distances</name>
@@ -671,11 +673,17 @@ $str='<!-- converted by GPS2GE V2.0 http://www.parawing.net -->
       '.$BG.'
       '.$BT.'
   </Folder>
-      '.$flightWayPoints.' ';
+      '.$flightWayPoints.' '.
+	"\n</Folder>\n</kml>";
 
+	writeFile($kmlTempFile,$str);
+	// zip the file 
+	require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+	$archive = new PclZip($kmzFile);
+	$v_list = $archive->create($kmlTempFile, PCLZIP_OPT_REMOVE_ALL_PATH);
+	@unlink($kmlTempFile);
 
-
-return $str;
+	return 1;
 }
 
 
