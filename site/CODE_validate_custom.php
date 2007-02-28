@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
 $ok=0;
 
 // first upload the igc to the server
@@ -23,8 +24,11 @@ $tmpFilename=sprintf("%08d.igc",rand(0,99999999));
 
 require_once $CONF_abs_path."/lib/php_ssh/src/ssh.php";
 
-$remote = "leotest@vali.glidingcontest.org";
+// SET these parameters
+$remote = "manolis@vali.glidingcontest.org";
 $password = "o23se7n2p";
+$v_olc="manolis";
+$v_year="2007";
 
 $rmt = new SExec($remote, $password);
 if ($rmt == FALSE || $rmt->error ) {
@@ -41,7 +45,7 @@ DEBUG("VALIDATE_IGC",1,"Output: $out");
 
 // done with that , call the url
 
-$fl="http://vali.glidingcontest.org:81/cgi-bin/vali-gps.cgi?get=$tmpFilename&year=2007&olc=holc";
+$fl="http://vali.glidingcontest.org:81/cgi-bin/vali-gps.cgi?get=$tmpFilename&year=$v_year&olc=$v_olc";
 DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 $contents =	split("\n",fetchURL($fl,30));
 
