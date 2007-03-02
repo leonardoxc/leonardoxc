@@ -24,15 +24,15 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	$op=$_REQUEST['op'];
+	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
 	if (!in_array($op,array("find_flights","list_flights","submit_flight")) ) return;
 
 	$encoding="iso-8859-1";
 	if ($op=="find_flights") {
-		$lat=$_GET['lat']+0;
-		$lon=-$_GET['lon']+0;
+		$lat=makeSane($_GET['lat'],1);
+		$lon=-makeSane($_GET['lon'],1);
 
 		$firstPoint=new gpsPoint();
 		$firstPoint->lat=$lat;
@@ -120,15 +120,15 @@
 
 	} else if ($op=="list_flights") {
 		$where_clause="";
-		$flightID=$_GET['flightID']+0;
+		$flightID=makeSane($_GET['flightID'],1);
 		if ($flightID!=0) {
 			$where_clause.=" AND ID=$flightID "; 
 		} else {
-				 $tm=$_GET['from_tm']+0; // timestamp
+				 $tm=makeSane($_GET['from_tm'],1); // timestamp
 				 // if (!$tm) $tm=time()-60*60*24*7; // 1 week back
 				 $where_clause.=" AND dateAdded >= FROM_UNIXTIME(".$tm.") "; 
 		
-				 $count=$_GET['count']+0; // timestamp
+				 $count=makeSane($_GET['count'],1); // timestamp
 				 if ($count) $lim=" LIMIT 1,$count ";
 				 else  $lim="";
 		}
@@ -184,8 +184,9 @@
 		$XML_str.="</result>";	
 		send_XML($XML_str);
 
-	} // list_flights
+	} // submit flight
 	else	if ($op=="submit_flight") {
+		return; // we dont really need this, is done vi XMLRPC now
 		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 		$XML_str="<result>\n";
 		$XML_path=$_GET['XMLform'];

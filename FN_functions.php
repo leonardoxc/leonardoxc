@@ -243,8 +243,8 @@ function getBrowser() {
 
 	function setDEBUGfromGET(){
 		global $DBGcat,$DBGlvl;
-		if ( $_GET['DBGcat'] ) $DBGcat=$_GET['DBGcat'] ;
-		if ( $_GET['DBGlvl'] ) $DBGlvl=$_GET['DBGlvl'] ;		
+		if ( $_GET['DBGcat'] ) $DBGcat=makeSane($_GET['DBGcat'] );
+		if ( $_GET['DBGlvl'] ) $DBGlvl=makeSane($_GET['DBGlvl'],1) ;		
 	}
 
 	function getAvailableThemes() {

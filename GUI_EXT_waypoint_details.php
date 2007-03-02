@@ -38,7 +38,7 @@
   </style>
 <script language="javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <?
-	$waypointIDview=$_GET['wID']+0;
+	$waypointIDview=makeSane($_GET['wID'],1);
 
   $wpInfo =new waypoint($waypointIDview );
   $wpInfo->getFromDB();

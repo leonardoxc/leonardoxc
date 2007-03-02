@@ -17,7 +17,7 @@
   require_once dirname(__FILE__)."/FN_brands.php";
 
 
-  $sortOrder=$_REQUEST["sortOrder"];
+  $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="bestOlcScore";
 
   $legend=_LEAGUE_RESULTS." ";

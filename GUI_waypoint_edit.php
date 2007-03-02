@@ -15,7 +15,7 @@
 		return;
     }
 
-	$waypointIDedit=$_REQUEST['waypointIDedit'];
+	$waypointIDedit=makeSane($_REQUEST['waypointIDedit'],1);
 
 	if ( $_POST['editWaypoint']==1 ) { // CHANGE waypoint
 		$waypt=new waypoint($waypointIDedit);

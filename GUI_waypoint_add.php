@@ -43,7 +43,7 @@
 	}
 		
 
-	$query="SELECT  countryCode from $waypointsTable WHERE ID=".($_REQUEST['takeoffID']+0);
+	$query="SELECT  countryCode from $waypointsTable WHERE ID=".makeSane($_REQUEST['takeoffID'],1);
 	$res= $db->sql_query($query);
 		
     if($res <= 0){

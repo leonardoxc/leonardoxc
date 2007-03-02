@@ -23,7 +23,7 @@
   else 
   	  $legend=$ranksList[$rank]['name'];
 
-  $page_num=$_REQUEST["page_num"]+0;
+  $page_num=makeSane($_REQUEST["page_num"],1);
   if ($page_num==0)  $page_num=1;
   $startNum=($page_num-1)*$CONF_compItemsPerPage;
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
@@ -102,7 +102,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    uasort($pilots,$sort_funcs_pilots[$category]);
 
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
-   if ($tabID ==  ($_GET['comp']+0) ) $defaultTabStr=" tabbertabdefault";
+   if ($tabID ==  makeSane($_GET['comp'],1)  ) $defaultTabStr=" tabbertabdefault";
    else  $defaultTabStr="";
    
    $tabID++;

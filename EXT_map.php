@@ -24,7 +24,7 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	$op=$_REQUEST['op'];
+	$op=makeSane($_REQUEST['op'],1);
 	if (!$op) $op="get_map";	
 
 	if (!in_array($op,array("get_map")) ) return;

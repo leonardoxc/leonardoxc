@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-$areaID=$_GET['areaID']+0;
+$areaID=makeSane($_GET['areaID'],1);
 
 $pilotsList=array();
 $pilotsID=array();

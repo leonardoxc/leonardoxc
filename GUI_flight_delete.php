@@ -11,8 +11,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-  $flightID=$_REQUEST["flightID"];
-  $confirmed=$_REQUEST["confirmed"];
+  $flightID=makeSane($_REQUEST["flightID"],1);
+  $confirmed=makeSane($_REQUEST["confirmed"]);
 
   $flight=new flight();
   $flight->getFlightFromDB($flightID);

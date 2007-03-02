@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-  $sortOrder=$_REQUEST["sortOrder"];
+  $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="CountryCode";
 
   $page_num=$_REQUEST["page_num"]+0;

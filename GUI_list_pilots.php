@@ -15,7 +15,7 @@
 //-----------------------  list pilots ---------------------------------
 //-----------------------------------------------------------------------
 
- $sortOrder=$_REQUEST["sortOrder"];
+ $sortOrder=makeSane($_REQUEST["sortOrder"]);
  if ( $sortOrder=="")  $sortOrder="bestOlcScore";
 
  $is_comp=$comp;

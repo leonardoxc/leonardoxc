@@ -76,23 +76,24 @@ $_SESSION['userID']=$userID;
 
 // DEBUG
 setVarFromRequest("DBGcat","");
-setVarFromRequest("DBGlvl",0);
+setVarFromRequest("DBGlvl",0,1);
 
-setVarFromRequest("waypointIDview",0);
-setVarFromRequest("flightID",0);
-setVarFromRequest("pilotIDview",0);
-setVarFromRequest("year",date("Y")); 
-setVarFromRequest("month",0); // date("m") for current month
-setVarFromRequest("pilotID",0);
-setVarFromRequest("takeoffID",0);
+setVarFromRequest("waypointIDview",0,1);
+setVarFromRequest("flightID",0,1);
+setVarFromRequest("pilotIDview",0,1);
+setVarFromRequest("year",date("Y"),1); 
+setVarFromRequest("month",0,1); // date("m") for current month
+setVarFromRequest("pilotID",0,1);
+setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);
 setVarFromRequest("op",$CONF_main_page);
-setVarFromRequest("cat",$PREFS->viewCat);
+setVarFromRequest("cat",$PREFS->viewCat,1);
 setVarFromRequest("subcat","pg");
-setVarFromRequest("comp",0);
-setVarFromRequest("rank",0);
-setVarFromRequest("subrank",0);
-setVarFromRequest("clubID",0);
+setVarFromRequest("comp",0,1);
+setVarFromRequest("rank",0,1);
+setVarFromRequest("subrank",0,1);
+setVarFromRequest("clubID",0,1);
+
 
 if ($op=="main") $op=$CONF_main_page;
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;

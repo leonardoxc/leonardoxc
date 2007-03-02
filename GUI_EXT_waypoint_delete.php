@@ -38,7 +38,7 @@
   body {margin:0px}
   </style>
 <?
-	$waypointIDdelete=$_REQUEST['waypointIDdelete'];
+	$waypointIDdelete=makeSane($_REQUEST['waypointIDdelete'],1);
 	$waypt=new waypoint($waypointIDdelete);
 	$waypt->getFromDB();
 

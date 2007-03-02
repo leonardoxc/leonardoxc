@@ -34,7 +34,7 @@ if ($ap) {
 	//echo "!$currentlang!";
 } else $leonardo_header="basic";
 */
-setVarFromRequest("clubID",0);
+setVarFromRequest("clubID",0,1);
 
 // only the first time we get there do we se the language
 /* 
@@ -43,7 +43,7 @@ if ($_GET['ap']) {
 	$currentlang=$lng;
 }
 */
-if ($_GET['clubID']) { // some things we do when first in club
+if (makeSane($_GET['clubID'],1)) { // some things we do when first in club
 
 	if ( is_array($clubsList[$clubID]['gliderCat']) ) {
 		setVar("cat",0);

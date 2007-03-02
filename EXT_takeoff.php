@@ -22,7 +22,7 @@
 	require_once "FN_output.php";
 	setDEBUGfromGET();
 
-	$op=$_GET['op'];
+	$op=makeSane($_GET['op']);
 	if (!in_array($op,array("find_wpt","get_latest")) ) return;
 
 	if ($op=="find_wpt") {

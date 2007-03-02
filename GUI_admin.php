@@ -37,7 +37,7 @@ function chmodDir($dir){
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}
-	$admin_op=$_GET['admin_op'];
+	$admin_op=makeSane($_GET['admin_op']);
 
 
 echo "<br><BR>";

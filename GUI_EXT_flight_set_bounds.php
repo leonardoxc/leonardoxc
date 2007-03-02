@@ -35,10 +35,10 @@
 
 	if ( $_POST['setTimes']==1 ) { // set new bounds !!!
 	
-		$startTime=$_REQUEST['timeTextSecs1']+0; // in secs
-		$endTime=$_REQUEST['timeTextSecs2']+0; 
+		$startTime=makeSane($_REQUEST['timeTextSecs1'],1); // in secs
+		$endTime=makeSane($_REQUEST['timeTextSecs2'],1); 
 
-		$flightID=$_GET['flightID']+0;
+		$flightID=makeSane($_GET['flightID'],1);
 		if ($flightID<=0) exit;
 		
 		$flight=new flight();
@@ -90,7 +90,7 @@
   <?
 
 	
-	$flightID=$_GET['flightID']+0;
+	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
 	
 	$flight=new flight();

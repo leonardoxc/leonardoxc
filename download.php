@@ -32,7 +32,7 @@
 	require_once "language/countries-".$currentlang.".php";
 	setDEBUGfromGET();
 
-	$type=$_REQUEST['type'];
+	$type=makeSane($_REQUEST['type']);
 	if (!in_array($type,array("kml_trk","kml_wpt","sites")) ) return;
 	
 	if ($type=="kml_trk") {
@@ -40,13 +40,12 @@
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
-		$flightID=$_REQUEST['flightID'];
-		$flightID=$flightID+0;
+		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
-		$w=$_GET['w'];
-		$c=$_GET['c'];
-		$ex=$_GET['ex'];
-		$an=$_GET['an'];
+		$w=makeSane($_GET['w'],1);
+		$c=makeSane($_GET['c']);
+		$ex=makeSane($_GET['ex'],1);
+		$an=makeSane($_GET['an'],1);
 
 		if (!$w) $w=2;
 		if (!$c) $c="ff0000";
@@ -66,8 +65,7 @@
 		$file_name=$flight->filename.".kml";	
 		DEBUG("DL",1,"KML Filepath= $file_path<BR>");
 	} else if ($type=="gpx_trk") {
-		$flightID=$_REQUEST['flightID'];
-		$flightID=$flightID+0;
+		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
 		DEBUG("DL",1,"Will serve flight $flightID<BR>");
 		$flight=new flight();
@@ -76,13 +74,12 @@
 		$file_name=$flight->filename.".xml";
 		DEBUG("DL",1,"GPX Filepath= $file_path<BR>");
 	} else 	if ($type=="kml_wpt") {		
-		$waypointID=$_REQUEST['wptID'];
-		$waypointID=$waypointID+0;
+		$waypointID=makeSane($_REQUEST['wptID'],1);
 		
 		$xml=makeKMLwaypoint($waypointID);
 		$file_name=$waypointID.'.kml';
 	} else	if ($type=="sites") {
-		$sites=$_GET['sites'];
+		$sites=makeSane($_GET['sites']);
 		$sitesList=explode(",",$sites);
 		$xml='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
 		<kml xmlns="http://earth.google.com/kml/2.0">\n

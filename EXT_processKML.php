@@ -24,7 +24,7 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	$op=$_REQUEST['op'];
+	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="getKML";	
 
 	if (!in_array($op,array("getKML")) ) return;

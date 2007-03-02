@@ -17,9 +17,9 @@ require_once dirname(__FILE__)."/EXT_config.php";
 require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 
-$id=$_GET['id']+0;
-$action=$_GET['action'];
-$DBGlvl=$_GET['DBGlvl'];
+$id=makeSane($_GET['id'],1);
+$action=makeSane($_GET['action']);
+$DBGlvl=makeSane($_GET['DBGlvl'],1);
 $server=new Server($id);
 $server->getFromDB();
 

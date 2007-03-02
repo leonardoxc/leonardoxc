@@ -18,7 +18,7 @@
 
   $legend="";
  
-  $sortOrder=$_REQUEST["sortOrder"];
+  $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="DATE";
 
   $page_num=$_REQUEST["page_num"]+0;
@@ -94,7 +94,7 @@
   $where_clause.=$filter_clause;
 
   if ($clubID)   {
-  	 $add_remove_mode=$_GET['a_r']+0;
+  	 $add_remove_mode=makeSane($_GET['a_r'],1);
 	 $query_str.="&a_r=$add_remove_mode";
 
 	 require dirname(__FILE__)."/INC_club_where_clause.php";

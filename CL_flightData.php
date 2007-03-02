@@ -448,11 +448,11 @@ var $maxPointNum=1000;
 		}
 		
 
-
+		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
 		$kmzFile=$this->getIGCFilename(0).".kmz";
 		$kmlTempFile=$this->getIGCFilename(0).".kml";
 
-		if ( !file_exists($kmzFile) ) { // create the kmz file containg the points only
+		if ( !file_exists($kmzFile)  || 1) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(0);  
 			$lines = file ($filename); 
@@ -460,10 +460,10 @@ var $maxPointNum=1000;
 				$i=0;
 		
 	$str="<?xml version='1.0' encoding='UTF-8'?>\n".
-	"<kml xmlns=\"http://earth.google.com/kml/2.0\">\n";
-	
-				$str.="<Placemark >\n<name>Tracklog</name>\n".
-				" <styleUrl>Tracklog.kml#igcTrackLine</styleUrl>
+	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
+				$str.="<Document>									
+				<Placemark>\n<name>Tracklog</name>\n".
+				" <styleUrl>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kml#igcTrackLine</styleUrl>
 				<LineString>				
 				<altitudeMode>absolute</altitudeMode>
 				<coordinates>\n";
@@ -487,7 +487,7 @@ var $maxPointNum=1000;
 				}
 		
 				$str.="</coordinates>\n</LineString>\n";
-				$str.="</Placemark>\n</kml>";
+				$str.="</Placemark>\n</Document>\n</kml>";
 	
 				writeFile($kmlTempFile,$str);
 				// zip the file 
@@ -499,7 +499,6 @@ var $maxPointNum=1000;
 		}
 
 		
-		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
 		$kml_file_contents.=
 		"<Style ID='igcTrackLine'>
 			<LineStyle>
@@ -508,7 +507,7 @@ var $maxPointNum=1000;
 			</LineStyle>
 		  </Style>
 		";
-		$kml_file_contents.="<Folder>\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
+		//$kml_file_contents.="<Folder>\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 //		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 
 			$kml_file_contents.="
@@ -523,7 +522,7 @@ var $maxPointNum=1000;
   </Link>
 </NetworkLink>";
 
-		$kml_file_contents.="</Folder>";
+	//	$kml_file_contents.="</Folder>";
 
 
 		return $kml_file_contents;
@@ -642,10 +641,10 @@ var $maxPointNum=1000;
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
 //"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >".
-"<?xml version='1.0' encoding='UTF-8'?>".
-"<kml xmlns=\"http://earth.google.com/kml/2.0\">
-<Document>
-<name>Tracklog</name>
+"<?xml version='1.0' encoding='UTF-8'?>\n".
+"<kml xmlns=\"http://earth.google.com/kml/2.1\">
+<Document id='".$this->filename."'>
+<name>".$this->filename."</name>".$this->kmlGetDescription($extendedInfo,$getFlightKML)."
 <open>1</open>";
 			
 		/*<LookAt>

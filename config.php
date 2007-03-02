@@ -252,7 +252,7 @@ if ( count($parts)>1 )  {
 }
 
 if (!isset($module_name))  {
-	if (isset($_GET['name'])) $module_name=$_GET['name'];
+	if (isset($_GET['name'])) $module_name=makeSane($_GET['name']);
 	else $module_name="leonardo";
 
 	$moduleAbsPath=dirname(__FILE__);
@@ -279,7 +279,7 @@ if ($opMode!=2) {
 	}
 }
 
-function setVarFromRequest($varname,$def_value) {
+function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	global $$varname; 
     // echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname."<BR>";
 	if (isset($_REQUEST[$varname])) {
@@ -290,6 +290,22 @@ function setVarFromRequest($varname,$def_value) {
 	} else { // default value
 	  $$varname=$def_value;
 	  $_SESSION[$varname]=$$varname;
+	}
+	
+	// sanitize the variable!
+	if ($isNumeric) { // just add 0, this should do the trick
+	  $$varname=$$varname+0;
+	} else { // is string : allow only  a-zA-Z0-9_
+	  $$varname=preg_replace("/[^\w_]/","",$$varname);
+	}
+    $_SESSION[$varname]=$$varname;
+}
+
+function makeSane($str,$isNumeric=0) {
+	if ($isNumeric) { // just add 0, this should do the trick
+		return $str+0;
+	} else { // is string : allow only  a-zA-Z0-9_
+		return preg_replace("/[^\w_\-\,\.]/","",$str);
 	}
 }
 

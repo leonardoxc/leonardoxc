@@ -26,10 +26,10 @@
 	setDEBUGfromGET();
 
 
-	$op=$_GET['op'];
-	$clubID=$_GET['clubID']+0;
-	$flightID=$_GET['flightID']+0;
-	$pilotID=$_GET['pilotID']+0;
+	$op=makeSane($_GET['op']);
+	$clubID=makeSane($_GET['clubID'],1);
+	$flightID=makeSane($_GET['flightID'],1);
+	$pilotID=makeSane($_GET['pilotID'],1);
 	if ($op=='add'){	
 		  $query="INSERT INTO $clubsFlightsTable (clubID,flightID) VALUES ($clubID,$flightID )";
 		  $res= $db->sql_query($query);

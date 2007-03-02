@@ -16,7 +16,7 @@ if ( in_array($userID,$admin_users)  ) {
 	$flight->getFlightFromDB($flightID);
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
-		 $flight->cat=$_REQUEST["gliderCat"];
+		 $flight->cat=makeSane($_REQUEST["gliderCat"]);
 		 $flight->glider=$_REQUEST["glider"];
 		 $flight->comments=$_REQUEST["comments"];
 		 $flight->linkURL=$_REQUEST["linkURL"];

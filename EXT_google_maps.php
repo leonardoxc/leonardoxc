@@ -7,9 +7,9 @@
 
 	require "config.php";
 
-	$wpLon=$_GET[lon]+0;
-	$wpLat=$_GET[lat]+0;
-	$wpName=$_GET[wpName];
+	$wpLon=makeSane($_GET[lon],1);
+	$wpLat=makeSane($_GET[lat],1);
+	$wpName=makeSane($_GET[wpName]);
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>

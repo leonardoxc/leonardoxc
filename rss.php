@@ -32,7 +32,7 @@
 	$countryCode = ( isset($HTTP_GET_VARS['country']) ) ? substr($HTTP_GET_VARS['country'],0,2) : "";
 	$minOLCscore = ( isset($HTTP_GET_VARS['olcScore']) ) ? intval($HTTP_GET_VARS['olcScore']) : 0;
 
-	$op=$_REQUEST['op'];
+	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="latest";	
 
 
