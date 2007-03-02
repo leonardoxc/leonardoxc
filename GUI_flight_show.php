@@ -495,10 +495,11 @@ if ( $CONF_google_maps_track==1) {
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  )
-		 $googleMap="<div style='display:block; width:755px; height:520px;'><iframe align='left'
+		 $googleMap="<div style='display:block; width:755px; height:610px;'><iframe align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
-		$flight->flightID."&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
-		  TITLE='Google Map' width='755px' height='520px'
+		$flight->flightID."' ".
+//&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
+		 " TITLE='Google Map' width='755px' height='610px'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 		</iframe></div>";

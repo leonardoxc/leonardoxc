@@ -212,8 +212,8 @@ function fillInForm(name,area,countrycode){
               </div>
                
 </p>
-              <input type="text" name="timeTextSecs1" id="timeTextSecs1" />
-              <input type="text" name="timeTextSecs2" id="timeTextSecs2"/>
+              <input type="hidden" name="timeTextSecs1" id="timeTextSecs1" />
+              <input type="hidden" name="timeTextSecs2" id="timeTextSecs2"/>
 			  
               <p>
                 <input type="submit" name="Submit" value="Update times" />

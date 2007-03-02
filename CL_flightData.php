@@ -307,6 +307,21 @@ var $maxPointNum=1000;
 		else $suffix="";
 		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
+
+	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $flightsAbsPath;
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+	}
+
+	function getJsRelPath($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $flightsWebPath;
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+	}
+
    //require dirname(__FILE__)."/";
 
 	function kmlGetDescription($ext,$getFlightKML) {
@@ -805,7 +820,7 @@ $kml_file_contents=
     $data_X =array();
     $data_Y =array();
 
-	if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) 	$this->storeIGCvalues(); // if no file exists do the proccess now
+	if ( ! is_file($this->getPointsFilename(1) ) || ! is_file($this->getJsFilename(1) ) || $forceRefresh ) 	$this->storeIGCvalues(); // if no file exists do the proccess now
 
     $lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
     if (!$lines) return;
@@ -1053,17 +1068,26 @@ $kml_file_contents=
 		// now write it to file
 		$outputBuffer='$min_time='.$min_time.';$max_time='.$max_time.";\n\n\n";
 		
+		$jsOutput="";
 		foreach ($normPoints as $point) {
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
 			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
+			$this_tm=$point['time']-$min_time;
+			$jsOutput.=sprintf("lt[$this_tm]=%.5f;ln[$this_tm]=%.5f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
+								,$point['lat'],-$point['lon'],$point['dis'],$point['alt'],$point['speed'],$point['vario']);
 		}
 		$path_igc = dirname($this->getPointsFilename(1));
 		if (!is_dir($path_igc)) @mkdir($path_igc, 0755);
-		
+
+		// write saned js file		
+		writeFile($this->getJsFilename(1),$jsOutput);
 		// write saned IGC file
-		$handle = fopen($this->getPointsFilename(1), "w");
-		fwrite($handle, $outputBuffer);
-		fclose($handle);
+		writeFile($this->getPointsFilename(1),$outputBuffer);
+
+//		$handle = fopen($this->getPointsFilename(1), "w");
+//		fwrite($handle, $outputBuffer);
+//		fclose($handle);
+
 		return 1;
 
 	}
@@ -1927,6 +1951,7 @@ $kml_file_contents=
 			 $this->getMapFromServer();		
 	    } 	
 	    $this->updateCharts($forceRefresh);
+ 	    $this->updateCharts($forceRefresh,1);
 	}
 
     function updateCharts($forceRefresh=0,$rawCharts=0) {
@@ -1946,7 +1971,8 @@ $kml_file_contents=
 		if ( !is_file($alt_img_filename) ||  !is_file($speed_img_filename) ||  
 			 !is_file($vario_img_filename) ||  !is_file($takeoff_distance_img_filename) || 
 			 !is_file($alt_img_filename2) ||  !is_file($speed_img_filename2) ||  
-			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||  $forceRefresh) {
+			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||
+			 !is_file($this->getJsFilename(1)) ||  $forceRefresh) {
 	
 			list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 			if ($rawCharts) 

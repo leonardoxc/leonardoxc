@@ -1,0 +1,34 @@
+
+V:\modules\leonardo\server\validate>vali-bra 1.igc
+-----------------------------------
+---------- VALI-BRA V1.23 ---------
+--- for use with IQ-COMPEO only ---
+------- (c) Braeuniger GmbH -------
+-----------------------------------
+
+
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ !!!!!!!!!!!!!!! Data modified !!!!!!!!!!!!!!!!!
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+V:\modules\leonardo\server\validate>vali-mun 1.igc
+Validation check failed
+
+V:\modules\leonardo\server\validate>vali-xgd 1.igc
+FAILED
+
+V:\modules\leonardo\server\validate>vali-xmp 1.igc
+Validation check failed
+
+
+V:\modules\leonardo\server\validate>vali-xmr 1.igc
+FAILED
+
+
+V:\modules\leonardo\server\validate>valigpsdump 1.igc
+FAILED
+
+
+
+V:\modules\leonardo\server\validate>valig7to 1.igc
+NOT valid

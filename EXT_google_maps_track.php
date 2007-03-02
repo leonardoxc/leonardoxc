@@ -11,26 +11,58 @@
  	require_once "EXT_config.php";
 
 	require_once "CL_flightData.php";
-//	require_once "FN_functions.php";	
+	require_once "FN_functions.php";	
 //	require_once "FN_UTM.php";
-//	require_once "FN_waypoint.php";	
-//	require_once "FN_output.php";
-//	require_once "FN_pilot.php";
+	require_once "FN_waypoint.php";	
+	require_once "FN_output.php";
+	require_once "FN_pilot.php";
 //	require_once "FN_flight.php";
 //	setDEBUGfromGET();
 
+	$flightID=makeSane($_GET['id'],1);
+	if ($flightID<=0) exit;
+	
+	$flight=new flight();
+	$flight->getFlightFromDB($flightID);
+	$flight->updateCharts(0,1); // no force update, raw charts
+
+	if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem,1))) {
+		$chart1= $flight->getChartRelPath("alt",$PREFS->metricSystem,1);
+		$title1="Altitude";
+	} else if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem,1)) ) {
+		$chart1=$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem,1);
+		$title1="Distance from takeoff";
+	}
+
+	$hlines=$flight->getRawHeader();
+	foreach($hlines as $line) {
+		if (strlen($line) == 0) continue;	  
+		eval($line);
+	}
+	$START_TIME=$min_time;
+	$END_TIME=$max_time;
+	$DURATION=$END_TIME-$START_TIME;
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <title>Google Maps</title>
 <style type="text/css">
-.style1 { background-image:url(http://pgforum.thenet.gr/modules/leonardo/templates/basic/tpl/p19_logo.gif); width:142px; height:37px;}
+ body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
+ body {margin:0px; background-color:#E9E9E9}
+.box {
+	 background-color:#F4F0D5;
+	 border:1px solid #555555;
+	padding:3px; 
+	margin-bottom:5px;
+}
+.boxTop {margin:0; }
+
 #map { 
 	 margin:0;
 	 padding:0;
 	 width:600px;
-	 height:500px;
+	 height:480px;
 	 border: 1px solid #999999;
 }
 			 
@@ -69,7 +101,7 @@ a:link, a:visited, a:active { font-family:Verdana, Arial, Helvetica, sans-serif;
 
 fieldset.legendBox { 
 	width:115px;
-	height:500px;
+	height:600px;
 	border-style: solid; 
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
@@ -99,62 +131,189 @@ fieldset.legendBox {
 <body  onUnload="GUnload()">
 
 <? if (1) { ?>
-<div id="control" class="style1"><b><? $_SERVER['SERVER_NAME']?></b></div>
-<a href="javascript:moveit()">move it </a>
 
- <div style="position: relative; width: 500px; height:100px;"> 
-<div style="position: absolute; top: 5px; left: 0px; z-index: 100; height:100px; left: 0px; width:2px; background-color:#FF0000;" 
-              id="timeLine"></div>
-              <img style="position: absolute; top: 0px; left:0px; z-index: 0; cursor: crosshair;" 
-              id="imggraphs" src="{AMIM_ALT_GRAPH_IMG}"  onmousemove="moveit()" alt="graphs" 
-              title="{#_Click_to_set_Time}" border="0" 
-              height="100" width="500"> </div> 
-</div>
 <? } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="mapTable">
   <tr>
-	<td><div id="map"></div></td>
-	<td valign="top"><fieldset class="legendBox"><legend>Info</legend><BR />
-	
-	<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr /><div id="side_bar"></div></fieldset></td>
-  </tr>
+	<td valign="top"><div style="position: relative; width: 600px; height:120px;"> 
+	  <div style="position: absolute; top: 14px; left: 40px; z-index: 100; height:84px;  width:2px; background-color:#00FF00;" 
+	  id="timeLine1"></div>
+	   
+	  <div style="position: absolute; float:right; right:20px; top: 1px; z-index: 50; padding-right:4px; text-align:right;
+				 height:12px; width:130px; border:0px solid #777777; background-color:#F2F599;" 
+	  id="timeBar"><?=$title1?></div>
 
+      <img style="position: absolute; top: 0px; left:0px; z-index: 0; cursor: crosshair;  border: 1px solid #999999;" 
+	  id="imggraphs" src="<?=$chart1?>" onMouseMove="SetTimer(event)" alt="graphs" 
+	  title="Click to set Time" border="0" 
+	  height="120" width="600">
+	</div></td>
+	<td rowspan="2" valign="top">
+		 <form name="form1" method="post" action="">
+		<fieldset class="legendBox"><legend>Info</legend><BR />
+	
+		<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr />
+		<div id="side_bar">
+		</div> 
+		<hr>
+	    <div align="right">Time: 
+	        <input name="timeText1" id="timeText1" type="text" size="5" >
+	    </div>
+	    <div align="right">Speed: 
+	        <input name="speed" id="speed" type="text" size="5" >
+	    </div>
+	    <div align="right">Alt: 
+	        <input name="alt" id="alt" type="text" size="5" >
+	    </div>
+	    <div align="right">Vario: 
+	        <input name="vario" id="vario" type="text" size="5" >
+	    </div>
+		</fieldset>
+        </form></td>
+  </tr>
+  <tr>
+	<td valign="top"><div id="map"></div></td>
+  </tr>
 </table>
 <div id="pdmarkerwork"></div>
 
 <script type="text/javascript">
-if(window.location.search) {
-	// Was a file specified?
-	var params = window.location.search.slice(1).split("&");
-	var vals = new Array(params.length);
-	for(var i = 0;i < params.length;i++) {
-		var item = params[i].split("=");
-		vals[item[0]] = item[1];
-	}
-	var zoom=4;
-	if(vals["file"]) {
-		if(vals["zoom"]) {
-		 	zoom = parseInt(vals["zoom"]);
-		} else {
-		 	zoom = 4;
-		}
-		var fname=vals["file"];  
-		fname=fname.replace("\/\/","\/");
-	}
-}
 var relpath="<?=$moduleRelPath?>";
+var fname="<?=$flight->getPolylineRelPath() ?>";
+var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 
-
-function moveit(){
-	var pt = marker.getPoint();
+function moveMarker(){
+	var pt =  posMarker.getPoint();
 	var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)
-	marker.setPoint(newpos);
+	posMarker.setPoint(newpos);
 	//map.setCenter(newpos, 17-5);
 }
 
+function MWJ_findObj( oName, oFrame, oDoc ) {
+	if( !oDoc ) { if( oFrame ) { oDoc = oFrame.document; } else { oDoc = window.document; } }
+	if( oDoc[oName] ) { return oDoc[oName]; } if( oDoc.all && oDoc.all[oName] ) { return oDoc.all[oName]; }
+	if( oDoc.getElementById && oDoc.getElementById(oName) ) { return oDoc.getElementById(oName); }
+	for( var x = 0; x < oDoc.forms.length; x++ ) { if( oDoc.forms[x][oName] ) { return oDoc.forms[x][oName]; } }
+	for( var x = 0; x < oDoc.anchors.length; x++ ) { if( oDoc.anchors[x].name == oName ) { return oDoc.anchors[x]; } }
+	for( var x = 0; document.layers && x < oDoc.layers.length; x++ ) {
+		var theOb = MWJ_findObj( oName, null, oDoc.layers[x].document ); if( theOb ) { return theOb; } }
+	if( !oFrame && window[oName] ) { return window[oName]; } if( oFrame && oFrame[oName] ) { return oFrame[oName]; }
+	for( var x = 0; oFrame && oFrame.frames && x < oFrame.frames.length; x++ ) {
+		var theOb = MWJ_findObj( oName, oFrame.frames[x], oFrame.frames[x].document ); if( theOb ) { return theOb; } }
+	return null;
+}
+
+	var ImgW = 600;
+	var StartTime = <?=$START_TIME?> ;
+	var EndTime = <?=$DURATION?> ;
+	
+	var timeLine=new Array();
+	timeLine[1] = document.getElementById("timeLine1").style;
+	
+	var marginLeft=40;
+	var marginRight=19;
+
+	function getCurrentTime(ct) {
+	   ct=ct/60;
+	   h=Math.floor(ct/60);
+  	   if (h<10) h="0"+h;
+	   m=Math.floor(ct % 60);
+	   if (m<10) m="0"+m;
+	   return h+":"+m;
+	}
+	
+	function MWJ_changeSize( oName, oWidth, oHeight, oFrame ) {
+		var theDiv = MWJ_findObj( oName, oFrame ); if( !theDiv ) { return; }
+		if( theDiv.style ) { theDiv = theDiv.style; }
+		 var oPix = document.childNodes ? 'px' : 0;		
+		 if( theDiv.resizeTo ) { theDiv.resizeTo( oWidth, oHeight ); }
+		theDiv.width = oWidth + oPix; theDiv.pixelWidth = oWidth;
+		theDiv.height = oHeight + oPix; theDiv.pixelHeight = oHeight;
+	}
+
+  function DisplayCrosshair(i){ // i=1 for the start , 2 end 	 
+	   var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime)
+	   timeLine[i].left = marginLeft + Temp  + "px";
+	   
+	   timeText=document.getElementById("timeText"+i);
+	   timeText.value=getCurrentTime(StartTime + CurrTime[i]);
+
+	 //  timeTextSecs=document.getElementById("timeTextSecs"+i);
+	 //  timeTextSecs.value=Math.floor(StartTime + CurrTime[i]);
+ }
+
+function getCheckedValue(radioObj) {
+	if(!radioObj)
+		return "";
+	var radioLength = radioObj.length;
+	for(var ii = 0; ii < radioLength; ii++) {
+		if(radioObj[ii].checked) {
+			return radioObj[ii].value;
+		}
+	}
+	return "";
+}
+
+function setValue(obj,target)
+{		
+//	var n = obj.selectedIndex;    // Which menu item is selected
+	var val = obj.value;        // Return string value of menu item
+	t=MWJ_findObj(target);
+	t.value=val;	
+}
 
 
+function SetTimer(evt) {
+   i=1; //getCheckedValue(document.forms[0].timeSel);
+   if (typeof evt == "object") {
+		if (evt.layerX > -1) {
+		 CurrTime[i] = (evt.layerX -marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
+		} else if (evt.offsetX) {
+		 CurrTime[i] = (evt.offsetX-marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
+		}
+   }
+  
+	if ( CurrTime[1] <0 )  { CurrTime[1] =0; }
+	if ( CurrTime[1] >= CurrTime[2]-4 )  { CurrTime[1] =CurrTime[2]-5; }
+    DisplayCrosshair(i);
+
+	// round up to 20secs..
+	tm=Math.floor(CurrTime[1]/20)*20;
+
+	// get the lat lon
+	lat=lt[tm];
+	lon=ln[tm];
+	var newpos= new GLatLng(lat, lon);
+	posMarker.setPoint(newpos);
+
+	speed=document.getElementById("speed");
+    speed.value=s[tm];
+	alt=document.getElementById("alt");
+    alt.value=a[tm];
+	vario=document.getElementById("vario");
+    vario.value=v[tm];
+
+  }
+
+  var CurrTime=new Array();
+  CurrTime[1] = 0;
+  CurrTime[2] = EndTime;
+  DisplayCrosshair(1);
+ // DisplayCrosshair(2);
+   
+	var lt=new Array();
+	var ln=new Array();
+	var d=new Array();
+	var a=new Array();
+	var s=new Array();
+	var v=new Array();
 </script>
+<? if (1) {?>
+<script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
+<? } ?>
+
+<? if (1) {?>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
+<? } ?>
 
 </body>
