@@ -100,7 +100,7 @@ div.markerTooltip, div.markerDetail {
 a:link, a:visited, a:active { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; text-decoration:none;  }
 
 fieldset.legendBox { 
-	width:115px;
+	width:130px;
 	height:600px;
 	border-style: solid; 
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
@@ -181,7 +181,8 @@ fieldset.legendBox {
 var relpath="<?=$moduleRelPath?>";
 var fname="<?=$flight->getPolylineRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
-
+var posMarker;
+ 
 function moveMarker(){
 	var pt =  posMarker.getPoint();
 	var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)

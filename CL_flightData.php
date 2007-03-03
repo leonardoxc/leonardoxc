@@ -1486,7 +1486,7 @@ $kml_file_contents=
 	} // end function getFlightFromIGC()
 
 	function validate() {
-		global $CONF_validation_server_url;
+		global $CONF_validation_server_url,$DBGlvl;
 		global $baseInstallationPath,$CONF_abs_path;
 
 		global $alreadyValidatedInPage;
@@ -1500,11 +1500,12 @@ $kml_file_contents=
 		} else { //standard leoanrdo validation -> the server not yet working 
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
 			$fl= $CONF_validation_server_url."?file=".$IGCwebPath;
+			if ($DBGlvl) $fl.="&dbg=1";
 			DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 			$contents =	split("\n",fetchURL($fl,30));
 			if (!$contents) return 0;
 	
-			// foreach ( $contents as $line) echo $line."<BR>";
+			foreach ( $contents as $line) DEBUG("VALIDATE",64,"$line");
 			$ok=-1;
 			if (trim($contents[0])=="OK") $ok=1;
 		}

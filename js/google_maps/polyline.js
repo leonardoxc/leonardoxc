@@ -8,7 +8,6 @@
       var gmarkers = [];
       var htmls = [];
       var i = 0;
-	  var posMarker;
 
       var background = [];
           background["green"] = "img/pin_1.png";

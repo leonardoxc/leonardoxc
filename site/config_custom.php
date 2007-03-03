@@ -58,9 +58,9 @@
  $mapServerActive=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
- $CONF_google_maps_track=1;
+ $CONF_google_maps_track=0;
  $CONF_google_maps_track_order=1; // will apear in the second tab
- $CONF_google_maps_track_only=1;  // use only google maps,  discard the local map server
+ $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 
  // set to 1 if you have an scoring server running
  // set to 0 if you dont know what a scoring server is ...
@@ -84,7 +84,7 @@
  // validate against the G-record
  $CONF_use_validation=1;
 
- $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate.php";
+ $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";
  
  // Membership of NAC (National Airsport Control, also referred as National Aero Club)
  $CONF_NAC_list=array(

@@ -49,7 +49,7 @@ foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
 	else $style="";
 	echo " <div class='menu1' $style ><a href='?name=$module_name&op=comp&rank=$rank&subrank=$subrankID'>$subrankTitle</a></div>";	
 }
-echo "<BR><BR";
+echo "<BR><BR>";
 // show the current subranking
 require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
 

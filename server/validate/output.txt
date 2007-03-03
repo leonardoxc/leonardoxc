@@ -1,5 +1,5 @@
 
-V:\modules\leonardo\server\validate>vali-bra 1.igc
+vali-bra
 -----------------------------------
 ---------- VALI-BRA V1.23 ---------
 --- for use with IQ-COMPEO only ---
@@ -11,24 +11,21 @@ V:\modules\leonardo\server\validate>vali-bra 1.igc
  !!!!!!!!!!!!!!! Data modified !!!!!!!!!!!!!!!!!
  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-V:\modules\leonardo\server\validate>vali-mun 1.igc
+vali-mun
 Validation check failed
 
-V:\modules\leonardo\server\validate>vali-xgd 1.igc
+vali-xgd
 FAILED
 
-V:\modules\leonardo\server\validate>vali-xmp 1.igc
+vali-xmp
 Validation check failed
 
-
-V:\modules\leonardo\server\validate>vali-xmr 1.igc
+vali-xmr
 FAILED
 
 
-V:\modules\leonardo\server\validate>valigpsdump 1.igc
+valigpsdump 
 FAILED
 
-
-
-V:\modules\leonardo\server\validate>valig7to 1.igc
+valig7to
 NOT valid
