@@ -1486,7 +1486,7 @@ $kml_file_contents=
 	} // end function getFlightFromIGC()
 
 	function validate() {
-		global $CONF_validation_server_url,$DBGlvl;
+		global $CONF_validation_server_url, $CONF_use_custom_validation, $DBGlvl;
 		global $baseInstallationPath,$CONF_abs_path;
 
 		global $alreadyValidatedInPage;
@@ -1495,7 +1495,7 @@ $kml_file_contents=
 
 		set_time_limit (240);	
 		$customValidationCodeFile=dirname(__FILE__)."/site/CODE_validate_custom.php";
-		if ( file_exists($customValidationCodeFile) ) { // we expect the result on $ok
+		if (  $CONF_use_custom_validation && file_exists($customValidationCodeFile) ) { // we expect the result on $ok
 			include $customValidationCodeFile;
 		} else { //standard leoanrdo validation -> the server not yet working 
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file

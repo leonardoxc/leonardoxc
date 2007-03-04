@@ -71,10 +71,18 @@ function getUsedGliders($userID) {
 	return $gliders;
 }
 
+function transliterate($str,$enc) {
+	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+	require_once dirname(__FILE__)."/lib/utf8_to_ascii/utf8_to_ascii.php";
+	$NewEncoding = new ConvertCharset;
+	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);
+	return utf8_to_ascii($str_utf8);
+}
+
 function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
-	global $currentlang,$nativeLanguage,$langEncodings;
-	global $countries;
+	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
+	global $countries,$langEncodings;
 	global $CONF_phpbb_realname_field;
 
 	$query="SELECT CONCAT(FirstName,' ',LastName) as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
@@ -89,11 +97,36 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
+
+
+		if ( strlen($realName)>1) { // always return real name
+			
+			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
+			else $str=$realName; 
+			
+			// we have some info on how to tranlitarate
+			// and the currentlang is not the native lang of the pilot.
+			$pilotCountry=strtolower($pilot['countryCode']);
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) !== NULL ) { // found the lang code				
+					// echo $pilotLang."#".$pilotCountry."$";
+					$enc=$langEncodings[$pilotLang];
+					if ($enc) 
+						$str=transliterate($str,$enc);
+				}
+			} 
+
+			// else return as is.
+			return $str;
+			
+		}
 					
-		if (strlen ($realName)>1 && $currentlang==$nativeLanguage) { // else realname is no good
+					/*
+		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
 			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
 			else return $realName; 
-		}
+		}*/
+		
 	} 
 
     if ($opMode==1) { // phpNuke 

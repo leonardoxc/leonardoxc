@@ -11,25 +11,32 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-
 $ok=0;
 
 // first upload the igc to the server
-$IGCabsPath=$CONF_abs_path."/".$this->getIGCRelPath(0); // validate original file
+$IGCabsPath=$this->getIGCFilename(0); // validate original file
 DEBUG("VALIDATE_IGC",1,"Will use igc: $IGCabsPath<BR>");
 // make an 8 chars filename
 $tmpFilename=sprintf("%08d.igc",rand(0,99999999)); 
 
-// now the scp code
-
-require_once $CONF_abs_path."/lib/php_ssh/src/ssh.php";
 
 // SET these parameters
 $remote = "manolis@vali.glidingcontest.org";
-$password = "o23se7n2p";
 $v_olc="manolis";
 $v_year="2007";
 
+$cmd="scp -q $IGCabsPath $remote:$tmpFilename";
+exec($cmd,$out,$res);
+
+//echo "cmd:$cmd<BR>";
+//echo "RES: $res, <BR>";
+//print_r($out);
+
+/*
+// now the scp code
+require_once $CONF_abs_path."/lib/php_ssh/src/ssh.php";
+global $debug_sexec;
+$debug_sexec=1;
 $rmt = new SExec($remote, $password);
 if ($rmt == FALSE || $rmt->error ) {
     DEBUG("VALIDATE_IGC",1,"Couldn't open the connection\n");
@@ -42,6 +49,8 @@ $rmt->ssh_copy_to($IGCabsPath, $tmpFilename, $out);
 $rmt->destruct();
 
 DEBUG("VALIDATE_IGC",1,"Output: $out");
+print_r($out);
+*/
 
 // done with that , call the url
 

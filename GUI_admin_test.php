@@ -121,6 +121,7 @@ LSEEYOU PureGlider=False
 								if (strtoupper(substr($line,0,strlen($str))) == strtoupper($str) ) {
 									$pr_res[$pr]++;
 									$found=1;
+									if ($pr=="G7ToWin"){  echo "found : ".$flight->flightID."<BR>"; exit; }
 									break;
 								}
 							}
