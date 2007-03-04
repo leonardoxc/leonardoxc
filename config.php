@@ -36,6 +36,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // for phpbb when  $CONF_use_own_template=1;
  $CONF_use_own_login=0;
  
+ // rely on  leonardo_pilits name flields  entirely
+ $CONF_use_leonardo_names=0;
+ 
  // admin_users 
  // put in this array the userID of the users you want ot grand admin status
  // YOU MUST PUT AT LEAST ONE ADMIN USER

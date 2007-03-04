@@ -24,6 +24,9 @@
  // for phpbb when  $CONF_use_own_template=1;
  $CONF_use_own_login=1;
  
+  // rely on  leonardo_pilits name flields  entirely
+ $CONF_use_leonardo_names=1;
+ 
  // mod_users 
  // put in this array the userID of the users you want ot grand mod status
  // You can leave this blank

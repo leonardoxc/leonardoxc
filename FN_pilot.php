@@ -108,12 +108,13 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 			// and the currentlang is not the native lang of the pilot.
 			$pilotCountry=strtolower($pilot['countryCode']);
 			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) !== NULL ) { // found the lang code				
-					// echo $pilotLang."#".$pilotCountry."$";
-					$enc=$langEncodings[$pilotLang];
-					if ($enc) 
-						$str=transliterate($str,$enc);
-				}
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
+					$pilotLang=$nativeLanguage; 
+				
+				 echo $pilotLang."#".$pilotCountry."$";
+				$enc=$langEncodings[$pilotLang];
+				if ($enc) $str=transliterate($str,$enc);
+			
 			} 
 
 			// else return as is.
@@ -188,6 +189,7 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 
 function getNationalityDropDown($cCode) {
 	global $countries;
+	asort($countries);
 	$str="<Select name='countriesList'>";
 	$str.="<option value=''></option>\n";
 	foreach ($countries as $countrycode=>$countryName) {

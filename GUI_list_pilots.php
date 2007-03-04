@@ -138,7 +138,19 @@
   $pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
 
 
-  
+ if ($CONF_use_leonardo_names)  {
+ $query = 'SELECT DISTINCT userID, CONCAT(FirstName," ",LastName) as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
+		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
+		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
+		. ' sum( DURATION )/count( * ) as mean_duration, '
+		. ' sum( FLIGHT_KM ) as totalOlcKm, '
+		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
+		. ' max( FLIGHT_POINTS ) as bestOlcScore '
+        . ' FROM  '.$flightsTable.' ' .$extra_table_str
+        . ' WHERE private=0  '.$where_clause
+        . ' GROUP BY userID'
+        . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
+} else { // default
  $query = 'SELECT DISTINCT userID, username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
@@ -150,7 +162,7 @@
         . ' WHERE private=0  AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' GROUP BY userID'
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
-	
+}	
 	$res= $db->sql_query($query);
 		// echo $query;
     if($res <= 0){
