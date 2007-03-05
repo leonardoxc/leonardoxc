@@ -83,7 +83,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_phpbb_realname_field;
+	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names;
 
 	$query="SELECT CONCAT(FirstName,' ',LastName) as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
 	$res= $db->sql_query($query);
@@ -99,7 +99,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 		$realName=$pilot['realName'];
 
 
-		if ( strlen($realName)>1) { // always return real name
+		if ( strlen($realName)>1 && ($CONF_use_leonardo_names || $currentlang==$nativeLanguage) ) { // always return real name
 			
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
 			else $str=$realName; 
@@ -107,22 +107,24 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 			// we have some info on how to tranlitarate
 			// and the currentlang is not the native lang of the pilot.
 			$pilotCountry=strtolower($pilot['countryCode']);
+			$pilotLang=""; 
+			
 			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
 				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
 					$pilotLang=$nativeLanguage; 
 				
-				 echo $pilotLang."#".$pilotCountry."$";
-				$enc=$langEncodings[$pilotLang];
-				if ($enc) $str=transliterate($str,$enc);
+				//echo $pilotLang."#".$pilotCountry."$";
 			
 			} 
-
+			$enc=$langEncodings[$pilotLang];
+			if ($enc) $str=transliterate($str,$enc);
+//echo $realName."@";
 			// else return as is.
 			return $str;
 			
 		}
 					
-					/*
+		/*
 		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
 			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
 			else return $realName; 

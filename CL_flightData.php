@@ -1073,7 +1073,7 @@ $kml_file_contents=
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
 			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
 			$this_tm=$point['time']-$min_time;
-			$jsOutput.=sprintf("lt[$this_tm]=%.5f;ln[$this_tm]=%.5f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
+			$jsOutput.=sprintf("lt[$this_tm]=%.6f;ln[$this_tm]=%.6f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
 								,$point['lat'],-$point['lon'],$point['dis'],$point['alt'],$point['speed'],$point['vario']);
 		}
 		$path_igc = dirname($this->getPointsFilename(1));

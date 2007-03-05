@@ -87,8 +87,8 @@
 
 		process_waypoints();
 		var encodedPolyline = new GPolyline.fromEncoded({
-			color: "#FFFFFF",
-			weight: 1,
+			color: "#FF0000",
+			weight: 2,
 			opacity:1,
 			points: lines[3],
 			levels: lines[4],

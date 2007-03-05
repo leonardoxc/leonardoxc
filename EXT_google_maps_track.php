@@ -145,7 +145,7 @@ fieldset.legendBox {
 
       <img style="position: absolute; top: 0px; left:0px; z-index: 0; cursor: crosshair;  border: 1px solid #999999;" 
 	  id="imggraphs" src="<?=$chart1?>" onMouseMove="SetTimer(event)" alt="graphs" 
-	  title="Click to set Time" border="0" 
+	  title="Move mouse to animate flight" border="0" 
 	  height="120" width="600">
 	</div></td>
 	<td rowspan="2" valign="top">
