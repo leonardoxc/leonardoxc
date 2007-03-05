@@ -218,7 +218,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				foreach($ranksList as $rankID=>$rankArray) {
 					$rname=$rankArray['name'];
 					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
-					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1'>".$rname."</a></li>";
+					if  ($rankArray['menuYear']) $yearToForceStr="&year=".$rankArray['menuYear']."&month=0";
+					else $yearToForceStr="";
+					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
 				
 				}			
 			}

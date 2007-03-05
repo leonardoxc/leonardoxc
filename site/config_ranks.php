@@ -11,6 +11,7 @@ $ranksList=array(
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
 		 'datesMenu'=>'years',
 		 'startYear'=>2005,
+		 'menuYear'=>2007, // either force the menu item to point to this year or put zero  
 		 'subranks'=>array(
 		 		1=>array('id'=>1, 
 						'name'=>'Paraglider (FAI 3) Sport',
