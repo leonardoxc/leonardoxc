@@ -594,11 +594,10 @@ var $maxPointNum=1000;
 		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
+		
+		if ( is_file($this->getPolylineFilename())  ) return ;
 
-		// $getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
-//		if ( is_file($this->getPolylineFilename() ) return ;
-
-		$filename=$this->getIGCFilename(0);  
+		$filename=$this->getIGCFilename(1);  
 		$lines = file ($filename); 
 		if (!$lines) return;
 		$i=0;
@@ -1552,7 +1551,7 @@ $kml_file_contents=
 		$fl= $OLCScoringServerPath."?pass=".$OLCScoringServerPassword."&file=".$IGCwebPath;
 		DEBUG("OLC_SCORE",1,"Will use URL: $fl<BR>");
 		//$contents = file($fl); 
-		$contents =	split("\n",fetchURL($fl,20));
+		$contents =	split("\n",fetchURL($fl,40));
 		if (!$contents) return;
 				
 		$turnpointNum=1;

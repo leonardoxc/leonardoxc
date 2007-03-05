@@ -46,6 +46,10 @@
       <td><a href="https://sourceforge.net/projects/leonardoserver/" target="_blank">https://sourceforge.net/projects/leonardoserver/</a></td>
     </tr>
     <tr>
+      <td><div align="right">Scoring Optimization</div></td>
+      <td><a href="http://freenet-homepage.de/streckenflug/optigc.html" target="_blank">Thomas Kuhlmann</a></td>
+    </tr>
+    <tr>
       <td><div align="right">GE extended Info Module </div></td>
       <td><a href="http://www.parawing.net" target="_blank">Emmanuel Chabani aka Man's</a></td>
     </tr>
