@@ -15,13 +15,12 @@
 	if ($year)
   		$where_clause.=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
 
-	$where_clause.=" AND cat=$cat ";
 	
 	// pilots must be NACid=1 (DHV) and NACmemberID>0
-	$where_clause.=" AND NACid=1 AND NACmemberID>0 ";
+//	$where_clause.=" AND NACid=1 AND NACmemberID>0 ";
 
 	// The flgiht mus be validated
-	$where_clause.=" AND validated=1 ";
+//	$where_clause.=" AND validated=1 ";
 
 	// OLC km's must be > 15
 	$where_clause.=" AND FLIGHT_KM>=15000 ";

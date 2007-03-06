@@ -34,6 +34,9 @@
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
   $datesMenu=$ranksList[$rank]['datesMenu'];
   $startYear=$ranksList[$rank]['startYear'];
+  if ($ranksList[$rank]['entity']=='club') $listClubs=1;
+  else $listClubs=0;
+  
   require_once dirname(__FILE__)."/MENU_second_menu.php";
 
 // show the general discription of the ranking
@@ -66,24 +69,19 @@ require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
 
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
-<? echo makePilotPopup();  ?>
-<? if (0) { ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tabber.js"></script>
-<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber.css" TYPE="text/css" MEDIA="screen">
-<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber-print.css" TYPE="text/css" MEDIA="print">
-<script type="text/javascript">
-/* Optional: Temporarily hide the "tabber" class so it does not "flash" on the page as plain HTML. 
-   After tabber runs, the class is changed to "tabberlive" and it will appear. */
-document.write('<style type="text/css">.tabber{display:none;}<\/style>');
-</script>
-<? } ?>
+<? if (!$listClubs) echo makePilotPopup();  ?>
+
 <div class="tabber" id="compTabber">
 <?
-  if ($lng==$ranksList[$rank]['localLanguage'])
-  		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['localName'];
-  else
-  		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['name'];
-  listCategory($subrankTitle, _OLC_TOTAL_SCORE,"score","score","formatOLCScore");
+	if ($lng==$ranksList[$rank]['localLanguage'])
+		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['localName'];
+	else
+		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['name'];
+		
+	if ($listClubs) 		
+	  listClubs($subrankTitle, _OLC_TOTAL_SCORE,"score","score","formatOLCScore");
+	else
+	  listCategory($subrankTitle, _OLC_TOTAL_SCORE,"score","score","formatOLCScore");
 
 ?>
 </div>
@@ -184,6 +182,103 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 
 	echo "</table>"; 
 	echo '</div>';
+} //end function
+
+function listClubs($legend,$header, $category, $key, $formatFunction="") {
+   global $clubs;
+   global $Theme,$countries;
+   global $module_name,$moduleRelPath;
+   global $CONF_compItemsPerPage;
+   global $page_num,$pagesNum,$startNum,$itemsNum;
+   global $op,$cat;
+   global $countHowMany;
+   global $tabID;
+   global $sort_funcs_pilots;
+
+   uasort($clubs,$sort_funcs_pilots[$category]);
+
+   $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
+    
+   $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
+   echo "<table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
+   			<tr><td class='tableTitleExtra' colspan='".($countHowMany+3)."'>$legend</td></tr>";
+   
+   ?>
+   <tr>
+   <td class="SortHeader" width="30"><? echo _NUM ?></td>
+   <td class="SortHeader"><div align=left><? echo _CLUB ?></div></td>
+   <? for ($ii=1;$ii<=$countHowMany;$ii++) { ?>
+   <td class="SortHeader" width="55">#<? echo $ii?></td>
+   <? } ?>
+   <td class="SortHeader" width="70"><? echo $header ?></td>
+   </tr>
+   <? 
+
+	  $i=1;
+   	  foreach ($clubs as $clubID=>$club) {
+  		 if ($i>$CONF_compItemsPerPage) break;
+		 if (!$club[$category]['sum'] || ! count($club[$category]['flights'])) continue;
+
+		 $sortRowClass=($i%2)?"l_row1":"l_row2"; 
+ 		 if ($i==1) $bg=" class='compFirstPlace'";
+ 		 else if ($i==2) $bg=" class='compSecondPlace'";
+ 		 else if ($i==3) $bg=" class='compThirdPlace'";
+		 else $bg=" class='$sortRowClass'";
+		 	 	     
+	     $i++;
+		 echo "<TR $bg>";
+		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
+	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
+				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
+					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>".
+				"</div></TD>";
+		 
+
+		$k=0;
+
+		unset($pilotBrands);
+		$pilotBrands=array();
+		foreach ($club[$category]['flights'] as $flightID) {
+			$val=$club['flights'][$flightID][$key];
+
+			$glider=$club['flights'][$flightID]['glider'];
+			$country=$countries[$club['flights'][$flightID]['country']];
+
+			$thisFlightBrandID=$club['flights'][$flightID]['brandID'];
+			if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
+
+			if (!$val)  $outVal="-";
+			else if ($formatFunction) $outVal=$formatFunction($val);
+			else $outVal=$val;
+			
+			$pilotName=getPilotRealName($club['flights'][$flightID]['userID'],0); 
+			$descr=_PILOT.": $pilotName, "._GLIDER.": $glider, "._COUNTRY.": $country";
+			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
+			else echo "<TD>".$outVal."</TD>"; 	 		  
+			$k++;
+			if ($k>=$countHowMany) break;
+		}
+
+		if ($k!=$countHowMany) {
+			for($j=$k;$j<$countHowMany;$j++) {
+				echo "<TD>-</TD>"; 	 		  
+			}
+		}
+
+		 if ($formatFunction) $outVal=$formatFunction($club[$category]["sum"]);
+		 else $outVal=$club[$category]["sum"];
+   	     echo "<TD>".$outVal."</TD>"; 	 
+
+//		arsort($pilotBrands);
+//		$brandID=array_shift(array_keys($pilotBrands));
+//		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' border=0 align=abs_middle>";
+//		echo "<td align='center'>$gliderBrandImg</td>";
+		echo "</tr>";
+   	}	// next club
+
+	echo "</table>"; 
+//	echo '</div>';
+
 } //end function
 
 ?>

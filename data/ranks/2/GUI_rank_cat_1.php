@@ -14,11 +14,11 @@
 //-----------------------------------------------------------------------
 //-----------------------  custom league --------------------------------
 //-----------------------------------------------------------------------
-	// 	sport class ,  category=1";
+	// 	PG (cat=1) all categories !!
 	// Some config
 	$cat=1; // pg
-	$where_clause="";
-	$where_clause.=" AND category=1 ";
+	$where_clause="";	
+	$where_clause.=" AND cat=1 "; // pg
 	require_once dirname(__FILE__)."/common_pre.php";
 	
 	$query = "SELECT $flightsTable.ID, userID, takeoffID ,
@@ -27,7 +27,30 @@
   		. " FROM $flightsTable,$pilotsTable "
         . " WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause ";
 
+	$query = "
+	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
+	from (
+	   select $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID,
+		  @num := if(@clubID = $flightsTable.clubID, @num + 1, 1) as row_number,
+		  @clubID := .$flightsTable.clubID as dummy
+	  from $flightsTable,$pilotsTable
+	  WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause
+	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	) as x where x.row_number <= 6;
+	";
 
-require_once dirname(__FILE__)."/common.php";
+	$query = "
+	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
+	from (
+	   select $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID,
+		  @num := if(@clubID = $flightsTable.clubID, @num + 1, 1) as row_number,
+		  @clubID := .$flightsTable.clubID as dummy
+	  from $flightsTable,$pilotsTable
+	  WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause
+	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	) as x ;
+	";
+	
+	require_once dirname(__FILE__)."/common.php";
 
 ?>

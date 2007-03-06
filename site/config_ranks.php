@@ -4,6 +4,7 @@ $ranksList=array(
 
 1=>array('id'=>1,
 		 'type'=>'national',
+		 'entity'=>'pilot',
 		 'name'=>'German National Ranking',
 		 'localName'=>'German National Ranking (in german)',
 		 'localLanguage'=>'german',
@@ -37,6 +38,29 @@ $ranksList=array(
 			),
 		),
 
+2=>array('id'=>2,
+		 'type'=>'national',
+		 'entity'=>'club',
+		 'name'=>'German Club Ranking',
+		 'localName'=>'German Club Ranking (in german)',
+		 'localLanguage'=>'german',
+		 'dontShowCatSelection'=>1, // no glider type selection menu on top
+ 		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+		 'datesMenu'=>'years',
+		 'startYear'=>2005,
+		 'menuYear'=>2007, // either force the menu item to point to this year or put zero  
+		 'subranks'=>array(
+		 		1=>array('id'=>1, 
+						'name'=>'Paraglider',
+						'localName'=>'Paraglider (in german)',
+						),
+		 		2=>array('id'=>2, 
+						'name'=>'Hangglider',
+						'localName'=>'Hangglider (in german)',
+						),
+		 
+			),
+		),
 );
 
 ?>

@@ -256,7 +256,7 @@ function removeClubFlight(clubID,flightID) {
 	<tr> 
 	  <td class='SortHeader' width="25"><? echo _NUM ?></td>
 		 <?
-		   printHeader(70,$sortOrder,"DATE",_DATE_SORT,$query_str) ;
+		   printHeader(60,$sortOrder,"DATE",_DATE_SORT,$query_str) ;
 		   printHeader(160,$sortOrder,"pilotName",_PILOT,$query_str) ;
 		   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$query_str) ;
 		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
@@ -298,7 +298,7 @@ function removeClubFlight(clubID,flightID) {
   	   		$dateStr="&nbsp;";  
 			$rowStr="";
   	   }
-  	   if ( $days_from_submission <= 3 ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' width='31' height='12' />";			
+  	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' width='31' height='12' />";			
   	   
 		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
 
@@ -329,8 +329,8 @@ function removeClubFlight(clubID,flightID) {
 		//$brandsList[$gliderType][$brandID]
 	   else $gliderBrandImg="&nbsp;";
 	   
-	   echo "\t<TD $first_col_back_color>".($i-1+$startNum)."</TD>";
-	   echo "<TD class='dateString' valign='top'>$dateStr</TD>".
+	   echo "\t<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div></TD>";
+	   echo "<TD class='dateString' valign='top'><div>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		

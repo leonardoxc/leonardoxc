@@ -15,12 +15,13 @@
 	// echo "<BR><BR><BR>$query";
 
    if($res <= 0){
+   echo $query;
       echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();
    }
 
 $i=1;  
-$pilots=array(); // new method -> one multi array
+$clubs=array(); // new method -> one multi array
 list($takeoffsCountry,$takeoffsContinent)=getTakeoffsCountryContinent();
 
 while ($row = $db->sql_fetchrow($res)) {
@@ -28,23 +29,31 @@ while ($row = $db->sql_fetchrow($res)) {
 	 $countryCode=$takeoffsCountry[$takeoffID];
 	 $continentCode=$takeoffsContinent[$takeoffID];
 
+	 $clubID=$row["clubID"];
 	 $uID=$row["userID"];
 	 $flightID=$row["ID"];
 
-	 if (!isset($pilots[$uID]['name'])){
-		 $name=getPilotRealName($uID,1); 
-		 $name=prepare_for_js($name);
-	     $pilots[$uID]['name']=$name;
-	 }
+//	 if (!isset($pilots[$uID]['name'])){
+//		 $name=getPilotRealName($uID,1); 
+////		 $name=prepare_for_js($name);
+//	     $clubs[$uID]['name']=$name;
+//	 }
 	 
-	 $brandID=guessBrandID($row['cat'],$row['glider']);
+	// $brandID=guessBrandID($row['cat'],$row['glider']);
+	
+	// $name=getPilotRealName($uID,0); 
+	$name="aa";
+	 //$name=prepare_for_js($name);
+	 $clubs[$clubID]['flights'][$flightID]['pilotName']=$name;
 
-	 $pilots[$uID]['flights'][$flightID]['glider']=$row['glider'];
-	 $pilots[$uID]['flights'][$flightID]['brandID']=$brandID;
-	 $pilots[$uID]['flights'][$flightID]['type']=$row["BEST_FLIGHT_TYPE"];
-	 $pilots[$uID]['flights'][$flightID]['country']=$countryCode;
-	 $pilots[$uID]['flights'][$flightID]['continent']=$continentCode;
-	 $pilots[$uID]['flights'][$flightID]['score']=$row["FLIGHT_POINTS"];
+	 $clubs[$clubID]['flights'][$flightID]['userID']=$uID;
+	 $clubs[$clubID]['flights'][$flightID]['glider']=$row['glider'];
+	 
+	 $clubs[$clubID]['flights'][$flightID]['brandID']=$brandID;
+	 $clubs[$clubID]['flights'][$flightID]['type']=$row["BEST_FLIGHT_TYPE"];
+	 $clubs[$clubID]['flights'][$flightID]['country']=$countryCode;
+	 $clubs[$clubID]['flights'][$flightID]['continent']=$continentCode;
+	 $clubs[$clubID]['flights'][$flightID]['score']=$row["FLIGHT_POINTS"];
      $i++;
 } 
 
@@ -64,8 +73,8 @@ while ($row = $db->sql_fetchrow($res)) {
 //	$countHowMany= $CONF_countHowManyFlightsInComp;
 	$countHowMany= 3; // german rule
 
-	foreach ($pilots as $pilotID=>$pilotArray) {
-		$flightsArray=&$pilots[$pilotID]['flights'];
+	foreach ($clubs as $clubID=>$clubArray) {
+		$flightsArray=&$clubs[$clubID]['flights'];
 		// now custom rule 
 		// sort by olc , 
 		// keep only europe flights	
@@ -82,7 +91,7 @@ while ($row = $db->sql_fetchrow($res)) {
 			if ($flight['continent']!=1)  continue;
 
 			if ($flight['country']=='DE') $nationalFlights++;
-			$pilots[$pilotID][$category]['flights'][$i]=$flightID;
+			$clubs[$clubID][$category]['flights'][$i]=$flightID;
 			$lastVal=$flight[$key];
 			$bestSUM+=$flight[$key];
 			$i++;
@@ -94,7 +103,7 @@ while ($row = $db->sql_fetchrow($res)) {
 			foreach ($flightsArray as $flightID=>$flight) {
 				if ($flight['country']=='DE') { 
 					$nationalFlights++;
-					$pilots[$pilotID][$category]['flights'][$countHowMany-1]=$flightID;
+					$clubs[$clubID][$category]['flights'][$countHowMany-1]=$flightID;
 					$bestSUM-=$lastVal;
 					$bestSUM+=$flight[$key];
 					break;
@@ -105,13 +114,13 @@ while ($row = $db->sql_fetchrow($res)) {
 		if (!$nationalFlights && $i==$countHowMany) { // there are no national flights -> delete last flight from list
 			//	echo "<HR>no national flight found will delete last flight<BR>";
 			$bestSUM-=$lastVal;
-			unset($pilots[$pilotID][$category]['flights'][$countHowMany-1]);
+			unset($clubs[$clubID][$category]['flights'][$countHowMany-1]);
 		}
 
-		$pilots[$pilotID][$category]['sum']=$bestSUM;	
+		$clubs[$clubID][$category]['sum']=$bestSUM;	
 
 
 	}
-	// print_r($pilots);
+	// print_r($clubs);
 
 ?>

@@ -254,15 +254,17 @@ border:0;
 
 /* some styles for the listTable items */
 .distance   { color:#4400aa; text-align:right; }
-.dateString { color:#224488; text-align:right; }
-.OLCScore   { color:#224488; text-align:right; }
+.dateString div { color:#003366; text-align:right; font-size:9px; vertical-align:top; }
+.OLCScore   { color:#000066; text-align:right; }
 .listIcons { margin-right:1px; }
 
 .flagIcon { margin-right:0.5em; vertical-align:middle; text-decoration:none; border: 0 none;  }
 
 .numeration { display:inline; }
 .numeration  a, .numeration  a:visited { color:#FFFFFF; }
-.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }
+/*.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }*/
+.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#70719A; font-size:10px; text-align:right; }
+
 .pilotLink,   .pilotLink   a, .pilotLink   a:visited { color:#000066; text-align:left; }
 
 /* for the active page num in the numeration */
