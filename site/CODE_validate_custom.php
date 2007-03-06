@@ -66,6 +66,9 @@ if ($contents) {
 		if (substr($line,0,20)=="ValiGPS: IGC file OK") {
 			$ok=1; // valid
 			break;
+		} else if ( strpos($line,"igc file not found") === true ) {
+			$ok=0; // not yet processed
+			break;
 		}
 	}
 }

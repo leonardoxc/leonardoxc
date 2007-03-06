@@ -42,6 +42,7 @@ function chmodDir($dir){
 
 echo "<br><BR>";
 echo "<ul>";
+	if ($CONF_use_validation) echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
@@ -77,6 +78,19 @@ echo "</ul><br><br>";
 					 $status=$flight->getIGCRelPath()." MISSING";
 				     echo "Flight ID: ".$row["ID"]." [".$row["active"]."] $status <br>";
 				 }
+			 }
+		}
+		echo "<BR><br><BR>DONE !!!<BR>";
+	} else if ($admin_op=="updateValidation") {
+		$query="SELECT ID from $flightsTable WHERE validated=0";
+		$res= $db->sql_query($query);
+			
+		if($res > 0){
+			 $waypoints=getWaypoints();
+			 while ($row = mysql_fetch_assoc($res)) { 
+				 $flight=new flight();
+				 $flight->getFlightFromDB($row["ID"]);
+				 $flight->validate();
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
