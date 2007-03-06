@@ -35,7 +35,7 @@ $lonWest=floor($lon);
 $latNorth=$latSouth+1;
 $lonEast=$lonWest+1;
 
-$latD=$lat-$latSouth;
+$latD=1-($lat-$latSouth);
 $lonD=$lon-$lonWest;
 
 
@@ -45,19 +45,19 @@ $demFile="N40E023".".hgt";
 
 // find x,y inside the file
 // 1 degree is 1201 points
-$x=round((1-$lonD)*1201);
-$y=round($latD*1201);
+$x=floor($lonD*1201);
+$y=floor($latD*1201);
 
 // point offeset in file
-$pointOffset=$x+$y*1201;
+$pointOffset=($x+$y*1201)*2;
 
 
 $fl=file_get_contents($demFile);
 
-$alt=$fl[$pointOffset]*256+$fl[$pointOffset];
+$alt=ord($fl[$pointOffset])*256+ord($fl[$pointOffset+1]);
 
 
-echo "$latD $lonD $x $y <BR>";
+echo "$latD $lonD $x $y  $pointOffset<BR>";
 echo $alt;
 
 
