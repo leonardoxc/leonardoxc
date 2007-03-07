@@ -43,14 +43,29 @@
 	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
 	from (
 	   select $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID,
+			  $waypointsTable.CountryCode as takeoffCountryCode, 
 		  @num := if(@clubID = $flightsTable.clubID, @num + 1, 1) as row_number,
 		  @clubID := .$flightsTable.clubID as dummy
-	  from $flightsTable,$pilotsTable
-	  WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause
+	  from $flightsTable,$pilotsTable,$waypointsTable
+	  WHERE (userID!=0 AND  private=0) 
+			AND $flightsTable.userID=$pilotsTable.pilotID 
+			AND $flightsTable.clubID<>0 
+			AND $flightsTable.takeoffID =$waypointsTable.ID 
+			$where_clause
 	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
 	) as x ;
 	";
 	
+	$query = "
+	 SELECT $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
+	 FROM  $flightsTable,$pilotsTable
+	 WHERE (userID!=0 AND  private=0) 
+			AND $flightsTable.userID=$pilotsTable.pilotID 
+			AND $flightsTable.clubID<>0 
+			$where_clause
+	  order by $flightsTable.clubID, score DESC
+	";
+
 	require_once dirname(__FILE__)."/common.php";
 
 ?>

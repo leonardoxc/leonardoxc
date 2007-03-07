@@ -14,11 +14,11 @@
 //-----------------------------------------------------------------------
 //-----------------------  custom league --------------------------------
 //-----------------------------------------------------------------------
-	// 	open class ,  category=2";
+	// 	PG (cat=1) all categories !!
 	// Some config
-	$cat=1; // pg
-	$where_clause="";
-	$where_clause.=" AND category=2 ";
+	// $cat=1; // hg flex -+ regid
+	$where_clause="";	
+	$where_clause.=" AND (cat=2 OR cat=4) "; // hg flex + rigid
 	require_once dirname(__FILE__)."/common_pre.php";
 	
 	$query = "SELECT $flightsTable.ID, userID, takeoffID ,
@@ -27,8 +27,45 @@
   		. " FROM $flightsTable,$pilotsTable "
         . " WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause ";
 
+	$query = "
+	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
+	from (
+	   select $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID,
+		  @num := if(@clubID = $flightsTable.clubID, @num + 1, 1) as row_number,
+		  @clubID := .$flightsTable.clubID as dummy
+	  from $flightsTable,$pilotsTable
+	  WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause
+	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	) as x where x.row_number <= 6;
+	";
 
-require_once dirname(__FILE__)."/common.php";
+	$query = "
+	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
+	from (
+	   select $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID,
+			  $waypointsTable.CountryCode as takeoffCountryCode, 
+		  @num := if(@clubID = $flightsTable.clubID, @num + 1, 1) as row_number,
+		  @clubID := .$flightsTable.clubID as dummy
+	  from $flightsTable,$pilotsTable,$waypointsTable
+	  WHERE (userID!=0 AND  private=0) 
+			AND $flightsTable.userID=$pilotsTable.pilotID 
+			AND $flightsTable.clubID<>0 
+			AND $flightsTable.takeoffID =$waypointsTable.ID 
+			$where_clause
+	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	) as x ;
+	";
+	
+	$query = "
+	 SELECT $flightsTable.clubID,$flightsTable.ID, ( FLIGHT_POINTS * ( 1 - ( 0.075*(cat-2)) )  ) as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
+	 FROM  $flightsTable,$pilotsTable
+	 WHERE (userID!=0 AND  private=0) 
+			AND $flightsTable.userID=$pilotsTable.pilotID 
+			AND $flightsTable.clubID<>0 
+			$where_clause
+	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	";
 
+	require_once dirname(__FILE__)."/common.php";
 
 ?>
