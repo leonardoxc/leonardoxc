@@ -88,18 +88,7 @@
  $CONF_use_validation=1;
  $CONF_use_custom_validation=1;
  $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";
- 
- // Membership of NAC (National Airsport Control, also referred as National Aero Club)
- $CONF_NAC_list=array(
-	1=>array("name"=>"DHV",
-	 "id_input_method"=>"external",
-	 "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
-	 // use this for production 
-	 // "input_url"=>"/admin/odb/page.php?id=check_membership&callingfield=NACmemberID",
-	)							
- );
- $CONF_use_NAC=1; 
- 
+  
 
  
  // set this to 0 if you dont want to give the functionality of OLC submits
@@ -126,9 +115,7 @@
  $CONF_metricSystem=1; //  1=km,m     2=miles,feet
 
 
- // flights that were submitted these days ago will have a "new" icon
- // set to -1 to disable
- $CONF_new_flights_days_threshold=-1;
+ 
  // Debug leave it 0
  $CONF_show_DBG_XML=1;
 
@@ -153,5 +140,45 @@
  // you have leonardo
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
+ 
+ 
+ // 2007/03/07 ADDED
+ 
+ // flights that were submitted these days ago will have a "new" icon
+ // set to -1 to disable
+ $CONF_new_flights_days_threshold=-1;
 
+
+ // Membership of NAC (National Airsport Control, also referred as National Aero Club)
+ $CONF_NAC_list=array(
+	1=>array(
+		 'id'=>1,
+		 'name'=>'DHV',
+		 'localName'=>'DHV',
+		 'localLanguage'=>'german',
+		 'periodIsNormal'=>0 , // if league period doesnt start on 1/1 then =>0
+		 'periodStart'=>"-10-1",	
+		 "id_input_method"=>"external",
+		 "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
+		 // use this for production 
+		 // "input_url"=>"/admin/odb/page.php?id=check_membership&callingfield=NACmemberID",
+
+		 // Use the NAC clubs. A pilot can be member only to one NAC club.
+		"use_clubs"=>1,
+
+		 // While this flag is 1 the pilots are allowd to change their club membership
+		 // the admin must set this to 0 to finalise the memberships for the period.
+		"club_change_period_active"=>1,
+		
+		 // While this flag is 1 the pilots are allowed to add themsleves as members of a club
+		 // IF they havent done it before.
+		 // the admin must set this to 0 when he wishes to stop pilots registering for clubs.
+		 "add_to_club_period_active"=>1,
+		 "current_year"=>2007,
+	)							
+ );
+ $CONF_use_NAC=1; 
+ 
+
+ 
 ?>

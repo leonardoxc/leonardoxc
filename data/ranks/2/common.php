@@ -30,7 +30,7 @@ while ($row = $db->sql_fetchrow($res)) {
 	 $countryCode=$takeoffsCountry[$takeoffID];
 	 $continentCode=$takeoffsContinent[$takeoffID];
 
-	 $clubID=$row["clubID"];
+	 $clubID=$row["NACclubID"];
 	 $uID=$row["userID"];
 	 $flightID=$row["ID"];
 	 

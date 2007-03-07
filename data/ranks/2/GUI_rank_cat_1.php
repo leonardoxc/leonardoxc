@@ -21,12 +21,14 @@
 	$where_clause.=" AND cat=1 "; // pg
 	require_once dirname(__FILE__)."/common_pre.php";
 	
+/*
+	// just testing
 	$query = "SELECT $flightsTable.ID, userID, takeoffID ,
   				 gliderBrandID, $flightsTable.glider as glider,cat,
   				 FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  "
   		. " FROM $flightsTable,$pilotsTable "
         . " WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause ";
-
+	// just testing
 	$query = "
 	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
 	from (
@@ -38,7 +40,7 @@
 	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
 	) as x where x.row_number <= 6;
 	";
-
+	// just testing
 	$query = "
 	select clubID , userID, ID, FLIGHT_POINTS, takeoffID, gliderBrandID, glider AS glider
 	from (
@@ -55,15 +57,16 @@
 	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
 	) as x ;
 	";
-	
+*/
+	// this is the correct one !!!
 	$query = "
-	 SELECT $flightsTable.clubID,$flightsTable.ID, FLIGHT_POINTS as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
+	 SELECT $flightsTable.NACclubID, $flightsTable.ID, FLIGHT_POINTS as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
 	 FROM  $flightsTable,$pilotsTable
 	 WHERE (userID!=0 AND  private=0) 
 			AND $flightsTable.userID=$pilotsTable.pilotID 
-			AND $flightsTable.clubID<>0 
+			AND $flightsTable.NACclubID<>0 
 			$where_clause
-	  order by $flightsTable.clubID, score DESC
+	  order by $flightsTable.NACclubID, score DESC
 	";
 
 	require_once dirname(__FILE__)."/common.php";

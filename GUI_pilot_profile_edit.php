@@ -51,12 +51,21 @@
 	$NACmemberID=$_POST['NACmemberID']+0;
 	if ($NACmemberID<=0) $NACid=0;
 	
+	$NACclubID=$_POST['NACclubID']+0;
+	
+	if ($NACid && $NACclubID && $CONF_NAC_list[$NACid]['use_clubs'] ) {
+		// add_to_club_period_active
+		if ($CONF_NAC_list[$NACid]['club_change_period_active'])
+			NACclub::updatePilotFlights($pilotIDview,$NACid,$NACclubID); 
+	}
+	
    $query="UPDATE $pilotsTable SET
    		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
 		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
 		`NACid` = $NACid,
 		`NACmemberID` = $NACmemberID,
+		`NACclubID` = $NACclubID,
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
@@ -192,7 +201,8 @@
 	   var NAC_id_input_method= [];
 	   var NACid=0;
 	   <?=$list1.$list2 ?>
-
+		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
+		
 		function changeNAC() {
 			var mid=MWJ_findObj("NACmemberID");
 			mid.value="";
@@ -212,6 +222,11 @@
 			}
 		}
 
+		function setClub() {	
+			if 	(NACid>0) {
+				window.open(NAC_club_input_url+'?NAC_ID='+NACid, '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
+			}
+		}
 	</script>
 	<?
 			echo "<select name='NACid' id='NACid' onchange='changeNAC(this)'>";
@@ -226,7 +241,18 @@
 			echo "</select>";
 			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"block")."'>";
 			echo _MemberID.": <input size='6' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";
-			echo "<a href='#' onclick=\"setID();return false;\">"._EnterID."</a></div>";
+			
+		
+			
+			echo "<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>";
+			
+			echo "<br>"._Club." :";							
+			if ($CONF_NAC_list[$pilot['NACid']]['club_change_period_active']) {
+								
+			} else {				
+				echo "";
+			}	
+			echo "<a href='#' onclick=\"setClub();return false;\">"._EnterCLub."</a></div>";
 		} else { ?>
 	<input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
 	<input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />

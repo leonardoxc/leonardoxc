@@ -199,7 +199,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
     
   // $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
-   echo "<table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
+   echo "<table class='listTable listTableTabber listTable2' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($pilotsMax+3)."'>$legend</td></tr>";
    
    ?>
@@ -207,7 +207,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
    <td class="SortHeader" width="30"><? echo _NUM ?></td>
    <td class="SortHeader"><div align=left><? echo _CLUB ?></div></td>
    <? for ($ii=1;$ii<=$pilotsMax;$ii++) { ?>
-   <td class="SortHeader" width="55"><? echo _PILOT." #$ii" ;?></td>
+   <td class="SortHeader" width="55"><div align=left><? echo _PILOT." #$ii" ;?></div></td>
    <? } ?>
    <td class="SortHeader" width="70"><? echo $header ?></td>
    </tr>
@@ -245,8 +245,8 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 			$pilotName=getPilotRealName($pilotID,1); 
 			$pilotName=prepare_for_js($pilotName);
 			echo "<TD width='20%'>";
-			echo "<table width='100%' cellpadding='0' cellspacing='0'><TR><TD colspan=3 id='$arrayName"."_$pilotID'>".
-				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
+			echo "<table width='100%' cellpadding='0' cellspacing='0' class='listTable3'><TR><TD colspan=3 id='$arrayName"."_$pilotID'>".
+				"<a  class='clubPilot' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
 					addslashes($pilotName)."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotName."</a>".
 			"</td></tr><tr>";
 			foreach($pilot['flights_sel'] as $flightID) {

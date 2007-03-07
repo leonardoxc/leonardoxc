@@ -188,6 +188,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $mapsTable		=  $CONF_tables_prefix."_maps";
  $waypointsTable=  $CONF_tables_prefix."_waypoints";
  $clubsTable	=  $CONF_tables_prefix."_clubs";
+ $NACclubsTable =  $CONF_tables_prefix."_NAC_clubs";
  $clubsPilotsTable	=  $CONF_tables_prefix."_clubs_pilots";
  $clubsFlightsTable	=  $CONF_tables_prefix."_clubs_flights";
  $serversTable	=  $CONF_tables_prefix."_servers";
@@ -237,6 +238,12 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // The top 'dates' menu  will have years starting from $CONF_StartYear
  $CONF_StartYear=1998;
+
+
+ // flights that were submitted these days ago will have a "new" icon
+ // set to -1 to disable
+ $CONF_new_flights_days_threshold=3;
+ 
 
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only

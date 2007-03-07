@@ -20,7 +20,7 @@
 	$where_clause="";	
 	$where_clause.=" AND (cat=2 OR cat=4) "; // hg flex + rigid
 	require_once dirname(__FILE__)."/common_pre.php";
-	
+/*	
 	$query = "SELECT $flightsTable.ID, userID, takeoffID ,
   				 gliderBrandID, $flightsTable.glider as glider,cat,
   				 FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  "
@@ -55,15 +55,15 @@
 	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
 	) as x ;
 	";
-	
+	*/
 	$query = "
-	 SELECT $flightsTable.clubID,$flightsTable.ID, ( FLIGHT_POINTS * ( 1 - ( 0.075*(cat-2)) )  ) as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
+	 SELECT $flightsTable.NACclubID,$flightsTable.ID, ( FLIGHT_POINTS * ( 1 - ( 0.075*(cat-2)) )  ) as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
 	 FROM  $flightsTable,$pilotsTable
 	 WHERE (userID!=0 AND  private=0) 
 			AND $flightsTable.userID=$pilotsTable.pilotID 
-			AND $flightsTable.clubID<>0 
+			AND $flightsTable.NACclubID<>0 
 			$where_clause
-	  order by $flightsTable.clubID, FLIGHT_POINTS DESC
+	  order by $flightsTable.NACclubID, FLIGHT_POINTS DESC
 	";
 
 	require_once dirname(__FILE__)."/common.php";

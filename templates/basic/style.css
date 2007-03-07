@@ -224,7 +224,23 @@ The main table that holds the list of flights/pilots/takeoffs
 	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
 */
 }
+ 
+.listTable2 TD {
+ 	vertical-align:top;
+	border-bottom-color:#AAAAAA; border-bottom-width:1px; border-bottom-style:solid;
+}
 
+.listTable3 TD {
+ 	vertical-align:top;
+	border:0;
+}
+
+.clubPilot , a:link.clubPilot ,  a.clubPilot , a:visited.clubPilot  { 
+	font-size:11px;
+	text-decoration:none;
+	color:#0066CC;
+
+}
 
 .simpleTable {
 	text-align:left;

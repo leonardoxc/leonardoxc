@@ -32,3 +32,18 @@ ALTER TABLE `leonardo_flights` ADD `validationMessage` TEXT NOT NULL AFTER `vali
 
 ALTER TABLE `leonardo_pilots` ADD `NACid` INT UNSIGNED NOT NULL DEFAULT '0' AFTER `countryCode` ,
 ADD `NACmemberID` BIGINT UNSIGNED NOT NULL DEFAULT '0' AFTER `NACid` ;
+
+
+# 2007/03/07
+
+CREATE TABLE `leonardo_NAC_clubs` (
+`NAC_ID` MEDIUMINT NOT NULL ,
+`clubID` BIGINT NOT NULL ,
+`clubName` VARCHAR( 255 ) NOT NULL ,
+PRIMARY KEY ( `NAC_ID` , `clubID` )
+) ENGINE = MYISAM ;
+
+
+ALTER TABLE `leonardo_pilots` ADD `NACclubID` BIGINT NOT NULL AFTER `NACmemberID` ;
+
+ALTER TABLE `leonardo_flights` ADD `NACclubID` BIGINT NOT NULL ;
