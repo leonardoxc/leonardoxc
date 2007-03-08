@@ -11,7 +11,7 @@ $ranksList=array(
 		 'dontShowCatSelection'=>1, // no glider type selection menu on top
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
 		 'datesMenu'=>'years',
-		 'startYear'=>2005,
+		 'startYear'=>2007,
 		 'menuYear'=>2007, // either force the menu item to point to this year or put zero  
 		 'subranks'=>array(
 		 		1=>array('id'=>1, 
@@ -47,7 +47,7 @@ $ranksList=array(
 		 'dontShowCatSelection'=>1, // no glider type selection menu on top
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
 		 'datesMenu'=>'years',
-		 'startYear'=>2005,
+		 'startYear'=>2007,
 		 'menuYear'=>2007, // either force the menu item to point to this year or put zero  
 		 'subranks'=>array(
 		 		1=>array('id'=>1, 

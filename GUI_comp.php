@@ -207,7 +207,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
    ?>
    <tr>
    <td class="SortHeader" width="30"><? echo _NUM ?></td>
-   <td class="SortHeader"><div align=left><? echo _CLUB ?></div></td>
+   <td class="SortHeader"><div align=left><? echo _Club ?></div></td>
    <? for ($ii=1;$ii<=$pilotsMax;$ii++) { ?>
    <td class="SortHeader" width="55"><div align=left><? echo _PILOT." #$ii" ;?></div></td>
    <? } ?>
@@ -229,7 +229,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 	     $i++;
 		 echo "<TR $bg>";
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
-	     echo "<TD width='27%'><div align=left >".$clubNamesList[$clubID].
+	     echo "<TD width='25%'><div align=left >".$clubNamesList[$clubID].
 				"</div></TD>";
 		 
 
