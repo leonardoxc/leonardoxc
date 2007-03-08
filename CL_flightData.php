@@ -759,13 +759,13 @@ $kml_file_contents=
 					if  ( strlen($line) < 23 ) 	continue;
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$thisPoint->gpsTime+=$day_offset;
-					$data_time[$i]=sec2Time($thisPoint->getTime(),1);
-					
+										
 					// check for start of flight 
 					if ($thisPoint->getTime()<$this->START_TIME) continue;
 					// check for end of flight 
 					if ($thisPoint->getTime()>$this->END_TIME) continue;
 					
+					$data_time[$i]=sec2Time($thisPoint->getTime(),1);
 					$data_alt[$i]=$thisPoint->getAlt();				
 					if ( $data_alt[$i] > $this->maxAllowedHeight ) continue;
 
@@ -1390,19 +1390,20 @@ $kml_file_contents=
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
 					if (!$garminSpecialCase && ! $this->forceBounds) {
-						if ( ($fast_points>5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
+						if ( ($fast_points>=5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
 							$stillOnGround=0;
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found Takeoff <br>");
 						}
 										
 						if ($stillOnGround) { //takeoff scan
-							if ($speed > 15 ) {					
+							// either speed >= 15 or if we already have 2 fast points settle with speed>=10
+							if ($speed >= 15 ||  ( $speed >= 10 && $fast_points>=2 ) ) { 
 								$fast_points++;		
 								$fast_points_dt+=$deltaseconds;	
 								DEBUG("IGC",1,"[$points] $line<br>");
 								DEBUG("IGC",1,"[$points] Found a fast speed point <br>");																
-							} else {
+							} else { // reset takeoff scan
 								DEBUG("IGC",1,"[$points] $line<br>");
 								DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");																
 	
@@ -1423,8 +1424,8 @@ $kml_file_contents=
 							}
 						}					
 	
-	
-						if ($slow_points>5 || $slow_points_dt>300) { // found landing 5 stopped points or 5 mins (300 secs)
+						// found landing (5 stopped points and >2mins) or 5 mins (300 secs)
+						if ( ($slow_points>5 && $slow_points_dt>180)  || $slow_points_dt>300) { 
 							$foundNewTrack=1;
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
@@ -1974,7 +1975,8 @@ $kml_file_contents=
 			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||
 			 !is_file($this->getJsFilename(1)) ||  $forceRefresh) {
 	
-			list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
+			// list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
+			
 			if ($rawCharts) 
 				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getRawValues($forceRefresh);
 			else	
@@ -2016,6 +2018,7 @@ $kml_file_contents=
 	}
 
 	function plotGraph($title,$data_time,$yvalues,$img_filename,$raw=0) {
+		
 		if (count($data_time)==0) {
 			$data_time[0]=0;
 			$yvalues[0]=0;
@@ -2058,8 +2061,8 @@ $kml_file_contents=
 		// if only one point  add it twice ! 
 		// we should nt be here at the first place !
 		if (count($data_time)==1) {
-			$yvalues[]=$yvalues[0];
-			$data_time[]=$data_time[0];
+			$yvalues[1]=$yvalues[0];
+			$data_time[1]=$data_time[0];
 		}
 		//echo "$title -> max:".max($yvalues)." min: ".min($yvalues)." data_time_num: ".count($data_time)."<BR>";
 		$lineplot=new LinePlot($yvalues);
