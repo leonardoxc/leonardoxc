@@ -52,38 +52,45 @@
     <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
     <td width=150 valign="top" bgcolor="#F5F5F5"> <? echo $pilot['FirstName'] ?></td>
     <td width =3>&nbsp;</td>
-    <td colspan="2" rowspan="8" valign="top">
-        <? 
-	  	if ($pilot['PilotPhoto']>0) {
-		?>
-		 <div align="center"><strong><? echo _Photo ?>
-        </strong><br>
-		<?
-			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";					
-		?> 
-		</div>
-		<?		
-		}
-	  ?>    </td>
+    <td colspan="2" valign="top" bgcolor="#F5F2EB">      <div align="left">
+	<? if ($CONF_use_NAC) {
+		    require_once dirname(__FILE__)."/CL_NACclub.php";
+			echo "<strong>"._MEMBER_OF.":</strong> ";
+			echo $CONF_NAC_list[$pilot['NACid']] ['name'];
+			echo " [ "._MemberID.": ";
+
+			if ($CONF_NAC_list[$pilot['NACid']]['memberIDpublic']) echo $pilot['NACmemberID']." ]";
+			else echo "***** ]";
+		} ?></div></td>
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
     <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['LastName'] ?>    </td>
     <td>&nbsp;</td>
+    <td colspan="2" valign="top" bgcolor="#F5F2EB"><div align="left">
+	<? if ($CONF_use_NAC)  {     
+		echo "<strong>"._Club.":</strong> ".NACclub::getClubName( $pilot['NACid'], $pilot['NACclubID']) ;
+	} ?></div></td>
   </tr>
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
     <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDescription($pilot['countryCode']); ?>    </td>
     <td>&nbsp;</td>
+    <td colspan="2" rowspan="7" valign="top"><? 
+	  	if ($pilot['PilotPhoto']>0) {
+		?>
+      <div align="center"><strong><? echo _Photo ?> </strong><br>
+          <?
+			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";					
+		?>
+                        </div>      <?		
+		}
+	  ?></td>
   </tr>
   <tr>
-    <td valign="top" bgcolor="#E9EDF5"><? if ($CONF_use_NAC) {?><div align="right"><? echo _MEMBER_OF ?></div><? } ?></td>
-    <td valign="top" bgcolor="#F5F5F5"><? if ($CONF_use_NAC) {
-			echo $CONF_NAC_list[$pilot['NACid']] ['name'];
-			echo " [ "._MemberID.": ";
-			echo $pilot['NACmemberID']." ]";;
-		} ?>
-	</td>
+    <td valign="top" bgcolor="#E9EDF5">
+    <div align="right"><? echo _Sponsor ?></div></td>
+    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['sponsor'] ?>	</td>
     <td>&nbsp;</td>
   </tr>
   <tr> 

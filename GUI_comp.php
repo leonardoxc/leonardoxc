@@ -185,7 +185,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 } //end function
 
 function listClubs($legend,$header, $category, $key, $formatFunction="") {
-   global $clubs;
+   global $clubs,$NACid;
    global $Theme,$countries;
    global $module_name,$moduleRelPath;
    global $CONF_compItemsPerPage;
@@ -195,6 +195,8 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
    global $tabID;
    global $sort_funcs_pilots;
 
+   require_once dirname(__FILE__)."/CL_NACclub.php";
+   $clubNamesList=NACclub::getClubs($NACid);
 
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
     
@@ -227,8 +229,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 	     $i++;
 		 echo "<TR $bg>";
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
-	     echo "<TD width='27%'><div align=left >".		 
-				"CLUB #".$clubID.
+	     echo "<TD width='27%'><div align=left >".$clubNamesList[$clubID].
 				"</div></TD>";
 		 
 

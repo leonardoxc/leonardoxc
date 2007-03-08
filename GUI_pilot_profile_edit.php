@@ -11,6 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
+  require_once dirname(__FILE__)."/CL_NACclub.php";
+
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
 
   // edit function
@@ -66,6 +69,7 @@
 		`NACid` = $NACid,
 		`NACmemberID` = $NACmemberID,
 		`NACclubID` = $NACclubID,
+		`sponsor` = '".prep_for_DB($_POST['sponsor'])."',
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
@@ -117,12 +121,14 @@
     echo "<div align=center>"._Your_profile_has_been_updated."<br></div>";
   }
   
-  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND pilotID=user_id" );
+  $query_sel="SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND pilotID=user_id" ;
+  $res= $db->sql_query($query_sel);
 
   if($res <= 0){
      echo("<H3>Error in pilot query</H3>\n");
      return;
   } else if ( mysql_num_rows($res)==0){
+	 // echo "query: $query_sel failed, will insert values into table<BR>";
   	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID) VALUES($pilotIDview)" );
 	 echo("<H3>No info for this pilot</H3>\n");
 	 return;
@@ -143,7 +149,8 @@
 <?
   open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=370 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
   
-  open_tr();  
+//  open_tr();  
+  echo "<tr>";
   echo "<td>";
 ?>
 
@@ -153,7 +160,7 @@
     </tr>
     <tr> 
       <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
-      <td width="150">
+      <td width="150" valign="top">
 			<? if ((strlen(str_replace(".","",trim($pilot['FirstName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
 			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120"> 
 			<? } else { ?>
@@ -161,42 +168,16 @@
 			<input name="FirstName" type="hidden" value="<? echo $pilot['FirstName'] ?>" > 
 			<? } ?></td>
       <td width =3>&nbsp;</td>
-      <td colspan="2" rowspan="6" valign="top"> <div align="center"><strong><? echo _Photo ?></strong><br>
-          <? 
-	  	if ($pilot['PilotPhoto']>0) {
-			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
-			echo "<br> "._Delete_Photo. " <input type=checkbox name=PilotPhotoDelete value=1>";
+      <td colspan="2" rowspan="3" valign="top" bgcolor="#E8EBDE"><div align="left">
+<? if ($CONF_use_NAC) {
+		echo _MEMBER_OF.": ";
+
+		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+			$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
+			$list2.="NAC_id_input_method[$NACid]  = '".$NAC['id_input_method']."';\n";
 		}
-	  ?>
-        </div>
-        <div align="center"></div></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
-      <td> 
-			<? if ((strlen(str_replace(".","",trim($pilot['LastName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
-			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120"> 
-			<? } else { ?>
-			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled> 
-			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" > 
-			<? } ?>      </td>
-      <td>&nbsp;</td>
-    </tr>
-  <tr> 
-    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDropDown($pilot['countryCode']); ?>    </td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td valign="top" bgcolor="#E9EDF5"><? if ($CONF_use_NAC) {?><div align="right"><? echo _MEMBER_OF ?></div><? } ?></td>
-    <td valign="top" >
-	<? if ($CONF_use_NAC) {
-				foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-					$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
-					$list2.="NAC_id_input_method[$NACid]  = '".$NAC['id_input_method']."';\n";
-				}
-	?>
-	<script language="javascript">
+?>
+       <script language="javascript">
 	   var NAC_input_url= [];
 	   var NAC_id_input_method= [];
 	   var NACid=0;
@@ -208,11 +189,11 @@
 			mid.value="";
 			
 			var sl=MWJ_findObj("NACid");
-			NACid= sl.selectedIndex;    // Which menu item is selected
+			NACid= sl.options[sl.selectedIndex].value ;    // Which menu item is selected
 			if (NACid==0) {
 				MWJ_changeDisplay("mID","none");		
 			} else {		
-				MWJ_changeDisplay("mID","block");
+				MWJ_changeDisplay("mID","inline");
 			}
 			
 		}	
@@ -224,11 +205,13 @@
 
 		function setClub() {	
 			if 	(NACid>0) {
-				window.open(NAC_club_input_url+'?NAC_ID='+NACid, '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
+				var NACclubID_fld	=MWJ_findObj("NACclubID");
+				var NACclubID		=NACclubID_fld.value;
+				window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=500,HEIGHT=420,LEFT=100,TOP=100',false);
 			}
 		}
-	</script>
-	<?
+	      </script>
+          <?
 			echo "<select name='NACid' id='NACid' onchange='changeNAC(this)'>";
 			echo "<option value='0'></option>";
 			foreach  ($CONF_NAC_list as $NACid=>$NAC) {
@@ -239,25 +222,62 @@
 			}
 	
 			echo "</select>";
-			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"block")."'>";
-			echo _MemberID.": <input size='6' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";
+			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"inline")."'> ";
+			echo _MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";			
+			echo "[&nbsp;<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>&nbsp;]";
 			
-		
+			echo "<div align=left>"._Club." ";				
+			$NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);			
 			
-			echo "<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>";
-			
-			echo "<br>"._Club." :";							
-			if ($CONF_NAC_list[$pilot['NACid']]['club_change_period_active']) {
-								
+
+			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] || 
+				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] )
+				) {
+				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
 			} else {				
 				echo "";
 			}	
-			echo "<a href='#' onclick=\"setClub();return false;\">"._EnterCLub."</a></div>";
-		} else { ?>
-	<input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
-	<input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />
-		<? } ?>	</td>
+			
+			echo "<br><input  type='hidden' name='NACclubID' value='".$pilot['NACclubID']."' /> ";
+			echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
+
+			echo "</div>";
+} else { ?>
+          <input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
+          <input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />
+          <input type="hidden" name="NACclubID" value="<?=$row['NACclubID']?>" />
+<? } ?>
+</div></td>
+    </tr>
+    <tr> 
+      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
+      <td valign="top"> 
+			<? if ((strlen(str_replace(".","",trim($pilot['LastName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
+			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120"> 
+			<? } else { ?>
+			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled> 
+			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" > 
+			<? } ?>      </td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
+      <td valign="top"><? echo getNationalityDropDown($pilot['countryCode']); ?></td>
+      <td>&nbsp;</td>
+    </tr>
+  <tr> 
+    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Sponsor ?></div></td>
+    <td valign="top"><input name="sponsor" type="text" value="<? echo $pilot['sponsor'] ?>" size="25" maxlength="120"></td>
     <td>&nbsp;</td>
+    <td width="90" colspan="2" rowspan="4" valign="top"><p align="right">
+	<? 	if ($pilot['PilotPhoto']>0) 
+			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
+	?>
+	<strong><? echo _Photo ?></strong>
+    <? if ($pilot['PilotPhoto']>0) 
+			echo "<br><BR> "._Delete_Photo. " <input type=checkbox name=PilotPhotoDelete value=1>";
+	?>
+    </p></td>
   </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
@@ -279,16 +299,17 @@
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Occupation?></div></td>
       <td> <input name="Occupation" type="text" value="<? echo $pilot['Occupation'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
-      <td colspan="2" bgcolor="#E9EDF5"> <div align="center"><? echo _Upload_new_photo_or_change_old ?>
+      <td colspan="2" bgcolor="#E9EDF5"><div align="right"><? echo _Upload_new_photo_or_change_old ?>
 	  </div></td>
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Web_Page ?></div></td>
       <td><input name="PersonalWebPage" type="text" value="<? echo $pilot['PersonalWebPage'] ?>" size="25" maxlength="120"></td>
       <td>&nbsp;</td>
-      <td colspan="2"><div align="center"> 
+      <td colspan="2"> 
+        <div align="right">
           <input name="PilotPhoto" type="file" size="30">
-        </div></td>
+          </div></td>
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Other_Interests ?></div></td>

@@ -158,6 +158,7 @@
 		 'localLanguage'=>'german',
 		 'periodIsNormal'=>0 , // if league period doesnt start on 1/1 then =>0
 		 'periodStart'=>"-10-1",	
+		 'memberIDpublic'=>0,  // dont show member ID to others
 		 "id_input_method"=>"external",
 		 "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
 		 // use this for production 

@@ -10,6 +10,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+	$NACid=1;
 
 	// $year=2007; // flights from 1.10.2006 00:00 UTC - 30.09.2007
 	//	if ($year)

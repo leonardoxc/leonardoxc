@@ -33,7 +33,9 @@ class NACclub {
 	
 	function getClubs($NAC_ID) {
 		global $db,$NACclubsTable;
-		$res= $db->sql_query("SELECT * FROM $NACclubsTable WHERE NAC_ID=$NAC_ID ORDER BY clubName" );
+		$query="SELECT * FROM $NACclubsTable WHERE NAC_ID=$NAC_ID ORDER BY clubName";
+		$res= $db->sql_query($query);
+		//echo $query;
   		if($res <= 0){   
 			 echo "Error getting NAC clubs from DB<BR>";
 		     return;
@@ -45,6 +47,19 @@ class NACclub {
 		return $NACclubList;
     }
 
+	function getClubName($NAC_ID,$clubID){
+		global $db,$NACclubsTable;
+		$query="SELECT clubName FROM $NACclubsTable WHERE NAC_ID=$NAC_ID AND clubID=$clubID ";
+		$res= $db->sql_query($query);
+		//echo $query;
+  		if($res <= 0){   
+			 echo "Error getting NAC club from DB<BR>";
+		     return;
+	    }
+		if ($row=$db->sql_fetchrow($res)) 	return $row['clubName'];
+		else return "";
+	}
+
 	function updatePilotFlights($pilotID,$NAC_ID,$NACclubID,$year=0) {
 		global $db,$flightsTable, $NACclubsTable,$CONF_NAC_list;
 
@@ -53,14 +68,15 @@ class NACclub {
 		if ( $CONF_NAC_list[$NAC_ID]['periodIsNormal']) { // league start and end on 1/1
 			$where_clause.=" DATE >='".$year."-1-1' AND DATE <= '".$year."-12-31'";
 		} else {
-			$where_clause.=" DATE >='".($year-1).$CONF_NAC_list[$NAC_ID]['periodStart']."' AND DATE < '".$year.$CONF_NAC_list[$NAC_ID]['periodStart'];
+			$where_clause.=" DATE >='".($year-1).$CONF_NAC_list[$NAC_ID]['periodStart']."' AND DATE < '".$year.$CONF_NAC_list[$NAC_ID]['periodStart']."'";
 		 }
 
-		$query="UDATE $flightsTable SET NACclubID=$NACclubID $where_clause";
+		$query="UPDATE $flightsTable SET NACclubID=$NACclubID $where_clause AND userID=$pilotID";
 		// echo $query;
 	    $res= $db->sql_query($query);
 	    if($res <= 0){
 		  echo "Error updating NACclub to flights table for pilot $pilotID<BR>";
+		 echo $query;
 		  return 0;
 	    }		
 		return 1;

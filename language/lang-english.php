@@ -623,4 +623,11 @@ define("_Clubs_Leagues","Clubs / Leagues");
 define("_Pilot_Statistics","Pilot Statistics");
 define("_National_Rankings","National Rankings");
 
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
 ?>
