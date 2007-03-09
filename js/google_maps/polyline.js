@@ -28,7 +28,7 @@
 			// Icon.iconSize=new GSize(16,16);
 			Icon.shadow = "http://maps.google.com/mapfiles/kml/pal3/icon61s.png";
 			Icon.shadowSize=new GSize(59,32);
-			Icon.iconAnchor=new GPoint(16,32);
+			Icon.iconAnchor=new GPoint(12,16);
 
 			Icon.infoWindowAnchor=new GPoint(16,0);
 		}
@@ -92,7 +92,7 @@
 			opacity:1,
 			points: lines[3],
 			levels: lines[4],
-			zoomFactor: 10,
+			zoomFactor: 16,
 			numLevels:4
 		});
 		map.addOverlay(encodedPolyline);

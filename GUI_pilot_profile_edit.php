@@ -231,7 +231,8 @@
 			
 
 			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] || 
-				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] )
+				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) || 
+					in_array($userID,$admin_users) || in_array($userID,$mod_users)
 				) {
 				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
 			} else {				

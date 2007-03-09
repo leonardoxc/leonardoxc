@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.5 2007/02/20 22:29:56 manolis Exp $
+ *   $Id: GUI_login.php,v 1.6 2007/03/09 16:09:15 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -97,7 +97,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 
 					if( $session_id )
 					{
-						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo&op=pilot_profile";
+						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo&op=pilot_profile&pilotIDview=".$row['user_id'];
 												
 						?>
 						<script language="javascript">window.location="<?=$url?>"; </script>

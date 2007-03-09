@@ -610,7 +610,26 @@ var $maxPointNum=1000;
 	
 		$prevLat=0;
 		$prevLon=0;
-		
+
+		// compute num of B lines
+		$numLines=0;
+		foreach($lines as $line) {
+			if ($line{0}=='B' && strlen($line) >= 23 ) $numLines++;
+		}
+
+		if ($numLines>200 && $numLines<400) {
+			$mod=8; // max visible every 8 points
+			$lvlArray="30102010"; // for mod 8
+		} else 	if ($numLines>=400 && $numLines<600) {
+			$mod=12;
+			$lvlArray="300100200100";
+		} else 	if ($numLines>=600) {
+			$mod=18;
+			$lvlArray="300100200100200100";
+		}
+
+		$lvlEncArray=array(0=>'?','@','A','B' );
+
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;				
@@ -626,8 +645,14 @@ var $maxPointNum=1000;
 					if ( $lon  > $max_lon )  $max_lon =$lon  ;
 					if ( $lon  < $min_lon )  $min_lon =$lon  ;
 
-					$kml_file_contents.=encodeNumber($lat-$prevLat).encodeNumber($lon-$prevLon);					
-					$levels.="B";
+					$kml_file_contents.=encodeNumber($lat-$prevLat).encodeNumber($lon-$prevLon);
+
+
+					$thisLvl=$lvlEncArray[ $lvlArray[$i%$mod]+0 ];
+//					$levels.="B";
+					$levels.=$thisLvl;
+
+
 					$prevLat=$lat;
 					$prevLon=$lon;
 

@@ -55,7 +55,7 @@
 			$where_clause.=" AND FLIGHT_POINTS>=".$minOLCscore." ";
 		 }
 
-		 $query="SELECT * FROM $flightsTable $extra_tbl WHERE  private=0 $where_clause ORDER BY dateAdded DESC LIMIT 1,$count ";
+		 $query="SELECT * , $flightsTable.Id as flightID FROM $flightsTable $extra_tbl WHERE  private=0 $where_clause ORDER BY dateAdded DESC LIMIT 1,$count ";
 		// echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
@@ -91,7 +91,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 	$score=formatOLCScore($row["FLIGHT_POINTS"],false);
 
 			$title="OLCscore: $score :: Pilot: $name :: takeoff: $takeoffName :: duration: $duration :: open distance: $linKM";
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['flightID']);
 
 		if ($row['takeoffVinicity'] > $takeoffRadious ) 
 			$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

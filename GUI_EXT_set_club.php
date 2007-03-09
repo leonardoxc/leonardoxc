@@ -33,11 +33,11 @@
 	$clubList=NACclub::getClubs($NAC_ID);
 	// print_r($clubList);
 
-  ?>
-<head>
+  ?><head>
 <title><?=_Select_Club?></title>
 
 </head>
+
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
 	 body {margin:0px; background-color:#E9E9E9}
@@ -94,6 +94,9 @@ function setValToMaster() {
                   <div align="center">
     <select name="clubList" size="24">
 			      <?
+					if ($clubID==0) $sel=" selected ";
+					else $sel="";
+					echo "<option value='0' $sel></option>\n";
 					foreach ($clubList as $clubID_list=>$clubName) {
 							if ($clubID==$clubID_list) $sel=" selected ";
 							else $sel="";
