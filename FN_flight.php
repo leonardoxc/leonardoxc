@@ -82,7 +82,7 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 
 	if (!$filename) return array(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
 	if (! is_file ($filename) ) return array(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
-	if ( strtolower(substr($filename,-4))!=".igc") return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
+	if ( strtolower(substr($filename,-4))!=".igc" && strtolower(substr($filename,-4))!=".olc" ) return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
 
 	checkPath($flightsAbsPath."/".$userID);
 	$tmpIGCPath=$filename;

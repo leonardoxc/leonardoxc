@@ -78,7 +78,8 @@
 	 $dir=	$tmpZIPfolder;
 	 $current_dir = opendir($dir);
 	 while($entryname = readdir($current_dir)){
-		if( ! is_dir("$dir/$entryname") && ($entryname != "." and $entryname!="..")  &&  strtolower(substr($entryname,-4))==".igc" ) {					
+		if( ! is_dir("$dir/$entryname") && ($entryname != "." and $entryname!="..")  && 
+			( strtolower(substr($entryname,-4))==".igc" ||  strtolower(substr($entryname,-4))==".olc" )  ) {					
 		   	 $igcFiles++;
 			 $igcFilename=$dir."/".$entryname;
 			 echo _ADDING_FILE." ".$entryname."<br>\n";

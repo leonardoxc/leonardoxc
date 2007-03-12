@@ -1148,6 +1148,7 @@ $kml_file_contents=
 	$this->setAllowedParams();
 	$this->filename=basename($filename);
 	
+	$manual_optimize=0;
 	$done=0;
 	$try_no_takeoff_detection=0;	
 	while(!$done) {	
@@ -1166,7 +1167,63 @@ $kml_file_contents=
 		for($i=0;$i< count($lines)-10 ;$i++) {		
 			$pointOK=1;
 			$line=trim($lines[$i]);
+						
 			if  (strlen($line)==0) continue;
+			
+		function getmicrotime2(){ 
+   list($usec, $sec) = explode(" ",microtime()); 
+   return ((float)$usec + (float)$sec); 
+   } 	
+			if ( strtoupper(substr($line,0,3))=='OLC' ) { // we got an olc optimized file , get the 5 turnpoints
+									$s1=getmicrotime2();
+				if (preg_match(
+					   "/&w0bh=([NnSs])&w0bg=(\d+)&w0bm=(\d+)&w0bmd=(\d+)&w0lh=([EeWw])&w0lg=(\d+)&w0lm=(\d+)&w0lmd=(\d+)".				
+						"&w1bh=([NnSs])&w1bg=(\d+)&w1bm=(\d+)&w1bmd=(\d+)&w1lh=([EeWw])&w1lg=(\d+)&w1lm=(\d+)&w1lmd=(\d+)".
+						"&w2bh=([NnSs])&w2bg=(\d+)&w2bm=(\d+)&w2bmd=(\d+)&w2lh=([EeWw])&w2lg=(\d+)&w2lm=(\d+)&w2lmd=(\d+)".
+						"&w3bh=([NnSs])&w3bg=(\d+)&w3bm=(\d+)&w3bmd=(\d+)&w3lh=([EeWw])&w3lg=(\d+)&w3lm=(\d+)&w3lmd=(\d+)".
+						"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$line,$matches) ){
+							
+						for($i1=0;$i1<=4;$i1++) 
+							$opt_point[$i1]=sprintf("%02d%02d%03d%s%03d%02d%03d%s",$matches[1+$i1*8+1],$matches[1+$i1*8+2],$matches[1+$i1*8+3],$matches[1+$i1*8+0],
+							$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
+
+						$manual_optimize=1;
+						$opt_point_num=0;
+						// print_r($matches);
+						// print_r($p);
+						echo "MANUAL OPT IS IN PLACE<BR>";
+						
+						$linesStr=implode("",$lines);
+						
+						$pString="";
+						for($i1=0;$i1<4;$i1++) 
+							$pString.=$opt_point[$i1].".+";
+							
+						//	$pString=$opt_point[2];
+						 $pString.=$opt_point[4];
+						echo $pString;
+//$linesStr=substr($linesStr,0,1000);
+						//$linesStr="4028971N02310369Exxxxxxxxxxxx \n4029542N02309821Exxxxxxxxxxxxxxx4029082N02310398Exxxxx4029452N02309771Exxx4028538N02310182E";
+						$linesStr=str_replace(array("\n","\r","\0","\t","\x0B"),"",$linesStr);
+//						$linesStr=str_replace("\r","",$linesStr);
+	//					$linesStr=str_replace(chr(0),"",$linesStr);
+						
+						//echo $linesStr;
+						if ( preg_match("/$pString/ms",$linesStr,$matches) ) {
+						
+							echo "the optimized points are OK<BR>";
+								
+						} else {
+							echo "the optimized points are NOT OK<BR>";
+						}
+						
+						// if ( substr($line,7,17)==$opt_point[$opt_point_num]
+						echo "time:".(getmicrotime2()-$s1)."<BR>";
+				}
+
+			}
+			exit;
+			
 			if  ( $line{0}!='B' ) continue;
 			$Brecords++;
 			if  ( strlen($line)  < 23 ) { 
@@ -1319,6 +1376,8 @@ $kml_file_contents=
 			$outputLine=$line;
 			$line=trim($line);
 			if  (strlen($line)==0) continue;
+			
+			if (strtoupper(substr($line,0,3)) =="OLC"  ) continue; // it is an olc file , dont put the OLC... line in to the saned file
 			
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
 				if ( $alreadyInPoints && $points>0 ) {
