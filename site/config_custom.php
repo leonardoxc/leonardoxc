@@ -157,12 +157,16 @@
 		 'localName'=>'DHV',
 		 'localLanguage'=>'german',
 		 'periodIsNormal'=>0 , // if league period doesnt start on 1/1 then =>0
-		 'periodStart'=>"-10-1",	
+		 'periodStart'=>"-10-01",	
 		 'memberIDpublic'=>0,  // dont show member ID to others
-		 "id_input_method"=>"external",
-		 "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
+		 
+		 "external_input"=>1, // turning on/off the external input
+         'external_fields'=>'NACmemberID,LastName,FirstName', //these fields will be set by the external tool
+         
+		  "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
 		 // use this for production 
-		 // "input_url"=>"/admin/odb/page.php?id=check_membership&callingfield=NACmemberID",
+		 // 'input_url'=>'/admin/odb/page.php?id=check_membership&field_mgnr=NACmemberID&field_name=LastName&field_vorname=FirstName',		 
+
 
 		 // Use the NAC clubs. A pilot can be member only to one NAC club.
 		"use_clubs"=>1,
@@ -176,7 +180,33 @@
 		 // the admin must set this to 0 when he wishes to stop pilots registering for clubs.
 		 "add_to_club_period_active"=>1,
 		 "current_year"=>2007,
-	)							
+	)	,
+   2=>array(
+    	'id'=>2,
+		'name'=>'OeAeC',
+		'localName'=>'OeAeC',
+		'localLanguage'=>'german',
+		'periodIsNormal'=>0 , // if league period doesnt start on 1/1 then =>0
+		'periodStart'=>"-10-1",
+		'memberIDpublic'=>0,  // dont show member ID to others
+         /*"id_input_method"=>"external", // not needed! */
+		"external_input"=>0, // turning on/off the external input
+		'external_fields'=>'',
+		'input_url'=>'',
+
+		// Use the NAC clubs. A pilot can be member only to one NAC club.
+		"use_clubs"=>0,
+
+		// While this flag is 1 the pilots are allowd to change their club membership
+		// the admin must set this to 0 to finalise the memberships for the period.
+		"club_change_period_active"=>1,
+
+		// While this flag is 1 the pilots are allowed to add themsleves as members of a club
+		// IF they havent done it before.
+		// the admin must set this to 0 when he wishes to stop pilots registering for clubs.
+		"add_to_club_period_active"=>1,
+		"current_year"=>2007
+	)					
  );
  $CONF_use_NAC=1; 
  

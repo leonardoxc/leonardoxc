@@ -76,6 +76,7 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="") {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
+	global  $CONF_NAC_list,  $CONF_use_NAC ;
 
 	set_time_limit (120);
 
@@ -95,7 +96,7 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 
 	//  we must cope with some cases here
 	//  1. more flights in the igc
-	//  2. garmin saved paths -> zero time difference
+	//  2. garmin saved paths -> zero time difference -> SOLVED!
 	
 	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) 			
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
@@ -147,6 +148,34 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		}  
     } // took care of photos
 
+	// if we use NACclubs
+	// get the NACclubID for userID
+	// and see if the flight is in the current year (as defined in the NAclist array
+	if ( $CONF_use_NAC ) {
+		require_once dirname(__FILE__)."/CL_NACclub.php";
+		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userID);
+		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
+			// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
+			$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];
+			
+			if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
+				$seasonStart=($currSeasonYear-1)."-12-31";
+				$seasonEnd=$currSeasonYear."-12-31";
+			} else {
+				$seasonStart=($currSeasonYear-1).$CONF_NAC_list[$pilotNACID]['periodStart'];
+				$seasonEnd=$currSeasonYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
+			}
+
+			if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
+				$flight->NACclubID=$pilotNACclubID;
+			}
+		}
+	}
+	
+	if ($CONF_use_validation) {
+		$ok=$flight->validate(0); // dont update DB
+	}
+	
 	$flight->putFlightToDB(0);
 	set_time_limit (200);
 	$flight->getOLCscore();

@@ -211,9 +211,6 @@ function setValue(obj)
 		$flight->getFlightFromDB($flightID);
 
 		$flight->category=$_POST['category']+0;
-		if ($CONF_use_validation) {
-			$ok=$flight->validate();
-		}
 		$flight->putFlightToDB(1);
 
 		if ($flight->takeoffVinicity > $takeoffRadious*2 ) {

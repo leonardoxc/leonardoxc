@@ -55,10 +55,13 @@
 	if ($NACmemberID<=0) $NACid=0;
 	
 	$NACclubID=$_POST['NACclubID']+0;
+	if ($NACid==0) $NACclubID=0;
 	
-	if ($NACid && $NACclubID && $CONF_NAC_list[$NACid]['use_clubs'] ) {
+	// echo "$NACid , $NACmemberID, $NACclubID <BR>";
+	if ($NACid==0 || $CONF_NAC_list[$NACid]['use_clubs'] ) {
 		// add_to_club_period_active
-		if ($CONF_NAC_list[$NACid]['club_change_period_active'])
+		// echo "updating club-flights<BR>";
+		if ($CONF_NAC_list[$NACid]['club_change_period_active'] || $NACid==0)
 			NACclub::updatePilotFlights($pilotIDview,$NACid,$NACclubID); 
 	}
 	
@@ -114,7 +117,7 @@
 
     $res= $db->sql_query( $query );
     if($res <= 0){
-      echo("<H3>Error in update query</H3>\n");
+      echo("<H3>Error in update query:  $query</H3>\n");
       return;  
     }
 	
@@ -152,6 +155,38 @@
 //  open_tr();  
   echo "<tr>";
   echo "<td>";
+  
+   	# Changes Martin Jursa 09.03.2007:
+	# in case certain fields are set by an external tool, these fields will be set readonly
+	# otherwise, they can be edited
+	# $possible_readonly_fields contains all the fields for which this readonly mechanism is available
+	$readonly_fields=array('LastName', 'FirstName');
+	if ($CONF_use_NAC) {
+		$readonly_fields=array();
+		$list1=$list2=$list3='';
+		$possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate');
+		$list4="var all_readonly_fields  = '".implode(',', $possible_readonly_fields)."';\n";
+		
+		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+			$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
+			$ext_input=empty($NAC['external_input']) ? 0 : 1;
+			$list2.="NAC_external_input[$NACid]  = $ext_input;\n";
+			$use_clubs=$NAC['use_clubs']+0;			
+			$list2.="NAC_use_clubs[$NACid]  = $use_clubs;\n";
+
+			$externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
+			if ($ext_input && !empty($NAC['external_fields'])) {
+				$list3.="NAC_external_fields[$NACid] = '$externalfields';\n";
+				if ($pilot['NACid']==$NACid) {
+					$tmp_fields=explode(',', $externalfields);
+					foreach ($tmp_fields as $fld) {
+						if (in_array($fld, $possible_readonly_fields)) $readonly_fields[]=$fld;
+					}
+				}
+			}
+		}
+
+	}
 ?>
 
   <table  class=main_text  width="100%" border="0">
@@ -162,7 +197,7 @@
       <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
       <td width="150" valign="top">
 			<? if ((strlen(str_replace(".","",trim($pilot['FirstName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
-			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120"> 
+			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <? echo in_array('FirstName', $readonly_fields) ? 'readonly' : '' ?> >
 			<? } else { ?>
 			<input name="FirstNameD" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" disabled> 
 			<input name="FirstName" type="hidden" value="<? echo $pilot['FirstName'] ?>" > 
@@ -172,31 +207,56 @@
 <? if ($CONF_use_NAC) {
 		echo _MEMBER_OF.": ";
 
-		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+		/*foreach  ($CONF_NAC_list as $NACid=>$NAC) {
 			$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
 			$list2.="NAC_id_input_method[$NACid]  = '".$NAC['id_input_method']."';\n";
 		}
+		*/
 ?>
-       <script language="javascript">
-	   var NAC_input_url= [];
-	   var NAC_id_input_method= [];
-	   var NACid=0;
-	   <?=$list1.$list2 ?>
+       <script language="javascript">   
+	   	var NAC_input_url= [];
+		var NAC_external_input= [];
+		var NAC_external_fields= [];
+		var NAC_use_clubs=[];
+		var NACid=0;
+	   	<?=$list1.$list2.$list3.$list4 ?>
 		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
 		
 		function changeNAC() {
 			var mid=MWJ_findObj("NACmemberID");
 			mid.value="";
-			
+
 			var sl=MWJ_findObj("NACid");
 			NACid= sl.options[sl.selectedIndex].value ;    // Which menu item is selected
 			if (NACid==0) {
-				MWJ_changeDisplay("mID","none");		
-			} else {		
+				MWJ_changeDisplay("mID","none");
+			} else {
 				MWJ_changeDisplay("mID","inline");
+				if (NAC_external_input[NACid]) {
+					MWJ_changeDisplay("mIDselect","block");
+				}else {
+					MWJ_changeDisplay("mIDselect","none");
+				}
 			}
 			
-		}	
+			if (NAC_use_clubs[NACid]) {
+				MWJ_changeDisplay("mClubSelect","block");
+			} else  {
+				MWJ_changeDisplay("mClubSelect","none");
+			}
+			
+			var flds=all_readonly_fields.split(',');
+			for (var i=0; i<flds.length; i++) {
+				document.forms[0].elements[flds[i]].readOnly=false;
+			}
+			if (NACid!=0 && NAC_external_fields[NACid]) {
+				flds=NAC_external_fields[NACid].split(',');
+				for (var i=0; i<flds.length; i++) {
+					document.forms[0].elements[flds[i]].readOnly=true;
+				}
+			}
+		}
+		
 		function setID() {	
 			if 	(NACid>0) {
 				window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
@@ -221,40 +281,52 @@
 				
 			}
 	
-			echo "</select>";
-			echo "<div id='mID' style='display:".(($pilot['NACid']==0)?"none":"inline")."'> ";
-			echo _MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' readonly  /> ";			
+			echo "</select>";					
+			
+			echo "<div id='mID' style='display:".(($pilot['NACid']==0) ? "none" : "inline")."'> ";
+			$memberid_readonly=in_array('NACmemberID', $readonly_fields) ? 'readonly' : '';
+			echo "<span style='white-space:nowrap'>"._MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' $memberid_readonly  /></span> ";
+			echo "<div id='mIDselect' style='display:".($memberid_readonly ? "block" : "none")."'> ";
 			echo "[&nbsp;<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>&nbsp;]";
-			
-			echo "<div align=left>"._Club." ";				
-			$NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);			
-			
+			echo "</div>";
 
-			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] || 
-				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) || 
-					in_array($userID,$admin_users) || in_array($userID,$mod_users)
-				) {
-				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
-			} else {				
-				echo "";
-			}	
+
 			
+			echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";
+			$NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);
+
+
+			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
+				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
+				in_array($userID,$admin_users) || in_array($userID,$mod_users)
+			) {
+				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
+			} else {
+				echo "";
+			}
+
 			echo "<br><input  type='hidden' name='NACclubID' value='".$pilot['NACclubID']."' /> ";
 			echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
 
 			echo "</div>";
+			
+			
 } else { ?>
-          <input type="hidden" name="NACid" value="<?=$row['NACid']?>" />
-          <input type="hidden" name="NACmemberID" value="<?=$row['NACmemberID']?>" />
-          <input type="hidden" name="NACclubID" value="<?=$row['NACclubID']?>" />
-<? } ?>
+          <input type="hidden" name="NACid" value="<?=$pilot['NACid']?>" />
+          <input type="hidden" name="NACmemberID" value="<?=$pilot['NACmemberID']?>" />
+          <input type="hidden" name="NACclubID" value="<?=$pilot['NACclubID']?>" />
+<? }
+
+?>
+
+
 </div></td>
     </tr>
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
       <td valign="top"> 
 			<? if ((strlen(str_replace(".","",trim($pilot['LastName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
-			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120"> 
+			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <? echo in_array('LastName', $readonly_fields) ? 'readonly' : '' ?> >
 			<? } else { ?>
 			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled> 
 			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" > 
@@ -283,7 +355,8 @@
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
           (<? echo _dd_mm_yy ?>) </div></td>
-      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120">      </td>
+      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120" <? echo in_array('Birthdate', $readonly_fields) ? 'readonly' : '' ?> >   
+    </td>
       <td>&nbsp;</td>
     </tr>
     <tr> 

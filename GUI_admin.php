@@ -42,7 +42,8 @@ function chmodDir($dir){
 
 echo "<br><BR>";
 echo "<ul>";
-	if ($CONF_use_validation) echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> ";
+	if ($CONF_use_validation)	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> ";
+	if ($CONF_use_NAC)			echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
@@ -81,6 +82,44 @@ echo "</ul><br><br>";
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
+	} else if ($admin_op=="updateNAC_Clubs") {
+		$query="SELECT $flightsTable.DATE , $flightsTable.ID as flightID, $pilotsTable.NACid  as NACid , $pilotsTable.NACclubID  as NACclubID from $flightsTable, $pilotsTable 
+				WHERE $flightsTable.userID=$pilotsTable.pilotID AND $pilotsTable.NACid <> 0  AND $pilotsTable.NACclubID <> 0 ";
+		$res= $db->sql_query($query);
+			
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+			 	 $pilotNACID=$row['NACid'];
+				 $pilotNACclubID=$row['NACclubID'];			
+				 // if we use NACclubs
+				// get the NACclubID for userID
+				// and see if the flight is in the current year (as defined in the NAclist array
+			 	if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
+					// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
+					$currYear=$CONF_NAC_list[$pilotNACID]['current_year'];
+					
+					if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
+						$seasonStart=($currYear-1)."-12-31";
+						$seasonEnd=$currYear."-12-31";
+					} else {
+						$seasonStart=($currYear-1).$CONF_NAC_list[$pilotNACID]['periodStart'];
+						$seasonEnd=$currYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
+					}
+					
+					
+					if ($row['DATE'] > $seasonStart  && $flight->DATE <= $seasonEnd ) { // yes -> put in the clubId in the flight
+						 $query2="UPDATE $flightsTable SET NACclubID = $pilotNACclubID where ID=".$row['flightID'];
+						 $res2= $db->sql_query($query2);
+						 if (!$res2) echo "Problem in updating flight info: $query2<BR>";
+
+					}
+				}
+				 				 
+			 }
+		} else 
+			echo "Problem in query: $query<BR>";
+			
+		echo "<BR><br><BR>DONE !!!<BR>";		
 	} else if ($admin_op=="updateValidation") {
 		$query="SELECT ID from $flightsTable WHERE validated=0";
 		$res= $db->sql_query($query);

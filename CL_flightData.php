@@ -41,7 +41,8 @@ class flight {
 	var $validated=0;
 	var $grecord=0;
 	var $validationMessage="";
-
+	var $NACclubID=0;
+	
 var $timezone=0;
 
 var $DATE;
@@ -595,7 +596,7 @@ var $maxPointNum=1000;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 		
-		if ( is_file($this->getPolylineFilename())  ) return ;
+		// if ( is_file($this->getPolylineFilename())  ) return ;
 
 		$filename=$this->getIGCFilename(1);  
 		$lines = file ($filename); 
@@ -617,7 +618,10 @@ var $maxPointNum=1000;
 			if ($line{0}=='B' && strlen($line) >= 23 ) $numLines++;
 		}
 
-		if ($numLines>200 && $numLines<400) {
+		if ($numLines<200 ) {
+			$mod=1; 
+			$lvlArray="3"; // always 3
+		} else 	if ($numLines>=200 && $numLines<400) {
 			$mod=8; // max visible every 8 points
 			$lvlArray="30102010"; // for mod 8
 		} else 	if ($numLines>=400 && $numLines<600) {
@@ -1510,7 +1514,7 @@ $kml_file_contents=
 		return 1;	
 	} // end function getFlightFromIGC()
 
-	function validate() {
+	function validate($updateFlightInDB=1) {
 		global $CONF_validation_server_url, $CONF_use_custom_validation, $DBGlvl;
 		global $baseInstallationPath,$CONF_abs_path;
 
@@ -1540,7 +1544,7 @@ $kml_file_contents=
 
 		$this->grecord=$ok;
 		$this->validated=$ok;
-		$this->putFlightToDB(1);
+		if ( $updateFlightInDB ) $this->putFlightToDB(1);
 
 		return $ok;
 	}
@@ -1705,8 +1709,9 @@ $kml_file_contents=
 	  
 		$this->flightID=$flightID;
 		$name=getPilotRealName($row["userID"]);
-		$this->userName=$name;		 
-
+		$this->userName=$name;		
+		 
+		$this->NACclubID=$row["NACclubID"];
 		$this->cat=$row["cat"];		
 		$this->subcat=$row["subcat"];	
 		$this->category=$row["category"];		
@@ -1890,6 +1895,7 @@ $kml_file_contents=
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
+		NACclubID,
 		comments, glider, linkURL, timesViewed,
 		photo1Filename,photo2Filename,photo3Filename,
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
@@ -1917,6 +1923,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
+		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		'$this->photo1Filename','$this->photo2Filename','$this->photo3Filename',
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,

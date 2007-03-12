@@ -24,7 +24,7 @@
 	// $where_clause.=" AND validated=1 ";
 
 	// OLC km's must be > 15
-	$where_clause.=" AND FLIGHT_KM>=15000 ";
+	//	$where_clause.=" AND FLIGHT_KM>=15000 ";
 
 
 
