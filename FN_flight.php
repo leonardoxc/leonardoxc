@@ -74,7 +74,7 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 	return 1;
 }
 
-function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="") {
+function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global  $CONF_NAC_list,  $CONF_use_NAC ;
 
@@ -93,14 +93,15 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
 	$flight->glider=$glider;
+	$flight->category=$category;
 
 	//  we must cope with some cases here
 	//  1. more flights in the igc
 	//  2. garmin saved paths -> zero time difference -> SOLVED!
-	
+
 	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) 			
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
-	
+
 	$oldFlightID= $flight->findSameFlightID();
 	if ($oldFlightID>0) 		
 		return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$oldFlightID);	
@@ -129,7 +130,6 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
     if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
     if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
     if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
-
 	
 	rename($tmpIGCPath, $flight->getIGCFilename() );
 	

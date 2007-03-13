@@ -1169,7 +1169,8 @@ $kml_file_contents=
 			$line=trim($lines[$i]);
 						
 			if  (strlen($line)==0) continue;
-			
+
+if ($TEST_OLC) {			
 		function getmicrotime2(){ 
    list($usec, $sec) = explode(" ",microtime()); 
    return ((float)$usec + (float)$sec); 
@@ -1223,6 +1224,7 @@ $kml_file_contents=
 
 			}
 			exit;
+}
 			
 			if  ( $line{0}!='B' ) continue;
 			$Brecords++;
