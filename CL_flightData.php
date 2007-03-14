@@ -2188,9 +2188,10 @@ if using integers for calculation of distances in decimeters, this formular gene
 	
 			// list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 			
-			if ($rawCharts) 
+			if ($rawCharts)  {
 				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getRawValues($forceRefresh);
-			else	
+				//list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance,$data_X,$data_Y)=$this->getRawValues($forceRefresh,1);
+			} else	
 				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 
 			if (!count($data_time) ) return; // empty timeseries
@@ -2202,8 +2203,17 @@ if using integers for calculation of distances in decimeters, this formular gene
 			require_once dirname(__FILE__)."/lib/graph/jpgraph.php";
 			require_once dirname(__FILE__)."/lib/graph/jpgraph_line.php";
 
+/*
+require_once dirname(__FILE__)."/CL_dem.php";
+$ground=array();
+foreach ($data_time as $i=>$tm) {
+	$ground[$i]=DEM::getAlt($data_Y[$i],$data_X[$i]);
+	echo $ground[$i]."#";
 
-			$this->plotGraph("Height (m)",$data_time,$data_alt,$alt_img_filename,$rawCharts);
+}
+*/
+		 	$this->plotGraph("Height (m)",$data_time,$data_alt,$alt_img_filename,$rawCharts);
+			//$this->plotGraph("Height (m)",$data_time,$ground,$alt_img_filename,$rawCharts);
 			$this->plotGraph("Speed (km/h)",$data_time,$data_speed,$speed_img_filename,$rawCharts);
 			$this->plotGraph("Vario (m/sec)",$data_time,$data_vario,$vario_img_filename,$rawCharts);
 			$this->plotGraph("Takeoff distance (km)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename,$rawCharts);	
