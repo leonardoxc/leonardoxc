@@ -17,9 +17,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('January','February','March','April','May','June',
 					'July','August','September','October','November','December');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -296,30 +298,6 @@ define("_RETURN_TO_FLIGHT","Return to flight");
 define("_RETURN_TO_FLIGHT","Return to flight");
 define("_READY_FOR_SUBMISSION","Ready to submit");
 define("_SUBMIT_TO_OLC","Submit to OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","The flight has been succesfully submited to the OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","The OLC reference number is");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","There was a problem on OLC submission");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Look below for the cause of the problem");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","The flight was succesfully removed from the OLC");
-define("_FLIGHT_NOT_SCORED","The flight has no OLC score and therefore cannot be submited");
-define("_TOO_LATE","The deadline for this flight is over and therefore cannot be submited");
-define("_CANNOT_BE_SUBMITTED","The deadline for this flight is over");
-define("_NO_PILOT_OLC_DATA","<p><strong>No OLC data for the pilot</strong><br>
-  <br>
-<b>What is OLC / what are these fields for ?</b><br><br>
-	For a valid submission to OLC the pilot should already be registered in the OLC system.</p>
-<p> This can be done <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  at this web page</a>, where you must select your country and then select 'Contest Registration'<br>
-</p>
-<p>When the registration is done, you must go to 'Pilot Profile'->'Edit OLC info' and enter there your info EXACTLY as you entrered it at OLC registration
-</p>
-<ul>
-	<li><div align=left>First/Given name</div>
-	<li><div align=left>Surname</div>
-	<li><div align=left>Date of birth</div>
-	<li> <div align=left>Your callsign</div>
-	<li><div align=left>If you have already submitted flights to OLC, the 4 letters you use for the IGC filename</div>
-</ul>");
 define("_OLC_MAP","Map");
 define("_OLC_BARO","Barograph");
 
@@ -395,37 +373,7 @@ define("_Delete_Photo","Delete Photo");
 define("_Your_profile_has_been_updated","Your profile has been updated");
 define("_Submit_Change_Data","Submit - Change Data");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Edit OLC info");
-define("_OLC_information","OLC information");
-define("_callsign","Callsign");
-define("_filename_suffix","Filename suffix");
-define("_OLC_Pilot_Info","OLC Pilot Info");
-define("_OLC_EXPLAINED","<b>What is OLC / what are these fields for ?</b><br><br>
-	For a valid submission to OLC the pilot should already be registered in the OLC system.</p>
-<p> This can be done <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  at this web page</a>, where you must select your country and then select 'Contest Registration'<br>
-</p>
-<p>When the registration is done you must enter here your info EXACTLY as you entrered it at OLC registration
-</p>
-<ul>
-	<li><div align=left>First/Given name</div>
-	<li><div align=left>Surname</div>
-	<li><div align=left>Date of birth</div>
-	<li> <div align=left>Your callsign</div>
-	<li><div align=left>If you have already submitted flights to OLC, the 4 letters you use for the IGC filename</div>
-</ul>
-");
 
-define("_OLC_SUFFIX_EXPLAINED","<b>What is the 'Filename suffix?'</b><br>It is a 4 letter identifier that uniquely identifies a pilot or a glider. 
-If you dont really know what to enter here, here are some tips:<p>
-<ul>
-<li>Use 4 leters derived from your first name / last name
-<li>Try to find a combination that sounds strange enough. This will cut down the possibility that your suffix will be the same with another pilot's
-<li>If you have problems submitting your flight to OLC through Leonardo, it may be the suffix. Try changing it and resubmit.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -629,5 +577,17 @@ define("_Close_window","Close window");
 define("_EnterID","Enter ID");
 define("_Club","Club");
 define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+// end 2007/03/13
 
 ?>

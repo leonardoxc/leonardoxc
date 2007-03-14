@@ -21,7 +21,7 @@
 	var enablePast = 0;		// 0 - disabled ; 1 - enabled
 	var fixedX = -1;		// x position (-1 if to appear below control)
 	var fixedY = -1;		// y position (-1 if to appear below control)
-//	var showWeekNumber = 1;	// 0 - don't show; 1 - show
+	var showWeekNumber = 1;	// 0 - don't show; 1 - show
 	var showToday = 1;		// 0 - don't show; 1 - show
 
 	// we set this before calling
@@ -31,7 +31,108 @@
 	// var startAt = 1;		// 0 - sunday ; 1 - monday
 
 	function Dummy() {return }
+	/*
+	var gotoString = {
+		it : 'Vai al Mese Corrente',
+		gr : 'Επιλογή τρέχοντος μήνα',
+		en : 'Go To Current Month',
+		tr : 'Go To Current Month',
+		es : 'Ir al Mes Actual',
+		de : 'Gehe zu aktuellem Monat'
+	};
+	var todayString = {
+		it : 'Oggi θ',
+		gr : 'Σήμερα είναι',
+		en : 'Today is',
+		tr : 'Today is',
+		es : 'Hoy es',
+		de : 'Heute ist'
+	};
+	var weekString = {
+		it : 'Set',
+		gr : 'Εβδ',
+	    	en : 'Wk',
+	    	tr : 'Wk',
+		es : 'Sem',
+		de : 'KW'
+	};
+	var scrollLeftMessage = {
+	    it : 'Clicca per passare al mese precedente. Tieni premuto per scorrere i vari mesi.',
+	    gr : 'Πατήστε για επιλογή του προηγούμενου μήνα',
+		en : 'Click to scroll to previous month. Hold mouse button to scroll automatically.',
+		tr : 'Click to scroll to previous month. Hold mouse button to scroll automatically.',
+		es : 'Presione para pasar al mes anterior. Deje presionado para pasar varios meses.',
+		de : 'Klicken um zum vorigen Monat zu gelangen. Gedruckt halten, um automatisch weiter zu scrollen.'
+	};
+	var scrollRightMessage = {
+		it : 'Clicca per passare al mese successivo. Tieni premuto per scorrere i vari mesi.',
+		gr : 'Πατήστε για επιλογή του επόμενου μήνα',
+		en : 'Click to scroll to next month. Hold mouse button to scroll automatically.',
+		tr : 'Click to scroll to next month. Hold mouse button to scroll automatically.',
+		es : 'Presione para pasar al siguiente mes. Deje presionado para pasar varios meses.',
+		de : 'Klicken um zum nachsten Monat zu gelangen. Gedruckt halten, um automatisch weiter zu scrollen.'
+	};
+	var selectMonthMessage = {
+		it : 'Clicca per scegliere il mese.',
+		gr : 'Πατήστε για επιλογή μήνα',
+		en : 'Click to select a month.',
+		tr : 'Click to select a month.',
+		es : 'Presione para seleccionar un mes',
+		de : 'Klicken um Monat auszuwahlen'
+	};
+	var selectYearMessage = {
+		it : 'Clicca per scegliere l"anno.',
+		gr : 'Πατήστε για επιλογή έτους',
+		en : 'Click to select a year.',
+		tr : 'Click to select a year.',
+		es : 'Presione para seleccionar un ano',
+		de : 'Klicken um Jahr auszuwahlen'
+	};
+	var selectDateMessage = {		// do not replace [date], it will be replaced by date.
+		it : 'Scegli [date] come data.',
+		gr : 'Επιλογή [date] ως ημερομηνίας',
+		en : 'Select [date] as date.',
+		tr : 'Select [date] as date.',
+		es : 'Seleccione [date] como fecha',
+		de : 'Wahle [date] als Datum.'
+	};
+	var	monthName = {
+		it : new Array('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'),
+		gr : new Array('Ιανουάριος','Φεβρουάριος','Μαρτιος','Απρίλιος','Μαϊος','Ιούνιος','Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος'),
+		en : new Array('January','February','March','April','May','June','July','August','September','October','November','December'),
+		tr : new Array('Ocak','Subat','Mart','Nisan','Mayis','Haziran','Temmuz','Agustos','Eylul','Ekim','Kasim','Aralik'),
+		es : new Array('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'),
+		de : new Array('Januar','Februar','Marz','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember')
+	};
+	var	monthName2 = {
+		it : new Array('GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC'),
+		gr : new Array('Ιαν','Φεβ','Μαρ','Απρ','Μαι','Ιουν','Ιουλ','Αυγ','Σεπ','Οκτ','Νοε','Δεκ'),
+		en : new Array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'),
+		tr : new Array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'),
+		es : new Array('ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'),
+		de : new Array('JAN','FEB','MRZ','APR','MAI','JUN','JUL','AUG','SEP','OKT','NOV','DEZ')
+	};
 
+	if (startAt==0) {
+		dayName = {
+			it : new Array('Dom','Lun','Mar','Mer','Gio','Ven','Sab'),
+			gr : new Array('Κυρ','Δευ','Τρι','Τετ','Πεμ','Παρ','Σαβ'),
+			en : new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat'),
+			tr : new Array('Sun','Mon','Tue','Wed','Thu','Fri','Sat'),
+			es : new Array('Dom','Lun','Mar','Mie','Jue','Vie','Sab'),
+			de : new Array('So','Mo','Di','Mi','Do','Fr','Sa')
+		};
+	} else {
+		dayName = {
+			it : new Array('Lun','Mar','Mer','Gio','Ven','Sab','Dom'),
+			gr : new Array('Δε','Τρ','Τε','Πε','Πα','Σα','Κυ'),
+			en : new Array('Mon','Tue','Wed','Thu','Fri','Sat','Sun'),
+			tr : new Array('Mon','Tue','Wed','Thu','Fri','Sat','Sun'),
+			es : new Array('Lun','Mar','Mie','Jue','Vie','Sab','Dom'),
+			de : new Array('Mo','Di','Mi','Do','Fr','Sa','So')
+		};
+	}
+*/
 	var crossobj, crossMonthObj, crossYearObj, monthSelected, yearSelected, dateSelected, omonthSelected, oyearSelected, odateSelected, monthConstructed, yearConstructed, intervalID1, intervalID2, timeoutID1, timeoutID2, ctlToPlaceValue, ctlNow, dateFormat, selDayAction, isPast;
 	var  nStartingYear=1980;
 	var visYear  = 0;
@@ -114,9 +215,7 @@
 			img[i] = new Image;
 			img[i].src = imgDir + imgsrc[i];
 		}
-		document.write ('<div onclick="bShow=true" id="calendar" style="z-index:+1999;position:absolute;visibility:hidden;"><table width="'+((showWeekNumber==1)?240:205)+'" style="font-family:Arial;font-size:11px;border: 1px solid #A0A0A0;" bgcolor="#ffffff"><tr bgcolor="#000066"><td><table width="'+((showWeekNumber==1)?238:203)+'"><tr><td style="padding:1px;font-family:Arial;font-size:11px;"><font color="#ffffff' + '' /*C9D3E9*/ +'"><b><span id="caption"></span></b></font></td><td align="right">');
-		if (!hideCloseButton) document.write ('<a href="javascript:hideCalendar()"><img src="'+imgDir+'close.gif" width="15" height="13" border="0" /></a>');
-		document.write ('</td></tr></table></td></tr><tr><td style="padding:2px" bgcolor="#ffffff"><span id="content"></span></td></tr>');
+		document.write ('<div onclick="bShow=true" id="calendar" style="z-index:+1999;position:absolute;visibility:hidden;"><table width="'+((showWeekNumber==1)?240:210)+'" style="font-family:Arial;font-size:11px;border: 1px solid #A0A0A0;" bgcolor="#ffffff"><tr bgcolor="#000066"><td><table width="'+((showWeekNumber==1)?238:208)+'"><tr><td style="padding:1px;font-family:Arial;font-size:11px;"><font color="#ffffff' + '' /*C9D3E9*/ +'"><b><span id="caption"></span></b></font></td><td align="right"><a href="javascript:hideCalendar()"><img src="'+imgDir+'close.gif" width="15" height="13" border="0" /></a></td></tr></table></td></tr><tr><td style="padding:2px" bgcolor="#ffffff"><span id="content"></span></td></tr>');
 
 		if (showToday == 1) {
 			document.write ('<tr bgcolor="#f0f0f0"><td style="padding: 2px" align="center"><span id="lblToday"></span></td></tr>');
@@ -140,12 +239,10 @@
 							
 		if (!ns4)
 		{						
-			if (bPageLoaded) return;
-
 			if (!ie) yearNow += 1900;
 
 			crossobj=(dom)?document.getElementById('calendar').style : ie? document.all.calendar : document.calendar;
-			if (!visibleOnLoad ) hideCalendar();
+			hideCalendar();
 
 			crossMonthObj = (dom) ? document.getElementById('selectMonth').style : ie ? document.all.selectMonth : document.selectMonth;
 
@@ -173,7 +270,7 @@
 	}
 
 	function hideCalendar() {
-		if (visibleOnLoad && hideCloseButton) return;
+//return;
 		crossobj.visibility = 'hidden';
 		if (crossMonthObj != null) crossMonthObj.visibility = 'hidden';
 		if (crossYearObj  != null) crossYearObj.visibility = 'hidden';
@@ -204,10 +301,6 @@
 	}
 
 	function closeCalendar() {
-		if (ctlToPlaceValue.name =='DAY_SELECT') { // dont hide it
-			window.location=thisUrl+'&year='+yearSelected+'&month='+(monthSelected+1)+'&day='+dateSelected;
-			return;
-		}
 		hideCalendar();
 		ctlToPlaceValue.value = constructDate(dateSelected,monthSelected,yearSelected);
 		if ( ctlToPlaceValue.name =='current_day_f' ) { 
@@ -420,11 +513,11 @@
 		sHTML = '<table border="0" style="font-family:verdana;font-size:8px;"><tr>';
 
 		if (showWeekNumber == 1) {
-			sHTML += '<td ><b>' + weekString[language] + '</b></td><td width="1" rowspan="7" bgcolor="#d0d0d0" style="padding:0px"><img src="'+imgDir+'divider.gif" width="1"></td>';
+			sHTML += '<td width="20"><b>' + weekString[language] + '</b></td><td width="1" rowspan="7" bgcolor="#d0d0d0" style="padding:0px"><img src="'+imgDir+'divider.gif" width="1"></td>';
 		}
 
 		for (i = 0; i<7; i++) {
-			sHTML += '<td align="right"><b><font color="#000066">' + dayName[language][i] + '</font></b></td>';
+			sHTML += '<td width="20" align="right"><b><font color="#000066">' + dayName[language][i] + '</font></b></td>';
 		}
 
 		sHTML += '</tr><tr>';
@@ -473,22 +566,22 @@
 			}
 
 			if ((datePointer == dateNow) && (monthSelected == monthNow) && (yearSelected == yearNow)) {	///// today
-				sHTML += "<b><a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#ff0000>" + datePointer + "</font></a></b>";
+				sHTML += "<b><a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#ff0000>&nbsp;" + datePointer + "</font>&nbsp;</a></b>";
 			} else if (dayPointer % 7 == (startAt * -1)+1) {									///// SI ES DOMINGO
 				if (isPast==1)
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#909090>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#909090>" + datePointer + "</font>&nbsp;</a>";
 				else
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#54A6E2>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#54A6E2>" + datePointer + "</font>&nbsp;</a>";
 			} else if ((dayPointer % 7 == (startAt * -1)+7 && startAt==1) || (dayPointer % 7 == startAt && startAt==0)) {	///// SI ES SABADO
 				if (isPast==1)
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#909090>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#909090>" + datePointer + "</font>&nbsp;</a>";
 				else
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#54A6E2>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#54A6E2>" + datePointer + "</font>&nbsp;</a>";
 			} else {																			///// CUALQUIER OTRO DIA
 				if (isPast==1)
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#909090>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#909090>" + datePointer + "</font>&nbsp;</a>";
 				else
-					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+"><font color=#000066>" + datePointer + "</font></a>";
+					sHTML += "<a "+dateMessage+" title=\"" + sHint + "\" style='"+sStyle+"' "+selDayAction+">&nbsp;<font color=#000066>" + datePointer + "</font>&nbsp;</a>";
 			}
 
 			sHTML += '';

@@ -221,6 +221,8 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 	echo "<center><img src='".$moduleRelPath."/img/icon_filter.png' border=0>"._THE_FILTER_IS_ACTIVE."";
 	echo " :: <a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
  } else echo "<center><img src='".$moduleRelPath."/img/icon_p5.gif' border=0>"._THE_FILTER_IS_INACTIVE."</center>";
+
+ $calLang=$lang2iso[$currentlang];
 ?>
 <? if ($_GET['fl_url']) { ?>
 <script language='javascript'>
@@ -229,6 +231,24 @@ window.location = "<? echo  $redirectUrl ?>"
 <? } ?>
 <script language='javascript'>
 	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+
+	var language = '<?=$calLang?>';	
+	var startAt = 1;		// 0 - sunday ; 1 - monday
+	var visibleOnLoad=0;
+	var showWeekNumber = 1;	// 0 - don't show; 1 - show
+	var hideCloseButton=0;
+	var gotoString 		= {<?=$calLang?> : '<?=_Go_To_Current_Month?>'};
+	var todayString 	= {<?=$calLang?> : '<?=_Today_is?>'};
+	var weekString 		= {<?=$calLang?> : '<?=_Wk?>'};
+	var scrollLeftMessage 	= {<?=$calLang?> : '<?=_Click_to_scroll_to_previous_month?>'};
+	var scrollRightMessage 	= {<?=$calLang?>: '<?=_Click_to_scroll_to_next_month?>'};
+	var selectMonthMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_month?>'};
+	var selectYearMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_year?>'};
+	var selectDateMessage 	= {<?=$calLang?> : '<?=_Select_date_as_date?>' };
+	var	monthName 		= {<?=$calLang?> : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
+	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
+	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
+
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
@@ -302,9 +322,7 @@ window.location = "<? echo  $redirectUrl ?>"
       <td><div align="right"> <? echo _OR ?> 
           <input name="FILTER_dateType" type="radio" value="DATE_RANGE" <? if ($FILTER_dateType=="DATE_RANGE") echo "checked" ?>>
         </div></td>
-      <td><p><? echo _From ;
-				$calLang=$lang2iso[$currentlang];
-		  ?>  
+      <td><p><? echo _From ; ?>  
           <input name="FILTER_from_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_from_day_text ?>" >
           <a href="javascript:showCalendar(document.formFilter.cal_from_button, document.formFilter.FILTER_from_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> 
           <img name='cal_from_button' src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0"></a> 
@@ -325,45 +343,45 @@ window.location = "<? echo  $redirectUrl ?>"
 		function setVal(value1)
 		{
 			if (value1=='=') { 
-				document.formFilter.FILTER_pilot2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_pilot2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_pilot3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_pilot3_select_op.value = '<? echo _IS ?>';
+				document.formFilter.FILTER_pilot2_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_pilot2_select_op.value = "<? echo _IS ?>";
+				document.formFilter.FILTER_pilot3_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_pilot3_select_op.value = "<? echo _IS ?>";
 			} else {
-				document.formFilter.FILTER_pilot2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_pilot2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_pilot3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_pilot3_select_op.value = '<? echo _IS_NOT ?>';
+				document.formFilter.FILTER_pilot2_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_pilot2_select_op.value = "<? echo _IS_NOT ?>";
+				document.formFilter.FILTER_pilot3_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_pilot3_select_op.value = "<? echo _IS_NOT ?>";
 			}
 		}
 
 		function setVal2(value1)
 		{
 			if (value1=='=') { 
-				document.formFilter.FILTER_takeoff2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_takeoff2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_takeoff3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_takeoff3_select_op.value = '<? echo _IS ?>';
+				document.formFilter.FILTER_takeoff2_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_takeoff2_select_op.value = "<? echo _IS ?>";
+				document.formFilter.FILTER_takeoff3_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_takeoff3_select_op.value = "<? echo _IS ?>";
 			} else {
-				document.formFilter.FILTER_takeoff2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_takeoff2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_takeoff3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_takeoff3_select_op.value = '<? echo _IS_NOT ?>';
+				document.formFilter.FILTER_takeoff2_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_takeoff2_select_op.value = "<? echo _IS_NOT ?>";
+				document.formFilter.FILTER_takeoff3_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_takeoff3_select_op.value = "<? echo _IS_NOT ?>";
 			}
 		}		
 
 		function setVal3(value1)
 		{
 			if (value1=='=') { 
-				document.formFilter.FILTER_country2_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_country2_select_op.value = '<? echo _IS ?>';
-				document.formFilter.FILTER_country3_select_pretext.value = '<? echo _OR ?>';
-				document.formFilter.FILTER_country3_select_op.value = '<? echo _IS ?>';
+				document.formFilter.FILTER_country2_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_country2_select_op.value = "<? echo _IS ?>";
+				document.formFilter.FILTER_country3_select_pretext.value = "<? echo _OR ?>";
+				document.formFilter.FILTER_country3_select_op.value = "<? echo _IS ?>";
 			} else {
-				document.formFilter.FILTER_country2_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_country2_select_op.value = '<? echo _IS_NOT ?>';
-				document.formFilter.FILTER_country3_select_pretext.value = '<? echo _AND ?>';
-				document.formFilter.FILTER_country3_select_op.value = '<? echo _IS_NOT ?>';
+				document.formFilter.FILTER_country2_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_country2_select_op.value = "<? echo _IS_NOT ?>";
+				document.formFilter.FILTER_country3_select_pretext.value = "<? echo _AND ?>";
+				document.formFilter.FILTER_country3_select_op.value = "<? echo _IS_NOT ?>";
 			}
 		}		
 		</script> <select name="FILTER_pilot1_select_op" onchange="setVal(this.value)" >

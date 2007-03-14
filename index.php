@@ -83,6 +83,7 @@ setVarFromRequest("flightID",0,1);
 setVarFromRequest("pilotIDview",0,1);
 setVarFromRequest("year",date("Y"),1); 
 setVarFromRequest("month",0,1); // date("m") for current month
+setVarFromRequest("day",0,1); // only used for flights_list
 setVarFromRequest("pilotID",0,1);
 setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);

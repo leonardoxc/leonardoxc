@@ -1,4 +1,5 @@
-<? if (0) { ?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9"></head><? } ?><?php
+<? if (0) { ?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9"></head><? } 
+?><?php
 /**************************************************************************/
 /* Turkish language translation by Ali Yucer   (yucer_ali@hotmail.com)    */
 /**************************************************************************/
@@ -25,9 +26,11 @@
 
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
 				'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -321,48 +324,6 @@ define("_RETURN_TO_FLIGHT","Uçuşa dön");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Uçuşa dön");
 define("_READY_FOR_SUBMISSION","Gönderime hazır");
-define("_SUBMIT_TO_OLC","OLC'ye gönder");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Ucusunuz 
-basari ile OLC'ye kayit edilmistir");
-define("_THE_OLC_REFERENCE_NUMBER_IS","OLC referans numarasi");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","OLC kaydinda bir sorun 
-olustu");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Sorunun sebebi icin 
-asagiya bakiniz");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Ucusunuz basari ile OLC'den 
-silindi");
-define("_FLIGHT_NOT_SCORED","Ucusunuz OLC Puan'i yoktur, o sebepten kayit 
-edilemiyor");
-define("_TOO_LATE","Ucusunuzun en son kayit edilme tarihi gecmistir, bu 
-sebepten kayit edilemiyor");
-define("_CANNOT_BE_SUBMITTED","ucusunuzun son kayit tarihi gecmistir");
-define("_NO_PILOT_OLC_DATA","<p><strong>Bu Pilot uzerine OLC bilgisi
-yoktur</strong><br>
-  <br>
-		OLC ye gecerli bir kayit yapabilmek icin Pilotun OLC ye uye
-olmus<br>olmasi gerekmektedir.</p>
-<p> bu kayit icin <a
-href='http://www2.onlinecontest.org/olcphp/2005/anm_teilnehmer.php?olc=holc-gr&spr=en'
-target='_blank'>Buraya
-</a> tiklayiniz.<br>
-</p>
-<p>kayit yapildiktan sonra server yoneticisi ile <a
-href='mailto:andread@thenet.gr'>temasa</a>
-geçiniz<br>
-Luften Eposta mesajinizda belirtiniz :<br>
-</p>
-<ul>
-	<li><div align=left>Ad</div>
-	<li><div align=left>Soyad</div>
-	<li><div align=left>Dogum Gunu</div>
-	<li> <div align=left>Cagri Isaretiniz</div>
-	<li><div align=left>OLC ye ucuşlarınızı zaten kaydetmiş iseniz, IGC dosya 
-isminizde kullandıgınız 4 harf.</div>
-	<li><div align=left>Eger sistemimizin uçuşlarınızı otomatik olarak OLC yede 
-kaydetmesini istiyorsanız, kaydetmek istediğiniz minimum OLC skoru ne 
-olmalıdır</div>
-</ul>
-");
 define("_OLC_MAP","Harita");
 define("_OLC_BARO","BAROMETRE");
 
@@ -438,51 +399,6 @@ değiştir");
 define("_Delete_Photo","Fotoğrafı sil");
 define("_Your_profile_has_been_updated","Profiliniz güncellendi");
 define("_Submit_Change_Data","Gönder - Bilgi değiştir");
-
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","OLC bilgisini değiştir");
-define("_OLC_information","OLC bilgisi");
-define("_callsign","Çağrı İşareti");
-define("_filename_suffix","Dosya kodu");
-define("_OLC_Pilot_Info","OLC Pilot bilgisi");
-define("_OLC_EXPLAINED","<b>OLC Nedir / Bu bosluklar (alanlarin kullanimi) 
-ne icindir ?</b><br><br>
-	OLC ye gecerli bir kayıt yapabilmek icin (Leonardo dan), pilotun önceden 
-OLC sistemine ayrıeten kayıt olmuş olması gerekmektedir.</p>
-<p>Bu islem <a 
-href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' 
-target='_blank'> bu sayfadan</a> yapilabilmektedir, once ulkenizi sonrada 
-Contest Registration=Yarisma Kaydi nı seçmeniz gerekmektedir
-  <br>
-</p>
-<p>Kayit işlemi bittikten sonra, OLC ye kayıt olurken verdiğiniz bilgilerin 
-AYNISINI burayada yuklemelisiniz
-</p>
-<ul>
-	<li><div align=left>Ad</div>
-	<li><div align=left>Soyad</div>
-	<li><div align=left>Doğum Tarihi</div>
-	<li> <div align=left>Cagri Isaretiniz</div>
-	<li><div align=left>OLC ye ucuslarınızı zaten kaydetmis iseniz, IGC dosya 
-isminizde kullandığınız 4 harf.</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Filename Suffix</b> nedir ? Bir pilotu 
-veya yamaçparaşütünü diğerlerinden ayırt eden 4 hafli bir şifredir 
-(koddur)'<br>.
-Buraya ne yazmanız konusunda emin değilseniz, sizler için bir takım 
-ipuçları:<p>
-<ul>
-<li>Isminizden/Soyadınızdan çıkardığınız 4 adet harfi kullanınız
-<li>Kulağa garip gelen bir kombinasyon bulmaya çalışın. Bu diger bir pilot 
-ile aynı koda sahip olma durumunu engelleyebilir.
-<li>Eger uçuşunuzu Leonardo sistemi ile OLC ye kayıt etmekte bir sorun 
-çıkarsa, sorun bu suffix (kod) dan dolayı olabilir. Kod unuzu değistirip 
-tekrardan uçuşunuzu gondermeyi deneyin.
-</ul>");
 
 //--------------------------------------------
 // pilot_profile_stats.php
@@ -683,4 +599,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

@@ -17,9 +17,11 @@
 /************************************************************************/
 
 function setMonths() {
-global  $monthList;
+global  $monthList,	$monthListShort, $weekdaysList;
 $monthList=array('Januar','Februar','Marec','April','Maj','Junij',
 'Julij','Avgust','September','Oktober','November','December');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -295,31 +297,6 @@ define("_RETURN_TO_FLIGHT","Nazaj na let");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Nazaj na let");
 define("_READY_FOR_SUBMISSION","Pripravljena za prijavo");
-define("_SUBMIT_TO_OLC","Prijavi na OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Ta let je bil uspe¹no prijavljen na OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","OLC referenèna ¹tevilka je");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Te¾ava pri OLC prijavljanju");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Poglej spodaj, kaj je vzrok te¾ave");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Ta let je bil uspe¹no odstranjen z OLC");
-define("_FLIGHT_NOT_SCORED","Ta let nima OLC toèk in torej ne more biti prijavljen");
-define("_TOO_LATE","Rok za ta let je potekel in torej ne more biti prijavljen");
-define("_CANNOT_BE_SUBMITTED","Rok za ta let je potekel");
-define("_NO_PILOT_OLC_DATA","<p><strong>Ni OLC podatkov za pilota</strong><br>
-  <br>
-<b>kaj je OLC / èemu so ta polja ?</b><br><br>
-Za veljavno prijavo na OLC mora biti pilot ¾e registriran v sistemu OLC.</p>
-<p> To se lahko opravi <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na tej strani</a>, kjer mora¹ izbrati svojo dr¾avo in nato 'Contest Registration'<br>
-</p>
-<p>Ko je registracija opravljena, gre¹ v Leonardu na 'Profil pilota'->'Uredi OLC info' in vnesi svoje podatke ENAKO kot si jih vnesel/vnesla ob registraciji v OLC
-</p>
-<ul>
-<li><div align=left>Ime</div>
-<li><div align=left>Priimek</div>
-<li><div align=left>Rojstni datum</div>
-<li> <div align=left>Klicni znak</div>
-<li><div align=left>Èe si ¾e prijavljal/la lete na OLC, vpi¹i 4 èrke, ki jih uporablja¹ za lastno oznako v imenu IGC datoteke</div>
-</ul>");
 define("_OLC_MAP","Zemljevid");
 define("_OLC_BARO","Barograf");
 
@@ -395,45 +372,6 @@ define("_Delete_Photo","Zbri¹i sliko");
 define("_Your_profile_has_been_updated","Tvoj profil je obnovljen");
 define("_Submit_Change_Data","Podaj - spremeni podatke");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Uredi OLC info");
-define("_OLC_information","OLC info");
-define("_callsign","Klicni znak");
-define("_filename_suffix","Konènica datoteke");
-define("_OLC_Pilot_Info","OLC info o pilotu");
-define("_OLC_EXPLAINED","<b>kaj je OLC / èemu so ta polja ?</b><br><br>
-Za veljavno prijavo na OLC mora biti pilot ¾e registriran v sistemu OLC.</p>
-<p> To se lahko opravi <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na tej strani</a>, kjer mora¹ izbrati svojo dr¾avo in nato 'Contest Registration'<br>
-</p>
-<p>Ko je registracija opravljena, gre¹ v Leonardu na 'Profil pilota'->'Uredi OLC info' in vnesi svoje podatke ENAKO kot si jih vnesel/vnesla ob registraciji v OLC
-</p>
-<ul>
-<li><div align=left>Ime</div>
-<li><div align=left>Priimek</div>
-<li><div align=left>Rojstni datum</div>
-<li> <div align=left>Klicni znak</div>
-<li><div align=left>Èe si ¾e prijavljal/la lete na OLC, vpi¹i 4 èrke, ki jih uporablja¹ za lastno oznako v imenu IGC datoteke</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Kaj je 'konènica datoteke' (filename suffix)?</b><br>To je 4 znakovna unikatna oznaka vsakega pilota ali krila. 
-Èe res ne ve¹ kaj vnesti, je tu nekaj namigov:<p>
-<ul>
-<li>Uporabi 4 èrke svojega imena / priimka
-<li>Poskusi najti kombinaciji, ki zveni dovolj nenavadno. To precej zmanj¹a mo¾nosti da bi bila oznaka enaka kot pri kakem drugem pilotu
-<li>Èe ima¹ te¾ave s prijavo leta na OLC skozi Leonarda, je to lahko zaradi oznake. Spremeni oznako in ponovno poskusi.
-</ul>");
-
-//
-//
-//
-//
-//
-//
-//
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -633,4 +571,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

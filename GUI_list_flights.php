@@ -30,12 +30,18 @@
   $query_str="";
   $legend="";
   $legend="<b>"._MENU_FLIGHTS."</b> ";
-  if ($year && !$month ) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
+
+  if ($year && $month && $day ) {
+		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m%d') = ".sprintf("%04d%02d%02d",$year,$month,$day)." ";
+  } else {
+	  if ($year && !$month ) {
+			$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
+	  }
+	  if ($year && $month ) {
+			$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
+	  }
   }
-  if ($year && $month ) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
-  }
+
   if (! $year ) {
 	//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
   }

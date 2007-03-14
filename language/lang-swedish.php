@@ -21,9 +21,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Januari','Februari','Mars','April','Maj','Juni',
 					'Juli','Augusti','September','Oktober','November','December');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -299,31 +301,6 @@ define("_RETURN_TO_FLIGHT","Återgå till flyget");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Återgå till flyget");
 define("_READY_FOR_SUBMISSION","Klar att skicka in");
-define("_SUBMIT_TO_OLC","Skicka in till OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Flyget har framgånsrikt skickat in till OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","OLC-referensnummer är");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Det uppkom ett problem vid OLC-inskickningen");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Se nedan för orsaken till problemet");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Flyget var framgångsrikt borttaget från OLC");
-define("_FLIGHT_NOT_SCORED","Flyget har ingen OLC-poäng  och kan inte skickas in");
-define("_TOO_LATE","sista datum ('deadline') för detta flyg har gått ut och det kan därför inte skicka sin");
-define("_CANNOT_BE_SUBMITTED","Sista datum ('deadline') för detat flyg har gått ut");
-define("_NO_PILOT_OLC_DATA","<p><strong>Inget OLC data för piloten</strong><br>
-  <br>
-<b>Vad är OLC / vad är dessa fält till för?</b><br><br>
-	För en giltig inskickning till OLC skall piloten redan vara registrerad i OLC-systemet.</p>
-<p> Detta kan göras på<a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  denna webb-sida</a>, där du måste välja land och sedan 'Contest Registration'<br>
-</p>
-<p>När registreringen är utförd, måste du gå till 'Pilotprofil'->'Ändra OLC-info' och skriv in din information EXAKT som du skrev in den i OLC registreringen
-</p>
-<ul>
-	<li><div align=left>Förnamn</div>
-	<li><div align=left>Efternamn</div>
-	<li><div align=left>Födelsedatum</div>
-	<li> <div align=left>Ditt 'callsign'</div>
-	<li><div align=left>Om du redan skickat in flyg till OLC, de 4 bokstäverna som används till IGC-filnamnet</div>
-</ul>");
 define("_OLC_MAP","Karta");
 define("_OLC_BARO","Barograf");
 
@@ -399,37 +376,6 @@ define("_Delete_Photo","Ta bort bild");
 define("_Your_profile_has_been_updated","Din profil har uppdaterats");
 define("_Submit_Change_Data","Skicka in - Ändra data");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Ändra OLC-info");
-define("_OLC_information","OLC-information");
-define("_callsign","Callsign");
-define("_filename_suffix","Filnamnssuffix");
-define("_OLC_Pilot_Info","OLC Pilot Info");
-define("_OLC_EXPLAINED","<b>VAd är OLC / vad används dessa fält till ?</b><br><br>
-	För en giltig inskickning till OLC ,skall piloten redan vara resgistretad i OLC systemet.</p>
-<p> Dett kan göras <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  på denna webb-sida</a>, där du måste välja land och sedan välja 'Contest Registration'<br>
-</p>
-<p>När registreringen är utförd måste du skriva in informationen här EXAKT som du gjorde vid OLC registreringen.
-</p>
-<ul>
-	<li><div align=left>Förnamn</div>
-	<li><div align=left>Efternamn</div>
-	<li><div align=left>Födelsedatum</div>
-	<li> <div align=left>sin Anropssignal ('callsign')</div>
-	<li><div align=left>Om du redan skcikat in flyg till OLC, de 4 bokstäverna du använder för IGC-filenamnet</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Vad är 'Filenamnssuffix?'</b><br>Det är en 4 bokstavs identifier som unikt identifierar en pilot eller en farkost. 
-Om du inte vet vad du skall skriva in, här är några tips:<p>
-<ul>
-<li>Använd 4 bokstäver baserat på ditt förnamn/efternamn 
-<li>Försök hitta en kombination som låter tillräckligt konstig. Det minskar möjlighetna att ditt siffix blir det samma som någon annans pilots
-<li>Om du har problems med att skcika in dina flyg till OLC via Leonardo, kan det vara suffixet . Prova byta suffix och skicka in igen.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -630,4 +576,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

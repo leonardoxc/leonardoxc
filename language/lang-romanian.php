@@ -17,9 +17,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
                     'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -295,33 +297,6 @@ define("_RETURN_TO_FLIGHT","Inapoi la zbor");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Inapoi la zbor");
 define("_READY_FOR_SUBMISSION","Gata pentru a fi inregistrat");
-define("_SUBMIT_TO_OLC","Inregistrare catre OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Zborul a fost inregistrat cu succes catre OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","Numarul de referinta OLC este");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","A fost o problema cu inregistrarea OLC");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Uitati-va mai jos pentru cauza problemei");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Zborul a fost sters din OLC");
-define("_FLIGHT_NOT_SCORED","Zborul nu are score OLC si de aceea nu poate fi inregistrat");
-define("_TOO_LATE","Termenul limita pentru acest zbor a expirat si de aceea nu poate fi inregistrat");
-define("_CANNOT_BE_SUBMITTED","Termenul limita pentru acest zbor a expirat");
-
-// You can leave this untranslated -> is not used any more !!!
-define("_NO_PILOT_OLC_DATA","<p><strong>No OLC data for the pilot</strong><br>
-  <br>
-<b>What is OLC / what are these fields for ?</b><br><br>
-	For a valid submission to OLC the pilot should already be registered in the OLC system.</p>
-<p> This can be done <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  at this web page</a>, where you must select your country and then select 'Contest Registration'<br>
-</p>
-<p>When the registration is done, you must go to 'Pilot Profile'->'Edit OLC info' and enter there your info EXACTLY as you entrered it at OLC registration
-</p>
-<ul>
-	<li><div align=left>First/Given name</div>
-	<li><div align=left>Surname</div>
-	<li><div align=left>Date of birth</div>
-	<li> <div align=left>Your callsign</div>
-	<li><div align=left>If you have already submitted flights to OLC, the 4 letters you use for the IGC filename</div>
-</ul>");
 define("_OLC_MAP","Harta");
 define("_OLC_BARO","Barograf");
 
@@ -397,40 +372,6 @@ define("_Delete_Photo","Sterge foto");
 define("_Your_profile_has_been_updated","Profilul a fost actializat");
 define("_Submit_Change_Data","Inregistreaza - Schimba data");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Editeaza info OLC");
-define("_OLC_information","informatie OLC");
-define("_callsign","Callsign");
-define("_filename_suffix","Extensie fisier");
-define("_OLC_Pilot_Info","Informatii pilot OLC");
-
-// You can leave this untranslated -> is not used any more !!!
-define("_OLC_EXPLAINED","<b>What is OLC / what are these fields for ?</b><br><br>
-	For a valid submission to OLC the pilot should already be registered in the OLC system.</p>
-<p> This can be done <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  at this web page</a>, where you must select your country and then select 'Contest Registration'<br>
-</p>
-<p>When the registration is done you must enter here your info EXACTLY as you entrered it at OLC registration
-</p>
-<ul>
-	<li><div align=left>First/Given name</div>
-	<li><div align=left>Surname</div>
-	<li><div align=left>Date of birth</div>
-	<li> <div align=left>Your callsign</div>
-	<li><div align=left>If you have already submitted flights to OLC, the 4 letters you use for the IGC filename</div>
-</ul>
-");
-
-// You can leave this untranslated -> is not used any more !!!
-define("_OLC_SUFFIX_EXPLAINED","<b>What is the 'Filename suffix?'</b><br>It is a 4 letter identifier that uniquely identifies a pilot or a glider. 
-If you dont really know what to enter here, here are some tips:<p>
-<ul>
-<li>Use 4 leters derived from your first name / last name
-<li>Try to find a combination that sounds strange enough. This will cut down the possibility that your suffix will be the same with another pilot's
-<li>If you have problems submitting your flight to OLC through Leonardo, it may be the suffix. Try changing it and resubmit.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -629,4 +570,24 @@ define("_Pilot_Statistics","Pilot Statistics");
 define("_National_Rankings","National Rankings");
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

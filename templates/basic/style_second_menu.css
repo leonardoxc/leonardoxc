@@ -163,3 +163,13 @@ margin-left:18em;
 #dropMenu li:hover, #dropMenu li.hover {
   position:static;
 } 
+
+
+.calBox ,  .calBox font ,  .calBox td , .calBox a ,  .calBox a:visited , .calBox a:link {
+	font-size:10px;
+	margin:0;
+	padding:0;
+}
+.calBox ,  .calBox font  {
+	font-size:10px;
+}

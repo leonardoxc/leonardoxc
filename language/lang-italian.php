@@ -25,9 +25,11 @@
 /**************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
 				'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre');
+	$monthListShort=array('GEN','FEB','MAR','APR','MAG','GIU','LUG','AGO','SET','OTT','NOV','DIC');
+	$weekdaysList=array('Lun','Mar','Mer','Gio','Ven','Sab','Dom') ;
 }
 setMonths();
 
@@ -303,32 +305,6 @@ define("_RETURN_TO_FLIGHT","Ritorna al volo");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Ritorna al volo");
 define("_READY_FOR_SUBMISSION","Pronto per l'inserimento");
-define("_SUBMIT_TO_OLC","Inserisci nel server OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Il volo è stato inserito con successo nel server OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","Il numero di riferimento OLC è");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","C'è un problema con l'inserimento nel server OLC");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Guarda sotto per la causa del problema");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Il volo è stato rimosso con successo dal server OLC");
-define("_FLIGHT_NOT_SCORED","Il volo non ha punteggio OLC e perciò non può essere inserito");
-define("_TOO_LATE","La deadline per questo volo è stata superata e perciò non può essere inserito");
-define("_CANNOT_BE_SUBMITTED","La deadline per questo volo è stata superata");
-define("_NO_PILOT_OLC_DATA","<p><strong>Non ci sono dati OLC per il pilota</strong><br>
-  <br>
-<b>Cosa è OLC / A cosa servono questi campi?</b><br><br>
-	Per un inserimento valido nell'OLC il pilota dovrebbe essere già registrato sul server OLC.</p>
-<p> La registrazione si può fare <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  a questa pagina</a>, dove devi selezionare il tuo paese e poi scegliere 'Contest Registration'<br>
-</p>
-<p>Quando la registrazione è fatta devi inserire qui le tue informazioni ESATTAMENTE come le hai inserite nella registrazione OLC
-</p>
-<ul>
-	<li><div align=left>Nome</div>
-	<li><div align=left>Cognome</div>
-	<li><div align=left>Data di nascita</div>
-	<li> <div align=left>Firma</div>
-	<li><div align=left>Se hai già inserito dei voli nell'OLC, le 4 lettere che usi per il nome del file IGC</div>
-</ul>
-");
 define("_OLC_MAP","Mappa OLC");
 define("_OLC_BARO","Barografo");
 
@@ -403,38 +379,6 @@ define("_Upload_new_photo_or_change_old","Carica nuova foto o cambiane una vecch
 define("_Delete_Photo","Elimina Foto");
 define("_Your_profile_has_been_updated","Il tuo profilo è stato aggiornato");
 define("_Submit_Change_Data","Invia - Cambia i dati");
-
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Edita informazioni OLC");
-define("_OLC_information","Informazioni OLC");
-define("_callsign","Firma");
-define("_filename_suffix","Suffisso del nome del file");
-define("_OLC_Pilot_Info","Informazioni Pilota OLC");
-define("_OLC_EXPLAINED","<b>Cosa è OLC / A cosa servono questi campi?</b><br><br>
-	Per un inserimento valido nell'OLC il pilota dovrebbe essere già registrato sul server OLC.</p>
-<p> La registrazione si può fare <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  a questa pagina</a>, dove devi selezionare il tuo paese e poi scegliere 'Contest Registration'<br>
-</p>
-<p>Quando la registrazione è fatta devi inserire qui le tue informazioni ESATTAMENTE come le hai inserite nella registrazione OLC
-</p>
-<ul>
-	<li><div align=left>Nome</div>
-	<li><div align=left>Cognome</div>
-	<li><div align=left>Data di nascita</div>
-	<li> <div align=left>Firma</div>
-	<li><div align=left>Se hai già inserito dei voli nell'OLC, le 4 lettere che usi per il nome del file IGC</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Cos'è il 'Suffisso del nome del file?'</b><br>E' un identificatore di 4 lettere che identifica univocamente un pilota o un mezzo. 
-Se non sai cosa inserire qui, leggi questi suggerimenti:<p>
-<ul>
-<li>Usa 4 lettere derivate dal tuo nome / cognome
-<li>Cerca di trovare una combinazione che sia abbastanza strana. Questo escluderà la possibilità che il tuo suffisso sia uguale a quello di un'altro pilota
-<li>Se hai problemi ad inserire il tuo volo nell'OLC tramite Leonardo, questo può essere dovuto al suffisso. Prova a cambiarlo e riprova.
-</ul>");
 
 //--------------------------------------------
 // pilot_profile_stats.php
@@ -636,4 +580,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Vai al Mese Corrente');
+define('_Today_is','Oggi è');
+define('_Wk','Set');
+define('_Click_to_scroll_to_previous_month','Clicca per passare al mese precedente. Tieni premuto per scorrere i vari mesi.');
+define('_Click_to_scroll_to_next_month','Clicca per passare al mese successivo. Tieni premuto per scorrere i vari mesi.');
+define('_Click_to_select_a_month','Clicca per scegliere il mese.');
+define('_Click_to_select_a_year','Clicca per scegliere l"anno.');
+define('_Select_date_as_date.','Scegli [date] come data.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

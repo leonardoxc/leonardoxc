@@ -21,9 +21,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Январь','Февраль','Март','Апрель','Май','Июнь',
 					'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -299,32 +301,6 @@ define("_RETURN_TO_FLIGHT","Вернуться к полету");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Вернуться к полету");
 define("_READY_FOR_SUBMISSION","Все готово для включения");
-define("_SUBMIT_TO_OLC","Включить файл в OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Полет включен в OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","Номер полета в OLC");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Не получилось включить полет в OLC");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Причина проблемы ниже");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Полет успешно удален из OLC");
-define("_FLIGHT_NOT_SCORED","Полету не присвоен зачетный балл OLC");
-define("_TOO_LATE","Прошел срок, в течение которого этот полет мог быть включен в OLC");
-define("_CANNOT_BE_SUBMITTED","Прошел срок, в течение которого этот полет мог быть включен в OLC");
-define("_NO_PILOT_OLC_DATA","<p><strong>Нет данных о пилоте, необходимых для OLC</strong><br>
-  <br>
-<b>Что такое OLC / зачем эти поля ?</b><br><br>
-	OLC - On-Line Contest - онлайновое соревнование.</p>
-	Для включения файла в OLC пилот должен быть уже зарегистрирован в системе OLC.</p>
- Это можно сделать <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
- здесь</a>, где Вы должны выбрать свою страну и затем 'Contest Registration'<br>
-</p>
-<p>После регистрации нужно зайти в 'Pilot Profile'->'Edit OLC info' и ввести там Вашу информацию В ТОЧНОСТИ так же, как при регистрации в OLC
-</p>
-<ul>
-	<li><div align=left>Имя</div>
-	<li><div align=left>Фамилия</div>
-	<li><div align=left>Дата рождения</div>
-	<li> <div align=left>Позывной</div>
-	<li><div align=left>Если Вы уже вводили полеты в OLC, 4 буквы, которые Вы используете для имени IGC файла</div>
-</ul>");
 define("_OLC_MAP","Карта");
 define("_OLC_BARO","Барограф");
 
@@ -400,37 +376,6 @@ define("_Delete_Photo","Удалить фото");
 define("_Your_profile_has_been_updated","Ваш профиль обновлен");
 define("_Submit_Change_Data","Сохранить данные");
 
-//--------------------------------------------
-// pilot_пlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Редактировать данные OLC");
-define("_OLC_information","Информация OLC");
-define("_callsign","Позывной");
-define("_filename_suffix","Расширение файлов");
-define("_OLC_Pilot_Info","Информация о пилоте OLC");
-define("_OLC_EXPLAINED","<b>Что такое OLC / зачем эти поля?</b><br><br>
-	Для регистрации полетов в OLC пилот должен быть уже зарегистрирован в системе OLC.</p>
-<p> Это может быть сделано <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  на этой странице</a>, где Вы должны выбрать свою страну и потом выбрать 'Contest Registration'<br>
-</p>
-<p>После регистрации Вы должны ввести здесь свои данные ТОЧНО ТАК ЖЕ, как Вы их ввели при регистрации в OLC
-</p>
-<ul>
-	<li><div align=left>Имя</div>
-	<li><div align=left>Фамилия</div>
-	<li><div align=left>Дата рождения</div>
-	<li> <div align=left>Ваш позывной</div>
-	<li><div align=left>Если Вы уже регистрировали полеты в OLC, 4 буквы, которые Вы используете для файлов IGC</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Что такое 'расширение файла'?</b><br>Это четырехбуквенный идентификатор, который однозначно идентифицирует пилота или параплан. 
-Если Вы совсем не знаете, что ввести, вот Вам несколько советов:<p>
-<ul>
-<li>Используйте 4 буквы Вашего имени/фамилии
-<li>Попробуйте придумать достаточно необычную комбинацию. Это снизит вероятность того, что Ваше расширение совпадет с чьим-то еще
-<li>Если у Вас возникнут проблемы с регистрацией полетов в OLC через Leonardo, дело может быть в расширении. Попробуйте поменять его и послать полет еще раз.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -631,4 +576,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

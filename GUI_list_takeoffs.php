@@ -29,7 +29,7 @@
 //		$query_str.="&year=".$year;
   }
   if ($year && $month ) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".$year.$month." ";
+		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
 		//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
 //		$query_str.="&year=".$year."&month=".$month;
   }

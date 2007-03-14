@@ -24,9 +24,11 @@
 /**************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Enero','Febrero','Marzo','Abril','Mayo','Junio',
 					'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
+	$monthListShort=array('ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC');
+	$weekdaysList=array('Lun','Mar','Mie','Jue','Vie','Sab','Dom') ;
 }
 setMonths();
 
@@ -302,31 +304,6 @@ define("_RETURN_TO_FLIGHT","Volver al vuelo");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Volver al vuelo");
 define("_READY_FOR_SUBMISSION","Listo para enviar");
-define("_SUBMIT_TO_OLC","Enviar a OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","El vuelo ha sido enviado a el OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","El número de referencia OLC es");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Ocurrió un error en el envio OLC");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Mire abajo para ver la causa del problema");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","El vuelo ha sido removido del el OLC");
-define("_FLIGHT_NOT_SCORED","El vuelo no tiene puntaje OLC y por lo tanto no puede ser enviado");
-define("_TOO_LATE","El plazo de envio de este vuelo ha terminado y por lo tanto no puede ser enviado");
-define("_CANNOT_BE_SUBMITTED","El plazo de envio de este vuelo ha terminado");
-define("_NO_PILOT_OLC_DATA","<p><strong>No hay datos OLC para este piloto</strong><br>
-  <br>
-<b>¿Qué es OLC / para qué son estos campos ?</b><br><br>
-	Para validad el envio a el OLC el piloto debe estar registrado en el sistema OLC.</p>
-<p> Esto podés hacerlo <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=es' target='_blank'>
-  en este sitio</a>, donde deberás seleccionar tu país y luego 'Contest Registration'<br>
-</p>
-<p>Cuando hayas finalizado el registro, debes ir a tu 'Perfil del Piloto'->'Editar información OLC' e ingresar tu información EXACTAMENTE como la ingresaste en el registro OLC
-</p>
-<ul>
-	<li><div align=left>Nombres</div>
-	<li><div align=left>Apellidos</div>
-	<li><div align=left>Fecha de nacimiento</div>
-	<li> <div align=left>Apodo</div>
-	<li><div align=left>Si ya has enviado vuelos al OLC, las 4 letras que utilizas para el nombre de archivo IGC</div>
-</ul>");
 define("_OLC_MAP","Mapa");
 define("_OLC_BARO","Barograma");
 
@@ -402,37 +379,6 @@ define("_Delete_Photo","Borrar Foto");
 define("_Your_profile_has_been_updated","Tu perfil ha sido actualizado");
 define("_Submit_Change_Data","Enviar - Cambiar Datos");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Editar información OLC");
-define("_OLC_information","información OLC");
-define("_callsign","Apodo");
-define("_filename_suffix","Sufijo de Archivo");
-define("_OLC_Pilot_Info","Información OLC de Piloto");
-define("_OLC_EXPLAINED","<b>¿Qué es OLC / para qué son estos campos ?</b><br><br>
-	Para validad el envio a el OLC el piloto debe estar registrado en el sistema OLC.</p>
-<p> Esto podés hacerlo <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=es' target='_blank'>
-  en este sitio</a>, donde deberás seleccionar tu país y luego 'Contest Registration'<br>
-</p>
-<p>Cuando hayas completado el registro debes ingresar aquí la información EXACTAMENTE como la ingresaste en el registro OLC
-</p>
-<ul>
-	<li><div align=left>Nombres</div>
-	<li><div align=left>Apellido</div>
-	<li><div align=left>Fecha de Nacimiento</div>
-	<li> <div align=left>Apodo</div>
-	<li><div align=left>Si ya has enviado vuelos al OLC, las 4 letras que utilizas para el nombre de archivo IGC</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>¿Qué es el 'sufijo de archivo?'</b><br>Es un identificador de 4 letras que identifica únicamente a un piloto o ala. 
-Si no estas seguro de que ingresar realmente aquí, aquí algunos tips:<p>
-<ul>
-<li>Usa 4 letras en derivadas de tu nombres / apellidos
-<li>Intenta buscar una combinación que suene bastante extraña. Esto reducirá la posibilidad de que tu sufijo sea igual al de otros pilotos
-<li>Si tienes problemas enviando tu vuelo al OLC por medio de Leonardo, puede ser el sufijo. Prueba cambiarlo y reenviarlo.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -633,4 +579,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Ir al Mes Actual');
+define('_Today_is','Hoy es');
+define('_Wk','Sem');
+define('_Click_to_scroll_to_previous_month','Presione para pasar al mes anterior. Deje presionado para pasar varios meses.');
+define('_Click_to_scroll_to_next_month','Presione para pasar al siguiente mes. Deje presionado para pasar varios meses.');
+define('_Click_to_select_a_month','Presione para seleccionar un mes');
+define('_Click_to_select_a_year','Presione para seleccionar un ano');
+define('_Select_date_as_date.','Seleccione [date] como fecha.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

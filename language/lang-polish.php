@@ -18,9 +18,11 @@
 /*************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Styczeñ','Luty','Marzec','Kwiecieñ','Maj','Czerwiec',
 					'Lipiec','Sierpieñ','Wrzesieñ','Pa¼dziernik','Listopad','Grudzieñ');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -296,31 +298,6 @@ define("_RETURN_TO_FLIGHT","Powrót do lotu");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Powrót do lotu");
 define("_READY_FOR_SUBMISSION","Gotowy do wys³ania");
-define("_SUBMIT_TO_OLC","Wy¶lij do OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Lot zosta³ pomy¶lnie przes³any na serwer OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","Numer referencyjny OLC:");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Podczas przesy³ania lotu na serwer OLC wyst±pi³ b³±d!");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Przyczyna b³êdu zosta³a podana poni¿ej");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Lot zosta³ usuniêty z serwera OLC");
-define("_FLIGHT_NOT_SCORED","Lot nie jest punktowany i nie mo¿e zostaæ zg³oszony");
-define("_TOO_LATE","Min±³ ostateczny termin przes³ania lotu i nie mo¿e on byæ zg³oszony");
-define("_CANNOT_BE_SUBMITTED","Min±³ ostateczny termin przes³ania lotu");
-define("_NO_PILOT_OLC_DATA","<p><strong>Brak danych pilota w bazie OLC</strong><br>
-  <br>
-<b>Czym jest OLC / Do czego s³u¿± te pola ?</b><br><br>
-	Aby lot móg³ zostaæ zg³oszony, pilot musi byæ uprzednio zarejestrowany w systemie OLC.</p>
-<p> Mo¿na tego dokonaæ <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na tej stronie</a>, gdzie nale¿y wybraæ swój kraj, a nastêpnie wybraæ 'Contest Registration'<br>
-</p>
-<p>Po zakoñczeniu rejestracji w OLC, nale¿y przej¶æ do menu 'Profil pilota'->'Edytuj dane OLC' i wpisaæ DOK£ADNIE takie same dane, jak podczas rejestracji do OLC
-</p>
-<ul>
-	<li><div align=left>Imiê</div>
-	<li><div align=left>Nazwisko</div>
-	<li><div align=left>Data urodzenia</div>
-	<li> <div align=left>Callsign</div>
-	<li><div align=left>Je¶li pilot przesy³a³ ju¿ loty do OLC, 4 litery, które wpisuje na koñcu pliku IGC</div>
-</ul>");
 define("_OLC_MAP","Mapa");
 define("_OLC_BARO","Barograf");
 
@@ -396,37 +373,6 @@ define("_Delete_Photo","Usuñ zdjêcie");
 define("_Your_profile_has_been_updated","Profil zosta³ uaktualniony");
 define("_Submit_Change_Data","Prze¶lij - Zmieñ dane");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Edytuj dane OLC");
-define("_OLC_information","Dane OLC");
-define("_callsign","Callsign");
-define("_filename_suffix","Sufiks pliku IGC");
-define("_OLC_Pilot_Info","Dane pilota w OLC");
-define("_OLC_EXPLAINED","<b>Czym jest OLC / Do czego s³u¿± te pola ?</b><br><br>
-	Aby lot móg³ zostaæ zg³oszony, pilot musi byæ uprzednio zarejestrowany w systemie OLC.</p>
-<p> Mo¿na tego dokonaæ <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na tej stronie</a>, gdzie nale¿y wybraæ swój kraj, a nastêpnie wybraæ 'Contest Registration'<br>
-</p>
-<p>Po zakoñczeniu rejestracji nale¿y wpisaæ tutaj DOK£ADNIE takie same dane, jak podczas rejestracji do OLC
-</p>
-<ul>
-	<li><div align=left>Imiê</div>
-	<li><div align=left>Nazwisko</div>
-	<li><div align=left>Data urodzenia</div>
-	<li> <div align=left>Callsign</div>
-	<li><div align=left>Je¶li pilot przesy³a³ ju¿ loty do OLC, 4 litery, które wpisuje na koñcu pliku IGC</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Czym jest 'Sufiks pliku IGC?'</b><br>Jest to czteroliterowy identyfikator, unikatowy dla danego pilota lub skrzyd³a. 
-Je¶li nie wiadomo, co tutaj wpisaæ, oto kilka wskazówek:<p>
-<ul>
-<li>Pierwsze litery imienia i nazwiska
-<li>Nale¿y szukaæ oryginalnych kombinacji. Dziêki temu ograniczymy szansê, ¿e taki sam sufiks bêdzie u¿yty przez innego pilota.
-<li>Je¶li przy przesy³aniu lotów do OLC przez serwer Leonardo pojawiaj± siê problemy, mo¿e byæ to kwestia z³ego sufiksu. Mo¿na spróbowaæ go zmieniæ i przes³aæ ponownie.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -630,4 +576,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

@@ -18,7 +18,9 @@
   
   $dateLegend="";
   $allTimesDisplay=0;
-  if ($year && !$month ) $dateLegend.=$year;
+
+  if ($year && $month && $day && $op=="list_flights") $dateLegend.=sprintf("%02d.%02d.%04d",$day,$month,$year);
+  else if ($year && !$month ) $dateLegend.=$year;
   else if ($year && $month ) $dateLegend.=$monthList[$month-1]." ".$year;
   else if (! $year ) {
 	$dateLegend.=_ALL_TIMES;

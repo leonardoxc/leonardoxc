@@ -1,5 +1,4 @@
-<? if (1==2) { ?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-7"></head><? } ?>
-<?
+<? if (0) { ?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-7"></head><? } ?><?
 
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
@@ -18,9 +17,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Ιανουάριος','Φεβρουάριος','Μαρτιος','Απρίλιος','Μαϊος','Ιούνιος',
 				'Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος');
+	$monthListShort=array('ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
+	$weekdaysList=array('Δευ','Τρι','Τετ','Πεμ','Παρ','Σαβ','Κυρ') ;
 }
 setMonths();
 
@@ -299,50 +300,8 @@ define("_RETURN_TO_FLIGHT","Επιστροφή στην πτήση");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Επιστροφή στην πτήση");
 define("_READY_FOR_SUBMISSION","Ετοιμη προς υποβολή");
-define("_SUBMIT_TO_OLC","Υποβολή στο OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Η πτήση καταχωρήθηκε επιτυχώς στο OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","Ο OLC αριθμός αναφοράς της πτήσης είναι");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Παρουσιάστηκε πρόβλημα κατά την υποβολή");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Κοιτάξτε το κειμενο παρακάτω για να εντοπίσετε το πρόβλημα");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Η πτήση αφαιρέθηκε απο το OLC");
-define("_FLIGHT_NOT_SCORED","Η πτήση δεν έχει βαθμολογηθεί και επομένως<br>δεν μπορεί να υποβληθεί στο OLC");
-define("_TOO_LATE","Η προθεσμία υποβολής έχει περάσει<br>και επομένως η πτήση δεν μπορεί να υποβληθεί");
-define("_CANNOT_BE_SUBMITTED","Η προθεσμία υποβολής έχει περάσει");
-define("_NO_PILOT_OLC_DATA","<p><strong>Δεν υπάρχουν δεδομένα για τον πιλότο</strong><br>
-<br>
-		Για έγκυρη υποβολή μιας πτήσης στο OLC πρέπει ο πιλότος να είναι εγγεγραμένος ΗΔΗ <BR>
-        στο σύστημα του OLC.</p>
-<p> Αυτό μπορεί να το κάνει <a href='http://www2.onlinecontest.org/olcphp/2005/anm_teilnehmer.php?olc=holc-gr&spr=en' target='_blank'>
-  από αυτή τη διεύθυνση</a><br>
-</p>
-<p>Αφού ολοκληρωθεί η διαδικασία αυτή <a href='mailto:andread@thenet.gr'>επικοινωνήστε</a> με
-		  τον διαχειριστή του συστήματος.<br>
-	    Στο email να αναφέρετε (ΑΚΡΙΒΩΣ όπως τα δηλώσατε):<br>
-</p>
-<ul><li>
-  <div align=left>First/Given name
-	</div>
-<li>
-  <div align=left>Surname
-	</div>
-<li>
-  <div align=left>Date of birth
-	</div>
-<li>
-  <div align=left>Το παρατσούκλι(callsign) σας
- 	</div>
-<li>
-  <div align=left>Εάν έχετε υποβάλλει ήδη πτήσεις, τα 4 χαρακτηριστικά γράμματα που χρησιμοποιήτε για το όνομα IGC αρχείου
-	</div>
-<li>
-  <div align=left>Εάν επιθυμείτε αυτόματη υποβολή των πτήσεων σας στο OLC (προτείνεται ΝΑΙ)
-		και αν ΝΑΙ, πάνω από πόσους (OLC) βαθμούς να γίνεται αυτό (προτείνεται 15).
-  </div>
-</ul>
-");
 define("_OLC_MAP","Χάρτης");
 define("_OLC_BARO","Βαρόγραμα");
-
 
 
 //--------------------------------------------
@@ -416,38 +375,6 @@ define("_Upload_new_photo_or_change_old","Δώστε μια νέα φωτογραφία ή αλλάξτε την
 define("_Delete_Photo","Διαγραφή φωτογραφίας");
 define("_Your_profile_has_been_updated","Το προφίλ σας έχει αλλαχτεί");
 define("_Submit_Change_Data","Αλλαγή στοιχείων");
-
-//--------------------------------------------
-// pilot_οlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Ανανέωση OLC στοιχείων");
-define("_OLC_information","Πληροφορίες για το OLC");
-define("_callsign","Παρατσούκλι");
-define("_filename_suffix","Πρόθεμα αρχείου");
-define("_OLC_Pilot_Info","Στοιχεία πιλότου για το OLC");
-define("_OLC_EXPLAINED","<b>Τί είναι το OLC / τι είναι αυτά τα πεδία;</b><br><br>
-	Για μια έγκυρη υποβολή πτήσης στο OLC ο πιλότος πρέπει να έιναι ήδη γραμμένος στο OLC.</p>
-<p> Αυτό μπορεί να γίνει <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-gr&spr=gr' target='_blank'>
-από αυτή τη διεύθυνση</a><br> 
-</p>
-<p>Αφού ολοκληρωθεί η διαδικασία αυτή εισάγετε εδώ τα στοιχεία  ΑΚΡΙΒΩΣ όπως τα δηλώσατε στο OLC<br>
-</p>
-<ul>
-<li><div align=left>First/Given name</div>
-<li><div align=left>Surname</div>
-<li><div align=left>Date of birth</div>
-<li><div align=left>Το παρατσούκλι(callsign) σας</div>
-<li><div align=left>Εάν έχετε υποβάλλει ήδη πτήσεις, τα 4 χαρακτηριστικά γράμματα που χρησιμοποιήτε για το όνομα IGC αρχείου</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Τι είναι το 'Πρόθεμα αρχείου';</b><br>Είναι 4 γράμματα που χαρακτιρίζουν με μοναδικό τρόπο ένα πιλότο ή μια πτητική συσκευή. 
-Εαν δεν ξέρετε τι να συμπληρώσετε εδώ, να μερικές συμβουλές:<p>
-<ul>
-<li>Χρησιμοποιήστε 4 γράμματα απο το όνομα / επώνυμο σας
-<li>Βρείτε ένα συνδυασμό  αρκετά ασυνήθιστο ώστε να μην υπάρχει περίπτωση να τον έχει χρησιμοποιήσει ήδη κάποιος άλλος.
-<li>Εάν έχετε προβλήματα κατα την αποστολή πτήσης στο OLC υπάρχει μεγάλη πιθανότητα να φταίει το 'πρόθεμα αρχείου'. Αλλάξτε το και ξαναδοκιμάστε.
-</ul>");
 
 //--------------------------------------------
 // pilot_profile_stats.php
@@ -628,25 +555,43 @@ define("_In_Local_Language","Στα ελληνικά");
 define("_In_English","Στα αγγλικά");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Please enter your username and password to log in.");
-define("_SEND_PASSWORD","I forgot my password");
-define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
-define("_AUTO_LOGIN","Log me on automatically each visit");
-define("_USERNAME","Username");
-define("_PASSWORD","Password");
-define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+define("_ENTER_PASSWORD","Δώστε το όνομα χρήστη και τον κωδικό σας.");
+define("_SEND_PASSWORD","Ξέχασα τον κωδικό μου");
+define("_ERROR_LOGIN","Δώσατε λάθος όνομα χρήστη ή κωδικό.");
+define("_AUTO_LOGIN","Αυτόματη εισαγωγή μου σε κάθε επίσκεψη");
+define("_USERNAME","Χρήστης");
+define("_PASSWORD","Κωδικός");
+define("_PROBLEMS_HELP","Εάν έχετε προβλήματα εισόδου επικοινωνήστε με τον διαχειριστή");
 
-define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
-define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+define("_LOGIN_TRY_AGAIN","Πατήστε %sΕδώ%s για να ξαναδοκιμάσετε");
+define("_LOGIN_RETURN","Πατήστε %sΕδώ%s για να γυρίσετε στην αρχική σελίδα");
 // end 2007/02/20
 
-define("_Category","Category");
-define("_MEMBER_OF","Member of");
-define("_MemberID","Member ID");
-define("_EnterID","Enter ID");
-define("_Clubs_Leagues","Clubs / Leagues");
-define("_Pilot_Statistics","Pilot Statistics");
-define("_National_Rankings","National Rankings");
+define("_Category","Κατηγορία");
+define("_MEMBER_OF","Μέλος ");
+define("_MemberID","Α/Α Μέλους");
+define("_EnterID","Εισαγωγή Α/Α");
+define("_Clubs_Leagues","Λέσχες / Κατατάξεις");
+define("_Pilot_Statistics","Στατιστικά πιλότων");
+define("_National_Rankings","Εθνικές κατατάξεις");
 
 
+// new on 2007/03/08
+define("_Select_Club","Επιλογή Λέσχης");
+define("_Close_window","Κλείσιμο παραθύρου");
+define("_Club","Λέσχη");
+define("_Sponsor","Σπόνσορας");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Επιλογή τρέχοντος μήνα');
+define('_Today_is','Σήμερα είναι');
+define('_Wk','Εβδ');
+define('_Click_to_scroll_to_previous_month','Πατήστε για επιλογή του προηγούμενου μήνα');
+define('_Click_to_scroll_to_next_month','Πατήστε για επιλογή του επόμενου μήνα');
+define('_Click_to_select_a_month','Πατήστε για επιλογή μήνα');
+define('_Click_to_select_a_year','Πατήστε για επιλογή έτους');
+define('_Select_date_as_date.','Επιλογή [date] ως ημερομηνίας'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>

@@ -17,9 +17,11 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Sijeèanj','Veljaèa','Ožujak','Travanj','Svibanj','Lipanj',
 					'Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac');
+	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
 setMonths();
 
@@ -295,31 +297,6 @@ define("_RETURN_TO_FLIGHT","Povratak na let");
 //--------------------------------------------
 define("_RETURN_TO_FLIGHT","Povratak na let");
 define("_READY_FOR_SUBMISSION","Spremno za predaju");
-define("_SUBMIT_TO_OLC","Predaj na OLC");
-define("_YOUR_FLIGHT_HAS_BEEN_SUCCESSFULLY_SUBMITED_TO_THE_OLC","Let je uspješno predan na OLC");
-define("_THE_OLC_REFERENCE_NUMBER_IS","OLC referentni broj je");
-define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Došlo je do problema pri predaji na OLC");
-define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Pogledaj dolje za uzrok problema");
-define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Let je uspješno obrisan s OLC-a");
-define("_FLIGHT_NOT_SCORED","Let nema OLC bodova i zato ne može biti predan na OLC");
-define("_TOO_LATE","Zadnji rok za predaju ovog leta je prošao pa on ne može biti predan na OLC");
-define("_CANNOT_BE_SUBMITTED","Zadnji rok za predaju ovog leta je prošao");
-define("_NO_PILOT_OLC_DATA","<p><strong>Nema OLC podataka za pilota</strong><br>
-  <br>
-<b>Što je OLC / èemu služe ova polja ?</b><br><br>
-	Za uspješnu predaju leta na OLC pilot treba veæ biti registriran na OLC sustavu.</p>
-<p> To se može napraviti <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na ovoj stranici</a>, gdje morate prvo odabrati svoju državu, a onda 'Contest Registration'<br>
-</p>
-<p>Kad ste obavili registraciju, morate iæi na 'Profil pilota'->'Izmijeni OLC podatke' i tamo unijeti svoje podatke na POTPUNO isti naèin kako ste ih unijeli pri OLC registraciji
-</p>
-<ul>
-	<li><div align=left>Ime</div>
-	<li><div align=left>Prezime</div>
-	<li><div align=left>Datum roðenja</div>
-	<li> <div align=left>Nadimak</div>
-	<li><div align=left>Ako ste veæ predavali letove na OLC, 4 slova koja koristite za ime IGC datoteke</div>
-</ul>");
 define("_OLC_MAP","Mapa");
 define("_OLC_BARO","Barograf");
 
@@ -395,37 +372,6 @@ define("_Delete_Photo","Obriši sliku");
 define("_Your_profile_has_been_updated","Vaš profil je promijenjen");
 define("_Submit_Change_Data","Prihvati promjene");
 
-//--------------------------------------------
-// pilot_ïlc_profile_edit.php
-//--------------------------------------------
-define("_edit_OLC_info","Izmijeni OLC podatke");
-define("_OLC_information","OLC podaci");
-define("_callsign","Nadimak");
-define("_filename_suffix","Nastavak IGC datoteke");
-define("_OLC_Pilot_Info","OLC podaci za pilota");
-define("_OLC_EXPLAINED","<b>Što je OLC / što znaèe ova polja ?</b><br><br>
-	Za uspješnu predaju leta na OLC pilot treba veæ biti registriran na OLC sustavu.</p>
-To se može napraviti <a href='http://www2.onlinecontest.org/olcphp/2005/ausw_wertung.php?olc=holc-i&spr=en' target='_blank'>
-  na ovoj stranici</a>, gdje morate prvo odabrati svoju državu, a onda 'Contest Registration'<br>
-</p>
-<p>Kad ste obavili registraciju, ovdje morate unijeti svoje podatke na POTPUNO isti naèin kako ste ih unijeli pri OLC registraciji
-</p>
-<ul>
-	<li><div align=left>Ime</div>
-	<li><div align=left>Prezime</div>
-	<li><div align=left>Datum roðenja</div>
-	<li> <div align=left>Nadimak</div>
-	<li><div align=left>Ako ste veæ predavali letove na OLC, 4 slova koja koristite za ime IGC datoteke</div>
-</ul>
-");
-
-define("_OLC_SUFFIX_EXPLAINED","<b>Što je 'Nastavak IGC datoteke?'</b><br>To je 4 slova dugaèak id koji jednoznaèno odreðuje pilota ili letjelicu. 
-Ako želite savjet što unijeti na to mjesto, ovdje su neki prijedlozi:<p>
-<ul>
-<li>Koristite 4 slova iz svog imena i prezimena (Ivo Periæ - IPER)
-<li>Pokušajte naæi neobiènu kombinaciju kako bi smanjili vjerojatnost da æe je koristiti i neki drugi pilot.
-<li>Ako imate problema u predaji leta na OLC preko Leonarda, možda je problem u tom nastavku. Probajte ga promijeniti i ponovno predati let.
-</ul>");
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
@@ -625,4 +571,24 @@ define("_National_Rankings","National Rankings");
 
 
 
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+
+// end 2007/03/13
 ?>
