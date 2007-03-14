@@ -185,26 +185,31 @@ function setValue(obj)
 	set_time_limit (120);
 	ignore_user_abort(true);	
 
-	if ($_POST['insert_as_user_id'] >0 ) $flights_user_id=$_POST['insert_as_user_id'];
+	if ($_POST['insert_as_user_id'] >0 ) $flights_user_id=$_POST['insert_as_user_id']+0;
 	else $flights_user_id=$userID;
 
 	if ($_POST['is_private'] ==1 ) $is_private=1;
 	else $is_private=0;
 
-	$gliderCat=$_POST['gliderCat'];
+	$gliderCat=$_POST['gliderCat']+0;
 
 
 	$tmpFilename=$_FILES['datafile']['tmp_name'];
 	$tmpFormFilename=$_FILES['datafile']['name'];	
-	if ( strtolower(substr($tmpFormFilename,-4))!=".igc" &&  strtolower(substr($tmpFormFilename,-4))!=".olc" ) { // not allowed extension
+
+	$suffix=strtolower(substr($tmpFormFilename,-4));
+	if ($suffix==".olc") $tmpFormFilename=substr($tmpFormFilename,0,-4).".igc"; // make it an igc file (we deal with its content later )
+	
+	
+	if ( strtolower(substr($tmpFormFilename,-4))!=".igc" ) { // not allowed extension
 		$result=ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC;
 		@unlink($tmpFilename);
 	} else {
 		checkPath($flightsAbsPath."/".$flights_user_id);
-		move_uploaded_file($tmpFilename, $flightsAbsPath."/".$flights_user_id."/".$_FILES['datafile']['name'] );
-		$filename=$flightsAbsPath."/".$flights_user_id."/".$_FILES['datafile']['name'];
+		move_uploaded_file($tmpFilename, $flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename );
+		$filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
 	
-		// 	echo $filename;
+			echo $filename;
 		if (!$_FILES['datafile']['name']) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
 		
 		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat) ;

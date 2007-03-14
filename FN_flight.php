@@ -76,13 +76,13 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
-	global  $CONF_NAC_list,  $CONF_use_NAC ;
+	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation ;
 
 	set_time_limit (120);
 
 	if (!$filename) return array(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
 	if (! is_file ($filename) ) return array(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
-	if ( strtolower(substr($filename,-4))!=".igc" && strtolower(substr($filename,-4))!=".olc" ) return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
+	if ( strtolower(substr($filename,-4))!=".igc" ) return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
 
 	checkPath($flightsAbsPath."/".$userID);
 	$tmpIGCPath=$filename;
@@ -131,18 +131,28 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
     if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
     if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
 	
-	rename($tmpIGCPath, $flight->getIGCFilename() );
+	@rename($tmpIGCPath, $flight->getIGCFilename() );
+	// in case an olc file was created too
+	@rename($tmpIGCPath.".olc", $flight->getIGCFilename().".olc" );
+	@unlink($tmpIGCPath.".olc");
+	@unlink($tmpIGCPath);
 	
-    if ($calledFromForm) {		
+    if ($calledFromForm) {	
+		
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
-			if ($_FILES[$var_name]['name'] ) {  
-				$flight->$var_name=$_FILES[$var_name]['name'];
-				if ( move_uploaded_file($_FILES[$var_name]['tmp_name'],  $flight->getPhotoFilename($i) ) ) {
-					resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-					resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
-				} else { //upload not successfull
-					$flight->$var_name="";
+			$photoName=$_FILES[$var_name]['name'];
+			$photoFilename=$_FILES[$var_name]['tmp_name'];
+			
+			if ( $photoName ) {  
+				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
+					$flight->$var_name=$photoName;
+					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
+						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+					} else { //upload not successfull
+						$flight->$var_name="";
+					}
 				}
 			}
 		}  

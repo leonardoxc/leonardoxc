@@ -86,7 +86,7 @@
 
  // validate against the G-record
  $CONF_use_validation=1;
- $CONF_use_custom_validation=1;
+ $CONF_use_custom_validation=0;
  $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";
   
 

@@ -25,7 +25,7 @@ $remote = "manolis@vali.glidingcontest.org";
 $v_olc="manolis";
 $v_year="2007";
 
-$cmd="scp -q $IGCabsPath $remote:$tmpFilename";
+$cmd="scp -q '$IGCabsPath' $remote:$tmpFilename";
 exec($cmd,$out,$res);
 
 //echo "cmd:$cmd<BR>";

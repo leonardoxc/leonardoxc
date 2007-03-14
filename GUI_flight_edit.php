@@ -33,22 +33,27 @@
 		if ($_REQUEST['is_private']=="1")  $flight->private=1; 
 		else $flight->private=0;
 
-		 for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+		
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
+			$photoName=$_FILES[$var_name]['name'];
+			$photoFilename=$_FILES[$var_name]['tmp_name'];
 			if ($_REQUEST["photo".$i."Delete"]=="1") {		// DELETE photo
 				$flight->deletePhoto($i);
-			} else if ($_FILES[$var_name]['name'] ) {  // upload new
+			} else if ($photoName ) {  // upload new
 				$flight->deletePhoto($i);  //first delete old
-				$flight->$var_name=$_FILES[$var_name]['name'];
-				if ( move_uploaded_file($_FILES[$var_name]['tmp_name'],  $flight->getPhotoFilename($i) ) ) {
-					resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-					resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
-				} else { //upload not successfull
-					$flight->$var_name="";
+				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
+					$flight->$var_name=$photoName;
+					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
+						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+					} else { //upload not successfull
+						$flight->$var_name="";
+					}
 				}
 			}
-		 }  
-
+		} 
+		 
 		 $flight->putFlightToDB(1);
 
 		 open_inner_table(_CHANGE_FLIGHT_DATA,650);

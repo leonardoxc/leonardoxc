@@ -1134,6 +1134,126 @@ $kml_file_contents=
 		return $i;
 	}
 
+	function checkForOLCfile($filename) {
+		$lines = file ($filename);
+		$line=$lines[0];
+		if (  strtoupper(substr($line,0,3))!='OLC' ) return 0; // not OLC file
+
+		// if the first line begins with OLC we have an olc file		
+		// we got an olc optimized file , get the 5 turnpoints
+		if (preg_match(
+	   "/&w0bh=([NnSs])&w0bg=(\d+)&w0bm=(\d+)&w0bmd=(\d+)&w0lh=([EeWw])&w0lg=(\d+)&w0lm=(\d+)&w0lmd=(\d+)".				
+		"&w1bh=([NnSs])&w1bg=(\d+)&w1bm=(\d+)&w1bmd=(\d+)&w1lh=([EeWw])&w1lg=(\d+)&w1lm=(\d+)&w1lmd=(\d+)".
+		"&w2bh=([NnSs])&w2bg=(\d+)&w2bm=(\d+)&w2bmd=(\d+)&w2lh=([EeWw])&w2lg=(\d+)&w2lm=(\d+)&w2lmd=(\d+)".
+		"&w3bh=([NnSs])&w3bg=(\d+)&w3bm=(\d+)&w3bmd=(\d+)&w3lh=([EeWw])&w3lg=(\d+)&w3lm=(\d+)&w3lmd=(\d+)".
+		"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$lines[0],$matches) )
+		{
+			for($i1=0;$i1<=4;$i1++)  {
+				$opt_point[$i1]=sprintf("%02d%02d%03d%s%03d%02d%03d%s",$matches[1+$i1*8+1],$matches[1+$i1*8+2],$matches[1+$i1*8+3],$matches[1+$i1*8+0],
+								$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
+			}
+			$manual_optimize=1;
+			
+			// print_r($matches);
+			// print_r($p);
+			
+			//now confirm that the supplied points are indeed in the track.
+			$opt_point_num=0;
+			foreach($lines as $line) {		
+				if (strtoupper($line[0])!='B') continue;
+				if ( substr($line,7,17)==$opt_point[$opt_point_num] ) { // found the point inside the track
+					$opt_point_num++;
+					if ($opt_point_num==5) break;
+				}
+			}
+			
+			if ($opt_point_num==5) {			
+				// echo "OPTIMIZATION POINTS confirmed";
+				// now compute best score
+				for($i=0;$i<=4;$i++)  {
+					$points[$i]=new gpsPoint("B120000".$opt_point[$i]."A0000000000");					
+				}
+				/*
+Explained by Thomas Kuhlmann
+
+You have 5 Points:
+Startpoint, First Waypoint, Second Waypoint, Third Waypoint, Endpoint
+given following distances
+a : distance from First to Second Waypoint
+b : distance from Second the Third Waypoint
+c : distance from Third to First Waypoint
+d : distance from End- To Startpoint
+Rule to have a triangle (it may be 20% open):
+
+  d <= 20% ( a+b+c )
+this is equivalent to:
+  d*5 <= a+b+c
+
+Now you have to check if this triangle fullfills the 28% FAI rule:
+  ( a >= 28% (a+b+c) )  AND  (b >= 28% (a+b+c))  AND (c>= 28% (a+b+c))
+this is quivalent to (28% = 7/25):
+  (25*a >= 7*(a+b+c))  AND (25*b >= 7*(a+b+c)) AND (25*c >= 7*(a+b+c))
+if using integers for calculation of distances in decimeters, this formular generates no integer to float concerning problems. 
+				*/	
+				$a=$points[1]->calcDistance($points[2]);
+				$b=$points[2]->calcDistance($points[3]);
+				$c=$points[3]->calcDistance($points[1]);
+				$d=$points[4]->calcDistance($points[0]);
+
+				// echo "<br> triangle : $a $b $c $d<BR>";
+				$u=$a+$b+$c;
+				if ($d*5 <= ($u) ) { // we have a triangle
+					if ( ( 25*$a >= 7*$u )  && ( 25*$b >= 7*$u ) && ( 25*$c >= 7*$u ) ) {
+						$factor1=2; // fai triangle
+					} else { 		
+						$factor1=1.75; // open triangle
+					}
+					$km_triangle=($u-$d)/1000;
+					$score_triangle=$km_triangle*$factor1;
+				}
+					
+				//now for straight distance				
+				$a=$points[0]->calcDistance($points[1]);
+				$b=$points[1]->calcDistance($points[2]);
+				$c=$points[2]->calcDistance($points[3]);
+				$d=$points[3]->calcDistance($points[4]);
+
+				$factor=1.5;
+				$km_straight=($a+$b+$c+$d)/1000;
+				$score_straight=$km_straight*$factor;
+				//echo "$a $b $c $d<BR>";
+				//echo "km_straight:$km_straight  score_straight:$score_straight <BR>";				
+				//echo "km_triangle:$km_triangle  score_triangle:$score_triangle <BR>";
+				
+				$str="";
+				for($i=0;$i<=4;$i++)  
+					$str.=$opt_point[$i]."\n";
+				if ($score_triangle>=$score_straight) 
+					$str.="$km_triangle\n$score_triangle\n$factor1\n";
+				else 
+					$str.="$km_straight\n$score_straight\n$factor\n";
+					
+				writeFile($filename.".olc",$str);
+			} // end if confirmed the 5 turnpoints
+						
+		} // end if the preg match
+			
+		// now write the IGC file stripping the first line
+		// there might be a &IGCigcIGC= (maxpunkte) or not (compeGPS)
+		// $lines[0]
+		if ( preg_match("/&IGCigcIGC=(.*)/",$lines[0],$matches) ) {
+			$lines[0]=$matches[1]."\n";
+		} else { // just remove the line[0] for the array
+			array_shift($lines);
+		}
+
+		// done write the stripped file to disk
+		$str=implode("",$lines);
+		writeFile($filename,$str);
+		
+		return 1;
+	}
+	
 	function getFlightFromIGC($filename) {
 	set_time_limit (100);
 	if ($this->forceBounds) {
@@ -1147,13 +1267,14 @@ $kml_file_contents=
 	}
 	$this->setAllowedParams();
 	$this->filename=basename($filename);
-	
-	$manual_optimize=0;
+
+	$this->checkForOLCfile($filename);
+
 	$done=0;
 	$try_no_takeoff_detection=0;	
 	while(!$done) {	
 	
-		$lines = file ($filename); 
+		$lines = file ($filename);			 
 		$linesNum =count($lines);
 		DEBUG("IGC",1,"File has total $linesNum lines<br>");
 		$points=0;
@@ -1169,63 +1290,6 @@ $kml_file_contents=
 			$line=trim($lines[$i]);
 						
 			if  (strlen($line)==0) continue;
-
-if ($TEST_OLC) {			
-		function getmicrotime2(){ 
-   list($usec, $sec) = explode(" ",microtime()); 
-   return ((float)$usec + (float)$sec); 
-   } 	
-			if ( strtoupper(substr($line,0,3))=='OLC' ) { // we got an olc optimized file , get the 5 turnpoints
-									$s1=getmicrotime2();
-				if (preg_match(
-					   "/&w0bh=([NnSs])&w0bg=(\d+)&w0bm=(\d+)&w0bmd=(\d+)&w0lh=([EeWw])&w0lg=(\d+)&w0lm=(\d+)&w0lmd=(\d+)".				
-						"&w1bh=([NnSs])&w1bg=(\d+)&w1bm=(\d+)&w1bmd=(\d+)&w1lh=([EeWw])&w1lg=(\d+)&w1lm=(\d+)&w1lmd=(\d+)".
-						"&w2bh=([NnSs])&w2bg=(\d+)&w2bm=(\d+)&w2bmd=(\d+)&w2lh=([EeWw])&w2lg=(\d+)&w2lm=(\d+)&w2lmd=(\d+)".
-						"&w3bh=([NnSs])&w3bg=(\d+)&w3bm=(\d+)&w3bmd=(\d+)&w3lh=([EeWw])&w3lg=(\d+)&w3lm=(\d+)&w3lmd=(\d+)".
-						"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$line,$matches) ){
-							
-						for($i1=0;$i1<=4;$i1++) 
-							$opt_point[$i1]=sprintf("%02d%02d%03d%s%03d%02d%03d%s",$matches[1+$i1*8+1],$matches[1+$i1*8+2],$matches[1+$i1*8+3],$matches[1+$i1*8+0],
-							$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
-
-						$manual_optimize=1;
-						$opt_point_num=0;
-						// print_r($matches);
-						// print_r($p);
-						echo "MANUAL OPT IS IN PLACE<BR>";
-						
-						$linesStr=implode("",$lines);
-						
-						$pString="";
-						for($i1=0;$i1<4;$i1++) 
-							$pString.=$opt_point[$i1].".+";
-							
-						//	$pString=$opt_point[2];
-						 $pString.=$opt_point[4];
-						echo $pString;
-//$linesStr=substr($linesStr,0,1000);
-						//$linesStr="4028971N02310369Exxxxxxxxxxxx \n4029542N02309821Exxxxxxxxxxxxxxx4029082N02310398Exxxxx4029452N02309771Exxx4028538N02310182E";
-						$linesStr=str_replace(array("\n","\r","\0","\t","\x0B"),"",$linesStr);
-//						$linesStr=str_replace("\r","",$linesStr);
-	//					$linesStr=str_replace(chr(0),"",$linesStr);
-						
-						//echo $linesStr;
-						if ( preg_match("/$pString/ms",$linesStr,$matches) ) {
-						
-							echo "the optimized points are OK<BR>";
-								
-						} else {
-							echo "the optimized points are NOT OK<BR>";
-						}
-						
-						// if ( substr($line,7,17)==$opt_point[$opt_point_num]
-						echo "time:".(getmicrotime2()-$s1)."<BR>";
-				}
-
-			}
-			exit;
-}
-			
 			if  ( $line{0}!='B' ) continue;
 			$Brecords++;
 			if  ( strlen($line)  < 23 ) { 
@@ -1378,6 +1442,8 @@ if ($TEST_OLC) {
 			$outputLine=$line;
 			$line=trim($line);
 			if  (strlen($line)==0) continue;
+
+			// if (strtoupper(substr($line,0,1)) !="B" ) echo "@$line<BR>";
 			
 			if (strtoupper(substr($line,0,3)) =="OLC"  ) continue; // it is an olc file , dont put the OLC... line in to the saned file
 			
@@ -1398,7 +1464,7 @@ if ($TEST_OLC) {
 					if ($yr_last > 80 ) $yr="19".$yr_last;
 					else $yr="20".$yr_last;
 					$this->DATE=$yr."-".substr($this->DATE,2,2)."-".substr($this->DATE,0,2);				
-
+										
 					$alreadyInPoints=1;
 				}
 			} else if (strtoupper(substr($line,0,13)) =="HFTZOTIMEZONE" ) {  // HFTZOTimezone:3 OR HFTZOTimezone:-8  
@@ -1600,6 +1666,7 @@ if ($TEST_OLC) {
 			if (trim($contents[0])=="OK") $ok=1;
 		}
 
+		//	 -1 => invalid 0 => not yet proccessed  1 => valid
 		// force ok=1 till we have a validation server ready
 		// $ok=1;
 
@@ -1751,7 +1818,7 @@ if ($TEST_OLC) {
 	}
 
 	function getFlightFromDB($flightID) {
-	  global $db,$prefix;
+	  global $db,$prefix,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
 	  
@@ -1794,9 +1861,10 @@ if ($TEST_OLC) {
 		$this->glider=$row["glider"];  
 		$this->linkURL=$row["linkURL"];
 
-		$this->photo1Filename=$row["photo1Filename"];
-		$this->photo2Filename=$row["photo2Filename"];
-		$this->photo3Filename=$row["photo3Filename"];
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";
+			$this->$var_name=$row[$var_name];
+		}
 
 		$this->takeoffID=$row["takeoffID"];
 		$this->takeoffVinicity=$row["takeoffVinicity"];
@@ -1937,7 +2005,7 @@ if ($TEST_OLC) {
 
     function putFlightToDB($update=0) {
 		global $db;
-		global $flightsTable;
+		global $flightsTable,$CONF_photosPerFlight;
 
 		if ($update) {
 			$query="REPLACE INTO ";		
@@ -1952,13 +2020,19 @@ if ($TEST_OLC) {
 			$this->dateAdded= date("Y-m-d H:i:s"); 
 			$this->timesViewed=0;
 		}
-
+		
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";			
+			$p1.="$var_name, ";
+			$p2.="'".$this->$var_name."',";
+		}
+		
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
 		NACclubID,
 		comments, glider, linkURL, timesViewed,
-		photo1Filename,photo2Filename,photo3Filename,
+		$p1
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
 		timezone,
@@ -1986,7 +2060,7 @@ if ($TEST_OLC) {
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
-		'$this->photo1Filename','$this->photo2Filename','$this->photo3Filename',
+		$p2
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',
 		$this->timezone,
@@ -2013,7 +2087,9 @@ if ($TEST_OLC) {
 	
 		//echo $query;
 		$result = $db->sql_query($query);
-
+		if (!$result) {
+			echo "Problem in puting flight to DB $query<BR>";
+		}
 		//echo "UPDATE / INSERT RESULT ".$result ;
 		if (!$update) $this->flightID=mysql_insert_id();
 

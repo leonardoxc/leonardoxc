@@ -72,7 +72,7 @@
 		}
 	}
 
-   $igcContents.=$_POST['IGCigcIGC'];
+   $igcContents.="\n".$_POST['IGCigcIGC'];
    // Write $somecontent to our opened file. 
    if (!fwrite($handle, $igcContents)) { 		
 		echo "Cannot write to file ($filename) on server <br>";

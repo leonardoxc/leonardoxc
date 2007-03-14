@@ -97,6 +97,19 @@ function  checkPath($path){
  
 }
 
+
+function validJPGfilename($filename) {
+	$filename=strtolower($filename);
+	if ( strtolower(substr($filename,-4))==".jpg" || strtolower(substr($filename,-5))==".jpeg" ) return 1;
+	return 0;
+}
+
+function validJPGfile($filename) {
+	  $im = getimagesize($filename);
+	  if ($im[0] && $im[1]) return 1;
+	  else return 0;
+}
+
 function resizeJPG($forcedwidth, $forcedheight, $sourcefile, $destfile, $imgcomp)
 {
 	$g_imgcomp=100-$imgcomp;
