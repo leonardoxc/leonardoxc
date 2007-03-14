@@ -1139,6 +1139,8 @@ $kml_file_contents=
 		$line=$lines[0];
 		if (  strtoupper(substr($line,0,3))!='OLC' ) return 0; // not OLC file
 
+		// echo "First line starts with OLC, will search further";
+		DEBUG("OLC",255,"First line starts with OLC, will search further");
 		// if the first line begins with OLC we have an olc file		
 		// we got an olc optimized file , get the 5 turnpoints
 		if (preg_match(
@@ -1153,7 +1155,7 @@ $kml_file_contents=
 								$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
 			}
 			$manual_optimize=1;
-			
+			// echo "manual_optimize";			
 			// print_r($matches);
 			// print_r($p);
 			
@@ -1161,14 +1163,24 @@ $kml_file_contents=
 			$opt_point_num=0;
 			foreach($lines as $line) {		
 				if (strtoupper($line[0])!='B') continue;
-				if ( substr($line,7,17)==$opt_point[$opt_point_num] ) { // found the point inside the track
-					$opt_point_num++;
-					if ($opt_point_num==5) break;
+				$done=0;
+				while(! $done){
+					if ( substr($line,7,17)==$opt_point[$opt_point_num] ) { // found the point inside the track
+						$opt_point_num++; // search for next turnpoint
+						if ($opt_point_num==5) break;
+					} else {
+						$done=1;
+					}
 				}
+				if ($opt_point_num==5) break;
 			}
 			
+//for($i=0;$i<=4;$i++)  {
+//	echo "#".$opt_point[$i]."<br>";		
+//}
 			if ($opt_point_num==5) {			
-				// echo "OPTIMIZATION POINTS confirmed";
+//echo "OPTIMIZATION POINTS confirmed";
+				DEBUG("OLC",255,"OPTIMIZATION POINTS confirmed");
 				// now compute best score
 				for($i=0;$i<=4;$i++)  {
 					$points[$i]=new gpsPoint("B120000".$opt_point[$i]."A0000000000");					
@@ -1681,6 +1693,33 @@ if using integers for calculation of distances in decimeters, this formular gene
 		global $OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
 		global $baseInstallationPath;
 
+		// see if there is an OLC file present
+		$OLCfilename=$this->getIGCFilename().".olc";
+
+		if (file_exists($OLCfilename) ) { 
+			DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
+		
+			$lines=file($OLCfilename);
+/*
+4624328N00805128E
+4632522N00819212E
+4617978N00733326E
+4609910N00755225E
+4609910N00755225E
+118.68765887809
+207.70340303666
+1.75
+*/
+			$this->FLIGHT_KM=$lines[5]*1000;
+			$this->FLIGHT_POINTS=$lines[6]+0;
+			$factor=$lines[7]+0;
+			if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
+			if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
+			if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
+
+			return 1;
+		}
+
 		if (! $scoringServerActive) return 0;
 
 
@@ -1986,6 +2025,9 @@ if using integers for calculation of distances in decimeters, this formular gene
 
 		unlink($this->getIGCFilename() ); 
 		@unlink($this->getIGCFilename(1) ); 
+		//@unlink($this->getIGCFilename(1).".js" ); 
+		//@unlink($this->getIGCFilename(1).".txt" ); 
+		@unlink($this->getIGCFilename(0).".olc" ); 
 		@unlink($this->getMapFilename() ); 
 
 		for ($metric_system=0;$metric_system<=1;$metric_system++) {
