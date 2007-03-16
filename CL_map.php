@@ -316,8 +316,8 @@ class flightMap extends rasterUTM_Map {
 // return;
 		   if (function_exists("gd_info")) {
 			   $gdinfo=gd_info();
-			   if ( strpos($gdinfo["GD Version"],"2.") ) $gd2=true;
-			   else $gd2=false;
+			   if ( strpos($gdinfo["GD Version"],"2.") ===false) $gd2=0;
+			   else $gd2=1;
 		   } else $gd2=false;
 	
 		   if ( $gd2 )  $this->img=imagecreatetruecolor($dest_width,$dest_height);
