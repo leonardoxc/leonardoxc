@@ -211,5 +211,15 @@
  $CONF_use_NAC=1; 
  
 
+ // this will allow the use of pre-calculated turnpoints for OLC score optimization
+ // This is done by uploading an .OLC file
+ $CONF_allow_olc_files=1;
+ 
+ // this will allow an external program to upload a flight to this server.
+ // the program must post a form to http://serveraddess/modules/leonardo/flight_submit.php
+ $CONF_allow_direct_upload=1;
+ 
+  // this will enable a calnder in flights_list to select individual days
+ $CONF_use_calendar=1;
  
 ?>

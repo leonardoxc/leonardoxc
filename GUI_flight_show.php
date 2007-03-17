@@ -254,8 +254,29 @@ function delete_takeoff(id) {
 		$flight->getOLCscore();
 		$flight->putFlightToDB(1); // 1== UPDATE
   }
-
+	
   $flight->updateAll(0);
+  
+  if ($CONF_use_validation) {
+		if ($flight->grecord==0) $flight->validate();
+		
+		if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
+		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
+		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
+		
+		$valiStr="&nbsp;<img class='listIcons' src='".$moduleRelPath."/img/$vImg' align='absmiddle' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
+		if ($flight->autoScore) { // means that there is manual optimization present
+			$vStr='This flight was optimized manually.';
+			$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_olc_manual.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='16' border='0' />";
+			if ($flight->autoScore > $flight->FLIGHT_POINTS ) {
+				$vStr="The manual optimization is worst than the auto optimization (Auto score:".$flight->autoScore.")";
+				$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_att1.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='17' border='0' />";				
+			} else {
+				$vStr="The manual optimization is better than the auto optimization (Auto score:".$flight->autoScore.")";
+				$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/olc_icon_submited.gif' align='absmiddle' title='$vStr' alt='$vStr' width='16' height='16' border='0' />";
+			}
+		}
+  }
   
   DEBUG_END(); // flush debug here
 	
@@ -290,6 +311,7 @@ $Ltemplate->assign_vars(array(
 	'LANDING_TIME'=>sec2Time($flight->END_TIME),
 	'LINEAR_DISTANCE'=>formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)",
 	'DURATION'=>sec2Time($flight->DURATION),
+	'VALI'=>$valiStr,
 ));
 
 if ( $scoringServerActive ) {

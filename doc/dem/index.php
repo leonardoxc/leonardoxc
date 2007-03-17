@@ -24,24 +24,56 @@ It follows that a 3" HGT file  has a file length of 2 x 1201 x 1201.
 */
 
 
+
 $lat=40.4879667;
 $lon=23.1730500;
 // height =476 !!
 
+if ($lat>=0) {
+	$latSouth=floor($lat);
+	//$latNorth=$latSouth+1;
+	$latD=1-$lat+$latSouth;
+	$latStr="N";
+} else {
+	$latSouth=ceil(abs($lat));
+	// $latNorth=$latSouth-1;
+	$latD=-$lat-$latSouth+1;
+	$latStr="S";
+}
 
-$latSouth=floor($lat);
-$lonWest=floor($lon);
+if ($lon>=0){
+	$lonWest=floor($lon);
+	//$lonEast=$lonWest+1;
+	$lonD=$lon-$lonWest;
+	$lonStr="E";
+} else {
+	$lonWest=ceil(abs($lon));
+	//$lonEast=$lonWest-1;
+	$lonD=$lonWest+$lon;
+	$lonStr="W";
+}
 
-$latNorth=$latSouth+1;
-$lonEast=$lonWest+1;
 
-$latD=1-($lat-$latSouth);
-$lonD=$lon-$lonWest;
+
 
 
 // find the file to use!
-$demFile="N40E023".".hgt";
+$demFile=sprintf("%s%02d%s%03d.zip",$latStr,$latSouth,$lonStr,$lonWest);
+echo $demFile;
+exit;
 
+  require_once('../../lib/pclzip/pclzip.lib.php');
+  $archive = new PclZip($demFile);
+  $list=$archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING);
+  if ( $list == 0) {
+    die("Error : ".$archive->errorInfo(true));
+  } else  {
+  //	 echo $list[0]['content'];
+  
+  }
+  
+  
+// $fl=file_get_contents($demFile);
 
 // find x,y inside the file
 // 1 degree is 1201 points
@@ -52,9 +84,9 @@ $y=floor($latD*1201);
 $pointOffset=($x+$y*1201)*2;
 
 
-$fl=file_get_contents($demFile);
 
-$alt=ord($fl[$pointOffset])*256+ord($fl[$pointOffset+1]);
+
+$alt=ord($list[0]['content'][$pointOffset])*256+ord($list[0]['content'][$pointOffset+1]);
 
 
 echo "$latD $lonD $x $y  $pointOffset<BR>";

@@ -49,3 +49,8 @@ ALTER TABLE `leonardo_pilots` ADD `NACclubID` BIGINT NOT NULL AFTER `NACmemberID
 ALTER TABLE `leonardo_flights` ADD `NACclubID` BIGINT NOT NULL ;
 
 ALTER TABLE `leonardo_pilots` CHANGE `sponsorID` `sponsor` VARCHAR( 255 ) NULL ;
+
+
+# 2007/03/16
+
+ALTER TABLE `leonardo_flights` ADD `autoScore` FLOAT NOT NULL DEFAULT '0' AFTER `FLIGHT_POINTS` ;

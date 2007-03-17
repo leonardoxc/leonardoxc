@@ -72,6 +72,8 @@ var $turnpoint3="";
 var $turnpoint4="";
 var $turnpoint5="";
 
+var $autoScore=0;
+
 var $olcRefNum="";
 var $olcFilename="";
 var $olcDateSubmited;
@@ -1675,7 +1677,10 @@ if using integers for calculation of distances in decimeters, this formular gene
 	
 			foreach ( $contents as $line) DEBUG("VALIDATE",64,"$line");
 			$ok=-1;
-			if (trim($contents[0])=="OK") $ok=1;
+			if (trim($contents[0])=="OK") { 
+				$ok=1;
+				$valStr=trim($contents[1]);
+			}
 		}
 
 		//	 -1 => invalid 0 => not yet proccessed  1 => valid
@@ -1684,6 +1689,7 @@ if using integers for calculation of distances in decimeters, this formular gene
 
 		$this->grecord=$ok;
 		$this->validated=$ok;
+		$this->validationMessage=$valStr;
 		if ( $updateFlightInDB ) $this->putFlightToDB(1);
 
 		return $ok;
@@ -1691,57 +1697,51 @@ if using integers for calculation of distances in decimeters, this formular gene
 	
 	function getOLCscore() {
 		global $OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
-		global $baseInstallationPath;
-
-		// see if there is an OLC file present
-		$OLCfilename=$this->getIGCFilename().".olc";
-
-		if (file_exists($OLCfilename) ) { 
-			DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
-		
-			$lines=file($OLCfilename);
-/*
-4624328N00805128E
-4632522N00819212E
-4617978N00733326E
-4609910N00755225E
-4609910N00755225E
-118.68765887809
-207.70340303666
-1.75
-*/
-			$this->FLIGHT_KM=$lines[5]*1000;
-			$this->FLIGHT_POINTS=$lines[6]+0;
-			$factor=$lines[7]+0;
-			if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
-			if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
-			if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
-
-			return 1;
-		}
+		global $baseInstallationPath,$CONF_allow_olc_files;
 
 		if (! $scoringServerActive) return 0;
-
-
-/*
-		// check if scorring server is respoding (timeout = 5 secs)
- 	    //get hostname from  $OLCScoringServerPath first
-		preg_match("/^(http:\/\/)?([^\/]+)/i", $OLCScoringServerPath, $matches);
-		$ScoringServerHostName= $matches[2]; 
-		$pos = strpos( $ScoringServerHostName,":"); 
-		if ($pos === false) $ScoringServerPort=80;
-		else  { 
-			$ScoringServerPort= substr($ScoringServerHostName,$pos+1);
-			$ScoringServerHostName=substr($ScoringServerHostName,0,$pos);
+		$manualScore=0;
+		
+		if ($CONF_allow_olc_files) {
+			// see if there is an OLC file present
+			$OLCfilename=$this->getIGCFilename().".olc";
+	
+			if (file_exists($OLCfilename) ) { 
+				DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
+			
+				$lines=file($OLCfilename);
+	/*
+	4624328N00805128E
+	4632522N00819212E
+	4617978N00733326E
+	4609910N00755225E
+	4609910N00755225E
+	118.68765887809
+	207.70340303666
+	1.75
+	*/
+				$this->FLIGHT_KM=$lines[5]*1000;
+				$this->FLIGHT_POINTS=$lines[6]+0;
+				$factor=$lines[7]+0;
+				if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
+				if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
+				if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
+				
+				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_KM: ".$this->FLIGHT_KM."<BR>");
+				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_POINTS: ".$this->FLIGHT_POINTS."<BR>");
+				DEBUG('OLC_SCORE',1,"MANUAL BEST_FLIGHT_TYPE: ".$this->BEST_FLIGHT_TYPE."<BR>");
+				for($i=0;$i<5;$i++) {				
+				    //              01234567890123456
+					// must convert 4624328N00805128E to N54:54.097 W02:40.375 
+					$str=substr($lines[$i],7,1) .substr($lines[$i],0,2).':'.substr($lines[$i],2,2).'.'.substr($lines[$i],4,3).' '.
+						 substr($lines[$i],16,1).substr($lines[$i],8,3).':'.substr($lines[$i],11,2).'.'.substr($lines[$i],13,3);
+					DEBUG('OLC_SCORE',1,"MANUAL TurnPoint ".($i+1).": $str<BR>");
+					$this->{'turnpoint'.($i+1)}=$str;				
+				}
+				$manualScore=1;
+			}
 		}
-
-		// echo "#".$ScoringServerHostName."#". $ScoringServerPort ."#";
-		$fp = @fsockopen ($ScoringServerHostName, $ScoringServerPort, $errno, $errstr, 3); 
-		if (!$fp)  { 
-			// echo "SERVER NOT ACTIVE"; 
-			return 0;
-		} else fclose ($fp); 
-*/
+				
 		set_time_limit (240);	
 		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1); // score saned file
 
@@ -1757,7 +1757,7 @@ if using integers for calculation of distances in decimeters, this formular gene
 			DEBUG("OLC_SCORE",1,"LINE: $line<BR>\n");
 			$var_name  = strtok($line,' '); 
 			$var_value = strtok(' '); 
-			if ($var_name{0}=='p') {
+			if ($var_name{0}=='p' ) {
 				// sample line 
 				// p0181 12:45:43 N53:20.898 W 1:48.558 
 				// p0181 12:45:43 N53:20.898 W12:48.558 
@@ -1768,10 +1768,17 @@ if using integers for calculation of distances in decimeters, this formular gene
 				$var_value =$lat." ".$lon;
 				$turnpointNum++;
 			};
-			$this->$var_name=trim($var_value);
+			
+			if (! $manualScore) {
+				$this->$var_name=trim($var_value);				
+			} else {				
+				if ($var_name=='MAX_LINEAR_DISTANCE') $this->$var_name=trim($var_value);
+				if ($var_name=='FLIGHT_POINTS') $this->autoScore=trim($var_value);
+			}
+			
 			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
 		}		
-		$this->FLIGHT_KM=$this->FLIGHT_KM*1000;
+		if (! $manualScore) $this->FLIGHT_KM=$this->FLIGHT_KM*1000;
 	}
 
 	function getMapFromServer($num=0) {
@@ -1926,6 +1933,7 @@ if using integers for calculation of distances in decimeters, this formular gene
 		$this->BEST_FLIGHT_TYPE=$row["BEST_FLIGHT_TYPE"];
 		$this->FLIGHT_KM=$row["FLIGHT_KM"];
 		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];	  	  
+		$this->autoScore=$row["autoScore"];	
 
 		$this->FIRST_POINT=$row["FIRST_POINT"];
 		$this->LAST_POINT=$row["LAST_POINT"];
@@ -2093,6 +2101,7 @@ if using integers for calculation of distances in decimeters, this formular gene
 		BEST_FLIGHT_TYPE,
 		FLIGHT_KM,
 		FLIGHT_POINTS,
+		autoScore,
 		FIRST_POINT,LAST_POINT,
 		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5,
 		olcRefNum,olcFilename,olcDateSubmited
@@ -2121,6 +2130,7 @@ if using integers for calculation of distances in decimeters, this formular gene
 		'$this->BEST_FLIGHT_TYPE',
 		$this->FLIGHT_KM,
 		$this->FLIGHT_POINTS,
+		$this->autoScore,
 		'$this->FIRST_POINT',
 		'$this->LAST_POINT',
 		'$this->turnpoint1','$this->turnpoint2','$this->turnpoint3','$this->turnpoint4','$this->turnpoint5',

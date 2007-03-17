@@ -35,10 +35,9 @@ Each cell has two bytes, and the elevation at that cell is 256*(1st byte) + (2nd
 It follows that a 3" HGT file  has a file length of 2 x 1201 x 1201. 
 */
 
-global $CONF_DEMpath,$openDEMfiles;
-
+global $openDEMfiles,$missingDEMfiles;
 $openDEMfiles=array();
-$CONF_DEMpath=dirname(__FILE__)."/data/dem/";
+$missingDEMfiles=array();
 
 class DEM {
 
@@ -47,23 +46,58 @@ class DEM {
 	}
 	
 	function getAlt($lat,$lon) {
-		global $CONF_DEMpath,$openDEMfiles;
+		global $CONF_DEMpath,$openDEMfiles,$missingDEMfiles;
 		
-		$latSouth=floor($lat);
-		$lonWest=floor($lon);
+		if ($lat>=0) {
+			$latSouth=floor($lat);
+			//$latNorth=$latSouth+1;
+			$latD=1-$lat+$latSouth;
+			$latStr="N";
+		} else {
+			$latSouth=ceil(abs($lat));
+			// $latNorth=$latSouth-1;
+			$latD=-$lat-$latSouth+1;
+			$latStr="S";
+		}
 		
-		$latNorth=$latSouth+1;
-		$lonEast=$lonWest+1;
-		
-		$latD=1-($lat-$latSouth);
-		$lonD=$lon-$lonWest;
+		if ($lon>=0){
+			$lonWest=floor($lon);
+			//$lonEast=$lonWest+1;
+			$lonD=$lon-$lonWest;
+			$lonStr="E";
+		} else {
+			$lonWest=ceil(abs($lon));
+			//$lonEast=$lonWest-1;
+			$lonD=$lonWest+$lon;
+			$lonStr="W";
+		}		
 				
 		// find the file to use!
-		$demFile="N40E023".".hgt";
-				
+		// $demFile="N40E023";
+		$demFile=sprintf("%s%02d%s%03d.zip",$latStr,$latSouth,$lonStr,$lonWest);
+		
+		$demZipFile=$CONF_DEMpath.'/'.$demFile.'.zip';
+		
+		if ($missingDEMfiles[$demFile]) return -9999;
+		
 		// see if it already open
-		if ( ! ($openDEMfiles[$demFile])  ) {
-			$openDEMfiles[$demFile]=file_get_contents($CONF_DEMpath.$demFile);
+		if ( ! $openDEMfiles[$demFile] ) {
+		
+			  if (!is_file($demZipFile)) {
+			  	$missingDEMfiles[$demFile]=1;
+				return -9999;
+			  }
+				//	$openDEMfiles[$demFile]=file_get_contents($CONF_DEMpath.$demFile);
+			  require_once dirname(__FILE__).'/lib/pclzip/pclzip.lib.php';
+			  $archive = new PclZip($demZipFile);
+			  $list=$archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING);
+			  if ( $list == 0) {
+				DEBUG("DEM",255,"DEM::getAlt : ".$archive->errorInfo(true)."<BR>");
+			  	return -9999;
+				// die("Error : ".$archive->errorInfo(true));
+			  } else  {
+			    $openDEMfiles[$demFile]=$list[0]['content'];			  
+			  }
 		}
 		
 		// find x,y inside the file

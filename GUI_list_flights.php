@@ -31,7 +31,7 @@
   $legend="";
   $legend="<b>"._MENU_FLIGHTS."</b> ";
 
-  if ($year && $month && $day ) {
+  if ($year && $month && $day &&  $CONF_use_calendar ) {
 		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m%d') = ".sprintf("%04d%02d%02d",$year,$month,$day)." ";
   } else {
 	  if ($year && !$month ) {

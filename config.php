@@ -75,6 +75,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // database, you should have already an workiing map db 
  // in order to use a url
 
+ // this is for the  DEM - 3d maps, to compute ground height 
+ $CONF_DEMpath=dirname(__FILE__)."/data/dem/";
+
+
  // the native language of the server
  $nativeLanguage="english";
  
@@ -244,7 +248,18 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // set to -1 to disable
  $CONF_new_flights_days_threshold=3;
  
+ // this will allow the use of pre-calculated turnpoints for OLC score optimization
+ // This is done by uploading an .OLC file
+ $CONF_allow_olc_files=1;
+ 
+ // this will allow an external program to upload a flight to this server.
+ // the program must post a form to http://serveraddess/modules/leonardo/flight_submit.php
+ $CONF_allow_direct_upload=1;
 
+ // this will enable a calnder in flights_list to select individual days
+ $CONF_use_calendar=1;
+ 
+ 
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

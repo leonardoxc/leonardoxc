@@ -15,7 +15,7 @@
 
 if ($datesMenu!='years') {
 $tblWidth=240;
-if ($op=="list_flights") $tblWidth=495;
+if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 ?>
 
 <table class="dropDownBox" width="<?=$tblWidth?>" cellpadding="2" cellspacing="0">
@@ -33,7 +33,7 @@ if ($op=="list_flights") $tblWidth=495;
 	</td>
 </tr>
 <tr>
-<? if ($op=="list_flights") {?>
+<? if ($op=="list_flights" && $CONF_use_calendar) {?>
 	<td class="tableBox" valign="top" style="width:255px">		
 <? } else { ?>
 	<td>
@@ -48,7 +48,7 @@ if ($op=="list_flights") $tblWidth=495;
     <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
 </tr>
 <tr>
-<? if ($op=="list_flights") {?>
+<? if ($op=="list_flights" &&  $CONF_use_calendar ) {?>
 	<td valign="top" class="calBox">
 <? 
 		$calLang=$lang2iso[$currentlang]; 
