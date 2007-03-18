@@ -24,7 +24,7 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	if ($CONF_allow_direct_upload) {
+	if (! $CONF_allow_direct_upload) {
 		echo "problem<br>";
 		echo "Direct upload is not permitted on this server.";
 		exit;
