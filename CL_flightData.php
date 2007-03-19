@@ -2045,9 +2045,12 @@ if using integers for calculation of distances in decimeters, this formular gene
 		@unlink($this->getPointsFilename(1) ) ;
 		@unlink($this->getJsFilename(1) );
 		@unlink($this->getIGCFilename(0).".olc" ); 
+		@unlink($this->getIGCFilename(0).".kmz" ); 
+		@unlink($this->getIGCFilename(0).".man.kmz" ); 
+		@unlink($this->getIGCFilename(0).".poly.txt" ); 
 		@unlink($this->getMapFilename() ); 
 
-		for ($metric_system=0;$metric_system<=1;$metric_system++) {
+		for ($metric_system=1;$metric_system<=2;$metric_system++) {
 			for ($raw=0;$raw<=1;$raw++) {
 				@unlink($this->getChartFilename("alt",$metric_system,$raw) ); 
 				@unlink($this->getChartFilename("speed",$metric_system,$raw) ); 
