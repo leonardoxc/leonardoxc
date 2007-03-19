@@ -268,12 +268,14 @@ if ($opMode==1 || $opMode==2 ) $CONF_mainfile="modules.php";
 else  $CONF_mainfile="index.php";
 
 // detect if the installation in not on the root
-$baseInstallationPath="";
-$parts=explode("/",$_SERVER['REQUEST_URI']);
-
-if ( count($parts)>1 )  {
-	for($i=1;$i<count($parts);$i++) 
-	   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
+if (!$baseInstallationPathSet) {
+	$baseInstallationPath="";
+	$parts=explode("/",$_SERVER['REQUEST_URI']);
+	
+	if ( count($parts)>1 )  {
+		for($i=1;$i<count($parts);$i++) 
+		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
+	}
 }
 
 if (!isset($module_name))  {

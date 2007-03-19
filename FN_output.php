@@ -79,7 +79,7 @@ function formatDistanceOLC($distance,$showKm=true) { // in meters
 
 
 function formatOLCScore($score,$html_output=true) { 
-	return sprintf("%.1f",$score);
+	return sprintf("%.2f",$score);
 	//if ($html_output) return '<font color=#0000ff>'.sprintf("%.1f",$score).'</font>';
 	//else return sprintf("%.1f",$score);
 }

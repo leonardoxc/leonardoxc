@@ -205,12 +205,13 @@ function setValue(obj)
 		$result=ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC;
 		@unlink($tmpFilename);
 	} else {
+		if (!$_FILES['datafile']['name']) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+
 		checkPath($flightsAbsPath."/".$flights_user_id);
 		move_uploaded_file($tmpFilename, $flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename );
 		$filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
 	
-			echo $filename;
-		if (!$_FILES['datafile']['name']) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+		//	echo $filename;
 		
 		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat) ;
 		

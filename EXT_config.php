@@ -52,7 +52,7 @@
 		$module_name=$tmpParts[count($tmpParts)-1];
 	}
 
-
+/*
 	$baseInstallationPath="";
 	$parts=explode("/",$_SERVER['REQUEST_URI']);
 
@@ -62,10 +62,10 @@
 		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
 		}
 	}
-
+*/
 		
- $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
- $OLCScoringServerPassword="mypasswd";
+ //$OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
+ //$OLCScoringServerPassword="mypasswd";
 
  session_start();
  $userID = $_SESSION['userID'];

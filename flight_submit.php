@@ -23,6 +23,7 @@
 	require_once "FN_pilot.php";
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
+	// $DBGlvl=255;
 
 	if (! $CONF_allow_direct_upload) {
 		echo "problem<br>";
@@ -41,8 +42,8 @@
 		exit;
 	}	
 
-	$user=str_replace("\\'", "''", $_POST['OLCvnolc'] );
-	$pass=str_replace("\\'", "''", $_POST['na'] );
+	$user=str_replace("\\'", "''", $_POST['user'] );
+	$pass=str_replace("\\'", "''", $_POST['pass'] );
 
 	$sql = "SELECT user_id, username, user_password
 			FROM ".$prefix."_users	WHERE username = '$user'";
@@ -73,7 +74,7 @@
 	// make the first line:
 	$igcContents="OLCvnolc=$username&na=$username";
 	foreach($_POST as $varName=>$varValue) {
-		if ($varName !='IGCigcIGC' && $varName!='OLCvnolc' && $varName!='na' ) {
+		if ($varName !='IGCigcIGC' && $varName!='user' && $varName!='pass' ) {
 			$igcContents.="&$varName=$varValue";
 		}
 	}
@@ -108,5 +109,5 @@
 		echo "flight scored<br>";
 
 	}
-
+    // DEBUG_END();
 ?>

@@ -266,9 +266,9 @@ function removeClubFlight(clubID,flightID) {
 		   printHeader(160,$sortOrder,"pilotName",_PILOT,$query_str) ;
 		   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$query_str) ;
 		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
-		   printHeader(65,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
-		   printHeader(65,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
-		   printHeader(60,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
+		   printHeader(60,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
+		   printHeader(60,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
+		   printHeader(65,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
   	  <td width="50" class='SortHeader'>&nbsp;</td>

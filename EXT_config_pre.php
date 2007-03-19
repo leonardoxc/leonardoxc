@@ -13,9 +13,19 @@
 
 	$tmpDir=dirname(__FILE__);
 	$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-	$module_name=$tmpParts[count($tmpParts)-1];
+	$module_name=$tmpParts[count($tmpParts)-1]; 
 	$moduleAbsPath=dirname(__FILE__);
 	$moduleRelPath=".";
 	
+	$baseInstallationPath="";
+	$baseInstallationPathSet=1;
+	$parts=explode("/",$_SERVER['REQUEST_URI']);
+
+	if ( count($parts)>1 )  {
+		for($i=1;$i<count($parts);$i++) {
+		   if ($parts[$i-1]=="modules") break;
+		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
+		}
+	}
 
 ?>

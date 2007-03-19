@@ -103,12 +103,16 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
 
 	$oldFlightID= $flight->findSameFlightID();
-	if ($oldFlightID>0) 		
+	if ($oldFlightID>0) {
+		@unlink($flight->getIGCFilename(1));
 		return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$oldFlightID);	
+	}
 
 	$sameFilenameID=$flight->findSameFilename( basename($filename) );
-	if ($sameFilenameID>0) 	
+	if ($sameFilenameID>0) 	 {
+		@unlink($flight->getIGCFilename(1));
 		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
+	}
 
 	if ($calledFromForm) {	
 		$flight->comments=$_REQUEST["comments"];

@@ -18,8 +18,11 @@
 
 function setMonths() {
 	global  $monthList;
-	$monthList=array('January','February','March','April','May','June',
-					'July','August','September','October','November','December');
+	$monthList=array('Leden','Unor','Brezen','Duben','Kveten','Cerven',               
+					   'Cervenec','Srpen','Zari','Rijen','Listopad','Prosinec');
+
+	$monthListShort=array('LED','UNO','BRE','DUB','KVE','CRN','CRC','SRP','ZAR','RIJ','LIS','PRO');
+	$weekdaysList=array('Po','Ut','St','Ct','Pa','So','Ne') ;
 }
 setMonths();
 
@@ -47,7 +50,7 @@ define("_BEST_OLC_SCORE","Nejlepsi OLC skore");
 define("_From","z");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Trvani_hodiny_minuty");
+define("_DURATION_HOURS_MIN","Trvani");
 define("_SHOW","Ukaz");
 
 // show flight
@@ -498,7 +501,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Mistni rekord<br>(otevrena vzdalenost)");
 define("_GLIDER_TYPE","Typ Kluzaku");
 function setGliderCats() {
 	global  $gliderCatList;
-	$gliderCatList=array(1=>'Paraglider',2=>'Flex wing FAI1',4=>'Rigid wind FAI5',8=>'Glider');
+	$gliderCatList=array(1=>'Padakovy kluzak',2=>'Rogalo flex',4=>'Rogalo rigid',8=>'Kluzak');
 }
 setGliderCats();
 
@@ -550,25 +553,96 @@ define("_All_glider_types","VSECHNY typy kluzaku");
 
 define("_MENU_SITES_GUIDE","Prehled mist na letani");
 define("Site_Guide","Mistni pruvodce");
- /*
 
-Search_Options
-Below_is_the_list_of_selected_sites
+define("_Search_Options","Search Options");
+define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
+define("_Clear_this_list","Clear this list");
+define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
+define("_Available_Takeoffs","Available Takeoffs");
+define("_Search_site_by_name","Search site by name");
+define("_give_at_least_2_letters","give at least 2 letters");
+define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
+define("_Takeoff_Details","Takeoff Details");
 
-Search site by name
-(give at least 2 letters) 
 
-Click "See the selected sites" to open these sites in Google Earth 
+define("_Takeoff_Info","Takeoff Info");
+define("_XC_Info","XC Info");
+define("_Flight_Info","Flight Info");
 
-or 
+define("_MENU_LOGOUT","Logout");
+define("_MENU_LOGIN","Login");
+define("_MENU_REGISTER","Open an account");
 
-Select the sites of a specific country
 
-Clear this list
+define("_Africa","Africa");
+define("_Europe","Europe");
+define("_Asia","Asia");
+define("_Australia","Australia");
+define("_North_Central_America","North/Central America");
+define("_South_America","South America");
 
-See the selected sites
+define("_Recent","Recent");
 
-_THIS_ISNT_A_TRACKLOG_FILE
-*/
+
+define("_Unknown_takeoff","Unknown takeoff");
+define("_Display_on_Google_Earth","Display on Google Earth");
+define("_Use_Man_s_Module","Use Man's Module");
+define("_Line_Color","Line Color");
+define("_Line_width","Line width");
+define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
+define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
+define("_EDIT_WAYPOINT","Edit Takeoff Info");
+define("_DELETE_WAYPOINT","Delete Takeoff");
+define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
+define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
+define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
+define("_Takeoff_Name","Takeoff Name");
+define("_In_Local_Language","In Local Language");
+define("_In_English","In English");
+
+// New on 2007/02/20 - login screen
+define("_ENTER_PASSWORD","Please enter your username and password to log in.");
+define("_SEND_PASSWORD","I forgot my password");
+define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
+define("_AUTO_LOGIN","Log me on automatically each visit");
+define("_USERNAME","Username");
+define("_PASSWORD","Password");
+define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+
+define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
+define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+// end 2007/02/20
+
+define("_Category","Category");
+define("_MEMBER_OF","Member of");
+define("_MemberID","Member ID");
+define("_EnterID","Enter ID");
+define("_Clubs_Leagues","Clubs / Leagues");
+define("_Pilot_Statistics","Pilot Statistics");
+define("_National_Rankings","National Rankings");
+
+// new on 2007/03/08
+define("_Select_Club","Select Club");
+define("_Close_window","Close window");
+define("_EnterID","Enter ID");
+define("_Club","Club");
+define("_Sponsor","Sponsor");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','Go To Current Month');
+define('_Today_is','Today is');
+define('_Wk','Wk');
+define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
+define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
+define('_Click_to_select_a_month','Click to select a month.');
+define('_Click_to_select_a_year','Click to select a year.');
+define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+// end 2007/03/13
+
 
 ?>

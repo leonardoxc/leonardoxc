@@ -265,18 +265,20 @@ function delete_takeoff(id) {
 		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 		
 		$valiStr="&nbsp;<img class='listIcons' src='".$moduleRelPath."/img/$vImg' align='absmiddle' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
-		if ($flight->autoScore) { // means that there is manual optimization present
-			$vStr='This flight was optimized manually.';
-			$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_olc_manual.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='16' border='0' />";
-			if ($flight->autoScore > $flight->FLIGHT_POINTS ) {
-				$vStr="The manual optimization is worst than the auto optimization (Auto score:".$flight->autoScore.")";
-				$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_att1.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='17' border='0' />";				
-			} else {
-				$vStr="The manual optimization is better than the auto optimization (Auto score:".$flight->autoScore.")";
-				$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/olc_icon_submited.gif' align='absmiddle' title='$vStr' alt='$vStr' width='16' height='16' border='0' />";
-			}
-		}
   }
+
+	if ($flight->autoScore) { // means that there is manual optimization present
+		if (!$valiStr) $valiStr="&nbsp;";
+		$vStr='This flight was optimized manually.';
+		$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_olc_manual.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='16' border='0' />";
+		if ($flight->autoScore > $flight->FLIGHT_POINTS ) {
+			$vStr="The manual optimization is worst than the auto optimization (Auto score:".$flight->autoScore.")";
+			$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/icon_att1.gif' align='absmiddle' title='$vStr' alt='$vStr' width='17' height='17' border='0' />";				
+		} else {
+			$vStr="The manual optimization is better than the auto optimization (Auto score:".$flight->autoScore.")";
+			$valiStr.="<img class='listIcons' src='".$moduleRelPath."/img/olc_icon_submited.gif' align='absmiddle' title='$vStr' alt='$vStr' width='16' height='16' border='0' />";
+		}
+	}
   
   DEBUG_END(); // flush debug here
 	
@@ -538,6 +540,8 @@ $mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></scri
 <link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
 <link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
 <script type='text/javascript'>
+// document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
+</script>
 </script>
 <div class='tabber' id='mapTabber'>
  <div class='tabbertab $defaultTabStr1' title='Map'>

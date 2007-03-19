@@ -61,7 +61,7 @@
  $mapServerActive=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
- $CONF_google_maps_track=0;
+ $CONF_google_maps_track=1;
  $CONF_google_maps_track_order=1; // will apear in the second tab
  $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 
@@ -86,10 +86,8 @@
 
  // validate against the G-record
  $CONF_use_validation=1;
- $CONF_use_custom_validation=0;
- $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";
-  
-
+ $CONF_use_custom_validation=1;
+ $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";  
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
@@ -140,7 +138,6 @@
  // you have leonardo
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
- 
  
  // 2007/03/07 ADDED
  
@@ -213,10 +210,11 @@
 
  // this will allow the use of pre-calculated turnpoints for OLC score optimization
  // This is done by uploading an .OLC file
- $CONF_allow_olc_files=1;
+ $CONF_allow_olc_files=0;
  
- // this will allow an external program to upload a flight to this server.
+ // this will allow an external program  (maxpunkte) to upload a flight to this server.
  // the program must post a form to http://serveraddess/modules/leonardo/flight_submit.php
+ // it works even if the  $CONF_allow_olc_files is set to 0 (server optimization is done instead  )
  $CONF_allow_direct_upload=1;
  
   // this will enable a calnder in flights_list to select individual days

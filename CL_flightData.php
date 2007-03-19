@@ -447,7 +447,9 @@ var $maxPointNum=1000;
 
 		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 		if ($extended) {
-			$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML)."</Placemark>";
+			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
+			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
+			//$kml_file_contents.="</Placemark>";
 			kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
 			$kml_file_contents.="
 <NetworkLink>
@@ -482,6 +484,12 @@ var $maxPointNum=1000;
 				$str.="<Document>									
 				<Placemark>\n<name>Tracklog</name>\n".
 				" <styleUrl>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kml#igcTrackLine</styleUrl>
+				<Style ID='igcTrackLine'>
+					<LineStyle>
+					  <color>ff0000ff</color>
+					  <width>2</width>
+					</LineStyle>
+			  </Style>
 				<LineString>				
 				<altitudeMode>absolute</altitudeMode>
 				<coordinates>\n";
@@ -682,6 +690,7 @@ var $maxPointNum=1000;
 		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 		//if (file_exists($this->getKMLFilename())) return;
 
+		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extendedInfo";
 		//UTF-8 or 
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
@@ -2033,8 +2042,8 @@ if using integers for calculation of distances in decimeters, this formular gene
 
 		unlink($this->getIGCFilename() ); 
 		@unlink($this->getIGCFilename(1) ); 
-		//@unlink($this->getIGCFilename(1).".js" ); 
-		//@unlink($this->getIGCFilename(1).".txt" ); 
+		@unlink($this->getPointsFilename(1) ) ;
+		@unlink($this->getJsFilename(1) );
 		@unlink($this->getIGCFilename(0).".olc" ); 
 		@unlink($this->getMapFilename() ); 
 
