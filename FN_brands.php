@@ -16,8 +16,12 @@ function guessBrandID($gliderType,$gliderDesc){
 	global  $brandsList;
 	if (!is_array($brandsList[$gliderType]) ) return 0;
 	
+	$gliderDesc=strtolower($gliderDesc);
+	//$gliderDesc=str_replace(" ","",$gliderDesc);
+	$gliderDesc=preg_replace('/[^\w]/','',$gliderDesc);
+
 	foreach($brandsList[$gliderType] as $brandID=>$brandName) {
-		if (  ! ( strpos(strtolower(str_replace(" ","",$gliderDesc)),strtolower($brandName) ) === false ) ) {
+		if (  ! ( strpos($gliderDesc,strtolower($brandName) ) === false ) ) {
 			return $brandID;
 		}
 	
@@ -69,6 +73,21 @@ function guessBrandID($gliderType,$gliderDesc){
 
 
  );
+
+ $brandsList[2]=array(
+	1=>"WillsWing",
+	"Moyes",
+	"Aeros",
+	);
+
+ $brandsList[4]=array(
+	1=>"WillsWing",
+	"Moyes",
+	"Aeros",
+	"AIR",
+	);
+
+
  /*
  $__brandsList=array(
 	"Airwave",
@@ -104,4 +123,7 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Gin",
 	"Edel" );
 	*/
+
+	// now copy the paraglider array to the paramotor array\
+	$brandsList[16]= $brandsList[1];
 ?>

@@ -257,7 +257,7 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 <?	
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
-   global $pilotNames,$pilotGlidersMax;
+   global $pilotNames,$pilotGlidersMax,$brandsList;
    
    global $Theme;
    global $module_name;
@@ -306,7 +306,8 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 else $bg=" class='$sortRowClass'";
 		 
 	 	 $brandID=$pilotGlidersMax[$pilotID]+0;
-		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' border=0 align=abs_middle>";
+		 $brandName=$brandsList[$cat][$brandID];
+		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
 //		 if ($brandID) 
 //		 else $gliderBrandImg="&nbsp;";
 		 	     
@@ -340,7 +341,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			}
 		}
 
-		echo "<td>$gliderBrandImg</td>";
+		echo "<td align='center'>$gliderBrandImg</td>";
    	}	
 
 	echo "</table>"; 

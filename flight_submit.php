@@ -24,7 +24,7 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 	// $DBGlvl=255;
-
+	echo "<html><body>";
 	if (! $CONF_allow_direct_upload) {
 		echo "problem<br>";
 		echo "Direct upload is not permitted on this server.";
@@ -59,7 +59,7 @@
 	} else 	$passwdProblems=1;
 
 	if ($passwdProblems) {
-		echo "Invalid user data<BR>";
+		echo "Invalid user data<BR></BODY></HTML>";
 		exit;
 	}
 
@@ -67,7 +67,7 @@
 
    $filename = dirname(__FILE__)."/flights/".$_POST['igcfn'].".igc";	   
    if (!$handle = fopen($filename, 'w')) { 
-		echo "Cannot open file ($filename) on server for writing<BR>";
+		echo "Cannot open file ($filename) on server for writing<BR></BODY></HTML>";
 		exit;
    } 
 
@@ -82,7 +82,7 @@
    $igcContents.="\n".$_POST['IGCigcIGC'];
    // Write $somecontent to our opened file. 
    if (!fwrite($handle, $igcContents)) { 		
-		echo "Cannot write to file ($filename) on server <br>";
+		echo "Cannot write to file ($filename) on server <br></BODY></HTML>";
 		exit;
    } 		
    fclose($handle); 
@@ -103,11 +103,12 @@
 
 	if ($errCode!=1) {
 		echo "problem<br>";
-		echo htmlspecialchars(getAddFlightErrMsg($errCode,$flightID));
+		echo getAddFlightErrMsg($errCode,$flightID);
 	} else {
 		echo "response=$flightID<br>";
 		echo "flight scored<br>";
 
 	}
     // DEBUG_END();
+	echo "</body></html>";
 ?>

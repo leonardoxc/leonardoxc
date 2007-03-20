@@ -210,7 +210,7 @@
 
  // this will allow the use of pre-calculated turnpoints for OLC score optimization
  // This is done by uploading an .OLC file
- $CONF_allow_olc_files=0;
+ $CONF_allow_olc_files=1;
  
  // this will allow an external program  (maxpunkte) to upload a flight to this server.
  // the program must post a form to http://serveraddess/modules/leonardo/flight_submit.php

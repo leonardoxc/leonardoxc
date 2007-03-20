@@ -1,7 +1,7 @@
 <?php
 /**
 * US-ASCII transliterations of Unicode text
-* @version $Id: utf8_to_ascii.php,v 1.1 2007/03/04 00:42:10 manolis Exp $
+* @version $Id: utf8_to_ascii.php,v 1.2 2007/03/20 14:40:57 manolis Exp $
 * @package utf8_to_ascii
 */
 
@@ -104,7 +104,7 @@ function utf8_to_ascii($str, $unknown = '?') {
         }
         
         $bank = $ord >> 8;
-        
+        //echo "#$bank#";
         # If we haven't used anything from this bank before, need to load it...
         if ( !array_key_exists($bank, $UTF8_TO_ASCII) ) {
             
@@ -127,7 +127,7 @@ function utf8_to_ascii($str, $unknown = '?') {
         }
         
         $newchar = $ord & 255;
-        
+        // echo "#$newchar#";
         if ( array_key_exists($newchar, $UTF8_TO_ASCII[$bank]) ) {
             echo $UTF8_TO_ASCII[$bank][$newchar];
         } else {

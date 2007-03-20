@@ -330,11 +330,14 @@ function removeClubFlight(clubID,flightID) {
 	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
 	   else $gliderBrandImg="&nbsp;";
 
-	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
+	/*   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
 			title='".$row['glider']."' border='0' />";
-		//$brandsList[$gliderType][$brandID]
-	   else $gliderBrandImg="&nbsp;";
+	    else $gliderBrandImg="&nbsp;";
+	*/
 	   
+		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
+			title='".$row['glider']."' border='0' />";
+
 	   echo "\t<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div></TD>";
 	   echo "<TD class='dateString' valign='top'><div>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
