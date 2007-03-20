@@ -57,10 +57,11 @@
 		    require_once dirname(__FILE__)."/CL_NACclub.php";
 			echo "<strong>"._MEMBER_OF.":</strong> ";
 			echo $CONF_NAC_list[$pilot['NACid']] ['name'];
-			echo " [ "._MemberID.": ";
-
-			if ($CONF_NAC_list[$pilot['NACid']]['memberIDpublic']) echo $pilot['NACmemberID']." ]";
-			else echo "***** ]";
+			if ($pilot['NACid']) { 
+				echo " [ "._MemberID.": ";
+				if ($CONF_NAC_list[$pilot['NACid']]['memberIDpublic']) echo $pilot['NACmemberID']." ]";
+				else echo "***** ]";
+			}
 		} ?></div></td>
   </tr>
   <tr> 

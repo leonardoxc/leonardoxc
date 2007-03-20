@@ -328,12 +328,17 @@ function setVarFromRequest($varname,$def_value,$isNumeric=0) {
     $_SESSION[$varname]=$$varname;
 }
 
-function makeSane($str,$isNumeric=0) {
-	if ($isNumeric) { // just add 0, this should do the trick
+function makeSane($str,$type=0) {
+	if ($type==1) { // 1=> numeric just add 0, this should do the trick
 		return $str+0;
-	} else { // is string : allow only  a-zA-Z0-9_
+	} else 	if ($type==0) { // is "strict" string : allow only  a-zA-Z0-9_-,.
 		return preg_replace("/[^\w_\-\,\.]/","",$str);
+	} else 	if ($type==2) { // is "relaxed" string : allow only  a-zA-Z0-9_
+		return preg_replace('/\\\/',"",$str);
+	} else {	// no sanitation
+		return $str; 
 	}
+
 }
 
 function setVar($varname,$value) {

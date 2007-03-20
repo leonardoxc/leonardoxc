@@ -160,7 +160,8 @@
 	# in case certain fields are set by an external tool, these fields will be set readonly
 	# otherwise, they can be edited
 	# $possible_readonly_fields contains all the fields for which this readonly mechanism is available
-	$readonly_fields=array('LastName', 'FirstName');
+	$readonly_fields=array();
+	//$readonly_fields=array('LastName', 'FirstName');
 	if ($CONF_use_NAC) {
 		$readonly_fields=array();
 		$list1=$list2=$list3='';
@@ -196,12 +197,16 @@
     <tr> 
       <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
       <td width="150" valign="top">
-			<? if ((strlen(str_replace(".","",trim($pilot['FirstName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
-			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <? echo in_array('FirstName', $readonly_fields) ? 'readonly' : '' ?> >
-			<? } else { ?>
-			<input name="FirstNameD" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" disabled> 
-			<input name="FirstName" type="hidden" value="<? echo $pilot['FirstName'] ?>" > 
-			<? } ?></td>
+			<? 
+				$firstNameReadOnly='';
+				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
+					  !in_array($userID,$admin_users) && 
+					  !in_array($userID,$mod_users)  
+				) $firstNameReadOnly='"readonly"';
+				if ( in_array('FirstName', $readonly_fields) ) $firstNameReadOnly='"readonly"';
+			?> 
+			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly ?> >
+	  </td>
       <td width =3>&nbsp;</td>
       <td colspan="2" rowspan="3" valign="top" bgcolor="#E8EBDE"><div align="left">
 <? if ($CONF_use_NAC) {
@@ -325,12 +330,16 @@
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
       <td valign="top"> 
-			<? if ((strlen(str_replace(".","",trim($pilot['LastName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?> 
-			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <? echo in_array('LastName', $readonly_fields) ? 'readonly' : '' ?> >
-			<? } else { ?>
-			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled> 
-			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" > 
-			<? } ?>      </td>
+			<?
+				$lastNameReadOnly='';
+				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
+					  !in_array($userID,$admin_users) && 
+					  !in_array($userID,$mod_users)  
+				) $lastNameReadOnly='"readonly"';
+				if ( in_array('LastName', $readonly_fields) ) $lastNameReadOnly='"readonly"';
+			?>
+			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> >
+		</td>
       <td>&nbsp;</td>
     </tr>
     <tr>

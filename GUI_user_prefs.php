@@ -13,17 +13,17 @@
   
   if (isset($_REQUEST['updatePrefs'])) {// submit form 	   		
 
-	$PREFS->themeName= $_POST['PREFS_themeName'];
-	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage'];
-	$PREFS->metricSystem=$_POST['PREFS_metricSystem'];
+	$PREFS->themeName=makeSane($_POST['PREFS_themeName'],0);
+	$PREFS->itemsPerPage=makeSane($_POST['PREFS_itemsPerPage'],1);
+	$PREFS->metricSystem=makeSane($_POST['PREFS_metricSystem']);
 
-	$PREFS->language=$_POST['PREFS_language'];
+	$PREFS->language=makeSane($_POST['PREFS_language']);
 	$_SESSION["lng"]= $PREFS->language;
 
-	$PREFS->viewCat=$_POST['PREFS_viewCat'];
+	$PREFS->viewCat=makeSane($_POST['PREFS_viewCat'],1);
 	$_SESSION["cat"]= $PREFS->viewCat;
 
-	$PREFS->viewCountry=$_POST['PREFS_viewCountry'];
+	$PREFS->viewCountry=makeSane($_POST['PREFS_viewCountry']);
 	$_SESSION["country"]= $PREFS->viewCountry;
 
     echo "<div align=center>"._Your_settings_have_been_updated."<br><br><a href='?name=$module_name&op=list_flights'>"._RETURN_TO_FLIGHTS."</a><br><br></div>";
@@ -99,6 +99,10 @@
       <td bgcolor="#F8F8E4"><div align="right"><? echo _VIEW_COUNTRY ?></div></td>
       <td>      <select name="PREFS_viewCountry">
 <? 
+		if (!$countriesNum) {
+			list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList(0,0);
+			$countriesNum=count($countriesNames);
+		}
 		//list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList();
 		//$countriesNum=count($countriesNames);
 
@@ -130,6 +134,15 @@
     <tr> 
       <td bgcolor="#F8F8E4"><div align="right"><? echo _ITEMS_PER_PAGE ?></div></td>
       <td> <input name="PREFS_itemsPerPage" type="text" value="<? echo $PREFS->itemsPerPage ?>" size="5" maxlength="120"></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr> 
+      <td bgcolor="#F8F8E4"><div align="right"><? echo "Google Maps"?></div></td>
+      <td>
+        <select name="PREFS_googleMaps">
+          <option value="1" <? echo ($PREFS->googleMaps==1)?"selected":"" ?>><? echo _YES ?></option>
+          <option value="0" <? echo ($PREFS->googleMaps==0)?"selected":"" ?>><? echo _NO ?></option>
+        </select></td>
       <td>&nbsp;</td>
     </tr>
 

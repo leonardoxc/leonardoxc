@@ -35,17 +35,30 @@
  
 	if ( $_POST['addWaypoint']==1 ) { // ADD waypoint
 		$waypt=new waypoint(0);
-		
-		$waypt->name=$_POST['wname'];
-		$waypt->intName=$_POST['intName'];
-		$waypt->type=$_POST['type'];
-		$waypt->lat=$_POST['lat'];
-		$waypt->lon=$_POST['lon'];
-		$waypt->location=$_POST['wlocation'];
-		$waypt->intLocation=$_POST['intLocation'];
-		$waypt->countryCode=$_POST['countryCode'];
-		$waypt->link=$_POST['link'];
-		$waypt->description=$_POST['description'];
+
+		$waypt->name=makeSane($_POST['wname'],2);
+		$waypt->intName=makeSane($_POST['intName'],2);
+		$waypt->type=makeSane($_POST['type'],1);
+		$waypt->lat=makeSane($_POST['lat'],1);
+		$waypt->lon=makeSane($_POST['lon'],1);
+		$waypt->location=makeSane($_POST['location'],2);
+		$waypt->intLocation=makeSane($_POST['intLocation'],2);
+		$waypt->countryCode=makeSane($_POST['countryCode'],2);
+		$waypt->link=makeSane($_POST['link'],2);
+		$waypt->description=makeSane($_POST['description'],2);
+
+		if (! $waypt->name && ! $waypt->intName  ) {
+			echo("<H3> Please give takeoff name! </H3>\n");		
+		   return;
+		}
+
+		// fill in values that the user left out.
+		if (! $waypt->name ) 	$waypt->name =$waypt->intName;
+		if (! $waypt->intName ) $waypt->intName=$waypt->name;
+		if (! $waypt->location ) 	$waypt->location =$waypt->intLocation;
+		if (! $waypt->intLocation ) $waypt->intLocation=$waypt->location;
+
+
 
 		if ( $waypt->putToDB(0) ) {
 		?>
