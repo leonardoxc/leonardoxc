@@ -1150,7 +1150,12 @@ $kml_file_contents=
 		$line=$lines[0];
 		if (  strtoupper(substr($line,0,3))!='OLC' ) return 0; // not OLC file
 
-		// echo "First line starts with OLC, will search further";
+		$mindist=0;
+		if ( preg_match("/&mindist=(\d+)&/",$lines[0],$m) ) {
+			$mindist=$m[1];
+		}
+		// echo "mindist: $mindist		<BR>";
+
 		DEBUG("OLC",255,"First line starts with OLC, will search further");
 		// if the first line begins with OLC we have an olc file		
 		// we got an olc optimized file , get the 5 turnpoints
@@ -1159,8 +1164,16 @@ $kml_file_contents=
 		"&w1bh=([NnSs])&w1bg=(\d+)&w1bm=(\d+)&w1bmd=(\d+)&w1lh=([EeWw])&w1lg=(\d+)&w1lm=(\d+)&w1lmd=(\d+)".
 		"&w2bh=([NnSs])&w2bg=(\d+)&w2bm=(\d+)&w2bmd=(\d+)&w2lh=([EeWw])&w2lg=(\d+)&w2lm=(\d+)&w2lmd=(\d+)".
 		"&w3bh=([NnSs])&w3bg=(\d+)&w3bm=(\d+)&w3bmd=(\d+)&w3lh=([EeWw])&w3lg=(\d+)&w3lm=(\d+)&w3lmd=(\d+)".
-		"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$lines[0],$matches) )
-		{
+		"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$lines[0],$matches)  || 
+		
+		preg_match(
+	   "/&fai0bh=([NnSs])&fai0bg=(\d+)&fai0bm=(\d+)&fai0bmd=(\d+)&fai0lh=([EeWw])&fai0lg=(\d+)&fai0lm=(\d+)&fai0lmd=(\d+)".				
+		"&fai1bh=([NnSs])&fai1bg=(\d+)&fai1bm=(\d+)&fai1bmd=(\d+)&fai1lh=([EeWw])&fai1lg=(\d+)&fai1lm=(\d+)&fai1lmd=(\d+)".
+		"&fai2bh=([NnSs])&fai2bg=(\d+)&fai2bm=(\d+)&fai2bmd=(\d+)&fai2lh=([EeWw])&fai2lg=(\d+)&fai2lm=(\d+)&fai2lmd=(\d+)".
+		"&fai3bh=([NnSs])&fai3bg=(\d+)&fai3bm=(\d+)&fai3bmd=(\d+)&fai3lh=([EeWw])&fai3lg=(\d+)&fai3lm=(\d+)&fai3lmd=(\d+)".
+		"&fai4bh=([NnSs])&fai4bg=(\d+)&fai4bm=(\d+)&fai4bmd=(\d+)&fai4lh=([EeWw])&fai4lg=(\d+)&fai4lm=(\d+)&fai4lmd=(\d+)/",$lines[0],$matches)
+		
+		) {
 			for($i1=0;$i1<=4;$i1++)  {
 				$opt_point[$i1]=sprintf("%02d%02d%03d%s%03d%02d%03d%s",$matches[1+$i1*8+1],$matches[1+$i1*8+2],$matches[1+$i1*8+3],$matches[1+$i1*8+0],
 								$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
@@ -1186,37 +1199,38 @@ $kml_file_contents=
 				if ($opt_point_num==5) break;
 			}
 			
-//for($i=0;$i<=4;$i++)  {
-//	echo "#".$opt_point[$i]."<br>";		
-//}
+			//for($i=0;$i<=4;$i++)  {
+			//	echo "#".$opt_point[$i]."<br>";		
+			//}
 			if ($opt_point_num==5) {			
-//echo "OPTIMIZATION POINTS confirmed";
+				//echo "OPTIMIZATION POINTS confirmed";
 				DEBUG("OLC",255,"OPTIMIZATION POINTS confirmed");
 				// now compute best score
 				for($i=0;$i<=4;$i++)  {
 					$points[$i]=new gpsPoint("B120000".$opt_point[$i]."A0000000000");					
 				}
 				/*
-Explained by Thomas Kuhlmann
-
-You have 5 Points:
-Startpoint, First Waypoint, Second Waypoint, Third Waypoint, Endpoint
-given following distances
-a : distance from First to Second Waypoint
-b : distance from Second the Third Waypoint
-c : distance from Third to First Waypoint
-d : distance from End- To Startpoint
-Rule to have a triangle (it may be 20% open):
-
-  d <= 20% ( a+b+c )
-this is equivalent to:
-  d*5 <= a+b+c
-
-Now you have to check if this triangle fullfills the 28% FAI rule:
-  ( a >= 28% (a+b+c) )  AND  (b >= 28% (a+b+c))  AND (c>= 28% (a+b+c))
-this is quivalent to (28% = 7/25):
-  (25*a >= 7*(a+b+c))  AND (25*b >= 7*(a+b+c)) AND (25*c >= 7*(a+b+c))
-if using integers for calculation of distances in decimeters, this formular generates no integer to float concerning problems. 
+					Explained by Thomas Kuhlmann
+					
+					You have 5 Points:
+					Startpoint, First Waypoint, Second Waypoint, Third Waypoint, Endpoint
+					given following distances
+					a : distance from First to Second Waypoint
+					b : distance from Second the Third Waypoint
+					c : distance from Third to First Waypoint
+					d : distance from End- To Startpoint
+					Rule to have a triangle (it may be 20% open):
+					
+					  d <= 20% ( a+b+c )
+					this is equivalent to:
+					  d*5 <= a+b+c
+					
+					Now you have to check if this triangle fullfills the 28% FAI rule:
+					  ( a >= 28% (a+b+c) )  AND  (b >= 28% (a+b+c))  AND (c>= 28% (a+b+c))
+					this is quivalent to (28% = 7/25):
+					  (25*a >= 7*(a+b+c))  AND (25*b >= 7*(a+b+c)) AND (25*c >= 7*(a+b+c))
+					if using integers for calculation of distances in decimeters,
+					 this formular generates no integer to float concerning problems. 
 				*/	
 				$a=$points[1]->calcDistance($points[2]);
 				$b=$points[2]->calcDistance($points[3]);
@@ -1251,11 +1265,20 @@ if using integers for calculation of distances in decimeters, this formular gene
 				$str="";
 				for($i=0;$i<=4;$i++)  
 					$str.=$opt_point[$i]."\n";
-				if ($score_triangle>=$score_straight) 
-					$str.="$km_triangle\n$score_triangle\n$factor1\n";
-				else 
-					$str.="$km_straight\n$score_straight\n$factor\n";
+				
+				// check if $mindist>0 and  the triangle km are < $mindist, then we check
+				// if the straight distance km are > $mindist and use that instead	
+				if ($km_triangle<$mindist) {
+					if ($km_straight>=$mindist) $str.="$km_straight\n$score_straight\n$factor\n";
+					else $str.="$km_triangle\n$score_triangle\n$factor1\n";
+				} else {				
+					if ($score_triangle>=$score_straight) 
+						$str.="$km_triangle\n$score_triangle\n$factor1\n";
+					else 
+						$str.="$km_straight\n$score_straight\n$factor\n";
+				}
 					
+				$str.="\n$mindist";
 				writeFile($filename.".olc",$str);
 			} // end if confirmed the 5 turnpoints
 						
@@ -2343,7 +2366,8 @@ foreach ($data_time as $i=>$tm) {
 	function findSameFilename($filename) {
 		global $db;
 		global $flightsTable;
-		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->userID." AND filename=".$filename." ";
+		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->userID." AND filename=\"".$filename."\" ";
+		// echo $query;
 		$res= $db->sql_query($query);
 		if ($res<=0) return 0; // no duplicate found
 

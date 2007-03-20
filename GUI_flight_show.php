@@ -514,7 +514,7 @@ $googleMap="";
 if ( is_file($flight->getMapFilename() ) )
 		$localMap="<img src='".$flight->getMapRelPath()."' border=0>";	
 
-if ( $CONF_google_maps_track==1) {
+if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	// $flight->createGPXfile();
 	$flight->createEncodedPolyline();
 

@@ -136,6 +136,7 @@
       <td> <input name="PREFS_itemsPerPage" type="text" value="<? echo $PREFS->itemsPerPage ?>" size="5" maxlength="120"></td>
       <td>&nbsp;</td>
     </tr>
+	<? if ($CONF_google_maps_track) { ?>
     <tr> 
       <td bgcolor="#F8F8E4"><div align="right"><? echo "Google Maps"?></div></td>
       <td>
@@ -145,7 +146,16 @@
         </select></td>
       <td>&nbsp;</td>
     </tr>
-
+	<? } ?>
+	 <tr> 
+      <td bgcolor="#F8F8E4"><div align="right"><? echo _PILOT_NAME ?></div></td>
+      <td>
+        <select name="PREFS_nameOrder">
+          <option value="1" <? echo ($PREFS->nameOrder==1)?"selected":"" ?>><? echo _First_Name.' / '._Last_Name ?></option>
+          <option value="2" <? echo ($PREFS->nameOrder==2)?"selected":"" ?>><? echo _Last_Name.' / '._First_Name  ?></option>
+        </select></td>
+      <td>&nbsp;</td>
+    </tr>
     <tr> 
       <td colspan="3"><div align="center"> 
           <input type="submit" name="Submit" value="<? echo _Submit_Change_Data ?>">

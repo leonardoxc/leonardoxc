@@ -139,7 +139,9 @@
 
 
  if ($CONF_use_leonardo_names)  {
- $query = 'SELECT DISTINCT userID, CONCAT(FirstName," ",LastName) as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
+ 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
+	else $nOrder="CONCAT(LastName,' ',FirstName)";
+ $query = 'SELECT DISTINCT userID,  '.$nOrder.' as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '

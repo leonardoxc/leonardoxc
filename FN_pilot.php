@@ -83,9 +83,12 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names;
+	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names,$PREFS;
 
-	$query="SELECT CONCAT(FirstName,' ',LastName) as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
+	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
+	else $nOrder="CONCAT(LastName,' ',FirstName)";
+	
+	$query="SELECT $nOrder as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
 	$res= $db->sql_query($query);
 	// echo $query;
 

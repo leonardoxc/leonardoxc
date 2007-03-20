@@ -77,7 +77,9 @@
 	 if ($opMode==1) { 
 		$sortOrderFinal="CONCAT(name,username) ";
 	 } else {
-		$sortOrderFinal=$CONF_phpbb_realname_field;
+		//if ($CONF_use_leonardo_names) $sortOrderFinal='username';
+		//else $sortOrderFinal=$CONF_phpbb_realname_field;
+		 $sortOrderFinal=$CONF_phpbb_realname_field;
 	 }
 	 $where_clause2="  AND ".$flightsTable.".userID=".$prefix."_users.user_id ";
 	 $extra_table_str2=",".$prefix."_users";
@@ -140,6 +142,15 @@
 			ORDER BY ".$sortOrderFinal ." ".$ord." LIMIT $startNum,".$PREFS->itemsPerPage ;
   }
 */
+
+	/*
+	if ($CONF_use_leonardo_names) {
+		if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
+		else $nOrder="CONCAT(LastName,' ',FirstName)";
+	} else {
+		$nOrder='username';
+	}
+	*/
 	$query="SELECT * , $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID 
 		FROM $flightsTable $extra_table_str $extra_table_str2
 		WHERE (1=1) $where_clause $where_clause2

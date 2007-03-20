@@ -259,6 +259,12 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // this will enable a calnder in flights_list to select individual days
  $CONF_use_calendar=1;
  
+ // this is the default setting for the user's -> "My settings"
+ $CONF_googleMapsShow=1;
+ 
+ // 1- > western -> firstName - LastName
+ // 2- > eastern -> LastName - firstName 
+ $CONF_defaultNameOrder=1; 
  
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
@@ -370,12 +376,17 @@ if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) 
 	$PREFS->viewCountry=0;
 	$PREFS->itemsPerPage=$CONF_itemsPerPage;
 	$PREFS->metricSystem=$CONF_metricSystem;
+
+	$PREFS->nameOrder=$CONF_defaultNameOrder;
+	$PREFS->googleMaps=$CONF_googleMapsShow;
 }
 
 if (isset($_REQUEST['updatePrefs'])) {// submit form 	   		
 	$PREFS->themeName= $_POST['PREFS_themeName'];
 	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage'];
 	$PREFS->metricSystem=$_POST['PREFS_metricSystem'];
+	$PREFS->googleMaps=$_POST['PREFS_googleMaps'];
+	$PREFS->nameOrder=$_POST['PREFS_nameOrder'];
 	
 	$PREFS->language=$_POST['PREFS_language'];
 	$_SESSION["lng"]= $PREFS->language;
