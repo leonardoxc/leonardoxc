@@ -24,7 +24,8 @@ $module = 1;
 $prefix="phpbb";
 
 // $currentlang=$nativeLanguage;
-setVarFromRequest("lng",$nativeLanguage); 
+//setVarFromRequest("lng",$nativeLanguage); 
+setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
 /*
 setVarFromRequest("ap",0);
@@ -43,8 +44,8 @@ if ($_GET['ap']) {
 	$currentlang=$lng;
 }
 */
-if (makeSane($_GET['clubID'],1)) { // some things we do when first in club
-
+$clubID=makeSane($clubID,1);
+if ($clubID) { // some things we do when first in club
 	if ( is_array($clubsList[$clubID]['gliderCat']) ) {
 		setVar("cat",0);
 	}
