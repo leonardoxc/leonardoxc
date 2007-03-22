@@ -89,6 +89,7 @@
 						
 
 	$klasse=$_POST['klasse'];
+	if (!$klasse) 	$klasse=$_POST['Klasse'];
 
 	$cat=0;
 	$category=1;
