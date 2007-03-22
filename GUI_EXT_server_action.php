@@ -17,6 +17,10 @@ require_once dirname(__FILE__)."/EXT_config.php";
 require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 
+if (! in_array($userID,$admin_users)) {
+	return;
+}
+
 $id=makeSane($_GET['id'],1);
 $action=makeSane($_GET['action']);
 $DBGlvl=makeSane($_GET['DBGlvl'],1);

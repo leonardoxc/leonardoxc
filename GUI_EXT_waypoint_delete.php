@@ -30,7 +30,7 @@
 	
 	// echo "# $userID #";
     if (! in_array($userID,$admin_users)) {
-		// return;
+		 return;
     }
 ?>
   <style type="text/css">

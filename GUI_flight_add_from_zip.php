@@ -11,7 +11,8 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+ if (!$userID) return;
+ 
  open_inner_table( _SUBMIT_FLIGHT,650,"icon_add.png");
  echo "<tr><td>";
 

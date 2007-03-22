@@ -28,7 +28,7 @@
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	
     if (! in_array($userID,$admin_users)) {
-//		return;
+		return;
     }
 	$waypointLat=$_REQUEST['lat']+0;
 	$waypointLon=$_REQUEST['lon']+0;

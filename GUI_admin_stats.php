@@ -13,7 +13,8 @@
 
  
 //-----------------------------------------------------------------------------------------------------------
-
+  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  
 	require_once dirname(__FILE__)."/lib/graph/jpgraph_gradient.php";
 	require_once dirname(__FILE__)."/lib/graph/jpgraph_plotmark.inc" ;
 

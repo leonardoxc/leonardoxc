@@ -10,6 +10,11 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+
+if (! in_array($userID,$admin_users)) {
+	return;
+}
+	
 require_once dirname(__FILE__)."/CL_server.php";
 $servers=Server::getServers();
 

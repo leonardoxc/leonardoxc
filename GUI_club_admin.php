@@ -11,6 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
+if ( ! is_club_admin($userID,$clubID) && !is_leo_admin($userID) ) { echo "go away"; return; }
+
 $pilotsList=array();
 $pilotsID=array();
 

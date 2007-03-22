@@ -25,9 +25,10 @@
 	require_once $moduleRelPath."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
 
-
-	$op=makeSane($_GET['op']);
 	$clubID=makeSane($_GET['clubID'],1);
+	if ( ! is_club_admin($userID,$clubID) && !is_leo_admin($userID) ) { echo "go away"; return; }
+
+	$op=makeSane($_GET['op']);	
 	$flightID=makeSane($_GET['flightID'],1);
 	$pilotID=makeSane($_GET['pilotID'],1);
 	if ($op=='add'){	

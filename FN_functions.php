@@ -275,7 +275,7 @@ function getBrowser() {
 
 	function is_club_admin($userID,$clubID) {
 		global $clubsList;
-		if ($clubsList[$clubID]['adminID']==$userID) return 1;
+		if ($clubsList[$clubID]['adminID']==$userID && $userID <>0 ) return 1;
 		else return 0;
 	}
 

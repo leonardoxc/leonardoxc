@@ -27,22 +27,25 @@
 	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	
-    if (! in_array($userID,$admin_users)) {
-		//		return;
-    }
 	
 
+	$flightID=makeSane($_GET['flightID'],1);
+	if ($flightID<=0) exit;
+		
+	$flight=new flight();
+	$flight->getFlightFromDB($flightID);
+
+    if ( $userID!=$flight->userID && !in_array($userID,$admin_users) && !in_array($userID,$mod_users)) {
+		echo "go away";
+		return;
+    }
 
 	if ( $_POST['setTimes']==1 ) { // set new bounds !!!
 	
 		$startTime=makeSane($_REQUEST['timeTextSecs1'],1); // in secs
 		$endTime=makeSane($_REQUEST['timeTextSecs2'],1); 
 
-		$flightID=makeSane($_GET['flightID'],1);
-		if ($flightID<=0) exit;
 		
-		$flight=new flight();
-		$flight->getFlightFromDB($flightID);
 		
 		$flight->forceBounds=1; // must be in these time bounds
 		$flight->START_TIME=$startTime;
@@ -90,11 +93,7 @@
   <?
 
 	
-	$flightID=makeSane($_GET['flightID'],1);
-	if ($flightID<=0) exit;
-	
-	$flight=new flight();
-	$flight->getFlightFromDB($flightID);
+
 	
 	$flight->updateCharts(1,1); // force update, raw charts
 

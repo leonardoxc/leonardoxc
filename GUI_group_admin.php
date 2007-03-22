@@ -11,6 +11,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+if ( !in_array($userID,$admin_users) ) { echo "go away"; return; }
+
 $areaID=makeSane($_GET['areaID'],1);
 
 $pilotsList=array();

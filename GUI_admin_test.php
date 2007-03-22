@@ -11,7 +11,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-
+  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  
 function chmodDir($dir){
  $current_dir = opendir($dir);
  while($entryname = readdir($current_dir)){

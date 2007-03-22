@@ -12,6 +12,8 @@
 //************************************************************************/
 
  
+  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  
   $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="actionTime";
 

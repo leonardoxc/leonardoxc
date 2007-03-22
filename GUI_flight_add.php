@@ -10,6 +10,9 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+
+ if (!$userID) return;
+ 
 ?>
 <style type="text/css">
 <!--
@@ -185,7 +188,7 @@ function setValue(obj)
 	set_time_limit (120);
 	ignore_user_abort(true);	
 
-	if ($_POST['insert_as_user_id'] >0 ) $flights_user_id=$_POST['insert_as_user_id']+0;
+	if ($_POST['insert_as_user_id'] >0 && in_array($userID,$admin_users) ) $flights_user_id=$_POST['insert_as_user_id']+0;
 	else $flights_user_id=$userID;
 
 	if ($_POST['is_private'] ==1 ) $is_private=1;
