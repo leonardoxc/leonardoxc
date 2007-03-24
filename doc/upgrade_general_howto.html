@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+<style type="text/css">
+<!--
+.style2 {
+	color: #336600;
+	font-weight: bold;
+}
+.style4 {color: #336633; font-style: italic; font-weight: bold; }
+-->
+</style>
+</head>
+
+<body>
+<p>&nbsp;</p>
+<p><strong>UPGRADE INSTRUCTIONS: </strong><br />
+  <br />
+1) unzip the new version in the modules dir but not in dir leonardo/ but   something other like&nbsp; leo/</p>
+<p>2) run the provided SQL on your main DB. ALL SQL upgrades are HARMLESS   to existing data AND functionality </p>
+<p><br />
+  3) copy the site/ files from the leonardo/ dir to leo/</p>
+<p class="style4">** By this time your new version will be available at  /modules.php?name=leo <br />
+  Test the basic functionality. because the  fligths/ and maps/ dir are not yet moved the fligth display screen<br />
+will not display maps/ and charts. ** </p>
+<p><br />
+4) MOVE (or copy but it is not nessasary) the <br />
+  <br />
+  flights/ <br />
+  maps/ 
+  <br />
+  data/ <br />
+  <br />
+files from the leonardo/ dir to leo/ (no backup is really needed) </p>
+<p><span class="style4">** By this time your new version will be available at  /modules.php?name=leo <br />
+Test ALL the  functionality now that the   fligths/ and maps/ dir are moved to the right place.. ** </span></p>
+<p>  5) rename leonardo/ to leonardo_old/ ?(or anything you wish) <br />
+</p>
+<p>6) rename leo/&nbsp; to leonardo/ and you are done! </p>
+<p>  <span class="style2">** Test again all features on new version, if big problems,<br />
+</span><span class="style2">revert to old by   using the steps in reverse order. <br />
+  (NO NEED TO REVERSE SQL commands) **</span><br />
+  <br />
+  This is a fail safe method, no need to duplicate/backup db, no data can   be lost, <br />
+  the 2 versions can also run in paralell&nbsp; using the same db but   storing flights in<br /> 
+  different place ( not recommended !!!!) <br />
+</p>
+<p>&nbsp;</p>
+<p>&nbsp; </p>
+</body>
+</html>
