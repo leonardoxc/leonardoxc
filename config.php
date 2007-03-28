@@ -90,10 +90,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",
-				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian");
+				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese");
 
  $langEncodings=array(
-	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"iso-8859-5","brazilian"=>"iso-8859-1","catalan"=>"iso-8859-1",
+	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"iso-8859-5","brazilian"=>"iso-8859-1",
+	"catalan"=>"iso-8859-1", "chinese"=>"gb2312",
 	"croatian"=>"windows-1250","czech"=>"iso-8859-2","danish"=>"iso-8859-1","dutch"=>"iso-8859-1",
 	"english"=>"iso-8859-1","estonian"=>"iso-8859-15","finnish"=>"iso-8859-1","french"=>"iso-8859-1",
 	"german"=>"iso-8859-1","greek"=>"iso-8859-7","hebrew"=>"iso-8859-8","hungarian"=>"iso-8859-2",
@@ -106,11 +107,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $lang2iso=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
  			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"br","greek"=>"gr","turkish"=>"tr",
 			"swedish"=>"se","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
-			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si","danish"=>"dk");
+			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si","danish"=>"dk","chinese"=>"cn");
 
   $CONFIG_langsSpoken=array(
 	"albanian"=>array("al"),"arabic"=>array("eg"),"bulgarian"=>array("bg"),
-	"catalan"=>array("es"),"czech"=>array("cz"),"danish"=>array("dk"),
+	"catalan"=>array("es"),"chinese"=>array("cn"),"czech"=>array("cz"),"danish"=>array("dk"),
 	"estonian"=>array("ee"),"finnish"=>array("fi"),"hebrew"=>array("il"),
 	"hungarian"=>array("hu"),"icelandic"=>array("is"),"italian"=>array("it"),
 	"latvian"=>array("lv"),"lithuanian"=>array("lt"),"macedonian"=>array("mk"),
