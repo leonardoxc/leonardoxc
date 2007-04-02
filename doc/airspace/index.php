@@ -4,6 +4,30 @@ define("BINFILEMAGICNUMBER"		,0x4ab199f0);
 define("BINFILEVERION"          ,0x00000101);
 define("BINFILEHEADER" 			,"XCSoar Airspace File V1.0");
 
+define("TOFEET",3.281);
+define("QNH",1013.2);
+
+function AltitudeToQNHAltitude($alt) {
+  $k1=0.190263;
+  $ps = pow( (44330.8-$alt)/4946.54 , 1.0/$k1);
+  return StaticPressureToAltitude($ps);
+}
+
+function StaticPressureToAltitude($ps) {
+   // http://wahiduddin.net/calc/density_altitude.htm
+  $k1=0.190263;
+  $k2=8.417286e-5;
+  $h_gps0 = 0;
+
+  $Pa = pow(
+                  pow($ps-(QNH-1013.25)*100.0,$k1)
+                  -($k2*$h_gps0)
+                  ,(1.0/$k1));
+
+  $altitude = 44330.8-4946.54*pow($Pa,$k1);
+  return $altitude;
+}
+
 $bFillMode = false;
 $bWaiting = true;
 
@@ -15,6 +39,11 @@ class AIRSPACE_ACK {
 	var $AcknowledgementTime;
 }
 // typedef enum {abUndef, abMSL, abAGL, abFL} AirspaceAltBase_t;
+
+define("abUndef",0);
+define("abMSL",1);
+define("abAGL",2);
+define("abFL",3);
 
 class AIRSPACE_ALT {
 	var $Altitude;
@@ -119,7 +148,10 @@ function DBG($str){
 // this can now be called multiple times to load several airspaces.
 // to start afresh, call CloseAirspace()
 
-$fp = fopen(dirname(__FILE__)."/Air_Germany.txt","r");
+// $openairFilename='Air_Germany.txt';
+$openairFilename="OPENAIRD.TXT";
+
+$fp = fopen(dirname(__FILE__)."/$openairFilename","r");
 if ($fp ) {
 	ReadAirspace($fp);
 }
@@ -227,12 +259,12 @@ function ParseLine($nLineType)
 
 	case k_nLtAL:
 		if ($bFillMode)
-			ReadAltitude( substr($TempString,3), $TempArea->Base);
+			$TempArea->Base= ReadAltitude( substr($TempString,3) );
 		break;
 
 	case k_nLtAH:
 		if ($bFillMode)
-			ReadAltitude( substr(TempString,3),$TempArea->Top);
+			$TempArea->Top=ReadAltitude( substr($TempString,3) );
 		break;
 
 	case k_nLtV:
@@ -452,7 +484,7 @@ function GetNextLine($fp, &$Text)
 		}
     }
 
-  DBG("GetNextLine: type: $nLineType got: $Text");
+//  DBG("GetNextLine: type: $nLineType got: $Text");
   return $nLineType;
 }
 
@@ -481,7 +513,7 @@ function StartsWith($Text, $LookFor)
 
 function ReadCoords($Text) { 
   $Text=strtolower($Text);
-  DBG("ReadCoords: Text=$Text");
+ // DBG("ReadCoords: Text=$Text");
   // 53:26:09 N 009:45:46 E
   if ( ! preg_match("/(\d+):(\d+):(\d+) +([ns]) +(\d+):(\d+):(\d+) +([we])/",$Text,$matches) ) {
     DBG("ReadCoords: Not match ");
@@ -500,7 +532,7 @@ function ReadCoords($Text) {
   $X = $Xsec/3600 + $Xmin/60 + $Xdeg;
   if ($matches[8]=='w')   $X = -$X ;
 
-  DBG("ReadCoords: X=$X Y=$Y");
+//  DBG("ReadCoords: X=$X Y=$Y");
   return array(1,$X,$Y);
 
 }
@@ -519,4 +551,182 @@ function AddPoint($Temp, $AeraPointCount) {
 }
 
 
+function ReadAltitude($Text) {
+	DBG("ReadAltitude: $Text");
+/*
+AIRSPACE_ALT *Alt
+  TCHAR *Stop;
+  TCHAR Text[128];
+  TCHAR *pWClast = NULL;
+  TCHAR *pToken;
+  bool  fHasUnit=false;
+
+
+
+  _tcsncpy(Text, Text_, sizeof(Text)/sizeof(Text[0]));
+  Text[sizeof(Text)/sizeof(Text[0])-1] = '\0';
+
+  _tcsupr(Text);
+*/
+
+// for testing 
+//  $Text="FL=130ft";
+
+  $fHasUnit=0;
+  $Text=trim(strtoupper($Text));
+  $Text=str_replace("\t","",$Text);
+
+  // split string to " "
+  // pToken = strtok_r(Text, TEXT(" "), &pWClast);
+
+//  $parts=split(" ",$Text);
+preg_match("/(\d*)([ =]*)([A-Z]*)([ =]*)(\d*)([ =]*)([A-Z]*)([ =]*)/",$Text,$parts);
+//print_r($parts);
+//echo "<HR>";
+  $Alt=new AIRSPACE_ALT();
+
+  $Alt->Altitude = 0;
+  $Alt->FL = 0;
+  $Alt->Base = abUndef;
+
+//   while(pToken != NULL && *pToken != '\0'){
+   for ($i=1;$i<count($parts);$i++) {
+
+ // foreach($parts as $pToken) {
+    $pToken=$parts[$i];
+	if (!$pToken || $pToken==' ') continue;
+
+    if ( is_numeric($pToken) ) {
+      if ($Alt->Base == abFL){
+        $Alt->FL = $pToken;
+        $Alt->Altitude = AltitudeToQNHAltitude(($Alt->FL * 100)/TOFEET);
+      } else {
+        $Alt->Altitude = $pToken;
+      }
+
+//      if (*Stop != '\0'){
+//        pToken = Stop;
+//        continue;
+//      }
+
+    }  else if ( $pToken=='SFC' || $pToken=='GND' ) {
+      $Alt->Base = abAGL;
+      $Alt->FL = 0;
+      $Alt->Altitude = 0;
+      $fHasUnit = 1;
+    } else if ( $pToken=='FL' ){ 
+      // this parses "FL=150" and "FL150"
+      $Alt->Base = abFL;
+      $fHasUnit = true;
+
+//      $Alt->FL = $matches[2];
+//      $Alt->Altitude = AltitudeToQNHAltitude(($Alt->FL * 100)/TOFEET);
+
+		
+      /*if (pToken[2] != '\0'){// no separator between FL and number
+		$pToken = &pToken[2];
+		continue;
+      }*/
+    } else if ( $pToken=='FT'  || $pToken=='F' ){
+      $Alt->Altitude = $Alt->Altitude/TOFEET;
+      $fHasUnit = true;
+    } else if ( $pToken=='M'){
+      $fHasUnit = true;
+    } else if ( $pToken=='MSL'){
+      $Alt->Base = abMSL;
+    } else if ( $pToken=='AGL'){
+      $Alt->Base = abAGL;
+    } else if ( $pToken=='STD'){
+      if ($Alt->Base != abUndef) {
+        // warning! multiple base tags
+      }
+      $Alt->Base = abFL;
+      $Alt->FL = ($Alt->Altitude * TOFEET) / 100;
+      $Alt->Altitude = AltitudeToQNHAltitude(($Alt->FL * 100)/TOFEET);
+    }
+
+     // $pToken = strtok_r(NULL, TEXT(" \t"), &pWClast);
+
+  } // end while
+
+  if (! $fHasUnit && $Alt->Base != abFL) {
+    // ToDo warning! no unit defined use feet or user alt unit
+    // Alt->Altitude = Units::ToSysAltitude(Alt->Altitude);
+    $Alt->Altitude = $Alt->Altitude/ TOFEET;
+  }
+
+  if ($Alt->Base == abUndef) {
+    // ToDo warning! no base defined use MSL
+    $Alt->Base = abMSL;
+  }
+
+  DBG("ReadAltitude: FL=". $Alt->FL.", Alt:". $Alt->Altitude.", Base:". $Alt->Base." ");
+  return $Alt;
+}
+
+
+function AddArea($Temp) {
+  global $bFillMode,$NumberOfAirspaceAreas,$AirspaceArea,$AirspacePoint;
+
+  $NewArea = new AIRSPACE_AREA ();
+ 
+
+  if(!$bFillMode) {
+      $NumberOfAirspaceAreas++;
+  } else {
+
+      $NumberOfAirspaceAreas++;
+
+      $NewArea->Name				= $Temp->Name;
+      $NewArea->Type 				= $Temp->Type;
+      $NewArea->Base->Altitude		= $Temp->Base->Altitude ;
+      $NewArea->Base->FL			= $Temp->Base->FL  ;
+      $NewArea->Base->Base   		= $Temp->Base->Base;
+      $NewArea->NumPoints 			= $Temp->NumPoints;
+      $NewArea->Top->Altitude  		= $Temp->Top->Altitude ;
+      $NewArea->Top->FL 			= $Temp->Top->FL;
+      $NewArea->Top->Base   		= $Temp->Top->Base;
+      $NewArea->FirstPoint 			= $Temp->FirstPoint;
+      $NewArea->Ack->AcknowledgedToday = false;
+      $NewArea->Ack->AcknowledgementTime = 0;
+      $NewArea->_NewWarnAckNoBrush = false;
+
+
+      $Temp->FirstPoint = $Temp->FirstPoint + $Temp->NumPoints ;
+
+      if ($Temp->NumPoints > 0) {
+
+        CheckAirspacePoint($NewArea->FirstPoint);
+
+	   //  $PointList =new   AIRSPACE_POINT();
+        $PointList = $AirspacePoint;
+        $NewArea->MaxLatitude = -90;
+        $NewArea->MinLatitude = 90;
+        $NewArea->MaxLongitude  = -180;
+        $NewArea->MinLongitude  = 180;
+
+        for($i=$NewArea->FirstPoint; $i<($NewArea->FirstPoint + $Temp->NumPoints) ; $i++)
+        {
+          if($PointList[$i].Latitude > $NewArea->MaxLatitude)
+            $NewArea->MaxLatitude = $PointList[$i].Latitude ;
+          if($PointList[$i].Latitude < $NewArea->MinLatitude)
+            $NewArea->MinLatitude = $PointList[$i].Latitude ;
+
+          if($PointList[$i].Longitude  > $NewArea->MaxLongitude)
+            $NewArea->MaxLongitude  = $PointList[$i].Longitude ;
+          if($PointList[$i].Longitude  < $NewArea->MinLongitude)
+            $NewArea->MinLongitude  = $PointList[$i].Longitude ;
+        }
+      } else {
+
+        $NewArea->MaxLatitude = 0;
+        $NewArea->MinLatitude = 0;
+        $NewArea->MaxLongitude  = 0;
+        $NewArea->MinLongitude  = 0;
+
+      }
+
+      $AirspaceArea[$NumberOfAirspaceAreas-1]= $NewArea ;
+    }
+}
 ?>
