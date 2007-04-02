@@ -2,36 +2,6 @@
 
 
 
-static function AddAirspaceCircle(AIRSPACE_AREA *Temp, double CenterX, double CenterY, double Radius)
-{
-  AIRSPACE_CIRCLE *NewCircle = NULL;
-
-  if(!bFillMode)
-    {
-      NumberOfAirspaceCircles++;
-    }
-  else
-    {
-      NewCircle =  &AirspaceCircle[NumberOfAirspaceCircles];
-      NumberOfAirspaceCircles++;
-
-      _tcscpy(NewCircle->Name , Temp->Name);
-      NewCircle->Latitude = CenterY;
-      NewCircle->Longitude = CenterX;
-      NewCircle->Radius = Radius;
-      NewCircle->Type = Temp->Type;
-      NewCircle->Top.Altitude  = Temp->Top.Altitude ;
-      NewCircle->Top.FL   = Temp->Top.FL;
-      NewCircle->Top.Base   = Temp->Top.Base;
-      NewCircle->Base.Altitude  = Temp->Base.Altitude;
-      NewCircle->Base.FL   = Temp->Base.FL;
-      NewCircle->Base.Base   = Temp->Base.Base;
-      NewCircle->Ack.AcknowledgedToday = false;
-      NewCircle->Ack.AcknowledgementTime = 0;
-      NewCircle->_NewWarnAckNoBrush = false;
-    }
-}
-
 
 
 static function CalculateSector(TCHAR *Text)
@@ -72,52 +42,6 @@ static function CalculateSector(TCHAR *Text)
   AddPoint(&TempPoint, &TempArea.NumPoints);
 }
 
-static function CalculateArc(TCHAR *Text)
-{
-  double StartLat, StartLon;
-  double EndLat, EndLon;
-  double StartBearing;
-  double EndBearing;
-  double Radius;
-  TCHAR *Comma = NULL;
-
-  ReadCoords(&Text[3],&StartLon , &StartLat);
-	
-  Comma = _tcschr(Text,',');
-  if(!Comma)
-    return;
-
-  ReadCoords(&Comma[1],&EndLon , &EndLat);
-
-  DistanceBearing(CenterY, CenterX, StartLat, StartLon, 
-                  &Radius, &StartBearing);
-  DistanceBearing(CenterY, CenterX, EndLat, EndLon, 
-                  NULL, &EndBearing);
-  TempPoint.Latitude  = StartLat;
-  TempPoint.Longitude = StartLon;
-  AddPoint(&TempPoint, &TempArea.NumPoints);
-
-  while(fabs(EndBearing-StartBearing) > 7.5)
-  {
-	  StartBearing += Rotation *5 ;
-
-	  if(StartBearing > 360)
-		  StartBearing -= 360;
-	  if(StartBearing < 0)
-		  StartBearing += 360;
-
-	  if (bFillMode)	// Trig calcs not needed on first pass
-	  {
-            FindLatitudeLongitude(CenterY, CenterX, StartBearing, Radius,
-                                  &TempPoint.Latitude,
-                                  &TempPoint.Longitude);
-	  }
-    AddPoint(&TempPoint, &TempArea.NumPoints);
-  }
-  TempPoint.Latitude  = EndLat;
-  TempPoint.Longitude = EndLon;
-  AddPoint(&TempPoint, &TempArea.NumPoints);
-}
 
 
 static function ScanAirspaceCircleBounds(int i, double bearing) {

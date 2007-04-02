@@ -6,7 +6,10 @@ define("BINFILEHEADER" 			,"XCSoar Airspace File V1.0");
 
 define("TOFEET",3.281);
 define("QNH",1013.2);
-
+define("DEG_TO_RAD", 0.0174532925199432958);
+define("RAD_TO_DEG", 57.2957795131 );
+define("M_2PI", M_PI*2);
+	  
 function AltitudeToQNHAltitude($alt) {
   $k1=0.190263;
   $ps = pow( (44330.8-$alt)/4946.54 , 1.0/$k1);
@@ -51,6 +54,13 @@ class AIRSPACE_ALT {
 	var $Base;  // AirspaceAltBase_t 
 }
 
+class rectObj {
+  var $minx;
+  var $miny;
+  var $maxx;
+  var $maxy;
+} 
+
 class AIRSPACE_AREA {
   var $Name;
   var $Type;
@@ -68,6 +78,11 @@ class AIRSPACE_AREA {
   var $Ack; // AIRSPACE_ACK 
   var $WarningLevel; // 0= no warning, 1= predicted incursion, 2= entered
   var $varVisible;
+  
+  function AIRSPACE_AREA() {
+	 // $this->bounds
+  }
+  
 }
 
 class AIRSPACE_POINT {
@@ -75,6 +90,23 @@ class AIRSPACE_POINT {
 	var $Longitude;
 }
 
+class AIRSPACE_CIRCLE {
+  var $Name;
+  var $Type;
+  var $Base; // AIRSPACE_ALT 
+  var $Top; // AIRSPACE_ALT 
+  var $Latitude;
+  var $Longitude;
+  var $Radius;
+  var $Screen; // POINT 
+  var $ScreenR;
+  var $Visible;
+  var $_NewWarnAckNoBrush;
+  var $Ack; //AIRSPACE_ACK 
+  var $bounds; // rectObj 
+  var $WarningLevel; // 0= no warning, 1= predicted incursion, 2= entered
+  var $FarVisible;
+} 
 
 $TempArea=new AIRSPACE_AREA();
 $TempPoint=new AIRSPACE_POINT();
@@ -149,7 +181,10 @@ function DBG($str){
 // to start afresh, call CloseAirspace()
 
 // $openairFilename='Air_Germany.txt';
-$openairFilename="OPENAIRD.TXT";
+//$openairFilename="OPENAIRD.TXT";
+
+// maxpunkte
+$openairFilename='Air_Europe 2006.txt';
 
 $fp = fopen(dirname(__FILE__)."/$openairFilename","r");
 if ($fp ) {
@@ -220,12 +255,12 @@ function ReadAirspace($fp) {
 function ParseLine($nLineType)
 {
 	global $TempString,$LineCount;
-	global $bFillMode,$bWaiting,$TempArea,$k_nAreaCount,$k_nAreaType,$k_strAreaStart;
-	global $TempPoint, $TempArea,$NumberOfAirspaceCircles;
-	// DBG("ParseLine: [$nLineType] $TempString");
+	global $bFillMode,$bWaiting,$k_nAreaCount,$k_nAreaType,$k_strAreaStart;
+	global $TempPoint, $TempArea,$NumberOfAirspaceCircles,$NumberOfAirspaceAreas;
+	 DBG("ParseLine: [$nLineType] $TempString");
 
 	// int		nIndex;
-	global $Rotation ,$NumberOfAirspaceAreas,$CenterX, $CenterY;
+	global $Rotation ,$CenterX, $CenterY;
 
 	switch ($nLineType)
 	{
@@ -269,8 +304,10 @@ function ParseLine($nLineType)
 
 	case k_nLtV:
 		// Need to set these while in count mode, or DB/DA will crash
+		DBG("found V");
 		if( StartsWith(substr($TempString,2), "X=" ) || StartsWith(substr($TempString,2), "x=") )
 		{
+			DBG("will read coords");
 			list ($res, $CenterX , $CenterY ) = ReadCoords( substr($TempString,4) );
 			if ($res) break;
 		}
@@ -300,13 +337,13 @@ function ParseLine($nLineType)
 	      break;
 		}
 
-		DBG( sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
+		DBG( sprintf("Parse Error1 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
 		return 0;
 
 	case k_nLtDP:
 		list ($res, $TempPoint->Longitude , $TempPoint->Latitude ) = ReadCoords( substr($TempString,3) );
     	if (!$res)  {
-			DBG( sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
+			DBG( sprintf("Parse Error2 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
 			return 0;
 		}
   		$TempArea->NumPoints=AddPoint($TempPoint,$TempArea->NumPoints);
@@ -488,7 +525,7 @@ function GetNextLine($fp, &$Text)
   return $nLineType;
 }
 
-function StartsWith($Text, $LookFor)
+function StartsWith($Text, $lookFor)
 {
 	if (substr($Text,0,strlen($lookFor)) == $lookFor) return 1;
 	else return 0;
@@ -707,15 +744,15 @@ function AddArea($Temp) {
 
         for($i=$NewArea->FirstPoint; $i<($NewArea->FirstPoint + $Temp->NumPoints) ; $i++)
         {
-          if($PointList[$i].Latitude > $NewArea->MaxLatitude)
-            $NewArea->MaxLatitude = $PointList[$i].Latitude ;
-          if($PointList[$i].Latitude < $NewArea->MinLatitude)
-            $NewArea->MinLatitude = $PointList[$i].Latitude ;
+          if($PointList[$i]->Latitude > $NewArea->MaxLatitude)
+            $NewArea->MaxLatitude = $PointList[$i]->Latitude ;
+          if($PointList[$i]->Latitude < $NewArea->MinLatitude)
+            $NewArea->MinLatitude = $PointList[$i]->Latitude ;
 
-          if($PointList[$i].Longitude  > $NewArea->MaxLongitude)
-            $NewArea->MaxLongitude  = $PointList[$i].Longitude ;
-          if($PointList[$i].Longitude  < $NewArea->MinLongitude)
-            $NewArea->MinLongitude  = $PointList[$i].Longitude ;
+          if($PointList[$i]->Longitude  > $NewArea->MaxLongitude)
+            $NewArea->MaxLongitude  = $PointList[$i]->Longitude ;
+          if($PointList[$i]->Longitude  < $NewArea->MinLongitude)
+            $NewArea->MinLongitude  = $PointList[$i]->Longitude ;
         }
       } else {
 
@@ -729,4 +766,165 @@ function AddArea($Temp) {
       $AirspaceArea[$NumberOfAirspaceAreas-1]= $NewArea ;
     }
 }
+
+
+
+function AddAirspaceCircle($Temp, $CenterX, $CenterY, $Radius) { // AIRSPACE_AREA $Temp
+  global $bFillMode,$NumberOfAirspaceCircles,$AirspaceCircle;
+  
+  $NewCircle=new  AIRSPACE_CIRCLE();
+
+  if(!$bFillMode) {
+      $NumberOfAirspaceCircles++;
+  } else {
+      $NumberOfAirspaceCircles++;
+
+      $NewCircle->Name 		= $Temp->Name;
+      $NewCircle->Latitude 	= $CenterY;
+      $NewCircle->Longitude = $CenterX;
+      $NewCircle->Radius 	= $Radius;
+      $NewCircle->Type 		= $Temp->Type;
+      $NewCircle->Top->Altitude  = $Temp->Top->Altitude ;
+      $NewCircle->Top->FL   	= $Temp->Top->FL;
+      $NewCircle->Top->Base  = $Temp->Top->Base;
+      $NewCircle->Base->Altitude  = $Temp->Base->Altitude;
+      $NewCircle->Base->FL   = $Temp->Base->FL;
+      $NewCircle->Base->Base = $Temp->Base->Base;
+      $NewCircle->Ack->AcknowledgedToday = false;
+      $NewCircle->Ack->AcknowledgementTime = 0;
+      $NewCircle->_NewWarnAckNoBrush = false;
+	  
+	  $AirspaceCircle[$NumberOfAirspaceCircles-1]= $NewCircle ;
+    }
+}
+
+
+function CalculateArc($Text) {
+/*
+  double StartLat, StartLon;
+  double EndLat, EndLon;
+  double StartBearing;
+  double EndBearing;
+  double Radius;
+  TCHAR *Comma = NULL;
+*/
+	global $TempPoint,$CenterY, $CenterX,$Rotation ,$bFillMode;
+	
+	$parts=split(",",substr($Text,3) );
+	if ( count($parts)==1 ) return;
+	
+	list ($res, $StartLon , $StartLat) = ReadCoords( $parts[0] );
+ //	if ($res) break;
+ 	
+//  Comma = _tcschr(Text,',');
+//  if(!Comma)
+//    return;
+
+  list ($res, $EndLon  , $EndLat) = ReadCoords( $parts[1]  );
+//   ReadCoords(&Comma[1],&EndLon , &EndLat);
+
+  list($Radius, $StartBearing)	= DistanceBearing($CenterY, $CenterX, $StartLat, $StartLon, 1,1);
+  list($tmp1 ,  $EndBearing)	= DistanceBearing($CenterY, $CenterX, $EndLat, $EndLon,0,1);
+  
+  $TempPoint->Latitude  = $StartLat;
+  $TempPoint->Longitude = $StartLon;
+  
+  $TempArea->NumPoints=AddPoint($TempPoint, $TempArea->NumPoints);
+
+  while(abs($EndBearing-$StartBearing) > 7.5) {
+	  $StartBearing += $Rotation *5 ;
+
+	  if($StartBearing > 360)
+		  $StartBearing -= 360;
+	  if($StartBearing < 0)
+		  $StartBearing += 360;
+
+	  if ($bFillMode)	// Trig calcs not needed on first pass
+	  {
+         list($TempPoint->Latitude,$TempPoint->Longitude)= FindLatitudeLongitude($CenterY, $CenterX, $StartBearing, $Radius, 1,1 );
+	  }
+	  
+	  $TempArea->NumPoints=  AddPoint($TempPoint, $TempArea->NumPoints);
+  }
+  $TempPoint->Latitude  = $EndLat;
+  $TempPoint->Longitude = $EndLon;
+  $TempArea->NumPoints=AddPoint($TempPoint, $TempArea->NumPoints);
+  
+}
+
+function FindLatitudeLongitude($Lat, $Lon, $Bearing, $Distance ,$calc_lat_out , $calc_lon_out) {
+
+  $Lat *= DEG_TO_RAD;
+  $Lon *= DEG_TO_RAD;
+  $Bearing *= DEG_TO_RAD;
+  $Distance = $Distance/6371000;
+
+  $sinDistance = sin($Distance);
+  $cosLat = cos($Lat);
+
+  if ($calc_lat_out) {
+    $result = asin(sin($Lat)*cos($Distance)+$cosLat*$sinDistance*cos($Bearing));
+    $result *= RAD_TO_DEG;
+    $lat_out = $result;
+  }
+  
+  if ($calc_lon_out) {
+    if($cosLat==0)
+      $result = $Lon;
+    else {
+      $result = $Lon+asin(sin($Bearing)*$sinDistance/$cosLat);
+      $result = fmod(($result+M_PI), M_2PI );
+      $result = $result - M_PI;
+    }
+    $result *= RAD_TO_DEG;
+    $lon_out = $result;
+  }
+  
+  return array($lat_out, $lon_out );
+}
+
+function DistanceBearing($lat1, $lon1, $lat2, $lon2 ,$calcDistance , $calcBearing ) {
+
+  $lat1 *= DEG_TO_RAD;
+  $lat2 *= DEG_TO_RAD;
+  $lon1 *= DEG_TO_RAD;
+  $lon2 *= DEG_TO_RAD;
+
+  $clat1 = cos($lat1);
+  $clat2 = cos($lat2);
+  $dlat  = $lat2-$lat1;
+  $dlon  = $lon2-$lon1;
+
+  if ($calcDistance) {
+    $s1 = sin($dlat/2);
+    $s2 = sin($dlon/2);
+    $a= max(0.0,min(1.0,$s1*$s1+$clat1*$clat2*$s2*$s2));
+    $c= 2.0*atan2(sqrt($a),sqrt(1.0-$a));
+    $Distance = 6371000.0*$c;
+  }
+  
+  if ($calcBearing) {
+    $slat1 = sin($lat1);
+    $slat2 = sin($lat2);
+    $y = sin($dlon)*$clat2;
+    $x = $clat1*$slat2-$slat1*$clat2*cos($dlon);
+
+    if (abs($x)>0.00000001 && abs($y)>0.00000001){
+      $theta = atan2($y,$x)*RAD_TO_DEG;
+    } else {
+      $theta = 0;
+    }
+
+    while ($theta>360.0) {
+      $theta-= 360.0;
+    }
+    while ($theta<0.0) {
+      $theta+= 360.0;
+    }
+    $Bearing = $theta;
+  }
+
+  return array($Distance, $Bearing);
+}
+
 ?>
