@@ -69,9 +69,14 @@ class gpsPoint {
       return $lon;
    }
 
-	function getAlt() {
-	  if ($this->gpsAlt >0 ) return $this->gpsAlt+0;
-	  else return $this->varioAlt+0;
+	function getAlt($varioPrefered=0) {
+	  if ($varioPrefered) {
+		  if ($this->varioAlt>0 ) return $this->varioAlt+0;
+		  else return $this->gpsAlt+0;
+	  } else {
+		  if ($this->gpsAlt >0 ) return $this->gpsAlt+0;
+		  else return $this->varioAlt+0;
+	  }
 	}
 
 	function getTime() {
