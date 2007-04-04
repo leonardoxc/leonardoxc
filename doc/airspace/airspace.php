@@ -10,11 +10,18 @@ function RangeAirspaceCircle($longitude,$latitude,$i) {
 
 function InsideAirspaceCircle($longitude,$latitude,$i) {
   global $AirspaceCircle;
+/*  if ( $AirspaceCircle[$i]->Name=='EDR138:CONT') { 
+$dbg=1;
+		// echo " $longitude,$latitude <BR>";
+// circle i=$i, EDR138:CONT <BR>'; 
+		// print_r($AirspaceCircle[$i]);
+//		exit; 
+	}*/
   if (($latitude  > $AirspaceCircle[$i]->bounds->miny) &&
       ($latitude  < $AirspaceCircle[$i]->bounds->maxy) &&
       ($longitude > $AirspaceCircle[$i]->bounds->minx) &&
       ($longitude < $AirspaceCircle[$i]->bounds->maxx)) {
-
+		// if ($dbg) echo "got inside circle check<BR>";
     if (RangeAirspaceCircle($longitude, $latitude, $i)<0) {
       return 1;
     }
@@ -23,13 +30,13 @@ function InsideAirspaceCircle($longitude,$latitude,$i) {
 }
 
 
-function FindAirspaceCircle($Longitude,$Latitude) {
+function FindAirspaceCircle($Longitude,$Latitude,$alt) {
   global $AirspaceCircle,$NumberOfAirspaceCircles;
 
   if($NumberOfAirspaceCircles == 0) return -1;
 		
   for($i=0;$i<$NumberOfAirspaceCircles;$i++) {
-    if(CheckAirspaceAltitude($AirspaceCircle[$i]->Base->Altitude,$AirspaceCircle[$i]->Top->Altitude)) {
+    if(CheckAirspaceAltitude($AirspaceCircle[$i]->Base->Altitude,$AirspaceCircle[$i]->Top->Altitude,$alt)) {
 		if (InsideAirspaceCircle($Longitude,$Latitude,$i)) {
 		  return $i;
 		}
@@ -39,46 +46,11 @@ function FindAirspaceCircle($Longitude,$Latitude) {
 }
 
 
-function CheckAirspaceAltitude($Base, $Top) {
-/*
-  double alt;
-  if (GPS_INFO->BaroAltitudeAvailable) {
-    alt = GPS_INFO->BaroAltitude;
-  } else {
-    alt = GPS_INFO->Altitude;
-  }
-
-  switch (AltitudeMode)
-    {
-    case ALLON : return TRUE;
-		
-    case CLIP : 
-      if(Base < ClipAltitude)
-	return TRUE;
-      else
-	return FALSE;
-
-    case AUTO:
-      if( ( alt > (Base - AltWarningMargin) ) 
-	  && ( alt < (Top + AltWarningMargin) ))
-	return TRUE;
-      else
-	return FALSE;
-
-    case ALLBELOW:
-      if(  (Base - AltWarningMargin) < alt )
-	return  TRUE;
-      else
-	return FALSE;
-    case INSIDE:
-      if( ( alt >= (Base) ) && ( alt < (Top) ))
-	return TRUE;
-      else
-	return FALSE;
-    }
-  return TRUE;
-*/
-return 1;
+function CheckAirspaceAltitude($Base, $Top,$alt) {
+	// echo "# $Base, $Top, alt:$alt <BR>";
+	// return 1;
+	if (  $alt >= $Base && $alt<$Top) return 1;
+	else return 0;
 }
 
 ///////////////////////////////////////////////////
@@ -109,19 +81,21 @@ function isLeft( $P0, $P1, $P2 ) { // AIRSPACE_POINT P0
 //      Input:   P = a point,
 //               V[] = vertex points of a polygon V[n+1] with V[n]=V[0]
 //      Return:  wn = the winding number (=0 only if P is outside V[])
-function wn_PnPoly( $P, $V, $n )  //   AIRSPACE_POINT P, AIRSPACE_POINT* V
+function wn_PnPoly( $P, $start, $n )  //   AIRSPACE_POINT P, AIRSPACE_POINT* V
 {
+	global $AirspacePoint;
 	$wn = 0;    // the winding number counter
 
     // loop through all edges of the polygon
     for ($i=0; $i<$n; $i++) {   // edge from V[$i] to V[$i+1]
-        if ($V[$i]->Latitude <= $P->Latitude) {         // start y <= P.Latitude
-            if ($V[$i+1]->Latitude > $P->Latitude)      // an upward crossing
-                if (isLeft( $V[$i], $V[$i+1], $P) > 0)  // P left of edge
+		$p=$i+$start;
+        if ($AirspacePoint[$p]->Latitude <= $P->Latitude) {         // start y <= P.Latitude
+            if ($AirspacePoint[$p+1]->Latitude > $P->Latitude)      // an upward crossing
+                if (isLeft( $AirspacePoint[$p], $AirspacePoint[$p+1], $P) > 0)  // P left of edge
                     $wn++;            // have a valid up intersect
         } else {                       // start y > P->Latitude (no test needed)
-            if ($V[$i+1]->Latitude <= $P->Latitude)     // a downward crossing
-                if (isLeft( $V[$i], $V[$i+1], $P) < 0)  // P right of edge
+            if ($AirspacePoint[$p+1]->Latitude <= $P->Latitude)     // a downward crossing
+                if (isLeft( $AirspacePoint[$p], $AirspacePoint[$p+1], $P) < 0)  // P right of edge
                     $wn--;            // have a valid down intersect
         }
     }
@@ -145,10 +119,10 @@ function InsideAirspaceArea($longitude,$latitude,$i) {
       ($longitude < $AirspaceArea[$i]->bounds->maxx)
       ) {
 
-    CheckAirspacePoint($AirspaceArea[$i]->FirstPoint);
+    // CheckAirspacePoint($AirspaceArea[$i]->FirstPoint);
 
     // it is within, so now do detailed polygon test
-    if (wn_PnPoly($thispoint, $AirspacePoint[$AirspaceArea[$i]->FirstPoint],$AirspaceArea[$i]->NumPoints-1) != 0) {
+    if (wn_PnPoly($thispoint, $AirspaceArea[$i]->FirstPoint,$AirspaceArea[$i]->NumPoints ) != 0) {
       // we are inside the i'th airspace area
       return 1;
     }
@@ -157,12 +131,12 @@ function InsideAirspaceArea($longitude,$latitude,$i) {
 }
 
 
-function FindAirspaceArea($Longitude,$Latitude) {
+function FindAirspaceArea($Longitude,$Latitude,$alt) {
   global $NumberOfAirspaceAreas,$AirspaceArea ;
   if($NumberOfAirspaceAreas == 0)  return -1;
 
   for($i=0;$i<$NumberOfAirspaceAreas;$i++) {
-    if( CheckAirspaceAltitude($AirspaceArea[$i]->Base->Altitude, $AirspaceArea[$i]->Top->Altitude)) {
+    if( CheckAirspaceAltitude($AirspaceArea[$i]->Base->Altitude, $AirspaceArea[$i]->Top->Altitude,$alt)) {
 		if (InsideAirspaceArea($Longitude,$Latitude,$i)) {
 		  return $i;
 		}

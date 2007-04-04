@@ -35,7 +35,7 @@ function StaticPressureToAltitude($ps) {
   return $altitude;
 }
 
-$bFillMode = false;
+$bFillMode = true;
 $bWaiting = true;
 
 $TempString=array();
@@ -197,7 +197,12 @@ $fp = fopen(dirname(__FILE__)."/$openairFilename","r");
 if ($fp ) {
 	ReadAirspace($fp);
 }
+require_once dirname(__FILE__).'/check.php';
 
+// $igcFilename='73Phaki1.igc';
+$igcFilename='73Phaki2.igc';
+// $igcFilename='2006_06_03 Profitis.IGC';
+checkFile(dirname(__FILE__)."/$igcFilename");
 
 function ReadAirspace($fp) {
 
@@ -210,9 +215,14 @@ function ReadAirspace($fp) {
   if ( RestoreAirspace()) {
     echo "Read airspace from dump<br>";
 	global  $AirspaceArea,$AirspaceCircle,$AirspacePoint;
-print_r( $AirspaceArea);
+	global 	$NumberOfAirspaceAreas,	$NumberOfAirspacePoints,	$NumberOfAirspaceCircles;
+//print_r( $AirspaceArea);
 //print_r( $AirspaceCircle);
-// print_r($AirspacePoint);
+//print_r($AirspacePoint);
+	$NumberOfAirspaceAreas=count($AirspaceArea);
+	$NumberOfAirspacePoints=count($AirspacePoint);
+	$NumberOfAirspaceCircles=count($AirspaceCircle);
+	//exit;
 	return 1;
   }
 
@@ -238,7 +248,8 @@ print_r( $AirspaceArea);
   $Rotation = 1;
 
   DBG("Loading Airspace File...");
-  $TempArea->FirstPoint = $NumberOfAirspacePoints;	// JG 10-Nov-2005
+  //  $TempArea->FirstPoint = $NumberOfAirspacePoints;	// JG 10-Nov-2005
+  $TempArea->FirstPoint = 0;	
 
   $bFillMode = true;
   $bWaiting = true;
@@ -259,9 +270,9 @@ print_r( $AirspaceArea);
     AddArea($TempArea);
   }
 
-  $NumberOfAirspacePointsPass[0]	= $NumberOfAirspacePoints ;
-  $NumberOfAirspaceAreasPass[0] 	= $NumberOfAirspaceAreas ;
-  $NumberOfAirspaceCirclesPass[0]	= $NumberOfAirspaceCircles ;
+  //$NumberOfAirspacePointsPass[0]	= $NumberOfAirspacePoints ;
+//  $NumberOfAirspaceAreasPass[0] 	= $NumberOfAirspaceAreas ;
+//  $NumberOfAirspaceCirclesPass[0]	= $NumberOfAirspaceCircles ;
 
 
   FindAirspaceAreaBounds();
@@ -367,8 +378,8 @@ function ParseLine($nLineType)
 			DBG( sprintf("Parse Error2 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
 			return 0;
 		}
-  		$TempArea->NumPoints=AddPoint($TempPoint,$TempArea->NumPoints);
-		// TempArea.NumPoints++;
+  		AddPoint($TempPoint);
+		$TempArea->NumPoints++;
 		break;
 
 	case k_nLtDB:
@@ -595,18 +606,12 @@ function ReadCoords($Text) {
 
 }
 
-function AddPoint($Temp, $AeraPointCount) {
-  global $NumberOfAirspacePoints,$bFillMode,$AirspacePoint;
-  if($bFillMode){
-		CheckAirspacePoint($NumberOfAirspacePoints);
-		$AirspacePoint[$NumberOfAirspacePoints]->Latitude  = $Temp->Latitude;
-		$AirspacePoint[$NumberOfAirspacePoints]->Longitude = $Temp->Longitude;
-		$AeraPointCount++;
-  }
-
-  
-  $NumberOfAirspacePoints++;
-  return $AeraPointCount;
+function AddPoint($Temp) {
+	global $NumberOfAirspacePoints,$AirspacePoint;
+	// CheckAirspacePoint($NumberOfAirspacePoints);
+	$AirspacePoint[$NumberOfAirspacePoints+0]->Latitude  = $Temp->Latitude;
+	$AirspacePoint[$NumberOfAirspacePoints+0]->Longitude = $Temp->Longitude;
+ 	$NumberOfAirspacePoints++;
 }
 
 
@@ -725,33 +730,26 @@ preg_match("/(\d*)([ =]*)([A-Z]*)([ =]*)(\d*)([ =]*)([A-Z]*)([ =]*)/",$Text,$par
 
 
 function AddArea($Temp) {
-  global $bFillMode,$NumberOfAirspaceAreas,$AirspaceArea,$AirspacePoint;
-
-  $NewArea = new AIRSPACE_AREA ();
- 
-
-  if(!$bFillMode) {
-      $NumberOfAirspaceAreas++;
-  } else {
-
-      $NumberOfAirspaceAreas++;
-
-      $NewArea->Name				= $Temp->Name;
-      $NewArea->Type 				= $Temp->Type;
-      $NewArea->Base->Altitude		= $Temp->Base->Altitude ;
-      $NewArea->Base->FL			= $Temp->Base->FL  ;
-      $NewArea->Base->Base   		= $Temp->Base->Base;
-      $NewArea->NumPoints 			= $Temp->NumPoints;
-      $NewArea->Top->Altitude  		= $Temp->Top->Altitude ;
-      $NewArea->Top->FL 			= $Temp->Top->FL;
-      $NewArea->Top->Base   		= $Temp->Top->Base;
-      $NewArea->FirstPoint 			= $Temp->FirstPoint;
-//      $NewArea->Ack->AcknowledgedToday = false;
-//      $NewArea->Ack->AcknowledgementTime = 0;
-//      $NewArea->_NewWarnAckNoBrush = false;
-
-
-      $Temp->FirstPoint = $Temp->FirstPoint + $Temp->NumPoints ;
+	global $NumberOfAirspaceAreas,$AirspaceArea,$AirspacePoint;
+	$NewArea = new AIRSPACE_AREA ();
+	$NumberOfAirspaceAreas++;
+	
+	$NewArea->Name				= $Temp->Name;
+	$NewArea->Type 				= $Temp->Type;
+	$NewArea->Base->Altitude	= $Temp->Base->Altitude ;
+	$NewArea->Base->FL			= $Temp->Base->FL  ;
+	$NewArea->Base->Base   		= $Temp->Base->Base;
+	$NewArea->NumPoints 		= $Temp->NumPoints;
+	$NewArea->Top->Altitude  	= $Temp->Top->Altitude ;
+	$NewArea->Top->FL 			= $Temp->Top->FL;
+	$NewArea->Top->Base   		= $Temp->Top->Base;
+	$NewArea->FirstPoint 		= $Temp->FirstPoint;
+	//      $NewArea->Ack->AcknowledgedToday = false;
+	//      $NewArea->Ack->AcknowledgementTime = 0;
+	//      $NewArea->_NewWarnAckNoBrush = false;
+	
+	
+	$Temp->FirstPoint = $Temp->FirstPoint + $Temp->NumPoints ;
 
 /*
       if ($Temp->NumPoints > 0) {
@@ -787,65 +785,43 @@ function AddArea($Temp) {
 
       }
 */
-      $AirspaceArea[$NumberOfAirspaceAreas-1]= $NewArea ;
-    }
+	$AirspaceArea[$NumberOfAirspaceAreas-1]= $NewArea ;
+
 }
 
 
 
 function AddAirspaceCircle($Temp, $CenterX, $CenterY, $Radius) { // AIRSPACE_AREA $Temp
-  global $bFillMode,$NumberOfAirspaceCircles,$AirspaceCircle;
-  
-  $NewCircle=new  AIRSPACE_CIRCLE();
-
-  if(!$bFillMode) {
-      $NumberOfAirspaceCircles++;
-  } else {
-      $NumberOfAirspaceCircles++;
-
-      $NewCircle->Name 		= $Temp->Name;
-      $NewCircle->Latitude 	= $CenterY;
-      $NewCircle->Longitude = $CenterX;
-      $NewCircle->Radius 	= $Radius;
-      $NewCircle->Type 		= $Temp->Type;
-      $NewCircle->Top->Altitude  = $Temp->Top->Altitude ;
-      $NewCircle->Top->FL   	= $Temp->Top->FL;
-      $NewCircle->Top->Base  = $Temp->Top->Base;
-      $NewCircle->Base->Altitude  = $Temp->Base->Altitude;
-      $NewCircle->Base->FL   = $Temp->Base->FL;
-      $NewCircle->Base->Base = $Temp->Base->Base;
-//      $NewCircle->Ack->AcknowledgedToday = false;
-//      $NewCircle->Ack->AcknowledgementTime = 0;
-//      $NewCircle->_NewWarnAckNoBrush = false;
-	  
-	  $AirspaceCircle[$NumberOfAirspaceCircles-1]= $NewCircle ;
-    }
+	global $NumberOfAirspaceCircles,$AirspaceCircle;
+	
+	$NewCircle=new  AIRSPACE_CIRCLE();
+	$NewCircle->Name 		= $Temp->Name;
+	$NewCircle->Latitude 	= $CenterY;
+	$NewCircle->Longitude	= $CenterX;
+	$NewCircle->Radius 		= $Radius;
+	$NewCircle->Type 		= $Temp->Type;
+	$NewCircle->Top->Altitude  = $Temp->Top->Altitude ;
+	$NewCircle->Top->FL   	= $Temp->Top->FL;
+	$NewCircle->Top->Base	= $Temp->Top->Base;
+	$NewCircle->Base->Altitude  = $Temp->Base->Altitude;
+	$NewCircle->Base->FL	= $Temp->Base->FL;
+	$NewCircle->Base->Base	= $Temp->Base->Base;
+	//      $NewCircle->Ack->AcknowledgedToday = false;
+	//      $NewCircle->Ack->AcknowledgementTime = 0;
+	//      $NewCircle->_NewWarnAckNoBrush = false;
+	$AirspaceCircle[$NumberOfAirspaceCircles]= $NewCircle ;
+	$NumberOfAirspaceCircles++;
 }
 
 
 function CalculateArc($Text) {
-/*
-  double StartLat, StartLon;
-  double EndLat, EndLon;
-  double StartBearing;
-  double EndBearing;
-  double Radius;
-  TCHAR *Comma = NULL;
-*/
-	global $TempPoint,$CenterY, $CenterX,$Rotation ,$bFillMode;
-	
-	$parts=split(",",substr($Text,3) );
-	if ( count($parts)==1 ) return;
-	
-	list ($res, $StartLon , $StartLat) = ReadCoords( $parts[0] );
- //	if ($res) break;
- 	
-//  Comma = _tcschr(Text,',');
-//  if(!Comma)
-//    return;
+  global $TempArea,$TempPoint,$CenterY, $CenterX,$Rotation ;
 
+  $parts=split(",",substr($Text,3) );
+  if ( count($parts)==1 ) { echo "wrong format in CalculateArc<BR>"; return; }
+	
+  list ($res, $StartLon , $StartLat) = ReadCoords( $parts[0] );
   list ($res, $EndLon  , $EndLat) = ReadCoords( $parts[1]  );
-//   ReadCoords(&Comma[1],&EndLon , &EndLat);
 
   list($Radius, $StartBearing)	= DistanceBearing($CenterY, $CenterX, $StartLat, $StartLon, 1,1);
   list($tmp1 ,  $EndBearing)	= DistanceBearing($CenterY, $CenterX, $EndLat, $EndLon,0,1);
@@ -853,7 +829,8 @@ function CalculateArc($Text) {
   $TempPoint->Latitude  = $StartLat;
   $TempPoint->Longitude = $StartLon;
   
-  $TempArea->NumPoints=AddPoint($TempPoint, $TempArea->NumPoints);
+  AddPoint($TempPoint);
+  $TempArea->NumPoints++;
 
   while(abs($EndBearing-$StartBearing) > 7.5) {
 	  $StartBearing += $Rotation *5 ;
@@ -862,17 +839,16 @@ function CalculateArc($Text) {
 		  $StartBearing -= 360;
 	  if($StartBearing < 0)
 		  $StartBearing += 360;
-
-	  if ($bFillMode)	// Trig calcs not needed on first pass
-	  {
-         list($TempPoint->Latitude,$TempPoint->Longitude)= FindLatitudeLongitude($CenterY, $CenterX, $StartBearing, $Radius, 1,1 );
-	  }
+	
+      list($TempPoint->Latitude,$TempPoint->Longitude)= FindLatitudeLongitude($CenterY, $CenterX, $StartBearing, $Radius, 1,1 );
 	  
-	  $TempArea->NumPoints=  AddPoint($TempPoint, $TempArea->NumPoints);
+	  AddPoint($TempPoint);
+	  $TempArea->NumPoints++;
   }
   $TempPoint->Latitude  = $EndLat;
-  $TempPoint->Longitude = $EndLon;
-  $TempArea->NumPoints=AddPoint($TempPoint, $TempArea->NumPoints);
+  $TempPoint->Longitude = $EndLon;  
+  AddPoint($TempPoint);
+  $TempArea->NumPoints++;
   
 }
 
@@ -988,34 +964,21 @@ function FindAirspaceAreaBounds() {
   global $AirspaceArea,$AirspacePoint,$NumberOfAirspaceAreas;
 
   for($i=0; $i<$NumberOfAirspaceAreas; $i++) {
-    $first = true;
-
+	$AirspaceArea[$i]->bounds->minx = 1000;
+	$AirspaceArea[$i]->bounds->maxx = -1000;
+	$AirspaceArea[$i]->bounds->miny = 1000;
+	$AirspaceArea[$i]->bounds->maxy = -1000;
     for( $j= $AirspaceArea[$i]->FirstPoint; $j< $AirspaceArea[$i]->FirstPoint + $AirspaceArea[$i]->NumPoints; $j++) {
-
-      if ($first) {
-        CheckAirspacePoint($j);
-
-        $AirspaceArea[$i]->bounds->minx = $AirspacePoint[$j]->Longitude;
-        $AirspaceArea[$i]->bounds->maxx = $AirspacePoint[$j]->Longitude;
-        $AirspaceArea[$i]->bounds->miny = $AirspacePoint[$j]->Latitude;
-        $AirspaceArea[$i]->bounds->maxy = $AirspacePoint[$j]->Latitude;
-        $first = false;
-      } else {
-        $AirspaceArea[$i]->bounds->minx = min($AirspacePoint[$j]->Longitude,
-                                          $AirspaceArea[$i]->bounds->minx);
-        $AirspaceArea[$i]->bounds->maxx = max($AirspacePoint[$j]->Longitude,
-                                          $AirspaceArea[$i]->bounds->maxx);
-        $AirspaceArea[$i]->bounds->miny = min($AirspacePoint[$j]->Latitude,
-                                          $AirspaceArea[$i]->bounds->miny);
-        $AirspaceArea[$i]->bounds->maxy = max($AirspacePoint[$j]->Latitude,
-                                          $AirspaceArea[$i]->bounds->maxy);
-      }
+        $AirspaceArea[$i]->bounds->minx = min($AirspacePoint[$j]->Longitude	,$AirspaceArea[$i]->bounds->minx);
+        $AirspaceArea[$i]->bounds->maxx = max($AirspacePoint[$j]->Longitude	,$AirspaceArea[$i]->bounds->maxx);
+        $AirspaceArea[$i]->bounds->miny = min($AirspacePoint[$j]->Latitude	,$AirspaceArea[$i]->bounds->miny);
+        $AirspaceArea[$i]->bounds->maxy = max($AirspacePoint[$j]->Latitude	,$AirspaceArea[$i]->bounds->maxy);
     }
-    $AirspaceArea[$i]->WarningLevel = 0; // clear warnings to initialise
+    // $AirspaceArea[$i]->WarningLevel = 0; // clear warnings to initialise
   }
 }
 
-function   StoreAirspace() {
+function  StoreAirspace() {
 	global $AirspacePoint,$AirspaceArea,$AirspaceCircle;
 	$line1=serialize($AirspacePoint);
 	$line2=serialize($AirspaceArea);
