@@ -29,34 +29,37 @@ function checkFile($filename) {
 	// !( A1<X0 || A0>X1 ) &&  !( B1<Y0 || B0>Y1 )
 	// X,A -> lon
 	// Y,B -> lat 
-	// X0 -> $min_lon A0-> $area->bounds->minx
-	// X1 -> $max_lon A1-> $area->bounds->maxx
-	// Y0 -> $min_lat B0-> $area->bounds->miny
-	// Y1 -> $max_lat B1-> $area->bounds->maxy
+	// X0 -> $min_lon A0-> $area->minx
+	// X1 -> $max_lon A1-> $area->maxx
+	// Y0 -> $min_lat B0-> $area->miny
+	// Y1 -> $max_lat B1-> $area->maxy
 	
-	// !( $area->bounds->maxx<$min_lon || $area->bounds->minx>$max_lon ) &&  !( $area->bounds->maxx<$min_lat || $area->bounds->miny>$max_lat )
+	// !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&  !( $area->maxx<$min_lat || $area->miny>$max_lat )
 
-	global $AirspaceArea,$AirspaceCircle;
+	global $AirspaceArea,$NumberOfAirspaceAreas;
 
 	foreach($AirspaceArea as $i=>$area) {
-		if ( !( $area->bounds->maxx<$min_lon || $area->bounds->minx>$max_lon ) &&
-			 !( $area->bounds->maxy<$min_lat || $area->bounds->miny>$max_lat )
+		if ( !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&
+			 !( $area->maxy<$min_lat || $area->miny>$max_lat )
 		) {
-			echo "Found area [$i] => ".$area->Name;
-			print_r($area);
-
-		}
-	}
-	foreach($AirspaceCircle as $i=>$area) {
-		if ( !( $area->bounds->maxx<$min_lon || $area->bounds->minx>$max_lon ) &&  
-			 !( $area->bounds->maxy<$min_lat || $area->bounds->miny>$max_lat )
-		) {
-			echo "Found  circle [$i] => ".$area->Name."<BR>";
-
+			if ($area->Shape==1) $shape="Area  "; else $shape="Circle";
+			echo "Found $shape [$i] => ".$area->Name.'<BR>';
+			// print_r($area);
+			if ($area->Shape==1) {
+				$area->Points[]=$area->Points[0];
+				// $area->NumPoints=count($area->Points);
+			}
+			$selAirspaceArea[]=$area;
 		}
 	}
 
-return;
+	$AirspaceArea=$selAirspaceArea;
+	$NumberOfAirspaceAreas=count($AirspaceArea);
+	echo '<HR>';
+//print_r($AirspaceArea);
+	echo '<HR>';
+	echo '<HR>';
+	$i=0;
 	foreach($lines as $line) {
 		$line=trim($line);
 		if  (strlen($line)==0) continue;				
@@ -65,19 +68,22 @@ return;
 				$thisPoint=new gpsPoint($line,0);
 				$alt=$thisPoint->getAlt(1);	// prefer vario alt
 
-				$insideCircle=-1;
-				$insideArea=-1;
-				$insideCircle=FindAirspaceCircle(-$thisPoint->lon,$thisPoint->lat,$alt);
-				$insideArea=FindAirspaceArea(-$thisPoint->lon,$thisPoint->lat,$alt);
-				if ($insideCircle>=0 || $insideArea>=0) {
-					echo "INSIDE AIRSPACE circle: $insideCircle , area: $insideArea <BR>";
+				// $insideArea=-1;
+				$insideAreas=array();
+				$insideAreas=FindAirspaceArea(-$thisPoint->lon,$thisPoint->lat,$alt);
+				if (count($insideAreas)>0) {
+					echo "point [$i] INSIDE AIRSPACE areas: ";
+					foreach($insideAreas as $areaInfo) echo $AirspaceArea[$areaInfo[0]]->Name." areaID[$areaInfo[0]] disInside[$areaInfo[1]] altInside[$areaInfo[2]]  ";
+					echo "<BR>";
 				} else { 
-
 					// echo "OK<BR>";
 				}
 				$i++;
 		}
 	}		
+$m1=memory_get_usage();
+echo "ReadAltitude: mem usage: $m1 <BR>"; 
+
 
 }
 
