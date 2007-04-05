@@ -177,7 +177,7 @@ function DBG($str){
 //$openairFilename="OPENAIRD.TXT";
 
 // maxpunkte
-$openairFilename='Air_Europe 2006.txt';
+ $openairFilename='Air_Europe 2006.txt';
 
 $fp = fopen(dirname(__FILE__)."/$openairFilename","r");
 if ($fp ) {
@@ -991,8 +991,8 @@ function  StoreAirspace() {
 echo count($AirspaceArea);
 echo "#";
 echo strlen($AirspaceArea);
-echo "#";
-echo memory_get_usage() . "\n"; 
+//echo "#";
+//echo memory_get_usage() . "\n"; 
 // print_r($AirspaceArea);
 
 	$line1=serialize($AirspaceArea);

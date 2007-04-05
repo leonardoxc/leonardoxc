@@ -56,9 +56,11 @@ function checkFile($filename) {
 	$AirspaceArea=$selAirspaceArea;
 	$NumberOfAirspaceAreas=count($AirspaceArea);
 	echo '<HR>';
-//print_r($AirspaceArea);
+// print_r($AirspaceArea);
 	echo '<HR>';
 	echo '<HR>';
+	
+	
 	$i=0;
 	foreach($lines as $line) {
 		$line=trim($line);
@@ -81,8 +83,8 @@ function checkFile($filename) {
 				$i++;
 		}
 	}		
-$m1=memory_get_usage();
-echo "ReadAltitude: mem usage: $m1 <BR>"; 
+//$m1=memory_get_usage();
+//echo "ReadAltitude: mem usage: $m1 <BR>"; 
 
 
 }

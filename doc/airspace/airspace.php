@@ -173,7 +173,7 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3, $lon4, $lat4) 
   // units
   $XTD *= (RAD_TO_DEG * 111194.9267);
  
-   return $XTD;
+   return abs($XTD);
 }
 
 function FindAirspaceArea($Longitude,$Latitude,$alt) {
