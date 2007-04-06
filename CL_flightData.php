@@ -1698,8 +1698,7 @@ $kml_file_contents=
 
 		require_once dirname(__FILE__).'/FN_airspace.php';
 		set_time_limit (140);	
-
-		LoadAirspace();
+		
 		$resStr=checkAirspace($this->getIGCFilename());
 		DEBUG("checkAirspace",1,"Airspace check:");
 		if (!$resStr) {

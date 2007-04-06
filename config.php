@@ -199,7 +199,8 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $serversTable	=  $CONF_tables_prefix."_servers";
  $logTable		=  $CONF_tables_prefix."_log";
  $statsTable		=  $CONF_tables_prefix."_stats";
-
+ $airspaceTable		=  $CONF_tables_prefix."_airspace";
+ 
  $areasTable	=  $CONF_tables_prefix."_areas";
  $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";
  

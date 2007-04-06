@@ -285,9 +285,10 @@ fieldset.legendBox {
 					if ($flight->airspaceCheck==-1) { // problem
 						echo "<strong>PROBLEM!</strong><BR>";
 						$checkLines=explode("\n",$flight->airspaceCheckMsg);
+						$area_ids=explode(",",$checkLines[0]);
 						for($i=1;$i<count($checkLines); $i++) {
 							echo $checkLines[$i];
-							echo " [ <a href=''>Update comment</a> ]<br>";
+							echo " [ <a href='?update_airspace_comment&acid=".$area_ids[$i-1]."'>Update comment</a> ]<br>";
 						}
 						// echo "DETAILS:  <BR>";
 					} else {// clear

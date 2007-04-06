@@ -21,7 +21,39 @@ function  StoreAirspace() {
 	fclose($handle);
 }
 
-function ReadAirspace($fp) {
+function putAirspaceToDB() {
+	global $db,$AirspaceArea,$airspaceTable;
+	
+	if (count($AirspaceArea)==0) return 1;	
+
+	$query="TRUNCATE TABLE $airspaceTable ";
+	$res= $db->sql_query($query);
+	
+	for($i=0;$i<count($AirspaceArea);$i++) {
+	    //	print_r($AirspaceArea[$i]->Base);
+		$fields=" Name, Type, Shape, Comments, minx, miny, maxx, maxy , Base , Top, ";
+		$values=" '".$AirspaceArea[$i]->Name."' ,  '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$AirspaceArea[$i]->Comments."', 
+					".$AirspaceArea[$i]->minx.", ".$AirspaceArea[$i]->miny.", ".$AirspaceArea[$i]->maxx.",  ".$AirspaceArea[$i]->maxy." ,
+				 '".serialize($AirspaceArea[$i]->Base)."' ,'".serialize($AirspaceArea[$i]->Top)."' , ";
+		if ($AirspaceArea[$i]->Shape==1) { //area
+			$fields.=" Points";
+			$values.=" '".serialize($AirspaceArea[$i]->Points)."' ";
+		} else { // circle
+			$fields.="Radius, Latitude, Longitude ";
+			$values.=$AirspaceArea[$i]->Radius." , ".$AirspaceArea[$i]->Latitude." , ".$AirspaceArea[$i]->Longitude ;
+		}
+		$query="INSERT into $airspaceTable ($fields) VALUES ($values) ";
+		$res= $db->sql_query($query);
+			
+		if(!$res) {
+			echo "Error in inserting airspace to DB: $query <BR>";
+			return 0;
+		}
+	}
+	return 1;
+}
+
+function ReadAirspace($openairFilename) {
 
   global $Rotation ,$CenterX , $CenterY ,$Radius, $LineCount;
   global $NumberOfAirspaceAreas;
@@ -29,6 +61,8 @@ function ReadAirspace($fp) {
   global $TempArea , $TempPoint, $TempString;
   
   DEBUG("checkAirspace",128,"ReadAirspace");
+
+
   $NumberOfAirspaceAreas=0;
 
 
@@ -45,6 +79,12 @@ function ReadAirspace($fp) {
   DEBUG("checkAirspace",128,"Loading Airspace File...");
 
 
+  $fp = fopen($openairFilename,"r");
+  if (!$fp ) {
+  	echo "Cannot read airspace file: $openairFilename<BR>";
+	return 0;
+  }
+  
   while( ($nLineType = GetNextLine($fp, $TempString) )  >= 0 )
   {
 		// DEBUG("checkAirspace",128,"GetNextLine(outside): type: $nLineType got: $TempString");	
@@ -58,7 +98,8 @@ function ReadAirspace($fp) {
 
 
   FindAirspaceBounds();
-  StoreAirspace();
+  // StoreAirspace();
+  
 }
 
 function ParseLine($nLineType) {

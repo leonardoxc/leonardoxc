@@ -75,6 +75,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
 				<? if ($CONF_isMasterServer) { ?><li><a href="?name=<?=$module_name?>&op=servers_manage">Manage Leonardo Servers</a></li><? } ?>
+				<li><a href="?name=<?=$module_name?>&op=admin_airspace">Administer Airspace checking</a></li>
 				<li><a href="?name=<?=$module_name?>&op=admin_logs">Administer the Logs</a></li>
 				<li><a href="?name=<?=$module_name?>&op=admin_stats">Usage Statistics</a></li>
 				<li><a href="?name=<?=$module_name?>&op=admin_takeoffs">Administer the Takeoffs</a></li>

@@ -36,6 +36,7 @@ class AIRSPACE_POINT {
 }
 
 class AIRSPACE_AREA {
+  var $id;
   var $Name;
   var $Type;
   var $Shape; // 1 => area , 2=> circle
@@ -469,6 +470,9 @@ function checkAirspace($filename) {
 
 	global $AirspaceArea,$NumberOfAirspaceAreas;
 
+	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
+	$NumberOfAirspaceAreas=count($AirspaceArea);
+/*
 	foreach($AirspaceArea as $i=>$area) {
 		if ( !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&
 			 !( $area->maxy<$min_lat || $area->miny>$max_lat )
@@ -486,6 +490,9 @@ function checkAirspace($filename) {
 
 	$AirspaceArea=$selAirspaceArea;
 	$NumberOfAirspaceAreas=count($AirspaceArea);
+*/
+	
+
 	//	echo '<HR>';
 	// print_r($AirspaceArea);
 	//	echo '<HR>';
@@ -528,7 +535,7 @@ function checkAirspace($filename) {
 	$resStr1='';
 	if (count($violations)>0) {
 		foreach($violations as $i=>$violatedArea) {
-			$resStr1.="$i,";
+			$resStr1.=$AirspaceArea[$i]->id.",";
 			$resStr.="HorDist: ".floor($violatedArea['maxDistance'])."m, VertDist:".floor($violatedArea['maxAlt'])."m, ";
 			$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] COMMENT: '.$AirspaceArea[$i]->Comment."\n";
 		}
@@ -587,5 +594,49 @@ function  RestoreAirspace() {
 	return 0;
 }
 
+
+function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
+	global $AirspaceArea,$NumberOfAirspaceAreas, $db,$airspaceTable ;
+	$AirspaceArea=array();
+	
+	$query="SELECT * FROM $airspaceTable WHERE 
+				 NOT ( maxx< $min_lon OR minx>$max_lon ) AND	 NOT ( maxy< $min_lat OR miny>$max_lat ) ";		 
+	$res= $db->sql_query($query);
+		
+	if(!$res) {
+		echo "Error in gettig airspace from DB: $query <BR>";
+		return 0;
+	}
+
+	$i=0;
+	while ($row = mysql_fetch_assoc($res)){
+		if ($row['Shape']==1) $shape="Area"; else $shape="Circle";
+		DEBUG("getAirspaceFromDB",1, "Found $shape => ".$row['Name'].'<BR>');
+		$AirspaceArea[$i]->id		=$row['id'];		
+		$AirspaceArea[$i]->Name		=$row['Name'];
+		$AirspaceArea[$i]->Type		=$row['Type'];
+		$AirspaceArea[$i]->Shape	=$row['Shape'];
+		$AirspaceArea[$i]->Comments	=$row['Comments'];		
+		$AirspaceArea[$i]->minx		=$row['minx'];
+		$AirspaceArea[$i]->miny		=$row['miny'];		
+		$AirspaceArea[$i]->maxx		=$row['maxx'];
+		$AirspaceArea[$i]->maxy		=$row['maxy'];
+		
+		$AirspaceArea[$i]->Base		=unserialize($row['Base']);
+		$AirspaceArea[$i]->Top		=unserialize($row['Top']);
+		
+		if ($row['Shape']==1) { // area
+			$AirspaceArea[$i]->Points	=unserialize($row['Points']);
+			$AirspaceArea[$i]->NumPoints=count($AirspaceArea[$i]->Points);
+			$AirspaceArea[$i]->Points[]	=$AirspaceArea[$i]->Points[0];
+		} else {
+			$AirspaceArea[$i]->Radius		=$row['Radius'];		
+			$AirspaceArea[$i]->Latitude		=$row['Latitude'];
+			$AirspaceArea[$i]->maxy		=$row['Longitude'];		
+		}
+		$i++;
+	}
+	$NumberOfAirspaceAreas=count($AirspaceArea);
+}
 
 ?>
