@@ -43,6 +43,11 @@ class flight {
 	var $validationMessage="";
 	var $NACclubID=0;
 	
+	var $airspaceCheck=-1;
+	var $airspaceCheckFinal=-1;
+	var $airspaceCheckMsg="";
+	var $checkedBy="";
+
 var $timezone=0;
 
 var $DATE;
@@ -1687,6 +1692,31 @@ $kml_file_contents=
 		return 1;	
 	} // end function getFlightFromIGC()
 
+	function checkAirspace($updateFlightInDB=0) {
+		global $CONF_airspaceChecks;
+		if (!$CONF_airspaceChecks) return 1;
+
+		require_once dirname(__FILE__).'/FN_airspace.php';
+		set_time_limit (140);	
+
+		LoadAirspace();
+		$resStr=checkAirspace($this->getIGCFilename());
+		DEBUG("checkAirspace",1,"Airspace check:");
+		if (!$resStr) {
+			DEBUG("checkAirspace",1,"CLEAR");
+			$this->airspaceCheck=1;
+			if ( $this->airspaceCheckFinal==0) $this->airspaceCheckFinal=1; // only set it if undefined
+			$this->airspaceCheckMsg="";
+		} else  {
+			DEBUG("checkAirspace",1,$resStr);
+			$this->airspaceCheck=-1;
+			if ( $this->airspaceCheckFinal==0) $this->airspaceCheckFinal=-1; // only set it if undefined
+			$this->airspaceCheckMsg=$resStr;
+		}
+
+		if ( $updateFlightInDB ) $this->putFlightToDB(1);
+	}
+
 	function validate($updateFlightInDB=1) {
 		global $CONF_validation_server_url, $CONF_use_custom_validation, $DBGlvl;
 		global $baseInstallationPath,$CONF_abs_path;
@@ -1928,6 +1958,11 @@ $kml_file_contents=
 		$this->grecord=$row["grecord"];		
 		$this->validationMessage=$row["validationMessage"];	
 
+		$this->airspaceCheck=$row["airspaceCheck"]+0;
+		$this->airspaceCheckFinal=$row["airspaceCheckFinal"]+0;
+		$this->airspaceCheckMsg=$row["airspaceCheckMsg"];
+		$this->checkedBy=$row["checkedBy"];
+
 		$this->timesViewed=$row["timesViewed"];		
 		$this->dateAdded=$row["dateAdded"];		
 		$this->timezone=$row["timezone"];		
@@ -2115,6 +2150,7 @@ $kml_file_contents=
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
+		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
 		comments, glider, linkURL, timesViewed,
 		$p1
@@ -2144,6 +2180,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
+		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		$p2

@@ -54,3 +54,31 @@ ALTER TABLE `leonardo_pilots` CHANGE `sponsorID` `sponsor` VARCHAR( 255 ) NULL ;
 # 2007/03/16
 
 ALTER TABLE `leonardo_flights` ADD `autoScore` FLOAT NOT NULL DEFAULT '0' AFTER `FLIGHT_POINTS` ;
+
+
+# 2007/04/06
+
+CREATE TABLE `leonardo_airspace` (
+`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`Name` VARCHAR( 50 ) NOT NULL ,
+`Type` VARCHAR( 30 ) NOT NULL ,
+`Shape` TINYINT UNSIGNED DEFAULT '0' NOT NULL ,
+`Comments` VARCHAR( 255 ) NOT NULL ,
+`minx` FLOAT NOT NULL ,
+`miny` FLOAT NOT NULL ,
+`maxx` FLOAT NOT NULL ,
+`maxy` FLOAT NOT NULL ,
+`Base` BLOB NOT NULL ,
+`Top` BLOB NOT NULL ,
+`Points` BLOB NOT NULL ,
+`Radius` FLOAT NOT NULL ,
+`Latitude` FLOAT NOT NULL ,
+`Longitude` FLOAT NOT NULL ,
+PRIMARY KEY ( `id` ) ,
+INDEX ( `minx` , `miny` , `maxx` , `maxy` )
+) TYPE = MYISAM ;
+
+ALTER TABLE `leonardo_flights` ADD `airspaceCheck` TINYINT DEFAULT '0' NOT NULL AFTER `validationMessage` ,
+ADD `airspaceCheckFinal` TINYINT DEFAULT '0' NOT NULL AFTER `airspaceCheck` ,
+ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
+ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;

@@ -43,7 +43,7 @@ function checkFile($filename) {
 			 !( $area->maxy<$min_lat || $area->miny>$max_lat )
 		) {
 			if ($area->Shape==1) $shape="Area  "; else $shape="Circle";
-			echo "Found $shape [$i] => ".$area->Name.'<BR>';
+			DBG( "Found $shape [$i] => ".$area->Name.'<BR>');
 			// print_r($area);
 			if ($area->Shape==1) {
 				$area->Points[]=$area->Points[0];
@@ -55,10 +55,10 @@ function checkFile($filename) {
 
 	$AirspaceArea=$selAirspaceArea;
 	$NumberOfAirspaceAreas=count($AirspaceArea);
-	echo '<HR>';
-// print_r($AirspaceArea);
-	echo '<HR>';
-	echo '<HR>';
+	//	echo '<HR>';
+	// print_r($AirspaceArea);
+	//	echo '<HR>';
+	//	echo '<HR>';
 	
 	
 	$i=0;
@@ -74,19 +74,32 @@ function checkFile($filename) {
 				$insideAreas=array();
 				$insideAreas=FindAirspaceArea(-$thisPoint->lon,$thisPoint->lat,$alt);
 				if (count($insideAreas)>0) {
-					echo "point [$i] INSIDE AIRSPACE areas: ";
-					foreach($insideAreas as $areaInfo) echo $AirspaceArea[$areaInfo[0]]->Name." areaID[$areaInfo[0]] disInside[$areaInfo[1]] altInside[$areaInfo[2]]  ";
-					echo "<BR>";
+					//echo "point [$i] INSIDE AIRSPACE areas: ";
+					//foreach($insideAreas as $areaInfo) echo $AirspaceArea[$areaInfo[0]]->Name." areaID[$areaInfo[0]] disInside[$areaInfo[1]] altInside[$areaInfo[2]]  ";
+					foreach($insideAreas as $areaInfo) {
+						$areaID=$areaInfo[0];
+						$disInside=$areaInfo[1];
+						$altInside=$areaInfo[2];
+						if ( $disInside > $violations[$areaID]['maxDistance']  )  $violations[$areaID]['maxDistance'] = $disInside; 
+						if ( $altInside > $violations[$areaID]['maxAlt']  )  $violations[$areaID]['maxAlt'] = $altInside; 
+					}
+					//echo "<BR>";
 				} else { 
 					// echo "OK<BR>";
 				}
 				$i++;
 		}
 	}		
+
+	$resStr='';
+    foreach($violations as $i=>$violatedArea) {
+		$resStr.="VertDist: ".floor($violatedArea['maxDistance'])."m, HorDist:".floor($violatedArea['maxAlt'])."m, ";
+		$resStr.='Inside airspace: '. $AirspaceArea[$i]->Name. ' COMMENT: '.$AirspaceArea[$i]->Comment.'<BR>';
+	}
 //$m1=memory_get_usage();
 //echo "ReadAltitude: mem usage: $m1 <BR>"; 
 
-
+	return $resStr;
 }
 
 ?>

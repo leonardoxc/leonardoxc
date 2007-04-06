@@ -267,6 +267,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // 2- > eastern -> LastName - firstName 
  $CONF_defaultNameOrder=1; 
  
+ // USE airspace checking
+ $CONF_airspaceChecks=0; 
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

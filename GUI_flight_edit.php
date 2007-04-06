@@ -24,6 +24,11 @@
 		 $flight->grecord=$_REQUEST["grecord"]+0;
 		 $flight->validated=$_REQUEST["validated"]+0;
 
+		$flight->airspaceCheck=$_REQUEST["airspaceCheck"]+0;
+		$flight->airspaceCheckFinal=$_REQUEST["airspaceCheckFinal"]+0;
+		$flight->airspaceCheckMsg=$_REQUEST["airspaceCheckMsg"];
+		$flight->checkedBy=$_REQUEST["checkedBy"];
+
 		 $flight->comments=$_REQUEST["comments"];
 		 //echo $flight->comments."<HR><HR>";
 		 //exit;
@@ -265,7 +270,54 @@ fieldset.legendBox {
 	    </fieldset></td>
     </tr>
 	<? } ?>
+	<? if ($CONF_airspaceChecks && in_array($userID,$admin_users) ) {?>
+    <tr>
+      <td colspan="2"  valign="top">
+	    <fieldset class="legendBox legend2">
+	    <legend><? echo "Airspace Check" ?></legend>
+	  <div align="left">
+	 	  <table class=main_text width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top">
+				<?
+					// echo "#".$flight->airspaceCheck."#";
+					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
+					if ($flight->airspaceCheck==-1) { // problem
+						echo "<strong>PROBLEM!</strong><BR>";
+						$checkLines=explode("\n",$flight->airspaceCheckMsg);
+						for($i=1;$i<count($checkLines); $i++) {
+							echo $checkLines[$i];
+							echo " [ <a href=''>Update comment</a> ]<br>";
+						}
+						// echo "DETAILS:  <BR>";
+					} else {// clear
+						echo "<strong>CLEAR</strong><BR>";
+					}
 
+				?>
+				<input type="hidden" name="airspaceCheck" value="<?=$flight->airspaceCheck?>">
+				<input type="hidden" name="airspaceCheckMsg" value="<?=$flight->airspaceCheckMsg?>">
+
+				Mark flight as <select name="airspaceCheckFinal">
+				<?
+					if ($flight->airspaceCheckFinal==1) $air_sel_1="selected";
+					else if ($flight->airspaceCheckFinal==-1) $air_sel_2="selected";
+					else if ($flight->airspaceCheckFinal==0) $air_sel_3="selected";
+					echo "<option $air_sel_1 value='1'>Valid</option>\n";
+				 	echo "<option $air_sel_2 value='-1'>Invalid</option>\n";
+				  	echo "<option $air_sel_3 value='0'>Not yet processed</option>\n";
+				?>
+				</select>
+				Comment / Checked by
+				<input name="checkedBy" type="text" id="checkedBy" size="40" value="<? echo  $flight->checkedBy ?>">
+				
+				</td>
+			</tr>
+		</table>	
+	    </div>
+	    </fieldset></td>
+    </tr>
+	<? } ?>
 
     <tr>
       <td colspan="2" valign="middle">

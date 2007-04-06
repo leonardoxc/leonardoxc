@@ -76,7 +76,7 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
-	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation ;
+	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
 
 	set_time_limit (120);
 
@@ -190,6 +190,10 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		$ok=$flight->validate(0); // dont update DB
 	}
 	
+	if ($CONF_airspaceChecks) {
+		$flight->checkAirspace(0); // dont update DB
+	}
+
 	$flight->putFlightToDB(0);
 	set_time_limit (200);
 	$flight->getOLCscore();

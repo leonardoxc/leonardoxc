@@ -258,13 +258,17 @@ function delete_takeoff(id) {
   $flight->updateAll(0);
   
   if ($CONF_use_validation) {
-		if ($flight->grecord==0) $flight->validate();
+		if ($flight->grecord==0) $flight->validate(1);
 		
 		if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
 		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 		
 		$valiStr="&nbsp;<img class='listIcons' src='".$moduleRelPath."/img/$vImg' align='absmiddle' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
+  }
+
+  if ($CONF_airspaceChecks) {
+		if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
   }
 
 	if ($flight->autoScore) { // means that there is manual optimization present
@@ -486,6 +490,15 @@ if (in_array($userID,$admin_users) ) {
 	// display the trunpoints
 	//echo "<hr> ";
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
+
+	if ($flight->airspaceCheckFinal==-1) { // problem
+		$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+		$checkLines=explode("\n",$flight->airspaceCheckMsg);
+		for($i=1;$i<count($checkLines); $i++) {
+			$adminPanel.=$checkLines[$i]."<br>";
+		}
+	}
+
 	if ($CONF_show_DBG_XML) {
 		$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
 	}

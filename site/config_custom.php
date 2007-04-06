@@ -220,4 +220,6 @@
   // this will enable a calnder in flights_list to select individual days
  $CONF_use_calendar=1;
  
+ // USE airspace checking
+ $CONF_airspaceChecks=1; 
 ?>

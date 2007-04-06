@@ -1,32 +1,25 @@
 <? 
 
-require_once dirname(__FILE__)."/airspace.php";
+require_once dirname(__FILE__)."/FN_airspace.php";
 
 
-function DBG($str){
-	 echo $str."<BR>";
+function  StoreAirspace() {
+	global $AirspaceArea;
+	//echo count($AirspaceArea)."#".memory_get_usage() . "\n"; 
+	// print_r($AirspaceArea);
+
+	$line1=serialize($AirspaceArea);
+	$filename=dirname(__FILE__)."/airspace.dump";
+    if (!$handle = fopen($filename, 'w')) {
+         echo "Cannot open file ($filename)";
+         exit;
+    }
+	if (fwrite($handle, $line1."\n") === FALSE) {
+		echo "Cannot write to file ($filename)";
+		exit;
+	}    
+	fclose($handle);
 }
-
-//$openairFilename='Air_Germany.txt';
-//$openairFilename="OPENAIRD.TXT";
-
-// maxpunkte
- $openairFilename='Air_Europe 2006.txt';
-
-$fp = fopen(dirname(__FILE__)."/$openairFilename","r");
-if ($fp ) {
-	ReadAirspace($fp);
-}
-require_once dirname(__FILE__).'/check.php';
-
-// $igcFilename='73Phaki1.igc';
-// $igcFilename='73Phaki2.igc';
-$igcFilename='2006_06_03 Profitis.IGC';
-$checkRes=checkFile(dirname(__FILE__)."/$igcFilename");
-echo "Airspace check result:<BR>";
-echo $checkRes;
-
-
 
 function ReadAirspace($fp) {
 
@@ -35,18 +28,10 @@ function ReadAirspace($fp) {
   global $bWaiting ;
   global $TempArea , $TempPoint, $TempString;
   
-  DBG("ReadAirspace");
+  DEBUG("checkAirspace",128,"ReadAirspace");
   $NumberOfAirspaceAreas=0;
 
-  if ( RestoreAirspace()) {
-    echo "Read airspace from dump<br>";
-	global  $AirspaceArea,$NumberOfAirspaceAreas;
 
-	//print_r( $AirspaceArea);
-	$NumberOfAirspaceAreas=count($AirspaceArea);
-	//exit;
-	return 1;
-  }
 
   $TempString=array();
   $TempArea=new AIRSPACE_AREA();
@@ -57,14 +42,14 @@ function ReadAirspace($fp) {
   $Rotation = 1;
   $bWaiting = true;
 
-  DBG("Loading Airspace File...");
+  DEBUG("checkAirspace",128,"Loading Airspace File...");
 
 
   while( ($nLineType = GetNextLine($fp, $TempString) )  >= 0 )
   {
-		// DBG("GetNextLine(outside): type: $nLineType got: $TempString");	
+		// DEBUG("checkAirspace",128,"GetNextLine(outside): type: $nLineType got: $TempString");	
 		if ( !ParseLine($nLineType) ){
-			DBG("Error in result from ParseLine()");
+			DEBUG("checkAirspace",128,"Error in result from ParseLine()");
 			return;
 		}
   }
@@ -78,10 +63,14 @@ function ReadAirspace($fp) {
 
 function ParseLine($nLineType) {
 	global $TempString,$LineCount;
-	global $bWaiting,$k_nAreaType,$k_strAreaStart;
+	global $bWaiting;
 	global $TempPoint, $TempArea,$NumberOfAirspaceAreas;
 	global $Rotation ,$CenterX, $CenterY;
-	// DBG("ParseLine: [$nLineType] $TempString");
+	// DEBUG("checkAirspace",128,"ParseLine: [$nLineType] $TempString");
+
+	$k_strAreaStart = array("R",  "Q", "P", "A", "B", "C", "CTR","D", "GP", "W", "E", "F");
+	$k_nAreaType = array( "RESTRICT", "DANGER", "PROHIBITED", "CLASSA", "CLASSB", "CLASSC", 
+					"CTR","CLASSD", "NOGLIDER", "WAVE", "CLASSE", "CLASSF");
 
 
 	switch ($nLineType)
@@ -125,9 +114,9 @@ function ParseLine($nLineType) {
 
 	case k_nLtV:
 		// Need to set these while in count mode, or DB/DA will crash
-		// DBG("found V");
+		// DEBUG("checkAirspace",128,"found V");
 		if( StartsWith(substr($TempString,2), "X=" ) || StartsWith(substr($TempString,2), "x=") ) {
-			// DBG("will read coords");
+			// DEBUG("checkAirspace",128,"will read coords");
 			list ($res, $CenterX , $CenterY ) = ReadCoords( substr($TempString,4) );
 			if ($res) break;
 		} else if( StartsWith(substr($TempString,2),"D=-") || StartsWith(substr($TempString,2),"d=-") )	{
@@ -147,14 +136,14 @@ function ParseLine($nLineType) {
 	      break;
 		}
 
-		DBG( sprintf("Parse Error1 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
+		DEBUG("checkAirspace",128, sprintf("Parse Error1 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
 		return 0;
 
 	case k_nLtDP:
-		// DBG("will read coods");
+		// DEBUG("checkAirspace",128,"will read coods");
 		list ($res, $TempPoint->Longitude , $TempPoint->Latitude ) = ReadCoords( substr($TempString,3) );
     	if (!$res)  {
-			DBG( sprintf("Parse Error2 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
+			DEBUG("checkAirspace",128, sprintf("Parse Error2 at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $TempString) );
 			return 0;
 		}
   		AddPoint($TempPoint);
@@ -223,7 +212,7 @@ function GetNextLine($fp, &$Text) {
 				  continue;
 	
 				default:
-					DBG( sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
+					DEBUG("checkAirspace",128, sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
 					return -1;
 				  continue;
 			}
@@ -246,7 +235,7 @@ function GetNextLine($fp, &$Text) {
 					// todo DY airway segment
 					// what about 'V T=' ?
 				default:
-					DBG( sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
+					DEBUG("checkAirspace",128, sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
 					return -1;
 				  continue;
 			}
@@ -263,7 +252,7 @@ function GetNextLine($fp, &$Text) {
 		    continue;
 
 		default:		
-		  DBG( sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
+		  DEBUG("checkAirspace",128, sprintf("Parse Error at Line: %d\r\n\"%s\"\r\nLine skiped.", $LineCount, $sTmp) );
 		  return -1;
 		  continue;
 		}
@@ -280,7 +269,7 @@ function GetNextLine($fp, &$Text) {
 		}
     }
 
-  //  DBG("GetNextLine: type: $nLineType got: $Text");
+  //  DEBUG("checkAirspace",128,"GetNextLine: type: $nLineType got: $Text");
   return $nLineType;
 }
 
@@ -291,10 +280,10 @@ function StartsWith($Text, $lookFor) {
 
 function ReadCoords($Text) { 
   $Text=strtolower($Text);
-  // DBG("ReadCoords: Text=$Text");
+  // DEBUG("checkAirspace",128,"ReadCoords: Text=$Text");
   // 53:26:09 N 009:45:46 E
   if ( ! preg_match("/(\d+):(\d+):(\d+) +([ns]) +(\d+):(\d+):(\d+) +([we])/",$Text,$matches) ) {
-    DBG("ReadCoords: Not match ");
+    DEBUG("checkAirspace",128,"ReadCoords: Not match ");
 	return array(0,0,0);
   }
 
@@ -310,7 +299,7 @@ function ReadCoords($Text) {
   $X = $Xsec/3600 + $Xmin/60 + $Xdeg;
   if ($matches[8]=='w')   $X = -$X ;
 
-  // DBG("ReadCoords: Text=$Text , X=$X, Y=$Y");
+  // DEBUG("checkAirspace",128,"ReadCoords: Text=$Text , X=$X, Y=$Y");
   return array(1,$X,$Y);
 
 }
@@ -325,7 +314,7 @@ function AddPoint($Temp) {
 
 function ReadAltitude($Text,$field) {
 	global $TempArea;
-	// DBG("ReadAltitude: $Text");
+	// DEBUG("checkAirspace",128,"ReadAltitude: $Text");
 
 	$fHasUnit=0;
 	$Text=trim(strtoupper($Text));
@@ -389,7 +378,7 @@ function ReadAltitude($Text,$field) {
     $TempArea->$field->Base = abMSL;
   }
 
-	// DBG("ReadAltitude: FL=". $Alt->FL.", Alt:". $Alt->Altitude.", Base:". $Alt->Base." ");
+	// DEBUG("checkAirspace",128,"ReadAltitude: FL=". $Alt->FL.", Alt:". $Alt->Altitude.", Base:". $Alt->Base." ");
 	//  return $Alt;
 }
 
@@ -521,43 +510,6 @@ function FindAirspaceBounds() {
 	}
 
   }
-}
-
-function  StoreAirspace() {
-	global $AirspaceArea;
-
-	//echo count($AirspaceArea);
-	//echo "#";
-	//echo strlen($AirspaceArea);
-	//echo "#";
-	//echo memory_get_usage() . "\n"; 
-	// print_r($AirspaceArea);
-
-	$line1=serialize($AirspaceArea);
-
-	$filename=dirname(__FILE__)."/airspace.dump";
-    if (!$handle = fopen($filename, 'w')) {
-         echo "Cannot open file ($filename)";
-         exit;
-    }
-	if (fwrite($handle, $line1."\n") === FALSE) {
-		echo "Cannot write to file ($filename)";
-		exit;
-	}    
-	fclose($handle);
-}
-
-
-function   RestoreAirspace() {
-	global $AirspaceArea;
-
-	$filename=dirname(__FILE__)."/airspace.dump";
-	if (is_file($filename)) {
-		$lines=file($filename);
-		$AirspaceArea=unserialize($lines[0]);
-		return 1;
-	}
-	return 0;
 }
 
 ?>

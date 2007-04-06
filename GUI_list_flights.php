@@ -184,6 +184,24 @@ TR .newDate {
 	background-image:url(<?=$themeRelPath?>/img/bg_row.gif);
 	background-repeat:repeat-x;
 }
+
+.checkedBy , td.checkedBy , div.checkedBy {
+	font-size:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height:9px;
+	background-color:#D6ECD5;
+	border:0;
+	padding:0px;
+	padding-left:1px;
+	padding-right:1px;
+	margin:0px;
+	width:auto;
+	display:block;
+	float:right;
+	clear:both;
+	text-align:right;	
+}
+
 </style>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup(); ?>
@@ -222,7 +240,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
-   global $CONF_photosPerFlight,$CONF_use_validation;   	 
+   global $CONF_photosPerFlight,$CONF_use_validation,$CONF_airspaceChecks;   	 
    global $gliderCatList,$brandsList;
 
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
@@ -376,9 +394,16 @@ function removeClubFlight(clubID,flightID) {
 		}
 	   echo "</TD>";
 	   echo "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
-   	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>".
+   	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
-	   "<TD align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+		if ($CONF_airspaceChecks && in_array($userID,$admin_users) ) {
+			if ( $row['airspaceCheckFinal']==-1 ) {
+				$airspaceProblem=' bgcolor=#F7E5C9 ';
+			} else 
+				$airspaceProblem='';
+		}
+
+	    echo "<TD $airspaceProblem align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 	
 		$photos_exist=0;
@@ -395,6 +420,14 @@ function removeClubFlight(clubID,flightID) {
 			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
 			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width='16' height='16' border='0' align='bottom' /></a>"; 
 	   }			
+
+		$checkedByStr='';
+		if ($row['checkedBy'] && in_array($userID,$admin_users)){
+			$checkedByArray=explode(" ",$row['checkedBy']);
+			$checkedByStr="<div class='checkedBy' align=right>".$checkedByArray[0]."</div>";
+			echo $checkedByStr;
+		}
+
 
 				
 
