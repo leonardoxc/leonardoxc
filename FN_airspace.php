@@ -537,7 +537,7 @@ function checkAirspace($filename) {
 		foreach($violations as $i=>$violatedArea) {
 			$resStr1.=$AirspaceArea[$i]->id.",";
 			$resStr.="HorDist: ".floor($violatedArea['maxDistance'])."m, VertDist:".floor($violatedArea['maxAlt'])."m, ";
-			$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] COMMENT: '.$AirspaceArea[$i]->Comment."\n";
+			$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] '."\n"; // COMMENT: '.$AirspaceArea[$i]->Comment."\n";
 		}
 		if ($resStr1) {
 			$resStr1=substr($resStr1,0,-1)."\n";

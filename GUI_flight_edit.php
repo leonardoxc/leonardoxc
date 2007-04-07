@@ -86,6 +86,52 @@ function setValue(obj)
 	// document.inputForm.glider.value = value;
 }
 </script>
+
+<? if ( is_leo_admin($userID) && $CONF_airspaceChecks ) { ?>
+<script language="javascript">
+function update_comment(area_id) {	 	
+	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
+	MWJ_changeSize('addTakeoffFrame',270,105);
+	MWJ_changeSize( 'takeoffAddID', 270,130 );
+	toggleVisible('takeoffAddID','takeoffAddPos',14,-50,410,320);
+}
+</script>	
+<style type="text/css">
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+</style>
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Update Comment</div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='addTakeoffDiv'>
+		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
+</div> 
+<? } ?>
+
 <style type="text/css">
 fieldset.legendBox { 
 	border-style: solid; 
@@ -280,6 +326,24 @@ fieldset.legendBox {
           <tr>
             <td valign="top">
 				<?
+				
+				function get_airspace_area_comment($area_id) {
+					  global $db,$airspaceTable;
+					  $query="SELECT Comments FROM $airspaceTable WHERE id=$area_id";
+					  $res= $db->sql_query($query);	
+					  # Error checking
+					  if($res <= 0){
+						 echo("<H3> Error in getting Comment for airspace from DB! $query</H3>\n");
+						 exit();
+					  }
+						
+					  if (! $row = $db->sql_fetchrow($res) ) {
+						 //echo("<H3> Error #2 in getting Comment for airspace from DB! $query</H3>\n");
+						 // exit();
+						 return "";
+					  }
+					  return $row['Comments'];
+				}
 					// echo "#".$flight->airspaceCheck."#";
 					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
 					if ($flight->airspaceCheck==-1) { // problem
@@ -288,7 +352,8 @@ fieldset.legendBox {
 						$area_ids=explode(",",$checkLines[0]);
 						for($i=1;$i<count($checkLines); $i++) {
 							echo $checkLines[$i];
-							echo " [ <a href='?update_airspace_comment&acid=".$area_ids[$i-1]."'>Update comment</a> ]<br>";
+							echo " COMMENT: ".get_airspace_area_comment($area_ids[$i-1]);
+							echo " [ <a id='takeoffAddPos' href='javascript:update_comment(".$area_ids[$i-1].");'>Update comment</a> ]<br>";
 						}
 						// echo "DETAILS:  <BR>";
 					} else {// clear
