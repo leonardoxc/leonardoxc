@@ -352,7 +352,7 @@ fieldset.legendBox {
 						$area_ids=explode(",",$checkLines[0]);
 						for($i=1;$i<count($checkLines); $i++) {
 							echo $checkLines[$i];
-							echo " COMMENT: ".get_airspace_area_comment($area_ids[$i-1]);
+							echo "<BR>COMMENT: ".get_airspace_area_comment($area_ids[$i-1]);
 							echo " [ <a id='takeoffAddPos' href='javascript:update_comment(".$area_ids[$i-1].");'>Update comment</a> ]<br>";
 						}
 						// echo "DETAILS:  <BR>";

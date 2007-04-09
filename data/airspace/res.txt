@@ -1,0 +1,54 @@
+
+openaird
+HorDist: 905m, VertDist:1m, Airspace: C75EDR-100_EDR14 [RESTRICT] COMMENT:
+HorDist: 2238m, VertDist:1m, Airspace: EDR138-120_SIEGE [RESTRICT] COMMENT
+Found Area => SX99B-160_118.55
+Found Area => HX37INGO
+Found Area => C85MUE-100
+Found Area => EDR138-120_SIEGE
+Found Area => C75EDR-100_EDR14
+Found Area => FX26ST-35
+Found Area => FX36STRAU
+
+Air_Germany.txt
+HorDist: 905m, VertDist:1m, Airspace: C75EDR-100_EDR14 [RESTRICT] COMMENT:
+HorDist: 2312m, VertDist:1m, Airspace: EDR138:CONT [RESTRICT] COMMENT:
+Found Area => SX99B-160_118.55
+Found Area => HX37INGO
+Found Area => C85MUE-100
+Found Circle => EDR138:CONT
+Found Area => C75EDR-100_EDR14
+
+
+Air_Europe 2006
+HorDist: 4624m, VertDist:1m, Airspace: EDR144:INTMT [RESTRICT]
+HorDist: 2312m, VertDist:1m, Airspace: EDR138:CONT [RESTRICT] 
+Found Area => TSI:122.1
+Found Area => EDR144:INTMT
+Found Circle => EDR138:CONT
+Found Area => KAA:118.375
+
+openair
+HorDist: 905m, VertDist:1m, Airspace: C75EDR-100_EDR14 [RESTRICT] COMMENT: [ Update comment ]
+HorDist: 2238m, VertDist:1m, Airspace: EDR138-120_SIEGE [RESTRICT] COMMENT:
+
+Found Area => SX99B-160_118.55
+Found Area => HX37INGO
+Found Area => C85MUE-100
+Found Area => EDR138-120_SIEGE
+Found Area => C75EDR-100_EDR14
+Found Area => FX26ST-35
+Found Area => FX36STRAU
+
+germany_2007_03_15.txt
+HorDist: 1348m, VertDist:1m, Airspace: FIR M?nchen [CLASSC] 3047-7466m
+HorDist: 282m, VertDist:1m, Airspace: ED-R144 Franken MON-FRI+ [RESTRICT] 2285-3047m
+HorDist: 2312m, VertDist:1m, Airspace: ED-R138 Siegenburg H24 [RESTRICT] 0-3657m
+Found Circle => ED-R138 Siegenburg H24
+Found Area => ED-R144 Franken MON-FRI+
+Found Area => FIR M?nchen
+Found Area => M?nchen
+Found Area => Ingolstadt
+Found Area => Straubing
+Found Area => Straubing
+Found Area => Bayr.Wald 118.55

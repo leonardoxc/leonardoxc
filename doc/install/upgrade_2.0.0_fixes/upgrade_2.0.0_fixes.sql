@@ -70,7 +70,7 @@ CREATE TABLE `leonardo_airspace` (
 `maxy` FLOAT NOT NULL ,
 `Base` BLOB NOT NULL ,
 `Top` BLOB NOT NULL ,
-`Points` BLOB NOT NULL ,
+`Points` MEDIUMBLOB NOT NULL ,
 `Radius` FLOAT NOT NULL ,
 `Latitude` FLOAT NOT NULL ,
 `Longitude` FLOAT NOT NULL ,
@@ -82,3 +82,6 @@ ALTER TABLE `leonardo_flights` ADD `airspaceCheck` TINYINT DEFAULT '0' NOT NULL 
 ADD `airspaceCheckFinal` TINYINT DEFAULT '0' NOT NULL AFTER `airspaceCheck` ,
 ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
 ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
+
+
+ALTER TABLE `leonardo_airspace` CHANGE `Points` `Points` MEDIUMBLOB NOT NULL 

@@ -46,7 +46,8 @@ function putAirspaceToDB() {
 		$res= $db->sql_query($query);
 			
 		if(!$res) {
-			echo "Error in inserting airspace to DB: $query <BR>";
+			echo "Error in inserting airspace [$i] to DB: $query <BR>";
+			print_r($AirspaceArea[$i]);
 			return 0;
 		}
 	}
@@ -301,10 +302,11 @@ function GetNextLine($fp, &$Text) {
 		if ($nLineType >= 0) {		// Valid line found
 			$Text=trim($Text);
 
-			if ( $commentPos=strpos($Text,'*')===false) { //do nothing
+			if ( ($commentPos=strpos($Text,'*'))===false) { //do nothing
 
 			} else {
-				$Text=substr($commentPos,0,$commentPos);
+				 DEBUG("checkAirspace",128,"GetNextLine: found Comment inlina at pos $commentPos<BR>");
+				$Text=substr($Text,0,$commentPos);
 			}
 			break;
 		}
@@ -324,9 +326,26 @@ function ReadCoords($Text) {
   // DEBUG("checkAirspace",128,"ReadCoords: Text=$Text");
   // 53:26:09 N 009:45:46 E
   if ( ! preg_match("/(\d+):(\d+):(\d+) +([ns]) +(\d+):(\d+):(\d+) +([we])/",$Text,$matches) ) {
-    DEBUG("checkAirspace",128,"ReadCoords: Not match ");
-	return array(0,0,0);
-  }
+  
+    if ( ! preg_match("/(\d+):(\d+)\.(\d+) +([ns]) +(\d+):(\d+)\.(\d+) +([we])/",$Text,$matches) ) {    
+		DEBUG("checkAirspace",128,"ReadCoords2: #$Text# Not match ");
+		return array(0,0,0);
+	}
+	$Ydeg=$matches[1];
+	$Ymin=$matches[2];
+	$Ysec=$matches[3];
+	$Y =  ($Ymin+ $Ysec/pow(10,strlen($Ysec)) ) / 60 + $Ydeg;
+	if ($matches[4]=='s')   $Y = -$Y ;
+	
+	$Xdeg=$matches[5];
+	$Xmin=$matches[6];
+	$Xsec=$matches[7];
+	$X = ( $Xmin+ $Xsec/pow(10,strlen($Xsec) ))/60 + $Xdeg;
+	if ($matches[8]=='w')   $X = -$X ;	
+	// DEBUG("checkAirspace",128,"ReadCoords: Text=$Text , X=$X, Y=$Y<BR>");
+	return array(1,$X,$Y);
+	
+  } 
 
   $Ydeg=$matches[1];
   $Ymin=$matches[2];

@@ -261,6 +261,15 @@ function CheckAirspaceAltitude($Base, $Top,$alt) {
 //            <0 for P2 right of the line
 //    See: the January 2001 Algorithm "Area of 2D and 3D Triangles and Polygons"
 function isLeft( $P0, $P1, $P2 ) { // AIRSPACE_POINT P0
+
+// un commnet this for debug
+/* 
+if ( ! $P1->Longitude  || ! $P0->Longitude  || ! $P2->Latitude || ! $P0->Latitude 
+ || !$P2->Longitude  || !$P1->Latitude )  {
+	 echo "ERROR: lat or lon  is ZERO . ";
+	 exit;
+ } */
+			
     return ( ($P1->Longitude - $P0->Longitude) * ($P2->Latitude - $P0->Latitude)
             - ($P2->Longitude - $P0->Longitude) * ($P1->Latitude - $P0->Latitude) );
 }
@@ -274,7 +283,7 @@ function wn_PnPoly( $P, $areaNum)  //   AIRSPACE_POINT P, AIRSPACE_POINT* V
 {
 	global $AirspaceArea;
 
-	$n=$AirspaceArea[$areaNum]->NumPoints ;
+	$n=$AirspaceArea[$areaNum]->NumPoints  - 1 ;
 	$wn = 0;    // the winding number counter
 
     // loop through all edges of the polygon
@@ -305,7 +314,6 @@ function InsideAirspaceArea($longitude,$latitude,$i) {
       // we are inside the i'th airspace area
 
 	  // now find the distance from the nearest eadge
-
       return 1;
   }
   return 0;
@@ -315,22 +323,21 @@ function InsideAirspaceArea($longitude,$latitude,$i) {
 function RangeAirspaceArea($longitude,$latitude,$i) {
   global $AirspaceArea;
 
+global $near;
   // find nearest distance to line segment
   $dist=100000;
   $nearestdistance = $dist;
-  for ($j=0; $j<$AirspaceArea[$i]->NumPoints; $j++) {
+  for ($j=0; $j<$AirspaceArea[$i]->NumPoints-1 ; $j++) {
     $dist = CrossTrackError( $AirspaceArea[$i]->Points[$j]->Longitude, $AirspaceArea[$i]->Points[$j]->Latitude,
 				 $AirspaceArea[$i]->Points[$j+1]->Longitude, $AirspaceArea[$i]->Points[$j+1]->Latitude,
-/*
-				 AirspacePoint[AirspaceArea[i].FirstPoint+j].Longitude,
-				 AirspacePoint[AirspaceArea[i].FirstPoint+j].Latitude,
-				 AirspacePoint[AirspaceArea[i].FirstPoint+j+1].Longitude,
-				 AirspacePoint[AirspaceArea[i].FirstPoint+j+1].Latitude,
-*/
-				 $longitude, $latitude,
-				 $lon4, $lat4);
+				 $longitude, $latitude);
     if ($dist<$nearestdistance) {
       $nearestdistance = $dist;
+	  $near[0]=$AirspaceArea[$i]->Points[$j]->Longitude;
+	  $near[1]=$AirspaceArea[$i]->Points[$j]->Latitude;
+	  $near[2]=$AirspaceArea[$i]->Points[$j+1]->Longitude;
+	  $near[3]=$AirspaceArea[$i]->Points[$j+1]->Latitude;
+	  $near[4]=$j;
     }
   }
 
@@ -353,7 +360,7 @@ In terms of these the cross track error, XTD, (distance off course) is given by
 
 (positive XTD means right of course, negative means left)
 */
-function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3, $lon4, $lat4) {
+function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
 
   list($dist_AD, $crs_AD)= DistanceBearing($lat1, $lon1, $lat3, $lon3, 1,1);
   $dist_AD/= (RAD_TO_DEG * 111194.9267); 
@@ -398,6 +405,7 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3, $lon4, $lat4) 
 
 function FindAirspaceArea($Longitude,$Latitude,$alt) {
   global $NumberOfAirspaceAreas,$AirspaceArea ;
+  global $near;
   if($NumberOfAirspaceAreas == 0)  return array();
 
   $areas=array();
@@ -408,9 +416,14 @@ function FindAirspaceArea($Longitude,$Latitude,$alt) {
 		  ($Longitude > $AirspaceArea[$i]->minx) && ($Longitude < $AirspaceArea[$i]->maxx)) {
 
 		if ($AirspaceArea[$i]->Shape==1) { // area
-			if (InsideAirspaceArea($Longitude,$Latitude,$i)) {
+			if (InsideAirspaceArea($Longitude,$Latitude,$i)) { 
+			
 			  $distanceInside=RangeAirspaceArea($Longitude,$Latitude,$i);
+			  DEBUG("FindAirspaceArea",255, "Point inside area [$i] by $distanceInside<BR>");
 			  $areas[]=array($i,$distanceInside,$altInside);
+			  
+			  DEBUG("FindAirspaceArea",255, "[".$near[4]."] Point: $Longitude,$Latitude segment at ".$near[4]." ". $near[1].",".$near[0]."-".$near[3].",".$near[2]."<BR>" );
+			  
 			}
 		} else {
 			$distanceInside=InsideAirspaceCircle($Longitude,$Latitude,$i);
@@ -537,7 +550,7 @@ function checkAirspace($filename) {
 		foreach($violations as $i=>$violatedArea) {
 			$resStr1.=$AirspaceArea[$i]->id.",";
 			$resStr.="HorDist: ".floor($violatedArea['maxDistance'])."m, VertDist:".floor($violatedArea['maxAlt'])."m, ";
-			$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] '."\n"; // COMMENT: '.$AirspaceArea[$i]->Comment."\n";
+			$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] '.floor($AirspaceArea[$i]->Base->Altitude).'-'.floor($AirspaceArea[$i]->Top->Altitude)."m\n"; // COMMENT: '.$AirspaceArea[$i]->Comment."\n";
 		}
 		if ($resStr1) {
 			$resStr1=substr($resStr1,0,-1)."\n";
@@ -626,14 +639,23 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 		$AirspaceArea[$i]->Top		=unserialize($row['Top']);
 		
 		if ($row['Shape']==1) { // area
-			$AirspaceArea[$i]->Points	=unserialize($row['Points']);
+			$AirspaceArea[$i]->Points	=unserialize($row['Points']);			
+		//	DEBUG("getAirspaceFromDB",1, "Area first point :  ".$AirspaceArea[$i]->Points[0]->Latitude.",".
+		//			$AirspaceArea[$i]->Points[0]->Longitude.
+		//			" last point :  ".$AirspaceArea[$i]->Points[count($AirspaceArea[$i]->Points)-1]->Latitude.",".
+		//			$AirspaceArea[$i]->Points[count($AirspaceArea[$i]->Points)-1]->Longitude."<BR>");
+
+			if ($AirspaceArea[$i]->Points[0] != $AirspaceArea[$i]->Points[count($AirspaceArea[$i]->Points)-1] ) {
+				//DEBUG("getAirspaceFromDB",1, "Adding Last point == first point<BR>");
+				$AirspaceArea[$i]->Points[]	=$AirspaceArea[$i]->Points[0];
+			}
 			$AirspaceArea[$i]->NumPoints=count($AirspaceArea[$i]->Points);
-			$AirspaceArea[$i]->Points[]	=$AirspaceArea[$i]->Points[0];
 		} else {
 			$AirspaceArea[$i]->Radius		=$row['Radius'];		
 			$AirspaceArea[$i]->Latitude		=$row['Latitude'];
-			$AirspaceArea[$i]->maxy		=$row['Longitude'];		
+			$AirspaceArea[$i]->Longitude	=$row['Longitude'];		
 		}
+		// print_r($AirspaceArea[$i]);
 		$i++;
 	}
 	$NumberOfAirspaceAreas=count($AirspaceArea);
