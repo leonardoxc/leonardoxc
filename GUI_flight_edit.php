@@ -345,7 +345,7 @@ fieldset.legendBox {
 					  return $row['Comments'];
 				}
 					// echo "#".$flight->airspaceCheck."#";
-					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
+					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0 || 1) $flight->checkAirspace(1);
 					if ($flight->airspaceCheck==-1) { // problem
 						echo "<strong>PROBLEM!</strong><BR>";
 						$checkLines=explode("\n",$flight->airspaceCheckMsg);

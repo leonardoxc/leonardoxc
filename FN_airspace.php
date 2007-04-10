@@ -131,6 +131,7 @@ function FindLatitudeLongitude($Lat, $Lon, $Bearing, $Distance ,$calc_lat_out , 
   return array($lat_out, $lon_out );
 }
 
+
 function DistanceBearing($lat1, $lon1, $lat2, $lon2 ,$calcDistance , $calcBearing ) {
 
   $lat1 *= DEG_TO_RAD;
@@ -235,7 +236,7 @@ function InsideAirspaceCircle($longitude,$latitude,$i) {
 
 function CheckAirspaceAltitude($Base, $Top,$alt) {
 	// echo "# $Base, $Top, alt:$alt <BR>";
-	// return 1;
+	 return 1;
 	$a1= $alt - $Base ;
 	$a2= $Top - $alt;
 	if (  $a1 >0 && $a2>0 ) return min($a1,$a2);
@@ -346,6 +347,25 @@ global $near;
 }
 
 
+function dot($lon1, $lat1, $lon2, $lat2,$lon3, $lat3){
+//	AB = new int[2];
+//	BC = new int[2];
+
+//	AB[0] = B[0]-A[0];
+
+	$ab_lon=$lon2-$lon1;
+//	AB[1] = B[1]-A[1];
+	$ab_lat=$lat2-$lat1;
+
+	$BC_lon=$lon3-$lon2;
+	$BC_lat=$lat3-$lat2;
+	//BC[0] = C[0]-B[0];
+//	BC[1] = C[1]-B[1];
+	// int $dot = AB[0] * BC[0] + AB[1] * BC[1];
+	$dot = $ab_lon * $BC_lon + $ab_lat  * $BC_lat;
+	return $dot;
+}
+
 // finds cross track error in meters and closest point p4 between p3 and
 // desired track p1-p2.
 // very slow function!
@@ -362,15 +382,24 @@ In terms of these the cross track error, XTD, (distance off course) is given by
 */
 function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
 
+
   list($dist_AD, $crs_AD)= DistanceBearing($lat1, $lon1, $lat3, $lon3, 1,1);
+  $dist_AD_m=$dist_AD;
   $dist_AD/= (RAD_TO_DEG * 111194.9267); 
   $crs_AD*= DEG_TO_RAD;
 
  
-//  list($dist_AB, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2, 1,1);
-  list($tmp1, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2,0,1);
-  // $dist_AB/= (RAD_TO_DEG * 111194.9267); 
+
+
+
+  list($dist_AB, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2, 1,1);
+  //list($tmp1, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2,0,1);
+ // DEBUG("a1",1,"dist_AB : $dist_AB dist_AD:$dist_AD ");
+  $dist_AB_m=  $dist_AB;
+  $dist_AB/= (RAD_TO_DEG * 111194.9267); 
   $crs_AB*= DEG_TO_RAD;
+
+
 
  // $lat1 *= DEG_TO_RAD;
  // $lat2 *= DEG_TO_RAD;
@@ -389,8 +418,9 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
 
   $XTD = asin($sindist_AD*sin($crs_AD-$crs_AB));
 
-  //$sinXTD = sin($XTD);
-  //$ATD = asin(sqrt( $sindist_AD*$sindist_AD - $sinXTD*$sinXTD )/cos($XTD));
+
+  $sinXTD = sin($XTD);
+  $ATD = asin(sqrt( $sindist_AD*$sindist_AD - $sinXTD*$sinXTD )/cos($XTD));
   /*
   if (lon4 && lat4) {
     IntermediatePoint(lon1, lat1, lon2, lat2, ATD, dist_AB,
@@ -400,7 +430,30 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
   // units
   $XTD *= (RAD_TO_DEG * 111194.9267);
  
-   return abs($XTD);
+  $ATD *= (RAD_TO_DEG * 111194.9267);
+
+  $dot1 = dot($lon1, $lat1, $lon2, $lat2,$lon3, $lat3);
+  if($dot1 > 0) {
+	list($dist_BD, $tmp1 )= DistanceBearing($lat2, $lon2, $lat3, $lon3, 1,0);
+	return 	$dist_BD;
+  }  
+  $dot2 = dot($lon2, $lat2, $lon1, $lat1 ,$lon3, $lat3);
+  if($dot2 > 0) {
+	return $dist_AD_m;
+  }
+
+/*
+	//DEBUG("a1",1," XTD: $XTD , ATD: $ATD<BR>");
+	if ($ATD > $dist_AB_m ) {
+		list($dist_BD, $tmp1 )= DistanceBearing($lat2, $lon2, $lat3, $lon3, 1,0);
+		$XTD = min($dist_AD_m ,$dist_BD);
+		DEBUG("a1",1," special case: $dist_AD_m , $dist_BD<BR>");
+	} else {
+		DEBUG("a1",1,"XTD ($XTD) is ok ($ATD < $dist_AB_m )<BR>");
+	}
+*/
+//   return abs($ATD);
+    return abs($XTD);
 }
 
 function FindAirspaceArea($Longitude,$Latitude,$alt) {
@@ -419,10 +472,11 @@ function FindAirspaceArea($Longitude,$Latitude,$alt) {
 			if (InsideAirspaceArea($Longitude,$Latitude,$i)) { 
 			
 			  $distanceInside=RangeAirspaceArea($Longitude,$Latitude,$i);
-			  DEBUG("FindAirspaceArea",255, "Point inside area [$i] by $distanceInside<BR>");
+
+			  DEBUG("FindAirspaceArea",255, 
+						sprintf("Inside Area [%03s] by %05sm [%03d] Point: %0.5f,%0.5f (%0.5f,%0.5f)-(%0.5f,%0.5f)<BR>",$i,floor($distanceInside),$near[4], $Longitude,$Latitude,$near[1],$near[0],$near[3],$near[2] )." ");
+//			  DEBUG("FindAirspaceArea",255, "[".$near[4]."] Point: $Longitude,$Latitude segment at ".$near[4]." ". $near[1].",".$near[0]."-".$near[3].",".$near[2]."<BR>" );
 			  $areas[]=array($i,$distanceInside,$altInside);
-			  
-			  DEBUG("FindAirspaceArea",255, "[".$near[4]."] Point: $Longitude,$Latitude segment at ".$near[4]." ". $near[1].",".$near[0]."-".$near[3].",".$near[2]."<BR>" );
 			  
 			}
 		} else {
@@ -655,7 +709,7 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 			$AirspaceArea[$i]->Latitude		=$row['Latitude'];
 			$AirspaceArea[$i]->Longitude	=$row['Longitude'];		
 		}
-		// print_r($AirspaceArea[$i]);
+		// DEBUG("getAirspaceFromDB",1,"<pre>".print_r($AirspaceArea[$i],1). "</pre><BR>");
 		$i++;
 	}
 	$NumberOfAirspaceAreas=count($AirspaceArea);
