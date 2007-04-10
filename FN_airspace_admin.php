@@ -1,4 +1,20 @@
 <? 
+/************************************************************************/
+/* Leonardo: Gliding XC Server					                        */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
+/* http://sourceforge.net/projects/leonardoserver                       */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
+/************************************************************************
+	Airspace Code adapted from c++ from the xcsoar project 
+	http://xcsoar.sourceforge.net/
+************************************************************************/
 
 require_once dirname(__FILE__)."/FN_airspace.php";
 
@@ -26,13 +42,36 @@ function putAirspaceToDB() {
 	
 	if (count($AirspaceArea)==0) return 1;	
 
-	$query="TRUNCATE TABLE $airspaceTable ";
+
+//$query="TRUNCATE TABLE $airspaceTable ";
+
+	// set updated =0 so we then delete all areas not present in the new version
+	$query="UPDATE TABLE $airspaceTable set updated=0 ";
 	$res= $db->sql_query($query);
 	
+	//$query="TRUNCATE TABLE $airspaceTable ";
+
+	// get 'Comments' and 'id' values
+	$query="SELECT id,Comments,Name,serial FROM $airspaceTable ";
+	$res= $db->sql_query($query);
+	while ($row = mysql_fetch_assoc($res)){
+		$data[$row['Name']][$row['serial']]['Comments']=$row['Comments'];
+		$data[$row['Name']][$row['serial']]['id']=$row['id'];
+	}
+	
+	$names=array();
+	
 	for($i=0;$i<count($AirspaceArea);$i++) {
+		
+		$serial=$names[$AirspaceArea[$i]->Name]+0;
+		$names[$AirspaceArea[$i]->Name]++;
+	
+		$id=$data[$AirspaceArea[$i]->Name][$serial]['id']+0;
+		$Comments=$data[$AirspaceArea[$i]->Name][$serial]['Comments'];
+		
 	    //	print_r($AirspaceArea[$i]->Base);
-		$fields=" Name, Type, Shape, Comments, minx, miny, maxx, maxy , Base , Top, ";
-		$values=" '".$AirspaceArea[$i]->Name."' ,  '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$AirspaceArea[$i]->Comments."', 
+		$fields=" id, Name, serial, updated,  Type, Shape, Comments, minx, miny, maxx, maxy , Base , Top, ";
+		$values=" $id , '".$AirspaceArea[$i]->Name."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', 
 					".$AirspaceArea[$i]->minx.", ".$AirspaceArea[$i]->miny.", ".$AirspaceArea[$i]->maxx.",  ".$AirspaceArea[$i]->maxy." ,
 				 '".serialize($AirspaceArea[$i]->Base)."' ,'".serialize($AirspaceArea[$i]->Top)."' , ";
 		if ($AirspaceArea[$i]->Shape==1) { //area
@@ -42,7 +81,7 @@ function putAirspaceToDB() {
 			$fields.="Radius, Latitude, Longitude ";
 			$values.=$AirspaceArea[$i]->Radius." , ".$AirspaceArea[$i]->Latitude." , ".$AirspaceArea[$i]->Longitude ;
 		}
-		$query="INSERT into $airspaceTable ($fields) VALUES ($values) ";
+		$query="REPLACE into $airspaceTable ($fields) VALUES ($values) ";
 		$res= $db->sql_query($query);
 			
 		if(!$res) {
@@ -51,6 +90,11 @@ function putAirspaceToDB() {
 			return 0;
 		}
 	}
+	
+	// now delete areas not updated 
+	$query="DELETE FROM $airspaceTable WHERE updated=0 ";
+	$res= $db->sql_query($query);
+	
 	return 1;
 }
 

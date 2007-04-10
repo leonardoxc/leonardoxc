@@ -84,4 +84,18 @@ ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
 ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
 
 
-ALTER TABLE `leonardo_airspace` CHANGE `Points` `Points` MEDIUMBLOB NOT NULL 
+ALTER TABLE `leonardo_airspace` CHANGE `Points` `Points` MEDIUMBLOB NOT NULL ;
+
+ALTER TABLE `leonardo_airspace` ADD `serial` TINYINT NOT NULL DEFAULT '0' AFTER `Name` ,
+ADD `disabled` TINYINT NOT NULL DEFAULT '0' AFTER `serial` ;
+
+ALTER TABLE `leonardo_airspace` ADD INDEX ( `serial` , `disabled` ) ;
+
+ALTER TABLE `leonardo_airspace` ADD UNIQUE (
+`Name` ,
+`serial`
+)
+
+ALTER TABLE `leonardo_airspace` ADD `updated` TINYINT NOT NULL DEFAULT '0' AFTER `disabled` ;
+
+

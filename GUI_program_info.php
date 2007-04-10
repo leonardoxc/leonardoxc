@@ -53,6 +53,10 @@
       <td><div align="right">GE extended Info Module </div></td>
       <td><a href="http://www.parawing.net" target="_blank">Emmanuel Chabani aka Man's</a></td>
     </tr>
+    <tr>
+      <td><div align="right">Airspace Checking </div></td>
+      <td>Some code adapted from <a href="http://xcsoar.sourceforge.net/" target="_blank">xcsoar</a> project </td>
+    </tr>
     <tr> 
       <td><div align="right">Graph Plotting: </div></td>
       <td><a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph Copyright (C) 2001,2002,2003 Johan Persson</a></td>
@@ -126,8 +130,7 @@
         <p> <strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1142">Ardy Brouwer</a></strong> for the <strong>Dutch</strong> translation<br>
           <a href="http://www.ardybrouwer.com" target="_blank">http://www.ardybrouwer.com</a></p>
         <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=3178">Etienne Prade</a></strong> for the <strong>French</strong> translation<br>
-          <a href="http://www.prade.net%20" target="_blank">http://www.prade.net 
-          </a></p>
+          <a href="http://www.prade.net%20" target="_blank">http://www.prade.net          </a></p>
         <p><strong>Torsten</strong> for the <strong>German</strong> translation<br>
           <a href="http://www.paragliding365.com" target="_blank">http://www.paragliding365.com</a></p>
         <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1067">Jonas Svedberg</a></strong> for the <strong>Swedish</strong> translation</p>

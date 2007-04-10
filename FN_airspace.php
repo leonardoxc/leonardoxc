@@ -1,4 +1,20 @@
 <?
+/************************************************************************/
+/* Leonardo: Gliding XC Server					                        */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
+/* http://sourceforge.net/projects/leonardoserver                       */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
+/************************************************************************
+	Airspace Code adapted from c++ from the xcsoar project 
+	http://xcsoar.sourceforge.net/
+************************************************************************/
 
 define("abUndef",0);
 define("abMSL",1);
@@ -236,7 +252,7 @@ function InsideAirspaceCircle($longitude,$latitude,$i) {
 
 function CheckAirspaceAltitude($Base, $Top,$alt) {
 	// echo "# $Base, $Top, alt:$alt <BR>";
-	 return 1;
+	// return 1;
 	$a1= $alt - $Base ;
 	$a2= $Top - $alt;
 	if (  $a1 >0 && $a2>0 ) return min($a1,$a2);
@@ -381,22 +397,26 @@ In terms of these the cross track error, XTD, (distance off course) is given by
 (positive XTD means right of course, negative means left)
 */
 function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
-
+  $dot1 = dot($lon1, $lat1, $lon2, $lat2,$lon3, $lat3);
+  if($dot1 > 0) {
+	list($dist_BD, $tmp1 )= DistanceBearing($lat2, $lon2, $lat3, $lon3, 1,0);
+	return 	$dist_BD;
+  }  
+  $dot2 = dot($lon2, $lat2, $lon1, $lat1 ,$lon3, $lat3);
+  if($dot2 > 0) {
+    list($dist_AD, $crs_AD)= DistanceBearing($lat1, $lon1, $lat3, $lon3, 1,1);
+	return $dist_AD;
+  }
 
   list($dist_AD, $crs_AD)= DistanceBearing($lat1, $lon1, $lat3, $lon3, 1,1);
-  $dist_AD_m=$dist_AD;
   $dist_AD/= (RAD_TO_DEG * 111194.9267); 
   $crs_AD*= DEG_TO_RAD;
 
- 
-
-
-
-  list($dist_AB, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2, 1,1);
-  //list($tmp1, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2,0,1);
+ // list($dist_AB, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2, 1,1);
+  list($tmp1, $crs_AB)=  DistanceBearing($lat1, $lon1, $lat2, $lon2,0,1);
  // DEBUG("a1",1,"dist_AB : $dist_AB dist_AD:$dist_AD ");
-  $dist_AB_m=  $dist_AB;
-  $dist_AB/= (RAD_TO_DEG * 111194.9267); 
+  //$dist_AB_m=  $dist_AB;
+  //$dist_AB/= (RAD_TO_DEG * 111194.9267); 
   $crs_AB*= DEG_TO_RAD;
 
 
@@ -419,8 +439,8 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
   $XTD = asin($sindist_AD*sin($crs_AD-$crs_AB));
 
 
-  $sinXTD = sin($XTD);
-  $ATD = asin(sqrt( $sindist_AD*$sindist_AD - $sinXTD*$sinXTD )/cos($XTD));
+  //$sinXTD = sin($XTD);
+  //$ATD = asin(sqrt( $sindist_AD*$sindist_AD - $sinXTD*$sinXTD )/cos($XTD));
   /*
   if (lon4 && lat4) {
     IntermediatePoint(lon1, lat1, lon2, lat2, ATD, dist_AB,
@@ -430,17 +450,9 @@ function CrossTrackError($lon1, $lat1, $lon2, $lat2,$lon3, $lat3) {
   // units
   $XTD *= (RAD_TO_DEG * 111194.9267);
  
-  $ATD *= (RAD_TO_DEG * 111194.9267);
+  //$ATD *= (RAD_TO_DEG * 111194.9267);
 
-  $dot1 = dot($lon1, $lat1, $lon2, $lat2,$lon3, $lat3);
-  if($dot1 > 0) {
-	list($dist_BD, $tmp1 )= DistanceBearing($lat2, $lon2, $lat3, $lon3, 1,0);
-	return 	$dist_BD;
-  }  
-  $dot2 = dot($lon2, $lat2, $lon1, $lat1 ,$lon3, $lat3);
-  if($dot2 > 0) {
-	return $dist_AD_m;
-  }
+ 
 
 /*
 	//DEBUG("a1",1," XTD: $XTD , ATD: $ATD<BR>");
@@ -666,7 +678,7 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 	global $AirspaceArea,$NumberOfAirspaceAreas, $db,$airspaceTable ;
 	$AirspaceArea=array();
 	
-	$query="SELECT * FROM $airspaceTable WHERE 
+	$query="SELECT * FROM $airspaceTable WHERE disabled=0 AND 
 				 NOT ( maxx< $min_lon OR minx>$max_lon ) AND	 NOT ( maxy< $min_lat OR miny>$max_lat ) ";		 
 	$res= $db->sql_query($query);
 		
