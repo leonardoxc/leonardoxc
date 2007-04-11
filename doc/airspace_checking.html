@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Leonardo &quot;Direct flight upload&quot;</title>
+<style>
+<!--
+.style2 {color: #003366}
+-->
+</style>
+</head>
+<body link="blue" vlink="purple"> 
+<div> 
+  <h1><b>Leonardo &quot;A</b><b>irspace checking&quot;</b></h1>
+  <h1>1.&nbsp; Import of &quot;openair files&quot;</h1>
+  <p>The admin must put the openair file (for example &quot;Air_Europe 2006.txt&quot;)
+    in the leonardo/data/airspace directory.<br>
+  (and creat this dir if it doesnt exist). </p>
+  <p>Then from the top menu -&gt; &quot;Admin&quot;-&gt; &quot;Administer Airspace checking&quot; and </p>
+  <p>1) &quot; Delete all airspace entries in the DB &quot; to be sure no previous data
+    exist, if it is the first run or you want to start all over.</p>
+  <p>2) Click on the &quot;Update / Import airspace into DB&quot; next to the airspace
+    file. This may take from 5 to 20 secs. </p>
+  <p>&nbsp;</p>
+  <p>NOTE: you can &quot;Update / Import airspace into DB&quot; the same file
+    over and over again, if the airspace names are the same in the new/updated
+    file<br>
+    the comments you have inserted in the DB will be preserved. </p>
+  <p>&nbsp;</p>
+  <p>NOTE2: the </p>
+  <h1>2. Use</h1>
+  <p>Airspace checking is automatic on flight submission. No message is displayed
+    to the end user.</p>
+  <p>On the flight list, flights with airspace violations have the last column
+    with a differfent background. </p>
+  <p>Also the initials of the &quot;checker&quot; are displayed if any.</p>
+  <p>Flights that havent been checked on submission (because they were submitted
+  before this functionallity became available) are  checke when ever the &quot;edit
+  flight&quot; or the &quot;show flight&quot; screen are displayed. In the &quot;edit flight&quot; more
+    info is displayed about the &quot;check&quot; and the admin has the option of manually
+    making the check &quot;pass&quot; or &quot;fail&quot;</p>
+  <p>Also by setting the option to &quot;Not yet proccessed&quot; and pressing &quot;submit
+    changes&quot; he will force the re-checking of the flight on the next time he
+    enters this screen.</p>
+  <p>He can also enter his initials or a comment in the relevant field. He can
+    enter for example &quot;SJ Premission for airspace was granted&quot;. In the flight
+    list only the first part till the first space will be displayed ie &quot;SJ&quot;</p>
+  <p>The vertical height inside the airspace area is always computed as the minimum
+    one between &quot;base&quot; and &quot;top&quot;. For example a flight inside an airspace of
+    base=1000m and top=2000m with a gps point having alitude1100 will produce
+    a 100m vertical violation. A point of 1900m will also produce a 100m violation </p>
+  <p>&nbsp; </p>
+  <p>&nbsp; </p>
+</div> 
+</body>
+</html>

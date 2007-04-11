@@ -84,3 +84,8 @@ CREATE TABLE `leonardo_airspace` (
   KEY `serial_2` (`serial`,`disabled`)
 ) TYPE =MyISAM ;
 
+ALTER TABLE `leonardo_flights` ADD `airspaceCheck` TINYINT DEFAULT '0' NOT NULL AFTER `validationMessage` ,
+ADD `airspaceCheckFinal` TINYINT DEFAULT '0' NOT NULL AFTER `airspaceCheck` ,
+ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
+ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
+

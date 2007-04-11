@@ -43,6 +43,33 @@
 
 			) ,
 
+	5=>array(	"desc"=>"Danish XC league",
+				"id"=>5,
+				"lang"=>"danish",
+				"areaID"=>0,
+				"addManual"=>0,
+				"adminID"=>76,
+
+				// extra fields to expand club functionality
+				"noSpecificMembers"=>1,
+
+				"defaultDisplayLanguage"=>"danish",
+				"defaultDisplayTheme"=>"basic",
+
+				"countryCodes"=>array("dk"),
+				"pilotNationality"=>array("dk"),
+				"gliderCat"=>array(1),
+				
+				"startYear"=>"2006",
+				"startMonth"=>"0",
+				"startDay"=>"0",
+
+				"endYear"=>"2006",
+				"endMonth"=>"0",
+				"endDay"=>"0",
+
+			) ,
+
  );
 
 ?>
