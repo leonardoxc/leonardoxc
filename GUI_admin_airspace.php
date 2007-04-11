@@ -39,7 +39,32 @@
 	} else if ($_GET['act']=='check_flights') {	
 	
 		DEBUG('AdminAirspace',1,"Checking all flights for airspace violations<BR>");
-	
+		echo "Checking all flights for airspace violations<BR>";
+		$query="SELECT ID,active from $flightsTable  WHERE airspaceCheck=0 OR airspaceCheckFinal=0 ";
+		$res= $db->sql_query($query);
+			
+		if($res > 0){
+			 echo "<br><br>";
+			 $flight=new flight();
+			 $i=0;
+			 while ($row = mysql_fetch_assoc($res)) { 
+				 // $flight=new flight();
+				 $flight->getFlightFromDB($row["ID"]);		
+				 if (! is_file( $flight->getIGCFilename() ) ) {
+					 echo "[".$row['ID']."] IGC not found<BR>";		
+				 } else {
+					echo "[".$row['ID']."] ";
+					flush2Browser();
+					$flight->checkAirspace(1);
+					echo " Checked: ".$flight->airspaceCheckMsg."<BR>";
+					flush2Browser();
+					
+				 }
+				$i++;
+				if ($i>10) break;
+			 }
+		}
+		echo "<BR><br><BR>DONE !!!<BR>";
 	} else if ($_GET['importFile']) {
 	
 		$fileToImport=$_GET['importFile'];

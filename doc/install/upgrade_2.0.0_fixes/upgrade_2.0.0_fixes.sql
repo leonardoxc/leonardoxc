@@ -59,43 +59,28 @@ ALTER TABLE `leonardo_flights` ADD `autoScore` FLOAT NOT NULL DEFAULT '0' AFTER 
 # 2007/04/06
 
 CREATE TABLE `leonardo_airspace` (
-`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT ,
-`Name` VARCHAR( 50 ) NOT NULL ,
-`Type` VARCHAR( 30 ) NOT NULL ,
-`Shape` TINYINT UNSIGNED DEFAULT '0' NOT NULL ,
-`Comments` VARCHAR( 255 ) NOT NULL ,
-`minx` FLOAT NOT NULL ,
-`miny` FLOAT NOT NULL ,
-`maxx` FLOAT NOT NULL ,
-`maxy` FLOAT NOT NULL ,
-`Base` BLOB NOT NULL ,
-`Top` BLOB NOT NULL ,
-`Points` MEDIUMBLOB NOT NULL ,
-`Radius` FLOAT NOT NULL ,
-`Latitude` FLOAT NOT NULL ,
-`Longitude` FLOAT NOT NULL ,
-PRIMARY KEY ( `id` ) ,
-INDEX ( `minx` , `miny` , `maxx` , `maxy` )
-) TYPE = MYISAM ;
-
-ALTER TABLE `leonardo_flights` ADD `airspaceCheck` TINYINT DEFAULT '0' NOT NULL AFTER `validationMessage` ,
-ADD `airspaceCheckFinal` TINYINT DEFAULT '0' NOT NULL AFTER `airspaceCheck` ,
-ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
-ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
-
-
-ALTER TABLE `leonardo_airspace` CHANGE `Points` `Points` MEDIUMBLOB NOT NULL ;
-
-ALTER TABLE `leonardo_airspace` ADD `serial` TINYINT NOT NULL DEFAULT '0' AFTER `Name` ,
-ADD `disabled` TINYINT NOT NULL DEFAULT '0' AFTER `serial` ;
-
-ALTER TABLE `leonardo_airspace` ADD INDEX ( `serial` , `disabled` ) ;
-
-ALTER TABLE `leonardo_airspace` ADD UNIQUE (
-`Name` ,
-`serial`
-)
-
-ALTER TABLE `leonardo_airspace` ADD `updated` TINYINT NOT NULL DEFAULT '0' AFTER `disabled` ;
-
+  `id` mediumint(8) unsigned NOT NULL auto_increment,
+  `Name` varchar(50) NOT NULL,
+  `serial` tinyint(4) NOT NULL default '0',
+  `disabled` tinyint(4) NOT NULL default '0',
+  `updated` tinyint(4) NOT NULL default '0',
+  `Type` varchar(30) NOT NULL,
+  `Shape` tinyint(3) unsigned NOT NULL default '0',
+  `Comments` varchar(255) NOT NULL,
+  `minx` float NOT NULL,
+  `miny` float NOT NULL,
+  `maxx` float NOT NULL,
+  `maxy` float NOT NULL,
+  `Base` blob NOT NULL,
+  `Top` blob NOT NULL,
+  `Points` mediumblob NOT NULL,
+  `Radius` float NOT NULL,
+  `Latitude` float NOT NULL,
+  `Longitude` float NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `Name` (`Name`,`serial`),
+  KEY `minx` (`minx`,`miny`,`maxx`,`maxy`),
+  KEY `serial` (`serial`,`disabled`),
+  KEY `serial_2` (`serial`,`disabled`)
+) TYPE =MyISAM ;
 

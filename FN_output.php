@@ -404,4 +404,12 @@ function prepare_for_js($name) {
 	// $name=str_replace("'","\'",$name);
 	return $name;
 }
+
+
+function flush2Browser() {
+  echo str_pad(" ",4096," ");
+  flush();
+  ob_flush();
+  while (@ ob_end_flush());
+}
 ?>
