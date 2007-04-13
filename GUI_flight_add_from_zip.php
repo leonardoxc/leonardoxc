@@ -119,27 +119,5 @@
 	close_inner_table(); 
 
 
-function flush2Browser() {
-	// ob_implicit_flush(1) ;
 
-	/*for($i = 0; $i < 200; $i++){
-		print "<!-- bufferme -->\n";
-	}*/
-
-	if (1==1){
-	?>
-	<script language="javascript">		
-		for(i=0;i<100;i++) {
-			document.writeln("<!-- NULL -->");
-		}		
-	</script>
-	<?
-	}
-
-    flush();
- 	while (@ob_end_flush()); 
-	//ob_end_flush();
-	//	ob_start();	
-
-}
 ?>

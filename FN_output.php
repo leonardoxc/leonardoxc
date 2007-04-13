@@ -407,9 +407,34 @@ function prepare_for_js($name) {
 
 
 function flush2Browser() {
+
+// first version 
+/*
   echo str_pad(" ",4096," ");
   flush();
   ob_flush();
   while (@ ob_end_flush());
+*/
+
+// second version 
+	// ob_implicit_flush(1) ;
+
+	/*for($i = 0; $i < 200; $i++){
+		print "<!-- bufferme -->\n";
+	}*/	
+
+// third version
+	?>
+	<script language="javascript">		
+		for(i=0;i<100;i++) {
+			document.writeln("<!-- NULL -->");
+		}		
+	</script>
+	<?
+    flush();
+ 	while (@ob_end_flush()); 
+	//ob_end_flush();
+	//	ob_start();	
+
 }
 ?>
