@@ -130,9 +130,6 @@ fieldset.legendBox {
 </head>
 <body  onUnload="GUnload()">
 
-<? if (1) { ?>
-
-<? } ?>
 <table border="0" cellpadding="0" cellspacing="0" class="mapTable">
   <tr>
 	<td valign="top"><div style="position: relative; width: 600px; height:120px;"> 
@@ -309,12 +306,79 @@ function SetTimer(evt) {
 	var s=new Array();
 	var v=new Array();
 </script>
-<? if (1) {?>
-<script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
-<? } ?>
 
-<? if (1) {?>
+<script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
-<? } ?>
+
+<script language="javascript">
+ var poly ;
+ var pts;
+<?
+	require_once dirname(__FILE__).'/FN_airspace.php';	
+	$filename=$flight->getIGCFilename();
+	$lines = file ($filename); 
+	if (!$lines) { echo "Cant read file"; return; }
+	$i=0;
+
+    // find bounding box of flight
+	$min_lat=1000;
+	$max_lat=-1000;
+	$min_lon=1000;
+	$max_lon=-1000;
+	foreach($lines as $line) {
+		$line=trim($line);
+		if  (strlen($line)==0) continue;				
+		if ($line{0}=='B') {
+				if  ( strlen($line) < 23 ) 	continue;
+				$thisPoint=new gpsPoint($line,0);
+				if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
+				if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
+				if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
+				if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
+		}
+	}
+	// echo "$min_lat,	$max_lat,$min_lon,	$max_lon<BR>";
+
+	// now find the bounding boxes that have common points
+	// !( A1<X0 || A0>X1 ) &&  !( B1<Y0 || B0>Y1 )
+	// X,A -> lon
+	// Y,B -> lat 
+	// X0 -> $min_lon A0-> $area->minx
+	// X1 -> $max_lon A1-> $area->maxx
+	// Y0 -> $min_lat B0-> $area->miny
+	// Y1 -> $max_lat B1-> $area->maxy
+	
+	// !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&  !( $area->maxx<$min_lat || $area->miny>$max_lat )
+
+	global $AirspaceArea,$NumberOfAirspaceAreas;
+
+	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
+	$NumberOfAirspaceAreas=count($AirspaceArea);
+	// echo " // found( $NumberOfAirspaceAreas) areas  $min_lon , $max_lon , $min_lat ,$max_lat <BR>";	
+	foreach ($AirspaceArea as $i=>$area) {
+		echo "pts = [];\n";
+		if ($area->Shape==1) { // area 
+			// echo "// *** ".$area->Name."\n";				
+			for($j=0;$j<$area->NumPoints;$j++) {
+				 echo " pts[$j] = new GLatLng(".$area->Points[$j]->Latitude.",".$area->Points[$j]->Longitude.");\n";
+			}
+
+		}
+		echo " poly = new GPolygon(pts,'#000000',1,1,'#ff0000',0.5); \n";
+		echo " map.addOverlay(poly);\n";
+		// break;
+	
+	}
+	
+	
+?>
+//    pts[i] = new GLatLng(parseFloat(points[i].getAttribute("lat")),
+//						   parseFloat(points[i].getAttribute("lng")));
+
+//	var poly = new GPolygon(pts,"#000000",1,1,colour,0.5);
+	//polys.push(poly);
+	//labels.push(label);
+//	map.addOverlay(poly);
+</script>
 
 </body>
