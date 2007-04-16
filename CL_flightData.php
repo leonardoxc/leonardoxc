@@ -43,8 +43,8 @@ class flight {
 	var $validationMessage="";
 	var $NACclubID=0;
 	
-	var $airspaceCheck=-1;
-	var $airspaceCheckFinal=-1;
+	var $airspaceCheck=0; // not yet processed
+	var $airspaceCheckFinal=0; // not yet processed
 	var $airspaceCheckMsg="";
 	var $checkedBy="";
 
