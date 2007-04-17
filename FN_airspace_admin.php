@@ -52,10 +52,11 @@ function putAirspaceToDB() {
 	//$query="TRUNCATE TABLE $airspaceTable ";
 
 	// get 'Comments' and 'id' values
-	$query="SELECT id,Comments,Name,serial FROM $airspaceTable ";
+	$query="SELECT id,Comments,disabled, Name,serial FROM $airspaceTable ";
 	$res= $db->sql_query($query);
 	while ($row = mysql_fetch_assoc($res)){
 		$data[$row['Name']][$row['serial']]['Comments']=$row['Comments'];
+		$data[$row['Name']][$row['serial']]['disabled']=$row['disabled'];
 		$data[$row['Name']][$row['serial']]['id']=$row['id'];
 	}
 	
@@ -68,10 +69,11 @@ function putAirspaceToDB() {
 	
 		$id=$data[$AirspaceArea[$i]->Name][$serial]['id']+0;
 		$Comments=$data[$AirspaceArea[$i]->Name][$serial]['Comments'];
+		$disabled=$data[$AirspaceArea[$i]->Name][$serial]['disabled'];
 		
 	    //	print_r($AirspaceArea[$i]->Base);
-		$fields=" id, Name, serial, updated,  Type, Shape, Comments, minx, miny, maxx, maxy , Base , Top, ";
-		$values=" $id , '".$AirspaceArea[$i]->Name."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', 
+		$fields=" id, Name, serial, updated,  Type, Shape, Comments, disabled, minx, miny, maxx, maxy , Base , Top, ";
+		$values=" $id , '".$AirspaceArea[$i]->Name."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', $disabled ,
 					".$AirspaceArea[$i]->minx.", ".$AirspaceArea[$i]->miny.", ".$AirspaceArea[$i]->maxx.",  ".$AirspaceArea[$i]->maxy." ,
 				 '".serialize($AirspaceArea[$i]->Base)."' ,'".serialize($AirspaceArea[$i]->Top)."' , ";
 		if ($AirspaceArea[$i]->Shape==1) { //area

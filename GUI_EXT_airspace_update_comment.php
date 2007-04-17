@@ -43,10 +43,10 @@
 	// echo $area_id;
 
 	if ( $_POST['updateComment']==1 ) { // CHANGE waypoint
-
 		$Comments=prep_for_DB($_POST['Comments']);
+		$disabled=makeSane($_POST['disabled'],1);
 		
-		$query="UPDATE $airspaceTable SET Comments='$Comments' WHERE id=$area_id";
+		$query="UPDATE $airspaceTable SET Comments='$Comments' , disabled=$disabled WHERE id=$area_id";
 		// echo $query;
 		$res= $db->sql_query($query);	
 
@@ -69,7 +69,7 @@
 		
 	} else {
 
-	  $query="SELECT Comments FROM $airspaceTable WHERE id=$area_id";
+	  $query="SELECT Comments, disabled FROM $airspaceTable WHERE id=$area_id";
 	  $res= $db->sql_query($query);	
 	  # Error checking
 	  if($res <= 0){
@@ -86,6 +86,9 @@
 ?> 
 <form name="form1" method="post" action="">
 	  <textarea name="Comments" cols="27" rows="3" id="description"><? echo $row['Comments'] ?></textarea>
+      <br />
+      Disable Area
+	  <input type="checkbox" name="disabled" value="1" <? if ($row['disabled']) echo 'checked="checked"'; ?> />
 	  <input type="hidden"  name="updateComment" value="1" />
 	  <input type="submit" value="Update" />
 </form>

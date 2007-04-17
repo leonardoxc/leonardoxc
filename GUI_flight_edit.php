@@ -93,7 +93,7 @@ function update_comment(area_id) {
 	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
 	MWJ_changeSize('addTakeoffFrame',270,105);
 	MWJ_changeSize( 'takeoffAddID', 270,130 );
-	toggleVisible('takeoffAddID','takeoffAddPos',14,-50,410,320);
+	toggleVisible('takeoffAddID','takeoffAddPos'+area_id,14,-50,410,320);
 }
 </script>	
 <style type="text/css">
@@ -329,7 +329,7 @@ fieldset.legendBox {
 				
 				function get_airspace_area_comment($area_id) {
 					  global $db,$airspaceTable;
-					  $query="SELECT Comments FROM $airspaceTable WHERE id=$area_id";
+					  $query="SELECT Comments , disabled FROM $airspaceTable WHERE id=$area_id";
 					  $res= $db->sql_query($query);	
 					  # Error checking
 					  if($res <= 0){
@@ -342,7 +342,9 @@ fieldset.legendBox {
 						 // exit();
 						 return "";
 					  }
-					  return $row['Comments'];
+					  if ($row['disabled']) $dStr="<strong>DISABLED</strong> ";
+					  else $dStr='';
+					  return $dStr.$row['Comments'];
 				}
 					// echo "#".$flight->airspaceCheck."#";
 					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0 ) $flight->checkAirspace(1);
@@ -353,7 +355,7 @@ fieldset.legendBox {
 						for($i=1;$i<count($checkLines); $i++) {
 							echo $checkLines[$i];
 							echo "<BR>COMMENT: ".get_airspace_area_comment($area_ids[$i-1]);
-							echo " [ <a id='takeoffAddPos' href='javascript:update_comment(".$area_ids[$i-1].");'>Update comment</a> ]<br>";
+							echo " [ <a id='takeoffAddPos".$area_ids[$i-1]."' href='javascript:update_comment(".$area_ids[$i-1].");'>Update comment</a> ]<br>";
 						}
 						// echo "DETAILS:  <BR>";
 					} else {// clear

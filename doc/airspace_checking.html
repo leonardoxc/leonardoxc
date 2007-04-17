@@ -47,7 +47,22 @@
     one between &quot;base&quot; and &quot;top&quot;. For example a flight inside an airspace of
     base=1000m and top=2000m with a gps point having alitude1100 will produce
     a 100m vertical violation. A point of 1900m will also produce a 100m violation </p>
-  <p>&nbsp; </p>
+  <p>&nbsp;</p>
+  <h1>3. Disabling an airspace area.</h1>
+  <p>In the "update Comments" subwindow there is a "disable area" checkbox.<br>
+You just check it and press "update". The now "disabled" area will still be listed in the flight <br>
+(marked as disabled but still invalidating the flight) until a new recheck is forced. <br>
+When the re-check is forced the "disabled" area will disappear from the list.<br>
+<br>
+If this area was violated with other flights also, it will remain and invalidate these flights till a re-check is done for them.<br>
+<br>
+There is no option to delete an area from within the interface, if there REALLY a need to do so instead of "disable" it<br>
+the admin can delete the DB record directly. It is however adviced to use the "disable" functinality because it persists<br>
+(together with the "Comments" field) through new airspace file update. This means that if the new airspace file is imported <br>
+the next year, areas that were deleted will re-enter the DB where as  "disabled" areas will remain disabled (if they still exist in the new  file).<br>
+<br>
+All disabled areas are listed in the "Adminster Airspace checking" so the admin can edit their comments or re-activate them.<br>
+By re-activating an area all flights that violated this area must be manually be re-checked.  </p>
   <p>&nbsp; </p>
 </div> 
 </body>

@@ -104,3 +104,68 @@
 	}
 ?>
 </table>
+<br /><BR />
+<hr />
+<strong>Disabled Areas</strong><BR />
+<script language="javascript">
+function update_comment(area_id) {	 	
+	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
+	MWJ_changeSize('addTakeoffFrame',270,105);
+	MWJ_changeSize( 'takeoffAddID', 270,130 );
+	toggleVisible('takeoffAddID','takeoffAddPos'+area_id,14,-50,410,320);
+}
+</script>	
+<style type="text/css">
+.dropBox {
+	display:block;
+	position:absolute;
+
+	top:0px;
+	left: -999em;
+	width:auto;
+	height:auto;
+	
+	visibility:hidden;
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
+</style>
+<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle">Update Comment</div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='addTakeoffDiv'>
+		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
+</div> 
+<?
+	$query="SELECT * FROM $airspaceTable WHERE disabled=1";		 
+	$res= $db->sql_query($query);
+		
+	if(!$res) {
+		echo "Error in getting disabled airspaces from DB: $query <BR>";
+		return 0;
+	}
+
+	$i=0;
+	while ($row = mysql_fetch_assoc($res)){
+		$base=unserialize($row['Base']);
+		$top=unserialize($row['Top']);
+		echo " [ <a id='takeoffAddPos".$row['id']."' href='javascript:update_comment(".$row['id'].");'>Edit/activate</a> ] ";
+		echo $row['Name']." [".$row['Type']."] (".floor($base->Altitude)."m - ".floor($top->Altitude)."m)- COMMENT: ".$row['Comments']."<BR>";
+
+
+	}
+
+?>
