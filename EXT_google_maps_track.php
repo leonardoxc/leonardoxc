@@ -310,6 +310,7 @@ function SetTimer(evt) {
 <script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
+<? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
 <script language="javascript">
  var poly ;
  var pts;
@@ -350,35 +351,81 @@ function SetTimer(evt) {
 	
 	// !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&  !( $area->maxx<$min_lat || $area->miny>$max_lat )
 
+	//in germany, pilots are allowed to fly in class E and class G airspace, and in gliding sectors when they are activated (class W). 
+	// All others are forbidden - start by colouring particularly the CTRs, TMAs and Danger Areas (EDs) .
+	// $airspace_arr= array("R",  "Q", "P", "A", "B", "C", "CTR","D", "GP", "W", "E", "F");
+	$airspace_color= array( "RESTRICT"=>"#ff0000", "DANGER"=>"#ff0000", "PROHIBITED"=>"#ff0000", 
+							"CLASSA"=>"#0000ff", "CLASSB"=>"#0000ff", "CLASSC"=>"#0000ff", 
+							"CTR"=>"#ff0000","CLASSD"=>"#0000ff", "NOGLIDER"=>"#0000ff", "WAVE"=>"#00ff00", "CLASSE"=>"#00ff00", "CLASSF"=>"#0000ff");
+
+
 	global $AirspaceArea,$NumberOfAirspaceAreas;
+
+	echo "polys = [];\n";	
+	echo "labels = [];\n";	
 
 	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
 	$NumberOfAirspaceAreas=count($AirspaceArea);
 	// echo " // found( $NumberOfAirspaceAreas) areas  $min_lon , $max_lon , $min_lat ,$max_lat <BR>";	
 	foreach ($AirspaceArea as $i=>$area) {
-		echo "pts = [];\n";
-		if ($area->Shape==1) { // area 
-			// echo "// *** ".$area->Name."\n";				
+		echo "pts = [];\n";	
+		if ($area->Shape==1) { // area 					
 			for($j=0;$j<$area->NumPoints;$j++) {
 				 echo " pts[$j] = new GLatLng(".$area->Points[$j]->Latitude.",".$area->Points[$j]->Longitude.");\n";
 			}
-
-		}
-		echo " poly = new GPolygon(pts,'#000000',1,1,'#ff0000',0.5); \n";
-		echo " map.addOverlay(poly);\n";
-		// break;
-	
+		} else if ($area->Shape==2) { // cirle
+			$points=CalculateCircle($area->Latitude,$area->Longitude,$area->Radius);
+			for($j=0;$j<count($points);$j++) {
+				 echo " pts[$j] = new GLatLng(".$points[$j]->lat.",".$points[$j]->lng.");\n";
+			}
+		}	
+		echo " poly = new GPolygon(pts,'#000000',1,1,'".$airspace_color[$area->Type]."',0.25); \n";
+		echo " polys.push(poly); \n";
+		echo " labels.push('".$area->Name.' ['.$area->Type.'] ('.floor($area->Base->Altitude).'m-'.floor($area->Top->Altitude).'m)'."'); \n";
+		echo " map.addOverlay(poly);\n";	
 	}
 	
-	
+
+
 ?>
-//    pts[i] = new GLatLng(parseFloat(points[i].getAttribute("lat")),
-//						   parseFloat(points[i].getAttribute("lng")));
 
-//	var poly = new GPolygon(pts,"#000000",1,1,colour,0.5);
-	//polys.push(poly);
-	//labels.push(label);
-//	map.addOverlay(poly);
+      // === A method for testing if a point is inside a polygon
+      // === Returns true if poly contains point
+      // === Algorithm shamelessly stolen from http://alienryderflex.com/polygon/ 
+      GPolygon.prototype.Contains = function(point) {
+        var j=0;
+        var oddNodes = false;
+        var x = point.lng();
+        var y = point.lat();
+        for (var i=0; i < this.getVertexCount(); i++) {
+          j++;
+          if (j == this.getVertexCount()) {j = 0;}
+          if (((this.getVertex(i).lat() < y) && (this.getVertex(j).lat() >= y))
+          || ((this.getVertex(j).lat() < y) && (this.getVertex(i).lat() >= y))) {
+            if ( this.getVertex(i).lng() + (y - this.getVertex(i).lat())
+            /  (this.getVertex(j).lat()-this.getVertex(i).lat())
+            *  (this.getVertex(j).lng() - this.getVertex(i).lng())<x ) {
+              oddNodes = !oddNodes
+            }
+          }
+        }
+        return oddNodes;
+      }
+
+      GEvent.addListener(map, "click", function(overlay,point) {
+        if (point) {
+		  var infoStr='';
+          for (var i=0; i<polys.length; i++) {
+            if (polys[i].Contains(point)) {
+				infoStr=infoStr+labels[i]+"<BR>";
+            }
+          }
+		  if (infoStr!='') {
+            map.openInfoWindowHtml(point,infoStr);
+		  }
+        }
+      });
+
 </script>
-
+<? } ?>
 </body>

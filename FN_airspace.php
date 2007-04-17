@@ -727,4 +727,40 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 	$NumberOfAirspaceAreas=count($AirspaceArea);
 }
 
+function CalculateCircle($lat,$lng,$radius) {
+	$Rotation=1;
+
+	$StartBearing=0;
+	$EndBearing=360-8;
+	list( $StartLat,$StartLon )= FindLatitudeLongitude($lat, $lng,0,$radius,1,1);
+	list( $EndLat, $EndLon)= FindLatitudeLongitude($lat, $lng,$EndBearing,$radius,1,1);
+
+	$points=array();
+	$i=0;
+	$points[$i]->lat=$StartLat;
+	$points[$i]->lng=$StartLon;
+	$i++;
+ 
+  while(abs($EndBearing-$StartBearing) > 10) {
+	  $StartBearing += $Rotation * 10 ;
+
+	  if($StartBearing > 360)
+		  $StartBearing -= 360;
+	  if($StartBearing < 0)
+		  $StartBearing += 360;
+	
+      list($lat_temp,$lng_temp)= FindLatitudeLongitude($lat, $lng, $StartBearing, $radius, 1,1 );
+	  $points[$i]->lat=$lat_temp;
+	  $points[$i]->lng=$lng_temp;
+	  $i++;
+  }
+
+	$points[$i]->lat=$EndLat;
+	$points[$i]->lng=$EndLon;
+	$i++;
+	$points[$i]->lat=$StartLat;
+	$points[$i]->lng=$StartLon;
+	return $points;
+}
+
 ?>
