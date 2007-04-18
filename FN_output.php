@@ -152,13 +152,7 @@ function datetime2UnixTimestamp($datestamp) {
     }
 }
 
-function getUTMzoneLocal($lon, $lat)  {
-	if ($lon < 0.0)  $lonTmp = 180 - $lon ;
-	else $lonTmp = 180 - $lon ;
 
-	$UTMzone=ceil($lonTmp/6);
-	return $UTMzone;
-}
 
 function processIGC($filePath) {
 	global $takeoffRadious;
@@ -191,12 +185,41 @@ function processIGC($filePath) {
 	// echo $points;
 }
 
+function getUTMzoneLocal($lon, $lat)  {
+	if ($lon < 0.0)  $lonTmp = 180 - $lon ;
+	else $lonTmp = 180 - $lon ;
+
+	$UTMzone=ceil($lonTmp/6);
+	return $UTMzone;
+}
+
 function getUTMtimeOffset($lat,$lon, $theDate ) {
 // $lon is the X (negative is EAST positive is WEST
 // for now we return a very rough calculation
 
 	$timezone= ceil( -$lon / (180/12) );
 	return $timezone;
+}
+
+
+function getTZoffset($TZone,$tm) {
+	$oldTZ=getenv("TZ");
+	// echo "old:$oldTZ";
+	
+	putenv("TZ=$TZone");
+	$offset=date('O',$tm);
+	putenv("TZ=$oldTZ");
+	
+	if ( preg_match("/([-+])(\d\d)(\d\d)/",$offset,$matches) ) {
+		$secs=$matches[2]*3600+$matches[3]*60;
+		if ($matches[1]=='-') $secs=-$secs;
+	} else  {
+		echo "FATAL error in flight offset";
+		exit;
+	}
+	
+	
+	return $secs;
 }
 
 function generate_flights_pagination($base_url, $num_items, $per_page, $start_item, $add_prevnext_text = TRUE)

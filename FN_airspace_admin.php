@@ -69,7 +69,7 @@ function putAirspaceToDB() {
 	
 		$id=$data[$AirspaceArea[$i]->Name][$serial]['id']+0;
 		$Comments=$data[$AirspaceArea[$i]->Name][$serial]['Comments'];
-		$disabled=$data[$AirspaceArea[$i]->Name][$serial]['disabled'];
+		$disabled=$data[$AirspaceArea[$i]->Name][$serial]['disabled']+0;
 		
 	    //	print_r($AirspaceArea[$i]->Base);
 		$fields=" id, Name, serial, updated,  Type, Shape, Comments, disabled, minx, miny, maxx, maxy , Base , Top, ";
