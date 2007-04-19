@@ -162,27 +162,22 @@ function processIGC($filePath) {
 	$points=0;
 	foreach($lines as $line) {
 		$line=trim($line);
-		if  (strlen($line)==0) continue;
-		
+		if  (strlen($line)==0) continue;		
 		if ($line{0}=='B') {
-			if  ($points==0)  { // first point 
-				$firstPoint=new gpsPoint($line);
-				echo _TAKEOFF_COORDS." ";
-				echo $firstPoint->lat." ";
-				echo $firstPoint->lon."<br>";
+			$firstPoint=new gpsPoint($line);
+			//$res.=_TAKEOFF_COORDS." ";
+			//$res.=$firstPoint->lat." ";
+			//$res.=$firstPoint->lon."<br>";
 
-
+			$time=substr($line,1,6);
 			$zone= getUTMzoneLocal( $firstPoint->lon,$firstPoint->lat);
 			$timezone= ceil(-$firstPoint->lon / (180/12) );
-			echo "<b>UTM zone:</b> ".$zone." ";
-			echo "<b>Timezone:</b> ".$timezone."<br>";
-			} else  {
-				$lastPoint=new gpsPoint($line);
-			}
-			$points++;		   
+			$res.="<b>UTM zone:</b> ".$zone." ";
+			$res.="<b>Timezone:</b> ".$timezone." <b>First point time:</b> $time ";
+			break;
 		}
 	}
-	// echo $points;
+	return $res;
 }
 
 function getUTMzoneLocal($lon, $lat)  {
@@ -196,16 +191,71 @@ function getUTMzoneLocal($lon, $lat)  {
 function getUTMtimeOffset($lat,$lon, $theDate ) {
 // $lon is the X (negative is EAST positive is WEST
 // for now we return a very rough calculation
+	DEBUG('flight',1,"getUTMtimeOffset: date-> $theDate <BR>");
 
 	$timezone= ceil( -$lon / (180/12) );
 	return $timezone;
 }
 
+function getTZ($lat,$lon, $theDate) {
+	global $db,$waypointsTable;
+	$query="SELECT lat,lon,ABS($lat-lat) as dlat , ABS($lon- lon ) as dlon ,countryCode from $waypointsTable 
+				WHERE ABS($lat-lat) < 1 AND ABS($lon- lon )  < 1
+				ORDER BY dlat,dlon ASC";
+	DEBUG('getTZ',128,"getTZ: $query<BR>");
+	$res= $db->sql_query($query);
+		
+    if($res <= 0){
+		DEBUG('getTZ',128,"getTZ: no waypont near by will try rough method<BR>");
+		return  getUTMtimeOffset($lat,$lon, $theDate );
+    }
+
+	$i=0;
+	$minTakeoffDistance=1000000;
+	while ($row = mysql_fetch_assoc($res)) { 
+		$i++;	  
+		$this_distance = gpsPoint::calc_distance($row["lat"],$row["lon"],$lat,$lon);
+		DEBUG('getTZ',128,"getTZ: ".$row["lat"]." , ".$row["lon"]." country-> ".$row["countryCode"]." distance-> $this_distance <BR>");
+		if ( $this_distance < $minTakeoffDistance ) {
+				$minTakeoffDistance = $this_distance;
+				$countryCode=$row["countryCode"];
+		}
+    }     
+
+	if (!$i) {
+		DEBUG('getTZ',128,"getTZ: No waypont near by #2. Will try rough method<BR>");
+		return  getUTMtimeOffset($lat,$lon, $theDate );
+	}
+
+	DEBUG('getTZ',128,"getTZ: Min dist: $minTakeoffDistance , country: $countryCode <BR>");
+	if ($minTakeoffDistance > 50000 ) {
+		DEBUG('getTZ',128,"getTZ: Nearest waypoint is too far. Will try rough method<BR>");
+		return  getUTMtimeOffset($lat,$lon, $theDate );
+	}
+
+	// now we will try the getTZoffset()
+
+	// make $tm from YYYY-MM-DD
+	$tm=gmmktime(1,0,0,substr($theDate,5,2),substr($theDate,8,2),substr($theDate,0,4));
+
+	// this will return  good results only for countries that have ONE timezone
+	// else '' will be returned
+	require_once dirname(__FILE__).'/FN_timezones.php';
+	// $TZone=getTZforCountry($countryCode);
+	$TZone= $Countries2timeZones[strtoupper($countryCode)];
+	if ($TZone=='') { 
+		DEBUG('getTZ',128,"getTZ: Country $countryCode has more than one timezones.. Back to rough method<BR>");
+		return  getUTMtimeOffset($lat,$lon, $theDate );
+	}
+
+	return getTZoffset($TZone,$tm)/3600;
+}
 
 function getTZoffset($TZone,$tm) {
 	$oldTZ=getenv("TZ");
 	// echo "old:$oldTZ";
-	
+	DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm)<BR>");
+
 	putenv("TZ=$TZone");
 	$offset=date('O',$tm);
 	putenv("TZ=$oldTZ");
@@ -217,8 +267,7 @@ function getTZoffset($TZone,$tm) {
 		echo "FATAL error in flight offset";
 		exit;
 	}
-	
-	
+		
 	return $secs;
 }
 

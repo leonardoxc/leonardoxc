@@ -89,3 +89,7 @@ ADD `airspaceCheckFinal` TINYINT DEFAULT '0' NOT NULL AFTER `airspaceCheck` ,
 ADD `airspaceCheckMsg` TEXT NOT NULL AFTER `airspaceCheckFinal` ,
 ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
 
+# 2007/04/19
+
+ALTER TABLE `leonardo_waypoints` ADD INDEX ( `lat` , `lon` ) ;
+

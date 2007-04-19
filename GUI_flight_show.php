@@ -485,8 +485,25 @@ $adminPanel="";
 if (in_array($userID,$admin_users) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
-	// DEBUG MANOLIS
-	// processIGC($flight->getIGCFilename());
+
+	//	$adminPanel.='<pre>'.processIGC($flight->getIGCFilename());
+
+	// DEBUG TIMEZONE DETECTION 
+	$firstPoint=new gpsPoint($flight->FIRST_POINT);
+	$time=substr($flight->FIRST_POINT,1,6);
+	$zone= getUTMzoneLocal( $firstPoint->lon,$firstPoint->lat);
+	$timezone1= ceil(-$firstPoint->lon / (180/12) );
+
+	$timezone2=	 getTZ( $firstPoint->lat,$firstPoint->lon, $flight->DATE );
+
+	$adminPanel.="<pre><b>UTM zone:</b> $zone ";
+	$adminPanel.="<b>TZ (lat estimation):</b> $timezone1 ";
+	$adminPanel.="<b>TZ (estimation 2):</b> $timezone2 ";
+	$adminPanel.="<b>TZ (db):</b> ".$flight->timezone."\n";
+	$adminPanel.="<b>First point time:</b> $time ";
+	$adminPanel.="DATE : ".$flight->DATE." ";
+	$adminPanel.='</pre>';
+
 	// display the trunpoints
 	//echo "<hr> ";
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
