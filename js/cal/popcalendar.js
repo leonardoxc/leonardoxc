@@ -37,7 +37,9 @@
 	var visYear  = 0;
 	var visMonth = 0;
 	var bPageLoaded = false;
-	var ie  = document.all;
+	var ie=(/msie/i.test(navigator.userAgent) && !/opera/i.test(navigator.userAgent));
+	var ie7=(/msie 7/i.test(navigator.userAgent));
+	// var ie  = document.all;
 	var dom = document.getElementById;
 	var ns4 = document.layers;
 	var today    = new Date();
@@ -142,7 +144,8 @@
 		{						
 			if (bPageLoaded) return;
 
-			if (!ie) yearNow += 1900;
+			// if (!ie) yearNow += 1900;
+			if (!ie && !ie7) yearNow += 1900;
 
 			crossobj=(dom)?document.getElementById('calendar').style : ie? document.all.calendar : document.calendar;
 			if (!visibleOnLoad ) hideCalendar();
