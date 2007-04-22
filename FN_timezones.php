@@ -16,7 +16,54 @@ function getTZforCountry($countryCode) {
 	return $Countries2timeZones[$countryCode];
 }
 
+//special cases
+/*
+Portugal 
+Azores	UTC-1	UTC	From the last Sunday in March at 00:00 to the last Sunday in October at 01:00	Atlantic/Azores
+Madeira	UTC	UTC+1	From the last Sunday in March at 01:00 to the last Sunday in October at 02:00	Atlantic/Madeira
+Continental Portugal	UTC	UTC+1	From the last Sunday in March at 01:00 to the last Sunday in October at 02:00	Europe/Lisbon
+Simple Rule  if lon < -20 ( - is W ) then TZ=Atlantic/Azores
 
+
+Spain
+Spain, except Canary Islands	UTC+1	UTC+2	From the last Sunday in March at 03:00 to the last Sunday in October at 02:00
+Canary Islands	UTC	UTC+1	From the last Sunday in March at 01:00 to the last Sunday in October at 02:00
+Canary Islands	Atlantic/Canary
+Ceuta and Melilla	Africa/Ceuta
+Spain (all other places)	Europe/Madrid
+
+Simple Rule  if lon < -11  (- is W )  then TZ=Atlantic/Canary
+
+
+new zeland
+http://www.statoids.com/tnz.html
+Canada
+http://www.statoids.com/tca.html
+Brazil
+http://www.statoids.com/tbr.html
+
+australia
+http://www.statoids.com/tau.html
+central - west is on 129E
+
+central - east is on 
+lat > 141E for lon < -26 (S)
+lat > 138E for lon > -26 (S)
+
+east - > Australia/Sydney
+west
+central
+
+equador
+http://www.statoids.com/tec.html
+argentina
+http://www.statoids.com/tar.html
+chile
+http://www.statoids.com/tcl.html
+mexico
+http://www.statoids.com/tmx.html
+
+*/
 
 $Countries2timeZones=array(
 // AFRICA 

@@ -95,6 +95,24 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->glider=$glider;
 	$flight->category=$category;
 
+	// check for mac newlines
+	$lines=file($tmpIGCPath);
+	if ( count ($lines)==1) {
+		if ($lines[0]=preg_replace("/\r([^\n])/","\r\n\\1",$lines[0])) {		
+			DEBUG('addFlightFromFile',1,"addFlightFromFile: MAC newlines found<BR>");
+			if (!$handle = fopen($tmpIGCPath, 'w')) { 
+				print "Cannot open file ($filename)"; 
+				exit; 
+			} 
+			if (!fwrite($handle, $lines[0])) { 
+			   print "Cannot write to file ($filename)"; 
+			   exit; 
+			} 
+			fclose($handle); 
+		} 
+	}
+	unset($lines);
+
 	//  we must cope with some cases here
 	//  1. more flights in the igc
 	//  2. garmin saved paths -> zero time difference -> SOLVED!
