@@ -42,8 +42,11 @@ function chmodDir($dir){
 
 echo "<br><BR>";
 echo "<ul>";
-	if ($CONF_use_validation)	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> ";
-	if ($CONF_use_NAC)			echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> ";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names 
+where the local or english name is missing and put the existing name into the missing one <BR>i.e if the local name is missing the english/international name will be used as the local too. ";
+	if ($CONF_use_validation)	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
+This is a *heavy* operation and will take long to complete<BR>It will check all unchecked flights for airspace violations";
+	if ($CONF_use_NAC)			echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
@@ -63,6 +66,16 @@ echo "</ul><br><br>";
 		echo "<ol>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
 		echo "</ol>";
+    } else if ($admin_op=="fixTakeoffNames") {
+		$ar1=array('name'=>'intName','intName'=>'name','location'=>'intLocation','intLocation'=>'location');
+		foreach ($ar1 as $n1=>$n2){
+			$query="UPDATE $waypointsTable SET $n1=$n2 WHERE $n1='' ";
+			$res= $db->sql_query($query);				
+			if(!$res){
+				echo "error in Update query: $query<BR>";
+			}
+		}
+		echo "<BR><BR>Takeoff Names fixed<BR><BR>";
     } else if ($admin_op=="findMissingFiles") {
 		$query="SELECT ID,active from $flightsTable ";
 		$res= $db->sql_query($query);

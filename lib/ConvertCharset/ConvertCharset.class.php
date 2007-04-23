@@ -325,8 +325,9 @@ class ConvertCharset {
 			$FileName = func_get_arg($i);
 			if (!is_file(CONVERT_TABLES_DIR . $FileName)) 
 			{
-			    print $this->DebugOutput(0, 0, CONVERT_TABLES_DIR . $FileName); //Print an error message
-					exit;
+			    // print $this->DebugOutput(0, 0, CONVERT_TABLES_DIR . $FileName); //Print an error message
+				return array();
+				//exit;
 			}
 			$FileWithEncTabe = fopen(CONVERT_TABLES_DIR . $FileName, "r") or die(); //This die(); is just to make sure...
 		  while(!feof($FileWithEncTabe))
@@ -453,6 +454,8 @@ class ConvertCharset {
 				{
 					$CharsetTable = $this->MakeConvertTable ($FromCharset);
 				}
+
+				if (!count($CharsetTable)) return $StringToChange;
 				/**
 				 * For each char in a string... 
 				 **/

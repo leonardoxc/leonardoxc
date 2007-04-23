@@ -116,7 +116,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">".$pilotLang."#".$pilotCountry."$";	
+			// echo ">$realName ".$pilotLang."#".$pilotCountry."$<br>";	
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);

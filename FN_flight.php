@@ -80,9 +80,36 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 
 	set_time_limit (120);
 
-	if (!$filename) return array(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
-	if (! is_file ($filename) ) return array(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
-	if ( strtolower(substr($filename,-4))!=".igc" ) return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
+	global $CONF_server_id ;
+	require_once dirname(__FILE__).'/CL_actionLogger.php';
+	$log=new Logger();
+	$log->userID  	=$userID;
+	$log->ItemType	=1 ; // flight; 
+	$log->ItemID	= 0; // 0 at start will fill in later if successfull
+	$log->ServerItemID	=$CONF_server_id ;
+	$log->ActionID  = 1 ;  //1  => add  2  => edit;
+	$log->ActionXML	= '';
+	$log->Modifier	= 0;
+	$log->ModifierID= 0;
+	$log->ServerModifierID =0;
+	$log->Result = 0;
+	$log->ResultDescription ="";
+
+	if (!$filename) {
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
+	}
+	if (! is_file ($filename) ) {
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
+	}
+	if ( strtolower(substr($filename,-4))!=".igc" ) {
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
+	}
 
 	checkPath($flightsAbsPath."/".$userID);
 	$tmpIGCPath=$filename;
@@ -117,18 +144,25 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	//  1. more flights in the igc
 	//  2. garmin saved paths -> zero time difference -> SOLVED!
 
-	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) 			
+	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) {
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
+	}
 
 	$oldFlightID= $flight->findSameFlightID();
 	if ($oldFlightID>0) {
 		@unlink($flight->getIGCFilename(1));
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$oldFlightID);	
 	}
 
 	$sameFilenameID=$flight->findSameFilename( basename($filename) );
 	if ($sameFilenameID>0) 	 {
 		@unlink($flight->getIGCFilename(1));
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
 	}
 
@@ -218,12 +252,49 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->updateTakeoffLanding();
 	$flight->putFlightToDB(1); // update
 
-/*
-	set_time_limit (200);
-	$flight->updateAll(1);
-	$flight->putFlightToDB(1); // update
-*/
+	$log->Result=1; //success
+	$log->ActionXML=
+"<flight>
+<serverID></serverID>
+<id></id>
+<date></date>
+<filename></filename>
+<link></link>
 
+<glider></glider>
+<gliderCat></gliderCat>
+<linkURL></linkURL>
+<cat></cat>
+<private></private>
+<comments></comments>
+
+
+<userID></userID>
+<pilotFirstName></pilotFirstName>
+<pilotLastName></pilotLastName>
+<pilotCountry></pilotCountry>
+
+<takeoffID></takeoffID>
+<takeoffName></takeoffName>
+<takeoffCountry></takeoffCountry>
+
+
+StartTime
+Duration
+Flight Type
+Straight Distance
+XCKm
+XCscore
+Max speed
+Max vario
+Min vario
+Max Alt ASL
+Min Alt ASL
+Takeoff alt
+</flight>
+";
+	if (!$log->put()) echo "Problem in logger<BR>";
+	
 	return array(1,$flight->flightID); // ALL OK;
 }
 
