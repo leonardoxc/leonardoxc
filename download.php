@@ -81,8 +81,9 @@
 	} else	if ($type=="sites") {
 		$sites=makeSane($_GET['sites']);
 		$sitesList=explode(",",$sites);
-		$xml='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
-		<kml xmlns="http://earth.google.com/kml/2.0">\n
+//		$xml='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"? >'.
+		$xml='<?xml version="1.0" encoding="UTF-8"?>'.
+		'<kml xmlns="http://earth.google.com/kml/2.1">\n
 		<Folder>
 		<name>Leonardo Site List</name>';
 
@@ -102,6 +103,12 @@
 		}
 		
 		$xml.="</Folder>\n</kml>\n";
+		
+		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+		$NewEncoding = new ConvertCharset;
+		$FromCharset=$langEncodings[$currentlang];
+		$xml = $NewEncoding->Convert($xml, $FromCharset, "utf-8", $Entities);
+		
 		$file_name="Leonardo site guide.kml";
 	
 	}

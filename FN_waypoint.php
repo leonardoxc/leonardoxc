@@ -250,11 +250,17 @@ function  makeKMLwaypoint($waypointID) {
 
 	$placemarkString=makeWaypointPlacemark($waypointID) ;
 
-	$xml_text='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
-<kml xmlns="http://earth.google.com/kml/2.0">
+//	$xml_text='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"? >'.
+	$xml_text='<?xml version="1.0" encoding="UTF-8"?>'.
+'<kml xmlns="http://earth.google.com/kml/2.1">
 '.$placemarkString.'
 </kml>
 ';
+	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+	$NewEncoding = new ConvertCharset;
+	$FromCharset=$langEncodings[$currentlang];
+	$xml_text = $NewEncoding->Convert($xml_text, $FromCharset, "utf-8", $Entities);
+
 	return $xml_text;
 }
 
