@@ -271,6 +271,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // USE airspace checking
  $CONF_airspaceChecks=0; 
 
+ // Will use the date('0') together with the timezone name for TZ detection
+ // This is buggy in php 4.4.1 and before .
+ $CONF_use_date_for_TZ_detection=1;
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

@@ -199,6 +199,11 @@ function getUTMtimeOffset($lat,$lon, $theDate ) {
 
 function getTZ($lat,$lon, $theDate) {
 	global $db,$waypointsTable;
+	global $CONF_use_date_for_TZ_detection;
+
+	// fall back to simple lon method in case of old php (4.4.1) 
+	if (!$CONF_use_date_for_TZ_detection) 	return getUTMtimeOffset($lat,$lon, $theDate );
+
 	$query="SELECT lat,lon,ABS($lat-lat) as dlat , ABS($lon- lon ) as dlon ,countryCode from $waypointsTable 
 				WHERE ABS($lat-lat) < 1 AND ABS($lon- lon )  < 1
 				ORDER BY dlat,dlon ASC";
@@ -254,7 +259,7 @@ function getTZ($lat,$lon, $theDate) {
 function getTZoffset($TZone,$tm) {
 	$oldTZ=getenv("TZ");
 	// echo "old:$oldTZ";
-	DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm) [server TZ=$oldTZ] ".date("T/Z/I/O")."<BR>");
+	// DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm) [server TZ=$oldTZ] ".date("T/Z/I/O")."<BR>");
 
 	putenv("TZ=$TZone");
 $offset=date('O',$tm);
@@ -276,6 +281,7 @@ $offset=date('O',$tm);
 		echo "FATAL error in flight offset";
 		exit;
 	}
+	DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm) = ".($secs /3600)."<BR>");
 		
 	return $secs;
 }

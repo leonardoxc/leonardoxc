@@ -96,6 +96,63 @@ var $maxPointNum=1000;
     function flight() {
 		
     }
+	
+	
+	function toXML(){
+		/*	maybe also include these
+		
+		"forceBounds"	
+		"autoScore"
+		"validated"	"grecord"	"validationMessage"	
+		"airspaceCheck"	"airspaceCheckFinal"	"airspaceCheckMsg"	
+		*/
+		global $CONF_server_id;
+		$xml=
+"<flight>
+<serverID>$CONF_server_id</serverID>
+<id>$this->flightID</id>
+<date>$this->DATE</date>
+<dateAdded>$this->dateAdded</date>
+<filename>$this->filename</filename>
+<link></link>
+
+<glider>$this->glider</glider>
+<gliderCat>$this->cat</gliderCat>
+<linkURL>$this->linkURL</linkURL>
+<cat>$this->category</cat>
+<private>$this->private</private>
+<comments>$this->comments</comments>
+
+<userID>$this->userID</userID>
+<userName>$this->userName</userName>
+<pilotFirstName></pilotFirstName>
+<pilotLastName></pilotLastName>
+<pilotCountry></pilotCountry>
+
+<takeoffID>$this->takeoffID</takeoffID>
+<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
+<takeoffName>".$this->getTakeoffName()."</takeoffName>
+<takeoffCountry></takeoffCountry>
+
+<Timezone>$this->timezone</Timezone>
+<StartTime>$this->START_TIME</StartTime>
+<Duration>$this->DURATION</Duration>
+
+<Flight Type>$this->BEST_FLIGHT_TYPE</Flight Type>
+<Straight Distance>$this->MAX_LINEAR_DISTANCE</Straight Distance>
+<XCKm>$this->FLIGHT_KM</XCKm>
+<XCscore>$this->FLIGHT_POINTS</XCscore>
+<Max speed>$this->MAX_SPEED</Max speed>
+<Max vario>$this->MAX_VARIO</Max vario>
+<Min vario>$this->MIN_VARIO</Min vario>
+<Max Alt ASL>$this->MAX_ALT</Max Alt ASL>
+<Min Alt ASL>$this->MIN_ALT</Min Alt ASL>
+<Takeoff alt>$this->TAKEOFF_ALT</Takeoff alt>
+<Landing alt>$this->LANDING_ALT</Landing alt>
+</flight>";
+
+		return $xml;
+	}
 
 	function setAllowedParams() {
 		if ($this->cat==1 ) { // PG
@@ -1538,6 +1595,7 @@ $kml_file_contents=
 					if ($this->timezone==1000) { // no timezone in the file
 						// echo "calc timezone<br>";
 						$this->timezone= getUTMtimeOffset( $firstPoint->lat,$firstPoint->lon, $this->DATE );
+						$this->timezone= getTZ( $firstPoint->lat,$firstPoint->lon, $this->DATE );						
 						// echo 	$this->timezone;
 						$firstPoint->timezone=$this->timezone;
 					}
@@ -2216,6 +2274,21 @@ $kml_file_contents=
 		//echo "UPDATE / INSERT RESULT ".$result ;
 		if (!$update) $this->flightID=mysql_insert_id();
 
+
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ServerItemID	=$CONF_server_id ;
+		$log->ActionID  = $update+1 ;  //1  => add  2  => edit;
+		$log->ActionXML	= $this->toXML();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = ($result?1:0);
+		if (!$log->Result) $log->ResultDescription ="Problem in puting flight to DB $query";
+		if (!$log->put()) echo "Problem in logger<BR>";
 	}
 
 	function activateFlight() {

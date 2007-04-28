@@ -196,7 +196,7 @@ class Logger {
 		
 		foreach ($DBvars as $varName) {
 				$vars_list.="$varName,";
-				$values_list.="'".$this->$varName."',";
+				$values_list.="'".addslashes ($this->$varName)."',";
 		}
 
 		$vars_list=substr($vars_list,0,-1);
