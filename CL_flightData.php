@@ -1738,9 +1738,17 @@ $kml_file_contents=
 			@mkdir($path_igc,0755);
 		} 
 		// write saned IGC file
-		$handle=fopen($this->getIGCFilename(1),"w");
-		fwrite($handle, $outputBuffer) ;
-		fclose($handle);
+		if (!$handle = fopen($this->getIGCFilename(1), 'w')) { 
+			print "Cannot open file (".$this->getIGCFilename(1).")"; 		
+		} 
+		if (!fwrite($handle, $outputBuffer)) { 
+		   print "Cannot write to file (".$this->getIGCFilename(1).")"; 
+		} 
+		fclose($handle); 
+		
+		//$handle=fopen($this->getIGCFilename(1),"w");
+		//fwrite($handle, $outputBuffer) ;
+		//fclose($handle);
 
 		$this->LANDING_ALT= $lastPoint->getAlt();
 		$this->END_TIME =   $lastPoint->getTime();

@@ -203,6 +203,14 @@ function setValue(obj)
 	$suffix=strtolower(substr($tmpFormFilename,-4));
 	if ($suffix==".olc") $tmpFormFilename=substr($tmpFormFilename,0,-4).".igc"; // make it an igc file (we deal with its content later )
 	
+	if ($suffix==".kml") { // see if it is a kml file from GPSdump
+		// echo "kml file<BR>";
+		require_once dirname(__FILE__).'/FN_kml2igc.php';
+		if ( kml2igc($tmpFilename) ) {
+			$tmpFormFilename=substr($tmpFormFilename,0,-4).".igc"; 
+		} 
+	}
+	
 	
 	if ( strtolower(substr($tmpFormFilename,-4))!=".igc" ) { // not allowed extension
 		$result=ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC;
