@@ -112,9 +112,11 @@ var $maxPointNum=1000;
 <serverID>$CONF_server_id</serverID>
 <id>$this->flightID</id>
 <date>$this->DATE</date>
-<dateAdded>$this->dateAdded</date>
+<dateAdded>$this->dateAdded</dateAdded>
 <filename>$this->filename</filename>
-<link></link>
+<linkIGC>".$this->getIGC_URL()."</linkIGC>
+<linkDisplay>".$this->getFlightLinkURL()."</linkDisplay>
+
 
 <glider>$this->glider</glider>
 <gliderCat>$this->cat</gliderCat>
@@ -138,17 +140,17 @@ var $maxPointNum=1000;
 <StartTime>$this->START_TIME</StartTime>
 <Duration>$this->DURATION</Duration>
 
-<Flight Type>$this->BEST_FLIGHT_TYPE</Flight Type>
-<Straight Distance>$this->MAX_LINEAR_DISTANCE</Straight Distance>
+<FlightType>$this->BEST_FLIGHT_TYPE</FlightType>
+<StraightDistance>$this->MAX_LINEAR_DISTANCE</StraightDistance>
 <XCKm>$this->FLIGHT_KM</XCKm>
 <XCscore>$this->FLIGHT_POINTS</XCscore>
-<Max speed>$this->MAX_SPEED</Max speed>
-<Max vario>$this->MAX_VARIO</Max vario>
-<Min vario>$this->MIN_VARIO</Min vario>
-<Max Alt ASL>$this->MAX_ALT</Max Alt ASL>
-<Min Alt ASL>$this->MIN_ALT</Min Alt ASL>
-<Takeoff alt>$this->TAKEOFF_ALT</Takeoff alt>
-<Landing alt>$this->LANDING_ALT</Landing alt>
+<MaxSpeed>$this->MAX_SPEED</MaxSpeed>
+<MaxVario>$this->MAX_VARIO</MaxVario>
+<MinVario>$this->MIN_VARIO</MinVario>
+<MaxAltASL>$this->MAX_ALT</MaxAltASL>
+<MinAltASL>$this->MIN_ALT</MinAltASL>
+<TakeoffAlt>$this->TAKEOFF_ALT</TakeoffAlt>
+<LandingAlt>$this->LANDING_ALT</LandingAlt>
 </flight>";
 
 		return $xml;
@@ -345,6 +347,12 @@ var $maxPointNum=1000;
 		global $baseInstallationPath,$module_name;
 		global $CONF_mainfile;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
+	}
+
+	function getIGC_URL($saned=0) {
+		global $baseInstallationPath,$module_name;
+		global $CONF_mainfile;
+		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/".$this->getIGCRelPath($saned);
 	}
 
 	function getFlightKML() {
