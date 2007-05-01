@@ -79,6 +79,108 @@ function transliterate($str,$enc) {
 	return utf8_to_ascii($str_utf8);
 }
 
+function getPilotInfo($pilotIDview) {
+	global $db,$pilotsTable,$prefix,$opMode;
+	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
+	global $countries,$langEncodings;
+	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names,$PREFS;
+	
+	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
+	$res= $db->sql_query($query);
+	// echo $query;
+
+
+	// Get real name from leonardo_pilots
+	// 
+	// we must make sure the name can be displayed in the $currentlang encoding
+	// 
+	if ($res) {
+		$pilot = $db->sql_fetchrow($res);
+		$firstName=$pilot['FirstName'];
+		$lastName=$pilot['LastName'];
+		$pilotCountry=strtolower($pilot['countryCode']);
+		$Sex=$pilot['Sex'];
+		$Birthdate=$pilot['Birthdate'];
+		
+		if ( strlen($lastName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name				
+			// we have some info on how to tranlitarate
+			// and the currentlang is not the native lang of the pilot.			
+			$pilotLang=""; 			
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
+					$pilotLang=$nativeLanguage; 				
+				//echo $pilotLang."#".$pilotCountry."$";			
+			} 
+
+			//	if all else fails translitarate using the nativeLangauge
+			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
+			// echo ">$realName ".$pilotLang."#".$pilotCountry."$<br>";	
+
+			$enc=$langEncodings[$pilotLang];
+			if ($enc) {
+				$firstName=transliterate($firstName,$enc);
+				$lastName=transliterate($lastName,$enc);
+			}
+			//echo $realName."@";
+			// else return as is.
+
+
+			return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate);
+			
+		}
+					
+		/*
+		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
+			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
+			else return $realName; 
+		}*/
+		
+	} 
+
+    if ($opMode==1) { // phpNuke 
+		$res= $db->sql_query("SELECT username,name FROM ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		if ($res) {
+			$row= $db->sql_fetchrow($res);
+			if ($currentlang!=$nativeLanguage) { 
+				 $realName=$row["username"]; 
+			} else {
+				 if ($row["name"]!='') $realName=$row["name"];
+				 else $realName=$row["username"];
+			}
+			$str=$realName;		
+		}		
+	} else { // phpBB
+		$res= $db->sql_query("SELECT $CONF_phpbb_realname_field FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		if ($res) {
+			$row= $db->sql_fetchrow($res);
+			$realName=$row["$CONF_phpbb_realname_field"];
+
+			$str=$realName;			
+			// we have some info on how to tranlitarate
+			// and the currentlang is not the native lang of the pilot.			
+			$pilotLang=""; 			
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
+					$pilotLang=$nativeLanguage; 				
+				//echo $pilotLang."#".$pilotCountry."$";			
+			} 
+
+			//	if all else fails translitarate using the nativeLangauge
+			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
+			// echo ">".$pilotLang."#".$pilotCountry."$";	
+
+			$enc=$langEncodings[$pilotLang];
+			if ($enc) $str=transliterate($str,$enc);
+			//echo $realName."@";
+			// else return as is.
+		}
+	}
+
+	return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate);
+
+}
+
+
 function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;

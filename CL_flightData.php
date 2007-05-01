@@ -106,52 +106,78 @@ var $maxPointNum=1000;
 		"validated"	"grecord"	"validationMessage"	
 		"airspaceCheck"	"airspaceCheckFinal"	"airspaceCheckMsg"	
 		*/
-		global $CONF_server_id;
+		global $CONF_server_id,$CONF_photosPerFlight;
+		
+		$photosXML='';
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";
+			if ($this->$var_name) {
+				$photosXML.="<photo>\n<id>$i</id>\n<name>".$this->$var_name."</name>\n<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getPhotoRelPath($i)."</link>\n</photo>\n";
+			}
+		}
+		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
+		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
+		
 		$xml=
 "<flight>
 <serverID>$CONF_server_id</serverID>
 <id>$this->flightID</id>
-<date>$this->DATE</date>
 <dateAdded>$this->dateAdded</dateAdded>
 <filename>$this->filename</filename>
 <linkIGC>".$this->getIGC_URL()."</linkIGC>
-<linkDisplay>".$this->getFlightLinkURL()."</linkDisplay>
+<linkDisplay>".htmlspecialchars($this->getFlightLinkURL())."</linkDisplay>
 
+<info>
+	<glider>$this->glider</glider>
+	<gliderCat>$this->cat</gliderCat>
+	<cat>$this->category</cat>
+	<linkURL>$this->linkURL</linkURL>
+	<private>$this->private</private>
+	<comments>$this->comments</comments>
+</info>
 
-<glider>$this->glider</glider>
-<gliderCat>$this->cat</gliderCat>
-<linkURL>$this->linkURL</linkURL>
-<cat>$this->category</cat>
-<private>$this->private</private>
-<comments>$this->comments</comments>
+<time>
+	<date>$this->DATE</date>
+	<Timezone>$this->timezone</Timezone>
+	<StartTime>$this->START_TIME</StartTime>
+	<Duration>$this->DURATION</Duration>
+</time>
 
-<userID>$this->userID</userID>
-<userName>$this->userName</userName>
-<pilotFirstName></pilotFirstName>
-<pilotLastName></pilotLastName>
-<pilotCountry></pilotCountry>
+<pilot>
+	<userID>$this->userID</userID>
+	<userName>$this->userName</userName>
+	<pilotFirstName></pilotFirstName>
+	<pilotLastName></pilotLastName>
+	<pilotCountry></pilotCountry>
+	<pilotBirthdate></pilotBirthdate>
+	<pilotSex></pilotSex>
+</pilot>
 
-<takeoffID>$this->takeoffID</takeoffID>
-<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
-<takeoffName>".$this->getTakeoffName()."</takeoffName>
-<takeoffCountry></takeoffCountry>
+<location>
+	<takeoffID>$this->takeoffID</takeoffID>
+	<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
+	<takeoffName>$takeoffName</takeoffName>
+	<takeoffNameInt>$takeoffNameInt</takeoffNameInt>
+	<takeoffCountry>$takeoffCountry</takeoffCountry>
+</location>
 
-<Timezone>$this->timezone</Timezone>
-<StartTime>$this->START_TIME</StartTime>
-<Duration>$this->DURATION</Duration>
+<stats>
+	<FlightType>$this->BEST_FLIGHT_TYPE</FlightType>
+	<StraightDistance>$this->MAX_LINEAR_DISTANCE</StraightDistance>
+	<XCKm>$this->FLIGHT_KM</XCKm>
+	<XCscore>$this->FLIGHT_POINTS</XCscore>
+	<MaxSpeed>$this->MAX_SPEED</MaxSpeed>
+	<MaxVario>$this->MAX_VARIO</MaxVario>
+	<MinVario>$this->MIN_VARIO</MinVario>
+	<MaxAltASL>$this->MAX_ALT</MaxAltASL>
+	<MinAltASL>$this->MIN_ALT</MinAltASL>
+	<TakeoffAlt>$this->TAKEOFF_ALT</TakeoffAlt>
+	<LandingAlt>$this->LANDING_ALT</LandingAlt>
+</stats>
 
-<FlightType>$this->BEST_FLIGHT_TYPE</FlightType>
-<StraightDistance>$this->MAX_LINEAR_DISTANCE</StraightDistance>
-<XCKm>$this->FLIGHT_KM</XCKm>
-<XCscore>$this->FLIGHT_POINTS</XCscore>
-<MaxSpeed>$this->MAX_SPEED</MaxSpeed>
-<MaxVario>$this->MAX_VARIO</MaxVario>
-<MinVario>$this->MIN_VARIO</MinVario>
-<MaxAltASL>$this->MAX_ALT</MaxAltASL>
-<MinAltASL>$this->MIN_ALT</MinAltASL>
-<TakeoffAlt>$this->TAKEOFF_ALT</TakeoffAlt>
-<LandingAlt>$this->LANDING_ALT</LandingAlt>
-</flight>";
+$photosXML
+
+</flight>\n";
 
 		return $xml;
 	}
@@ -352,7 +378,7 @@ var $maxPointNum=1000;
 	function getIGC_URL($saned=0) {
 		global $baseInstallationPath,$module_name;
 		global $CONF_mainfile;
-		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/".$this->getIGCRelPath($saned);
+		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getIGCRelPath($saned);
 	}
 
 	function getFlightKML() {

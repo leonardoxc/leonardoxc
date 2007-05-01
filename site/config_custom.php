@@ -148,7 +148,7 @@
 
  // Membership of NAC (National Airsport Control, also referred as National Aero Club)
  $CONF_NAC_list=array(
-	1=>array(
+/*	1=>array(
 		 'id'=>1,
 		 'name'=>'DHV',
 		 'localName'=>'DHV',
@@ -177,9 +177,9 @@
 		 // the admin must set this to 0 when he wishes to stop pilots registering for clubs.
 		 "add_to_club_period_active"=>1,
 		 "current_year"=>2007,
-	)	,
-   2=>array(
-    	'id'=>2,
+	)	,*/
+   24=>array(
+    	'id'=>24,
 		'name'=>'OeAeC',
 		'localName'=>'OeAeC',
 		'localLanguage'=>'german',
@@ -192,7 +192,7 @@
 		'input_url'=>'',
 
 		// Use the NAC clubs. A pilot can be member only to one NAC club.
-		"use_clubs"=>0,
+		"use_clubs"=>1,
 
 		// While this flag is 1 the pilots are allowd to change their club membership
 		// the admin must set this to 0 to finalise the memberships for the period.

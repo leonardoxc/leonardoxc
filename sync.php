@@ -52,6 +52,7 @@
 			$desc=htmlspecialchars ($desc);
 
 			$RSS_str.="<item>
+<transactionID>".$row['transactionID']."</transactionID>			
 <type>".$row['ItemType']."</type>
 <id>".$row['ItemID']."</id>
 <serverId>".$row['ServerItemID']."</serverId>

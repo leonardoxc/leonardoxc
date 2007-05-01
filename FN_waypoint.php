@@ -176,6 +176,19 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 	return $waypoints;
 }
 
+function getWaypointFull($ID) {
+	global $db,$waypointsTable,$prefix,$opMode;
+	global $CONFIG_forceIntl;
+
+	$query="SELECT * from $waypointsTable WHERE ID=".$ID;
+	$res= $db->sql_query($query);			
+	if($res <= 0) return array(0,"UNKNOWN","UNKNOWN","UNKNOWN");
+	
+	$row = $db->sql_fetchrow($res) ;
+	$db->sql_freeresult($res);
+
+	return array($ID,$row["name"],$row["intName"],$row["countryCode"]);
+}
 
 function getWaypointName($ID,$forceIntl=-1,$countryFirst=0) {
 	global $db,$waypointsTable,$prefix,$opMode;
