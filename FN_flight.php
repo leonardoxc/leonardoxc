@@ -121,6 +121,10 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->private=$is_private;
 	$flight->glider=$glider;
 	$flight->category=$category;
+	$flight->comments=$comments;
+	$flight->glider=$glider;
+	$flight->linkURL=$linkURL;
+	if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
@@ -166,15 +170,6 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
 	}
 
-	if ($calledFromForm) {	
-		$flight->comments=$_REQUEST["comments"];
-		// check to see if the user has filled in a glider
-		if ($_REQUEST["glider"]!='') $flight->glider=$_REQUEST["glider"];
-		// else the glider will be found from the igc file 
-		
-		$flight->linkURL=$_REQUEST["linkURL"];
-		if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
-	}
 
 	// move the flight to corresponding year
 	$yearPath=$flightsAbsPath."/".$flight->userID."/flights/".$flight->getYear(); 
@@ -251,49 +246,6 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 	$flight->getOLCscore();
 	$flight->updateTakeoffLanding();
 	$flight->putFlightToDB(1); // update
-
-	$log->Result=1; //success
-	$log->ActionXML=
-"<flight>
-<serverID></serverID>
-<id></id>
-<date></date>
-<filename></filename>
-<link></link>
-
-<glider></glider>
-<gliderCat></gliderCat>
-<linkURL></linkURL>
-<cat></cat>
-<private></private>
-<comments></comments>
-
-
-<userID></userID>
-<pilotFirstName></pilotFirstName>
-<pilotLastName></pilotLastName>
-<pilotCountry></pilotCountry>
-
-<takeoffID></takeoffID>
-<takeoffName></takeoffName>
-<takeoffCountry></takeoffCountry>
-
-
-StartTime
-Duration
-Flight Type
-Straight Distance
-XCKm
-XCscore
-Max speed
-Max vario
-Min vario
-Max Alt ASL
-Min Alt ASL
-Takeoff alt
-</flight>
-";
-	if (!$log->put()) echo "Problem in logger<BR>";
 	
 	return array(1,$flight->flightID); // ALL OK;
 }

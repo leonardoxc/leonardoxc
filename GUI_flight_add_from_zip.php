@@ -72,7 +72,7 @@
 	move_uploaded_file($_FILES['zip_datafile']['tmp_name'], $tmpZIPPath );
 
      delDir($tmpZIPfolder);
-	 exec("unzip -o -j ".$tmpZIPPath." -d ".$tmpZIPfolder );
+	 exec("unzip -o -j '".$tmpZIPPath."' -d '".$tmpZIPfolder."'" );
 
 	 $igcFiles=0;
 	 $igcFilesSubmited=0;

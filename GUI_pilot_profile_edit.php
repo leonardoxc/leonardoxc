@@ -175,6 +175,10 @@
 			$use_clubs=$NAC['use_clubs']+0;			
 			$list2.="NAC_use_clubs[$NACid]  = $use_clubs;\n";
 
+			$list2.="NAC_select_clubs[$NACid]  = ".( ( $NAC['club_change_period_active'] || 
+				($NAC['add_to_club_period_active'] && !$pilot['NACclubID'] )|| 
+				in_array($userID,$admin_users)|| in_array($userID,$mod_users) )? 1 : 0).";\n";
+
 			$externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
 			if ($ext_input && !empty($NAC['external_fields'])) {
 				$list3.="NAC_external_fields[$NACid] = '$externalfields';\n";
@@ -223,6 +227,7 @@
 		var NAC_external_input= [];
 		var NAC_external_fields= [];
 		var NAC_use_clubs=[];
+		var NAC_select_clubs=[];
 		var NACid=0;
 	   	<?=$list1.$list2.$list3.$list4 ?>
 		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
@@ -246,8 +251,12 @@
 			
 			if (NAC_use_clubs[NACid]) {
 				MWJ_changeDisplay("mClubSelect","block");
+				if (NAC_select_clubs[NACid]) {
+				  MWJ_changeDisplay("mClubLink","inline");
+				}
 			} else  {
 				MWJ_changeDisplay("mClubSelect","none");
+				MWJ_changeDisplay("mClubLink","none");
 			}
 			
 			var flds=all_readonly_fields.split(',');
@@ -300,16 +309,19 @@
 			echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";
 			$NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);
 
-
 			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
 				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
 				in_array($userID,$admin_users) || in_array($userID,$mod_users)
-			) {
+			) $showChangeClubLink="inline";
+			else $showChangeClubLink="none";
+			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub();return false;\">"._Select_Club."</a> ]</div>";
+/*
+			
 				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
 			} else {
 				echo "";
 			}
-
+*/
 			echo "<br><input  type='hidden' name='NACclubID' value='".$pilot['NACclubID']."' /> ";
 			echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
 
@@ -556,5 +568,5 @@
 ?>
 <script language="javascript">
 		var sl0=MWJ_findObj("NACid");
-		NACid= sl0.selectedIndex;    // Which menu item is selected
+		NACid= sl0.options[sl0.selectedIndex].value ;    // Which menu item is selected
 </script>

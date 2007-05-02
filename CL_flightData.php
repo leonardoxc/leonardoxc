@@ -99,12 +99,8 @@ var $maxPointNum=1000;
 	
 	
 	function toXML(){
-		/*	maybe also include these
-		
-		"forceBounds"	
-		"autoScore"
-		"validated"	"grecord"	"validationMessage"	
-		"airspaceCheck"	"airspaceCheckFinal"	"airspaceCheckMsg"	
+		/*	maybe also include these	
+		"forceBounds"		"autoScore"
 		*/
 		global $CONF_server_id,$CONF_photosPerFlight;
 		
@@ -117,7 +113,8 @@ var $maxPointNum=1000;
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
 		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
-		
+		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate)=getPilotInfo($this->userID);
+
 		$xml=
 "<flight>
 <serverID>$CONF_server_id</serverID>
@@ -146,11 +143,11 @@ var $maxPointNum=1000;
 <pilot>
 	<userID>$this->userID</userID>
 	<userName>$this->userName</userName>
-	<pilotFirstName></pilotFirstName>
-	<pilotLastName></pilotLastName>
-	<pilotCountry></pilotCountry>
-	<pilotBirthdate></pilotBirthdate>
-	<pilotSex></pilotSex>
+	<pilotFirstName>$firstName</pilotFirstName>
+	<pilotLastName>$lastName</pilotLastName>
+	<pilotCountry>$pilotCountry</pilotCountry>
+	<pilotBirthdate>$Birthdate</pilotBirthdate>
+	<pilotSex>$Sex</pilotSex>
 </pilot>
 
 <location>
@@ -172,8 +169,16 @@ var $maxPointNum=1000;
 	<MaxAltASL>$this->MAX_ALT</MaxAltASL>
 	<MinAltASL>$this->MIN_ALT</MinAltASL>
 	<TakeoffAlt>$this->TAKEOFF_ALT</TakeoffAlt>
-	<LandingAlt>$this->LANDING_ALT</LandingAlt>
 </stats>
+
+<validation>
+	<validated>$this->validated</validated>
+	<grecord>$this->grecord</grecord>
+	<validationMessage>$this->validationMessage</validationMessage>
+	<airspaceCheck>$this->airspaceCheck</airspaceCheck>
+	<airspaceCheckFinal>$this->airspaceCheckFinal</airspaceCheckFinal>
+	<airspaceCheckMsg>$this->airspaceCheckMsg</airspaceCheckMsg>
+</validation>
 
 $photosXML
 
@@ -2220,6 +2225,20 @@ $kml_file_contents=
 			$this->deletePhoto($i);
 		}
 
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ServerItemID	=$CONF_server_id ;
+		$log->ActionID  = 4 ;  //1  => add  2  => edit; 4  => delete
+		$log->ActionXML	= $this->toXML();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = 1;
+		if (!$log->Result) $log->ResultDescription ="Problem in deleting flight  $query";
+		if (!$log->put()) echo "Problem in logger<BR>";
 	}
 
     function putFlightToDB($update=0) {

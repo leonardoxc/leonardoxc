@@ -222,9 +222,13 @@ function setValue(obj)
 		move_uploaded_file($tmpFilename, $flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename );
 		$filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
 	
-		//	echo $filename;
-		
-		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat) ;
+		//	echo $filename; 
+		$category=$_POST['category']+0;
+		$comments=$_POST["comments"];
+		$glider=$_POST["glider"];
+		$linkURL=$_POST["linkURL"];
+
+		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat,  $linkURL,$comments,$glider,$category) ;
 		
 	}
 	
@@ -236,9 +240,6 @@ function setValue(obj)
 	} else {
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-
-		$flight->category=$_POST['category']+0;
-		$flight->putFlightToDB(1);
 
 		if ($flight->takeoffVinicity > $takeoffRadious*2 ) {
 ?>

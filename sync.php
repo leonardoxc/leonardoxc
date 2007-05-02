@@ -52,13 +52,14 @@
 			$desc=htmlspecialchars ($desc);
 
 			$RSS_str.="<item>
-<transactionID>".$row['transactionID']."</transactionID>			
+<transactionID>".sprintf("%020d",$row['transactionID'])."</transactionID>			
+<actionTime>".$row['actionTime']."</actionTime>
 <type>".$row['ItemType']."</type>
 <id>".$row['ItemID']."</id>
 <serverId>".$row['ServerItemID']."</serverId>
 <action>".$row['ActionID']."</action>
 <userID>".$row['userID']."</userID>
-<actionTime>".$row['actionTime']."</actionTime>
+
 <ActionXML>".$row['ActionXML']."</ActionXML>
 </item>\n";
 		}
