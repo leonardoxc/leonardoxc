@@ -90,7 +90,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",
-				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese");
+				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");
 
  $langEncodings=array(
 	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"iso-8859-5","brazilian"=>"iso-8859-1",
@@ -107,7 +107,8 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $lang2iso=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
  			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"br","greek"=>"gr","turkish"=>"tr",
 			"swedish"=>"se","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
-			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si","danish"=>"dk","chinese"=>"cn");
+			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
+			"danish"=>"dk","chinese"=>"cn","hebrew"=>"il");
 
   $CONFIG_langsSpoken=array(
 	"albanian"=>array("al"),"arabic"=>array("eg"),"bulgarian"=>array("bg"),

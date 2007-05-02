@@ -1,0 +1,601 @@
+<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8"></head><? }?><?php
+
+/**************************************************************************/
+/*  Translation to Hebrew by                                              */
+/*  Dmitry N. Korogodin  (novanow@012.net.il)  NOVA ISRAEL TEL AVIV 2007  */
+/**************************************************************************/
+
+
+/************************************************************************/
+/* Leonardo: Gliding XC Server	     	                              */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
+/* http://leonardo.thenet.gr                                            */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/*                                                                      */
+/* If you need to use double quotes (") remember to add a backslash (\),*/
+/* so your entry will look like: This is \"double quoted\" text.        */
+/* And, if you use HTML code, please double check it.                   */
+/************************************************************************/
+
+function setMonths() {
+	global  $monthList,	$monthListShort, $weekdaysList;
+	$monthList=array('ינואר','פברואר','מרץ','אפריל','מאי','יוני',
+					'יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר');
+	$monthListShort=array('ינו','פבר','מרס','אפר','מאי','יונ','יול','אוג','ספט','אוק','נוב','דצמ');
+	$weekdaysList=array('ב','ג','ד','ה','ו','ש','א') ;
+}
+setMonths();
+
+//--------------------------------------------
+// output.php
+//--------------------------------------------
+define("_FREE_FLIGHT","טיסה חופשית");
+define("_FREE_TRIANGLE","משולש חופשי");
+define("_FAI_TRIANGLE","FAIמשולש ");
+
+define("_SUBMIT_FLIGHT_ERROR","הגישת טיסה לא הסתיימה בהצלחה ");
+
+// list_pilots()
+define("_NUM","#");
+define("_PILOT","טייס");
+define("_NUMBER_OF_FLIGHTS","מספר טיסות");
+define("_BEST_DISTANCE","מיטב המרחק");
+define("_MEAN_KM"," # ממוצעת קילומטרים לפי טיסה");
+define("_TOTAL_KM","סיכום הטיסה ,קילומטר");
+define("_TOTAL_DURATION_OF_FLIGHTS","סיכום של משך טיסות");
+define("_MEAN_DURATION"," ממוצע של משך טיסות");
+define("_TOTAL_OLC_KM","OLC סיכום מרחק");
+define("_TOTAL_OLC_SCORE","OLC סיכום נקודות");
+define("_BEST_OLC_SCORE","OLC הנקודות מיטב");
+define("_From","מאת");
+
+// list_flights()
+define("_DURATION_HOURS_MIN","משך (ש:ד)");
+define("_SHOW","להציג");
+
+// show flight
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","טיסה תופעל בדקות הקרובות");
+define("_TRY_AGAIN","נא לנסות מאוחר יותר");
+
+define("_TAKEOFF_LOCATION","המראה");
+define("_TAKEOFF_TIME","זמן המראה");
+define("_LANDING_LOCATION","נחיתה");
+define("_LANDING_TIME","נחיתה זמן");
+define("_OPEN_DISTANCE","מרחק קווי");
+define("_MAX_DISTANCE","מרב המרחק");
+define("_OLC_SCORE_TYPE","OLCסוג של נקודות ");
+define("_OLC_DISTANCE","OLC מרחק");
+define("_OLC_SCORING","OLC נקודות");
+define("_MAX_SPEED", "מרב המהירות");
+define("_MAX_VARIO","מרב הוריו");
+define("_MEAN_SPEED","מהירות ממוצעת");
+define("_MIN_VARIO","מזער הוריו");
+define("_MAX_ALTITUDE","מרב הגובה מעל פני הים");
+define("_TAKEOFF_ALTITUDE","גובה המראה מעל פני הים");
+define("_MIN_ALTITUDE","מזער גובה מעל פני הים");
+define("_ALTITUDE_GAIN","גובה הרכוש");
+define("_FLIGHT_FILE","קובץ טיסה");
+define("_COMMENTS","תגובות");
+define("_RELEVANT_PAGE","רלוונטי URL דף ");
+define("_GLIDER","דאון");
+define("_PHOTOS","תמונות");
+define("_MORE_INFO","מידע נוסף");
+define("_UPDATE_DATA","עדכון נתונים");
+define("_UPDATE_MAP","עדכון מפה");
+define("_UPDATE_3D_MAP","עדכון מפה תלת-ממדית");
+define("_UPDATE_GRAPHS","עדכון תרשים");
+define("_UPDATE_SCORE","עדכון נקודות");
+
+define("_TAKEOFF_COORDS",": קואורדינטות המראה");
+define("_NO_KNOWN_LOCATIONS","המקום אינו מוכר!");
+define("_FLYING_AREA_INFO","מידע על אזור טיסה");
+
+//--------------------------------------------
+// index.php
+//--------------------------------------------
+define("_PAGE_TITLE","XCלאונרדו ");
+define("_RETURN_TO_TOP","לחזור למעלה");
+// list flight
+define("_PILOT_FLIGHTS","טיסות של טייס");
+
+define("_DATE_SORT","תאריך");
+define("_PILOT_NAME","שם טייס");
+define("_TAKEOFF","המראה");
+define("_DURATION","משך זמן");
+define("_LINEAR_DISTANCE","מרחק פתוח");
+define("_OLC_KM"," קילומטריםOLC");
+define("_OLC_SCORE","OLC נקודות");
+define("_DATE_ADDED","הגשה האחרונה");
+
+define("_SORTED_BY",":נבחר לפי");
+define("_ALL_YEARS","כל השנים");
+define("_SELECT_YEAR_MONTH","נא לבחור שנה (גם חודש)");
+define("_ALL","הכול");
+define("_ALL_PILOTS","להציג כול הטייסים");
+define("_ALL_TAKEOFFS","להציג כול ההמראות");
+define("_ALL_THE_YEAR","כול השנים");
+
+// add flight
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","הקובצ טיסה אינו סופק");
+define("_NO_SUCH_FILE","קובץ הסופק אינו נמצא בשרת");
+define("_FILE_DOESNT_END_IN_IGC",".igc הסיומת של קובץ הסופק אינו מתאימה ולא ");
+define("_THIS_ISNT_A_VALID_IGC_FILE","אינו מתאים .igcהקובץ ");
+define("_THERE_IS_SAME_DATE_FLIGHT","הטיסה עם אותו תאריך וזמן כבר נמצת");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","במקרה החלפת קובץ, קודם אנא");
+define("_DELETE_THE_OLD_ONE","למחוק הישן יותר");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","הטיסה עם אותו שם כבר נמצת");
+define("_CHANGE_THE_FILENAME","במקרה הטיסה הזאת היא טיסה אחרת אנא לשנות את השם ולנסות שוב!");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","הטיסה היתה הוגשה בהצלחה!");
+define("_PRESS_HERE_TO_VIEW_IT","נא להקיש כאן לצפיה");
+define("_WILL_BE_ACTIVATED_SOON","(תהיה מופעלת בתוך שתי דקות)");
+
+// add_from_zip
+define("_SUBMIT_MULTIPLE_FLIGHTS","להגיש מספר טיסות");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","IGCיש אפשרות להגיש רק קבציי ");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS"," שהכיל טיסות<br>ZIP להגיש קובץ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","נא להקיש כאן להגשת טיסות");
+
+define("_FILE_DOESNT_END_IN_ZIP",".zipהסיומת של קובץ הסופק אינו מתאימה ולא ");
+define("_ADDING_FILE","הגשת קובץ");
+define("_ADDED_SUCESSFULLY","הוגש בהצלחה");
+define("_PROBLEM","בעיה");
+define("_TOTAL","סיכום");
+define("_IGC_FILES_PROCESSED","טיסות היו מעובדות");
+define("_IGC_FILES_SUBMITED"," טיסות היו הוגשות");
+
+// info
+define("_DEVELOPMENT","פיתוח");
+define("_ANDREADAKIS_MANOLIS","מנוליס אנדראדקיס");
+define("_PROJECT_URL","דף אינטרנט מוקדש לפרויקט");
+define("_VERSION","גירסה");
+define("_MAP_CREATION","פיתוח מפה");
+define("_PROJECT_INFO","מידע על פרויקט");
+
+// menu bar 
+define("_MENU_MAIN_MENU","תפריט ראשית");
+define("_MENU_DATE","נא לבחור תאריך");
+define("_MENU_COUNTRY","לבחור ארץ");
+define("_MENU_XCLEAGUE","XCאגודה ");
+define("_MENU_ADMIN","מנהל");
+
+define("_MENU_COMPETITION_LEAGUE","אגודה  כול הסוגים");
+define("_MENU_OLC","OLC");
+define("_MENU_OPEN_DISTANCE","מרחק פתוח");
+define("_MENU_DURATION","משך זמן");
+define("_MENU_ALL_FLIGHTS","להציג כול הטיסות");
+define("_MENU_FLIGHTS","טיסות");
+define("_MENU_TAKEOFFS","המראות");
+define("_MENU_FILTER","מסנן");
+define("_MENU_MY_FLIGHTS","טיסות שלי");
+define("_MENU_MY_PROFILE","פרופיל שלי");
+define("_MENU_MY_STATS","סטטיסטיקה שלי"); 
+define("_MENU_MY_SETTINGS","הגדרות שלי"); 
+define("_MENU_SUBMIT_FLIGHT","להגיש טיסה ");
+define("_MENU_SUBMIT_FROM_ZIP","ZIP להגיש טיסה מקובץ ");
+define("_MENU_SHOW_PILOTS","טייסים");
+define("_MENU_SHOW_LAST_ADDED"," להציג את טיסות הוגשות באחרונה ");
+define("_FLIGHTS_STATS","סטטיסטיקה טיסות");
+
+define("_SELECT_YEAR","לבחור שנה");
+define("_SELECT_MONTH","לבחור חודש");
+define("_ALL_COUNTRIES","להציג כול הארצות");
+//--------------------------------------------
+// list_pilots.php
+//--------------------------------------------
+
+define("_ALL_TIMES","במשך כל הזמן");
+define("_NUMBER_OF_FLIGHTS","מספר טיסות");
+define("_TOTAL_DISTANCE","סיכום מרחק");
+define("_TOTAL_DURATION","סיכום משך זמן");
+define("_BEST_OPEN_DISTANCE","מיטב המרחק");
+define("_TOTAL_OLC_DISTANCE","OLC סיכום מרחק");
+define("_TOTAL_OLC_SCORE","OLCסיכום נקודות ");
+define("_BEST_OLC_SCORE","OLCמיטב הנקודות ");
+define("_MEAN_DURATION","ממוצעת משך זמן");
+define("_MEAN_DISTANCE","ממוצעת מרחק");
+define("_PILOT_STATISTICS_SORT_BY","טייסים  בחירב לפי");
+define("_CATEGORY_FLIGHT_NUMBER","מספר טיסות 'FastJoe'-סוג ");
+define("_CATEGORY_TOTAL_DURATION","משך הזמן סיכום'DURACELL' סוג -");
+define("_CATEGORY_OPEN_DISTANCE","'Open Distance'סוג -");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","אין טייסים להצגה!");
+
+	
+//--------------------------------------------
+// delete_flight.php
+//--------------------------------------------
+
+define("_THE_FLIGHT_HAS_BEEN_DELETED","הטיסה נמחקה");
+define("_RETURN","לחזור חזרה");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED"," זהירות! האם ברצונך למחוק את הטיסה? ");
+define("_THE_DATE","תאריך");
+define("_YES","כן");
+define("_NO","לא");
+
+//--------------------------------------------
+// competition.php
+//--------------------------------------------
+
+define("_LEAGUE_RESULTS","התוצאות של אגודה");
+define("_N_BEST_FLIGHTS","מיטב הטיסות");
+define("_OLC","OLC");
+define("_OLC_TOTAL_SCORE","OLCסיקום הנקודות ");
+define("_KILOMETERS","קילומטרים");
+define("_TOTAL_ALTITUDE_GAIN","סיכום הגובה מורוח");
+define("_TOTAL_KM","סיכום הקילומטרים");
+
+//--------------------------------------------
+// filter.php
+//--------------------------------------------
+
+define("_IS","נמצא");
+define("_IS_NOT","אינו נמצא");
+define("_OR","או");
+define("_AND","גם");
+define("_FILTER_PAGE_TITLE","נא לסנן טיסות");
+define("_RETURN_TO_FLIGHTS","נא לשוב לטיסות");
+define("_THE_FILTER_IS_ACTIVE","המסנן מופעל");
+define("_THE_FILTER_IS_INACTIVE","המסנן מבוטל");
+define("_SELECT_DATE","נא לבחור תאריך");
+define("_SHOW_FLIGHTS","נא להציג טיסות");
+define("_ALL2","הכול");
+define("_WITH_YEAR","בשנה");
+define("_MONTH","חודש");
+define("_YEAR","שנה");
+define("_FROM","מאת");
+define("_from","מאת");
+define("_TO","אל");
+define("_SELECT_PILOT","נא לבחור טייס");
+define("_THE_PILOT","הטייס");
+define("_THE_TAKEOFF","ההמראה");
+define("_SELECT_TAKEOFF","נא לבחור את ההמראה");
+define("_THE_COUNTRY","הארץ");
+define("_COUNTRY","ארץ");
+define("_SELECT_COUNTRY","נא לבחור את הארץ");
+define("_OTHER_FILTERS","מסננים אחרים");
+define("_LINEAR_DISTANCE_SHOULD_BE","מרחק קווי הצפוי");
+define("_OLC_DISTANCE_SHOULD_BE"," הצפויOLCמרחק ");
+define("_OLC_SCORE_SHOULD_BE","צפויות OLCנקודות ");
+define("_DURATION_SHOULD_BE","משך זמן צפוי");
+define("_ACTIVATE_CHANGE_FILTER","להפעיל\לשנות מסנן");
+define("_DEACTIVATE_FILTER","לבטל מסנן");
+define("_HOURS","שעות");
+define("_MINUTES","דקות");
+
+//--------------------------------------------
+// add_flight.php
+//--------------------------------------------
+
+define("_SUBMIT_FLIGHT","להגיש טיסה");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(IGC דרוש רק קובץ)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","<br>IGC להגיש קובץ טיסה");
+define("_NOTE_TAKEOFF_NAME","אנא לציין שם מקום המראה וארץ");
+define("_COMMENTS_FOR_THE_FLIGHT","תגובות טיסה");
+define("_PHOTO","תמונה");
+define("_PHOTOS_GUIDELINES","ובגודל לא יותר מ jpg תמונות חייבות להיות בקובץ מסוג ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","להגדשת טיסה אנא להקיש כאן");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","האם ברצונך להגיש יותר מהטיסה אחת בו-זמני?");
+define("_PRESS_HERE","אנא להקיש כאן");
+
+define("_IS_PRIVATE","לא להציג לציבור");
+define("_MAKE_THIS_FLIGHT_PRIVATE","לא להציג לציבור");
+define("_INSERT_FLIGHT_AS_USER_ID","לשבץ את הטיסה כמו זהות משתמש");
+define("_FLIGHT_IS_PRIVATE","הטיסה זאת היא טיסה פרטית");
+
+//--------------------------------------------
+// edit_flight.php
+//--------------------------------------------
+
+define("_CHANGE_FLIGHT_DATA","לשנות נתוני טיסה");
+define("_IGC_FILE_OF_THE_FLIGHT","IGC קובץ טיסה ");
+define("_DELETE_PHOTO","למחוק");
+define("_NEW_PHOTO","תמונה חדשה");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","לשינוי נתוני טיסה נא להקיש כאן");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","השינוים נקלטו בהצלחה");
+define("_RETURN_TO_FLIGHT","לחזור לטיסה");
+
+//--------------------------------------------
+// olc
+//--------------------------------------------
+define("_RETURN_TO_FLIGHT","לחזור לטיסה");
+define("_READY_FOR_SUBMISSION","מוכן להגשה");
+define("_SUBMIT_TO_OLC","OLCלהגיש ל");
+define("_OLC_MAP","מפה");
+define("_OLC_BARO","רשם-לחץ");
+
+//--------------------------------------------
+// pilot_profile.php
+//--------------------------------------------
+define("_Pilot_Profile","פרופיל טייס");
+define("_back_to_flights","נא לחזור לטיסות");
+define("_pilot_stats","סטטיסטיקת טייס");
+define("_edit_profile","לערוך פרופיל");
+define("_flights_stats","סטטיסטיקת טיסות");
+define("_View_Profile","להציג פרופיל");
+
+define("_Personal_Stuff","מידע פרטי");
+define("_First_Name","שם פרטי");
+define("_Last_Name","שם משפחה");
+define("_Birthdate","תאריך לידה ");
+define("_dd_mm_yy","dd.mm.yy");
+define("_Sign","חתימה");
+define("_Marital_Status","מצב משפחתי");
+define("_Occupation","מקצוע");
+define("_Web_Page","דף הבית");
+define("_N_A","לא זמין");
+define("_Other_Interests","תחביבים");
+define("_Photo","תמונה");
+
+define("_Flying_Stuff","מידע טיסתי");
+define("_note_place_and_date","אם רלוונטי נא לציין את התאריך ומקום המראה");
+define("_Flying_Since","בטיסה מאז");
+define("_Pilot_Licence","רשיון טייס");
+define("_Paragliding_training","למודים הנוכחים");
+define("_Favorite_Location","אתר החביב");
+define("_Usual_Location","אתר מקובל");
+define("_Best_Flying_Memory","מיטב הזכרונות טיס");
+define("_Worst_Flying_Memory"," הזכרונות טיס הקריטיים");
+define("_Personal_Distance_Record","שיא מרחק פרטי");
+define("_Personal_Height_Record","שיא גובה פרטי");
+define("_Hours_Flown","שאות באוויר");
+define("_Hours_Per_Year","שאות טיס בשנה");
+
+define("_Equipment_Stuff","מידע ציוד");
+define("_Glider","דאון");
+define("_Harness","ריתמה");
+define("_Reserve_chute","מצנח רזרבי");
+define("_Camera","מצלמה");
+define("_Vario","וריו");
+define("_GPS","מערכת מיקום גלובלית");
+define("_Helmet","קסדה");
+define("_Camcorder","מצלמת וידאו");
+
+define("_Manouveur_Stuff","תמרון מידע");
+define("_note_max_descent_rate","אם אפשרי נא לציין מהרות ירידה ");
+define("_Spiral","ספירלה ");
+define("_Bline","Bline");
+define("_Full_Stall","הזדקרות מלאה");
+define("_Other_Manouveurs_Acro","אחרים Acroהתרמונים ");
+define("_Sat","SAT");
+define("_Asymmetric_Spiral","ספירלה אסימטרית");
+define("_Spin","ספירלה נגטיבית");
+
+define("_General_Stuff","מידע כללי");
+define("_Favorite_Singer","זמר החביב");
+define("_Favorite_Movie","קולנוע החביב");
+define("_Favorite_Internet_Site"," החביב<br>אתר אינטרנט ");
+define("_Favorite_Book","ספר החביב");
+define("_Favorite_Actor","שחקן החביב");
+
+//--------------------------------------------
+// pilot_profile_edit.php
+//--------------------------------------------
+define("_Upload_new_photo_or_change_old","להעלות תמונה חדשה או להחליף  את הקודמת");
+define("_Delete_Photo","למחוק תמונה");
+define("_Your_profile_has_been_updated","הפרופיל שלך היה מעודכן בהצלחה");
+define("_Submit_Change_Data","להגיש  לשנות את הנתון");
+
+
+//--------------------------------------------
+// pilot_profile_stats.php
+//--------------------------------------------
+define("_hh_mm","hh:mm");
+
+define("_Totals","סיכום");
+define("_First_flight_logged","טיסה ראשונה הרשומה");
+define("_Last_flight_logged","טיסה אחרונה הרשומה");
+define("_Flying_period_covered","סקר התקופה טים");
+define("_Total_Distance","סיקום המרחק");
+define("_Total_OLC_Score","OLCסיכום הנקודות ");
+define("_Total_Hours_Flown","סיכום שאות טיס");
+define("_Total_num_of_flights","סיכום # טיסות ");
+
+define("_Personal_Bests","שיאים אישיים");
+define("_Best_Open_Distance","מיטב המרחק פתוח");
+define("_Best_FAI_Triangle","FAIמיטב המשולש ");
+define("_Best_Free_Triangle","מיטב המשולש חופשי");
+define("_Longest_Flight","מיטב המשך זמן טיסה");
+define("_Best_OLC_score","OLCמיטב הנקודות ");
+
+define("_Absolute_Height_Record","שיא גובה מוחלט");
+define("_Altitute_gain_Record","שיא גובה הושג");
+define("_Mean_values","ממוצע ערך");
+define("_Mean_distance_per_flight","ממוצע המרחק לפי טיסה");
+define("_Mean_flights_per_Month","ממוצע המספר טיסות לפי חודש");
+define("_Mean_distance_per_Month","ממוצע המרחק לפי חודש");
+define("_Mean_duration_per_Month","ממוצע המשך זמן טיסה לפי חודש");
+define("_Mean_duration_per_flight","ממוצע המשך זמן טיסה לפי שנה");
+define("_Mean_flights_per_Year","ממוצע המספר טיסות לפי שנה");
+define("_Mean_distance_per_Year","ממוצע המרחק לפי שנה");
+define("_Mean_duration_per_Year","ממוצע המשך זמן טיסה לפי שנה");
+
+//--------------------------------------------
+// show_waypoint.php
+//--------------------------------------------
+define("_See_flights_near_this_point","להציג טיסות קרובות לנקודה זאת");
+define("_Waypoint_Name","שם נקודת התייחסות");
+define("_Navigate_with_Google_Earth","Google Earthלנווט ב");
+define("_See_it_in_Google_Maps","Google Mapsלצפות ב");
+define("_See_it_in_MapQuest","MapQuestלצפות ב");
+define("_COORDINATES","קואורדינטות");
+define("_FLIGHTS","טיסות");
+define("_SITE_RECORD","שיאים האתר");
+define("_SITE_INFO","מידע אתר");
+define("_SITE_REGION","אזור");
+define("_SITE_LINK","קיצור דרך למידע נוסף");
+define("_SITE_DESCR","מקום המראה/תיאור אתר");
+
+//--------------------------------------------
+// KML file
+//--------------------------------------------
+define("_See_more_details","נא לצפות לפרטים נוספים");
+define("_KML_file_made_by"," עשוי על ידיKML הקובץ ");
+
+//--------------------------------------------
+// add_waypoint.php WAY POINT IS NOT THE SAME THING THAT TAKEOFF!!!
+//--------------------------------------------
+define("_ADD_WAYPOINT","להוסיף את המקום המראה");
+define("_WAYPOINT_ADDED","ההמראה רשומה בהצלחה");
+
+//--------------------------------------------
+// list_takeoffs.php
+//--------------------------------------------
+define("_SITE_RECORD_OPEN_DISTANCE","השיא של המקום המראה <br>(open distance)");
+	
+//--------------------------------------------
+// glider types
+//--------------------------------------------
+define("_GLIDER_TYPE","סוג של דאון");
+function setGliderCats() {
+	global  $CONF_glider_types,$gliderCatList;
+	$gliderCatList=array(1=>'מצנח רחיפה',2=>'כנף מתכופפת  FAI1',4=>'כנף קשה FAI5',8=>'גלשן');
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
+}
+setGliderCats();
+
+//--------------------------------------------
+// user prefs  & units
+//--------------------------------------------
+
+define("_Your_settings_have_been_updated","ההגדרות שלך היו מעודכנות בהצלחה! ");
+
+define("_THEME","נושא");
+define("_LANGUAGE","שפה");
+define("_VIEW_CATEGORY","להציג סוג");
+define("_VIEW_COUNTRY","להציג ארץ");
+define("_UNITS_SYSTEM" ,"יחידות מדידה");
+define("_METRIC_SYSTEM","מטרי (קילומטר, מטר");
+define("_IMPERIAL_SYSTEM","אימפריאלי (מילים,רגל) ");
+define("_ITEMS_PER_PAGE","פריטים בעמוד");
+
+define("_MI","מל");
+define("_KM","קמ");
+define("_FT","פט");
+define("_M","מ");
+define("_MPH","מל\ש");
+define("_KM_PER_HR","קמ\ש");
+define("_FPM","פט\מ");
+define("_M_PER_SEC","מ\שניה");
+
+//--------------------------------------------
+// index page
+//--------------------------------------------
+
+define("_WORLD_WIDE","חובק עולם");
+define("_National_XC_Leagues_for","XCהאגודות לאומיות ");
+define("_Flights_per_Country","טיסות לכול ארץ");
+define("_Takeoffs_per_Country","המראות לכול ארץ");
+define("_INDEX_HEADER","XCברוכים הבאים לאגודה לאונרדו ");
+define("_INDEX_MESSAGE"," כדי לנווט או לבחור מלמטה&quot;Main menu&quot;נא להשתמש ב
+");
+
+//--------------------------------------------
+// NEW 
+//--------------------------------------------
+define("_MENU_SUMMARY_PAGE","ראשון (סיכום) דף");
+define("_Display_ALL","להציג הכול");
+define("_Display_NONE","לא להציג שום דבר");
+define("_Reset_to_default_view","להחזיר תצוגה ברירת מחדל");
+define("_No_Club","אין מועדון");
+define("_This_is_the_URL_of_this_page","זאת הכתובת של דף הזה");
+define("_All_glider_types","כול סוגים של דאונים");
+
+define("_MENU_SITES_GUIDE","מדריך למקומות המראה");
+define("_Site_Guide","מדריך לאתר");
+
+define("_Search_Options","הגדרות חיפוש");
+define("_Below_is_the_list_of_selected_sites","לפניך הרשימה של אתרים נבחרים");
+define("_Clear_this_list","למחוק רשימה");
+define("_See_the_selected_sites_in_Google_Earth"," Google Earth אנא להצפיע על אתרים הנבחרים ב ");
+define("_Available_Takeoffs","המראות זמינות");
+define("_Search_site_by_name","לחפש אתר לפי השם");
+define("_give_at_least_2_letters","בא לציין לפחות שתי אותיות");
+define("_takeoff_move_instructions_1","
+יש להעביר כול הטיסות לרשימה בצד ימין באמצעות הקשה את << או רק טיסה נבחרת באמצעות <");
+define("_Takeoff_Details","פרטים המראות");
+
+
+define("_Takeoff_Info","מידע המראות");
+define("_XC_Info","XCמידע ");
+define("_Flight_Info","מידע טיסה");
+
+define("_MENU_LOGOUT","יציא מערכת");
+define("_MENU_LOGIN","כניסה למערכת");
+define("_MENU_REGISTER","פתיחת חשבון");
+
+
+define("_Africa","אפריקה");
+define("_Europe","אירופה");
+define("_Asia","אסיה");
+define("_Australia","אוסטרליה");
+define("_North_Central_America","צפון  מרכז אמריקה");
+define("_South_America","דרום אמריקה");
+
+define("_Recent","לאחרונה");
+
+
+define("_Unknown_takeoff","מקום המראה אינו מוכר!");
+define("_Display_on_Google_Earth","Google Earthלהציג ב");
+define("_Use_Man_s_Module","Man's Moduleלהשתמש ב");
+define("_Line_Color","צבע קו");
+define("_Line_width","רוחב קו");
+define("_unknown_takeoff_tooltip_1","לטיסה זאת יש מקום המראה אינו מוכר");
+define("_unknown_takeoff_tooltip_2","אם ידוע לך המקום המראה של טיסה הזו נא למלא פרטים!");
+define("_EDIT_WAYPOINT","לערוך מידע המראה");
+define("_DELETE_WAYPOINT","למחוק המראה");
+define("_SUBMISION_DATE","תאריך הגשה"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED"," כמות צפיות על הטיסה"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1"," OKאם ידוע לך מידע המראה, נא למלא את הפרטים. אם לא, נא לסגור את החולון על ידי הקשה ב");
+define("_takeoff_add_help_2"," אין צורך להגיש אותה עוד פעם. נא לסגור את החלון'טיסה אינה מוכרת'אם המראה של טיסתך נמצת ברשימה מעל ");
+define("_takeoff_add_help_3"," אם המראה של טיסתך נמצת ברשימה למתה נא להקיש עליב למילוא אוטומטי  .");
+define("_Takeoff_Name","שם מקום המראה");
+define("_In_Local_Language","בשפה מקומית");
+define("_In_English","באנגלית");
+
+// New on 2007/02/20 - login screen
+define("_ENTER_PASSWORD","נא להקיש את השם משתמש וסיסמה עבור כינסה למערכת");
+define("_SEND_PASSWORD","שכחתה את סיסמתך?");
+define("_ERROR_LOGIN","הסיסמה אינה נכונה ושם משתמש או סיסמה אינם מופעלים");
+define("_AUTO_LOGIN","לאפשר כניסה אוטומטית כול ביקור שלי");
+define("_USERNAME","שם משתמש");
+define("_PASSWORD","סיסמה");
+define("_PROBLEMS_HELP","אם נתקלת בבעיה נא להתקשר למנהל מערכת");
+
+define("_LOGIN_TRY_AGAIN","לניסיון החוזר %sכאן%s נא להקיש ");
+define("_LOGIN_RETURN"," לחזרה לאינדקס %sכאן%s נא להקיש ");
+// end 2007/02/20
+
+define("_Category","סוג");
+define("_MEMBER_OF","חבר ב- ");
+define("_MemberID","זהות חבר ");
+define("_EnterID","נא להכניס זהות");
+define("_Clubs_Leagues","מועדונים / אגודות ");
+define("_Pilot_Statistics","סטטיסטיקה של טייס");
+define("_National_Rankings","דירוג לאומי ");
+
+// new on 2007/03/08
+define("_Select_Club","נא לבחור את המועדון");
+define("_Close_window","נא לסגור את החלון");
+define("_EnterID","נא להכניס זהות");
+define("_Club","המועדון");
+define("_Sponsor"," נותן חסות");
+
+
+// new on 2007/03/13
+define('_Go_To_Current_Month','להניע לחודש הנוכחי');
+define('_Today_is','התאריך של היום הוא');
+define('_Wk','שבוע');
+define('_Click_to_scroll_to_previous_month',' לעברה לחודש שעבר נא להקיש כאן.לעברה אוטומטית נא להחזיק את המקש עכבר ');
+define('_Click_to_scroll_to_next_month','עברה לחודש הבא נא להקיש כאן.לעברה אוטומטית נא להחזיק את המקש עכבר ');
+define('_Click_to_select_a_month','נא להקיש לבחירה חודש נוכחי');
+define('_Click_to_select_a_year','.נא להקיש לבחירה שנה נוכחית');
+define('_Select_date_as_date.','תאריך [date] נא לבחור '); // do not replace [date], it will be replaced by date.
+// end 2007/03/13
+
+?>

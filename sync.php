@@ -30,6 +30,13 @@
 	$startID 	= $_GET['startID']+0;
 	$count 	 	= $_GET['c']+0;	
 
+	if ($count) $limit="LIMIT $count";
+	else $limit="";
+
+	$where_clause='';
+	if ($type) $where_clause=" AND ItemType=$type ";
+
+
 	if (!$op) $op="latest";	
 	if (!in_array($op,array("latest")) ) return;
 
@@ -38,7 +45,7 @@
 
 	if ($op=="latest") {
 		
-		 $query="SELECT * FROM $logTable  WHERE  transactionID>=$startID  AND result=1 ORDER BY transactionID";
+		 $query="SELECT * FROM $logTable  WHERE  transactionID>=$startID  AND result=1 $where_clause ORDER BY transactionID $limit";
 		 // echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
