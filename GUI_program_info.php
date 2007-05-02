@@ -24,6 +24,7 @@
 
 
 
+
   
 <div align="center"> 
   <p> 
@@ -75,9 +76,12 @@
         <p align="left"><strong>Leonardo Installations </strong></p>
         <ul><li>
             <div align="left"><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
-                    Leonardo</a></div>
-          </li>
-          <li>
+              Leonardo</a></div>
+        </li>
+		
+          <li><div align="left"><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></div> 
+		</li>         
+			<li>
             <div align="left"><a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">Italian Leonardo</a></div>
           </li>
           <li>
@@ -102,7 +106,11 @@
             <div align="left"><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></div>
           </li>
           <li>
-            <div align="left"><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></div>
+            <div align="left"><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></div>
+          </li>
+          <li>
+            <div align="left"><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian
+                Leonardo</a></div>
           </li>
         </ul>
         </div>
@@ -147,6 +155,9 @@
               <p> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </p>
               <p> <a href="http://para-nimbus.xhost.ro/" target="_blank"><strong>Ciprian
                     Chis</strong></a> for the <strong>Romanian</strong> translation</p>
+              <p> <a href="http://www.volfik.com/" target="_blank"><strong>Peter Volf</strong></a> for the <strong>Czech</strong> translation </p>
+              <p> <strong>Xiaozhong</strong>  for the <strong>Chinese</strong> translation</p>
+              <p><strong>Dmitry Korogodin</strong> for the <strong>Hebrew</strong> translation</p>
               <hr></td>
     </tr>
   </table>
