@@ -1,4 +1,4 @@
-<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8"></head><? }?><?php
+<? if (0){?><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-8-i"></head><? }?><?php
 
 /**************************************************************************/
 /*  Translation to Hebrew by                                              */

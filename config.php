@@ -97,7 +97,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	"catalan"=>"iso-8859-1", "chinese"=>"gb2312",
 	"croatian"=>"windows-1250","czech"=>"iso-8859-2","danish"=>"iso-8859-1","dutch"=>"iso-8859-1",
 	"english"=>"iso-8859-1","estonian"=>"iso-8859-15","finnish"=>"iso-8859-1","french"=>"iso-8859-1",
-	"german"=>"iso-8859-1","greek"=>"iso-8859-7","hebrew"=>"iso-8859-8","hungarian"=>"iso-8859-2",
+	"german"=>"iso-8859-1","greek"=>"iso-8859-7","hebrew"=>"iso-8859-8-i","hungarian"=>"iso-8859-2",
 	"icelandic"=>"iso-8859-1","italian"=>"iso-8859-1","latvian"=>"iso-8859-13","lithuanian"=>"iso-8859-13",
 	"macedonian"=>"iso-8859-5","mexican"=>"iso-8859-1","norwegian"=>"iso-8859-1","polish"=>"iso-8859-2","portuguese"=>"iso-8859-1",
 	"romanian"=>"iso-8859-2","russian"=>"windows-1251","serbian"=>"iso-8859-5","serbo-croatian"=>"iso-8859-2",
