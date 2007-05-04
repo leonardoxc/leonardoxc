@@ -58,7 +58,10 @@ if ($countriesNum) {
 			$i= $c * $num_of_rows +( $r % $num_of_rows);
 			if ($i<$countriesNum) {
 				$countryName=$countriesNames[$i];
-				echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>\n";
+				if ($currentlang=='hebrew')
+					echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>(".$countriesFlightsNum[$i].") $countryName</a>\n";
+				else
+					echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>\n";
 			}	 
 			else echo "&nbsp;";
 
