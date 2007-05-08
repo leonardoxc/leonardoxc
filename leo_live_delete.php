@@ -39,7 +39,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 	border:1px solid #888888; COLOR: #000000;
 	FONT-FAMILY: Verdana, Tahoma;
 	FONT-SIZE: 11px;
-	WIDTH: 150px;
+	WIDTH: 100px;
 	MARGIN: 0px;
 	BACKGROUND: #FFFFFF ;
 	padding-left:3px; vertical-align:middle; padding-right:2px; padding-top:3px; padding-bottom:2px; background-color:#FFFFFF
@@ -51,7 +51,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 	BORDER-STYLE: solid;
 	BORDER-COLOR: #888888;
 	BORDER-WIDTH: 1px;
-	WIDTH: 150px;
+	WIDTH: 100px;
 	PADDING: 3px 2px 2px 2px;
 	MARGIN: 0px;
 	VERTICAL-ALIGN: middle;
@@ -59,7 +59,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
 
 .submitButton {
 BORDER: 1px solid #FFFFFF; 
-HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
+HEIGHT: 21px; WIDTH: 230px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
 MARGIN: 0px; padding-top: 3px; padding-bottom: 3px; ALIGN: center; vertical-align:middle;
 text-align:center;
 }
@@ -87,6 +87,10 @@ HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-S
 MARGIN: 0px; padding-top: 3px; padding-bottom: 3px; ALIGN: center; vertical-align:middle;
 text-align:center;
 }
+.smalltext5 {	font-size: 90%; FONT-SIZE: 11px;
+    COLOR: #333333; 
+    FONT-FAMILY: Verdana, Arial, Helvetica;
+}
 -->
 </style>
 </head> 
@@ -95,11 +99,11 @@ text-align:center;
 	function exitPage($msg){
 		global $moduleRelPath,$PREFS;
 ?>
-<table width="450" height=100% align="center"  cellpadding="0" cellspacing="0" class="tborder">
+<table width="320" height=100% align="center"  cellpadding="0" cellspacing="0" class="tborder">
    <tbody><tr class="tcat">
 	<td align="left" width="1"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
 	<td align="left" width="11">&nbsp;</td>
-	<td width=402 align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Submit track to Leonardo  </font></strong></span></td>
+	<td width=270 align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Delete track from this list</font></strong></span></td>
 	<td align="right" width="36"><div align=right class="smalltext"><a href='#' onClick="closeWin();"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div></td>
   </tr>
   <tr>
@@ -108,14 +112,7 @@ text-align:center;
 <?
 	exit;
 }
-$servers=array(
-  	        //  99=>"pgforum.home",
-   	        //  98=>"pgforum.thenet.gr",
-	          1=>"sky.gr",
-	          2=>"paraglidingforum.com",
-	          3=>"LIGA PORTUGUESA DE VOO LIVRE ",
-	          4=>"XC Brasil"
-			 );
+
 
 if ($_POST['formSubmit']==1) {
 
@@ -142,26 +139,18 @@ if ($_POST['formSubmit']==1) {
 		}
 		
 
-
-		// $serverURL="http://pgforum.thenet.gr/modules/leonardo/op.php";
-		$serverURL="http://".($servers[$_POST['serverID']+0])."/modules/leonardo/op.php";
-		$serverURLbase="http://".($servers[$_POST['serverID']+0]);
-		// echo 		$pass;
 		$row = mysql_fetch_assoc($res);
 		if ($row) {
 			if ($row['passwd']!=$trackpass) {
 				exitPage("You haven't provided the correct password for the tracklog");
 			}
-			$trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
-			$tm=$row["tm"];
+
+			$query2="DELETE FROM  leonardo_live_data WHERE username='$username' AND port='$port' ";
+			// echo $query;
+			$res2= $db->sql_query($query2);
 		
-			$igcURL=htmlspecialchars( "$trackURL?op=igc&user=$username&port=$port");
-			$igcFilename= htmlspecialchars(date("Y-m-d H-i-s",$tm).".igc" );
-	
-			$private=0;
-			list($flightID,$errCode,$errMsg)=submitFlightToServer($serverURL, $user, $pass, $igcURL, $igcFilename, $private, $glidertype, $linkURL, $comments, $glider);
-			if ($flightID) $msg="Flight was submited OK. <a target='_blank' href='$serverURLbase/modules.php?name=leonardo&op=show_flight&flightID=$flightID'>You can see it here</a>";
-			else $msg="Error $errCode: $errMsg";
+			if ($res2) $msg="Flight was deleted from Live server";
+			else $msg="Error in deleting flight";
 		}	else {
 			exitPage("Cannot get DATA for user $username");		
 		}
@@ -176,54 +165,25 @@ if ($_POST['formSubmit']==1) {
    <tbody><tr class="tcat">
 	<td align="left" width="1"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
 	<td align="left" width="11">&nbsp;</td>
-	<td width=402 align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Submit track to Leonardo  </font></strong></span></td>
+	<td width=202 align="left" valign="middle">&nbsp;&nbsp;<span class="smalltext5"><strong><font color="#ffffff">Delete track from this list</font></strong></span></td>
 	<td align="right" width="36"><div align=right class="smalltext"><a href='#' onClick="closeWin();"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div></td>
   </tr>
   <tr>
 	<td colspan="4" bgcolor="#f5f5f5"><table border="0" cellpadding="2" cellspacing="1" width="100%">
 	  <tbody>
 	    <tr>
-	      <td colspan="4" class="smalltext">Password of the tracklog:<span class="smalltext1">
+	      <td class="smalltext"><div align="left">Password of the tracklog:<span class="smalltext1">
 	        <input name="trackpass" type="text" class="logintext" id="trackpass" value="" />
-	      </span></td>
+	        </span></div></td>
 	      </tr>
-	    
-	    <tr>
-	      <td colspan="4" class="smalltext">Submit at 
-	        <select name="serverID">
-				<? foreach ($servers as $serverID=>$ServerName) {
-					echo "<option value='$serverID'>$ServerName</option>\n";
-					}
-				?>
-	          </select>	        </td>
-	      </tr>
-	    <tr>
-		<td class="smalltext" width="230"><span class="gen">Username</span>:</td>
-		<td ><input name="user" class="logintext" value="" type="text"></td>
-	    <td ><span class="smalltext2"><span class="gen">Password<span class="smalltext3">:</span></span></span></td>
-	    <td ><input name="pass" class="loginpassword" value="" type="password" /></td>
-	    </tr>
 	  <tr>
-	    <td class="smalltext">Type of Glider: </td>
-	    <td><select name="type" id="type">
-	      <option value="1" selected="selected">Paraglider</option>
-	      <option value="2">Hanglider Flex</option>
-	      <option value="4">Hanglider Rigid</option>
-	      </select>	    </td>
-	    <td><span class="smalltext4">Glider:</span></td>
-	    <td><input name="glider" type="text" class="loginpassword" id="glider" value="" /></td>
-	  </tr>
-	  <tr>
-	    <td class="smalltext">Comments</td>
-	    <td colspan="3"><textarea name="comments" cols="40" rows="3" id="comments"></textarea></td>
-	    </tr>
-	  <tr>
-	    <td class="smalltext">Relevant URL </td>
-	    <td colspan="3"><input name="url" type="text" class="loginpassword" id="url" value="" size="100" />
-	      <input name=formSubmit value=1 type=hidden />
-          <input name="username" value="<?=$_GET['user']?>" type=hidden />
-          <input name="port" value="<?=$_GET['port']+0?>" type=hidden />
-          <input name="submitButton" value="Submit" class="submitButton1" type="submit" /></td>
+	    <td class="smalltext">
+	      <div align="left">
+	        <input name=formSubmit value=1 type=hidden />
+	        <input name="username" value="<?=$_GET['user']?>" type=hidden />
+	        <input name="port" value="<?=$_GET['port']+0?>" type=hidden />
+	        <input name="submitButton" value="Delete tracklog from Live server" class="submitButton1" type="submit" />
+	        </div></td>
 	    </tr>
 	</tbody></table>		
       <div align="center">

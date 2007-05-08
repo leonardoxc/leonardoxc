@@ -57,6 +57,14 @@ body {
 		MWJ_changeSize( 'takeoffAddID', 450,238 );
 		toggleVisible('takeoffAddID','pos'+i,20,-322,725,455);
 	 }
+	 
+	  function deleteWindow(user,port,i) {	 
+		//MWJ_changeContents('takeoffBoxTitle',"Submit");
+		document.getElementById('addTakeoffFrame').src='leo_live_delete.php?user='+user+'&port='+port;		
+		MWJ_changeSize('addTakeoffFrame',450,108);
+		MWJ_changeSize( 'takeoffAddID', 450,108 );
+		toggleVisible('takeoffAddID','pos'+i,20,-270,725,455);
+	 }
 </script>
 <style type="text/css">
 .dropBox {
@@ -167,8 +175,10 @@ if ($op=="list") {
 			echo "<a href='$trackURL?op=track&user=$username&port=$port'>Google Earth</a> :: ";
 			echo "<a href='$trackURL?op=igc&user=$username&port=$port'>Get IGC</a> :: ";
 		// 	if (! $live_now) echo "<a target='_blank' href='$trackURL?op=submit&user=$username&port=$port'>Submit to Leonardo</a>";
-			if (! $live_now) echo "<a id='pos$j' href='javascript:submitWindow(\"$username\",$port,$j)'>Submit to Leonardo</a>";
-			else echo "wait till landing";
+			if (! $live_now) {
+				echo "<a id='pos$j' href='javascript:submitWindow(\"$username\",$port,$j)'>Submit to Leonardo</a>"; 
+				echo " :: <a id='pos$j' href='javascript:deleteWindow(\"$username\",$port,$j)'>Delete</a>";
+			}	else echo "[ wait till landing ]";
 			echo "</td></tr>";
 			$i++;
 			$j++;
