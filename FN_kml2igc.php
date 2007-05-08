@@ -22,7 +22,22 @@ function kml2igc($filename){
 	// 	now search for this
 	//	<FsInfo time_of_first_point="2007-04-05T09:51:50Z"
 	//                hash="2E361EB937B9D7D6C92855F38D37B399B17292AD">
-	if( ! preg_match("/<FsInfo *time_of_first_point=\"([^\"]+)\" *hash=\"(.*)\">/i",$lines,$matches) ) {
+//	if( ! preg_match("/<FsInfo *time_of_first_point=\"([^\"]+)\" *hash=\"(.*)\">/i",$lines,$matches) ) {
+//		return 0;
+//	}
+/*
+this is the new format from kml
+        <FsInfo time_of_first_point="2007-04-22T13:42:06Z"
+                civl_pilot_id="4" comp_pilot_id="4"
+                instrument="GPS 72 Software Version 2.30"
+                downloaded="2007-04-29T12:39:49Z"
+                hash="80F1FAC5CFFE4B97E202371EF6303BFCF83A6D78">
+I'm a zero at the left in regular expressions, then i change a litle to 
+this one...
+
+*/
+
+	if( ! preg_match("/<FsInfo.*time_of_first_point=\"([^\"]+)\".*hash=\"([^\"]+)\">/i",$lines,$matches) ) {
 		return 0;
 	}
 
