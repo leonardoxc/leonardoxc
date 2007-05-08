@@ -58,9 +58,13 @@
 
 			$desc=htmlspecialchars ($desc);
 
+			$actionTime=$row['actionTime']-date('Z');
+			$actionTimeStr=tm2fulldate($actionTime);
+
 			$RSS_str.="<item>
 <transactionID>".sprintf("%020d",$row['transactionID'])."</transactionID>			
-<actionTime>".$row['actionTime']."</actionTime>
+<actionTimeUTC>".$actionTimeStr."</actionTimeUTC>
+<serverUTCoffset>".date('Z')."</serverUTCoffset>
 <type>".$row['ItemType']."</type>
 <id>".$row['ItemID']."</id>
 <serverId>".$row['ServerItemID']."</serverId>

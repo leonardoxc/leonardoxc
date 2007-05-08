@@ -13,6 +13,7 @@
 
 require_once dirname(__FILE__)."/CL_gpsPoint.php";
 require_once dirname(__FILE__)."/FN_kml.php";
+require_once dirname(__FILE__)."/FN_pilot.php";
 
 class flight {
 	var $cat=1;
@@ -115,6 +116,9 @@ var $maxPointNum=1000;
 		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate)=getPilotInfo($this->userID);
 
+		$dateAdded=$this->DATE;
+		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
+
 		$xml=
 "<flight>
 <serverID>$CONF_server_id</serverID>
@@ -134,7 +138,7 @@ var $maxPointNum=1000;
 </info>
 
 <time>
-	<date>$this->DATE</date>
+	<date>$dateAdded</date>
 	<Timezone>$this->timezone</Timezone>
 	<StartTime>$this->START_TIME</StartTime>
 	<Duration>$this->DURATION</Duration>
@@ -152,6 +156,7 @@ var $maxPointNum=1000;
 
 <location>
 	<takeoffID>$this->takeoffID</takeoffID>
+	<serverID>$CONF_server_id</serverID>
 	<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
 	<takeoffName>$takeoffName</takeoffName>
 	<takeoffNameInt>$takeoffNameInt</takeoffNameInt>
@@ -161,7 +166,7 @@ var $maxPointNum=1000;
 <stats>
 	<FlightType>$this->BEST_FLIGHT_TYPE</FlightType>
 	<StraightDistance>$this->MAX_LINEAR_DISTANCE</StraightDistance>
-	<XCKm>$this->FLIGHT_KM</XCKm>
+	<XCdistance>$this->FLIGHT_KM</XCdistance>
 	<XCscore>$this->FLIGHT_POINTS</XCscore>
 	<MaxSpeed>$this->MAX_SPEED</MaxSpeed>
 	<MaxVario>$this->MAX_VARIO</MaxVario>
@@ -1564,7 +1569,7 @@ $kml_file_contents=
 
 		//	 
 		if ($p==0)  {
-			echo "NO VALID POINTS FOUND";
+			DEBUG("IGC",1,"NO VALID POINTS FOUND");
 			return 0; // no valid points found
 		}
 

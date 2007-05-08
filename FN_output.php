@@ -18,6 +18,20 @@ function sec2Time($secs,$no_seconds=false) {
     return '<span class="time_style">'.sprintf("%d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60).'</span>';
 }
 
+function fulldate2tm($dateStr) {
+	// expecting YYYY-MM-DD HH:MM:SS
+	$tm=0;
+	if (preg_match("/(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)/",$dateStr,$matches)) {
+		$tm=mktime($matches[4],$matches[5],$matches[6],$matches[2],$matches[3],$matches[1]);
+	}
+	return $tm;
+}
+
+function tm2fulldate($tm){
+	// return YYYY-MM-DD HH:MM:SS
+	return date("Y-m-d H:i:s",$tm);
+}
+
 function days2YearsMonths($days) {
    $years=floor($days/365);
    $months=ceil( ($days%365) / 30 );

@@ -175,7 +175,7 @@ function getPilotInfo($pilotIDview) {
 			// else return as is.
 		}
 	}
-
+	list($lastName,$firstName)=split(" ",$str,2);
 	return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate);
 
 }

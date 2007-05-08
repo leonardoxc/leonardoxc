@@ -62,16 +62,17 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 	require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	$client = new IXR_Client($serverURL);
 	// $client->debug=true;
-	//echo "$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider #<BR>";
+	// echo "$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider #<BR>";
 
 	if ( ! $client->query('flights.submit',$username, $passwd, $igcURL, $igcFilename, $private, $cat, $linkURL, $comments, $glider ) ) {
-		echo 'submitFlightToServer: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
-		return $client->getErrorCode();
+		//echo 'submitFlightToServer: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+		return array(0,$client->getErrorCode(),$client->getErrorMessage());
 	} else {
 		$flightID= $client->getResponse();
-		echo 'Flight was submited with id '.$flightID;
+		return array($flightID,'','');
+		// echo 'Flight was submited with id '.$flightID;
 	}
-	return 1;
+	// return $flightID;
 }
 
 function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
@@ -251,7 +252,9 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 }
 
 function getAddFlightErrMsg($result,$flightID) {
-	global $module_name;
+	global $module_name,$baseInstallationPath,$CONF_mainfile;
+	$callingURL="http://".$_SERVER['SERVER_NAME']."$baseInstallationPath/$CONF_mainfile";
+
 	switch ($result) {
 		case ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE:
 			$errMsg=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE;
@@ -267,11 +270,11 @@ function getAddFlightErrMsg($result,$flightID) {
 			break;
 		case ADD_FLIGHT_ERR_SAME_DATE_FLIGHT:	
 			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-							 "<a href='?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
+							 "<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT:
 			$errMsg=_THERE_IS_SAME_FILENAME_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-						"<a href='?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
+						"<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
 						_CHANGE_THE_FILENAME;
 			break;
 	}
