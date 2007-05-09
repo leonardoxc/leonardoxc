@@ -99,16 +99,20 @@ text-align:center;
 	function exitPage($msg){
 		global $moduleRelPath,$PREFS;
 ?>
-<table width="320" height=100% align="center"  cellpadding="0" cellspacing="0" class="tborder">
+
+
+<table width="450" height=100% align="center"  cellpadding="0" cellspacing="0" class="tborder">
    <tbody><tr class="tcat">
-	<td align="left" width="1"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
+	<td align="left" width="1" height="30"><img src="{IMG_PATH}space.gif" height="21" width="1"></td>
 	<td align="left" width="11">&nbsp;</td>
-	<td width=270 align="left" valign="middle">&nbsp;<span class="smalltext"><strong><font color="#ffffff">Delete track from this list</font></strong></span></td>
+	<td width=202 align="left" valign="middle">&nbsp;&nbsp;<span class="smalltext5"><strong><font color="#ffffff">Delete track from this list</font></strong></span></td>
 	<td align="right" width="36"><div align=right class="smalltext"><a href='#' onClick="closeWin();"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div></td>
   </tr>
   <tr>
-	<td colspan="4" bgcolor="#f5f5f5" height="200"><?=$msg?>
-</td></tr></tbody></table>
+	<td colspan="4" bgcolor="#f5f5f5">	<?=$msg?>
+      </td>
+  </tr>
+</table>
 <?
 	exit;
 }
