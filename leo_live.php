@@ -34,19 +34,34 @@
 		$langEncodings[$currentlang]='iso-8859-1';
 		
 		$xml= '<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"?>
-<kml xmlns="http://earth.google.com/kml/2.0">
+<kml xmlns="http://earth.google.com/kml/2.1">
+<Folder>
+ <name>Leonardo Live for '.$user.'</name>
 <NetworkLink>
   <name>Leonardo Live for '.$user.'</name>
   <open>1</open>
   <description>User '.$user.' was last seen at</description>
   <Url>
-    <href><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.']]></href>
-    <refreshMode>onInterval</refreshMode>
+    <href><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.']]></href>';
+/*    <refreshMode>onInterval</refreshMode>
     <refreshInterval>10</refreshInterval>
     <viewRefreshMode>onStop</viewRefreshMode>
     <viewRefreshTime>10</viewRefreshTime>
+*/
+$xml.='
   </Url>
 </NetworkLink>
+<NetworkLink>
+  <name>Leonardo Live for '.$user.' 2</name>
+  <open>1</open>
+  <description>User '.$user.' was last seen at (2)</description>
+  <Link>
+    <href><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=update&user='.$user.']]></href>
+    <refreshMode>onInterval</refreshMode>
+    <refreshInterval>10</refreshInterval>
+  </Link>
+</NetworkLink>
+</Folder>
 </kml>';
 		
 	} else	if ( $op=="pos" ) {
@@ -84,10 +99,107 @@
 			
 		} // end while 
 		$name=$user;
-		$xml=makeKMLpoint($lat,$lon,$alt,$name,$XML_str);
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>';
+		$xml.= '<kml xmlns="http://earth.google.com/kml/2.1">';
+		
+//		$xml.='<NetworkLinkControl> ';
+//		$xml.= '  <cookie>'.$cookieStr.'</cookie>';
+//		$xml.= '  <linkName>Track Animation start</linkName>';
+//		$xml.='</NetworkLinkControl> ';	
+		$xml.= '<Folder>';
+$xml.= makeMarkerXML();
+		$xml.= '<Folder id="Position">';
+		$xml.= '<open>1</open>';
+		$xml.= '<name>Currect Position</name>';
+
+		//$xml.= '<name>my doc</name>';
+		//$xml.= '<folder id="my1">';
+
+		$xml.=makeKMLpoint($lat,$lon,$alt,$name,$XML_str);
+		$xml.= '</Folder>';
+
+		$xml.= '<Folder id="trackpoints">';
+		$xml.= '<name>Trackpoints</name>';
+		
+		$xml.= makeLineStyleXML();
+		$xml.= '</Folder>';
+		
+		$xml.= '</Folder>';			
+		$xml.='</kml>';
+
+		
 		
 		// echo $XML_str;
 		// send_XML($XML_str);
+	} else	if ( $op=="update" ) {
+		list($lat,$lon,$time,$alt,$sog,$cog,$XML_str)=getLastPoint($user);
+		list($lat2,$lon2,$time2,$alt2,$sog2,$cog2,$XML_str2)=getLastPoint($user,1);// previous point
+
+		$langEncodings[$currentlang]='iso-8859-1';
+
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+		$xml.= '<kml xmlns="http://earth.google.com/kml/2.1">'."\n";
+
+		$xml.='<NetworkLinkControl> '."\n";
+		// $xml.= '  <cookie>'.$cookieStr.'</cookie>';
+		$xml.= '  <linkName>Track Animation</linkName>'."\n";
+		$xml.='  <Update> 
+			<targetHref><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.']]></targetHref> 
+';
+
+$desc="$time  <BR>$alt m, $sog km/h, cog:$cog";
+$xml.='  
+			<Change> 
+			  <Placemark targetId="myplacemark">
+				  <description><![CDATA['.$desc.']]></description>".
+			  </Placemark>
+			  <Point targetId="mypoint"> 
+				<coordinates>'.$lon.','.$lat.','.$alt.'</coordinates>
+			  </Point> 
+			</Change> ';
+
+		$xml.='
+  </Update> 
+  <Update> 
+	<targetHref><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.']]></targetHref> 
+';
+
+$xml.="
+<Create>
+	<Folder targetId='trackpoints'>
+		<Placemark id='".$user."_".$time."'> 
+			<styleUrl>#markerPoint</styleUrl>
+			<name></name>
+			<Point>
+				<altitudeMode>absolute</altitudeMode>
+				<coordinates>$lon,$lat,$alt</coordinates> 
+			</Point>
+		</Placemark>
+	</Folder > 
+</Create> 
+";
+
+$xml.="
+<Create>
+    <Folder  targetId='trackpoints'>
+	 	<Placemark id='".$user."_".$time."'> 
+			<styleUrl>#trackLine</styleUrl>
+			<name></name>
+			<LineString >	    
+				<altitudeMode>absolute</altitudeMode>				
+				<coordinates>
+					$lon2,$lat2,$alt2
+					$lon,$lat,$alt					
+				</coordinates>
+			</LineString> 
+	  </Placemark>
+	</Folder> 
+</Create> 
+";
+		$xml.="	  </Update> ";		
+		$xml.='</NetworkLinkControl> ';				
+		$xml.='</kml>';
+
 	} else if ($op=="track") {
 		$user=$_GET['user'];
 		$port=$_GET['port'];
@@ -373,12 +485,21 @@ $file_name="kml.kml";
 	function makeKMLpoint($lat,$lon,$alt,$name="",$desc="") {
 
       $res = 
-"<Placemark>".
+"<Placemark id='myplacemark'>".
 "  <name><![CDATA[$name]]></name>".
 "  <description><![CDATA[$desc]]></description>".
-"  <styleUrl>#markerPoint</styleUrl>
-  <Point> ".
-//"		 <extrude>1</extrude>".
+"  
+	<Style id='sn_icon_cat_1'>
+		<IconStyle>
+			<scale>0.5</scale>
+			<Icon>
+				<href>http://pgforum.thenet.gr/modules/leonardo/img/icon_cat_1.png</href>
+			</Icon>
+		</IconStyle>
+	</Style>
+	<styleUrl>#sn_icon_cat_1</styleUrl>
+	<Point id='mypoint'> ".
+"		 <extrude>1</extrude>".
 "      <tessellate>1</tessellate>".
 //"		      <altitudeMode>relativeToGround</altitudeMode>".
 "      <altitudeMode>absolute</altitudeMode>".
@@ -436,4 +557,83 @@ $file_name="kml.kml";
 		$kml_file_contents.="</Placemark>";
 		return 		$kml_file_contents;
 	}
+
+function getLastPoint($user,$offset=0){
+	global $db;
+
+	if ($offset) $limitStr="LIMIT $offset,1";
+	else $limitStr="LIMIT 1";
+
+	$query="SELECT * FROM  leonardo_live_data WHERE username='$user' ORDER BY tm desc $limitStr ";
+	 //echo $query;
+	 $res= $db->sql_query($query);
+	 if($res <= 0){
+		 echo("<H3> Error in query! $query </H3>\n");
+		 exit();
+	 }
+
+	$XML_str="NO DATA - ERROR";
+	if  ($row = mysql_fetch_assoc($res)) { 
+		$ip	  =$row["ip"];
+		$time =$row["time"];
+		$username =$row["username"];
+		$passwd =$row["passwd"];
+		$lat =$row["lat"];
+		$lon =$row["lon"];
+		$alt =$row["alt"];
+		$sog =$row["sog"];
+		$cog =$row["cog"];		
+
+		$thisPoint=new gpsPoint();
+		$thisPoint->lat=$lat;
+		$thisPoint->lon=$lon;
+		
+		$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".
+		substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
+		$XML_str="$time  <BR>$alt m, $sog km/h, cog:$cog";
+		return array($lat,$lon,$time,$alt,$sog,$cog,$XML_str);	
+	} else {
+		return array(0,0,0,0,0,0,"");	
+	}
+}
+
+function makeMarkerXML($iconNum=2,$scale=0.2) {
+    	$icons = array (1 => array ("root://icons/palette-2.png", 224, 224), 
+						2 => array ("root://icons/palette-4.png", 0, 160),
+						3 => array ("root://icons/palette-3.png", 64, 192), 
+						4 => array ("root://icons/palette-3.png", 96, 192), 
+						5 => array ("root://icons/palette-3.png", 128, 192) );
+
+	$xml='<Style id="markerPoint">
+		<IconStyle>
+		  <scale>'.$scale.'</scale>
+		  <Icon>
+			<href>'.$icons[$iconNum][0].'</href>
+			<x>'.$icons[$iconNum][1].'</x>
+			<y>'.$icons[$iconNum][2].'</y>
+			<w>32</w>
+			<h>32</h>
+		  </Icon>
+		</IconStyle>
+		<LabelStyle>
+			<scale>0.7</scale>
+		</LabelStyle>
+	  </Style>
+';
+	return $xml;
+}
+
+function makeLineStyleXML($lineColor="FF0000",$lineWidth=2) {
+	$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);		
+	$xml="
+		<Style id='trackLine'>
+			<LineStyle>
+			  <color>".$KMLlineColor."</color>
+			  <width>$lineWidth</width>
+			</LineStyle>
+		  </Style>
+	";
+	return $xml;
+}
+
 ?>

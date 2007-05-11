@@ -35,16 +35,22 @@ format
 last 2 char -> 0
 */
 
+if ( count($argv) != 4 ) {
+	echo "Usage $argv[0] igcfile username pass\n";
+	exit;
+}
+list($scriptname,$filename,$username,$pass)=$argv;
 
+//$filename="test.igc";
+//$username="manolis";
+//$pass="man123";
 
-$username="manolis";
-$pass="man123";
 $gsm1="202";
 $gsm2="05";
 $gsm3="1";
-$filename="test.igc";
+
 $server="dev.thenet.gr";
-$serverPort=998;
+$serverPort=999;
 
 
 function makeHeader() {
