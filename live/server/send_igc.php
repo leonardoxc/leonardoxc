@@ -147,7 +147,7 @@ closeSocket();
 
 function sendString($str) {
 	global $fp;
-	echo $str;
+	// echo $str;
 	fputs ($fp, $str); 
 }
 

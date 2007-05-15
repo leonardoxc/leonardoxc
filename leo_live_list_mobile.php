@@ -42,6 +42,8 @@ a:hover { 	background-color:#FFCC66; }
 </head>
 <body>
 <h1>Leonardo Live</h1>
+<a href="<?='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live_list.php'?>">Επιστροφή</a><BR><BR>
+
 Πάτηστε στα ονόματα για να παρακουλουθήσετε τον πιλότο στο Google Earth
 <?
 $trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
