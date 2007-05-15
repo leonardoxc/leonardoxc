@@ -45,8 +45,9 @@ body {
   <BR>
   <a href="leo_live_rss.php"><img src="img/rss.gif" width="31" height="15" border="0" align="absmiddle"> RSS Feed HERE (Copy - Paste
   Link into your RSS Reader)</a></p>
-  
-  <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<p><a href="leo_live_list_mobile.php">Same page suitable for Mobile Phones</a></p>
+<p><a href="leo_live_task.php?taskID=1">TEST live Task (simulated run)</a></p>
+<div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 <script language="javascript">
