@@ -222,11 +222,16 @@ class task {
       $waypoints[$i]->intName = $row["intName"];
       $waypoints[$i]->lat = $row["lat"];
       $waypoints[$i]->lon = $row["lon"];
-      $waypoints[$i]->description = $row["description"];
       $waypoints[$i]->wType = $row["wType"];
       $waypoints[$i]->radius = $row["radius"];
       $waypoints[$i]->distanceDiff = $row["distanceDiff"];
       $waypoints[$i]->distanceTotal = $row["distanceTotal"];
+	  if ($row["wType"]=='TAKEOFF')  $waypoints[$i]->description = "TAKEOFF";
+	  else if ($row["wType"]=='GOAL')  $waypoints[$i]->description = "GOAL";
+	  else if ($row["wType"]=='START')  $waypoints[$i]->description = "START";
+	  else if ($row["wType"]=='WAYPT')  $waypoints[$i]->description = "WAYPT";
+
+      // $waypoints[$i]->description = $row["description"];
       // echo '<pre>';print_r($waypoints[$i]);echo '</pre>';
       $i ++;
     }
@@ -273,7 +278,7 @@ class task {
 			$min_lat = $waypoint->lat;
 		}
 	}
-
+	
     $this->max_lat = $max_lat;
     $this->max_lon = $max_lon;
     $this->min_lat = $min_lat;
@@ -300,17 +305,26 @@ class task {
 		<coordinates>
 		";
 
-    $taskWaypoints = $this->getTaskWaypoints();
-    for ($i = 0; $i < count($taskWaypoints); $i++) {
-      $newPoint = $taskWaypoints[$i];
-      $kml_file_contents .= - $newPoint->lon.",".$newPoint->lat.",500 ";
-
-      $turnpointPlacemark[$i] = $newPoint->makeKMLpoint($i);
-      $turnpointRadius[$i] = $newPoint->makeKMLradius($i,1);
-      $turnpointRadiusSolid[$i] = $newPoint->makeKMLradius($i,0);
-    }
-
-    $kml_file_contents .= "
+	$taskWaypoints = $this->getTaskWaypoints();
+	$normalWaypoints=0;
+	for ($i = 0; $i < count($taskWaypoints); $i++) {
+		$newPoint = $taskWaypoints[$i];
+		$kml_file_contents .= - $newPoint->lon.",".$newPoint->lat.",500 ";
+		
+		if ($newPoint->wType=='WAYPT') {		
+			$normalWaypoints++;
+			$iconNum=$normalWaypoints;
+			$name = "TP $normalWaypoints";
+		} else {
+			$iconNum=10;
+			$name = $newPoint->description;
+		}
+		$turnpointPlacemark[$i] = $newPoint->makeKMLpoint($iconNum,$name);
+		$turnpointRadius[$i] = $newPoint->makeKMLradius($i,1);
+		$turnpointRadiusSolid[$i] = $newPoint->makeKMLradius($i,0);
+	}
+	
+	$kml_file_contents .= "
     </coordinates>
     </LineString>
     </Placemark>
@@ -996,7 +1010,17 @@ class Tasks {
 }
 
 class taskTurnpoint extends waypoint {
-    var $icons = array (1 => array ("root://icons/palette-3.png", 0, 192), 2 => array ("root://icons/palette-3.png", 32, 192), 3 => array ("root://icons/palette-3.png", 64, 192), 4 => array ("root://icons/palette-3.png", 96, 192), 5 => array ("root://icons/palette-3.png", 128, 192));
+    var $icons = array (
+		1 => array ("root://icons/palette-3.png", 0, 192), 
+		2 => array ("root://icons/palette-3.png", 32, 192),
+		3 => array ("root://icons/palette-3.png", 64, 192),
+		4 => array ("root://icons/palette-3.png", 96, 192), 
+		5 => array ("root://icons/palette-3.png", 128, 192),
+
+		10 => array ("http://maps.google.com/mapfiles/kml/pal2/icon5.png", 0, 0),
+		11 => array ("root://icons/palette-3.png", 128, 192),
+		12 => array ("root://icons/palette-3.png", 128, 192),
+	);
 
 	function taskTurnpoint() {
 	
@@ -1092,19 +1116,24 @@ $response .= '</Placemark>';
 		
 	}
 
-	function makeKMLpoint($num) {
+	function makeKMLpoint($num,$name) {
       $res = "
       <Placemark>
-      		 <name>".$this->description."</name>
+      		 <name>".$name."</name>
       		 <Style>
       		  <IconStyle>
       			<scale>0.4</scale>
       			<Icon>
-      			  <href>".$this->icons[$$num +1][0]."</href>
-      			  <x>".$this->icons[$num +1][1]."</x>
-      			  <y>".$this->icons[$num +1][2]."</y>
+      			  <href>".$this->icons[$num ][0]."</href>";
+if ($num<10) {
+$res.=" 
+      			  <x>".$this->icons[$num ][1]."</x>
+      			  <y>".$this->icons[$num ][2]."</y>
       			  <w>32</w>
       			  <h>32</h>
+";
+}
+$res.="
       			</Icon>
       		  </IconStyle>
 			 

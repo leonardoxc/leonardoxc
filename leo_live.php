@@ -25,6 +25,12 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
+	function in_bounds($lat,$lon, $max_lat,$max_lon,$min_lat,$min_lon) {
+		$lon=-$lon;
+		if ( $lat<=$max_lat && $lat >=$min_lat && $lon<=$max_lon && $lon>=$min_lon ) return 1;
+		return 0;
+	}
+
 	$colors=array("FF0000","00FF00","0000FF","FFFF00","FF00FF","00FFFF","EF8435","34A7F0","33F1A3","9EF133","808080");
 
 	$op=$_REQUEST['op'];
@@ -45,6 +51,11 @@
 		$taskKML=$task->getTaskKML();
 		$task->computeMapBoundaries();
 
+		// add a small margin
+		$task->max_lat+=0.2;
+		$task->max_lon+=0.2;
+		$task->min_lat-=0.2;
+		$task->min_lon-=0.2;
 
 		$xml= '<?xml version="1.0" encoding="UTF-8"?>
 		<kml xmlns="http://earth.google.com/kml/2.1">
@@ -57,7 +68,7 @@
 
 		// get only live tracks from last 10 hrs
 		$last_tm_limit=time()-3600*10;		
-		$query="SELECT username,max(tm) as last_tm FROM  leonardo_live_data WHERE tm > $last_tm_limit GROUP BY username ORDER BY last_tm desc";
+		$query="SELECT lat,lon,username,max(tm) as last_tm FROM  leonardo_live_data WHERE tm > $last_tm_limit GROUP BY username ORDER BY last_tm desc";
 		//echo $query;
 		$res= $db->sql_query($query);
 		if($res <= 0){
@@ -70,8 +81,10 @@
 		$xml.="<open>1</open>\n";
 		$xml.="<name>Live Tracks</name>\n";
 		while  ($row = mysql_fetch_assoc($res)) { 
+			if (! in_bounds($row['lat'],$row['lon'], $task->max_lat,$task->max_lon,$task->min_lat,$task->min_lon)	) continue;
+
 			$username =$row["username"];
-			list($lat,$lon,$time,$alt,$sog,$cog,$XML_str,$port)=getLastPoint($username);
+			list($lat,$lon,$time,$tm,$alt,$sog,$cog,$XML_str,$port)=getLastPoint($username);
 			$color=$colors[$j%count($colors)];
 			$xml.='<NetworkLink>
 		  <name>'.$username.'</name>
@@ -105,7 +118,7 @@
   </Url>
 </NetworkLink>';
 
-if (!$port) list($lat,$lon,$time,$alt,$sog,$cog,$XML_str,$port)=getLastPoint($user);
+if (!$port) list($lat,$lon,$time,$tm,$alt,$sog,$cog,$XML_str,$port)=getLastPoint($user);
 
 $xml.= '
 <NetworkLink>
@@ -133,7 +146,7 @@ $xml.='
 	} else	if ( $op=="pos" ) {
 		$XML_str="NO DATA - ERROR";
 
-		list($lat,$lon,$time,$alt,$sog,$cog,$XML_str,$portUsed)=getLastPoint($user);
+		list($lat,$lon,$time,$tm,$alt,$sog,$cog,$XML_str,$portUsed)=getLastPoint($user);
 		if ($time) {
 			// $timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
 			$XML_str="$time  <BR>$alt m, $sog km/h, cog:$cog";
@@ -177,17 +190,37 @@ $xml.='
 		// echo $XML_str;
 		// send_XML($XML_str);
 	} else	if ( $op=="update" ) {
-		list($lat,$lon,$time,$alt,$sog,$cog,$XML_str,$portUsed)=getLastPoint($user);
-		list($lat2,$lon2,$time2,$alt2,$sog2,$cog2,$XML_str2,$portUsed2)=getLastPoint($user,1);// previous point
+		list($lat,$lon,$time,$tm1,$alt,$sog,$cog,$XML_str,$portUsed)=getLastPoint($user);
+		list($lat2,$lon2,$time2,$tm2,$alt2,$sog2,$cog2,$XML_str2,$portUsed2)=getLastPoint($user,1);// previous point
 		
+
+		$last_tm=$_GET['tm'];
+		$cookieStr="tm=$tm1";
+
+		if ($last_tm==$tm1) $sametm=1;
+		else $sametm=0;
+
+		$dt=$tm1-$tm2;
+		$gl_ratio="N/A";
+		if ($dt) {
+			$vario=sprintf("%.1f",($alt-$alt2)/$dt);
+			if ($vario>=0) $vimg="<img align='middle' src='http://".$_SERVER['SERVER_NAME']."/modules/leonardo/live/icon_up.gif'>";
+			else $vimg="<img src='http://".$_SERVER['SERVER_NAME']."/modules/leonardo/live/icon_down.gif'>";
+			//km/h -> m/sec
+			if ($vario<0) $gl_ratio=sprintf("%.1f", ($sog*1000/3600) / -$vario);
+
+		} else $vario=0;
+
 		$langEncodings[$currentlang]='iso-8859-1';
-		$desc="$time  <BR>$alt m, $sog km/h, cog:$cog";
+		$timeStr=substr($time,11);
+		$infoStr="[ $alt m, $vario m/sec ]<BR>[ $sog km/h, cog:$cog, GR:$gl_ratio ]";
+		$desc="$timeStr $infoStr<BR>";
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
 		$xml.= '<kml xmlns="http://earth.google.com/kml/2.1">'."\n";
 
 		$xml.='<NetworkLinkControl> '."\n";
-		// $xml.= '  <cookie>'.$cookieStr.'</cookie>';
+		$xml.= '  <cookie>'.$cookieStr.'</cookie>';
 		$xml.= '  <linkName>Track Animation</linkName>'."\n";
 $xml.='  <Update> 
 	<targetHref><![CDATA[http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php?op=pos&user='.$user.'&color='.$color.']]></targetHref> 
@@ -202,12 +235,14 @@ $xml.='  <Update>
 </Update> 
 ';
 
+if (!$sametm){
 $xml.="\n<Update> 
 <targetHref><![CDATA[http://".$_SERVER['SERVER_NAME']."/modules/leonardo/leo_live.php?op=pos&user=$user&color=$color]]></targetHref>
 <Create>
 	<Folder targetId='trackpoints'>
 		<Placemark id='p_".$time."'> 
 			<styleUrl>#livePointStyle</styleUrl>
+			<description><![CDATA[<b>$user</b>: $timeStr<BR>$infoStr]]></description>
 			<name></name>
 			<Point>
 				<altitudeMode>absolute</altitudeMode>
@@ -237,7 +272,7 @@ $xml.="\n
 </Create> 
 </Update>
 ";
-		
+}		
 		$xml.='</NetworkLinkControl> ';				
 		$xml.='</kml>';
 
@@ -601,6 +636,7 @@ function getLastPoint($user,$offset=0){
 	if  ($row = mysql_fetch_assoc($res)) { 
 		$ip	  =$row["ip"];
 		$time =$row["time"];
+		$tm =$row["tm"];
 		$username =$row["username"];
 		$passwd =$row["passwd"];
 		$lat =$row["lat"];
@@ -618,9 +654,9 @@ function getLastPoint($user,$offset=0){
 		//$timeStr=substr($time,0,4)."-".substr($time,4,2)."-".substr($time,6,2)." ".substr($time,8,2).":".substr($time,10,2).":".substr($time,12,2);
 
 		$XML_str="$time  <BR>$alt m, $sog km/h, cog:$cog";
-		return array($lat,$lon,$time,$alt,$sog,$cog,$XML_str,$port);	
+		return array($lat,$lon,$time,$tm,$alt,$sog,$cog,$XML_str,$port);	
 	} else {
-		return array(0,0,0,0,0,0,"",0);	
+		return array(0,0,0,0,0,0,0,"",0);	
 	}
 }
 

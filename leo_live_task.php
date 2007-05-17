@@ -39,6 +39,7 @@ a:hover { 	background-color:#FFCC66; }
 -->
 </style>
 <title>Leonardo Live !</title>
+<meta http-equiv="refresh" content="30">
 </head>
 <body>
 <h1>Leonardo Live</h1>
@@ -68,6 +69,10 @@ if ($op=="list") {
 	}
 	$waypoints=array();
 	$i=0;
+	$max_lat=-9999;
+	$max_lon=-9999;
+	$min_lat=9999;
+	$min_lon=9999;
 	while  ($row = mysql_fetch_assoc($res)) { 
 		$waypoints[$i]=new gpsPoint();
 		$waypoints[$i]->lat=$row['lat'];
@@ -78,9 +83,18 @@ if ($op=="list") {
 		$waypoints[$i]->radius=$row['radius'];
 		$waypoints[$i]->distanceDiff=$row['distanceDiff'];
 		$waypoints[$i]->distanceTotal=$row['distanceTotal'];
+
+		if ( $waypoints[$i]->lat > $max_lat )  $max_lat = $waypoints[$i]->lat ;
+		if ( $waypoints[$i]->lat < $min_lat )  $min_lat  = $waypoints[$i]->lat ;
+		if ( $waypoints[$i]->lon > $max_lon )  $max_lon = $waypoints[$i]->lon ;
+		if ( $waypoints[$i]->lon < $min_lon )  $min_lon  = $waypoints[$i]->lon ;
 		$i++;
 	}
 
+	$max_lat+=0.2;
+	$max_lon+=0.2;
+	$min_lat-=0.2;
+	$min_lon-=0.2;
 	// print_r($waypoints);
 	// get only tracks 10 hrs old
 	$last_tm_limit=time()-3600*10;
@@ -96,8 +110,10 @@ if ($op=="list") {
 	echo "<tr><th>Πιλότος</th><th>Τελευταίο στίγμα</th><th>Τοποθεσιά</th><th>Ύψος</th><th>Ταχύτητα</th><th>Πορεία</th></tr>";
 	$j=0;
 	while  ($row = mysql_fetch_assoc($res)) { 
-		$username =$row["username"];
-		getUserInfoShort($username);
+		if ( in_bounds($row['lat'],$row['lon'], $max_lat,$max_lon,$min_lat,$min_lon) ) {
+			$username =$row["username"];
+			getUserInfoShort($username);
+		}
 	}
 	echo "</table>";
 } 
@@ -110,6 +126,13 @@ function getCogDescr($cog){
 	$i=floor($c)+1;
 	if ($i<0) $i=0;
 	return $dirs[$i];
+}
+
+
+function in_bounds($lat,$lon, $max_lat,$max_lon,$min_lat,$min_lon) {
+	$lon=-$lon;	
+	if ( $lat<=$max_lat && $lat >=$min_lat && $lon<=$max_lon && $lon>=$min_lon ) return 1;
+	return 0;
 }
 
 function getUserInfoShort($username) {
@@ -161,6 +184,8 @@ function getUserInfoShort($username) {
 		$i=0;
 
 		foreach($waypoints as $waypoint) {
+
+		   if ($waypoint->wType=='START') continue;
 		   $takeoff_distance = $thisPoint->calcDistance($waypoint);
 		   if ( $takeoff_distance < $minTakeoffDistance ) {
 				$minTakeoffDistance = $takeoff_distance;

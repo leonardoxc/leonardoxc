@@ -75,10 +75,11 @@ foreach ($startTimes as $filename=>$startTime){
 		$sleeptime=$startTime-$prevTime;
 		$res.="sleep $sleeptime\n";
 	}
-	$res.="nohup  php ./send_igc.php '$dirname$filename'  '".$pilots[$filename]."' $pass &\n";
+	$res.="php ./send_igc.php '$dirname$filename'  '".$pilots[$filename]."' $pass &\n";
 	$prevTime=$startTime;
 }
 
 
+echo "php ./delete_points.php $pass\n";
 echo $res;
 ?>
