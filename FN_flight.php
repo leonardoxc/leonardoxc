@@ -18,6 +18,7 @@ define("ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC",-3);
 define("ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE",-4);
 define("ADD_FLIGHT_ERR_SAME_DATE_FLIGHT",-5);
 define("ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT",-6);
+define("ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE",-7);
 
 //------------------- FLIGHT RELATED FUNCTIONS ----------------------------
 
@@ -155,6 +156,15 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
 	}
 
+	// echo $flight->DATE	." >  ". date("Y-m-d",time()+3600*10) ."<BR>";
+	// check for dates in the furure
+	if ( $flight->DATE	> date("Y-m-d",time()+3600*10)  ) {
+		@unlink($flight->getIGCFilename(1));
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);	
+	}
+
 	$oldFlightID= $flight->findSameFlightID();
 	if ($oldFlightID>0) {
 		@unlink($flight->getIGCFilename(1));
@@ -276,6 +286,10 @@ function getAddFlightErrMsg($result,$flightID) {
 			$errMsg=_THERE_IS_SAME_FILENAME_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
 						"<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
 						_CHANGE_THE_FILENAME;
+			break;
+		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	
+			$errMsg="The date of the flight is in the future<BR>Please use the Year-month-day not the US Year-day-month format";
+							 
 			break;
 	}
 
