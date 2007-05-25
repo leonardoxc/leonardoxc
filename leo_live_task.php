@@ -47,7 +47,7 @@ a:hover { 	background-color:#FFCC66; }
 <?
 $trackURL='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live.php';
 ?>
-<a href="<?='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live_list.php'?>">Επιστροφή</a><BR><BR><?
+<a href="<?='http://'.$_SERVER['SERVER_NAME'].'/modules/leonardo/leo_live_list.php'?>">Return</a><BR><BR><?
 $op=$_GET['op'];
 $taskID=$_GET['taskID']+0;
 if (!$taskID) {
@@ -58,7 +58,7 @@ if (!$taskID) {
 if (!$op) $op="list";
 if ($op=="list") {
 	echo "<h2>TASK $taskID</h2>";
-	echo "<a title='$title' href='$trackURL?taskID=$taskID'>Ζωντανή παρακολούθηση στο Google Earth</a><br><BR>";
+	echo "<a title='$title' href='$trackURL?taskID=$taskID'>Live Google Earth Tracking</a><br><BR>";
 	// get all the task waypoints into memory
 	$query="SELECT * FROM  leonardo_live_waypoints WHERE taskID=$taskID ORDER BY ID ASC";
 	//echo $query;
