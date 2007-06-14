@@ -1,4 +1,18 @@
+<html>
+
+<head>
+<meta http-equiv="refresh" content="2; url=http://live.thenet.gr"> 
+<title>LeoLive</title>
+</head>
+<body bgcolor="#FFFFFF">
+<center>
+  <p>The new page for leonardo Live is</p>
+  <p><a href="http://live.thenet.gr">live.thenet.gr</a> </p>
+  <p>&nbsp; </p>
+</center>
+
 <? 
+exit;
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
