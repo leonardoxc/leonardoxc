@@ -27,7 +27,7 @@ $DBGlvl=makeSane($_GET['DBGlvl'],1);
 $server=new Server($id);
 $server->getFromDB();
 
-// se to 1 for debug
+// set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
 
 

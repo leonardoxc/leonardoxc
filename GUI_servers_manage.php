@@ -46,6 +46,7 @@ echo  "<div class='tableTitle'>
 </div>" ;
 
 $i=0;
+
 echo "<table class='main_text simpleTable' cellspacing=0 cellpadding=3><tr>";
 echo "<th>ACTIONS</th><th>ID</th><th>URL</th><th>version</th><th>active</th><th>wpt exchange</th><th>isLeo</th><th>Type</th><th></th>";
 echo "</tr>";

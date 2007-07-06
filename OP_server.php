@@ -87,6 +87,7 @@ function server_module_info($arg) {
 }
 
 // this function runs only on the Master Server to register slave servers
+require_once dirname(__FILE__).'/CL_server.php';
 $serverFunctions['server.registerSlave']='registerSlave';
 function registerSlave($arg) {
 	$installType=$arg[0];
@@ -101,9 +102,25 @@ function registerSlave($arg) {
 	if (!$CONF_isMasterServer)	
 		return new IXR_Error(5001, "Not a Master server");	
 
+	$newServer=new Server();
+	$newServer->ID= Server::getNextFreeID();
+	$newServer->isLeo=1;
+	$newServer->installation_type	=$installType;
+	$newServer->leonardo_version	=$leonardo_version ;
+	$newServer->url					=$url;
+	$newServer->url_base			=$url_base;
+	$newServer->url_op				=$url_op;
+	$newServer->admin_email			=$adminEmail;
+	$newServer->site_pass			=$sitePass;
+	$newServer->is_active			=0;
+	$newServer->gives_waypoints		=1;
+	$newServer->waypoint_countries	='';
 
+	$res=$newServer->putToDB();
+
+/*
 	$fileStr="$installType#$leonardo_version#$url#$adminEmail#$sitePass\n";
-	$filename=dirname(__FILE__)."/clientServers.txt";
+	$filename=dirname(__FILE__)."/DB_of_servers.txt";
     if (!$handle = fopen($filename, 'a'))  
 		return new IXR_Error(5002, "Cannot open file ($filename)");	
 
@@ -111,6 +128,7 @@ function registerSlave($arg) {
 		return new IXR_Error(5003, "Cannot write to file ($filename)");	
 		
     fclose($handle); 
+*/
 	return 1;
 }
 

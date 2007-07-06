@@ -242,6 +242,19 @@ class Server {
 		$this->gotValues=1;
     }
 
+	function getNextFreeID() {
+		global $db,$serversTable;
+		$res= $db->sql_query("SELECT max(ID) as maxid FROM $serversTable ");
+  		if($res <= 0){   
+			 echo "Error getting info for last server ID from DB<BR>";
+		     return -1;
+	    }
+	    $row= $db->sql_fetchrow($res);
+		$maxid=$row['maxid']+1;
+		if ($maxid<100) $maxid=100;
+		return $maxid;
+	}
+
 	function putToDB($update=0) {
 		global $db,$serversTable;
 
@@ -264,7 +277,7 @@ class Server {
 
 		$query.= " ) VALUES ( ";
 		foreach ($this->valuesArray as $valStr) {
-			$query.= "'".prep_for_DB($this->description)."',";
+			$query.= "'".prep_for_DB($this->$valStr)."',";
 		}
 		$query=substr($query,0,-1);
 		$query.= " ) ";
