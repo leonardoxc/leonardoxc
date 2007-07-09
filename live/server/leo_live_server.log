@@ -1,9 +1,0 @@
-Sat Feb 24 23:54:16 2007: ip-> port-> pid->4508: Starting Leo Live Server Non-blocking TCP Server 
-Sat Feb 24 23:54:16 2007: ip-> port-> pid->4508: Working dir: ./ 
-Sat Feb 24 23:54:16 2007: ip-> port-> pid->4508: Listening on Port: 999. 
-Sat Feb 24 23:58:39 2007: ip-> port-> pid->4508: Got INT signal , preparing for exit 
-Sat Feb 24 23:58:39 2007: ip-> port-> pid->4508: Server terminated. 
-Sat Feb 24 23:58:44 2007: ip-> port-> pid->5060: Starting Leo Live Server Non-blocking TCP Server 
-Sat Feb 24 23:58:44 2007: ip-> port-> pid->5060: Working dir: ./ 
-Sat Feb 24 23:58:44 2007: ip-> port-> pid->5060: Listening on Port: 999. 
-Sun Feb 25 00:06:31 2007: ip->127.0.0.1 port->3030 pid->3708: Connection request received from (127.0.0.1:3030) 
