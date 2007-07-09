@@ -93,3 +93,7 @@ ADD `checkedBy` VARCHAR( 100 ) NOT NULL AFTER `airspaceCheckMsg` ;
 
 ALTER TABLE `leonardo_waypoints` ADD INDEX ( `lat` , `lon` ) ;
 
+
+# 2007/07/09
+
+ALTER TABLE `leonardo_flights` ADD `hash` VARCHAR( 100 ) NOT NULL ;

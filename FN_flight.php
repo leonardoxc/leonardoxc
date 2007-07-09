@@ -19,6 +19,7 @@ define("ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE",-4);
 define("ADD_FLIGHT_ERR_SAME_DATE_FLIGHT",-5);
 define("ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT",-6);
 define("ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE",-7);
+define("ADD_FLIGHT_ERR_SAME_HASH_FLIGHT",-8);
 
 //------------------- FLIGHT RELATED FUNCTIONS ----------------------------
 
@@ -130,6 +131,10 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
+	$hash=md5( implode("\r\n",$lines)  );
+
+	$flight->hash=$hash;
+
 	if ( count ($lines)==1) {
 		if ($lines[0]=preg_replace("/\r([^\n])/","\r\n\\1",$lines[0])) {		
 			DEBUG('addFlightFromFile',1,"addFlightFromFile: MAC newlines found<BR>");
@@ -180,6 +185,16 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
 	}
+
+	
+	$sameHashID=$flight->findSameHash( $hash );
+	if ($sameHashID>0) 	 {
+		@unlink($flight->getIGCFilename(1));
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameHashID);	
+	}
+
 
 
 	// move the flight to corresponding year
@@ -286,6 +301,10 @@ function getAddFlightErrMsg($result,$flightID) {
 			$errMsg=_THERE_IS_SAME_FILENAME_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
 						"<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
 						_CHANGE_THE_FILENAME;
+			break;
+		case ADD_FLIGHT_ERR_SAME_HASH_FLIGHT:
+			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
+							 "<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	
 			$errMsg="The date of the flight is in the future<BR>Please use the Year-month-day not the US Year-day-month format";

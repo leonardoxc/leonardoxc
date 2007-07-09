@@ -62,6 +62,10 @@ echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a> ";
 echo "</ul><br><br>";
 
+echo "<ul>";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
+echo "</ul><br><br>";
+
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
@@ -160,6 +164,37 @@ echo "</ul><br><br>";
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
+	} else if ($admin_op=="makehash") {
+		global $flightsAbsPath;
+		$query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
+		$res= $db->sql_query($query);
+		
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+					$files_total++;
+					$year=substr($row['DATE'],0,4);
+					$filename=$flightsAbsPath."/".$row['userID']."/flights/".$year."/".$row['filename'];  
+					if (!is_file($filename) ) { 
+						$file_not_found++ ; 
+						continue;
+					}
+
+					$fileContents=implode("\r\n",file($filename));
+					$hash=md5($fileContents);
+
+					$query2="UPDATE $flightsTable SET hash='$hash' WHERE ID=".$row['ID']." ";
+					$res2= $db->sql_query($query2);
+					
+					if(!$res2){
+						echo "Problem in query:$query2<BR>";
+						exit;
+					}
+			 }
+		}
+		echo "<BR><br><br>DONE !!!<BR>";
+		echo "<BR><br>Files not found : $file_not_found <BR>";
+		echo "<BR><br>Files total: $files_total<BR>";
+		
 	} else if ($admin_op=="updateScoring") {
 		$query="SELECT ID from $flightsTable WHERE active=1";
 		$res= $db->sql_query($query);

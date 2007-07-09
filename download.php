@@ -33,9 +33,30 @@
 	setDEBUGfromGET();
 
 	$type=makeSane($_REQUEST['type']);
-	if (!in_array($type,array("kml_trk","kml_wpt","sites")) ) return;
-	
-	if ($type=="kml_trk") {
+	if (!in_array($type,array("kml_task","kml_trk","kml_wpt","sites")) ) return;
+
+	if ($type=="kml_task") {
+		$moduleRelPath="modules/".$module_name;
+		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+
+		$flightID=makeSane($_REQUEST['flightID'],1);
+		//echo $_SERVER['QUERY_STRING'];
+		
+		DEBUG("DL",1,"Will serve task for flight $flightID<BR>");
+
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+	//	if ( $flight->userID!=$userID && ! in_array($userID,$admin_users) && $flight->private) {
+	//		echo _FLIGHT_IS_PRIVATE;
+	//		return;
+	//	}
+		$xml=$flight->kmlGetTask();
+		//$xml=$flight->createKMLfile("ff0000",1,2);
+
+		$file_name=$flight->filename.".task.kml";	
+		DEBUG("DL",1,"KML Filepath= $file_path<BR>");
+	} else if ($type=="kml_trk") {
 		$moduleRelPath="modules/".$module_name;
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;

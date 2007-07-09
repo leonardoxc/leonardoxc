@@ -124,7 +124,7 @@ fieldset.legendBox {
 }
 
 </style>
-<script src="http://maps.google.com/maps?file=api&v=1&key=<? echo $CONF_google_maps_api_key ?>&amp;v=2" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=2.x&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/pdmarker.js" type="text/javascript"></script>
 </head>
@@ -179,7 +179,8 @@ var relpath="<?=$moduleRelPath?>";
 var fname="<?=$flight->getPolylineRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 var posMarker;
- 
+
+
 function moveMarker(){
 	var pt =  posMarker.getPoint();
 	var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)
@@ -308,7 +309,45 @@ function SetTimer(evt) {
 </script>
 
 <script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
+<script language="javascript">
+      // create the map
+      var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
+      map.addControl(new GLargeMapControl());
+      map.addControl(new GMapTypeControl());
+      map.setCenter(new GLatLng(0,0), 4);
+
+	var taskicons=[];
+          taskicons["s"]   = "img/icon_start.png";    
+          taskicons["1"]   = "img/icon_1.png";
+          taskicons["2"]   = "img/icon_2.png";
+          taskicons["3"]   = "img/icon_3.png";
+          taskicons["4"]   = "img/icon_4.png";
+		  taskicons["5"]   = "img/icon_5.png";
+          taskicons["e"]   = "img/icon_end.png";
+
+      function createTaskMarker(point,name,ba) {      
+			var Icon = new GIcon(G_DEFAULT_ICON, taskicons[ba]);
+			Icon.iconSize=new GSize(16,24);
+			//Icon.shadow = "http://maps.google.com/mapfiles/kml/pal3/icon61s.png";
+			//Icon.shadowSize=new GSize(16,24);
+			Icon.iconAnchor=new GPoint(3,20);
+			Icon.infoWindowAnchor=new GPoint(16,0);
+
+       		var marker = new GMarker(point,Icon,{title:name});
+
+			posMarker=marker;
+	        return marker;
+      }
+
+	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=5251");
+	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
+	//map.addOverlay(kmlOverlay);
+<? 
+echo $flight->gMapsGetTaskJS(); 
+?>
+</script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
+
 
 <? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
 <script language="javascript">

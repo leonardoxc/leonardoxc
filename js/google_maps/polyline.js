@@ -12,7 +12,6 @@
       var background = [];
           background["green"] = "img/pin_1.png";
           background["red"]   = "img/pin_2.png";
-    
 
       // A function to create the marker and set up the event window
       function createMarker(point,name,html,ba,normalMarker) {      
@@ -58,10 +57,10 @@
 
 
       // create the map
-      var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
-      map.addControl(new GLargeMapControl());
-      map.addControl(new GMapTypeControl());
-      map.setCenter(new GLatLng(0,0), 4);
+//      var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
+//      map.addControl(new GLargeMapControl());
+//      map.addControl(new GMapTypeControl());
+//      map.setCenter(new GLatLng(0,0), 4);
 
       var side_bar_html = "";
       
@@ -158,11 +157,7 @@ icon.infoWindowAnchor = new GPoint(5, 1);
         document.getElementById("side_bar").innerHTML =  curHtml + side_bar_html;
       }                   
 	 //fname is derevied from args
-      GDownloadUrl(fname, process_polyline);
-	  
-	  
-	  
-
+      GDownloadUrl(fname, process_polyline);	 	
 	  
 	  
     }

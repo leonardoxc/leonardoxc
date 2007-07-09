@@ -49,6 +49,8 @@ class flight {
 	var $airspaceCheckMsg="";
 	var $checkedBy="";
 
+	var $hash='';
+
 var $timezone=0;
 
 var $DATE;
@@ -472,8 +474,68 @@ $photosXML
 		return $str;
 	}
 
-	function kmlGetTask(){
-		$kml_file_contents="";
+	function gMapsGetTaskJS(){
+		
+
+		
+		$icons=array(
+		1=>array("root://icons/palette-3.png",0,192),
+		2=>array("root://icons/palette-3.png",32,192),
+		3=>array("root://icons/palette-3.png",64,192),
+		4=>array("root://icons/palette-3.png",96,192),
+		5=>array("root://icons/palette-3.png",128,192) );
+		$kml_file_contents="var polyline = new GPolyline([ \n";
+
+		$j=0;
+		for($i=1;$i<=5;$i++) {
+			$varname="turnpoint$i";
+			if ($this->{$varname}) {
+				$pointString=explode(" ",$this->{$varname});
+				// make this string 
+				// B1256514029151N02310255EA0000000486
+				// from N40:29.151 E23:10.255
+				preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$this->{$varname},$matches);
+		
+				$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
+				$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
+		
+				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
+					$matches[6],$matches[7],$matches[8],$matches[5] );
+		
+				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );			
+				$kml_file_contents.=    ' new GLatLng('.$newPoint->lat.','.(-$newPoint->lon).'),';
+		
+				$name=$i;
+
+				$turnpointPlacemark[$j]='					
+		            var marker = createTaskMarker(new GLatLng('.$newPoint->lat.','.(-$newPoint->lon).'),"TP '.$name.'","'.$name.'");
+        		    map.addOverlay(marker);
+				';
+				$j++;
+		
+			}
+		}
+
+		$kml_file_contents=substr($kml_file_contents,0,-1);
+		$kml_file_contents.=' ], "#FFFFFF", 3,1); 
+			map.addOverlay(polyline);
+';
+
+		for ($i=0;$i<$j;$i++) 
+			$kml_file_contents.=$turnpointPlacemark[$i];
+
+		return $kml_file_contents;
+	}
+
+
+	function kmlGetTask($completeKMLfile=0){
+		if ($completeKMLfile) {
+			$kml_file_contents="<?xml version='1.0' encoding='UTF-8'?>\n".
+								"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
+		} else {
+			$kml_file_contents="";
+		}
+
 		$kml_file_contents.="<Folder>
 		<name>OLC Task</name>";
 		
@@ -543,6 +605,9 @@ $photosXML
 			$kml_file_contents.=$turnpointPlacemark[$i];
 		$kml_file_contents.="</Folder>";
 	
+		if ($completeKMLfile) {
+			$kml_file_contents="</kml>\n";
+		}
 		return $kml_file_contents;
 	}
 
@@ -2111,6 +2176,8 @@ $kml_file_contents=
 		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];	  	  
 		$this->autoScore=$row["autoScore"];	
 
+		$this->hash=$row["hash"];	
+
 		$this->FIRST_POINT=$row["FIRST_POINT"];
 		$this->LAST_POINT=$row["LAST_POINT"];
 
@@ -2273,6 +2340,7 @@ $kml_file_contents=
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
+		hash,
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
 		comments, glider, linkURL, timesViewed,
@@ -2303,6 +2371,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
+		'$this->hash', 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
@@ -2550,6 +2619,17 @@ foreach ($data_time as $i=>$tm) {
 		return $row["ID"]; // found duplicate retrun the ID; 
 	}
 
+	function findSameHash($hash) {
+		global $db;
+		global $flightsTable;
+		$query="SELECT ID FROM $flightsTable WHERE hash='$hash' ";
+		// echo $query;
+		$res= $db->sql_query($query);
+		if ($res<=0) return 0; // no duplicate found
+
+		$row = $db->sql_fetchrow($res);
+		return $row["ID"]; // found duplicate retrun the ID; 
+	}
 
 	function getOLCpilotData() {
 		global $db;
