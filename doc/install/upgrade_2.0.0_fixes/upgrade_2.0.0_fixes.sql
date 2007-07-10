@@ -97,3 +97,16 @@ ALTER TABLE `leonardo_waypoints` ADD INDEX ( `lat` , `lon` ) ;
 # 2007/07/09
 
 ALTER TABLE `leonardo_flights` ADD `hash` VARCHAR( 100 ) NOT NULL ;
+
+
+# 2007/07/10
+
+ALTER TABLE `leonardo_flights` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `ID` ,
+ADD `originalURL` VARCHAR( 255 ) NOT NULL AFTER `serverID` ,
+ADD `original_ID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `originalURL` ;
+
+
+ALTER TABLE `leonardo_pilots` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `pilotID` ;
+
+ALTER TABLE `leonardo_pilots` DROP PRIMARY KEY ,
+ADD PRIMARY KEY ( `pilotID` , `serverID` ) 

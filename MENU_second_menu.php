@@ -38,7 +38,7 @@
   
   $pilotLegend="";
   $allPilotsDisplay=0;
-  if ($pilotID) $pilotLegend=getPilotRealName($pilotID);
+  if ($pilotID) $pilotLegend=getPilotRealName($pilotID,$serverID);
   else {
   	$pilotLegend=_ALL_PILOTS;
   	$allPilotsDisplay=1;

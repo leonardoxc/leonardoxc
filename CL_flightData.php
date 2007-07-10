@@ -51,6 +51,10 @@ class flight {
 
 	var $hash='';
 
+	var $serverID=0;
+	var $originalURL='';
+	var $original_ID=0;
+
 var $timezone=0;
 
 var $DATE;
@@ -181,6 +185,7 @@ var $maxPointNum=1000;
 <validation>
 	<validated>$this->validated</validated>
 	<grecord>$this->grecord</grecord>
+	<hash>$this->hash</hash>
 	<validationMessage>$this->validationMessage</validationMessage>
 	<airspaceCheck>$this->airspaceCheck</airspaceCheck>
 	<airspaceCheckFinal>$this->airspaceCheckFinal</airspaceCheckFinal>
@@ -2121,6 +2126,10 @@ $kml_file_contents=
 		$name=getPilotRealName($row["userID"]);
 		$this->userName=$name;		
 		 
+		$this->serverID=$row["serverID"];
+		$this->originalURL=$row["originalURL"];
+		$this->original_ID=$row["original_ID"];
+
 		$this->NACclubID=$row["NACclubID"];
 		$this->cat=$row["cat"];		
 		$this->subcat=$row["subcat"];	
@@ -2340,7 +2349,8 @@ $kml_file_contents=
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
-		hash,
+		hash, serverID, originalURL, original_ID,
+
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
 		comments, glider, linkURL, timesViewed,
@@ -2371,7 +2381,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
-		'$this->hash', 
+		'$this->hash',  $this->serverID, '$this->originalURL', $this->original_ID, 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,

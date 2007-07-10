@@ -185,7 +185,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    while ($row = mysql_fetch_assoc($res)) { 
      $is_private=$row["private"];
 
-     $name=getPilotRealName($row["userID"]);
+     $name=getPilotRealName($row["userID"],$row["serverID"]);
 	 $takeoffName=getWaypointName($row["takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );

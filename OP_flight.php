@@ -91,7 +91,7 @@ function flights_find($arg) {
 		$flights=array();
 		$i=0;
 		while ($row = mysql_fetch_assoc($res)) { 
-			$name=getPilotRealName($row["userID"]);
+			$name=getPilotRealName($row["userID"],$row["serverID"]);
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row['DATE'],0,4);		
 			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  

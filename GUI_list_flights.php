@@ -47,7 +47,7 @@
   }
   
   if ($pilotID!=0) {
-		$where_clause.=" AND userID='".$pilotID."' ";		
+		$where_clause.=" AND userID='".$pilotID."'  AND serverID=$serverID ";		
   } else {  // 0 means all flights BUT not test ones 
 		$where_clause.=" AND userID>0 ";		
   }
@@ -310,7 +310,7 @@ function removeClubFlight(clubID,flightID) {
      $is_private=$row["private"];
 	 $flightID=$row['ID'];
 
-     $name=getPilotRealName($row["userID"],1);
+     $name=getPilotRealName($row["userID"],$row["serverID"],1);
 	 $name=prepare_for_js($name);
 
 	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"]) );

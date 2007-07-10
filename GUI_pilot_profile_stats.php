@@ -72,7 +72,7 @@
 
   $row = mysql_fetch_assoc($res);
   
-  $realName=getPilotRealName($pilotIDview);	
+  $realName=getPilotRealName($pilotIDview,$serverID);	
   $legend="<b>$realName</b> "._flights_stats;
   $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
   $legendRight.=" | <a href='?name=$module_name&op=pilot_profile&pilotIDview=$pilotIDview'>"._Pilot_Profile."</a>";

@@ -39,7 +39,7 @@ function getPilotList($clubID=0) {
 	$pilots=array();
 	$pilotsID=array();
 	while ($row = $db->sql_fetchrow($res)) {
-		$name =getPilotRealName($row["userID"]);
+		$name =getPilotRealName($row["userID"],$row["serverID"]);
 		$pnames[$row["userID"]]=$name;
 	}
 	if (!empty($pnames)) {
@@ -181,7 +181,7 @@ function getPilotInfo($pilotIDview) {
 }
 
 
-function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
+function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
@@ -190,7 +190,7 @@ function getPilotRealName($pilotIDview,$getAlsoCountry=0) {
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
 	
-	$query="SELECT $nOrder as realName ,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
+	$query="SELECT $nOrder as realName ,countryCode,serverID FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
 	$res= $db->sql_query($query);
 	// echo $query;
 

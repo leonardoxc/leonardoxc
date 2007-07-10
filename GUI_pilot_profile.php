@@ -16,7 +16,7 @@
   }
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
 
-  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND pilotID=user_id" );
+  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=user_id" );
 
   if($res <= 0){
      echo("<H3>Error in pilot query</H3>\n");
@@ -32,9 +32,9 @@
   
 
   $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
-  $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=$pilotIDview'>"._pilot_stats."</a>";
-  if ( $pilotIDview == $userID || in_array($userID,$admin_users)  ) {
+  $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
+  if ( $pilotIDview == $userID || in_array($userID,$admin_users ) && $serverID==0  ) {
 	  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
       if ($enableOLCsubmission) $legendRight.=" | <a href='?name=$module_name&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
   }

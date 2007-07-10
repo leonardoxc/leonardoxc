@@ -80,11 +80,11 @@ setVarFromRequest("DBGlvl",0,1);
 
 setVarFromRequest("waypointIDview",0,1);
 setVarFromRequest("flightID",0,1);
-setVarFromRequest("pilotIDview",0,1);
+setVarFromRequest("pilotIDview",0,0);
 setVarFromRequest("year",date("Y"),1); 
 setVarFromRequest("month",0,1); // date("m") for current month
 setVarFromRequest("day",0,1); // only used for flights_list
-setVarFromRequest("pilotID",0,1);
+setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);
 setVarFromRequest("op",$CONF_main_page);
@@ -94,6 +94,17 @@ setVarFromRequest("comp",0,1);
 setVarFromRequest("rank",0,1);
 setVarFromRequest("subrank",0,1);
 setVarFromRequest("clubID",0,1);
+
+$serverID=0;
+if ( count($pilotPartsArray=split('_',$pilotIDview)) > 1 ) {
+	$serverID=$pilotPartsArray[0];
+	$pilotIDview=$pilotPartsArray[1];
+}
+
+if (  count($pilotPartsArray=split('_',$pilotID)) >1 ) {
+	$serverID=$pilotPartsArray[0];
+	$pilotID=$pilotPartsArray[1];
+}
 
 
 if ($op=="main") $op=$CONF_main_page;

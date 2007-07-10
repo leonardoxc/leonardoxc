@@ -17,7 +17,7 @@
 	// Listing Topics
 	while($row= $db->sql_fetchrow($result1)) {		
 		 $flightID=$row["ID"];
-		 $name=getPilotRealName($row["userID"]);
+		 $name=getPilotRealName($row["userID"],$row["serverID"]);
 		 $takeoffName=getWaypointName($row["takeoffID"]);
 		 $takeoffVinicity=$row["takeoffVinicity"];
 		 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
