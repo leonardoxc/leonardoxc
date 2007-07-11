@@ -21,11 +21,14 @@
 	$where_clause.=" AND category=1 ";
 	require_once dirname(__FILE__)."/common_pre.php";
 	
-	$query = "SELECT $flightsTable.ID, userID, takeoffID ,
+	$query = "SELECT $flightsTable.ID, userID, takeoffID , userServerID, 
   				 gliderBrandID, $flightsTable.glider as glider,cat,
   				 FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  "
   		. " FROM $flightsTable,$pilotsTable "
-        . " WHERE (userID!=0 AND  private=0) AND $flightsTable.userID=$pilotsTable.pilotID $where_clause ";
+        . " WHERE (userID!=0 AND  private=0)
+			 AND $flightsTable.userID=$pilotsTable.pilotID 
+			 AND $flightsTable.userServerID=$pilotsTable.serverID
+			 $where_clause ";
 
 
 require_once dirname(__FILE__)."/common.php";

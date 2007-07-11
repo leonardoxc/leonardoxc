@@ -55,6 +55,9 @@ class flight {
 	var $originalURL='';
 	var $original_ID=0;
 
+	var $originalUserID =0;
+	var $userServerID=0;
+
 var $timezone=0;
 
 var $DATE;
@@ -120,7 +123,7 @@ var $maxPointNum=1000;
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
 		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
-		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate)=getPilotInfo($this->userID);
+		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
 		$dateAdded=$this->DATE;
 		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
@@ -152,6 +155,8 @@ var $maxPointNum=1000;
 
 <pilot>
 	<userID>$this->userID</userID>
+	<serverID>$this->userServerID</serverID>
+	<CIVLID>$CIVL_ID</CIVLID>
 	<userName>$this->userName</userName>
 	<pilotFirstName>$firstName</pilotFirstName>
 	<pilotLastName>$lastName</pilotLastName>
@@ -302,90 +307,120 @@ $photosXML
 	    return $window_size;
 	}
 
-	function getIGCRelPath($saned=0) {
+
+	// ---------------------------------
+	// Relative (web) paths
+	// ---------------------------------
+	function getPilotRelDir() {
 		global $flightsWebPath;
+		if ($this->userServerID) $extra_prefix=$this->userServerID.'_';
+		else $extra_prefix='';
+
+		return $flightsWebPath."/".$extra_prefix.$this->userID;
+	}
+
+	function getIGCRelPath($saned=0) {
 		if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;  
+
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;  
 	}
 
 	function getKMLRelPath() {
-		global $flightsWebPath;
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";  
 	}
 
 	function getGPXRelPath() {
-		global $flightsWebPath;
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";  
 	}
 	function getPolylineRelPath() {
-		global $flightsWebPath;
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";  
 	}
 
 	function getMapRelPath($num=0) {
-		global $flightsWebPath;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $flightsWebPath."/".$this->userID."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";  
+		return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";  
 	}    
+
 	function getChartRelPath($chartType,$unitSystem=1,$rawChart=0) {
-		global $flightsWebPath;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
-		return $flightsWebPath."/".$this->userID."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";  
+		return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";  
 	} 
 	function getPhotoRelPath($photoNum) {
-		global $flightsWebPath;
 		$t="photo".$photoNum."Filename";
-		return $flightsWebPath."/".$this->userID."/photos/".$this->getYear()."/".$this->$t;  
+		return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;  
 	} 
+	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return  $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+	}
+	function getJsRelPath($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+	}
+	// ---------------------------------
+	// now absolute filenames
+	// ---------------------------------
+	function getPilotAbsDir() {
+		global $flightsAbsPath;
+		if ($this->userServerID) $extra_prefix=$this->userServerID.'_';
+		else $extra_prefix='';
+
+		return $flightsAbsPath."/".$extra_prefix.$this->userID;
+	}
 
 	function getIGCFilename($saned=0) {
-		global $flightsAbsPath;
 		if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.$suffix;  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;  
 	}
-
 	function getKMLFilename() {
-		global $flightsAbsPath;
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".kml";  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";  
 	}
-
 	function getGPXFilename() {
-		global $flightsAbsPath;
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".xml";  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";  
 	}
 	function getPolylineFilename() {	
-		global $flightsAbsPath;
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename.".poly.txt";  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";  
 	}
-
 	function getMapFilename($num=0) {
-		global $flightsAbsPath;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $flightsAbsPath."/".$this->userID."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";  
+		return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";  
 	}    
-	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
-		global $flightsAbsPath;
+	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {		
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 
-		return $flightsAbsPath."/".$this->userID."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";  
+		return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";  
 	} 
 	function getPhotoFilename($photoNum) {
-		global $flightsAbsPath;
 		$t="photo".$photoNum."Filename";
-		return $flightsAbsPath."/".$this->userID."/photos/".$this->getYear()."/".$this->$t;  
+		return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;  
 	} 
+	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+	}
+	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		if ($timeStep) $suffix=".".$timeStep;
+		else $suffix="";
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+	}
 
+	//---------------------------------------
+	// Full url functions
+	//----------------------------------------
 	function getFlightLinkURL() {
 		global $baseInstallationPath,$module_name;
 		global $CONF_mainfile;
@@ -410,35 +445,10 @@ $photosXML
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=gpx_trk&flightID=".$this->flightID;
 	}
 
-	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $flightsAbsPath;
-		if ($timeStep) $suffix=".".$timeStep;
-		else $suffix="";
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
-	}
-	
-	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $flightsWebPath;
-		if ($timeStep) $suffix=".".$timeStep;
-		else $suffix="";
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
-	}
+	//------------------------------
+	// End of path functions
+	//------------------------------
 
-	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $flightsAbsPath;
-		if ($timeStep) $suffix=".".$timeStep;
-		else $suffix="";
-		return $flightsAbsPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
-	}
-
-	function getJsRelPath($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $flightsWebPath;
-		if ($timeStep) $suffix=".".$timeStep;
-		else $suffix="";
-		return $flightsWebPath."/".$this->userID."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
-	}
-
-   //require dirname(__FILE__)."/";
 
 	function kmlGetDescription($ext,$getFlightKML) {
 		if ($this->takeoffVinicity > $takeoffRadious ) 
@@ -1548,7 +1558,7 @@ $kml_file_contents=
 				 	// echo "#"; $pointOK=0;
 			}
 
-			if ($T_distance[1] < 0.5) {  // less than 0.5 m distance
+			if ($T_distance[1] < 0.5 && $T_deltaseconds[1] >2 ) {  // less than 0.5 m distance
 			 	$pointOK=0;
 				DEBUG("IGC",8,"[$Brecords-$p] Distance <0.5 m <br>");
 				$REJ_T_distance++;
@@ -1584,6 +1594,7 @@ $kml_file_contents=
 			}
 			if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
 				// echo "V";
+				 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_vario[1]) ."m/sec  > max allowed vario<br>");
 			}
 			if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care 
 				$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
@@ -1699,7 +1710,10 @@ $kml_file_contents=
 				// HOGTYGLIDERTYPE
 			} else 	if ($line{0}=='B' ) {
 				if ($stopReadingPoints ) continue;
-				if ($line{1}=='X') continue ; // MARKED BAD from BEFORE 
+				if ($line{1}=='X') { 
+					DEBUG("IGC",1,"[$points] BAD : $line<br>");
+					continue ; // MARKED BAD from BEFORE 
+				}
 				if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
 				
 
@@ -1796,7 +1810,7 @@ $kml_file_contents=
 								$slow_points++;		
 								$slow_points_dt+=$deltaseconds;	
 								DEBUG("IGC",1,"[$points] $line<br>");
-								DEBUG("IGC",1,"[$points] Found a slow speed point <br>");																
+								DEBUG("IGC",1,"[$points] Found a slow speed point (speed, dt)=($speed,$deltaseconds)<br>");																
 							} else {
 								$slow_points=0;
 								$slow_points_dt=0;
@@ -2123,12 +2137,15 @@ $kml_file_contents=
 	  }
 	  
 		$this->flightID=$flightID;
-		$name=getPilotRealName($row["userID"]);
+		$name=getPilotRealName($row["userID"],$row["userServerID"]);
 		$this->userName=$name;		
 		 
 		$this->serverID=$row["serverID"];
 		$this->originalURL=$row["originalURL"];
 		$this->original_ID=$row["original_ID"];
+
+		$this->originalUserID=$row["originalUserID"];
+		$this->userServerID=$row["userServerID"];
 
 		$this->NACclubID=$row["NACclubID"];
 		$this->cat=$row["cat"];		
@@ -2350,6 +2367,7 @@ $kml_file_contents=
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
 		hash, serverID, originalURL, original_ID,
+		originalUserID ,userServerID,
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
@@ -2382,6 +2400,8 @@ $kml_file_contents=
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$this->originalURL', $this->original_ID, 
+		$this->originalUserID , $this->userServerID,
+
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
@@ -2685,6 +2705,60 @@ foreach ($data_time as $i=>$tm) {
 		if ($submitDeadline > $now ) return 1;
 		else return 0;		
 	}
-	
+
+	// assigns the flight to a new user
+	function changeUser($newUserID,$newUserServerID) {
+		global $flightsAbsPath,$CONF_photosPerFlight;
+
+		$pilotDir=$this->getPilotAbsDir();
+		
+		if ($newUserServerID) $extra_prefix=$newUserServerID.'_';
+		else $extra_prefix='';
+		$newPilotDir=$flightsAbsPath."/".$extra_prefix.$newUserID;
+
+		$flightYear=$this->getYear();
+		$subdirs=array('flights','charts','maps');
+		foreach ($subdirs as $subdir){
+			$sourceDir="$pilotDir/$subdir/$flightYear";
+			$targetDir="$newPilotDir/$subdir/$flightYear";
+			
+			if ($handle = opendir($sourceDir)) {
+				while (false !== ($file = readdir($handle))) {
+					if (  substr( $file,0,strlen($this->filename) )==$this->filename  ) {
+						// echo "$file\n";
+						$filesToMove[$sourceDir.'/'.$file]=$targetDir.'/'.$file;
+					}
+				}
+				closedir($handle);
+			}
+		}
+
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";			
+			$file=$this->$var_name;
+			if ($file) {
+				$sourceDir="$pilotDir/photos/$flightYear";
+				$targetDir="$newPilotDir/photos/$flightYear";
+				$filesToMove[$sourceDir.'/'.$file]=$targetDir.'/'.$file;
+			}
+		}
+
+		array_push($subdirs,'photos');
+		foreach ($subdirs as $subdir){
+			makeDir("$newPilotDir/$subdir");
+		}
+
+		foreach ($filesToMove as $src=>$target){
+			makeDir($target);
+			@rename($src,$target);
+		}
+
+		$this->userID=$newUserID;
+		$this->userServerID=$newUserServerID;
+		$this->putFlightToDB(1);
+
+	}
+
+
  } // end of class
 ?>

@@ -18,6 +18,25 @@
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
+		$newUserIDStr=$_POST["newUserID"];
+		if ($newUserIDStr) { // move this flight to a new userID
+			 $newUserIDStrPart=split('_',$newUserIDStr);
+			 $newUserServerID=0;
+			 if (count($newUserIDStrPart)>1) {
+				$newUserServerID=$newUserIDStrPart[0];
+			 	$newUserID=$newUserIDStrPart[1];				
+	  	     } else if (is_numeric($newUserIDStr) ){
+				$newUserID=$newUserIDStr;
+			 } else {
+				echo "Not correct format for new user ID<BR>";
+				$inError=1;
+			 }
+
+			 if (!$inError) {
+				 $flight->changeUser($newUserID,$newUserServerID);
+			 }
+		} else {
+
 		 $flight->cat=$_REQUEST["gliderCat"]+0;
  		 $flight->category=$_REQUEST["category"]+0;
 		 $flight->glider=$_REQUEST["glider"];
@@ -60,7 +79,7 @@
 		} 
 		 
 		 $flight->putFlightToDB(1);
-
+	   } // end else
 		 open_inner_table(_CHANGE_FLIGHT_DATA,650);
 
 		 echo "<center> <br><br>"._THE_CHANGES_HAVE_BEEN_APPLIED."<br><br><br>";
@@ -175,6 +194,7 @@ fieldset.legendBox {
 		</td>
     </tr>
 <? } ?>
+
     <tr>
       <td colspan="2"  valign="top">
         <table width="100%"  border="0" cellspacing="0" cellpadding="0">
@@ -432,6 +452,19 @@ fieldset.legendBox {
         <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb'; ?></div>
       </div></td>
     </tr>
+<? if ( is_leo_admin($userID) ) {?>
+    <tr>
+      <td colspan=2 valign="top">        
+	    <fieldset class="legendBox legend3">
+		    <legend>ADMIN OPTION: Assign this flight to another pilot</legend>			
+			 <input name="newUserID" type="text" size="10" value="">	
+	    </fieldset>
+		</td>
+    </tr>
+<? } ?>
+    <tr>
+      <td colspan=2 valign="top">       &nbsp;
+	  </td></tR>
     <tr>
       <td>&nbsp;</td>
       <td><p><font face="Verdana, Arial, Helvetica, sans-serif">

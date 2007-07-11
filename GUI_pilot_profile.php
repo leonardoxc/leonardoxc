@@ -22,16 +22,19 @@
      echo("<H3>Error in pilot query</H3>\n");
      return;
   } else if ( mysql_num_rows($res)==0){
-  	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID) VALUES($pilotIDview)" );
+  	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverID)" );
 	 //echo("<H3>No info for this pilot</H3>\n");
 	 //return;
-  	 $res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview );
+  	// $res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview );
+    $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=user_id" );
+
   }
   
   $pilot = mysql_fetch_assoc($res);
   
+  $pilotName=getPilotRealName($pilotIDview,$serverID,1);
 
-  $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
+  $legend=_Pilot_Profile.": <b>$pilotName</b>";
   $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
   $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
   if ( $pilotIDview == $userID || in_array($userID,$admin_users ) && $serverID==0  ) {

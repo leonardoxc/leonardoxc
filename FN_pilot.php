@@ -79,13 +79,14 @@ function transliterate($str,$enc) {
 	return utf8_to_ascii($str_utf8);
 }
 
-function getPilotInfo($pilotIDview) {
+function getPilotInfo($pilotIDview,$serverID) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
 	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names,$PREFS;
 	
-	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode FROM $pilotsTable WHERE pilotID=".$pilotIDview ;
+	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID 
+			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
 	$res= $db->sql_query($query);
 	// echo $query;
 
@@ -101,7 +102,8 @@ function getPilotInfo($pilotIDview) {
 		$pilotCountry=strtolower($pilot['countryCode']);
 		$Sex=$pilot['Sex'];
 		$Birthdate=$pilot['Birthdate'];
-		
+		$CIVL_ID=$pilot['CIVL_ID'];		
+
 		if ( strlen($lastName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name				
 			// we have some info on how to tranlitarate
 			// and the currentlang is not the native lang of the pilot.			
@@ -125,7 +127,7 @@ function getPilotInfo($pilotIDview) {
 			// else return as is.
 
 
-			return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate);
+			return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
 			
 		}
 					
@@ -176,7 +178,7 @@ function getPilotInfo($pilotIDview) {
 		}
 	}
 	list($lastName,$firstName)=split(" ",$str,2);
-	return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate);
+	return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
 
 }
 

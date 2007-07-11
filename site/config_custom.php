@@ -24,7 +24,7 @@
  // for phpbb when  $CONF_use_own_template=1;
  $CONF_use_own_login=1;
  
-  // rely on  leonardo_pilits name flields  entirely
+  // rely on  leonardo_pilots name fields  entirely
  $CONF_use_leonardo_names=1;
  
  // mod_users 

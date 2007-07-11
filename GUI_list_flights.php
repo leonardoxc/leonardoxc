@@ -47,7 +47,7 @@
   }
   
   if ($pilotID!=0) {
-		$where_clause.=" AND userID='".$pilotID."'  AND serverID=$serverID ";		
+		$where_clause.=" AND userID='".$pilotID."'  AND userServerID=$serverID ";		
   } else {  // 0 means all flights BUT not test ones 
 		$where_clause.=" AND userID>0 ";		
   }
@@ -310,7 +310,7 @@ function removeClubFlight(clubID,flightID) {
      $is_private=$row["private"];
 	 $flightID=$row['ID'];
 
-     $name=getPilotRealName($row["userID"],$row["serverID"],1);
+     $name=getPilotRealName($row["userID"],$row["userServerID"],1);
 	 $name=prepare_for_js($name);
 
 	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"]) );
@@ -373,7 +373,7 @@ function removeClubFlight(clubID,flightID) {
 		"<div id='p_$i' class='pilotLink'>";
 		
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		echo "</div>";
 		echo "<div id='t_$i' class='takeoffLink'>";
 		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".addslashes($takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";

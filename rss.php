@@ -81,7 +81,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 			 $nearestWaypoint->getFromDB();
 
 
-     $name=getPilotRealName($row["userID"],$row["serverID"]);
+     $name=getPilotRealName($row["userID"],$row["userServerID"]);
 	 $takeoffName=getWaypointName($row["takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $duration=sec2Time($row['DURATION'],1);

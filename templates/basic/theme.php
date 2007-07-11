@@ -33,7 +33,7 @@ else $icon_name=$icon;
 		if ($_SESSION["filter_clause"] && 0)   { // no filter icon 
 		?> <a href='?name=<? echo $module_name ?>&op=filter'><img src="<?=$imagesPrefix ?>icon_filter.png" border=0></a> <? } else { ?>
 	  	<img src="<?=$imagesPrefix.$icon_name ?>" ><? }?></td>
-      <td width=<? echo $width_header ?> valign=top background="<?=$imagesPrefix ?>tbl_header_middle.gif" height="20">
+      <td width=<? echo $width_header ?> valign=absmiddle background="<?=$imagesPrefix ?>tbl_header_middle.gif" height="20">
 	  <?=$title ?></td>
 	  <td width="12" background="<?=$imagesPrefix ?>tbl_header_right.gif"></td>
     </tr>

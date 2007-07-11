@@ -87,7 +87,7 @@
 //			 $nearestWaypoint=new waypoint($takeoffIDTmp);
 //			 $nearestWaypoint->getFromDB();
 	
-			$name=getPilotRealName($row["userID"],$row["serverID"]);
+			$name=getPilotRealName($row["userID"],$row["userServerID"]);
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row[DATE],0,4);		
 			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
@@ -154,7 +154,7 @@
 			 $nearestWaypoint=new waypoint($takeoffIDTmp);
 			 $nearestWaypoint->getFromDB();
 	
-			$name=getPilotRealName($row["userID"],$row["serverID"]);
+			$name=getPilotRealName($row["userID"],$row["userServerID"]);
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row[DATE],0,4);		
 			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  

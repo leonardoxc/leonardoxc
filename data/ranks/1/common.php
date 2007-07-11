@@ -28,11 +28,11 @@ while ($row = $db->sql_fetchrow($res)) {
 	 $countryCode=$takeoffsCountry[$takeoffID];
 	 $continentCode=$takeoffsContinent[$takeoffID];
 
-	 $uID=$row["userID"];
+	 $uID=$row["userServerID"].'_'.$row["userID"];
 	 $flightID=$row["ID"];
 
 	 if (!isset($pilots[$uID]['name'])){
-		 $name=getPilotRealName($uID,1); 
+		 $name=getPilotRealName($row["userID"],$row["userServerID"],1); 
 		 $name=prepare_for_js($name);
 	     $pilots[$uID]['name']=$name;
 	 }
@@ -92,7 +92,7 @@ while ($row = $db->sql_fetchrow($res)) {
 		if (!$nationalFlights &&  $i==$countHowMany) { // find first national flight ID and replace the last flight in the list
 		//echo "<HR><HR>no national flight found ";
 			foreach ($flightsArray as $flightID=>$flight) {
-				if ($flight['country']=='DE') { 
+				if ($flight['country']=='DE' ) { 
 					$nationalFlights++;
 					$pilots[$pilotID][$category]['flights'][$countHowMany-1]=$flightID;
 					$bestSUM-=$lastVal;

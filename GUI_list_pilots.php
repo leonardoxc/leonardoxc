@@ -141,8 +141,8 @@
  if ($CONF_use_leonardo_names)  {
  	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
- $query = 'SELECT DISTINCT CONCAT(  '.$flightsTable.'.serverID ,userID  ) , userID,
-		  '.$flightsTable.'.serverID, '.$nOrder.' as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
+ $query = 'SELECT DISTINCT CONCAT(  '.$flightsTable.'.userServerID ,userID  ) , userID,
+		  '.$flightsTable.'.userServerID, '.$nOrder.' as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
@@ -150,11 +150,11 @@
 		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM  '.$flightsTable.' ' .$extra_table_str
-        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.serverID '.$where_clause
-        . ' GROUP BY '.$flightsTable.'.serverID , userID '
+        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.userServerID '.$where_clause
+        . ' GROUP BY '.$flightsTable.'.userServerID , userID '
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
 } else { // default
- $query = 'SELECT DISTINCT CONCAT( '.$flightsTable.'.serverID , userID ) , userID,  '.$flightsTable.'.serverID,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
+ $query = 'SELECT DISTINCT CONCAT( '.$flightsTable.'.userServerID , userID ) , userID,  '.$flightsTable.'.userServerID,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
@@ -162,8 +162,8 @@
 		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM  '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
-        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.serverID AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
-        . ' GROUP BY '.$flightsTable.'.serverID , userID  '
+        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.userServerID AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
+        . ' GROUP BY '.$flightsTable.'.userServerID , userID  '
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
 }	
 	$res= $db->sql_query($query);
@@ -259,7 +259,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
    $i=1;
    while ($row = $db->sql_fetchrow($res)) { 
 
-    $name=getPilotRealName($row["userID"],$row["serverID"]);
+    $name=getPilotRealName($row["userID"],$row["userServerID"]);
     $name=prepare_for_js($name);
 
 	$mean_duration=$row["totalDuration"]/$row["totalFlights"];
@@ -273,7 +273,7 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	echo "<TD><div align=left id='p_$i'>";
 
 	echo getNationalityDescription($row["countryCode"],1,0);
-	echo "<a href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["serverID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
+	echo "<a href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
 		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
 			
 	 echo "<TD>".$row["totalFlights"]."</TD>". 	 

@@ -1,6 +1,3 @@
-<table border="0" align="center" cellpadding="4" cellspacing="1">
-	<tr>
-		<td valign=top align=center>
 
 <? 
 	$query='SELECT count(  *  ) as flightCount, DATE_FORMAT( dateAdded ,  "%Y-%m"  )   as date_Added

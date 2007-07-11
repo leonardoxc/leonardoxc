@@ -191,9 +191,7 @@ function drawChart($chartNum,$legend, $legendarray, $args) {
 
 	if ($chartNum) $graph->Stroke(dirname(__FILE__)."/stats_usage_$chartNum.png");
 ?>
-<table border="0" align="center" cellpadding="4" cellspacing="1">
-	<tr>
-		<td valign=top align=center>
+
 		<table width=610  bgcolor="0060C1" class="main_text" border="0" align="center" cellpadding="2" cellspacing="1">
 			<tr bgcolor="#0060C1">
 				<td colspan=3 style="font-size:14px; font-weight:bold; color:white; text-align:center;"> 

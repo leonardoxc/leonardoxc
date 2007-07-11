@@ -111,7 +111,7 @@
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
   require_once dirname(__FILE__)."/MENU_second_menu.php";
 
-  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.serverID ,  username, 
+  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID ,  username, 
   				 gliderBrandID,'.$flightsTable.'.glider as glider,cat,
   				 MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
   		. ' FROM '.$flightsTable.', '.$prefix.'_users' . $extra_table_str
@@ -138,8 +138,8 @@
    $pilotGlidersMax=array();
    
    while ($row = $db->sql_fetchrow($res)) { 
-	 $uID=$row["serverID"].'_'.$row["userID"];
-	 $serverID=$row["serverID"];
+	 $uID=$row["userServerID"].'_'.$row["userID"];
+	 $serverID=$row["userServerID"];
 	 if (!isset($pilotNames[$uID])){
 		 $name=getPilotRealName($row["userID"],$serverID,1); 
 		 $name=prepare_for_js($name);

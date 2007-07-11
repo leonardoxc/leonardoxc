@@ -105,8 +105,12 @@ ALTER TABLE `leonardo_flights` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT 
 ADD `originalURL` VARCHAR( 255 ) NOT NULL AFTER `serverID` ,
 ADD `original_ID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `originalURL` ;
 
+ALTER TABLE `leonardo_flights` ADD `originalUserID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `userID` ;
+ALTER TABLE `leonardo_flights` ADD `userServerID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `originalUserID` ;
 
 ALTER TABLE `leonardo_pilots` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `pilotID` ;
 
 ALTER TABLE `leonardo_pilots` DROP PRIMARY KEY ,
 ADD PRIMARY KEY ( `pilotID` , `serverID` ) 
+
+ALTER TABLE `leonardo_pilots` ADD `CIVL_ID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `countryCode` ;

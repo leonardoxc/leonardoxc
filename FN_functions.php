@@ -87,6 +87,22 @@ function delDir($dir){
  @rmdir(${dir});
 }
 
+function makeDir($path, $rights = 0777) {
+  	$folder_path = array( strstr($path, '.') ? dirname($path) : $path);
+
+	while(!@is_dir(dirname(end($folder_path)))
+          && dirname(end($folder_path)) != '/'
+          && dirname(end($folder_path)) != '.'
+          && dirname(end($folder_path)) != '') {
+    	array_push($folder_path, dirname(end($folder_path)));
+	}
+	while($parent_folder_path = array_pop($folder_path)) {
+    	if(!@mkdir($parent_folder_path, $rights)) return 0;
+		//user_error("Can't create folder \"$parent_folder_path\".");
+	}
+
+	return 1;
+}
 
 function  checkPath($path){
   if (!is_dir($path))  mkdir($path,0755);
