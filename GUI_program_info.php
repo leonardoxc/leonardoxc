@@ -12,23 +12,15 @@
 /************************************************************************/
 
   echo "<br>";
-  open_inner_table("Leonardo's Dream - Gliding XC Server",650,"icon_help.png");
+  open_inner_table("Leonardo's Dream - Gliding XC Server",760,"icon_help.png");
   echo "<tr><td>";
   ?>
-
-
-
-
-
-
-
-
 
 
   
 <div align="center"> 
   <p> 
-  <table class=main_text width="586" border="0" align="center" cellpadding="2" cellspacing="2">
+  <table class=main_text width="700" border="0" align="center" cellpadding="2" cellspacing="2">
     <tr> 
       <td width="135">
 <div align="right"><? echo _DEVELOPMENT ?>: </div></td>
@@ -71,94 +63,86 @@
       <td>Alexander Caravitis</td>
     </tr>
     <tr> 
-      <td colspan="2"><div align="center">
+      <td colspan="2"><div align="left">
         <hr>
         <p align="left"><strong>Leonardo Installations </strong></p>
-        <ul><li>
-            <div align="left"><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
-              Leonardo</a></div>
-        </li>
-		
-          <li><div align="left"><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></div> 
-		</li>         
-			<li>
-            <div align="left"><a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">Italian Leonardo</a></div>
-          </li>
+        <ul>
           <li>
-            <div align="left"><a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></div>
-          </li>
+            <a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
+              Leonardo</a></li>
+          <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></li>
+          <li><a href="http://xc.ciclone.com.br/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Brazilian Leonardo</a></li>
+          <li> <a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
           <li>
-            <div align="left"><a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></div>
-          </li>
+            <a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></li>
+          <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>
+          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></li>
           <li>
-            <div align="left"><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></div>
-          </li>
+            <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></li>
           <li>
-			 <div align="left"><a href="http://www.foroparapente.com/modules.php?name=leonardo&op=list_flights" target="_blank">Chilian Leonardo</a></div>
-		  </li>
+            <a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
+          <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
           <li>
-            <div align="left"><a href="http://xc.ciclone.com.br/xc/modules.php?name=leonardo&op=list_flights" target="_blank">Brazilian Leonardo</a></div>
-          </li>
-          <li>
-            <div align="left"><a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></div>
-          </li>
-          <li>
-            <div align="left"><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></div>
-          </li>
-          <li>
-            <div align="left"><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></div>
-          </li>
-          <li>
-            <div align="left"><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian
-                Leonardo</a></div>
-          </li>
-        </ul>
+            <a href="http://www.foroparapente.com/modules.php?name=leonardo&op=list_flights" target="_blank">Chilian Leonardo</a></li>
+          <li><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian
+            Leonardo</a></li>
+          </ul>
         </div>
-        <hr>        <p>Many thanks to: </p>                <p>        <strong>Hannes Krueger</strong>, for his GPLIGC and openGLIGCexplorer
-          that gave me the initial idea<br>
-          <a href="http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php" target="_blank">http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php</a></p>                <p><strong>Kostas 'GUS' Proitsakis</strong> - Greece, for Beta testing
-          and Map creation<br>
-          <strong>Alexander Caravitis</strong> - Greece, for Beta testing and
-          Map creation</p>                <p><strong>Stein-Tore Erdal</strong> - Norway, for his excellent fightbook,
-          another inspiration<br>
-          <a href="http://www.flightlog.org" target="_blank">http://www.flightlog.org</a></p>
-          <p><strong>Emmanuel Chabani aka Man's </strong>for his Google Earth
-          extended info Module.</p>        <p>Also many thanks to the following for providing translations, valuable 
+        <hr>        <p>Many <em>many</em> thanks to: </p>                
+        <ul>
+          <li>        <strong>Hannes Krueger</strong>, for his GPLIGC and openGLIGCexplorer
+            that gave me the initial idea            <a href="http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php" target="_blank">http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php</a></li>
+          <li><strong>Kostas 'GUS' Proitsakis</strong> - Greece, for Beta testing
+            and Map creation</li>
+          <li><strong>Alexander Caravitis</strong> - Greece, for Beta testing and
+            Map creation</li>
+          <li><strong>Stein-Tore Erdal</strong> - Norway, for his excellent fightbook,
+            another inspiration            <a href="http://www.flightlog.org" target="_blank">http://www.flightlog.org</a></li>
+          <li><strong>Emmanuel Chabani aka Man's </strong>for his Google Earth
+            extended info Module.</li>
+          <li><strong><a href="http://www.dhv.de" target="_blank">DHV</a></strong> for  sponsoring the development of <br />
+            a) Custom rankings / National custom rankings / Club rankings <br />
+            b) Airspace infrigments checking <br />
+          </li>
+          <li><strong>Peter Wild (DHV) , Martin Jursa (DHV)</strong> for believing in the power of open source and their valuable contributions and assistance.</li>
+        </ul>
+        <p>Also many thanks to the following for providing translations, valuable 
           feedback and beta testing:</p>
-        <p><strong>Lucio Mazzi &amp; Benedetto Lo Tufo</strong> - Italy <br>
-          <a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights</a></p>        <p><strong>Mark Graham</strong> - UK<br>
-          <a href="http://www.pgcomps.org.uk/?page=/xcleague/xc/view.php" target="_blank">http://www.pgcomps.org.uk/?page=/xcleague/xc/view.php</a></p>        <p><strong>Ali
-              Yucer</strong> - Turkey<br>
-              <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.ypforum.com/modules.php?name=leonardo&amp;op=list_flights</a></p>        
-        <p><strong>Ale Spitznagel</strong> - Argentine<br>
-          <a href="http://www.argentinaxc.com.ar" target="_blank">http://www.argentinaxc.com.ar</a></p>
+        <ul>
+          <li><strong>Lucio Mazzi &amp; Benedetto Lo Tufo</strong> - Italy <br>
+            <a href="http://www.vololibero.net/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights</a></li>
+          <li><strong>Mark Graham</strong> - UK<br>
+            <a href="http://www.pgcomps.org.uk/?page=/xcleague/xc/view.php" target="_blank">http://www.pgcomps.org.uk/?page=/xcleague/xc/view.php</a></li>
+          <li><strong>Ali
+            Yucer</strong> - Turkey<br>
+            <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">http://www.ypforum.com/modules.php?name=leonardo&amp;op=list_flights</a></li>
+          <li><strong>Ale Spitznagel</strong> - Argentine<br>
+            <a href="http://www.argentinaxc.com.ar" target="_blank">http://www.argentinaxc.com.ar</a></li>
+        </ul>
         <p><em>I need to <strong>specially</strong> thank the following people 
           for their spontaneous answer to my call for translators.</em></p>
-        <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=202">Paulo Reis</a></strong> for the <strong>Portuguese</strong> translation</p>
-        <p> <strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1142">Ardy Brouwer</a></strong> for the <strong>Dutch</strong> translation<br>
-          <a href="http://www.ardybrouwer.com" target="_blank">http://www.ardybrouwer.com</a></p>
-        <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=3178">Etienne Prade</a></strong> for the <strong>French</strong> translation<br>
-          <a href="http://www.prade.net%20" target="_blank">http://www.prade.net          </a></p>
-        <p><strong>Torsten</strong> for the <strong>German</strong> translation<br>
-          <a href="http://www.paragliding365.com" target="_blank">http://www.paragliding365.com</a></p>
-        <p><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1067">Jonas Svedberg</a></strong> for the <strong>Swedish</strong> translation</p>
-        <p> <strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=2336">Andrei Orehov</a></strong> for the <strong>Russian</strong> translation</p>        
-              <p><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=pilot_profile&pilotIDview=2747"><strong>Olympio
-                  Faissol</strong></a> for the <strong>Brazilian</strong> translation<br>
-                  <a href="http://ofaissol.blogspot.com" target="_blank">http://ofaissol.blogspot.com</a></p>
-              <p>  <strong>Zeljko Vranic</strong> for the <strong>Croatian</strong> translation<br>
-                <br>        
-        <strong>Karolina Kociecka</strong> for the <strong>Polish</strong> translation</p>
-              <p><a href="http://www.felhout.hu/erd/egyeb/introduction.html" target="_blank"><strong>Zsolt Rohberg</strong></a>  for the <strong>Hungarian</strong> translation</p>
-              <p><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=5393" target="_blank"><strong>Rado
-              Voglar</strong></a> for the <strong>Slovenian</strong> translation </p>
-              <p> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </p>
-              <p> <a href="http://para-nimbus.xhost.ro/" target="_blank"><strong>Ciprian
-                    Chis</strong></a> for the <strong>Romanian</strong> translation</p>
-              <p> <a href="http://www.volfik.com/" target="_blank"><strong>Peter Volf</strong></a> for the <strong>Czech</strong> translation </p>
-              <p> <strong>Xiaozhong</strong>  for the <strong>Chinese</strong> translation</p>
-              <p><strong>Dmitry Korogodin</strong> for the <strong>Hebrew</strong> translation</p>
-              <hr></td>
+        <ul>
+          <li><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=202">Paulo Reis</a></strong> for the <strong>Portuguese</strong> translation</li>
+          <li> <strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1142">Ardy Brouwer</a></strong> for the <strong>Dutch</strong> translation <a href="http://www.ardybrouwer.com" target="_blank">http://www.ardybrouwer.com</a></li>
+          <li><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=3178">Etienne Prade</a></strong> for the <strong>French</strong> translation <a href="http://www.prade.net%20" target="_blank">http://www.prade.net          </a></li>
+          <li><strong>Torsten</strong> for the <strong>German</strong> translation <a href="http://www.paragliding365.com" target="_blank">http://www.paragliding365.com</a></li>
+          <li><strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=1067">Jonas Svedberg</a></strong> for the <strong>Swedish</strong> translation</li>
+          <li> <strong><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=2336">Andrei Orehov</a></strong> for the <strong>Russian</strong> translation</li>
+          <li><a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=pilot_profile&pilotIDview=2747"><strong>Olympio
+            Faissol</strong></a> for the <strong>Brazilian</strong> translation <a href="http://ofaissol.blogspot.com" target="_blank">http://ofaissol.blogspot.com</a></li>
+          <li>  <strong>Zeljko Vranic</strong> for the <strong>Croatian</strong> translation</li>
+          <li>          <strong>Karolina Kociecka</strong> for the <strong>Polish</strong> translation</li>
+          <li><a href="http://www.felhout.hu/erd/egyeb/introduction.html" target="_blank"><strong>Zsolt Rohberg</strong></a> for the <strong>Hungarian</strong> translation</li>
+          <li><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=5393" target="_blank"><strong>Rado
+            Voglar</strong></a> for the <strong>Slovenian</strong> translation </li>
+          <li> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </li>
+          <li> <a href="http://para-nimbus.xhost.ro/" target="_blank"><strong>Ciprian
+            Chis</strong></a> for the <strong>Romanian</strong> translation</li>
+          <li> <a href="http://www.volfik.com/" target="_blank"><strong>Peter Volf</strong></a> for the <strong>Czech</strong> translation </li>
+          <li> <strong>Xiaozhong</strong> for the <strong>Chinese</strong> translation</li>
+          <li><strong>Dmitry Korogodin</strong> for the <strong>Hebrew</strong> translation</li>
+        </ul>        
+        <hr></td>
     </tr>
   </table>
   <p> 

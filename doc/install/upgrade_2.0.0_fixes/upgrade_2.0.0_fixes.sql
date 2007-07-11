@@ -110,7 +110,6 @@ ALTER TABLE `leonardo_flights` ADD `userServerID` MEDIUMINT UNSIGNED DEFAULT '0'
 
 ALTER TABLE `leonardo_pilots` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `pilotID` ;
 
-ALTER TABLE `leonardo_pilots` DROP PRIMARY KEY ,
-ADD PRIMARY KEY ( `pilotID` , `serverID` ) 
+ALTER TABLE `leonardo_pilots` DROP PRIMARY KEY , ADD PRIMARY KEY ( `pilotID` , `serverID` ) ;
 
 ALTER TABLE `leonardo_pilots` ADD `CIVL_ID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `countryCode` ;

@@ -10,8 +10,8 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-  $CONF_version="2.0.0";
-  $CONF_releaseDate="2007/01/10";
+  $CONF_version="2.1.0.pre";
+  $CONF_releaseDate="2007/07/11";
 /************************************************************************
  ChangeLog
  1.5.02 ( release date 2006/05/11) 
