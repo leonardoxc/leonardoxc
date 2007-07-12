@@ -11,6 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+require_once dirname(__FILE__).'/FN_functions.php';
+require_once dirname(__FILE__).'/FN_output.php';
+require_once dirname(__FILE__).'/CL_flightData.php';
 
 define("ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE",-1);
 define("ADD_FLIGHT_ERR_NO_SUCH_FILE",-2);
@@ -77,19 +80,22 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 	// return $flightID;
 }
 
-function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
+function addFlightFromFile($filename,$calledFromForm,$userIDstr,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
 
 	set_time_limit (120);
 
 	global $CONF_server_id ;
+	list($thisServerID,$userID) = splitServerPilotStr($userIDstr);
+	if (!$thisServerID) $thisServerID=$CONF_server_id;
+
 	require_once dirname(__FILE__).'/CL_actionLogger.php';
 	$log=new Logger();
 	$log->userID  	=$userID;
 	$log->ItemType	=1 ; // flight; 
 	$log->ItemID	= 0; // 0 at start will fill in later if successfull
-	$log->ServerItemID	=$CONF_server_id ;
+	$log->ServerItemID	= $thisServerID ;
 	$log->ActionID  = 1 ;  //1  => add  2  => edit;
 	$log->ActionXML	= '';
 	$log->Modifier	= 0;
@@ -114,11 +120,13 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 		return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
 	}
 
-	checkPath($flightsAbsPath."/".$userID);
+	checkPath($flightsAbsPath."/".$userIDstr);
 	$tmpIGCPath=$filename;
 	
 	if ($gliderCat==-1) $gliderCat=$CONF_default_cat_add;
 	$flight=new flight();
+	if ($thisServerID!=$CONF_server_id) $flight->userServerID=$thisServerID;
+
 	$flight->userID=$userID;
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
@@ -198,10 +206,10 @@ function addFlightFromFile($filename,$calledFromForm,$userID,$is_private=0,$glid
 
 
 	// move the flight to corresponding year
-	$yearPath=$flightsAbsPath."/".$flight->userID."/flights/".$flight->getYear(); 
-	$maps_dir=$flightsAbsPath."/".$flight->userID."/maps/".$flight->getYear();
-	$charts_dir=$flightsAbsPath."/".$flight->userID."/charts/".$flight->getYear();
-	$photos_dir=$flightsAbsPath."/".$flight->userID."/photos/".$flight->getYear();
+	$yearPath=$flightsAbsPath."/".$userIDstr."/flights/".$flight->getYear(); 
+	$maps_dir=$flightsAbsPath."/".$userIDstr."/maps/".$flight->getYear();
+	$charts_dir=$flightsAbsPath."/".$userIDstr."/charts/".$flight->getYear();
+	$photos_dir=$flightsAbsPath."/".$userIDstr."/photos/".$flight->getYear();
 
     if (!is_dir($yearPath))  	mkdir($yearPath,0755);
     if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);

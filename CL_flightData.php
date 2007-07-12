@@ -2286,7 +2286,7 @@ $kml_file_contents=
 	function deleteFlight() {
  		global $db;
 		global $flightsTable;
-		global $CONF_photosPerFlight;
+		global $CONF_photosPerFlight,$CONF_server_id;
 
 		$query="DELETE from $flightsTable  WHERE ID=".$this->flightID." ";
 		// echo $query;
@@ -2341,7 +2341,7 @@ $kml_file_contents=
 
     function putFlightToDB($update=0) {
 		global $db;
-		global $flightsTable,$CONF_photosPerFlight;
+		global $flightsTable,$CONF_photosPerFlight,$CONF_server_id;
 
 		if ($update) {
 			$query="REPLACE INTO ";		

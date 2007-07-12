@@ -183,7 +183,7 @@ class club {
 
 		$query.= " ) VALUES ( ";
 		foreach ($this->valuesArray as $valStr) {
-			$query.= "'".prep_for_DB($this->description)."',";
+			$query.= "'".prep_for_DB($this->$valStr)."',";
 		}
 		$query=substr($query,0,-1);
 		$query.= " ) ";

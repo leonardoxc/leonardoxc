@@ -12,6 +12,7 @@
 /************************************************************************/
 
 require_once dirname(__FILE__).'/FN_functions.php';
+require_once dirname(__FILE__).'/CL_logReplicator.php';
 
 class Server {
 	var $ID;
@@ -319,7 +320,9 @@ class Server {
 		if (!$this->gotValues) $this->getFromDB();
 		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
 
-		$urlToPull.='&c=3&startID=140';
+		// $urlToPull.='&c=1&startID=143';
+		$urlToPull.='&c=1&startID=1733';
+
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
 		echo "will use $urlToPull<BR>";
 		$rssStr=fetchURL($urlToPull,20);
@@ -337,13 +340,15 @@ class Server {
 		//echo "<PRE>";
 		//print_r($xmlArray);
 		//echo "</PRE>";
-		foreach ($xmlArray['log']['item'] as $i=>$logItem) {
-			if (!is_numeric($i) ) continue;
-			echo "<PRE>";
-			print_r($logItem);
-			echo "</PRE>";
-		}
 
+		if ($xmlArray['log']['item']['_num']) {
+			foreach ($xmlArray['log']['item'] as $i=>$logItem) {
+				if (!is_numeric($i) ) continue;				
+				logReplicator::processEntry($this->ID,$logItem);
+			}
+		} else {
+			logReplicator::processEntry($this->ID,$xmlArray['log']['item']);
+		}
 	}
 }
 

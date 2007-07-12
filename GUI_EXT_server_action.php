@@ -57,6 +57,10 @@ if ($action==1) { // server info
 	$files_send=$server->sendOPfiles(); 
 	echo "Send $files_send files to slave server <BR>";
 } else if ($action==5) { // sync (pull data from server )
+	$moduleRelPath="modules/".$module_name;
+	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+
 	$server->sync();
 } else if ($action==99) { //test
 	echo $server->url_op;

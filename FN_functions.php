@@ -475,4 +475,13 @@ function  writeFile($filename,$str){
 	return 1;
 }
 
+function splitServerPilotStr($str) {
+	$serverID=0;
+	if (  count($pilotPartsArray=split('_',$str)) >1 ) {
+		$serverID=$pilotPartsArray[0];
+		$pilotID=$pilotPartsArray[1];
+	} else $pilotID=$str+0;
+
+	return array($serverID,$pilotID);
+}
 ?>
