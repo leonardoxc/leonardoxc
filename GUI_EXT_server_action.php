@@ -56,7 +56,8 @@ if ($action==1) { // server info
 } else if ($action==4) { //send op files
 	$files_send=$server->sendOPfiles(); 
 	echo "Send $files_send files to slave server <BR>";
-
+} else if ($action==5) { // sync (pull data from server )
+	$server->sync();
 } else if ($action==99) { //test
 	echo $server->url_op;
 	echo "<BR>$action<br>";

@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+require_once dirname(__FILE__).'/FN_functions.php';
 
 class Server {
 	var $ID;
@@ -23,6 +24,11 @@ class Server {
 	var $url_op;
 	var $admin_email;
 	var $site_pass;
+
+	var $lastPullUpdateTm;
+	var $serverPass;
+	var $clientPass;
+
 	var $is_active;
 	var $gives_waypoints;
 	var $waypoint_countries;
@@ -35,8 +41,9 @@ class Server {
 		if ($id!="") {
 			$this->ID=$id;
 		}
+
 	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
-			"url_op","admin_email","site_pass","is_active","gives_waypoints","waypoint_countries"
+			"url_op","admin_email","site_pass","lastPullUpdateTm","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
 		$this->DEBUG=0;
@@ -291,6 +298,53 @@ class Server {
 		return 1;
     }
 
+
+	function checkServerPass($serverID,$pass) {
+		global $db,$serversTable;
+		$res= $db->sql_query("SELECT * FROM $serversTable WHERE ID=$serverID AND serverPass='$pass' ");
+  		if($res <= 0){   
+			 echo "Error getting server from DB<BR>";
+		     return;
+	    }
+
+	    if ( $row= $db->sql_fetchrow($res) ) {
+			return 1;
+		} else {
+			return 0;
+		}
+    }
+
+	function sync() { // we pull data from this server
+		global $CONF_server_id;
+		if (!$this->gotValues) $this->getFromDB();
+		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
+
+		$urlToPull.='&c=3&startID=140';
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
+		echo "will use $urlToPull<BR>";
+		$rssStr=fetchURL($urlToPull,20);
+		if (!$rssStr) {
+			echo "Cannot get data from server<BR>";
+			return 0;
+		}
+
+		// echo "<PRE>$rssStr</pre>";
+		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
+		$xmlDoc = new MiniXMLDoc();
+		$xmlDoc->fromString($rssStr);
+		$xmlArray=$xmlDoc->toArray();
+
+		//echo "<PRE>";
+		//print_r($xmlArray);
+		//echo "</PRE>";
+		foreach ($xmlArray['log']['item'] as $i=>$logItem) {
+			if (!is_numeric($i) ) continue;
+			echo "<PRE>";
+			print_r($logItem);
+			echo "</PRE>";
+		}
+
+	}
 }
 
 ?>

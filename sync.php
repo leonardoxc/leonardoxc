@@ -21,6 +21,8 @@
 	require_once "FN_waypoint.php";	
 	require_once "FN_output.php";
 	require_once "FN_pilot.php";
+	require_once "CL_server.php";
+
 	setDEBUGfromGET();
 
 	// the requesting server must authenticate first
@@ -29,6 +31,9 @@
 	$type		= $_GET['type']+0;
 	$startID 	= $_GET['startID']+0;
 	$count 	 	= $_GET['c']+0;	
+
+	$clientID	= makeSane($_GET['clientID'],1);	
+	$clientPass	= makeSane($_GET['clientPass'],0);
 
 	if ($count) $limit="LIMIT $count";
 	else $limit="";
@@ -40,8 +45,17 @@
 	if (!$op) $op="latest";	
 	if (!in_array($op,array("latest")) ) return;
 
-	
 	$encoding="utf-8";
+	$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+	// authentication stuff
+	// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
+	if (!Server::checkServerPass($clientID,$clientPass)) {
+		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+		$op='error';
+		$RSS_str.="<error>Not authorized</error>\n";
+	}
+	
+	
 
 	if ($op=="latest") {
 		
@@ -52,7 +66,7 @@
 			 echo("<H3> Error in query! </H3>\n");
 			 exit();
 		 }
-		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+		
 
 		while ($row = mysql_fetch_assoc($res)) { 
 
@@ -74,27 +88,23 @@
 <ActionXML>".$row['ActionXML']."</ActionXML>
 </item>\n";
 		}
-
-		$RSS_str.="</log>\n";
+		
 		//$RSS_str=htmlspecialchars($RSS_str);
 
 		//$NewEncoding = new ConvertCharset;
 		//$FromCharset=$langEncodings[$currentlang];
 		//$RSS_str = $NewEncoding->Convert($RSS_str, $FromCharset, "utf-8", $Entities);
-
-
-		if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
-		{
-			header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
-		}
-		else
-		{
-			header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
-		}
-		header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
-		header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-		header ('Content-Type: text/xml');
-		echo $RSS_str;
 	}
+
+	$RSS_str.="</log>\n";
+	if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))	{
+		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
+	} else	{
+		header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
+	}
+	header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+	header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header ('Content-Type: text/xml');
+	echo $RSS_str;
 
 ?>

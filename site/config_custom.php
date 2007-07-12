@@ -15,7 +15,7 @@
  $CONF_master_server_id=1;
 
  // Our server ID -> usually 0 for non network operation
- $CONF_server_id=0;
+ $CONF_server_id=99;
  
  // if it is a phpbb module we can use our own template 
  // and not the onw of the forum 

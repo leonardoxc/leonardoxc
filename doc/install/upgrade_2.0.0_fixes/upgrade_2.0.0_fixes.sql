@@ -113,3 +113,10 @@ ALTER TABLE `leonardo_pilots` ADD `serverID` SMALLINT UNSIGNED DEFAULT '0' NOT N
 ALTER TABLE `leonardo_pilots` DROP PRIMARY KEY , ADD PRIMARY KEY ( `pilotID` , `serverID` ) ;
 
 ALTER TABLE `leonardo_pilots` ADD `CIVL_ID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL AFTER `countryCode` ;
+
+
+ALTER TABLE `leonardo_servers` ADD `serverPass` VARCHAR( 50 ) NOT NULL AFTER `site_pass` ,
+ADD `clientPass` VARCHAR( 50 ) NOT NULL AFTER `serverPass` ,
+ADD `lastPullUpdateTm` BIGINT UNSIGNED DEFAULT '0' NOT NULL AFTER `clientPass` ;
+
+
