@@ -121,8 +121,17 @@ class logReplicator {
 				echo "logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>";
 				return 0;
 			}
+			$argArray=array("dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
+							"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
+							"original_ID"	=>$e['ActionXML']['flight']['id'],
+							"serverID"		=>$e['ActionXML']['flight']['serverID'],
+							"userServerID"	=>$e['ActionXML']['flight']['serverID'],
+							"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
+			);
+
 			writeFile($tempFilename,$igcFileStr);
-			list( $res,$flightID)=addFlightFromFile($tempFilename,0,$userID,$is_private,$gliderCat,$linkURL,$comments,$glider, $category);
+			list( $res,$flightID)=addFlightFromFile($tempFilename,0,$userID,
+							$is_private,$gliderCat,$linkURL,$comments,$glider, $category,$argArray);
 			if ($res!=1) { 
 				echo "Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>";
 			} else { 

@@ -71,8 +71,24 @@
 	$tmpZIPPath=$flightsAbsPath."/".$userID."/flights/".$filename;
 	move_uploaded_file($_FILES['zip_datafile']['tmp_name'], $tmpZIPPath );
 
-     delDir($tmpZIPfolder);
-	 exec("unzip -o -j ".$tmpZIPPath." -d '".$tmpZIPfolder."'" );
+	//delDir($tmpZIPfolder);
+	//exec("unzip -o -j ".$tmpZIPPath." -d '".$tmpZIPfolder."'" );
+
+	makeDir($tmpZIPfolder);
+	require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+	$archive = new PclZip($tmpZIPPath);
+    $list 	 = $archive->extract(PCLZIP_OPT_PATH, $tmpZIPfolder,
+                                PCLZIP_OPT_REMOVE_ALL_PATH,
+								PCLZIP_OPT_BY_PREG, "/(\.igc)|(\.olc)$/i");
+
+	echo "<b>List of uploaded igc/olc files</b><BR>";
+	$f_num=1;
+	foreach($list as $fileInZip) {
+		echo "$f_num) ".$fileInZip['stored_filename']. ' ('.floor($fileInZip['size']/1024).'Kb)<br>';
+		$f_num++;
+	}
+	flush2Browser();
+	flush2Browser();
 
 	 $igcFiles=0;
 	 $igcFilesSubmited=0;

@@ -333,8 +333,16 @@ function removeClubFlight(clubID,flightID) {
   	   		$dateStr="&nbsp;";  
 			$rowStr="";
   	   }
-  	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  ) $dateStr.="<br><img src='".$moduleRelPath."/img/icon_new.png' width='31' height='12' />";			
-  	   
+
+	   $dateStr.="<br>";
+  	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
+			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"];
+			$dateStr.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='31' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
+  	   }
+		$extLinkImgStr=getExternalLinkIconStr($row["serverID"],$row["originalURL"]);
+		if ($extLinkImgStr) $extLinkImgStr="<a href='".$row["originalURL"]."' target='_blank'>$extLinkImgStr</a>";
+		$dateStr.=$extLinkImgStr;
+
 		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
 
 	   $duration=sec2Time($row['DURATION'],1);

@@ -182,6 +182,12 @@ function getPilotInfo($pilotIDview,$serverID) {
 
 }
 
+function getExternalLinkIconStr($serverID,$linkURL='') {
+	global $CONF_server_id,$moduleRelPath;
+	if ( !$serverID || $serverID==$CONF_server_id) return '';
+	else return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='External Entry $linkURL'>";
+
+}
 
 function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 	global $db,$pilotsTable,$prefix,$opMode;
@@ -228,7 +234,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 			// else return as is.
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
-			return $str;
+			return $str.getExternalLinkIconStr($serverID);
 			
 		}
 					
@@ -279,6 +285,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 		}
 	}
 
+	$str.=getExternalLinkIconStr($serverID);
 	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0).$str; 
 	else return $str; 
 }

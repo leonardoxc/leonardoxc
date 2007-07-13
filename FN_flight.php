@@ -80,7 +80,9 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 	// return $flightID;
 }
 
-function addFlightFromFile($filename,$calledFromForm,$userIDstr,$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1) {
+function addFlightFromFile($filename,$calledFromForm,$userIDstr,
+		$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
+		$argArray=array() ) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
 
@@ -109,6 +111,14 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,$is_private=0,$g
 		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
 	}
+
+	// now is the time to remove bad chars from the filename!
+	$newFilename=str_replace("'"," ",$filename);
+	if ($newFilename!=$filename) {
+		rename($filename,$newFilename);
+		$filename=$newFilename;
+	}
+
 	if (! is_file ($filename) ) {
 		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_NO_SUCH_FILE,0);
 		if (!$log->put()) echo "Problem in logger<BR>";
@@ -136,6 +146,10 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,$is_private=0,$g
 	$flight->glider=$glider;
 	$flight->linkURL=$linkURL;
 	if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
+
+	foreach ($argArray as $varName=>$varValue) {
+		$flight->$varName=$varValue;
+	}
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
