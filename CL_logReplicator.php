@@ -93,49 +93,82 @@ class logReplicator {
 
 		$pilot->putToDB($update);
 	}
+	
+	function findFlight($serverID,$flightIDoriginal) {
+	  global $db,$flightsTable;
+	  
+	  $query="SELECT * FROM $flightsTable  WHERE original_ID=$flightIDoriginal AND serverID=$serverID";
 
+	  $res= $db->sql_query($query);	
+	  # Error checking
+	  if($res <= 0){
+		 echo("<H3> Error in findFlight query! $query</H3>\n");
+		 exit();
+	  }
+		
+	  if (! $row = $db->sql_fetchrow($res) ) {
+		  return 0;	  
+	  } else {
+	  	return $row['ID'];
+	  }
+	  
+	}
+	
 	function processEntry($serverID,$e) {
 		global $flightsAbsPath;
 		echo "<PRE>";
 		print_r($e);
 		echo "</PRE>";
 		if ($e['type']=='1') { // flight
-			$igcFilename=$e['ActionXML']['flight']['filename'];
-			$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
-			$tempFilename=$flightsAbsPath.'/'.$igcFilename;
-
-			$userServerID=$e['ActionXML']['flight']['serverID'];
-			if ($userServerID==0)  $userServerID=$serverID;
-
-			$userID=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
-
-			logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
-
-			$is_private	=$e['ActionXML']['flight']['info']['private'];
-			$gliderCat	=$e['ActionXML']['flight']['info']['gliderCat'];
-			$linkURL	=$e['ActionXML']['flight']['info']['linkURL'];
-			$comments	=$e['ActionXML']['flight']['info']['comments'];
-			$glider		=$e['ActionXML']['flight']['info']['glider'];
-			$category	=$e['ActionXML']['flight']['info']['cat'];
-			if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
-				echo "logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>";
-				return 0;
-			}
-			$argArray=array("dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
-							"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
-							"original_ID"	=>$e['ActionXML']['flight']['id'],
-							"serverID"		=>$e['ActionXML']['flight']['serverID'],
-							"userServerID"	=>$e['ActionXML']['flight']['serverID'],
-							"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
-			);
-
-			writeFile($tempFilename,$igcFileStr);
-			list( $res,$flightID)=addFlightFromFile($tempFilename,0,$userID,
-							$is_private,$gliderCat,$linkURL,$comments,$glider, $category,$argArray);
-			if ($res!=1) { 
-				echo "Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>";
-			} else { 
-				echo "flight pulled OK with local ID $flightID<BR>";
+			if ($e['action']==1) {	// add
+				$igcFilename=$e['ActionXML']['flight']['filename'];
+				$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
+				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
+	
+				$userServerID=$e['ActionXML']['flight']['serverID'];
+				if ($userServerID==0)  $userServerID=$serverID;
+	
+				$userID=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
+	
+				logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
+	
+				$is_private	=$e['ActionXML']['flight']['info']['private'];
+				$gliderCat	=$e['ActionXML']['flight']['info']['gliderCat'];
+				$linkURL	=$e['ActionXML']['flight']['info']['linkURL'];
+				$comments	=$e['ActionXML']['flight']['info']['comments'];
+				$glider		=$e['ActionXML']['flight']['info']['glider'];
+				$category	=$e['ActionXML']['flight']['info']['cat'];
+				if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
+					echo "logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>";
+					return 0;
+				}
+				$argArray=array("dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
+								"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
+								"original_ID"	=>$e['ActionXML']['flight']['id'],
+								"serverID"		=>$e['ActionXML']['flight']['serverID'],
+								"userServerID"	=>$e['ActionXML']['flight']['serverID'],
+								"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
+				);
+	
+				writeFile($tempFilename,$igcFileStr);
+				list( $res,$flightID)=addFlightFromFile($tempFilename,0,$userID,
+								$is_private,$gliderCat,$linkURL,$comments,$glider, $category,$argArray);
+				if ($res!=1) { 
+					echo "Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>";
+				} else { 
+					echo "flight pulled OK with local ID $flightID<BR>";
+				}
+			} else if ($e['action']==2) {	// edit / update
+				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
+				if (!$flightIDlocal) {
+					echo "logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." an original ID : ".
+							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont update<BR>";
+					return;
+				}
+				echo "will update flight";
+				
+			} else if ($e['action']==4) {	// edit / update
+			
 			}
 		}		
 	}

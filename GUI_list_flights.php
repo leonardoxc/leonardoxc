@@ -322,8 +322,13 @@ function removeClubFlight(clubID,flightID) {
 
 	   $days_from_submission =	floor( ( mktime() - datetime2UnixTimestamp($row["dateAdded"]) ) / 86400 );  // 60*60*24 sec per day
 
-	   if ( $is_private ) $first_col_back_color=" bgcolor=#33dd33 ";
-	   else  $first_col_back_color="";
+	   if ( $is_private ) {
+			// $first_col_back_color=" bgcolor=#33dd33 ";
+			$privateIcon="<img src='".$moduleRelPath."/img/icon_private.gif' align='absmiddle'' width='13' height='13'>";
+	   } else  { 
+			//$first_col_back_color="";
+			$privateIcon='';
+	   }
 	   	   
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
   	   		 $currDate=$row["DATE"];  	   		
@@ -375,7 +380,7 @@ function removeClubFlight(clubID,flightID) {
 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
 			title='".$row['glider']."' border='0' />";
 
-	   echo "\t<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div></TD>";
+	   echo "\t<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
 	   echo "<TD class='dateString' valign='top'><div>$dateStr</div></TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
