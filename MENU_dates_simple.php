@@ -34,32 +34,17 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 </tr>
 <tr>
 <? if ($op=="list_flights" && $CONF_use_calendar) {?>
-	<td class="tableBox" valign="top" style="width:255px">		
-<? } else { ?>
-	<td>
-<? }?>
-	</td>
-	<td class="tableBox" valign="top" style="width:60px">
-		<strong><?=_YEAR?></strong>
-	</td>
-	<td class="tableBox" valign="top" style="width:90px">
-		<strong><?=_MONTH?></strong>
-	</td>
-    <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
-</tr>
-<tr>
-<? if ($op=="list_flights" &&  $CONF_use_calendar ) {?>
-	<td valign="top" class="calBox">
+	<td class="calBox" valign="top" style="width:255px" rowspan="2">		
 <? 
 		$calLang=$lang2iso[$currentlang]; 
 		if (!$day) $day=date("d");
 		if (!$month) $month=date("m");
 		if (!$year)  $year=date("Y");
 		$dateStr=sprintf("%02d.%02d.%04d",$day,$month,$year);
-	  ?>
+ ?>
 <script language='javascript'>
 	var thisUrl= '?name=<?=$module_name ?>';
-	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+	var imgDir = '<?= $moduleRelPath ?>/js/cal/';
 
 	var language = '<?=$calLang?>';	
 	var startAt = 1;		// 0 - sunday ; 1 - monday
@@ -88,13 +73,29 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 <script language='javascript'>
 
  init();
- showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,1,67);
+ showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,1,46);
 </script>
+
 <? } else { ?>
 	<td>
+<? }?>
+	</td>
+	<td class="tableBox" valign="top" style="width:60px">
+		<strong><?=_YEAR?></strong>
+	</td>
+	<td class="tableBox" valign="top" style="width:90px">
+		<strong><?=_MONTH?></strong>
+	</td>
+    <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
+</tr>
+<tr>
+<? if ($op=="list_flights" &&  $CONF_use_calendar ) {?>
+<? 
+ } else { ?>
+	<td>
+	</td>
 <? } ?>
    
-	</td>
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		

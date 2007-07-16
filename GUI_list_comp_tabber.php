@@ -107,98 +107,43 @@
 
   $where_clause.=$where_clause_country;
   
-	// was _KILOMETERS -> bug
-	// and _TOTAL_KM
-	if ($PREFS->metricSystem==1) {
-		$FAI_TRIANGLE_str=_KM;
-		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._KM;
-	} else  {
-		$FAI_TRIANGLE_str=_MI;
-		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._MI;
-	}
-
-	$leagueCategories=array(
-		0=>array('select_fields'=>'FLIGHT_POINTS',
-				'select_as'=>'FLIGHT_POINTS',
-				'sortBy'=>'FLIGHT_POINTS',
-				'where_clause'=>'',
-				'legend'=>_OLC,
-				'header'=>_OLC_TOTAL_SCORE,
-		 		'arrayName'=>"olc_score",
-				'formatFunction'=>"formatOLCScore"),
-		1=>array('select_fields'=>'FLIGHT_KM',
-				'select_as'=>'FLIGHT_KM',
-				'sortBy'=>'FLIGHT_KM',
-				'where_clause'=>' AND BEST_FLIGHT_TYPE="FAI_TRIANGLE" ',
-				'legend'=>_FAI_TRIANGLE,	'header'=>$FAI_TRIANGLE_str, 		'arrayName'=>"triangleKm",		'formatFunction'=>"formatDistance"),
-		2=>array('select_fields'=>'LINEAR_DISTANCE',
-				'select_as'=>'LINEAR_DISTANCE',
-				'sortBy'=>'LINEAR_DISTANCE',
-				'where_clause'=>'',
-				'legend'=>_MENU_OPEN_DISTANCE,'header'=>$MENU_OPEN_DISTANCE_str,'arrayName'=>"open_distance",	'formatFunction'=>"formatDistance"),
-		3=>array('select_fields'=>'DURATION',
-				'select_as'=>'DURATION',
-				'sortBy'=>'DURATION',
-				'where_clause'=>'',
-				'legend'=>_DURATION,		'header'=>_TOTAL_DURATION, 			'arrayName'=>"duration",		'formatFunction'=>"sec2Time"),
-		4=>array('select_fields'=>' ( MAX_ALT-TAKEOFF_ALT ) ',
-				'select_as'=>'altGain',
-				'sortBy'=>'altGain',
-				'where_clause'=>'',
-				'legend'=>_ALTITUDE_GAIN,	'header'=>_TOTAL_ALTITUDE_GAIN, 	'arrayName'=>"alt_gain",		'formatFunction'=>"formatAltitude"),
-
-	);
-
-	$leagueCategory=$_GET['comp']+0;
-
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
   require_once dirname(__FILE__)."/MENU_second_menu.php";
 
-	$where_clause.=	 $leagueCategories[$leagueCategory]['where_clause'];
-  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID , 
-  				 gliderBrandID,'.$flightsTable.'.glider as glider,cat, '.
-				 $leagueCategories[$leagueCategory]['select_fields'].' as '.$leagueCategories[$leagueCategory]['select_as']
-  		. ' FROM '.$flightsTable. $extra_table_str
-        . ' WHERE (userID!=0 AND  private=0) '.$where_clause
-        . ' ORDER BY  userID , userServerID, '.$leagueCategories[$leagueCategory]['sortBy'].' DESC ';
-/*
-  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID , 
+  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID ,  username, 
   				 gliderBrandID,'.$flightsTable.'.glider as glider,cat,
   				 MAX_ALT , TAKEOFF_ALT, DURATION , LINEAR_DISTANCE, FLIGHT_POINTS  , FLIGHT_KM, BEST_FLIGHT_TYPE  '
-  		. ' FROM '.$flightsTable. $extra_table_str
-        . ' WHERE (userID!=0 AND  private=0) '.$where_clause
+  		. ' FROM '.$flightsTable.', '.$prefix.'_users' . $extra_table_str
+        . ' WHERE (userID!=0 AND  private=0) AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
         . ' ';
-*/
+
    $res= $db->sql_query($query);
-		// echo $query;
+	//	echo $query;
    if($res <= 0){
-      echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY." $query </H3>\n");
+      echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");
       exit();
    }
 
    $i=1;
- /*  $duration=array();
+   $duration=array();
    $triangleKm=array();
    $open_distance=array();
    $max_alt=array();
    $alt_gain=array();
    $olc_score=array();
-   */
+   
    $pilotNames=array();
    $pilotGliders=array();   
    $pilotGlidersMax=array();
    
-	$arrayName= $leagueCategories[$leagueCategory]['arrayName'];
-	${$arrayName}=array();
-
    while ($row = $db->sql_fetchrow($res)) { 
 	 $uID=$row["userServerID"].'_'.$row["userID"];
 	 $serverID=$row["userServerID"];
-
 	 if (!isset($pilotNames[$uID])){
 		 $name=getPilotRealName($row["userID"],$serverID,1); 
 		 $name=prepare_for_js($name);
 		 $pilotNames[$uID]=$name;
+
 	 } 
 	 
 	 $brandID=guessBrandID($row['cat'],$row['glider']);
@@ -208,10 +153,6 @@
 	 }
 
 	 
-	if ( ! is_array( ${$arrayName}[$uID] ) )  ${$arrayName}[$uID]=array();
-
-	${$arrayName}[$uID][$row["ID"]]=$row[$leagueCategories[$leagueCategory]['select_as']];
-/*
 	 if  ( $row["BEST_FLIGHT_TYPE"] == "FAI_TRIANGLE" ) {
 		if ( ! is_array ($triangleKm[$uID] ) )  $triangleKm[$uID]=array();
 	 	$triangleKm[$uID][$row["ID"]]=$row["FLIGHT_KM"]; 
@@ -228,7 +169,7 @@
 	 $alt_gain[$uID][$row["ID"]]=$gain;
 	 if  (! is_array ($olc_score[$uID] )) $olc_score[$uID]=array();
 	 $olc_score[$uID][$row["ID"]]=$row["FLIGHT_POINTS"];
-	 */
+	 
      $i++;
   } 
 
@@ -254,8 +195,8 @@
 	
 	  //get some stats now 
 	  foreach (${$arrayName} as $pilotID=>$pilotArray) {
-			// arsort($pilotArray);
-			// arsort(${$arrayName}[$pilotID]);
+			arsort($pilotArray);
+			arsort(${$arrayName}[$pilotID]);
 			$i=0;
 			$best3=0;
 			foreach( $pilotArray as $element) {
@@ -268,23 +209,18 @@
 	  }	  	
 	  uasort(${$arrayName}, "cmp");
   }  
-
   
   $countHowMany= $CONF_countHowManyFlightsInComp;
-  sortArrayBest($leagueCategories[$leagueCategory]['arrayName'],$countHowMany);
-/*
   sortArrayBest("duration",$countHowMany);
   sortArrayBest("open_distance",$countHowMany);
   sortArrayBest("max_alt",$countHowMany);
   sortArrayBest("alt_gain",$countHowMany);
   sortArrayBest("olc_score",$countHowMany);
   sortArrayBest("triangleKm",$countHowMany); 
-*/
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup();  ?>
 
-<? if (0) { ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tabber.js"></script>
 <link rel="stylesheet" href="<?=$themeRelPath ?>/tabber.css" TYPE="text/css" MEDIA="screen">
 <link rel="stylesheet" href="<?=$themeRelPath ?>/tabber-print.css" TYPE="text/css" MEDIA="print">
@@ -300,34 +236,24 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 
 <div class="tabber" id="compTabber">
 <?
-} else {
-?>
-
-<? 
-	foreach($leagueCategories as $subcatID=>$subcatArray) {
-		$subcatTitle=$subcatArray['legend'];			
-		if ($subcatID==$leagueCategory) $style ="style='background-color:#E1E6F3;' ";
-		else $style="";
-
-		echo " <div class='menu1' $style ><a href='?name=$module_name&op=competition&comp=$subcatID'>$subcatTitle</a></div>";	
+	// was _KILOMETERS -> bug
+	// and _TOTAL_KM
+	if ($PREFS->metricSystem==1) {
+		$FAI_TRIANGLE_str=_KM;
+		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._KM;
+	} else  {
+		$FAI_TRIANGLE_str=_MI;
+		$MENU_OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._MI;
 	}
-	echo "<BR>";
-}
-  listCategory($leagueCategories[$leagueCategory]['legend'],$leagueCategories[$leagueCategory]['header'],
-				$leagueCategories[$leagueCategory]['arrayName'],$leagueCategories[$leagueCategory]['formatFunction']);
-/*
+
   listCategory(_OLC,				_OLC_TOTAL_SCORE,"olc_score","formatOLCScore");
   listCategory(_FAI_TRIANGLE, 		$FAI_TRIANGLE_str ,"triangleKm","formatDistance");   
   listCategory(_MENU_OPEN_DISTANCE,	$MENU_OPEN_DISTANCE_str,"open_distance","formatDistance");
   listCategory(_DURATION,			_TOTAL_DURATION,"duration","sec2Time"); 
   listCategory(_ALTITUDE_GAIN,		_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
-*/
-if (0) {
 ?>
-
 </div>
 <?	
-}
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
    global $pilotNames,$pilotGlidersMax,$brandsList;

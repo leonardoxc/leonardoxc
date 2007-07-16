@@ -9,7 +9,7 @@ not (standards mode)
 */
 
 
-if (0) { ?>
+if (! $CONF_use_htc_ie_hack ) { ?>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 sfHover = function() {
 	var sfEls = document.getElementById("nav").getElementsByTagName("LI");	
@@ -174,6 +174,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li class='li_space'></li>
 		<li><a href="?name=<?=$module_name?>&op=stats"><?=_FLIGHTS_STATS ?></a></li>
 		<li><a href="?name=<?=$module_name?>&op=program_info"><?=_PROJECT_INFO ?></a></li>
+		<? insertMenuItems('main_menu','bottom'); ?>
 	</ul>
 </li>
 
@@ -205,28 +206,72 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	</ul>
 </li>
 
-<li class="lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
-	<ul>
-		<? if (0) { ?><li><a href="?name=<?=$module_name?>&op=comp"><?=_MENU_OLC ?> GERMAN</a></li><? }?>
-		<li><a href="?name=<?=$module_name?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
-		<li class='li_space'></li>
-		<li><a href="?name=<?=$module_name?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
-		<li><a href="?name=<?=$module_name?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
-		<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
+<li class="long lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
+	<ul class="long">
+		<li><a href="?name=<?=$module_name?>&op=competition&clubID=0"><?=_MENU_XCLEAGUE ?></a></li>
+		<? if (0) { ?>
+			<li><a href="?name=<?=$module_name?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
+			<li class='li_space long'></li>
+			<li><a href="?name=<?=$module_name?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
+			<li><a href="?name=<?=$module_name?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
+			<li><a href="?name=<?=$module_name?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
+		<? }?>
 		<? 
 			if ( count($ranksList) ) {
-				echo "<li class='li_h1'>.:: "._National_Rankings." ::.</li>";
+				echo "<li class='li_h1 long_li_h1'>.:: "._National_Rankings." ::.</li>";
 				foreach($ranksList as $rankID=>$rankArray) {
 					$rname=$rankArray['name'];
 					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
 					if  ($rankArray['menuYear']) $yearToForceStr="&year=".$rankArray['menuYear']."&month=0";
 					else $yearToForceStr="";
-					echo "<li><a href='?name=$module_name&op=comp&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
+					echo "<li><a href='?name=$module_name&op=comp&clubID=0&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
 				
 				}			
 			}
 		?>
+	<?
+	if (count($clubsList) >0) {
+		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
+		foreach( $clubsList as $clubsItem) {
+			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
+			else $a_class="";
+			echo "<li $a_class><a $a_class href='?name=".$module_name."&op=competition&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+		}
+	}
+
+	if (count($apList) >0) {
+		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
+		foreach( $apList as $apName=>$apItem) {
+			echo "<li><a href='?name=$module_name&ap=$apName'>".$apItem['desc']."</a></li>\n";
+	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","","?name='.$module_name.'&ap='.$apName.'"));';
+		}
+	}
+
+?>
 	</ul>
 </li>
 		
 </ul>
+
+
+<?
+function insertMenuItems($top_menu_item,$position) {
+	global $CONF_MENU,$module_name;
+
+	if ($CONF_MENU[$top_menu_item][$position])
+		foreach($CONF_MENU[$top_menu_item][$position] as $menuEntry) {
+			if ($menuEntry['type']=='spacer') {
+				echo "<li class='li_space ".$menuEntry['extra_class']."'></li>";
+				continue;
+			}
+
+			echo '<li>';
+			if ($menuEntry['linkType']=='leonardo') $hrefStr="?name=$module_name&".$menuEntry['link'];
+			else $hrefStr=$menuEntry['link'];
+			echo "<a href='$hrefStr'>".$menuEntry['name']."</a>";
+			echo '</li>';
+		}
+
+}
+
+?>

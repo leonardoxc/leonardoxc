@@ -219,7 +219,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $takeoffRadious= 500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
- $CONF_compItemsPerPage=50;
+ $CONF_compItemsPerPage=100;
  $CONF_defaultThemeName="basic";
  $CONF_metricSystem=1; //  1=km,m     2=miles,feet
 
@@ -275,6 +275,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // Will use the date('0') together with the timezone name for TZ detection
  // This is buggy in php 4.4.1 and before .
  $CONF_use_date_for_TZ_detection=1;
+
+
+  // use htc files for ie mouse over TR elements
+  // May not work on servers behind firewalls
+  $CONF_use_htc_ie_hack=1;
 
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only

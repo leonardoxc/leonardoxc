@@ -192,8 +192,7 @@ TR .newDate {
 	background-color:#D6ECD5;
 	border:0;
 	padding:0px;
-	padding-left:1px;
-	padding-right:1px;
+	padding-left:1px;	padding-right:1px;
 	margin:0px;
 	width:auto;
 	display:block;
@@ -327,7 +326,7 @@ function removeClubFlight(clubID,flightID) {
 			$privateIcon="<img src='".$moduleRelPath."/img/icon_private.gif' align='absmiddle'' width='13' height='13'>";
 	   } else  { 
 			//$first_col_back_color="";
-			$privateIcon='';
+			$privateIcon='&nbsp;';
 	   }
 	   	   
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
@@ -339,14 +338,17 @@ function removeClubFlight(clubID,flightID) {
 			$rowStr="";
   	   }
 
-	   $dateStr.="<br>";
+	   $date2row="";
   	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
 			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"];
-			$dateStr.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='31' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
-  	   }
+			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='31' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
+  	   } 
+
 		$extLinkImgStr=getExternalLinkIconStr($row["serverID"],$row["originalURL"]);
 		if ($extLinkImgStr) $extLinkImgStr="<a href='".$row["originalURL"]."' target='_blank'>$extLinkImgStr</a>";
-		$dateStr.=$extLinkImgStr;
+
+		$date2row.=$extLinkImgStr;
+		if ($date2row=='') $date2row.='&nbsp;';
 
 		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
 
@@ -380,8 +382,8 @@ function removeClubFlight(clubID,flightID) {
 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
 			title='".$row['glider']."' border='0' />";
 
-	   echo "\t<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
-	   echo "<TD class='dateString' valign='top'><div>$dateStr</div></TD>".
+	   echo "\n<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
+	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row</TD>".
        "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		

@@ -140,7 +140,7 @@ margin-left:8em;
 
 /* the last item of the top menu will fold on the right */
 #nav li.lastItem ul, #nav li li.lastItem ul, #nav li li li.lastItem ul {
-	margin-left:-5.5em;
+	margin-left:-8.5em;
 }
 
 #nav li:hover, #nav li.sfhover { background-color:#F8C90C; }

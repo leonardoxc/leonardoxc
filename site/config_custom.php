@@ -108,7 +108,7 @@
  $takeoffRadious= 500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
- $CONF_compItemsPerPage=50;
+ $CONF_compItemsPerPage=200;
  $CONF_defaultThemeName="basic";
  $CONF_metricSystem=1; //  1=km,m     2=miles,feet
 
@@ -222,4 +222,35 @@
  
  // USE airspace checking
  $CONF_airspaceChecks=1; 
+
+  // use htc files for ie mouse over TR elements
+  // May not work on servers behind firewalls
+  $CONF_use_htc_ie_hack=1;
+
+
+// menu custom entries
+/*
+the menu that can have added entries are
+'home'  (the first menu item with the home icon )
+'main_menu' (the main menu)
+
+For each menu there are many slots were one or more entries can be added
+FOR home->
+'top' top most 
+'before_personal' before the logged in user menu 
+'before_settings'
+'bottom' after all items
+
+
+*/
+$CONF_MENU['main_menu']['bottom']=array(
+		array('type'=>'spacer','extra_class'=>'long'),
+		array('name'=>'Instructions',
+			'linkType'=>'leonardo', // leonardo or external
+			'link'=>'op=instructions',
+			'target'=>'_blank',
+		)
+);
+
+
 ?>
