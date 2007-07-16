@@ -2456,6 +2456,24 @@ $kml_file_contents=
 		if (!$log->put()) echo "Problem in logger<BR>";
 	}
 
+	function makeLogEntry() {
+		global $CONF_server_id ;
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ServerItemID	=$CONF_server_id ;
+		$log->ActionID  = 1 ;  //1  => add  2  => edit;
+		$log->ActionXML	= $this->toXML();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = 1;
+		
+		if (!$log->put()) echo "Problem in logger<BR>";
+	}
+	
 	function activateFlight() {
 		global $db;
 		global $flightsTable;

@@ -64,6 +64,9 @@ echo "</ul><br><br>";
 
 echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
+echo "</ul><br>";
+echo "<ul>";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=remakeLog'>Clean and remake sync-log</a> ";
 echo "</ul><br><br>";
 
     if ($admin_op=="findUnusedIGCfiles") {
@@ -213,6 +216,20 @@ echo "</ul><br><br>";
 			 }
 		}
 		echo "<BR><br><br>DONE !!!<BR>";
+	} else if ($admin_op=="remakeLog") {
+		Logger::deleteLogsFromDB(1);
+		$query="SELECT ID from $flightsTable WHERE active=1 AND serverID=0 ";
+		$res= $db->sql_query($query);
+		
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				  $flight=new flight();
+				  $flight->getFlightFromDB($row["ID"]);
+				  $flight->makeLogEntry();
+				  set_time_limit(300);
+			 }
+		}
+		echo "<BR><br><br>DONE !!!<BR>";		
 	} else if ($admin_op=="updateMaps") {
 		$query="SELECT ID from $flightsTable WHERE active=1";
 		$res= $db->sql_query($query);

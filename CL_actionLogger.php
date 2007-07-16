@@ -183,6 +183,21 @@ class Logger {
 		return $actionTypes[$act];
 	}
 	
+	function deleteLogsFromDB($type){
+		global $db, $logTable;
+		
+		if ($type)  $where_clause=" WHERE ItemType=$type ";
+		$query = "DELETE from $logTable $where_clause";
+		// echo $query;
+		$res = $db->sql_query($query);
+		if ($res) return 1;
+		else { 
+			echo "Problem in deleting log entries from DB $query<br>";
+			return 0;		
+		}
+
+	}
+	
 	function put(){
 		global $db, $logTable, $userID;
 	
