@@ -140,8 +140,7 @@ class logReplicator {
 				$glider		=$e['ActionXML']['flight']['info']['glider'];
 				$category	=$e['ActionXML']['flight']['info']['cat'];
 				if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
-					echo "logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>";
-					return 0;
+					return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>");
 				}
 				$argArray=array("dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
 								"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
@@ -155,16 +154,15 @@ class logReplicator {
 				list( $res,$flightID)=addFlightFromFile($tempFilename,0,$userID,
 								$is_private,$gliderCat,$linkURL,$comments,$glider, $category,$argArray);
 				if ($res!=1) { 
-					echo "Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>";
+					return array(0,"Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>");
 				} else { 
-					echo "flight pulled OK with local ID $flightID<BR>";
+					return array(1,"Flight pulled OK with local ID $flightID<BR>");
 				}
 			} else if ($e['action']==2) {	// edit / update
 				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
 				if (!$flightIDlocal) {
-					echo "logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." an original ID : ".
-							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont update<BR>";
-					return;
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." and original ID : ".
+							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont update<BR>");
 				}
 				echo "Will update flight $flightIDlocal<BR>";
 				
@@ -218,20 +216,23 @@ class logReplicator {
 				}
 				
 				$extFlight->putFlightToDB(1);
-				
+				return array(1,"Flight updated OK");				
+
 			} else if ($e['action']==4) {	// edit / update
 				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
 				if (!$flightIDlocal) {
-					echo "logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." an original ID : ".
-							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont delete it<BR>";
-					return;
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." and original ID : ".
+							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont delete it<BR>");
 				}
 				echo "Will delete flight $flightIDlocal<BR>";
 				
 				$extFlight=new flight();			
 				$extFlight->deleteFlight();			
+				return array(1,"Flight deleted ok");
 			}
-		}		
+			return array(0,"Unknown error, this should not happen");
+		}		 // if type==1
+
 	}
 
 

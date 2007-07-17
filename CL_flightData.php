@@ -125,6 +125,9 @@ var $maxPointNum=1000;
 		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
+		$userServerID=$this->userServerID;
+		if ($userServerID==0) $userServerID=$CONF_server_id;
+
 		$dateAdded=$this->DATE;
 		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
 
@@ -155,7 +158,7 @@ var $maxPointNum=1000;
 
 <pilot>
 	<userID>$this->userID</userID>
-	<serverID>$this->userServerID</serverID>
+	<serverID>$userServerID</serverID>
 	<CIVLID>$CIVL_ID</CIVLID>
 	<userName>$this->userName</userName>
 	<pilotFirstName>$firstName</pilotFirstName>
@@ -1705,7 +1708,7 @@ $kml_file_contents=
 				// echo $this->timezone."#^^";
 			} else if (strtoupper(substr($line,2,13)) =="GTYGLIDERTYPE" ) {  
 				// HOGTYGLIDERTYPE: Gradient Bliss 26  OR  HPGTYGliderType:Gradient Nevada 
-				$this->glider=trim(substr($line,16));
+				if (!$this->glider ) $this->glider=trim(substr($line,16));
 				// HFGTYGLIDERTYPE
 				// HOGTYGLIDERTYPE
 			} else 	if ($line{0}=='B' ) {

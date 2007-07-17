@@ -66,8 +66,14 @@ echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 echo "</ul><br>";
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=remakeLog'>Clean and remake sync-log</a> ";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=remakeLog'>Remake sync-log</a> ";
 echo "</ul><br><br>";
+
+echo "<ul>";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=clearBatchBit'>Clean the batch bits for all flights</a> ";
+echo "</ul><br><br>";
+
 
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
@@ -199,7 +205,7 @@ echo "</ul><br><br>";
 		echo "<BR><br>Files total: $files_total<BR>";
 		
 	} else if ($admin_op=="updateScoring") {
-		$query="SELECT ID from $flightsTable WHERE active=1";
+		$query="SELECT ID from $flightsTable WHERE active=1 ORDER BY ID ASC";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
@@ -216,9 +222,12 @@ echo "</ul><br><br>";
 			 }
 		}
 		echo "<BR><br><br>DONE !!!<BR>";
-	} else if ($admin_op=="remakeLog") {
+	} else if ($admin_op=="cleanLog") {
 		Logger::deleteLogsFromDB(1);
-		$query="SELECT ID from $flightsTable WHERE active=1 AND serverID=0 ";
+		clearBatchBit();
+	} else if ($admin_op=="remakeLog") {
+
+		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
@@ -226,12 +235,15 @@ echo "</ul><br><br>";
 				  $flight=new flight();
 				  $flight->getFlightFromDB($row["ID"]);
 				  $flight->makeLogEntry();
+				  setBatchBit($row["ID"]);
 				  set_time_limit(300);
 			 }
 		}
-		echo "<BR><br><br>DONE !!!<BR>";		
+		echo "<BR><br><br>DONE !!!<BR>";
+	} else if ($admin_op=="clearBatchBit") {
+		clearBatchBit();
 	} else if ($admin_op=="updateMaps") {
-		$query="SELECT ID from $flightsTable WHERE active=1";
+		$query="SELECT ID from $flightsTable WHERE active=1 ORDER BY ID ASC";
 		$res= $db->sql_query($query);
 		
 		if($res > 0) {
@@ -362,4 +374,27 @@ echo "</ul><br><br>";
 		 }      
 		 closedir($current_dir);
 	}
+
+function clearBatchBit() {
+	global $db,$flightsTable ;
+	$query="UPDATE $flightsTable SET batchOpProcessed=0";
+	$res= $db->sql_query($query);
+	
+	if(!$res){
+		echo "<BR>PROBLEM in clearing 'batch bit'!!!<BR>";
+	} else {
+		echo "<BR>Batch bits are now set to 0 for all flights!<BR>";
+	}
+}
+
+function setBatchBit($flightID) {
+	global $db,$flightsTable ;
+	$query="UPDATE $flightsTable SET batchOpProcessed=1 WHERE ID=$flightID";
+	$res= $db->sql_query($query);
+	
+	if(!$res){
+		echo "<BR>PROBLEM in setting 'batch bit'!!! for flight $flightID<BR>";
+	} 
+}
+
 ?>

@@ -26,7 +26,7 @@ class Server {
 	var $admin_email;
 	var $site_pass;
 
-	var $lastPullUpdateTm;
+	var $lastPullUpdateID;
 	var $serverPass;
 	var $clientPass;
 
@@ -44,7 +44,7 @@ class Server {
 		}
 
 	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
-			"url_op","admin_email","site_pass","lastPullUpdateTm","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
+			"url_op","admin_email","site_pass","lastPullUpdateID","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
 		$this->DEBUG=0;
@@ -299,6 +299,10 @@ class Server {
 		return 1;
     }
 
+	// serverPass -> the password that the client server with the speficic ID must provide
+	// clientPass -> the password WE (the local server) uses when it wants to connect to server with ID
+
+	// they are the same only in the entry of the local server
 
 	function checkServerPass($serverID,$pass) {
 		global $db,$serversTable;
@@ -320,11 +324,13 @@ class Server {
 		if (!$this->gotValues) $this->getFromDB();
 		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
 
-		// $urlToPull.='&c=1&startID=143';
-		$urlToPull.='&c=1&startID=1733';
+		$chunkSize=3;
+		$startID=$this->lastPullUpdateID+1;
+
+		$urlToPull.="&c=$chunkSize&startID=$startID";
 
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
-		echo "will use $urlToPull<BR>";
+		echo "Will use $urlToPull<BR>";
 		$rssStr=fetchURL($urlToPull,20);
 		if (!$rssStr) {
 			echo "Cannot get data from server<BR>";
@@ -344,10 +350,26 @@ class Server {
 		if ($xmlArray['log']['item']['_num']) {
 			foreach ($xmlArray['log']['item'] as $i=>$logItem) {
 				if (!is_numeric($i) ) continue;				
-				logReplicator::processEntry($this->ID,$logItem);
+				if ( ! $this->processSyncEntry($this->ID,$logItem) ) { // if we got an error break the loop, the admin must solve the error
+					break;
+				}	
 			}
 		} else {
-			logReplicator::processEntry($this->ID,$xmlArray['log']['item']);
+			$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
+		}
+	}
+
+	function processSyncEntry($ID,$logItem) {
+		list($result,$message)=logReplicator::processEntry($ID,$logItem);
+		if (!result) {
+			echo " ERROR : $message <BR>";
+			return 0;
+		} else {
+			// update the 
+			$this->lastPullUpdateID=$logItem['transactionID']+0;
+			$this->putToDB(1);
+			echo "OK: $message<BR>";
+			return 1;
 		}
 	}
 }

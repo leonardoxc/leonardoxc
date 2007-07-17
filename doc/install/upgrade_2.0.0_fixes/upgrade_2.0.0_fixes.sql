@@ -120,3 +120,9 @@ ADD `clientPass` VARCHAR( 50 ) NOT NULL AFTER `serverPass` ,
 ADD `lastPullUpdateTm` BIGINT UNSIGNED DEFAULT '0' NOT NULL AFTER `clientPass` ;
 
 
+# 2007/07/17
+
+ALTER TABLE `leonardo_servers` CHANGE `lastPullUpdateTm` `lastPullUpdateID` BIGINT( 20 ) UNSIGNED NOT NULL DEFAULT '0'
+
+ALTER TABLE `leonardo_flights` ADD `batchOpProcessed` TINYINT UNSIGNED DEFAULT '0' NOT NULL ;
+

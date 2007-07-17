@@ -52,7 +52,7 @@
 	if (!Server::checkServerPass($clientID,$clientPass)) {
 		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
 		$op='error';
-		$RSS_str.="<error>Not authorized</error>\n";
+		$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
 	}
 	
 	
