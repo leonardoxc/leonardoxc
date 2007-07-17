@@ -125,8 +125,11 @@ fieldset.legendBox {
 
 </style>
 <script src="http://maps.google.com/maps?file=api&v=2.x&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/pdmarker.js" type="text/javascript"></script>
+
+
 </head>
 <body  onUnload="GUnload()">
 
@@ -146,7 +149,10 @@ fieldset.legendBox {
 	  height="120" width="600">
 	</div></td>
 	<td rowspan="2" valign="top">
-		 <form name="form1" method="post" action="">
+	  <div align="right"><a href='javascript:toogleFullScreen();'>Full screen On/Off
+	      -&gt; <img src='<?=$moduleRelPath?>/img/icon_resize.gif' border=0 align='absmiddle' title='Toogle Full screen On/Off' alt='Toogle Full screen On/Off'></a><BR>
+      </div>
+	  <form name="form1" method="post" action="">
 		<fieldset class="legendBox"><legend>Info</legend><BR />
 	
 		<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr />
@@ -166,7 +172,7 @@ fieldset.legendBox {
 	        <input name="vario" id="vario" type="text" size="5" >
 	    </div>
 		</fieldset>
-        </form></td>
+    </form></td>
   </tr>
   <tr>
 	<td valign="top"><div id="map"></div></td>

@@ -134,3 +134,103 @@ function toggleVisibility(elId) {
 function nop()
 {
 }
+
+
+
+	var iframeState='normal';
+	var normalWidth=755;
+	var normalHeight=610;
+
+	function toogleFullScreen() {
+		parent.resizeIframe('gmaps_iframe');
+		var iframeEl = document.getElementById? document.getElementById('map'): document.all? document.all['map']: null;
+
+		if (iframeEl) {
+			iframeEl.style.height = "auto"; // helps resize (for some) if new doc shorter than previous
+			iframeEl.style.width = "auto"; 
+			// need to add to height to be sure it will all show
+			if (iframeState=='normal') {
+				var size=getParentSize();
+				var new_w = (size.width-40);
+				var new_h = (size.height-20);
+				iframeState='max';
+			} else {
+				var new_w = normalWidth;
+				var new_h =	normalHeight;
+				iframeState='normal';
+			}
+			iframeEl.style.height = new_h-122 + "px";
+			iframeEl.style.width = new_w-155 + "px";
+		}
+		zoomToFlight();
+	}
+
+	function resizeIframe(iframeName) {
+		//var iframeWin = window.frames[iframeName];
+		var iframeEl = document.getElementById? document.getElementById(iframeName): document.all? document.all[iframeName]: null;
+		var gmaps_div = document.getElementById? document.getElementById('gmaps_div'): document.all? document.all['gmaps_div']: null;
+		
+		if (iframeEl) {
+			iframeEl.style.height = "auto"; // helps resize (for some) if new doc shorter than previous
+			iframeEl.style.width = "auto"; 
+			// need to add to height to be sure it will all show
+			if (iframeState=='normal') {
+				var size=getSize();
+				var new_w = (size.width-40);
+				var new_h = (size.height-20);
+				iframeState='max';
+
+				gmaps_div.style.top = "10px";
+				gmaps_div.style.left = "10px";
+				gmaps_div.style.position='absolute';
+
+			} else {
+				var new_w = normalWidth;
+				var new_h =	normalHeight;
+				iframeState='normal';
+				gmaps_div.style.top = "0px";
+				gmaps_div.style.left = "0px";
+				gmaps_div.style.position='relative';
+			}
+			iframeEl.style.height = new_h + "px";
+			iframeEl.style.width = new_w + "px";
+		}
+	}
+
+	function getSize() {
+		var myHeight = 0;
+		var myWidth = 0;
+		if( typeof( window.innerWidth ) == 'number' ) {
+			//Non-IE
+			myHeight = window.innerHeight;
+			myWidth = window.innerWidth;
+		} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+			//IE 6+ in standards compliant mode
+			myHeight = document.documentElement.clientHeight;
+			myWidth = document.documentElement.clientWidth;
+		} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+			//IE 4 compatible
+			myHeight = document.body.clientHeight;
+			myWidth = document.body.clientWidth;
+		}
+		return {width : myWidth, height : myHeight};
+	}
+
+	function getParentSize() {
+		var myHeight = 0;
+		var myWidth = 0;
+		if( typeof( parent.window.innerWidth ) == 'number' ) {
+			//Non-IE
+			myHeight = parent.window.innerHeight;
+			myWidth = parent.window.innerWidth;
+		} else if( parent.document.documentElement && ( parent.document.documentElement.clientWidth || parent.document.documentElement.clientHeight ) ) {
+			//IE 6+ in standards compliant mode
+			myHeight = parent.document.documentElement.clientHeight;
+			myWidth = parent.document.documentElement.clientWidth;
+		} else if( parent.document.body && ( parent.document.body.clientWidth || parent.document.body.clientHeight ) ) {
+			//IE 4 compatible
+			myHeight = parent.document.body.clientHeight;
+			myWidth = parent.document.body.clientWidth;
+		}
+		return {width : myWidth, height : myHeight};
+	}

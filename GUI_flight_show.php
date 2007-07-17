@@ -548,15 +548,16 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	// $flight->createGPXfile();
 	$flight->createEncodedPolyline();
 
-	if ( $CONF_google_maps_api_key  )
-		 $googleMap="<div style='display:block; width:755px; height:610px;'><iframe align='left'
+	if ( $CONF_google_maps_api_key  ) {
+		 $googleMap="</p><div id='gmaps_div' style='display:block; width:755px; height:610px;'><iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
 		$flight->flightID."' ".
 //&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
-		 " TITLE='Google Map' width='755px' height='610px'
+		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 		</iframe></div>";
+	}
 
 	if ($CONF_google_maps_track_only==1) { // use only google maps,  discard the local map server
 		$mapImg=$googleMap; 
