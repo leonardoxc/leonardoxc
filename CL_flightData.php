@@ -798,7 +798,7 @@ $photosXML
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 		
-		// if ( is_file($this->getPolylineFilename())  ) return ;
+		if ( is_file($this->getPolylineFilename())  ) return ;
 
 		$filename=$this->getIGCFilename(1);  
 		$lines = file ($filename); 

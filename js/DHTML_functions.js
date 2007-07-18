@@ -138,7 +138,7 @@ function nop()
 
 
 	var iframeState='normal';
-	var normalWidth=755;
+	var normalWidth=745;
 	var normalHeight=610;
 
 	function toogleFullScreen() {
@@ -146,12 +146,13 @@ function nop()
 		var iframeEl = document.getElementById? document.getElementById('map'): document.all? document.all['map']: null;
 
 		if (iframeEl) {
-			iframeEl.style.height = "auto"; // helps resize (for some) if new doc shorter than previous
-			iframeEl.style.width = "auto"; 
+			// iframeEl.style.height = "auto"; // helps resize (for some) if new doc shorter than previous
+			// iframeEl.style.width = "auto"; 
+			
 			// need to add to height to be sure it will all show
 			if (iframeState=='normal') {
 				var size=getParentSize();
-				var new_w = (size.width-40);
+				var new_w = (size.width-10);
 				var new_h = (size.height-20);
 				iframeState='max';
 			} else {
@@ -162,6 +163,7 @@ function nop()
 			iframeEl.style.height = new_h-122 + "px";
 			iframeEl.style.width = new_w-155 + "px";
 		}
+	
 		zoomToFlight();
 	}
 
@@ -170,18 +172,20 @@ function nop()
 		var iframeEl = document.getElementById? document.getElementById(iframeName): document.all? document.all[iframeName]: null;
 		var gmaps_div = document.getElementById? document.getElementById('gmaps_div'): document.all? document.all['gmaps_div']: null;
 		
+		toggleVisibility('chartsDiv');
+		
 		if (iframeEl) {
 			iframeEl.style.height = "auto"; // helps resize (for some) if new doc shorter than previous
 			iframeEl.style.width = "auto"; 
 			// need to add to height to be sure it will all show
 			if (iframeState=='normal') {
 				var size=getSize();
-				var new_w = (size.width-40);
-				var new_h = (size.height-20);
+				var new_w = (size.width-10);
+				var new_h = (size.height-10);
 				iframeState='max';
 
-				gmaps_div.style.top = "10px";
-				gmaps_div.style.left = "10px";
+				gmaps_div.style.top = "5px";
+				gmaps_div.style.left = "5px";
 				gmaps_div.style.position='absolute';
 
 			} else {

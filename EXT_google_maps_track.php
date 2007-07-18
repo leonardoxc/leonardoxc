@@ -99,20 +99,32 @@ div.markerTooltip, div.markerDetail {
 
 a:link, a:visited, a:active { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; text-decoration:none;  }
 
-fieldset.legendBox { 
-	width:130px;
-	height:600px;
+fieldset.legendBox  { 
+	height:auto;
+	
 	border-style: solid; 
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 
-	padding:0 1em .5em 0.4em; 	
+	display:block;
+	float:right;
+	clear:both;
+
+	padding:0;
+	padding-left:3px; 	
+	padding-bottom:4px;
+	
 	margin-bottom:0.5em;
 	margin-right:0px;
-	margin-left:5px;
+	margin-left:3px;
 	text-align:left;
 	background-color:#f4f4f4;
+
+
+	width:132px;
 }
+
+
 .legendBox legend {
 	border:1px outset #E2E2E2;
 	padding:0.2em 1.2em 0.2em 1.2em;
@@ -120,9 +132,23 @@ fieldset.legendBox {
 	color:#000000;
 	font-weight:bold;
 	font-size:11px;
-	background-color:#D9E9F1;
+	background-color:#B7DEA8;
 }
 
+.imgBox {
+	width:auto;
+	display:block;
+	float:right;
+	clear:both;
+	background-color:#F5F7F9;
+	padding:3px;
+	margin:3px;
+}
+.shadowBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+}
 </style>
 <script src="http://maps.google.com/maps?file=api&v=2.x&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
@@ -149,36 +175,57 @@ fieldset.legendBox {
 	  height="120" width="600">
 	</div></td>
 	<td rowspan="2" valign="top">
-	  <div align="right"><a href='javascript:toogleFullScreen();'>Full screen On/Off
-	      -&gt; <img src='<?=$moduleRelPath?>/img/icon_resize.gif' border=0 align='absmiddle' title='Toogle Full screen On/Off' alt='Toogle Full screen On/Off'></a><BR>
-      </div>
+
 	  <form name="form1" method="post" action="">
-		<fieldset class="legendBox"><legend>Info</legend><BR />
+	  	<fieldset class="legendBox"><legend>Display</legend><BR />
+			
+			<a href='javascript:toogleFullScreen();'>Full screen On/Off</a>
+		  
+		</fieldset>
+ 		<fieldset class="legendBox"><legend>Info</legend><BR />
+			<div align="right">Time: 
+				<input name="timeText1" id="timeText1" type="text" size="5" >
+			</div>
+			<div align="right">Speed: 
+				<input name="speed" id="speed" type="text" size="5" >
+			</div>
+			<div align="right">Alt: 
+				<input name="alt" id="alt" type="text" size="5" >
+			</div>
+			<div align="right">Vario: 
+				<input name="vario" id="vario" type="text" size="5" >
+			</div>
+		</fieldset>
+
+
+		<fieldset class="legendBox"><legend>Control</legend><BR />
 	
 		<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr />
 		<div id="side_bar">
 		</div> 
-		<hr>
-	    <div align="right">Time: 
-	        <input name="timeText1" id="timeText1" type="text" size="5" >
-	    </div>
-	    <div align="right">Speed: 
-	        <input name="speed" id="speed" type="text" size="5" >
-	    </div>
-	    <div align="right">Alt: 
-	        <input name="alt" id="alt" type="text" size="5" >
-	    </div>
-	    <div align="right">Vario: 
-	        <input name="vario" id="vario" type="text" size="5" >
-	    </div>
 		</fieldset>
-    </form></td>
+    </form>
+	<?
+	/*
+$images="";
+for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
+	$photoFilename="photo".$photoNum."Filename";
+	if ($flight->$photoFilename) {
+		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+	}		
+}
+
+echo $images;
+*/
+?></td>
   </tr>
   <tr>
 	<td valign="top"><div id="map"></div></td>
   </tr>
 </table>
 <div id="pdmarkerwork"></div>
+
 
 <script type="text/javascript">
 var relpath="<?=$moduleRelPath?>";

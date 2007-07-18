@@ -9,31 +9,7 @@ not (standards mode)
 */
 
 
-if (! $CONF_use_htc_ie_hack ) { ?>
-<script type="text/javascript"><!--//--><![CDATA[//><!--
-sfHover = function() {
-	var sfEls = document.getElementById("nav").getElementsByTagName("LI");	
-	for (var i=0; i<sfEls.length; i++) {
-		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
-		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
-	}
-	var sfEls = document.getElementById("dropMenu").getElementsByTagName("LI");	
-	for (var i=0; i<sfEls.length; i++) {
-		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
-		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
-	}
-	var sfEls = document.getElementById("nav2").getElementsByTagName("LI");	
-	for (var i=0; i<sfEls.length; i++) {
-		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
-		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
-	}
-}
-
-// done through htc files
- if (window.attachEvent) window.attachEvent("onload", sfHover);
-
-//--><!]]></script>
-<? } else { ?>
+if ( $CONF_use_htc_ie_hack ) {  // may not work when server IP is in private network behind firewall ?>
 <!--[if IE ]>
 <style type = "text/css">
 	#vnav li, #nav li , #dropMenu li , table.listTable tr {
@@ -41,6 +17,39 @@ sfHover = function() {
 	}
 </style>
 <![endif]-->
+<? } else { ?>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+sfHover = function() {
+	var sfEls = document.getElementById("nav").getElementsByTagName("LI");	
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+		sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+	}
+	
+	var sfMenu=document.getElementById("dropMenu");
+	if (sfMenu) {
+		var sfEls = sfMenu.getElementsByTagName("LI");	
+		for (var i=0; i<sfEls.length; i++) {
+			sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+			sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+		}
+	}
+	
+	var sfMenu=document.getElementById("nav2");
+	if (sfMenu) {
+		var sfEls = sfMenu.getElementsByTagName("LI");	
+		for (var i=0; i<sfEls.length; i++) {
+			sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+			sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+		}
+	}
+
+}
+
+ // done through htc files
+ if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+//--><!]]></script>
 <? } ?>
 
 

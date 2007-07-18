@@ -6,17 +6,24 @@
 }
 
 .mapDiv{ 
-	padding-top:4px;
-	padding-bottom:20px;
+	padding-top:0px;
+	padding-bottom:0px;
 }
+.imgDiv{ display:none; clear:none; width:0;}
+
 .mapDiv2col { 
-	clear:none; width:610px; display:block; float:left;
-	padding-top:4px;
-	padding-bottom:20px;
+	clear:none; width:760px; display:block; float:left;
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.imgDiv2col{ 
+	clear:none; width:150px; display:block; float:right; 
+	margin-top:0px; padding-left:0px; 
+	vertical-align:top; 
+	text-align:right; 
 }
 
-.imgDiv{ display:none; clear:none; width:0;}
-.imgDiv2col{ clear:none; width:150px; display:block; float:right; padding-left:0px; vertical-align:top; text-align:right; }
+.marginTabbed { margin-top:32px; }
 .imgDiv2colmargin{	margin-top:605px; }
 .imgDiv2colmarginTabbed {	margin-top:665px;}
 
@@ -28,8 +35,12 @@
 .imgBox {
 	width:auto;
 	display:block;
-	float:right;
+/*	float:right;
 	clear:both;
+*/
+	float:left;
+	clear:none;
+	
 	background-color:#F5F7F9;
 	padding:3px;
 	margin:3px;
@@ -321,10 +332,12 @@ html>body .flightShowBox {
 <!-- END ADMIN_PANEL -->
     <tr>
       <td align="center" >
-		  <div align=center class="mapDiv{2col}">
-			{MAP_IMG}{CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
-          </div>
-		  <div class="imgDiv{2col} {margin}">{images}</div>
+		<div align=center class="mapDiv{2col}">
+			{MAP_IMG}
+		</div>
+		<div align=center class="mapDiv{2col}" id='chartsDiv' style='display:block'>
+				  {CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
+        </div>
 		</td>
     </tr>
   </tbody>

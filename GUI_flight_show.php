@@ -428,15 +428,6 @@ if ($flight->glider) {
 $gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
 $gliderCatList[$flight->cat]." ]";
  
-$images="";
-for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
-	$photoFilename="photo".$photoNum."Filename";
-	if ($flight->$photoFilename) {
-		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
-	}		
-}
-
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
 //-------------------------------------------------------------------
@@ -537,19 +528,29 @@ if (in_array($userID,$admin_users) ) {
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
+$images="";
+for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
+	$photoFilename="photo".$photoNum."Filename";
+	if ($flight->$photoFilename) {
+		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+	}		
+}
+
 // add support for google maps
 // see the config options 
 $localMap="";
 $googleMap="";
-if ( is_file($flight->getMapFilename() ) )
+if ( is_file($flight->getMapFilename() ) ) {
 		$localMap="<img src='".$flight->getMapRelPath()."' border=0>";	
+}
 
 if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	// $flight->createGPXfile();
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  ) {
-		 $googleMap="</p><div id='gmaps_div' style='display:block; width:755px; height:610px;'><iframe id='gmaps_iframe' align='left'
+		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
 		$flight->flightID."' ".
 //&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
@@ -558,40 +559,62 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 		</iframe></div>";
 	}
-
+	
 	if ($CONF_google_maps_track_only==1) { // use only google maps,  discard the local map server
-		$mapImg=$googleMap; 
-	} else { // use tabber 
-		$defaultTabStr1="";
-		$defaultTabStr2="";
-		if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
-		else $defaultTabStr1=" tabbertabdefault";
-
-$mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
-<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
-<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
-<script type='text/javascript'>
-// document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
-</script>
-</script>
-<div class='tabber' id='mapTabber'>
- <div class='tabbertab $defaultTabStr1' title='Map'>
-	$localMap
- </div>
- <div class='tabbertab $defaultTabStr2' style='width:750px' title='GoogleMap'>
-	$googleMap
- </div>
-</div>";
+		$localMap='';
 	}
-} else { // only static map 
-	$mapImg=$localMap;	
+
+}
+
+$divsToShow=0;
+if ($localMap) $divsToShow++;
+if ($googleMap) $divsToShow++;
+if ($images) $divsToShow++;
+
+if ( $divsToShow>1) { // use tabber 
+	$defaultTabStr1="";
+	$defaultTabStr2="";
+	if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
+	else $defaultTabStr1=" tabbertabdefault";
+
+	$mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
+	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
+	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
+	<script type='text/javascript'>
+	// document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
+	</script>
+	</script>
+	<div class='tabber' id='mapTabber'>\n";
+	
+	if ($localMap) {
+		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='Map'>
+					$localMap
+				 </div>\n";
+	}
+	if ($googleMap) {
+		$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>
+			$googleMap
+			</div>";
+	}
+	if ($images) {
+		$mapImg.="<div class='tabbertab' title='Photos' style='height:400px; background-color:#ECF0EA;'>
+			  $images
+			  </div>";
+	}		  
+	$mapImg.="</div>";
+
+} else { // only the one div that is present (we know that only one (or zero) is here)
+	$mapImg=$localMap.$googleMap.$images;	
 }
 
  // if google maps are present put photos lower down
-if ($googleMap ) {
-	$margin="imgDiv2colmargin";
-	if ($localMap)  // we use tabs so put some more space down
+if ( $googleMap  ) {
+	// $margin="imgDiv2colmargin";
+	$margin="";
+	if ($localMap)  {// we use tabs so put some more space down
 		$margin="imgDiv2colmarginTabbed";
+		$margin="marginTabbed";
+	}
 } else  $margin="";
 
 
