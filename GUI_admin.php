@@ -68,12 +68,16 @@ echo "</ul><br>";
 echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=remakeLog'>Remake sync-log</a> ";
-echo "</ul><br><br>";
+echo "</ul><br>";
 
 echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=clearBatchBit'>Clean the batch bits for all flights</a> ";
-echo "</ul><br><br>";
+echo "</ul><br>";
 
+echo "<ul>";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
+echo "</ul><br>";
 
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
@@ -240,6 +244,59 @@ echo "</ul><br><br>";
 			 }
 		}
 		echo "<BR><br><br>DONE !!!<BR>";
+
+	} else if ($admin_op=="cleanPhotosTable") {
+		$query="DELETE from $photosTable ";
+		$res= $db->sql_query($query);
+		
+		if(!$res){
+			echo "Problem in empting $photosTable : $query<BR>";
+		}
+		clearBatchBit();
+	} else if ($admin_op=="makePhotosNew") {
+
+		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 ORDER BY ID ASC";
+		$res= $db->sql_query($query);
+		
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$hasPhotos=0;
+				$photos=array();
+				for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+					$var_name="photo".$i."Filename";
+					if ($row[$var_name]) {
+						$photos[]=$row[$var_name];
+						$hasPhotos++;
+					}
+				}
+
+				$year=substr($row['DATE'],0,4);
+				$path=$row['ID']."/photos/$year";
+				foreach($photos as $photo) {
+					$query1="INSERT INTO $photosTable  (flightID,path,name) values (".$row['ID'].",'$path','$photo') ";
+					$res1= $db->sql_query($query1);					
+					if (!$res1) {
+						echo "Problem in instering photo : $query1<BR>";
+					}
+					$photoNumTotal++;
+				}
+
+				if ($hasPhotos) {
+					$query2="UPDATE $flightsTable SET hasPhotos=$hasPhotos WHERE ID=".$row['ID'];
+					$res2= $db->sql_query($query2);
+			
+					if(!$res2 ){
+						echo "Problem in updating hasPhotos : $query2<BR>";
+					}
+				}
+				setBatchBit($row["ID"]);
+				set_time_limit(30);
+			}
+		}
+
+		echo "Migrated $photoNumTotal photos<BR>";
+		echo "<BR><br><br>DONE !!!<BR>";
+
 	} else if ($admin_op=="clearBatchBit") {
 		clearBatchBit();
 	} else if ($admin_op=="updateMaps") {

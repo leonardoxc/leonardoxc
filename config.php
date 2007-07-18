@@ -201,9 +201,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $logTable		=  $CONF_tables_prefix."_log";
  $statsTable		=  $CONF_tables_prefix."_stats";
  $airspaceTable		=  $CONF_tables_prefix."_airspace";
- 
+
+
  $areasTable	=  $CONF_tables_prefix."_areas";
  $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";
+ $photosTable  	=	$CONF_tables_prefix."_photos";
  
  $CONF_phpbb_realname_field="username";
  // if you are running phpbb2 with the realanme mod , uncomment this instead

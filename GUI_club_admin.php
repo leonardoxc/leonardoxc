@@ -21,16 +21,18 @@ $pilotsID=array();
 //list($countriesCodes,$countriesNames)=getCountriesList();
 
 if ($_POST['formPosted']) {
-	$add_pilot_id=$_POST['add_pilot_id']+0;
+//	$add_pilot_id=$_POST['add_pilot_id'];
+	list($add_pilot_server_id,$add_pilot_id)=splitServerPilotStr($_POST['add_pilot_id']);
+
 	$action=$_POST['AdminAction'];
 	
 	if ($add_pilot_id) $action="add_pilot";
 
 	if ( $action=="add_pilot" ) {		
-		$pilotName=getPilotRealName($add_pilot_id);
+		$pilotName=getPilotRealName($add_pilot_id,$add_pilot_server_id);
 		$resText="Pilot Name: $pilotName -> ";
 		if ($pilotName) {
-			$query="INSERT INTO $clubsPilotsTable (clubID,pilotID) VALUES ($clubID,$add_pilot_id )";
+			$query="INSERT INTO $clubsPilotsTable (clubID,pilotID,pilotServerID) VALUES ($clubID,$add_pilot_id,$add_pilot_server_id )";
 			$res= $db->sql_query($query);
 			if($res <= 0){   
 				$resText.="This pilot is already in the club";
@@ -39,8 +41,9 @@ if ($_POST['formPosted']) {
 			$resText.="No such pilot ID ";
 		}
 	} else if ( $action=="remove_pilot" ) {
-		$pilotToRemove=$_POST['pilotToRemove'];
-		$query="DELETE FROM $clubsPilotsTable WHERE clubID=$clubID AND pilotID=$pilotToRemove";
+		// $pilotToRemove=$_POST['pilotToRemove'];
+		list($pilotToRemoveServerID,$pilotToRemove)=splitServerPilotStr($_POST['pilotToRemove']);
+		$query="DELETE FROM $clubsPilotsTable WHERE clubID=$clubID AND pilotID=$pilotToRemove AND pilotServerID=$pilotToRemoveServerID ";
 		$res= $db->sql_query($query);
 		if($res <= 0){   
 			$resText.="<H3> Error in removing pilot ! $query</H3>\n";
@@ -55,8 +58,8 @@ if ($_POST['formPosted']) {
 function addClubPilot() {
 	// clubID,pilotID;
 	document.clubAdmin.AdminAction.value="add_pilot";
-
 	document.clubAdmin.submit();
+/*
 	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
 	pars='op=add_pilot&clubID='+clubID+'&flightID='+flightID;
 	
@@ -67,13 +70,14 @@ function addClubPilot() {
 	div.innerHTML=newHTML;
 	
 	//toggleVisible(divID,divPos);
+*/
 }
 
 function removeClubPilot(pilotID) {
 	document.clubAdmin.pilotToRemove.value=pilotID;
 	document.clubAdmin.AdminAction.value="remove_pilot";
 	document.clubAdmin.submit();
-	
+	/*
 	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
 	pars='op=remove_pilot&clubID='+clubID+'&pilotID='+pilotID;
 	
@@ -85,6 +89,7 @@ function removeClubPilot(pilotID) {
 	MWJ_changeDisplay('pl_'+pilotID,"none");
 //	div.innerHTML=newHTML;
 	//toggleVisible(divID,divPos);
+*/
 }
 </script>
 
@@ -121,7 +126,7 @@ function removeClubPilot(pilotID) {
 	$i=0;
 	foreach ($pilots as $pilotName ){
 		$pilotID=$pilotsID[$i++];
-		echo "<div id='pl_$pilotID'>$pilotName ($pilotID) : <a href='javascript:removeClubPilot($pilotID);'>Remove pilot</a></div>"; 
+		echo "<div id='pl_$pilotID'>$pilotName ($pilotID) : <a href='javascript:removeClubPilot(\"$pilotID\");'>Remove pilot</a></div>"; 
 	}
 ?></td>
     <td><p>
@@ -138,17 +143,4 @@ function removeClubPilot(pilotID) {
 
 </form>
 
-<?
-/*
-  list($takeoffs,$takeoffsID)=getAreasTakeoffs($areaID);
-
-  $i=0;
-  foreach ($takeoffs as $name) {
-	  $takeoffID=$takeoffsID[$i];
-	//  echo "<tr><td>$name</td><td><a href='GUI_area_remove_takeoff?areaId=$areaID&takeoffID=$takeoffID'>remove Takeoff from area</a></td></tr>";
-	  $i++;
-  }
-  //echo "</td></tr>";
-*/
-?>
 </div>

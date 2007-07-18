@@ -122,7 +122,28 @@ ADD `lastPullUpdateTm` BIGINT UNSIGNED DEFAULT '0' NOT NULL AFTER `clientPass` ;
 
 # 2007/07/17
 
-ALTER TABLE `leonardo_servers` CHANGE `lastPullUpdateTm` `lastPullUpdateID` BIGINT( 20 ) UNSIGNED NOT NULL DEFAULT '0'
+ALTER TABLE `leonardo_servers` CHANGE `lastPullUpdateTm` `lastPullUpdateID` BIGINT( 20 ) UNSIGNED NOT NULL DEFAULT '0';
 
 ALTER TABLE `leonardo_flights` ADD `batchOpProcessed` TINYINT UNSIGNED DEFAULT '0' NOT NULL ;
+
+# 2007/07/18
+
+CREATE TABLE `leonardo_photos` (
+`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`flightID` MEDIUMINT UNSIGNED NOT NULL ,
+`path` VARCHAR( 255 ) NOT NULL ,
+`name` VARCHAR( 255 ) NOT NULL ,
+`description` TEXT NOT NULL ,
+PRIMARY KEY ( `ID` ) ,
+INDEX ( `flightID` )
+) TYPE = MYISAM ;
+
+ALTER TABLE `leonardo_flights` ADD `hasPhotos` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `linkURL` ;
+
+ALTER TABLE `leonardo_clubs_pilots` ADD `pilotServerID` MEDIUMINT UNSIGNED DEFAULT '0' NOT NULL ;
+
+ALTER TABLE `leonardo_clubs_pilots` DROP PRIMARY KEY ;
+
+ALTER TABLE `leonardo_clubs_pilots` ADD PRIMARY KEY ( `clubID` , `pilotID` , `pilotServerID` ) ;
+
 

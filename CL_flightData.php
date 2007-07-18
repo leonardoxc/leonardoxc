@@ -93,6 +93,9 @@ var $olcRefNum="";
 var $olcFilename="";
 var $olcDateSubmited;
 
+	var $hasPhotos=0;
+	var $photos=array();
+
 // CONSTANTS
 var	$maxAllowedSpeed=100;
 var	$maxAllowedVario=13;
@@ -128,14 +131,14 @@ var $maxPointNum=1000;
 		$userServerID=$this->userServerID;
 		if ($userServerID==0) $userServerID=$CONF_server_id;
 
-		$dateAdded=$this->DATE;
+		$dateAdded=$this->dateAdded;
 		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
 
 		$xml=
 "<flight>
 <serverID>$CONF_server_id</serverID>
 <id>$this->flightID</id>
-<dateAdded>$this->dateAdded</dateAdded>
+<dateAdded>$dateAdded</dateAdded>
 <filename>$this->filename</filename>
 <linkIGC>".$this->getIGC_URL()."</linkIGC>
 <linkDisplay>".htmlspecialchars($this->getFlightLinkURL())."</linkDisplay>
@@ -150,7 +153,7 @@ var $maxPointNum=1000;
 </info>
 
 <time>
-	<date>$dateAdded</date>
+	<date>$this->DATE</date>
 	<Timezone>$this->timezone</Timezone>
 	<StartTime>$this->START_TIME</StartTime>
 	<Duration>$this->DURATION</Duration>

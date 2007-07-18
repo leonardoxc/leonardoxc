@@ -20,12 +20,18 @@ function getPilotList($clubID=0) {
 	global $nativeLanguage,$currentlang,$opMode;
 	
 	if ($clubID) {
-		$query="SELECT *, $clubsPilotsTable.pilotID as userID FROM  $clubsPilotsTable, $pilotsTable  
-  			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID AND $clubsPilotsTable.clubID=$clubID";
+		$query="SELECT *, $clubsPilotsTable.pilotID as userID , $clubsPilotsTable.pilotServerID as userServerID 
+			FROM  $clubsPilotsTable, $pilotsTable  
+  			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID  
+					AND $clubsPilotsTable.pilotServerID=$pilotsTable.serverID AND $clubsPilotsTable.clubID=$clubID";
 	} else {
+/*
 	  	$query="SELECT DISTINCT userID, ".(($opMode==1)?"name,":"")." username FROM $flightsTable,".$prefix."_users 
 			 WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
 			""; //"ORDER BY ".(($opMode==1)?"name,":"")." username ";
+*/
+	  	$query="SELECT DISTINCT userID, userServerID FROM $flightsTable ";
+
 	}
 	
 	// echo $query;
@@ -39,8 +45,9 @@ function getPilotList($clubID=0) {
 	$pilots=array();
 	$pilotsID=array();
 	while ($row = $db->sql_fetchrow($res)) {
-		$name =getPilotRealName($row["userID"],$row["serverID"]);
-		$pnames[$row["userID"]]=$name;
+		$name = getPilotRealName($row["userID"],$row["userServerID"],0,2);
+		$name=strtoupper(substr($name,0,1)).substr($name,1);
+		$pnames[($row["userServerID"]+0).'_'.$row["userID"]]=$name;
 	}
 	if (!empty($pnames)) {
 		asort($pnames);
@@ -53,11 +60,11 @@ function getPilotList($clubID=0) {
 
 }
 
-function getUsedGliders($userID) {
+function getUsedGliders($userID,$serverID=0) {
 	global $db;
 	global $flightsTable;
 
-	$query="SELECT glider from $flightsTable WHERE userID=$userID AND glider <> '' GROUP BY glider ORDER BY DATE DESC ";
+	$query="SELECT glider from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND glider <> '' GROUP BY glider ORDER BY DATE DESC ";
 // echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){
@@ -182,14 +189,15 @@ function getPilotInfo($pilotIDview,$serverID) {
 
 }
 
-function getExternalLinkIconStr($serverID,$linkURL='') {
+function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) { 
+	// $typeOfLink=1 img, 0->none, 2->text (*)
 	global $CONF_server_id,$moduleRelPath;
-	if ( !$serverID || $serverID==$CONF_server_id) return '';
-	else return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='External Entry $linkURL'>";
-
+	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ) return '';
+	else if ($typeOfLink==1) return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='External Entry $linkURL'>";
+	else if ($typeOfLink==2) return " (*)";
 }
 
-function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
+function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExternalIndicator=1) {
 	global $db,$pilotsTable,$prefix,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
@@ -234,7 +242,8 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 			// else return as is.
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
-			return $str.getExternalLinkIconStr($serverID);
+
+			return $str.getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 			
 		}
 					
@@ -285,7 +294,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0) {
 		}
 	}
 
-	$str.=getExternalLinkIconStr($serverID);
+	$str.=getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0).$str; 
 	else return $str; 
 }

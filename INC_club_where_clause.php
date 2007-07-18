@@ -16,6 +16,7 @@
 
 	if ( ! $clubsList[$clubID]['noSpecificMembers'] ) {
 	  $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
+							$flightsTable.userServerID=$clubsPilotsTable.pilotServerID AND 
 				 			$clubsPilotsTable.clubID=$clubID ";
 	  $extra_table_str.=",$clubsPilotsTable ";
 	}

@@ -142,6 +142,8 @@ class logReplicator {
 				if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 					return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL<BR>");
 				}
+
+
 				$argArray=array("dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
 								"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
 								"original_ID"	=>$e['ActionXML']['flight']['id'],
@@ -155,9 +157,20 @@ class logReplicator {
 								$is_private,$gliderCat,$linkURL,$comments,$glider, $category,$argArray);
 				if ($res!=1) { 
 					return array(0,"Problem: ".getAddFlightErrMsg($res,$flightID)."<BR>");
-				} else { 
-					return array(1,"Flight pulled OK with local ID $flightID<BR>");
-				}
+				} 
+
+				/* now take care of photos 
+				
+					<photos>
+						<photo>
+						<id>1</id>
+						<name>164_6443.jpg</name>
+						<link>http://www.sky.gr/modules/leonardo/flights/11/photos/2004/164_6443.jpg</link>
+						</photo>
+					</photos>
+				*/
+				return array(1,"Flight pulled OK with local ID $flightID<BR>");
+
 			} else if ($e['action']==2) {	// edit / update
 				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
 				if (!$flightIDlocal) {

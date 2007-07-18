@@ -242,6 +242,10 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $CONF_photosPerFlight,$CONF_use_validation,$CONF_airspaceChecks;   	 
    global $gliderCatList,$brandsList;
 
+$clubIcon	="<img src='".$moduleRelPath."/img/icon_club_small.gif' width=12 height=12 border=0 align='absmiddle' >";
+$removeFromClubIcon	="<img src='".$moduleRelPath."/img/icon_club_remove.gif' width=22 height=12 border=0 align='absmiddle' title='Remove flight from this league'>";
+$addToClubIcon		="<img src='".$moduleRelPath."/img/icon_club_add.gif' width=12 height=12 border=0 align='absmiddle' title='Add flight to this league'>";
+
    if ( $clubID  && (is_club_admin($userID,$clubID) || is_leo_admin($userID))  )  {
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
@@ -253,7 +257,10 @@ function addClubFlight(clubID,flightID) {
 	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
 
-	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom></a>";
+	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><?=$removeFromClubIcon?></a>";
+	div=MWJ_findObj('fl_'+flightID);
+	div.innerHTML=newHTML;
+
 	div=MWJ_findObj('fl_'+flightID);
 	div.innerHTML=newHTML;
 	//toggleVisible(divID,divPos);
@@ -265,7 +272,7 @@ function removeClubFlight(clubID,flightID) {
 	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
 
-	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><img src='<?=$moduleRelPath?>/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom></a>";
+	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><?=$addToClubIcon?></a>";
 	div=MWJ_findObj('fl_'+flightID);
 	div.innerHTML=newHTML;
 	//toggleVisible(divID,divPos);
@@ -341,7 +348,7 @@ function removeClubFlight(clubID,flightID) {
 	   $date2row="";
   	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
 			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"];
-			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='31' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
+			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
   	   } 
 
 		$extLinkImgStr=getExternalLinkIconStr($row["serverID"],$row["originalURL"]);
@@ -383,8 +390,20 @@ function removeClubFlight(clubID,flightID) {
 			title='".$row['glider']."' border='0' />";
 
 	   echo "\n<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
-	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row</TD>".
-       "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
+	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row";
+
+			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode )  {
+				// echo "<BR>";	   
+				if (in_array($flightID,$clubFlights ) ){
+					echo "<div id='fl_$flightID' style='display:inline;margin:0px;padding:0px'><a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">$removeFromClubIcon</a></div>";
+				} else {
+					echo "<div id='fl_$flightID' style='display:inline'><a href=\"#\" onclick=\"addClubFlight($clubID,$flightID);return false;\">$addToClubIcon</a></div>";
+				}				
+			} 
+
+		echo "</TD>";
+
+	      echo  "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
@@ -420,13 +439,18 @@ function removeClubFlight(clubID,flightID) {
 
 	    echo "<TD $airspaceProblem align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
-	
-		$photos_exist=0;
-		for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
-			if ($row["photo".$photo_i."Filename"]) { 
-				$photos_exist=1; break; 
-			}
-		}	
+
+		if (1) {
+			$photos_exist=0;
+			for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
+				if ($row["photo".$photo_i."Filename"]) { 
+					$photos_exist=1; break; 
+				}
+			}	
+		} else {
+			$photos_exist=$row["hasPhotos"];
+		}
+
 	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' valign='top' />";
 	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
@@ -446,20 +470,12 @@ function removeClubFlight(clubID,flightID) {
 
 				
 
-			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode )  {
+			if ( ( is_club_admin($userID,$clubID) || is_leo_admin($userID) )&&  $add_remove_mode  && 0)  {
 				echo "<BR>";	   
 				if (in_array($flightID,$clubFlights ) ){
-					echo "<div id='fl_$flightID' style='display:inline'>
-<a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">
-<img src='".$moduleRelPath."/img/icon_club_remove.gif' width=16 height=16 border=0 align=bottom title='Remove flight from this league'></a>
-</div>
-";
+					echo "<div id='fl_$flightID' style='display:inline'><a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">$removeFromClubIcon</a></div>";
 				} else {
-					echo "<div id='fl_$flightID' style='display:inline'>
-<a href=\"#\" onclick=\"addClubFlight($clubID,$flightID);return false;\">
-<img src='".$moduleRelPath."/img/icon_club_add.gif' width=16 height=16 border=0 align=bottom title='Add flight to this league'></a>
-</div>
-";
+					echo "<div id='fl_$flightID' style='display:inline'><a href=\"#\" onclick=\"addClubFlight($clubID,$flightID);return false;\">$addToClubIcon</a></div>";
 				}				
 			} 
 			

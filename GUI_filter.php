@@ -54,11 +54,14 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 				if ($count==0) { // open ( 
 					$filter_clause.=" AND ( ";
 					$first_op=$$op_varname;
+					$inter_op=($first_op=="=")?" AND ":" OR ";
 				} else {
 					$filter_clause.=($first_op=="=")?" OR ":" AND ";
+					
 				}
 				$this_op=$first_op;
-				$filter_clause.=" ( userID ".$this_op." ".($$varname)." ) ";
+				list($thisUserServerID,$thisUserID)=splitServerPilotStr($$varname);
+				$filter_clause.=" ( userID $this_op $thisUserID $inter_op userServerID $this_op $thisUserServerID) ";
 				$count++;
 			}
 		}
