@@ -58,6 +58,11 @@
 }
 .boxTop {margin:0; }
 
+.infoString{
+	color:#FF6633;
+	font-weight:bold;
+}
+
 #map { 
 	 margin:0;
 	 padding:0;
@@ -150,7 +155,7 @@ fieldset.legendBox  {
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 }
 </style>
-<script src="http://maps.google.com/maps?file=api&v=2.x&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=2&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/pdmarker.js" type="text/javascript"></script>
@@ -183,18 +188,12 @@ fieldset.legendBox  {
 		  
 		</fieldset>
  		<fieldset class="legendBox"><legend>Info</legend><BR />
-			<div align="right">Time: 
-				<input name="timeText1" id="timeText1" type="text" size="5" >
-			</div>
-			<div align="right">Speed: 
-				<input name="speed" id="speed" type="text" size="5" >
-			</div>
-			<div align="right">Alt: 
-				<input name="alt" id="alt" type="text" size="5" >
-			</div>
-			<div align="right">Vario: 
-				<input name="vario" id="vario" type="text" size="5" >
-			</div>
+			<table align="right" cellpadding="2" cellspacing="0">
+				<TR><td><div align="right">Time:</div></td><TD width=75><span id="timeText1" class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Speed:</div></td><TD><span id='speed' class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Alt:</div></td><TD><span id='alt' class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Vario:</div></td><TD><span id='vario' class='infoString'></span></TD></TR>
+		</table>
 		</fieldset>
 
 
@@ -233,12 +232,18 @@ var fname="<?=$flight->getPolylineRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 var posMarker;
 
+var followGlider=1;
+var metricSystem=<?=$PREFS->metricSystem?>;
+
+var altUnits="<? echo (($PREFS->metricSystem==1)?_M:_FT) ; ?>";
+var speedUnits="<? echo (($PREFS->metricSystem==1)?_KM_PER_HR:_MPH) ; ?>";
+var varioUnits="<? echo (($PREFS->metricSystem==1)?_M_PER_SEC:_FPM) ; ?>";
 
 function moveMarker(){
 	var pt =  posMarker.getPoint();
 	var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)
 	posMarker.setPoint(newpos);
-	//map.setCenter(newpos, 17-5);
+	// if (followGlider) map.setCenter(newpos, null);
 }
 
 function MWJ_findObj( oName, oFrame, oDoc ) {
@@ -287,9 +292,10 @@ function MWJ_findObj( oName, oFrame, oDoc ) {
 	   var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime)
 	   timeLine[i].left = marginLeft + Temp  + "px";
 	   
-	   timeText=document.getElementById("timeText"+i);
-	   timeText.value=getCurrentTime(StartTime + CurrTime[i]);
-
+		MWJ_changeContents('timeText'+i,getCurrentTime(StartTime + CurrTime[i]));
+	  // timeText=document.getElementById("timeText"+i);
+	  // timeText.value=;
+	
 	 //  timeTextSecs=document.getElementById("timeTextSecs"+i);
 	 //  timeTextSecs.value=Math.floor(StartTime + CurrTime[i]);
  }
@@ -338,12 +344,35 @@ function SetTimer(evt) {
 	var newpos= new GLatLng(lat, lon);
 	posMarker.setPoint(newpos);
 
-	speed=document.getElementById("speed");
-    speed.value=s[tm];
-	alt=document.getElementById("alt");
-    alt.value=a[tm];
-	vario=document.getElementById("vario");
-    vario.value=v[tm];
+	if (followGlider) map.setCenter(newpos, null);
+
+	var speedStr=s[tm];
+	var altStr=a[tm];
+	var varioStr=v[tm];
+
+	if (metricSystem==2) {
+		speedStr*=0.62;
+	}
+	speedStr=Math.round(speedStr*10)/10;
+	speedStr=speedStr+speedUnits;
+
+	if (metricSystem==2) {
+		altStr*=3.28;
+	}
+	altStr=Math.round(altStr);
+	altStr=altStr+altUnits;
+
+	if (metricSystem==2) {
+		varioStr*=196.8;
+	}
+	varioStr=Math.round(varioStr*10)/10;
+	varioStr=varioStr+varioUnits;
+
+//	speed=document.getElementById("speed");
+//    speed.value=speedStr;
+	MWJ_changeContents('speed',speedStr);
+	MWJ_changeContents('alt',altStr);
+	MWJ_changeContents('vario',varioStr);
 
   }
 
