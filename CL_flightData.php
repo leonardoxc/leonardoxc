@@ -530,6 +530,7 @@ $photosXML
 
 				$turnpointPlacemark[$j]='					
 		            var marker = createTaskMarker(new GLatLng('.$newPoint->lat.','.(-$newPoint->lon).'),"TP '.$name.'","'.$name.'");
+					taskLayer.push(marker); 
         		    map.addOverlay(marker);
 				';
 				$j++;
@@ -540,6 +541,7 @@ $photosXML
 		$kml_file_contents=substr($kml_file_contents,0,-1);
 		$kml_file_contents.=' ], "#FFFFFF", 3,1); 
 			map.addOverlay(polyline);
+			taskLayer.push(polyline); 
 ';
 
 		for ($i=0;$i<$j;$i++) 

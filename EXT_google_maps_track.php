@@ -202,7 +202,17 @@ fieldset.legendBox  {
 		<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr />
 		<div id="side_bar">
 		</div> 
+		<hr>
+		<input type="checkbox" value="1" id='followGlider' onclick="toggleFollow(this)">Follow Glider<br>
+		<input type="checkbox" value="1" checked id='showTask' onclick="toggleTask(this)">Show Task
 		</fieldset>
+
+<? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
+ 		<fieldset class="legendBox"><legend>Admin</legend><BR />
+		<input type="checkbox" value="1" checked id='airspaceShow' onclick="toggleAirspace(this)">Show Airspace
+		</fieldset>
+<?  } ?>
+
     </form>
 	<?
 	/*
@@ -232,12 +242,16 @@ var fname="<?=$flight->getPolylineRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 var posMarker;
 
-var followGlider=1;
+var followGlider=0;
+var airspaceShow=1;
+var showTask=1;
+var taskLayer=[];
+
 var metricSystem=<?=$PREFS->metricSystem?>;
 
-var altUnits="<? echo (($PREFS->metricSystem==1)?_M:_FT) ; ?>";
-var speedUnits="<? echo (($PREFS->metricSystem==1)?_KM_PER_HR:_MPH) ; ?>";
-var varioUnits="<? echo (($PREFS->metricSystem==1)?_M_PER_SEC:_FPM) ; ?>";
+var altUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M:_FT) ; ?>";
+var speedUnits="<? echo ' '.(($PREFS->metricSystem==1)?_KM_PER_HR:_MPH) ; ?>";
+var varioUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M_PER_SEC:_FPM) ; ?>";
 
 function moveMarker(){
 	var pt =  posMarker.getPoint();
@@ -299,6 +313,33 @@ function MWJ_findObj( oName, oFrame, oDoc ) {
 	 //  timeTextSecs=document.getElementById("timeTextSecs"+i);
 	 //  timeTextSecs.value=Math.floor(StartTime + CurrTime[i]);
  }
+
+function refreshMap() {	
+   // map.setMapType(G_NORMAL_MAP); 
+   // map.setMapType(G_HYBRID_MAP);
+}
+
+function toggleFollow(radioObj) {
+	if(!radioObj) return "";	
+	if(radioObj.checked) followGlider=1;
+	else followGlider=0;
+}
+
+function toggleTask(radioObj) {
+	if(!radioObj) return "";	
+	if(radioObj.checked) { 
+		showTask=1;
+	    for (var i=0; i<taskLayer.length; i++) {
+			map.addOverlay(taskLayer[i]);
+        }
+	} else {
+		showTask=0;
+  		for (var i=0; i<taskLayer.length; i++) {
+			map.removeOverlay(taskLayer[i]);
+        }
+	}
+	refreshMap();	
+}
 
 function getCheckedValue(radioObj) {
 	if(!radioObj)
@@ -364,8 +405,10 @@ function SetTimer(evt) {
 
 	if (metricSystem==2) {
 		varioStr*=196.8;
+		varioStr=Math.round(varioStr);
+	} else {
+		varioStr=Math.round(varioStr*10)/10;
 	}
-	varioStr=Math.round(varioStr*10)/10;
 	varioStr=varioStr+varioUnits;
 
 //	speed=document.getElementById("speed");
@@ -433,6 +476,23 @@ echo $flight->gMapsGetTaskJS();
 
 <? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
 <script language="javascript">
+
+function toggleAirspace(radioObj) {
+	if(!radioObj) return "";	
+	if(radioObj.checked) {
+		showAirspace=1;
+        for (var i=0; i<polys.length; i++) {
+			map.addOverlay(polys[i]);
+        }
+	} else {
+		showAirspace=0;
+        for (var i=0; i<polys.length; i++) {
+			map.removeOverlay(polys[i]);
+        }
+	}
+	refreshMap();
+}
+
  var poly ;
  var pts;
 <?

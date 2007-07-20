@@ -96,37 +96,6 @@
 		});
 		map.addOverlay(encodedPolyline);
 
-
-
-
-
-
-if (0 ) {
-	  // Create our "tiny" marker icon
-var icon = new GIcon();
-icon.image = "http://labs.google.com/ridefinder/images/mm_20_red.png";
-icon.shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
-icon.iconSize = new GSize(12, 20);
-icon.shadowSize = new GSize(22, 20);
-icon.iconAnchor = new GPoint(6, 20);
-icon.infoWindowAnchor = new GPoint(5, 1);
-
-	// marker = new PdMarker(new GLatLng(49.28124,-123.12035), {icon:icon, draggable: true});
-	marker = new PdMarker(new GLatLng(49.28124,-123.12035), {draggable: true});
-
-	marker.setTooltip("Vancouver");
-	var html = "Visit <a href='http://www.yourvancouver.com'>Vancouver<\/a>";
-	marker.setDetailWinHTML(html);
-	marker.setHoverImage("http://www.google.com/mapfiles/dd-start.png");
-	map.addOverlay(marker);
-
-
-}
-
-
-
-
-
 	   }
 	   
       // === Define the function thats going to process the text file ===
