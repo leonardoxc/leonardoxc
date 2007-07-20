@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: thales.thenet.gr
--- Generation Time: Jul 06, 2007 at 05:06 PM
+-- Generation Time: Jul 20, 2007 at 12:58 PM
 -- Server version: 5.0.22
 -- PHP Version: 4.1.2
 -- 
@@ -16,7 +16,6 @@
 -- Table structure for table `leonardo_NAC_clubs`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_NAC_clubs`;
 CREATE TABLE `leonardo_NAC_clubs` (
   `NAC_ID` mediumint(9) NOT NULL default '0',
   `clubID` bigint(20) NOT NULL default '0',
@@ -30,7 +29,6 @@ CREATE TABLE `leonardo_NAC_clubs` (
 -- Table structure for table `leonardo_airspace`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_airspace`;
 CREATE TABLE `leonardo_airspace` (
   `id` mediumint(8) unsigned NOT NULL,
   `Name` varchar(50) NOT NULL,
@@ -55,7 +53,7 @@ CREATE TABLE `leonardo_airspace` (
   KEY `minx` (`minx`,`miny`,`maxx`,`maxy`),
   KEY `serial` (`serial`,`disabled`),
   KEY `serial_2` (`serial`,`disabled`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=3312 ;
 
 -- --------------------------------------------------------
 
@@ -63,14 +61,13 @@ CREATE TABLE `leonardo_airspace` (
 -- Table structure for table `leonardo_areas`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_areas`;
 CREATE TABLE `leonardo_areas` (
   `areaID` mediumint(8) unsigned NOT NULL,
   `name` varchar(60) NOT NULL,
   `desc` varchar(255) NOT NULL,
   `descInt` varchar(255) NOT NULL,
   PRIMARY KEY  (`areaID`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -78,7 +75,6 @@ CREATE TABLE `leonardo_areas` (
 -- Table structure for table `leonardo_areas_takeoffs`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_areas_takeoffs`;
 CREATE TABLE `leonardo_areas_takeoffs` (
   `areaID` mediumint(8) unsigned NOT NULL,
   `takeoffID` mediumint(8) unsigned NOT NULL
@@ -90,7 +86,6 @@ CREATE TABLE `leonardo_areas_takeoffs` (
 -- Table structure for table `leonardo_clubs`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_clubs`;
 CREATE TABLE `leonardo_clubs` (
   `ID` bigint(20) unsigned NOT NULL,
   `name` varchar(255) NOT NULL default '',
@@ -108,7 +103,7 @@ CREATE TABLE `leonardo_clubs` (
   `formula_parameters` text NOT NULL,
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -116,7 +111,6 @@ CREATE TABLE `leonardo_clubs` (
 -- Table structure for table `leonardo_clubs_flights`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_clubs_flights`;
 CREATE TABLE `leonardo_clubs_flights` (
   `clubID` mediumint(8) unsigned NOT NULL,
   `flightID` mediumint(8) unsigned NOT NULL
@@ -128,11 +122,11 @@ CREATE TABLE `leonardo_clubs_flights` (
 -- Table structure for table `leonardo_clubs_pilots`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_clubs_pilots`;
 CREATE TABLE `leonardo_clubs_pilots` (
   `clubID` bigint(20) unsigned NOT NULL default '0',
   `pilotID` bigint(20) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`clubID`,`pilotID`)
+  `pilotServerID` mediumint(8) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`clubID`,`pilotID`,`pilotServerID`)
 ) TYPE=MyISAM;
 
 -- --------------------------------------------------------
@@ -141,9 +135,11 @@ CREATE TABLE `leonardo_clubs_pilots` (
 -- Table structure for table `leonardo_flights`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_flights`;
 CREATE TABLE `leonardo_flights` (
   `ID` bigint(20) unsigned NOT NULL,
+  `serverID` smallint(5) unsigned NOT NULL default '0',
+  `originalURL` varchar(255) NOT NULL,
+  `original_ID` mediumint(8) unsigned NOT NULL default '0',
   `cat` smallint(5) unsigned NOT NULL default '1',
   `subcat` smallint(5) unsigned NOT NULL default '1',
   `category` smallint(5) unsigned NOT NULL default '2',
@@ -151,12 +147,15 @@ CREATE TABLE `leonardo_flights` (
   `dateAdded` datetime NOT NULL default '0000-00-00 00:00:00',
   `timesViewed` mediumint(9) NOT NULL default '0',
   `userID` mediumint(8) unsigned NOT NULL default '0',
+  `originalUserID` mediumint(8) unsigned NOT NULL default '0',
+  `userServerID` mediumint(8) unsigned NOT NULL default '0',
   `filename` varchar(200) NOT NULL default '',
   `place` varchar(100) NOT NULL default '',
   `glider` varchar(50) NOT NULL default '',
   `gliderBrandID` smallint(5) unsigned NOT NULL default '0',
   `comments` text NOT NULL,
   `linkURL` varchar(200) NOT NULL default '',
+  `hasPhotos` tinyint(3) unsigned NOT NULL default '0',
   `photo1Filename` varchar(150) NOT NULL default '',
   `photo2Filename` varchar(150) NOT NULL default '',
   `photo3Filename` varchar(150) NOT NULL default '',
@@ -205,12 +204,14 @@ CREATE TABLE `leonardo_flights` (
   `airspaceCheckMsg` text NOT NULL,
   `checkedBy` varchar(100) NOT NULL,
   `NACclubID` bigint(20) NOT NULL,
+  `hash` varchar(100) NOT NULL,
+  `batchOpProcessed` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`),
   KEY `userID` (`userID`),
   KEY `takeoffID` (`takeoffID`),
   KEY `FLIGHT_POINTS` (`FLIGHT_POINTS`),
   KEY `clubID_2` (`FLIGHT_POINTS`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=5311 ;
 
 -- --------------------------------------------------------
 
@@ -218,7 +219,6 @@ CREATE TABLE `leonardo_flights` (
 -- Table structure for table `leonardo_log`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_log`;
 CREATE TABLE `leonardo_log` (
   `transactionID` bigint(20) unsigned NOT NULL,
   `actionTime` bigint(20) unsigned NOT NULL,
@@ -235,7 +235,7 @@ CREATE TABLE `leonardo_log` (
   `Result` mediumint(8) unsigned NOT NULL,
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=4776 ;
 
 -- --------------------------------------------------------
 
@@ -243,7 +243,6 @@ CREATE TABLE `leonardo_log` (
 -- Table structure for table `leonardo_maps`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_maps`;
 CREATE TABLE `leonardo_maps` (
   `ID` bigint(20) NOT NULL,
   `filename` varchar(200) NOT NULL default '',
@@ -257,7 +256,23 @@ CREATE TABLE `leonardo_maps` (
   `metersPerPixel` float(7,5) NOT NULL default '0.00000',
   PRIMARY KEY  (`ID`,`filename`),
   UNIQUE KEY `filename` (`filename`)
-) TYPE=MyISAM PACK_KEYS=0;
+) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=4711 ;
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `leonardo_photos`
+-- 
+
+CREATE TABLE `leonardo_photos` (
+  `ID` bigint(20) unsigned NOT NULL,
+  `flightID` mediumint(8) unsigned NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY  (`ID`),
+  KEY `flightID` (`flightID`)
+) TYPE=MyISAM AUTO_INCREMENT=1431 ;
 
 -- --------------------------------------------------------
 
@@ -265,10 +280,11 @@ CREATE TABLE `leonardo_maps` (
 -- Table structure for table `leonardo_pilots`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_pilots`;
 CREATE TABLE `leonardo_pilots` (
   `pilotID` bigint(20) NOT NULL default '0',
+  `serverID` smallint(5) unsigned NOT NULL default '0',
   `countryCode` char(2) NOT NULL default '',
+  `CIVL_ID` mediumint(8) unsigned NOT NULL default '0',
   `NACid` int(10) unsigned NOT NULL default '0',
   `NACmemberID` bigint(20) unsigned NOT NULL default '0',
   `NACclubID` bigint(20) NOT NULL,
@@ -321,7 +337,7 @@ CREATE TABLE `leonardo_pilots` (
   `Reserve` varchar(60) NOT NULL default '',
   `Helmet` varchar(60) NOT NULL default '',
   `PilotPhoto` varchar(30) NOT NULL default '',
-  PRIMARY KEY  (`pilotID`)
+  PRIMARY KEY  (`pilotID`,`serverID`)
 ) TYPE=MyISAM;
 
 -- --------------------------------------------------------
@@ -330,7 +346,6 @@ CREATE TABLE `leonardo_pilots` (
 -- Table structure for table `leonardo_servers`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_servers`;
 CREATE TABLE `leonardo_servers` (
   `ID` mediumint(8) unsigned NOT NULL,
   `isLeo` tinyint(3) unsigned NOT NULL,
@@ -341,11 +356,14 @@ CREATE TABLE `leonardo_servers` (
   `url_op` varchar(255) NOT NULL,
   `admin_email` varchar(100) NOT NULL,
   `site_pass` varchar(100) NOT NULL,
+  `serverPass` varchar(50) NOT NULL,
+  `clientPass` varchar(50) NOT NULL,
+  `lastPullUpdateID` bigint(20) unsigned NOT NULL default '0',
   `is_active` tinyint(3) unsigned NOT NULL default '0',
   `gives_waypoints` tinyint(3) unsigned NOT NULL default '0',
   `waypoint_countries` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=102 ;
 
 -- --------------------------------------------------------
 
@@ -353,7 +371,6 @@ CREATE TABLE `leonardo_servers` (
 -- Table structure for table `leonardo_stats`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_stats`;
 CREATE TABLE `leonardo_stats` (
   `tm` bigint(20) unsigned NOT NULL,
   `year` smallint(5) unsigned NOT NULL,
@@ -377,7 +394,6 @@ CREATE TABLE `leonardo_stats` (
 -- Table structure for table `leonardo_users`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_users`;
 CREATE TABLE `leonardo_users` (
   `user_id` mediumint(8) NOT NULL default '0',
   `user_active` tinyint(1) default '1',
@@ -402,7 +418,6 @@ CREATE TABLE `leonardo_users` (
 -- Table structure for table `leonardo_waypoints`
 -- 
 
-DROP TABLE IF EXISTS `leonardo_waypoints`;
 CREATE TABLE `leonardo_waypoints` (
   `ID` mediumint(9) NOT NULL,
   `name` varchar(100) NOT NULL default '',
@@ -418,5 +433,4 @@ CREATE TABLE `leonardo_waypoints` (
   `modifyDate` date NOT NULL default '2005-09-01',
   PRIMARY KEY  (`ID`),
   KEY `lat` (`lat`,`lon`)
-) TYPE=MyISAM PACK_KEYS=0;
-
+) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=9341 ;
