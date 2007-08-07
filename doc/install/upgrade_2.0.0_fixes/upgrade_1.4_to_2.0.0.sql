@@ -4,13 +4,13 @@ CREATE TABLE `leonardo_areas` (
   `desc` varchar(255) NOT NULL,
   `descInt` varchar(255) NOT NULL,
   PRIMARY KEY  (`areaID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_areas_takeoffs` (
   `areaID` mediumint(8) unsigned NOT NULL,
   `takeoffID` mediumint(8) unsigned NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_clubs` (
@@ -30,19 +30,19 @@ CREATE TABLE `leonardo_clubs` (
   `formula_parameters` text NOT NULL,
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_clubs_flights` (
   `clubID` mediumint(8) unsigned NOT NULL,
   `flightID` mediumint(8) unsigned NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 CREATE TABLE `leonardo_clubs_pilots` (
   `clubID` bigint(20) unsigned NOT NULL default '0',
   `pilotID` bigint(20) unsigned NOT NULL default '0',
   PRIMARY KEY  (`clubID`,`pilotID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_log` (
@@ -61,7 +61,7 @@ CREATE TABLE `leonardo_log` (
   `Result` mediumint(8) unsigned NOT NULL,
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_servers` (
@@ -78,7 +78,7 @@ CREATE TABLE `leonardo_servers` (
   `gives_waypoints` tinyint(3) unsigned NOT NULL default '0',
   `waypoint_countries` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 
 CREATE TABLE `leonardo_stats` (
@@ -96,7 +96,7 @@ CREATE TABLE `leonardo_stats` (
   `browser` char(15) NOT NULL default '',
   `browser_version` char(10) NOT NULL default '',
   KEY `tm` (`tm`,`year`,`month`,`day`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM ;
 
 ALTER TABLE `leonardo_flights` MODIFY COLUMN `userID` MEDIUMINT(8) NOT NULL DEFAULT '0';
 ALTER TABLE `leonardo_flights` ADD COLUMN `category` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '2';

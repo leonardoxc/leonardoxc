@@ -29,8 +29,8 @@ function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Ocak','Þubat','Mart','Nisan','Mayýs','Haziran',
 				'Temmuz','Aðustos','Eylül','Ekim','Kasým','Aralýk');
-	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
-	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
+	$monthListShort=array('OCK','ÞBT','MRT','NSN','MYS','HZR','TMZ','AÐU','EYL','EKM','KSM','ARL');
+	$weekdaysList=array('Pzr','Pzts','Salý','Çrþ','Prþ','Cuma','Cmrt') ;
 }
 setMonths();
 
@@ -62,7 +62,7 @@ define("_DURATION_HOURS_MIN","Süre (ss:dd)");
 define("_SHOW","Göster");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Uçuþ 1-2 dakika içinde aktif 
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Uçuþ Kaydýnýz 1-2 dakika içinde aktif 
 olacaktýr. ");
 define("_TRY_AGAIN","Lütfen az sonra tekrar deneyin");
 
@@ -103,7 +103,7 @@ define("_FLYING_AREA_INFO","Flying area info");
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","En Üste dön");
+define("_RETURN_TO_TOP","En Baþa dön");
 // list flight
 define("_PILOT_FLIGHTS","Pilot'un uçuþlarý");
 
@@ -125,34 +125,26 @@ define("_ALL_TAKEOFFS","Tüm kalkýþ pistlerini göster");
 define("_ALL_THE_YEAR","Tüm yýl");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Bir ucus dosyasi 
-gondermediniz");
-define("_NO_SUCH_FILE","gonderdiginiz dosya serverda bulunamiyor");
-define("_FILE_DOESNT_END_IN_IGC","dosya IGC uzantili degil");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Bu gecerli bir IGC dosyasi degil");
-define("_THERE_IS_SAME_DATE_FLIGHT","Ayni gun ve tarihte zaten baska bir 
-ucus kayýtlý");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","degistirmek istiyorsaniz once 
-eskisini silmelisiniz");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Bir uçuþ dosyasý göndermediniz");
+define("_NO_SUCH_FILE","Gönderdiðiniz dosya sitede bulunamýyor");
+define("_FILE_DOESNT_END_IN_IGC","Dosya IGC uzantýlý deðil");
+define("_THIS_ISNT_A_VALID_IGC_FILE","Bu geçerli bir IGC dosyasý deðil");
+define("_THERE_IS_SAME_DATE_FLIGHT","Ayný gün ve tarihte zaten baþka bir uçuþ kayýtlý");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Deðiþtirmek istiyorsanýz önce eskisini silmelisiniz");
 define("_DELETE_THE_OLD_ONE","Eski bir tane sil");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Tayni isimde zaten baska bir dosya 
-var");
-define("_CHANGE_THE_FILENAME","bu ucus baska bir ucus ise ltf dosya ismini 
-degistirerek tekrar deneyin");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","Ayný isimde zaten baska bir dosya var");
+define("_CHANGE_THE_FILENAME","Bu uçuþ baska bir uçuþ ise lütfen dosya ismini deðistirerek tekrar deneyin");
 define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Uçuþ kaydýnýz gönderildi");
-define("_PRESS_HERE_TO_VIEW_IT","Izlemek icin buraya basin");
-define("_WILL_BE_ACTIVATED_SOON","(uçuþ kaydýnýz 1-2 dakika içinde aktif 
-olacaktýr)");
+define("_PRESS_HERE_TO_VIEW_IT","Görmek için buraya týklayýn");
+define("_WILL_BE_ACTIVATED_SOON","(Uçuþ kaydýnýz 1-2 dakika içinde aktif olacaktýr)");
 
 // add_from_zip
 define("_SUBMIT_MULTIPLE_FLIGHTS","Birden fazla uçuþ kaydý gönder");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED",".zip dosyasýnýn içindeki 
-sadece .igc dosyalarý iþlenir.");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Uçuþlarý içeren<br>zip 
-dosyasý gönder");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED",".zip dosyasýnýn içindeki sadece .igc dosyalarý iþlenir.");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Uçuþlarý içeren<br>zip dosyasý gönder");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Göndermek Ýçin Týklayýn");
 
-define("_FILE_DOESNT_END_IN_ZIP","yuklediginiz dosya ZIP uzantisi degil");
+define("_FILE_DOESNT_END_IN_ZIP","Yüklediðiniz dosya ZIP uzantýsý deðil");
 define("_ADDING_FILE","Dosya gönderiliyor");
 define("_ADDED_SUCESSFULLY","Baþarýyla gönderildi");
 define("_PROBLEM","Problem");
@@ -186,12 +178,12 @@ define("_MENU_FILTER","Süzgeç");
 define("_MENU_MY_FLIGHTS","Uçuþlarým");
 define("_MENU_MY_PROFILE","Pilot Profilim");
 define("_MENU_MY_STATS","Ýstatistiklerim");
-define("_MENU_MY_SETTINGS","My settings"); 
+define("_MENU_MY_SETTINGS","Ayarlarým"); 
 define("_MENU_SUBMIT_FLIGHT","Uçuþ Kaydý Gönder");
 define("_MENU_SUBMIT_FROM_ZIP","ZIP dosyasýyla gönder");
 define("_MENU_SHOW_PILOTS","Pilotlar");
 define("_MENU_SHOW_LAST_ADDED","En Son Yüklenenler");
-define("_FLIGHTS_STATS","Flights Stats");
+define("_FLIGHTS_STATS","Uçuþ Ýstatistikleri");
 
 define("_SELECT_YEAR","Yýl Seç");
 define("_SELECT_MONTH","Ay Seç");
@@ -224,8 +216,7 @@ define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Gösterilecek pilot yok");
 
 define("_THE_FLIGHT_HAS_BEEN_DELETED","Uçuþ kaydý silindi");
 define("_RETURN","Geri Dön");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","DIKKAT - Bu ucus kaydini 
-silmek uzeresiniz");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","DIKKAT - Bu uçuþ kaydýný silmek üzeresiniz");
 define("_THE_DATE","Tarih ");
 define("_YES","EVET");
 define("_NO","HAYIR");
@@ -285,25 +276,19 @@ define("_MINUTES","dakika");
 //--------------------------------------------
 
 define("_SUBMIT_FLIGHT","Uçuþ Kaydý Gönder");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(Sadece .IGC dosyasý gerekli , diðer
-alanlar boþ býrakýlabilir<br><b> .igc dosyasý oluþturmakla ilgili rehber
-yazýyý okumak için <a href=http://www.ypforum.com/viewtopic.php?t=226
-target=_blank >Týklayýn</a></b>)");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(Sadece .IGC dosyasý gerekli , diðer alanlar boþ býrakýlabilir<br><b> .igc dosyasý oluþturmakla ilgili rehber yazýyý okumak için <a href=http://www.ypforum.com/viewtopic.php?t=226 target=_blank >Týklayýn</a></b>)");
 define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","IGC dosyasýný seçiniz");
-define("_NOTE_TAKEOFF_NAME","<font size=1>Kalkýþ Pistinin adýný veya ülkeyi
-yazabilirsiniz</font>");
+define("_NOTE_TAKEOFF_NAME","<font size=1>Kalkýþ Pistinin adýný veya ülkeyi yazabilirsiniz</font>");
 define("_COMMENTS_FOR_THE_FLIGHT","Uçuþ yorumlarý");
 define("_PHOTO","Fotoðraf");
-define("_PHOTOS_GUIDELINES","Fotoðraflar JPG ve  den küçük olmalý.");
+define("_PHOTOS_GUIDELINES","Fotoðraflar JPG ve belrtilen boyuttan küçük olmalý ->");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Kaydý Gönder");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Birden fazla ucus kaydi 
-girmek istiyormusunuz ?");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Birden fazla uçuþ kaydý girmek istiyormusunuz ?");
 define("_PRESS_HERE","Buraya týklayýn");
 
 define("_IS_PRIVATE","Herkese açýk olmasýn");
 define("_MAKE_THIS_FLIGHT_PRIVATE","Herkese açýk olmasýn");
-define("_INSERT_FLIGHT_AS_USER_ID","Ucusu kullanici ID (kimligi) olarak 
-gir");
+define("_INSERT_FLIGHT_AS_USER_ID","Uçuþu kullanýcý ID (kimligi) olarak gir");
 define("_FLIGHT_IS_PRIVATE","Bu uçuþ özeldir");
 
 //--------------------------------------------
@@ -311,11 +296,10 @@ define("_FLIGHT_IS_PRIVATE","Bu uçuþ özeldir");
 //--------------------------------------------
 
 define("_CHANGE_FLIGHT_DATA","Uçuþ kaydýný düzenle");
-define("_IGC_FILE_OF_THE_FLIGHT","Ucusun IGC dosyasý");
+define("_IGC_FILE_OF_THE_FLIGHT","Uçuþun IGC dosyasý");
 define("_DELETE_PHOTO","Sil");
 define("_NEW_PHOTO","Yeni fotoðraf");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Uçuþ bilgilerini deðiþtirmek için 
-buraya týklayýnýz");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Uçuþ bilgilerini deðiþtirmek için buraya týklayýnýz");
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","Deðiþiklikler kaydedildi");
 define("_RETURN_TO_FLIGHT","Uçuþa dön");
 
@@ -394,8 +378,7 @@ define("_Favorite_Actor","Favori Aktörü");
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Yeni bir fotoðraf ekle veya 
-deðiþtir");
+define("_Upload_new_photo_or_change_old","Yeni bir fotoðraf ekle veya deðiþtir");
 define("_Delete_Photo","Fotoðrafý sil");
 define("_Your_profile_has_been_updated","Profiliniz güncellendi");
 define("_Submit_Change_Data","Gönder - Bilgi deðiþtir");
@@ -438,7 +421,7 @@ define("_Mean_duration_per_Year","Senelik ortalama uçulan sðre");
 //--------------------------------------------
 define("_See_flights_near_this_point","Bu bölgeye yakýn uçuþlara bakýnýz");
 define("_Waypoint_Name","Waypoint ismi");
-define("_Navigate_with_Google_Earth","Google Earth ile Uçuþunuzu Izleyiniz");
+define("_Navigate_with_Google_Earth","Google Earth ile Uçuþunuzu Ýzleyiniz");
 define("_See_it_in_Google_Maps","Google Maps ile Uçtuðunuz yere bakýnýz");
 define("_See_it_in_MapQuest","MapQuest ile Uçtuðunuz yere bakýnýz");
 define("_COORDINATES","Koordinatlar");
@@ -452,8 +435,8 @@ define("_SITE_DESCR","Bölge/Kalkýþ Pisti Açýklamasý");
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","See more details");
-define("_KML_file_made_by","KML file made by");
+define("_See_more_details","Daha Fazla Detay");
+define("_KML_file_made_by","KML dosyasý oluþturulma");
 
 //--------------------------------------------
 // add_waypoint.php
@@ -481,142 +464,141 @@ setGliderCats();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","Your settings have been updated");
+define("_Your_settings_have_been_updated","Ayarlarýnýz Kayýt Edildi");
 
-define("_THEME","Theme");
-define("_LANGUAGE","Language");
-define("_VIEW_CATEGORY","View category");
-define("_VIEW_COUNTRY","View country");
-define("_UNITS_SYSTEM" ,"Units system");
+define("_THEME","Tema");
+define("_LANGUAGE","Dil");
+define("_VIEW_CATEGORY","Kategori");
+define("_VIEW_COUNTRY","Ülke");
+define("_UNITS_SYSTEM" ,"Mesafe Birimi");
 define("_METRIC_SYSTEM","Metric (km,m)");
 define("_IMPERIAL_SYSTEM","Imperial (miles,feet)");
-define("_ITEMS_PER_PAGE","Items per page");
+define("_ITEMS_PER_PAGE","Sayfa Baþýna Uçuþ Gösterim Adedi");
 
 define("_MI","mi");
 define("_KM","km");
 define("_FT","ft");
 define("_M","m");
 define("_MPH","mph");
-define("_KM_PER_HR","km/h");
+define("_KM_PER_HR","km/s");
 define("_FPM","fpm");
-define("_M_PER_SEC","m/sec");
+define("_M_PER_SEC","m/san");
 
 //--------------------------------------------
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","World Wide");
-define("_National_XC_Leagues_for","National XC Leagues for");
-define("_Flights_per_Country","Flights per Country");
-define("_Takeoffs_per_Country","Takeoffs per Country");
-define("_INDEX_HEADER","Welcome to Leonardo XC League");
-define("_INDEX_MESSAGE","You can use the &quot;Main menu&quot; to navigate or use the most common choices presented below.");
+define("_WORLD_WIDE","Dünya");
+define("_National_XC_Leagues_for","Ulusal XC Lig ");
+define("_Flights_per_Country","Ülke Baþýna Uçuþlar");
+define("_Takeoffs_per_Country","Ülke Baþýna Kalkýþ Pistleri");
+define("_INDEX_HEADER","Leonardo XC Ligine Hoþgeldiniz");
+define("_INDEX_MESSAGE","&quot;Ana Menüyü&quot; kullanarak uçuþlara bakabilirsiniz..");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","First (Summary) Page");
-define("_Display_ALL","Display ALL");
-define("_Display_NONE","Display NONE");
-define("_Reset_to_default_view","Reset to default view");
-define("_No_Club","No Club");
-define("_This_is_the_URL_of_this_page","This is the URL of this page");
-define("_All_glider_types","All glider types");
+define("_MENU_SUMMARY_PAGE","Ana Sayfa");
+define("_Display_ALL","Hepsini Göster");
+define("_Display_NONE","Hiçbirini Gösterme");
+define("_Reset_to_default_view","Varsayýlan Görünüme Dön");
+define("_No_Club","Kulüp Yok");
+define("_This_is_the_URL_of_this_page","Bu, bu sayfanýn adresidir ");
+define("_All_glider_types","Tüm Uçuþ Aletleri");
 
-define("_MENU_SITES_GUIDE","Flying Sites Guide");
-define("_Site_Guide","Site Guide");
+define("_MENU_SITES_GUIDE","Uçuþ Bölgeleri Rehberi");
+define("_Site_Guide","Site Kullaným Rehberi");
 
-define("_Search_Options","Search Options");
-define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
-define("_Clear_this_list","Clear this list");
-define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
-define("_Available_Takeoffs","Available Takeoffs");
-define("_Search_site_by_name","Search site by name");
-define("_give_at_least_2_letters","give at least 2 letters");
-define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
-define("_Takeoff_Details","Takeoff Details");
+define("_Search_Options","Arama Ayarlarý");
+define("_Below_is_the_list_of_selected_sites","Seçilen Bölgeler");
+define("_Clear_this_list","Listeyi Temizle");
+define("_See_the_selected_sites_in_Google_Earth","Seçilen Kalkýþ Pistlerini Google Earth de Göster");
+define("_Available_Takeoffs","Uygun Kalkýþ Pistleri");
+define("_Search_site_by_name","Kalkýþ Pisti Arama");
+define("_give_at_least_2_letters","En az 2 karekter giriniz");
+define("_takeoff_move_instructions_1","Tüm seçili kalkýþ pistlerini >> e týklayarak sað panele alabilirsiniz veya > Karekterine týklayarak tek tek alabilirsiniz");
+define("_Takeoff_Details","Kalkýþ Pisti Detaylarý");
 
+define("_Takeoff_Info","Kalkýþ Pisti Bilgileri");
+define("_XC_Info","XC Bilgi");
+define("_Flight_Info","Uçuþ Bilgi");
 
-define("_Takeoff_Info","Takeoff Info");
-define("_XC_Info","XC Info");
-define("_Flight_Info","Flight Info");
-
-define("_MENU_LOGOUT","Logout");
-define("_MENU_LOGIN","Login");
-define("_MENU_REGISTER","Open an account");
-
-
-define("_Africa","Africa");
-define("_Europe","Europe");
-define("_Asia","Asia");
-define("_Australia","Australia");
-define("_North_Central_America","North/Central America");
-define("_South_America","South America");
-
-define("_Recent","Recent");
+define("_MENU_LOGOUT","Çýkýþ");
+define("_MENU_LOGIN","Giriþ Yap");
+define("_MENU_REGISTER","Kayýt Ol");
 
 
-define("_Unknown_takeoff","Unknown takeoff");
-define("_Display_on_Google_Earth","Display on Google Earth");
+define("_Africa","Afrika");
+define("_Europe","Avrupa");
+define("_Asia","Asya");
+define("_Australia","Avusturalya");
+define("_North_Central_America","Kuzey Amerika");
+define("_South_America","Güney Amerika");
+
+define("_Recent","Son Gönderilen");
+
+
+define("_Unknown_takeoff","Bilinmeyen Kalkýþ Pisti");
+define("_Display_on_Google_Earth","Google Earth de Göster");
 define("_Use_Man_s_Module","Use Man's Module");
-define("_Line_Color","Line Color");
-define("_Line_width","Line width");
-define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
-define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
-define("_EDIT_WAYPOINT","Edit Takeoff Info");
-define("_DELETE_WAYPOINT","Delete Takeoff");
-define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+define("_Line_Color","Çizgi Rengi");
+define("_Line_width","Çizgi Kalýnlýðý");
+define("_unknown_takeoff_tooltip_1","Bu uçuþ bilinmeyen kalkýþ pistine ait");
+define("_unknown_takeoff_tooltip_2","Eðer Kalkýþ/iniþ bölgesini biliyorsanýz kayýt etmek için lütfen týklayýn ve bilgileri girin.");
+define("_EDIT_WAYPOINT","Kalkýþ Pisti Bilgilerini Düzenle");
+define("_DELETE_WAYPOINT","Kalkýþ Pistini Sil");
+define("_SUBMISION_DATE","Siteye Kayýt Tarihi"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Ýzlenme Sayýsý"); // the times that this flight have been viewed
 
 
-define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
-define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
-define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
-define("_Takeoff_Name","Takeoff Name");
-define("_In_Local_Language","In Local Language");
-define("_In_English","In English");
+define("_takeoff_add_help_1","Eðer kalkýþ pistinin bilgilerini biliyorsanýz bilgileri girebilirsiniz , bilmiyorsanýz OK e týklayarak pencereyi kapatýn.");
+define("_takeoff_add_help_2","Eger yukarýda sizin kalkýþ noktanýz ' bilinmeyen kalkýþ pisti ' olarak gosteriliyorsa , tekrar bunu girmenize gerek yok. sadece pencereyi kapatýn yeter ");
+define("_takeoff_add_help_3","Eðer kalkýþ noktasý adýný aþaðýda görüyorsanýz soldaki boþ alana otomatik olarak yazýlmasi için üzerine týklayýn.");
+define("_Takeoff_Name","Kalkýþ Pisti Adý");
+define("_In_Local_Language","Türkçe");
+define("_In_English","Ýngilizce");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Please enter your username and password to log in.");
-define("_SEND_PASSWORD","I forgot my password");
-define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
-define("_AUTO_LOGIN","Log me on automatically each visit");
-define("_USERNAME","Username");
-define("_PASSWORD","Password");
-define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+define("_ENTER_PASSWORD","Giriþ yapmak için kullanýcý adýnýzý ve þifrenizi giriniz.");
+define("_SEND_PASSWORD","Þifremi unuttum");
+define("_ERROR_LOGIN","Yanlýþ kullanýcý adý veya þifre girdiniz");
+define("_AUTO_LOGIN","Beni Hatýrla");
+define("_USERNAME","Kullanýcý Adý");
+define("_PASSWORD","Þifre");
+define("_PROBLEMS_HELP","Giriþ yaparken sorun yaþýyorsanýz admin ile irtibata geçiniz");
 
-define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
-define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+define("_LOGIN_TRY_AGAIN","%sBuraya%s týklayarak tekrar deneyebilirsiniz");
+define("_LOGIN_RETURN","%sBuraya%s týklayarak Ana Sayfaya dönebilirsiniz");
 // end 2007/02/20
 
-define("_Category","Category");
-define("_MEMBER_OF","Member of");
-define("_MemberID","Member ID");
-define("_EnterID","Enter ID");
-define("_Clubs_Leagues","Clubs / Leagues");
-define("_Pilot_Statistics","Pilot Statistics");
-define("_National_Rankings","National Rankings");
+define("_Category","Kategori");
+define("_MEMBER_OF","Kullanýcý");
+define("_MemberID","Kullanýcý ID");
+define("_EnterID","ID Gir");
+define("_Clubs_Leagues","Kulüp / Lig");
+define("_Pilot_Statistics","Pilot Ýstatistikleri");
+define("_National_Rankings","Ulusal Sýralamalar");
 
 
 
 
 // new on 2007/03/08
-define("_Select_Club","Select Club");
-define("_Close_window","Close window");
-define("_EnterID","Enter ID");
-define("_Club","Club");
+define("_Select_Club","Kulüp Seç");
+define("_Close_window","Pencereyi Kapat");
+define("_EnterID","ID Gir");
+define("_Club","Kulüp");
 define("_Sponsor","Sponsor");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Go To Current Month');
-define('_Today_is','Today is');
+define('_Go_To_Current_Month','Bulunduðun tarihe dön');
+define('_Today_is','Bugün - ');
 define('_Wk','Wk');
 define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
 define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
-define('_Click_to_select_a_month','Click to select a month.');
-define('_Click_to_select_a_year','Click to select a year.');
-define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+define('_Click_to_select_a_month','Ay seçmek için týklayýn.');
+define('_Click_to_select_a_year','Yýl seçmek için týklayýn.');
+define('_Select_date_as_date.',' [date] tarih olarak seçin'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
 ?>
