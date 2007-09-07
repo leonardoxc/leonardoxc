@@ -365,7 +365,7 @@ return "<waypoint>
 		
 		
 	    if($res <= 0){
-		  echo "Error putting waypount to DB<BR>";
+		  echo "Error putting waypount to DB $query<BR>";
 		  return 0;
 	    }					
 		return 1;

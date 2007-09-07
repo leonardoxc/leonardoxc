@@ -2,8 +2,7 @@
 -- version 2.6.4-pl1
 -- http://www.phpmyadmin.net
 -- 
--- Host: thales.thenet.gr
--- Generation Time: Jul 20, 2007 at 12:58 PM
+-- Generation Time: Aug 10, 2007 at 11:42 AM
 -- Server version: 5.0.22
 -- PHP Version: 4.1.2
 -- 
@@ -21,7 +20,7 @@ CREATE TABLE `leonardo_NAC_clubs` (
   `clubID` bigint(20) NOT NULL default '0',
   `clubName` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`NAC_ID`,`clubID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -30,7 +29,7 @@ CREATE TABLE `leonardo_NAC_clubs` (
 -- 
 
 CREATE TABLE `leonardo_airspace` (
-  `id` mediumint(8) unsigned NOT NULL,
+  `id` mediumint(8) unsigned NOT NULL auto_increment,
   `Name` varchar(50) NOT NULL,
   `serial` tinyint(4) NOT NULL default '0',
   `disabled` tinyint(4) NOT NULL default '0',
@@ -53,7 +52,7 @@ CREATE TABLE `leonardo_airspace` (
   KEY `minx` (`minx`,`miny`,`maxx`,`maxy`),
   KEY `serial` (`serial`,`disabled`),
   KEY `serial_2` (`serial`,`disabled`)
-) TYPE=MyISAM AUTO_INCREMENT=3312 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -62,12 +61,12 @@ CREATE TABLE `leonardo_airspace` (
 -- 
 
 CREATE TABLE `leonardo_areas` (
-  `areaID` mediumint(8) unsigned NOT NULL,
+  `areaID` mediumint(8) unsigned NOT NULL auto_increment,
   `name` varchar(60) NOT NULL,
   `desc` varchar(255) NOT NULL,
   `descInt` varchar(255) NOT NULL,
   PRIMARY KEY  (`areaID`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -78,7 +77,7 @@ CREATE TABLE `leonardo_areas` (
 CREATE TABLE `leonardo_areas_takeoffs` (
   `areaID` mediumint(8) unsigned NOT NULL,
   `takeoffID` mediumint(8) unsigned NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -87,7 +86,7 @@ CREATE TABLE `leonardo_areas_takeoffs` (
 -- 
 
 CREATE TABLE `leonardo_clubs` (
-  `ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL default '',
   `intName` varchar(255) NOT NULL default '',
   `description` text NOT NULL,
@@ -103,7 +102,7 @@ CREATE TABLE `leonardo_clubs` (
   `formula_parameters` text NOT NULL,
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -114,7 +113,7 @@ CREATE TABLE `leonardo_clubs` (
 CREATE TABLE `leonardo_clubs_flights` (
   `clubID` mediumint(8) unsigned NOT NULL,
   `flightID` mediumint(8) unsigned NOT NULL
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -127,7 +126,7 @@ CREATE TABLE `leonardo_clubs_pilots` (
   `pilotID` bigint(20) unsigned NOT NULL default '0',
   `pilotServerID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`clubID`,`pilotID`,`pilotServerID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -136,7 +135,7 @@ CREATE TABLE `leonardo_clubs_pilots` (
 -- 
 
 CREATE TABLE `leonardo_flights` (
-  `ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL auto_increment,
   `serverID` smallint(5) unsigned NOT NULL default '0',
   `originalURL` varchar(255) NOT NULL,
   `original_ID` mediumint(8) unsigned NOT NULL default '0',
@@ -211,7 +210,7 @@ CREATE TABLE `leonardo_flights` (
   KEY `takeoffID` (`takeoffID`),
   KEY `FLIGHT_POINTS` (`FLIGHT_POINTS`),
   KEY `clubID_2` (`FLIGHT_POINTS`)
-) TYPE=MyISAM AUTO_INCREMENT=5311 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -220,7 +219,7 @@ CREATE TABLE `leonardo_flights` (
 -- 
 
 CREATE TABLE `leonardo_log` (
-  `transactionID` bigint(20) unsigned NOT NULL,
+  `transactionID` bigint(20) unsigned NOT NULL auto_increment,
   `actionTime` bigint(20) unsigned NOT NULL,
   `userID` mediumint(8) unsigned NOT NULL,
   `effectiveUserID` mediumint(8) unsigned NOT NULL,
@@ -235,7 +234,7 @@ CREATE TABLE `leonardo_log` (
   `Result` mediumint(8) unsigned NOT NULL,
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
-) TYPE=MyISAM AUTO_INCREMENT=4776 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -244,7 +243,7 @@ CREATE TABLE `leonardo_log` (
 -- 
 
 CREATE TABLE `leonardo_maps` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL auto_increment,
   `filename` varchar(200) NOT NULL default '',
   `leftX` double(10,2) NOT NULL default '0.00',
   `topY` double(10,2) NOT NULL default '0.00',
@@ -256,7 +255,7 @@ CREATE TABLE `leonardo_maps` (
   `metersPerPixel` float(7,5) NOT NULL default '0.00000',
   PRIMARY KEY  (`ID`,`filename`),
   UNIQUE KEY `filename` (`filename`)
-) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=4711 ;
+) ENGINE=MyISAM  PACK_KEYS=0;
 
 -- --------------------------------------------------------
 
@@ -265,14 +264,14 @@ CREATE TABLE `leonardo_maps` (
 -- 
 
 CREATE TABLE `leonardo_photos` (
-  `ID` bigint(20) unsigned NOT NULL,
+  `ID` bigint(20) unsigned NOT NULL auto_increment,
   `flightID` mediumint(8) unsigned NOT NULL,
   `path` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   PRIMARY KEY  (`ID`),
   KEY `flightID` (`flightID`)
-) TYPE=MyISAM AUTO_INCREMENT=1431 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -338,7 +337,7 @@ CREATE TABLE `leonardo_pilots` (
   `Helmet` varchar(60) NOT NULL default '',
   `PilotPhoto` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`pilotID`,`serverID`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -347,7 +346,7 @@ CREATE TABLE `leonardo_pilots` (
 -- 
 
 CREATE TABLE `leonardo_servers` (
-  `ID` mediumint(8) unsigned NOT NULL,
+  `ID` mediumint(8) unsigned NOT NULL auto_increment,
   `isLeo` tinyint(3) unsigned NOT NULL,
   `installation_type` smallint(5) unsigned NOT NULL default '2',
   `leonardo_version` varchar(20) NOT NULL,
@@ -363,7 +362,7 @@ CREATE TABLE `leonardo_servers` (
   `gives_waypoints` tinyint(3) unsigned NOT NULL default '0',
   `waypoint_countries` varchar(255) NOT NULL,
   PRIMARY KEY  (`ID`)
-) TYPE=MyISAM AUTO_INCREMENT=102 ;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -386,7 +385,7 @@ CREATE TABLE `leonardo_stats` (
   `browser` char(15) NOT NULL default '',
   `browser_version` char(10) NOT NULL default '',
   KEY `tm` (`tm`,`year`,`month`,`day`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -410,7 +409,7 @@ CREATE TABLE `leonardo_users` (
   `user_actkey` varchar(32) default NULL,
   `user_newpasswd` varchar(32) default NULL,
   PRIMARY KEY  (`user_id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -419,7 +418,7 @@ CREATE TABLE `leonardo_users` (
 -- 
 
 CREATE TABLE `leonardo_waypoints` (
-  `ID` mediumint(9) NOT NULL,
+  `ID` mediumint(9) NOT NULL auto_increment,
   `name` varchar(100) NOT NULL default '',
   `intName` varchar(100) NOT NULL default '',
   `lat` float NOT NULL default '0',
@@ -433,4 +432,5 @@ CREATE TABLE `leonardo_waypoints` (
   `modifyDate` date NOT NULL default '2005-09-01',
   PRIMARY KEY  (`ID`),
   KEY `lat` (`lat`,`lon`)
-) TYPE=MyISAM PACK_KEYS=0 AUTO_INCREMENT=9341 ;
+) ENGINE=MyISAM  ;
+
