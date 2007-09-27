@@ -178,6 +178,37 @@ if (! $dontShowCountriesSelection ) {
 	</li>
 </ul>
 
+<? 
+// SEASON MOD
+if ($CONF['use_season_years'] ) {
+	if ($season) $seasonLegend=_SEASON.' '.$season;
+	else $seasonLegend=_SELECT_SEASON;
+
+	$seasonStr="<li><a href='?name=$module_name&season=0'>"._NO_SEASON."</a></li>\n";		
+	if ($CONF['use_defined_seasons']) {
+	
+		foreach ($CONF['seasons'] as $thisSeason=>$seasonDetails) {
+			$seasonStr.="<li><a href='?name=$module_name&season=$thisSeason'>$thisSeason</a></li>\n";		
+		}
+	
+	} else {
+		for ( $thisSeason=$CONF['start_season']; $thisSeason<=$CONF['end_season'] ; $thisSeason++) {
+			$seasonStr.="<li><a href='?name=$module_name&season=$thisSeason'>$thisSeason</a></li>\n";		
+		}
+	}	
+?>
+<div id="nav2">
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<li ><a href='#'><? echo $seasonLegend;  // echo $current_catImg?></a>
+	<ul>
+	<? echo $seasonStr;?>
+	</ul>
+</li>
+</ul>
+</div>
+<? } ?>
+
+
 <? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?

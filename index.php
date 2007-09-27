@@ -84,6 +84,11 @@ setVarFromRequest("pilotIDview",0,0);
 setVarFromRequest("year",date("Y"),1); 
 setVarFromRequest("month",0,1); // date("m") for current month
 setVarFromRequest("day",0,1); // only used for flights_list
+
+// SEASON MOD
+setVarFromRequest("season",0,1); // only used for flights_list
+setVarFromRequest("subseason",0,0); // can be text
+
 setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);
@@ -225,30 +230,6 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_pilot_profile_stats.php";
 } else if ($op=="user_prefs") { 
 	require $moduleRelPath."/GUI_user_prefs.php";
-//--------------------------
-// OLC related actions
-//--------------------------
-} else if ($op=="olc_submit") {
-	require $moduleRelPath."/FN_olc.php";
-	open_inner_table("OLC",600);
-	open_tr();
-		echo "<div align=center>";
-		olcSubmit($flightID); // $flightID
-		echo "<br><BR>";
-		echo "<a href='?name=$module_name&op=show_flight&flightID=".$flightID."'>"._RETURN_TO_FLIGHT."</a>";
-		echo "<br><BR></div>";
-    close_inner_table();  
-} else if ($op=="olc_remove") {
-	require $moduleRelPath."/FN_olc.php";	
-	open_inner_table("OLC",600);
-	open_tr();
-		echo "<div align=center>";
-		olcRemove($flightID);
-		echo "<br><BR>";
-		echo "<a href='?name=$module_name&op=show_flight&flightID=".$flightID."'>"._RETURN_TO_FLIGHT."</a>";
-		echo "<br><BR>";
-		echo "<br><BR></div>";
-    close_inner_table();  
 //--------------------------
 // Misc related actions
 //--------------------------

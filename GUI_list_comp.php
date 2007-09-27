@@ -36,16 +36,55 @@
 		$legend.=" :: ".$countries[$country]." ";				
   }
 
-  if ($year && !$month) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		$legend.=" :: ".$year." ";
-  }
-  if ($year && $month) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
-		$legend.=" :: ".$monthList[$month-1]." ".$year." ";
-  }
-  if (! $year ) {
-	$legend.=" :: "._ALL_TIMES." ";
+
+	// SEASON MOD
+	if (!$season) {
+		  if ($year && !$month) {
+				$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
+				$legend.=" :: ".$year." ";
+		  }
+		  if ($year && $month) {
+				$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
+				$legend.=" :: ".$monthList[$month-1]." ".$year." ";
+		  }
+		  if (! $year ) {
+			$legend.=" :: "._ALL_TIMES." ";
+		  }
+		  
+    }  else {
+	  	// SEASON MOD
+		if ($CONF['use_defined_seasons']) {
+			if ( $CONF['seasons'][$season] ) {
+				$thisSeasonStart=$CONF['seasons'][$season]['start'];
+				$thisSeasonEnd	=$CONF['seasons'][$season]['end'];
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}
+		} else {
+			if ( $season>=$CONF['start_season'] && $season<=$CONF['end_season'] ) {
+			
+				if ( $CONF['season_default_starts_in_previous_year'] ) {
+					$thisSeasonStart=($season-1)."-".$CONF['season_default_start'];
+					$thisSeasonEnd	= $season."-".$CONF['season_default_end']; 
+				} else  if ( $CONF['season_default_ends_in_next_year'] ) {
+					$thisSeasonStart=$season."-".$CONF['season_default_start'];
+					$thisSeasonEnd	= ($season+1)."-".$CONF['season_default_end']; 
+				} else {
+					$thisSeasonStart=$season."-".$CONF['season_default_start'];
+					$thisSeasonEnd	=$season."-".$CONF['season_default_end']; 
+				}	
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}	  
+		}	
+		
+		if 	($seasonValid) {
+	        $where_clause.=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
+			$legend.=" :: ".SEASON." ".$season;
+		}	
+		
   }
 
    $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_CATEGORY_FLIGHT_NUMBER, "totalDistance"=>_TOTAL_DISTANCE, 

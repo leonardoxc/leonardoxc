@@ -33,17 +33,55 @@
  if ($page_num==0)  $page_num=1;
  
   $legend="";
-  if ($year && !$month) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		//$legend.=" <b>[ ".$year." ]</b> ";
+  
+  // SEASON MOD
+  if (!$season) {
+	  if ($year && !$month) {
+			$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
+			//$legend.=" <b>[ ".$year." ]</b> ";
+	  }
+	  if ($year && $month) {
+			$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
+			//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
+	  }
+	  if (! $year ) {
+		//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
+	  }
+    }  else {
+	  	// SEASON MOD
+		if ($CONF['use_defined_seasons']) {
+			if ( $CONF['seasons'][$season] ) {
+				$thisSeasonStart=$CONF['seasons'][$season]['start'];
+				$thisSeasonEnd	=$CONF['seasons'][$season]['end'];
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}
+		} else {
+			if ( $season>=$CONF['start_season'] && $season<=$CONF['end_season'] ) {
+			
+				if ( $CONF['season_default_starts_in_previous_year'] ) {
+					$thisSeasonStart=($season-1)."-".$CONF['season_default_start'];
+					$thisSeasonEnd	= $season."-".$CONF['season_default_end']; 
+				} else  if ( $CONF['season_default_ends_in_next_year'] ) {
+					$thisSeasonStart=$season."-".$CONF['season_default_start'];
+					$thisSeasonEnd	= ($season+1)."-".$CONF['season_default_end']; 
+				} else {
+					$thisSeasonStart=$season."-".$CONF['season_default_start'];
+					$thisSeasonEnd	=$season."-".$CONF['season_default_end']; 
+				}	
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}	  
+		}	
+		
+		if 	($seasonValid) {
+	        $where_clause.=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
+		}	
+		
   }
-  if ($year && $month) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
-		//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
-  }
-  if (! $year ) {
-	//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
-  }
+  
   
   if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";

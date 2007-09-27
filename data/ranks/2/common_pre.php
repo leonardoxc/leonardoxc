@@ -12,10 +12,13 @@
 /************************************************************************/
 	$NACid=1;
 
-	$year=2007; // flights from 1.10.2006 00:00 UTC - 30.09.2007
-	if ($year)
- 	 		$where_clause.=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
-
+	$year=2008; // flights from 1.10.2006 00:00 UTC - 30.09.2007
+	
+	if ($year==2007)
+  		$where_clause.=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
+	else if ($year ) {
+		$where_clause.=" AND DATE >='".($year-1)."-09-16' AND DATE <= '".$year."-09-15' ";
+	}
 	
 	// pilots must be NACid=1 (DHV) and NACmemberID>0
 	$where_clause.=" AND NACid=1 AND NACmemberID>0 ";
