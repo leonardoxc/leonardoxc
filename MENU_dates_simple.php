@@ -13,28 +13,83 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if ($datesMenu!='years') {
+if ($datesMenu!='years' && $datesMenu!='seasons') {
 $tblWidth=240;
 if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
+
+if ($CONF['use_season_years']) $tblWidth+=70;
+
 ?>
 
 <table class="dropDownBox" width="<?=$tblWidth?>" cellpadding="2" cellspacing="0">
 <tr>
-	<td colspan=4 height=25 class="main_text" bgcolor="#40798C">
+	<td colspan=5 height=25 class="main_text" bgcolor="#40798C">
 		<div class="style1" align="center"><strong><?=_SELECT_DATE?> <?=_OR?></strong></div>
 	</td>
 	
 </tr>
 <tr>
-	<td colspan=4 height=20 class="dropDownBoxH2" >
+	<td colspan=5 height=20 class="dropDownBoxH2" >
 		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0'><?=_ALL_YEARS?></a>
+			<a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
 		</div>
 	</td>
 </tr>
 <tr>
+<?
+	if ($CONF['use_season_years'] ) {
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
+	} else {
+		echo '<td>';
+	}
+	echo '</td>';
+
+	if ($op=="list_flights" &&  $CONF_use_calendar ) {
+		echo '<td class="tableBox" valign="top" style="width:255px"><strong>'._DAY.'</strong>';
+	} else { 
+		echo '<td>';
+	}
+	echo '</td>';
+
+?>
+
+	<td class="tableBox" valign="top" style="width:60px">
+		<strong><?=_YEAR?></strong>
+	</td>
+	<td class="tableBox" valign="top" style="width:90px">
+		<strong><?=_MONTH?></strong>
+	</td>
+    <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
+</tr>
+<tr>
+<?
+if ($CONF['use_season_years'] ) {
+	echo '<td class="sp " valign="top">';
+   	if ($season) $seasonLegend=_SEASON.' '.$season;
+	else $seasonLegend=_SELECT_SEASON;
+
+	$seasonStr="";
+	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
+	if ($CONF['use_defined_seasons']) {
+	
+		foreach ($CONF['seasons'] as $thisSeason=>$seasonDetails) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
+		}
+	
+	} else {
+		for ( $thisSeason=$CONF['start_season']; $thisSeason<=$CONF['end_season'] ; $thisSeason++) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
+		}
+	}	
+	echo $seasonStr."";
+	echo '</td>';
+} else {
+	echo '<td></td>';
+}
+?>
+
 <? if ($op=="list_flights" && $CONF_use_calendar) {?>
-	<td class="calBox" valign="top" style="width:255px" rowspan="2">		
+	<td class="calBox" valign="top" style="width:255px">		
 <? 
 		$calLang=$lang2iso[$currentlang]; 
 		if (!$day) $day=date("d");
@@ -43,7 +98,7 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 		$dateStr=sprintf("%02d.%02d.%04d",$day,$month,$year);
  ?>
 <script language='javascript'>
-	var thisUrl= '?name=<?=$module_name ?>';
+	var thisUrl= '?name=<?=$module_name ?>&season=0';
 	var imgDir = '<?= $moduleRelPath ?>/js/cal/';
 
 	var language = '<?=$calLang?>';	
@@ -73,34 +128,18 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 <script language='javascript'>
 
  init();
- showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,1,46);
+ showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,76,67);
 </script>
-
+</td>
 <? } else { ?>
-	<td>
-<? }?>
-	</td>
-	<td class="tableBox" valign="top" style="width:60px">
-		<strong><?=_YEAR?></strong>
-	</td>
-	<td class="tableBox" valign="top" style="width:90px">
-		<strong><?=_MONTH?></strong>
-	</td>
-    <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
-</tr>
-<tr>
-<? if ($op=="list_flights" &&  $CONF_use_calendar ) {?>
-<? 
- } else { ?>
-	<td>
-	</td>
+<td></td>
 <? } ?>
-   
+
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
 		for($i=date("Y");$i>=$CONF_StartYear;$i--)  
-			echo "<a href='?name=$module_name&year=$i&month=0&day=0'>$i</a>";		
+			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
 	?>
 	</td>
 	<td valign="top">
@@ -108,7 +147,7 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 		$i=1;
 		foreach ($monthList as $monthName)  {		 
 			$k=sprintf("%02s",$i);
-			echo "<a href='?name=$module_name&month=$k&day=0'>$monthName</a>";		
+			echo "<a href='?name=$module_name&season=0&month=$k&day=0'>$monthName</a>";		
 			$i++;
 		 }
 	?>
@@ -118,7 +157,7 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 	 $month_num=date("m");
 	 $year_num=date("Y");
      for ($i=0;$i<8;$i++) {
-	    echo "<a href='?name=".($module_name.$query_str)."&year=$year_num&month=$month_num&day=0'>".($monthList[$month_num-1]." ".$year_num)."</a>";
+	    echo "<a href='?name=".($module_name.$query_str)."&season=0&year=$year_num&month=$month_num&day=0'>".($monthList[$month_num-1]." ".$year_num)."</a>";
 		$month_num--;
 		if ($month_num==0) { 
 			$year_num--; 
@@ -131,23 +170,110 @@ if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
 	</td>
 </tr>
 </TABLE>
-<? } else { ?>
+<? } else if ($datesMenu=='years') {  /// simple years dropdown for xc league
 
-<table class="dropDownBox" width="150" cellpadding="2" cellspacing="0">
+$dWidth=150;
+if ($CONF['use_season_years'] ) $dWidth+=70;
+
+?>
+
+<table class="dropDownBox" width="<=$dWidth?>" cellpadding="2" cellspacing="0">
 <tr>
+<?
+	if ($CONF['use_season_years'] ) {
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
+	} else {
+		echo '<td>';
+	}
+	echo '</td>';
+?>
+
 	<td class="tableBox" valign="top">
 		<strong><?=_YEAR?></strong>
 	</td>
 </tr>
 <tr>
+<?
+if ($CONF['use_season_years'] ) {
+	echo '<td class="sp " valign="top">';
+   	if ($season) $seasonLegend=_SEASON.' '.$season;
+	else $seasonLegend=_SELECT_SEASON;
+
+	$seasonStr="";
+	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
+	if ($CONF['use_defined_seasons']) {
+	
+		foreach ($CONF['seasons'] as $thisSeason=>$seasonDetails) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
+		}
+	
+	} else {
+		for ( $thisSeason=$CONF['start_season']; $thisSeason<=$CONF['end_season'] ; $thisSeason++) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
+		}
+	}	
+	echo $seasonStr."";
+	echo '</td>';
+} else {
+	echo '<td></td>';
+}
+?>
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
 		for($i=date("Y");$i>=$startYear;$i--)  
-			echo "<a href='?name=$module_name&year=$i&month=0&day=0'>$i</a>";		
+			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
 	?>
 	<a style='text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0'><?=_ALL_YEARS?></a>
 	</td>
+</tr>
+</TABLE>
+
+
+<? } else { 
+
+$dWidth=150;
+if ($CONF['use_season_years'] ) $dWidth+=70;
+
+?>
+
+<table class="dropDownBox" width="<=$dWidth?>" cellpadding="2" cellspacing="0">
+<tr>
+<?
+	if ($CONF['use_season_years'] ) {
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
+	} else {
+		echo '<td>';
+	}
+	echo '</td>';
+?>
+</tr>
+<tr>
+<?
+if ($CONF['use_season_years'] ) {
+	echo '<td class="sp " valign="top">';
+   	if ($season) $seasonLegend=_SEASON.' '.$season;
+	else $seasonLegend=_SELECT_SEASON;
+
+	$seasonStr="";
+	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
+	if ($CONF['use_defined_seasons']) {
+	
+		foreach ($CONF['seasons'] as $thisSeason=>$seasonDetails) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
+		}
+	
+	} else {
+		for ( $thisSeason=$CONF['start_season']; $thisSeason<=$CONF['end_season'] ; $thisSeason++) {
+			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
+		}
+	}	
+	echo $seasonStr."";
+	echo '</td>';
+} else {
+	echo '<td></td>';
+}
+?>
 </tr>
 </TABLE>
 

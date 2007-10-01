@@ -231,8 +231,13 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				foreach($ranksList as $rankID=>$rankArray) {
 					$rname=$rankArray['name'];
 					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
-					if  ($rankArray['menuYear']) $yearToForceStr="&year=".$rankArray['menuYear']."&month=0";
-					else $yearToForceStr="";
+					if  ($rankArray['menuYear']) {
+						if ($rankArray['datesMenu']=='years' ) 
+							$yearToForceStr="&year=".$rankArray['menuYear']."&month=0&season=0";
+						else
+							$yearToForceStr="&season=".$rankArray['menuYear'];
+
+					}	else $yearToForceStr="";
 					echo "<li><a href='?name=$module_name&op=comp&clubID=0&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
 				
 				}			

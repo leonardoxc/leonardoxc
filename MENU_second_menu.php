@@ -19,14 +19,19 @@
   $dateLegend="";
   $allTimesDisplay=0;
 
-  if ($year && $month && $day && $op=="list_flights") $dateLegend.=sprintf("%02d.%02d.%04d",$day,$month,$year);
-  else if ($year && !$month ) $dateLegend.=$year;
-  else if ($year && $month ) $dateLegend.=$monthList[$month-1]." ".$year;
-  else if (! $year ) {
-	$dateLegend.=_ALL_TIMES;
-	$allTimesDisplay=1;
-  }
-  
+	if ($season) {
+		$dateLegend.=_SEASON.' '.$season;
+	} else {
+	  if ($year && $month && $day && $op=="list_flights") $dateLegend.=sprintf("%02d.%02d.%04d",$day,$month,$year);
+	  else if ($year && !$month ) $dateLegend.=$year;
+	  else if ($year && $month ) $dateLegend.=$monthList[$month-1]." ".$year;
+	  else if (! $year ) {
+		// $dateLegend.=_ALL_TIMES;
+		$dateLegend.=_SELECT_DATE;
+		$allTimesDisplay=1;
+	  }
+	}  
+
   $countryLegend="";
   $allCountriesDisplay=0;
   if ($country) $countryLegend=$countries[$country];
@@ -180,7 +185,7 @@ if (! $dontShowCountriesSelection ) {
 
 <? 
 // SEASON MOD
-if ($CONF['use_season_years'] ) {
+if ($CONF['use_season_years']  && 0 ) { // not need a separate menu ,is in the Dates menu
 	if ($season) $seasonLegend=_SEASON.' '.$season;
 	else $seasonLegend=_SELECT_SEASON;
 
@@ -241,9 +246,9 @@ if ($CONF['use_season_years'] ) {
 		<? // display this url 	
 			$thisURL="?name=$module_name&op=$op";
 			if ($op=="comp") 
-				$thisURL.="&rank=$rank&subrank=$subrank&year=$year";
+				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
 			else
-				$thisURL.="&year=$year&month=$month&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+				$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
 		?>
 		<a  href='<? echo $thisURL;
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>

@@ -88,6 +88,12 @@ setVarFromRequest("day",0,1); // only used for flights_list
 // SEASON MOD
 setVarFromRequest("season",0,1); // only used for flights_list
 setVarFromRequest("subseason",0,0); // can be text
+if ($season) {
+	setVar("year",0);
+	setVar("month",0);
+	setVar("day",0);
+}
+
 
 setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);

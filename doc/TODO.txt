@@ -10,3 +10,20 @@ v. 1.6.01
 
 - Must add many more LANG constants
 - When filter is active there should be an icon displayng that !
+
+
+************************************
+******************* TODO ***********
+************************************
+
+Suggestions by Mark Dowsett
+
+- Submit flights as user XXX for zip files
+
+Suggestions by Ryan ( euroryan@gmail.com ) 
+- Pagenation in Leagae results
+
+- Filter to filter by pilot nationality
+
+- Also if possible a filter to view your top 6 olc scores within two chosen   dates
+
