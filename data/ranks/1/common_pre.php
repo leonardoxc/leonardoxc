@@ -12,8 +12,8 @@
 /************************************************************************/
 
 	// $year=2007; // flights from 1.10.2006 00:00 UTC - 30.09.2007
-	if ($year)
-  		$where_clause.=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
+	//if ($year)
+  	//	$where_clause.=" AND DATE >='".($year-1)."-10-1' AND DATE < '".$year."-10-1' "; 
 
 	$where_clause.=" AND cat=$cat ";
 	

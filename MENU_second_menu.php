@@ -185,19 +185,19 @@ if (! $dontShowCountriesSelection ) {
 
 <? 
 // SEASON MOD
-if ($CONF['use_season_years']  && 0 ) { // not need a separate menu ,is in the Dates menu
+if ($CONF['seasons']['use_season_years']  && 0 ) { // not need a separate menu ,is in the Dates menu
 	if ($season) $seasonLegend=_SEASON.' '.$season;
 	else $seasonLegend=_SELECT_SEASON;
 
 	$seasonStr="<li><a href='?name=$module_name&season=0'>"._NO_SEASON."</a></li>\n";		
-	if ($CONF['use_defined_seasons']) {
+	if ($CONF['seasons']['use_defined_seasons']) {
 	
-		foreach ($CONF['seasons'] as $thisSeason=>$seasonDetails) {
+		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
 			$seasonStr.="<li><a href='?name=$module_name&season=$thisSeason'>$thisSeason</a></li>\n";		
 		}
 	
 	} else {
-		for ( $thisSeason=$CONF['start_season']; $thisSeason<=$CONF['end_season'] ; $thisSeason++) {
+		for ( $thisSeason=$CONF['seasons']['start_season']; $thisSeason<=$CONF['seasons']['end_season'] ; $thisSeason++) {
 			$seasonStr.="<li><a href='?name=$module_name&season=$thisSeason'>$thisSeason</a></li>\n";		
 		}
 	}	
@@ -224,7 +224,7 @@ if ($CONF['use_season_years']  && 0 ) { // not need a separate menu ,is in the D
   	    </div>
   	    <? } ?>
 
-  	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
+  	    <? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$pilotLegend</b>";
@@ -233,7 +233,7 @@ if ($CONF['use_season_years']  && 0 ) { // not need a separate menu ,is in the D
   	    ?>
 		</div>		
   	    <? } ?>
-  	    <? if ($op!='competition' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
+  	    <? if ($op!='competition' && $op!='comp' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$takeoffLegend</b>";

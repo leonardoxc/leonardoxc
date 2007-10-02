@@ -53,26 +53,26 @@
 		  
     }  else {
 	  	// SEASON MOD
-		if ($CONF['use_defined_seasons']) {
-			if ( $CONF['seasons'][$season] ) {
-				$thisSeasonStart=$CONF['seasons'][$season]['start'];
-				$thisSeasonEnd	=$CONF['seasons'][$season]['end'];
+		if ($CONF['seasons']['use_defined_seasons']) {
+			if ( $CONF['seasons']['seasons'][$season] ) {
+				$thisSeasonStart=$CONF['seasons']['seasons'][$season]['start'];
+				$thisSeasonEnd	=$CONF['seasons']['seasons'][$season]['end'];
 				$seasonValid=1;
 			} else {
 				$seasonValid=0;
 			}
 		} else {
-			if ( $season>=$CONF['start_season'] && $season<=$CONF['end_season'] ) {
+			if ( $season>=$CONF['seasons']['start_season'] && $season<=$CONF['seasons']['end_season'] ) {
 			
-				if ( $CONF['season_default_starts_in_previous_year'] ) {
-					$thisSeasonStart=($season-1)."-".$CONF['season_default_start'];
-					$thisSeasonEnd	= $season."-".$CONF['season_default_end']; 
-				} else  if ( $CONF['season_default_ends_in_next_year'] ) {
-					$thisSeasonStart=$season."-".$CONF['season_default_start'];
-					$thisSeasonEnd	= ($season+1)."-".$CONF['season_default_end']; 
+				if ( $CONF['seasons']['season_default_starts_in_previous_year'] ) {
+					$thisSeasonStart=($season-1)."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= $season."-".$CONF['seasons']['season_default_end']; 
+				} else  if ( $CONF['seasons']['season_default_ends_in_next_year'] ) {
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= ($season+1)."-".$CONF['seasons']['season_default_end']; 
 				} else {
-					$thisSeasonStart=$season."-".$CONF['season_default_start'];
-					$thisSeasonEnd	=$season."-".$CONF['season_default_end']; 
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	=$season."-".$CONF['seasons']['season_default_end']; 
 				}	
 				$seasonValid=1;
 			} else {
@@ -99,19 +99,7 @@
   //$legend.=$sortDesc;
 
   $query_str="";
-  $query_str.="&comp=".$is_comp;
-
-  $res= $db->sql_query("SELECT count(DISTINCT userID) as itemNum FROM $flightsTable  WHERE (userID!=0 AND  private=0) ".$where_clause." ");
-  if($res <= 0){   
-	 echo("<H3> Error in count items query! </H3>\n");
-     exit();
-  }
-
-  $row = $db->sql_fetchrow($res);
-  $itemsNum=$row["itemNum"];   
-
-  $startNum=($page_num-1)*$CONF_compItemsPerPage;
-  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  $query_str.="&comp=".$comp;
 
   if ($country) {
 		$where_clause_country.=" AND $waypointsTable.countryCode='".$country."' ";
@@ -189,9 +177,31 @@
 	);
 
 	$leagueCategory=$_GET['comp']+0;
+/*
+  $query_count="SELECT count(DISTINCT userID) as itemNum FROM $flightsTable  WHERE (userID!=0 AND  private=0) ".$where_clause." ";
+  $res= $db->sql_query( $query_count);
+  // echo $query_count;
+  if($res <= 0){   
+	 echo("<H3> Error in count items query! $query_count</H3>\n");
+     exit();
+  }
 
-  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
-  require_once dirname(__FILE__)."/MENU_second_menu.php";
+  $row = $db->sql_fetchrow($res);
+  
+  $itemsNum=$row["itemNum"];   
+
+  $startNum=($page_num-1)*$CONF_compItemsPerPage;
+  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  $endNum=$startNum+$CONF_compItemsPerPage;
+	
+  $legendRight=generate_flights_pagination("?name=$module_name&op=competition$query_str", 
+			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
+			
+
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+*/
 
 	$where_clause.=	 $leagueCategories[$leagueCategory]['where_clause'];
   $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID , 
@@ -308,6 +318,22 @@
 	  uasort(${$arrayName}, "cmp");
   }  
 
+  $itemsNum=count(${$leagueCategories[$leagueCategory]['arrayName']});   
+
+  $startNum=($page_num-1)*$CONF_compItemsPerPage;
+  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  $endNum=$startNum+$CONF_compItemsPerPage;
+	
+  $legendRight=generate_flights_pagination("?name=$module_name&op=competition$query_str", 
+			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
+			
+
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+
+  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div><div class='pagesDiv'>$legendRight</div></div>" ;
+  require_once dirname(__FILE__)."/MENU_second_menu.php";
   
   $countHowMany= $CONF_countHowManyFlightsInComp;
   sortArrayBest($leagueCategories[$leagueCategory]['arrayName'],$countHowMany);
@@ -406,9 +432,11 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    </tr>
    <? 
 
-	  $i=1;
+	  $i=1;	  
    	  foreach (${$arrayName} as $pilotID=>$pilotArray) {
-  		 if ($i>$CONF_compItemsPerPage) break;
+	  	 if ($i< ( $startNum + 1) ) { $i++ ;  continue; }
+		 if ($i>( $startNum  + $CONF_compItemsPerPage) ) break;
+  		 // if ($i>$CONF_compItemsPerPage) break;
 
 
 		 $sortRowClass=($i%2)?"l_row1":"l_row2"; 
@@ -423,9 +451,9 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 //		 if ($brandID) 
 //		 else $gliderBrandImg="&nbsp;";
 		 	     
-	     $i++;
+	     
 		 echo "<TR $bg>";
-		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
+		 echo "<TD>".($i)."</TD>"; 	
 	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
 				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
@@ -434,7 +462,9 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 else $outVal=$pilotArray["SUM"];
    	     echo "<TD>".$outVal."</TD>"; 	 
 		 $pilotArray["SUM"]=0;
-
+		 
+		 $i++;
+		
 		$k=0;
 		foreach ($pilotArray as $flightID=>$val) {
 			if (!$val)  $outVal="-";

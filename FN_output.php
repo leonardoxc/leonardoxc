@@ -319,8 +319,8 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 
 	Change $begin_end and $from_middle to suit your needs appropriately
 */
-	$begin_end = 3;
-	$from_middle = 3;
+	$begin_end = 2;
+	$from_middle = 2;
 	
 	$total_pages = ceil($num_items/$per_page);
 

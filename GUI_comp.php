@@ -23,20 +23,111 @@
   else 
   	  $legend=$ranksList[$rank]['name'];
 
-  $page_num=makeSane($_REQUEST["page_num"],1);
-  if ($page_num==0)  $page_num=1;
-  $startNum=($page_num-1)*$CONF_compItemsPerPage;
-  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  // we do a little trick here!
+  // if the rank has custom seasons we just replace the global $CONF['seasons'] array 
+  // since both have the same structure
+  if ( $ranksList[$rank]['useCustomSeasons'] ) { 
+	  $CONF['seasons']=$ranksList[$rank]['seasons'];
+  }
 
-  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;
+  // prepare the Where caluse regarging dates
+  // SEASON MOD
+  $where_clause='';
+  
+  if (!$season) {
+	  if ($year && $month && $day &&  $CONF_use_calendar ) {
+			$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m%d') = ".sprintf("%04d%02d%02d",$year,$month,$day)." ";
+	  } else {
+		  if ($year && !$month ) {
+				$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
+		  }
+		  if ($year && $month ) {
+				$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
+		  }
+	  }
+	
+	  if (! $year ) {
+		//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
+	  }
+  }  else {
+	  	// SEASON MOD
+		if ($CONF['seasons']['use_defined_seasons']) {
+			if ( $CONF['seasons']['seasons'][$season] ) {
+				$thisSeasonStart=$CONF['seasons']['seasons'][$season]['start'];
+				$thisSeasonEnd	=$CONF['seasons']['seasons'][$season]['end'];
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}
+		} else {
+			if ( $season>=$CONF['seasons']['start_season'] && $season<=$CONF['seasons']['end_season'] ) {
+			
+				if ( $CONF['seasons']['season_default_starts_in_previous_year'] ) {
+					$thisSeasonStart=($season-1)."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= $season."-".$CONF['seasons']['season_default_end']; 
+				} else  if ( $CONF['seasons']['season_default_ends_in_next_year'] ) {
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= ($season+1)."-".$CONF['seasons']['season_default_end']; 
+				} else {
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	=$season."-".$CONF['seasons']['season_default_end']; 
+				}	
+				$seasonValid=1;
+			} else {
+				$seasonValid=0;
+			}	  
+		}	
+		
+		if 	($seasonValid) {
+	        $where_clause.=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
+		}	
+		
+  }
+
+  // show the current subranking
+  require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
 
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
   $datesMenu=$ranksList[$rank]['datesMenu'];
   $startYear=$ranksList[$rank]['startYear'];
+  
   if ($ranksList[$rank]['entity']=='club') $listClubs=1;
   else $listClubs=0;
+
+  $clubID=0;
   
+  /*
+  $page_num=makeSane($_REQUEST["page_num"],1);
+  if ($page_num==0)  $page_num=1;
+  $startNum=($page_num-1)*$CONF_compItemsPerPage;
+  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  */
+  $page_num=$_REQUEST["page_num"]+0;
+  if ($page_num==0)  $page_num=1;
+  
+    $itemsNum=count($pilots);   
+
+  $startNum=($page_num-1)*$CONF_compItemsPerPage;
+  $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
+  $endNum=$startNum+$CONF_compItemsPerPage;
+	
+  $legendRight=generate_flights_pagination("?name=$module_name&op=comp&rank=$rank&subrank=$subrank", 
+			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
+			
+
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+
+  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div>";
+  if (!$listClubs) echo "<div class='pagesDiv'>$legendRight</div>";
+  
+  echo "</div>" ;
+
+
+
+  //echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div></div>" ;  
   require_once dirname(__FILE__)."/MENU_second_menu.php";
 
 // show the general discription of the ranking
@@ -53,9 +144,6 @@ foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
 	echo " <div class='menu1' $style ><a href='?name=$module_name&op=comp&rank=$rank&subrank=$subrankID'>$subrankTitle</a></div>";	
 }
 echo "<BR><BR>";
-// show the current subranking
-require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
-
 
 	// was _KILOMETERS -> bug
 	// and _TOTAL_KM
@@ -124,6 +212,8 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 
 	  $i=1;
    	  foreach ($pilots as $pilotID=>$pilot) {
+	  	 if ($i< ( $startNum + 1) ) { $i++ ;  continue; }
+		 if ($i>( $startNum  + $CONF_compItemsPerPage) ) break;
   		 // if ($i>$CONF_compItemsPerPage) break;
 		 if (!$pilot[$category]['sum'] || ! count($pilot[$category]['flights'])) continue;
 
@@ -133,9 +223,9 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
  		 else if ($i==3) $bg=" class='compThirdPlace'";
 		 else $bg=" class='$sortRowClass'";
 		 	 	     
-	     $i++;
+	     
 		 echo "<TR $bg>";
-		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
+		 echo "<TD>".($i)."</TD>"; 	
 	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
 				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>".
@@ -144,6 +234,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 		 else $outVal=$pilot[$category]["sum"];
    	     echo "<TD>".$outVal."</TD>"; 	 
 		 
+		$i++;
 
 		$k=0;
 

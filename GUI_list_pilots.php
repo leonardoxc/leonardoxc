@@ -49,26 +49,26 @@
 	  }
     }  else {
 	  	// SEASON MOD
-		if ($CONF['use_defined_seasons']) {
-			if ( $CONF['seasons'][$season] ) {
-				$thisSeasonStart=$CONF['seasons'][$season]['start'];
-				$thisSeasonEnd	=$CONF['seasons'][$season]['end'];
+		if ($CONF['seasons']['use_defined_seasons']) {
+			if ( $CONF['seasons']['seasons'][$season] ) {
+				$thisSeasonStart=$CONF['seasons']['seasons'][$season]['start'];
+				$thisSeasonEnd	=$CONF['seasons']['seasons'][$season]['end'];
 				$seasonValid=1;
 			} else {
 				$seasonValid=0;
 			}
 		} else {
-			if ( $season>=$CONF['start_season'] && $season<=$CONF['end_season'] ) {
+			if ( $season>=$CONF['seasons']['start_season'] && $season<=$CONF['seasons']['end_season'] ) {
 			
-				if ( $CONF['season_default_starts_in_previous_year'] ) {
-					$thisSeasonStart=($season-1)."-".$CONF['season_default_start'];
-					$thisSeasonEnd	= $season."-".$CONF['season_default_end']; 
-				} else  if ( $CONF['season_default_ends_in_next_year'] ) {
-					$thisSeasonStart=$season."-".$CONF['season_default_start'];
-					$thisSeasonEnd	= ($season+1)."-".$CONF['season_default_end']; 
+				if ( $CONF['seasons']['season_default_starts_in_previous_year'] ) {
+					$thisSeasonStart=($season-1)."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= $season."-".$CONF['seasons']['season_default_end']; 
+				} else  if ( $CONF['seasons']['season_default_ends_in_next_year'] ) {
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	= ($season+1)."-".$CONF['seasons']['season_default_end']; 
 				} else {
-					$thisSeasonStart=$season."-".$CONF['season_default_start'];
-					$thisSeasonEnd	=$season."-".$CONF['season_default_end']; 
+					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
+					$thisSeasonEnd	=$season."-".$CONF['seasons']['season_default_end']; 
 				}	
 				$seasonValid=1;
 			} else {
