@@ -244,6 +244,8 @@ FOR home->
 
 
 */
+
+// SEASON MOD
 $CONF_MENU['main_menu']['bottom']=array(
 		array('type'=>'spacer','extra_class'=>'long'),
 		array('name'=>'Instructions',
