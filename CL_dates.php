@@ -70,7 +70,8 @@ class dates {
 	
 	function getCurrentSeason($rankID) {
 		global $ranksList,$CONF;
-			
+		$thisSeason=0;
+
 		if ($rankID) {
 			if ( $ranksList[$rankID]['useCustomSeasons'] ) 
 				$conf=&$ranksList[$rankID]['seasons'];			
@@ -82,22 +83,40 @@ class dates {
 		
 		if (! $conf['use_season_years'] ) return 0;
 		
-		$t1=split("-",$conf['season_default_start']);
-		$m1=$t1[0]+0;
-		$d1=$t1[1]+0;			
-		$t2=split("-",$conf['season_default_end']);
-		$m2=$t1[0]+0;
-		$d2=$t1[1]+0;			
-		
-		$seasonTry=date("Y");	
-		$seasonTryStart	=mktime(0,0,0,$m1,$d1,$seasonTry+$conf['season_start_year_diff']);
-		$seasonTryEnd	=mktime(23,59,59,$m2,$d2,$seasonTry+$conf['season_end_year_diff']);
-
-		$thisTM=time();
-		if ($thisTM<$seasonTryStart) $thisSeason=$seasonTry-1;
-		else if ($thisTM>$seasonTryEnd) $thisSeason=$seasonTry+1;
-		else $thisSeason=$seasonTry;
+		if (!$conf['use_defined_seasons']) {
+			$t1=split("-",$conf['season_default_start']);
+			$m1=$t1[0]+0;
+			$d1=$t1[1]+0;			
+			$t2=split("-",$conf['season_default_end']);
+			$m2=$t1[0]+0;
+			$d2=$t1[1]+0;			
 			
+			$seasonTry=date("Y");	
+			$seasonTryStart	=mktime(0,0,0,$m1,$d1,$seasonTry+$conf['season_start_year_diff']);
+			$seasonTryEnd	=mktime(23,59,59,$m2,$d2,$seasonTry+$conf['season_end_year_diff']);
+	
+			$thisTM=time();
+			if ($thisTM<$seasonTryStart) $thisSeason=$seasonTry-1;
+			else if ($thisTM>$seasonTryEnd) $thisSeason=$seasonTry+1;
+			else $thisSeason=$seasonTry;
+
+		} else {
+			foreach ($conf['seasons'] as $thisSeasonID=>$seasonDetails) {
+				$t1=split("-",$seasonDetails['start']);
+				$y1=$t1[0]+0;
+				$m1=$t1[1]+0;
+				$d1=$t1[2]+0;			
+				$t2=split("-",$seasonDetails['end']);
+				$y2=$t2[0]+0;
+				$m2=$t2[1]+0;
+				$d2=$t2[2]+0;							
+				$seasonTryStart	=mktime(0,0,0,$m1,$d1,$y1);
+				$seasonTryEnd	=mktime(23,59,59,$m2,$d2,$y2);		
+				$thisTM=time();
+				if ($thisTM>=$seasonTryStart && $thisTM<=$seasonTryEnd) $thisSeason=$thisSeasonID;
+			}
+
+		}
 
 		return $thisSeason;
 	}

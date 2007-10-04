@@ -57,19 +57,19 @@ $ranksList=array(
 			//'season_end_year_diff'=>0,
 
 				
-			'start_season'=>2006,
+			'start_season'=>2007,
 			'end_season'=>'current',
 		
 		
 			// The next array will be used in case of 	$CONF['use_defined_seasons']=1
 			'seasons'=>array(
+				2008=>array('start'=>'2007-10-1','end'=>'2008-09-30'),		
 				2007=>array('start'=>'2006-10-1','end'=>'2007-9-30',
 							'subseasons'=>array(
 								'winter'=>array('start'=>'2006-10-1','end'=>'2007-3-31','localName'=>'winterInLocalLanguage'),
 								'summer'=>array('start'=>'2007-3-1','end'=>'2007-9-30','localName'=>'summerInLocalLanguage'),
 							)					
-						),
-				2008=>array('start'=>'2007-10-1','end'=>'2008-09-30'),			
+						),					
 			)					 
 		 
 		 ),
@@ -109,28 +109,30 @@ $ranksList=array(
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
 		 
  		  // Ths configures the top menu links to point to a specific year/season
-		 'datesMenu'=>'years',	
-		 // either force the menu item to point to this year or put zero  
-		 // possible values for seasons
-		 // 'current' 
-		 // a season ( ie 2007)
-		 // 0 is not allowed
-		 // possible values for years
-		 // date("Y")
-		 // a year ( ie 2007)
-		 // 0 = all years
-		 
-		 'menuYear'=>date("Y"), 
-		 'menuYear'=>0, 
+		 'datesMenu'=>'seasons',	
+		 'menuYear'=>'current' ,
 		 
 		 'useCustomYears'=>1, 
 		 'years'=>array (
-				'use_calendar_years'=>1,
+				'use_calendar_years'=>0,
 				'start_year'=>2003,
 				'end_year'=>date("Y"),
 		 ),
 
-		 'useCustomSeasons'=>0, 
+
+		 'useCustomSeasons'=>1, 
+		 'seasons'=>array (	
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>0,
+			// The next 4 values will be used in case of 	$CONF['use_defined_seasons']=0
+			'season_default_start'=>'10-1',
+			'season_default_end'=>'9-31',
+			// if the season 2007 is 2006-10-1 till  2007-9-30
+			'season_start_year_diff'=>-1,
+			'season_end_year_diff'=>0,				
+			'start_season'=>2007,
+			'end_season'=>'current',
+		 ),
 		 
 		 'subranks'=>array(
 		 		1=>array('id'=>1, 

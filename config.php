@@ -273,12 +273,13 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	
 	$CONF['years']=array(
 		'use_calendar_years'=>1,
-		'start_year'=>2000,
+		'start_year'=>1998,
 		'end_year'=>date("Y")
 		);
 	
 	
-	$CONF['seasons']['use_season_years']=1;	
+	// set this to 1 to enable seasons
+	$CONF['seasons']['use_season_years']=0;	
 	
 	// IF this is set then all info on which sesons to display in hte menu
 	//     will be taken forh the $CONF['seasons']['seasons']
@@ -289,11 +290,22 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	//    $CONF['seasons']['season_default_start'] and $CONF['seasons']['season_default_end']	
 	$CONF['seasons']['use_defined_seasons']=0;
 
+	// Defined seasons
+	// The next array will be used in case of 	$CONF['seasons']['show_only_defined_seasons']=1
+	$CONF['seasons']['seasons']=array(
+		2008=>array('start'=>'2007-10-1','end'=>'2008-09-30'),
+		2007=>array('start'=>'2006-10-1','end'=>'2007-9-30',
+					'subseasons'=>array(
+						'winter'=>array('start'=>'2006-10-1','end'=>'2007-3-31','localName'=>'winterInLocalLanguage'),
+						'summer'=>array('start'=>'2007-3-1','end'=>'2007-9-30','localName'=>'summerInLocalLanguage'),
+					)					
+				),
+	
+	);				
+
 	// The next 4 values will be used in case of 	$CONF['seasons']['show_only_defined_seasons']=0
 	$CONF['seasons']['season_default_start']='10-1';
-	$CONF['seasons']['season_default_end']='9-31';
-	
-	
+	$CONF['seasons']['season_default_end']='9-31';		
 	
 	// ONLY ONE of the 3 next varibles canbe set to TRUE !!!
 	// if the season 2007 is 2006-10-1 till  2007-9-30
@@ -308,22 +320,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	//$CONF['seasons']['season_start_year_diff']=0;
 	//$CONF['seasons']['season_end_year_diff']=0;
 
-
-
-	$CONF['seasons']['start_season']=2001;
+	$CONF['seasons']['start_season']=2007;
 	$CONF['seasons']['end_season']= dates::getCurrentSeason(0);
 
-	// The next array will be used in case of 	$CONF['seasons']['show_only_defined_seasons']=1
-	$CONF['seasons']['seasons']=array(
-		2007=>array('start'=>'2006-10-1','end'=>'2007-9-30',
-					'subseasons'=>array(
-						'winter'=>array('start'=>'2006-10-1','end'=>'2007-3-31','localName'=>'winterInLocalLanguage'),
-						'summer'=>array('start'=>'2007-3-1','end'=>'2007-9-30','localName'=>'summerInLocalLanguage'),
-					)					
-				),
-		2008=>array('start'=>'2007-10-1','end'=>'2008-09-30'),
-	
-	);				
  // end of seasons config
  				
 	

@@ -14,6 +14,7 @@
 /************************************************************************/
 
 if ( $op!='comp' ) {
+	if (! $CONF['seasons']['use_season_years'] ) $season=0;
 
 	$tblWidth=240;
 	if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
@@ -129,7 +130,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 <script language='javascript'>
 
  init();
- showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,76,67);
+ showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?76:6)?>,67);
 </script>
 </td>
 <? } else { ?>
