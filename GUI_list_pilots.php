@@ -35,52 +35,7 @@
   $legend="";
   
   // SEASON MOD
-  if (!$season) {
-	  if ($year && !$month) {
-			$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-			//$legend.=" <b>[ ".$year." ]</b> ";
-	  }
-	  if ($year && $month) {
-			$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
-			//$legend.=" <b>[ ".$monthList[$month-1]." ".$year." ]</b> ";
-	  }
-	  if (! $year ) {
-		//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
-	  }
-    }  else {
-	  	// SEASON MOD
-		if ($CONF['seasons']['use_defined_seasons']) {
-			if ( $CONF['seasons']['seasons'][$season] ) {
-				$thisSeasonStart=$CONF['seasons']['seasons'][$season]['start'];
-				$thisSeasonEnd	=$CONF['seasons']['seasons'][$season]['end'];
-				$seasonValid=1;
-			} else {
-				$seasonValid=0;
-			}
-		} else {
-			if ( $season>=$CONF['seasons']['start_season'] && $season<=$CONF['seasons']['end_season'] ) {
-			
-				if ( $CONF['seasons']['season_default_starts_in_previous_year'] ) {
-					$thisSeasonStart=($season-1)."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	= $season."-".$CONF['seasons']['season_default_end']; 
-				} else  if ( $CONF['seasons']['season_default_ends_in_next_year'] ) {
-					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	= ($season+1)."-".$CONF['seasons']['season_default_end']; 
-				} else {
-					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	=$season."-".$CONF['seasons']['season_default_end']; 
-				}	
-				$seasonValid=1;
-			} else {
-				$seasonValid=0;
-			}	  
-		}	
-		
-		if 	($seasonValid) {
-	        $where_clause.=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
-		}	
-		
-  }
+  $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
   
   
   if ($country) {

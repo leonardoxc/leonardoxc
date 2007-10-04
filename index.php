@@ -48,6 +48,7 @@ require_once dirname(__FILE__)."/FN_pilot.php";
 require_once dirname(__FILE__)."/FN_flight.php";	
 require_once dirname(__FILE__)."/FN_output.php";
 require_once dirname(__FILE__)."/CL_flightData.php";
+require_once dirname(__FILE__)."/CL_dates.php";
 require_once dirname(__FILE__)."/CL_statsLogger.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 

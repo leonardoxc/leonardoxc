@@ -246,6 +246,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
 
  // The top 'dates' menu  will have years starting from $CONF_StartYear
+ // Deprecated -  not use it anywherenow
  $CONF_StartYear=1998;
 
 
@@ -268,7 +269,15 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
 	// SEASON MOD
 	// start of seasons config (2007-09-27)
-	$CONF['seasons']['use_calendar_years']=1;	
+	require_once dirname(__FILE__)."/CL_dates.php";
+	
+	$CONF['years']=array(
+		'use_calendar_years'=>1,
+		'start_year'=>2000,
+		'end_year'=>date("Y")
+		);
+	
+	
 	$CONF['seasons']['use_season_years']=1;	
 	
 	// IF this is set then all info on which sesons to display in hte menu
@@ -278,23 +287,31 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	//    BOTH VALUES MUST BE defined
 	//    In this case also the season start/end will be defined from 
 	//    $CONF['seasons']['season_default_start'] and $CONF['seasons']['season_default_end']	
-	$CONF['seasons']['use_defined_seasons']=1;
+	$CONF['seasons']['use_defined_seasons']=0;
 
 	// The next 4 values will be used in case of 	$CONF['seasons']['show_only_defined_seasons']=0
 	$CONF['seasons']['season_default_start']='10-1';
 	$CONF['seasons']['season_default_end']='9-31';
 	
+	
+	
 	// ONLY ONE of the 3 next varibles canbe set to TRUE !!!
 	// if the season 2007 is 2006-10-1 till  2007-9-30
-	$CONF['seasons']['season_default_starts_in_previous_year']=1;
+	$CONF['seasons']['season_start_year_diff']=-1;
+	$CONF['seasons']['season_end_year_diff']=0;
+
 	// else if season 2007 is 2007-4-1 till  2008-3-31
-	$CONF['seasons']['season_default_ends_in_next_year']=0;
+	//$CONF['seasons']['season_start_year_diff']=0;
+	//$CONF['seasons']['season_end_year_diff']=1;
+
 	// else if season 2007 is 2007-1-1 till  2007-12-31
-	$CONF['seasons']['season_default_ends_in_same_year']=0;
+	//$CONF['seasons']['season_start_year_diff']=0;
+	//$CONF['seasons']['season_end_year_diff']=0;
 
 
-	$CONF['seasons']['start_season']=2004;
-	$CONF['seasons']['end_season']=2008;
+
+	$CONF['seasons']['start_season']=2001;
+	$CONF['seasons']['end_season']= dates::getCurrentSeason(0);
 
 	// The next array will be used in case of 	$CONF['seasons']['show_only_defined_seasons']=1
 	$CONF['seasons']['seasons']=array(

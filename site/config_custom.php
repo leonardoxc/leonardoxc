@@ -132,6 +132,7 @@
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
 
  // The top 'dates' menu  will have years starting from $CONF_StartYear
+ // Deprecated -  not use it anywherenow
  $CONF_StartYear=2007;
 
  // you should probably set  $OLCScoringServerPath to the same server 

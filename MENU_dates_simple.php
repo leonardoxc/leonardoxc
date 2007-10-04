@@ -13,11 +13,12 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if ($datesMenu!='years' && $datesMenu!='seasons') {
-$tblWidth=240;
-if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
+if ( $op!='comp' ) {
 
-if ($CONF['seasons']['use_season_years']) $tblWidth+=70;
+	$tblWidth=240;
+	if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
+	
+	if ($CONF['seasons']['use_season_years']) $tblWidth+=70;
 
 ?>
 
@@ -77,7 +78,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 		}
 	
 	} else {
-		for ( $thisSeason=$CONF['seasons']['start_season']; $thisSeason<=$CONF['seasons']['end_season'] ; $thisSeason++) {
+		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
 			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
 		}
 	}	
@@ -138,8 +139,9 @@ if ($CONF['seasons']['use_season_years'] ) {
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
-		for($i=date("Y");$i>=$CONF_StartYear;$i--)  
+		 for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
 			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
+		}
 	?>
 	</td>
 	<td valign="top">
@@ -170,28 +172,35 @@ if ($CONF['seasons']['use_season_years'] ) {
 	</td>
 </tr>
 </TABLE>
-<? } else if ($datesMenu=='years') {  /// simple years dropdown for xc league
-
-$dWidth=150;
-if ($CONF['seasons']['use_season_years'] ) $dWidth+=70;
-
+<? } else { 
+//-----------------------------------------------
+//-----------------------------------------------
+// simple years / seasons dropdown for xc league
+//-----------------------------------------------
+//-----------------------------------------------
+	$dWidth=10;
+	if ($CONF['seasons']['use_season_years'] ) $dWidth+=70;
+	if ($CONF['years']['use_calendar_years'] ) $dWidth+=70;
 ?>
 
 <table class="dropDownBox" width="<=$dWidth?>" cellpadding="2" cellspacing="0">
 <tr>
 <?
 	if ($CONF['seasons']['use_season_years'] ) {
-		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong></td>';
 	} else {
-		echo '<td>';
+		echo '<td></td>';
 	}
-	echo '</td>';
-?>
 
-	<td class="tableBox" valign="top">
-		<strong><?=_YEAR?></strong>
-	</td>
-</tr>
+
+	if ($CONF['years']['use_calendar_years'] ) {
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>'._YEAR.'</strong></td>';
+	} else {
+		echo '<td></td>';
+	}
+
+	
+?>
 <tr>
 <?
 if ($CONF['seasons']['use_season_years'] ) {
@@ -208,7 +217,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 		}
 	
 	} else {
-		for ( $thisSeason=$CONF['seasons']['start_season']; $thisSeason<=$CONF['seasons']['end_season'] ; $thisSeason++) {
+		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
 			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
 		}
 	}	
@@ -217,63 +226,22 @@ if ($CONF['seasons']['use_season_years'] ) {
 } else {
 	echo '<td></td>';
 }
+
 ?>
+
+    <? 	if ($CONF['years']['use_calendar_years'] ) { ?>
 	<td class="sp " valign="top">
 	<?  
 		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
-		for($i=date("Y");$i>=$startYear;$i--)  
+		for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
 			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
+		}
 	?>
-	<a style='text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0'><?=_ALL_YEARS?></a>
+	<a style='text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
 	</td>
-</tr>
-</TABLE>
-
-
-<? } else {  // use seasons
-
-$dWidth=150;
-if ($CONF['seasons']['use_season_years'] ) $dWidth+=70;
-
-?>
-
-<table class="dropDownBox" width="<=$dWidth?>" cellpadding="2" cellspacing="0">
-<tr>
-<?
-	if ($CONF['seasons']['use_season_years'] ) {
-		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
-	} else {
-		echo '<td>';
-	}
-	echo '</td>';
-?>
-</tr>
-<tr>
-<?
-if ($CONF['seasons']['use_season_years'] ) {
-	echo '<td class="sp " valign="top">';
-   	if ($season) $seasonLegend=_SEASON.' '.$season;
-	else $seasonLegend=_SELECT_SEASON;
-
-	$seasonStr="";
-	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
-	if ($CONF['seasons']['use_defined_seasons']) {
+	<? } else { ?>
 	
-		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
-		}
-	
-	} else {
-		for ( $thisSeason=$CONF['seasons']['start_season']; $thisSeason<=$CONF['seasons']['end_season'] ; $thisSeason++) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
-		}
-	}	
-	echo $seasonStr."";
-	echo '</td>';
-} else {
-	echo '<td></td>';
-}
-?>
+	<? } ?>
 </tr>
 </TABLE>
 

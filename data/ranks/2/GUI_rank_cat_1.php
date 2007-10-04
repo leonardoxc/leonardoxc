@@ -17,7 +17,7 @@
 	// 	PG (cat=1) all categories !!
 	// Some config
 	$cat=1; // pg
-	$where_clause="";	
+	// $where_clause="";	
 	$where_clause.=" AND cat=1 "; // pg
 	require_once dirname(__FILE__)."/common_pre.php";
 	

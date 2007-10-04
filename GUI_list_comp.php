@@ -37,55 +37,10 @@
   }
 
 
-	// SEASON MOD
-	if (!$season) {
-		  if ($year && !$month) {
-				$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-				$legend.=" :: ".$year." ";
-		  }
-		  if ($year && $month) {
-				$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
-				$legend.=" :: ".$monthList[$month-1]." ".$year." ";
-		  }
-		  if (! $year ) {
-			$legend.=" :: "._ALL_TIMES." ";
-		  }
-		  
-    }  else {
-	  	// SEASON MOD
-		if ($CONF['seasons']['use_defined_seasons']) {
-			if ( $CONF['seasons']['seasons'][$season] ) {
-				$thisSeasonStart=$CONF['seasons']['seasons'][$season]['start'];
-				$thisSeasonEnd	=$CONF['seasons']['seasons'][$season]['end'];
-				$seasonValid=1;
-			} else {
-				$seasonValid=0;
-			}
-		} else {
-			if ( $season>=$CONF['seasons']['start_season'] && $season<=$CONF['seasons']['end_season'] ) {
-			
-				if ( $CONF['seasons']['season_default_starts_in_previous_year'] ) {
-					$thisSeasonStart=($season-1)."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	= $season."-".$CONF['seasons']['season_default_end']; 
-				} else  if ( $CONF['seasons']['season_default_ends_in_next_year'] ) {
-					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	= ($season+1)."-".$CONF['seasons']['season_default_end']; 
-				} else {
-					$thisSeasonStart=$season."-".$CONF['seasons']['season_default_start'];
-					$thisSeasonEnd	=$season."-".$CONF['seasons']['season_default_end']; 
-				}	
-				$seasonValid=1;
-			} else {
-				$seasonValid=0;
-			}	  
-		}	
-		
-		if 	($seasonValid) {
-	        $where_clause.=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
-			$legend.=" :: ".SEASON." ".$season;
-		}	
-		
-  }
+  // SEASON MOD
+  list($dates_where_clause,$dates_legend) = dates::makeWhereClause(0,$season,$year,$month,0 , 1);
+  $where_clause.=$dates_where_clause;
+  $legend.=$dates_legend;
 
    $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_CATEGORY_FLIGHT_NUMBER, "totalDistance"=>_TOTAL_DISTANCE, 
 			     "totalDuration"=>_CATEGORY_TOTAL_DURATION, "bestDistance"=>_CATEGORY_OPEN_DISTANCE, 

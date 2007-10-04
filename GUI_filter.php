@@ -283,7 +283,7 @@ window.location = "<? echo  $redirectUrl ?>"
           <option value="<=" <? if ($FILTER_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
         </select> <select name="FILTER_YEAR_select">
           <? 
-			 for($i=$CONF_StartYear;$i<=date("Y");$i++)  {
+			 for($i=$CONF['years']['start_year'];$i<=$CONF['years']['end_year'];$i++)  {
 			 	$sel=($i==$FILTER_YEAR_select)?"selected":"";
 				echo  "<option value='$i' $sel>$i</option>";
 			 }
@@ -314,7 +314,7 @@ window.location = "<? echo  $redirectUrl ?>"
         <? echo _YEAR ?>
         <select name="FILTER_MONTH_YEAR_select_YEAR">
           <? 
-			 for($i=$CONF_StartYear;$i<=date("Y");$i++)  {
+ 			 for($i=$CONF['years']['start_year'];$i<=$CONF['years']['end_year'];$i++)  {
 			 	$sel=($i==$FILTER_MONTH_YEAR_select_YEAR)?"selected":"";
 				echo  "<option value='$i' $sel>$i</option>";
 			 }
