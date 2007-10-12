@@ -439,6 +439,7 @@ function setVar($varname,$value) {
 
 // you should probably set  $OLCScoringServerPath to the same server 
 // you have leonardo
+$OLCScoringServerUseInternal=1;
 $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
 

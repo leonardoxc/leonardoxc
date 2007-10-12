@@ -137,9 +137,11 @@
 
  // you should probably set  $OLCScoringServerPath to the same server 
  // you have leonardo
+ $OLCScoringServerUseInternal=1;
  $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
- 
+
+
  // 2007/03/07 ADDED
  
  // flights that were submitted these days ago will have a "new" icon

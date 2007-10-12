@@ -1959,7 +1959,7 @@ $kml_file_contents=
 	}
 	
 	function getOLCscore() {
-		global $OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
+		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
 		global $baseInstallationPath,$CONF_allow_olc_files;
 
 		if (! $scoringServerActive) return 0;
@@ -2006,14 +2006,53 @@ $kml_file_contents=
 		}
 				
 		set_time_limit (240);	
-		$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1); // score saned file
 
-		$fl= $OLCScoringServerPath."?pass=".$OLCScoringServerPassword."&file=".$IGCwebPath;
-		DEBUG("OLC_SCORE",1,"Will use URL: $fl<BR>");
-		//$contents = file($fl); 
-		$contents =	split("\n",fetchURL($fl,40));
-		if (!$contents) return;
-				
+		if ($OLCScoringServerUseInternal) {
+			$file=$this->getIGCFilename(1);
+
+			$path=dirname( __FILE__ ).'/server';		
+			$igcFilename=tempnam($path."/tmpFiles","IGC.");  //urlencode($basename)
+			@unlink($igcFilename);
+			
+			$lines=file($file);
+	
+			$cont="";
+			foreach($lines as $line) {
+				$cont.=$line;
+			}	
+	
+
+			if (!$handle = fopen($igcFilename, 'w')) exit; 
+			if (!fwrite($handle, $cont))    exit; 
+			fclose ($handle); 
+	
+			@chmod ($path."/olc", 0755);  
+			$cmd=$path."/olc ".$igcFilename;
+			DEBUG('OLC_SCORE',1,"cmd=$cmd");
+			exec($cmd,$res);
+			
+			DEBUG('OLC_SCORE',1,"result has ".count($res)." lines<BR>");
+			$contents=array();
+			foreach($res as $line) {
+					DEBUG('OLC_SCORE',1,$line.'<BR>');
+					if (substr($line,0,4)=="OUT ") { 
+						// echo substr($line,4)."\n";
+						$contents[]=substr($line,4);
+					}
+			}
+	
+			@unlink($igcFilename);	
+
+		} else {
+			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1); // score saned file
+	
+			$fl= $OLCScoringServerPath."?pass=".$OLCScoringServerPassword."&file=".$IGCwebPath;
+			DEBUG("OLC_SCORE",1,"Will use URL: $fl<BR>");
+			//$contents = file($fl); 
+			$contents =	split("\n",fetchURL($fl,40));
+			if (!$contents) return;
+		}				
+
 		$turnpointNum=1;
 		foreach(  $contents  as $line) {	
 			if (!$line) continue;		
@@ -2042,6 +2081,7 @@ $kml_file_contents=
 			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
 		}		
 		if (! $manualScore) $this->FLIGHT_KM=$this->FLIGHT_KM*1000;
+
 	}
 
 	function getMapFromServer($num=0) {
