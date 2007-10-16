@@ -393,8 +393,12 @@ if ($opMode!=2) {
 }
 
 function setVarFromRequest($varname,$def_value,$isNumeric=0) {
-	global $$varname; 
-     // echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname.", $def_value<BR>";
+	if ($varname=='day' || $varname=='month' || $varname=='year' ) {
+			if ( isset($_SESSION[$varname.'leo']))  $_SESSION[$varname]=$_SESSION[$varname.'leo'];
+	}
+
+	global $$varname;
+	// echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname.", $def_value<BR>";
 	if (isset($_REQUEST[$varname])) {
 	  $$varname=$_REQUEST[$varname];
 	  $_SESSION[$varname]=$$varname;
@@ -411,7 +415,9 @@ function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	} else { // is string : allow only  a-zA-Z0-9_
 	  $$varname=preg_replace("/[^\w_]/","",$$varname);
 	}
-    $_SESSION[$varname]=$$varname;
+	$_SESSION[$varname]=$$varname;
+	if ($varname=='day' || $varname=='month' || $varname=='year' )   $_SESSION[$varname.'leo']=$$varname;
+	
 }
 
 function makeSane($str,$type=0) {
@@ -432,6 +438,7 @@ function setVar($varname,$value) {
     //echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname."<BR>";
 	  $$varname=$value;
 	  $_SESSION[$varname]=$$varname;
+	  if ($varname=='day' || $varname=='month' || $varname=='year' )   $_SESSION[$varname.'leo']=$$varname;
 	 // $_GET[$varname]=$$varname;
 	 // $_POST[$varname]=$$varname;
 	 // $_REQUEST[$varname]=$$varname;
