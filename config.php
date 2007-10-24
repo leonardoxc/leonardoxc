@@ -88,6 +88,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // else leave it blank
  $CONF_google_maps_api_key="";
 
+
+ // use utf language files 
+ // not yet ready !! dont use !
+ $CONF_use_utf=0;
+ 
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",
 				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");

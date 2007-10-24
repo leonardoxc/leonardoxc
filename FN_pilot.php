@@ -83,7 +83,11 @@ function transliterate($str,$enc) {
 	require_once dirname(__FILE__)."/lib/utf8_to_ascii/utf8_to_ascii.php";
 	$NewEncoding = new ConvertCharset;
 	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);
-	return utf8_to_ascii($str_utf8);
+
+	global $CONF_use_utf;
+	//if ($CONF_use_utf) return ($str_utf8);
+	//else return utf8_to_ascii($str_utf8);
+	 return utf8_to_ascii($str_utf8);
 }
 
 function getPilotInfo($pilotIDview,$serverID) {

@@ -9,7 +9,7 @@
  **/
 $PATH_TO_CLASS = dirname(ereg_replace("\\\\","/",__FILE__)) . "/" . "ConvertTables" . "/";
 define ("CONVERT_TABLES_DIR", $PATH_TO_CLASS);
-define ("DEBUG_MODE", 1);
+define ("DEBUG_MODE", -1);
 
 /**
  * -- 1.0 2004-07-28 --

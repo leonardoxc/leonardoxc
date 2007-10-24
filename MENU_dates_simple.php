@@ -108,17 +108,18 @@ if ($CONF['seasons']['use_season_years'] ) {
 	var visibleOnLoad=1;
 	var showWeekNumber = 0;	// 0 - don't show; 1 - show
 	var hideCloseButton=1;
-	var gotoString 		= {<?=$calLang?> : '<?=_Go_To_Current_Month?>'};
-	var todayString 	= {<?=$calLang?> : '<?=_Today_is?>'};
-	var weekString 		= {<?=$calLang?> : '<?=_Wk?>'};
-	var scrollLeftMessage 	= {<?=$calLang?> : '<?=_Click_to_scroll_to_previous_month?>'};
-	var scrollRightMessage 	= {<?=$calLang?>: '<?=_Click_to_scroll_to_next_month?>'};
-	var selectMonthMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_month?>'};
-	var selectYearMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_year?>'};
-	var selectDateMessage 	= {<?=$calLang?> : '<?=_Select_date_as_date?>' };
-	var	monthName 		= {<?=$calLang?> : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
-	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
-	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
+	var gotoString 		= {'<?=$calLang?>' : '<?=_Go_To_Current_Month?>'};
+	var todayString 	= {'<?=$calLang?>' : '<?=_Today_is?>'};
+	var weekString 		= {'<?=$calLang?>' : '<?=_Wk?>'};
+	var scrollLeftMessage 	= {'<?=$calLang?>' : '<?=_Click_to_scroll_to_previous_month?>'};
+	var scrollRightMessage 	= {'<?=$calLang?>': '<?=_Click_to_scroll_to_next_month?>'};
+	var selectMonthMessage 	= {'<?=$calLang?>' : '<?=_Click_to_select_a_month?>'};
+	var selectYearMessage 	= {'<?=$calLang?>' : '<?=_Click_to_select_a_year?>'};
+//	var selectYearMessage 	= '<?=_Click_to_select_a_year?>';
+	var selectDateMessage 	= {'<?=$calLang?>' : '<?=_Select_date_as_date?>' };
+	var	monthName 		= {'<?=$calLang?>' : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
+	var	monthName2 		= {'<?=$calLang?>' : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
+	var dayName = {'<?=$calLang?>' : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
