@@ -246,6 +246,8 @@ if ($op=="users") {
 //--------------------------
 } else if ($op=="admin") {
 	require $moduleRelPath."/GUI_admin.php";
+} else if ($op=="admin_brands") {
+	require $moduleRelPath."/GUI_admin_brands.php";
 } else if ($op=="admin_airspace") {
 	require $moduleRelPath."/GUI_admin_airspace.php";
 } else if ($op=="admin_test") {
