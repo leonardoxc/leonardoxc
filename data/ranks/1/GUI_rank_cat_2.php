@@ -17,7 +17,7 @@
 	// 	open class ,  category=2";
 	// Some config
 	$cat=1; // pg
-	$where_clause="";
+
 	$where_clause.=" AND category=2 ";
 	require_once dirname(__FILE__)."/common_pre.php";
 	

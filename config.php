@@ -320,7 +320,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	//$CONF['seasons']['season_start_year_diff']=0;
 	//$CONF['seasons']['season_end_year_diff']=0;
 
-	$CONF['seasons']['start_season']=2007;
+	$CONF['seasons']['start_season']=2006;
 	$CONF['seasons']['end_season']= dates::getCurrentSeason(0);
 
  // end of seasons config
@@ -331,9 +331,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
 	$CONF['brands']['showAll']=0;
 
 	$CONF['brands']['list']=array(
-		1=>array(id=>1, brand=>'AIR', brandAlias=>array('A.I.R') , company=>'Aeronautic Innovation Rühle GmbH (A.I.R. GmbH)', extID=>-49288),
-		47=>array(id=>47, brand=>'Nova', brandAlias=>array() , company=>'NOVA Vertriebsgesellschaft m.b.H.', extID=>3580),
-		53=>array(id=>53, brand=>'Gradient', brandAlias=>array() , company=>'Gradient s.r.o.', extID=>4918),
+		//1=>array(id=>1, brand=>'AIR', brandAlias=>array('A.I.R') , company=>'Aeronautic Innovation Rühle GmbH (A.I.R. GmbH)', extID=>-49288),
+		5=>array('id'=>5, 'brand'=>'Nova', 'brandAlias'=>array() , 'company'=>'NOVA Vertriebsgesellschaft m.b.H.', 'extID'=>3580),
+		10=>array('id'=>10, 'brand'=>'Gradient', 'brandAlias'=>array() , 'company'=>'Gradient s.r.o.', 'extID'=>4918),
 
 		);
 	$CONF['brands']['filterList']=array(1,47);

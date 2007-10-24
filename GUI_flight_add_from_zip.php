@@ -44,6 +44,26 @@
 		?>
 	  </select></td>
     </tr>
+	<tr>
+	  <td  valign="top"><div align="right" class="style2"><? echo _Category; ?></div></td>
+      <td valign="top"> <select name="category">
+		<? 
+			foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+					if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+			}
+		?></select>
+		</td>
+	</tr>
+	<? if ( in_array($userID,$admin_users)) { ?>
+    <tr>
+      <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
+      <td colspan="3" valign="top">
+        <input name="insert_as_user_id" type="text" size="10">
+		</td>
+    </tr>
+ 	<? }?>
     <tr>
       <td>&nbsp;</td>
       <td><p><font face="Verdana, Arial, Helvetica, sans-serif">

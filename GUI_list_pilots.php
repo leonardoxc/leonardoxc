@@ -38,6 +38,9 @@
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
   
   
+  // BRANDS MOD  
+  $where_clause.= brands::makeWhereClause($brandID);
+
   if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
 			

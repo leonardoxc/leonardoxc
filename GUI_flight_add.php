@@ -152,6 +152,24 @@ function setValue(obj)
 	  </td>
     </tr>
     <tr>
+      <td><div align="right" class="styleItalic"><?=_Glider_Brand ?> </div></td>
+      <td colspan="3">
+			<? if (1) { ?>
+				<select name="gliderBrandSelect" id="gliderBrandSelect" onchange="setValue(this);">			
+					<option value=0></option>
+					<? 
+					$brandsListFilter=brands::getBrandsList();
+					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+						echo "<option value=$brandIDfilter>$brandNameFilter</option>";
+					}					
+				?>
+				</select>
+			<? } ?>
+
+		</td>
+    </tr>
+
+    <tr>
       <td><div align="right" class="styleItalic"><?=_RELEVANT_PAGE ?> </div></td>
       <td colspan="3">
         http://<input name="linkURL" type="text" id="linkURL" size="50" value="">

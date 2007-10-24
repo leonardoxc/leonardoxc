@@ -305,7 +305,7 @@ $CONF_MENU['main_menu']['bottom']=array(
 	//$CONF['seasons']['season_start_year_diff']=0;
 	//$CONF['seasons']['season_end_year_diff']=0;
 
-	$CONF['seasons']['start_season']=2007;
+	$CONF['seasons']['start_season']=2006;
 	$CONF['seasons']['end_season']= dates::getCurrentSeason(0);
 
  // end of seasons config

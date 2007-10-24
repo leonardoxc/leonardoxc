@@ -42,6 +42,9 @@
   $where_clause.=$dates_where_clause;
   $legend.=$dates_legend;
 
+  // BRANDS MOD  
+  $where_clause.= brands::makeWhereClause($brandID);
+
    $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_CATEGORY_FLIGHT_NUMBER, "totalDistance"=>_TOTAL_DISTANCE, 
 			     "totalDuration"=>_CATEGORY_TOTAL_DURATION, "bestDistance"=>_CATEGORY_OPEN_DISTANCE, 
 			     "totalOlcKm"=>_TOTAL_OLC_DISTANCE, "totalOlcPoints"=>_TOTAL_OLC_SCORE, "bestOlcScore"=>_BEST_OLC_SCORE, 
@@ -205,10 +208,10 @@
 		 $pilotNames[$uID]=$name;
 	 } 
 	 
-	 $brandID=guessBrandID($row['cat'],$row['glider']);
-	 if ($brandID) {
+	 $flightBrandID=guessBrandID($row['cat'],$row['glider']);
+	 if ($flightBrandID) {
 		 if ( ! is_array($pilotGliders[$uID]) ) $pilotGliders[$uID]=array();
-		 $pilotGliders[$uID][$brandID]++;
+		 $pilotGliders[$uID][$flightBrandID]++;
 	 }
 
 	 
@@ -400,10 +403,10 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
  		 else if ($i==3) $bg=" class='compThirdPlace'";
 		 else $bg=" class='$sortRowClass'";
 		 
-	 	 $brandID=$pilotGlidersMax[$pilotID]+0;
-		 $brandName=$brandsList[$cat][$brandID];
-		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
-//		 if ($brandID) 
+	 	 $flightBrandID=$pilotGlidersMax[$pilotID]+0;
+		 $brandName=$brandsList[$cat][$flightBrandID];
+		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
+//		 if ($flightBrandID) 
 //		 else $gliderBrandImg="&nbsp;";
 		 	     
 	     

@@ -37,10 +37,10 @@ while ($row = $db->sql_fetchrow($res)) {
 	     $pilots[$uID]['name']=$name;
 	 }
 	 
-	 $brandID=guessBrandID($row['cat'],$row['glider']);
+	 $flightBrandID=guessBrandID($row['cat'],$row['glider']);
 
 	 $pilots[$uID]['flights'][$flightID]['glider']=$row['glider'];
-	 $pilots[$uID]['flights'][$flightID]['brandID']=$brandID;
+	 $pilots[$uID]['flights'][$flightID]['brandID']=$flightBrandID;
 	 $pilots[$uID]['flights'][$flightID]['type']=$row["BEST_FLIGHT_TYPE"];
 	 $pilots[$uID]['flights'][$flightID]['country']=$countryCode;
 	 $pilots[$uID]['flights'][$flightID]['continent']=$continentCode;

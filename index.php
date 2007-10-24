@@ -44,11 +44,13 @@ require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 require_once dirname(__FILE__)."/FN_UTM.php";
 require_once dirname(__FILE__)."/FN_functions.php";	
 require_once dirname(__FILE__)."/FN_waypoint.php";	
+require_once dirname(__FILE__)."/FN_brands.php";
 require_once dirname(__FILE__)."/FN_pilot.php";	
 require_once dirname(__FILE__)."/FN_flight.php";	
 require_once dirname(__FILE__)."/FN_output.php";
 require_once dirname(__FILE__)."/CL_flightData.php";
 require_once dirname(__FILE__)."/CL_dates.php";
+require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/CL_statsLogger.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 

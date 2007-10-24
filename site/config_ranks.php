@@ -57,7 +57,7 @@ $ranksList=array(
 			//'season_end_year_diff'=>0,
 
 				
-			'start_season'=>2007,
+			'start_season'=>2006,
 			'end_season'=>'current',
 		
 		

@@ -75,6 +75,12 @@ echo "<ul>";
 echo "</ul><br>";
 
 echo "<ul>";
+	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=glidersDetect'>Detect / Guess glider brands</a> ";
+echo "</ul><br>";
+
+
+
+echo "<ul>";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
 	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
 echo "</ul><br>";
@@ -326,7 +332,40 @@ echo "</ul><br>";
 		 echo "<br><br>";
 	 	 importMaps( $mapsPath ,1,0);
 		 echo "<BR><br><BR>DONE IMPORTING MAPS!!!<BR>";
-	}
+	} else if ($admin_op=="glidersDetect") {
+		global $flightsAbsPath;
+		$forceRedetection=1;
+
+		$query="SELECT ID, cat, glider,  gliderBrandID FROM  $flightsTable WHERE batchOpProcessed=0 ";
+		if (! $forceRedetection) $query.=" AND gliderBrandID<>0 ";
+		$query.=" LIMIT 10000 ";
+		$res= $db->sql_query($query);
+		
+		$detectedGliderBrands=0;
+		$totalGliderBrands=0;
+		$i=0;
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+					$gliderBrandID=guessBrandID($row['cat'],$row['glider']);
+					$totalGliderBrands++;
+					if ( $gliderBrandID) { 
+						$detectedGliderBrands++;
+						$query2="UPDATE $flightsTable SET batchOpProcessed=1, gliderBrandID=$gliderBrandID  WHERE ID=".$row['ID'];
+						$res2= $db->sql_query($query2);					
+						if(!$res2){
+							echo "Problem in query:$query2<BR>";
+							exit;
+						}
+					}
+					$i++;
+					if ($i%200==0) {
+						echo "Total: $totalGliderBrands Detected: $detectedGliderBrands<BR>";
+					}
+			 }
+		}
+		echo "<BR><br><br>DONE !!!<BR>";		
+	} 
+
 
 	echo "</td></tr>";
     close_inner_table();

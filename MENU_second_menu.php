@@ -186,14 +186,35 @@ if (! $dontShowCountriesSelection ) {
 		</ul>
 	</li>
 </ul>
-<? if ($CONF['brands']['filter_brands'] || 1) {  ?>
-  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
+<? if ($CONF['brands']['filter_brands'] ) {  ?>
+<div id="nav2">
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<li ><a href='#'>
+<? 
+	if (!$brandID) {
+		echo _Select_Brand ;
+		$brandImg='';
+	} else { 
+		$brandImg="<img src='$moduleRelPath/img/brands/1/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
+		echo $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID]['brand'];		
+
+		// echo $brandID;
+	}
+?></a>
+	<ul>
   	    <?
-  	    	echo "<b>$clubName</b>";
-  	    	if (!$noClubDisplay) 
-  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+			$brandsListFilter=brands::getBrandsList();
+			echo "<li><a href='?name=$module_name&brandID=0'>"._All_Brands."</a></li>";
+  	    	foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+				echo "<li><a href='?name=$module_name&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
+			}
   	    ?>
-  	    </div>
+
+	</ul>
+</li>
+</ul>
+</div>
+
 <? }?>
 
 <? if ($clubID) {  ?>

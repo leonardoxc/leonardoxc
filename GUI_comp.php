@@ -37,6 +37,9 @@
   $where_clause='';
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
 
+  // BRANDS MOD  
+  $where_clause.= brands::makeWhereClause($brandID);
+
   // show the current subranking
   require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
 
@@ -218,8 +221,8 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 		}
 
 		arsort($pilotBrands);
-		$brandID=array_shift(array_keys($pilotBrands));
-		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$brandID).".gif' border=0 align=abs_middle>";
+		$flightBrandID=array_shift(array_keys($pilotBrands));
+		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' border=0 align=abs_middle>";
 		echo "<td align='center'>$gliderBrandImg</td>";
    	}	// next pilot
 

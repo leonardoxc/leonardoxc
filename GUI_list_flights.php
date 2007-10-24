@@ -33,7 +33,10 @@
 
   // SEASON MOD
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
-  
+
+  // BRANDS MOD  
+  $where_clause.= brands::makeWhereClause($brandID);
+
   if ($pilotID!=0) {
 		$where_clause.=" AND userID='".$pilotID."'  AND userServerID=$serverID ";		
   } else {  // 0 means all flights BUT not test ones 

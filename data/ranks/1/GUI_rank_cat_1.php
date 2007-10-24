@@ -30,7 +30,6 @@
 			 AND $flightsTable.userServerID=$pilotsTable.serverID
 			 $where_clause ";
 
-
 require_once dirname(__FILE__)."/common.php";
 
 ?>
