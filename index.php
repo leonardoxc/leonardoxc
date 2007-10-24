@@ -95,6 +95,8 @@ if ($season) {
 	setVar("day",0);
 }
 
+// BRANDS MOD
+setVarFromRequest("brandID",0,1); // numeric
 
 setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);

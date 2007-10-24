@@ -186,6 +186,16 @@ if (! $dontShowCountriesSelection ) {
 		</ul>
 	</li>
 </ul>
+<? if ($CONF['brands']['filter_brands'] || 1) {  ?>
+  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <?
+  	    	echo "<b>$clubName</b>";
+  	    	if (!$noClubDisplay) 
+  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    ?>
+  	    </div>
+<? }?>
+
 <? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
