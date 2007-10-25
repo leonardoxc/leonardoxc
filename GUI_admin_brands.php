@@ -14,6 +14,9 @@
  
   if ( !is_leo_admin($userID) ) { echo "go away"; return; }
   
+  $workTable="temp_leonardo_gliders";
+//  $workTable=$flightsTable;
+
   open_inner_table("ADMIN AREA :: Glider Brands Managment",650);
   open_tr();
   echo "<td align=left>";	
@@ -27,9 +30,19 @@
 
 	echo "<br>";
 	echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=glidersDetect'>Auto detect glider brands</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayUnknown'>See gliders with unknown brands</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayKnown'>See glider Names with KNONW brands</a><BR></a>";
+	
+	
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=init'>1. Init (make temp table and copy gliders)</a><BR></a>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=glidersDetect'>2. Auto detect glider brands</a><BR></a>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=normalize'>3. Normalize 'glider' -> 'gliderName</a><BR></a>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=removeBrand'>4. Remove Brand from 'gliderName' Field</a><BR></a>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=useKnown'>5. Use known glider names to find unknown</a><BR></a>";
+	echo "<HR>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=createSQL'>6. Create SQL script to update main table </a><BR></a>";
+	
+	echo "<HR>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayUnknown'>* See gliders with unknown brands</a><BR></a>";
+	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayKnown'>* See glider Names with KNOWN brands</a><BR></a>";
 	echo "<hr>";
 
 function sanitizeGliderName($gliderName) {
@@ -38,60 +51,158 @@ function sanitizeGliderName($gliderName) {
 	
 	$gliderNameNorm=preg_replace("/(III)/",'3',$gliderNameNorm);
 	$gliderNameNorm=preg_replace("/(II)/",'2',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(one)/",'1',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(two)/",'2',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(three)/",'3',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(four)/",'4',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(five)/",'5',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(six)/",'6',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(seven)/",'7',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(eight)/",'8',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(nine)/",'9',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](one)/",'1',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](two)/",'2',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](three)/",'3',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](four)/",'4',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](five)/",'5',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](six)/",'6',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](seven)/",'7',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](eight)/",'8',$gliderNameNorm);
+	$gliderNameNorm=preg_replace("/[^\w](nine)/",'9',$gliderNameNorm);
 	
 	$gliderNameNorm=ucwords(strtolower($gliderNameNorm));
 	return $gliderNameNorm;
 }
 
-	if ($admin_op=="displayKnown") {	
-		$query="SELECT gliderBrandID, glider , count(*) as gNum FROM  $flightsTable WHERE gliderBrandID <> 0 group by glider ORDER BY glider DESC ";
+
+
+	if ($admin_op=="init") {
+		execMysqlQuery("DROP TABLE IF EXISTS temp_leonardo_gliders;");
+		execMysqlQuery("CREATE TABLE temp_leonardo_gliders (
+			  glider varchar(100) NOT NULL default '',
+			  gliderName VARCHAR( 100) NOT NULL default '',
+			  gliderBrandID int(11) NOT NULL default '0',
+			  PRIMARY KEY  (glider ),
+			  KEY gliderBrandID(gliderBrandID)
+			) TYPE=MyISAM;");
+		execMysqlQuery("		
+			INSERT INTO temp_leonardo_gliders
+			SELECT glider, '', 0
+			FROM `leonardo_flights`
+			GROUP BY glider
+			ORDER BY glider;
+		");	
+	} else if ($admin_op=="createSQL") {	
+		$query="SELECT * FROM  $workTable WHERE gliderBrandID<>0  ORDER BY glider DESC ";		
+		$res= $db->sql_query($query);
+		$i=0;
+
+		if($res > 0){
+			echo "<pre>";
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$gliderName=$row['glider'];
+				$sql="UPDATE $flightsTable SET glider='".$row['gliderName']."' , gliderBrandID = ".$row['gliderBrandID']." WHERE glider='".$row['glider']."' ; "; 
+				echo  "$sql\n";
+			}
+			echo "</pre>";
+		}	
+	} else if ($admin_op=="normalize") {	
+		echo "Normalize the 'glider' field and put it in 'gliderName'<BR>";
+		$query="SELECT gliderBrandID, glider FROM  $workTable WHERE 1=1  ORDER BY glider DESC ";
 		$res= $db->sql_query($query);
 		$i=0;
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				$gliderName=$row['glider'];
-				$count=$row['gNum'];
-				$gliderName=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderName);
+				
+				// $gliderName=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderName);
 				
 				$gliderNameNorm=sanitizeGliderName($gliderName);
-				echo  " $gliderNameNorm=>$count<BR>";
+				echo  " $gliderName => $gliderNameNorm <BR>";
+				execMysqlQuery("update $workTable set gliderName='$gliderNameNorm' where glider='$gliderName'");
 			}
 		}	
-	} else if ($admin_op=="displayUnknown") {	
-		$query="SELECT glider , count(*) as gNum FROM  $flightsTable WHERE gliderBrandID =0 group by glider ORDER BY glider DESC ";
+	} else if ($admin_op=="removeBrand") {	
+		echo "Remove the Brand name from the'gliderName' field<BR>";
+		$query="SELECT gliderBrandID, gliderName , glider FROM  $workTable WHERE 1=1  ORDER BY glider DESC ";
 		$res= $db->sql_query($query);
 		$i=0;
 		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$gliderName=$row['glider'];
+				$gliderNameNorm=$row['gliderName'];
+				
+				$gliderNameNew=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderNameNorm);
+				
+				$gliderNameNew=sanitizeGliderName($gliderNameNew);
+				echo  " $gliderNameNorm => $gliderNameNew <BR>";
+				execMysqlQuery("update $workTable set gliderName='$gliderNameNew' where gliderName='$gliderNameNorm'");
+			}
+		}	
+	} else if ($admin_op=="useKnown") {
+		$query="SELECT gliderBrandID, glider ,gliderName FROM  $workTable WHERE gliderBrandID <> 0 group by glider ORDER BY glider DESC ";
+		$res= $db->sql_query($query);
+		$i=0;
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$gliderName=$row['glider'];
+				//$count=$row['gNum'];
+				//$gliderName=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderName);
+				
+				$gliderNameNorm=$row['gliderName'];
+								
+				$gliderNameNorm=strtolower($gliderNameNorm);	
+				$gliderNameNorm=preg_replace('/[^\w]/','',$gliderNameNorm);
+				if (strlen($gliderNameNorm) >2) $brandGliders[$row['gliderBrandID']][]=$gliderNameNorm;
+	
+				// echo  " $gliderName =>$gliderNameNorm=>brandID = ".$row['gliderBrandID']." <BR>";
+			}
+			
+			foreach ($brandGliders as $bID=>$bGlidersList) {
+				foreach ($bGlidersList as $gName) {
+					execMysqlQuery("update $workTable set gliderBrandID=$bID where glider LIKE '%$gName%' AND gliderBrandID=0 ");
+				}	
+			
+			}
+			
+		}	
+
+	} else if ($admin_op=="displayKnown") {
+		$query="SELECT gliderBrandID, glider ,gliderName FROM  $workTable WHERE gliderBrandID <> 0 ORDER BY gliderBrandID, gliderName  ASC";
+		$res= $db->sql_query($query);
+		$i=1;
+		if($res > 0){
+			echo "<table border=1 ><tr><td></td><td>Original Name</td><td>Brand Name</td><td>Glider Name</td></tr>";
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$gliderName=$row['glider'];
+				$gliderNameNorm=$row['gliderName'];
+								
+				//$gliderNameNorm=strtolower($gliderNameNorm);	
+				//$gliderNameNorm=preg_replace('/[^\w]/','',$gliderNameNorm);
+				//$brandGliders[$row['gliderBrandID']][]=$gliderNameNorm;
+	
+				echo  "<tr><td>$i</td><td>$gliderName</td><td>".$brandsList[1][$row['gliderBrandID']]."</td><td>$gliderNameNorm</td></tr>\n";
+				$i++;
+			}			
+			echo "</table>";
+		}	
+	} else if ($admin_op=="displayUnknown") {	
+		$query="SELECT * FROM  $workTable WHERE gliderBrandID =0 group by glider ORDER BY glider DESC ";
+		$res= $db->sql_query($query);
+		$i=1;
+		if($res > 0){
+		echo "<table border=1 ><tr><td></td><td>Original Name</td><td>Glider Name</td></tr>";
 			 while ($row = mysql_fetch_assoc($res)) { 
 
 				$gliderName=$row['glider'];
-				$gliderNameNorm=sanitizeGliderName($gliderName);
-				$glidersList[$row['glider']]=$gliderNameNorm;
-				$glidersListNorm[$gliderNameNorm]++;
+				$gliderNameNorm=$row['gliderName']; //sanitizeGliderName($gliderName);
+				//$glidersList[$row['glider']]=$gliderNameNorm;
+				//$glidersListNorm[$gliderNameNorm]++;
 				
-				echo $row['glider'].' -> '.$row['gNum']." [ $gliderNameNorm ]<br>";
+				echo "<tr><td>$i</td><td>".$row['glider']."</td><td>".$gliderNameNorm."</td></tr>";
+				$i++;
 			}		
-			echo "<HR><HR>";
-			foreach ($glidersListNorm as $gliderNameNorm=>$count){
-				echo  " $gliderNameNorm=>$count<BR>";
-			}
+			echo "</table>";
+
 		}
 	} else if ($admin_op=="glidersDetect") {
 		global $flightsAbsPath;
 		$forceRedetection=1;
 
-		$query="SELECT ID, cat, glider,  gliderBrandID FROM  $flightsTable WHERE batchOpProcessed=0 ";
+		$query="SELECT glider, gliderBrandID FROM  $workTable WHERE 1=1 ";
 		if (! $forceRedetection) $query.=" AND gliderBrandID<>0 ";
-		$query.=" LIMIT 10000 ";
+		// $query.=" LIMIT 10000 ";
 		$res= $db->sql_query($query);
 		
 		$detectedGliderBrands=0;
@@ -99,11 +210,11 @@ function sanitizeGliderName($gliderName) {
 		$i=0;
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
-					$gliderBrandID=guessBrandID($row['cat'],$row['glider']);
+					$gliderBrandID=guessBrandID(1,$row['glider']);
 					$totalGliderBrands++;
 					if ( $gliderBrandID) { 
 						$detectedGliderBrands++;
-						$query2="UPDATE $flightsTable SET batchOpProcessed=1, gliderBrandID=$gliderBrandID  WHERE ID=".$row['ID'];
+						$query2="UPDATE $workTable SET  gliderBrandID=$gliderBrandID  WHERE glider='".$row['glider']."'";
 						$res2= $db->sql_query($query2);					
 						if(!$res2){
 							echo "Problem in query:$query2<BR>";
@@ -122,4 +233,13 @@ function sanitizeGliderName($gliderName) {
 
 	echo "</td></tr>";
     close_inner_table();
+	
+	function execMysqlQuery($query) {
+		global $db;
+		$res= $db->sql_query($query);
+		if(! $res ){
+			echo "Problem in query :$query<BR>";
+			exit;
+		}
+	}
 ?>

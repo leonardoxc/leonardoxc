@@ -67,6 +67,10 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Perche",
 	"Trekking", // 35 
 	"XiX",
+	
+	"WillsWing",
+	"Moyes",
+	"AIR",
 	// to be added
 //	"FlyingPlanet", // not found
 //	"ADG",      // not found
