@@ -92,7 +92,7 @@ function sanitizeGliderName($gliderName) {
 			echo "<pre>";
 			 while ($row = mysql_fetch_assoc($res)) { 
 				$gliderName=$row['glider'];
-				$sql="UPDATE $flightsTable SET glider='".$row['gliderName']."' , gliderBrandID = ".$row['gliderBrandID']." WHERE glider='".$row['glider']."' ; "; 
+				$sql="UPDATE $flightsTable SET glider='".str_replace("'","#",$row['gliderName'] )."' , gliderBrandID = ".$row['gliderBrandID']." WHERE glider='".addslashes ($row['glider'])."' ; "; 
 				echo  "$sql\n";
 			}
 			echo "</pre>";
@@ -123,7 +123,7 @@ function sanitizeGliderName($gliderName) {
 				$gliderName=$row['glider'];
 				$gliderNameNorm=$row['gliderName'];
 				
-				$gliderNameNew=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderNameNorm);
+				$gliderNameNew=str_ireplace($CONF['brands']['list'][$row['gliderBrandID']],'',$gliderNameNorm);
 				
 				$gliderNameNew=sanitizeGliderName($gliderNameNew);
 				echo  " $gliderNameNorm => $gliderNameNew <BR>";
@@ -172,7 +172,7 @@ function sanitizeGliderName($gliderName) {
 				//$gliderNameNorm=preg_replace('/[^\w]/','',$gliderNameNorm);
 				//$brandGliders[$row['gliderBrandID']][]=$gliderNameNorm;
 	
-				echo  "<tr><td>$i</td><td>$gliderName</td><td>".$brandsList[1][$row['gliderBrandID']]."</td><td>$gliderNameNorm</td></tr>\n";
+				echo  "<tr><td>$i</td><td>$gliderName</td><td>".$CONF['brands']['list'][$row['gliderBrandID']]."</td><td>$gliderNameNorm</td></tr>\n";
 				$i++;
 			}			
 			echo "</table>";
@@ -210,7 +210,7 @@ function sanitizeGliderName($gliderName) {
 		$i=0;
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
-					$gliderBrandID=guessBrandID(1,$row['glider']);
+					$gliderBrandID=brands::guessBrandID($row['glider']);
 					$totalGliderBrands++;
 					if ( $gliderBrandID) { 
 						$detectedGliderBrands++;

@@ -64,8 +64,8 @@ function getUsedGliders($userID,$serverID=0) {
 	global $db;
 	global $flightsTable;
 
-	$query="SELECT glider from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND glider <> '' GROUP BY glider ORDER BY DATE DESC ";
-// echo $query;
+	$query="SELECT glider,gliderBrandID from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider ORDER BY DATE DESC ";
+	// echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){
 		return array ();
@@ -73,7 +73,7 @@ function getUsedGliders($userID,$serverID=0) {
 
 	$gliders=array();
 	while ($row = $db->sql_fetchrow($res)) { 
-			array_push($gliders,$row["glider"] );
+			array_push($gliders,array($row['gliderBrandID'],$row['glider'])  );
 	}
 	return $gliders;
 }

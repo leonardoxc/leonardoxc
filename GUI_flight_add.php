@@ -144,7 +144,9 @@ function setValue(obj)
 					<option></option>
 					<? 
 						foreach($gliders as $selGlider) {
-							echo "<option>".$selGlider."</option>\n";
+							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
+							else $flightBrandName='';
+							echo "<option value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
 						}
 					?>
 				</select>

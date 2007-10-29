@@ -10,7 +10,8 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-    require_once dirname(__FILE__)."/FN_brands.php";
+
+
 	require_once $moduleRelPath."/CL_template.php";
 	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 
@@ -417,13 +418,12 @@ if ($flight->linkURL) {
 		formatURL($flight->linkURL,15)."</a>";
 }
 
-if ($flight->glider) {
- 	$flightBrandID=guessBrandID($flight->cat,$flight->glider);
+ 	$flightBrandID=$row['gliderBrandID'];
+ 	//$flightBrandID=guessBrandID($flight->cat,$flight->glider);
 	if ($flightBrandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$flight->cat/".sprintf("%03d",$flightBrandID).".gif' border=0 align='absmiddle'> ";
 	else $gliderBrandImg="";
-
 	$glider=$gliderBrandImg.$flight->glider;
-}
+
 
 $gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
 $gliderCatList[$flight->cat]." ]";

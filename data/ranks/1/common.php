@@ -37,7 +37,8 @@ while ($row = $db->sql_fetchrow($res)) {
 	     $pilots[$uID]['name']=$name;
 	 }
 	 
-	 $flightBrandID=guessBrandID($row['cat'],$row['glider']);
+	 // $flightBrandID=brands::guessBrandID($row['glider']);
+  	 $flightBrandID=$row['gliderBrandID'];
 
 	 $pilots[$uID]['flights'][$flightID]['glider']=$row['glider'];
 	 $pilots[$uID]['flights'][$flightID]['brandID']=$flightBrandID;

@@ -10,7 +10,6 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-  require_once dirname(__FILE__)."/FN_brands.php";
   
   function replace_spaces($str) {
 		return str_replace(" ","&nbsp;",$str);
@@ -231,7 +230,7 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
    global $CONF_photosPerFlight,$CONF_use_validation,$CONF_airspaceChecks;   	 
-   global $gliderCatList,$brandsList;
+   global $gliderCatList;
 
 $clubIcon	="<img src='".$moduleRelPath."/img/icon_club_small.gif' width=12 height=12 border=0 align='absmiddle' >";
 $removeFromClubIcon	="<img src='".$moduleRelPath."/img/icon_club_remove.gif' width=22 height=12 border=0 align='absmiddle' title='Remove flight from this league'>";
@@ -368,17 +367,13 @@ function removeClubFlight(clubID,flightID) {
 			$olcScoreTypeImg="photo_icon_blank.gif";
 		}
 
-	   $brandID=guessBrandID($gliderType,$row['glider']);
-	   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
-	   else $gliderBrandImg="&nbsp;";
+	  // $brandID=guessBrandID($gliderType,$row['glider']);
+		//	   $thisBrandID=$row["gliderBrandID"];
+	   //if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
+	   //else $gliderBrandImg="&nbsp;";
+   
+	    $gliderBrandImg=brands::getBrandImg($row["gliderBrandID"],$row['glider'],$gliderType);
 
-	/*   if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
-			title='".$row['glider']."' border='0' />";
-	    else $gliderBrandImg="&nbsp;";
-	*/
-	   
-		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$gliderType/".sprintf("%03d",$brandID).".gif' 
-			title='".$row['glider']."' border='0' />";
 
 	   echo "\n<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
 	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row";

@@ -14,7 +14,6 @@
 //-----------------------------------------------------------------------
 //-----------------------  custom league --------------------------------
 //-----------------------------------------------------------------------
-  require_once dirname(__FILE__)."/FN_brands.php";
 
   if (!$subrank)  $subrank=1;
 
@@ -222,7 +221,10 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 
 		arsort($pilotBrands);
 		$flightBrandID=array_shift(array_keys($pilotBrands));
-		$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' border=0 align=abs_middle>";
+
+		$gliderBrandImg=brands::getBrandImg($flightBrandID,'',$cat);	
+		//$gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$flightBrandID).".gif' border=0 align=abs_middle>";
+
 		echo "<td align='center'>$gliderBrandImg</td>";
    	}	// next pilot
 

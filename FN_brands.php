@@ -12,25 +12,9 @@
 /************************************************************************/
 
 
-function guessBrandID($gliderType,$gliderDesc){
-	global  $brandsList;
-	if (!is_array($brandsList[$gliderType]) ) return 0;
-	
-	$gliderDesc=strtolower($gliderDesc);
-	//$gliderDesc=str_replace(" ","",$gliderDesc);
-	$gliderDesc=preg_replace('/[^\w]/','',$gliderDesc);
 
-	foreach($brandsList[$gliderType] as $brandID=>$brandName) {
-		if (  ! ( strpos($gliderDesc,strtolower($brandName) ) === false ) ) {
-			return $brandID;
-		}
-	
-	}
-	return 0;
-}
-
-//------------------- GLIDER BRANDS DEFINITIONS & RELATED FUNCTIONS ----------------------------
- $brandsList[1]=array(
+//------------------- GLIDER BRANDS DEFINITIONS  ----------------------------
+ $CONF['brands']['list']=array(
 	1=>"Advance",
 	"Airwave",
 	"Gin",
@@ -67,67 +51,18 @@ function guessBrandID($gliderType,$gliderDesc){
 	"Perche",
 	"Trekking", // 35 
 	"XiX",
-	
+	"Paradelta",
 	"WillsWing",
 	"Moyes",
 	"AIR",
+	"Aeros",	// 40
+
 	// to be added
-//	"FlyingPlanet", // not found
-//	"ADG",      // not found
+	//	"FlyingPlanet", // not found
+	//	"ADG",      // not found
 
 
  );
 
- $brandsList[2]=array(
-	1=>"WillsWing",
-	"Moyes",
-	"Aeros",
-	);
 
- $brandsList[4]=array(
-	1=>"WillsWing",
-	"Moyes",
-	"Aeros",
-	"AIR",
-	);
-
-
- /*
- $__brandsList=array(
-	"Airwave",
-	"Pegas",
-	"Trekking",
-	"Ozone",
-	"MacPara",
-	"UP",
-	"Swing",
-	"Paratech",
-	"Nove",
-	"Apco",
-	"Sol",
-	"Advance",
-	"Windtech",
-	"Aerodyne",
-	"Sky Paragliders",
-	"Perche",
-	"Aeros",
-	"FreeX",
-	"Wings Of Change",
-	"XIX",
-	"Gradient",
-	"ITV",
-	"Firebird",
-	"Nervures",
-	"ProDesign",
-	"Skywalk",
-	"Icaro",
-	"Dudek",
-	"Independence",
-	"U-Turn",
-	"Gin",
-	"Edel" );
-	*/
-
-	// now copy the paraglider array to the paramotor array\
-	$brandsList[16]= $brandsList[1];
 ?>

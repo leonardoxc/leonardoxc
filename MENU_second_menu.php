@@ -195,15 +195,15 @@ if (! $dontShowCountriesSelection ) {
 		echo _Select_Brand ;
 		$brandImg='';
 	} else { 
-		$brandImg="<img src='$moduleRelPath/img/brands/1/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
-		echo $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID]['brand'];		
+		$brandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
+		echo $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];		
 
 		// echo $brandID;
 	}
 ?></a>
 	<ul>
   	    <?
-			$brandsListFilter=brands::getBrandsList();
+			$brandsListFilter=brands::getBrandsList(1);
 			echo "<li><a href='?name=$module_name&brandID=0'>"._All_Brands."</a></li>";
   	    	foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
 				echo "<li><a href='?name=$module_name&brandID=$brandIDfilter'>$brandNameFilter</a></li>";

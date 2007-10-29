@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------
 //-----------------------  list pilots ---------------------------------
 //-----------------------------------------------------------------------
-  require_once dirname(__FILE__)."/FN_brands.php";
+
 
   $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="bestOlcScore";
@@ -208,7 +208,8 @@
 		 $pilotNames[$uID]=$name;
 	 } 
 	 
-	 $flightBrandID=guessBrandID($row['cat'],$row['glider']);
+	 // $flightBrandID=guessBrandID($row['cat'],$row['glider']);
+	 $flightBrandID=$row['gliderBrandID'];
 	 if ($flightBrandID) {
 		 if ( ! is_array($pilotGliders[$uID]) ) $pilotGliders[$uID]=array();
 		 $pilotGliders[$uID][$flightBrandID]++;
@@ -353,7 +354,7 @@ if (0) {
 }
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
-   global $pilotNames,$pilotGlidersMax,$brandsList;
+   global $pilotNames,$pilotGlidersMax;
    
    global $Theme;
    global $module_name;
@@ -404,8 +405,10 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 else $bg=" class='$sortRowClass'";
 		 
 	 	 $flightBrandID=$pilotGlidersMax[$pilotID]+0;
-		 $brandName=$brandsList[$cat][$flightBrandID];
-		 $gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
+
+		 //$brandName=$brandsList[$cat][$flightBrandID];
+		 //$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
+		 $gliderBrandImg=brands::getBrandImg($flightBrandID,'',$cat);
 //		 if ($flightBrandID) 
 //		 else $gliderBrandImg="&nbsp;";
 		 	     

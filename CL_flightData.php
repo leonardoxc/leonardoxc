@@ -31,6 +31,8 @@ class flight {
 	
     var $comments="";  
     var $glider="";  
+	var $gliderBrandID=0;
+
 	var $linkURL="";
 	var $takeoffID=0;
 	var $takeoffVinicity=0;
@@ -2220,6 +2222,7 @@ $kml_file_contents=
 		$this->comments=$row["comments"];
 		
 		$this->glider=$row["glider"];  
+		$this->gliderBrandID =$row["gliderBrandID "];  
 		$this->linkURL=$row["linkURL"];
 
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
@@ -2419,7 +2422,7 @@ $kml_file_contents=
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
-		comments, glider, linkURL, timesViewed,
+		comments, glider, gliderBrandID linkURL, timesViewed,
 		$p1
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
@@ -2452,7 +2455,7 @@ $kml_file_contents=
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID,
-		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."', '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
+		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  $this->gliderBrandID , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		$p2
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',
