@@ -39,6 +39,7 @@
 
 		 $flight->cat=$_REQUEST["gliderCat"]+0;
  		 $flight->category=$_REQUEST["category"]+0;
+		 $flight->gliderBrandID=$_REQUEST["gliderBrandID"];
 		 $flight->glider=$_REQUEST["glider"];
 		 $flight->grecord=$_REQUEST["grecord"]+0;
 		 $flight->validated=$_REQUEST["validated"]+0;
@@ -98,10 +99,16 @@
 function setValue(obj)
 {		
 	var n = obj.selectedIndex;    // Which menu item is selected
-	var val = obj[n].text;        // Return string value of menu item
+	var val = obj[n].value;        // Return string value of menu item
+
+	var valParts= val.split("_");
 
 	gl=MWJ_findObj("glider");
-	gl.value=val;
+	gl.value=valParts[1];
+
+	gl=MWJ_findObj("gliderBrandID");
+	gl.value=valParts[0];
+
 	// document.inputForm.glider.value = value;
 }
 </script>
@@ -249,22 +256,55 @@ fieldset.legendBox {
             <td>
 			   <fieldset class="legendBox legend2"><legend><? echo _GLIDER ?></legend>
 	  <div align="left">
-     <input name="glider" type="text" size="30" value="<? echo  $flight->glider ?>">
-         
+	  
+	  <table><tr><td><div align="left" class="styleItalic"><?=_Glider_Brand ?> </div>
+			</td>
+			<td><? echo _GLIDER ?>
+			</td>
+			<td><? echo _Or_Select_from_previous ?>
+			</td>
+			</tr>
+			<tr>
+			<td>
+				<select name="gliderBrandID" id="gliderBrandID" >			
+					<option value=0></option>
+					<? 
+					$brandsListFilter=brands::getBrandsList();
+					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+						if (  $flight->gliderBrandID== $brandIDfilter ) $glSel="selected";
+						else $glSel="";
+						echo "<option $glSel value=$brandIDfilter>$brandNameFilter</option>";
+					}					
+				?>
+				</select>
+			</td>
+			<td>
+     <input name="glider" type="text" size="20" value="<? echo  $flight->glider ?>">
+         </td>
+		 <td>
 		<? 
 			$gliders=  getUsedGliders($flight->userID) ;
 			if (count($gliders)) { ?>
 				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
-					<option></option>
+					<option value="0_"></option>
 					<? 
+							
 						foreach($gliders as $selGlider) {
-							if ( $flight->glider == $selGlider) $glSel="selected";
+							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
+							else $flightBrandName='';
+
+							if ( $flight->glider == $selGlider[1] && $flight->gliderBrandID==$selGlider[0]) $glSel="selected";
 							else $glSel="";
-							echo "<option $glSel>".$selGlider."</option>\n";
+							echo "<option $glSel value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
+
+//							echo "<option $glSel>".$selGlider."</option>\n";
 						}
 					?>
 				</select>
 			<? } ?>	
+			</td>
+			</tr>
+			</table>
 		       </div>
 	  </fieldset>			</td>
             <td>
@@ -463,7 +503,7 @@ fieldset.legendBox {
     </tr>
 <? } ?>
     <tr>
-      <td colspan=2 valign="top">       &nbsp;
+      <td colspan=2 valign="top">&nbsp;       
 	  </td></tR>
     <tr>
       <td>&nbsp;</td>

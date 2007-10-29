@@ -147,6 +147,7 @@ var $maxPointNum=1000;
 
 <info>
 	<glider>$this->glider</glider>
+	<gliderBrandID>$this->gliderBrandID</gliderBrandID>
 	<gliderCat>$this->cat</gliderCat>
 	<cat>$this->category</cat>
 	<linkURL>$this->linkURL</linkURL>
@@ -2222,7 +2223,7 @@ $kml_file_contents=
 		$this->comments=$row["comments"];
 		
 		$this->glider=$row["glider"];  
-		$this->gliderBrandID =$row["gliderBrandID "];  
+		$this->gliderBrandID =$row["gliderBrandID"];  
 		$this->linkURL=$row["linkURL"];
 
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
@@ -2422,7 +2423,7 @@ $kml_file_contents=
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,
-		comments, glider, gliderBrandID linkURL, timesViewed,
+		comments, glider, gliderBrandID, linkURL, timesViewed,
 		$p1
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,

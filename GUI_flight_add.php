@@ -70,10 +70,16 @@
 function setValue(obj)
 {		
 	var n = obj.selectedIndex;    // Which menu item is selected
-	var val = obj[n].text;        // Return string value of menu item
+	var val = obj[n].value;        // Return string value of menu item
+
+	var valParts= val.split("_");
 
 	gl=MWJ_findObj("glider");
-	gl.value=val;
+	gl.value=valParts[1];
+
+	gl=MWJ_findObj("gliderBrandID");
+	gl.value=valParts[0];
+
 	// document.inputForm.glider.value = value;
 }
 </script>
@@ -107,8 +113,7 @@ function setValue(obj)
 					else $is_type_sel ="";
 					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
 			}
-		?></select>
-		</td>
+		?></select>		</td>
       <td width="133"  valign="top"><? if ($enablePrivateFlights) { ?>
 		<span class="styleItalic">
         <?=_MAKE_THIS_FLIGHT_PRIVATE ?>
@@ -119,10 +124,49 @@ function setValue(obj)
 	
 	<? if ( in_array($userID,$admin_users)) { ?>
     <tr>
+      <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
+      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
+					<option value=0></option>
+					<? 
+					$brandsListFilter=brands::getBrandsList();
+					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+						echo "<option  value=$brandIDfilter>$brandNameFilter</option>";
+					}					
+				?>
+				</select>
+				<?=_GLIDER ?>
+				 <input name="glider" type="text" size="20" > 
+			</td>
+			</tr>	 
+				 		<? 
+			$gliders=  getUsedGliders($userID) ;
+			if (count($gliders) ||1) {
+				
+				 ?>
+			 <tr>
+      <td valign="top"><div align="right" class="styleItalic"><?=_Or_Select_from_previous ?></div></td>
+      <td colspan="3" valign="top"> 
+				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
+					<option value="0_"></option>
+					<? 
+							
+						foreach($gliders as $selGlider) {
+							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
+							else $flightBrandName='';
+							
+							echo "<option value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
+
+//							echo "<option $glSel>".$selGlider."</option>\n";
+						}
+					?>
+				</select>
+			<? } ?>	
+				</td>
+    </tr>
+    <tr>
       <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
-        <input name="insert_as_user_id" type="text" size="10">
-		</td>
+        <input name="insert_as_user_id" type="text" size="10">		</td>
     </tr>
  	<? }?>
     <tr>
@@ -130,59 +174,19 @@ function setValue(obj)
 	  <span class="styleSmallRed"><br>
         <?=_NOTE_TAKEOFF_NAME ?></span></div></td>
       <td colspan="3" valign="top">
-        <textarea name="comments" cols="60" rows="4"></textarea>
-		</td>
-    </tr>
-    <tr>
-      <td><div align="right" class="styleItalic"><?=_GLIDER ?></div></td>
-      <td colspan="3">
-        <input name="glider" type="text" id="glider" size="30">
-		<? 
-			$gliders=  getUsedGliders($userID) ;
-			if (count($gliders)) { ?>
-				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
-					<option></option>
-					<? 
-						foreach($gliders as $selGlider) {
-							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
-							else $flightBrandName='';
-							echo "<option value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
-						}
-					?>
-				</select>
-			<? } ?>
-	  </td>
-    </tr>
-    <tr>
-      <td><div align="right" class="styleItalic"><?=_Glider_Brand ?> </div></td>
-      <td colspan="3">
-			<? if (1) { ?>
-				<select name="gliderBrandSelect" id="gliderBrandSelect" onchange="setValue(this);">			
-					<option value=0></option>
-					<? 
-					$brandsListFilter=brands::getBrandsList();
-					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
-						echo "<option value=$brandIDfilter>$brandNameFilter</option>";
-					}					
-				?>
-				</select>
-			<? } ?>
-
-		</td>
+        <textarea name="comments" cols="60" rows="4"></textarea>		</td>
     </tr>
 
     <tr>
       <td><div align="right" class="styleItalic"><?=_RELEVANT_PAGE ?> </div></td>
       <td colspan="3">
-        http://<input name="linkURL" type="text" id="linkURL" size="50" value="">
-		</td>
+        http://<input name="linkURL" type="text" id="linkURL" size="50" value="">		</td>
     </tr>
 	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) { ?>
     <tr>
       <td><div align="right" class="styleItalic"><? echo _PHOTO." #$i"; ?></div></td>
       <td colspan="3">
-        <input name="photo<?=$i?>Filename" type="file" size="50">
-	  </td>
+        <input name="photo<?=$i?>Filename" type="file" size="50">	  </td>
     </tr>
 	<? } ?>
 	 <tr>
@@ -193,8 +197,7 @@ function setValue(obj)
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td colspan="3"><p><input name="submit" type="submit" value="<?=_PRESS_HERE_TO_SUBMIT_THE_FLIGHT ?>"></p>
-      </td>
+      <td colspan="3"><p><input name="submit" type="submit" value="<?=_PRESS_HERE_TO_SUBMIT_THE_FLIGHT ?>"></p>      </td>
     </tr>
     <tr>
       <td colspan=4><div align="center" class="smallLetter"><em><?=_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE ?> 
@@ -246,9 +249,10 @@ function setValue(obj)
 		$category=$_POST['category']+0;
 		$comments=$_POST["comments"];
 		$glider=$_POST["glider"];
+		$gliderBrandID=$_POST["gliderBrandID"]+0;
 		$linkURL=$_POST["linkURL"];
 
-		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat,  $linkURL,$comments,$glider,$category) ;
+		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat,  $linkURL,$comments,$glider,$category,array('gliderBrandID'=>$gliderBrandID) ) ;
 		
 	}
 	

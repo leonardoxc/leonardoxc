@@ -187,7 +187,7 @@ if (! $dontShowCountriesSelection ) {
 	</li>
 </ul>
 <? if ($CONF['brands']['filter_brands'] ) {  ?>
-<div id="nav2">
+<div id="nav3">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
 <li ><a href='#'>
 <? 

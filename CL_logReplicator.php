@@ -150,6 +150,7 @@ class logReplicator {
 								"serverID"		=>$e['ActionXML']['flight']['serverID'],
 								"userServerID"	=>$e['ActionXML']['flight']['serverID'],
 								"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
+								"gliderBrandID"	=>$e['ActionXML']['flight']['gliderBrandID'],
 				);
 	
 				writeFile($tempFilename,$igcFileStr);
@@ -183,6 +184,7 @@ class logReplicator {
 				$extFlight->getFlightFromDB($flightIDlocal);
 				
 				$extFlight->glider	=$e['ActionXML']['flight']['info']['glider'];
+				$extFlight->gliderBrandID	=$e['ActionXML']['flight']['info']['gliderBrandID'];
 				$extFlight->cat		=$e['ActionXML']['flight']['info']['gliderCat'];
 				$extFlight->category=$e['ActionXML']['flight']['info']['cat'];
 				$extFlight->linkURL =$e['ActionXML']['flight']['info']['linkURL'];

@@ -55,6 +55,13 @@ class brands {
 		return  $brandsList;	
 	}
 
+	function isValidBrandForFilter($brandID) {
+		global $CONF;
+		if (!$CONF['brands']['filter_brands']) return 0;
+		
+		if ( in_array($brandID,$CONF['brands']['filterList']) || $CONF['brands']['showAll']   ) return 1;
+		else return 0;
+	}
 
 	function guessBrandID($gliderDesc){
 		global  $CONF;

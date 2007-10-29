@@ -432,7 +432,9 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 
-			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."'>".$outVal."</a></TD>"; 	 		  
+			// $descr="flight $flightID";
+			// alt='$descr' title='$descr'
+			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."' >".$outVal."</a></TD>"; 	 		  
 			else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;

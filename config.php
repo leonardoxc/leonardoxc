@@ -334,14 +334,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // start of BRANDS MOD
 	$CONF['brands']['filter_brands'] = 1;
 	$CONF['brands']['showAll']=0;
-/*
-	$CONF['brands']['list']=array(
-		//1=>array(id=>1, brand=>'AIR', brandAlias=>array('A.I.R') , company=>'Aeronautic Innovation Rühle GmbH (A.I.R. GmbH)', extID=>-49288),
-		5=>array('id'=>5, 'brand'=>'Nova', 'brandAlias'=>array() , 'company'=>'NOVA Vertriebsgesellschaft m.b.H.', 'extID'=>3580),
-		10=>array('id'=>10, 'brand'=>'Gradient', 'brandAlias'=>array() , 'company'=>'Gradient s.r.o.', 'extID'=>4918),
-
-		);
-*/
+	$CONF['brands']['list']=array();
 	$CONF['brands']['filterList']=array(1,2,4);
 
  // end of BRANDS MOD

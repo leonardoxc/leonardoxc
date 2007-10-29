@@ -18,22 +18,39 @@
 
  if (!isset($_FILES['zip_datafile']['name'])) {
 ?>  
+<script language="JavaScript">
+function setValue(obj)
+{		
+	var n = obj.selectedIndex;    // Which menu item is selected
+	var val = obj[n].value;        // Return string value of menu item
+
+	var valParts= val.split("_");
+
+	gl=MWJ_findObj("glider");
+	gl.value=valParts[1];
+
+	gl=MWJ_findObj("gliderBrandID");
+	gl.value=valParts[0];
+
+	// document.inputForm.glider.value = value;
+}
+</script>
 <form name="inputForm" action="" enctype="multipart/form-data" method="post" >	
 
-  <table class=main_text width="100%" border="0" align="center" cellpadding="5" cellspacing="3">
+  <table class=main_text width="630" border="0" align="center" cellpadding="5" cellspacing="3">
     <tr>
-      <td colspan="2"><div align="center" class="style111"><strong><? echo _SUBMIT_MULTIPLE_FLIGHTS?> </strong></div>      
+      <td colspan="4"><div align="center" class="style111"><strong><? echo _SUBMIT_MULTIPLE_FLIGHTS?> </strong></div>      
         <div align="center" class="style222"><? echo _ONLY_THE_IGC_FILES_WILL_BE_PROCESSED?></div></td>
     </tr>
     <tr>
-      <td width="211" valign="top"><div align="right" class="style2"><? echo _SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS ?></div></td>
-      <td width="451" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td width="120" valign="top"><div align="right" class="styleItalic"><? echo _SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS ?></div></td>
+      <td  colspan="3" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
         <input name="zip_datafile" type="file" size="50">
       </font></td>
     </tr>
     <tr>
-      <td  valign="top"><div align="right" class="style2"> <? echo _GLIDER_TYPE ?></div></td>
-      <td  valign="top"><select name="gliderCat">        
+	<td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
+      <td width="193"  valign="top"><select name="gliderCat">        
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -43,30 +60,75 @@
 			}
 		?>
 	  </select></td>
-    </tr>
-	<tr>
-	  <td  valign="top"><div align="right" class="style2"><? echo _Category; ?></div></td>
-      <td valign="top"> <select name="category">
-		<? 
+      <td width="172"  valign="top"><? echo _Category; ?> <select name="category">
+	  <? 
 			foreach ( $CONF_category_types as $gl_id=>$gl_type) {
 					if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
 					else $is_type_sel ="";
 					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
 			}
-		?></select>
+		?></select>		</td>
+      <td width=155 align="center"  valign="top"><? if ($enablePrivateFlights) { ?>
+		<span class="styleItalic">
+        <?=_MAKE_THIS_FLIGHT_PRIVATE ?>
+      </span>
+        <input type="checkbox" name="is_private" value="1">
+	  <? } ?></td>
+    </tr>
+	
+	
+    <tr>
+      <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
+      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
+					<option value=0></option>
+					<? 
+					$brandsListFilter=brands::getBrandsList();
+					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+						echo "<option  value=$brandIDfilter>$brandNameFilter</option>";
+					}					
+				?>
+				</select>
+				<?=_GLIDER ?>
+				 <input name="glider" type="text" size="20" > 
 		</td>
-	</tr>
+	</tr>	 
+				 		<? 
+			$gliders=  getUsedGliders($userID) ;
+			if (count($gliders) ||1) {
+				
+				 ?>
+	  <tr>
+      <td valign="top"><div align="right" class="styleItalic"><?=_Or_Select_from_previous ?></div></td>
+      <td colspan="3" valign="top"> 
+				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
+					<option value="0_"></option>
+					<? 
+							
+						foreach($gliders as $selGlider) {
+							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
+							else $flightBrandName='';
+							
+							echo "<option value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
+
+//							echo "<option $glSel>".$selGlider."</option>\n";
+						}
+					?>
+				</select>
+			</td>	
+		</tr>
+			<? } ?>	
+
 	<? if ( in_array($userID,$admin_users)) { ?>
     <tr>
-      <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
+      <td width="120" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
         <input name="insert_as_user_id" type="text" size="10">
-		</td>
+	  </td>
     </tr>
  	<? }?>
     <tr>
       <td>&nbsp;</td>
-      <td><p><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td colspan=3><p><font face="Verdana, Arial, Helvetica, sans-serif">
           <input name="submit" type="submit" value="<? echo _PRESS_HERE_TO_SUBMIT_THE_FLIGHTS ?>">
 </font></p>
       </td>
@@ -82,13 +144,22 @@
 	$filename=$_FILES['zip_datafile']['name'];
 	$gliderCat=$_POST['gliderCat'];
 
+	$category=$_POST['category']+0;
+	$glider=$_POST["glider"];
+	$gliderBrandID=$_POST["gliderBrandID"]+0;
+		
+		
 	if (!$filename) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
 	if (strtolower(substr($filename,-4))!=".zip") addFlightError(_FILE_DOESNT_END_IN_ZIP);
 
-	checkPath($flightsAbsPath."/".$userID);
 
-	$tmpZIPfolder=$flightsAbsPath."/".$userID."/flights/zipTmp".sprintf("%05d",rand(1, 10000) ) ;
-	$tmpZIPPath=$flightsAbsPath."/".$userID."/flights/".$filename;
+	if ($_POST['insert_as_user_id'] >0 && in_array($userID,$admin_users) ) $flights_user_id=$_POST['insert_as_user_id']+0;
+	else $flights_user_id=$userID;
+	
+	checkPath($flightsAbsPath."/".$flights_user_id);
+
+	$tmpZIPfolder=$flightsAbsPath."/".$flights_user_id."/flights/zipTmp".sprintf("%05d",rand(1, 10000) ) ;
+	$tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/".$filename;
 	move_uploaded_file($_FILES['zip_datafile']['tmp_name'], $tmpZIPPath );
 
 	//delDir($tmpZIPfolder);
@@ -125,7 +196,10 @@
 			flush2Browser();
 			sleep(1);
 
-			list($res,$flightID)=addFlightFromFile($igcFilename,0,$userID,0,$gliderCat) ;
+		
+			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,0,$gliderCat,
+								'','',$glider,$category,array('gliderBrandID'=>$gliderBrandID) 
+			) ;
 			 
 			 if ($res==1) { 
 					echo _ADDED_SUCESSFULLY."<BR>";
