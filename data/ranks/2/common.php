@@ -31,7 +31,8 @@ while ($row = $db->sql_fetchrow($res)) {
 	 $continentCode=$takeoffsContinent[$takeoffID];
 
 	 $clubID=$row["NACclubID"];
-	 $uID=$row["userID"];
+	 // $uID=$row["userID"];
+	 $uID=$row["userServerID"].'_'.$row["userID"];
 	 $flightID=$row["ID"];
 	 
 	// $brandID=guessBrandID($row['cat'],$row['glider']);

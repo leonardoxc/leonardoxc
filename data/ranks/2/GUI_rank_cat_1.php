@@ -60,10 +60,13 @@
 */
 	// this is the correct one !!!
 	$query = "
-	 SELECT $flightsTable.NACclubID, $flightsTable.ID, FLIGHT_POINTS as score, takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
+	 SELECT $flightsTable.NACclubID, $flightsTable.ID, FLIGHT_POINTS as score, userServerID,
+			takeoffID ,gliderBrandID, $flightsTable.glider as glider, $flightsTable.userID
 	 FROM  $flightsTable,$pilotsTable
 	 WHERE (userID!=0 AND  private=0) 
-			AND $flightsTable.userID=$pilotsTable.pilotID 
+			 AND $flightsTable.userID=$pilotsTable.pilotID 
+			 AND $flightsTable.userServerID=$pilotsTable.serverID
+
 			AND $flightsTable.NACclubID<>0 
 			$where_clause
 	  order by $flightsTable.NACclubID, score DESC

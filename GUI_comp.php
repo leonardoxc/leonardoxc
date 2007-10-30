@@ -288,10 +288,13 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 		$j=0;
 		foreach ($club as $pilotID=>$pilot) {
 			$k=0;
-			if (!is_numeric( $pilotID) ) continue;
+			$pilotIDparts=split('_',$pilotID,2);
+			if (!is_numeric( $pilotIDparts[1]) ) continue;
 			// echo "#".$pilotID."#";
 
-			$pilotName=getPilotRealName($pilotID,1); 
+			$pilotName=getPilotRealName($pilotIDparts[1],$pilotIDparts[0],1); 
+
+
 			$pilotName=prepare_for_js($pilotName);
 			echo "<TD width='20%'>";
 			echo "<table width='100%' cellpadding='0' cellspacing='0' class='listTable3'><TR><TD colspan=3 id='$arrayName"."_$pilotID'>".

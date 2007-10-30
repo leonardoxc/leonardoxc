@@ -24,7 +24,7 @@
 	*/
 	
 	// pilots must be NACid=1 (DHV) and NACmemberID>0
-	$where_clause.=" AND NACid=1 AND NACmemberID>0 ";
+	$where_clause.=" AND $pilotsTable.NACid=1 AND NACmemberID>0 ";
 
 	// The flgiht mus be validated
 	// $where_clause.=" AND validated=1 ";
