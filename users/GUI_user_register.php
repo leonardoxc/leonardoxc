@@ -15,7 +15,7 @@
 
 if ($_POST['registerForm']==1) {
 
-	foreach (array("ufname", "ulname", "uemail", "uwsite", "uname", "upass", "upass2") as $a )
+	foreach (array("ufname", "ulname", "uemail",  "uname", "upass", "upass2") as $a )
 	{
 		$$a=$_POST[$a];
 	}
@@ -42,7 +42,8 @@ This is a verification email sent from ".$_SERVER['HTTP_HOST']."
 
 To finally create your account, you will need to click on link below to verify your email address:
 
-http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile."?op=users&page=index&act=register&ufname=$ufname&ulname=$ulname&uemail=$uemail
+http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile.
+	"?op=users&page=index&act=register&ufname=$ufname&ulname=$ulname&uemail=$uemail&uname=$uname&upass=$upass
 
 Regards,
 
@@ -69,13 +70,13 @@ Regards,
     <td class=header>&nbsp;</td> 
   </tr> 
 </table> 
-";
+
 <? 
 
 } else if ( isset($_GET['uname']) && isset($_GET['upass']) && isset($_GET['uemail']) ) { // add the user
 
 	$uname=$_GET['uname'];
-	$upass=$_GET['upass'];
+	$upass=md5($_GET['upass']);
 	$uemail=$_GET['uemail'];
 
 	$sql="INSERT into $users_table (username,user_password,user_email) VALUES( '$uname', '$upass', '$uemail' )";
@@ -92,21 +93,17 @@ Regards,
       <br>      <br>      <table align="center" width="70%"> 
         <tr class=header> 
           <td> <u>Email</u> </td> 
-          <td> $uemail </td> 
+          <td><?=$uemail ?></td> 
         </tr> 
         <tr class=header> 
           <td> <u>Username</u> </td> 
-          <td> $uname </td> 
-        </tr> 
-        <tr class=header> 
-          <td> <u>Password</u> </td> 
-          <td> $upass </td> 
+          <td><?=$uname ?></td> 
         </tr> 
       </table> 
       <div align="center"><br> 
         <br> 
         <center> 
-        <a href="?op=users&page=index&act=login">Login</a><br> 
+        <a href="?op=login">Login</a><br> 
         <br> 
       </div></td> 
   </tr> 

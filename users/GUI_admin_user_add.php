@@ -50,60 +50,65 @@ if ($_POST['formAdd']==1) {
 
 ?>
  <form method="post" action="?op=users&page=admin&act=add" name="add_user_form"> 
-  <img src="images/dot.gif"> <u>Add user</u> &nbsp;&nbsp; [Fields with <font color="ff0000">*</font> must
-  be filled]
-  <hr color="cccccc"> 
-  <table align="center" width="500" cellpadding="1" cellspacing="1" bgcolor="808080"> 
-     <tr bgcolor="dcdcdc" class=header> 
-      <td width="40%"> <u>First Name</u> <font color="ff0000">*</font></td> 
-      <td align="center"><input type="text" name="ufname"></td> 
+   <div align="center"></div>
+  <table align="center" width="500" cellpadding="2" cellspacing="1" bgcolor="#D8DCED"> 
+     <tr bgcolor="#E9E7F3" >
+       <td colspan="2"><div align="center"><u><strong>Add user</strong></u> <strong>&nbsp;&nbsp; [Fields
+           with <font color="ff0000">*</font> must
+       be filled] </strong></div></td>
+     </tr>
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td width="40%"> <div align="right"><u>First Name</u> <font color="ff0000">*</font></div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="ufname" type="text" size="30">
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td> <u>Last Name</u></td> 
-      <td align="center"><input type="text" name="ulname"> </td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td> <div align="right"><u>Last Name</u><font color="ff0000"> *</font></div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="ulname" type="text" size="30"> 
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>Email</u> <font color="ff0000">*</font> </td> 
-      <td align="center"><input type="text" name="uemail"></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td><div align="right"><u>Email</u> <font color="ff0000">*</font> </div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="uemail" type="text" size="30">
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>Email again</u> <font color="ff0000">*</font></td> 
-      <td align="center"><input type="text" name="uemail2"></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td> <div align="right"><u>Website</u> [Without http://]</div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="uwsite" type="text" size="30">
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>ICQ</u></td> 
-      <td align="center"><input type="text" name="uicq"></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td><div align="right"><u>Username</u> <font color="ff0000">*</font></div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="uname" type="text" size="30">
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td> <u>Website</u> [Without http://]</td> 
-      <td align="center"><input type="text" name="uwsite"></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td><div align="right"><u>Password</u> <font color="ff0000">*</font></div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="upass" type="password" size="30"> 
+      </div></td> 
     </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>Username</u> <font color="ff0000">*</font></td> 
-      <td align="center"><input type="text" name="uname"></td> 
-    </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>Password</u> <font color="ff0000">*</font></td> 
-      <td align="center"><input type="password" name="upass"> </td> 
-    </tr> 
-     <tr bgcolor="cccccc" class=header> 
-      <td><u>Password again</u> <font color="ff0000">*</font> </td> 
-      <td align="center"><input type="password" name="upass2"></td> 
-    </tr> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td><div align="right"><u>Password again</u> <font color="ff0000">*</font> </div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
+        <input name="upass2" type="password" size="30">
+      </div></td> 
+    </tr>
+     <tr bgcolor="#F4F5FA" class=header>
+       <td>&nbsp;</td>
+       <td align="center" bgcolor="#F4F5FA">
+         <div align="right">
+           <input name="formAdd" type="hidden" value="1">
+           <input name="submit" type="submit" value="Add user">
+       </div></td>
+     </tr> 
    </table> 
   <br> 
-  <p align="right"> 
-     <input name="formAdd" type="hidden" value="1"> 
-     <input type="submit" value="Add user"> 
- </form> 
+</form> 
 <br> 
 <br> 
-</td> 
-</tr> 
-</table> 
-</td> 
-</tr> 
-<tr> 
-  <td class=header>&nbsp;</td> 
-</tr> 
-</table> 

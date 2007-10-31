@@ -15,38 +15,33 @@
 ?>
  <table align="center" width="600"> 
 <tr> 
-  <td><table width="100%" align="center" bgcolor="cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
+  <td><table width="100%" align="center" bgcolor="#cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
       <tr> 
-        <td bgcolor="dcdcdc"><div align="center"><br> 
+        <td bgcolor="#dcdcdc"><div align="center"><br> 
             <strong>User Administration</strong><br> 
-            <table align=\"center\" width=\"100%\"> 
-              <tr> 
-                <td><img src=\"images/dot.gif\"> <u>List of users</u></td> 
-                <td></td> 
-              </tr> 
-            </table> 
-            <hr color=\"cccccc\"> 
-            <table align=\"center\" width=\"100%\" cellpadding=\"2\" cellspacing=\"1\" bgcolor=\"808080\"> 
-              <tr align=\"center\" bgcolor=\"cccccc\"> 
+            <hr color="#cccccc"> 
+            <table align="center" width="100%" cellpadding="2" cellspacing="1" bgcolor="#808080"> 
+              <tr align="center" bgcolor="#cccccc"> 
                 <td width=50>User ID</td> 
                 <td width=140><b>User</b></td> 
                 <td><b>Actions</b></td> 
               </tr> 
     <?
-		$sql= "SELECT * from $users_table ORDER by user_id";
+		$sql= "SELECT * from $users_table ORDER by user_id ";
+
 		$result = $db->sql_query($sql);
-	
+		$i=0;
 		while($disp_users = $db->sql_fetchrow($result) ) { 
 	?> 
-              <tr bgcolor=\"a9a9a9\" align=\"left\"> 
+              <tr bgcolor="<? echo (($i%2)?"#E9E7F3":"#ffffff"); ?>" align="left"> 
                 <td><? echo $disp_users['user_id'] ?></td> 
                 <td> <font class=table_u><b><? echo $disp_users['username'] ?></b></td> 
-                <td><font class=table_u>[ <a href=\"?op=users&page=admin&act=edit&user=<? echo $disp_users['username'] ?>
-		"\" title=\"Edit user: <? echo $disp_users['username'] ?>\">Edit user</a> ]
-                  - [ <a href=\"?op=users&page=admin&cmd=delete&user=<? echo $disp_users['username'] ?>\" title=\"Delete user: <? echo $disp_users['username'] ?>\">Delete
+                <td><font class=table_u>[ <a href="?op=users&page=admin&act=edit&editUserID=<? echo $disp_users['user_id'] ?>" title="Edit user: <? echo $disp_users['username'] ?>">Edit user</a> ]
+                  - [ <a href="?op=users&page=admin&act=delete&user=<? echo $disp_users['username'] ?>" title="Delete user: <? echo $disp_users['username'] ?>">Delete
                   user</a> ] </td> 
               </tr> 
     <?
+		$i++;
 	}
 	?> 
             </table> 

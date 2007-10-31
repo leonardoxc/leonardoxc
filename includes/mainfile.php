@@ -44,7 +44,6 @@ if ($phpver >= 41) {
     $PHP_SELF = $_SERVER['PHP_SELF'];
 }
 
-
 if (!ini_get("register_globals")) {
     import_request_variables('GPC');
 }
@@ -72,56 +71,30 @@ foreach ($_POST as $secvalue) {
     }
 }
 
-
-
 if (eregi("mainfile.php",$PHP_SELF)) {
     Header("Location: index.php");
     die();
 }
 
-require_once dirname(__FILE__)."/config.php";
+require_once dirname(__FILE__)."/db.php";
+require_once dirname(__FILE__)."/sessions.php";
+require_once dirname(__FILE__)."/functions.php";
+require_once dirname(__FILE__)."/common.php";
 
-require_once dirname(__FILE__)."/includes/db.php";
-require_once dirname(__FILE__)."/includes/functions.php";
-require_once dirname(__FILE__)."/includes/common.php";
+// standard session management 
+$userdata = session_pagestart($user_ip, PAGE_LEONARDO); 
+// init_userprefs($userdata); 
+
+$lang['ENCODING']= $langEncodings[$currentlang];
+// set page title 
+$page_title = 'LEONARDO';
+
 
 if (isset($_SESSION['user_id'])) {
   $userdata['user_id']  = $_SESSION['user_id'];
   $userdata['username'] = $_SESSION['username'];
 }
 
-$mainfile = 1;
-
-function get_lang($module) {
-    global $currentlang, $language;
-
-    if (file_exists("language/lang-$currentlang.php")) {
-            include_once("language/lang-$currentlang.php");
-        }
-}
-
-function is_admin($admin) {
-    global $prefix, $db;
-    if(!is_array($admin)) {
-        $admin = base64_decode($admin);
-        $admin = explode(":", $admin);
-        $aid = "$admin[0]";
-        $pwd = "$admin[1]";
-    } else {
-        $aid = "$admin[0]";
-        $pwd = "$admin[1]";
-    }
-    if ($aid != "" AND $pwd != "") {
-        $sql = "SELECT pwd FROM ".$prefix."_authors WHERE aid='$aid'";
-        $result = $db->sql_query($sql);
-        $row = $db->sql_fetchrow($result);
-        $pass = $row[pwd];
-        if($pass == $pwd && $pass != "") {
-            return 1;
-        }
-    }
-    return 0;
-}
 
 function is_user($user) {
     global $prefix, $db, $user_prefix;
@@ -150,7 +123,10 @@ function cookiedecode($user) {
     global $cookie, $prefix, $db, $user_prefix;
     $user = base64_decode($user);
     $cookie = explode(":", $user);
+
     $sql = "SELECT user_password FROM ".$user_prefix."_users WHERE username='$cookie[1]'";
+
+	// echo $sql;
     $result = $db->sql_query($sql);
     $row = $db->sql_fetchrow($result);
     $pass = $row[user_password];
@@ -163,56 +139,6 @@ function cookiedecode($user) {
 }
 
 
-
-function check_html ($str, $strip="") {
-    /* The core of this code has been lifted from phpslash */
-    /* which is licenced under the GPL. */
-    include("config.php");
-    if ($strip == "nohtml")
-            $AllowableHTML=array('');
-        $str = stripslashes($str);
-        $str = eregi_replace("<[[:space:]]*([^>]*)[[:space:]]*>",
-                         '<\\1>', $str);
-               // Delete all spaces from html tags .
-        $str = eregi_replace("<a[^>]*href[[:space:]]*=[[:space:]]*\"?[[:space:]]*([^\" >]*)[[:space:]]*\"?[^>]*>",
-                         '<a href="\\1">', $str); # "
-               // Delete all attribs from Anchor, except an href, double quoted.
-        $str = eregi_replace("<[[:space:]]* img[[:space:]]*([^>]*)[[:space:]]*>", '', $str);
-               // Delete all img tags
-        $tmp = "";
-        while (ereg("<(/?[[:alpha:]]*)[[:space:]]*([^>]*)>",$str,$reg)) {
-                $i = strpos($str,$reg[0]);
-                $l = strlen($reg[0]);
-                if ($reg[1][0] == "/") $tag = strtolower(substr($reg[1],1));
-                else $tag = strtolower($reg[1]);
-                if ($a = $AllowableHTML[$tag])
-                        if ($reg[1][0] == "/") $tag = "</$tag>";
-                        elseif (($a == 1) || ($reg[2] == "")) $tag = "<$tag>";
-                        else {
-                          # Place here the double quote fix function.
-                          $attrb_list=delQuotes($reg[2]);
-                          // A VER
-                          $attrb_list = ereg_replace("&","&amp;",$attrb_list);
-                          $tag = "<$tag" . $attrb_list . ">";
-                        } # Attribs in tag allowed
-                else $tag = "";
-                $tmp .= substr($str,0,$i) . $tag;
-                $str = substr($str,$i+$l);
-        }
-        $str = $tmp . $str;
-        return $str;
-        exit;
-        /* Squash PHP tags unconditionally */
-        $str = ereg_replace("<\?","",$str);
-        return $str;
-}
-
-function filter_text($Message, $strip="") {
-    global $EditedMessage;
-    check_words($Message);
-    $EditedMessage=check_html($EditedMessage, $strip);
-    return ($EditedMessage);
-}
 
 function removecrlf($str) {
     // Function for Security Fix by Ulf Harnhammar, VSU Security 2002

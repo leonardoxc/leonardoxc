@@ -22,6 +22,9 @@
 		'overall_header' => 'tpl/overall_header.html')
 	);
 
+	if ($CONF_use_utf) $lang['ENCODING']='utf-8';
+	else  $lang['ENCODING']=$langEncodings[$currentlang];
+
 	$Ltemplate->assign_vars(array(	
 		'STYLE_LINK'=> $moduleRelPath."/templates/".$PREFS->themeName."/style.css",
 		'IMG_PATH'=> $moduleRelPath."/templates/".$PREFS->themeName."/img/"

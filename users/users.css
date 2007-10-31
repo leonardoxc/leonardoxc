@@ -1,67 +1,16 @@
 <style type="text/css">
 <!--
 
-BODY {
-	SCROLLBAR-FACE-COLOR: #cccccc; SCROLLBAR-HIGHLIGHT-COLOR: #cccccc; SCROLLBAR-SHADOW-COLOR: cccccc; SCROLLBAR-ARROW-COLOR: #000000; SCROLLBAR-BASE-COLOR: #000000; scrollbar-3d-light-color: #cccccc; scrollbar-dark-shadow-color: #cccccc
-}
-
-FONT {
-	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Helvetica
-}
-TD {
-	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Helvetica
-}
-P {
-	FONT-SIZE: 12px; FONT-FAMILY: Verdana,Helvetica
-}
-DIV {
-	FONT-SIZE: 11px; FONT-FAMILY: Verdana,Helvetica
-}
-A:link {
-	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none
-}
-A:active {
-	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none
-}
-A:visited {
-	FONT-SIZE: 11px; COLOR: #000000; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none
-}
-A:hover {
-	FONT-SIZE: 11px; COLOR: #ff0000; FONT-FAMILY: Verdana, Helvetica; TEXT-DECORATION: none
-}
-.content {
-	FONT-SIZE: 12px; BACKGROUND: none transparent scroll repeat 0% 0%; COLOR: #000000; FONT-FAMILY: Verdana, Helvetica
-}
-INPUT {
-	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; FONT: 11px Verdana,Arial,Helvetica,sans-serif; BORDER-LEFT: 1px solid; COLOR: #000000; BORDER-BOTTOM: 1px solid; BACKGROUND: #dcdcdc
-}
-TEXTAREA {
-	BORDER-RIGHT: 2px gray solid; BORDER-TOP: 2px gray solid; FONT: 11px Verdana,Arial,Helvetica,sans-serif; BORDER-LEFT: 2px gray solid; COLOR: #000000; BORDER-BOTTOM: 2px gray solid; BACKGROUND: #dcdcdc
-}
-SELECT {
-	BORDER-RIGHT: 1px dotted; BORDER-TOP: 1px solid; FONT: 11px Verdana,Arial,Helvetica,sans-serif; BORDER-LEFT: 1px solid; COLOR: #000000; BORDER-BOTTOM: 1px solid
-}
-SELECT {
-	BACKGROUND: #ffffff
-}
-INPUT {
-	TEXT-INDENT: 2px
-}
-INPUT.button {
-	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; BACKGROUND: #efefef; FONT: 11px Verdana,Arial,Helvetica,sans-serif; BORDER-LEFT: 1px solid; COLOR: #000000; BORDER-BOTTOM: 1px solid
-}
 .table_display { BORDER-TOP: 1px gray solid; BORDER-RIGHT: 1px gray solid; BORDER-LEFT: 1px gray solid
 }
 .table_info { BORDER-TOP: 2px gray solid; BORDER-LEFT: 2px gray solid; BORDER-RIGHT: 2px gray solid
 }
-.bigfont { FONT-SIZE: 18px; COLOR: #005177; BACKGROUND: none transparent scroll repeat 0% 0%; FONT-FAMILY: Verdana, Helvetica
-}
-.header  { border-bottom:1px dashed #999999; font-family:Verdana, Arial; font-weight:bold; color:#4C77B6; font-size:10px; background-color:#cccccc; letter-spacing:-1px 
+.bigfont { FONT-SIZE: 18px; COLOR: #005177; }
+.header  { border-bottom:1px dashed #999999; font-weight:bold; color:#4C77B6; font-size:10px; letter-spacing:-1px 
 }
 .header_logo { border-top: 1px gray dashed; border-left: 1px gray dashed; border-bottom: 1px gray dashed; border-right: 1px gray dashed
 }
-.table_u { FONT-SIZE: 12px; BACKGROUND: none transparent scroll repeat 0% 0%; COLOR: #dcdcdc; FONT-FAMILY: Verdana, Helvetica
-}
+.table_u { FONT-SIZE: 12px; }
 
 .styleRed {
 	color: #FF0000;

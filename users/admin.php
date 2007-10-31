@@ -12,26 +12,27 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	if (!in_array($userID,$admin_users) ) {
+	if (! is_leo_admin($userID)  ) {
 		return;
 	}
 
 ?>
  <table align="center" width="740"> 
   <tr> 
-     <td class=header><font class="bigfont"> 
+     <td bgcolor="#E9E7F3" class=header><font class="bigfont"> 
        <center> 
         <font color="#005177">User Admin Panel</font> 
       </center> 
-       </font></td> 
+    </font></td> 
    </tr> 
   <tr> 
-     <td class=header><center> 
+     <td bgcolor="#F9F6E1" class=header><center> 
          <font color="#005177"> :: [ <a href="?op=users&page=admin&act=users">User
-         Administration </a> ] :: [ <a href="?op=users&page=index&act=users">Show
-         Users</a> ] :: [ <a href="?op=users&page=admin&act=add">Add user</a> ]
-         :: </font> 
-       </center></td> 
+         Administration </a> ] ::  [ <a href="?op=users&page=admin&act=add">Add
+         user</a> ]
+         :: [ <a href="?op=users&page=index&act=register">Register (as a plain
+         visitor)</a> ] </font> 
+        </center></td> 
    </tr> 
 </table> 
 <br>
@@ -52,12 +53,12 @@
   <tr> 
     <td><table width="100%" align="center" bgcolor="#cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
         <tr> 
-          <td bgcolor="#dcdcdc"> <p align="center"><br> 
+          <td bgcolor="#EFCCAD"> <p align="center"><br> 
               Welcome to the User Administration Panel. </p>
             <p align="center">Please choose your
             action for the menu above</p>
             <p align="center"><br> 
-                </p></td> 
+          </p></td> 
         </tr> 
       </table></td> 
   </tr> 

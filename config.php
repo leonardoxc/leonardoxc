@@ -399,7 +399,7 @@ $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 $CONF_abs_path=dirname(__FILE__);
 
-if ($opMode!=2) {
+if ($opMode!=2 && $opMode!=3 ) {
 	function append_sid($a,$b="") {
 		return $a.$b;
 	}

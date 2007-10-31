@@ -5,7 +5,7 @@ $dbms = 'mysql';
 require_once dirname(__FILE__)."/../site/config_db.php";
 $table_prefix = $prefix.'_';
 $user_prefix  = $prefix ;
-$users_table= $table_prefix."_users";
+$users_table= $prefix."_users";
 
 require_once dirname(__FILE__)."/mysql.php";
 

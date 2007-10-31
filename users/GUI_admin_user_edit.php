@@ -11,38 +11,42 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
-$sql = "SELECT * from $users_table WHERE username = '$user'";
+$userID_to_edit=$_GET['editUserID'];
+$sql = "SELECT * from $users_table WHERE user_id = '$userID_to_edit'";
 $result = $db->sql_query($sql);
 $user_prefs = $db->sql_fetchrow($result);
 
 $user_ex_pass = $user_prefs['user_password']; // puts default user password
 
 ?>
+
 <form method="post" action="?op=users&page=admin&act=edit"> 
-  <img src="images/dot.gif"> <u>Edit user:</u> <?=$user_prefs['username']?>
-  <hr color="cccccc"> 
-  <table align="center" width="500" cellpadding="1" cellspacing="1" bgcolor="808080"> 
-     <tr bgcolor="cccccc" class=header> 
-      <td width="40%"><input type="hidden" name="uname" value="$user"> 
-         <input type="hidden" name="default_pass" value="$user_ex_pass"> 
-         <u>Username </u></td> 
-      <td align="center"><div align="left">
+  <table align="center" width="500" cellpadding="2" cellspacing="1" bgcolor="#D8DCED"> 
+     <tr bgcolor="#E9E7F3" >
+       <td colspan="2"><div align="center" class="bigfont"><strong>Edit user: <?=$user_prefs['username']?>
+       </strong></div></td>
+    </tr>
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td width="40%" bgcolor="#F4F5FA"><div align="right">
+          <input type="hidden" name="uname" value="$user"> 
+           <input type="hidden" name="default_pass" value="$user_ex_pass"> 
+         <u>Username </u></div></td> 
+      <td align="center" bgcolor="#F4F5FA"><div align="left">
         <input type="text" name="ufname" value="<?=$user_prefs['username']?>"> 
       </div></td> 
 	 </tr>
-     <tr bgcolor="cccccc" class=header> 
-      <td> <u>Email</u></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td bgcolor="#F4F5FA"> <div align="right"><u>Email</u></div></td> 
       <td align="center"> <div align="left">
         <input name="uemail" type="text"  value="<?=$user_prefs['user_email']?>" size="30"> 
       </div></td> 
-     <tr bgcolor="cccccc" class=header> 
-      <td> <u>New password</u></td> 
+     <tr bgcolor="#F4F5FA" class=header> 
+      <td bgcolor="#F4F5FA"> <div align="right"><u>New password</u></div></td> 
       <td align="center"><div align="left">
         <input type="password" name="unpass"> 
       </div></td> 
     </tr>
-     <tr bgcolor="cccccc" class=header>
+     <tr bgcolor="#F4F5FA" class=header>
        <td><input name="reset" type="reset" value="Default"></td>
        <td align="center"><div align="right">
           <input name="submit" type="submit" value="Change settings">

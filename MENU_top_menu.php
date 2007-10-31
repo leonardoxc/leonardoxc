@@ -87,6 +87,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
 				<li><a href="?name=<?=$module_name?>&op=admin">ADMIN MENU</a></li>
+				<? if ( is_leo_admin($userID) )  {  ?>
+				<li><a href="?name=<?=$module_name?>&op=users&page=admin">User Administration</a></li>
+				<? } ?>
 				<li class='li_space long'></li>
 				<li><a href="?name=<?=$module_name?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
 				<li><a href="?name=<?=$module_name?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>

@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.6 2007/03/09 16:09:15 manolis Exp $
+ *   $Id: GUI_login.php,v 1.7 2007/10/31 15:33:57 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -48,9 +48,8 @@ $phpbb_root_path = './';
 //
 // Set page ID for session management
 //
-// $userdata = session_pagestart($user_ip, PAGE_LOGIN);
-
-init_userprefs($userdata);
+$userdata = session_pagestart($user_ip, PAGE_LOGIN);
+// init_userprefs($userdata);
 //
 // End session management
 //
@@ -84,7 +83,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		{
 			if( $row['user_level'] != ADMIN && $board_config['board_disable'] )
 			{
-				redirect(append_sid("modules.php?name=leonardo", true));
+				redirect(append_sid($CONF_mainfile."?name=$module_name", true));
 			}
 			else
 			{
@@ -93,11 +92,11 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 					$autologin = ( isset($HTTP_POST_VARS['autologin']) ) ? TRUE : 0;
 
 					$admin = (isset($HTTP_POST_VARS['admin'])) ? 1 : 0;
-					$session_id = session_begin($row['user_id'], $user_ip, PAGE_INDEX, FALSE, $autologin, $admin);
+					$session_id = session_begin($row['user_id'], $user_ip, PAGE_INDEX, FALSE, $autologin, $admin);					
 
 					if( $session_id )
 					{
-						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "modules.php?name=leonardo&op=pilot_profile&pilotIDview=".$row['user_id'];
+						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : $CONF_mainfile."?name=$module_name&op=pilot_profile&pilotIDview=".$row['user_id'];
 												
 						?>
 						<script language="javascript">window.location="<?=$url?>"; </script>
