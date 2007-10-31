@@ -30,11 +30,15 @@ $module_name = basename(dirname(__FILE__));
 //$moduleAbsPath=dirname(__FILE__);
 $moduleRelPath="modules/".$module_name;
 
+
 require_once dirname(__FILE__)."/config.php";
+if ($opMode==3) require_once  dirname(__FILE__)."/includes/mainfile.php";
+
+
 setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
 
-if ($opMode==3) require_once  dirname(__FILE__)."/includes/mainfile.php";
+
 
 if (!eregi("modules.php", $_SERVER['PHP_SELF']) && ($opMode==1 || $opMode==2) ) {
     die ("You can't access this file directly...");
@@ -320,12 +324,12 @@ function exitPage($exitNow=1){
    DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
    DEBUG_END();
    
-   require_once $moduleRelPath."/BLOCKS_end.php";
+   require_once dirname(__FILE__)."/BLOCKS_end.php";
    if ($opMode==1) {   
 		CloseTable();
 		include("footer.php");
    } else if ($opMode==3) {
-		require_once $moduleRelPath."/GUI_footer.php";
+		require_once dirname(__FILE__)."/GUI_footer.php";
    }
   
    statsLogger::Log($pageTime);

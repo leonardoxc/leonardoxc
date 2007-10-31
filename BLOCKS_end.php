@@ -1,6 +1,6 @@
 
 	</td>
-    <td valign=top>		
+    <td valign=top>		<!-- right side blocks -->
 <?
 	// render right side blocks
 	$dir=dirname(__FILE__)."/blocks";
@@ -33,16 +33,15 @@ function renderBlock($thisBlock) {
 	if (!$blockActive) return;
 	if ( !in_array($op,$blockShow) && count($blockShow) ) return;
 
-	if (!$blockwidth) $blockwidth=230;
+	if (!$blockwidth) $blockwidth=230;	
+
 	ob_start();
 
-
-//	openBox($blockTitle,$blockwidth);
 	open_box($blockTitle,$blockwidth,"icon_help.png");
 	require_once dirname(__FILE__)."/blocks/$thisBlock/index.php";
 	close_box();
-//	closeBox();
 	echo "<BR>";
+
 	$outRes = ob_get_contents();
 	ob_end_clean();
 	return $outRes ;

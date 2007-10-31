@@ -44,8 +44,8 @@
 		$newlang=$currentlang;
 		$inside_mod =1;
 		define('INSIDE_MOD',1);
-		require_once("mainfile.php");
-
+		require_once dirname(__FILE__)."/includes/mainfile.php";
+		require_once "language/lang-".$currentlang.".php";
 		// re-set $module_name;
 		$tmpDir=dirname(__FILE__);
 		$tmpParts=split("/",str_replace("\\","/",$tmpDir));

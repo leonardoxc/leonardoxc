@@ -12,7 +12,7 @@
 /************************************************************************/
 
  list($countriesCodes,$countriesNames)=getCountriesList();
- $rss_url_base="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/rss.php";
+ $rss_url_base="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/$moduleRelPath/rss.php";
 echo "<BR>";
  open_inner_table("Configure RSS Feed",700,"rss.gif"); echo "<tr><td>";
 ?>

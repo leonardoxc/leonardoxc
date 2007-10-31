@@ -19,6 +19,7 @@
 
 $phpver = phpversion();
 
+if (1) {
 
 if ($phpver >= '4.0.4pl1' && strstr($HTTP_USER_AGENT,'compatible')) {
     if (extension_loaded('zlib')) {
@@ -36,6 +37,7 @@ if ($phpver >= '4.0.4pl1' && strstr($HTTP_USER_AGENT,'compatible')) {
     }
 }
 
+}
 
 
 $phpver = explode(".", $phpver);
