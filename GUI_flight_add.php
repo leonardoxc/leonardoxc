@@ -122,7 +122,7 @@ function setValue(obj)
 		<? } ?></td>
     </tr>
 	
-	<? if ( in_array($userID,$admin_users)) { ?>
+	
     <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
       <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
@@ -163,6 +163,7 @@ function setValue(obj)
 			<? } ?>	
 				</td>
     </tr>
+	<? if ( in_array($userID,$admin_users)) { ?>
     <tr>
       <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
