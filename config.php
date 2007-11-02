@@ -29,8 +29,11 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // Our server ID -> usually 0 for non network operation
  $CONF_server_id=0;
  
+ // various display parameters
+ $CONF['display']['blocks']['right_side']=1;
+
  // if it is a phpbb module we can use our own template 
- // and not the onw of the forum 
+ // and not the one of the forum 
  $CONF_use_own_template=0;
  
  // for phpbb when  $CONF_use_own_template=1;
@@ -208,13 +211,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $airspaceTable		=  $CONF_tables_prefix."_airspace";
 
 
- $areasTable	=  $CONF_tables_prefix."_areas";
- $areasTakeoffsTable	=  $CONF_tables_prefix."_areas_takeoffs";
- $photosTable  	=	$CONF_tables_prefix."_photos";
+ $areasTable	=		$CONF_tables_prefix."_areas";
+ $areasTakeoffsTable=	$CONF_tables_prefix."_areas_takeoffs";
+ $photosTable  	=		$CONF_tables_prefix."_photos";
  
- $CONF_phpbb_realname_field="username";
- // if you are running phpbb2 with the realanme mod , uncomment this instead
-// $CONF_phpbb_realname_field="user_realname";
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
@@ -359,12 +359,17 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF_use_htc_ie_hack=1;
 
 
+
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
 
-if ($opMode==1 || $opMode==2 ) $CONF_mainfile="modules.php";
-else  $CONF_mainfile="index.php";
+  $CONF_abs_path=dirname(__FILE__);
+  // this loads predefined settings for userDB and  settings 
+  // to bridge to the users table of different forum/portal/cms systems
+  require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
+
 
 // detect if the installation in not on the root
 if (!$baseInstallationPathSet) {
@@ -397,13 +402,6 @@ $waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 $flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
-$CONF_abs_path=dirname(__FILE__);
-
-if ($opMode!=2 && $opMode!=3 ) {
-	function append_sid($a,$b="") {
-		return $a.$b;
-	}
-}
 
 function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	if ($varname=='day' || $varname=='month' || $varname=='year' ) {

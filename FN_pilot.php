@@ -15,7 +15,7 @@
 //------------------- PILOT RELATED FUNCTIONS ----------------------------
 function getPilotList($clubID=0) {
 	global $db;
-	global $flightsTable,$prefix;
+	global $flightsTable;
 	global	$clubsPilotsTable, $pilotsTable ;
 	global $nativeLanguage,$currentlang,$opMode;
 	
@@ -25,13 +25,7 @@ function getPilotList($clubID=0) {
   			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID  
 					AND $clubsPilotsTable.pilotServerID=$pilotsTable.serverID AND $clubsPilotsTable.clubID=$clubID";
 	} else {
-/*
-	  	$query="SELECT DISTINCT userID, ".(($opMode==1)?"name,":"")." username FROM $flightsTable,".$prefix."_users 
-			 WHERE ".$flightsTable.".userID=".$prefix."_users.user_id ".
-			""; //"ORDER BY ".(($opMode==1)?"name,":"")." username ";
-*/
 	  	$query="SELECT DISTINCT userID, userServerID FROM $flightsTable ";
-
 	}
 	
 	// echo $query;
@@ -91,10 +85,10 @@ function transliterate($str,$enc) {
 }
 
 function getPilotInfo($pilotIDview,$serverID) {
-	global $db,$pilotsTable,$prefix,$opMode;
+	global $db,$pilotsTable,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names,$PREFS;
+	global $CONF_use_leonardo_names,$PREFS,$CONF;
 	
 	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID 
 			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
@@ -151,7 +145,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 	} 
 
     if ($opMode==1) { // phpNuke 
-		$res= $db->sql_query("SELECT username,name FROM ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
 			if ($currentlang!=$nativeLanguage) { 
@@ -163,10 +157,10 @@ function getPilotInfo($pilotIDview,$serverID) {
 			$str=$realName;		
 		}		
 	} else { // phpBB
-		$res= $db->sql_query("SELECT $CONF_phpbb_realname_field FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
-			$realName=$row["$CONF_phpbb_realname_field"];
+			$realName=$row[$CONF['userdb']['user_real_name_field']];
 
 			$str=$realName;			
 			// we have some info on how to tranlitarate
@@ -202,10 +196,10 @@ function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 }
 
 function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExternalIndicator=1) {
-	global $db,$pilotsTable,$prefix,$opMode;
+	global $db,$pilotsTable,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_phpbb_realname_field,$CONF_use_leonardo_names,$PREFS;
+	global $CONF_use_leonardo_names,$PREFS,$CONF;
 
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
@@ -260,7 +254,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	} 
 
     if ($opMode==1) { // phpNuke 
-		$res= $db->sql_query("SELECT username,name FROM ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
 			if ($currentlang!=$nativeLanguage) { 
@@ -272,10 +266,10 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			$str=$realName;		
 		}		
 	} else { // phpBB
-		$res= $db->sql_query("SELECT $CONF_phpbb_realname_field FROM  ".$prefix."_users WHERE user_id=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
-			$realName=$row["$CONF_phpbb_realname_field"];
+			$realName=$row[$CONF['userdb']['user_real_name_field']];
 
 			$str=$realName;			
 			// we have some info on how to tranlitarate

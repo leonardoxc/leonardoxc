@@ -16,7 +16,8 @@
   }
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
 
-  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=user_id" );
+  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
+						" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'] );
 
   if($res <= 0){
      echo("<H3>Error in pilot query</H3>\n");
@@ -26,7 +27,9 @@
 	 //echo("<H3>No info for this pilot</H3>\n");
 	 //return;
   	// $res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview );
-    $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=user_id" );
+	$res= $db->sql_query("SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
+						" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'] );
+
 
   }
   

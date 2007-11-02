@@ -69,10 +69,19 @@
 	 } else {
 		//if ($CONF_use_leonardo_names) $sortOrderFinal='username';
 		//else $sortOrderFinal=$CONF_phpbb_realname_field;
-		 $sortOrderFinal=$CONF_phpbb_realname_field;
+		 $sortOrderFinal=$CONF['userdb']['user_real_name_field'];
+
+		if ($PREFS->nameOrder==1) $sortOrderFinal="CONCAT(FirstName,' ',LastName) ";
+		else $sortOrderFinal="CONCAT(LastName,' ',FirstName) ";
 	 }
-	 $where_clause2="  AND ".$flightsTable.".userID=".$prefix."_users.user_id ";
-	 $extra_table_str2=",".$prefix."_users";
+
+	 if ( $CONF['userdb']['use_leonardo_real_names'] ) { // use the leonardo_pilots table 
+		 $where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID ";
+		 $extra_table_str2=",$pilotsTable";
+	 } else {
+		 $where_clause2="  AND ".$flightsTable.".userID=".$CONF['userdb']['users_table'].".".$CONF['userdb']['user_id_field'] ;
+		 $extra_table_str2=",".$CONF['userdb']['users_table'];
+	 }
 
      $ord="ASC";
   }  else if ($sortOrder=="dateAdded") { 
@@ -145,7 +154,7 @@
 		FROM $flightsTable $extra_table_str $extra_table_str2
 		WHERE (1=1) $where_clause $where_clause2
 		ORDER BY $sortOrderFinal $ord LIMIT $startNum,".$PREFS->itemsPerPage ;
-   //  echo $query;
+    //  echo $query;
   $res= $db->sql_query($query);
 
   if($res <= 0){

@@ -1,21 +1,5 @@
 <?php
 
-/************************************************************************/
-/* PHP-NUKE: Advanced Content Management System                         */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2002 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
-/* NSN Groups                                           */
-/* By: NukeScripts Network (webmaster@nukescripts.net)  */
-/* http://www.nukescripts.net                           */
-/* Copyright © 2000-2004 by NukeScripts Network         */
-/********************************************************/
 
 $phpver = phpversion();
 
@@ -78,7 +62,15 @@ if (eregi("mainfile.php",$PHP_SELF)) {
     die();
 }
 
-require_once dirname(__FILE__)."/db.php";
+
+require_once dirname(__FILE__)."/mysql.php";
+// Make the database connection.
+$db = new sql_db($dbhost, $dbuser, $dbpasswd, $dbname, false);
+if(!$db->db_connect_id) {
+   echo "Could not connect to the database<br>";
+   exit;
+}
+
 require_once dirname(__FILE__)."/sessions.php";
 require_once dirname(__FILE__)."/functions.php";
 require_once dirname(__FILE__)."/common.php";
@@ -99,7 +91,7 @@ if (isset($_SESSION['user_id'])) {
 
 
 function is_user($user) {
-    global $prefix, $db, $user_prefix;
+    global $db, $user_prefix,$CONF;
     if(!is_array($user)) {
         $user = base64_decode($user);
         $user = explode(":", $user);
@@ -110,7 +102,7 @@ function is_user($user) {
         $pwd = "$user[2]";
     }
     if ($uid != "" AND $pwd != "") {
-        $sql = "SELECT user_password FROM ".$user_prefix."_users WHERE user_id='$uid'";
+        $sql = "SELECT ".$CONF['userdb']['password_field']." FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."='$uid'";
         $result = $db->sql_query($sql);
         $row = $db->sql_fetchrow($result);
         $pass = $row[user_password];
@@ -122,11 +114,12 @@ function is_user($user) {
 }
 
 function cookiedecode($user) {
-    global $cookie, $prefix, $db, $user_prefix;
+    global $cookie,  $db, $user_prefix;
     $user = base64_decode($user);
     $cookie = explode(":", $user);
 
-    $sql = "SELECT user_password FROM ".$user_prefix."_users WHERE username='$cookie[1]'";
+    // $sql = "SELECT user_password FROM ".$user_prefix."_users WHERE username='$cookie[1]'";
+    $sql = "SELECT ".$CONF['userdb']['password_field']." FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['username_field']."='$cookie[1]'";
 
 	// echo $sql;
     $result = $db->sql_query($sql);

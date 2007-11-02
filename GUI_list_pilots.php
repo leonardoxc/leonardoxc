@@ -157,8 +157,9 @@
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcPoints, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
-        . ' FROM  '.$flightsTable.', '.$prefix.'_users' .$extra_table_str
-        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.userServerID AND '.$flightsTable.'.userID = '.$prefix.'_users.user_id '.$where_clause
+        . ' FROM  '.$flightsTable.', '.$CONF['userdb']['users_table'].' '.$extra_table_str
+        . ' WHERE private=0  AND '.$pilotsTable.'.serverID= '.$flightsTable.'.userServerID AND '
+		. $flightsTable.'.userID = '.$CONF['userdb']['users_table'].'.'.$CONF['userdb']['user_id_field'].' '.$where_clause
         . ' GROUP BY '.$flightsTable.'.userServerID , userID  '
         . ' ORDER BY '.$sortOrderFinal .' '.$ord.' LIMIT '.$startNum.','.$PREFS->itemsPerPage.' ';
 }	

@@ -202,8 +202,9 @@
 			// echo "$field : ".$FL_FORM[$field]."<BR>";
 		}
 
-		$sql = "SELECT user_id, username, user_password
-			    FROM ".$prefix."_users	WHERE username = '" . str_replace("\\'", "''", $FL_FORM["username"] ). "'";
+		$sql = "SELECT ".$CONF['userdb']['user_id_field'].", ".$CONF['userdb']['username_field'].", ".$CONF['userdb']['password_field'].
+			" FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['username_field']." = '" . str_replace("\\'", "''", $FL_FORM["username"] ). "'";
+
 		if ( !($result = $db->sql_query($sql)) )
 		{
 			$XML_str.="<returnCode>-20</returnCode>\n";

@@ -167,11 +167,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	<ul>
 		<? if ( $CONF_use_own_template ) { // we must put register/login menut items ?>
 			<? 	if ( $userID <=0 ) { 
-					if ($CONF_use_own_login) $login_url="?name=$module_name&op=login";
+					if ($CONF_use_own_login) $login_url=str_replace("%module_name%",$module_name,$CONF['bridge']['login_url']);
 					else $login_url="login.php?redirect=modules.php&name=$module_name";
+
+					$register_url=str_replace("%module_name%",$module_name,$CONF['bridge']['register_url']);
+
 			?>
 			<li><a href="<?=$login_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>			
-			<li><a href="profile.php?mode=register"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
+			<li><a href="<?=$register_url?>"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
 			<? } else { // user alredy logged in  
 					if ($CONF_use_own_login) $logout_url="?name=$module_name&op=login&logout=true";
 					else $logout_url="login.php?logout=true";

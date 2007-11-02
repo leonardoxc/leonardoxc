@@ -125,7 +125,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
    global $db,$Theme, $module_name, $takeoffRadious, $userID, $moduleRelPath;
    global $admin_users, $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
-   global $currentlang,$nativeLanguage,$opMode, $countries;
+   global $currentlang,$nativeLanguage, $countries;
 	 
    
    $headerSelectedBgColor="#F2BC66";

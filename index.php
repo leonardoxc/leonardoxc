@@ -32,13 +32,9 @@ $moduleRelPath="modules/".$module_name;
 
 
 require_once dirname(__FILE__)."/config.php";
-if ($opMode==3) require_once  dirname(__FILE__)."/includes/mainfile.php";
-
 
 setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
-
-
 
 if (!eregi("modules.php", $_SERVER['PHP_SELF']) && ($opMode==1 || $opMode==2) ) {
     die ("You can't access this file directly...");
@@ -72,18 +68,8 @@ if ($opMode==1 ) { // phpnuke
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
 } else if ($opMode==3 ) { // standalone
-
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
-	// print_r($_REQUEST);
-/*
-	$user = $_REQUEST['user'];
-	if ( is_user($user)) {
-		cookiedecode($user);
-		$userID=$cookie[0];
-		$userName=$cookie[1];
-	}
-*/
 }
 
 $_SESSION['userID']=$userID;
@@ -141,6 +127,7 @@ if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 if ($op=="login") {  // do some output buffering so that cookies can be set later on
 	ob_start();
 }
+
 if ($opMode==3)  // stand alone
 	require_once dirname(__FILE__)."/GUI_header.php";
 
@@ -184,12 +171,14 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
 //---------------------------------------------
 
 if ($op=="users") { 
-	if ($opMode==3) require $moduleRelPath."/USERS_index.php";
+	if ($opMode==3 ) require $moduleRelPath."/USERS_index.php";
 } else if ($op=="login") { 
 	$noFooterMenu=1;
 	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_login.php";
 } else if ($op=="register") { 
-	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_register.php";
+	echo "<BR><BR>Parameter Not used !!<BR>";
+	// Not used 
+	//	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_register.php";
 } else if ($op=="index_full") { 
 	require $moduleRelPath."/GUI_index_full.php";
 // Clubs - areas admin

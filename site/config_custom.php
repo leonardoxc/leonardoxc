@@ -17,10 +17,15 @@
  // Our server ID -> usually 0 for non network operation
  $CONF_server_id=99;
  
+ // various display parameters
+ $CONF['display']['blocks']['right_side']=1;
+
+ 
  // if it is a phpbb module we can use our own template 
  // and not the onw of the forum 
  $CONF_use_own_template=1;
  
+
  // for phpbb when  $CONF_use_own_template=1;
  $CONF_use_own_login=1;
  
@@ -94,10 +99,6 @@
  // set $scoringServerActive=0 to disable the scoring.
  $enablePrivateFlights=1;
 
- $CONF_phpbb_realname_field="username";
- // if you are running phpbb2 with the realanme mod , uncomment this instead
- // $CONF_phpbb_realname_field="user_realname";
- 
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
  $minMrSidResolution=28.5; // m/pixel
@@ -247,7 +248,7 @@ FOR home->
 
 */
 
-// SEASON MOD
+
 $CONF_MENU['main_menu']['bottom']=array(
 		array('type'=>'spacer','extra_class'=>'long'),
 		array('name'=>'Instructions',
@@ -257,7 +258,9 @@ $CONF_MENU['main_menu']['bottom']=array(
 		)
 );
 
-	
+
+// SEASON MOD
+
 	$CONF['years']=array(
 		'use_calendar_years'=>1,
 		'start_year'=>2006,

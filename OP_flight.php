@@ -136,9 +136,9 @@ function flights_submit($args) {
 	$comments=$args[7];
 	$glider=$args[8];
 
-	global $db,$prefix;
-	$sql = "SELECT user_id, username, user_password 
-			FROM ".$prefix."_users	WHERE username = '$username'";
+	global $db,$CONF;
+	$sql = "SELECT ".$CONF['userdb']['user_id_field'].", ".$CONF['userdb']['username_field'].", ".$CONF['userdb']['password_field'].
+			" FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['username_field']." = '$username'";
 	if ( !($result = $db->sql_query($sql)) ) {
 		return  new IXR_Error(200, "Error in obtaining userdata for $username");
 	}

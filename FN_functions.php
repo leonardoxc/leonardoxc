@@ -446,7 +446,7 @@ function getBrowser() {
 	}
 	
 	function getRelMainFileName() {
-		global $baseInstallationPath, $module_name, $opMode,$CONF_mainfile;
+		global $baseInstallationPath, $module_name, $CONF_mainfile;
 		return "/$baseInstallationPath/$CONF_mainfile?name=$module_name";
 	}
 

@@ -124,7 +124,7 @@
     echo "<div align=center>"._Your_profile_has_been_updated."<br></div>";
   }
   
-  $query_sel="SELECT * FROM $pilotsTable, ".$prefix."_users WHERE pilotID=".$pilotIDview ." AND pilotID=user_id" ;
+  $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
   $res= $db->sql_query($query_sel);
 
   if($res <= 0){

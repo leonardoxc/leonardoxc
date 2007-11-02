@@ -45,8 +45,9 @@
 	$user=str_replace("\\'", "''", $_POST['user'] );
 	$pass=str_replace("\\'", "''", $_POST['pass'] );
 
-	$sql = "SELECT user_id, username, user_password
-			FROM ".$prefix."_users	WHERE username = '$user'";
+	$sql = "SELECT ".$CONF['userdb']['user_id_field'].", ".$CONF['userdb']['username_field'].", ".$CONF['userdb']['password_field'].
+			" FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['username_field']." = '$user'";
+
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		echo "Invalid user data<BR>";

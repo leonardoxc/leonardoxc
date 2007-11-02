@@ -2170,7 +2170,7 @@ $kml_file_contents=
 	}
 
 	function getFlightFromDB($flightID) {
-	  global $db,$prefix,$CONF_photosPerFlight;
+	  global $db,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
 	  

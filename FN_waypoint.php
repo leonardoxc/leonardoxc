@@ -14,7 +14,7 @@
 
 function getTakeoffsCountryContinent() {
 	global $db;
-	global $flightsTable,$waypointsTable,$prefix;
+	global $flightsTable,$waypointsTable;
 	require_once dirname(__FILE__)."/FN_areas.php";
 
   	$query="SELECT DISTINCT takeoffID, $waypointsTable.countryCode 
@@ -40,7 +40,7 @@ function getTakeoffsCountryContinent() {
 
 function getTakeoffList() {
 	global $db;
-	global $flightsTable,$prefix;
+	global $flightsTable;
 
   	$query="SELECT DISTINCT takeoffID FROM $flightsTable WHERE takeoffID<>0";
 	// echo $query;
@@ -67,7 +67,7 @@ function getTakeoffList() {
 
 function getAreasTakeoffs($areaID) {
 	global $db;
-	global $waypointsTable ,$areasTakeoffsTable,$prefix;
+	global $waypointsTable ,$areasTakeoffsTable;
 
   	$query="SELECT * FROM $waypointsTable,$areasTakeoffsTable	
 		WHERE $areasTakeoffsTable.takeoffID = $waypointsTable.ID AND $areasTakeoffsTable.areaID=$areaID";
@@ -96,7 +96,7 @@ function getAreasTakeoffs($areaID) {
 
 function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	global $db;
-	global $flightsTable,$waypointsTable,$prefix,$moduleRelPath,$countries;	
+	global $flightsTable,$waypointsTable,$moduleRelPath,$countries;	
 	global $clubsList;
 
 	$where_clause="";
@@ -177,7 +177,7 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 }
 
 function getWaypointFull($ID) {
-	global $db,$waypointsTable,$prefix,$opMode;
+	global $db,$waypointsTable;
 	global $CONFIG_forceIntl;
 
 	$query="SELECT * from $waypointsTable WHERE ID=".$ID;
@@ -191,7 +191,7 @@ function getWaypointFull($ID) {
 }
 
 function getWaypointName($ID,$forceIntl=-1,$countryFirst=0) {
-	global $db,$waypointsTable,$prefix,$opMode;
+	global $db,$waypointsTable;
 	global $CONFIG_forceIntl;
 
     if ($forceIntl==-1) $forceIntl=$CONFIG_forceIntl	;
