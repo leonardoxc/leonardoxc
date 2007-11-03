@@ -21,7 +21,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 // 2 = phbb2 module
 // 3 = standalone -- still work in progress
  $opMode= 2; 
- require_once dirname(__FILE__)."/site/config_op_mode.php";
+ require dirname(__FILE__)."/site/config_op_mode.php";
   
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;

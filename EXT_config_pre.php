@@ -18,15 +18,17 @@
 	$moduleAbsPath=dirname(__FILE__);
 	$moduleRelPath=".";
 	
-	$baseInstallationPath="";
-	$baseInstallationPathSet=1;
-	$parts=explode("/",$_SERVER['REQUEST_URI']);
-
-	if ( count($parts)>1 )  {
-		for($i=1;$i<count($parts);$i++) {
-		   if ($parts[$i-1]=="modules") break;
-		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
+    require dirname(__FILE__)."/site/config_op_mode.php";
+	if (!$baseInstallationPathSet) {
+		$baseInstallationPath="";
+		$baseInstallationPathSet=1;
+		$parts=explode("/",$_SERVER['REQUEST_URI']);
+	
+		if ( count($parts)>1 )  {
+			for($i=1;$i<count($parts);$i++) {
+			   // if ($parts[$i-1]=="modules") break;
+			   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
+			}
 		}
 	}
-
 ?>
