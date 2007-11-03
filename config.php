@@ -385,12 +385,16 @@ if (!$baseInstallationPathSet) {
 if (!isset($module_name))  {
 	if (isset($_GET['name'])) $module_name=makeSane($_GET['name']);
 	else $module_name="leonardo";
-
-	$moduleAbsPath=dirname(__FILE__);
+	
 	$moduleRelPath=moduleRelPath();
 }
 
+$moduleAbsPath=dirname(__FILE__);
+
+
 if ($opMode==3 || $opMode==4) $moduleRelPath="./";
+
+setModuleArg();
 
 $flightsRelPath="flights";
 $waypointsRelPath="waypoints";

@@ -45,7 +45,7 @@ if ( $userdata['session_logged_in'] )
 	if (empty($leonardo_header)) 
 		$u_login_logout = 'login.'.$phpEx.'?logout=true&amp;sid=' . $userdata['session_id'];
 	else 
-		$u_login_logout = 'modules.php?name=leonardo&op=login&logout=true&amp;sid=' . $userdata['session_id'];		
+		$u_login_logout = CONF_MODULE_ARG.'&op=login&logout=true&amp;sid=' . $userdata['session_id'];		
 	$l_login_logout = $lang['Logout'] . ' [ ' . $userdata['username'] . ' ]';
 }
 else
@@ -53,7 +53,7 @@ else
 	if (empty($leonardo_header)) 
 		$u_login_logout = 'login.'.$phpEx;
 	else
-		$u_login_logout = 'modules.php?name=leonardo&op=login';			
+		$u_login_logout = CONF_MODULE_ARG.'&op=login';			
 	$l_login_logout = $lang['Login']; 
 }
 

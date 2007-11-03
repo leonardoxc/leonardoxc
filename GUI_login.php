@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.7 2007/10/31 15:33:57 manolis Exp $
+ *   $Id: GUI_login.php,v 1.8 2007/11/03 22:43:36 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -83,7 +83,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		{
 			if( $row['user_level'] != ADMIN && $board_config['board_disable'] )
 			{
-				redirect(append_sid($CONF_mainfile."?name=$module_name", true));
+				redirect(append_sid($CONF_mainfile."".CONF_MODULE_ARG."", true));
 			}
 			else
 			{
@@ -96,7 +96,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 
 					if( $session_id )
 					{
-						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : $CONF_mainfile."?name=$module_name&op=pilot_profile&pilotIDview=".$row['user_id'];
+						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : 
+								$CONF_mainfile.CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$row['user_id'];
 												
 						?>
 						<script language="javascript">window.location="<?=$url?>"; </script>
@@ -122,8 +123,9 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 						'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 					);
 
-					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"?name=$module_name&op=login\">", '</a>') .
-					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="?name='.$module_name.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".
+						CONF_MODULE_ARG."&op=login\">", '</a>') .
+					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.CONF_MODULE_ARG.'&op='.$CONF_main_page.'">', '</a>')."</div>";
 					echo "$message";
 				}
 			}
@@ -143,8 +145,9 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 			);
 
 //			$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
-			$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"?name=$module_name&op=login\">", '</a>') .
-			 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="?name='.$module_name.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+			$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".
+				CONF_MODULE_ARG."&op=login\">", '</a>') .
+			 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.CONF_MODULE_ARG.'&op='.$CONF_main_page.'">', '</a>')."</div>";
 			echo "$message";
 			//message_die(GENERAL_MESSAGE, $message);
 		}
@@ -167,8 +170,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		}
 		else
 		{
-			$url="$CONF_mainfile?name=$module_name&op=$CONF_main_page";
-			// redirect(append_sid("CONF_mainfile?name=$module_name&op=$CONF_main_page", true));
+			$url="$CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
+			// redirect(append_sid("CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page", true));
 			?>
 			<script language="javascript">window.location="<?=$url?>"; </script>
 			<?
@@ -176,7 +179,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 	}
 	else
 	{
-		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "CONF_mainfile?name=$module_name&op=$CONF_main_page";
+		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
 		redirect(append_sid($url, true));
 	}
 }
@@ -259,8 +262,8 @@ else
 	}
 	else
 	{
-			$url="$CONF_mainfile?name=$module_name&op=$CONF_main_page";
-			// redirect(append_sid("CONF_mainfile?name=$module_name&op=$CONF_main_page", true));
+			$url="$CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
+			// redirect(append_sid("CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page", true));
 			?>
 			<script language="javascript">window.location="<?=$url?>"; </script>
 			<?

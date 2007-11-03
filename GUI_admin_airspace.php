@@ -79,8 +79,8 @@
 ?>
  <table class='simpleTable' width="100%" border=0 cellpadding="2" cellspacing="0">
    <tr>
-     <td colspan="3"><strong>Actions :: <a href="?name=<?=$module_name?>&op=admin_airspace&act=delete_all">Delete all airspace entries in the DB</a> :: 
-	  <a href="?name=<?=$module_name?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong></td>
+     <td colspan="3"><strong>Actions :: <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=delete_all">Delete all airspace entries in the DB</a> :: 
+	  <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong></td>
    </tr>
    <tr>
      <td colspan="3">&nbsp;</td>
@@ -96,7 +96,7 @@
 		$fname="$airspaceDir/$entryname";
 		if( ! is_dir($fname) && ( strtolower(substr($fname,-4)) == ".txt" ) ){		
 		  echo  '<tr>';
-		  echo "<td>$entryname</td><td><a href='?name=$module_name&op=admin_airspace&importFile=$entryname'>Update / Import airspace into DB</a></td><td>&nbsp;</td>";
+		  echo "<td>$entryname</td><td><a href='".CONF_MODULE_ARG."&op=admin_airspace&importFile=$entryname'>Update / Import airspace into DB</a></td><td>&nbsp;</td>";
 		  echo '</tr>';
 		}
 	

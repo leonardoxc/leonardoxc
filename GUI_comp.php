@@ -66,7 +66,7 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
   $endNum=$startNum+$CONF_compItemsPerPage;
 	
-  $legendRight=generate_flights_pagination("?name=$module_name&op=comp&rank=$rank&subrank=$subrank", 
+  $legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=comp&rank=$rank&subrank=$subrank", 
 			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
 			
 
@@ -95,7 +95,7 @@ foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
 		
 	if ($subrankID==$subrank) $style ="style='background-color:#E1E6F3;' ";
 	else $style="";
-	echo " <div class='menu1' $style ><a href='?name=$module_name&op=comp&rank=$rank&subrank=$subrankID'>$subrankTitle</a></div>";	
+	echo " <div class='menu1' $style ><a href='".CONF_MODULE_ARG."&op=comp&rank=$rank&subrank=$subrankID'>$subrankTitle</a></div>";	
 }
 echo "<BR><BR>";
 
@@ -207,7 +207,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 			$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
-			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
+			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
 			else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;
@@ -317,7 +317,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 				
 				// $descr=_PILOT.": $pilotName, "._GLIDER.": $glider, "._COUNTRY.": $country";
 				$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
-				if ($val) echo "<TD width='33%'><a href='?name=$module_name&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
+				if ($val) echo "<TD width='33%'><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
 				else echo "<TD width='33%'>".$outVal."</TD>"; 	 		  
 				$k++;
 				if ($k>=$countHowManyFlights) break;

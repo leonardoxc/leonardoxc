@@ -42,7 +42,7 @@ if ( $_REQUEST["addTakeoffForm"] ) { // form submitted
  
  open_inner_table("Administer Area (group of takeoffs)",700); echo "<tr><td>";
  if ($_REQUEST["FILTER_dateType"])  { 
-	echo "<center><a href='?name=".$module_name."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
+	echo "<center><a href='".CONF_MODULE_ARG."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
 	// echo "<a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
  }
 

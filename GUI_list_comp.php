@@ -152,7 +152,7 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
   $endNum=$startNum+$CONF_compItemsPerPage;
 	
-  $legendRight=generate_flights_pagination("?name=$module_name&op=competition$query_str", 
+  $legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=competition$query_str", 
 			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
 			
 
@@ -283,7 +283,7 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
   $endNum=$startNum+$CONF_compItemsPerPage;
 	
-  $legendRight=generate_flights_pagination("?name=$module_name&op=competition$query_str", 
+  $legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=competition$query_str", 
 			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
 			
 
@@ -333,7 +333,7 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 		if ($subcatID==$leagueCategory) $style ="style='background-color:#E1E6F3;' ";
 		else $style="";
 
-		echo " <div class='menu1' $style ><a href='?name=$module_name&op=competition&comp=$subcatID'>$subcatTitle</a></div>";	
+		echo " <div class='menu1' $style ><a href='".CONF_MODULE_ARG."&op=competition&comp=$subcatID'>$subcatTitle</a></div>";	
 	}
 	echo "<BR>";
 }
@@ -434,7 +434,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
 			// $descr="flight $flightID";
 			// alt='$descr' title='$descr'
-			if ($val) echo "<TD><a href='?name=$module_name&op=show_flight&flightID=".$flightID."' >".$outVal."</a></TD>"; 	 		  
+			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' >".$outVal."</a></TD>"; 	 		  
 			else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;

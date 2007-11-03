@@ -113,10 +113,10 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 
   if ($sortOrder==$fieldName) { 
    echo "<td $widthStr  class='SortHeader activeSortHeader $alignClass'>
-			<a href='?name=$module_name&op=admin_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
+			<a href='".CONF_MODULE_ARG."&op=admin_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
 		</td>";
   } else {  
-	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='?name=$module_name&op=admin_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
+	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='".CONF_MODULE_ARG."&op=admin_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
    } 
 }
 
@@ -179,8 +179,8 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 			echo "</td>\n";
 			
 			echo "<td>";
-					echo "<a href='?name=$module_name&op=show_waypoint&waypointIDview=".takeoffID."'>Display</a> :: ";
-					echo "<a href='?name=$module_name&op=list_flights&takeoffID=$takeoffID&year=0&month=0&pilotID=0&country=0&cat=0'>Flights</a> :: ";
+					echo "<a href='".CONF_MODULE_ARG."&op=show_waypoint&waypointIDview=".takeoffID."'>Display</a> :: ";
+					echo "<a href='".CONF_MODULE_ARG."&op=list_flights&takeoffID=$takeoffID&year=0&month=0&pilotID=0&country=0&cat=0'>Flights</a> :: ";
 					echo "<a href='javascript:edit_takeoff($takeoffID)'>Edit</a> :: ";		
 					echo "<a href='javascript:delete_takeoff($takeoffID)'>Del</a>";		
 			echo "</td>\n";

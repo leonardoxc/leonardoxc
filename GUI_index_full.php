@@ -50,7 +50,7 @@
 
 		$Ltemplate->assign_block_vars('tk', array(	 	
 			'link'=> "javascript:jumpToTakeoffs('".$countriesCodes[$i]."')",
-//			'link'=>'?name='.$module_name.'&op=list_takeoffs&year=0&takeoffID=0&pilotID=0&country='.$countriesCodes[$i],
+//			'link'=> CONF_MODULE_ARG.'&op=list_takeoffs&year=0&takeoffID=0&pilotID=0&country='.$countriesCodes[$i],
 			'name'=>$countryName			
 		));
 		$i++;
@@ -104,10 +104,10 @@ $tkStr.='
 	}
 	if ($userID>0) {
 		$Ltemplate->assign_block_vars('myMenu', array(	 	
-			'LINK_MY_FLIGHTS' =>"?name=$module_name&op=list_flights&pilotID=$userID&takeoffID=0&country=0&year=0&month=0",
-			'LINK_MY_PROFILE' =>"?name=$module_name&op=pilot_profile&pilotIDview=$userID",
-			'LINK_MY_STATS'   =>"?name=$module_name&op=pilot_profile_stats&pilotIDview=$userID",
-			'LINK_MY_SETTINGS'=>"?name=$module_name&op=user_prefs",
+			'LINK_MY_FLIGHTS' =>"".CONF_MODULE_ARG."&op=list_flights&pilotID=$userID&takeoffID=0&country=0&year=0&month=0",
+			'LINK_MY_PROFILE' =>"".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=$userID",
+			'LINK_MY_STATS'   =>"".CONF_MODULE_ARG."&op=pilot_profile_stats&pilotIDview=$userID",
+			'LINK_MY_SETTINGS'=>"".CONF_MODULE_ARG."&op=user_prefs",
 		));
 	}
 	$Ltemplate->assign_vars( array(	 
@@ -117,10 +117,10 @@ $tkStr.='
 		'YEARS_OPTION'=>$sel_years,
 		'CATS_OPTION'=>$sel_cat,
 
-		'LINK_SITES_GUIDE'=>"?name=$module_name&op=sites",
-		'LINK_SHOW_LAST_ADDED'=>"?name=$module_name&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0",
-		'LINK_SHOW_PILOTS'    =>"?name=$module_name&op=list_pilots&comp=0",
-		'LINK_SUBMIT_FLIGHT'  =>"?name=$module_name&op=add_flight",
+		'LINK_SITES_GUIDE'=>"".CONF_MODULE_ARG."&op=sites",
+		'LINK_SHOW_LAST_ADDED'=>"".CONF_MODULE_ARG."&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0",
+		'LINK_SHOW_PILOTS'    =>"".CONF_MODULE_ARG."&op=list_pilots&comp=0",
+		'LINK_SUBMIT_FLIGHT'  =>"".CONF_MODULE_ARG."&op=add_flight",
 
 		'SHOW_LEAGUE_URL'=> getRelMainFileName()."&op=competition",
 		'SHOW_FLIGHTS_URL'=> getRelMainFileName()."&op=list_flights&takeoffID=0&pilotID=0",

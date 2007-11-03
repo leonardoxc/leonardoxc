@@ -21,7 +21,10 @@ sory.title {
 }
 
 .main_text { color: #003366; }
-.main_text a:link, a:active, a:visited , a:hover { text-decoration:underline; }
+.main_text a:link, a:active, a:visited , a:hover {
+ text-decoration:underline;
+ font-weight:normal;
+}
 
 
 /* various styles for time,distance,score etc...
@@ -201,6 +204,7 @@ The main table that holds the list of flights/pilots/takeoffs
 	width:760px;
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
+	font-weight:normal;
 	color: #003366;
 	border:1px;
 	border-style:solid;
@@ -210,7 +214,9 @@ The main table that holds the list of flights/pilots/takeoffs
 }
 	
 .listTable a, .listTable a:visited  {
+
 	color:#333366;
+	font-weight:normal;
 	text-decoration:underline;
 }
 

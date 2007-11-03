@@ -10,6 +10,11 @@ if ( $_SERVER['SERVER_NAME'] =="pgforum.home" ) {
 	$dbname = 'discuz';
 	$dbuser = 'root';
 	$dbpasswd = '321ox';
+} else if ( $_SERVER['SERVER_NAME'] =='joomla.home'  ) {
+	$dbhost = 'localhost';
+	$dbname = 'joomla';
+	$dbuser = 'root';
+	$dbpasswd = '321ox';
 } else {
 	$dbhost = 'localhost';
 	$dbname = 'paraglidingforum';

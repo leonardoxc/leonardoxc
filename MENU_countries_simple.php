@@ -32,7 +32,7 @@
 <tr>
 	<td colspan=<?=$num_of_cols ?> class="dropDownBoxH2">
 		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&country=0'><?=_Display_ALL?></a>
+			<a style='text-align:center; text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&country=0'><?=_Display_ALL?></a>
 		</div>
 	</td>
 </tr>
@@ -59,9 +59,9 @@ if ($countriesNum) {
 			if ($i<$countriesNum) {
 				$countryName=$countriesNames[$i];
 				if ($currentlang=='hebrew')
-					echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>(".$countriesFlightsNum[$i].") $countryName</a>\n";
+					echo "<a href='".CONF_MODULE_ARG."&country=".$countriesCodes[$i]."'>(".$countriesFlightsNum[$i].") $countryName</a>\n";
 				else
-					echo "<a href='?name=".$module_name."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>\n";
+					echo "<a href='".CONF_MODULE_ARG."&country=".$countriesCodes[$i]."'>$countryName (".$countriesFlightsNum[$i].")</a>\n";
 			}	 
 			else echo "&nbsp;";
 

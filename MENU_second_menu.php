@@ -68,7 +68,7 @@
 <div class="mainBox" align="left">  	
   	
 		<? if ($_SESSION["filter_clause"]) {  ?>
-   	    <div class="menu1" style="clear:none; float:left;" ><a href="?name=<?=$module_name?>&op=filter"><img 
+   	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=CONF_MODULE_ARG?>&op=filter"><img 
 		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
 		</div>
 		<? } ?>
@@ -97,7 +97,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLiStr="";
 
 	if (count($clubsList[$clubID]['gliderCat']) >1 ) {
-		$catLink="?name=".$module_name."&cat=0";
+		$catLink=CONF_MODULE_ARG."&cat=0";
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";	
@@ -106,7 +106,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	}
 	
 	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
-		  $catLink="?name=".$module_name."&cat=".$c_gliderCat;
+		  $catLink=CONF_MODULE_ARG."&cat=".$c_gliderCat;
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 		  
@@ -120,13 +120,13 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	if ( count($CONF_glider_types) > 1 ) { 
 		$catLiStr="";
 	
-		$catLink="?name=".$module_name."&cat=0";
+		$catLink=CONF_MODULE_ARG."&cat=0";
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
 	
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
-		  $catLink="?name=".$module_name."&cat=".$tmpcat;
+		  $catLink=CONF_MODULE_ARG."&cat=".$tmpcat;
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 		  
@@ -204,9 +204,9 @@ if (! $dontShowCountriesSelection ) {
 	<ul>
   	    <?
 			$brandsListFilter=brands::getBrandsList(1);
-			echo "<li><a href='?name=$module_name&brandID=0'>"._All_Brands."</a></li>";
+			echo "<li><a href='".CONF_MODULE_ARG."&brandID=0'>"._All_Brands."</a></li>";
   	    	foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
-				echo "<li><a href='?name=$module_name&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
+				echo "<li><a href='".CONF_MODULE_ARG."&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
 			}
   	    ?>
 
@@ -222,7 +222,7 @@ if (! $dontShowCountriesSelection ) {
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='?name=$module_name&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".CONF_MODULE_ARG."&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    <? } ?>
@@ -232,7 +232,7 @@ if (! $dontShowCountriesSelection ) {
    	    <?
   	    	echo "<b>$pilotLegend</b>";
   	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='?name=$module_name&pilotID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".CONF_MODULE_ARG."&pilotID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>		
   	    <? } ?>
@@ -241,13 +241,13 @@ if (! $dontShowCountriesSelection ) {
    	    <?
   	    	echo "<b>$takeoffLegend</b>";
   	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='?name=$module_name&takeoffID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".CONF_MODULE_ARG."&takeoffID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
 		<? } ?>  	
   	    <div class="menu1" >
 		<? // display this url 	
-			$thisURL="?name=$module_name&op=$op";
+			$thisURL=CONF_MODULE_ARG."&op=$op";
 			if ($op=="comp") 
 				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
 			else

@@ -140,15 +140,15 @@
   $pilot = mysql_fetch_assoc($res);
   
   $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
-  $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='?name=".$module_name."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
+  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
   $legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
 /*  if ( $pilotIDview == $userID || in_array($userID,$admin_users) || in_array($userID,$mod_users)  ) 
-	  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
+	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
   else $legendRight.="";
 */ 
 ?>
-<form name=pilotProfile  enctype="multipart/form-data" method="POST" action="?name=<? echo $module_name ?>&op=pilot_profile_edit&pilotIDview=<? echo $pilotIDview?>" >
+<form name=pilotProfile  enctype="multipart/form-data" method="POST" action="<?=CONF_MODULE_ARG?>&op=pilot_profile_edit&pilotIDview=<? echo $pilotIDview?>" >
 <?
   open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=370 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
   

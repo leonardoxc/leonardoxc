@@ -446,10 +446,15 @@ function getBrowser() {
 	}
 	
 	function getRelMainFileName() {
-		global $baseInstallationPath, $module_name, $CONF_mainfile;
-		return "/$baseInstallationPath/$CONF_mainfile?name=$module_name";
+		global $baseInstallationPath, $module_name, $CONF_mainfile, $CONF_arg_name;		
+		return "/$baseInstallationPath/$CONF_mainfile?$CONF_arg_name=$module_name";
 	}
 
+	function getArgList($str) {
+		global  $module_name, $CONF_arg_name;		
+		return "?$CONF_arg_name=$module_name$str";	
+	}
+	
 	function getRelMainDir($noLeadingSlash=0,$noTrailingSlash=0) {
 		global $baseInstallationPath, $moduleRelPath;
 		

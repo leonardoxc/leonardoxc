@@ -42,48 +42,48 @@ function chmodDir($dir){
 
 echo "<br><BR>";
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names 
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names 
 where the local or english name is missing and put the existing name into the missing one <BR>i.e if the local name is missing the english/international name will be used as the local too. ";
-	if ($CONF_use_validation)	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
+	if ($CONF_use_validation)	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
 This is a *heavy* operation and will take long to complete<BR>It will check all unchecked flights for airspace violations";
-	if ($CONF_use_NAC)			echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
+	if ($CONF_use_NAC)			echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
 echo "</ul>";
 
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=importMaps'>Import Maps</a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=updateFilePerm'>Update file permissions</a>  ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=findMissingFiles'>Find missing IGC</a>  ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=importMaps'>Import Maps</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateFilePerm'>Update file permissions</a>  ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findMissingFiles'>Find missing IGC</a>  ";
 echo "</ul><br><br>";
 
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a> ";
 echo "</ul><br><br>";
 
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 echo "</ul><br>";
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=remakeLog'>Remake sync-log</a> ";
-echo "</ul><br>";
-
-echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=clearBatchBit'>Clean the batch bits for all flights</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=remakeLog'>Remake sync-log</a> ";
 echo "</ul><br>";
 
 echo "<ul>";
-//	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=glidersDetect'>Detect / Guess glider brands</a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands'>Detect / Guess glider brands</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=clearBatchBit'>Clean the batch bits for all flights</a> ";
+echo "</ul><br>";
+
+echo "<ul>";
+//	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=glidersDetect'>Detect / Guess glider brands</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
 echo "</ul><br>";
 
 
 
 echo "<ul>";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
-	echo "<li><a href='?name=".$module_name."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
 echo "</ul><br>";
 
     if ($admin_op=="findUnusedIGCfiles") {
@@ -430,8 +430,8 @@ echo "</ul><br>";
 					if ( strtolower(substr($entryname,-4))==".igc" ) {
 						$filename="$dir_last/$entryname";
 						$pilotID=$dir_parts[count($dir_parts)-1];
-						echo "<li> <a href='?name=$module_name&op=list_flights&pilotID=$pilotID&takeoffID=0&country=0&year=0&month=0'>USER</a> :: ". date ("Y/m/d H:i", filemtime("$dir/$entryname"))."&nbsp;<a href='modules/leonardo/".$filename."'>$filename</a> ::";
-						echo " <a href='?name=$module_name&op=addTestFlightFromURL&flightURL=".urlencode("http://".$_SERVER['HTTP_HOST']."/".$flightsWebPath."/".$dir_parts[count($dir_parts)-1]."/".$entryname)."'>Check it</a>";
+						echo "<li> <a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotID&takeoffID=0&country=0&year=0&month=0'>USER</a> :: ". date ("Y/m/d H:i", filemtime("$dir/$entryname"))."&nbsp;<a href='modules/leonardo/".$filename."'>$filename</a> ::";
+						echo " <a href='".CONF_MODULE_ARG."&op=addTestFlightFromURL&flightURL=".urlencode("http://".$_SERVER['HTTP_HOST']."/".$flightsWebPath."/".$dir_parts[count($dir_parts)-1]."/".$entryname)."'>Check it</a>";
 					}
 				}
 			}

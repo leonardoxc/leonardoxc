@@ -38,11 +38,11 @@
   $pilotName=getPilotRealName($pilotIDview,$serverID,1);
 
   $legend=_Pilot_Profile.": <b>$pilotName</b>";
-  $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
+  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
   if ( $pilotIDview == $userID || in_array($userID,$admin_users ) && $serverID==0  ) {
-	  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
-      if ($enableOLCsubmission) $legendRight.=" | <a href='?name=$module_name&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
+	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
+      if ($enableOLCsubmission) $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
   }
   else $legendRight.="";
   

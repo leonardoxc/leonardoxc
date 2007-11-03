@@ -46,7 +46,7 @@ if ( in_array($userID,$admin_users)  ) {
 		 open_inner_table(_CHANGE_FLIGHT_DATA,650);
 
 		 echo "<center> <br><br>"._THE_CHANGES_HAVE_BEEN_APPLIED."<br><br><br>";
-		 echo "<a href='?name=".$module_name."&op=show_flight&flightID=".$flightID."'>"._RETURN_TO_FLIGHT."</a><br><br><br>";
+		 echo "<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."'>"._RETURN_TO_FLIGHT."</a><br><br><br>";
 		 echo "</center>";
 		 close_inner_table();
 	} else { // show the form

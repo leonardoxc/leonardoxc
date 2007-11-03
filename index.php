@@ -73,6 +73,9 @@ if ($opMode==1 ) { // phpnuke
 } else if ($opMode==4 ) { // discuz
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
+} else if ($opMode==5 ) { // joomla
+	$userID=$userdata['user_id'];
+	$userName=$userdata['username'];
 }
 
 $_SESSION['userID']=$userID;

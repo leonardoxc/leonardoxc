@@ -33,7 +33,7 @@ if ( $op!='comp' ) {
 <tr>
 	<td colspan=5 height=20 class="dropDownBoxH2" >
 		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
+			<a style='text-align:center; text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
 		</div>
 	</td>
 </tr>
@@ -71,16 +71,16 @@ if ($CONF['seasons']['use_season_years'] ) {
 	else $seasonLegend=_SELECT_SEASON;
 
 	$seasonStr="";
-	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
+	//	$seasonStr.="<a href='".CONF_MODULE_ARG."&season=0'>"._NO_SEASON."</a>\n";		
 	if ($CONF['seasons']['use_defined_seasons']) {
 	
 		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
+			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";		
 		}
 	
 	} else {
 		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
+			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";
 		}
 	}	
 	echo $seasonStr."";
@@ -100,8 +100,8 @@ if ($CONF['seasons']['use_season_years'] ) {
 		$dateStr=sprintf("%02d.%02d.%04d",$day,$month,$year);
  ?>
 <script language='javascript'>
-	var thisUrl= '?name=<?=$module_name ?>&season=0';
-	var imgDir = '<?= $moduleRelPath ?>/js/cal/';
+	var thisUrl= '<?=CONF_MODULE_ARG ?>&season=0';
+	var imgDir = '<?=$moduleRelPath ?>/js/cal/';
 
 	var language = '<?=$calLang?>';	
 	var startAt = 1;		// 0 - sunday ; 1 - monday
@@ -140,9 +140,9 @@ if ($CONF['seasons']['use_season_years'] ) {
 
 	<td class="sp " valign="top">
 	<?  
-		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
+		// echo "<a href='".CONF_MODULE_ARG."&year=0&month=0'>"._ALL_YEARS."</a>";		
 		 for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
-			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
+			echo "<a href='".CONF_MODULE_ARG."&season=0&year=$i&month=0&day=0'>$i</a>";		
 		}
 	?>
 	</td>
@@ -151,7 +151,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 		$i=1;
 		foreach ($monthList as $monthName)  {		 
 			$k=sprintf("%02s",$i);
-			echo "<a href='?name=$module_name&season=0&month=$k&day=0'>$monthName</a>";		
+			echo "<a href='".CONF_MODULE_ARG."&season=0&month=$k&day=0'>$monthName</a>";		
 			$i++;
 		 }
 	?>
@@ -161,7 +161,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 	 $month_num=date("m");
 	 $year_num=date("Y");
      for ($i=0;$i<8;$i++) {
-	    echo "<a href='?name=".($module_name.$query_str)."&season=0&year=$year_num&month=$month_num&day=0'>".($monthList[$month_num-1]." ".$year_num)."</a>";
+	    echo "<a href='".CONF_MODULE_ARG.$query_str."&season=0&year=$year_num&month=$month_num&day=0'>".($monthList[$month_num-1]." ".$year_num)."</a>";
 		$month_num--;
 		if ($month_num==0) { 
 			$year_num--; 
@@ -211,16 +211,16 @@ if ($CONF['seasons']['use_season_years'] ) {
 	else $seasonLegend=_SELECT_SEASON;
 
 	$seasonStr="";
-	//	$seasonStr.="<a href='?name=$module_name&season=0'>"._NO_SEASON."</a>\n";		
+	//	$seasonStr.="<a href='".CONF_MODULE_ARG."&season=0'>"._NO_SEASON."</a>\n";		
 	if ($CONF['seasons']['use_defined_seasons']) {
 	
 		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";		
+			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";		
 		}
 	
 	} else {
 		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
-			$seasonStr.="<a href='?name=$module_name&season=$thisSeason'>$thisSeason</a>\n";
+			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";
 		}
 	}	
 	echo $seasonStr."";
@@ -234,12 +234,12 @@ if ($CONF['seasons']['use_season_years'] ) {
     <? 	if ($CONF['years']['use_calendar_years'] ) { ?>
 	<td class="sp " valign="top">
 	<?  
-		// echo "<a href='?name=$module_name&year=0&month=0'>"._ALL_YEARS."</a>";		
+		// echo "<a href='".CONF_MODULE_ARG."&year=0&month=0'>"._ALL_YEARS."</a>";		
 		for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
-			echo "<a href='?name=$module_name&season=0&year=$i&month=0&day=0'>$i</a>";		
+			echo "<a href='".CONF_MODULE_ARG."&season=0&year=$i&month=0&day=0'>$i</a>";		
 		}
 	?>
-	<a style='text-decoration:underline;' href='?name=<?=$module_name?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
+	<a style='text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
 	</td>
 	<? } else { ?>
 	

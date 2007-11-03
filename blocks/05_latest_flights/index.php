@@ -23,7 +23,7 @@
 		 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 		 $flightDurationFrm=sec2Time($row['DURATION'],1);		
 
-		$content .= "<a href='modules.php?name=".$module_name."&op=show_flight&flightID=$flightID' STYLE='text-decoration: none'> ";
+		$content .= "<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=$flightID' STYLE='text-decoration: none'> ";
 		$content .= "<b> $name </b></a><br><font color=\"#666666\">
 					<i>[ $takeoffName ] <br><b>".formatDate($row["DATE"])."</b><br>"._DURATION.": $flightDurationFrm<br>"._OLC_SCORING.":".formatOLCScore($row['FLIGHT_POINTS'])."</i></font><br><br>";
 		$count = $count + 1;

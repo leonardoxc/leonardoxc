@@ -175,7 +175,7 @@
 
 <?
 
-	$legendRight=generate_flights_pagination("?name=$module_name&op=$op&sortOrder=$sortOrder$query_str", 
+	$legendRight=generate_flights_pagination("".CONF_MODULE_ARG."&op=$op&sortOrder=$sortOrder$query_str", 
 											 $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
@@ -215,7 +215,7 @@ function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_
 	if ($is_comp) {
 		echo "<td $widthStr align=$align class='$cList'><div align=$align>$fieldDesc$img</div></td>";
 	} else {
-		echo "<td $widthStr align=$align class='$cList'><a href='?name=$module_name&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc$img</a></td>";
+		echo "<td $widthStr align=$align class='$cList'><a href='".CONF_MODULE_ARG."&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc$img</a></td>";
 	}
 }
 

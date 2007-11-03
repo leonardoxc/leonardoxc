@@ -114,10 +114,10 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 
   if ($sortOrder==$fieldName) { 
    echo "<td $widthStr  class='SortHeader activeSortHeader $alignClass'>
-			<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
+			<a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
 		</td>";
   } else {  
-	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
+	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
    } 
 }
 
@@ -149,7 +149,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 		$sortRowClass="l_row1";
 		if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
 			$currCountry=$countries[$row["countryCode"]] ;
-			$country_str= "<a href='?name=$module_name&op=list_flights&country=".$row["countryCode"]."&takeoffID=0'>".$currCountry."</a>";
+			$country_str= "<a href='".CONF_MODULE_ARG."&op=list_flights&country=".$row["countryCode"]."&takeoffID=0'>".$currCountry."</a>";
 
 			if ($sortOrder=='CountryCode') $sortRowClass="l_row2";
 			else $sortRowClass=($i%2)?"l_row1":"l_row2"; 

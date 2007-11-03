@@ -216,8 +216,8 @@ function delete_takeoff(id) {
 	}
 
 	if ( $flight->userID==$userID || is_leo_admin($userID) ) {
-		$legendRight.="<a href='?name=$module_name&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
-				   <a href='?name=$module_name&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
+				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
@@ -393,14 +393,14 @@ if ($flight->is3D()) {
 			  echo "<img src='".$moduleRelPath."/img/olc_icon_submited.gif' border=0 align=bottom>";
 			  // echo _SUBMITED_SUCCESSFULLY_ON." ".$flight->olcDateSubmited;
 			  if ($flight->insideOLCsubmitWindow()  && ( in_array($userID,$admin_users)  || $flight->userID==$userID  )  ) {
-				echo "<a href='?name=".$module_name."&op=olc_remove&flightID=".$flight->flightID."'>";	
+				echo "<a href='".CONF_MODULE_ARG."&op=olc_remove&flightID=".$flight->flightID."'>";	
 				echo "<img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>";
 			  }
 			}
 			else if ($flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) {
 				echo _READY_FOR_SUBMISSION;
 				if ( in_array($userID,$admin_users)  || $flight->userID==$userID  ) 
-				echo " <a href='?name=".$module_name."&op=olc_submit&flightID=".$flight->flightID."'>"._SUBMIT_TO_OLC."</a>";
+				echo " <a href='".CONF_MODULE_ARG."&op=olc_submit&flightID=".$flight->flightID."'>"._SUBMIT_TO_OLC."</a>";
 			}
 			else  echo _CANNOT_BE_SUBMITTED;
 		   echo "</div></TD>";
@@ -526,10 +526,10 @@ if (in_array($userID,$admin_users) ) {
 	}
 	
 	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
-	$adminPanel.="<a href='?name=".$module_name."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
+	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
+	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
+	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
+	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
 
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }

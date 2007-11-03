@@ -202,7 +202,7 @@ function setValue(obj)
     </tr>
     <tr>
       <td colspan=4><div align="center" class="smallLetter"><em><?=_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE ?> 
-	<a href="?name=<?=$module_name?>&op=add_from_zip"><?=_PRESS_HERE ?> </a></em></div></td>
+	<a href="<?=CONF_MODULE_ARG?>&op=add_from_zip"><?=_PRESS_HERE ?> </a></em></div></td>
     </tr>
   </table>
   </form>
@@ -294,7 +294,7 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 		?>  	 
 		  <p align="center"><span class="style111"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_YOUR_FLIGHT_HAS_BEEN_SUBMITTED ?></font></span> <br>
 		  <br>
-		  <a href="?name=<?=$module_name?>&op=show_flight&flightID=<?=$flightID ?>"><?=_PRESS_HERE_TO_VIEW_IT ?></a><br>
+		  <a href="<?=CONF_MODULE_ARG?>&op=show_flight&flightID=<?=$flightID ?>"><?=_PRESS_HERE_TO_VIEW_IT ?></a><br>
 		  <em><?=_WILL_BE_ACTIVATED_SOON ?></em> 
 		  <hr>	  
 		<?

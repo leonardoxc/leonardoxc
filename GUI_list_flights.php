@@ -163,7 +163,7 @@
   }
 	
 	$legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
-	$legendRight=generate_flights_pagination("?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+	$legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
 	if ($endNum>$itemsNum) $endNum=$itemsNum;
@@ -218,11 +218,11 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   
   if ($sortOrder==$fieldName) { 
    echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
+		<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
 		</td>\n";
   } else {  
    echo "<td class='SortHeader $alignClass' $widthStr>
-		<a href='?name=$module_name&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a>
+		<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a>
 		</td>\n";
    } 
 }
@@ -281,9 +281,9 @@ function removeClubFlight(clubID,flightID) {
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {
 			if ($add_remove_mode)
-				echo "<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&a_r=0'>Return to normal view</a>";
+				echo "<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str&a_r=0'>Return to normal view</a>";
 			else
-				echo "<a href='?name=$module_name&op=list_flights&sortOrder=$sortOrder$query_str&a_r=1'>Add / remove flights</a>";
+				echo "<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str&a_r=1'>Add / remove flights</a>";
 
 		}
 		echo "<div id='updateDiv' style='display:block'></div>";
@@ -432,7 +432,7 @@ function removeClubFlight(clubID,flightID) {
 				$airspaceProblem='';
 		}
 
-	    echo "<TD $airspaceProblem align=left><a href='?name=$module_name&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+	    echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 	    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/gearth_icon.png' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 
 		if (1) {
@@ -451,8 +451,8 @@ function removeClubFlight(clubID,flightID) {
 
 		
 	   if ($row["userID"]==$userID || in_array($userID,$admin_users) ) {  // admin IDS in $admin_users
-			echo "<a href='?name=$module_name&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
-			echo "<a href='?name=$module_name&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width='16' height='16' border='0' align='bottom' /></a>"; 
+			echo "<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
+			echo "<a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/change_icon.png' width='16' height='16' border='0' align='bottom' /></a>"; 
 	   }			
 
 		$checkedByStr='';

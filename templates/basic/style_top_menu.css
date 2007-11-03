@@ -1,6 +1,7 @@
 
 	  
 #nav, #nav ul {
+	font-weight:normal;
 	float: left;
 	width: 760px;
 	clear:both;
@@ -22,6 +23,7 @@
 }
 
 #nav a {
+	font-weight:normal;
 	display: block;
 	width: 12em;
 	
@@ -40,8 +42,10 @@ padding:0;
 }
 
 #nav li {
-	font-size:11px;
+	background-image: none;
+	font-weight:normal;
 
+	font-size:11px;
 	float: left;
 	
 	padding: 0;
@@ -111,6 +115,7 @@ padding-left:0.6em;
 }
 
 #nav li li {
+	background-image: none;
 	padding-right: 1em;
 	width: 17em;
 	border:0;

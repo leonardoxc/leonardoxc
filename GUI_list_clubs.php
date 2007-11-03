@@ -81,11 +81,11 @@ function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgCo
   if ($sortOrder==$fieldName) { 
    echo "<td $widthStr bgcolor='$headerSelectedBgColor'>
 		<div class='whiteLetter' align=left>
-		<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div></td>";
+		<a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div></td>";
   } else {  
    echo "<td $widthStr bgcolor='$headerUnselectedBgColor'>
 		<div align=left>
-		<a href='?name=$module_name&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</div></td>";
+		<a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</div></td>";
    } 
 }
 
@@ -129,7 +129,7 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 	if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
 		$currCountry=$countries[$row["countryCode"]] ;
 		$country_str= "<div align=left>".
-			"<a href='?name=$module_name&op=list_clubs&country=".$row["countryCode"]."'>".$currCountry."</a>". 	   
+			"<a href='".CONF_MODULE_ARG."&op=list_clubs&country=".$row["countryCode"]."'>".$currCountry."</a>". 	   
 		    "</div>";
 		if ($sortOrder=='CountryCode') $bgcolor="bgcolor=#DDDDDD"; 
 		else $bgcolor=($i%2)?"bgcolor=#DDDDDD":"";
@@ -144,11 +144,11 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
 
 		echo "<TD ".(($sortOrder=="takeoffID")?"bgcolor=".$sortRowBgColor:"").">".
 			 "<div align=left>".
-			 "<a href='?name=$module_name&op=show_club&clubIDview=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
+			 "<a href='".CONF_MODULE_ARG."&op=show_club&clubIDview=".$row["ID"]."'><img src='".$moduleRelPath."/img/icon_magnify_small.gif' border=0></a>".
 			"&nbsp;".
-			 "<a href='?name=$module_name&op=list_flights&clubID=".$row["ID"]."'>".$takeoffName."</a>".			
+			 "<a href='".CONF_MODULE_ARG."&op=list_flights&clubID=".$row["ID"]."'>".$takeoffName."</a>".			
 			 "</div></TD>";
-  		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]." (<a href='?name=$module_name&op=list_flights&clubID=".$row["ID"]."'>"._SHOW_FLIGHTS."</a>)</div></TD>	";
+  		echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".$row["FlightsNum"]." (<a href='".CONF_MODULE_ARG."&op=list_flights&clubID=".$row["ID"]."'>"._SHOW_FLIGHTS."</a>)</div></TD>	";
 	   	echo "<TD ".(($sortOrder=="LINEAR_DISTANCE")?"bgcolor=".$sortRowBgColor:"")."><div align=right>".formatDistanceOpen($row["max_distance"])."</div></TD>	";
   	 close_tr();
    }     

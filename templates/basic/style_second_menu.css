@@ -3,7 +3,7 @@
 #dropMenu, #dropMenu ul {
 	float: left;
 	width: auto;
-
+	font-weight:normal;
 	list-style: none;
 	line-height: 1em;
 	background-color:#f6f5fa;
@@ -30,6 +30,9 @@
 
 /* the top items a */
 #dropMenu li {
+	background-image: none;
+	font-weight:normal;
+	
 	font-size:11px;
 
 	width:8em;

@@ -32,17 +32,17 @@
 	echo "<ul>";
 	
 	
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=init'>1. Init (make temp table and copy gliders)</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=glidersDetect'>2. Auto detect glider brands</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=normalize'>3. Normalize 'glider' -> 'gliderName</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=removeBrand'>4. Remove Brand from 'gliderName' Field</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=useKnown'>5. Use known glider names to find unknown</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=init'>1. Init (make temp table and copy gliders)</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=glidersDetect'>2. Auto detect glider brands</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=normalize'>3. Normalize 'glider' -> 'gliderName</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=removeBrand'>4. Remove Brand from 'gliderName' Field</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=useKnown'>5. Use known glider names to find unknown</a><BR></a>";
 	echo "<HR>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=createSQL'>6. Create SQL script to update main table </a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createSQL'>6. Create SQL script to update main table </a><BR></a>";
 	
 	echo "<HR>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayUnknown'>* See gliders with unknown brands</a><BR></a>";
-	echo "<li><a href='?name=".$module_name."&op=admin_brands&admin_op=displayKnown'>* See glider Names with KNOWN brands</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayUnknown'>* See gliders with unknown brands</a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayKnown'>* See glider Names with KNOWN brands</a><BR></a>";
 	echo "<hr>";
 
 function sanitizeGliderName($gliderName) {

@@ -22,7 +22,7 @@ $countriesNum=count($countriesNames);
 $i=0;
 foreach ($countriesNames as $countryName)
 {
-	echo '<a href="?name='.$module_name.'&country='.$countriesCodes[$i].'">'.$countryName.'</a> :: ';
+	echo '<a href="'.CONF_MODULE_ARG.'&country='.$countriesCodes[$i].'">'.$countryName.'</a> :: ';
 	++$i;
 }
 
