@@ -17,8 +17,8 @@ list($pilotsList,$pilotsID)=getPilotList();
 list($takeoffs,$takeoffsID)=getTakeoffList();
 list($countriesCodes,$countriesNames)=getCountriesList();
 
-$filterUrl="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=filter&fl_url=1";
-$redirectUrl="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0";
+$filterUrl="http://".$_SERVER['SERVER_NAME'].getRelMainFileName()"&op=filter&fl_url=1";
+$redirectUrl="http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0";
 
 if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 

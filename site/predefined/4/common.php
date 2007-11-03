@@ -1,5 +1,4 @@
 <?php
-echo "DEPRECATED";exit;
 /***************************************************************************
  *                                common.php
  *                            -------------------
@@ -7,7 +6,7 @@ echo "DEPRECATED";exit;
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: common.php,v 1.2 2007/11/03 00:15:12 manolis Exp $
+ *   $Id: common.php,v 1.1 2007/11/03 00:15:13 manolis Exp $
  *
  ***************************************************************************/
 

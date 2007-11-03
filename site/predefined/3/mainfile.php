@@ -1,5 +1,5 @@
 <?php
-echo "DEPRECATED";exit;
+
 
 $phpver = phpversion();
 

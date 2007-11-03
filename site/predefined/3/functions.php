@@ -1,5 +1,5 @@
 <?php
-echo "DEPRECATED";exit;
+
 // added at phpBB 2.0.11 to properly format the username
 function phpbb_clean_username($username)
 {

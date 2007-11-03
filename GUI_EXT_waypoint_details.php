@@ -125,13 +125,15 @@
 		$flightNum=mysql_num_rows($res);
 		$row = mysql_fetch_assoc($res);
 
-		echo "<a target='_blank' href='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']."'>".
+		echo "<a target='_blank' href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']."'>".
 			formatDistance($row['record_km'],1)."</a>";
 	 } 
 
 
 ?>
-              <p> <strong><? echo "<a target='_blank'  href='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=$module_name&op=list_flights&takeoffID=$waypointIDview&year=0&month=0'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong></td>
+		          <p> <strong><? echo "<a target='_blank'  href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
+				  	"&op=list_flights&takeoffID=$waypointIDview&year=0&month=0'>".
+				  	_See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong></td>
         </tr>
         <tr bgcolor="#49766D">
           <td><div align="left" ></div>

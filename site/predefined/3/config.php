@@ -14,6 +14,16 @@
 
 // Specific settigns for standalone operation ($opMode=3)
 
+// Path settings
+$CONF['path']['direct_call']=1;
+
+function moduleRelPath($forUtilityFiles=0){
+	global $module_name;
+	if ($forUtilityFiles) // for EXT_ files
+		return "./";
+	else 
+		return "./";
+}
 // bridge to the users table of different forum/portal/cms systems
 $CONF['userdb']['users_table']='leonardo_users';
 $CONF['userdb']['user_id_field']='user_id';
@@ -34,6 +44,7 @@ $CONF['userdb']['user_first_name_field']='';
 
 // bridge to the login system of different forum/portal/cms systems
 $CONF['bridge']['login_url']="?name=%module_name%&op=login";
+$CONF['bridge']['logout_url']="?name=$module_name&op=login&logout=true";
 $CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
 // $CONF['bridge']['register_url']="profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';
@@ -63,6 +74,6 @@ $board_config['session_length']=3600;
 require_once $CONF_abs_path."/site/config_db.php";
 
 // also load the required functions
-require_once $CONF_abs_path."/includes/mainfile.php";
+require_once dirname(__FILE__)."/mainfile.php";
 
 ?>

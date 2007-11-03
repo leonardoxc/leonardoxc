@@ -450,6 +450,18 @@ function getBrowser() {
 		return "/$baseInstallationPath/$CONF_mainfile?name=$module_name";
 	}
 
+	function getRelMainDir($noLeadingSlash=0,$noTrailingSlash=0) {
+		global $baseInstallationPath, $moduleRelPath;
+		
+		// / + modules/leonardo/
+		// / + components/com_leonardo/
+		// /leonardo + /./
+		if ( $noLeadingSlash) 
+			return "$baseInstallationPath/$moduleRelPath/";
+		else 
+			return "/$baseInstallationPath/$moduleRelPath/";
+	}
+
 	// google maps polyline encoding
 	function encodeNumber($num) {
 		//    printf("%f = ", $num);

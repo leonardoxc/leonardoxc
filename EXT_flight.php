@@ -61,7 +61,7 @@
 		 $XML_str="<result>\n";
 		$XML_str.="
 			<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Flight list</title>
-			<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."</link>		
+			<link>http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."</link>		
 			<date>". gmdate('D, d M Y H:i:s', time()) . " GMT</date>
 		";
 
@@ -88,9 +88,9 @@
 //			 $nearestWaypoint->getFromDB();
 	
 			$name=getPilotRealName($row["userID"],$row["userServerID"]);
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row[DATE],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
@@ -143,7 +143,7 @@
 		$XML_str="
 		<result>
 			<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Flight list</title>
-			<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."</link>
+			<link>http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."</link>
 			<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Flight list</description>
 			<managingEditor>".$CONF_admin_email."</managingEditor>
 			<webMaster>".$CONF_admin_email."</webMaster>
@@ -155,9 +155,9 @@
 			 $nearestWaypoint->getFromDB();
 	
 			$name=getPilotRealName($row["userID"],$row["userServerID"]);
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row[DATE],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

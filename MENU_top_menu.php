@@ -176,10 +176,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			<li><a href="<?=$login_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>			
 			<li><a href="<?=$register_url?>"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
 			<? } else { // user alredy logged in  
-					if ($CONF_use_own_login) $logout_url="?name=$module_name&op=login&logout=true";
+					if ($CONF_use_own_login) $logout_url=str_replace("%module_name%",$module_name,$CONF['bridge']['logout_url']);					
 					else $logout_url="login.php?logout=true";
 			?>
-			<li><a href="<?=$logout_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
+					<li><a href="<?=$logout_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
 			
 			<? } ?>
 			<li class='li_space'></li>

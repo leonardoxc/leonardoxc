@@ -104,7 +104,7 @@
 		$flightNum=mysql_num_rows($res);
 		$row = mysql_fetch_assoc($res);
 
-		echo "<a href='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']."'>".
+		echo "<a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']."'>".
 			formatDistance($row['record_km'],1)."</a>";
 	 } 
 
@@ -135,7 +135,7 @@
 		<? list($browser_agent,$browser_version)=getBrowser();
 			if ( $CONF_google_maps_api_key  ) { ?> 
 		<iframe align="right"
-		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps.php?wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
+		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
 		  TITLE="Google Map" width="680px" height="400px"
 		  scrolling="no" frameborder="0">
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.

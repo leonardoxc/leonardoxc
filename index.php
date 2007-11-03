@@ -70,6 +70,9 @@ if ($opMode==1 ) { // phpnuke
 } else if ($opMode==3 ) { // standalone
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
+} else if ($opMode==4 ) { // discuz
+	$userID=$userdata['user_id'];
+	$userName=$userdata['username'];
 }
 
 $_SESSION['userID']=$userID;
@@ -128,7 +131,7 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
-if ($opMode==3)  // stand alone
+if ($opMode==3 || $opMode==4)  // stand alone
 	require_once dirname(__FILE__)."/GUI_header.php";
 
 // phpnuke
@@ -174,7 +177,7 @@ if ($op=="users") {
 	if ($opMode==3 ) require $moduleRelPath."/USERS_index.php";
 } else if ($op=="login") { 
 	$noFooterMenu=1;
-	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_login.php";
+	if ($opMode==2 || $opMode==3 || $opMode==4) require $moduleRelPath."/GUI_login.php";
 } else if ($op=="register") { 
 	echo "<BR><BR>Parameter Not used !!<BR>";
 	// Not used 
@@ -317,7 +320,7 @@ function exitPage($exitNow=1){
    if ($opMode==1) {   
 		CloseTable();
 		include("footer.php");
-   } else if ($opMode==3) {
+   } else if ($opMode==3 || $opMode==4) {
 		require_once dirname(__FILE__)."/GUI_footer.php";
    }
   

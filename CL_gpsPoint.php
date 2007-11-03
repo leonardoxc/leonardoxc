@@ -250,9 +250,8 @@ Time to launch from landing
 		$this->modifyDate=$wpInfo['modifyDate'];
     }
 
-	function exportXML() {
-		global $baseInstallationPath, $CONF_mainfile, $module_name;
-		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_waypoint&waypointIDview=".$this->waypointID);
+	function exportXML() {	
+		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_waypoint&waypointIDview=".$this->waypointID);
 	
 return "<waypoint>
 <id>".htmlspecialchars($this->waypointID)."</id>

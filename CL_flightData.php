@@ -431,27 +431,20 @@ $photosXML
 	// Full url functions
 	//----------------------------------------
 	function getFlightLinkURL() {
-		global $baseInstallationPath,$module_name;
-		global $CONF_mainfile;
-		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$this->flightID;
 	}
 
 	function getIGC_URL($saned=0) {
-		global $baseInstallationPath,$module_name;
-		global $CONF_mainfile;
+		global $baseInstallationPath;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getIGCRelPath($saned);
 	}
 
 	function getFlightKML() {
-		global $baseInstallationPath,$module_name;
-		global $CONF_mainfile;
-		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=kml_trk&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID;
 	}
 
 	function getFlightGPX() {
-		global $baseInstallationPath,$module_name;
-		global $CONF_mainfile;
-		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/$module_name/download.php?type=gpx_trk&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].$getRelMainDir()."download.php?type=gpx_trk&flightID=".$this->flightID;
 	}
 
 	//------------------------------

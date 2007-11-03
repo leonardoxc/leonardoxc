@@ -80,7 +80,7 @@ with (unknownTakeoffTip)
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
 	document.getElementById('takeoffBoxTitle').innerHTML = "<?=_ADD_WAYPOINT?>";	
-	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
+	document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,320);
 	 MWJ_changeSize( 'takeoffAddID', 410,350 );
 	toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
@@ -89,7 +89,7 @@ function add_takeoff(lat,lon,id) {
 function edit_takeoff(id) {	 
 	 takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
+ 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,320);
 	 MWJ_changeSize( 'takeoffAddID', 410,350 );
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
@@ -98,7 +98,7 @@ function edit_takeoff(id) {
 function delete_takeoff(id) {	 
 	 takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Delete Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
+ 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,220);
 	 MWJ_changeSize( 'takeoffAddID', 410,250 );
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,220);
@@ -109,7 +109,7 @@ function delete_takeoff(id) {
 <script language="javascript">
 	function set_flight_bounds(id) {
 		MWJ_changeContents('takeoffBoxTitle',"Set Start - Stop time for flight");
-		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_flight_set_bounds.php?flightID='+id;		
+		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;		
 		MWJ_changeSize('addTakeoffFrame',740,395);
 		MWJ_changeSize( 'takeoffAddID', 745,415 );
 		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
@@ -117,7 +117,7 @@ function delete_takeoff(id) {
 	
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"<?=_ADD_WAYPOINT?>");
-		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
+		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
 		MWJ_changeSize('addTakeoffFrame',720,380);
 		MWJ_changeSize( 'takeoffAddID', 725,400 );
 		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,455);
@@ -557,9 +557,8 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 	if ( $CONF_google_maps_api_key  ) {
 		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$moduleRelPath."/EXT_google_maps_track.php?id=".
+		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track.php?id=".
 		$flight->flightID."' ".
-//&file=$baseInstallationPath/".$flight->getPolylineRelPath()."&zoom=3'
 		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.

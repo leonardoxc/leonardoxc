@@ -36,14 +36,14 @@
 					// important to set these
 					$userID=$setinfo[user_id];
 					$userName=$uname;					
-					header("Location: http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile."?op=pilot_profile");
+					header("Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=pilot_profile");
 					exit;
 				}
 			} else {
 				$loginMessage="Wrong Username/Password";
 			}
 			// In case of error redirect to form
-			$newLocation="Location: http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile."?op=users&page=index&act=login&msg=".htmlspecialchars($loginMessage);			
+			$newLocation="Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=users&page=index&act=login&msg=".htmlspecialchars($loginMessage);			
 			header($newLocation);
 		} else {
 			// show the login form instead
@@ -55,7 +55,7 @@
 		  $_COOKIE['user']="";
 		  $userID=0;
 		  $userName="";
-		  header("Location: http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile."?op=main");
+		  header("Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=main");
 	}
 
 ?>

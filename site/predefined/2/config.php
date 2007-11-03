@@ -14,6 +14,17 @@
 
 // Specific settigns for phpBB module operation ($opMode=2)
 
+// Path settings
+$CONF['path']['direct_call']=0;
+
+function moduleRelPath($forUtilityFiles=0){
+	global $module_name;
+	if ($forUtilityFiles) // for EXT_ files
+		return "./";
+	else 
+		return "modules/$module_name";
+}
+
 // bridge to the users table of different forum/portal/cms systems
 $CONF['userdb']['users_table']='phpbb_users';
 $CONF['userdb']['user_id_field']='user_id';
@@ -36,6 +47,7 @@ $CONF['userdb']['user_first_name_field']='';
 
 // bridge to the login system of different forum/portal/cms systems
 $CONF['bridge']['login_url']="?name=%module_name%&op=login";
+$CONF['bridge']['logout_url']="?name=$module_name&op=login&logout=true";
 // $CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
 $CONF['bridge']['register_url']="profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';

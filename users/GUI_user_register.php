@@ -42,8 +42,8 @@ This is a verification email sent from ".$_SERVER['HTTP_HOST']."
 
 To finally create your account, you will need to click on link below to verify your email address:
 
-http://".$_SERVER['HTTP_HOST'].$baseInstallationPath."/".$moduleRelPath.$CONF_mainfile.
-	"?op=users&page=index&act=register&ufname=$ufname&ulname=$ulname&uemail=$uemail&uname=$uname&upass=$upass
+http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
+"&op=users&page=index&act=register&ufname=$ufname&ulname=$ulname&uemail=$uemail&uname=$uname&upass=$upass
 
 Regards,
 

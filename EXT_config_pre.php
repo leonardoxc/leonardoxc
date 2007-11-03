@@ -10,7 +10,8 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+	define('EXT_CONFIG',1);
+	
 	$tmpDir=dirname(__FILE__);
 	$tmpParts=split("/",str_replace("\\","/",$tmpDir));
 	$module_name=$tmpParts[count($tmpParts)-1]; 

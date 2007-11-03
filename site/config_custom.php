@@ -52,7 +52,9 @@
  	$CONF_google_maps_api_key="ABQIAAAAX8dZ6sFifmmWXGOjKHGxPhTjzsUiTe7EptkEoRMcB5oNJjdn9BRtnm44EUCFh4qu4TVmu34mpoR-Wg";
  else if ($_SERVER['SERVER_NAME']=='pgforum.home') 
 	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BReKpwmJUF9SRfvHw89FQlWBLDdWBRvaCZXB3H2e8Qqb1i64X_5ypyNFQ";
- 
+ else if ($_SERVER['SERVER_NAME']=='discuz.home') 
+	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BRBavgrClgUnZUXbXjVb3EsnG7hFhTcr6kKwUYuFYu2d8rL0c6Cys5JLg";
+	
  // If you have a waypoint database that has names in another language
  // than english but you want to diplay waypoint names in english 
  // set this to 1 to force that

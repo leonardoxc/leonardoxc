@@ -1,5 +1,28 @@
 <?php
-echo "DEPRECATED";exit;
+//-- mod : language settings -----------------------------------------------------------------------
+/***************************************************************************
+ *                               functions.php
+ *                            -------------------
+ *   begin                : Saturday, Feb 13, 2001
+ *   copyright            : (C) 2001 The phpBB Group
+ *   email                : support@phpbb.com
+ *
+ *   $Id: functions.php,v 1.1 2007/11/03 00:15:13 manolis Exp $
+ *
+ *
+ ***************************************************************************/
+
+/***************************************************************************
+ *
+ *   This program is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation; either version 2 of the License, or
+ *   (at your option) any later version.
+ *
+ *
+ ***************************************************************************/
+
+
 // added at phpBB 2.0.11 to properly format the username
 function phpbb_clean_username($username)
 {
@@ -8,6 +31,20 @@ function phpbb_clean_username($username)
 	$username = str_replace("'", "\\'", $username);
 
 	return $username;
+}
+
+
+//
+// Initialise user settings on page load
+function init_userprefs($userdata)
+{
+	global $db, $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS;
+	global $board_config, $theme, $images;
+	global $template, $lang, $phpEx, $phpbb_root_path;
+	global $nav_links;
+
+
+	return;
 }
 
 function encode_ip($dotquad_ip)

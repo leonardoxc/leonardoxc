@@ -299,9 +299,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 }
 
 function getAddFlightErrMsg($result,$flightID) {
-	global $module_name,$baseInstallationPath,$CONF_mainfile;
-	$callingURL="http://".$_SERVER['SERVER_NAME']."$baseInstallationPath/$CONF_mainfile";
-
+	$callingURL="http://".$_SERVER['SERVER_NAME'].getRelMainFileName();
+	
 	switch ($result) {
 		case ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE:
 			$errMsg=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE;
@@ -317,16 +316,16 @@ function getAddFlightErrMsg($result,$flightID) {
 			break;
 		case ADD_FLIGHT_ERR_SAME_DATE_FLIGHT:	
 			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-							 "<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
+							 "<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT:
 			$errMsg=_THERE_IS_SAME_FILENAME_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-						"<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
+						"<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
 						_CHANGE_THE_FILENAME;
 			break;
 		case ADD_FLIGHT_ERR_SAME_HASH_FLIGHT:
 			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-							 "<a href='$callingURL?name=$module_name&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
+							 "<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	
 			$errMsg="The date of the flight is in the future<BR>Please use the Year-month-day not the US Year-day-month format";

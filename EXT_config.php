@@ -40,11 +40,11 @@
 		$tmpDir=dirname(__FILE__);
 		$tmpParts=split("/",str_replace("\\","/",$tmpDir));
 		$module_name=$tmpParts[count($tmpParts)-1];
-	}  else if ( $opMode==3) {
+	}  else if ( $opMode==3 || $opMode==4 ) {
 		$newlang=$currentlang;
 		$inside_mod =1;
 		define('INSIDE_MOD',1);
-		require_once dirname(__FILE__)."/includes/mainfile.php";
+		// require_once dirname(__FILE__)."/includes/mainfile.php";
 		require_once "language/lang-".$currentlang.".php";
 		// re-set $module_name;
 		$tmpDir=dirname(__FILE__);
@@ -64,9 +64,6 @@
 	}
 */
 		
- //$OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
- //$OLCScoringServerPassword="mypasswd";
-
  session_start();
  $userID = $_SESSION['userID'];
 

@@ -122,9 +122,9 @@ $tkStr.='
 		'LINK_SHOW_PILOTS'    =>"?name=$module_name&op=list_pilots&comp=0",
 		'LINK_SUBMIT_FLIGHT'  =>"?name=$module_name&op=add_flight",
 
-		'SHOW_LEAGUE_URL'=> "$baseInstallationPath/$CONF_mainfile?name=$module_name&op=competition",
-		'SHOW_FLIGHTS_URL'=> "$baseInstallationPath/$CONF_mainfile?name=$module_name&op=list_flights&takeoffID=0&pilotID=0",
-		'SHOW_TAKEOFFS_URL'=> "$baseInstallationPath/$CONF_mainfile?name=$module_name&op=list_takeoffs&pilotID=0"
+		'SHOW_LEAGUE_URL'=> getRelMainFileName()."&op=competition",
+		'SHOW_FLIGHTS_URL'=> getRelMainFileName()."&op=list_flights&takeoffID=0&pilotID=0",
+		'SHOW_TAKEOFFS_URL'=> getRelMainFileName()."&op=list_takeoffs&pilotID=0"
 	));
 
    	$Ltemplate->pparse('body');

@@ -12,22 +12,26 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-// Specific settigns for phpNuke module ($opMode=1)
+// Specific settigns for standalone operation ($opMode=3)
 
 // Path settings
-$CONF['path']['direct_call']=0;
+$CONF['path']['direct_call']=1;
 
 function moduleRelPath($forUtilityFiles=0){
 	global $module_name;
 	if ($forUtilityFiles) // for EXT_ files
 		return "./";
 	else 
-		return "modules/$module_name";
+		return "./";
 }
+/*
+$baseInstallationPath="/leonardo";
+$baseInstallationPathSet=1;
+*/
 
 // bridge to the users table of different forum/portal/cms systems
-$CONF['userdb']['users_table']='nuke_users';
-$CONF['userdb']['user_id_field']='user_id';
+$CONF['userdb']['users_table']='cdb_members';
+$CONF['userdb']['user_id_field']='uid';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';
 
@@ -42,21 +46,48 @@ $CONF['userdb']['has_seperate_last_first_name']=0;
 $CONF['userdb']['user_last_name_field']='';
 $CONF['userdb']['user_first_name_field']='';
 
+
 // bridge to the login system of different forum/portal/cms systems
-$CONF['bridge']['login_url']="?name=%module_name%&op=login";
-$CONF['bridge']['logout_url']="?name=$module_name&op=login&logout=true";
-$CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
+//$CONF['bridge']['login_url']="?name=%module_name%&op=login";
+$CONF['bridge']['login_url']="/logging.php?action=login";
+$CONF['bridge']['register_url']="/register.php";
+$CONF['bridge']['logout_url']="/logging.php?action=logout&formhash=1";
+
+//$CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
 // $CONF['bridge']['register_url']="profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';
 $CONF['bridge']['edit_profile_url']='';
 
 
-// various settings that depend on $opMode !
-$CONF_mainfile="modules.php";
 
-// this is missing from phpNuke so define it here
-function append_sid($a,$b="") {
-	return $a.$b;
-}
+// various settings that depend on $opMode !
+$CONF_mainfile="index.php";
+
+
+// other settings that are needed
+/*
+$prefix = 'cdb';
+
+$table_prefix = $prefix.'_';
+$user_prefix  = $prefix ;
+$users_table= $prefix."_members";
+
+define('USERS_TABLE','cdb_members');
+define('SESSIONS_TABLE','cdb_sessions');
+define('ANONYMOUS',-1);
+
+$board_config['sitename']=$_SERVER['SERVER_NAME'];
+$board_config['cookie_name']='cdb';
+$board_config['cookie_path']='/';
+$board_config['cookie_domain']=$_SERVER['SERVER_NAME'];
+$board_config['cookie_secure']=0;
+$board_config['session_length']=3600;
+*/	
+
+// we need to get the db login information 
+require_once $CONF_abs_path."/site/config_db.php";
+
+// also load the required functions
+require_once dirname(__FILE__)."/mainfile.php";
 
 ?>

@@ -387,11 +387,10 @@ if (!isset($module_name))  {
 	else $module_name="leonardo";
 
 	$moduleAbsPath=dirname(__FILE__);
-	if ($opMode==3) $moduleRelPath="./";
-	else  $moduleRelPath="modules/".$module_name;
+	$moduleRelPath=moduleRelPath();
 }
 
-if ($opMode==3) $moduleRelPath="./";
+if ($opMode==3 || $opMode==4) $moduleRelPath="./";
 
 $flightsRelPath="flights";
 $waypointsRelPath="waypoints";

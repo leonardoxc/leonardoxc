@@ -40,7 +40,7 @@ function flights_count($arg) {
 $serverFunctions['flights.find']='flights_find';
 function flights_find($arg) {
 		global $db,$flightsTable;
-		global $baseInstallationPath,$module_name,$takeoffRadious;
+		global $module_name,$takeoffRadious;
 		require_once "FN_pilot.php";
 
 		$sitePass=$arg[0];
@@ -92,9 +92,9 @@ function flights_find($arg) {
 		$i=0;
 		while ($row = mysql_fetch_assoc($res)) { 
 			$name=getPilotRealName($row["userID"],$row["serverID"]);
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules.php?name=".$module_name."&op=show_flight&flightID=".$row['ID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']);
 			$this_year=substr($row['DATE'],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/".$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

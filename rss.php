@@ -67,7 +67,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <channel>
 	<docs>http://leonardo.thenet.gr</docs>
 	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</title>
-	<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."</link>
+	<link>http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."</link>
 	<language>el</language>
 	<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</description>
 	<managingEditor>".$CONF_admin_email."</managingEditor>
@@ -91,7 +91,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 	$score=formatOLCScore($row["FLIGHT_POINTS"],false);
 
 			$title="OLCscore: $score :: Pilot: $name :: takeoff: $takeoffName :: duration: $duration :: open distance: $linKM";
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$CONF_mainfile."?name=".$module_name."&op=show_flight&flightID=".$row['flightID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['flightID']);
 
 		if ($row['takeoffVinicity'] > $takeoffRadious ) 
 			$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
