@@ -462,9 +462,9 @@ function getBrowser() {
 		// / + components/com_leonardo/
 		// /leonardo + /./
 		if ( $noLeadingSlash) 
-			return "$baseInstallationPath/$moduleRelPath/";
+			return str_replace('//','/',"$baseInstallationPath/$moduleRelPath/");
 		else 
-			return "/$baseInstallationPath/$moduleRelPath/";
+			return  str_replace('//','/',"/$baseInstallationPath/$moduleRelPath/");
 	}
 
 	// google maps polyline encoding

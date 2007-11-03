@@ -22,7 +22,7 @@ $servers=Server::getServers();
 <script language="javascript">
 function serverAction(id,action,DBGlvl) {	 	
 	//document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
-	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
+	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
 	//MWJ_changeSize('addTakeoffFrame',410,320);
 	//MWJ_changeSize( 'takeoffAddID', 410,350 );
 	// toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);

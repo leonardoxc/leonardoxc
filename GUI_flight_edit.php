@@ -116,7 +116,7 @@ function setValue(obj)
 <? if ( is_leo_admin($userID) && $CONF_airspaceChecks ) { ?>
 <script language="javascript">
 function update_comment(area_id) {	 	
-	document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
+	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
 	MWJ_changeSize('addTakeoffFrame',270,105);
 	MWJ_changeSize( 'takeoffAddID', 270,130 );
 	toggleVisible('takeoffAddID','takeoffAddPos'+area_id,14,-50,410,320);

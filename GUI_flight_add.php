@@ -271,7 +271,7 @@ function setValue(obj)
 <script language="javascript">
 	 function user_add_takeoff(lat,lon,id) {	 
 		MWJ_changeContents('takeoffBoxTitle',"Register Takeoff");
-		document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_user_waypoint_add.php?refresh=0&lat='+lat+'&lon='+lon+'&takeoffID='+id;		
+		document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_user_waypoint_add.php?refresh=0&lat='+lat+'&lon='+lon+'&takeoffID='+id;		
 		MWJ_changeSize('addTakeoffFrame',720,345);
 		MWJ_changeSize( 'takeoffAddID', 725,365 );
 		toggleVisible('takeoffAddID','takeoffAddPos',-10,-50,725,435);

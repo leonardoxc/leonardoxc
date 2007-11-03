@@ -233,7 +233,7 @@ window.location = "<? echo  $redirectUrl ?>"
 </script>
 <? } ?>
 <script language='javascript'>
-	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+	var imgDir = '<?= $moduleRelPath ?>/js/cal/';
 
 	var language = '<?=$calLang?>';	
 	var startAt = 1;		// 0 - sunday ; 1 - monday

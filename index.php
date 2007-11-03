@@ -28,7 +28,7 @@ $pageStart=leo_getmicrotime();
 $module_name = basename(dirname(__FILE__));				
 
 //$moduleAbsPath=dirname(__FILE__);
-$moduleRelPath="modules/".$module_name;
+$moduleRelPath="modules/$module_name";
 
 
 require_once dirname(__FILE__)."/config.php";
