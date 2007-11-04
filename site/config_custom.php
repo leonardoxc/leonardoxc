@@ -54,6 +54,8 @@
 	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BReKpwmJUF9SRfvHw89FQlWBLDdWBRvaCZXB3H2e8Qqb1i64X_5ypyNFQ";
  else if ($_SERVER['SERVER_NAME']=='discuz.home') 
 	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BRBavgrClgUnZUXbXjVb3EsnG7hFhTcr6kKwUYuFYu2d8rL0c6Cys5JLg";
+ else if ($_SERVER['SERVER_NAME']=='joomla.home') 
+	$CONF_google_maps_api_key="ABQIAAAAg1o4ozR4NUEP6EDKiQZQ8BSwvEsbQTqQrA192ixDzCWb_VxfORQ9AB_K1dmzbkVEV75rJYpcnYpemQ";
 	
  // If you have a waypoint database that has names in another language
  // than english but you want to diplay waypoint names in english 

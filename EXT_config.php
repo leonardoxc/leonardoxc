@@ -52,6 +52,7 @@
 		$module_name=$tmpParts[count($tmpParts)-1];
 	}
 
+	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 /*
 	$baseInstallationPath="";
 	$parts=explode("/",$_SERVER['REQUEST_URI']);

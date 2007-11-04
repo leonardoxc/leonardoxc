@@ -17,6 +17,7 @@
 	$module_name=$tmpParts[count($tmpParts)-1]; 
 	$moduleAbsPath=dirname(__FILE__);
 	$moduleRelPath=".";
+	$isExternalFile=1;
 	
     require dirname(__FILE__)."/site/config_op_mode.php";
 	if (!$baseInstallationPathSet) {
@@ -31,4 +32,5 @@
 			}
 		}
 	}
+
 ?>
