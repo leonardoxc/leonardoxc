@@ -5,7 +5,7 @@
 // 3 = standalone -- still work in progress
 // 4 = discuz
 // 5 = joomla
-$opMode= 5; 
+$opMode= 2; 
 
 if ($opMode==1)			$baseInstallationPath='';
 else if ($opMode==2)	$baseInstallationPath='';
