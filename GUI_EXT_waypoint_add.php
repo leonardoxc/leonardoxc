@@ -24,8 +24,14 @@
 	require_once dirname(__FILE__)."/FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
-	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
+	if( ! $CONF_use_utf) {
+		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
+		require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
+	} else {
+		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
+		require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
+	}
+
 	
     if (! auth::isAdmin($userID)) {
 		return;

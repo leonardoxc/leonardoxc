@@ -37,7 +37,12 @@
 		require($phpbb_root_path . 'common.'.$phpEx);
 	}
 
-	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";		
+	if( ! $CONF_use_utf) {
+		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
+	} else {
+		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
+	}
+
 	session_start();
 	$userID = $_SESSION['userID'];
 

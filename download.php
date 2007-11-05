@@ -28,8 +28,13 @@
 	require_once dirname(__FILE__)."/FN_waypoint.php";	
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/CL_flightData.php";
-	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
+	if( ! $CONF_use_utf) {
+		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
+		require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
+	} else {
+		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
+		require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
+	}
 	setDEBUGfromGET();
 
 	$type=makeSane($_REQUEST['type']);

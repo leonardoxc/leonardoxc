@@ -94,7 +94,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  // use utf language files 
  // not yet ready !! dont use !
- $CONF_use_utf=0;
+ $CONF_use_utf=1;
  
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",

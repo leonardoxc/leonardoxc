@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.5 2007/10/24 18:56:25 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.6 2007/11/05 12:14:26 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -72,6 +72,7 @@ $Ltemplate->set_filenames(array(
 );
 
 if ($CONF_use_utf) $lang['ENCODING']='utf-8';
+
 //
 // Generate logged in/logged out status
 //

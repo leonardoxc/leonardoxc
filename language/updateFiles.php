@@ -11,7 +11,7 @@ $baseDefines=getDefinesAsArray("lang-$baseLang.php");
 print_r($definesArray);
 foreach($availableLanguages as $lang) {
 
-	if ($lang!='greek') continue;
+	// if ($lang!='greek') continue;
 	
 	$encFrom=$langEncodings[$lang];
 	$encTo="utf-8";
