@@ -63,8 +63,7 @@
 	$Ltemplate->assign_vars( array(	 	
 		'TAKEOFF_OPTION_LIST'=>$TAKEOFF_OPTION_LIST,
 		'COUNTRIES_OPTION_LIST'=>$COUNTRIES_OPTION_LIST,
-		'MODULE_REL_PATH'=>$moduleRelPath,
-		'MODULE_NAME'=>$module_name,
+		'MODULE_REL_PATH'=>$moduleRelPath,		
 		'TEMPLATE_REL_PATH'=>$moduleRelPath."/templates/".$PREFS->themeName ,
 		'LANG'=>$currentlang,
 	));

@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-    if (! in_array($userID,$admin_users)) {
+    if (! auth::isAdmin($userID)) {
 		return;
     }
 	$waypointLat=$_REQUEST['lat']+0;

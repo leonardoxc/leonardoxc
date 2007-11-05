@@ -192,8 +192,7 @@
     listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
 
 function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
-	global $moduleRelPath;
-	global $Theme,$module_name;
+	global $moduleRelPath , $Theme;
 	
 	if ($width==0) $widthStr="";
     else  $widthStr="width='".$width."'";
@@ -221,7 +220,6 @@ function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_
 
 function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_comp=0) {
    global $db,$Theme;
-   global $module_name;
    global $moduleRelPath;
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;

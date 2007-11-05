@@ -28,15 +28,14 @@ $pageStart=leo_getmicrotime();
 $module_name = basename(dirname(__FILE__));				
 
 //$moduleAbsPath=dirname(__FILE__);
-$moduleRelPath="modules/$module_name";
-
+// $moduleRelPath="modules/$module_name";
 
 require_once dirname(__FILE__)."/config.php";
 
 setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
 
-if (!eregi("modules.php", $_SERVER['PHP_SELF']) && ($opMode==1 || $opMode==2) ) {
+if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF'])  ) {
     die ("You can't access this file directly...");
 }
 
@@ -285,7 +284,7 @@ exitPage(0);
 // END OF OUTPUT to the browser
 
 function exitPage($exitNow=1){
-   global $module_name,$opMode,$noFooterMenu,$moduleRelPath,$PREFS;
+   global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
    global $sqlQueriesDebug,$sqlFetchTime;
    global $pageStart;
  

@@ -26,7 +26,7 @@
 	return;  
   }
   
-  if ( $flight->private && $flight->userID!=$userID && ! is_leo_admin($userID) ) {
+  if ( $flight->private && $flight->userID!=$userID && ! auth::isAdmin($userID) ) {
 		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
   }
@@ -75,7 +75,7 @@ with (unknownTakeoffTip)
 <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
-<? if ( is_leo_admin($userID) ) { ?>
+<? if ( auth::isAdmin($userID) ) { ?>
 <script language="javascript">
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
@@ -211,11 +211,11 @@ function delete_takeoff(id) {
 <?
 	$legendRight="";
 
-	if (is_leo_admin($userID) ) {
+	if (auth::isAdmin($userID) ) {
 		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
-	if ( $flight->userID==$userID || is_leo_admin($userID) ) {
+	if ( $flight->userID==$userID || auth::isAdmin($userID) ) {
 		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
@@ -389,17 +389,17 @@ if ($flight->is3D()) {
 			  echo "[ <a href='$olc_url/map/".$olcName.".jpg' target='_blank'>"._OLC_MAP."</a> ] ";
 			  echo "[ <a href='$olc_url/ENL/".$olcName.".png' target='_blank'>"._OLC_BARO."</a> ] ";
 			  echo "[".substr($flight->olcDateSubmited,0,10)."] ";
-			  if ( in_array($userID,$admin_users)  || $flight->userID==$userID  ) echo "(Ref: ".$flight->olcRefNum.") ";
+			  if ( auth::isAdmin($userID)  || $flight->userID==$userID  ) echo "(Ref: ".$flight->olcRefNum.") ";
 			  echo "<img src='".$moduleRelPath."/img/olc_icon_submited.gif' border=0 align=bottom>";
 			  // echo _SUBMITED_SUCCESSFULLY_ON." ".$flight->olcDateSubmited;
-			  if ($flight->insideOLCsubmitWindow()  && ( in_array($userID,$admin_users)  || $flight->userID==$userID  )  ) {
+			  if ($flight->insideOLCsubmitWindow()  && ( auth::isAdmin($userID)  || $flight->userID==$userID  )  ) {
 				echo "<a href='".CONF_MODULE_ARG."&op=olc_remove&flightID=".$flight->flightID."'>";	
 				echo "<img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>";
 			  }
 			}
 			else if ($flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) {
 				echo _READY_FOR_SUBMISSION;
-				if ( in_array($userID,$admin_users)  || $flight->userID==$userID  ) 
+				if ( auth::isAdmin($userID)  || $flight->userID==$userID  ) 
 				echo " <a href='".CONF_MODULE_ARG."&op=olc_submit&flightID=".$flight->flightID."'>"._SUBMIT_TO_OLC."</a>";
 			}
 			else  echo _CANNOT_BE_SUBMITTED;
@@ -479,7 +479,7 @@ $gliderCatList[$flight->cat]." ]";
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
 $adminPanel="";
-if (in_array($userID,$admin_users) ) {
+if (auth::isAdmin($userID) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 

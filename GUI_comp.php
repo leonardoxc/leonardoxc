@@ -131,7 +131,7 @@ echo "<BR><BR>";
 function listCategory($legend,$header, $category, $key, $formatFunction="") {
    global $pilots;
    global $Theme,$countries;
-   global $module_name,$moduleRelPath;
+   global $moduleRelPath;
    global $CONF_compItemsPerPage;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $op,$cat;
@@ -235,7 +235,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 function listClubs($legend,$header, $category, $key, $formatFunction="") {
    global $clubs,$NACid;
    global $Theme,$countries;
-   global $module_name,$moduleRelPath;
+   global $moduleRelPath;
    global $CONF_compItemsPerPage;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $op,$cat;

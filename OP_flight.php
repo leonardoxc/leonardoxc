@@ -40,7 +40,7 @@ function flights_count($arg) {
 $serverFunctions['flights.find']='flights_find';
 function flights_find($arg) {
 		global $db,$flightsTable;
-		global $module_name,$takeoffRadious;
+		global $takeoffRadious;
 		require_once "FN_pilot.php";
 
 		$sitePass=$arg[0];

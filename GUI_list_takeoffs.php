@@ -103,8 +103,7 @@
 <? echo makeTakeoffPopup(); ?>
 <?
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
-  global $moduleRelPath;
-  global $Theme,$module_name;
+  global $moduleRelPath ,$Theme;
 
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
@@ -122,8 +121,8 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 }
 
 function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
-   global $db,$Theme, $module_name, $takeoffRadious, $userID, $moduleRelPath;
-   global $admin_users, $PREFS;
+   global $db,$Theme, $takeoffRadious, $userID, $moduleRelPath;
+   global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage, $countries;
 	 

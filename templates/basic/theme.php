@@ -17,7 +17,7 @@ $imagesPrefix=$moduleRelPath."/img/";
 global $imagesPrefix;
 
 function open_box($title,$width,$icon,$bgcolor=MAIN_BG) {
-global $imagesPrefix,$module_name;
+global $imagesPrefix;
 $width_tot=$width;
 $width_2=$width_tot-11-15;
 $width_header=$width_tot-17-12;

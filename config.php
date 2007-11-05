@@ -370,41 +370,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
   // to bridge to the users table of different forum/portal/cms systems
   require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
 
-
-// detect if the installation in not on the root
-if (!$baseInstallationPathSet) {
-	$baseInstallationPath="";
-	$parts=explode("/",$_SERVER['REQUEST_URI']);
-	
-	if ( count($parts)>1 )  {
-		for($i=1;$i<count($parts);$i++) 
-		   if ($parts[$i-1]!='') $baseInstallationPath.="/".$parts[$i-1];	
-	}
-}
-
-if (!isset($module_name))  {
-	if (isset($_GET['name'])) $module_name=makeSane($_GET['name']);
-	else $module_name="leonardo";
-	
-	$moduleRelPath=moduleRelPath();
-}
-
-$moduleAbsPath=dirname(__FILE__);
-
-
-if ($opMode==3 || $opMode==4) $moduleRelPath="./";
-
-setModuleArg();
-
-$flightsRelPath="flights";
-$waypointsRelPath="waypoints";
-
-$waypointsAbsPath=dirname(__FILE__)."/".$waypointsRelPath;
-$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-
-$flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
-$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
-
+  setLeonardoPaths();
 
 function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	if ($varname=='day' || $varname=='month' || $varname=='year' ) {
@@ -461,13 +427,15 @@ function setVar($varname,$value) {
 // you should probably set  $OLCScoringServerPath to the same server 
 // you have leonardo
 $OLCScoringServerUseInternal=1;
-$OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
+// These are not needed if $OLCScoringServerUseInternal=1;
+$OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
 
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
 @include_once dirname(__FILE__)."/site/config_ranks.php";
  
+// time to load the user prefs from cookie
 require_once dirname(__FILE__)."/CL_user_prefs.php";
 $PREFS=new userPrefs();
 if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) {
@@ -505,6 +473,84 @@ $PREFS->setToCookie();
 
 $themeRelPath=$moduleRelPath."/templates/".$PREFS->themeName;
 $themeAbsPath=dirname(__FILE__)."/templates/".$PREFS->themeName;
+
+
+	function getRelMainFileName() {
+		global $baseInstallationPath, $CONF_mainfile ;		
+		return  str_replace('//','/',"/$baseInstallationPath/$CONF_mainfile".CONF_MODULE_ARG);
+	}
+
+	function getArgList($str) {
+		global  $module_name, $CONF_arg_name;		
+		return "?$CONF_arg_name=$module_name$str";	
+	}
+	
+	function getRelMainDir($noLeadingSlash=0,$noTrailingSlash=0) {
+		global $baseInstallationPath, $moduleRelPath;
+		
+		// / + modules/leonardo/
+		// / + components/com_leonardo/
+		// /leonardo + /./
+		if ( $noLeadingSlash) 
+			return str_replace('//','/',"$baseInstallationPath/$moduleRelPath/");
+		else 
+			return  str_replace('//','/',"/$baseInstallationPath/$moduleRelPath/");
+	}
+
+function setLeonardoPaths () {
+	global	$baseInstallationPath,$baseInstallationPathSet;
+	global 	$module_name,$moduleAbsPath,$moduleRelPath;
+	global 	$waypointsRelPath,	$waypointsAbsPath,	$waypointsWebPath;
+	global 	$flightsRelPath,	$flightsAbsPath,	$flightsWebPath;
+	global  $CONF_arg_name;
+	global 	$isExternalFile;
+
+
+	if (!isset($module_name))  {
+		if (isset($_GET[$CONF_arg_name])) $module_name=makeSane($_GET[$CONF_arg_name]);
+		else {
+			$tmpDir=dirname(__FILE__);
+			$tmpParts=split("/",str_replace("\\","/",$tmpDir));
+			$module_name=$tmpParts[count($tmpParts)-1]; 
+			// $module_name="leonardo";
+		}
+	}
+	
+	$moduleRelPath=moduleRelPath($isExternalFile);
+	// if ($opMode==3 || $opMode==4) $moduleRelPath="./";
+
+	// detect if the installation in not on the root
+	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);
+	$baseInstallationPath="";
+	$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['REQUEST_URI']))   );	
+	if ( count($parts)>1 )  {
+		for($i=0;$i<count($parts);$i++) 
+		   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
+	}
+
+/*
+	echo dirname($_SERVER['REQUEST_URI']);
+	echo "#moduleRelPath=$moduleRelPath#moduleRelPathTemp=$moduleRelPathTemp#";
+	echo "baseInstallationPath=$baseInstallationPath#<BR>";
+
+if (defined('CONF_MODULE_ARG') )	exit;
+*/
+	if (!defined('CONF_MODULE_ARG') ){
+		define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
+	}
+
+	$moduleAbsPath=dirname(__FILE__);	
+
+	
+	$flightsRelPath="flights";
+	$waypointsRelPath="waypoints";
+
+	$waypointsAbsPath=dirname(__FILE__)."/".$waypointsRelPath;
+	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+
+	$flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
+	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+}
 
 
 ?>

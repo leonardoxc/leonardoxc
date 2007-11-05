@@ -75,7 +75,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 // http://www.seoconsultants.com/css/menus/horizontal/
 // http://www.cssplay.co.uk/menus/final_drop.html
 
-	 $iconLink="?$CONF_arg_name=$module_name&op=index_full";
+	 $iconLink="".CONF_MODULE_ARG."&op=index_full";
 	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
@@ -83,45 +83,45 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li class="smallItem long"><a class="smallItem" href='#'><?=$iconImg?></a>
 	<ul class="long">
 
-<? if ( is_leo_admin($userID) )  {  ?>
+<? if ( auth::isAdmin($userID) )  {  ?>
 		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=admin">ADMIN MENU</a></li>
-				<? if ( is_leo_admin($userID) )  {  ?>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=users&page=admin">User Administration</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin">ADMIN MENU</a></li>
+				<? if ( auth::isAdmin($userID) )  {  ?>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=users&page=admin">User Administration</a></li>
 				<? } ?>
 				<li class='li_space long'></li>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
-				<? if ($CONF_isMasterServer) { ?><li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=servers_manage">Manage Leonardo Servers</a></li><? } ?>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=admin_airspace">Administer Airspace checking</a></li>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=admin_logs">Administer the Logs</a></li>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=admin_stats">Usage Statistics</a></li>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
+				<? if ($CONF_isMasterServer) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li><? } ?>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Administer the Logs</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
 				<li class='li_space long'></li>
 				<?  if ($DBGlvl==0)  { ?>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&DBGlvl=255">Activate DEBUG</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=255">Activate DEBUG</a></li>
 				<? } else { ?>
-				<li><a href="<?="?$CONF_arg_name=$module_name" ?>&DBGlvl=0">Deactivate DEBUG</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=0">Deactivate DEBUG</a></li>
 				<? } ?>
 			</ul>
 		</li>
 <? } ?>
 
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	if (count($clubsList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
-			echo "<li $a_class><a $a_class href='?$CONF_arg_name=$module_name&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+			echo "<li $a_class><a $a_class href='".CONF_MODULE_ARG."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
 			if (  $clubsItem['id'] == $clubID && 
-					(  ( $clubID  && (is_club_admin($userID,$clubID) )  || is_leo_admin($userID))  	)	 
+					(  ( $clubID  && (auth::isClubAdmin($userID,$clubID) )  || auth::isAdmin($userID))  	)	 
 			    )  {  ?>
-				<li style='background-color:#FF9933'><a href="<?="?$CONF_arg_name=$module_name" ?>&op=club_admin&club_to_admin_id=<?=$clubID?>"><img 
+				<li style='background-color:#FF9933'><a href="<?="".CONF_MODULE_ARG."" ?>&op=club_admin&club_to_admin_id=<?=$clubID?>"><img 
 				src="<?=$moduleRelPath?>/img/icon_arrow_up.png" border=0 align="absmiddle" /> Administer this Club</a></li>		
 			<? } 
 		}
@@ -130,14 +130,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	if (count($apList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
-			echo "<li><a href='?$CONF_arg_name=$module_name&ap=$apName'>".$apItem['desc']."</a></li>\n";
+			echo "<li><a href='".CONF_MODULE_ARG."&ap=$apName'>".$apItem['desc']."</a></li>\n";
 	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","",CONF_MODULE_ARG.'&ap='.$apName.'"));';
 		}
 	}
 
 	if (count($clubsList) >0 || count($apList) >0) {
 		echo "<li class='li_space long'></li>\n";
-		echo "<li><a href='?$CONF_arg_name=$module_name&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
+		echo "<li><a href='".CONF_MODULE_ARG."&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
 	}
 ?>
 	</ul>
@@ -147,7 +147,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	$langLiStr="";
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
-	  $flagLink="?$CONF_arg_name=$module_name&lng=".$tmpLang;
+	  $flagLink="".CONF_MODULE_ARG."&lng=".$tmpLang;
  	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
 	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
@@ -185,59 +185,59 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			<li class='li_space'></li>
 		<? } ?>
   		<? if (is_user($user) || $userID>0)  { ?>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=add_flight"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=add_from_zip"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=add_flight"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=add_from_zip"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights&pilotID=<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=pilot_profile&pilotIDview=<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=pilot_profile_stats&pilotIDview=<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile&pilotIDview=<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile_stats&pilotIDview=<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
 		<li class='li_space'></li>
 		<? } ?>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=user_prefs"><?=_MENU_MY_SETTINGS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=user_prefs"><?=_MENU_MY_SETTINGS ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=stats"><?=_FLIGHTS_STATS ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=program_info"><?=_PROJECT_INFO ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=stats"><?=_FLIGHTS_STATS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=program_info"><?=_PROJECT_INFO ?></a></li>
 		<? insertMenuItems('main_menu','bottom'); ?>
 	</ul>
 </li>
 
 <li><a href="#"><?=_MENU_FLIGHTS." ".$arrDownImg?></a>
 	<ul>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights"><?=_MENU_FLIGHTS ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=filter"><?=_MENU_FILTER ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights"><?=_MENU_FLIGHTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=filter"><?=_MENU_FILTER ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"><?=_MENU_ALL_FLIGHTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"><?=_MENU_ALL_FLIGHTS ?></a></li>
 	</ul>
 </li>
 
 <li><a href="#"><?=_MENU_TAKEOFFS." ".$arrDownImg ?></a>
 	<ul>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=sites"><?=_MENU_SITES_GUIDE ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_takeoffs"><?=_MENU_TAKEOFFS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=sites"><?=_MENU_SITES_GUIDE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_takeoffs"><?=_MENU_TAKEOFFS ?></a></li>
 	</ul>
 </li>
 
 <li><a href="#"><?=_MENU_SHOW_PILOTS." ".$arrDownImg?></a>
 	<ul>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_pilots&comp=0"><?=_MENU_SHOW_PILOTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&comp=0"><?=_MENU_SHOW_PILOTS ?></a></li>
 		<li class='li_h1'>.:: Pilot Statistics ::.</li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"><?=_MENU_OLC ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_pilots&sortOrder=bestDistance&comp=1"><?=_MENU_OPEN_DISTANCE ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_pilots&sortOrder=totalDuration&comp=1"><?=_MENU_DURATION ?></a></li>
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=list_pilots&sortOrder=totalFlights&comp=1"><?=_MENU_FLIGHTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"><?=_MENU_OLC ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=bestDistance&comp=1"><?=_MENU_OPEN_DISTANCE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=totalDuration&comp=1"><?=_MENU_DURATION ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=totalFlights&comp=1"><?=_MENU_FLIGHTS ?></a></li>
 	</ul>
 </li>
 
 <li class="long lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul class="long">
-		<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=competition&clubID=0"><?=_MENU_XCLEAGUE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&clubID=0"><?=_MENU_XCLEAGUE ?></a></li>
 		<? if (0) { ?>
-			<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
+			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
 			<li class='li_space long'></li>
-			<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
-			<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
-			<li><a href="<?="?$CONF_arg_name=$module_name" ?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
+			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
+			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
+			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
 		<? }?>
 		<? 
 			if ( count($ranksList) ) {
@@ -255,7 +255,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 					}	else $yearToForceStr="";
 					
 					
-					echo "<li><a href='?$CONF_arg_name=$module_name&op=comp&clubID=0&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
+					echo "<li><a href='".CONF_MODULE_ARG."&op=comp&clubID=0&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
 				
 				}			
 			}
@@ -266,14 +266,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
-			echo "<li $a_class><a $a_class href='?$CONF_arg_name=$module_name&op=competition&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+			echo "<li $a_class><a $a_class href='".CONF_MODULE_ARG."&op=competition&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
 		}
 	}
 
 	if (count($apList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
-			echo "<li><a href='?$CONF_arg_name=$module_name&ap=$apName'>".$apItem['desc']."</a></li>\n";
+			echo "<li><a href='".CONF_MODULE_ARG."&ap=$apName'>".$apItem['desc']."</a></li>\n";
 	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","",CONF_MODULE_ARG.'&ap='.$apName.'"));';
 		}
 	}
@@ -287,7 +287,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 <?
 function insertMenuItems($top_menu_item,$position) {
-	global $CONF_MENU,$module_name;
+	global $CONF_MENU;
 
 	if ($CONF_MENU[$top_menu_item][$position])
 		foreach($CONF_MENU[$top_menu_item][$position] as $menuEntry) {
@@ -297,7 +297,7 @@ function insertMenuItems($top_menu_item,$position) {
 			}
 
 			echo '<li>';
-			if ($menuEntry['linkType']=='leonardo') $hrefStr="?$CONF_arg_name=$module_name&".$menuEntry['link'];
+			if ($menuEntry['linkType']=='leonardo') $hrefStr=CONF_MODULE_ARG."&".$menuEntry['link'];
 			else $hrefStr=$menuEntry['link'];
 			echo "<a href='$hrefStr'>".$menuEntry['name']."</a>";
 			echo '</li>';

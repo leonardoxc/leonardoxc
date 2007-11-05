@@ -1,23 +1,14 @@
 <? 
-/*	$tmpDir=dirname(__FILE__);
-	$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-	$module_name=$tmpParts[count($tmpParts)-1];
-	$moduleAbsPath=dirname(__FILE__);
-	$moduleRelPath=".";
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
-*/
- 	require_once "EXT_config_pre.php";
-	require_once "config.php";
- 	require_once "EXT_config.php";
+ 	require_once dirname(__FILE__)."/EXT_config.php";
 
-	require_once "CL_flightData.php";
-	require_once "FN_functions.php";	
-//	require_once "FN_UTM.php";
-	require_once "FN_waypoint.php";	
-	require_once "FN_output.php";
-	require_once "FN_pilot.php";
-//	require_once "FN_flight.php";
-//	setDEBUGfromGET();
+	require_once dirname(__FILE__)."/CL_flightData.php";
+	require_once dirname(__FILE__)."/FN_functions.php";	
+	require_once dirname(__FILE__)."/FN_waypoint.php";	
+	require_once dirname(__FILE__)."/FN_output.php";
+	require_once dirname(__FILE__)."/FN_pilot.php";
+	//	setDEBUGfromGET();
 
 	$flightID=makeSane($_GET['id'],1);
 	if ($flightID<=0) exit;
@@ -207,7 +198,7 @@ fieldset.legendBox  {
 		<input type="checkbox" value="1" checked id='showTask' onclick="toggleTask(this)">Show Task
 		</fieldset>
 
-<? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
+<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
  		<fieldset class="legendBox"><legend>Admin</legend><BR />
 		<input type="checkbox" value="1" checked id='airspaceShow' onclick="toggleAirspace(this)">Show Airspace
 		</fieldset>
@@ -474,7 +465,7 @@ echo $flight->gMapsGetTaskJS();
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
 
-<? if ($CONF_airspaceChecks && is_leo_admin($userID)  ) { ?>
+<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
 <script language="javascript">
 
 function toggleAirspace(radioObj) {

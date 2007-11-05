@@ -35,7 +35,7 @@
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
 
-    if ( $userID!=$flight->userID && !in_array($userID,$admin_users) && !in_array($userID,$mod_users)) {
+    if ( $userID!=$flight->userID && !auth::isAdmin($userID) && !in_array($userID,$mod_users)) {
 		echo "go away";
 		return;
     }
@@ -51,8 +51,8 @@
 		$flight->START_TIME=$startTime;
 		$flight->END_TIME=$endTime;
 		
-		$waypointsWebPath="modules/".$module_name."/".$waypointsRelPath;
-		$flightsWebPath="modules/".$module_name."/".$flightsRelPath;
+		$waypointsWebPath=moduleRelPath(0)."/".$waypointsRelPath;
+		$flightsWebPath=moduleRelPath(0).."/".$flightsRelPath;
 
 		$flight->getFlightFromIGC( $flight->getIGCFilename() );
 		$flight->updateTakeoffLanding();
@@ -92,7 +92,6 @@
 </style>
   <?
 
-	
 
 	
 	$flight->updateCharts(1,1); // force update, raw charts

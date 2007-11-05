@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
   $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="actionTime";
@@ -39,7 +39,7 @@
 
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
-  global $Theme,$module_name;
+  global $Theme;
 
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
@@ -82,7 +82,7 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
    	$currCountry="";
    	$i=1;
 	while ($row = $db->sql_fetchrow($res)) {  
-		if ( is_leo_admin($row['userID'])  ) $admStr="*ADMIN*";
+		if ( auth::isAdmin($row['userID'])  ) $admStr="*ADMIN*";
 		else $admStr="";
 
 		if ($row['ServerItemID']==0) $serverStr="Local";

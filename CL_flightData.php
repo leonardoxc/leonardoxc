@@ -631,7 +631,7 @@ $photosXML
 	}
 
 	function kmlGetTrack($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extended=1) {
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -745,7 +745,7 @@ $photosXML
 	}
 
 	function gpxGetTrack() {
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -792,7 +792,7 @@ $photosXML
 	}
 
 	function createEncodedPolyline() {
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 		
@@ -873,7 +873,7 @@ $photosXML
 	}
 
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -921,7 +921,7 @@ $kml_file_contents=
 
 	function createGPXfile($returnAlsoXML=0) {
 
-		global $module_name, $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 

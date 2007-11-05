@@ -33,7 +33,7 @@
 	if (!$userID) $Ltemplate->assign_block_vars('SWITCH_ANON_USER', array() );
 	else $Ltemplate->assign_block_vars('SWITCH_LOGIN_USER', array() );
 
-	if (in_array($userID,$admin_users) ) $Ltemplate->assign_block_vars('SWITCH_ADMIN', array() );
+	if (auth::isAdmin($userID) ) $Ltemplate->assign_block_vars('SWITCH_ADMIN', array() );
 
 // new code ----------------------------------
 

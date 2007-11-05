@@ -73,7 +73,7 @@
 
 function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgColor,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
-  global $Theme,$module_name;
+  global $Theme;
 
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
@@ -91,11 +91,9 @@ function printHeaderTakeoffs($width,$headerSelectedBgColor,$headerUnselectedBgCo
 
 function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
    global $db,$Theme;
-   global $module_name;
    global $takeoffRadious;
    global $userID;
    global $moduleRelPath;
-   global $admin_users;
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;

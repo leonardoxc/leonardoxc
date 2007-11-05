@@ -10,7 +10,9 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
- 
+
+require_once dirname(__FILE__)."/CL_auth.php"; 
+
 function fetchURL( $url, $timeout=5) {
    $url_parsed = parse_url($url);
    $host = $url_parsed["host"];
@@ -289,18 +291,6 @@ function getBrowser() {
 		 return $res;
 	}
 
-	function is_club_admin($userID,$clubID) {
-		global $clubsList;
-		if ($clubsList[$clubID]['adminID']==$userID && $userID <>0 ) return 1;
-		else return 0;
-	}
-
-	function is_leo_admin($userID) {
-		global $admin_users;
-		if (in_array($userID,$admin_users)) return 1;
-		else return 0;
-	}
-	
 	# Compares versions of software
 	# versions must must use the format ' x.y.z... ' 
 	# where (x, y, z) are numbers in [0-9]
@@ -445,28 +435,6 @@ function getBrowser() {
 	
 	}
 	
-	function getRelMainFileName() {
-		global $baseInstallationPath, $module_name, $CONF_mainfile, $CONF_arg_name;		
-		return "/$baseInstallationPath/$CONF_mainfile?$CONF_arg_name=$module_name";
-	}
-
-	function getArgList($str) {
-		global  $module_name, $CONF_arg_name;		
-		return "?$CONF_arg_name=$module_name$str";	
-	}
-	
-	function getRelMainDir($noLeadingSlash=0,$noTrailingSlash=0) {
-		global $baseInstallationPath, $moduleRelPath;
-		
-		// / + modules/leonardo/
-		// / + components/com_leonardo/
-		// /leonardo + /./
-		if ( $noLeadingSlash) 
-			return str_replace('//','/',"$baseInstallationPath/$moduleRelPath/");
-		else 
-			return  str_replace('//','/',"/$baseInstallationPath/$moduleRelPath/");
-	}
-
 	// google maps polyline encoding
 	function encodeNumber($num) {
 		//    printf("%f = ", $num);

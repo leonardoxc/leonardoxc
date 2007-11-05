@@ -411,7 +411,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 }
 
 function makePilotPopup() {
-	global $moduleRelPath,$module_name,$opMode;
+	global $moduleRelPath,$opMode;
 	ob_start();
 
 ?>
@@ -455,7 +455,7 @@ visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 }
 
 function makeTakeoffPopup($ext=0,$userID=0) {
-	global $moduleRelPath,$module_name,$opMode;
+	global $moduleRelPath,$opMode;
 	ob_start();
 
 ?>
@@ -473,7 +473,7 @@ with (takeoffTip)
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
 	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%4%'><? echo _Navigate_with_Google_Earth ?></a>"+
-	<? if ( $ext && is_leo_admin($userID) ) { ?>
+	<? if ( $ext && auth::isAdmin($userID) ) { ?>
     '</td></tr><tr><td class="infoBox adminBox">'+
 	 "<img src='<?=$moduleRelPath?>/img/icon_add.png' align='absmiddle' border=0> <a href='javascript:add_takeoff(%6%,%7%,%4%)'><?=_ADD_WAYPOINT?></a>"+
 

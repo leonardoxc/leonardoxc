@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
- 	require_once "EXT_config_pre.php";
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";
 
@@ -31,7 +31,7 @@
 		exit;
 	}
 	
-	$moduleRelPath="modules/".$module_name;
+	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 

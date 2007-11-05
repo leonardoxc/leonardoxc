@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 //************************************************************************/
 
-  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
  ?>
  <script language="javascript">
@@ -19,7 +19,7 @@
 function edit_takeoff(id) {	 
 	// takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
+ 	 document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,320);
 	 MWJ_changeSize( 'takeoffAddID', 410,350 );
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
@@ -28,7 +28,7 @@ function edit_takeoff(id) {
 function delete_takeoff(id) {	 
 	// takeoffTip.hide();
 	 document.getElementById('takeoffBoxTitle').innerHTML = "Delete Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='modules/<?=$module_name?>/GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
+ 	 document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
 	 MWJ_changeSize('addTakeoffFrame',410,220);
 	 MWJ_changeSize( 'takeoffAddID', 410,250 );
 	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,220);
@@ -103,7 +103,7 @@ function delete_takeoff(id) {
 
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
-  global $Theme,$module_name;
+  global $Theme;
 
   if ($width==0) $widthStr="";
   else  $widthStr="width='".$width."'";
@@ -159,7 +159,7 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 		echo "<tr><td colspan=7><strong>$takeoffID</strong></td><tr>";
 		foreach($takeoff as $actionTime=>$details ) {
 	
-			if ( is_leo_admin($details['userID'])  ) $admStr="*ADMIN*";
+			if ( auth::isAdmin($details['userID'])  ) $admStr="*ADMIN*";
 			else $admStr="";
 
 			

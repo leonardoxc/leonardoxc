@@ -97,7 +97,7 @@ function takeoffDetails() {
 
 		wID=availableList.options[wIndex]['value'];
 //		wID=1;
-		document.getElementById('takeoffFrame').src='modules/{MODULE_NAME}/GUI_EXT_waypoint_details.php?wID='+wID+'&lang={LANG}';
+		document.getElementById('takeoffFrame').src='{MODULE_REL_PATH}/GUI_EXT_waypoint_details.php?wID='+wID+'&lang={LANG}';
 		MWJ_changeSize('takeoffFrame',605,320);
 		MWJ_changeSize('takeoffID', 605,350 );
 

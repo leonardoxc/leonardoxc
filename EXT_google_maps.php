@@ -1,7 +1,5 @@
-<? 
-	$tmpDir=dirname(__FILE__);
-	$tmpParts=split("/",str_replace("\\","/",$tmpDir));
-	$module_name=$tmpParts[count($tmpParts)-1];
+<?
+	$module_name = basename(dirname(__FILE__));		
 	$moduleAbsPath=dirname(__FILE__);
 	$moduleRelPath=".";
 

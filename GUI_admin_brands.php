@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-  if ( !is_leo_admin($userID) ) { echo "go away"; return; }
+  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
   $workTable="temp_leonardo_gliders";
 //  $workTable=$flightsTable;
@@ -21,7 +21,7 @@
   open_tr();
   echo "<td align=left>";	
 
-	if (!in_array($userID,$admin_users)) {
+	if (!auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}

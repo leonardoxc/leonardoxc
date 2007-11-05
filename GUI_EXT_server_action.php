@@ -17,7 +17,7 @@ require_once dirname(__FILE__)."/EXT_config.php";
 require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 
-if (! in_array($userID,$admin_users)) {
+if (! auth::isAdmin($userID)) {
 	return;
 }
 
@@ -57,7 +57,7 @@ if ($action==1) { // server info
 	$files_send=$server->sendOPfiles(); 
 	echo "Send $files_send files to slave server <BR>";
 } else if ($action==5) { // sync (pull data from server )
-	$moduleRelPath="modules/".$module_name;
+	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 

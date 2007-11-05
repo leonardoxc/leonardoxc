@@ -96,7 +96,7 @@
  // validate against the G-record
  $CONF_use_validation=1;
  $CONF_use_custom_validation=0;
- $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/validate/validate.php";  
+ $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."server/validate/validate.php";  
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
@@ -143,7 +143,7 @@
  // you should probably set  $OLCScoringServerPath to the same server 
  // you have leonardo
  $OLCScoringServerUseInternal=1;
- $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/modules/".$module_name."/server/scoreOLC.php";
+ $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."server/scoreOLC.php";
  $OLCScoringServerPassword="mypasswd";
 
 
@@ -168,7 +168,7 @@
 		 "external_input"=>1, // turning on/off the external input
          'external_fields'=>'NACmemberID,LastName,FirstName', //these fields will be set by the external tool
          
-		  "input_url"=>"/modules/leonardo/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
+		  "input_url"=>getRelMainDir()."/site/NAC_1_enter_id.php?id=check_membership&callingfield=NACmemberID",
 		 // use this for production 
 		 // 'input_url'=>'/admin/odb/page.php?id=check_membership&field_mgnr=NACmemberID&field_name=LastName&field_vorname=FirstName',		 
 

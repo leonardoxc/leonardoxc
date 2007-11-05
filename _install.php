@@ -173,20 +173,6 @@
 		echo 'RPC-XML interface  OK<br>';
 	}
 
-/*	require_once dirname(__FILE__)."/soap/nusoap.php";
-	$soapclient = new soapclient('http://www.paraglidingforum.com/modules/leonardo/soap/op.php');		
-	if($err = $soapclient->getError()){
-		echo "SOAP init error<br>";
-	} else {
-		$return_val =$soapclient->call(	'registerServer',array($installType,$op_url,$adminEmail,$CONF_SitePassword)  );
-		if($err = $soapclient->getError()) echo "SOAP Online error: $err<br>";
-		else echo "SOAP interface OK<br>";
-	}
-*/
-	// Debug for SOAP
-	//echo 'Request: <xmp>'.$soapclient->request.'</xmp>';
-	//echo 'Response: <xmp>'.$soapclient->response.'</xmp>';
-	//echo 'Debug log: <pre>'.$soapclient->debug_str.'</pre>';
 
 	if ($opMode==1) { // phpNuke
 		findAdminUsers(2);

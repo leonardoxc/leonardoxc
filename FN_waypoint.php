@@ -279,7 +279,7 @@ function  makeKMLwaypoint($waypointID) {
 
 function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {	
 	global $db, $waypointsTable;
-	global $module_name,$flightsTable,$countries,$CONF_mainfile,$moduleRelPath;
+	global $flightsTable,$countries,$CONF_mainfile,$moduleRelPath;
 
     $wpInfo =new waypoint($waypointID);
     $wpInfo->getFromDB();

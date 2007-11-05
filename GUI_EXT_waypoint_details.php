@@ -28,7 +28,7 @@
 	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	
-    if (! in_array($userID,$admin_users)) {
+    if (! auth::isAdmin($userID)) {
 		// return;
     }
 ?>
@@ -48,7 +48,7 @@
   $wpName= selectWaypointName($wpInfo->name,$wpInfo->intName,$wpInfo->countryCode);
   $wpLocation = selectWaypointLocation($wpInfo->location,$wpInfo->intLocation,$wpInfo->countryCode);
 
-  if ( in_array($userID,$admin_users)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+  if ( auth::isAdmin($userID)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
   $titleString=_Waypoint_Name." : ".$wpName." (".$countries[$wpInfo->countryCode].") &nbsp;";
 
 //$opString="<a href='#' onclick=\"toggleVisible('takeoffID','takeoffPos',14,-20,0,0);return false;\">

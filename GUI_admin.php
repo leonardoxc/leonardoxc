@@ -33,7 +33,7 @@ function chmodDir($dir){
   open_tr();
   echo "<td align=left>";	
 
-	if (!in_array($userID,$admin_users)) {
+	if (!auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}
@@ -409,7 +409,7 @@ echo "</ul><br>";
 
 
   function findUnusedIGCfiles($dir,$rootLevel,$prefixRemoveCharsArg) {
-		 global $module_name,$flightsWebPath;
+		 global $flightsWebPath;
 
 		 set_time_limit (160);
 		 $i=0;
@@ -430,7 +430,7 @@ echo "</ul><br>";
 					if ( strtolower(substr($entryname,-4))==".igc" ) {
 						$filename="$dir_last/$entryname";
 						$pilotID=$dir_parts[count($dir_parts)-1];
-						echo "<li> <a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotID&takeoffID=0&country=0&year=0&month=0'>USER</a> :: ". date ("Y/m/d H:i", filemtime("$dir/$entryname"))."&nbsp;<a href='modules/leonardo/".$filename."'>$filename</a> ::";
+						echo "<li> <a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotID&takeoffID=0&country=0&year=0&month=0'>USER</a> :: ". date ("Y/m/d H:i", filemtime("$dir/$entryname"))."&nbsp;<a href='$moduleRelPath/".$filename."'>$filename</a> ::";
 						echo " <a href='".CONF_MODULE_ARG."&op=addTestFlightFromURL&flightURL=".urlencode("http://".$_SERVER['HTTP_HOST']."/".$flightsWebPath."/".$dir_parts[count($dir_parts)-1]."/".$entryname)."'>Check it</a>";
 					}
 				}

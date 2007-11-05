@@ -18,24 +18,27 @@
 		return;
 	}
 
- 	require_once "EXT_config_pre.php";
-	require_once "config.php";
- 	require_once "EXT_config.php";
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
+	require_once dirname(__FILE__)."/config.php";
+ 	require_once dirname(__FILE__)."/EXT_config.php";
 
-	require_once "FN_functions.php";	
-	require_once "FN_UTM.php";
-	require_once "FN_pilot.php";
-	require_once "FN_waypoint.php";	
-	require_once "FN_output.php";
-	require_once "CL_flightData.php";
-	require_once "language/lang-".$currentlang.".php";
-	require_once "language/countries-".$currentlang.".php";
+	require_once dirname(__FILE__)."/FN_functions.php";	
+	require_once dirname(__FILE__)."/FN_UTM.php";
+	require_once dirname(__FILE__)."/FN_pilot.php";
+	require_once dirname(__FILE__)."/FN_waypoint.php";	
+	require_once dirname(__FILE__)."/FN_output.php";
+	require_once dirname(__FILE__)."/CL_flightData.php";
+	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
+	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
 	setDEBUGfromGET();
 
 	$type=makeSane($_REQUEST['type']);
 	if (!in_array($type,array("kml_task","kml_trk","kml_wpt","sites")) ) return;
 
 	if ($type=="kml_task") {
+		//$isExternalFile=0;
+		//setLeonardoPaths();
+
 		$moduleRelPath=moduleRelPath(0); 
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
@@ -47,7 +50,7 @@
 
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-	//	if ( $flight->userID!=$userID && ! in_array($userID,$admin_users) && $flight->private) {
+	//	if ( $flight->userID!=$userID && ! auth::isAdmin($userID) && $flight->private) {
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}
@@ -76,7 +79,7 @@
 
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-	//	if ( $flight->userID!=$userID && ! in_array($userID,$admin_users) && $flight->private) {
+	//	if ( $flight->userID!=$userID && ! auth::isAdmin($userID) && $flight->private) {
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}

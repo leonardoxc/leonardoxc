@@ -357,7 +357,6 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $pilotNames,$pilotGlidersMax;
    
    global $Theme;
-   global $module_name;
    global $moduleRelPath;
 
    global $CONF_compItemsPerPage;

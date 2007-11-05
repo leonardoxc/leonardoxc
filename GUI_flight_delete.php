@@ -17,7 +17,7 @@
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
-  if ($confirmed && ( $flight->userID == $userID || in_array($userID,$admin_users) )  ) {
+  if ($confirmed && ( $flight->userID == $userID || auth::isAdmin($userID) )  ) {
 
 	$flight->deleteFlight();
 	echo "<div align=center><br>"._THE_FLIGHT_HAS_BEEN_DELETED."<br><br>";

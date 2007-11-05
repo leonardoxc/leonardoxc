@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
- 	require_once "EXT_config_pre.php";
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";
 
@@ -26,7 +26,7 @@
 	setDEBUGfromGET();
 
 	$clubID=makeSane($_GET['clubID'],1);
-	if ( ! is_club_admin($userID,$clubID) && !is_leo_admin($userID) ) { echo "go away"; return; }
+	if ( ! auth::isClubAdmin($userID,$clubID) && !auth::isAdmin($userID) ) { echo "go away"; return; }
 
 	$op=makeSane($_GET['op']);	
 	$flightID=makeSane($_GET['flightID'],1);

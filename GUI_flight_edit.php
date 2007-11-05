@@ -14,7 +14,7 @@
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
-  if ( $flight->userID == $userID || in_array($userID,$admin_users)  ) {
+  if ( $flight->userID == $userID || auth::isAdmin($userID)  ) {
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
@@ -113,7 +113,7 @@ function setValue(obj)
 }
 </script>
 
-<? if ( is_leo_admin($userID) && $CONF_airspaceChecks ) { ?>
+<? if ( auth::isAdmin($userID) && $CONF_airspaceChecks ) { ?>
 <script language="javascript">
 function update_comment(area_id) {	 	
 	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
@@ -327,7 +327,7 @@ fieldset.legendBox {
           </tr>
         </table>		</td>
     </tr>
-	<? if ($CONF_use_validation && in_array($userID,$admin_users) ) {?>
+	<? if ($CONF_use_validation && auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan="2"  valign="top">
 	    <fieldset class="legendBox legend2">
@@ -376,7 +376,7 @@ fieldset.legendBox {
 	    </fieldset></td>
     </tr>
 	<? } ?>
-	<? if ($CONF_airspaceChecks && in_array($userID,$admin_users) ) {?>
+	<? if ($CONF_airspaceChecks && auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan="2"  valign="top">
 	    <fieldset class="legendBox legend2">
@@ -492,7 +492,7 @@ fieldset.legendBox {
         <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb'; ?></div>
       </div></td>
     </tr>
-<? if ( is_leo_admin($userID) ) {?>
+<? if ( auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan=2 valign="top">        
 	    <fieldset class="legendBox legend3">

@@ -20,7 +20,7 @@
   $wpName= selectWaypointName($wpInfo->name,$wpInfo->intName,$wpInfo->countryCode);
   $wpLocation = selectWaypointLocation($wpInfo->location,$wpInfo->intLocation,$wpInfo->countryCode);
 
-  if ( in_array($userID,$admin_users)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+  if ( auth::isAdmin($userID)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
   $titleString=_Waypoint_Name." : ".$wpName." (".$countries[$wpInfo->countryCode].") &nbsp;";
 
   open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>".$titleString."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",720,"icon_pin.png");

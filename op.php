@@ -25,7 +25,7 @@ require_once dirname(__FILE__)."/FN_UTM.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 require_once dirname(__FILE__)."/FN_output.php";
 
-$moduleRelPath="modules/$module_name";
+$moduleRelPath=moduleRelPath(0);
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 function securityCheck($sitePass) {

@@ -7,13 +7,5 @@
 // 5 = joomla
 $opMode= 2; 
 
-if ($opMode==1)			$baseInstallationPath='';
-else if ($opMode==2)	$baseInstallationPath='';
-else if ($opMode==3)	$baseInstallationPath='/modules/leonardo';
-else if ($opMode==4)	$baseInstallationPath='/leonardo';
-else if ($opMode==5)	$baseInstallationPath='/';
-
-$baseInstallationPathSet=1;
-
 $CONF_isMasterServer=1; 
 ?>
