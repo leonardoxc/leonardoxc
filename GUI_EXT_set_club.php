@@ -24,13 +24,9 @@
 	require_once dirname(__FILE__)."/FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
-	if( ! $CONF_use_utf) {
-		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
-	} else {
-		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
-	}
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
+
 	require_once dirname(__FILE__)."/CL_NACclub.php";
 
 	$clubID=$_GET['clubID']+0;
@@ -39,9 +35,8 @@
 	// print_r($clubList);
 
   ?><head>
-<title><?=_Select_Club?></title>
-
-</head>
+  <title><?=_Select_Club?></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
 
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
@@ -92,6 +87,7 @@ function setValToMaster() {
 }
 
 </script>
+</head>
       <form name="form1" method="post" action="" >
 <table width="450" border="0" align="center" cellpadding="2" class="shadowBox main_text">
               <tr>

@@ -23,17 +23,11 @@
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	require_once dirname(__FILE__)."/FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
-	setDEBUGfromGET();
-	if( ! $CONF_use_utf) {
-		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
-	} else {
-		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
-	}
+	setDEBUGfromGET();	
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
-	
-    if (! auth::isAdmin($userID)) {
+	if (! auth::isAdmin($userID)) {
 		return;
     }
 	$waypointLat=$_REQUEST['lat']+0;
@@ -100,10 +94,13 @@
 
 	//echo $nearestCountryCode."^^";
   ?>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
   <style type="text/css">
   body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
   body {margin:0px}
   </style>
+</head>
   <?
 
  // open_inner_table(_ADD_WAYPOINT,450,"icon_pin.png"); 

@@ -636,12 +636,13 @@ $photosXML
 		global $langEncodings,$currentlang;
 
 		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
+
 		if ($extended) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
 			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
 			//$kml_file_contents.="</Placemark>";
 			kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
-			$kml_file_contents.="
+			$kml_file_contents="
 <NetworkLink>
   <name>Extended analysis</name>
   <visibility>1</visibility>
@@ -662,7 +663,7 @@ $photosXML
 		$kmzFile=$this->getIGCFilename(0).".kmz";
 		$kmlTempFile=$this->getIGCFilename(0).".kml";
 
-		if ( !file_exists($kmzFile)  || 1) { // create the kmz file containg the points only
+		if ( !file_exists($kmzFile)  || 0 ) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(0);  
 			$lines = file ($filename); 
@@ -671,16 +672,23 @@ $photosXML
 		
 	$str="<?xml version='1.0' encoding='UTF-8'?>\n".
 	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
+
 				$str.="<Document>									
+				<name>Tracklog File</name>
 				<Placemark>\n<name>Tracklog</name>\n".
+				str_replace("&","&#38;"," <styleUrl>http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']."#igcTrackLine</styleUrl>") .
+	//			str_replace("&","&#38;"," <styleUrl>".$this->filename."#igcTrackLine</styleUrl>") .
+
+/*
 				" <styleUrl>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kml#igcTrackLine</styleUrl>
 				<Style ID='igcTrackLine'>
 					<LineStyle>
 					  <color>ff0000ff</color>
 					  <width>2</width>
 					</LineStyle>
-			  </Style>
-				<LineString>				
+			  </Style>".
+*/
+				"<LineString>				
 				<altitudeMode>absolute</altitudeMode>
 				<coordinates>\n";
 		
@@ -714,14 +722,21 @@ $photosXML
 			}
 		}
 
-		
+
+		$kml_file_contents222.="
+			<Document>		
+			<name>MainTrack.kml</name>		
+";
+
+		$kml_file_contents='';
 		$kml_file_contents.=
-		"<Style ID='igcTrackLine'>
+		"<Style id='igcTrackLine'>
 			<LineStyle>
 			  <color>".$KMLlineColor."</color>
 			  <width>$lineWidth</width>
 			</LineStyle>
 		  </Style>
+
 		";
 		//$kml_file_contents.="<Folder>\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
 //		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
@@ -733,12 +748,22 @@ $photosXML
   <open>0</open> 
   <refreshVisibility>0</refreshVisibility>
   <flyToView>0</flyToView>
+
+		<Style id='igcTrackLine'>
+			<LineStyle>
+			  <color>".$KMLlineColor."</color>
+			  <width>$lineWidth</width>
+			</LineStyle>
+		  </Style>
+
   <Link>
 	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kmz</href>
   </Link>
 </NetworkLink>";
 
 	//	$kml_file_contents.="</Folder>";
+		$kml_file_contents222.="
+			</Document>		";
 
 
 		return $kml_file_contents;
@@ -875,9 +900,8 @@ $photosXML
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
 		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
-		global $langEncodings,$currentlang;
+		global $langEncodings,$currentlang,	$CONF_use_utf;
 
-		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 		//if (file_exists($this->getKMLFilename())) return;
 
 		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extendedInfo";
@@ -912,10 +936,12 @@ $kml_file_contents=
 
 		$kml_file_contents.="</Document>\n</kml>";
 
-		$NewEncoding = new ConvertCharset;
-		$FromCharset=$langEncodings[$currentlang];
-		$kml_file_contents = $NewEncoding->Convert($kml_file_contents, $FromCharset, "utf-8", $Entities);
-
+		if (! $CONF_use_utf) {
+			require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+			$NewEncoding = new ConvertCharset;
+			$FromCharset=$langEncodings[$currentlang];
+			$kml_file_contents = $NewEncoding->Convert($kml_file_contents, $FromCharset, "utf-8", $Entities);
+		}
 		return $kml_file_contents;
 	}
 

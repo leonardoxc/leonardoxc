@@ -37,11 +37,15 @@
 		require($phpbb_root_path . 'common.'.$phpEx);
 	}
 
-	if( ! $CONF_use_utf) {
-		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-	} else {
-		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
+	if ($CONF_use_utf) {
+		define('CONF_LANG_ENCODING_TYPE','utf8');
+		$lang['ENCODING']='utf-8';
+	} else  {
+		define('CONF_LANG_ENCODING_TYPE','iso');
+		$lang['ENCODING']=$langEncodings[$currentlang];
 	}
+
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 
 	session_start();
 	$userID = $_SESSION['userID'];

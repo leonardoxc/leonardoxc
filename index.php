@@ -39,13 +39,11 @@ if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF'])  ) {
     die ("You can't access this file directly...");
 }
 
-if( ! $CONF_use_utf) {
-	require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-	require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
-} else {
-	require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
-	require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
-}
+if ($CONF_use_utf) define('CONF_LANG_ENCODING_TYPE','utf8');
+else  define('CONF_LANG_ENCODING_TYPE','iso');
+
+require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
+require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 require_once dirname(__FILE__)."/FN_UTM.php";
 require_once dirname(__FILE__)."/FN_functions.php";	
 require_once dirname(__FILE__)."/FN_waypoint.php";	

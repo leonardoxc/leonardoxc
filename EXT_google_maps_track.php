@@ -1,6 +1,7 @@
 <? 
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
+	$CONF_use_utf=1;
  	require_once dirname(__FILE__)."/EXT_config.php";
 
 	require_once dirname(__FILE__)."/CL_flightData.php";
@@ -9,6 +10,7 @@
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	//	setDEBUGfromGET();
+
 
 	$flightID=makeSane($_GET['id'],1);
 	if ($flightID<=0) exit;
@@ -37,6 +39,7 @@
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
 <title>Google Maps</title>
 <style type="text/css">
  body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}

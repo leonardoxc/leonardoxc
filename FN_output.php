@@ -400,11 +400,15 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 
 	if ( $add_prevnext_text )
 	{
+		global $themeRelPath;
+		$imgNext="<img src='$themeRelPath/img/icon_page_next.gif' border=0 align=absmiddle >";
+		$imgPrev="<img src='$themeRelPath/img/icon_page_previous.gif' border=0 align=absmiddle >";
 		if ( $on_page > 1 )
-			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '">«</a>&nbsp;&nbsp;'.$page_string;
+			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '">'.$imgPrev.'</a>&nbsp;&nbsp;'.$page_string;
 
-		if ( $on_page < $total_pages )
-			$page_string .= '&nbsp;&nbsp;<a href="' . append_sid($base_url . "&amp;page_num=" . ($on_page+1)   ) . '">»</a>';
+		if ( $on_page < $total_pages ) 
+			$page_string .= '&nbsp;&nbsp;<a href="' . append_sid($base_url . "&amp;page_num=" . ($on_page+1)   ) . '">'.$imgNext.'</a>';
+
 	}
 	$page_string = '<div class="numeration">'.$page_string.'</div>';
 	return $page_string;
@@ -455,7 +459,7 @@ visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 }
 
 function makeTakeoffPopup($ext=0,$userID=0) {
-	global $moduleRelPath,$opMode;
+	global $moduleRelPath;
 	ob_start();
 
 ?>

@@ -12,6 +12,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Google Maps</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script src="http://maps.google.com/maps?file=api&v=1&key=<? echo $CONF_google_maps_api_key ?>" type="text/javascript"></script>
   </head>
 <body>

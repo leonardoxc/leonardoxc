@@ -24,15 +24,8 @@
 	require_once dirname(__FILE__)."/FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
-	if( ! $CONF_use_utf) {
-		require_once dirname(__FILE__)."/language/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/countries-".$currentlang.".php";
-	} else {
-		require_once dirname(__FILE__)."/language/utf8/lang-".$currentlang.".php";
-		require_once dirname(__FILE__)."/language/utf8/countries-".$currentlang.".php";
-	}
-	
-	
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
 	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
@@ -57,7 +50,7 @@
 		$flight->END_TIME=$endTime;
 		
 		$waypointsWebPath=moduleRelPath(0)."/".$waypointsRelPath;
-		$flightsWebPath=moduleRelPath(0).."/".$flightsRelPath;
+		$flightsWebPath=moduleRelPath(0)."/".$flightsRelPath;
 
 		$flight->getFlightFromIGC( $flight->getIGCFilename() );
 		$flight->updateTakeoffLanding();
@@ -82,7 +75,8 @@
 	}
 		
 
-  ?>
+  ?><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
 
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
@@ -95,6 +89,7 @@
 	}
 	.boxTop {margin:0; }
 </style>
+</head>
   <?
 
 
@@ -176,7 +171,8 @@ function fillInForm(name,area,countrycode){
 }
  
 </script>
-      <form name="form1" method="post"  >
+      
+<form name="form1" method="post"  >
         <table width="720" border="0" align="center" cellpadding="0"  cellspacing="1" class="shadowBox main_text">
           <tr>
             <td  width=600 bgcolor="#E3E7F2">
