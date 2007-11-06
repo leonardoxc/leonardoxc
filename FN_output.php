@@ -18,6 +18,11 @@ function sec2Time($secs,$no_seconds=false) {
     return '<span class="time_style">'.sprintf("%d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60).'</span>';
 }
 
+function sec2Time24h($secs) {
+    return sprintf("%02d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60);
+}
+
+
 function fulldate2tm($dateStr) {
 	// expecting YYYY-MM-DD HH:MM:SS
 	$tm=0;

@@ -669,7 +669,7 @@ $photosXML
 		$kmzFile=$this->getIGCFilename(0).".kmz";
 		$kmlTempFile=$this->getIGCFilename(0).".kml";
 
-		if ( !file_exists($kmzFile)  || 1 ) { // create the kmz file containg the points only
+		if ( !file_exists($kmzFile)   ) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(0);  
 			$lines = file ($filename); 
@@ -685,7 +685,7 @@ $photosXML
 					<name>Tracklog</name>
 					<Style >
 						<LineStyle>
-						  <color>ffffffff</color>
+						  <color>ff0000ff</color>
 						  <width>2</width>
 						</LineStyle>
 				  	</Style>					
@@ -696,23 +696,62 @@ $photosXML
 				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
 				// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
 				$str=str_replace("&nbsp;"," ",$str);
-		
+				$timeStampStr='';
 				foreach($lines as $line) {
 					$line=trim($line);
 					if  (strlen($line)==0) continue;				
 					if ($line{0}=='B') {
 							if  ( strlen($line) < 23 ) 	continue;
 							$thisPoint=new gpsPoint($line,$this->timezone);
-							$data_alt[$i]=$thisPoint->getAlt();				
-							if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
-							$str.=-$thisPoint->lon.",".$thisPoint->lat.",".($thisPoint->getAlt()*$exaggeration)." ";
+							$alt=$thisPoint->getAlt();
+							$lon=-$thisPoint->lon;
+							$lat=$thisPoint->lat;
+							// $data_alt[$i]=$thisPoint->getAlt();				
+							if ( $alt > $this->maxAllowedHeight ) continue;
+							$str.=$lon.",".$lat.",".($alt*$exaggeration)." ";
 							$i++;
 							if($i % 50==0) $str.="\n";
+
+							if($i % 5 ==0) {
+							  $timeStampStr.="<Placemark>
+								<TimeStamp>
+									<when>".$this->DATE."T".sec2Time24h( ( $thisPoint->getTime() )%(3600*24) )."Z</when>
+								</TimeStamp>
+								<styleUrl>#trackMark</styleUrl>
+								  <Point>
+									<altitudeMode>absolute</altitudeMode>
+									<coordinates>".$lon.",".$lat.",".($alt*$exaggeration)."</coordinates>
+								  </Point>
+							</Placemark>";
+						 }
 					}
 				}
 		
 				$str.="</coordinates>\n</LineString>\n";
-				$str.="</Placemark>\n</Document>\n</kml>";
+				$str.="</Placemark>";
+
+
+		$str.= "		
+				<Folder>
+				<name>Timestamps</name>
+				";
+				
+	    $str.= "
+	<Style id='trackMark'>
+		<IconStyle>
+		  <color>".$KMLlineColor."</color>
+		  <scale>0.3</scale>
+		  <Icon>
+			<href>http://maps.google.com/mapfiles/kml/pal4/icon17.png</href>
+		  </Icon>
+		</IconStyle>
+		<LabelStyle>
+		  <color>ffff862a</color>
+		</LabelStyle>
+	</Style>";
+				$str.= $timeStampStr;
+				$str.= "\n</Folder>\n";
+				$str.="\n</Document>\n</kml>";
 	
 				writeFile($kmlTempFile,$str);
 				// zip the file 
@@ -882,14 +921,14 @@ $photosXML
 
 		//if (file_exists($this->getKMLFilename())) return;
 
-		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extendedInfo";
+		$getFlightKML=$this->getFlightKML()."&c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extendedInfo";
 		//UTF-8 or 
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
 //"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >".
 "<?xml version='1.0' encoding='UTF-8'?>\n".
 "<kml xmlns=\"http://earth.google.com/kml/2.1\">
-<Document id='".$this->filename."'>
+<Document>
 <name>".$this->filename."</name>".$this->kmlGetDescription($extendedInfo,$getFlightKML)."
 <open>1</open>";
 			
