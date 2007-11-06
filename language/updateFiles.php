@@ -12,6 +12,7 @@ print_r($definesArray);
 foreach($availableLanguages as $lang) {
 
 	// if ($lang!='greek') continue;
+	 if ( in_array($lang,array('chinese','hebrew') )  ) continue;
 	
 	$encFrom=$langEncodings[$lang];
 	$encTo="utf-8";
