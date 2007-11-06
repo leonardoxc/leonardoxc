@@ -87,7 +87,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin">ADMIN MENU</a></li>
-				<? if ( auth::isAdmin($userID) )  {  ?>
+				<? if ( auth::isAdmin($userID) && $opMode==3 )  {  ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=users&page=admin">User Administration</a></li>
 				<? } ?>
 				<li class='li_space long'></li>

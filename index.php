@@ -258,6 +258,8 @@ if ($op=="users") {
 //--------------------------
 } else if ($op=="admin") {
 	require $moduleRelPath."/GUI_admin.php";
+} else if ($op=="admin_languages") {
+	require $moduleRelPath."/GUI_admin_update_languages.php";
 } else if ($op=="admin_brands") {
 	require $moduleRelPath."/GUI_admin_brands.php";
 } else if ($op=="admin_airspace") {

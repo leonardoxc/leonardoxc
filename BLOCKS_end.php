@@ -22,11 +22,11 @@
 		if (count($blocksList))	 {
 			sort($blocksList);
 			foreach ($blocksList as $thisBlock) {
-				$side_blocks_html.=renderBlock($thisBlock);
+				$side_blocks_html.= renderBlock($thisBlock);
 			}
 		}
 		
-		echo $side_blocks_html;
+		// echo $side_blocks_html;
 	}
 
 function renderBlock($thisBlock) {
@@ -45,7 +45,8 @@ function renderBlock($thisBlock) {
 	echo "<BR>";
 
 	$outRes = ob_get_contents();
-	ob_end_clean();
+	// ob_end_clean();
+	while (@ob_end_clean()); 
 	return $outRes ;
 }
 ?>

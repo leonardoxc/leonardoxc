@@ -40,51 +40,62 @@ function chmodDir($dir){
 	$admin_op=makeSane($_GET['admin_op']);
 
 
-echo "<br><BR>";
+echo "<br>";
+
+echo "<h3>Update operations</h3>";
+
 echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names 
-where the local or english name is missing and put the existing name into the missing one <BR>i.e if the local name is missing the english/international name will be used as the local too. ";
-	if ($CONF_use_validation)	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
-This is a *heavy* operation and will take long to complete<BR>It will check all unchecked flights for airspace violations";
-	if ($CONF_use_NAC)			echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateMaps'>Update Flight Maps</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_languages'>Administer Language Translations</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names where the local or english name is missing and put the existing name into the missing one i.e if the local name is missing the english/international name will be used as the local too. ";
+	if ($CONF_use_validation)	
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
+This is a *heavy* operation and will take long to complete. It will check all unchecked flights for airspace violations";
+
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a><br>
+	This is a *heavy* operation and will take long to complete. It will re-compute  the takeoff/landing  for ALL flights ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a><BR>
+	This is a *heavy* operation and will take long to complete. It will re-compute Scoring for ALL flights either scored or not";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateMaps'>Update Flight Maps</a><br>
+	This is a *heavy* operation and will take long to complete. It will re-draw the static Maps for ALL flights either present or not ";
 echo "</ul>";
 
+echo "<h3>Operations used at Installation time</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=importMaps'>Import Maps</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateFilePerm'>Update file permissions</a>  ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findMissingFiles'>Find missing IGC</a>  ";
-echo "</ul><br><br>";
+echo "</ul>";
 
+echo "<h3>Troubleshoot operations</h3>";
 echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a> ";
-echo "</ul><br><br>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findMissingFiles'>Find missing IGC</a><br> It will find flights that for some 'strange' reason dont have their IGC files present where they should have  ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a><BR>It will find all IGC files that were rejected during submission BUT for some strange reason were not auto-clened by the system. ";
+echo "</ul>";
 
+echo "<h3>Migration to newer DB schemes operations</h3>";
 echo "<ul>";
+	if ($CONF_use_NAC)			
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
-echo "</ul><br>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table (NOT USED !!!)</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table (NOT USED !!!)</a> ";
+echo "</ul>";
+
+echo "<h3>Sync Log oparations</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=remakeLog'>Remake sync-log</a> ";
-echo "</ul><br>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=remakeLog'>Remake sync-log </a><br>
+	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
+	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
+echo "</ul>";
 
 echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=clearBatchBit'>Clean the batch bits for all flights</a> ";
-echo "</ul><br>";
-
-echo "<ul>";
-//	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=glidersDetect'>Detect / Guess glider brands</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
-echo "</ul><br>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=clearBatchBit'>Clean the batchProcessed field for all flights</a> ";
+echo "</ul><br><hr>";
 
 
 
-echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
-echo "</ul><br>";
+
 
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
@@ -410,7 +421,7 @@ echo "</ul><br>";
 
 
   function findUnusedIGCfiles($dir,$rootLevel,$prefixRemoveCharsArg) {
-		 global $flightsWebPath;
+		 global $flightsWebPath,$moduleRelPath;
 
 		 set_time_limit (160);
 		 $i=0;
