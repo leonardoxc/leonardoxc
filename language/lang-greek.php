@@ -584,14 +584,14 @@ define("_Sponsor","Σπόνσορας");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Επιλογή τρέχοντος μήνα');
-define('_Today_is','Σήμερα είναι');
-define('_Wk','Εβδ');
-define('_Click_to_scroll_to_previous_month','Πατήστε για επιλογή του προηγούμενου μήνα');
-define('_Click_to_scroll_to_next_month','Πατήστε για επιλογή του επόμενου μήνα');
-define('_Click_to_select_a_month','Πατήστε για επιλογή μήνα');
-define('_Click_to_select_a_year','Πατήστε για επιλογή έτους');
-define('_Select_date_as_date.','Επιλογή [date] ως ημερομηνίας'); // do not replace [date], it will be replaced by date.
+define("_Go_To_Current_Month","Επιλογή τρέχοντος μήνα");
+define("_Today_is","Σήμερα είναι");
+define("_Wk","Εβδ");
+define("_Click_to_scroll_to_previous_month","Πατήστε για επιλογή του προηγούμενου μήνα");
+define("_Click_to_scroll_to_next_month","Πατήστε για επιλογή του επόμενου μήνα");
+define("_Click_to_select_a_month","Πατήστε για επιλογή μήνα");
+define("_Click_to_select_a_year","Πατήστε για επιλογή έτους");
+define("_Select_date_as_date.","Επιλογή [date] ως ημερομηνίας"); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
 ?>

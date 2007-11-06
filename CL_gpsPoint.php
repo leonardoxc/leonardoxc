@@ -230,24 +230,29 @@ Time to launch from landing
 
 	function getFromDB() {
 		global $db,$waypointsTable;
-		$res= $db->sql_query("SELECT * FROM $waypointsTable WHERE ID=".$this->waypointID );
-  		if($res <= 0){   
-		     return;
-	    }
+		# Martin Jursa 20.05.2007: avoid sql error if waypointID is not given
+		if (!$this->waypointID) {
+			return;
+		}else {
+			$res= $db->sql_query("SELECT * FROM $waypointsTable WHERE ID=".$this->waypointID );
+	  		if($res <= 0){
+			     return;
+		    }
 
-	    $wpInfo = $db->sql_fetchrow($res);
+		    $wpInfo = $db->sql_fetchrow($res);
 
-		$this->lat =$wpInfo['lat'];
-		$this->lon =$wpInfo['lon'];
-		$this->name =$wpInfo['name'];
-		$this->type =$wpInfo['type'];
-		$this->intName =$wpInfo['intName'];
-		$this->location =$wpInfo['location'];
-		$this->intLocation =$wpInfo['intLocation'];
-		$this->countryCode =$wpInfo['countryCode'];
-		$this->link =$wpInfo['link'];
-		$this->description =$wpInfo['description'];
-		$this->modifyDate=$wpInfo['modifyDate'];
+			$this->lat =$wpInfo['lat'];
+			$this->lon =$wpInfo['lon'];
+			$this->name =$wpInfo['name'];
+			$this->type =$wpInfo['type'];
+			$this->intName =$wpInfo['intName'];
+			$this->location =$wpInfo['location'];
+			$this->intLocation =$wpInfo['intLocation'];
+			$this->countryCode =$wpInfo['countryCode'];
+			$this->link =$wpInfo['link'];
+			$this->description =$wpInfo['description'];
+			$this->modifyDate=$wpInfo['modifyDate'];
+		}
     }
 
 	function exportXML() {	

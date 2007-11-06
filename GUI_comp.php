@@ -39,11 +39,25 @@
   // BRANDS MOD  
   $where_clause.= brands::makeWhereClause($brandID);
 
-  // show the current subranking
-  require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
 
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
+  
+  
+  	# Martin Jursa 22.05.2007 option NACclub Selection
+	$dontShowNacClubSelection=1;
+	$forceNacId=0;
+	if (!empty($CONF_use_NAC) && empty($ranksList[$rank]['dontShowNacClubSelection'])) {
+		require_once(dirname(__FILE__)."/CL_NACclub.php");
+		$dontShowNacClubSelection=0;
+		# to override any REQUEST/SESSION nacid value inside the nacclub second_menu
+		$forceNacId=$ranksList[$rank]['forceNacId'];
+		if ($forceNacId) $nacid=$forceNacId;
+	}
+  
+  // show the current subranking
+  require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
+
   
   
   if ($ranksList[$rank]['entity']=='club') $listClubs=1;

@@ -45,6 +45,11 @@
   if ($takeoffID) {
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
   }
+	// Martin Jursa 18.05.2007
+	// Support for NACclubs added
+	if ($nacid && $nacclubid) {
+		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid  ";
+	}
 
   if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";

@@ -8,10 +8,11 @@ $baseLang='english';
 $baseDefines=getDefinesAsArray("lang-$baseLang.php");
 
 
-print_r($definesArray);
+ // print_r($baseDefines);
+
 foreach($availableLanguages as $lang) {
 
-	// if ($lang!='greek') continue;
+	 if ( ! in_array($lang,array('greek','german','english')) ) continue;
 	 if ( in_array($lang,array('chinese','hebrew') )  ) continue;
 	
 	$encFrom=$langEncodings[$lang];
@@ -23,7 +24,9 @@ foreach($availableLanguages as $lang) {
 	$langDefines=getDefinesAsArray("lang-$lang.php");
 	$definesMissing=array();	
 	foreach($baseDefines as $defineStr=>$translateStr) {
+		//	echo " $defineStr => $translateStr<BR>";
 		if (! $langDefines[$defineStr]){
+			echo "@@@@@@ $defineStr => $translateStr<BR>";
 			$definesMissing[$defineStr]=$translateStr;
 		}
 	}
@@ -37,6 +40,7 @@ foreach($availableLanguages as $lang) {
 	$NewFileOutput = $NewEncoding->Convert($FileText, $encFrom, $encTo, $Entities);
 
 	if ( count($definesMissing) ) {
+		$NewFileOutput=substr($NewFileOutput,0,-3);
 		echo "There are ".count($definesMissing)." defines missing from $lang File<BR>";
 		$NewFileOutput.="\r\n//--------------------------------------------------------\r\n";
 		$NewFileOutput.="//--------------------------------------------------------\r\n";
@@ -45,6 +49,7 @@ foreach($availableLanguages as $lang) {
 		foreach($definesMissing as $defineStr=>$translateStr){
 				$NewFileOutput.="define(\"$defineStr\",\"$translateStr\"); \r\n";
 		}
+		$NewFileOutput.="\r\n?>";
 	}
 	
 	$outFile='utf8/'.$FileName;
@@ -74,12 +79,12 @@ function getDefinesAsArray($file){
 	$transArray=array();
 	$i=0;
 	foreach ($lines as $line) {
-		if ( preg_match("/define\(\"(.+)\",\"(.+)\"\)\;/is",$line,$matches) ) {
+		if ( preg_match("/define\([\"\'](.+)[\"\'], *[\"\'](.+)[\"\']\)\;/is",$line,$matches) ) {
 			$definesArray[$matches[1]]=$matches[2];
 			$i++;
 		}
 	}
-	return array($definesArray);
+	return $definesArray;
 }
 
 

@@ -55,7 +55,7 @@ define("_SHOW","Display");
 // show flight
 define("_FLIGHT_WILL_BE_ACTIVATED_SOON","The flight will be activated in 1-2 minutes. ");
 define("_TRY_AGAIN","Please try again later");
-
+define("_SEASON","Season");
 define("_TAKEOFF_LOCATION","Takeoff");
 define("_TAKEOFF_TIME","Takeoff time");
 define("_LANDING_LOCATION","Landing");
@@ -316,6 +316,7 @@ define("_First_Name"," First Name");
 define("_Last_Name","Last Name");
 define("_Birthdate","Birthdate");
 define("_dd_mm_yy","dd.mm.yy");
+define("_pilot_email","Email Address");
 define("_Sign","Sign");
 define("_Marital_Status","Marital Status");
 define("_Occupation","Occupation");
@@ -373,6 +374,28 @@ define("_Delete_Photo","Delete Photo");
 define("_Your_profile_has_been_updated","Your profile has been updated");
 define("_Submit_Change_Data","Submit - Change Data");
 
+//--------------------------------------------
+// Added by Martin Jursa, 26.04.2007 for pilot_profile and pilot_profile_edit
+//--------------------------------------------
+define("_Sex", "Sex");
+define("_Login_Stuff", "Change Login-Data");
+define("_PASSWORD_CONFIRMATION", "Confirm password");
+define("_EnterPasswordOnlyToChange", "Only enter the password, if you want to change it:");
+
+define("_PwdAndConfDontMatch", "Password and confirmation are different.");
+define("_PwdTooShort", "The password is too short. It must have a length of at least $passwordMinLength characters.");
+define("_PwdConfEmpty", "The password has not be confirmed.");
+define("_PwdChanged", "The password was changed.");
+define("_PwdNotChanged", "The password has NOT been changed.");
+define("_PwdChangeProblem", "A problem occurred when changing the password.");
+
+define("_EmailEmpty", "The email address must not be empty.");
+define("_EmailInvalid", "The email address is invalid.");
+define("_EmailSaved", "The email address was saved");
+define("_EmailNotSaved", "The email address has not been saved.");
+define("_EmailSaveProblem", "A problem occurred when saving the email address.");
+
+// End 26.04.2007
 
 //--------------------------------------------
 // pilot_profile_stats.php
@@ -518,6 +541,10 @@ define("_Flight_Info","Flight Info");
 define("_MENU_LOGOUT","Logout");
 define("_MENU_LOGIN","Login");
 define("_MENU_REGISTER","Open an account");
+define("_PROJECT_HELP","Help");
+define("_PROJECT_NEWS","News");
+define("_PROJECT_RULES","Regulations");
+
 
 
 define("_Africa","Africa");
@@ -580,14 +607,68 @@ define("_Sponsor","Sponsor");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Go To Current Month');
-define('_Today_is','Today is');
-define('_Wk','Wk');
-define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
-define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
-define('_Click_to_select_a_month','Click to select a month.');
-define('_Click_to_select_a_year','Click to select a year.');
-define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+define("_Go_To_Current_Month","Go To Current Month");
+define("_Today_is","Today is");
+define("_Wk","Wk");
+define("_Click_to_scroll_to_previous_month","Click to scroll to previous month. Hold mouse button to scroll automatically.");
+define("_Click_to_scroll_to_next_month","Click to scroll to next month. Hold mouse button to scroll automatically.");
+define("_Click_to_select_a_month","Click to select a month.");
+define("_Click_to_select_a_year","Click to select a year.");
+define("_Select_date_as_date.","Select [date] as date."); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
 
+
+// New on 2007/05/18 (alternative GUI_filter)
+define("_Filter_NoSelection", "No selection");
+define("_Filter_CurrentlySelected", "Current selection");
+define("_Filter_DialogMultiSelectInfo", "Press Ctrl for multiple selection.");
+
+define("_Filter_FilterTitleIncluding", "Only selected $items");
+define("_Filter_FilterTitleExcluding", "Exclude $items");
+define("_Filter_DialogTitleIncluding", "Select $items");
+define("_Filter_DialogTitleExcluding", "Select $items");
+
+define("_Filter_Items_pilot", "pilots");
+define("_Filter_Items_nacclub", "clubs");
+define("_Filter_Items_country", "countries");
+define("_Filter_Items_takeoff", "take offs");
+
+define("_Filter_Button_Select", "Select");
+define("_Filter_Button_Delete", "Delete");
+define("_Filter_Button_Accept", "Accept selection");
+define("_Filter_Button_Cancel", "Cancel");
+
+# menu bar
+define("_MENU_FILTER_NEW","Filter **NEW VERSION**");
+
+// end 2007/05/18
+
+
+
+
+// New on 2007/05/23
+// second menu NACCclub selection
+define("_ALL_NACCLUBS", "All Clubs");
+// Note to translators: use the placeholder $nacname in your translation as it is, don"t translate it
+define("_SELECT_NACCLUB", 'Select [nacname]-Club');
+
+// pilot profile
+define("_FirstOlcYear", "First year of participation in an online XC contest");
+define("_FirstOlcYearComment", "Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings.");
+
+//end 2007/05/23
+
+// New on 2007/11/06
+define("_Select_Brand","Select Brand");
+define("_All_Brands","All Brands");
+define("_DAY","DAY");
+define('_Glider_Brand','Glider Brand');
+define('_Or_Select_from_previous','Or Select from previous');
+
+define('_Explanation_AddToBookmarks_IE', 'Add these filter settings to your favourites');
+define('_Msg_AddToBookmarks_IE', 'Click here to add these filter settings to your bookmarks.');
+define('_Explanation_AddToBookmarks_nonIE', '(Save this link to your bookmarks.)');
+define('_Msg_AddToBookmarks_nonIE', 'To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.');
+	
+//end 2007/11/06
 ?>

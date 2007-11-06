@@ -332,10 +332,19 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 	return "$imgStr$textStr";
 }
 
-function getNationalityDropDown($cCode) {
+/**
+ * Modification Martin Jursa 26.04.2007
+ * Support for disabled added
+ *
+ * @param string $cCode
+ * @param bool $disabled
+ * @return string
+ */
+function getNationalityDropDown($cCode, $disabled=false) {
 	global $countries;
 	asort($countries);
-	$str="<Select name='countriesList'>";
+	$disabled_attr=$disabled ? ' disabled' : '';
+	$str="<select name='countriesList' $disabled_attr>";
 	$str.="<option value=''></option>\n";
 	foreach ($countries as $countrycode=>$countryName) {
 		if ( strtolower($countrycode)==strtolower($cCode) ) $sel=" selected"; 
@@ -344,6 +353,106 @@ function getNationalityDropDown($cCode) {
 	}
 	$str.='</Select>';
 	return $str;
+}
+
+/**
+ * Martin Jursa 26.04.2007
+ *
+ * @param string $sex
+ * @param bool $disabled
+ * @return string
+ */
+function getSexDropDown($sex, $disabled=false) {
+	$disabled_attr=$disabled ? ' disabled' : '';
+	if ($sex!='M' && $sex!='F') $sex='';
+	$str="<select name='Sex' $disabled_attr>\n";
+	$values=array('', 'M', 'F');
+	foreach ($values as $value) {
+		$selected=$sex==$value ? ' selected ' : '';
+		$str.="<option value='$value' $selected>$value</option>\n";
+	}
+	$str.='</select>
+';
+	return $str;
+}
+
+/**
+ * Martin Jursa 26.04.2007
+ * Save email and password to user table if the respective options are set
+ * returns a resultmessage
+ *
+ * @param int $userID
+ * @param string $newEmail
+ * @param string $newPassword
+ * @param string $newPasswordConfirmation
+ * @return string
+ */
+function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmation) {
+	global $db;
+	global $CONF_edit_login;
+	global $CONF_edit_email;
+	global $CONF_password_minlength;
+	$goodmsgs=array();
+	$errmsgs=array();
+	if (empty($CONF_edit_login)) {
+		$errmsgs[]='saveLoginData requires turning on CONF_edit_login.';
+	}elseif (empty($userID)) {
+		$errmsgs[]='UserID is missing; cannot update login data.';
+	}else  {
+		if (!empty($CONF_edit_email)) {
+			if (empty($newEmail)) {
+				$errmsgs[]=_EmailEmpty;
+			}else {
+				$saved=false;
+				$email=emailChecked($newEmail);
+				if ($email=='') {
+					$errmsgs[]=_EmailInvalid;
+				}else {
+					$sql='UPDATE '.USERS_TABLE." SET user_email='$email' WHERE user_id=$userID";
+					$res=$db->sql_query($sql);
+			  		if($res<=0){
+			  			$errmsgs[]=_EmailSaveProblem;
+			  		}else {
+						//$goodmsgs[]=_EmailSaved;
+						$saved=true;
+			  		}
+				}
+	  			if (!$saved) $errmsgs[]=_EmailNotSaved;
+			}
+		}
+		if (!empty($newPassword)) {
+			$saved=false;
+			$newPassword=trim($newPassword);
+			$newPasswordConfirmation=trim($newPasswordConfirmation);
+			$passwordMinLength=!empty($CONF_password_minlength) ? $CONF_password_minlength : 4;
+			if ($newPasswordConfirmation=='') {
+				$errmsgs[]=_PwdConfEmpty;
+			}elseif (strlen($newPassword)<$passwordMinLength) {
+				eval('$errmsgs[]="'._PwdTooShort.'";');
+			}elseif ($newPassword!=$newPasswordConfirmation) {
+				$errmsgs[]=_PwdAndConfDontMatch;
+			}else {
+				$pwd=md5($newPassword);
+				$sql='UPDATE '.USERS_TABLE." SET user_password='$pwd' WHERE user_id=$userID";
+				$res=$db->sql_query($sql);
+		  		if($res<=0){
+		  			$errmsgs[]=_PwdChangeProblem;
+		  		}else {
+		  			$goodmsgs[]=_PwdChanged;
+	  				$saved=true;
+		  		}
+			}
+	  		if (!$saved) $errmsgs[]=_PwdNotChanged;
+		}
+	}
+	$message='';
+	if (count($goodmsgs)>0) {
+		$message.=implode('<br>', $goodmsgs);
+	}
+	if (count($errmsgs)>0) {
+		$message.='<div style="color:red; margin:0">'.implode('<br>', $errmsgs).'</div>';
+	}
+	return $message;
 }
 
 

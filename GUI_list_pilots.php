@@ -46,6 +46,12 @@
 			
   }
 
+  # Martin Jursa 23.05.2007: support for NacClub Filtering
+  if (!empty($CONF_use_NAC)) {
+	  if ($nacid && $nacclubid) {
+	  		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid";
+	  }
+  }
 
   if ($clubID)   {
 	 require dirname(__FILE__)."/INC_club_where_clause.php";

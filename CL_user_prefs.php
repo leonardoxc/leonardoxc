@@ -64,8 +64,8 @@ class UserPrefs {
 			$this->viewCat=$newUserPrefs->viewCat;
 			$visitorID=$newUserPrefs->visitorID;
 		}
-
-		$sessionID=$_COOKIE['leonardo_session'];
+		# Martin Jursa 23.05.2007: check isset to avoid err-message on verbose apache installations
+		$sessionID=isset($_COOKIE['leonardo_session']) ? $_COOKIE['leonardo_session'] : '';
 		// $visitorID gets set form the cookie !
 		$rNum=sprintf("%010d%04d",time(),rand(1,9999));		
 		if ( !$visitorID ) $visitorID = $rNum;

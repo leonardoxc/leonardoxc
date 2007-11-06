@@ -36,6 +36,7 @@
 		$legend.=" :: ".$countries[$country]." ";				
   }
 
+	$dontShowNacClubSelection=1;
 
   // SEASON MOD
   list($dates_where_clause,$dates_legend) = dates::makeWhereClause(0,$season,$year,$month,0 , 1);

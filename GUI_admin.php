@@ -145,9 +145,10 @@ echo "</ul><br>";
 					
 					
 					if ($row['DATE'] > $seasonStart  && $flight->DATE <= $seasonEnd ) { // yes -> put in the clubId in the flight
-						 $query2="UPDATE $flightsTable SET NACclubID = $pilotNACclubID where ID=".$row['flightID'];
-						 $res2= $db->sql_query($query2);
-						 if (!$res2) echo "Problem in updating flight info: $query2<BR>";
+						/// Martin Jursa, 17.05.2007: Update the NACid too
+						$query2="UPDATE $flightsTable SET NACclubID = $pilotNACclubID, NACid=$pilotNACID  where ID=".$row['flightID'];
+						$res2= $db->sql_query($query2);
+						if (!$res2) echo "Problem in updating flight info: $query2<BR>";
 
 					}
 				}

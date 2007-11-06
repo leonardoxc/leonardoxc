@@ -10,7 +10,11 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-	
+
+/**
+ * Dialog to select one NAC-club
+ * Modification Martin Jursa 22.05.2007 to work with MENU_nacclubs_simple
+ */
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
@@ -31,25 +35,47 @@
 
 	$clubID=$_GET['clubID']+0;
 	$NAC_ID=$_GET['NAC_ID']+0;
-	$clubList=NACclub::getClubs($NAC_ID);
+	
 	// print_r($clubList);
+	// $charset=$langEncodings[$currentlang];
 
-  ?><head>
+	# $_GET['option'] is to control scenario dependent options
+	$option=empty($_GET['option']) ? 1 : $_GET['option'];
+	# url parameters in case of option 2
+	$params=empty($_GET['params']) ? '' : urldecode($_GET['params']);
+
+	$withFlightsOnly=$option==2;
+	$clubList=NACclub::getClubs($NAC_ID, $withFlightsOnly);
+
+  ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  >
+<html>
+<head>
   <title><?=_Select_Club?></title>
-  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+  <meta http-equiv="content-type" content="text/html; charset=<?=$lang['ENCODING']?>">
 
 <style type="text/css">
-	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
-	 body {margin:0px; background-color:#E9E9E9}
+	html {
+		height: 100%;
+	}
+	body, p, table,tr,td {
+		font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
+	}
+	body {
+		margin:0px;
+		background-color:#E9E9E9;
+		height: 100%;
+	}
 	.box {
-		 background-color:#F4F0D5;
-		 border:1px solid #555555;
-		padding:3px; 
+	 	background-color:#F4F0D5;
+	 	border:1px solid #555555;
+		padding:3px;
 		margin-bottom:5px;
 	}
 	.boxTop {margin:0; }
 </style>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
+<? if ($option==1) { ?>
 function refreshParent() {
   topWinRef=top.location.href;
   top.window.location.href=topWinRef;
@@ -70,7 +96,7 @@ function MWJ_findObj( oName, oFrame, oDoc ) {
 
 function setValToMaster() {
 	if (!window.opener) {
-		alert('ERROR');
+		alert('Parent window not available');
 	}else {
 		var NACclub_sel=MWJ_findObj("clubList");
 		var selIndex	= NACclub_sel.selectedIndex;
@@ -85,31 +111,61 @@ function setValToMaster() {
 	}
 	window.close();
 }
-
+<? }elseif ($option==2) { ?>
+function setValToMaster() {
+	if (!window.opener) {
+		alert('Parent window not available');
+	}else {
+		var masterDoc=window.opener.document;
+		var urlParams='<?=$params?>';
+		if (urlParams=='') {
+			alert('Parameter params is missing.');
+		}else {
+			var parts=masterDoc.location.href.split('?');
+			var el=document.getElementById('clubList');
+			if (el) {
+				var nacclubId=el.options[el.selectedIndex].value;
+				if (!nacclubId) nacclubId='0';
+				var hrefNew=parts[0]+'?'+urlParams+'&nacclubid='+nacclubId+'&nacid=<?=$NAC_ID?>';
+				masterDoc.location.href=hrefNew;
+			}
+		}
+	}
+	window.close();
+}
+<? }else { ?>
+function setValToMaster() {
+	alert('Missing or invalid Parameter "option"');
+}
+<? } ?>//-->
 </script>
 </head>
-      <form name="form1" method="post" action="" >
-<table width="450" border="0" align="center" cellpadding="2" class="shadowBox main_text">
-              <tr>
-                <td width="478" bgcolor="#CFE2CF">
-                  <div align="center">
-    <select name="clubList" size="24">
-			      <?
-					if ($clubID==0) $sel=" selected ";
-					else $sel="";
-					echo "<option value='0' $sel></option>\n";
-					foreach ($clubList as $clubID_list=>$clubName) {
-							if ($clubID==$clubID_list) $sel=" selected ";
-							else $sel="";
-							echo "<option value='$clubID_list' $sel>$clubName</option>\n";
-					} 							 
-				?>
-                    </select>
-    <br>
-    <input type="submit" name="Submit" value="<? echo _Select_Club ?>" onclick="setValToMaster()"/>
-    <input type="submit" name="Submit2" value="<? echo _Close_window ?>"  onclick="window.close();" />  
-				  </div></td>
-              </tr>
-            
-            </table>
-      </form>    
+<body style="height:100%;width:100%;">
+<form name="form1" method="post" action="" style="height:100%;width:100%;">
+	<table width="450" height="100%" border="0" align="center" cellpadding="2" class="shadowBox main_text">
+	  <tr>
+	    <td width="478" bgcolor="#CFE2CF">
+	      <div align="center" style="height:100%">
+			<select name="clubList" id="clubList" size="24"  style="height:90%">
+		      <?
+				if ($clubID==0) $sel=" selected ";
+				else $sel="";
+				echo "<option value='0' $sel></option>\n";
+				foreach ($clubList as $clubID_list=>$clubName) {
+						if ($clubID==$clubID_list) $sel=" selected ";
+						else $sel="";
+						echo "<option value='$clubID_list' $sel>$clubName</option>\n";
+				}
+			?>
+		    </select>
+		    <br>
+		    <input type="button" name="Submit" value="<? echo _Select_Club ?>" onclick="setValToMaster()"/>
+		    <input type="button" name="Submit2" value="<? echo _Close_window ?>"  onclick="window.close();" />
+		  </div>
+		 </td>
+	  </tr>
+
+	</table>
+</form>
+</body>
+</html>

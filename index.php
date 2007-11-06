@@ -116,6 +116,9 @@ setVarFromRequest("comp",0,1);
 setVarFromRequest("rank",0,1);
 setVarFromRequest("subrank",0,1);
 setVarFromRequest("clubID",0,1);
+/// Martin Jursa 17.05.2007 : values for nacclub filtering added
+setVarFromRequest("nacclubid", 0, 1);
+setVarFromRequest("nacid", 0, 1);
 
 $serverID=0;
 if ( count($pilotPartsArray=split('_',$pilotIDview)) > 1 ) {

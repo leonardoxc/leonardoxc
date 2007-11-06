@@ -7,10 +7,14 @@ $ranksList=array(
 		 'type'=>'national',
 		 'entity'=>'pilot',
 		 'name'=>'German National Ranking',
-		 'localName'=>'German National Ranking (in german)',
+		 'localName'=>'Deutsche Gleitschirm Wertung',
 		 'localLanguage'=>'german',
 		 'dontShowCatSelection'=>1, // no glider type selection menu on top
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
+		'forceNacId'=>1, // the only NAC ID to be used
 
 		  // Ths configures the top menu links to point to a specific year/season
 		 'datesMenu'=>'seasons',	
@@ -103,10 +107,15 @@ $ranksList=array(
 		 'type'=>'national',
 		 'entity'=>'club',
 		 'name'=>'German Club Ranking',
-		 'localName'=>'German Club Ranking (in german)',
+		 'localName'=>'Deutsche Drachenwertung',
 		 'localLanguage'=>'german',
 		 'dontShowCatSelection'=>1, // no glider type selection menu on top
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+		 
+ 		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
+		'forceNacId'=>1, // the only NAC ID to be used
+
 		 
  		  // Ths configures the top menu links to point to a specific year/season
 		 'datesMenu'=>'seasons',	

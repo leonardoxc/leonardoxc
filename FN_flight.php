@@ -23,6 +23,7 @@ define("ADD_FLIGHT_ERR_SAME_DATE_FLIGHT",-5);
 define("ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT",-6);
 define("ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE",-7);
 define("ADD_FLIGHT_ERR_SAME_HASH_FLIGHT",-8);
+define("ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW",-9);
 
 //------------------- FLIGHT RELATED FUNCTIONS ----------------------------
 
@@ -208,6 +209,27 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
 	}
 
+	// Two week time limit check - P.Wild
+
+	$tmpyear=$flight->getYear();
+	$tmpmonth=$flight->getMonth();
+	$tmpday=$flight->getDay();
+	$tmpnow=strtotime("now");
+	$tmpflightdate=strtotime($tmpyear."-".$tmpmonth."-".$tmpday);
+
+	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
+	if ($CONF_new_flights_submit_window>0) {
+		global $userID, $super_users;
+		$admin=in_array($userID, $super_users);
+		if (!$admin) {
+			if (($tmpnow-$tmpflightdate)>($CONF_new_flights_submit_window*24*60*60))  {
+				@unlink($flight->getIGCFilename(1));
+				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
+			}
+		}
+	}
+	// end martin / peter
+
 	
 	$sameHashID=$flight->findSameHash( $hash );
 	if ($sameHashID>0) 	 {
@@ -330,6 +352,9 @@ function getAddFlightErrMsg($result,$flightID) {
 		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	
 			$errMsg="The date of the flight is in the future<BR>Please use the Year-month-day not the US Year-day-month format";
 							 
+			break;
+	    case ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW:
+			$errMsg=_OUTSIDE_SUBMIT_WINDOW;
 			break;
 	}
 

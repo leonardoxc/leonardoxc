@@ -58,8 +58,25 @@
   if ($takeoffID) $takeoffLegend=getWaypointName($takeoffID);
   else {
 		$takeoffLegend=_ALL_TAKEOFFS;
-		$allTakeoffDisplay=1;  
-  }
+		$allTakeoffDisplay=1;
+	}
+
+	# Martin Jursa, 22.05.2007
+	$showNacClubSelection=!empty($CONF_use_NAC) && empty($dontShowNacClubSelection);
+	if ($showNacClubSelection) {
+		$nacClubLegend=_ALL_NACCLUBS;
+		if (!empty($forceNacId)) $nacid=$forceNacId; # just to make sure
+		if ($nacid) {
+			if ($nacclubid) {
+				require_once(dirname(__FILE__)."/CL_NACclub.php");
+				$nacClubLegend=NACclub::getClubName($nacid, $nacclubid);
+				if ($nacClubLegend=='') {
+					$nacclubid=0;
+					$nacClubLegend=_ALL_NACCLUBS;
+				}
+			}
+		}
+	}
 
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
@@ -185,6 +202,14 @@ if (! $dontShowCountriesSelection ) {
 		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 		</ul>
 	</li>
+<? # Martin Jursa 22.05.2007 NACClub Menu
+ 	if ($showNacClubSelection ) { ?>
+	<li><a href="#"> <? echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
+		<ul>
+		 <li><?  require dirname(__FILE__)."/MENU_nacclubs_simple.php"; ?></li>
+		</ul>
+	</li>
+<? } ?>
 </ul>
 <? if ($CONF['brands']['filter_brands'] ) {  ?>
 <div id="nav3">
@@ -252,6 +277,12 @@ if (! $dontShowCountriesSelection ) {
 				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
 			else
 				$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+			# Martin Jursa 25.05.2007: support for nacclub-filtering
+			if (!empty($CONF_use_NAC)) {
+				if ($nacclubid && $nacid) {
+					$thisURL.="&nacid=$nacid&nacclubid=$nacclubid";
+				}
+			}
 		?>
 		<a  href='<? echo $thisURL;
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>

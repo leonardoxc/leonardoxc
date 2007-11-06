@@ -45,7 +45,9 @@ class flight {
 	var $grecord=0;
 	var $validationMessage="";
 	var $NACclubID=0;
-	
+	/// Martin Jursa, 17.05.2007
+	var $NACid=0;
+
 	var $airspaceCheck=0; // not yet processed
 	var $airspaceCheckFinal=0; // not yet processed
 	var $airspaceCheckMsg="";
@@ -109,7 +111,11 @@ var $maxPointNum=1000;
 //---------------
 // CONSTRUCTOR
     function flight() {
-		
+    	# Martin Jursa, 30.05.2007: make time gap configurable
+		global $CONF_max_allowed_time_gap;
+		if (!empty($CONF_max_allowed_time_gap)) {
+			$this->max_allowed_time_gap=$CONF_max_allowed_time_gap;
+		}
     }
 	
 	
@@ -2236,6 +2242,8 @@ $kml_file_contents=
 		$this->userServerID=$row["userServerID"];
 
 		$this->NACclubID=$row["NACclubID"];
+		/// Martin Jursa, 17.05.2007
+		$this->NACid=$row["NACid"];
 		$this->cat=$row["cat"];		
 		$this->subcat=$row["subcat"];	
 		$this->category=$row["category"];		
@@ -2452,6 +2460,7 @@ $kml_file_contents=
 			$p2.="'".$this->$var_name."',";
 		}
 		
+		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
@@ -2459,7 +2468,7 @@ $kml_file_contents=
 		originalUserID ,userServerID,
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
-		NACclubID,
+		NACclubID,NACid,
 		comments, glider, gliderBrandID, linkURL, timesViewed,
 		$p1
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
@@ -2492,7 +2501,7 @@ $kml_file_contents=
 		$this->originalUserID , $this->userServerID,
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
-		$this->NACclubID,
+		$this->NACclubID, $this->NACid,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  $this->gliderBrandID , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		$p2
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,

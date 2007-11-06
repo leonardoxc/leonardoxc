@@ -46,9 +46,27 @@ class NACclub {
 		else return 0;
     }
 
-	function getClubs($NAC_ID) {
+/**
+ * Get Array of clubID=>clubName
+ * Modification Martin Jursa, 22.05.2007: Option $withFlightsOnly to limit array to clubs having submitted flights
+ *
+ * @param int $NAC_ID
+ * @param bool $withFlightsOnly
+ * @return array
+ */
+	function getClubs($NAC_ID, $withFlightsOnly=false) {
 		global $db,$NACclubsTable;
-		$query="SELECT * FROM $NACclubsTable WHERE NAC_ID=$NAC_ID ORDER BY clubName";
+		if ($withFlightsOnly) {
+			global $flightsTable;
+			$query="SELECT clubID, clubName
+				FROM $NACclubsTable c
+					INNER JOIN $flightsTable f ON f.NACid=c.NAC_ID AND f.NACclubID=c.clubID
+				WHERE c.NAC_ID=$NAC_ID
+				GROUP BY  clubID, clubName
+				ORDER BY clubName";
+		}else {
+			$query="SELECT * FROM $NACclubsTable WHERE NAC_ID=$NAC_ID ORDER BY clubName";
+		}
 		$res= $db->sql_query($query);
 		//echo $query;
   		if($res <= 0){   
@@ -88,7 +106,8 @@ class NACclub {
 			$where_clause.=" DATE >='".($year-1).$CONF_NAC_list[$NAC_ID]['periodStart']."' AND DATE < '".$year.$CONF_NAC_list[$NAC_ID]['periodStart']."'";
 		 }
 
-		$query="UPDATE $flightsTable SET NACclubID=$NACclubID $where_clause AND userID=$pilotID";
+		// Martin Jursa 18.05.2007: Save the NACid too
+		$query="UPDATE $flightsTable SET NACclubID=$NACclubID, NACid=$NAC_ID $where_clause AND userID=$pilotID";
 		// echo $query;
 	    $res= $db->sql_query($query);
 	    if($res <= 0){
