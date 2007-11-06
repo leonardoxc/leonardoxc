@@ -34,7 +34,7 @@
 	setDEBUGfromGET();
 
 	$type=makeSane($_REQUEST['type']);
-	if (!in_array($type,array("kml_task","kml_trk","kml_wpt","sites")) ) return;
+	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites")) ) return;
 
 	if ($type=="kml_task") {
 		//$isExternalFile=0;
@@ -60,6 +60,53 @@
 
 		$file_name=$flight->filename.".task.kml";	
 		DEBUG("DL",1,"KML Filepath= $file_path<BR>");
+	} else if ($type=="kml_trk_color") {
+	
+		$moduleRelPath=moduleRelPath(0); 
+		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+		
+		$flightID=makeSane($_REQUEST['flightID'],1);
+		//echo $_SERVER['QUERY_STRING'];
+		$w=makeSane($_GET['w'],1);
+		$c=makeSane($_GET['c']);
+		$ex=makeSane($_GET['ex'],1);
+		$an=makeSane($_GET['an'],1);
+
+		if (!$w) $w=2;
+		if (!$c) $c="ff0000";
+		if (!$ex) { $ex=1; }
+		
+		DEBUG("DL",1,"Will serve flight $flightID<BR>");
+
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+		
+		$getFlightKML=$flight->getFlightKML()."&c=$c&ex=$ex&w=$w&an=$an";
+		$getFlightKML="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getIGCRelPath(0)).".kmz";
+		
+			$KMLlineColor="ff".substr($c,4,2).substr($c,2,2).substr($c,0,2);
+			
+		$xml='<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">'.
+"<NetworkLinkControl>
+  <Update>
+    <targetHref>".str_replace("&","&amp;",$getFlightKML)."</targetHref>
+    <Change>
+      <Placemark targetId='Tracklog'>	  					
+					<Style >
+						<LineStyle>
+						  <color>$KMLlineColor</color>
+						  <width>$w</width>
+						</LineStyle>
+				  	</Style>
+      </Placemark>
+    </Change>
+  </Update>
+</NetworkLinkControl>
+</kml>";
+//echo $xml;
+//exit;
 	} else if ($type=="kml_trk") {
 		$moduleRelPath=moduleRelPath(0); 
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;

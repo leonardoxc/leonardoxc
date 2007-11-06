@@ -440,7 +440,8 @@ $photosXML
 	}
 
 	function getFlightKML() {
-		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID;
+		global $current_lang;
+		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?lang=$current_lang&type=kml_trk&flightID=".$this->flightID;
 	}
 
 	function getFlightGPX() {
@@ -556,14 +557,19 @@ $photosXML
 		}
 
 		$kml_file_contents.="<Folder>
-		<name>OLC Task</name>";
+		<name>OLC Task</name>
+
+		";
+		
 		
 		$kml_file_contents.="<Placemark>
 		<name>OLC Task</name>
-		<LineStyle><color>ffff0000</color></LineStyle>
-		<LineString>
-		<altitudeMode>extrude</altitudeMode>
-		<coordinates>
+		<Style id='taskLine'>		
+			<LineStyle><color>ffffffff</color></LineStyle>
+		</Style>
+		<LineString>		
+			<altitudeMode>extrude</altitudeMode>
+			<coordinates>
 		";
 		
 		$icons=array(
@@ -635,7 +641,7 @@ $photosXML
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
-		$getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
+		$getFlightKML=$this->getFlightKML()."&c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 
 		if ($extended) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
@@ -663,7 +669,7 @@ $photosXML
 		$kmzFile=$this->getIGCFilename(0).".kmz";
 		$kmlTempFile=$this->getIGCFilename(0).".kml";
 
-		if ( !file_exists($kmzFile)  || 0 ) { // create the kmz file containg the points only
+		if ( !file_exists($kmzFile)  || 1 ) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(0);  
 			$lines = file ($filename); 
@@ -675,22 +681,17 @@ $photosXML
 
 				$str.="<Document>									
 				<name>Tracklog File</name>
-				<Placemark>\n<name>Tracklog</name>\n".
-				str_replace("&","&#38;"," <styleUrl>http://".$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']."#igcTrackLine</styleUrl>") .
-	//			str_replace("&","&#38;"," <styleUrl>".$this->filename."#igcTrackLine</styleUrl>") .
-
-/*
-				" <styleUrl>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kml#igcTrackLine</styleUrl>
-				<Style ID='igcTrackLine'>
-					<LineStyle>
-					  <color>ff0000ff</color>
-					  <width>2</width>
-					</LineStyle>
-			  </Style>".
-*/
-				"<LineString>				
-				<altitudeMode>absolute</altitudeMode>
-				<coordinates>\n";
+				<Placemark id='Tracklog'>
+					<name>Tracklog</name>
+					<Style >
+						<LineStyle>
+						  <color>ffffffff</color>
+						  <width>2</width>
+						</LineStyle>
+				  	</Style>					
+					<LineString>				
+						<altitudeMode>absolute</altitudeMode>
+						<coordinates>\n";
 		
 				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
 				// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
@@ -723,48 +724,25 @@ $photosXML
 		}
 
 
-		$kml_file_contents222.="
-			<Document>		
-			<name>MainTrack.kml</name>		
-";
-
 		$kml_file_contents='';
-		$kml_file_contents.=
-		"<Style id='igcTrackLine'>
-			<LineStyle>
-			  <color>".$KMLlineColor."</color>
-			  <width>$lineWidth</width>
-			</LineStyle>
-		  </Style>
-
-		";
-		//$kml_file_contents.="<Folder>\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
-//		$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>".$this->kmlGetDescription($extended,$getFlightKML);
-
-			$kml_file_contents.="
+		$kml_file_contents.="
 <NetworkLink>
   <name>Tracklog</name>
   <visibility>1</visibility>
-  <open>0</open> 
+  <open>1</open> 
   <refreshVisibility>0</refreshVisibility>
   <flyToView>0</flyToView>
-
-		<Style id='igcTrackLine'>
-			<LineStyle>
-			  <color>".$KMLlineColor."</color>
-			  <width>$lineWidth</width>
-			</LineStyle>
-		  </Style>
-
   <Link>
-	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".kmz</href>
+	<href>http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0) ).".kmz</href>
   </Link>
-</NetworkLink>";
+</NetworkLink>
 
-	//	$kml_file_contents.="</Folder>";
-		$kml_file_contents222.="
-			</Document>		";
-
+<NetworkLink>
+  <name>UpdateColor</name>
+  <Link>
+    <href>".str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) )."</href></Link>
+</NetworkLink>
+";
 
 		return $kml_file_contents;
 	}
@@ -2203,6 +2181,7 @@ $kml_file_contents=
 	  }
 		
 	  if (! $row = $db->sql_fetchrow($res) ) {
+	  echo "###### ERRROR ####$query###";
 		  return 0;	  
 	  }
 	  
