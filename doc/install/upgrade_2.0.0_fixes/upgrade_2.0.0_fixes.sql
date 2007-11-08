@@ -147,3 +147,16 @@ ALTER TABLE `leonardo_clubs_pilots` DROP PRIMARY KEY ;
 ALTER TABLE `leonardo_clubs_pilots` ADD PRIMARY KEY ( `clubID` , `pilotID` , `pilotServerID` ) ;
 
 
+# 2007/11/08
+#  Changes by DHV 
+
+ALTER TABLE leonardo_flights ADD NACid int(10) unsigned NOT NULL default '0' AFTER checkedBy;
+ALTER TABLE leonardo_flights ADD INDEX NACClubIndex (NACclubID, NACid);
+
+UPDATE leonardo_flights f  INNER JOIN leonardo_pilots p ON p.pilotID=f.userID
+	SET f.NACid=p.NACid, f.NACclubID=p.NACclubID
+	WHERE p.NACclubID>0 AND p.pilotID>0;
+
+# The "newcomer" upgrade:
+ALTER TABLE `leonardo_pilots` ADD `FirstOlcYear` INT( 10 ) NOT NULL DEFAULT '0' AFTER `PilotPhoto` ;
+

@@ -55,7 +55,21 @@
 		if (is_file(getPilotPhotoFilename($pilotIDview)) )	$PilotPhoto=1;
 		else $PilotPhoto=0;
 	}
-	
+
+	# Martin Jursa 26.04.2007
+	# save password and/or email
+	if (!empty($CONF_edit_login)) {
+		$changeMsg=saveLoginData($pilotIDview,
+			!empty($_POST['user_email']) ? $_POST['user_email'] : '',
+			!empty($_POST['pwd1']) ? $_POST['pwd1'] : '',
+			!empty($_POST['pwd2']) ? $_POST['pwd2'] : ''
+		);
+		if ($changeMsg!='') {
+     		echo '<div style="font-weight:bold;margin:10px;">'.$changeMsg.'</div>';
+		}
+	}
+	# end save password
+
 	$NACid=$_POST['NACid']+0;
 	$NACmemberID=$_POST['NACmemberID']+0;
 	if ($NACmemberID<=0) $NACid=0;
@@ -152,13 +166,14 @@
   $pilot = mysql_fetch_assoc($res);
 
   $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
-  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
-  $legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
-/*  if ( $pilotIDview == $userID || auth::isAdmin($userID) || in_array($userID,$mod_users)  ) 
-	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
+  $legendRight="<a href='?name=$module_name&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='?name=".$module_name."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
+  # Martin Jursa 26.04.2007: place the submit() in function submitPilotProfile
+  $legendRight.=" | <a href='javascript: submitPilotProfile();'>"._Submit_Change_Data."</a>";
+/*  if ( $pilotIDview == $userID || in_array($userID,$admin_users) || in_array($userID,$mod_users)  )
+	  $legendRight.=" | <a href='?name=$module_name&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
   else $legendRight.="";
-*/ 
+*/
 ?>
 <form name=pilotProfile  enctype="multipart/form-data" method="POST" action="<?=CONF_MODULE_ARG?>&op=pilot_profile_edit&pilotIDview=<?=$pilotIDview?>" >
 <?
@@ -172,24 +187,19 @@
 	# in case certain fields are set by an external tool, these fields will be set readonly
 	# otherwise, they can be edited
 	# $possible_readonly_fields contains all the fields for which this readonly mechanism is available
+	# Martin Jursa, 26.04.2007, modified to handle list Birthdate and countriesList
 	$readonly_fields=array();
-	//$readonly_fields=array('LastName', 'FirstName');
 	if ($CONF_use_NAC) {
-		$readonly_fields=array();
 		$list1=$list2=$list3='';
-		$possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate');
+		$possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate', 'Sex', 'countriesList');
 		$list4="var all_readonly_fields  = '".implode(',', $possible_readonly_fields)."';\n";
-		
+
 		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
 			$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
 			$ext_input=empty($NAC['external_input']) ? 0 : 1;
 			$list2.="NAC_external_input[$NACid]  = $ext_input;\n";
-			$use_clubs=$NAC['use_clubs']+0;			
+			$use_clubs=$NAC['use_clubs']+0;
 			$list2.="NAC_use_clubs[$NACid]  = $use_clubs;\n";
-
-			$list2.="NAC_select_clubs[$NACid]  = ".( ( $NAC['club_change_period_active'] || 
-				($NAC['add_to_club_period_active'] && !$pilot['NACclubID'] )|| 
-				auth::isAdmin($userID)|| in_array($userID,$mod_users) )? 1 : 0).";\n";
 
 			$externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
 			if ($ext_input && !empty($NAC['external_fields'])) {
@@ -213,16 +223,12 @@
     <tr>
       <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
       <td width="150" valign="top">
-			<? 
-				$firstNameReadOnly='';
-				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && 
-					  !in_array($userID,$mod_users)  
-				) $firstNameReadOnly='"readonly"';
-				if ( in_array('FirstName', $readonly_fields) ) $firstNameReadOnly='"readonly"';
-			?> 
-			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly ?> >
-	  </td>
+			<? if ((strlen(str_replace(".","",trim($pilot['FirstName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?>
+			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <? echo in_array('FirstName', $readonly_fields) ? 'readonly' : '' ?> >
+			<? } else { ?>
+			<input name="FirstNameD" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" disabled>
+			<input name="FirstName" type="hidden" value="<? echo $pilot['FirstName'] ?>" >
+			<? } ?></td>
       <td width =3>&nbsp;</td>
       <td colspan="2" rowspan="3" valign="top" bgcolor="#E8EBDE"><div align="left">
 <? if ($CONF_use_NAC) {
@@ -239,7 +245,6 @@
 		var NAC_external_input= [];
 		var NAC_external_fields= [];
 		var NAC_use_clubs=[];
-		var NAC_select_clubs=[];
 		var NACid=0;
 	   	<?=$list1.$list2.$list3.$list4 ?>
 		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
@@ -263,22 +268,28 @@
 
 			if (NAC_use_clubs[NACid]) {
 				MWJ_changeDisplay("mClubSelect","block");
-				if (NAC_select_clubs[NACid]) {
-				  MWJ_changeDisplay("mClubLink","inline");
-				}
 			} else  {
 				MWJ_changeDisplay("mClubSelect","none");
-				MWJ_changeDisplay("mClubLink","none");
 			}
-	
+
 			var flds=all_readonly_fields.split(',');
 			for (var i=0; i<flds.length; i++) {
-				document.forms[0].elements[flds[i]].readOnly=false;
+				setReadOnly(document.forms[0].elements[flds[i]], false);
 			}
 			if (NACid!=0 && NAC_external_fields[NACid]) {
 				flds=NAC_external_fields[NACid].split(',');
 				for (var i=0; i<flds.length; i++) {
-					document.forms[0].elements[flds[i]].readOnly=true;
+					setReadOnly(document.forms[0].elements[flds[i]], true);
+				}
+			}
+		}
+
+		function setReadOnly(elmt, readonly) {
+			if (elmt) {
+				if (elmt.type=='select-one') {
+					elmt.disabled=readonly;
+				}else {
+					elmt.readOnly=readonly;
 				}
 			}
 		}
@@ -295,6 +306,17 @@
 				var NACclubID		=NACclubID_fld.value;
 				window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=500,HEIGHT=420,LEFT=100,TOP=100',false);
 			}
+		}
+		// Martin Jursa 26.04.2007, submit the Form
+		// remove the disabled attribute, otherwise the values dont get posted
+		function submitPilotProfile() {
+			document.pilotProfile.countriesList.disabled=false;
+			if (document.pilotProfile.Sex) {
+				if (document.pilotProfile.Sex.type=='select-one') {
+					document.pilotProfile.Sex.disabled=false;
+				}
+			}
+			document.pilotProfile.submit();
 		}
 	      </script>
           <?
@@ -321,19 +343,16 @@
 			echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";
 			$NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);
 
+
 			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
 				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
-				auth::isAdmin($userID) || in_array($userID,$mod_users)
-			) $showChangeClubLink="inline";
-			else $showChangeClubLink="none";
-			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub();return false;\">"._Select_Club."</a> ]</div>";
-/*
-			
+				in_array($userID,$admin_users) || in_array($userID,$mod_users)
+			) {
 				echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
 			} else {
 				echo "";
 			}
-*/
+
 			echo "<br><input  type='hidden' name='NACclubID' value='".$pilot['NACclubID']."' /> ";
 			echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
 
@@ -353,130 +372,110 @@
     </tr>
     <tr>
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?></div></td>
-      <td valign="top"> 
-			<?
-				$lastNameReadOnly='';
-				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && 
-					  !in_array($userID,$mod_users)  
-				) $lastNameReadOnly='"readonly"';
-				if ( in_array('LastName', $readonly_fields) ) $lastNameReadOnly='"readonly"';
-			?>
-			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> >
-		</td>
+      <td valign="top">
+			<? if ((strlen(str_replace(".","",trim($pilot['LastName']))) < 2) || (in_array($userID,$admin_users)) || (in_array($userID,$mod_users)) ) { ?>
+			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <? echo in_array('LastName', $readonly_fields) ? 'readonly' : '' ?> >
+			<? } else { ?>
+			<input name="LastNameD" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" disabled>
+			<input name="LastName" type="hidden" value="<? echo $pilot['LastName'] ?>" >
+			<? } ?>      </td>
       <td>&nbsp;</td>
     </tr>
+
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"><div align="right"> <? echo _Birthdate ?><br>
+		  (<? echo _dd_mm_yy ?>) </div></td>
+		<td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120" <? echo in_array('Birthdate', $readonly_fields) ? 'readonly' : '' ?> >      </td>
+		<td>&nbsp;</td>
+	</tr>
+
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"><div align="right"> <? echo _Sex ?></div></td>
+		<td valign="top"><? echo getSexDropDown($pilot['Sex'], in_array('Sex', $readonly_fields)) ?></td>
+		<td>&nbsp;</td>
+	</tr>
+
     <tr>
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
-      <td valign="top"><? echo getNationalityDropDown($pilot['countryCode']); ?></td>
+      <td valign="top"><? echo getNationalityDropDown($pilot['countryCode'], in_array('countriesList', $readonly_fields)) ?></td>
       <td>&nbsp;</td>
     </tr>
-  <tr> 
-    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Sponsor ?></div></td>
-    <td valign="top"><input name="sponsor" type="text" value="<? echo $pilot['sponsor'] ?>" size="25" maxlength="120"></td>
-    <td>&nbsp;</td>
-    <td width="90" colspan="2" rowspan="4" valign="top"><p align="right">
-	<? 	if ($pilot['PilotPhoto']>0) 
-			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
-	?>
-	<strong><? echo _Photo ?></strong>
-    <? if ($pilot['PilotPhoto']>0) 
-			echo "<br><BR> "._Delete_Photo. " <input type=checkbox name=PilotPhotoDelete value=1>";
-	?>
-    </p></td>
-  </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
-          (<? echo _dd_mm_yy ?>) </div></td>
-      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120" <? echo in_array('Birthdate', $readonly_fields) ? 'readonly' : '' ?> >   
-    </td>
-      <td>&nbsp;</td>
+
+    <tr>
+		<td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Web_Page ?></div></td>
+		<td><input name="PersonalWebPage" type="text" value="<? echo $pilot['PersonalWebPage'] ?>" size="25" maxlength="120"></td>
     </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Sign ?></div></td>
-      <td> <input name="Sign" type="text" value="<? echo $pilot['Sign'] ?>" size="25" maxlength="120"></td>
+
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Sponsor ?></div></td>
+		<td valign="top"><input name="sponsor" type="text" value="<? echo $pilot['sponsor'] ?>" size="25" maxlength="120"></td>
+		<td>&nbsp;</td>
+	</tr>
+
+	<tr>
+		<td  valign="top"><td colspan="2"><div align="left">
+			<? 	if ($pilot['PilotPhoto']>0)
+					echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
+			?>
+			<? echo _Photo ?>
+		    <? if ($pilot['PilotPhoto']>0)
+					echo "<br><BR> "._Delete_Photo. " <input type=checkbox name=PilotPhotoDelete value=1>";
+			?>
+		    </div></td>
+  	</tr>
+
+    <tr>
       <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Marital_Status ?></div></td>
-      <td> <input name="MartialStatus" type="text" value="<? echo $pilot['MartialStatus'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Occupation?></div></td>
-      <td> <input name="Occupation" type="text" value="<? echo $pilot['Occupation'] ?>" size="25" maxlength="120">      </td>
-      <td>&nbsp;</td>
-      <td colspan="2" bgcolor="#E9EDF5"><div align="right"><? echo _Upload_new_photo_or_change_old ?>
-	  </div></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Web_Page ?></div></td>
-      <td><input name="PersonalWebPage" type="text" value="<? echo $pilot['PersonalWebPage'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td colspan="2"> 
-        <div align="right">
-          <input name="PilotPhoto" type="file" size="30">
+      <td colspan="2"><div align="right">
+         	<input name="PilotPhoto" type="file" size="30">
           </div></td>
     </tr>
-    <tr> 
+
+    <tr>
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Other_Interests ?></div></td>
       <td colspan="4" valign="top"><textarea name="OtherInterests" cols="80" rows="2"><? echo $pilot['OtherInterests'] ?></textarea></td>
     </tr>
-    <tr> 
-      <td colspan="5" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?> 
+
+    <tr>
+      <td colspan="5" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?>
           (<? echo _note_place_and_date ?>)</font></strong></div></td>
     </tr>
-    <tr> 
+
+    <tr>
+      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _FirstOlcYear ?></div></td>
+      <td colspan="4"><table cellpadding="0" cellpadding="0" border="0"><tr><td><select name="FirstOlcYear">
+<?
+		$curryear=(date('Y')+0);
+		$ys=array(0);
+		for ($y=$curryear; $y>=2000; $y--) $ys[]=$y;
+		foreach ($ys as $y) {
+			$selected=$y==$pilot['FirstOlcYear'] ? ' selected ' : '';
+			$text=$y==0 ? '' : $y;
+			echo "<option value=\"$y\"$selected>$text</option>\n";
+		}
+
+?>
+      </select></td><td><div><?=_FirstOlcYearComment?><div></td></tr></table>
+      </td>
+    </tr>
+
+    <tr>
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
-      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120">      </td>
+      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120"></td>
       <td>&nbsp;</td>
       <td width="150" bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Distance_Record?></div></td>
       <td width="150"> <input name="personalDistance" type="text" value="<? echo $pilot['personalDistance'] ?>" size="25" maxlength="120"></td>
     </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Pilot_Licence?></div></td>
-      <td> <input name="PilotLicence" type="text" value="<? echo $pilot['PilotLicence'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Height_Record?></div></td>
-      <td> <input name="personalHeight" type="text" value="<? echo $pilot['personalHeight'] ?>" size="25" maxlength="120"></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Paragliding_training?></div></td>
-      <td> <input name="Training" type="text" value="<? echo $pilot['Training'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Flown?></div></td>
-      <td> <input name="HoursFlown" type="text" value="<? echo $pilot['HoursFlown'] ?>" size="25" maxlength="120"></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Favorite_Location?></div></td>
-      <td> <input name="FavoriteLocation" type="text" value="<? echo $pilot['FavoriteLocation'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Per_Year?></div></td>
-      <td> <input name="HoursPerYear" type="text" value="<? echo $pilot['HoursPerYear'] ?>" size="25" maxlength="120"></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Usual_Location?></div></td>
-      <td> <input name="UsualLocation" type="text" value="<? echo $pilot['UsualLocation'] ?>" size="25" maxlength="120">      </td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="top"> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Best_Flying_Memory ?></div></td>
-      <td colspan="4"><textarea name="BestMemory" cols="80" rows="3"><? echo $pilot['BestMemory'] ?></textarea></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Worst_Flying_Memory ?></div></td>
-      <td colspan="4" valign="top"><textarea name="WorstMemory" cols="80" rows="3"><? echo $pilot['WorstMemory'] ?></textarea></td>
-    </tr>
-    <tr> 
+
+    <tr>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>
-    <tr> 
+
+    <tr>
       <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _Equipment_Stuff?></font></strong></td>
     </tr>
 
@@ -503,85 +502,56 @@
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Helmet?></div></td>
       <td> <input name="Helmet" type="text" value="<? echo $pilot['Helmet'] ?>" size="25" maxlength="120"></td>
     </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Camera?></div></td>
-      <td> <input name="camera" type="text" value="<? echo $pilot['camera'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Camcorder?></div></td>
-      <td> <input name="camcorder" type="text" value="<? echo $pilot['camcorder'] ?>" size="25" maxlength="120"></td>
+
+<? if (!empty($CONF_edit_login)) {
+	if (!empty($CONF_edit_email)) {
+		$text_email='<input name="user_email" type="text" value="'.$pilot['user_email'].'" size="35" >';
+	}else {
+		$text_email=$pilot['user_email'];
+	}
+	$text_edit_pwd='
+    <tr>
+      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F">'._Login_Stuff.'</font></strong></td>
     </tr>
-    <tr> 
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _Manouveur_Stuff ?> 
-        (<? echo _note_max_descent_rate?>)</font></strong></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>
-      <td> <input name="Spiral" type="text" value="<? echo $pilot['Spiral'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Sat?></div></td>
-      <td> <input name="Sat" type="text" value="<? echo $pilot['Sat'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Bline?></div></td>
-      <td> <input name="Bline" type="text" value="<? echo $pilot['Bline'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Asymmetric_Spiral?></div></td>
-      <td> <input name="AsymmetricSpiral" type="text" value="<? echo $pilot['AsymmetricSpiral'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Full_Stall?></div></td>
-      <td> <input name="FullStall" type="text" value="<? echo $pilot['FullStall'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Spin?></div></td>
-      <td> <input name="Spin" type="text" value="<? echo $pilot['Spin'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Other_Manouveurs_Acro?></div></td>
-      <td> <input name="OtherAcro" type="text" value="<? echo $pilot['OtherAcro'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _General_Stuff?></font></strong></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Singer?></div></td>
-      <td> <input name="FavoriteSingers" type="text" value="<? echo $pilot['FavoriteSingers'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Book?></div></td>
-      <td> <input name="FavoriteBooks" type="text" value="<? echo $pilot['FavoriteBooks'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Movie?></div></td>
-      <td> <input name="FavoriteMovies" type="text" value="<? echo $pilot['FavoriteMovies'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Actor?></div></td>
-      <td> <input name="FavoriteActors" type="text" value="<? echo $pilot['FavoriteActors'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Internet_Site?></div></td>
-      <td> <input name="FavoriteSite" type="text" value="<? echo $pilot['FavoriteSite'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td></td>
-    </tr>
-    <tr> 
-      <td colspan="5"><div align="center"> 
+	<tr>
+		<td valign="middle" bgcolor="#E9EDF5"> <div align="right">'._USERNAME.'</div></td>
+		<td valign="middle"><b>'.$pilot['username'].'</b></td>
+		<td>&nbsp;</td>
+		<td valign="middle" bgcolor="#E9EDF5" colspan="2" >'._EnterPasswordOnlyToChange.'</td>
+	</tr>
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._pilot_email.'</div></td>
+		<td>'.$text_email.'</td>
+		<td>&nbsp;</td>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD.'</div></td>
+		<td><input name="pwd1" type="password" value="" size="25" maxlength="32"></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD_CONFIRMATION.'</div></td>
+		<td><input name="pwd2" type="password" value="" size="25" maxlength="32"></td>
+	</tr>
+';
+	echo $text_edit_pwd;
+} ?>
+    <tr>
+      <td colspan="5"><div align="center">
           <hr>
-       
-            <input type="submit" name="Submit" value="<? echo _Submit_Change_Data ?>">
+            <input type="button" name="Submit" value="<? echo _Submit_Change_Data ?>" onclick="submitPilotProfile();">
       </div></td>
     </tr>
   </table>
-  <input type=hidden name=updateProfile value=1>
-</form>
+  <input type="hidden" name="updateProfile" value="1">
 
 <?
   echo "</td></tr>";
   close_inner_table();
 ?>
+</form>
+
 <script language="javascript">
 		var sl0=MWJ_findObj("NACid");
-		NACid= sl0.options[sl0.selectedIndex].value ;    // Which menu item is selected
+		NACid= sl0.selectedIndex;    // Which menu item is selected
 </script>
