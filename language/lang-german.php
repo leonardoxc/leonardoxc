@@ -827,10 +827,18 @@ define('_Select_date_as_date.','Wahle [date] als Datum.'); // do not replace [da
 
 // end 2007/03/13
 
+// New on 2007/11/06
 
 define('_Explanation_AddToBookmarks_IE', 'Diese Filtereinstellungen zu den Favoriten hinzufügen');
 define('_Msg_AddToBookmarks_IE', 'Klicke auf diesen Link, um die Filtereinstellungen zu Deinen Favoriten hinzuzufügen.');
 define('_Explanation_AddToBookmarks_nonIE', '(Diesen Link in den Lesezeichen speichern.)');
 define('_Msg_AddToBookmarks_nonIE', 'Um diesen Link zu Deinen Lesezeichen hinzuzufügen, verwende die entsprechende Funktion Deines Browsers.');
+
+define('_PROJECT_HELP','Hilfe');
+define('_PROJECT_NEWS','News');
+define('_PROJECT_RULES','Ausschreibung 2007');
+define('_PROJECT_RULES2','Ausschreibung 2008');
+
+//end 2007/11/06
 
 ?>

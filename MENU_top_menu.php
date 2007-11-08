@@ -207,7 +207,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=filter"><?=_MENU_FILTER ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0"><?=_MENU_ALL_FLIGHTS ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0&brandID=0&nacclubid=0&nacid=0"><?=_MENU_ALL_FLIGHTS ?></a></li>
 	</ul>
 </li>
 
@@ -253,9 +253,12 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 							$yearToForceStr="&season=".$rankArray['menuYear'];
 
 					}	else $yearToForceStr="";
-					
-					
-					echo "<li><a href='".CONF_MODULE_ARG."&op=comp&clubID=0&rank=$rankID&subrank=1$yearToForceStr'>".$rname."</a></li>";
+
+					# Loop modified by Martin Jursa 24.05.2007 to obtain the first subrank-id from the array keys of the subranks-array					
+					$subrankkeys=array_keys($rankArray['subranks']);
+					$firstSubrank=$subrankkeys[0];
+					// $firstSubrank=$rankArray['subranks'][0]['id'];
+					echo "<li><a href='".CONF_MODULE_ARG."&op=comp&clubID=0&rank=$rankID&subrank=$firstSubrank$yearToForceStr'>".$rname."</a></li>";
 				
 				}			
 			}
@@ -286,8 +289,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 
 <?
+
 function insertMenuItems($top_menu_item,$position) {
 	global $CONF_MENU;
+	include_once dirname(__FILE__).'/site/config_menu.php';
 
 	if ($CONF_MENU[$top_menu_item][$position])
 		foreach($CONF_MENU[$top_menu_item][$position] as $menuEntry) {
@@ -299,7 +304,13 @@ function insertMenuItems($top_menu_item,$position) {
 			echo '<li>';
 			if ($menuEntry['linkType']=='leonardo') $hrefStr=CONF_MODULE_ARG."&".$menuEntry['link'];
 			else $hrefStr=$menuEntry['link'];
-			echo "<a href='$hrefStr'>".$menuEntry['name']."</a>";
+
+			if ( $menuEntry['target'] ) 
+				$targetStr=" target='".$menuEntry['target']."' ";
+			else 
+				$targetStr='';
+
+			echo "<a href='$hrefStr' $targetStr>".$menuEntry['name']."</a>";
 			echo '</li>';
 		}
 

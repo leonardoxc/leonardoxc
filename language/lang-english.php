@@ -669,6 +669,12 @@ define('_Explanation_AddToBookmarks_IE', 'Add these filter settings to your favo
 define('_Msg_AddToBookmarks_IE', 'Click here to add these filter settings to your bookmarks.');
 define('_Explanation_AddToBookmarks_nonIE', '(Save this link to your bookmarks.)');
 define('_Msg_AddToBookmarks_nonIE', 'To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.');
-	
+
+define('_PROJECT_HELP','Help');
+define('_PROJECT_NEWS','News');
+define('_PROJECT_RULES','Regulations 2007');
+define('_PROJECT_RULES2','Regulations 2008');
+
 //end 2007/11/06
+
 ?>

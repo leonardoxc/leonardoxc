@@ -258,7 +258,12 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // flights that were submitted these days ago will have a "new" icon
  // set to -1 to disable
  $CONF_new_flights_days_threshold=3;
- 
+
+ // Flights older than these days will not be accepted.
+ // set to 0 to deactivate
+ // Admins cat submit flights either way for any day in the past!
+ $CONF_new_flights_submit_window=0;
+
  // this will allow the use of pre-calculated turnpoints for OLC score optimization
  // This is done by uploading an .OLC file
  $CONF_allow_olc_files=1;

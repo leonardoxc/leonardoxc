@@ -192,6 +192,10 @@ if ($op=="users") {
 	//	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_register.php";
 } else if ($op=="index_full") { 
 	require $moduleRelPath."/GUI_index_full.php";
+} else if ($op=="index_help") {
+	require $moduleRelPath."/GUI_index_help.php";
+} else if ($op=="index_news") {
+	require $moduleRelPath."/GUI_index_news.php";
 // Clubs - areas admin
 //--------------------------
 } else if ($op=="club_admin") { 

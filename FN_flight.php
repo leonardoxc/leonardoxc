@@ -86,16 +86,17 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		$argArray=array() ) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
+	global $userID;
 
 	set_time_limit (120);
 
 	global $CONF_server_id ;
-	list($thisServerID,$userID) = splitServerPilotStr($userIDstr);
+	list($thisServerID,$userIDforFlight) = splitServerPilotStr($userIDstr);
 	if (!$thisServerID) $thisServerID=$CONF_server_id;
 
 	require_once dirname(__FILE__).'/CL_actionLogger.php';
 	$log=new Logger();
-	$log->userID  	=$userID;
+	$log->userID  	=$userID; // the userId that is logged in , not the one that the flight will be atrributed to 
 	$log->ItemType	=1 ; // flight; 
 	$log->ItemID	= 0; // 0 at start will fill in later if successfull
 	$log->ServerItemID	= $thisServerID ;
@@ -138,7 +139,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	$flight=new flight();
 	if ($thisServerID!=$CONF_server_id) $flight->userServerID=$thisServerID;
 
-	$flight->userID=$userID;
+	$flight->userID=$userIDforFlight;
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
 	$flight->glider=$glider;
@@ -210,20 +211,13 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	}
 
 	// Two week time limit check - P.Wild
-
-	$tmpyear=$flight->getYear();
-	$tmpmonth=$flight->getMonth();
-	$tmpday=$flight->getDay();
-	$tmpnow=strtotime("now");
-	$tmpflightdate=strtotime($tmpyear."-".$tmpmonth."-".$tmpday);
-
 	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
 	if ($CONF_new_flights_submit_window>0) {
-		global $userID, $super_users;
-		$admin=in_array($userID, $super_users);
-		if (!$admin) {
-			if (($tmpnow-$tmpflightdate)>($CONF_new_flights_submit_window*24*60*60))  {
+		if (! isModerator($userID) ) {
+			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
 				@unlink($flight->getIGCFilename(1));
+				$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
+				if (!$log->put()) echo "Problem in logger<BR>";
 				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
 			}
 		}
@@ -284,7 +278,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	// and see if the flight is in the current year (as defined in the NAclist array
 	if ( $CONF_use_NAC ) {
 		require_once dirname(__FILE__)."/CL_NACclub.php";
-		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userID);
+		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub();
 		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
 			// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
 			$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];

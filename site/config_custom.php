@@ -153,6 +153,14 @@
  // set to -1 to disable
  $CONF_new_flights_days_threshold=-1;
 
+ // Added 08.05.2007
+ // Flight upload time limit in days
+ // if <=0 limit checking is turned off
+ $CONF_new_flights_submit_window=0;
+
+ // Added 30.05.2007
+ // max time gap in track
+ $CONF_max_allowed_time_gap=900;
 
  // Membership of NAC (National Airsport Control, also referred as National Aero Club)
  $CONF_NAC_list=array(
@@ -215,6 +223,17 @@
  );
  $CONF_use_NAC=1; 
  
+/**
+ * Martin Jursa 26.04.2007: Options for editing login data in pilot_profile_edit
+ */
+ // The following will allow changing the password in pilot_profile_edit
+ $CONF_edit_login=1;
+ // $CONF_edit_email lets you edit the email directly;
+ // only effective if $CONF_edit_login!=0
+ $CONF_edit_email=1;
+/** End 26.4.2007 */
+
+
 
  // this will allow the use of pre-calculated turnpoints for OLC score optimization
  // This is done by uploading an .OLC file
@@ -234,33 +253,6 @@
   // use htc files for ie mouse over TR elements
   // May not work on servers behind firewalls
   $CONF_use_htc_ie_hack=0;
-
-
-// menu custom entries
-/*
-the menu that can have added entries are
-'home'  (the first menu item with the home icon )
-'main_menu' (the main menu)
-
-For each menu there are many slots were one or more entries can be added
-FOR home->
-'top' top most 
-'before_personal' before the logged in user menu 
-'before_settings'
-'bottom' after all items
-
-
-*/
-
-
-$CONF_MENU['main_menu']['bottom']=array(
-		array('type'=>'spacer','extra_class'=>'long'),
-		array('name'=>'Instructions',
-			'linkType'=>'leonardo', // leonardo or external
-			'link'=>'op=instructions',
-			'target'=>'_blank',
-		)
-);
 
 
 // SEASON MOD

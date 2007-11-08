@@ -24,6 +24,12 @@ class auth {
 	}
 
 
+	function isModerator($userID){
+		global $admin_users,$mod_users;
+		if (in_array($userID,$admin_users) || in_array($userID,$mod_users) )  return 1;
+		else return 0;
+	}
+
 	function isClubAdmin($userID,$clubID) {
 		global $clubsList;
 		if ($clubsList[$clubID]['adminID']==$userID && $userID <>0 ) return 1;
