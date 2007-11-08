@@ -177,7 +177,7 @@
 
 	echo  "<div class='tableTitle'>
 	<div class='titleDiv'>$legend</div>
-	<div class='pagesDiv'>$legendRight</div>
+	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
 	listFlights($res,$legend,	$query_str,$sortOrder);
@@ -196,7 +196,8 @@ TR .newDate {
 	background-color:#D6ECD5;
 	border:0;
 	padding:0px;
-	padding-left:1px;	padding-right:1px;
+	padding-left:1px;	
+	padding-right:1px;
 	margin:0px;
 	width:auto;
 	display:block;
