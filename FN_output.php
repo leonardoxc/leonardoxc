@@ -83,7 +83,7 @@ function formatDistance($distance,$showUnits=false) { // in meters
 		$units=_KM;
 	}
 	// return sprintf("%.2f km",$distance/1000);
-	return sprintf("%.1f %s",$dis,($showUnits)?$units:"");
+	return sprintf("%.1f&nbsp;%s",$dis,($showUnits)?$units:"");
 }
 
 function formatDistanceOpen($distance,$showKm=true) { // in meters
@@ -113,7 +113,7 @@ function formatAltitude($alt) {
 	} else { 
 		$units=_M;
 	}
-	return '<span class="altitude_style">'.sprintf("%d %s",$alt,$units).'</span>';
+	return '<span class="altitude_style">'.sprintf("%d&nbsp;%s",$alt,$units).'</span>';
 }
 
 function formatSpeed($speed) { // in km/h
@@ -126,7 +126,7 @@ function formatSpeed($speed) { // in km/h
 	} else { 
 		$units=_KM_PER_HR;
 	}
-	return '<span class="speed_style">'.sprintf("%.1f %s",$speed,$units).'</span>';
+	return '<span class="speed_style">'.sprintf("%.1f&nbsp;%s",$speed,$units).'</span>';
 }
 
 function formatVario($vario) { // in m/sec
@@ -136,10 +136,10 @@ function formatVario($vario) { // in m/sec
 	if ($PREFS->metricSystem==2) { 
 		$vario=$vario*3.28*60; // feet /min
 		$units=_FPM;
-		return '<span class="vario_style">'.sprintf("%.0f %s",$vario,$units).'</span>';
+		return '<span class="vario_style">'.sprintf("%.0f&nbsp;%s",$vario,$units).'</span>';
 	} else { 
 		$units=_M_PER_SEC;
-		return '<span class="vario_style">'.sprintf("%.1f %s",$vario,$units).'</span>';
+		return '<span class="vario_style">'.sprintf("%.1f&nbsp;%s",$vario,$units).'</span>';
 	}
 
 }

@@ -45,7 +45,6 @@ echo "<br>";
 echo "<h3>Update operations</h3>";
 
 echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_languages'>Administer Language Translations</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names where the local or english name is missing and put the existing name into the missing one i.e if the local name is missing the english/international name will be used as the local too. ";
 	if ($CONF_use_validation)	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>

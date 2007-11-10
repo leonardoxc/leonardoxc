@@ -17,51 +17,37 @@
 	// computed column "SCORE_SPEED"=FLIGHT_KM/DURATION added
 
 
-
-	require_once dirname(__FILE__)."/FN_brands.php";
-
-
 	function replace_spaces($str) {
 		return str_replace(" ","&nbsp;",$str);
 	}
 
 	$legend="";
-
+	
 	$sortOrder=makeSane($_REQUEST["sortOrder"]);
 	if ( $sortOrder=="")  $sortOrder="DATE";
-
+	
 	$page_num=$_REQUEST["page_num"]+0;
 	if ($page_num==0)  $page_num=1;
-
+	
 	if ($cat==0) $where_clause="";
 	else $where_clause=" AND cat=$cat ";
-
+	
 	$query_str="";
 	$legend="";
 	$legend="<b>"._MENU_FLIGHTS."</b> ";
-
-	if ($year && $month && $day &&  $CONF_use_calendar ) {
-		$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m%d') = ".sprintf("%04d%02d%02d",$year,$month,$day)." ";
-	}else {
-		if ($year && !$month ) {
-			$where_clause.=" AND DATE >='".($year-1)."-10-10' AND DATE < '".$year."-10-10' ";
-			//$where_clause.=" AND DATE_FORMAT(DATE,'%Y') = ".$year." ";
-		}
-		if ($year && $month ) {
-			$where_clause.=" AND DATE_FORMAT(DATE,'%Y%m') = ".sprintf("%04d%02d",$year,$month)." ";
-		}
-	}
-
-	if (! $year ) {
-		//$legend.=" <b>[ "._ALL_TIMES." ]</b> ";
-	}
-
+	
+	// SEASON MOD
+	$where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
+	
+	// BRANDS MOD  
+	$where_clause.= brands::makeWhereClause($brandID);
+	
 	if ($pilotID!=0) {
-		$where_clause.=" AND userID='".$pilotID."' ";
-	}else {  // 0 means all flights BUT not test ones
-		$where_clause.=" AND userID>0 ";
+		$where_clause.=" AND userID='".$pilotID."'  AND userServerID=$serverID ";		
+	} else {  // 0 means all flights BUT not test ones 
+		$where_clause.=" AND userID>0 ";		
 	}
-
+	
 	if ($takeoffID) {
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
 	}
@@ -71,11 +57,11 @@
 	if ($nacid && $nacclubid) {
 		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid  ";
 	}
-
+	
 	if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
 	}
-
+	
 	if ($sortOrder=="dateAdded" && $year ) $sortOrder="DATE";
 
 	# Martin Jursa 20.05.2007; have all possible descriptions in this array
@@ -124,6 +110,8 @@
 		$where_clause.=" AND private=0 ";
 	}
 	//$filter_clause built
+
+	
 
 	$filter_clause=$_SESSION["filter_clause"];
 
@@ -365,6 +353,8 @@ function removeClubFlight(clubID,flightID) {
 	  <td width="82" class='SortHeader alLeft'><? echo _SHOW ?></td>
   </tr>
 <?
+
+
    $i=1;
    $currDate="";
    while ($row = $db->sql_fetchrow($res)) {
@@ -398,6 +388,15 @@ function removeClubFlight(clubID,flightID) {
 
 		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
 
+
+
+
+
+
+
+
+
+
 	  	$duration=sec2Time($row['DURATION'],1);
         $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
         $olcDistance=formatDistanceOpen($row["FLIGHT_KM"]);
@@ -407,7 +406,6 @@ function removeClubFlight(clubID,flightID) {
 
         $olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
 	   	$gliderType=$row["cat"]; // 1=pg 2=hg flex 4=hg rigid 8=glider
-
 		// get the OLC score type
 		$olcScoreType=$row['BEST_FLIGHT_TYPE'];
 		if ($olcScoreType=="FREE_FLIGHT") {
@@ -450,6 +448,10 @@ function removeClubFlight(clubID,flightID) {
             "<TD class='speed'>$scoreSpeed</TD>".
             "<TD class='distance'>$olcDistance</TD>".
             "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' />";
+
+
+
+
 
 		if ($CONF_use_validation) {
 			$isValidated=$row['validated'];

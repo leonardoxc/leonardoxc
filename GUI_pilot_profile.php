@@ -42,12 +42,11 @@
   $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
   if ( $pilotIDview == $userID || auth::isAdmin($userID) && $serverID==0  ) {
 	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
-      if ($enableOLCsubmission) $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_olc_profile_edit&pilotIDview=$pilotIDview'>"._edit_OLC_info."</a>";
   }
   else $legendRight.="";
   
-  open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=380 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
-  open_tr();  
+  open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=430 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
+  open_tr();
   echo "<td>";
 ?> 
 <table  class=main_text  width="100%" border="0">

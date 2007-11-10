@@ -363,7 +363,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
   // May not work on servers behind firewalls
   $CONF_use_htc_ie_hack=1;
 
-
+  $CONF['list_flights']['fields']['scoring'][0]='LINEAR_DISTANCE'; // LINEAR_DISTANCE or SCORE_SPEED
 
 
 //-----------------------------------------------------------------------------

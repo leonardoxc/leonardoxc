@@ -254,7 +254,8 @@
   // May not work on servers behind firewalls
   $CONF_use_htc_ie_hack=0;
 
-
+  $CONF['list_flights']['fields']['scoring'][0]='SCORE_SPEED'; // LINEAR_DISTANCE or SCORE_SPEED
+  
 // SEASON MOD
 
 	$CONF['years']=array(

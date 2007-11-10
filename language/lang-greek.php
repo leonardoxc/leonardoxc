@@ -593,5 +593,6 @@ define("_Click_to_select_a_month","Πατήστε για επιλογή μήνα");
 define("_Click_to_select_a_year","Πατήστε για επιλογή έτους");
 define("_Select_date_as_date.","Επιλογή [date] ως ημερομηνίας"); // do not replace [date], it will be replaced by date.
 
+define('_MEAN_SPEED1','Μέση ταχύτητα');
 // end 2007/03/13
 ?>

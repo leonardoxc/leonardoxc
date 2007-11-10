@@ -95,6 +95,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
 				<? if ($CONF_isMasterServer) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li><? } ?>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Administer the Logs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>

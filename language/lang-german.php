@@ -839,6 +839,7 @@ define('_PROJECT_NEWS','News');
 define('_PROJECT_RULES','Ausschreibung 2007');
 define('_PROJECT_RULES2','Ausschreibung 2008');
 
+define('_MEAN_SPEED1','Durchschnitts');
 //end 2007/11/06
 
 ?>
