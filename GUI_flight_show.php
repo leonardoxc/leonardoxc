@@ -26,7 +26,7 @@
 	return;  
   }
   
-  if ( $flight->private && $flight->userID!=$userID && ! auth::isAdmin($userID) ) {
+  if ( $flight->private && ! $flight->belongsToUser($userID) && ! auth::isAdmin($userID) ) {
 		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
   }
@@ -215,14 +215,14 @@ function delete_takeoff(id) {
 		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
-	if ( $flight->userID==$userID || auth::isAdmin($userID) ) {
+	if ( $flight->belongsToUser($userID) || auth::isAdmin($userID) ) {
 		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
-			$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
+			$flight->userServerID."_".$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
 			$flight->userName."</a>&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
 	
 	$Ltemplate->assign_vars(array(
@@ -389,10 +389,10 @@ if ($flight->is3D()) {
 			  echo "[ <a href='$olc_url/map/".$olcName.".jpg' target='_blank'>"._OLC_MAP."</a> ] ";
 			  echo "[ <a href='$olc_url/ENL/".$olcName.".png' target='_blank'>"._OLC_BARO."</a> ] ";
 			  echo "[".substr($flight->olcDateSubmited,0,10)."] ";
-			  if ( auth::isAdmin($userID)  || $flight->userID==$userID  ) echo "(Ref: ".$flight->olcRefNum.") ";
+			  if ( auth::isAdmin($userID)  || $flight->belongsToUser($userID) ) echo "(Ref: ".$flight->olcRefNum.") ";
 			  echo "<img src='".$moduleRelPath."/img/olc_icon_submited.gif' border=0 align=bottom>";
 			  // echo _SUBMITED_SUCCESSFULLY_ON." ".$flight->olcDateSubmited;
-			  if ($flight->insideOLCsubmitWindow()  && ( auth::isAdmin($userID)  || $flight->userID==$userID  )  ) {
+			  if ($flight->insideOLCsubmitWindow()  && ( auth::isAdmin($userID)  || $flight->belongsToUser($userID)  )  ) {
 				echo "<a href='".CONF_MODULE_ARG."&op=olc_remove&flightID=".$flight->flightID."'>";	
 				echo "<img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>";
 			  }

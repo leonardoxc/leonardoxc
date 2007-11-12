@@ -118,6 +118,14 @@ var $maxPointNum=1000;
 		}
     }
 	
+	function belongsToUser($userID) {
+		global $CONF_server_id ;
+		if ( 	$this->userID == $userID && 
+				($this->userServerID==$CONF_server_id || $this->userServerID==0 )
+			) return 1;
+		else return 0;
+	
+	}
 	
 	function toXML(){
 		/*	maybe also include these	
@@ -959,7 +967,7 @@ $kml_file_contents=
 
 		$kml_file_contents.="</Document>\n</kml>";
 
-		if (! $CONF_use_utf) {
+		if (! $CONF_use_utf ) {
 			require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 			$NewEncoding = new ConvertCharset;
 			$FromCharset=$langEncodings[$currentlang];
@@ -2502,7 +2510,7 @@ $kml_file_contents=
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,
-		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  $this->gliderBrandID , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
+		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 		$p2
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',

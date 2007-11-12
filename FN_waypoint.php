@@ -266,8 +266,8 @@ function  getKMLrelPath($waypointID) {
 }
 
 function  makeKMLwaypoint($waypointID) {	
-  global $langEncodings,$currentlang;
-
+	global $langEncodings,$currentlang, $CONF_use_utf ;
+  
 	$placemarkString=makeWaypointPlacemark($waypointID) ;
 
 //	$xml_text='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"? >'.
@@ -276,11 +276,12 @@ function  makeKMLwaypoint($waypointID) {
 '.$placemarkString.'
 </kml>
 ';
-	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
-	$NewEncoding = new ConvertCharset;
-	$FromCharset=$langEncodings[$currentlang];
-	$xml_text = $NewEncoding->Convert($xml_text, $FromCharset, "utf-8", $Entities);
-
+	if (! $CONF_use_utf ) {
+		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+		$NewEncoding = new ConvertCharset;
+		$FromCharset=$langEncodings[$currentlang];
+		$xml_text = $NewEncoding->Convert($xml_text, $FromCharset, "utf-8", $Entities);
+	}
 	return $xml_text;
 }
 

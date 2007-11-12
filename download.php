@@ -32,6 +32,7 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
 	setDEBUGfromGET();
+	
 
 	$type=makeSane($_REQUEST['type']);
 	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites")) ) return;

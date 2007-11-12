@@ -278,7 +278,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	// and see if the flight is in the current year (as defined in the NAclist array
 	if ( $CONF_use_NAC ) {
 		require_once dirname(__FILE__)."/CL_NACclub.php";
-		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub();
+		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userIDforFlight);
 		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
 			// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
 			$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];

@@ -33,7 +33,7 @@
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
 
-    if ( $userID!=$flight->userID && !auth::isAdmin($userID) && !in_array($userID,$mod_users)) {
+    if ( ! $flight->belongsToUser($userID) && !auth::isAdmin($userID) && !in_array($userID,$mod_users)) {
 		echo "go away";
 		return;
     }

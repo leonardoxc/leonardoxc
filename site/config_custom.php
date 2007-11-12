@@ -39,6 +39,8 @@
 
  $CONF_main_page="index_full";
 
+ // use utf language files 
+ $CONF_use_utf=0;
 
  // the native language of the server
  $nativeLanguage="english";
