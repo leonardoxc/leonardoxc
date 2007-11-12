@@ -29,7 +29,21 @@ $server->getFromDB();
 
 // set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
+?><head>
 
+<style type="text/css">
+body { background-color: #EDF3F1;}
+
+body , p, table, td {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-style: normal;
+	text-align:justify;
+	margin:0;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<?
 
 if ($action==1) { // server info 
 	list($server_version,$server_releaseDate, $server_opMode,
@@ -46,9 +60,12 @@ if ($action==1) { // server info
 } else if ($action==2) {
 	$takeoffsList=$server->getTakeoffs(0); // takeoffs from time 0
 	echo "<HR>Takeoff list<hr>";
+	//print_r($takeoffsList);
 	foreach($takeoffsList as $takeoff){
 		$takeoff=(object) $takeoff;
-		echo "#".urldecode($takeoff->intName)."<BR>";
+		echo "#".urldecode($takeoff->intName).
+			"#".urldecode($takeoff->name).
+"#<BR>";
 	}
 
 } else if ($action==3) { //flights 
@@ -66,7 +83,7 @@ if ($action==1) { // server info
 	echo $server->url_op;
 	echo "<BR>$action<br>";
 	
-	list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(40,22);
+	list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(49.4619,-8.67848);
 	echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
 }
 

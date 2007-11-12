@@ -139,7 +139,7 @@ function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	return array($countriesCodes,$countriesNames,$countriesFlightsNum);
 }
 
-function getWaypoints($tm=0,$onlyTakeoffs=0) {
+function getWaypoints($tm=0,$onlyTakeoffs=0,$utf=0) {
 	global $db,$waypointsTable;
 	set_time_limit(200);
 	if ($onlyTakeoffs)
@@ -157,15 +157,22 @@ function getWaypoints($tm=0,$onlyTakeoffs=0) {
 
 	$waypoints=array();
 	$i=0;
-//    while ($row = $db->sql_fetchrow($res)) { 
-	//$rows=$db->sql_fetchrowset($res);
+	// while ($row = $db->sql_fetchrow($res)) { 
+	// $rows=$db->sql_fetchrowset($res);
 	
     while ($row = mysql_fetch_assoc($res)) { 
-	//foreach($rows as $row) {
+	 //foreach($rows as $row) {
 	  $waypoints[$i]=new gpsPoint();
  	  $waypoints[$i]->waypointID=$row["ID"];
-	  $waypoints[$i]->name=urlencode($row["name"]);
-	  $waypoints[$i]->intName=$row["intName"];
+
+	  if ($utf ) {
+			$waypoints[$i]->name=urlencode(mb_convert_encoding($row["name"] ,'iso-8859-7', "UTF-8"));
+			$waypoints[$i]->intName=urlencode(mb_convert_encoding($row["intName"] ,'iso-8859-1', "UTF-8"));
+
+	  } else {
+		  $waypoints[$i]->name=urlencode($row["name"]);
+		  $waypoints[$i]->intName=urlencode($row["intName"]);
+	  }
    	  $waypoints[$i]->lat=$row["lat"];
    	  $waypoints[$i]->lon=$row["lon"];
 	  $waypoints[$i]->type=$row["type"];

@@ -22,13 +22,44 @@ $servers=Server::getServers();
 <script language="javascript">
 function serverAction(id,action,DBGlvl) {	 	
 	//document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
-	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
+// 	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
+
+	document.getElementById('display_in_'+id).src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
 	//MWJ_changeSize('addTakeoffFrame',410,320);
 	//MWJ_changeSize( 'takeoffAddID', 410,350 );
 	// toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
+	MWJ_changeDisplay("display_"+id,"block");
+
+}
+
+function collapseAll() {
+	for(i=0;i <100 ; i++) {
+		MWJ_changeDisplay("action_"+i,"none");
+	}
+}
+
+function expandAll() {
+	for(i=0;i < 100 ; i++) {
+		MWJ_changeDisplay("action_"+i,"block");
+	}
 }
 </script>
+<style type="text/css">
 
+.actionsTable {
+	display:none;
+	border:1px solid #cccccc;
+	padding:2px;
+	background-color:#EEEAD2;
+}
+
+.actionsTable ul {
+margin-left:10px;
+padding:5px;
+}
+
+</style>
+<? if (0) { ?>
 <div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:block;">
 <table width="100%" >
 <tr><td class="infoBoxHeader" >
@@ -37,12 +68,12 @@ function serverAction(id,action,DBGlvl) {
 <div id='addTakeoffDiv'>
 <iframe id="addTakeoffFrame" width="100%" height="250" frameborder=0 style='border-width:0px'></iframe></div>
 </div>
-
+<? } ?>
 
 <?
 $legend="Manage external Servers";
 echo  "<div class='tableTitle'>
-<div class='titleDiv'>$legend</div>
+<div class='titleDiv'>$legend <a href='javascript:collapseAll()'>Collapse All</a> <a href='javascript:expandAll()'>Expand All</a> </div>
 </div>" ;
 
 $i=0;
@@ -62,16 +93,51 @@ foreach ($servers as $server) {
 
 	$url="<a href='http://".$server->url."' target='_blank'>".substr($server->url_base,0,50)."</a>";
 
-	echo "<TR><td><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a> :: 
-<b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull data)</a></b> ::
-<a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a> 
-		:: <a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a> :: <a href='javascript:serverAction(".$server->ID.",4,$DBGlvl);'>Update OP files</a>
-		:: <a href='javascript:serverAction(".$server->ID.",99,$DBGlvl);'>Test</a></td>".
-			"<td>".$server->ID."</td><td>".$url."</td><td>".$server->leonardo_version."</td><td>".
-			$server->is_active."</td><td>".$wpt."</td><td>".$server->isLeo."</td><td>".$type."</td><td></td></tr>";
+//	echo "<td  >";
+//	echo "";
+//	echo "</td></tr>";
 
-//	var $url_op;
-	$i++;
+	$id=$server->ID;
+	echo "<TR><td class='$actionRow' width='90' valign=top>
+
+			<div align='left' ><a href='javascript:toggleVisibility(\"action_$id\")'>Actions <img src='$moduleRelPath/img/icon_arrow_down.gif' border=0></a></div>
+			</td>".
+			"<td valign=top>".$server->ID."</td>
+			<td valign=top>".$url."</td>
+			<td valign=top>".$server->leonardo_version."</td>
+			<td valign=top> ".$server->is_active."</td>
+			<td valign=top>".$wpt."</td>
+			<td valign=top>".$server->isLeo."</td>
+			<td valign=top>".$type."</td>
+			<td valign=top></td>
+		</tr>";
+
+		echo "<TR height=0><td colspan='9' height=0>
+			<div class='actionsTable' id='action_$id' width=100%>
+				<table width=100%>
+				<tr>
+				<td><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a></td>
+				<td><b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull data)</a></b></td>
+				<td><a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a></td>
+				<td><a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a></td>
+				<td><a href='javascript:serverAction(".$server->ID.",4,$DBGlvl);'>Update OP files</a></td>
+				<td><a href='javascript:serverAction(".$server->ID.",99,$DBGlvl);'>Test</a>
+				<td><a href='javascript:toggleVisibility(\"display_$id\")'>Results On/Off</a></td>
+				</tr>
+				<TR >
+				<td colspan='7' bgcolor='#ffffff' >
+					<div style='display:none' id='display_$id' bgcolor='#ff0000'>
+						<iframe id='display_in_$id' width='100%' height='250' frameborder=0 style='border-width:0px'></iframe>
+					</div>
+				</td>
+				</tr>
+				</table>
+			</div>
+		</td></tr>";			
+
+
+		//	var $url_op;
+		$i++;
 }
 echo "</table>";
 

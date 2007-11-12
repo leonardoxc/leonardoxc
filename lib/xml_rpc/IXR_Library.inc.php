@@ -142,6 +142,10 @@ class IXR_Message {
         if (trim($this->message) == '') {
             return false;
         }
+
+		// $this->message = mb_convert_encoding($this->message ,'iso-8859-7', "UTF-8");
+
+
         $this->_parser = xml_parser_create();
         // Set XML parser to take the case of tags in to account
         xml_parser_set_option($this->_parser, XML_OPTION_CASE_FOLDING, false);
@@ -150,9 +154,11 @@ class IXR_Message {
         xml_set_element_handler($this->_parser, 'tag_open', 'tag_close');
         xml_set_character_data_handler($this->_parser, 'cdata');
         if (!xml_parse($this->_parser, $this->message)) {
-            /* die(sprintf('XML error: %s at line %d',
+            if (1) {
+				 die(sprintf('XML error: %s at line %d',
                 xml_error_string(xml_get_error_code($this->_parser)),
-                xml_get_current_line_number($this->_parser))); */
+                xml_get_current_line_number($this->_parser))); 
+			}
             return false;
         }
         xml_parser_free($this->_parser);
@@ -328,6 +334,7 @@ class IXR_Server {
 
 EOD;
         // Send it
+		// $xml = mb_convert_encoding($xml ,'iso-8859-7', "UTF-8");
         $this->output($xml);
     }
     function call($methodname, $args) {
@@ -368,7 +375,7 @@ EOD;
         $this->output($error->getXml());
     }
     function output($xml) {
-        $xml = '<?xml version="1.0"?>'."\n".$xml;
+        $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n".$xml;
         $length = strlen($xml);
         header('Connection: close');
         header('Content-Length: '.$length);
@@ -542,6 +549,9 @@ class IXR_Client {
         if ($this->debug) {
             echo '<pre>'.htmlspecialchars($contents)."\n</pre>\n\n";
         }
+
+		// $contents = mb_convert_encoding($contents ,'iso-8859-7', "UTF-8");
+
         // Now parse what we've got back
         $this->message = new IXR_Message($contents);
         if (!$this->message->parse()) {

@@ -55,8 +55,9 @@ function takeoffs_getTakeoffs($arg) {
 
 	if ( ! securityCheck($sitePass) )  return  new IXR_Error(4000, 'Access Denied');
 
-	$waypoints=getWaypoints($tm,$onlyTakeoffs);
+	$waypoints=getWaypoints($tm,$onlyTakeoffs,0);
 	return array(count($waypoints),$waypoints);
+	// return array(1,array($waypoints[0]));
 }
 
 
