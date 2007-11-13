@@ -262,7 +262,7 @@
 
 	$CONF['years']=array(
 		'use_calendar_years'=>1,
-		'start_year'=>2006,
+		'start_year'=>1998,
 		'end_year'=>date("Y")
 	);
 

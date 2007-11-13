@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+require_once dirname(__FILE__).'/FN_brands.php';
 
 class brands {
 
@@ -63,7 +64,7 @@ class brands {
 		else return 0;
 	}
 
-	function guessBrandID($gliderDesc){
+	function guessBrandID($gliderDesc){		
 		global  $CONF;
 		// if (!is_array($brandsList[$gliderType]) ) return 0;
 		
@@ -71,13 +72,36 @@ class brands {
 		//$gliderDesc=str_replace(" ","",$gliderDesc);
 		$gliderDesc=preg_replace('/[^\w]/','',$gliderDesc);
 	
+		//echo "detect for $gliderDesc : ";
 		foreach($CONF['brands']['list'] as $brandID=>$brandName) {
+			//echo "trying  $brandID=>$brandName <BR>";
 			if (  ! ( strpos($gliderDesc,strtolower($brandName) ) === false ) ) {
+				// echo "found ID $brandID<BR>";
 				return $brandID;
 			}
 		
 		}
 		return 0;
+	}
+
+	function sanitizeGliderName($gliderName) {
+		$gliderNameNorm=trim( preg_replace("/[\/\-\,\.]/",' ',$gliderName) );
+		$gliderNameNorm=preg_replace("/( )+/",' ',$gliderNameNorm);
+		
+		$gliderNameNorm=preg_replace("/(III)/",'3',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/(II)/",'2',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](one)/",'1',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](two)/",'2',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](three)/",'3',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](four)/",'4',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](five)/",'5',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](six)/",'6',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](seven)/",'7',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](eight)/",'8',$gliderNameNorm);
+		$gliderNameNorm=preg_replace("/[^\w](nine)/",'9',$gliderNameNorm);
+		
+		$gliderNameNorm=ucwords(strtolower($gliderNameNorm));
+		return $gliderNameNorm;
 	}
 
 }

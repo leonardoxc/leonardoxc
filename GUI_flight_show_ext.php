@@ -12,33 +12,14 @@
 /************************************************************************/
 
 
-	require_once $moduleRelPath."/CL_template.php";
-	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
-
-
-  $flightID+=0;
-  $flight=new flight();
-  if ( ! $flight->getFlightFromDB($flightID) ) {
-  	echo "<br><div align='center'>No such flight exists</div><br><BR>";
-	return;  
-  }
-  
-  if ( $flight->private && ! $flight->belongsToUser($userID) && ! auth::isAdmin($userID) ) {
-		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
-		return;
-  }
-
-  $flight->incViews();
-
-  if (!$flight->filename ){
-	require dirname(__FILE__).'/GUI_flight_show_ext.php';
-	return;
-  }
-
 	$Ltemplate ->set_filenames(array(
 		'body' => 'flight_show.html'));
 
+
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
+
+	//echo "$flight->takeoffID : $location <BR>";
+
   $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
 
  
@@ -248,24 +229,9 @@ function delete_takeoff(id) {
 		return;
   }
 
-  if ($_REQUEST['updateMap']) $flight->getMapFromServer();		
-  if ($_REQUEST['updateMap3d']) $flight->getMapFromServer(1);		
-  if ($_REQUEST['updateCharts']) $flight->updateCharts(1);		
-  if ($_REQUEST['updateData'])  {
-	$flight->getFlightFromIGC( $flight->getIGCFilename() );
-	$flight->updateTakeoffLanding();
-	$flight->putFlightToDB(1); // 1== UPDATE
-  }
-
-  if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
-		$flight->getOLCscore();
-		$flight->putFlightToDB(1); // 1== UPDATE
-  }
-	
-  $flight->updateAll(0);
   
   if ($CONF_use_validation) {
-		if ($flight->grecord==0) $flight->validate(1);
+		// if ($flight->grecord==0) $flight->validate(1);
 		
 		if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
 		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
@@ -275,7 +241,7 @@ function delete_takeoff(id) {
   }
 
   if ($CONF_airspaceChecks) {
-		if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
+		// if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
   }
 
 	if ($flight->autoScore) { // means that there is manual optimization present
@@ -382,37 +348,6 @@ if ($flight->is3D()) {
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 */
 
-  if ( $flight->olcFilename  || ( $flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) ) $showOLCsubmit=1;
-  else  $showOLCsubmit=0;
-  if ( $enableOLCsubmission && $showOLCsubmit && 0) {
-	  open_tr();
-		//   echo "<TD>&nbsp</td>";
-		   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">OLC</div></TD>";
-		   echo "<TD  colspan=4><div align=left>";
-			if ($flight->olcFilename) {
-			  $olc_url="http://www2.onlinecontest.org/holc/".$flight->getOLCYear();
-			  $olcName=strtolower (substr($flight->olcFilename,0,-4) );
-			  echo "[ <a href='$olc_url/map/".$olcName.".jpg' target='_blank'>"._OLC_MAP."</a> ] ";
-			  echo "[ <a href='$olc_url/ENL/".$olcName.".png' target='_blank'>"._OLC_BARO."</a> ] ";
-			  echo "[".substr($flight->olcDateSubmited,0,10)."] ";
-			  if ( auth::isAdmin($userID)  || $flight->belongsToUser($userID) ) echo "(Ref: ".$flight->olcRefNum.") ";
-			  echo "<img src='".$moduleRelPath."/img/olc_icon_submited.gif' border=0 align=bottom>";
-			  // echo _SUBMITED_SUCCESSFULLY_ON." ".$flight->olcDateSubmited;
-			  if ($flight->insideOLCsubmitWindow()  && ( auth::isAdmin($userID)  || $flight->belongsToUser($userID)  )  ) {
-				echo "<a href='".CONF_MODULE_ARG."&op=olc_remove&flightID=".$flight->flightID."'>";	
-				echo "<img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>";
-			  }
-			}
-			else if ($flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) {
-				echo _READY_FOR_SUBMISSION;
-				if ( auth::isAdmin($userID)  || $flight->userID==$userID  ) 
-				echo " <a href='".CONF_MODULE_ARG."&op=olc_submit&flightID=".$flight->flightID."'>"._SUBMIT_TO_OLC."</a>";
-			}
-			else  echo _CANNOT_BE_SUBMITTED;
-		   echo "</div></TD>";
-	//	   echo "<TD>&nbsp</td>";
-	  close_tr();
-  }
 
 if ($flight->comments) {
 	 $comments=$flight->comments;
@@ -553,90 +488,8 @@ for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 // see the config options 
 $localMap="";
 $googleMap="";
-if ( is_file($flight->getMapFilename() ) ) {
-		$localMap="<img src='".$flight->getMapRelPath()."' border=0>";	
-}
+$margin="";
 
-if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
-	// $flight->createGPXfile();
-	$flight->createEncodedPolyline();
-
-	if ( $CONF_google_maps_api_key  ) {
-		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track.php?id=".
-		$flight->flightID."' ".
-		 " TITLE='Google Map' width='100%' height='100%'
-		  scrolling='no' frameborder='0'>
-		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
-		</iframe></div>";
-	}
-	
-	if ($CONF_google_maps_track_only==1) { // use only google maps,  discard the local map server
-		$localMap='';
-	}
-
-}
-
-$divsToShow=0;
-if ($localMap) $divsToShow++;
-if ($googleMap) $divsToShow++;
-if ($images) $divsToShow++;
-
-if ( $divsToShow>1) { // use tabber 
-	$defaultTabStr1="";
-	$defaultTabStr2="";
-	if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
-	else $defaultTabStr1=" tabbertabdefault";
-
-	$mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
-	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
-	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
-	<script type='text/javascript'>
-	// document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
-	</script>
-	</script>
-	<div class='tabber' id='mapTabber'>\n";
-	
-	if ($localMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='Map'>
-					$localMap
-				 </div>\n";
-	}
-	if ($googleMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>
-			$googleMap
-			</div>";
-	}
-	if ($images) {
-		$mapImg.="<div class='tabbertab' title='Photos' style='height:400px; background-color:#ECF0EA;'>
-			  $images
-			  </div>";
-	}		  
-	$mapImg.="</div>";
-
-} else { // only the one div that is present (we know that only one (or zero) is here)
-	$mapImg=$localMap.$googleMap.$images;	
-}
-
- // if google maps are present put photos lower down
-if ( $googleMap  ) {
-	// $margin="imgDiv2colmargin";
-	$margin="";
-	if ($localMap)  {// we use tabs so put some more space down
-		$margin="imgDiv2colmarginTabbed";
-		$margin="marginTabbed";
-	}
-} else  $margin="";
-
-
-if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
-	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2="<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
-if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
 
 $Ltemplate->assign_vars(array(

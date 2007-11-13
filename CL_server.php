@@ -319,23 +319,48 @@ class Server {
 		}
     }
 
-	function sync() { // we pull data from this server
+	function deleteAllSyncedFlights() {
+		global $db,$flightsTable;
+		// if (!$this->gotValues) $this->getFromDB();
+		
+		$res= $db->sql_query("SELECT * FROM $flightsTable WHERE  serverID=$this->ID ");
+  		if($res <= 0){   
+			 echo "Error getting server's flights from local DB<BR>";
+		     return;
+	    }
+
+	    while( $row= $db->sql_fetchrow($res) ) {
+			  $flight=new flight();
+			  $flight->getFlightFromDB($row['ID']);		
+			  $flight->deleteFlight();
+		} 
+
+		//	reset the counter
+		$this->lastPullUpdateID=0;
+		$this->putToDB(1);
+
+	}
+
+	function sync($chunkSize=5) { // we pull data from this server
 		global $CONF_server_id;
 		if (!$this->gotValues) $this->getFromDB();
 		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
 
-		$chunkSize=3;
 		$startID=$this->lastPullUpdateID+1;
 
 		$urlToPull.="&c=$chunkSize&startID=$startID";
 
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
-		echo "Will use $urlToPull<BR>";
+		echo "Getting sync-log from $urlToPull ... ";
+		flush2Browser();
+
 		$rssStr=fetchURL($urlToPull,20);
 		if (!$rssStr) {
-			echo "Cannot get data from server<BR>";
+			echo "<BR>Cannot get data from server<BR>";
 			return 0;
 		}
+		echo " <strong>DONE</strong><br>";
+		flush2Browser();
 
 		// echo "<PRE>$rssStr</pre>";
 		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
@@ -360,15 +385,18 @@ class Server {
 	}
 
 	function processSyncEntry($ID,$logItem) {
+		echo "Processing entry ".($logItem['transactionID']+0)." ...  ";
+		flush2Browser();
+
 		list($result,$message)=logReplicator::processEntry($ID,$logItem);
 		if (!result) {
-			echo " ERROR : $message <BR>";
+			echo "<div class='error'>ERROR </div>: $message <BR>";
 			return 0;
 		} else {
 			// update the 
 			$this->lastPullUpdateID=$logItem['transactionID']+0;
 			$this->putToDB(1);
-			echo "OK: $message<BR>";
+			echo "<div class='ok'>OK</div>: $message<BR>";
 			return 1;
 		}
 	}

@@ -253,7 +253,10 @@ function setValue(obj)
 		$gliderBrandID=$_POST["gliderBrandID"]+0;
 		$linkURL=$_POST["linkURL"];
 
-		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,$is_private,$gliderCat,  $linkURL,$comments,$glider,$category,array('gliderBrandID'=>$gliderBrandID) ) ;
+		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,
+				array('gliderBrandID'=>$gliderBrandID,'private'=>$is_private,
+					  '$linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider,'category'=>$category,'cat'=>$gliderCat ) 
+				) ;
 		
 	}
 	

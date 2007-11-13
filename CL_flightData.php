@@ -57,6 +57,7 @@ class flight {
 
 	var $serverID=0;
 	var $originalURL='';
+	var $originalKML='';
 	var $original_ID=0;
 
 	var $originalUserID =0;
@@ -127,6 +128,20 @@ var $maxPointNum=1000;
 	
 	}
 	
+	function checkGliderBrand() {
+
+		if (! $this->gliderBrandID ) {			
+			$gliderBrandID=brands::guessBrandID($this->glider );
+			if ($gliderBrandID){
+				global $CONF;
+				$gliderName=str_ireplace($CONF['brands']['list'][$gliderBrandID],'',$this->glider);
+				$gliderName=brands::sanitizeGliderName($gliderName);
+				$this->glider=$gliderName;
+				$this->gliderBrandID=$gliderBrandID;
+			}
+		}
+	}
+
 	function toXML(){
 		/*	maybe also include these	
 		"forceBounds"		"autoScore"
@@ -141,7 +156,14 @@ var $maxPointNum=1000;
 			}
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
-		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
+
+//		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
+
+		$takeoff=new waypoint($this->takeoffID);
+		$takeoff->getFromDB();
+
+		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
+
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
 		$userServerID=$this->userServerID;
@@ -158,6 +180,7 @@ var $maxPointNum=1000;
 <filename>$this->filename</filename>
 <linkIGC>".$this->getIGC_URL()."</linkIGC>
 <linkDisplay>".htmlspecialchars($this->getFlightLinkURL())."</linkDisplay>
+<linkGE>".htmlspecialchars($this->getFlightKML(0))."</linkGE>
 
 <info>
 	<glider>$this->glider</glider>
@@ -179,7 +202,7 @@ var $maxPointNum=1000;
 <pilot>
 	<userID>$this->userID</userID>
 	<serverID>$userServerID</serverID>
-	<CIVLID>$CIVL_ID</CIVLID>
+	<civlID>$CIVL_ID</civlID>
 	<userName>$this->userName</userName>
 	<pilotFirstName>$firstName</pilotFirstName>
 	<pilotLastName>$lastName</pilotLastName>
@@ -189,12 +212,18 @@ var $maxPointNum=1000;
 </pilot>
 
 <location>
+	<firstLat>$firstPoint->lat</firstLat>
+	<firstLon>".-$firstPoint->lon."</firstLon>
 	<takeoffID>$this->takeoffID</takeoffID>
 	<serverID>$CONF_server_id</serverID>
 	<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
-	<takeoffName>$takeoffName</takeoffName>
-	<takeoffNameInt>$takeoffNameInt</takeoffNameInt>
-	<takeoffCountry>$takeoffCountry</takeoffCountry>
+	<takeoffName>$takeoff->name</takeoffName>
+	<takeoffNameInt>$takeoff->intName</takeoffNameInt>
+	<takeoffCountry>$takeoff->countryCode</takeoffCountry>
+	<takeoffLocation>$takeoff->location</takeoffLocation>
+	<takeoffLocationInt>$takeoff->intlocation</takeoffLocationInt>
+	<takeoffLat>$takeoff->lat</takeoffLat>
+	<takeoffLon>".-$takeoff->lon."</takeoffLon>
 </location>
 
 <stats>
@@ -453,9 +482,11 @@ $photosXML
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getIGCRelPath($saned);
 	}
 
-	function getFlightKML() {
+	function getFlightKML($includeLang=1) {
 		global $current_lang;
-		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?lang=$current_lang&type=kml_trk&flightID=".$this->flightID;
+		if ($includeLang) $langStr="&lang=$current_lang";
+		else  $langStr="";
+		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID.$langStr;
 	}
 
 	function getFlightGPX() {
@@ -2244,6 +2275,8 @@ $kml_file_contents=
 		 
 		$this->serverID=$row["serverID"];
 		$this->originalURL=$row["originalURL"];
+		$this->originalKML=$row["originalKML"];
+
 		$this->original_ID=$row["original_ID"];
 
 		$this->originalUserID=$row["originalUserID"];
@@ -2323,13 +2356,13 @@ $kml_file_contents=
 		$this->olcDateSubmited =$row["olcDateSubmited"];
 		
 	  	$db->sql_freeresult($res);
-		$this->updateTakeoffLanding();
+		if ($this->filename) $this->updateTakeoffLanding();
 		return 1;	
 	}
 
 	function updateTakeoffLanding($waypoints=array()) {
 		global $db;
-		global $flightsTable;
+		global $flightsTable, $waypoints;
 
 		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
 		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
@@ -2472,7 +2505,7 @@ $kml_file_contents=
 		$query.=" $flightsTable (".$fl_id_1."filename,userID,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
-		hash, serverID, originalURL, original_ID,
+		hash, serverID, originalURL, originalKML, original_ID,
 		originalUserID ,userServerID,
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
@@ -2505,7 +2538,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
-		'$this->hash',  $this->serverID, '$this->originalURL', $this->original_ID, 
+		'$this->hash',  $this->serverID, '$this->originalURL', '$this->originalKML',  $this->original_ID, 
 		$this->originalUserID , $this->userServerID,
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',

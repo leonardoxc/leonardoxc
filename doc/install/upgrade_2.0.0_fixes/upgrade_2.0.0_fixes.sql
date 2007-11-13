@@ -160,3 +160,5 @@ UPDATE leonardo_flights f  INNER JOIN leonardo_pilots p ON p.pilotID=f.userID
 # The "newcomer" upgrade:
 ALTER TABLE `leonardo_pilots` ADD `FirstOlcYear` INT( 10 ) NOT NULL DEFAULT '0' AFTER `PilotPhoto` ;
 
+
+ALTER TABLE `leonardo_flights` ADD `originalKML` VARCHAR( 255 ) NOT NULL AFTER `originalURL` ;

@@ -677,4 +677,7 @@ define('_PROJECT_RULES2','Regulations 2008');
 
 //end 2007/11/06
 define('_MEAN_SPEED1','Mean Speed');
+define('_External_Entry','External Entry');
+
+
 ?>

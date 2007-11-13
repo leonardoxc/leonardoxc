@@ -16,6 +16,8 @@ require_once dirname(__FILE__)."/EXT_config.php";
 
 require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
+require_once dirname(__FILE__).'/CL_brands.php';
+
 
 if (! auth::isAdmin($userID)) {
 	return;
@@ -38,9 +40,21 @@ body , p, table, td {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 10px;
 	font-style: normal;
-	text-align:justify;
+	text-align:left;
 	margin:0;
 }
+.ok { 
+	font-weight:bold;
+	color:#00CC33;
+	display:inline;
+}
+
+.error { 
+	font-weight:bold;
+	color:#FF3300;
+	display:inline;	
+}
+
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
 <?
@@ -78,7 +92,17 @@ if ($action==1) { // server info
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
-	$server->sync();
+	$chunkSize=$_GET['chunkSize']+0;
+	if (! $chunkSize ) $chunkSize=5;
+
+	$server->sync($chunkSize);
+} else if ($action==6) { // delete all external flights from this server
+	$moduleRelPath=moduleRelPath(0);
+	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+
+	$server->deleteAllSyncedFlights();
+
 } else if ($action==99) { //test
 	echo $server->url_op;
 	echo "<BR>$action<br>";

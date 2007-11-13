@@ -197,8 +197,8 @@ function setValue(obj)
 			sleep(1);
 
 		
-			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,0,$gliderCat,
-								'','',$glider,$category,array('gliderBrandID'=>$gliderBrandID) 
+			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
+								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,'glider'=>$glider,'category'=>$category) 
 			) ;
 			 
 			 if ($res==1) { 

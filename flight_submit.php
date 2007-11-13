@@ -101,7 +101,7 @@
 	else if ($klasse==4) { $cat=1 ;  $category=1; } // pg sport
 	else if ($klasse==5) { $cat=1 ;  $category=3; } // pg tandem
 
-	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,0,$cat,"","","",$category) ;
+	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	array('category'=>$category,'cat'=>$cat ) ) ;
 
 	if ($errCode!=1) {
 		echo "problem<br>";

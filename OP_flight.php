@@ -170,7 +170,10 @@ function flights_submit($args) {
 	} 		
 	@fclose($handle); 
 
-	list($errCode,$flightID)=addFlightFromFile($filename,0,	$userID,$private,$cat,$linkURL,$comments,$glider) ;
+	list($errCode,$flightID)=addFlightFromFile($filename,0,	$userID, 
+						array('private'=>$private,'cat'=>$cat,'category'=>1 , 
+							  'linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider) 
+					) ;
 	if ($errCode==1) { // all ok 
 		return $flightID;
 	} else {

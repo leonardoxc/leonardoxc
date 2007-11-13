@@ -252,7 +252,9 @@
 	   fclose($handle); 
 							
 
-		list($errCode,$flightID)=addFlightFromFile($filename,0,$FL_FORM["userID"],$FL_FORM["private"],$FL_FORM["cat"],$FL_FORM["linkURL"],$FL_FORM["comments"]) ;
+		list($errCode,$flightID)=addFlightFromFile($filename,0,$FL_FORM["userID"],
+				array('private'=>$FL_FORM["private"],'cat'=>$FL_FORM["cat"],'linkURL'=>$FL_FORM["linkURL"],'comments'=>$FL_FORM["comments"] ) 
+				) ;
 
 		$XML_str.="<returnCode>$errCode</returnCode>\n";
 		$XML_str.="<returnCodeDescription>".htmlspecialchars(getAddFlightErrMsg($errCode,$flightID))."</returnCodeDescription>\n";

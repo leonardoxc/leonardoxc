@@ -11,6 +11,28 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+function findNearestWaypoint($lat,$lon) {
+	global $waypoints;
+
+	$point=new GpsPoint();
+	$point->lat=$lat;
+	$point->lon=-$lon;
+
+	if (count($waypoints)==0) 
+		$waypoints=getWaypoints();
+
+	$nearestID=0;
+	$minDistance=1000000;
+
+	foreach($waypoints as $waypoint) {
+	   $distance = $point->calcDistance($waypoint);
+	   if ( $distance < $minDistance ) {
+			$minDistance = $distance;
+			$nearestID=$waypoint->waypointID;
+	   }
+	}
+	return array($nearestID,$minDistance);
+}
 
 function getTakeoffsCountryContinent() {
 	global $db;

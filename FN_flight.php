@@ -43,7 +43,8 @@ function addTestFlightFromURL($filename_url) {
 	} 
 	fclose($fp);
 
-	addFlightFromFile($filename_tmp,0,-1,1);
+	addFlightFromFile($filename_tmp,0,-1, array('private'=>1,'cat'=>-1,'category'=>1) );
+
 }
  
 function checkTrackFileName($filename) {
@@ -82,10 +83,12 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 }
 
 function addFlightFromFile($filename,$calledFromForm,$userIDstr,
-		$is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
-		$argArray=array() ) {
+
+		// $is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
+		$argArray=array()
+	 ) {
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
-	global  $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
+	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
 	global $userID;
 
 	set_time_limit (120);
@@ -134,24 +137,32 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	checkPath($flightsAbsPath."/".$userIDstr);
 	$tmpIGCPath=$filename;
-	
-	if ($gliderCat==-1) $gliderCat=$CONF_default_cat_add;
+		
 	$flight=new flight();
-	if ($thisServerID!=$CONF_server_id) $flight->userServerID=$thisServerID;
 
+	if ($thisServerID!=$CONF_server_id) 
+		$flight->userServerID=$thisServerID;
 	$flight->userID=$userIDforFlight;
+
+/*
 	$flight->cat=$gliderCat;
 	$flight->private=$is_private;
-	$flight->glider=$glider;
 	$flight->category=$category;
 	$flight->comments=$comments;
 	$flight->glider=$glider;
 	$flight->linkURL=$linkURL;
-	if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
+*/
 
 	foreach ($argArray as $varName=>$varValue) {
 		$flight->$varName=$varValue;
 	}
+
+	if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
+
+	if ($flight->cat==-1) $flight->cat=$CONF_default_cat_add;
+
+	// if no brand was given , try to detect
+	$flight->checkGliderBrand();
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);

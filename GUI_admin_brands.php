@@ -45,27 +45,6 @@
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayKnown'>* See glider Names with KNOWN brands</a><BR></a>";
 	echo "<hr>";
 
-function sanitizeGliderName($gliderName) {
-	$gliderNameNorm=trim( preg_replace("/[\/\-\,\.]/",' ',$gliderName) );
-	$gliderNameNorm=preg_replace("/( )+/",' ',$gliderNameNorm);
-	
-	$gliderNameNorm=preg_replace("/(III)/",'3',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/(II)/",'2',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](one)/",'1',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](two)/",'2',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](three)/",'3',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](four)/",'4',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](five)/",'5',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](six)/",'6',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](seven)/",'7',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](eight)/",'8',$gliderNameNorm);
-	$gliderNameNorm=preg_replace("/[^\w](nine)/",'9',$gliderNameNorm);
-	
-	$gliderNameNorm=ucwords(strtolower($gliderNameNorm));
-	return $gliderNameNorm;
-}
-
-
 
 	if ($admin_op=="init") {
 		execMysqlQuery("DROP TABLE IF EXISTS temp_leonardo_gliders;");
@@ -108,7 +87,7 @@ function sanitizeGliderName($gliderName) {
 				
 				// $gliderName=str_ireplace($brandsList[1][$row['gliderBrandID']],'',$gliderName);
 				
-				$gliderNameNorm=sanitizeGliderName($gliderName);
+				$gliderNameNorm=brands::sanitizeGliderName($gliderName);
 				echo  " $gliderName => $gliderNameNorm <BR>";
 				execMysqlQuery("update $workTable set gliderName='$gliderNameNorm' where glider='$gliderName'");
 			}
@@ -125,7 +104,7 @@ function sanitizeGliderName($gliderName) {
 				
 				$gliderNameNew=str_ireplace($CONF['brands']['list'][$row['gliderBrandID']],'',$gliderNameNorm);
 				
-				$gliderNameNew=sanitizeGliderName($gliderNameNew);
+				$gliderNameNew=brands::sanitizeGliderName($gliderNameNew);
 				echo  " $gliderNameNorm => $gliderNameNew <BR>";
 				execMysqlQuery("update $workTable set gliderName='$gliderNameNew' where gliderName='$gliderNameNorm'");
 			}
@@ -186,7 +165,7 @@ function sanitizeGliderName($gliderName) {
 			 while ($row = mysql_fetch_assoc($res)) { 
 
 				$gliderName=$row['glider'];
-				$gliderNameNorm=$row['gliderName']; //sanitizeGliderName($gliderName);
+				$gliderNameNorm=$row['gliderName']; //brands::sanitizeGliderName($gliderName);
 				//$glidersList[$row['glider']]=$gliderNameNorm;
 				//$glidersListNorm[$gliderNameNorm]++;
 				

@@ -24,7 +24,13 @@ function serverAction(id,action,DBGlvl) {
 	//document.getElementById('takeoffBoxTitle').innerHTML = "Register Takeoff";	
 // 	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
 
-	document.getElementById('display_in_'+id).src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl;
+	if (action==5) {
+		var chunkSize=MWJ_findObj('chunkSize_'+id).value;
+		var extraStr='&chunkSize='+chunkSize;
+	} else {
+		var extraStr='';
+	}
+	document.getElementById('display_in_'+id).src='<?=$moduleRelPath?>/GUI_EXT_server_action.php?id='+id+'&action='+action+'&DBGlvl='+DBGlvl+extraStr;
 	//MWJ_changeSize('addTakeoffFrame',410,320);
 	//MWJ_changeSize( 'takeoffAddID', 410,350 );
 	// toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
@@ -113,26 +119,31 @@ foreach ($servers as $server) {
 		</tr>";
 
 		echo "<TR height=0><td colspan='9' height=0>
-			<div class='actionsTable' id='action_$id' width=100%>
+			<div class='actionsTable' id='action_$id' width=100%><form name='syncForm'>
 				<table width=100%>
 				<tr>
-				<td><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a></td>
-				<td><b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull data)</a></b></td>
-				<td><a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a></td>
-				<td><a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a></td>
-				<td><a href='javascript:serverAction(".$server->ID.",4,$DBGlvl);'>Update OP files</a></td>
-				<td><a href='javascript:serverAction(".$server->ID.",99,$DBGlvl);'>Test</a>
-				<td><a href='javascript:toggleVisibility(\"display_$id\")'>Results On/Off</a></td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a></td>
+				<td valign='top'>
+					<b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull data)</a></b>
+					<input type=textbox id='chunkSize_$id' name='chunkSize_$id' value=10 size=3> Max entries
+				</td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",6,$DBGlvl);'>Reset Sync/Delete all Flights</a></td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a></td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a></td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",4,$DBGlvl);'>Update OP files</a></td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",99,$DBGlvl);'>Test</a>
+				<td valign='top'><a href='javascript:toggleVisibility(\"display_$id\")'>>></a></td>
 				</tr>
 				<TR >
-				<td colspan='7' bgcolor='#ffffff' >
+				<td colspan='8' bgcolor='#ffffff' >
 					<div style='display:none' id='display_$id' bgcolor='#ff0000'>
 						<iframe id='display_in_$id' width='100%' height='250' frameborder=0 style='border-width:0px'></iframe>
 					</div>
 				</td>
 				</tr>
-				</table>
+				</table></form>
 			</div>
+			
 		</td></tr>";			
 
 

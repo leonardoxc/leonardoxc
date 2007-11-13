@@ -163,7 +163,7 @@
 */
 
 	$where_clause.=	 $leagueCategories[$leagueCategory]['where_clause'];
-  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID , 
+  $query = 'SELECT '.$flightsTable.'.ID, userID, '.$flightsTable.'.userServerID , '.$flightsTable.'.filename,
   				 gliderBrandID,'.$flightsTable.'.glider as glider,cat, '.
 				 $leagueCategories[$leagueCategory]['select_fields'].' as '.$leagueCategories[$leagueCategory]['select_as']
   		. ' FROM '.$flightsTable. $extra_table_str
@@ -202,6 +202,8 @@
    while ($row = $db->sql_fetchrow($res)) { 
 	 $uID=$row["userServerID"].'_'.$row["userID"];
 	 $serverID=$row["userServerID"];
+
+	$flights[$row['ID']]=array('ext'=>($row['filename']?0:1) );
 
 	 if (!isset($pilotNames[$uID])){
 		 $name=getPilotRealName($row["userID"],$serverID,1); 
@@ -367,6 +369,8 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global  $countHowMany;
 
    global    $tabID;
+
+	global $flights;
 	
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
    if ($tabID ==  ($_GET['comp']+0) ) $defaultTabStr=" tabbertabdefault";
@@ -432,9 +436,12 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 
+			if ($flights[$flightID]['ext']) $extFlightImg="<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry."'>";
+			else $extFlightImg='';
+
 			// $descr="flight $flightID";
 			// alt='$descr' title='$descr'
-			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' >".$outVal."</a></TD>"; 	 		  
+			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' >$extFlightImg".$outVal."</a></TD>"; 	 		  
 			else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;

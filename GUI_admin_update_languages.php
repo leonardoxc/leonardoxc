@@ -100,14 +100,14 @@
 			
 			$FileName = LANG_ABS_PATH."/countries-$lang.php";
 			$File = file($FileName);
-			$NewFileOutput = implode("",$File);
+			$FileText = implode("",$File);
 			
 			writeFile(LANG_ABS_PATH."/iso/countries-$lang.php",$FileText);
 			
 			if (!	$convert_to_utf_mannually) {
-				$NewFileOutput=str_replace("charset=$encFrom","charset=utf-8",$NewFileOutput);
-				$NewFileOutput = $NewEncoding->Convert($NewFileOutput, $encFrom, $encTo, $Entities);
-				writeFile(LANG_ABS_PATH."/utf8/countries-$lang.php",$NewFileOutput);
+				$FileText=str_replace("charset=$encFrom","charset=utf-8",$FileText);
+				$FileText = $NewEncoding->Convert($FileText, $encFrom, $encTo, $Entities);
+				writeFile(LANG_ABS_PATH."/utf8/countries-$lang.php",$FileText);
 			}			
 			
 			echo "<strong>Converted $lang</strong><hr><BR>";
