@@ -46,7 +46,10 @@
 	if (!in_array($op,array("latest")) ) return;
 
 	$encoding="utf-8";
-	$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+	if ($CONF['sync']['protocol']['format']=='JSON') 
+		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+	else 
+		$RSS_str='{ "log": ';
 	// authentication stuff
 	// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
 	if (!Server::checkServerPass($clientID,$clientPass)) {
@@ -75,7 +78,21 @@
 			$actionTime=$row['actionTime']-date('Z');
 			$actionTimeStr=tm2fulldate($actionTime);
 
-			$RSS_str.="<item>
+			if ($CONF['sync']['protocol']['format']=='JSON') {
+				$RSS_str.=' { "item": {
+"transactionID": "'.sprintf("%020d",$row['transactionID']).'",
+"actionTimeUTC": "'.$actionTimeStr.'",
+"serverUTCoffset": "'.date('Z').'",
+"type": 	 "'.$row['ItemType'].'",
+"id": 		 "'.$row['ItemID'].'",
+"serverId":  "'.$row['ServerItemID'].'",
+"action>":   "'.$row['ActionID'].'",
+"userID":	 "'.$row['userID'].'",
+"ActionXML": "'.$row['ActionXML'].'",
+}}';
+									
+			} else {
+				$RSS_str.="<item>
 <transactionID>".sprintf("%020d",$row['transactionID'])."</transactionID>			
 <actionTimeUTC>".$actionTimeStr."</actionTimeUTC>
 <serverUTCoffset>".date('Z')."</serverUTCoffset>
@@ -96,7 +113,11 @@
 		//$RSS_str = $NewEncoding->Convert($RSS_str, $FromCharset, "utf-8", $Entities);
 	}
 
-	$RSS_str.="</log>\n";
+	if ($CONF['sync']['protocol']['format']=='JSON') 
+		$RSS_str.=' }} ';
+	else 	
+		$RSS_str.="</log>\n";
+		
 	if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))	{
 		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
 	} else	{

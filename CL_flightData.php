@@ -1,6 +1,6 @@
 <?
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                                */
+/* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
@@ -146,16 +146,26 @@ var $maxPointNum=1000;
 		/*	maybe also include these	
 		"forceBounds"		"autoScore"
 		*/
-		global $CONF_server_id,$CONF_photosPerFlight;
+		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
+		
+		if ($CONF['sync']['protocol']['format']=='JSON') $useJSON=1;
+		else $useJSON=0;
 		
 		$photosXML='';
+		$photosJSON='';
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			if ($this->$var_name) {
 				$photosXML.="<photo>\n<id>$i</id>\n<name>".$this->$var_name."</name>\n<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getPhotoRelPath($i)."</link>\n</photo>\n";
+				$photosJSON.=' { 
+	"id": '.$i.', 
+	"name": "'.$this->$var_name.'",
+	"link": "http://'.$_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i).'",
+	}';
 			}
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
+		if ($photosJSON) $photosJSON=' "photos": [ '.$photosJSON.' ] , ';
 
 //		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 
@@ -172,7 +182,8 @@ var $maxPointNum=1000;
 		$dateAdded=$this->dateAdded;
 		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
 
-		$xml=
+		if (!$useJSON) {
+		$resStr=
 "<flight>
 <serverID>$CONF_server_id</serverID>
 <id>$this->flightID</id>
@@ -252,8 +263,89 @@ var $maxPointNum=1000;
 $photosXML
 
 </flight>\n";
+		} else {
+$resStr='{ 
+"flight": {
+	"serverID": "'.$CONF_server_id.'",
+	"id": "'.$this->flightID.'",
+	"dateAdded": "'.$dateAdded.'",
+	"filename": "'.$this->filename.'",
+	"linkIGC": "'.$this->getIGC_URL().'",
+	"linkDisplay": "'.htmlspecialchars($this->getFlightLinkURL()).'",
+	"linkGE": "'.htmlspecialchars($this->getFlightKML(0)).'",
 
-		return $xml;
+	"info": {
+		"glider": "'.$this->glider.'",
+		"gliderBrandID": "'.$this->gliderBrandID.'",
+		"gliderCat": "'.$this->cat.'",
+		"cat": "'.$this->category.'",
+		"linkURL": "'.$this->linkURL.'",
+		"private": "'.$this->private.'",
+		"comments": "'.$this->comments.'",
+	},
+	
+	"time": {
+		"date": "'.$this->DATE.'",
+		"Timezone": "'.$this->timezone.'",
+		"StartTime": "'.$this->START_TIME.'",
+		"Duration": "'.$this->DURATION.'",
+	},
+	
+	"pilot": {
+		"userID": "'.$this->userID.'",
+		"serverID": "'.$userServerID.'",
+		"civlID": "'.$CIVL_ID.'",
+		"userName": "'.$this->userName.'",
+		"pilotFirstName": "'.$firstName.'",
+		"pilotLastName": "'.$lastName.'",
+		"pilotCountry": "'.$pilotCountry.'",
+		"pilotBirthdate": "'.$Birthdate.'",
+		"pilotSex": "'.$Sex.'",
+	},
+	
+	"location": {
+		"firstLat": "'.$firstPoint->lat.'",
+		"firstLon": "'.-$firstPoint->lon.'",
+		"takeoffID": "'.$this->takeoffID.'",
+		"serverID": "'.$CONF_server_id.'",
+		"takeoffVinicity": "'.$this->takeoffVinicity.'",
+		"takeoffName": "'.$takeoff->name.'",
+		"takeoffNameInt": "'.$takeoff->intName.'",
+		"takeoffCountry": "'.$takeoff->countryCode.'",
+		"takeoffLocation": "'.$takeoff->location.'",
+		"takeoffLocationInt": "'.$takeoff->intlocation.'",
+		"takeoffLat": "'.$takeoff->lat.'",
+		"takeoffLon": "'.-$takeoff->lon.'",
+	},
+	
+	"stats":  {
+		"FlightType": "'.$this->BEST_FLIGHT_TYPE.'",
+		"StraightDistance": "'.$this->MAX_LINEAR_DISTANCE.'",
+		"XCdistance": "'.$this->FLIGHT_KM.'",
+		"XCscore": "'.$this->FLIGHT_POINTS.'",
+		"MaxSpeed": "'.$this->MAX_SPEED.'",
+		"MaxVario": "'.$this->MAX_VARIO.'",
+		"MinVario": "'.$this->MIN_VARIO.'",
+		"MaxAltASL": "'.$this->MAX_ALT.'",
+		"MinAltASL": "'.$this->MIN_ALT.'",
+		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'",
+	},
+	
+	"validation": {
+		"validated": "'.$this->validated.'",
+		"grecord": "'.$this->grecord.'",
+		"hash": "'.$this->hash.'",
+		"validationMessage": "'.$this->validationMessage.'",
+		"airspaceCheck": "'.$this->airspaceCheck.'",
+		"airspaceCheckFinal": "'.$this->airspaceCheckFinal.'",
+		"airspaceCheckMsg": "'.$this->airspaceCheckMsg.'",
+	},
+	
+	'.$photosJSON.'
+}
+}';
+		}
+		return $resStr;
 	}
 
 	function setAllowedParams() {
