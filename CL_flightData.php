@@ -130,7 +130,7 @@ var $maxPointNum=1000;
 	
 	function checkGliderBrand() {
 
-		if (! $this->gliderBrandID ) {			
+		if (! $this->gliderBrandID ) {				
 			$gliderBrandID=brands::guessBrandID($this->glider );
 			if ($gliderBrandID){
 				global $CONF;

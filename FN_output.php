@@ -164,9 +164,8 @@ function datetime2UnixTimestamp($datestamp) {
     if ($datestamp!=0) {
         list($date, $time)=split(" ", $datestamp);
         list($year, $month, $day)=split("-", $date);
-        list($hour, $minute, $second)=split(":", $time);
-        $stampeddate=mktime($hour,$minute,$second,$month,$day,$year);
-     
+        list($hour, $minute, $second)=split(":", $time);		
+        $stampeddate=mktime($hour,$minute,$second,$month,$day,$year);    
         return   $stampeddate ;
     }
 }

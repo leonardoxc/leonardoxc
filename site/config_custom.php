@@ -153,7 +153,7 @@
  
  // flights that were submitted these days ago will have a "new" icon
  // set to -1 to disable
- $CONF_new_flights_days_threshold=-1;
+ $CONF_new_flights_days_threshold=7;
 
  // Added 08.05.2007
  // Flight upload time limit in days

@@ -88,7 +88,8 @@ class logReplicator {
 
 		// echo "nearest takeoff :  $nearestTakeoffID,$nearestDistance <BR>";
 
-		if ( $nearestDistance < $locationArray['takeoffVinicity'] ) { // we will use our waypoint
+		if ( $nearestDistance  < ( $locationArray['takeoffVinicity'] + 500 ) ) { 
+			// we will use our waypoint if our local waypoint is nearest  ( + 500m margin )
 			return array($nearestTakeoffID,$nearestDistance );
 		} else { // we will import this takeoff and use that instead
 			$newWaypoint =new waypoint();
@@ -205,6 +206,7 @@ class logReplicator {
 								"linkURL"	=>$e['ActionXML']['flight']['info']['linkURL'],
 								"comments"	=>$e['ActionXML']['flight']['info']['comments'],
 								"glider"	=>$e['ActionXML']['flight']['info']['glider'],
+								"gliderBrandID"	=>$e['ActionXML']['flight']['info']['gliderBrandID'],
 								"category"	=>$e['ActionXML']['flight']['info']['cat'],
 
 								"dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
@@ -214,9 +216,10 @@ class logReplicator {
 								"serverID"		=>$e['ActionXML']['flight']['serverID'],
 								"userServerID"	=>$e['ActionXML']['flight']['serverID'],
 								"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
-								"gliderBrandID"	=>$e['ActionXML']['flight']['gliderBrandID'],
-				);
 
+				);
+				// print_r($argArray);
+				
 				if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL  ) {
 					if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 						return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
@@ -239,7 +242,7 @@ class logReplicator {
 					foreach($argArray as $fieldName=>$fieldValue) {
 						$extFlight->$fieldName=$fieldValue;
 					}
-
+					// echo " gliderBrandID : $extFlight->gliderBrandID #<BR>";
 					$extFlight->takeoffID = $nearestTakeoffID;
 					$extFlight->takeoffVinicity = $nearestDistance ;
 

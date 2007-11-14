@@ -24,12 +24,20 @@ class json {
 	}
 	
 	function decode($str) {
-		if ( function_exists('json_decode') ) {
-			return json_decode($str, true);
+		if ( function_exists('json_decode') && 0 ) {	
+			//echo "using native function";
+			//echo $str;
+			$arr=json_decode($str, true);
+			// print_r($arr);
+			return $arr;
 		} else {
+			//	echo "using services json function";
 			require_once dirname(__FILE__).'/json.php';
+			//echo $str;
 			$json=new Services_JSON( SERVICES_JSON_LOOSE_TYPE );
-			return $json->decode($str);
+			$arr=$json->decode($str);
+			// print_r($arr);
+			return $arr;
 		}
 	}
 }

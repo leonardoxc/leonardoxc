@@ -354,7 +354,7 @@ class Server {
 		echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
 		flush2Browser();
 
-		$rssStr=fetchURL($urlToPull,20);
+		$rssStr=fetchURL($urlToPull,60);
 		if (!$rssStr) {
 			echo "<BR>Cannot get data from server<BR>";
 			return 0;
@@ -395,6 +395,10 @@ class Server {
 						break;
 					}	
 				}
+			} else {
+				echo "Error: <br />";
+				print_r($arr);
+
 			}
 
 		}

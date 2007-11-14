@@ -266,7 +266,8 @@ function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
    global $PREFS,$CONF;
    global $page_num,$pagesNum,$startNum,$itemsNum;
    global $currentlang,$nativeLanguage,$opMode;
-   global $CONF_photosPerFlight,$CONF_use_validation,$CONF_airspaceChecks;   	 
+   global $CONF_photosPerFlight,$CONF_use_validation,$CONF_airspaceChecks;  
+   global $CONF_new_flights_days_threshold; 
    global $gliderCatList;
 
 $clubIcon	="<img src='".$moduleRelPath."/img/icon_club_small.gif' width=12 height=12 border=0 align='absmiddle' >";
@@ -376,7 +377,7 @@ function removeClubFlight(clubID,flightID) {
 			$rowStr="";
   	   }
 
-	   $date2row="";
+	   $date2row="";	   
   	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
 			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"];
 			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
