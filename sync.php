@@ -31,6 +31,9 @@
 	$type		= $_GET['type']+0;
 	$startID 	= $_GET['startID']+0;
 	$count 	 	= $_GET['c']+0;	
+	$format		= makeSane($_GET['format'],0);	
+	if ( ! $format	) $format=$CONF['sync']['protocol']['format'];
+	$format=strtoupper($format);
 
 	$clientID	= makeSane($_GET['clientID'],1);	
 	$clientPass	= makeSane($_GET['clientPass'],0);
@@ -46,10 +49,13 @@
 	if (!in_array($op,array("latest")) ) return;
 
 	$encoding="utf-8";
-	if ($CONF['sync']['protocol']['format']=='JSON') 
+
+
+	if ($format=='XML') 
 		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
-	else 
-		$RSS_str='{ "log": ';
+	else if ($format=='JSON') 
+		$RSS_str='{ "log": [ ';
+
 	// authentication stuff
 	// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
 	if (!Server::checkServerPass($clientID,$clientPass)) {
@@ -70,7 +76,7 @@
 			 exit();
 		 }
 		
-
+		$item_num=0;
 		while ($row = mysql_fetch_assoc($res)) { 
 
 			$desc=htmlspecialchars ($desc);
@@ -78,20 +84,21 @@
 			$actionTime=$row['actionTime']-date('Z');
 			$actionTimeStr=tm2fulldate($actionTime);
 
-			if ($CONF['sync']['protocol']['format']=='JSON') {
+			if ($format=='JSON') {
+				if ($item_num>0) $RSS_str.=' , ';
 				$RSS_str.=' { "item": {
 "transactionID": "'.sprintf("%020d",$row['transactionID']).'",
 "actionTimeUTC": "'.$actionTimeStr.'",
 "serverUTCoffset": "'.date('Z').'",
-"type": 	 "'.$row['ItemType'].'",
-"id": 		 "'.$row['ItemID'].'",
-"serverId":  "'.$row['ServerItemID'].'",
-"action>":   "'.$row['ActionID'].'",
-"userID":	 "'.$row['userID'].'",
-"ActionXML": "'.$row['ActionXML'].'",
-}}';
+"type": 	  '.$row['ItemType'].',
+"id": 		  '.$row['ItemID'].',
+"serverId":   '.$row['ServerItemID'].',
+"action":     '.$row['ActionID'].',
+"userID":	  '.$row['userID'].',
+"ActionXML":  '.$row['ActionXML'].'
+}} ';
 									
-			} else {
+			} else if ($format=='XML') {
 				$RSS_str.="<item>
 <transactionID>".sprintf("%020d",$row['transactionID'])."</transactionID>			
 <actionTimeUTC>".$actionTimeStr."</actionTimeUTC>
@@ -104,7 +111,10 @@
 
 <ActionXML>".$row['ActionXML']."</ActionXML>
 </item>\n";
-		}
+			}
+
+			$item_num++;
+		} // end while
 		
 		//$RSS_str=htmlspecialchars($RSS_str);
 
@@ -113,10 +123,9 @@
 		//$RSS_str = $NewEncoding->Convert($RSS_str, $FromCharset, "utf-8", $Entities);
 	}
 
-	if ($CONF['sync']['protocol']['format']=='JSON') 
-		$RSS_str.=' }} ';
-	else 	
-		$RSS_str.="</log>\n";
+	if ($format=='XML') 		$RSS_str.="</log>\n";
+	else if ($format=='JSON') 	$RSS_str.=' ] } ';
+
 		
 	if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))	{
 		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
@@ -125,7 +134,9 @@
 	}
 	header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
 	header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-	header ('Content-Type: text/xml');
+	if ($format=='XML') 			header ('Content-Type: text/xml');
+	else if ($format=='JSON') 		header ('Content-Type: text/plain');
+
 	echo $RSS_str;
 
 ?>

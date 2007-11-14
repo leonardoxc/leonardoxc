@@ -44,6 +44,7 @@ class Server {
 		}
 
 	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
+			"sync_format",
 			"url_op","admin_email","site_pass","lastPullUpdateID","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
@@ -344,14 +345,13 @@ class Server {
 	function sync($chunkSize=5) { // we pull data from this server
 		global $CONF_server_id;
 		if (!$this->gotValues) $this->getFromDB();
-		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
 
 		$startID=$this->lastPullUpdateID+1;
-
-		$urlToPull.="&c=$chunkSize&startID=$startID";
-
+		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
+		$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->sync_format;
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
-		echo "Getting sync-log from $urlToPull ... ";
+
+		echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
 		flush2Browser();
 
 		$rssStr=fetchURL($urlToPull,20);
@@ -363,30 +363,49 @@ class Server {
 		flush2Browser();
 
 		// echo "<PRE>$rssStr</pre>";
-		require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
-		$xmlDoc = new MiniXMLDoc();
-		$xmlDoc->fromString($rssStr);
-		$xmlArray=$xmlDoc->toArray();
-
-		//echo "<PRE>";
-		//print_r($xmlArray);
-		//echo "</PRE>";
-
-		if ($xmlArray['log']['item']['_num']) {
-			foreach ($xmlArray['log']['item'] as $i=>$logItem) {
-				if (!is_numeric($i) ) continue;				
-				if ( ! $this->processSyncEntry($this->ID,$logItem) ) { // if we got an error break the loop, the admin must solve the error
-					break;
-				}	
+		if ($this->sync_format=='XML')	{	
+			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
+			$xmlDoc = new MiniXMLDoc();
+			$xmlDoc->fromString($rssStr);
+			$xmlArray=$xmlDoc->toArray();
+	
+			//echo "<PRE>";
+			//print_r($xmlArray);
+			//echo "</PRE>";
+	
+			if ($xmlArray['log']['item']['_num']) {
+				foreach ($xmlArray['log']['item'] as $i=>$logItem) {
+					if (!is_numeric($i) ) continue;				
+					if ( ! $this->processSyncEntry($this->ID,$logItem) ) { // if we got an error break the loop, the admin must solve the error
+						break;
+					}	
+				}
+			} else {
+				$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
 			}
-		} else {
-			$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
+		} else if ($this->sync_format=='JSON') {
+			require_once dirname(__FILE__).'/lib/json/CL_json.php';
+			$arr=json::decode($rssStr);
+			//print_r($arr);
+			//exit;
+			if ( count($arr['log']) ) {
+				foreach ($arr['log'] as $i=>$logItem) {
+					if (!is_numeric($i) ) continue;				
+					if ( ! $this->processSyncEntry($this->ID,$logItem['item']) ) { // if we got an error break the loop, the admin must solve the error
+						break;
+					}	
+				}
+			}
+
 		}
 	}
 
 	function processSyncEntry($ID,$logItem) {
 		echo "Processing entry ".($logItem['transactionID']+0)." ...  ";
 		flush2Browser();
+
+		//	print_r($logItem);
+		// return 1;
 
 		list($result,$message)=logReplicator::processEntry($ID,$logItem);
 		if (!result) {

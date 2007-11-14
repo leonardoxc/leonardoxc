@@ -162,3 +162,4 @@ ALTER TABLE `leonardo_pilots` ADD `FirstOlcYear` INT( 10 ) NOT NULL DEFAULT '0' 
 
 
 ALTER TABLE `leonardo_flights` ADD `originalKML` VARCHAR( 255 ) NOT NULL AFTER `originalURL` ;
+ALTER TABLE `leonardo_servers` ADD `sync_format` VARCHAR( 20 ) DEFAULT 'XML' NOT NULL AFTER `lastPullUpdateID` ;

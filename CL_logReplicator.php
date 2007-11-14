@@ -56,6 +56,10 @@ require_once dirname(__FILE__).'/FN_functions.php';
 require_once dirname(__FILE__).'/FN_flight.php';
 require_once dirname(__FILE__).'/CL_pilot.php';
 
+define('SYNC_INSERT_FLIGHT_LINK',1);
+define('SYNC_INSERT_FLIGHT_LOCAL',2);
+
+
 class logReplicator { 
 
 	function logReplicator() {
@@ -159,7 +163,7 @@ class logReplicator {
 	  
 	}
 	
-	function processEntry($serverID,$e) {
+	function processEntry($serverID,$e,$sync_mode=SYNC_INSERT_FLIGHT_LINK) {
 		global $flightsAbsPath;
 		global $DBGcat,$DBGlvl;
 		if ($DBGlvl>0) {
@@ -169,6 +173,10 @@ class logReplicator {
 		}
 
 		if ($e['type']=='1') { // flight
+			
+			$getValidationData=1;
+			$getScoreData =1;
+			
 
 			//	check 'alien' pilot  and insert him or update him anyway
 			$userServerID=$e['ActionXML']['flight']['serverID'];
@@ -209,7 +217,7 @@ class logReplicator {
 								"gliderBrandID"	=>$e['ActionXML']['flight']['gliderBrandID'],
 				);
 
-				if (0) {
+				if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL  ) {
 					if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 						return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
 					}
@@ -223,9 +231,6 @@ class logReplicator {
 					return array(1,"Flight *pulled* OK with local ID $flightID");
 
 				} else {
-					$getValidationData=1;
-					$getScoreData=1;
-
 					$extFlight=new flight();
 
 					$igcFilename=$e['ActionXML']['flight']['filename'];
@@ -315,7 +320,6 @@ class logReplicator {
 				$extFlight->START_TIME =$e['ActionXML']['flight']['time']['StartTime'];
 				$extFlight->DURATION =$e['ActionXML']['flight']['time']['Duration'];
 				$extFlight->END_TIME=$extFlight->START_TIME+$extFlight->DURATION;
-				
 				
 				if ($getValidationData) {
 					$extFlight->validated =$e['ActionXML']['flight']['validation']['validated'];

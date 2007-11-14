@@ -193,6 +193,12 @@ function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ) return '';
 	else if ($typeOfLink==1) return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." $linkURL'>";
 	else if ($typeOfLink==2) return " (*)";
+	else if ($typeOfLink==3) {
+		$file="$moduleRelPath/img/servers/".sprintf("%03d",$serverID).".gif";
+		if (!is_file($file)) $file="$moduleRelPath/img/icon_link.gif";
+
+		return "<img class='flagIcon' src='$file' border=0 title='"._External_Entry." $linkURL'>";
+	}
 }
 
 function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExternalIndicator=1) {
