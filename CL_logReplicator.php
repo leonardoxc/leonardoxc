@@ -82,7 +82,7 @@ class logReplicator {
 	[takeoffLat] => 20.5
 	[takeoffLon] => 40.3
 */
-		 // print_r($locationArray);
+		//  print_r($locationArray);
 
 		list( $nearestTakeoffID,$nearestDistance )=findNearestWaypoint($locationArray['takeoffLat'],$locationArray['takeoffLon']);
 
@@ -105,7 +105,7 @@ class logReplicator {
 			$newWaypoint->description ='';
 			$newWaypoint->putToDB(0);
 
-			return array($this->waypointID,$locationArray['takeoffVinicity']);
+			return array($newWaypoint->waypointID,$locationArray['takeoffVinicity']);
 		}
 	}
 

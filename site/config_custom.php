@@ -312,5 +312,10 @@
 
  // end of seasons config
 
+ // start of BRANDS MOD
+	$CONF['brands']['filter_brands'] = 1;
+	$CONF['brands']['showAll']=1;
+	$CONF['brands']['list']=array();
+	$CONF['brands']['filterList']=array(1,2,4);
 
 ?>

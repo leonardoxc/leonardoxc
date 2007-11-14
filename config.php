@@ -337,7 +337,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  				
 
  // start of BRANDS MOD
-	$CONF['brands']['filter_brands'] = 1;
+	$CONF['brands']['filter_brands'] = 0;
 	$CONF['brands']['showAll']=0;
 	$CONF['brands']['list']=array();
 	$CONF['brands']['filterList']=array(1,2,4);
