@@ -98,6 +98,29 @@ var $olcRefNum="";
 var $olcFilename="";
 var $olcDateSubmited;
 
+/*
+#externalFlightType
+#	0 -> local flight
+#	1- > SYNC_INSERT_FLIGHT_LINK (extllink  linked to external disply , only scroing info into DB)
+#	2 -> SYNC_INSERT_FLIGHT_LOCAL (extflight IGC imported locally)
+#isLive  
+#	0 -> not a live flight
+#	1 -> in progress liveflight in progress, only basic info into db and link to actual display/server
+#	2 -> finalized , liveflight finilized IGC imported locally
+#
+#forceBounds
+#	1-> auto detect start/end
+#	0-> set by user /admin
+*/
+var	$externalFlightType=0;
+var $isLive=0;
+var $firstPointTM=0;
+var $firstLat=0;
+var $firstLon=0;
+var	$lastPointTM=0;
+var $lastLat=0;
+var $lastLon=0;
+
 	var $hasPhotos=0;
 	var $photos=array();
 
@@ -307,8 +330,13 @@ $resStr='{
 	},
 	
 	"location": {
-		"firstLat": "'.$firstPoint->lat.'",
-		"firstLon": "'.-$firstPoint->lon.'",
+		"firstLat": "'.$firstPoint->lat().'",
+		"firstLon": "'.$firstPoint->lon().'",
+		"firstTM": "'.$firstPoint->gpsTime.'",
+		"lastLat": "'.$lastPoint->lat().'",
+		"lastLon": "'.$lastPoint->lon().'",
+		"lastTM": "'.$lastPoint->gpsTime.'",
+
 		"takeoffID": "'.$this->takeoffID.'",
 		"serverID": "'.$CONF_server_id.'",
 		"takeoffVinicity": "'.$this->takeoffVinicity.'",
@@ -2435,6 +2463,16 @@ $kml_file_contents=
 		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];	  	  
 		$this->autoScore=$row["autoScore"];	
 
+		$this->externalFlightType=$row["externalFlightType"];
+		$this->isLive=$row["isLive"];
+		$this->firstPointTM=$row["firstPointTM"];
+		$this->firstLat=$row["firstLat"];
+		$this->firstLon=$row["firstLon"];
+		$this->lastPointTM=$row["lastPointTM"];
+		$this->lastLat=$row["lastLat"];
+		$this->lastLon=$row["lastLon"];
+		$this->forceBounds=$row["forceBounds"];
+
 		$this->hash=$row["hash"];	
 
 		$this->FIRST_POINT=$row["FIRST_POINT"];
@@ -2633,6 +2671,10 @@ $kml_file_contents=
 		FLIGHT_KM,
 		FLIGHT_POINTS,
 		autoScore,
+		forceBounds,
+		externalFlightType,	isLive,
+		firstPointTM, firstLat, firstLon,
+		lastPointTM, lastLat, lastLon ,
 		FIRST_POINT,LAST_POINT,
 		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5,
 		olcRefNum,olcFilename,olcDateSubmited
@@ -2666,6 +2708,10 @@ $kml_file_contents=
 		$this->FLIGHT_KM,
 		$this->FLIGHT_POINTS,
 		$this->autoScore,
+		$this->forceBounds,
+		$this->externalFlightType,	$this->isLive,
+		$this->firstPointTM, $this->firstLat, $this->firstLon,
+		$this->lastPointTM, $this->lastLat, $this->lastLon ,
 		'$this->FIRST_POINT',
 		'$this->LAST_POINT',
 		'$this->turnpoint1','$this->turnpoint2','$this->turnpoint3','$this->turnpoint4','$this->turnpoint5',

@@ -562,4 +562,7 @@ if (defined('CONF_MODULE_ARG') )	exit;
 }
 
 
+define('SYNC_INSERT_FLIGHT_LINK',1);
+define('SYNC_INSERT_FLIGHT_LOCAL',2);
+
 ?>

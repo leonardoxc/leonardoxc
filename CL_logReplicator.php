@@ -56,9 +56,6 @@ require_once dirname(__FILE__).'/FN_functions.php';
 require_once dirname(__FILE__).'/FN_flight.php';
 require_once dirname(__FILE__).'/CL_pilot.php';
 
-define('SYNC_INSERT_FLIGHT_LINK',1);
-define('SYNC_INSERT_FLIGHT_LOCAL',2);
-
 
 class logReplicator { 
 
@@ -187,6 +184,9 @@ class logReplicator {
 			logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
 			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,$e['ActionXML']['flight']['location']);
 
+			// get only the first 2 bits
+			$externalFlightType=$sync_mode & 0x03 ;
+
 			if ($e['action']==1) {	// add
 				$igcFilename=$e['ActionXML']['flight']['filename'];
 				$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
@@ -216,6 +216,7 @@ class logReplicator {
 								"serverID"		=>$e['ActionXML']['flight']['serverID'],
 								"userServerID"	=>$e['ActionXML']['flight']['serverID'],
 								"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
+								"externalFlightType"=> $externalFlightType	,
 
 				);
 				// print_r($argArray);
@@ -242,6 +243,7 @@ class logReplicator {
 					foreach($argArray as $fieldName=>$fieldValue) {
 						$extFlight->$fieldName=$fieldValue;
 					}
+				
 					// echo " gliderBrandID : $extFlight->gliderBrandID #<BR>";
 					$extFlight->takeoffID = $nearestTakeoffID;
 					$extFlight->takeoffVinicity = $nearestDistance ;

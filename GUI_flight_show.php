@@ -30,7 +30,7 @@
 
   $flight->incViews();
 
-  if (!$flight->filename ){
+  if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){
 	require dirname(__FILE__).'/GUI_flight_show_ext.php';
 	return;
   }
