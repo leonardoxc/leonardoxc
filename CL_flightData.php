@@ -2516,6 +2516,15 @@ $kml_file_contents=
 		$this->$var_name="";
 	}
 
+	function deleteSecondaryFiles(){
+			@unlink($this->getPointsFilename(1) ) ;
+			@unlink($this->getJsFilename(1) );			
+			@unlink($this->getIGCFilename(0).".kmz" ); 
+			@unlink($this->getIGCFilename(0).".man.kmz" ); 
+			@unlink($this->getIGCFilename(0).".poly.txt" ); 
+	}
+
+
 	function deleteFlight() {
  		global $db;
 		global $flightsTable;
@@ -2535,12 +2544,10 @@ $kml_file_contents=
 
 		unlink($this->getIGCFilename() ); 
 		@unlink($this->getIGCFilename(1) ); 
-		@unlink($this->getPointsFilename(1) ) ;
-		@unlink($this->getJsFilename(1) );
 		@unlink($this->getIGCFilename(0).".olc" ); 
-		@unlink($this->getIGCFilename(0).".kmz" ); 
-		@unlink($this->getIGCFilename(0).".man.kmz" ); 
-		@unlink($this->getIGCFilename(0).".poly.txt" ); 
+
+		$this->deleteSecondaryFiles();
+
 		@unlink($this->getMapFilename() ); 
 
 		for ($metric_system=1;$metric_system<=2;$metric_system++) {

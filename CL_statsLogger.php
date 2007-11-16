@@ -5,8 +5,11 @@ class statsLogger {
 	}
 	
 	function log($executionTime){
+		global $CONF;
 		global $db, $statsTable, $userID,$op, $flightID,$PREFS;
 			
+		if (! $CONF['stats']['enable']) return;
+
 		list($agent,$version,$os,$aol)=findBrowserOS();
 
 		$query = "INSERT into $statsTable (tm,year,month,day,userID,sessionID,visitorID,op,flightID,

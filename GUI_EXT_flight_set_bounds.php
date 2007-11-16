@@ -43,8 +43,6 @@
 		$startTime=makeSane($_REQUEST['timeTextSecs1'],1); // in secs
 		$endTime=makeSane($_REQUEST['timeTextSecs2'],1); 
 
-		
-		
 		$flight->forceBounds=1; // must be in these time bounds
 		$flight->START_TIME=$startTime;
 		$flight->END_TIME=$endTime;
@@ -53,6 +51,9 @@
 		$flightsWebPath=moduleRelPath(0)."/".$flightsRelPath;
 
 		$flight->getFlightFromIGC( $flight->getIGCFilename() );
+
+		$flight->deleteSecondaryFiles();
+
 		$flight->updateTakeoffLanding();
 		$flight->getOLCscore();
 		

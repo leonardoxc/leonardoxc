@@ -57,6 +57,24 @@ class gpsPoint {
 		$this->gpsAlt=substr($line,30,5);			
 	}		
 
+	// because of a stupid initial degisn choice i made
+	// lon is used reversed inside leonardo.
+	// new code must use this function to get the correct value 
+	// instread of negating lon incode.
+	function lon(){
+		return -$this->lon;
+	}
+	function lat(){
+		return $this->lat;
+	}
+	function setLon($lon){
+		$this->lon=-$lon;
+	}
+	function setLat(){
+		$this->lat=$lat;
+	}
+
+
 	function getlatlon($str) {
       $latlon = substr($str,2) / 60000.0;
       $latlon += substr($str,0,2);

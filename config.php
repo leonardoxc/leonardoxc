@@ -366,7 +366,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF['list_flights']['fields']['scoring'][0]='LINEAR_DISTANCE'; // LINEAR_DISTANCE or SCORE_SPEED
 
   $CONF['sync']['protocol']['format']='JSON';
-  
+
+  // dont enable statistics by default, it uses a lot of space !!!
+  $CONF['stats']['enable']=0;
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

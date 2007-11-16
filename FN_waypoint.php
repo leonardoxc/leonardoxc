@@ -15,8 +15,8 @@ function findNearestWaypoint($lat,$lon) {
 	global $waypoints;
 
 	$point=new GpsPoint();
-	$point->lat=$lat;
-	$point->lon=-$lon;
+	$point->setLat($lat);
+	$point->setLon($lon);
 
 	if (count($waypoints)==0) 
 		$waypoints=getWaypoints();
