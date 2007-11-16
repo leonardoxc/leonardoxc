@@ -362,6 +362,10 @@ class Server {
 		echo " <strong>DONE</strong><br>";
 		flush2Browser();
 
+		// for debugging json
+		//writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
+		//return;
+
 		// echo "<PRE>$rssStr</pre>";
 		if ($this->sync_format=='XML')	{	
 			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';

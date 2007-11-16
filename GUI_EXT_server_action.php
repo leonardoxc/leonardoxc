@@ -16,6 +16,7 @@ require_once dirname(__FILE__)."/EXT_config.php";
 
 require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
+require_once dirname(__FILE__)."/FN_functions.php";	
 require_once dirname(__FILE__).'/CL_brands.php';
 
 

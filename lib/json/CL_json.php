@@ -24,21 +24,35 @@ class json {
 	}
 	
 	function decode($str) {
-		if ( function_exists('json_decode') && 0 ) {	
-			//echo "using native function";
-			//echo $str;
+		//$lib='native';
+		//$lib='services_JSON';
+		 $lib='jsonrpc';
+		
+		// dirty trick to correct bad json for photos
+		$str = preg_replace('/\t} {/','}, {', $str);
+		// remove trailing , 
+		$str = preg_replace('/,[ \r\n\t]+}/',' }', $str);
+
+	    // echo "Using $lib<BR>";
+		// echo $str;
+		if ( function_exists('json_decode') && $lib=='native' ) {	
 			$arr=json_decode($str, true);
-			// print_r($arr);
-			return $arr;
-		} else {
-			//	echo "using services json function";
+		} else if ($lib=='services_JSON') {
 			require_once dirname(__FILE__).'/json.php';
-			//echo $str;
 			$json=new Services_JSON( SERVICES_JSON_LOOSE_TYPE );
 			$arr=$json->decode($str);
-			// print_r($arr);
-			return $arr;
+		} else if ($lib=='jsonrpc'){
+			require_once dirname(__FILE__).'/jsonrpc/xmlrpc.php';
+			require_once dirname(__FILE__).'/jsonrpc/jsonrpc.php';
+			require_once dirname(__FILE__).'/jsonrpc/json_extension_api.php';
+			$arr=json_decode($str, true);
+			//	$value= php_jsonrpc_decode_json($str); 
+			//if ($value) 
+			//	$arr = (array)php_jsonrpc_decode($value, array('decode_php_objs'));
 		}
+
+		// print_r($arr);
+		return $arr;
 	}
 }
 ?>

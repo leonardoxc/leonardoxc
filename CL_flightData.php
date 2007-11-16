@@ -153,19 +153,22 @@ var $maxPointNum=1000;
 		
 		$photosXML='';
 		$photosJSON='';
+		$photosNum=0;
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			if ($this->$var_name) {
 				$photosXML.="<photo>\n<id>$i</id>\n<name>".$this->$var_name."</name>\n<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getPhotoRelPath($i)."</link>\n</photo>\n";
+				if ($photosNum>0) $photosJSON.=' , ';
 				$photosJSON.=' { 
 	"id": '.$i.', 
 	"name": "'.$this->$var_name.'",
 	"link": "http://'.$_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i).'",
 	}';
+				$photosNum++;
 			}
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
-		if ($photosJSON) $photosJSON=' "photos": [ '.$photosJSON.' ] , ';
+		if ($photosJSON) $photosJSON=' , "photos": [ '.$photosJSON.' ]  ';
 
 //		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 
@@ -339,7 +342,7 @@ $resStr='{
 		"airspaceCheck": "'.$this->airspaceCheck.'",
 		"airspaceCheckFinal": "'.$this->airspaceCheckFinal.'",
 		"airspaceCheckMsg": "'.$this->airspaceCheckMsg.'",
-	},
+	}
 	
 	'.$photosJSON.'
 }
