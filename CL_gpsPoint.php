@@ -194,6 +194,21 @@ class gpsPoint {
 		return $pointString;
 	}		
 
+	function fromStr($str) {
+		$pointString=explode(" ",$str);
+		// make this string 
+		// B1256514029151N02310255EA0000000486
+		// from N40:29.151 E23:10.255
+		preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$str,$matches);
+
+		$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
+		$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
+
+		$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
+			$matches[6],$matches[7],$matches[8],$matches[5] );
+
+		return new gpsPoint( $pointStringFaked , 0 );	
+	}
 
 }	 // end class gpsPoint
 

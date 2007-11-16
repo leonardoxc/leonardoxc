@@ -64,24 +64,11 @@ class logReplicator {
 
 
 
-	function checkLocation($serverID,$locationArray) {
-/*
-    [takeoffID] => 8869
-    [serverID] => 1
-    [takeoffVinicity] => 23.635354591202
-    [takeoffName] => Torrey Pines
-    [takeoffNameInt] => Torrey Pines
-    [takeoffCountry] => US
-	[firstLat] => 20.3
-	[firstLon] => 40.34
-	[takeoffLocation] => string
-	[takeoffLocationInt] => string 
-	[takeoffLat] => 20.5
-	[takeoffLon] => 40.3
-*/
+	function checkLocation($serverID,$locationArray,$bounds) {
 		//  print_r($locationArray);
 
-		list( $nearestTakeoffID,$nearestDistance )=findNearestWaypoint($locationArray['takeoffLat'],$locationArray['takeoffLon']);
+		// find nearest waypoint in local db
+		list( $nearestTakeoffID,$nearestDistance )=findNearestWaypoint($bounds['firstLat'],$bounds['firstLon']);
 
 		// echo "nearest takeoff :  $nearestTakeoffID,$nearestDistance <BR>";
 
@@ -182,7 +169,8 @@ class logReplicator {
 			$userIDstr=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
 
 			logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
-			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,$e['ActionXML']['flight']['location']);
+			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,
+								$e['ActionXML']['flight']['location'],$e['ActionXML']['flight']['bounds']);
 
 			// get only the first 2 bits
 			$externalFlightType=$sync_mode & 0x03 ;
@@ -190,16 +178,9 @@ class logReplicator {
 			if ($e['action']==1) {	// add
 				$igcFilename=$e['ActionXML']['flight']['filename'];
 				$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
+				$igcZipFileURL	=$e['ActionXML']['flight']['linkIGCzip'];
 				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
-	
-/*
-				$is_private	=$e['ActionXML']['flight']['info']['private'];
-				$gliderCat	=$e['ActionXML']['flight']['info']['gliderCat'];
-				$linkURL	=$e['ActionXML']['flight']['info']['linkURL'];
-				$comments	=$e['ActionXML']['flight']['info']['comments'];
-				$glider		=$e['ActionXML']['flight']['info']['glider'];
-				$category	=$e['ActionXML']['flight']['info']['cat'];
-*/
+
 				$argArray=array(
 								"private"	=>$e['ActionXML']['flight']['info']['private'],
 								"cat"		=>$e['ActionXML']['flight']['info']['gliderCat'],

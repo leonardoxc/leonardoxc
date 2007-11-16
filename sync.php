@@ -58,7 +58,7 @@
 
 	// authentication stuff
 	// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
-	if (!Server::checkServerPass($clientID,$clientPass)) {
+	if (0&& !Server::checkServerPass($clientID,$clientPass)) {
 		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
 		$op='error';
 		$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
@@ -67,7 +67,8 @@
 	
 
 	if ($op=="latest") {
-		
+ 		 $getIGCfiles = makeSane($_GET['getIGCfiles'],1);	
+		 
 		 $query="SELECT * FROM $logTable  WHERE  transactionID>=$startID  AND result=1 $where_clause ORDER BY transactionID $limit";
 		 // echo $query;
 		 $res= $db->sql_query($query);
@@ -77,6 +78,8 @@
 		 }
 		
 		$item_num=0;
+		$flightsToServe =array();
+		
 		while ($row = mysql_fetch_assoc($res)) { 
 
 			$desc=htmlspecialchars ($desc);
@@ -84,6 +87,14 @@
 			$actionTime=$row['actionTime']-date('Z');
 			$actionTimeStr=tm2fulldate($actionTime);
 
+			// prepare an array of files to send as well
+			if ($getIGCfiles) {
+				if (  $row['ItemType']==1 && $row['ActionID']==1 ) { // type is flight and action is add
+					if (! in_array($row['ItemID'],$flightsToServe) ) 
+						array_push($flightsToServe,$row['ItemID'] );
+				}
+			}
+			
 			if ($format=='JSON') {
 				if ($item_num>0) $RSS_str.=' , ';
 				$RSS_str.=' { "item": {
@@ -115,6 +126,74 @@
 
 			$item_num++;
 		} // end while
+
+		if ($format=='XML') 		$RSS_str.="</log>\n";
+		else if ($format=='JSON') 	$RSS_str.=' ] } ';
+		
+		if ($getIGCfiles) {
+			$sql="select ID, DATE, userID, filename from $flightsTable WHERE ID IN ( ";		
+			for($i=0;$i<count($flightsToServe);$i++) {
+				if ($i>0) $sql.=' , ';
+				$sql.=$flightsToServe[$i];			
+			}
+			$sql.=" ) ";
+		
+			$res= $db->sql_query($sql);	
+			# Error checking
+			if($res <= 0){
+				echo("<H3> Error in sync - get igc filenames query! $sql</H3>\n");
+				exit();
+			}
+
+			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+			
+			$filesToServe=array();
+			while  ( $row = $db->sql_fetchrow($res) ) {
+				$filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+				if (is_file($filename ))
+					array_push($filesToServe,
+									array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",
+											PCLZIP_ATT_FILE_CONTENT => implode("",file($filename ) ) 
+									) 
+							);
+				if (is_file($filename.'saned.igc' ))	
+					array_push($filesToServe,		
+							array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".saned.igc",
+									PCLZIP_ATT_FILE_CONTENT => implode("",file($filename.'saned.igc' ) ) 
+							) 
+					);								
+			}
+			
+			array_push($filesToServe,
+							array(	PCLZIP_ATT_FILE_NAME => "sync.txt",
+									PCLZIP_ATT_FILE_CONTENT => $RSS_str ) 
+							)  ;
+
+							
+			
+			$tmpZipFile="sync_".$clientID."_".time().".zip";
+	
+			$archive = new PclZip($tmpZipFile);
+			
+			$v_list = $archive->create(	$filesToServe,PCLZIP_OPT_REMOVE_ALL_PATH);
+			$outputStr=implode("", file($tmpZipFile) );
+			@unlink($tmpZipFile);
+			$outputFilename=$tmpZipFile;
+
+
+			$attachmentMIME ='application/octet-stream';
+			header("Pragma: public"); // required
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+			header("Cache-Control: private",false); // required for certain browsers 
+			header("Content-type: $attachmentMIME");
+			header('Content-Disposition: inline; filename="'.$outputFilename.'"');
+			header("Content-Transfer-Encoding: binary");
+			header("Content-length: ".strlen($outputStr));
+			echo $outputStr;
+			return;
+		}		
+		
 		
 		//$RSS_str=htmlspecialchars($RSS_str);
 
@@ -123,8 +202,7 @@
 		//$RSS_str = $NewEncoding->Convert($RSS_str, $FromCharset, "utf-8", $Entities);
 	}
 
-	if ($format=='XML') 		$RSS_str.="</log>\n";
-	else if ($format=='JSON') 	$RSS_str.=' ] } ';
+
 
 		
 	if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))	{

@@ -35,9 +35,48 @@
 	
 
 	$type=makeSane($_REQUEST['type']);
-	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites")) ) return;
+	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc")) ) return;
 
-	if ($type=="kml_task") {
+	if ($type=="igc") {
+		$zip=makeSane($_REQUEST['zip'],1);
+		
+		$flightID=makeSane($_REQUEST['flightID'],1);
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+			
+		if (!$zip ) {
+			$outputStr=implode("",file($flight->getIGCFilename(0)) );
+			$outputFilename=$flight->filename;
+		} else {
+			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+			$tmpZipFile="$flightID.zip";
+
+			$archive = new PclZip($tmpZipFile);
+			$v_list = $archive->create(	array(
+				array(	PCLZIP_ATT_FILE_NAME => "$flightID.igc",
+						PCLZIP_ATT_FILE_CONTENT => implode("",file($flight->getIGCFilename() ) ) 
+					  ), 
+				array(	PCLZIP_ATT_FILE_NAME => "$flightID.saned.igc",
+						PCLZIP_ATT_FILE_CONTENT => implode("",file($flight->getIGCFilename(1) )) 
+                      )
+				),					
+				PCLZIP_OPT_REMOVE_ALL_PATH);
+
+			$outputStr=implode("",file($tmpZipFile) );
+			@unlink($tmpZipFile);
+			$outputFilename=$tmpZipFile;
+		}
+		
+		// echo "$outputFilename <BR>";exit;
+		$attachmentMIME ='application/octet-stream';
+		header("Content-type: $attachmentMIME");
+		header('Content-Disposition: inline; filename="'.$outputFilename.'"');
+		header("Content-Transfer-Encoding: binary");
+		header("Content-length: ".strlen($outputStr));
+		echo $outputStr;
+		
+		
+	} else if ($type=="kml_task") {
 		//$isExternalFile=0;
 		//setLeonardoPaths();
 

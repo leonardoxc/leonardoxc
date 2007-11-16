@@ -193,13 +193,26 @@ var $maxPointNum=1000;
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
 		if ($photosJSON) $photosJSON=' , "photos": [ '.$photosJSON.' ]  ';
 
+		$tpNum=0;
+		$tpStr='';
+		for($i=1;$i<=5;$i++) {
+			$varname="turnpoint$i";
+			if ($this->{$varname}) {
+				$newPoint=gpsPoint::fromStr($this->{$varname});	
+				if ($tpNum>0) $tpStr=' , ';
+				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
+				$tpNum++;
+			}	
+		}
+		
 //		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 
 		$takeoff=new waypoint($this->takeoffID);
 		$takeoff->getFromDB();
 
 		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
-
+		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
+		
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
 		$userServerID=$this->userServerID;
@@ -216,6 +229,7 @@ var $maxPointNum=1000;
 <dateAdded>$dateAdded</dateAdded>
 <filename>$this->filename</filename>
 <linkIGC>".$this->getIGC_URL()."</linkIGC>
+<linkIGCzip>".$this->getZippedIGC_URL()."</linkIGCzip>
 <linkDisplay>".htmlspecialchars($this->getFlightLinkURL())."</linkDisplay>
 <linkGE>".htmlspecialchars($this->getFlightKML(0))."</linkGE>
 
@@ -297,9 +311,11 @@ $resStr='{
 	"dateAdded": "'.$dateAdded.'",
 	"filename": "'.$this->filename.'",
 	"linkIGC": "'.$this->getIGC_URL().'",
+	"linkIGCzip": "'.$this->getZippedIGC_URL().'",
 	"linkDisplay": "'.htmlspecialchars($this->getFlightLinkURL()).'",
 	"linkGE": "'.htmlspecialchars($this->getFlightKML(0)).'",
-
+	"isLive": '.$this->isLive.',
+	
 	"info": {
 		"glider": "'.$this->glider.'",
 		"gliderBrandID": "'.$this->gliderBrandID.'",
@@ -314,9 +330,19 @@ $resStr='{
 		"date": "'.$this->DATE.'",
 		"Timezone": "'.$this->timezone.'",
 		"StartTime": "'.$this->START_TIME.'",
-		"Duration": "'.$this->DURATION.'",
+		"Duration": "'.$this->DURATION.'",		
 	},
 	
+	"bounds": {
+		"forceBounds": '.$this->forceBounds.',
+		"firstLat": '.$firstPoint->lat().',
+		"firstLon": '.$firstPoint->lon().',
+		"firstTM": '.$firstPoint->gpsTime.',
+		"lastLat": '.$lastPoint->lat().',
+		"lastLon": '.$lastPoint->lon().',
+		"lastTM": '.$lastPoint->gpsTime.',
+	},
+		
 	"pilot": {
 		"userID": "'.$this->userID.'",
 		"serverID": "'.$userServerID.'",
@@ -330,13 +356,6 @@ $resStr='{
 	},
 	
 	"location": {
-		"firstLat": "'.$firstPoint->lat().'",
-		"firstLon": "'.$firstPoint->lon().'",
-		"firstTM": "'.$firstPoint->gpsTime.'",
-		"lastLat": "'.$lastPoint->lat().'",
-		"lastLon": "'.$lastPoint->lon().'",
-		"lastTM": "'.$lastPoint->gpsTime.'",
-
 		"takeoffID": "'.$this->takeoffID.'",
 		"serverID": "'.$CONF_server_id.'",
 		"takeoffVinicity": "'.$this->takeoffVinicity.'",
@@ -345,8 +364,8 @@ $resStr='{
 		"takeoffCountry": "'.$takeoff->countryCode.'",
 		"takeoffLocation": "'.$takeoff->location.'",
 		"takeoffLocationInt": "'.$takeoff->intlocation.'",
-		"takeoffLat": "'.$takeoff->lat.'",
-		"takeoffLon": "'.-$takeoff->lon.'",
+		"takeoffLat": "'.$takeoff->lat().'",
+		"takeoffLon": "'.$takeoff->lon().'",
 	},
 	
 	"stats":  {
@@ -355,12 +374,17 @@ $resStr='{
 		"XCdistance": "'.$this->FLIGHT_KM.'",
 		"XCscore": "'.$this->FLIGHT_POINTS.'",
 		"MaxSpeed": "'.$this->MAX_SPEED.'",
+		"MeanGliderSpeed": "'.$this->MEAN_SPEED.'",		
 		"MaxVario": "'.$this->MAX_VARIO.'",
 		"MinVario": "'.$this->MIN_VARIO.'",
 		"MaxAltASL": "'.$this->MAX_ALT.'",
 		"MinAltASL": "'.$this->MIN_ALT.'",
 		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'",
 	},
+
+	"turnpoints": [
+		'.$tpStr.'		
+	] ,
 	
 	"validation": {
 		"validated": "'.$this->validated.'",
@@ -603,6 +627,10 @@ $resStr='{
 	function getIGC_URL($saned=0) {
 		global $baseInstallationPath;
 		return "http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getIGCRelPath($saned);
+	}
+
+	function getZippedIGC_URL() {
+		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=igc&zip=1&flightID=".$this->flightID;
 	}
 
 	function getFlightKML($includeLang=1) {

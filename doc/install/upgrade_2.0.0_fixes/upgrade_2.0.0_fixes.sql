@@ -165,16 +165,18 @@ ALTER TABLE `leonardo_flights` ADD `originalKML` VARCHAR( 255 ) NOT NULL AFTER `
 ALTER TABLE `leonardo_servers` ADD `sync_format` VARCHAR( 20 ) DEFAULT 'XML' NOT NULL AFTER `lastPullUpdateID` ;
 
 
+# 2007/11/16
+
 #externalFlightType
 #	0 -> local flight
-#	1- > extllink  linked to external disply , only scroing info into DB
+#	1- > extllink  linked to external disply , only scoring info into DB
 #	2 -> extflight IGC imported locally
 #isLive  
 #	0 -> not a live flight
 #	1 -> in progress liveflight in progress, only basic info into db and link to actual display/server
 #	2 -> finalized , liveflight finilized IGC imported locally
 #
-#autoFlightBounds
+# forceBounds
 #	1-> auto detect start/end
 #	0-> set by user /admin
 
@@ -182,7 +184,7 @@ ALTER TABLE `leonardo_flights`
 ADD `isLive` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `autoScore` ,
 ADD `externalFlightType` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `isLive` ,
 ADD `forceBounds` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `externalFlightType` ,
-ADD `firstPointTM` INT UNSIGNED DEFAULT '0' NOT NULL AFTER `autoFlightBounds` ,
+ADD `firstPointTM` INT UNSIGNED DEFAULT '0' NOT NULL AFTER `forceBounds` ,
 ADD `firstLat` FLOAT NOT NULL AFTER `firstPointTM` ,
 ADD `firstLon` FLOAT NOT NULL AFTER `firstLat` ,
 ADD `lastPointTM` INT UNSIGNED DEFAULT '0' NOT NULL AFTER `firstLon` ,
