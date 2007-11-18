@@ -11,7 +11,17 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+?>
+<script language="javascript">
 
+function remakeLog(id,action,DBGlvl) {	 	
+	var logEntries=MWJ_findObj('logEntries').value;
+	var extraStr='&logEntries='+logEntries;	
+	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=remakeLog'+extraStr;
+}
+</script>
+	
+<?
 function chmodDir($dir){
  $current_dir = opendir($dir);
  while($entryname = readdir($current_dir)){
@@ -39,6 +49,8 @@ function chmodDir($dir){
 	}
 	$admin_op=makeSane($_GET['admin_op']);
 
+$logEntries=makeSane($_GET['logEntries'],1);
+if ($logEntries=='') $logEntries=50;
 
 echo "<br>";
 
@@ -83,7 +95,7 @@ echo "</ul>";
 echo "<h3>Sync Log oparations</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=remakeLog'>Remake sync-log </a><br>
+	echo "<li><a href='javascript:remakeLog()'>Remake sync-log </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set 0 to proccess all)<br>
 	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
 	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
 echo "</ul>";
@@ -119,7 +131,7 @@ echo "</ul><br><hr>";
 			 $flight=new flight();
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 // $flight=new flight();
-				 $flight->getFlightFromDB($row["ID"]);		
+				 $flight->getFlightFromDB($row["ID"],0);		
 
 				 if ( is_file( $flight->getIGCFilename() ) ) $status="OK"; 
 				 else {
@@ -176,7 +188,7 @@ echo "</ul><br><hr>";
 			 $waypoints=getWaypoints();
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 $flight=new flight();
-				 $flight->getFlightFromDB($row["ID"]);
+				 $flight->getFlightFromDB($row["ID"],0);
 				 $flight->validate();
 			 }
 		}
@@ -186,12 +198,13 @@ echo "</ul><br><hr>";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
+			global  $waypoints;
 			 $waypoints=getWaypoints();
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 $flight=new flight();
-				 $flight->getFlightFromDB($row["ID"]);
-				 $flight->updateTakeoffLanding($waypoints);
-				 $flight->putFlightToDB(1);
+				 $flight->getFlightFromDB($row["ID"],1); // this computes takeoff/landing also
+				 //$flight->updateTakeoffLanding();
+				 //$flight->putFlightToDB(1);
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
@@ -234,7 +247,7 @@ echo "</ul><br><hr>";
 			 $waypoints=getWaypoints();
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
-				  $flight->getFlightFromDB($row["ID"]);
+				  $flight->getFlightFromDB($row["ID"],0);
 
 				  if ($flight->FLIGHT_POINTS==0) {
 					  set_time_limit(200);
@@ -248,14 +261,16 @@ echo "</ul><br><hr>";
 		Logger::deleteLogsFromDB(1);
 		clearBatchBit();
 	} else if ($admin_op=="remakeLog") {
-
-		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC";
+		if ($logEntries) $limitStr= " LIMIT $logEntries ";
+		else $limitStr='';
+		
+		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
-				  $flight->getFlightFromDB($row["ID"]);
+				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
 				  $flight->makeLogEntry();
 				  setBatchBit($row["ID"]);
 				  set_time_limit(300);
@@ -324,7 +339,7 @@ echo "</ul><br><hr>";
 		if($res > 0) {
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
-				  $flight->getFlightFromDB($row["ID"]);		
+				  $flight->getFlightFromDB($row["ID"],0);		
 				  set_time_limit(300);
 				  // @unlink($flight->getMapFilename() );
 				  $flight->getMapFromServer();

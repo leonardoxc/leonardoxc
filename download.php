@@ -51,7 +51,7 @@
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 			$tmpZipFile="$flightID.zip";
 
-			$archive = new PclZip($tmpZipFile);
+			$archive = new PclZip($CONF_tmp_path.'/'.$tmpZipFile);
 			$v_list = $archive->create(	array(
 				array(	PCLZIP_ATT_FILE_NAME => "$flightID.igc",
 						PCLZIP_ATT_FILE_CONTENT => implode("",file($flight->getIGCFilename() ) ) 
@@ -62,8 +62,8 @@
 				),					
 				PCLZIP_OPT_REMOVE_ALL_PATH);
 
-			$outputStr=implode("",file($tmpZipFile) );
-			@unlink($tmpZipFile);
+			$outputStr=implode("",file($CONF_tmp_path.'/'.$tmpZipFile) );
+			@unlink($CONF_tmp_path.'/'.$tmpZipFile);
 			$outputFilename=$tmpZipFile;
 		}
 		

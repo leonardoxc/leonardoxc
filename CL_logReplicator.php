@@ -215,7 +215,7 @@ class logReplicator {
 					} 
 					return array(1,"Flight *pulled* OK with local ID $flightID");
 
-				} else {
+				} else if ( $sync_mode & SYNC_INSERT_FLIGHT_LINK  ){
 					$extFlight=new flight();
 
 					$igcFilename=$e['ActionXML']['flight']['filename'];

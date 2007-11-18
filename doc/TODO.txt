@@ -34,3 +34,24 @@ Suggestions by Ryan ( euroryan@gmail.com )
 FN_flight.php
 
 adjust code when submiting flight for "Nac club seasons / years"
+
+
+# 2007/11/18
+Solve JSON problems in various parsers
+
+1)sync->
+	1) use all new fields (bounds/optimized turnpoints)
+	2) make all checks for synced flights -> same flight/same hash etc
+	3) use the igc file that came with the zip if mode is local_insert
+
+
+2) Make detectTaekoff more inteligent:
+	Dont detect if takeoff distance <=takeoffRadious
+	also maybe a new way of finding closeset waypoint
+
+3) Sync pilots -> 2 ways
+	2) civil id
+	3) mapping table -> can be constructed by preliminary examination of flights(with hashes)/pilots between 2 servers
+
+
+

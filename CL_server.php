@@ -44,7 +44,7 @@ class Server {
 		}
 
 	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
-			"sync_format",
+			"sync_format", "sync_type", "use_zip",
 			"url_op","admin_email","site_pass","lastPullUpdateID","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
 		);
 		$this->gotValues=0;
@@ -343,24 +343,70 @@ class Server {
 	}
 
 	function sync($chunkSize=5) { // we pull data from this server
-		global $CONF_server_id;
+		global $CONF_server_id,$CONF_tmp_path;
+		
 		if (!$this->gotValues) $this->getFromDB();
 
 		$startID=$this->lastPullUpdateID+1;
 		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
 		$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->sync_format;
-		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass;
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass.
+					"&sync_type=".$this->sync_type."&use_zip=".$this->use_zip;
+
+
+		
 
 		echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
 		flush2Browser();
 
 		$rssStr=fetchURL($urlToPull,60);
 		if (!$rssStr) {
-			echo "<BR>Cannot get data from server<BR>";
+			echo "<div class='error'>Cannot get data from server</div><BR>";
 			return 0;
 		}
-		echo " <strong>DONE</strong><br>";
+		echo " <div class='ok'>DONE</div><br>";
 		flush2Browser();
+
+		if ($this->use_zip) { // we have a zip file in $rssStr, unzip it
+			echo "Unziping sync-log ... ";
+			$tmpZIPfolder=$CONF_tmp_path.'/'.$this->ID."_".time();
+			mkdir($tmpZIPfolder);
+			
+			$zipFile="$tmpZIPfolder/sync_log.zip";
+			writeFile($zipFile,$rssStr);
+			
+			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
+			
+			$archive = new PclZip($zipFile);
+			$list 	 = $archive->extract(PCLZIP_OPT_PATH, $tmpZIPfolder,
+										PCLZIP_OPT_REMOVE_ALL_PATH,
+										PCLZIP_OPT_BY_PREG, "/(\.igc)|(\.olc)|(\.txt)$/i");
+			echo " <div class='ok'>DONE</div><br>";
+			echo "<br><b>List of uploaded igc/olc/txt files</b><BR>";
+			$f_num=1;
+			foreach($list as $fileInZip) {
+				echo "$f_num) ".$fileInZip['stored_filename']. ' ('.floor($fileInZip['size']/1024).'Kb)<br>';
+				$f_num++;
+			}
+			flush2Browser();
+
+			if (is_file($tmpZIPfolder.'/sync.txt') ) {
+				$rssStr=implode('',file($tmpZIPfolder.'/sync.txt') );
+			} else {
+				echo "Could not find sync.txt. <div class='error'>Aborting</div>";
+				delDir($tmpZIPfolder);			
+				return 0;
+			}
+			
+			//delDir($tmpZIPfolder);			
+			//exit;		
+		}
+		
+	
+		// 
+		// getIGC
+		// zip
+
 
 		// for debugging json
 		//writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
@@ -388,8 +434,12 @@ class Server {
 				$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
 			}
 		} else if ($this->sync_format=='JSON') {
+			echo "Decoding log from JSON format ...";
+			flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 			$arr=json::decode($rssStr);
+			echo " <div class='ok'>DONE</div><br>";
+			flush2Browser();
 			//print_r($arr);
 			//exit;
 			if ( count($arr['log']) ) {
@@ -406,6 +456,9 @@ class Server {
 			}
 
 		}
+		
+		// clean up
+		delDir($tmpZIPfolder);			
 	}
 
 	function processSyncEntry($ID,$logItem) {
@@ -415,7 +468,7 @@ class Server {
 		//	print_r($logItem);
 		// return 1;
 
-		list($result,$message)=logReplicator::processEntry($ID,$logItem);
+		list($result,$message)=logReplicator::processEntry($ID,$logItem,$this->sync_type);
 		if (!result) {
 			echo "<div class='error'>ERROR </div>: $message <BR>";
 			return 0;

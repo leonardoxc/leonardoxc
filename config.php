@@ -11,6 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+// set this to always use . in sprintf 
+setlocale(LC_NUMERIC, 'en_US') ;
+
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
 
@@ -375,6 +378,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 //-----------------------------------------------------------------------------
 
   $CONF_abs_path=dirname(__FILE__);
+  $CONF_tmp_path=$CONF_abs_path.'/files/tmp';
   // this loads predefined settings for userDB and  settings 
   // to bridge to the users table of different forum/portal/cms systems
   require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
@@ -564,5 +568,11 @@ if (defined('CONF_MODULE_ARG') )	exit;
 
 define('SYNC_INSERT_FLIGHT_LINK',1);
 define('SYNC_INSERT_FLIGHT_LOCAL',2);
+
+define('SYNC_INSERT_PILOT_LINK',4);
+define('SYNC_INSERT_PILOT_LOCAL',8); 
+
+define('SYNC_INSERT_WAYPOINT_LINK',16);
+define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
 ?>

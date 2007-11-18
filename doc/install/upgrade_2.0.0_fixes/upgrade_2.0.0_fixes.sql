@@ -191,3 +191,8 @@ ADD `lastPointTM` INT UNSIGNED DEFAULT '0' NOT NULL AFTER `firstLon` ,
 ADD `lastLat` FLOAT NOT NULL AFTER `lastPointTM` ,
 ADD `lastLon` FLOAT NOT NULL AFTER `lastLat` ;
 
+
+# 2007/11/18
+
+ALTER TABLE `leonardo_servers` ADD `sync_type` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sync_format` ,
+ADD `use_zip` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sync_type` ;

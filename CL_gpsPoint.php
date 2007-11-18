@@ -348,11 +348,12 @@ return "<waypoint>
 		  return 0;
 	    }		
 		$waypoints=getWaypoints();
+		global $waypoints;
 		while(  $row = $db->sql_fetchrow($res)) {
 			$flightID=$row['ID'];
 			$flight=new flight();
 			$flight->getFlightFromDB($flightID);
-			$flight->updateTakeoffLanding($waypoints);
+			$flight->updateTakeoffLanding();
 		}
 		return 1;		
 	}

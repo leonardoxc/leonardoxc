@@ -58,16 +58,24 @@
 
 	// authentication stuff
 	// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
-	if (0&& !Server::checkServerPass($clientID,$clientPass)) {
-		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+	if ( !Server::checkServerPass($clientID,$clientPass)) {
 		$op='error';
-		$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
+		if ($format=='XML') {
+			$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+			$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
+		} else if ($format=='JSON') {
+			$RSS_str='{ "error": "Not authorized '.$clientID.','.$clientPass.'" }';
+		}
 	}
 	
 	
 
 	if ($op=="latest") {
- 		 $getIGCfiles = makeSane($_GET['getIGCfiles'],1);	
+ 		 $sync_type = makeSane($_GET['sync_type'],1);		 
+ 		 $getIGCfiles = $sync_type & SYNC_INSERT_FLIGHT_LOCAL ;
+		 
+		 $zip		= makeSane($_GET['use_zip'],1);			 
+		 if ($getIGCfiles) $zip=1;
 		 
 		 $query="SELECT * FROM $logTable  WHERE  transactionID>=$startID  AND result=1 $where_clause ORDER BY transactionID $limit";
 		 // echo $query;
@@ -129,40 +137,45 @@
 
 		if ($format=='XML') 		$RSS_str.="</log>\n";
 		else if ($format=='JSON') 	$RSS_str.=' ] } ';
-		
-		if ($getIGCfiles) {
-			$sql="select ID, DATE, userID, filename from $flightsTable WHERE ID IN ( ";		
-			for($i=0;$i<count($flightsToServe);$i++) {
-				if ($i>0) $sql.=' , ';
-				$sql.=$flightsToServe[$i];			
-			}
-			$sql.=" ) ";
-		
-			$res= $db->sql_query($sql);	
-			# Error checking
-			if($res <= 0){
-				echo("<H3> Error in sync - get igc filenames query! $sql</H3>\n");
-				exit();
-			}
 
+		if ($zip) {
+			$filesToServe=array();
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 			
-			$filesToServe=array();
-			while  ( $row = $db->sql_fetchrow($res) ) {
-				$filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
-				if (is_file($filename ))
-					array_push($filesToServe,
-									array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",
-											PCLZIP_ATT_FILE_CONTENT => implode("",file($filename ) ) 
-									) 
-							);
-				if (is_file($filename.'saned.igc' ))	
-					array_push($filesToServe,		
-							array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".saned.igc",
-									PCLZIP_ATT_FILE_CONTENT => implode("",file($filename.'saned.igc' ) ) 
-							) 
-					);								
-			}
+			if ($getIGCfiles) {
+				$sql="select ID, DATE, userID, filename from $flightsTable WHERE ID IN ( ";		
+				for($i=0;$i<count($flightsToServe);$i++) {
+					if ($i>0) $sql.=' , ';
+					$sql.=$flightsToServe[$i];			
+				}
+				$sql.=" ) ";
+			
+				$res= $db->sql_query($sql);	
+				# Error checking
+				if($res <= 0){
+					echo("<H3> Error in sync - get igc filenames query! $sql</H3>\n");
+					exit();
+				}
+	
+			
+				
+				
+				while  ( $row = $db->sql_fetchrow($res) ) {
+					$filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+					if (is_file($filename ))
+						array_push($filesToServe,
+										array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",
+												PCLZIP_ATT_FILE_CONTENT => implode("",file($filename ) ) 
+										) 
+								);
+					if (is_file($filename.'saned.igc' ))	
+						array_push($filesToServe,		
+								array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".saned.igc",
+										PCLZIP_ATT_FILE_CONTENT => implode("",file($filename.'saned.igc' ) ) 
+								) 
+						);								
+				}
+			}				
 			
 			array_push($filesToServe,
 							array(	PCLZIP_ATT_FILE_NAME => "sync.txt",
@@ -173,11 +186,11 @@
 			
 			$tmpZipFile="sync_".$clientID."_".time().".zip";
 	
-			$archive = new PclZip($tmpZipFile);
+			$archive = new PclZip($CONF_tmp_path.'/'.$tmpZipFile);
 			
 			$v_list = $archive->create(	$filesToServe,PCLZIP_OPT_REMOVE_ALL_PATH);
-			$outputStr=implode("", file($tmpZipFile) );
-			@unlink($tmpZipFile);
+			$outputStr=implode("", file($CONF_tmp_path.'/'.$tmpZipFile) );
+			@unlink($CONF_tmp_path.'/'.$tmpZipFile);
 			$outputFilename=$tmpZipFile;
 
 

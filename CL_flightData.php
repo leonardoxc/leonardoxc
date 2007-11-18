@@ -199,7 +199,7 @@ var $maxPointNum=1000;
 			$varname="turnpoint$i";
 			if ($this->{$varname}) {
 				$newPoint=gpsPoint::fromStr($this->{$varname});	
-				if ($tpNum>0) $tpStr=' , ';
+				if ($tpNum>0) $tpStr.=" ,\n		";
 				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
 				$tpNum++;
 			}	
@@ -2401,7 +2401,7 @@ $kml_file_contents=
 	
 	}
 
-	function getFlightFromDB($flightID) {
+	function getFlightFromDB($flightID,$updateTakeoff=1) {
 	  global $db,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
@@ -2517,11 +2517,11 @@ $kml_file_contents=
 		$this->olcDateSubmited =$row["olcDateSubmited"];
 		
 	  	$db->sql_freeresult($res);
-		if ($this->filename) $this->updateTakeoffLanding();
+		if ($this->filename && $updateTakeoff) $this->updateTakeoffLanding();
 		return 1;	
 	}
 
-	function updateTakeoffLanding($waypoints=array()) {
+	function updateTakeoffLanding() {
 		global $db;
 		global $flightsTable, $waypoints;
 
