@@ -36,8 +36,12 @@ FN_flight.php
 adjust code when submiting flight for "Nac club seasons / years"
 
 
+
+
 # 2007/11/18
-Solve JSON problems in various parsers
++ Solve JSON problems in various parsers
+
++ auto generate diff in tables
 
 1)sync->
 	1) use all new fields (bounds/optimized turnpoints)

@@ -25,8 +25,8 @@ class json {
 	
 	function decode($str) {
 		//$lib='native';
-		$lib='services_JSON';
-		// $lib='jsonrpc';
+		// $lib='services_JSON';
+		$lib='jsonrpc';
 		
 		// dirty trick to correct bad json for photos
 		$str = preg_replace('/\t} {/','}, {', $str);
