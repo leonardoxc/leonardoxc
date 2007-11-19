@@ -77,8 +77,8 @@ class logReplicator {
 			return array($nearestTakeoffID,$nearestDistance );
 		} else { // we will import this takeoff and use that instead
 			$newWaypoint =new waypoint();
-			$newWaypoint->lat =$locationArray['takeoffLat'];
-			$newWaypoint->lon =$locationArray['takeoffLon'];
+			$newWaypoint->setLat($locationArray['takeoffLat']);
+			$newWaypoint->setLon($locationArray['takeoffLon']);
 			$newWaypoint->name =$locationArray['takeoffName'];
 			$newWaypoint->type = 1000 ; // takeoff
 			$newWaypoint->intName =$locationArray['takeoffNameInt'];
