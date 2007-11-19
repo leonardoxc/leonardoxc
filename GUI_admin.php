@@ -50,7 +50,8 @@ function chmodDir($dir){
 	$admin_op=makeSane($_GET['admin_op']);
 
 $logEntries=makeSane($_GET['logEntries'],1);
-if ($logEntries=='') $logEntries=50;
+echo "#$logEntries#";
+if ($logEntries=='') { echo "%%%";$logEntries=50; }
 
 echo "<br>";
 
@@ -223,7 +224,7 @@ echo "</ul><br><hr>";
 						continue;
 					}
 
-					$fileContents=implode("\r\n",file($filename));
+					$fileContents=implode('',file($filename));
 					$hash=md5($fileContents);
 
 					$query2="UPDATE $flightsTable SET hash='$hash' WHERE ID=".$row['ID']." ";

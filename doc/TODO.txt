@@ -41,6 +41,8 @@ adjust code when submiting flight for "Nac club seasons / years"
 # 2007/11/18
 + Solve JSON problems in various parsers
 
+JSON better encoding;
+
 + auto generate diff in tables
 
 1)sync->

@@ -445,14 +445,15 @@ class Server {
 			if ( count($arr['log']) ) {
 				foreach ($arr['log'] as $i=>$logItem) {
 					if (!is_numeric($i) ) continue;				
-					if ( ! $this->processSyncEntry($this->ID,$logItem['item']) ) { // if we got an error break the loop, the admin must solve the error
+					if (  $this->processSyncEntry($this->ID,$logItem['item']) <= -128 ) { // if we got an error break the loop, the admin must solve the error
+						echo "<div class'error'>Got fatal Error, will exit</div>";
 						break;
 					}	
 				}
 			} else {
-				echo "Error: <br />";
+				echo "The sync-log returned error. Error: <br />";
 				print_r($arr);
-
+				echo "<hr><pre>$rssStr</pre>";
 			}
 
 		}
@@ -469,7 +470,7 @@ class Server {
 		// return 1;
 
 		list($result,$message)=logReplicator::processEntry($ID,$logItem,$this->sync_type);
-		if (!result) {
+		if ($result < 0 ) {
 			echo "<div class='error'>ERROR </div>: $message <BR>";
 			return 0;
 		} else {

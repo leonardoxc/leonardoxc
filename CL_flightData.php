@@ -171,8 +171,10 @@ var $maxPointNum=1000;
 		*/
 		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
 		
-		if ($CONF['sync']['protocol']['format']=='JSON') $useJSON=1;
-		else $useJSON=0;
+		if ($CONF['sync']['protocol']['format']=='JSON') {
+			$useJSON=1;
+			require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		} else $useJSON=0;
 		
 		$photosXML='';
 		$photosJSON='';
@@ -184,8 +186,8 @@ var $maxPointNum=1000;
 				if ($photosNum>0) $photosJSON.=' , ';
 				$photosJSON.=' { 
 	"id": '.$i.', 
-	"name": "'.$this->$var_name.'",
-	"link": "http://'.$_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i).'",
+	"name": "'.json::prepStr($this->$var_name).'",
+	"link": "http://'.json::prepStr($_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i)).'",
 	}';
 				$photosNum++;
 			}
@@ -306,10 +308,10 @@ $photosXML
 		} else {
 $resStr='{ 
 "flight": {
-	"serverID": "'.$CONF_server_id.'",
-	"id": "'.$this->flightID.'",
+	"serverID": '.$CONF_server_id.',
+	"id": '.$this->flightID.',
 	"dateAdded": "'.$dateAdded.'",
-	"filename": "'.$this->filename.'",
+	"filename": "'.json::prepStr($this->filename).'",
 	"linkIGC": "'.$this->getIGC_URL().'",
 	"linkIGCzip": "'.$this->getZippedIGC_URL().'",
 	"linkDisplay": "'.htmlspecialchars($this->getFlightLinkURL()).'",
@@ -317,13 +319,13 @@ $resStr='{
 	"isLive": '.$this->isLive.',
 	
 	"info": {
-		"glider": "'.$this->glider.'",
-		"gliderBrandID": "'.$this->gliderBrandID.'",
-		"gliderCat": "'.$this->cat.'",
-		"cat": "'.$this->category.'",
-		"linkURL": "'.$this->linkURL.'",
-		"private": "'.$this->private.'",
-		"comments": "'.$this->comments.'",
+		"glider": "'.json::prepStr($this->glider).'",
+		"gliderBrandID": '.$this->gliderBrandID.',
+		"gliderCat": '.$this->cat.',
+		"cat": '.$this->category.',
+		"linkURL": "'.json::prepStr($this->linkURL).'",
+		"private": '.$this->private.',
+		"comments": "'.json::prepStr($this->comments).'",
 	},
 	
 	"time": {
@@ -347,11 +349,11 @@ $resStr='{
 		"userID": "'.$this->userID.'",
 		"serverID": "'.$userServerID.'",
 		"civlID": "'.$CIVL_ID.'",
-		"userName": "'.$this->userName.'",
-		"pilotFirstName": "'.$firstName.'",
-		"pilotLastName": "'.$lastName.'",
+		"userName": "'.json::prepStr($this->userName).'",
+		"pilotFirstName": "'.json::prepStr($firstName).'",
+		"pilotLastName": "'.json::prepStr($lastName).'",
 		"pilotCountry": "'.$pilotCountry.'",
-		"pilotBirthdate": "'.$Birthdate.'",
+		"pilotBirthdate": "'.json::prepStr($Birthdate).'",
 		"pilotSex": "'.$Sex.'",
 	},
 	
@@ -359,18 +361,19 @@ $resStr='{
 		"takeoffID": "'.$this->takeoffID.'",
 		"serverID": "'.$CONF_server_id.'",
 		"takeoffVinicity": "'.$this->takeoffVinicity.'",
-		"takeoffName": "'.$takeoff->name.'",
-		"takeoffNameInt": "'.$takeoff->intName.'",
+		"takeoffName": "'.json::prepStr($takeoff->name).'",
+		"takeoffNameInt": "'.json::prepStr($takeoff->intName).'",
 		"takeoffCountry": "'.$takeoff->countryCode.'",
-		"takeoffLocation": "'.$takeoff->location.'",
-		"takeoffLocationInt": "'.$takeoff->intlocation.'",
+		"takeoffLocation": "'.json::prepStr($takeoff->location).'",
+		"takeoffLocationInt": "'.json::prepStr($takeoff->intlocation).'",
 		"takeoffLat": "'.$takeoff->lat().'",
 		"takeoffLon": "'.$takeoff->lon().'",
 	},
 	
 	"stats":  {
 		"FlightType": "'.$this->BEST_FLIGHT_TYPE.'",
-		"StraightDistance": "'.$this->MAX_LINEAR_DISTANCE.'",
+		"MaxStraightDistance": '.$this->MAX_LINEAR_DISTANCE.',
+		"StraightDistance": '.$this->LINEAR_DISTANCE.',
 		"XCdistance": "'.$this->FLIGHT_KM.'",
 		"XCscore": "'.$this->FLIGHT_POINTS.'",
 		"MaxSpeed": "'.$this->MAX_SPEED.'",
@@ -390,10 +393,10 @@ $resStr='{
 		"validated": "'.$this->validated.'",
 		"grecord": "'.$this->grecord.'",
 		"hash": "'.$this->hash.'",
-		"validationMessage": "'.$this->validationMessage.'",
-		"airspaceCheck": "'.$this->airspaceCheck.'",
-		"airspaceCheckFinal": "'.$this->airspaceCheckFinal.'",
-		"airspaceCheckMsg": "'.$this->airspaceCheckMsg.'",
+		"validationMessage": "'.json::prepStr($this->validationMessage).'",
+		"airspaceCheck": "'.json::prepStr($this->airspaceCheck).'",
+		"airspaceCheckFinal": "'.json::prepStr($this->airspaceCheckFinal).'",
+		"airspaceCheckMsg": "'.json::prepStr($this->airspaceCheckMsg).'",
 	}
 	
 	'.$photosJSON.'

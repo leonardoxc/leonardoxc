@@ -22,7 +22,11 @@ class json {
 			return $json->encode($object);
 		}
 	}
-	
+
+	function prepStr($str){
+		return str_replace('"','\"',$str);
+	}
+
 	function decode($str) {
 		//$lib='native';
 		// $lib='services_JSON';

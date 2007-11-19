@@ -166,7 +166,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
-	$hash=md5( implode("\r\n",$lines)  );
+	$hash=md5( implode('',$lines)  );
 
 	$flight->hash=$hash;
 

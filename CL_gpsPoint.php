@@ -70,7 +70,7 @@ class gpsPoint {
 	function setLon($lon){
 		$this->lon=-$lon;
 	}
-	function setLat(){
+	function setLat($lat){
 		$this->lat=$lat;
 	}
 
@@ -129,6 +129,25 @@ class gpsPoint {
 		return	utm(-$this->lon,$this->lat);
 	}
 
+	function getLatMin() {
+		 // "N43:45.419"
+		 $coord_tmp =$this->lat; 		
+		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
+		 else $i=ceil($coord_tmp); 		
+
+		 $f=abs(($coord_tmp-$i)*60);
+		 return sprintf("%s%d:%06.5f", (($i>=0)?"N":"S"),abs($i), $f);
+	}
+
+	function getLonMin() {
+		 $coord_tmp=-$this->lon;
+		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
+		 else $i=ceil($coord_tmp); 		
+
+		 $f=abs(($coord_tmp-$i)*60); 
+		 return sprintf("%s%d:%06.5f", (($i>=0)?"E":"W"),abs($i), $f);
+	}
+
 	function getLatMinDec($compact=0) {
 		 $coord_tmp =$this->lat; 		
 		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
@@ -154,6 +173,7 @@ class gpsPoint {
 	}
 
 	function getLatDMS() {
+
 		 $coord_tmp=$this->lat;
 		 if ($coord_tmp >=0) $i=floor($coord_tmp); 		
 		 else $i=ceil($coord_tmp); 		
