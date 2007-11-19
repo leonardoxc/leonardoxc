@@ -183,11 +183,11 @@ var $maxPointNum=1000;
 			$var_name="photo".$i."Filename";
 			if ($this->$var_name) {
 				$photosXML.="<photo>\n<id>$i</id>\n<name>".$this->$var_name."</name>\n<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getPhotoRelPath($i)."</link>\n</photo>\n";
-				if ($photosNum>0) $photosJSON.=' , ';
+				if ($photosNum>0) $photosJSON.=" , \n";
 				$photosJSON.=' { 
 	"id": '.$i.', 
 	"name": "'.json::prepStr($this->$var_name).'",
-	"link": "http://'.json::prepStr($_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i)).'",
+	"link": "http://'.json::prepStr($_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i)).'" 
 	}';
 				$photosNum++;
 			}
@@ -325,24 +325,24 @@ $resStr='{
 		"cat": '.$this->category.',
 		"linkURL": "'.json::prepStr($this->linkURL).'",
 		"private": '.$this->private.',
-		"comments": "'.json::prepStr($this->comments).'",
+		"comments": "'.json::prepStr($this->comments).'"
 	},
 	
 	"time": {
 		"date": "'.$this->DATE.'",
 		"Timezone": "'.$this->timezone.'",
 		"StartTime": "'.$this->START_TIME.'",
-		"Duration": "'.$this->DURATION.'",		
+		"Duration": "'.$this->DURATION.'"	
 	},
 	
 	"bounds": {
 		"forceBounds": '.$this->forceBounds.',
-		"firstLat": '.$firstPoint->lat().',
-		"firstLon": '.$firstPoint->lon().',
-		"firstTM": '.$firstPoint->gpsTime.',
-		"lastLat": '.$lastPoint->lat().',
-		"lastLon": '.$lastPoint->lon().',
-		"lastTM": '.$lastPoint->gpsTime.',
+		"firstLat": '.($firstPoint->lat()+0).',
+		"firstLon": '.($firstPoint->lon()+0).',
+		"firstTM": '.($firstPoint->gpsTime+0).',
+		"lastLat": '.($lastPoint->lat()+0).',
+		"lastLon": '.($lastPoint->lon()+0).',
+		"lastTM": '.($lastPoint->gpsTime+0).'
 	},
 		
 	"pilot": {
@@ -354,11 +354,11 @@ $resStr='{
 		"pilotLastName": "'.json::prepStr($lastName).'",
 		"pilotCountry": "'.$pilotCountry.'",
 		"pilotBirthdate": "'.json::prepStr($Birthdate).'",
-		"pilotSex": "'.$Sex.'",
+		"pilotSex": "'.$Sex.'"
 	},
 	
 	"location": {
-		"takeoffID": "'.$this->takeoffID.'",
+		"takeoffID": "'.($this->takeoffID+0).'",
 		"serverID": "'.$CONF_server_id.'",
 		"takeoffVinicity": "'.$this->takeoffVinicity.'",
 		"takeoffName": "'.json::prepStr($takeoff->name).'",
@@ -367,7 +367,7 @@ $resStr='{
 		"takeoffLocation": "'.json::prepStr($takeoff->location).'",
 		"takeoffLocationInt": "'.json::prepStr($takeoff->intlocation).'",
 		"takeoffLat": "'.$takeoff->lat().'",
-		"takeoffLon": "'.$takeoff->lon().'",
+		"takeoffLon": "'.$takeoff->lon().'"
 	},
 	
 	"stats":  {
@@ -382,7 +382,7 @@ $resStr='{
 		"MinVario": "'.$this->MIN_VARIO.'",
 		"MaxAltASL": "'.$this->MAX_ALT.'",
 		"MinAltASL": "'.$this->MIN_ALT.'",
-		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'",
+		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'"
 	},
 
 	"turnpoints": [
@@ -396,7 +396,7 @@ $resStr='{
 		"validationMessage": "'.json::prepStr($this->validationMessage).'",
 		"airspaceCheck": "'.json::prepStr($this->airspaceCheck).'",
 		"airspaceCheckFinal": "'.json::prepStr($this->airspaceCheckFinal).'",
-		"airspaceCheckMsg": "'.json::prepStr($this->airspaceCheckMsg).'",
+		"airspaceCheckMsg": "'.json::prepStr($this->airspaceCheckMsg).'"
 	}
 	
 	'.$photosJSON.'

@@ -62,10 +62,10 @@ class gpsPoint {
 	// new code must use this function to get the correct value 
 	// instread of negating lon incode.
 	function lon(){
-		return -$this->lon;
+		return -$this->lon+0;
 	}
 	function lat(){
-		return $this->lat;
+		return $this->lat+0;
 	}
 	function setLon($lon){
 		$this->lon=-$lon;

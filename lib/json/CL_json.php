@@ -11,6 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
 class json {
 
 	function encode($object) {
@@ -48,11 +49,14 @@ class json {
 		} else if ($lib=='jsonrpc'){
 			require_once dirname(__FILE__).'/jsonrpc/xmlrpc.php';
 			require_once dirname(__FILE__).'/jsonrpc/jsonrpc.php';
-			require_once dirname(__FILE__).'/jsonrpc/json_extension_api.php';
-			$arr=json_decode($str, true);
-			//	$value= php_jsonrpc_decode_json($str); 
-			//if ($value) 
-			//	$arr = (array)php_jsonrpc_decode($value, array('decode_php_objs'));
+			$GLOBALS['xmlrpc_internalencoding'] = 'UTF-8';
+			//require_once dirname(__FILE__).'/jsonrpc/json_extension_api.php';
+			//$arr=json_decode($str, true);
+			
+			$value= php_jsonrpc_decode_json($str); 
+			if ($value) 
+				$arr = php_jsonrpc_decode($value, array());
+
 		}
 
 		// print_r($arr);

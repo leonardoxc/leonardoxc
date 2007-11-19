@@ -409,7 +409,7 @@ class Server {
 
 
 		// for debugging json
-		//writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
+		// writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
 		//return;
 
 		// echo "<PRE>$rssStr</pre>";
@@ -442,13 +442,20 @@ class Server {
 			flush2Browser();
 			//print_r($arr);
 			//exit;
+			$entriesNum=0;
+			$entriesNumOK=0;
 			if ( count($arr['log']) ) {
 				foreach ($arr['log'] as $i=>$logItem) {
-					if (!is_numeric($i) ) continue;				
-					if (  $this->processSyncEntry($this->ID,$logItem['item']) <= -128 ) { // if we got an error break the loop, the admin must solve the error
+					if (!is_numeric($i) ) continue;		
+					echo ($entriesNum+1)." / $chunkSize ";
+					$entryResult=$this->processSyncEntry($this->ID,$logItem['item']) ;
+					if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
 						echo "<div class'error'>Got fatal Error, will exit</div>";
 						break;
-					}	
+					} 
+					
+					if (  $entryResult >0 ) $entriesNumOK++;
+					$entriesNum++;
 				}
 			} else {
 				echo "The sync-log returned error. Error: <br />";
@@ -457,6 +464,9 @@ class Server {
 			}
 
 		}
+		
+		echo "<div class='ok'>Sync-log replication finished</div><br>";
+		echo "Proccessed $entriesNum log entries ($entriesNumOK inserted OK) out of $chunkSize<br>";
 		
 		// clean up
 		delDir($tmpZIPfolder);			
