@@ -49,11 +49,12 @@ function chmodDir($dir){
 	}
 	$admin_op=makeSane($_GET['admin_op']);
 
-$logEntries=makeSane($_GET['logEntries'],1);
-echo "#$logEntries#";
-if ($logEntries=='') { echo "%%%";$logEntries=50; }
+	$logEntries=makeSane($_GET['logEntries'],1);	
+	if ( $logEntries=='' ) {
+		$logEntries=50; 
+	}
 
-echo "<br>";
+//echo "<br>";
 
 echo "<h3>Update operations</h3>";
 
@@ -96,7 +97,7 @@ echo "</ul>";
 echo "<h3>Sync Log oparations</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
-	echo "<li><a href='javascript:remakeLog()'>Remake sync-log </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set 0 to proccess all)<br>
+	echo "<li><a href='javascript:remakeLog()'>Remake sync-log </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set -1 to proccess all)<br>
 	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
 	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
 echo "</ul>";
@@ -262,22 +263,24 @@ echo "</ul><br><hr>";
 		Logger::deleteLogsFromDB(1);
 		clearBatchBit();
 	} else if ($admin_op=="remakeLog") {
-		if ($logEntries) $limitStr= " LIMIT $logEntries ";
+		if ($logEntries > 0) $limitStr= " LIMIT $logEntries ";
 		else $limitStr='';
 		
 		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
-		
+
+		$i=0;
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
 				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
 				  $flight->makeLogEntry();
 				  setBatchBit($row["ID"]);
+				  $i++;
 				  set_time_limit(300);
 			 }
 		}
-		echo "<BR><br><br>DONE !!!<BR>";
+		echo "<BR><br><br>DONE !!! processed $i flights<BR>";
 
 	} else if ($admin_op=="cleanPhotosTable") {
 		$query="DELETE from $photosTable ";

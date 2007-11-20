@@ -76,6 +76,7 @@ class logReplicator {
 			// we will use our waypoint if our local waypoint is nearest  ( + 500m margin )
 			return array($nearestTakeoffID,$nearestDistance );
 		} else { // we will import this takeoff and use that instead
+
 			$newWaypoint =new waypoint();
 			$newWaypoint->setLat($locationArray['takeoffLat']);
 			$newWaypoint->setLon($locationArray['takeoffLon']);
@@ -89,6 +90,10 @@ class logReplicator {
 			$newWaypoint->link ='';
 			$newWaypoint->description ='';
 			$newWaypoint->putToDB(0);
+
+			 // also add it up to $waypoints because we use this array for subsequent queries
+			global $waypoints;
+			array_push($waypoints,$newWaypoint);
 
 			return array($newWaypoint->waypointID,$locationArray['takeoffVinicity']);
 		}
