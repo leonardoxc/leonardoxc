@@ -82,7 +82,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // in order to use a url
 
  // this is for the  DEM - 3d maps, to compute ground height 
- $CONF_DEMpath=dirname(__FILE__)."/data/dem/";
+ $CONF_DEMpath=dirname(__FILE__)."/maps/hgt/";
 
 
  // the native language of the server

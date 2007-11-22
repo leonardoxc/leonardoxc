@@ -22,11 +22,12 @@ It follows that a 3" HGT file  has a file length of 2 x 1201 x 1201.
 
 */
 $openDEMfiles=array();
+global $openDEMfiles;
 
 class hgt {
 
 function getHeight($lat,$lon) {
-	global $openDEMfiles;
+	global $openDEMfiles,$CONF_DEMpath;
 
 	if ($lat>=0) {
 		$latSouth=floor($lat);
@@ -56,12 +57,14 @@ function getHeight($lat,$lon) {
 	$demFile=sprintf("%s%02d%s%03d.zip",$latStr,$latSouth,$lonStr,$lonWest);
 
 	if ( ! isset($openDEMfiles[$demFile])  )  {
-		if (!is_file($demFile)) {
+		// echo "Getting DEM file: $demFile<BR>";
+		if (!is_file($CONF_DEMpath.'/'.$demFile)) {
+			// echo "###".$demAbsPath.'/'.$demFile."#";
 			return 0;
 		}
-		// echo "Getting DEM file: $demFile<BR>";
-		require_once('../../lib/pclzip/pclzip.lib.php');
-		$archive = new PclZip($demFile);
+		
+		require_once(dirname(__FILE__).'/lib/pclzip/pclzip.lib.php');
+		$archive = new PclZip($CONF_DEMpath.'/'.$demFile);
 		$list=$archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING);
 		if ( $list == 0) { 
 			// 
@@ -90,14 +93,15 @@ function getHeight($lat,$lon) {
 } // end of class
 
 
+/* usage :
+	$lat=40.4879667;
+	$lon=23.1730500;
+	// height =476 !!
+	
+	$alt=hgt::getHeight($lat,$lon);
+	echo "$lat,$lon -> $alt<BR>";
 
-$lat=40.4879667;
-$lon=23.1730500;
-// height =476 !!
-
-$alt=hgt::getHeight($lat,$lon);
-echo "$lat,$lon -> $alt<BR>";
-
+	or test multiple lat/lon
 for ($dlat=0;$dlat<100;$dlat++) 
 	for ($dlon=0;$dlon<100;$dlon++)  {
 		$lat=40.0+$dlat/100;
@@ -106,6 +110,6 @@ for ($dlat=0;$dlat<100;$dlat++)
 		//echo "$lat,$lon -> $alt<BR>";
 		echo "$alt, ";
 	}
-
+*/
 
 ?>
