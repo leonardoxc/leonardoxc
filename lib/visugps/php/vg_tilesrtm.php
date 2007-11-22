@@ -136,18 +136,26 @@ function MakeBlock($image, $lonL, $lonR, $latB, $latT, $proj)
     if (($xL == $xR) || ($yT == $yB)) return;
 
 	if (VISUGPS_useHGT) {
+			//echo "# $xL $xR $yT $yB $lonL $lonR $latT $latB $fileLat $startLon $startLat";
 			$offLonPx = ($lonL - $startLon) * (SRTM_TILE_SIZE_PX - 1) / SRTM_TILE_SIZE_DEG;
 			$stepLonPx = ($lonR - $lonL) * (SRTM_TILE_SIZE_PX - 1) / ($xR - $xL) / SRTM_TILE_SIZE_DEG;
 	
 			$startLatPx = $proj->Y($latT);
+			$startLonPx = $proj->X($lonL);
 
 			for ($row = $yT; $row <= $yB; $row++) {
 				$lat = $proj->Lat($startLatPx + $row - $yT);
 				$offLatPx = ($startLat - $lat) * (SRTM_TILE_SIZE_PX - 1) / SRTM_TILE_SIZE_DEG;
+				
 				$lonPx = $offLonPx;
+				
+
+				
 				for ($col = $xL; $col <= $xR; $col++) {
-					$elevation = hgt::getHeight($lat, $lonPx);
-					imagesetpixel($image, $col, $row, $cMap[$elevation]);
+					$lon = $proj->Lon($startLonPx + $col - $xL);
+					$elevation = hgt::getHeight($lat, $lon);
+					imagesetpixel($image, $col, $row, $cMap[$elevation%256]);
+					// echo "($lat, $lon) $col, $row, $elevation<BR>";
 					$lonPx = $lonPx + $stepLonPx;
 				}
 			}

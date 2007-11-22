@@ -23,17 +23,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 Copyright (c) 2007 Victor Berchet, <http://www.victorb.fr>
 */
-	require_once dirname(__FILE__).'/../../../config.php';
 
+	require_once dirname(__FILE__).'/../../../config.php';
 	require_once dirname(__FILE__).'/../../json/CL_json.php';
 
     // Development version (cache off, easier debugging)
     define('VISUGPS_DEV', true);
 
     define('VISUGPS_useHGT', true);
-	if (VISUGPS_useHGT) {
+	if (VISUGPS_useHGT) 
 		require_once dirname(__FILE__).'/../../../CL_hgt.php';
-	}
+
 
     // Google maps tile size (pixels)
     define('G_TILE_SIZE', 256);

@@ -19,10 +19,18 @@ function fetchURL( $url, $timeout=5) {
    $port = $url_parsed["port"];
    if ($port==0)
        $port = 80;
-   $path = $url_parsed["path"];
+   $path =$url_parsed["path"];
    if ($url_parsed["query"] != "")
        $path .= "?".$url_parsed["query"];
 
+	/* this breaks things if the string is already rawurlencode
+		$dirName=dirname($path);
+		$fileName=basename($path);
+		//echo "% $dirName%$fileName %";
+		$path="$dirName/".rawurlencode($fileName);
+		echo "@$path@";
+	*/
+	
    $out = "GET $path HTTP/1.0\r\nHost: $host\r\n";
    $out.= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1) Gecko/20061010 Firefox/2.0\r\n\r\n";
 

@@ -1,7 +1,9 @@
 <?
- 	//require_once dirname(__FILE__)."/EXT_config_pre.php";
-	require_once "config.php";
- 	//require_once "EXT_config.php";
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
+	require_once dirname(__FILE__)."/config.php";
+ 	require_once dirname(__FILE__)."/EXT_config.php";
+
+	$moduleRelPath=moduleRelPath(0); 
 
 	//require_once "CL_flightData.php";
 	//require_once "FN_functions.php";	
@@ -46,7 +48,12 @@
         window.addEvent('unload', cleanMap);
 
         window.addEvent('domready', function() {
-	    kMap = new VisuGps(		);
+	    kMap = new VisuGps(	
+				{
+					proxyPath: 'lib/visugps/php/vg_proxy.php' ,
+					elevTileUrl: ['<?=$_SERVER['SERVER_NAME'].getRelMainDir()."lib/visugps/php"?>']
+				}	
+		);
 /*
 {elevTileUrl: ['pgforum.thenet.gr/modules/leonardo/_visugps/visugps/visugps/php'] }
             kMap = new VisuGps({elevTileUrl: ['ts0.victorb.fr',

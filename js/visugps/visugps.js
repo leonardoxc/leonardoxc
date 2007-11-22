@@ -41,7 +41,8 @@ var VisuGps = new Class({
         measureCfd : true,
         maxSpeed : 80,
         maxVario : 10,
-        maxElev : 9999
+        maxElev : 9999,		
+		proxyPath : 'vg_proxy.php'
     },
     /*
     Property: initialize
@@ -62,6 +63,8 @@ var VisuGps = new Class({
             maxSpeed - maximum value for the speed (min = 0)
             maxVario - maximum absolute value for the GR
             maxElev - maximum value for the elevation (min = 0)
+			
+			proxyPath
     */
     initialize : function(options) {
         this.setOptions(options);
@@ -244,8 +247,9 @@ var VisuGps = new Class({
     See:
             setTrack method.
     */
-    downloadTrack : function(url) {
-        new Json.Remote('lib/visugps/php/vg_proxy.php?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
+    downloadTrack : function(url) {		
+        // new Json.Remote('lib/visugps/php/vg_proxy.php?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
+        new Json.Remote(this.options.proxyPath+'?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
     },
     /*
     Property: toggleAnim (INTERNAL)
@@ -717,7 +721,7 @@ var VisuGps = new Class({
         srtmTL[0].getTileUrl = function(point, zoom){
                 var count = url.length;
                 var n = (point.x + point.y) % count;
-//document.writeln('http://' + url[n] + '/vg_tilesrtm.php?x=' + point.x + '&y=' + point.y + '&z=' + zoom);
+				// document.writeln('http://' + url[n] + '/vg_tilesrtm.php?x=' + point.x + '&y=' + point.y + '&z=' + zoom);
                 return 'http://' + url[n] + '/vg_tilesrtm.php?x=' + point.x + '&y=' + point.y + '&z=' + zoom;
             }
         var srtmMap = new google.maps.MapType(srtmTL, new google.maps.MercatorProjection(18), 'Elevation');

@@ -535,7 +535,8 @@ function setLeonardoPaths () {
 	// detect if the installation in not on the root
 	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);
 	$baseInstallationPath="";
-	$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['REQUEST_URI']))   );	
+	$queryLen=strlen($_SERVER['QUERY_STRING']);
+	$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname( substr($_SERVER['REQUEST_URI'],0,-$queryLen)     ))   );	
 	if ( count($parts)>1 )  {
 		for($i=0;$i<count($parts);$i++) 
 		   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	

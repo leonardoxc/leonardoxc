@@ -22,7 +22,7 @@ It follows that a 3" HGT file  has a file length of 2 x 1201 x 1201.
 
 */
 $openDEMfiles=array();
-global $openDEMfiles;
+global $openDEMfiles,$CONF_DEMpath;
 
 class hgt {
 
@@ -54,12 +54,12 @@ function getHeight($lat,$lon) {
 	}
 
 	// find the file to use!
-	$demFile=sprintf("%s%02d%s%03d.zip",$latStr,$latSouth,$lonStr,$lonWest);
+	$demFile=sprintf("%s%02d%s%03d.hgt.zip",$latStr,$latSouth,$lonStr,$lonWest);
 
 	if ( ! isset($openDEMfiles[$demFile])  )  {
 		// echo "Getting DEM file: $demFile<BR>";
 		if (!is_file($CONF_DEMpath.'/'.$demFile)) {
-			// echo "###".$demAbsPath.'/'.$demFile."#";
+			// echo "#not found ".$CONF_DEMpath.'/'.$demFile."#";
 			return 0;
 		}
 		

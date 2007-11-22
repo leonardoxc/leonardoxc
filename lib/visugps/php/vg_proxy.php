@@ -68,7 +68,7 @@ Track format:
         nbChartLbl - number of labels (time.labels)
 */
 function MakeTrack($url) 
-{   
+{   	
     require('vg_cache.php');       
 
     $cache = new Cache(CACHE_BASE_FOLDER . CACHE_FOLDER_TRACK, CACHE_NB_TRACK, 9);
@@ -76,15 +76,27 @@ function MakeTrack($url)
     if ($cache->get($data, $url)) {
         return $data;
     } else {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_GET['track']);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        $file = curl_exec($ch);
-        curl_close($ch);
-
+	
+		if (function_exists('curl_init')) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $_GET['track']);
+			curl_setopt($ch, CURLOPT_FAILONERROR, true);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+			$file = curl_exec($ch);
+			curl_close($ch);
+		} else {
+			require_once dirname(__FILE__).'/../../../FN_functions.php';
+			//echo $url;
+			$dirName=dirname($url);
+			$fileName=basename($url);
+			// echo "% $dirName%$fileName %";
+			$file=fetchURL( "$dirName/".rawurlencode($fileName) );
+		}
+		
+		// echo $file;
+		
         require('vg_parser.php');
 
         $track['date'] = array('day' => 0, 'month' => 0, 'year' => 0);
