@@ -16,7 +16,7 @@
 	if ($flightID<=0) exit;
 	
 	$flight=new flight();
-	$flight->getFlightFromDB($flightID);
+	$flight->getFlightFromDB($flightID,0);
 	$flight->updateCharts(0,1); // no force update, raw charts
 
 	if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem,1))) {
@@ -201,27 +201,14 @@ fieldset.legendBox  {
 		<input type="checkbox" value="1" checked id='showTask' onclick="toggleTask(this)">Show Task
 		</fieldset>
 
-<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
- 		<fieldset class="legendBox"><legend>Admin</legend><BR />
-		<input type="checkbox" value="1" checked id='airspaceShow' onclick="toggleAirspace(this)">Show Airspace
-		</fieldset>
-<?  } ?>
+		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
+				<fieldset class="legendBox"><legend>Admin</legend><BR />
+				<input type="checkbox" value="1" checked id='airspaceShow' onclick="toggleAirspace(this)">Show Airspace
+				</fieldset>
+		<?  } ?>
 
     </form>
-	<?
-	/*
-$images="";
-for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
-	$photoFilename="photo".$photoNum."Filename";
-	if ($flight->$photoFilename) {
-		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
-	}		
-}
-
-echo $images;
-*/
-?></td>
+	</td>
   </tr>
   <tr>
 	<td valign="top"><div id="map"></div></td>

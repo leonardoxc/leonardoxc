@@ -76,8 +76,8 @@ function MakeTrack($url)
     if ($cache->get($data, $url)) {
         return $data;
     } else {
-	
-		if (function_exists('curl_init')) {
+
+		if (function_exists('curl_init') && 0) {			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $_GET['track']);
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
@@ -95,7 +95,7 @@ function MakeTrack($url)
 			$file=fetchURL( "$dirName/".rawurlencode($fileName) );
 		}
 		
-		// echo $file;
+		// echo "#$file#";
 		
         require('vg_parser.php');
 

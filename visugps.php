@@ -3,7 +3,19 @@
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
 
+	require_once dirname(__FILE__)."/CL_flightData.php";
+	require_once dirname(__FILE__)."/FN_functions.php";	
+	require_once dirname(__FILE__)."/FN_waypoint.php";	
+	require_once dirname(__FILE__)."/FN_output.php";
+	require_once dirname(__FILE__)."/FN_pilot.php";
+
 	$moduleRelPath=moduleRelPath(0); 
+
+	$flightID=makeSane($_GET['flightID'],1);
+	if ($flightID<=0) exit;
+	
+	$flight=new flight();
+	$flight->getFlightFromDB($flightID,0);
 
 	//require_once "CL_flightData.php";
 	//require_once "FN_functions.php";	
@@ -23,7 +35,7 @@
     v\:* { behavior:url(#default#VML);}
     html, body {width: 100%; height: 100%}
     body {margin: 0px;}
-    #map {width: 100%; height: 80%}
+    #mapXX {width: 100%; height: 80%}
 
     #load2 {width: 100%; height: 100%; top:0px; left:0px; position:absolute; z-index:3000;
            background: #4682b4 url("img/loading.gif") no-repeat center center;
@@ -43,7 +55,7 @@
 
     <script>
 
-        var kMap = null;
+      var kMap = null;
 
         window.addEvent('unload', cleanMap);
 
@@ -54,6 +66,10 @@
 					elevTileUrl: ['<?=$_SERVER['SERVER_NAME'].getRelMainDir()."lib/visugps/php"?>']
 				}	
 		);
+
+		kMap.downloadTrack('http://<?=str_replace('/.//','/',$_SERVER['SERVER_NAME'].getRelMainDir().$flight->getIGCRelPath());?>');
+
+
 /*
 {elevTileUrl: ['pgforum.thenet.gr/modules/leonardo/_visugps/visugps/visugps/php'] }
             kMap = new VisuGps({elevTileUrl: ['ts0.victorb.fr',
@@ -64,7 +80,10 @@
                                                  'ts1.victorb.fr',
                                                  'ts2.victorb.fr',
                                                  'ts3.victorb.fr']});
-*/
+	*/
+
+		
+/*
            var trackName = decodeURIComponent(location.search) || 'noparam';
 
             if (m = /^\?track=(.*)$/i.exec(trackName)) {
@@ -72,6 +91,7 @@
             } else {
                 kMap.downloadTrack(location.href.replace(/[\w\.]*$/, 'lib/visugps/test.igc'));
             }
+*/
         });
 
         function cleanMap() {
@@ -82,9 +102,35 @@
     </script>
 
   </head>
-  <body>
-    <div id='map'></div>
+  <body  onUnload="GUnload()"> 
+
+<? if (0) { ?>
+<div id="panel">
+	<div class="innertube">	
+		<h1>CSS Right Frame Layout</h1>
+		<h3>Sample text here</h3>	
+	</div>
+</div>
+
+
+<div id="map">
+<div class="innertube">
+	<h1>Dynamic Drive CSS Library</h1>
+	<p><script type="text/javascript">filltext(255)</script></p>
+	<p style="text-align: center">Credits: <a href="http://www.dynamicdrive.com/style/">Dynamic Drive CSS Library</a></p>
+</div>
+</div>
+
+<div id='vgps-chartcont'></div>
+
+<?  }else { ?>
+	<div id='topDiv'>		
+		<div id='map'>1xxxxxxxxxxx2xxxxxxxxxxx3xxxxxxxxxx</div>
+		<div id='panel'>1xxxxxxxxxxx2xxxxxxxxxxx3xxxxxxxxxx</div>
+	</div>
     <div id='vgps-chartcont'></div>
+
     <div id='load'></div>
+<? } ?>
   </body>
 </html>

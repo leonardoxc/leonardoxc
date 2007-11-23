@@ -249,6 +249,8 @@ var VisuGps = new Class({
     */
     downloadTrack : function(url) {		
         // new Json.Remote('lib/visugps/php/vg_proxy.php?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
+		// document.writeln(this.options.proxyPath+'?track=' + url);
+
         new Json.Remote(this.options.proxyPath+'?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
     },
     /*

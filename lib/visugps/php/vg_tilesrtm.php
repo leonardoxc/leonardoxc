@@ -154,7 +154,7 @@ function MakeBlock($image, $lonL, $lonR, $latB, $latT, $proj)
 				for ($col = $xL; $col <= $xR; $col++) {
 					$lon = $proj->Lon($startLonPx + $col - $xL);
 					$elevation = hgt::getHeight($lat, $lon);
-					imagesetpixel($image, $col, $row, $cMap[$elevation%256]);
+					imagesetpixel($image, $col, $row, $cMap[$elevation/20]);
 					// echo "($lat, $lon) $col, $row, $elevation<BR>";
 					$lonPx = $lonPx + $stepLonPx;
 				}
