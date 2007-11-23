@@ -26,17 +26,12 @@ Copyright (c) 2007 Victor Berchet, <http://www.victorb.fr>
 */
 
 
-header('Content-type: text/plain; charset=ISO-8859-1');
+// header('Content-type: text/plain; charset=ISO-8859-1');
 //header('Cache-Control: no-cache, must-revalidate');
 //header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 
-require('vg_cfg.php');
-
-if (isset($_GET['track'])) {         
-    echo MakeTrack($_GET['track']);
-} else {
-    echo @json_encode(array('error' => 'invalid URL'));
-}
+require_once dirname(__FILE__).'/vg_cfg.php';
+require_once dirname(__FILE__).'/vg_parser.php';
 
 /*
 Function: MakeTrack
@@ -69,107 +64,76 @@ Track format:
 */
 function MakeTrack($url) 
 {   	
-    require('vg_cache.php');       
-
-    $cache = new Cache(CACHE_BASE_FOLDER . CACHE_FOLDER_TRACK, CACHE_NB_TRACK, 9);
-
-    if ($cache->get($data, $url)) {
-        return $data;
-    } else {
-
-		if (function_exists('curl_init') && 0) {			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $_GET['track']);
-			curl_setopt($ch, CURLOPT_FAILONERROR, true);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-			$file = curl_exec($ch);
-			curl_close($ch);
+	$file=implode('',file($url));
+	
+	$track['date'] = array('day' => 0, 'month' => 0, 'year' => 0);
+	$track['pilot'] = '';
+	
+	$nbPts = ParseIgc($file, $track);
+	
+	if ($nbPts < 5) {
+		$nbPts = ParseGpx($file, $track);
+	}
+	if ($nbPts < 5) {
+		$nbPts = ParseTrk($file, $track);
+	}
+	if ($nbPts < 5) {
+		$nbPts = ParseNmea($file, $track);
+	}
+	if ($nbPts < 5) {
+		$nbPts = ParseOzi($file, $track);
+	}
+	
+	if ($nbPts < 5) {
+		if (IsKml($file)) {
+			$jsTrack['kmlUrl'] = $url;
 		} else {
-			require_once dirname(__FILE__).'/../../../FN_functions.php';
-			//echo $url;
-			$dirName=dirname($url);
-			$fileName=basename($url);
-			// echo "% $dirName%$fileName %";
-			$file=fetchURL( "$dirName/".rawurlencode($fileName) );
+			$jsTrack['error'] = 'Unsupported track format!';
 		}
-		
-		// echo "#$file#";
-		
-        require('vg_parser.php');
-
-        $track['date'] = array('day' => 0, 'month' => 0, 'year' => 0);
-        $track['pilot'] = '';
-
-        $nbPts = ParseIgc($file, $track);
-
-        if ($nbPts < 5) {
-            $nbPts = ParseGpx($file, $track);
-        }
-        if ($nbPts < 5) {
-            $nbPts = ParseTrk($file, $track);
-        }
-        if ($nbPts < 5) {
-            $nbPts = ParseNmea($file, $track);
-        }
-        if ($nbPts < 5) {
-            $nbPts = ParseOzi($file, $track);
-        }
-
-        if ($nbPts < 5) {
-            if (IsKml($file)) {
-                $jsTrack['kmlUrl'] = $url;
-            } else {
-                $jsTrack['error'] = 'Unsupported track format!';
-            }
-        } else {
-            // Generate the time in second
-            for ($i = 0; $i < count($track['time']['hour']); $i++) {
-                $track['timeSec'][$i] = $track['time']['hour'][$i] * 3600 +
-                                        $track['time']['min'][$i] * 60 +
-                                        $track['time']['sec'][$i];
-            }
-
-            // Generate CHART_NBLBL labels
-            for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBLBL - 1); $i < CHART_NBLBL; $i++, $idx += $step) {
-                $jsTrack['time']['label'][$i] = $track['time']['hour'][$idx] . "h" . $track['time']['min'][$idx];
-            }
-
-            // Change the number of points to CHART_NBPTS
-            for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBPTS - 1); $i < CHART_NBPTS; $i++, $idx += $step) {
-                $jsTrack['elev'][$i] = $track['elev'][$idx];
-                $jsTrack['time']['hour'][$i] = $track['time']['hour'][$idx];
-                $jsTrack['time']['min'][$i] = $track['time']['min'][$idx];
-                $jsTrack['time']['sec'][$i] = $track['time']['sec'][$idx];
-            }
-
-            $jsTrack['lat'] = $track['lat'];
-            $jsTrack['lon'] = $track['lon'];
-
-            $jsTrack['elevGnd'] = GetElevGnd($track, CHART_NBPTS);
-            $jsTrack['speed'] = GetSpeed($track, CHART_NBPTS);
-            $jsTrack['vario'] = GetVario($track, CHART_NBPTS);
-
-            $jsTrack['nbTrackPt'] = $track['nbPt'];
-            $jsTrack['nbChartPt'] = CHART_NBPTS;
-            $jsTrack['nbChartLbl'] = CHART_NBLBL;
-            $jsTrack['date'] = $track['date'];
-            $jsTrack['pilot'] = $track['pilot'];
-        }
-
-
-//        $data = @json_encode($jsTrack);
-        $data = json::encode($jsTrack);
-
-//print_r($data );
-        if (!isset($jsTrack['error']) &&
-            !isset($jsTrack['kmlUrl'])) {
-            $cache->set($data, $url);
-        }
-
-        return $data;
-    }    
+	} else {
+		// Generate the time in second
+		for ($i = 0; $i < count($track['time']['hour']); $i++) {
+			$track['timeSec'][$i] = $track['time']['hour'][$i] * 3600 +
+									$track['time']['min'][$i] * 60 +
+									$track['time']['sec'][$i];
+		}
+	
+		// Generate CHART_NBLBL labels
+		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBLBL - 1); $i < CHART_NBLBL; $i++, $idx += $step) {
+			$jsTrack['time']['label'][$i] = $track['time']['hour'][$idx] . "h" . $track['time']['min'][$idx];
+		}
+	
+		// Change the number of points to CHART_NBPTS
+		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBPTS - 1); $i < CHART_NBPTS; $i++, $idx += $step) {
+			$jsTrack['elev'][$i] = $track['elev'][$idx];
+			$jsTrack['time']['hour'][$i] = $track['time']['hour'][$idx];
+			$jsTrack['time']['min'][$i] = $track['time']['min'][$idx];
+			$jsTrack['time']['sec'][$i] = $track['time']['sec'][$idx];
+		}
+	
+		$jsTrack['lat'] = $track['lat'];
+		$jsTrack['lon'] = $track['lon'];
+	
+		$jsTrack['elevGnd'] = GetElevGnd($track, CHART_NBPTS);
+		$jsTrack['speed'] = GetSpeed($track, CHART_NBPTS);
+		$jsTrack['vario'] = GetVario($track, CHART_NBPTS);
+	
+		$jsTrack['nbTrackPt'] = $track['nbPt'];
+		$jsTrack['nbChartPt'] = CHART_NBPTS;
+		$jsTrack['nbChartLbl'] = CHART_NBLBL;
+		$jsTrack['date'] = $track['date'];
+		$jsTrack['pilot'] = $track['pilot'];
+	}
+	//print_r($jsTrack);
+	
+	$data = json::encode($jsTrack);
+	
+	//print_r($data );
+	// if (!isset($jsTrack['error']) && !isset($jsTrack['kmlUrl'])) {
+	//    $cache->set($data, $url);
+	// }
+	
+	return $data;    
 }
 
 /*

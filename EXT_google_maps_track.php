@@ -197,13 +197,13 @@ fieldset.legendBox  {
 		<div id="side_bar">
 		</div> 
 		<hr>
-		<input type="checkbox" value="1" id='followGlider' onclick="toggleFollow(this)">Follow Glider<br>
-		<input type="checkbox" value="1" checked id='showTask' onclick="toggleTask(this)">Show Task
+		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)">Follow Glider<br>
+		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)">Show Task
 		</fieldset>
 
 		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
 				<fieldset class="legendBox"><legend>Admin</legend><BR />
-				<input type="checkbox" value="1" checked id='airspaceShow' onclick="toggleAirspace(this)">Show Airspace
+				<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)">Show Airspace
 				</fieldset>
 		<?  } ?>
 
@@ -446,8 +446,8 @@ function SetTimer(evt) {
       }
 
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=5251");
-	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
-	//map.addOverlay(kmlOverlay);
+	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
+	// map.addOverlay(kmlOverlay);
 <? 
 echo $flight->gMapsGetTaskJS(); 
 ?>

@@ -87,6 +87,20 @@ var VisuGps = new Class({
         this.distState = 0;
         this.distLine = {};
 
+		this.taskLayer=[];
+		this.taskicons=[];
+		this.taskicons["s"]   = "img/icon_start.png";    		
+		this.taskicons["1"]   = "img/icon_1.png";
+		this.taskicons["2"]   = "img/icon_2.png";
+		this.taskicons["3"]   = "img/icon_3.png";
+		this.taskicons["4"]   = "img/icon_4.png";
+		this.taskicons["5"]   = "img/icon_5.png";
+		this.taskicons["e"]   = "img/icon_end.png";
+		
+		this.tpLat=[];
+		this.tpLon=[];
+		this.tpName=[];
+		
         if (GBrowserIsCompatible()) {
             var map = $(this.options.mapDiv);
             if (!map) return;
@@ -109,6 +123,7 @@ var VisuGps = new Class({
     */
     clean : function() {
         google.maps.Unload();
+		// GUnload();
         if (this.charts) this.charts.clean();
         window.removeEvents('resize');
     },
@@ -191,6 +206,7 @@ var VisuGps = new Class({
 
             // Center the map on the track
             this.map.setCenter(bounds.getCenter(), this.map.getBoundsZoomLevel(bounds));
+			this._displayTask();
             this._displayTrack();
 
             // Put the marker on the take-off place
@@ -251,7 +267,8 @@ var VisuGps = new Class({
         // new Json.Remote('lib/visugps/php/vg_proxy.php?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
 		// document.writeln(this.options.proxyPath+'?track=' + url);
 
-        new Json.Remote(this.options.proxyPath+'?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
+        //new Json.Remote(this.options.proxyPath+'?track=' + url, {onComplete: this.setTrack.bind(this)}).send();
+		 new Json.Remote(url, {onComplete: this.setTrack.bind(this)}).send();
     },
     /*
     Property: toggleAnim (INTERNAL)
@@ -502,6 +519,40 @@ var VisuGps = new Class({
         if (this.points.length < 5) return;
         this.charts.draw();
     },
+		
+	_createTaskMarker : function (point,name,num) {      
+		var Icon = new google.maps.Icon(G_DEFAULT_ICON, this.taskicons[num]);
+		Icon.iconSize=new google.maps.Size(16,24);		
+		Icon.iconAnchor=new google.maps.Point(3,20);
+		Icon.infoWindowAnchor=new google.maps.Point(16,0);
+	
+		var marker = new google.maps.Marker(point,Icon,{title:name});
+
+		return marker;
+	},
+
+
+    /*
+    Property: _displayTask (INTERNAL)
+            Display the task.
+    */
+    _displayTask : function() {
+		var tp=[];
+
+		for(j=0;j<5;j++){							 
+			tp[j]=new google.maps.LatLng(this.tpLat[j],this.tpLon[j]);
+		}
+		
+		var polyline = new GPolyline(tp, "#FFFFFF", 3,1); 
+		this.map.addOverlay(polyline);
+		//this.taskLayer.push(polyline); 
+		
+		for(j=0;j<5;j++){							 
+			var marker = this._createTaskMarker(tp[j],'TP'+this.tpName[j],this.tpName[j] ) ;
+			//this.taskLayer.push(marker); 
+			this.map.addOverlay(marker);
+		}
+	},
     /*
     Property: _displayTrack (INTERNAL)
             Display the track.
@@ -509,6 +560,7 @@ var VisuGps = new Class({
     _displayTrack : function() {
         if (this.points.length < 5) return;
         var path = new google.maps.Polyline(this._getReducedTrack(), "#f00", 1, 1, {'clickable' : false});
+		
         // Remove the click listener from existing track
         if (this.path) {
             this.map.removeOverlay(this.path);
