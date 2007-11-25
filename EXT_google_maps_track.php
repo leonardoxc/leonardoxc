@@ -17,7 +17,11 @@
 	
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID,0);
-	$flight->updateCharts(0,1); // no force update, raw charts
+	
+	$flight->makeJSON(0);  // mo force
+
+	// we dont use png files any more
+	//$flight->updateCharts(0,1); // no force update, raw charts
 
 	if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem,1))) {
 		$chart1= $flight->getChartRelPath("alt",$PREFS->metricSystem,1);
@@ -160,6 +164,8 @@ var v=new Array();
 </script>
 
 <script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
+
+<script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
 
 <script type="text/javascript">
 	

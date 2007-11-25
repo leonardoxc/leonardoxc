@@ -1271,6 +1271,93 @@ $kml_file_contents=
 		return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance);
 	}
 
+	function makeJSON($forceRefresh=0) {
+	$forceRefresh=1;
+		$filename=$this->getJsonFilename();
+		if ( is_file($filename) && ! $forceRefresh ) {
+			return;
+		}
+
+		// if no file exists do the proccess now
+		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues(); 
+
+		$lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
+		if (!$lines) return;
+		$i = 0;
+	
+		// first 3 lines of pointsFile is reserved for info
+		for($k=3;$k< count($lines);$k++){
+			$line = trim($lines[$k]);
+			if (strlen($line) == 0) continue;
+			  
+			eval($line);
+			  
+			//	if ($alt > $this->maxAllowedHeight)  continue;
+			//    if ($speed > $this->maxAllowedSpeed) continue;
+			//    if (abs($vario) > $this->maxAllowedVario) continue;
+	
+			if  ( $time<$lastPointTime ) continue;		
+			$lastPointTime=$time;
+	
+			if ($time_in_secs) $data_time[$i] = $time;
+			else $data_time[$i] = sec2Time($time, 1);
+					
+			$data_alt[$i] = $alt;
+			$data_speed[$i] = $speed;
+			$data_vario[$i] = $vario;
+			$data_X[$i]=-$lon;
+			$data_Y[$i]=$lat;			
+	
+			if ($i > 0) {
+				// $t_dis=gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) ;
+				// $data_takeoff_distance[$i] = $t_dis/1000; //gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) /1000;		
+				$data_takeoff_distance[$i]=$dis;
+			} else {
+				$data_takeoff_distance[$i] = 0;
+				$firstLat=$lat;
+				$firstLon=$lon;
+			}
+			
+			$i ++;
+		} //end for loop
+
+
+	/*	// Generate CHART_NBLBL labels
+		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBLBL - 1); $i < CHART_NBLBL; $i++, $idx += $step) {
+			$jsTrack['time']['label'][$i] = $track['time']['hour'][$idx] . "h" . $track['time']['min'][$idx];
+		}
+	
+		// Change the number of points to CHART_NBPTS
+		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBPTS - 1); $i < CHART_NBPTS; $i++, $idx += $step) {
+			$jsTrack['elev'][$i] = $track['elev'][$idx];
+			$jsTrack['time']['hour'][$i] = $track['time']['hour'][$idx];
+			$jsTrack['time']['min'][$i] = $track['time']['min'][$idx];
+			$jsTrack['time']['sec'][$i] = $track['time']['sec'][$idx];
+		}
+	*/
+		$jsTrack['elev']=$data_alt;
+		$jsTrack['lat'] = $data_Y;
+		$jsTrack['lon'] = $data_X;
+	
+		$jsTrack['time_series'] = $data_time;
+		$jsTrack['time']['label']=array("11h40","12h6","12h29","12h52","13h15");
+		$jsTrack['elevGnd'] = $data_alt;
+		$jsTrack['speed'] 	= $data_speed;
+		$jsTrack['vario'] 	= $data_vario;
+		$jsTrack['distance'] =$data_takeoff_distance;
+		
+		$jsTrack['nbTrackPt'] = count( $data_X);
+		$jsTrack['nbChartPt'] = count( $data_X);
+		$jsTrack['nbChartLbl'] = 5;
+		$jsTrack['date'] = $this->DATE;
+
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+
+		$JSONstr = json::encode($jsTrack);
+
+		writeFile( $filename, $JSONstr );
+	}
+	
   function getRawValues($forceRefresh=0, $getAlsoXY=0) {
     $this->setAllowedParams();
 
@@ -1365,6 +1452,7 @@ $kml_file_contents=
 		fclose ($handle); 
 		return $l;
 	}
+	
 	
 	function storeIGCvalues() {
 		global $flightsAbsPath;
@@ -2811,6 +2899,7 @@ $kml_file_contents=
 	    $this->updateCharts($forceRefresh);
  	    $this->updateCharts($forceRefresh,1);
 	}
+
 
     function updateCharts($forceRefresh=0,$rawCharts=0) {
 		global $moduleRelPath,$chartsActive;
