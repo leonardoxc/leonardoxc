@@ -76,9 +76,8 @@
 			}	
 		);
 		
-	<?
-	echo $flight->gMapsGetTaskJS(1); 
-	?>
+		kMap.tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
+
 		
 		kMap.downloadTrack('http://<?=$_SERVER['SERVER_NAME'].getRelMainDir().$flight->getJsonRelPath();?>');	  
 	});
@@ -93,7 +92,7 @@
 </script>
 
 </head>
-<body  onUnload="GUnload()"> 
+<body  onUnload="google.maps.Unload()"> 
 	<div id='map'></div>		
 	<div id='vgps-chartcont'></div>	
 	<div id='load'></div>

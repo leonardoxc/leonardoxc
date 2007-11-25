@@ -568,7 +568,7 @@ $resStr='{
 	}
 	
 	function getJsonRelPath() { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename.".json.js";
+		return str_replace('.//','',$this->getPilotRelDir())."/flights/".$this->getYear()."/".rawurlencode($this->filename).".json.js";
 	}
 	// ---------------------------------
 	// now absolute filenames
@@ -698,21 +698,11 @@ $resStr='{
 		return $str;
 	}
 
+
 	function gMapsGetTaskJS($useJSapi=0){
-		
 
+		$jsonStr=' { "turnpoints":  [ ';
 		
-		$icons=array(
-		1=>array("root://icons/palette-3.png",0,192),
-		2=>array("root://icons/palette-3.png",32,192),
-		3=>array("root://icons/palette-3.png",64,192),
-		4=>array("root://icons/palette-3.png",96,192),
-		5=>array("root://icons/palette-3.png",128,192) );
-		if ($useJSapi)
-			$kml_file_contents22="var tpLat=[];var tpLon=[];var tpName=[];\n";
-		else 
-			$kml_file_contents="var polyline = new GPolyline([ \n";
-
 		$j=0;
 		for($i=1;$i<=5;$i++) {
 			$varname="turnpoint$i";
@@ -726,41 +716,25 @@ $resStr='{
 				$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
 				$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
 		
-				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
-					$matches[6],$matches[7],$matches[8],$matches[5] );
+				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",
+							$matches[2],$matches[3],$matches[4],$matches[1],
+							$matches[6],$matches[7],$matches[8],$matches[5] );
 		
 				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );	
 
-				if (!$useJSapi)		
-					$kml_file_contents.=    ' new GLatLng('.$newPoint->lat.','.(-$newPoint->lon).'),';	
-		
 				$name=$i;
+								
+				if ($i> 1 ) $jsonStr.=' , ';
+				$jsonStr.=' { "lat": '.$newPoint->lat().' , "lon": '.$newPoint->lon().
+							', "name": "TP'.$name.'", "id": "'.$name.'"  } '."\n";
 
-				if ($useJSapi) {
-					$turnpointPlacemark[$j]="kMap.tpLat[$j]=".$newPoint->lat.";\nkMap.tpLon[$j]="
-					.(-$newPoint->lon).";\nkMap.tpName[$j]='$name';\n";
-				} else {
-					$turnpointPlacemark[$j]='					
-						var marker = createTaskMarker(new GLatLng('.$newPoint->lat.','.(-$newPoint->lon).'),"TP '.$name.'","'.$name.'");
-						taskLayer.push(marker); 
-						map.addOverlay(marker);
-					';
-				}	
 				$j++;
 		
 			}
 		}
-		if (!$useJSapi) {
-			$kml_file_contents=substr($kml_file_contents,0,-1);
-			$kml_file_contents.=' ], "#FFFFFF", 3,1); 
-				map.addOverlay(polyline);
-				taskLayer.push(polyline); 
-			';
-		}
-		for ($i=0;$i<$j;$i++) 
-			$kml_file_contents.=$turnpointPlacemark[$i];
 
-		return $kml_file_contents;
+		$jsonStr.=' ] } ';
+		return $jsonStr;
 	}
 
 

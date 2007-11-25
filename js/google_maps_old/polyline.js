@@ -15,8 +15,8 @@
 
       // A function to create the marker and set up the event window
       function createMarker(point,name,html,ba,normalMarker) {      
-		//	  	var mylabel = {"url":overlay[ov], "anchor":new GLatLng(4,4), "size":new GSize(12,12)};
-		//        var Icon = new GIcon(G_DEFAULT_ICON, background[ba], mylabel);
+//	  	var mylabel = {"url":overlay[ov], "anchor":new GLatLng(4,4), "size":new GSize(12,12)};
+//        var Icon = new GIcon(G_DEFAULT_ICON, background[ba], mylabel);
 		if (normalMarker){ 
 			var Icon = new GIcon(G_DEFAULT_ICON, background[ba]);
 		} else {
@@ -125,6 +125,8 @@
 		var curHtml=document.getElementById("side_bar").innerHTML;
         document.getElementById("side_bar").innerHTML =  curHtml + side_bar_html;
       }                   
+	 //fname is derevied from args
+      GDownloadUrl(fname, process_polyline);	 	
 	  
 	  
     }
@@ -138,3 +140,7 @@
     // http://www.econym.demon.co.uk/googlemaps/
 
 
+function zoomToFlight() {		
+		zoom=map.getBoundsZoomLevel(bounds);	
+		map.setCenter(new GLatLng( center_lat,center_lon), zoom);
+}

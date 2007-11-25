@@ -536,14 +536,33 @@ var VisuGps = new Class({
     Property: _displayTask (INTERNAL)
             Display the task.
     */
-    _displayTask : function() {
+	 _displayTask : function(tp) {
+		var tpPoints=[];
+
+		for(j=0;j<5;j++){							 
+			tpPoints[j]=new google.maps.LatLng(this.tp.turnpoints[j].lat,this.tp.turnpoints[j].lon);
+		}
+		
+		var polyline = new google.maps.Polyline(tpPoints , "#FFFFFF", 3,1); 
+		this.map.addOverlay(polyline);
+		//taskLayer.push(polyline); 
+		
+		for(j=0;j<5;j++){							 
+			var marker = this._createTaskMarker(tpPoints[j],this.tp.turnpoints[j].name,this.tp.turnpoints[j].id ) ;
+			//taskLayer.push(marker); 
+			this.map.addOverlay(marker);
+		}
+		
+	} ,
+	
+    _displayTask2 : function() {
 		var tp=[];
 
 		for(j=0;j<5;j++){							 
 			tp[j]=new google.maps.LatLng(this.tpLat[j],this.tpLon[j]);
 		}
 		
-		var polyline = new GPolyline(tp, "#FFFFFF", 3,1); 
+		var polyline = new google.maps.Polyline(tp, "#FFFFFF", 3,1); 
 		this.map.addOverlay(polyline);
 		//this.taskLayer.push(polyline); 
 		

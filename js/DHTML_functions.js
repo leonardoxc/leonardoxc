@@ -160,8 +160,8 @@ function nop()
 				var new_h =	normalHeight;
 				iframeState='normal';
 			}
-			iframeEl.style.height = new_h-122 + "px";
-			iframeEl.style.width = new_w-155 + "px";
+			iframeEl.style.height = new_h-120 + "px";
+			iframeEl.style.width = new_w-75 + "px";
 		}
 	
 		zoomToFlight();
@@ -180,12 +180,12 @@ function nop()
 			// need to add to height to be sure it will all show
 			if (iframeState=='normal') {
 				var size=getSize();
-				var new_w = (size.width-10);
-				var new_h = (size.height-10);
+				var new_w = (size.width-1);
+				var new_h = (size.height-2);
 				iframeState='max';
 
-				gmaps_div.style.top = "5px";
-				gmaps_div.style.left = "5px";
+				gmaps_div.style.top = "0px";
+				gmaps_div.style.left = "0px";
 				gmaps_div.style.position='absolute';
 
 			} else {

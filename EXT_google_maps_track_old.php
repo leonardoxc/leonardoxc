@@ -11,7 +11,7 @@
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	//	setDEBUGfromGET();
 
-	
+
 	$flightID=makeSane($_GET['id'],1);
 	if ($flightID<=0) exit;
 	
@@ -21,10 +21,10 @@
 
 	if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem,1))) {
 		$chart1= $flight->getChartRelPath("alt",$PREFS->metricSystem,1);
-		$title1=_Altitude.' ('.(($PREFS->metricSystem==1)?_M:_FT).')';
+		$title1="Altitude";
 	} else if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem,1)) ) {
 		$chart1=$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem,1);
-		$title1=_Distance_from_takeoff.' ('.(($PREFS->metricSystem==1)?_KM_PER_HR:_MPH).')';
+		$title1="Distance from takeoff";
 	}
 
 	$hlines=$flight->getRawHeader();
@@ -44,63 +44,70 @@
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
 <script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
-
+<? if (0) { ?>
+<script src="<?=$moduleRelPath?>/js/google_maps/geo.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/pdmarker.js" type="text/javascript"></script>
+<? }?>
 
 </head>
 <body  onUnload="GUnload()">
 
 <table border="0" cellpadding="0" cellspacing="0" class="mapTable">
   <tr>
-	<td colspan=2 valign="top"><div style="position: relative; width: 745px; height:120px;"> 
-	  <div style="position: absolute; top: 6px; left: 40px; z-index: 100; 
-	  				height:95px;  width:2px; background-color:#44FF44;" 
-				  id="timeLine1"></div>
+	<td valign="top"><div style="position: relative; width: 600px; height:120px;"> 
+	  <div style="position: absolute; top: 14px; left: 40px; z-index: 100; height:84px;  width:2px; background-color:#00FF00;" 
+	  id="timeLine1"></div>
 	   
-	  <div style="position: absolute; float:right; right:4px; top: 0px; z-index: 150; padding-right:4px; text-align:right;
-				 height:12px; width:110px; border:0px solid #777777;  background-color:none; color:FF3333;" 
+	  <div style="position: absolute; float:right; right:20px; top: 1px; z-index: 50; padding-right:4px; text-align:right;
+				 height:12px; width:130px; border:0px solid #777777; background-color:#F2F599;" 
 	  id="timeBar"><?=$title1?></div>
 
-	  <div id="chart" class="chart" style="width: 745px; height: 120px;"  onMouseMove="SetTimer(event)"></div>
+	  <div id="chart" class="chart" style="width: 600px; height: 120px;"  onMouseMove="SetTimer(event)">
+      <img style="position: absolute; top: 0px; left:0px; z-index: 0; cursor: crosshair;  border: 1px solid #999999;" 
+	  id="imggraphs" src="<?=$chart1?>" onMouseMove="SetTimer(event)" alt="graphs" 
+	  title="Move mouse to animate flight" border="0" 
+	  height="120" width="600">
+	  </div>
 	</div></td>
-	</tr>
-	<tr>
-		<td valign="top"><div id="map"></div></td>
-		<td valign="top">
-		<form name="form1" method="post" action="">
-		<div style="display:block">
-		
+	<td rowspan="2" valign="top">
 
-		<div style="position:relative; float:right; clear:both; margin-top:8px">
-			<a href='javascript:toogleFullScreen();'><img src='img/icon_maximize.gif' border=0></a>
-		</div>
-		<br>
+	  <form name="form1" method="post" action="">
+	  	<fieldset class="legendBox"><legend>Display</legend><BR />
+			
+			<a href='javascript:toogleFullScreen();'>Full screen On/Off</a>
+		  
+		</fieldset>
  		<fieldset class="legendBox"><legend>Info</legend><BR />
-			<table align="center" cellpadding="2" cellspacing="0">
-				<TR><td><div align="left">Time:</div></td></TR><tr><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Speed:</div></td></TR><tr><TD><span id='speed' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Alt:</div></td></TR><tr><TD><span id='alt' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Vario:</div></td></TR><tr><TD><span id='vario' class='infoString'>-</span></TD></TR>
+			<table align="right" cellpadding="2" cellspacing="0">
+				<TR><td><div align="right">Time:</div></td><TD width=75><span id="timeText1" class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Speed:</div></td><TD><span id='speed' class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Alt:</div></td><TD><span id='alt' class='infoString'></span></TD></TR>
+				<TR><td><div align="right">Vario:</div></td><TD><span id='vario' class='infoString'></span></TD></TR>
 		</table>
 		</fieldset>
 
 
 		<fieldset class="legendBox"><legend>Control</legend><BR />
 	
-		<a href='javascript:zoomToFlight()'>Zoom to<br>flight</a><hr />
+		<a href='javascript:zoomToFlight()'>Zoom to flight</a><hr />
 		<div id="side_bar">
 		</div> 
 		<hr>
-		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)">Follow<br>Glider<br>
-		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)">Show<br>Task<br>
-		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
-			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)">Show<br>Airspace
-		<?  } ?>
+		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)">Follow Glider<br>
+		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)">Show Task
 		</fieldset>
 
-		</div>
+		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
+				<fieldset class="legendBox"><legend>Admin</legend><BR />
+				<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)">Show Airspace
+				</fieldset>
+		<?  } ?>
+
     </form>
 	</td>
-
+  </tr>
+  <tr>
+	<td valign="top"><div id="map"></div></td>
   </tr>
 </table>
 <div id="pdmarkerwork"></div>
@@ -108,10 +115,8 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
-<script src="js/chartFX/wz_jsgraphics.js"></script>
 <script src='js/chartFX/excanvas.js'></script>
 <script src='js/chartFX/chart.js'></script>
-<script src="js/chartFX/jgchartpainter.js"></script>
 <script src='js/chartFX/canvaschartpainter.js'></script>
 <link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
 
@@ -120,7 +125,7 @@
 
 var relpath="<?=$moduleRelPath?>";
 var polylineURL="<?=$flight->getPolylineRelPath() ?>";
-var jsonURL="<?=$flight->getJsonRelPath() ?>";
+var jsonURL="http://<?=$_SERVER['SERVER_NAME'].'/modules/leonardo/'.$flight->getJsonRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 var posMarker;
 
@@ -135,15 +140,15 @@ var altUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M:_FT) ; ?>";
 var speedUnits="<? echo ' '.(($PREFS->metricSystem==1)?_KM_PER_HR:_MPH) ; ?>";
 var varioUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M_PER_SEC:_FPM) ; ?>";
 
-var ImgW = 745;
+var ImgW = 600;
 var StartTime = <?=$START_TIME?> ;
 var EndTime = <?=$DURATION?> ;
 
 var timeLine=new Array();
 timeLine[1] = document.getElementById("timeLine1").style;
 
-var marginLeft=37;
-var marginRight=5;
+var marginLeft=40;
+var marginRight=19;
 
 
 var CurrTime=new Array();
@@ -162,11 +167,10 @@ var v=new Array();
 <script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
 
 <script type="text/javascript">
-	
-	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
-	map.addControl(new GLargeMapControl());
-	map.addControl(new GMapTypeControl());
-	map.setCenter (new GLatLng(0,0), 4);
+//	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
+//	map.addControl(new GLargeMapControl());
+//	map.addControl(new GMapTypeControl());
+//	map.setCenter (new GLatLng(0,0), 4);
 
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=5251");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
@@ -174,75 +178,47 @@ var v=new Array();
 
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	
-	displayTask(tp);
+	// displayTask(tp);
 	
-	GDownloadUrl(polylineURL, process_polyline);
+	// GDownloadUrl(polylineURL, process_polyline);
 	
 	function drawChart(jsonString) {		
 		var flightArray = eval("(" + jsonString + ")");		
-		// add some spaces to the last legend
-		flightArray.time.label[flightArray.time.label.length-1]+='   ___';
-		if (metricSystem==2) {
-			for(i=0;i<flightArray.elev.length;i++) {
-				flightArray.elev[i]*=3.28;
-				flightArray.elevGnd[i]*=3.28;
-			}
-		
-		}
 		var c = new Chart(document.getElementById('chart'));
 		c.setDefaultType(CHART_LINE );
 		c.setGridDensity(5, 5);
-		// c.setVerticalRange(0, 100);
+		c.setVerticalRange(0, 100);
 		c.setShowLegend(false);
-		c.setLabelPrecision(0);
 		c.setHorizontalLabels(flightArray.time.label);
-		c.add('Altitude',     '#FF3333', flightArray.elev);
-		c.add('Ground Elev',  '#C0AF9C', flightArray.elevGnd,CHART_AREA);
+		c.add('Altitude',            '#FF3333', flightArray.elev);
+		c.add('Ground Elev',        '#886D50', flightArray.elevGnd,CHART_AREA);
 		c.draw();
 	}
 
-	function startChartAjax(url, vars, callbackFunction){
-     	//  var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP.3.0");
-		// var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");	  
-		
-		if (window.XMLHttpRequest) {
-		 	// browser has native support for XMLHttpRequest object
-			var request= new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-		 	// try XMLHTTP ActiveX (Internet Explorer) version
-			var request = new ActiveXObject("Microsoft.XMLHTTP");
-			// alert("ie");
-		} else   {
-         alert('Your browser does not seem to support XMLHttpRequest.');
-	    }
-
-		// alert(url);
+	function ajax(url, vars, callbackFunction){
+        var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP.3.0");
         request.open("GET", url, true);
+		request.setRequestHeader("content-type","application/x-www-form-urlencoded");
+        request.send(vars);
         request.onreadystatechange = function(){
-			if (request.readyState == 4 || request.readyState=='complete') {
+			if (request.readyState == 4) {
 				if (request.status == 200) {
-					//  alert("OK  URL.");
 					callbackFunction(request.responseText);
 					//the_object = eval("(" + http_request.responseText + ")");
 				} else {
-					alert("There was a problem with the URL "+url);
+					alert("There was a problem with the URL.");
 				}
 				request = null;
 			}
 		};
-		// i have moved this below see
-		// http://keelypavan.blogspot.com/2006/03/reusing-xmlhttprequest-object-in-ie.html
-		// http://blog.davber.com/2006/08/22/ajax-and-ie-caching-problems/
-		request.setRequestHeader("content-type","application/x-www-form-urlencoded");
-	 	request.send(vars);
 	}
 
-	
-	startChartAjax(jsonURL,null,drawChart );
-	//window.onload = function() {
-		//ieCanvasInit('js/chartFX/iecanvas.htc');
+	ajax(jsonURL,null,drawChart );
+
+	window.onload = function() {
+		//ieCanvasInit('includes/iecanvas.htc');
 		// draw(); 
-	//};
+	};
 
 </script>
 

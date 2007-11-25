@@ -679,5 +679,10 @@ define('_PROJECT_RULES2','Regulations 2008');
 define('_MEAN_SPEED1','Mean Speed');
 define('_External_Entry','External Entry');
 
+// New on 2007/11/25
+define('_Altitude','Altitude');
+define('_Speed','Speed');
+define('_Distance_from_takeoff','Distance from takeoff');
+
 
 ?>
