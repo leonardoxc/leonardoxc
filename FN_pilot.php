@@ -77,6 +77,22 @@ function transliterate($str,$enc) {
 	// http://www.derickrethans.nl/translit.php
 	global $CONF_use_utf;
 
+	if ($enc=='gb2312') {
+		// echo "#### $str $enc ##";		
+
+		if (! $CONF_use_utf )  {
+			require_once dirname(__FILE__)."/lib/ConvertCharset/convert_gb2312.php";	
+			return gb2312_to_latin($str);		
+		} else {
+			require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
+			$gb2312_str= Charset::convert($str,'utf-8','gb2312');
+			$str2=Charset::PinYin($gb2312_str,'gb2312');
+			// echo "^gb2312_str : $gb2312_str ^ ";			
+			// echo "^str2: $str2 ^ ";
+			return $str2;
+
+		}
+	}
 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 	require_once dirname(__FILE__)."/lib/utf8_to_ascii/utf8_to_ascii.php";
 
@@ -280,6 +296,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	} else { // phpBB
 		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {
+							
 			$row= $db->sql_fetchrow($res);
 			$realName=$row[$CONF['userdb']['user_real_name_field']];
 
@@ -295,7 +312,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">".$pilotLang."#".$pilotCountry."$";	
+			 // echo "($str)>".$pilotLang."#".$pilotCountry."$";	
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);
