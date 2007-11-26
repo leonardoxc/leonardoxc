@@ -73,15 +73,21 @@ function getUsedGliders($userID,$serverID=0) {
 }
 
 function transliterate($str,$enc) {
+	// see this for hebraic-chinisee
+	// http://www.derickrethans.nl/translit.php
+	global $CONF_use_utf;
+
 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 	require_once dirname(__FILE__)."/lib/utf8_to_ascii/utf8_to_ascii.php";
+
+	// if $CONF_use_utf it means the $str is already in utf
+	// so  translitarate it directly
+	if ($CONF_use_utf) return utf8_to_ascii($str);
+
 	$NewEncoding = new ConvertCharset;
 	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);
-
-	global $CONF_use_utf;
-	//if ($CONF_use_utf) return ($str_utf8);
-	//else return utf8_to_ascii($str_utf8);
-	 return utf8_to_ascii($str_utf8);
+	
+	return utf8_to_ascii($str_utf8);
 }
 
 function getPilotInfo($pilotIDview,$serverID) {

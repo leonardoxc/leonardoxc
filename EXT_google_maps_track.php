@@ -18,7 +18,7 @@
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID,0);
 	
-	$flight->makeJSON(0);  // mo force
+	$flight->makeJSON(0);  // no force
 
 	// we dont use png files any more
 	//$flight->updateCharts(0,1); // no force update, raw charts
@@ -124,7 +124,7 @@
 
 var relpath="<?=$moduleRelPath?>";
 var polylineURL="<?=$flight->getPolylineRelPath() ?>";
-var jsonURL="<?=$flight->getJsonRelPath() ?>";
+// var jsonURL="<?=$flight->getJsonRelPath() ?>";
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 var posMarker;
 
@@ -155,15 +155,7 @@ CurrTime[1] = 0;
 CurrTime[2] = EndTime;
 DisplayCrosshair(1);
 
-var lt=new Array();
-var ln=new Array();
-var d=new Array();
-var a=new Array();
-var s=new Array();
-var v=new Array();
 </script>
-
-<script src="<?=$flight->getJsRelPath(1)?>" type="text/javascript"></script>
 
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
 
@@ -184,24 +176,35 @@ var v=new Array();
 	
 	GDownloadUrl(polylineURL, process_polyline);
 	
-	function drawChart(jsonString) {		
-		var flightArray = eval("(" + jsonString + ")");		
+	function drawChart() {		
+		// var flightArray = eval("(" + jsonString + ")");		
 		// add some spaces to the last legend
-		flightArray.time.label[flightArray.time.label.length-1]+='   ___';
+		flightArray.labels[flightArray.labels.length-1]+='   ___';
 		if (metricSystem==2) {
 			for(i=0;i<flightArray.elev.length;i++) {
 				flightArray.elev[i]*=3.28;
 				flightArray.elevGnd[i]*=3.28;
 			}
-		
+			flightArray.max_alt*=3.28;
+			flightArray.min_alt*=3.28;
 		}
+		
+		var min_alt=Math.floor( (flightArray.min_alt/100.0) )  * 100 ;
+		var max_alt=Math.ceil( (flightArray.max_alt/100.0) ) * 100  ;
+		
+		var ver_label_num=5;
+		// smart code to  compute vertival label num so to be mulitple of 100
+		//if ( ( (max_alt-min_alt)/ver_label_num) != Math.floor((max_alt-min_alt)/  ver_label_num ) ) 
+		//		ver_label_num++;
+
 		var c = new Chart(document.getElementById('chart'));
 		c.setDefaultType(CHART_LINE );
-		c.setGridDensity(5, 5);
-		// c.setVerticalRange(0, 100);
+
+		c.setGridDensity(flightArray.label_num,ver_label_num);
+		c.setVerticalRange( min_alt ,max_alt  );
 		c.setShowLegend(false);
 		c.setLabelPrecision(0);
-		c.setHorizontalLabels(flightArray.time.label);
+		c.setHorizontalLabels(flightArray.labels);
 		c.add('Altitude',     '#FF3333', flightArray.elev);
 		c.add('Ground Elev',  '#C0AF9C', flightArray.elevGnd,CHART_AREA);
 		c.draw();
@@ -243,8 +246,8 @@ var v=new Array();
 	 	request.send(vars);
 	}
 
-	
-	startChartAjax(jsonURL,null,drawChart );
+	drawChart();
+//	startChartAjax(jsonURL,null,drawChart );
 	//window.onload = function() {
 		//ieCanvasInit('js/chartFX/iecanvas.htc');
 		// draw(); 

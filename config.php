@@ -153,6 +153,8 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // ... but you will not have the track plotted on the map 
  $mapServerActive=1;
 
+ // dont use DEM for ground elevation by default
+ $CONF['maps']['3d']=0;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
  $CONF_google_maps_track=0;

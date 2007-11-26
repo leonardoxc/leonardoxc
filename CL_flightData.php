@@ -866,7 +866,7 @@ $resStr='{
 			if ( $lines) {
 				$i=0;
 		
-	$str="<?xml version='1.0' encoding='UTF-8'?>\n".
+	$str="<?xml version='1.0' encoding='iso-8859-2'?>\n".
 	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
 
 				$str.="<Document>									
@@ -1271,8 +1271,12 @@ $kml_file_contents=
 		return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance);
 	}
 
+
 	function makeJSON($forceRefresh=0) {
-	$forceRefresh=1;
+		global  $CONF;
+
+		// $forceRefresh=1;
+
 		$filename=$this->getJsonFilename();
 		if ( is_file($filename) && ! $forceRefresh ) {
 			return;
@@ -1284,7 +1288,10 @@ $kml_file_contents=
 		$lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
 		if (!$lines) return;
 		$i = 0;
-	
+
+		$jsTrack['max_alt']=0;
+		$jsTrack['min_alt']=100000;
+
 		// first 3 lines of pointsFile is reserved for info
 		for($k=3;$k< count($lines);$k++){
 			$line = trim($lines[$k]);
@@ -1299,64 +1306,70 @@ $kml_file_contents=
 			if  ( $time<$lastPointTime ) continue;		
 			$lastPointTime=$time;
 	
-			if ($time_in_secs) $data_time[$i] = $time;
-			else $data_time[$i] = sec2Time($time, 1);
-					
-			$data_alt[$i] = $alt;
-			$data_speed[$i] = $speed;
-			$data_vario[$i] = $vario;
-			$data_X[$i]=-$lon;
-			$data_Y[$i]=$lat;			
-	
-			if ($i > 0) {
-				// $t_dis=gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) ;
-				// $data_takeoff_distance[$i] = $t_dis/1000; //gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) /1000;		
-				$data_takeoff_distance[$i]=$dis;
-			} else {
-				$data_takeoff_distance[$i] = 0;
+			if (! $time_in_secs ) {
+				$time = sec2Time($time, 1);
+			}
+
+			$jsTrack['time'][$i]	=$time;
+			$jsTrack['elev'][$i]	=$alt;
+			$jsTrack['lat'][$i] 	=sprintf('%0.6f',$lat);
+			$jsTrack['lon'][$i]		= sprintf('%0.6f',-$lon);
+			$jsTrack['speed'][$i] 	= sprintf('%.2f',$speed);
+			$jsTrack['vario'][$i] 	= sprintf('%.2f',$vario);
+
+			if ( $CONF['maps']['3d'] ) {
+				require_once dirname(__FILE__).'/CL_hgt.php';
+				$jsTrack['elevGnd'][$i] = $elevGnd[$i] = hgt::getHeight($lat,-$lon);
+			} else  {
+				$jsTrack['elevGnd'][$i] = 0 ;
+			}
+
+			if ( $jsTrack['elevGnd'][$i] > $jsTrack['max_alt'] ) $jsTrack['max_alt']=$jsTrack['elevGnd'][$i];
+			if ( $jsTrack['elev'][$i]    > $jsTrack['max_alt'] ) $jsTrack['max_alt']=$jsTrack['elev'][$i];
+			if ( $jsTrack['elevGnd'][$i] < $jsTrack['min_alt'] ) $jsTrack['min_alt']=$jsTrack['elevGnd'][$i];
+			if ( $jsTrack['elev'][$i]    < $jsTrack['min_alt']) $jsTrack['min_alt']=$jsTrack['elev'][$i];
+
+
+			if ($i == 0) {
+				$dis =0;
 				$firstLat=$lat;
 				$firstLon=$lon;
 			}
+			$jsTrack['distance'][$i] =sprintf('%.3f',$dis);
 			
 			$i ++;
-		} //end for loop
+		}  //end for loop
 
-
-	/*	// Generate CHART_NBLBL labels
-		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBLBL - 1); $i < CHART_NBLBL; $i++, $idx += $step) {
-			$jsTrack['time']['label'][$i] = $track['time']['hour'][$idx] . "h" . $track['time']['min'][$idx];
-		}
-	
-		// Change the number of points to CHART_NBPTS
+		/*
+		 Change the number of points to CHART_NBPTS
 		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / (CHART_NBPTS - 1); $i < CHART_NBPTS; $i++, $idx += $step) {
 			$jsTrack['elev'][$i] = $track['elev'][$idx];
 			$jsTrack['time']['hour'][$i] = $track['time']['hour'][$idx];
 			$jsTrack['time']['min'][$i] = $track['time']['min'][$idx];
 			$jsTrack['time']['sec'][$i] = $track['time']['sec'][$idx];
 		}
-	*/
-		$jsTrack['elev']=$data_alt;
-		$jsTrack['lat'] = $data_Y;
-		$jsTrack['lon'] = $data_X;
+
+		*/
+
+		$nbPts=count( $jsTrack['time']);
+		$label_num=8;
+		for ($i = 0, $idx = 0, $step = ($nbPts - 1) / ($label_num - 1); $i < $label_num; $i++, $idx += $step) {
+			$jsTrack['labels'][$i] = $jsTrack['time'][$idx];
+		}
+		// 			$jsTrack['labels']=array("11h40","12h6","12h29","12h52","13h15");
 	
-		$jsTrack['time_series'] = $data_time;
-		$jsTrack['time']['label']=array("11h40","12h6","12h29","12h52","13h15");
-		$jsTrack['elevGnd'] = $data_alt;
-		$jsTrack['speed'] 	= $data_speed;
-		$jsTrack['vario'] 	= $data_vario;
-		$jsTrack['distance'] =$data_takeoff_distance;
-		
-		$jsTrack['nbTrackPt'] = count( $data_X);
-		$jsTrack['nbChartPt'] = count( $data_X);
-		$jsTrack['nbChartLbl'] = 5;
+		$jsTrack['points_num'] = $nbPts;
+		$jsTrack['nbChartPt'] = $nbPts;
+		$jsTrack['label_num'] = $label_num;
 		$jsTrack['date'] = $this->DATE;
 
 		require_once dirname(__FILE__).'/lib/json/CL_json.php';
 
 		$JSONstr = json::encode($jsTrack);
 
-		writeFile( $filename, $JSONstr );
+		writeFile( $filename, 'var flightArray='.$JSONstr );
 	}
+
 	
   function getRawValues($forceRefresh=0, $getAlsoXY=0) {
     $this->setAllowedParams();

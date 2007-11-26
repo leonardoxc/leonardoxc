@@ -476,16 +476,16 @@ function removeClubFlight(clubID,flightID) {
 	    if ($row['filename']) {
 			echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
-		    echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
+		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
 		} else {
-
-			echo "<TD $airspaceProblem align=left><a href='".$row["originalURL"]."' target='_blank'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._External_Entry."'  width='16' height='16' /></a>";
+			echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			// echo "<TD $airspaceProblem align=left><a href='".$row["originalURL"]."' target='_blank'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._External_Entry."'  width='16' height='16' /></a>";
 			if ($row["originalKML"]) 
 			    echo "<a href='".$row["originalKML"]."'><img class='listIcons' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 			else
 			    echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
-			echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
+			// echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 		}
 
 

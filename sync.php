@@ -138,6 +138,13 @@
 		if ($format=='XML') 		$RSS_str.="</log>\n";
 		else if ($format=='JSON') 	$RSS_str.=' ] } ';
 
+		//$RSS_str=htmlspecialchars($RSS_str);
+		if (!$CONF_use_utf) {
+		 	require_once dirname(__FILE__).'/lib/ConvertCharset/ConvertCharset.class.php';
+			$NewEncoding = new ConvertCharset;
+			$RSS_str = $NewEncoding->Convert($RSS_str,$langEncodings[$nativeLanguage], "utf-8", $Entities);
+		}
+
 		if ($zip) {
 			$filesToServe=array();
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";

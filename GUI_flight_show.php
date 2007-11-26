@@ -249,11 +249,12 @@ function delete_takeoff(id) {
   }
 
   if ($_REQUEST['updateMap']) $flight->getMapFromServer();		
-  if ($_REQUEST['updateMap3d']) $flight->getMapFromServer(1);		
+  // if ($_REQUEST['updateMap3d']) $flight->getMapFromServer(1);		
   if ($_REQUEST['updateCharts']) $flight->updateCharts(1);		
   if ($_REQUEST['updateData'])  {
 	$flight->getFlightFromIGC( $flight->getIGCFilename() );
 	$flight->updateTakeoffLanding();
+	$flight->makeJSON(1);
 	$flight->putFlightToDB(1); // 1== UPDATE
   }
 

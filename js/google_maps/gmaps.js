@@ -19,7 +19,7 @@
 	function DisplayCrosshair(i){ // i=1 for the start , 2 end 	 
 		var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime) ;
 		timeLine[i].left = marginLeft + Temp  + "px";		
-		MWJ_changeContents('timeText'+i,getCurrentTime(StartTime + CurrTime[i]));
+		//	MWJ_changeContents('timeText'+i,getCurrentTime(StartTime + CurrTime[i]));
 	}
 
 	function refreshMap() {	
@@ -81,22 +81,25 @@
 		
 		if ( CurrTime[1] <0 )  { CurrTime[1] =0; }
 		if ( CurrTime[1] >= CurrTime[2]-4 )  { CurrTime[1] =CurrTime[2]-5; }
+
 		DisplayCrosshair(i);
 		
 		// round up to 20secs..
-		tm=Math.floor(CurrTime[1]/20)*20;
-		
+		// tm=Math.floor(CurrTime[1]/20)*20;
+		tm=Math.floor(CurrTime[1]/EndTime * flightArray.points_num);
+		MWJ_changeContents('timeText'+i,flightArray.time[tm]);
+
 		// get the lat lon
-		lat=lt[tm];
-		lon=ln[tm];
+		lat=flightArray.lat[tm];
+		lon=flightArray.lon[tm];
 		var newpos= new GLatLng(lat, lon);
 		posMarker.setPoint(newpos);
 		
 		if (followGlider) map.setCenter(newpos, null);
 		
-		var speedStr=s[tm];
-		var altStr=a[tm];
-		var varioStr=v[tm];
+		var speedStr=flightArray.speed[tm];
+		var altStr=flightArray.elev[tm];
+		var varioStr=flightArray.vario[tm];
 		
 		if (metricSystem==2) {
 			speedStr*=0.62;

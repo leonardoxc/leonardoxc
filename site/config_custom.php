@@ -40,7 +40,7 @@
  $CONF_main_page="index_full";
 
  // use utf language files 
- $CONF_use_utf=0;
+ $CONF_use_utf=1;
 
  // the native language of the server
  $nativeLanguage="english";
@@ -70,6 +70,9 @@
  // set to 0 if you dont know what a map server is ...
  // ... but you will not have the track plotted on the map 
  $mapServerActive=1;
+
+ // use  DEM for ground elevation in the altitude graph
+ $CONF['maps']['3d']=1;
 
  // Use google maps to display flight track ( needs a google maps key : see above  $CONF_google_maps_api_key )
  $CONF_google_maps_track=1;
