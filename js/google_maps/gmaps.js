@@ -7,11 +7,13 @@
 		// if (followGlider) map.setCenter(newpos, null);
 	}
 
-	function getCurrentTime(ct) {
-	   ct=ct/60;
-	   h=Math.floor(ct/60);
+
+	
+	function sec2Time(secs){
+	   secs=secs/60;
+	   h=Math.floor(secs/60);
   	   if (h<10) h="0"+h;
-	   m=Math.floor(ct % 60);
+	   m=Math.floor(secs % 60);
 	   if (m<10) m="0"+m;
 	   return h+":"+m;
 	}
@@ -19,7 +21,7 @@
 	function DisplayCrosshair(i){ // i=1 for the start , 2 end 	 
 		var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime) ;
 		timeLine[i].left = marginLeft + Temp  + "px";		
-		//	MWJ_changeContents('timeText'+i,getCurrentTime(StartTime + CurrTime[i]));
+		//	MWJ_changeContents('timeText'+i,sec2Time(StartTime + CurrTime[i]));
 	}
 
 	function refreshMap() {	
@@ -86,20 +88,21 @@
 		
 		// round up to 20secs..
 		// tm=Math.floor(CurrTime[1]/20)*20;
-		tm=Math.floor(CurrTime[1]/EndTime * flightArray.points_num);
-		MWJ_changeContents('timeText'+i,flightArray.time[tm]);
+		tm=Math.floor(CurrTime[1]/EndTime * flight.points_num);
+		// MWJ_changeContents('timeText'+i,sec2Time(flight.time[tm]));
+		MWJ_changeContents('timeText'+i,flight.time[tm]);
 
 		// get the lat lon
-		lat=flightArray.lat[tm];
-		lon=flightArray.lon[tm];
+		lat=flight.lat[tm];
+		lon=flight.lon[tm];
 		var newpos= new GLatLng(lat, lon);
 		posMarker.setPoint(newpos);
 		
 		if (followGlider) map.setCenter(newpos, null);
 		
-		var speedStr=flightArray.speed[tm];
-		var altStr=flightArray.elev[tm];
-		var varioStr=flightArray.vario[tm];
+		var speedStr=flight.speed[tm];
+		var altStr=flight.elev[tm];
+		var varioStr=flight.vario[tm];
 		
 		if (metricSystem==2) {
 			speedStr*=0.62;
@@ -107,9 +110,9 @@
 		speedStr=Math.round(speedStr*10)/10;
 		speedStr=speedStr+speedUnits;
 		
-		if (metricSystem==2) {
-			altStr*=3.28;
-		}
+		//if (metricSystem==2) {
+		//	altStr*=3.28;
+		//}
 		altStr=Math.round(altStr);
 		altStr=altStr+altUnits;
 		

@@ -50,7 +50,7 @@
 		$waypointsWebPath=moduleRelPath(0)."/".$waypointsRelPath;
 		$flightsWebPath=moduleRelPath(0)."/".$flightsRelPath;
 
-		$flight->getFlightFromIGC( $flight->getIGCFilename() );
+		$flight->getFlightFromIGC( $flight->getIGCFilename(), 0 );
 
 		$flight->deleteSecondaryFiles();
 

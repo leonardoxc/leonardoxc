@@ -1275,7 +1275,7 @@ $kml_file_contents=
 	function makeJSON($forceRefresh=0) {
 		global  $CONF;
 
-		// $forceRefresh=1;
+		 $forceRefresh=1;
 
 		$filename=$this->getJsonFilename();
 		if ( is_file($filename) && ! $forceRefresh ) {
@@ -1306,9 +1306,9 @@ $kml_file_contents=
 			if  ( $time<$lastPointTime ) continue;		
 			$lastPointTime=$time;
 	
-			if (! $time_in_secs ) {
-				$time = sec2Time($time, 1);
-			}
+			//if (! $time_in_secs ) {
+			//	$time = sec2Time($time, 1);
+			//}
 
 			$jsTrack['time'][$i]	=$time;
 			$jsTrack['elev'][$i]	=$alt;
@@ -1382,7 +1382,8 @@ $kml_file_contents=
     $data_X =array();
     $data_Y =array();
 
-	if ( ! is_file($this->getPointsFilename(1) ) || ! is_file($this->getJsFilename(1) ) || $forceRefresh ) 	$this->storeIGCvalues(); // if no file exists do the proccess now
+	if ( ! is_file($this->getPointsFilename(1) ) ||  $forceRefresh )
+		 	$this->storeIGCvalues(); // if no file exists do the proccess now
 
     $lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
     if (!$lines) return;
@@ -1631,25 +1632,23 @@ $kml_file_contents=
 		// now write it to file
 		$outputBuffer='$min_time='.$min_time.';$max_time='.$max_time.";\n\n\n";
 		
-		$jsOutput="";
+		// $jsOutput="";
 		foreach ($normPoints as $point) {
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
 			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
 			$this_tm=$point['time']-$min_time;
-			$jsOutput.=sprintf("lt[$this_tm]=%.6f;ln[$this_tm]=%.6f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
-								,$point['lat'],-$point['lon'],$point['dis'],$point['alt'],$point['speed'],$point['vario']);
+
+//$jsOutput.=sprintf("lt[$this_tm]=%.6f;ln[$this_tm]=%.6f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
+	//							,$point['lat'],-$point['lon'],$point['dis'],$point['alt'],$point['speed'],$point['vario']);
 		}
 		$path_igc = dirname($this->getPointsFilename(1));
 		if (!is_dir($path_igc)) @mkdir($path_igc, 0755);
 
 		// write saned js file		
-		writeFile($this->getJsFilename(1),$jsOutput);
+		// writeFile($this->getJsFilename(1),$jsOutput);
+		
 		// write saned IGC file
 		writeFile($this->getPointsFilename(1),$outputBuffer);
-
-//		$handle = fopen($this->getPointsFilename(1), "w");
-//		fwrite($handle, $outputBuffer);
-//		fclose($handle);
 
 		return 1;
 
@@ -2677,7 +2676,8 @@ $kml_file_contents=
 		$this->$var_name="";
 	}
 
-	function deleteSecondaryFiles(){
+	function deleteSecondaryFiles(){	
+			@unlink($this->getJsonFilename() ) ;
 			@unlink($this->getPointsFilename(1) ) ;
 			@unlink($this->getJsFilename(1) );			
 			@unlink($this->getIGCFilename(0).".kmz" ); 
@@ -2703,7 +2703,7 @@ $kml_file_contents=
 
 		// Now delete the files
 
-		unlink($this->getIGCFilename() ); 
+		@unlink($this->getIGCFilename() ); 
 		@unlink($this->getIGCFilename(1) ); 
 		@unlink($this->getIGCFilename(0).".olc" ); 
 
@@ -2932,7 +2932,7 @@ $kml_file_contents=
 			 !is_file($vario_img_filename) ||  !is_file($takeoff_distance_img_filename) || 
 			 !is_file($alt_img_filename2) ||  !is_file($speed_img_filename2) ||  
 			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||
-			 !is_file($this->getJsFilename(1)) ||  $forceRefresh) {
+			 $forceRefresh) {
 	
 			// list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 			
