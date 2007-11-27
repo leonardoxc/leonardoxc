@@ -477,4 +477,45 @@ function splitServerPilotStr($str) {
 
 	return array($serverID,$pilotID);
 }
+
+
+// Color handling functions
+function RGB($r, $g, $b) { return array($r, $g, $b);}
+
+function AllocateColorMap($image, $array, &$colorMap) {
+    for ($index = 0; $index < count($array); $index++) {
+        $colorMap[$index] = imagecolorallocate($image,
+                                               $array[$index]['R'],
+                                               $array[$index]['G'],
+                                               $array[$index]['B']);
+    }
+}
+
+function InterpolateRGB(&$array, $startRGB, $endRGB, $startIdx, $endIdx)
+{
+    InterpolateArray($rArray, $startRGB[0], $endRGB[0], $startIdx, $endIdx);
+    InterpolateArray($gArray, $startRGB[1], $endRGB[1], $startIdx, $endIdx);
+    InterpolateArray($bArray, $startRGB[2], $endRGB[2], $startIdx, $endIdx);
+
+    for ($index = $startIdx; $index < $endIdx; $index++) {
+        $array[$index]['R'] = $rArray[$index];
+        $array[$index]['G'] = $gArray[$index];
+        $array[$index]['B'] = $bArray[$index];
+    }
+}
+
+function InterpolateArray(&$array, $startVal, $endVal, $startIdx, $endIdx)
+{
+    if ($endIdx <= $startIdx) return;
+
+    $step = ($endVal - $startVal) / ($endIdx - $startIdx);
+
+    for ($index = $startIdx; $index < $endIdx; $index++) {
+        $array[$index] = (int)round($startVal);
+        $startVal += $step;
+    }
+
+    $array[$endIdx] = $endVal;
+}
+
 ?>

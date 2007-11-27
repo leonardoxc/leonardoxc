@@ -1275,7 +1275,7 @@ $kml_file_contents=
 	function makeJSON($forceRefresh=0) {
 		global  $CONF;
 
-		 $forceRefresh=1;
+		// $forceRefresh=1;
 
 		$filename=$this->getJsonFilename();
 		if ( is_file($filename) && ! $forceRefresh ) {
@@ -2411,6 +2411,158 @@ $kml_file_contents=
 		}		
 		if (! $manualScore) $this->FLIGHT_KM=$this->FLIGHT_KM*1000;
 
+	}
+
+
+	function getMapFromServerDEM($num=0) {
+		global  $CONF;
+
+		 $forceRefresh=1;
+
+		$filename=$this->getMapFilename();
+		if ( is_file($filename) && ! $forceRefresh ) {
+			return;
+		}
+
+		// if no file exists do the proccess now
+		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues(); 
+
+		$lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
+		if (!$lines) return;
+		$i = 0;
+
+		$jsTrack['max_alt']=0;
+		$jsTrack['min_alt']=100000;
+
+		$min_lat=1000;
+		$max_lat=-1000;
+		$min_lon=1000;
+		$max_lon=-1000;
+
+		for($k=3;$k< count($lines);$k++){
+			$line = trim($lines[$k]);
+			if (strlen($line) == 0) continue;			  
+			eval($line);
+			$lon=-$lon;
+			if ( $lat  > $max_lat )  $max_lat =$lat  ;
+			if ( $lat  < $min_lat )  $min_lat =$lat  ;
+			if ( $lon  > $max_lon )  $max_lon =$lon  ;
+			if ( $lon  < $min_lon )  $min_lon =$lon  ;
+			$lat_arr[]=$lat;
+			$lon_arr[]=$lon;
+		}
+/*
+		$max_lat+=0.01;
+		$max_lon+=0.01;
+
+		$min_lat-=0.01;
+		$min_lon-=0.01;
+*/
+		$totalWidth1=calc_distance($min_lat, $min_lon,$min_lat, $max_lon);
+		$totalWidth2=calc_distance($max_lat, $min_lon,$max_lat, $max_lon);
+		$totalWidth=max($totalWidth1,$totalWidth2);
+
+		$totalHeight1=calc_distance($min_lat, $min_lon,$max_lat, $min_lon);
+		$totalHeight2=calc_distance($min_lat, $max_lon,$max_lat, $max_lon);
+		$totalHeight=max($totalHeight1,$totalHeight2);
+	
+		if ($totalWidth> $totalHeight ) {  
+			// Landscape  style
+			DEBUG("MAP",1,"Landscape style <BR>");		
+			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalHeight/totalWidth: ".( $totalHeight / $totalWidth)."<br>");
+			// if ( $totalHeight / $totalWidth < 3/4 ) $totalHeight = (3/4) *  $totalWidth ;			
+			$mapWidthPixels=600;
+			$mapHeightPixels=$mapWidthPixels * ( $totalHeight / $totalWidth);
+	
+		} else { 
+			// portait style
+			DEBUG("MAP",1,"Portait style <BR>");
+			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalWidth/totalHeight: ".( $totalWidth / $totalHeight)."<br>");
+			// if ( $totalWidth  / $totalHeight < 3/4 )  $totalWidth  = (3/4) * $totalHeight ;
+			$mapWidthPixels=300;
+			$mapHeightPixels=$mapWidthPixels * ( $totalHeight / $totalWidth);
+		}
+
+		DEBUG("MAP",1,"MAP  min_lat: $min_lat, min_lon: $min_lon, max_lat: $max_lat, max_lon: $max_lon <BR>");	
+
+		require_once dirname(__FILE__).'/CL_hgt.php';
+
+
+		$latStep= ($max_lat-$min_lat) /  $mapHeightPixels; 
+		$lonStep= ($max_lon-$min_lon) /  $mapWidthPixels ;
+		
+		
+		$max_ground_elev  =0;
+
+		$lon=$min_lon ;
+		for ($x=0;$x<$mapWidthPixels;$x++) {
+			
+			$lat=$min_lat ;		
+			for ($y=0;$y<$mapHeightPixels;$y++) {		
+					
+				// echo "lat:$lat lon:$lon<BR>";
+
+				// $lon=$min_lon+ $x * ($max_lon-$min_lon) /  $mapWidthPixels; 
+				// $lat=$min_lat+ $y * ($max_lat-$min_lat) / $mapHeightPixels; 
+				$alt=hgt::getHeight($lat,$lon);
+				//echo "$alt#";
+				if ($alt >$max_ground_elev  ) $max_ground_elev  =$alt;
+				$mapEvelGnd[$x][$y]=$alt;
+
+				// $mapLatLon[$x][$y]="$lat,$lon";
+				$lat+=$latStep;
+			}
+			$lon+=$lonStep;
+		}
+
+		// print_r($mapEvelGnd);
+		// print_r($mapLatLon);
+
+  		$img=imagecreatetruecolor($mapWidthPixels,$mapHeightPixels);
+		   
+		$backColor =imagecolorallocate ($img,214,223,209);
+		// $backColor =imagecolorallocate ($this->img,73,76,50);
+		if ($backColor==-1) echo "FAILED TO allocate new color<br>";
+		// imagefill($this->img,0,0, 1 );	
+
+		imagefilledrectangle($img, 0, 0, $mapWidthPixels-1, $mapHeightPixels-1, $backColor);
+
+        // Allocate the color map
+        InterpolateRGB($colorScale, RGB(  0,   0, 110), RGB(  0,   0, 110),   0, 255);
+        InterpolateRGB($colorScale, RGB(  0, 100,   0), RGB(180, 180,  50),   1,  60);
+        InterpolateRGB($colorScale, RGB(180, 180,  50), RGB(150, 110,  50),  60, 100);
+        InterpolateRGB($colorScale, RGB(150, 110,  50), RGB(150, 150, 150), 100, 150);
+        InterpolateRGB($colorScale, RGB(150, 150, 150), RGB(255, 255, 255), 150, 200);
+        InterpolateRGB($colorScale, RGB(255, 255, 255), RGB(255, 255, 255), 200, 253);
+        InterpolateRGB($colorScale, RGB(  0,   0,   0), RGB(  0,   0,   0), 254, 255);
+
+        AllocateColorMap($img, $colorScale, $cMap);
+
+		$factor= 256/$max_ground_elev;
+		for ($x=0;$x<$mapWidthPixels;$x++) {
+			for ($y=0;$y<$mapHeightPixels;$y++) {		
+				$color =$cMap[$mapEvelGnd[$x][$mapHeightPixels-$y] * $factor  - 1];
+				imagesetpixel ( $img, $x, $y, $color );
+			}
+		}
+
+		$track_color = imagecolorallocate($img, 255,0,0);
+
+		for ($i=0;$i<count($lat_arr);$i++) {
+			$lat=$lat_arr[$i];
+			$lon=$lon_arr[$i];
+
+			$x= ( $lon - $min_lon) * $mapWidthPixels/ ($max_lon-$min_lon) ; 
+			$y= ( $lat - $min_lat) * $mapHeightPixels/ ($max_lat-$min_lat) ; 
+			imagesetpixel ( $img, $x, $mapHeightPixels-$y, $track_color  );
+		}
+
+		imagefilter($img, IMG_FILTER_SMOOTH,200);
+
+		imagejpeg($img, $filename , 85);
+		imagedestroy($img);
+		return;
+	
 	}
 
 	function getMapFromServer($num=0) {

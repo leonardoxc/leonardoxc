@@ -2,11 +2,12 @@
 -- version 2.6.4-pl1
 -- http://www.phpmyadmin.net
 -- 
--- Generation Time: Aug 10, 2007 at 11:42 AM
+-- Host: thales.thenet.gr
+-- Generation Time: Nov 27, 2007 at 11:10 AM
 -- Server version: 5.0.22
 -- PHP Version: 4.1.2
 -- 
--- Database: `paraglidingforum`
+-- Database: `paraglidingforum2`
 -- 
 
 -- --------------------------------------------------------
@@ -20,7 +21,7 @@ CREATE TABLE `leonardo_NAC_clubs` (
   `clubID` bigint(20) NOT NULL default '0',
   `clubName` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`NAC_ID`,`clubID`)
-) ENGINE=MyISAM ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -30,29 +31,29 @@ CREATE TABLE `leonardo_NAC_clubs` (
 
 CREATE TABLE `leonardo_airspace` (
   `id` mediumint(8) unsigned NOT NULL auto_increment,
-  `Name` varchar(50) NOT NULL,
+  `Name` varchar(50) NOT NULL default '',
   `serial` tinyint(4) NOT NULL default '0',
   `disabled` tinyint(4) NOT NULL default '0',
   `updated` tinyint(4) NOT NULL default '0',
-  `Type` varchar(30) NOT NULL,
+  `Type` varchar(30) NOT NULL default '',
   `Shape` tinyint(3) unsigned NOT NULL default '0',
-  `Comments` varchar(255) NOT NULL,
-  `minx` float NOT NULL,
-  `miny` float NOT NULL,
-  `maxx` float NOT NULL,
-  `maxy` float NOT NULL,
+  `Comments` varchar(255) NOT NULL default '',
+  `minx` float NOT NULL default '0',
+  `miny` float NOT NULL default '0',
+  `maxx` float NOT NULL default '0',
+  `maxy` float NOT NULL default '0',
   `Base` blob NOT NULL,
   `Top` blob NOT NULL,
   `Points` mediumblob NOT NULL,
-  `Radius` float NOT NULL,
-  `Latitude` float NOT NULL,
-  `Longitude` float NOT NULL,
+  `Radius` float NOT NULL default '0',
+  `Latitude` float NOT NULL default '0',
+  `Longitude` float NOT NULL default '0',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `Name` (`Name`,`serial`),
   KEY `minx` (`minx`,`miny`,`maxx`,`maxy`),
   KEY `serial` (`serial`,`disabled`),
   KEY `serial_2` (`serial`,`disabled`)
-) ENGINE=MyISAM ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -62,9 +63,9 @@ CREATE TABLE `leonardo_airspace` (
 
 CREATE TABLE `leonardo_areas` (
   `areaID` mediumint(8) unsigned NOT NULL auto_increment,
-  `name` varchar(60) NOT NULL,
-  `desc` varchar(255) NOT NULL,
-  `descInt` varchar(255) NOT NULL,
+  `name` varchar(60) NOT NULL default '',
+  `desc` varchar(255) NOT NULL default '',
+  `descInt` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`areaID`)
 ) ENGINE=MyISAM ;
 
@@ -75,8 +76,8 @@ CREATE TABLE `leonardo_areas` (
 -- 
 
 CREATE TABLE `leonardo_areas_takeoffs` (
-  `areaID` mediumint(8) unsigned NOT NULL,
-  `takeoffID` mediumint(8) unsigned NOT NULL
+  `areaID` mediumint(8) unsigned NOT NULL default '0',
+  `takeoffID` mediumint(8) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
@@ -111,8 +112,8 @@ CREATE TABLE `leonardo_clubs` (
 -- 
 
 CREATE TABLE `leonardo_clubs_flights` (
-  `clubID` mediumint(8) unsigned NOT NULL,
-  `flightID` mediumint(8) unsigned NOT NULL
+  `clubID` mediumint(8) unsigned NOT NULL default '0',
+  `flightID` mediumint(8) unsigned NOT NULL default '0'
 ) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
@@ -138,6 +139,7 @@ CREATE TABLE `leonardo_flights` (
   `ID` bigint(20) unsigned NOT NULL auto_increment,
   `serverID` smallint(5) unsigned NOT NULL default '0',
   `originalURL` varchar(255) NOT NULL,
+  `originalKML` varchar(255) NOT NULL,
   `original_ID` mediumint(8) unsigned NOT NULL default '0',
   `cat` smallint(5) unsigned NOT NULL default '1',
   `subcat` smallint(5) unsigned NOT NULL default '1',
@@ -145,7 +147,7 @@ CREATE TABLE `leonardo_flights` (
   `active` smallint(6) NOT NULL default '0',
   `dateAdded` datetime NOT NULL default '0000-00-00 00:00:00',
   `timesViewed` mediumint(9) NOT NULL default '0',
-  `userID` mediumint(8) unsigned NOT NULL default '0',
+  `userID` bigint(20) NOT NULL default '0',
   `originalUserID` mediumint(8) unsigned NOT NULL default '0',
   `userServerID` mediumint(8) unsigned NOT NULL default '0',
   `filename` varchar(200) NOT NULL default '',
@@ -183,6 +185,15 @@ CREATE TABLE `leonardo_flights` (
   `FLIGHT_KM` float NOT NULL default '0',
   `FLIGHT_POINTS` float NOT NULL default '0',
   `autoScore` float NOT NULL default '0',
+  `isLive` tinyint(3) unsigned NOT NULL default '0',
+  `externalFlightType` tinyint(3) unsigned NOT NULL default '0',
+  `forceBounds` tinyint(3) unsigned NOT NULL default '0',
+  `firstPointTM` int(10) unsigned NOT NULL default '0',
+  `firstLat` float NOT NULL,
+  `firstLon` float NOT NULL,
+  `lastPointTM` int(10) unsigned NOT NULL default '0',
+  `lastLat` float NOT NULL,
+  `lastLon` float NOT NULL,
   `FIRST_POINT` varchar(50) NOT NULL default '',
   `LAST_POINT` varchar(50) NOT NULL default '',
   `turnpoint1` varchar(100) NOT NULL default '',
@@ -198,18 +209,18 @@ CREATE TABLE `leonardo_flights` (
   `grecord` smallint(6) NOT NULL default '0',
   `validated` smallint(6) NOT NULL default '0',
   `validationMessage` text NOT NULL,
-  `airspaceCheck` tinyint(3) NOT NULL default '-1',
-  `airspaceCheckFinal` tinyint(3) NOT NULL default '-1',
+  `airspaceCheck` tinyint(4) NOT NULL default '0',
+  `airspaceCheckFinal` tinyint(4) NOT NULL default '0',
   `airspaceCheckMsg` text NOT NULL,
-  `checkedBy` varchar(100) NOT NULL,
-  `NACclubID` bigint(20) NOT NULL,
+  `checkedBy` varchar(100) NOT NULL default '',
+  `NACid` int(10) unsigned NOT NULL default '0',
+  `NACclubID` bigint(20) NOT NULL default '0',
   `hash` varchar(100) NOT NULL,
   `batchOpProcessed` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`),
   KEY `userID` (`userID`),
   KEY `takeoffID` (`takeoffID`),
-  KEY `FLIGHT_POINTS` (`FLIGHT_POINTS`),
-  KEY `clubID_2` (`FLIGHT_POINTS`)
+  KEY `NACClubIndex` (`NACclubID`,`NACid`)
 ) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
@@ -220,18 +231,18 @@ CREATE TABLE `leonardo_flights` (
 
 CREATE TABLE `leonardo_log` (
   `transactionID` bigint(20) unsigned NOT NULL auto_increment,
-  `actionTime` bigint(20) unsigned NOT NULL,
-  `userID` mediumint(8) unsigned NOT NULL,
-  `effectiveUserID` mediumint(8) unsigned NOT NULL,
-  `ItemType` mediumint(8) unsigned NOT NULL,
-  `ItemID` mediumint(8) unsigned NOT NULL,
-  `ServerItemID` mediumint(8) unsigned NOT NULL,
-  `ActionID` mediumint(8) unsigned NOT NULL,
+  `actionTime` bigint(20) unsigned NOT NULL default '0',
+  `userID` mediumint(8) unsigned NOT NULL default '0',
+  `effectiveUserID` mediumint(8) unsigned NOT NULL default '0',
+  `ItemType` mediumint(8) unsigned NOT NULL default '0',
+  `ItemID` mediumint(8) unsigned NOT NULL default '0',
+  `ServerItemID` mediumint(8) unsigned NOT NULL default '0',
+  `ActionID` mediumint(8) unsigned NOT NULL default '0',
   `ActionXML` text NOT NULL,
-  `Modifier` mediumint(8) unsigned NOT NULL,
-  `ModifierID` mediumint(8) unsigned NOT NULL,
-  `ServerModifierID` mediumint(8) unsigned NOT NULL,
-  `Result` mediumint(8) unsigned NOT NULL,
+  `Modifier` mediumint(8) unsigned NOT NULL default '0',
+  `ModifierID` mediumint(8) unsigned NOT NULL default '0',
+  `ServerModifierID` mediumint(8) unsigned NOT NULL default '0',
+  `Result` mediumint(8) unsigned NOT NULL default '0',
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
 ) ENGINE=MyISAM ;
@@ -255,7 +266,7 @@ CREATE TABLE `leonardo_maps` (
   `metersPerPixel` float(7,5) NOT NULL default '0.00000',
   PRIMARY KEY  (`ID`,`filename`),
   UNIQUE KEY `filename` (`filename`)
-) ENGINE=MyISAM  PACK_KEYS=0;
+) ENGINE=MyISAM ;
 
 -- --------------------------------------------------------
 
@@ -286,7 +297,7 @@ CREATE TABLE `leonardo_pilots` (
   `CIVL_ID` mediumint(8) unsigned NOT NULL default '0',
   `NACid` int(10) unsigned NOT NULL default '0',
   `NACmemberID` bigint(20) unsigned NOT NULL default '0',
-  `NACclubID` bigint(20) NOT NULL,
+  `NACclubID` bigint(20) NOT NULL default '0',
   `olcBirthDate` varchar(8) NOT NULL default '',
   `olcFirstName` varchar(100) NOT NULL default '',
   `olcLastName` varchar(100) NOT NULL default '',
@@ -296,7 +307,7 @@ CREATE TABLE `leonardo_pilots` (
   `FirstName` varchar(40) NOT NULL default '',
   `LastName` varchar(50) NOT NULL default '',
   `clubID` mediumint(8) unsigned NOT NULL default '0',
-  `sponsor` varchar(255) default NULL,
+  `sponsor` varchar(255) NOT NULL default '',
   `Sex` varchar(6) NOT NULL default '',
   `Birthdate` varchar(15) NOT NULL default '',
   `Occupation` varchar(100) NOT NULL default '',
@@ -336,6 +347,7 @@ CREATE TABLE `leonardo_pilots` (
   `Reserve` varchar(60) NOT NULL default '',
   `Helmet` varchar(60) NOT NULL default '',
   `PilotPhoto` varchar(30) NOT NULL default '',
+  `FirstOlcYear` int(10) NOT NULL default '0',
   PRIMARY KEY  (`pilotID`,`serverID`)
 ) ENGINE=MyISAM ;
 
@@ -347,20 +359,23 @@ CREATE TABLE `leonardo_pilots` (
 
 CREATE TABLE `leonardo_servers` (
   `ID` mediumint(8) unsigned NOT NULL auto_increment,
-  `isLeo` tinyint(3) unsigned NOT NULL,
+  `isLeo` tinyint(3) unsigned NOT NULL default '0',
   `installation_type` smallint(5) unsigned NOT NULL default '2',
-  `leonardo_version` varchar(20) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `url_base` varchar(255) NOT NULL,
-  `url_op` varchar(255) NOT NULL,
-  `admin_email` varchar(100) NOT NULL,
-  `site_pass` varchar(100) NOT NULL,
+  `leonardo_version` varchar(20) NOT NULL default '',
+  `url` varchar(255) NOT NULL default '',
+  `url_base` varchar(255) NOT NULL default '',
+  `url_op` varchar(255) NOT NULL default '',
+  `admin_email` varchar(100) NOT NULL default '',
+  `site_pass` varchar(100) NOT NULL default '',
   `serverPass` varchar(50) NOT NULL,
   `clientPass` varchar(50) NOT NULL,
   `lastPullUpdateID` bigint(20) unsigned NOT NULL default '0',
+  `sync_format` varchar(20) NOT NULL default 'XML',
+  `sync_type` smallint(5) unsigned NOT NULL default '0',
+  `use_zip` tinyint(3) unsigned NOT NULL default '0',
   `is_active` tinyint(3) unsigned NOT NULL default '0',
   `gives_waypoints` tinyint(3) unsigned NOT NULL default '0',
-  `waypoint_countries` varchar(255) NOT NULL,
+  `waypoint_countries` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM ;
 
@@ -371,16 +386,16 @@ CREATE TABLE `leonardo_servers` (
 -- 
 
 CREATE TABLE `leonardo_stats` (
-  `tm` bigint(20) unsigned NOT NULL,
-  `year` smallint(5) unsigned NOT NULL,
-  `month` tinyint(3) unsigned NOT NULL,
-  `day` tinyint(3) unsigned NOT NULL,
-  `userID` bigint(20) unsigned NOT NULL,
-  `sessionID` bigint(20) unsigned NOT NULL,
-  `visitorID` bigint(20) unsigned NOT NULL,
+  `tm` bigint(20) unsigned NOT NULL default '0',
+  `year` smallint(5) unsigned NOT NULL default '0',
+  `month` tinyint(3) unsigned NOT NULL default '0',
+  `day` tinyint(3) unsigned NOT NULL default '0',
+  `userID` bigint(20) unsigned NOT NULL default '0',
+  `sessionID` bigint(20) unsigned NOT NULL default '0',
+  `visitorID` bigint(20) unsigned NOT NULL default '0',
   `op` char(25) NOT NULL default '',
-  `flightID` bigint(20) unsigned NOT NULL,
-  `executionTime` float unsigned NOT NULL,
+  `flightID` bigint(20) unsigned NOT NULL default '0',
+  `executionTime` float unsigned NOT NULL default '0',
   `os` char(20) NOT NULL default '',
   `browser` char(15) NOT NULL default '',
   `browser_version` char(10) NOT NULL default '',
@@ -429,8 +444,7 @@ CREATE TABLE `leonardo_waypoints` (
   `intLocation` varchar(100) NOT NULL default '',
   `link` varchar(255) NOT NULL default '',
   `description` text NOT NULL,
-  `modifyDate` date NOT NULL default '2005-09-01',
-  PRIMARY KEY  (`ID`),
-  KEY `lat` (`lat`,`lon`)
-) ENGINE=MyISAM  ;
+  `modifyDate` datetime NOT NULL default '2005-09-01 00:00:00',
+  PRIMARY KEY  (`ID`)
+) ENGINE=MyISAM ;
 
