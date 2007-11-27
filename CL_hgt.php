@@ -86,7 +86,7 @@ function getHeight($lat,$lon) {
 	// echo "$latD $lonD $x $y  $pointOffset<BR>";		
 
 	$alt=ord($openDEMfiles[$demFile][$pointOffset])*256+ord($openDEMfiles[$demFile][$pointOffset+1]);
-	if ($alt>65500) $alt=0;
+	if ($alt>30500) $alt=0;
 	return $alt;
 }
 

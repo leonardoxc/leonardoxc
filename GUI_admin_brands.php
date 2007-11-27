@@ -38,7 +38,8 @@
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=removeBrand'>4. Remove Brand from 'gliderName' Field</a><BR></a>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=useKnown'>5. Use known glider names to find unknown</a><BR></a>";
 	echo "<HR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createSQL'>6. Create SQL script to update main table </a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createSQL'>6a. Create SQL script to update main table </a><BR></a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createCSV'>6b. Create CSV file </a><BR></a>";
 	
 	echo "<HR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayUnknown'>* See gliders with unknown brands</a><BR></a>";
@@ -59,9 +60,25 @@
 			INSERT INTO temp_leonardo_gliders
 			SELECT glider, '', 0
 			FROM `leonardo_flights`
+			WHERE gliderBrandID=0
 			GROUP BY glider
 			ORDER BY glider;
 		");	
+	} else if ($admin_op=="createCSV") {
+		$query="SELECT * FROM  $workTable   ORDER BY gliderBrandID,glider DESC ";		
+		$res= $db->sql_query($query);
+		$i=0;
+
+		if($res > 0){
+			echo "<pre>";
+			while ($row = mysql_fetch_assoc($res)) {
+				$gliderName=$row['glider'];
+				$sql=str_replace("'","#",$row['gliderName'] ).";".$row['gliderBrandID'].";".$CONF['brands']['list'][$row['gliderBrandID']].";".addslashes ($row['glider']); 
+				echo  "$sql\n";
+			}
+			echo "</pre>";
+		}	
+
 	} else if ($admin_op=="createSQL") {	
 		$query="SELECT * FROM  $workTable WHERE gliderBrandID<>0  ORDER BY glider DESC ";		
 		$res= $db->sql_query($query);

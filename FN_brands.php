@@ -53,10 +53,12 @@
 	"XiX",
 	"Paradelta",
 	"WillsWing",
-	"Moyes",
-	"AIR",
-	"Aeros",	// 40
-
+	"Moyes", //39
+	"AIR", // 40
+//	"Aeros",	
+	"Airborne",
+	"Bautek",
+	"Seedwings",
 	// to be added
 	//	"FlyingPlanet", // not found
 	//	"ADG",      // not found
