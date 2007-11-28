@@ -90,6 +90,7 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table (NOT USED !!!)</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table (NOT USED !!!)</a> ";
 echo "</ul>";
@@ -125,23 +126,26 @@ echo "</ul><br><hr>";
 		}
 		echo "<BR><BR>Takeoff Names fixed<BR><BR>";
     } else if ($admin_op=="findMissingFiles") {
-		$query="SELECT ID,active from $flightsTable ";
+		$query="SELECT ID,active,dateAdded from $flightsTable ";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
 			 echo "<br><br>";
 			 $flight=new flight();
+			$i=0;
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 // $flight=new flight();
 				 $flight->getFlightFromDB($row["ID"],0);		
 
 				 if ( is_file( $flight->getIGCFilename() ) ) $status="OK"; 
 				 else {
-					 $status=$flight->getIGCRelPath()." MISSING";
-				     echo "Flight ID: ".$row["ID"]." [".$row["active"]."] $status <br>";
+					 $i++;
+					 $status=$flight->getIGCRelPath();
+				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."] $status <br>";
 				 }
 			 }
 		}
+		echo "<BR><br>IGC files missing: $i <hr><BR>";
 		echo "<BR><br><BR>DONE !!!<BR>";
 	} else if ($admin_op=="updateNAC_Clubs") {
 		$query="SELECT $flightsTable.DATE , $flightsTable.ID as flightID, $pilotsTable.NACid  as NACid , $pilotsTable.NACclubID  as NACclubID from $flightsTable, $pilotsTable 
@@ -195,6 +199,32 @@ echo "</ul><br><hr>";
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
+	} else if ($admin_op=="convertWaypoints") {
+		$query="SELECT * from $waypointsTable ORDER BY ID ASC";
+		$res= $db->sql_query($query);
+			
+		if($res > 0){
+			 $i=0;
+			 $waypoints=array();
+			 while ($row = mysql_fetch_assoc($res)) { 
+
+				$waypoints[$i]=array();
+				foreach($row as $name=>$value){
+					$waypoints[$i][$name]=$value;
+				}
+
+				$waypoints[$i]['name']=mb_convert_encoding($row["name"] ,'iso-8859-7', "UTF-8");
+				$waypoints[$i]['intName']=mb_convert_encoding($row["intName"] ,'iso-8859-1', "UTF-8");			  
+
+				foreach($waypoints[$i] as $name=>$value){
+					echo "$name: $value, ";
+				}
+				echo "<BR>";
+				$i++;
+			 }
+		}
+		echo "<BR><br><BR>DONE !!!<BR>";
+
 	} else if ($admin_op=="updateLocations") {
 		$query="SELECT ID from $flightsTable WHERE active=1";
 		$res= $db->sql_query($query);
@@ -212,7 +242,8 @@ echo "</ul><br><hr>";
 		echo "<BR><br><BR>DONE !!!<BR>";
 	} else if ($admin_op=="makehash") {
 		global $flightsAbsPath;
-		$query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
+		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
+		$query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE  batchOpProcessed=0 ";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
@@ -228,7 +259,7 @@ echo "</ul><br><hr>";
 					$fileContents=implode('',file($filename));
 					$hash=md5($fileContents);
 
-					$query2="UPDATE $flightsTable SET hash='$hash' WHERE ID=".$row['ID']." ";
+					$query2="UPDATE $flightsTable SET hash='$hash' , batchOpProcessed=1 WHERE ID=".$row['ID']." ";
 					$res2= $db->sql_query($query2);
 					
 					if(!$res2){
