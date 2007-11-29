@@ -593,21 +593,22 @@ if ( $divsToShow>1) { // use tabber
 	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
 	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
 	<script type='text/javascript'>
-	// document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
+	 // document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
 	</script>
 	</script>
 	<div class='tabber' id='mapTabber'>\n";
-	
+
+	if ($googleMap) {
+		$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>
+			$googleMap
+			</div>";
+	}	
 	if ($localMap) {
 		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='Map'>
 					$localMap
 				 </div>\n";
 	}
-	if ($googleMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>
-			$googleMap
-			</div>";
-	}
+
 	if ($images) {
 		$mapImg.="<div class='tabbertab' title='Photos' style='height:400px; background-color:#ECF0EA;'>
 			  $images
