@@ -38,9 +38,12 @@
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=removeBrand'>4. Remove Brand from 'gliderName' Field</a><BR></a>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=useKnown'>5. Use known glider names to find unknown</a><BR></a>";
 	echo "<HR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createSQL'>6a. Create SQL script to update main table </a><BR></a>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createCSV'>6b. Create CSV file </a><BR></a>";
-	
+
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createCSV'>6a. Create CSV file (copy - paste the output into a csv file) </a><BR>";
+	echo "<li>6b. Edit the CSV file locally in Excel and fix errors<BR>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=createSQL'>6c. Create SQL to update main table from CSV file </a><BR>";
+	echo "<li>6d. Run the SQL manually into the DB<BR>";
+
 	echo "<HR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayUnknown'>* See gliders with unknown brands</a><BR></a>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands&admin_op=displayKnown'>* See glider Names with KNOWN brands</a><BR></a>";
@@ -79,7 +82,43 @@
 			echo "</pre>";
 		}	
 
-	} else if ($admin_op=="createSQL") {	
+	} else if ($admin_op=="createSQL") {
+
+		if (!$_POST['createSQL']) {
+?>
+		<BR><strong>Create SQL to update main table from CSV file </strong><BR>
+		<FORM name="createSQLform" action="" enctype="multipart/form-data" method="post" >
+			<input name="csvFile" type="file" size="50">Select CSV file<br>
+			<input name="createSQL" type="submit" value="Create SQL"></p>      
+		</form>
+<?
+			
+
+		} else{ // parse the csv file
+
+			echo "Uploaded CSV file <BR>";
+
+			$tmpFilename=$_FILES['csvFile']['tmp_name'];
+			$tmpFormFilename=$_FILES['csvFile']['name'];	
+			if (!$tmpFilename) {
+				echo "You havent provided a csv file<BR>";
+			} else {
+				$lines=file($tmpFilename);
+				$i=0;
+				echo "<pre>";
+				foreach($lines as $line) {
+					$parts=split(";",trim($line));
+					$sql="UPDATE $flightsTable SET glider='".
+					str_replace("'","\'",$parts[0] )."' , gliderBrandID = ".
+					$parts[1]." WHERE glider='".addslashes ($parts[3])."' ; "; 
+					echo $sql."\n";
+					$i++;
+					//if ($i>10) break;
+				}
+				echo "</pre>";
+			}
+		}
+/*
 		$query="SELECT * FROM  $workTable WHERE gliderBrandID<>0  ORDER BY glider DESC ";		
 		$res= $db->sql_query($query);
 		$i=0;
@@ -93,6 +132,7 @@
 			}
 			echo "</pre>";
 		}	
+*/
 	} else if ($admin_op=="normalize") {	
 		echo "Normalize the 'glider' field and put it in 'gliderName'<BR>";
 		$query="SELECT gliderBrandID, glider FROM  $workTable WHERE 1=1  ORDER BY glider DESC ";

@@ -866,7 +866,7 @@ $resStr='{
 			if ( $lines) {
 				$i=0;
 		
-	$str="<?xml version='1.0' encoding='iso-8859-2'?>\n".
+	$str="<?xml version='1.0' encoding='iso-8859-1'?>\n".
 	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
 
 				$str.="<Document>									

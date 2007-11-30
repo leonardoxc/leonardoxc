@@ -51,7 +51,7 @@ function chmodDir($dir){
 
 	$logEntries=makeSane($_GET['logEntries'],1);	
 	if ( $logEntries=='' ) {
-		$logEntries=50; 
+		$logEntries=500; 
 	}
 
 //echo "<br>";
@@ -84,6 +84,13 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a><BR>It will find all IGC files that were rejected during submission BUT for some strange reason were not auto-clened by the system. ";
 echo "</ul>";
 
+echo "<h3>Clean up files</h3>";
+echo "<ul>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanGEFiles'>Clean files related to Google Earth (kmz and kml files)</a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanGMAPSfiles'>Clean files related to Google maps (use it after installing new 3d maps) </a>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanOldJSfiles'>Clean old js file (not used after v.2.9.0)</a>";
+echo "</ul>";
+
 echo "<h3>Migration to newer DB schemes operations</h3>";
 echo "<ul>";
 	if ($CONF_use_NAC)			
@@ -114,7 +121,16 @@ echo "</ul><br><hr>";
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
-		echo "</ol>";
+
+		echo "</ol>";    
+
+	} else if ($admin_op=="cleanGEFiles") {
+		deleteFiles(dirname(__FILE__)."/flights",0,".kmz");
+		deleteFiles(dirname(__FILE__)."/flights",0,".kml");
+    } else if ($admin_op=="cleanGMAPSfiles") {
+		deleteFiles(dirname(__FILE__)."/flights",0,".json.js");
+    } else if ($admin_op=="cleanOldJSfiles") {
+		deleteFiles(dirname(__FILE__)."/flights",0,".1.js");
     } else if ($admin_op=="fixTakeoffNames") {
 		$ar1=array('name'=>'intName','intName'=>'name','location'=>'intLocation','intLocation'=>'location');
 		foreach ($ar1 as $n1=>$n2){
@@ -469,6 +485,42 @@ echo "</ul><br><hr>";
 	}
 
 
+  function deleteFiles($dir,$rootLevel,$suffix) {	
+		 global $deletedFiles,$openedDirs,$entriesNum;
+
+		 set_time_limit (160);
+		
+		 if ($rootLevel==0) {			
+			$deletedFiles=0;
+			$openedDirs=0;
+		 }	 
+
+		 $suffix_len=strlen($suffix);
+		 $current_dir = opendir($dir);
+		 // echo "open $dir<BR>";
+		 $openedDirs++;
+
+		 while (false !== ($entryname = readdir($current_dir))) {     	
+			if( is_dir("$dir/$entryname") && $entryname != "." && $entryname!=".." ) {
+				// echo "<br>$dir/$entryname<br>";
+				deleteFiles($dir."/".$entryname,$rootLevel+1,$suffix);
+			} else if( $entryname != "." && $entryname!=".."  ){
+				// echo "$entryname::";
+				if (strtolower( substr($entryname,-$suffix_len))==$suffix ) {
+					$filename="$dir/$entryname";
+					echo "[ $deletedFiles ] Delete file $filename<BR>";
+					unlink($filename);
+					$deletedFiles++;	
+				}
+			}
+		 }      
+		 closedir($current_dir);
+		 if ($rootLevel==0) {
+			echo "<hr>Found and deleted $deletedFiles files<BR><BR>";
+			echo "opened Dirs: $openedDirs<br>";
+		}
+  }
+
   function findUnusedIGCfiles($dir,$rootLevel,$prefixRemoveCharsArg) {
 		 global $flightsWebPath,$moduleRelPath;
 
@@ -482,7 +534,9 @@ echo "</ul><br><hr>";
 		 $current_dir = opendir($dir);
 		 $dir_parts=explode("/",$dir);
 		 $dir_last="flights/".$dir_parts[count($dir_parts)-1];
-		 while($entryname = readdir($current_dir)){						   
+		
+		 while (false !== ($entryname = readdir($current_dir))) {     				   
+			// while($entryname = readdir($current_dir)){			
 			if( is_dir("$dir/$entryname") && $entryname != "." && $entryname!=".." ) {
 				// echo "<br>$dir/$entryname<br>";
 				findUnusedIGCfiles($dir."/".$entryname,$rootLevel+1,$prefixRemoveChars);
