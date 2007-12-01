@@ -773,11 +773,11 @@ define('_Filter_NoSelection', 'Keine Auswahl getroffen');
 define('_Filter_CurrentlySelected', 'Aktuelle Auswahl');
 define('_Filter_DialogMultiSelectInfo', 'Für Mehrfachauswahl Strg-Taste gedrückt halten.');
 
-define('_Filter_FilterTitleIncluding', 'Nur bestimmte $items');
-// Note to translators: use the placeholder $items in your translation as it is, don't translate it
-define('_Filter_FilterTitleExcluding', '$items ausschließen');
-define('_Filter_DialogTitleIncluding', '$items wählen');
-define('_Filter_DialogTitleExcluding', '$items wählen');
+define('_Filter_FilterTitleIncluding', 'Nur bestimmte [items]');
+// Note to translators: use the placeholder [items] in your translation as it is, don't translate it
+define('_Filter_FilterTitleExcluding', '[items] ausschließen');
+define('_Filter_DialogTitleIncluding', '[items] wählen');
+define('_Filter_DialogTitleExcluding', '[items] wählen');
 
 define('_Filter_Items_pilot', 'Piloten');
 define('_Filter_Items_nacclub', 'Vereine');
@@ -798,7 +798,7 @@ define("_MENU_FILTER_NEW","Filter **NEUE VERSION**");
 // New on 2007/05/23
 // second menu NACCclub selection
 define('_ALL_NACCLUBS', 'Alle Vereine');
-// Note to translators: use the placeholder $nacname in your translation as it is, don't translate it
+// Note to translators: use the placeholder [nacname] in your translation as it is, don't translate it
 define('_SELECT_NACCLUB', '[nacname]-Verein wählen');
 
 // pilot profile

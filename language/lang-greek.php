@@ -593,6 +593,71 @@ define("_Click_to_select_a_month","Πατήστε για επιλογή μήνα");
 define("_Click_to_select_a_year","Πατήστε για επιλογή έτους");
 define("_Select_date_as_date.","Επιλογή [date] ως ημερομηνίας"); // do not replace [date], it will be replaced by date.
 
-define('_MEAN_SPEED1','Μέση ταχύτητα');
 // end 2007/03/13
+
+// New on 2007/05/18 (alternative GUI_filter)
+define("_Filter_NoSelection", "Χωρίς επιλογή");
+define("_Filter_CurrentlySelected", "Τρέχουσα επιλογή");
+define("_Filter_DialogMultiSelectInfo", "Press Ctrl for multiple selection.");
+
+define('_Filter_FilterTitleIncluding', 'Επιλογή [items]');
+define('_Filter_FilterTitleExcluding', 'Αποκλεισμός [items]');
+define('_Filter_DialogTitleIncluding', 'Επιλογή [items]');
+define('_Filter_DialogTitleExcluding', 'Αποκλεισμός [items]');
+
+define("_Filter_Items_pilot", "πιλότων");
+define("_Filter_Items_nacclub", "λεσχών");
+define("_Filter_Items_country", "χωρών");
+define("_Filter_Items_takeoff", "απογειώσεων");
+
+define("_Filter_Button_Select", "Επιλογή");
+define("_Filter_Button_Delete", "Διαγραφή");
+define("_Filter_Button_Accept", "Αποδοχή επιλογών");
+define("_Filter_Button_Cancel", "Ακύρωση");
+
+# menu bar
+define("_MENU_FILTER_NEW","Filter **NEW VERSION**");
+
+// end 2007/05/18
+
+
+// New on 2007/05/23
+// second menu NACCclub selection
+define("_ALL_NACCLUBS", "Όλες οι λέσχες");
+// Note to translators: use the placeholder $nacname in your translation as it is, don"t translate it
+define("_SELECT_NACCLUB", 'Επιλογή λέσχης-[nacname]');
+
+// pilot profile
+define("_FirstOlcYear", "First year of participation in an online XC contest");
+define("_FirstOlcYearComment", "Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings.");
+
+//end 2007/05/23
+
+// New on 2007/11/06
+define("_Select_Brand","Επιλογή εταιρείας");
+define("_All_Brands","Όλες οι εταιρείες");
+define("_DAY","Μέρα");
+define('_Glider_Brand','Εταιρεία');
+define('_Or_Select_from_previous','Ή επιλέξτε απο προηγούμενα');
+
+define('_Explanation_AddToBookmarks_IE', 'Add these filter settings to your favourites');
+define('_Msg_AddToBookmarks_IE', 'Click here to add these filter settings to your bookmarks.');
+define('_Explanation_AddToBookmarks_nonIE', '(Save this link to your bookmarks.)');
+define('_Msg_AddToBookmarks_nonIE', 'To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.');
+
+define('_PROJECT_HELP','Βοήθεια');
+define('_PROJECT_NEWS','Νέα');
+define('_PROJECT_RULES','Κανόνες 2007');
+define('_PROJECT_RULES2','Κανόνες 2008');
+
+//end 2007/11/06
+define('_MEAN_SPEED1','Μέση ταχύτητα');
+define('_External_Entry','Πτήση απο άλλο server');
+
+// New on 2007/11/25
+define('_Altitude','Υψόμετρο');
+define('_Speed','Ταχύτητα');
+define('_Distance_from_takeoff','Αππόσταση απο απογείωση');
+
+
 ?>

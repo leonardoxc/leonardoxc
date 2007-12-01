@@ -342,10 +342,13 @@ function popupwindow(url, winwidth){
  */
 	function filter_title() {
 		$items=$this->items_title();
+		
 		if ($this->inclusive) {
-			eval('$title="'._Filter_FilterTitleIncluding.'";');
+			//eval('$title="'.str_replace('[items]',$items,_Filter_FilterTitleIncluding).'";');
+			$title=str_replace('[items]',$items,_Filter_FilterTitleIncluding);
 		}else {
-			eval('$title="'._Filter_FilterTitleExcluding.'";');
+			// eval('$title="'._Filter_FilterTitleExcluding.'";');
+			$title=str_replace('[items]',$items,_Filter_FilterTitleExcluding);
 		}
 		return $title;
 	}
@@ -409,9 +412,11 @@ function popupwindow(url, winwidth){
 	function dialog_title() {
 		$items=$this->items_title();
 		if ($this->inclusive) {
-			eval('$title="'._Filter_DialogTitleIncluding.'";');
+			// eval('$title="'._Filter_DialogTitleIncluding.'";');
+			$title=str_replace('[items]',$items,_Filter_DialogTitleIncluding);	
 		}else {
-			eval('$title="'._Filter_DialogTitleExcluding.'";');
+			// eval('$title="'._Filter_DialogTitleExcluding.'";');
+			$title=str_replace('[items]',$items,_Filter_DialogTitleExcluding);	
 		}
 		return $title;
 	}

@@ -39,14 +39,17 @@
 		// print_r($baseDefines);
 		
 		foreach($availableLanguages as $lang) {
+	
+			 
 			 $convert_to_utf_manually=0;		
 				
-			 // if ( ! in_array($lang,array('greek','german','english')) ) continue;
-			 if ( in_array($lang,array('chinese','hebrew') )  ) {
+			// if ( ! in_array($lang,array('greek','german','english')) ) continue;
+			 /*if ( in_array($lang,array('hebrew') )  ) {
 			 	$convert_to_utf_manually=1;
 			 	continue;
 			 }	
-					
+			*/	
+			
 			$FileName = LANG_ABS_PATH."/lang-$lang.php";
 			
 			$langDefines=getDefinesAsArray("lang-$lang.php");
@@ -84,13 +87,21 @@
 			
 			if (!	$convert_to_utf_manually) {
 				// replace in first list the encoding
-				$NewFileOutput=str_replace("charset=$encFrom","charset=utf-8",$NewFileOutput);
-				// now convert to utf-8 and write also
-				$NewEncoding = new ConvertCharset;
 				$encFrom=$langEncodings[$lang];
+				if ($lang=='hebrew') $encFrom='iso-8859-8';
 				$encTo="utf-8";
-				$Entities=0;
-				$NewFileOutput = $NewEncoding->Convert($NewFileOutput, $encFrom, $encTo, $Entities);			
+				$NewFileOutput=str_replace("charset=$encFrom","charset=utf-8",$NewFileOutput);
+	
+				
+				// now convert to utf-8 and write also					
+				if ($lang=='chinese') {
+					require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
+					$NewFileOutput= Charset::convert($NewFileOutput,'gb2312','utf-8');					
+				} else {					
+					$NewEncoding = new ConvertCharset;
+					$Entities=0;
+					$NewFileOutput = $NewEncoding->Convert($NewFileOutput, $encFrom, $encTo, $Entities);			
+				}
 				writeFile(LANG_ABS_PATH."/utf8/lang-$lang.php",$NewFileOutput);
 			}			
 			
@@ -106,7 +117,14 @@
 			
 			if (!	$convert_to_utf_mannually) {
 				$FileText=str_replace("charset=$encFrom","charset=utf-8",$FileText);
-				$FileText = $NewEncoding->Convert($FileText, $encFrom, $encTo, $Entities);
+	
+				if ($lang=='chinese') {
+					require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
+					$FileText= Charset::convert($FileText,'gb2312','utf-8');					
+				} else {
+					$FileText=str_replace("charset=$encFrom","charset=utf-8",$FileText);
+					$FileText = $NewEncoding->Convert($FileText, $encFrom, $encTo, $Entities);
+				}
 				writeFile(LANG_ABS_PATH."/utf8/countries-$lang.php",$FileText);
 			}			
 			

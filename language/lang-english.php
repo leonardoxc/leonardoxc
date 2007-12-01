@@ -623,10 +623,10 @@ define("_Filter_NoSelection", "No selection");
 define("_Filter_CurrentlySelected", "Current selection");
 define("_Filter_DialogMultiSelectInfo", "Press Ctrl for multiple selection.");
 
-define("_Filter_FilterTitleIncluding", "Only selected $items");
-define("_Filter_FilterTitleExcluding", "Exclude $items");
-define("_Filter_DialogTitleIncluding", "Select $items");
-define("_Filter_DialogTitleExcluding", "Select $items");
+define('_Filter_FilterTitleIncluding', 'Only selected [items]');
+define('_Filter_FilterTitleExcluding', 'Exclude [items]');
+define('_Filter_DialogTitleIncluding', 'Select [items]');
+define('_Filter_DialogTitleExcluding', 'Select [items]');
 
 define("_Filter_Items_pilot", "pilots");
 define("_Filter_Items_nacclub", "clubs");
