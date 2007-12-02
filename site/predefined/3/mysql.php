@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.1 2007/11/03 00:18:02 manolis Exp $
+ *   $Id: mysql.php,v 1.2 2007/12/02 09:17:06 manolis Exp $
  *
  ***************************************************************************/
 
@@ -64,6 +64,7 @@ class sql_db
 					@mysql_close($this->db_connect_id);
 					$this->db_connect_id = $dbselect;
 				}
+				$this->sql_query("SET SESSION sql_mode='ALLOW_INVALID_DATES' ");
 			}
 			return $this->db_connect_id;
 		}
