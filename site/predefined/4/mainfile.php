@@ -19,9 +19,8 @@
 
 $phpver = phpversion();
 
-if (1) {
-
-if ($phpver >= '4.0.4pl1' && strstr($HTTP_USER_AGENT,'compatible')) {
+if (0) {
+if ($phpver >= '4.0.4pl1' && strstr($_SERVER["HTTP_USER_AGENT"],'compatible')) {
     if (extension_loaded('zlib')) {
         ob_end_clean();
         ob_start('ob_gzhandler');
@@ -38,8 +37,7 @@ if ($phpver >= '4.0.4pl1' && strstr($HTTP_USER_AGENT,'compatible')) {
 }
 
 }
-
-
+	
 $phpver = explode(".", $phpver);
 $phpver = "$phpver[0]$phpver[1]";
 if ($phpver >= 41) {
