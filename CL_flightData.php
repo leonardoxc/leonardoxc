@@ -2289,7 +2289,7 @@ $kml_file_contents=
 	
 	function getOLCscore() {
 		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
-		global $baseInstallationPath,$CONF_allow_olc_files;
+		global $baseInstallationPath,$CONF_allow_olc_files,$CONF;
 
 		if (! $scoringServerActive) return 0;
 		$manualScore=0;
@@ -2356,7 +2356,10 @@ $kml_file_contents=
 			fclose ($handle); 
 	
 			@chmod ($path."/olc", 0755);  
-			$cmd=$path."/olc ".$igcFilename;
+			if ($CONF['os']=='windows') $olcEXE='olc.exe';
+			else $olcEXE='olc';
+			
+			$cmd=$path."/$olcEXE $igcFilename";
 			DEBUG('OLC_SCORE',1,"cmd=$cmd");
 			exec($cmd,$res);
 			

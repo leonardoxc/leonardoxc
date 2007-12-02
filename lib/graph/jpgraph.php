@@ -4,7 +4,7 @@
 // Description:	PHP4 Graph Plotting library. Base module.
 // Created: 	2001-01-08
 // Author:	Johan Persson (johanp@aditus.nu)
-// Ver:		$Id: jpgraph.php,v 1.1 2006/12/29 22:35:03 manolis Exp $
+// Ver:		$Id: jpgraph.php,v 1.2 2007/12/02 15:15:13 manolis Exp $
 //
 // License:	This code is released under QPL 1.0
 // Copyright (C) 2001,2002,2003 Johan Persson
@@ -216,19 +216,19 @@ else {
 
 if (!defined('TTF_DIR')) {
     // fixed windows
-    if (strstr( PHP_OS, 'WIN') ) {
+	// echo PHP_OS."#";
+    if ( strpos(strtolower(PHP_OS), 'win')  === false ) {	
+		DEFINE('TTF_DIR',dirname(__FILE__).'/fonts/');
+	} else {
 		if ( empty($_SERVER['SystemRoot'])) $winDir=$_SERVER['WINDIR']	;
 		else $winDir=$_SERVER['SystemRoot'];
+		
         if( ! $winDir) {
-	    die('JpGraph Error: No path specified for TTF_DIR. Please specify a path for that DEFINE in jpgraph.php');
-        }
-	else {
-	  DEFINE('TTF_DIR', $winDir . '/fonts/');
-        }
-    } else {
-	//	DEFINE('TTF_DIR','/usr/X11R6/lib/X11/fonts/truetype/');
-		DEFINE('TTF_DIR',dirname(__FILE__).'/fonts/');
-    }
+		    die('JpGraph Error: No path specified for TTF_DIR. Please specify a path for that DEFINE in jpgraph.php');
+        } else {
+			DEFINE('TTF_DIR', $winDir . '/fonts/');
+	    }
+	}
 
 }
 

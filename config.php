@@ -578,4 +578,7 @@ define('SYNC_INSERT_PILOT_LOCAL',8);
 define('SYNC_INSERT_WAYPOINT_LINK',16);
 define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
+if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
+else $CONF['os']='windows';
+
 ?>
