@@ -50,12 +50,15 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // YOU MUST PUT AT LEAST ONE ADMIN USER
 
  $admin_users=array();
- @include_once dirname(__FILE__)."/site/config_admin_users.php"; 
-
  // mod_users 
  // put in this array the userID of the users you want ot grand mod status
  // You can leave this blank
  $mod_users=array();
+
+ // ***********************************************************
+ // put your admin/mod users in this file !!!!!!!!!!!!!!!!!
+ // ***********************************************************
+ @include_once dirname(__FILE__)."/site/config_admin_users.php"; 
 
  $CONF_admin_email="your_mail@nowhere.com";
  require_once dirname(__FILE__)."/site/config_admin_email.php"; 
@@ -280,8 +283,6 @@ require_once dirname(__FILE__)."/site/config_version.php";
  // this will enable a calendar in flights_list to select individual days
  $CONF_use_calendar=1;
  
-
-
 	// SEASON MOD
 	// start of seasons config (2007-09-27)
 	require_once dirname(__FILE__)."/CL_dates.php";
@@ -580,5 +581,8 @@ define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
 if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
 else $CONF['os']='windows';
+
+ // profile options
+ $CONF['profile']['CIVL_ID_enter_url']=getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
 
 ?>

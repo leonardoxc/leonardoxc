@@ -111,10 +111,12 @@
     <td valign="top" bgcolor="#F5F5F5"><? 
 		$BirthdateHideMask=$pilot['BirthdateHideMask'] ;
 		$Birthdate=$pilot['Birthdate'] ;
-		for($i=0;$i<10;$i++) {
-			$Birthdate[$i]=$BirthdateHideMask[$i]=='x'?'x':$Birthdate[$i];
+		if ($Birthdate) {
+			for($i=0;$i<10;$i++) {
+				$Birthdate[$i]=$BirthdateHideMask[$i]=='x'?'x':$Birthdate[$i];
+			}
+			echo $Birthdate;
 		}
-		echo $Birthdate;
 		?>    </td>
     <td>&nbsp;</td>
   </tr>

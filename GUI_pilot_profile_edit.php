@@ -76,15 +76,27 @@
 		$FirstOlcYear=0;
 	}
 	
+
+	$hideDay=$_POST['hideDay']+0;
+	$hideMonth=$_POST['hideMonth']+0;
+	$hideYear=$_POST['hideYear']+0;
+	$hideYearLastDigit=$_POST['hideYearLastDigit']+0;
+
+	$BirthdateHideMask=($hideDay?'xx':'##').'.'.($hideMonth?'xx':'##').'.'.
+			($hideYear?'xxx':'###').($hideYearLastDigit?'x':'#');
+
+
    $query="UPDATE $pilotsTable SET
    		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
 		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
 		`NACid` = $NACid,
 		`NACmemberID` = $NACmemberID,
-		`NACclubID` = $NACclubID,
+		`NACclubID` = $NACclubID,		
+		`CIVL_ID` = '".prep_for_DB($_POST['CIVL_ID'])."',
 		`sponsor` = '".prep_for_DB($_POST['sponsor'])."',
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
+		`BirthdateHideMask` = '$BirthdateHideMask',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
 		`OtherInterests` = '".prep_for_DB($_POST['OtherInterests'])."',
@@ -159,7 +171,35 @@
 	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
   else $legendRight.="";
 */ 
+	$calLang=$lang2iso[$currentlang];
 ?>
+<script language="javascript">
+	function setCIVL_ID() {
+			window.open('<?=$CONF['profile']['CIVL_ID_enter_url']?>', '_blank',	'scrollbars=auto,resizable=yes,WIDTH=700,HEIGHT=550,LEFT=100,TOP=100',false);
+	}
+
+	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+
+	var language = '<?=$calLang?>';
+	var startAt = 1;		// 0 - sunday ; 1 - monday
+	var visibleOnLoad=0;
+	var showWeekNumber = 1;	// 0 - don't show; 1 - show
+	var hideCloseButton=0;
+	var gotoString 		= {<?=$calLang?> : '<?=_Go_To_Current_Month?>'};
+	var todayString 	= {<?=$calLang?> : '<?=_Today_is?>'};
+	var weekString 		= {<?=$calLang?> : '<?=_Wk?>'};
+	var scrollLeftMessage 	= {<?=$calLang?> : '<?=_Click_to_scroll_to_previous_month?>'};
+	var scrollRightMessage 	= {<?=$calLang?>: '<?=_Click_to_scroll_to_next_month?>'};
+	var selectMonthMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_month?>'};
+	var selectYearMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_year?>'};
+	var selectDateMessage 	= {<?=$calLang?> : '<?=_Select_date_as_date?>' };
+	var	monthName 		= {<?=$calLang?> : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
+	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
+	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
+
+</script>
+<script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
+
 <form name=pilotProfile  enctype="multipart/form-data" method="POST" action="<?=CONF_MODULE_ARG?>&op=pilot_profile_edit&pilotIDview=<?=$pilotIDview?>" >
 <?
   open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=\"370\" align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
@@ -189,7 +229,7 @@
 
 			$list2.="NAC_select_clubs[$NACid]  = ".( ( $NAC['club_change_period_active'] || 
 				($NAC['add_to_club_period_active'] && !$pilot['NACclubID'] )|| 
-				auth::isAdmin($userID)|| in_array($userID,$mod_users) )? 1 : 0).";\n";
+				auth::isAdmin($userID)|| auth::isModerator($userID) )? 1 : 0).";\n";
 
 			$externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
 			if ($ext_input && !empty($NAC['external_fields'])) {
@@ -216,8 +256,7 @@
 			<? 
 				$firstNameReadOnly='';
 				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && 
-					  !in_array($userID,$mod_users)  
+					  !auth::isAdmin($userID) && !auth::isModerator($userID)					 
 				) $firstNameReadOnly='"readonly"';
 				if ( in_array('FirstName', $readonly_fields) ) $firstNameReadOnly='"readonly"';
 			?> 
@@ -323,7 +362,7 @@
 
 			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
 				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
-				auth::isAdmin($userID) || in_array($userID,$mod_users)
+				auth::isAdmin($userID) || auth::isModerator($userID) 
 			) $showChangeClubLink="inline";
 			else $showChangeClubLink="none";
 			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub();return false;\">"._Select_Club."</a> ]</div>";
@@ -357,8 +396,7 @@
 			<?
 				$lastNameReadOnly='';
 				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && 
-					  !in_array($userID,$mod_users)  
+					  !auth::isAdmin($userID) && !auth::isModerator($userID) 
 				) $lastNameReadOnly='"readonly"';
 				if ( in_array('LastName', $readonly_fields) ) $lastNameReadOnly='"readonly"';
 			?>
@@ -368,9 +406,23 @@
     </tr>
     <tr>
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
-      <td valign="top"><? echo getNationalityDropDown($pilot['countryCode']); ?></td>
+      <td valign="top"><? echo getNationalityDropDown($pilot['countryCode'], in_array('countriesList', $readonly_fields)) ?></td>
       <td>&nbsp;</td>
     </tr>
+	
+    <tr> 
+      <td bgcolor="#E9EDF5"><div align="right">CIVL ID</div></td>
+      <td> <input name="CIVL_ID" id="CIVL_ID" type="text" value="<? echo $pilot['CIVL_ID'] ?>" size="6" maxlength="15"> 
+		<? echo "[&nbsp;<a href='#' onclick=\"setCIVL_ID();return false;\">"._EnterID."</a>&nbsp;]"; ?></td>
+      <td>&nbsp;</td>
+    </tr>
+
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"><div align="right"> <? echo _Sex ?></div></td>
+		<td valign="top"><? echo getSexDropDown($pilot['Sex'], in_array('Sex', $readonly_fields)) ?></td>
+		<td>&nbsp;</td>
+	</tr>
+	
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Sponsor ?></div></td>
     <td valign="top"><input name="sponsor" type="text" value="<? echo $pilot['sponsor'] ?>" size="25" maxlength="120"></td>
@@ -388,7 +440,30 @@
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?><br>
           (<? echo _dd_mm_yy ?>) </div></td>
-      <td valign="top"> <input name="Birthdate" type="text" value="<? echo $pilot['Birthdate'] ?>" size="25" maxlength="120" <? echo in_array('Birthdate', $readonly_fields) ? 'readonly' : '' ?> >   
+      <td valign="top">
+    	  <input name="Birthdate" type="text" size="10" maxlength="10" value="<? echo $pilot['Birthdate'] ?>"  readonly>
+		  <? if ( !in_array('Birthdate', $readonly_fields) ) { ?>
+          <a href="javascript:showCalendar(document.pilotProfile.cal_from_button, document.pilotProfile.Birthdate, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)">
+          <img name='cal_from_button' src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0"></a>
+		<? }?>
+			<br>Hide: 
+<? 
+   // xx.xx.xxxx
+	$BirthdateHideMask=$pilot['BirthdateHideMask'];
+	$hideDay=0;
+	$hideMonth=0;
+	$hideYear=0;
+	$hideYearLastDigit=0;
+	if ( substr($BirthdateHideMask,0,2) == 'xx') $hideDay=1;
+	if ( substr($BirthdateHideMask,3,2) == 'xx') $hideMonth=1;
+	if ( substr($BirthdateHideMask,6,3) == 'xxx') $hideYear=1;
+	if ( substr($BirthdateHideMask,9,1) == 'x') $hideYearLastDigit=1;
+
+?>
+			<input type="checkbox" name="hideDay" value="1" <?=($hideDay?'checked':'')?> ><?=_DAY?>
+			<input type="checkbox" name="hideMonth" value="1" <?=($hideMonth?'checked':'')?> ><?=_MONTH?>
+			<input type="checkbox" name="hideYear" value="1" <?=($hideYear?'checked':'')?> ><?=_YEAR?><br>
+			<input type="checkbox" name="hideYearLastDigit" value="1" <?=($hideYearLastDigit?'checked':'')?> ><?=_YEAR.' '._LAST_DIGIT?>
     </td>
       <td>&nbsp;</td>
     </tr>

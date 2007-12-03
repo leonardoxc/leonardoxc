@@ -196,3 +196,8 @@ ADD `lastLon` FLOAT NOT NULL AFTER `lastLat` ;
 
 ALTER TABLE `leonardo_servers` ADD `sync_type` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sync_format` ,
 ADD `use_zip` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sync_type` ;
+
+
+# 2007/12/03
+
+ALTER TABLE `leonardo_pilots` ADD `BirthdateHideMask` VARCHAR( 10 ) DEFAULT 'xx.xx.xxxx' NOT NULL AFTER `Birthdate` ;

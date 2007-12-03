@@ -684,5 +684,7 @@ define('_Altitude','Altitude');
 define('_Speed','Speed');
 define('_Distance_from_takeoff','Distance from takeoff');
 
+// New on 2007/12/03
+define('_LAST_DIGIT','last digit');
 
 ?>

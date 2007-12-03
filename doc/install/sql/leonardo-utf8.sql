@@ -21,7 +21,7 @@ CREATE TABLE `leonardo_NAC_clubs` (
   `clubID` bigint(20) NOT NULL default '0',
   `clubName` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`NAC_ID`,`clubID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -53,7 +53,7 @@ CREATE TABLE `leonardo_airspace` (
   KEY `minx` (`minx`,`miny`,`maxx`,`maxy`),
   KEY `serial` (`serial`,`disabled`),
   KEY `serial_2` (`serial`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,7 @@ CREATE TABLE `leonardo_areas` (
   `desc` varchar(255) NOT NULL default '',
   `descInt` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`areaID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -78,7 +78,7 @@ CREATE TABLE `leonardo_areas` (
 CREATE TABLE `leonardo_areas_takeoffs` (
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   `takeoffID` mediumint(8) unsigned NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `leonardo_clubs` (
   `formula_parameters` text NOT NULL,
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ CREATE TABLE `leonardo_clubs` (
 CREATE TABLE `leonardo_clubs_flights` (
   `clubID` mediumint(8) unsigned NOT NULL default '0',
   `flightID` mediumint(8) unsigned NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -127,7 +127,7 @@ CREATE TABLE `leonardo_clubs_pilots` (
   `pilotID` bigint(20) unsigned NOT NULL default '0',
   `pilotServerID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`clubID`,`pilotID`,`pilotServerID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -221,7 +221,7 @@ CREATE TABLE `leonardo_flights` (
   KEY `userID` (`userID`),
   KEY `takeoffID` (`takeoffID`),
   KEY `NACClubIndex` (`NACclubID`,`NACid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -245,7 +245,7 @@ CREATE TABLE `leonardo_log` (
   `Result` mediumint(8) unsigned NOT NULL default '0',
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -266,7 +266,7 @@ CREATE TABLE `leonardo_maps` (
   `metersPerPixel` float(7,5) NOT NULL default '0.00000',
   PRIMARY KEY  (`ID`,`filename`),
   UNIQUE KEY `filename` (`filename`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -282,7 +282,7 @@ CREATE TABLE `leonardo_photos` (
   `description` text NOT NULL,
   PRIMARY KEY  (`ID`),
   KEY `flightID` (`flightID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -350,7 +350,7 @@ CREATE TABLE `leonardo_pilots` (
   `PilotPhoto` varchar(30) NOT NULL default '',
   `FirstOlcYear` int(10) NOT NULL default '0',
   PRIMARY KEY  (`pilotID`,`serverID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -378,7 +378,7 @@ CREATE TABLE `leonardo_servers` (
   `gives_waypoints` tinyint(3) unsigned NOT NULL default '0',
   `waypoint_countries` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -401,7 +401,7 @@ CREATE TABLE `leonardo_stats` (
   `browser` char(15) NOT NULL default '',
   `browser_version` char(10) NOT NULL default '',
   KEY `tm` (`tm`,`year`,`month`,`day`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -423,4 +423,4 @@ CREATE TABLE `leonardo_waypoints` (
   `description` text NOT NULL,
   `modifyDate` datetime NOT NULL default '2005-09-01 00:00:00',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
