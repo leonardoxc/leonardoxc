@@ -82,7 +82,7 @@
     <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
     <td valign="top" bgcolor="#F5F5F5"> <? echo getNationalityDescription($pilot['countryCode']); ?>    </td>
     <td>&nbsp;</td>
-    <td colspan="2" rowspan="7" valign="top"><? 
+    <td colspan="2" rowspan="8" valign="top"><? 
 	  	if ($pilot['PilotPhoto']>0) {
 		?>
       <div align="center"><strong><? echo _Photo ?> </strong><br>
@@ -95,6 +95,12 @@
   </tr>
   <tr>
     <td valign="top" bgcolor="#E9EDF5">
+    <div align="right"><? echo _Sex ?></div></td>
+    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Sex'] ?>	</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td valign="top" bgcolor="#E9EDF5">
     <div align="right"><? echo _Sponsor ?></div></td>
     <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['sponsor'] ?>	</td>
     <td>&nbsp;</td>
@@ -102,7 +108,14 @@
   <tr> 
     <td valign="top" bgcolor="#E9EDF5"> <div align="right"> <? echo _Birthdate ?> 
         (<? echo _dd_mm_yy ?>) </div></td>
-    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Birthdate'] ?>    </td>
+    <td valign="top" bgcolor="#F5F5F5"><? 
+		$BirthdateHideMask=$pilot['BirthdateHideMask'] ;
+		$Birthdate=$pilot['Birthdate'] ;
+		for($i=0;$i<10;$i++) {
+			$Birthdate[$i]=$BirthdateHideMask[$i]=='x'?'x':$Birthdate[$i];
+		}
+		echo $Birthdate;
+		?>    </td>
     <td>&nbsp;</td>
   </tr>
   <tr> 
