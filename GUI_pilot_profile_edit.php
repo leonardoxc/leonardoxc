@@ -655,8 +655,11 @@
 <?
   echo "</td></tr>";
   close_inner_table();
+
+if ($CONF_use_NAC) {
 ?>
 <script language="javascript">
 		var sl0=MWJ_findObj("NACid");
 		NACid= sl0.options[sl0.selectedIndex].value ;    // Which menu item is selected
 </script>
+<? } ?>

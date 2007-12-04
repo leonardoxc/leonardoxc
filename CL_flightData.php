@@ -2249,7 +2249,7 @@ $kml_file_contents=
 
 	function validate($updateFlightInDB=1) {
 		global $CONF_validation_server_url, $CONF_use_custom_validation, $DBGlvl;
-		global $baseInstallationPath,$CONF_abs_path;
+		global $baseInstallationPath,$CONF_abs_path,$CONF;
 
 		global $alreadyValidatedInPage;
 		if ($alreadyValidatedInPage) return;
@@ -2261,7 +2261,7 @@ $kml_file_contents=
 			include $customValidationCodeFile;
 		} else { //standard leoanrdo validation -> the server not yet working 
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
-			$fl= $CONF_validation_server_url."?file=".$IGCwebPath;
+			$fl=  $CONF['validation']['server_url']."?file=".$IGCwebPath;
 			if ($DBGlvl) $fl.="&dbg=1";
 			DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 			$contents =	split("\n",fetchURL($fl,30));

@@ -41,21 +41,35 @@
 			"vali-xgd"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),					// ok ( fail -> -1 )
 			"vali-bra"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Data valid"), 			// ok ( fail -> 1 )
 			"ValiGpsDump.exe"	=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),				// ok ( fail -> -1 )
-			"valig7to.exe"		=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // 1->not valid 3->not present
+			"valiCompe"			=>array("name"=>"","ok_result"=>9999,"ok_string"=>"OK"),				// ok ( fail -> -1 )
+
+			// "valig7to.exe"		=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // 1->not valid 3->not present
 			"vali-mun"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // fail -> 0
 			"vali-xmr"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),	// fail -> 1		
-			"vali-cu"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 67
+			// "vali-cu"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 67
 			
-			"vali-ewa"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 2
-			"vali-fil"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
-			"vali-gcs"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 68
-			"vali-lxn"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
-			"vali-sch"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 0
+			//"vali-ewa"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 2
+			//"vali-fil"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
+			//"vali-gcs"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 68
+			//"vali-lxn"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
+			//"vali-sch"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 0
 		);
 			
+		if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
+		else $CONF['os']='windows';
+
+//exec("ls ",$output,$res);
+//print_r($output);
+//echo "#";
+
 		foreach($validatePrograms as $valProgram=>$valArray) {
-			@chmod ($path."/validate/$valProgram", 0755);  
-			$cmd="$valProgram ".basename($igcFilename);
+			@chmod ($path."/$valProgram", 0755);  
+			if ( $CONF['os']=='linux') {
+				$cmd="wine v:$valProgram v:".basename($igcFilename)." ";
+				// $cmd="wine v:$valProgram v:output.txt ";
+			} else 
+				$cmd="$valProgram ".basename($igcFilename);
+
 			DEBUG("<hr>cmd=$cmd");
 			//echo "CMD: $cmd\n";
 			unset($output);
@@ -63,15 +77,24 @@
 			exec($cmd,$output,$res);
 			
 			DEBUG("RESULT: $res");
-			// DEBUG("result has ".count($output)." lines");
+			DEBUG("result has ".count($output)." lines");
+
+
 			foreach($output as $line) {
 				DEBUG($line);
 			}
 
-			// ok found the correct val program
-			if ($res==$valArray['ok_result']) {
-				$ok=1;
-				break;
+			if ($valArray['ok_result']==9999) { // search for string instead
+				if (trim($output[0]==$valArray['ok_string']) ) {
+					$ok=1;
+					break;
+				}
+			} else {
+				// ok found the correct val program
+				if ($res==$valArray['ok_result']) {
+					$ok=1;
+					break;
+				}
 			}
 		}
 		DEBUG("</pre>");

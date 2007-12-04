@@ -186,8 +186,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
 
  // validate against the G-record
- $CONF_use_validation=0;
- $CONF_validation_server_url="";
+ $CONF_use_validation=1;
+ $CONF['validation']['user_internal_server']=1;
+ $CONF['validation']['server_url']="";
  
  
  // Membership of NAC (National Airsport Control, also referred as National Aero Club)

@@ -101,7 +101,8 @@
  // validate against the G-record
  $CONF_use_validation=1;
  $CONF_use_custom_validation=0;
- $CONF_validation_server_url="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."server/validate/validate.php";  
+ $CONF['validation']['user_internal_server']=1;
+ $CONF['validation']['server_url']="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."server/validate/validate.php";  
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 
