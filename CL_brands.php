@@ -33,8 +33,14 @@ class brands {
 
 	function getBrandImg($brandID,$gliderName='',$glidetCat=0){
 		global $moduleRelPath,$CONF;
+				
+		if (!$brandID) {
+			$brandID=brands::guessBrandID($gliderName);	
+			$brandName='';
+		}
+		
 		if ($brandID) {
-			$brandName=$CONF['brands']['list'][$brandID];
+			if (!isset($brandName) ) $brandName=$CONF['brands']['list'][$brandID];
 	 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
 		} else 
 	 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/unknown_".sprintf("%03d",$glidetCat).".gif' title='$gliderName'  alt='$gliderName' border='0' />";
