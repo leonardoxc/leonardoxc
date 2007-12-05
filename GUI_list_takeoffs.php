@@ -75,6 +75,13 @@
   $filter_clause=$_SESSION["filter_clause"];
   $where_clause.=$filter_clause;
 
+	if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $pilotsTableQuery=0;
+	else   $pilotsTableQuery=1;
+	
+	if ($pilotsTableQuery ){
+		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	
+		$extra_table_str.=",$pilotsTable";
+	}	
 
  $where_clause.=$where_clause_country;
 //-----------------------------------------------------------------------------------------------------------

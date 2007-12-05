@@ -61,3 +61,18 @@ JSON better encoding;
 
 
 
+todo
+2007/12/05
+
+Filter on nationality
+Option to xc league only on local flights
+
+sync
+1) correct dateadded
+2) info on whether to propagate flight or not 
+3) pilot sync mapping table
+
+sync.php -> special pilot sync mode
+ only output pilot info + flight hash for add operations
+ so to have pilots that have submitted same hash igc
+

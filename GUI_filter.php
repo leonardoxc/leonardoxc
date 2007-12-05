@@ -38,7 +38,11 @@ if (!empty($CONF_use_NAC)) {
 $dlgfilters['countries_incl']=new dialogfilter('country', 'FILTER_countries_incl');
 $dlgfilters['takeoffs_incl']=new dialogfilter('takeoff', 'FILTER_takeoffs_incl');
 $dlgfilters['nationality_incl']=new dialogfilter('nationality', 'FILTER_nationality_incl');
-$dlgfilters['servers_incl']=new dialogfilter('server', 'FILTER_server_incl');
+
+if ( count($CONF['servers']['list']) ) {
+	$dlgfilters['servers_incl']=new dialogfilter('server', 'FILTER_server_incl');
+}
+
 $filterkeys=array_keys($dlgfilters);
 
 if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted

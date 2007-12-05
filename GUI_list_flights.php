@@ -80,6 +80,9 @@
 
 	$sortOrderFinal=$sortOrder;
 	
+	$pilotsTableQuery=0;
+	$pilotsTableQuery2=0;
+	
 	$where_clause2="";
 	$extra_table_str2="";
 	if ($sortOrder=="pilotName") { 
@@ -95,8 +98,7 @@
 	 }
 	
 	 if ( $CONF['userdb']['use_leonardo_real_names'] ) { // use the leonardo_pilots table 
-		 $where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID ";
-		 $extra_table_str2=",$pilotsTable";
+		 $pilotsTableQuery2=1;
 	 } else {
 		 $where_clause2="  AND ".$flightsTable.".userID=".$CONF['userdb']['users_table'].".".$CONF['userdb']['user_id_field'] ;
 		 $extra_table_str2=",".$CONF['userdb']['users_table'];
@@ -117,7 +119,16 @@
 	
 	$filter_clause=$_SESSION["filter_clause"];
 	if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
-	else $countryCodeQuery=1;
+	else {
+			if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $countryCodeQuery=1;
+			else {
+				$pilotsTableQuery=1;
+				if ( strpos($filter_clause," countryCode") )  $countryCodeQuery=1;
+				else $countryCodeQuery=0;
+			}
+	}
+	
+	
 	
 	$where_clause.=$filter_clause;
 	
@@ -132,11 +143,22 @@
 	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
 	 $extra_table_str.=",".$waypointsTable;
 	} else $extra_table_str.="";
-	
+
+	 if ($pilotsTableQuery2 ){
+		$where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	 
+		$extra_table_str2.=",$pilotsTable";		
+	}
+
+	if ($pilotsTableQuery && !$pilotsTableQuery2){
+		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	
+		$extra_table_str.=",$pilotsTable";
+	}	 
+	 		
 	$where_clause.=$where_clause_country;
 	
 	$query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
-	//  echo "#count query#$query<BR>";
+	 // echo "#count query#$query<BR>";
+
 	$res= $db->sql_query($query);
 	if($res <= 0){   
 	 echo("<H3> Error in count items query! $query</H3>\n");

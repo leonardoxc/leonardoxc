@@ -72,11 +72,20 @@ class dialogfilter {
 					$this->numeric=false;
 					$this->dialog_width=340;
 					break;
-
+					
+				case 'nationality':
+					$this->numeric=false;
+					$this->dialog_width=340;
+					break;
+					
 				case 'takeoff':
 					$this->dialog_width=430;
 					break;
 
+				case 'server':
+					$this->dialog_width=430;
+					break;
+					
 				case 'nacclub':
 					$this->dialog_width=480;
 					if (empty($nacid)) {
@@ -151,10 +160,18 @@ class dialogfilter {
 				$this->data=$this->getCountriesList($in_string);
 				break;
 
+			case 'nationality':
+				$this->data=$this->getNationalitiesList($in_string);
+				break;
+				
 			case 'takeoff':
 				$this->data=$this->getTakeoffList($in_string);
 				break;
 
+			case 'server':
+				$this->data=$this->getServerList($in_string);
+				break;
+				
 			case 'nacclub':
 				$this->data=$this->getClubs($in_string);
 				break;
@@ -191,9 +208,12 @@ class dialogfilter {
  */
 	function filter_clause() {
 		$clause='';
+
 		$this->init_filter();
 		if (!$this->errmsg && $this->datavalue) {
 			$in_string=$this->to_in_string($this->datavalue);
+			
+			// echo $this->datavalue."#".			$in_string;
 			if ($in_string) {
 				global $flightsTable;
 				switch ($this->datakey) {
@@ -205,8 +225,17 @@ class dialogfilter {
 						$clause='countryCode';
 						break;
 
+					case 'nationality':
+						global $pilotsTable;
+						$clause=$pilotsTable.'.countryCode';
+						break;
+						
 					case 'takeoff':
 						$clause='takeoffID';
+						break;
+
+					case 'server':
+						$clause=$flightsTable.'.serverID';
 						break;
 
 					case 'nacclub':
@@ -561,6 +590,49 @@ WHERE
 		return $countriesList;
 	}
 
+	function getNationalitiesList($in_string='') {
+		global $db;
+		global $pilotsTable,  $countries;
+
+		$countriesList=array();
+
+		$where_clause='';
+		if ($in_string!='') $where_clause.=' AND countryCode IN ('.$in_string.')';
+
+	  	$sql="SELECT DISTINCT countryCode FROM 	$pilotsTable  WHERE countryCode<>'' $where_clause ";
+
+	  	$res= $db->sql_query($sql);
+	    if($res){
+			while (false!==$row=$db->sql_fetchrow($res)) {
+				$cCode=strtoupper($row['countryCode']);
+				if ($cCode)
+					$countriesList[$cCode]=$countries[$cCode];
+			}
+	    }
+		if (!empty($countriesList) ){
+			asort($countriesList);
+		}
+
+		return $countriesList;
+	}
+	
+	function getServerList($in_string='') {
+		global $CONF;
+		// echo "$in_string";
+		if ($in_string) {
+			$parts=split(',',$in_string);
+			// print_r($parts);
+			foreach ($CONF['servers']['list'] as $serverID=>$serverName) {
+				if ( in_array($serverID,$parts)  )
+					$servers[$serverID]=$serverName;
+			}
+			return $servers;
+		} else {
+			return $CONF['servers']['list'] ;
+		}
+
+	}
+	
 	function getTakeoffList($in_string='') {
 		global $db;
 		global $flightsTable;
@@ -584,6 +656,7 @@ WHERE
 		return $takeoffs;
 
 	}
+
 
 	function getClubs($in_string='') {
 		global $db, $flightsTable, $NACclubsTable;

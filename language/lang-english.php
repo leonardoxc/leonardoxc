@@ -687,4 +687,8 @@ define('_Distance_from_takeoff','Distance from takeoff');
 // New on 2007/12/03
 define('_LAST_DIGIT','last digit');
 
+define('_Filter_Items_nationality','nationality');
+define('_Filter_Items_server','server');
+
+
 ?>
