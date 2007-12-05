@@ -37,9 +37,9 @@ if (!empty($CONF_use_NAC)) {
 }
 $dlgfilters['countries_incl']=new dialogfilter('country', 'FILTER_countries_incl');
 $dlgfilters['takeoffs_incl']=new dialogfilter('takeoff', 'FILTER_takeoffs_incl');
-
+$dlgfilters['nationality_incl']=new dialogfilter('nationality', 'FILTER_nationality_incl');
+$dlgfilters['servers_incl']=new dialogfilter('server', 'FILTER_server_incl');
 $filterkeys=array_keys($dlgfilters);
-
 
 if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 
@@ -71,6 +71,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		$nacclub_clauses=array(); # nacclub filters will be OR-combined; this only works with including-filters; in case of excluding filters this code must be modified
 		foreach ($filterkeys as $filterkey) {
 			$clause=$dlgfilters[$filterkey]->filter_clause();
+			// echo $clause;
 			if ($clause!='') {
 				if ($dlgfilters[$filterkey]->datakey=='nacclub') {
 					$nacclub_clauses[]='('.$clause.')';
@@ -101,7 +102,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		}
 
 		$_SESSION["filter_clause"]=$filter_clause;
-	       //	 echo "#".$filter_clause."#<br>";
+	      //	 echo "#".$filter_clause."#<br>";
 	}
 
 } else { // form not submitted
@@ -300,6 +301,7 @@ foreach ($filterkeys as $filterkey) {
 
 
 ?>
+
     <tr>
       <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _OTHER_FILTERS ?></strong></span></div></td>
       <td>&nbsp;</td>
