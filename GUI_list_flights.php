@@ -343,7 +343,7 @@ function removeClubFlight(clubID,flightID) {
    
 
   ?>
-  	<table class='listTable' width="100%" cellpadding="2" cellspacing="0">
+  	<table class='listTable' style='clear:both' width="100%" cellpadding="2" cellspacing="0">
 	<tr> 
 	  <td class='SortHeader' width="25"><? echo _NUM ?></td>
 		 <?

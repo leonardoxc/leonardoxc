@@ -162,21 +162,21 @@
 
     function displayTask(tp) {
 		var tpPoints=[];
-
-		for(j=0;j<5;j++){							 
-			tpPoints[j]=new GLatLng(tp.turnpoints[j].lat,tp.turnpoints[j].lon);
+		if (tp.turnpoints.length>0) {
+			for(j=0;j<tp.turnpoints.length;j++){							 
+				tpPoints[j]=new GLatLng(tp.turnpoints[j].lat,tp.turnpoints[j].lon);
+			}
+			
+			var polyline = new GPolyline(tpPoints , "#FFFFFF", 3,1); 
+			map.addOverlay(polyline);
+			taskLayer.push(polyline); 
+			
+			for(j=0;j<tp.turnpoints.length;j++){							 
+				var marker = createTaskMarker(tpPoints[j],tp.turnpoints[j].name,tp.turnpoints[j].id ) ;
+				taskLayer.push(marker); 
+				map.addOverlay(marker);
+			}
 		}
-		
-		var polyline = new GPolyline(tpPoints , "#FFFFFF", 3,1); 
-		map.addOverlay(polyline);
-		taskLayer.push(polyline); 
-		
-		for(j=0;j<5;j++){							 
-			var marker = createTaskMarker(tpPoints[j],tp.turnpoints[j].name,tp.turnpoints[j].id ) ;
-			taskLayer.push(marker); 
-			map.addOverlay(marker);
-		}
-		
 	}
 	
 	

@@ -706,7 +706,7 @@ $resStr='{
 		$j=0;
 		for($i=1;$i<=5;$i++) {
 			$varname="turnpoint$i";
-			if ($this->{$varname}) {
+			if ($this->{$varname} ) {
 				$pointString=explode(" ",$this->{$varname});
 				// make this string 
 				// B1256514029151N02310255EA0000000486
