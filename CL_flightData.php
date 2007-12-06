@@ -2907,9 +2907,14 @@ $kml_file_contents=
 		}else {
 			$query="INSERT INTO ";		
 			$fl_id_1="dateAdded,";
-			$fl_id_2="now(),";
+
 			$this->active=0;
-			$this->dateAdded= date("Y-m-d H:i:s"); 
+			if (!$this->dateAdded )
+				$this->dateAdded= date("Y-m-d H:i:s"); 
+
+			// $fl_id_2="now(),";
+			$fl_id_2=" '".$this->dateAdded."',";
+
 			$this->timesViewed=0;
 		}
 		

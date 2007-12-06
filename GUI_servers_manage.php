@@ -124,9 +124,10 @@ foreach ($servers as $server) {
 				<tr>
 				<td valign='top'><a href='javascript:serverAction(".$server->ID.",1,$DBGlvl);'>Info</a></td>
 				<td valign='top'>
-					<b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull data)</a></b>
+					<b><a href='javascript:serverAction(".$server->ID.",5,$DBGlvl);'>Sync (pull)</a></b>
 					<input type=textbox id='chunkSize_$id' name='chunkSize_$id' value=10 size=3> Max entries
 				</td>
+				<td valign='top'><a href='javascript:serverAction(".$server->ID.",7,$DBGlvl);'>Guess Pilots</a></td>
 				<td valign='top'><a href='javascript:serverAction(".$server->ID.",6,$DBGlvl);'>Reset Sync/Delete all Flights</a></td>
 				<td valign='top'><a href='javascript:serverAction(".$server->ID.",2,$DBGlvl);'>Takeoffs</a></td>
 				<td valign='top'><a href='javascript:serverAction(".$server->ID.",3,$DBGlvl);'>Flights</a></td>

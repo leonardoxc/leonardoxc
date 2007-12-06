@@ -46,7 +46,7 @@
 
 
 	if (!$op) $op="latest";	
-	if (!in_array($op,array("latest")) ) return;
+	if (!in_array($op,array("latest","get_hash")) ) return;
 
 	$encoding="utf-8";
 
@@ -68,9 +68,34 @@
 		}
 	}
 	
+	set_time_limit( 60 + floor($count/4) );
 	
+	if ($op=="get_hash") {	
+		 $format='JSON';
+		 $query="SELECT ID, userID, serverID,hash, userServerID,originalUserID ,original_ID  FROM $flightsTable WHERE  hash<>'' ";
+		  //$query.=" LIMIT 1000 "; 
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 $RSS_str='{ "error": "Error in query!" }';
+		 } else {
+			$RSS_str='';
+			 $item_num=0;
+			 while ($row = mysql_fetch_assoc($res)) { 
+					if ($item_num>0) $RSS_str.=' , ';
+					$RSS_str.=' { "item": {
+"ID": '.$row['ID'].',
+"serverID": '.$row['serverID'].',
+"hash": "'.$row['hash'].'",
+"userID": 	  '.$row['userID'].',
+"userServerID": '.$row['userServerID'].',
+	}} ';
+				$item_num++;
+			}
+		 }
 
-	if ($op=="latest") {
+		$RSS_str='{ "log_item_num": '.$item_num.', "log": [ '.$RSS_str.' ] } ';
+
+	} else if ($op=="latest") {
  		 $sync_type = makeSane($_GET['sync_type'],1);		 
  		 $getIGCfiles = $sync_type & SYNC_INSERT_FLIGHT_LOCAL ;
 		 

@@ -104,6 +104,12 @@ if ($action==1) { // server info
 
 	$server->deleteAllSyncedFlights();
 
+} else if ($action==7) { // guess identical pilots 
+	$moduleRelPath=moduleRelPath(0);
+	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+
+	$server->guessPilots();
 } else if ($action==99) { //test
 	echo $server->url_op;
 	echo "<BR>$action<br>";

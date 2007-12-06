@@ -342,6 +342,105 @@ class Server {
 
 	}
 
+	function guessPilots($chunkSize=5) { // we pull data from this server
+		global $CONF_server_id,$CONF_tmp_path,$db,$flightsTable;
+		
+		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
+		$urlToPull.="&op=get_hash&format=".$this->sync_format;
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass.
+					"&use_zip=".$this->use_zip;
+
+		echo "Getting flight hashes from $urlToPull ... ";
+		flush2Browser();
+
+		$rssStr=fetchURL($urlToPull,60+floor($chunkSize/5) );
+		if (!$rssStr) {
+			echo "<div class='error'>Cannot get data from server</div><BR>";
+			return 0;
+		}
+		echo " <div class='ok'>DONE</div><br>";
+		flush2Browser();
+
+
+		echo "Decoding log from JSON format ...";
+		flush2Browser();
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		$arr=json::decode($rssStr);
+		echo " <div class='ok'>DONE</div><br>";
+		flush2Browser();
+		//print_r($arr);
+		//exit;
+		$entriesNum=0;
+		$entriesNumOK=0;
+		if ( count($arr['log']) ) {
+			$item_num=$arr['log_item_num'];
+			echo "<div class='ok'>GOT $item_num entries</div><br>";
+
+			foreach ($arr['log'] as $i=>$logItem) {
+				if (!is_numeric($i) ) {echo "$i not numric "; continue;		}
+				// echo ($entriesNum+1)." / $item_num  ";
+			
+				if (is_array($hashRemote[$logItem['item']['hash']]) ) {
+					echo " <div class='error'>WARNING same hash found with flights ".$hashRemote[$logItem['item']['hash']] ['ID']." [OLD] ".$logItem['item']['ID']." [CURRENT]</div><br>";
+				}
+
+				$hashRemote[$logItem['item']['hash']]=array('ID'=>$logItem['item']['ID'],'userID'=>$logItem['item']['userID'], 'userServerID'=>$logItem['item']['userServerID'] ) ;
+				//$entryResult=$this->processSyncEntry($this->ID,$logItem['item']) ;
+				//if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
+				//	echo "<div class'error'>Got fatal Error, will exit</div>";
+				//	break;
+				// } 
+				
+				if (  $entryResult >0 ) $entriesNumOK++;
+				$entriesNum++;
+			}
+			// now get the local hashes
+
+			 $query="SELECT ID, userID, serverID,hash, userServerID,originalUserID ,original_ID  FROM $flightsTable WHERE  hash<>'' ";
+			 $res= $db->sql_query($query);
+			 if($res <= 0){
+				 echo "Error in query!" ;
+			 } else {
+				 while ($row = mysql_fetch_assoc($res)) { 
+					$hashLocal[$row['hash']]=array('userID'=>$row['userID'], 'userServerID'=>$row['userServerID'] ) ;
+				 }
+			}
+
+			// now compare them 
+//print_r($hashLocal);
+//echo "<hr><HR><HR>";
+// print_r($hashRemote);
+
+			foreach($hashRemote as $testHash=>$remoteInfo) {
+				if (is_array($hashLocal[$testHash]) ) {
+					// if we have this user in the local db continue
+					if ($hashRemote[$testHash]['userID']==$hashLocal[$testHash]['userID'] && $hashLocal[$testHash]['userServerID']==$this->ID) continue;
+
+					$samePilots[ $hashRemote[$testHash]['userID'] ] [$hashRemote[$testHash]['userServerID'] ] [ $hashLocal[$testHash]['userID'] ] [ $hashLocal[$testHash]['userServerID'] ] ++; 
+					//echo "match REMOTE ".$hashRemote[$testHash]['userID']." [ ".$hashRemote[$testHash]['userServerID']." ] <=>  ".$hashLocal[$testHash]['userID']." [ ".$hashLocal[$testHash]['userServerID']." ] LOCAL<BR>"; 
+				}
+			}
+
+		} else {
+			echo "The sync-log returned error. Error: <br />";
+			print_r($arr);
+			echo "<hr><pre>$rssStr</pre>";
+		}
+
+		// print_r($samePilots);
+		foreach($samePilots as $remoteUserID=>$arr1) 
+			foreach($arr1 as $remoteUserServerID=>$arr2) 
+				foreach($arr2 as $localUserID=>$arr3)  
+					foreach($arr3 as $localUserServerID=>$arr4)  {
+						$counts=$arr4;
+
+						echo "$remoteUserServerID _$remoteUserID  $localUserServerID _$localUserID  = $counts <BR>";
+					}
+		echo "<div class='ok'>Sync-log replication finished</div><br>";
+		echo "Proccessed $entriesNum log entries ($entriesNumOK inserted OK) out of $item_num<br>";
+
+	}
+
 	function sync($chunkSize=5) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path;
 		
@@ -358,8 +457,10 @@ class Server {
 
 		echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
 		flush2Browser();
+		flush2Browser();
 
-		$rssStr=fetchURL($urlToPull,60);
+
+		$rssStr=fetchURL($urlToPull,60+floor($chunkSize/5) );
 		if (!$rssStr) {
 			echo "<div class='error'>Cannot get data from server</div><BR>";
 			return 0;

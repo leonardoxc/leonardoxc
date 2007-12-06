@@ -252,6 +252,7 @@ class logReplicator {
 					return array(1,"Flight *pulled* OK with local ID $flightID");
 
 				} else if ( ( $e['action']==1 && $sync_mode & SYNC_INSERT_FLIGHT_LINK  ) || $e['action']==2 ){
+					// inserting in LINK mode or updates
 					if ( $e['action']==1) {
 						$extFlight=new flight();
 					} else {
@@ -273,6 +274,8 @@ class logReplicator {
 					// no userid will be assgined to this flight since it will not be inserted locally
 					// so userID= userServerID;
 					$extFlight->userID=$extFlight->originalUserID;
+
+					$extFlight->dateAdded	=$e['ActionXML']['flight']['dateAdded'];
 
 					$extFlight->DATE 		=$e['ActionXML']['flight']['time']['date'];
 					$extFlight->timezone 	=$e['ActionXML']['flight']['time']['Timezone'];
