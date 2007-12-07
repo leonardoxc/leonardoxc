@@ -81,13 +81,24 @@
 			$RSS_str='';
 			 $item_num=0;
 			 while ($row = mysql_fetch_assoc($res)) { 
+			 
+			 		$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
 					if ($item_num>0) $RSS_str.=' , ';
 					$RSS_str.=' { "item": {
 "ID": '.$row['ID'].',
 "serverID": '.$row['serverID'].',
 "hash": "'.$row['hash'].'",
-"userID": 	  '.$row['userID'].',
-"userServerID": '.$row['userServerID'].',
+
+"pilot" : {
+	"userID": 	  '.$row['userID'].',
+	"userServerID": '.$row['userServerID'].',
+	"lName": "'.$pilotInfo[0].'",
+	"fName": "'.$pilotInfo[1].'",
+	"country": "'.$pilotInfo[2].'",
+	"sex": "'.$pilotInfo[3].'",
+	"birthdate": "'.$pilotInfo[4].'",
+	"CIVL_ID": "'.$pilotInfo[5].'"
+}	
 	}} ';
 				$item_num++;
 			}

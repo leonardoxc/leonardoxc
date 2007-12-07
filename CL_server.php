@@ -104,6 +104,25 @@ class Server {
 		}
 
 	}
+	
+
+	function getPilots($pilotIDarray) {
+			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
+	
+			$serverURL="http://".$this->url_op;
+			$client = new IXR_Client($serverURL);
+			if ($this->DEBUG) $client->debug=true;
+
+
+			if ( ! $client->query('pilots.getPilots',$this->site_pass, 11 ) ) {
+				echo 'getPilots: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
+				return array();  // $client->getErrorCode();
+			} else {
+				$pilotsList = $client->getResponse();
+				return $pilotsList;
+			}
+	}
+	
 	function getTakeoffs($tm) {
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
@@ -377,14 +396,14 @@ class Server {
 			echo "<div class='ok'>GOT $item_num entries</div><br>";
 
 			foreach ($arr['log'] as $i=>$logItem) {
-				if (!is_numeric($i) ) {echo "$i not numric "; continue;		}
+				if (!is_numeric($i) ) {echo "$i not numeric "; continue;		}
 				// echo ($entriesNum+1)." / $item_num  ";
 			
 				if (is_array($hashRemote[$logItem['item']['hash']]) ) {
-					echo " <div class='error'>WARNING same hash found with flights ".$hashRemote[$logItem['item']['hash']] ['ID']." [OLD] ".$logItem['item']['ID']." [CURRENT]</div><br>";
+					echo " <div class='error'>WARNING found hash from flight ".$logItem['item']['ID']." which already existed in flight ".$hashRemote[$logItem['item']['hash']] ['ID']." </div><br>";
 				}
 
-				$hashRemote[$logItem['item']['hash']]=array('ID'=>$logItem['item']['ID'],'userID'=>$logItem['item']['userID'], 'userServerID'=>$logItem['item']['userServerID'] ) ;
+				$hashRemote[$logItem['item']['hash']]=array('ID'=>$logItem['item']['ID'],'pilot'=>$logItem['item']['pilot'] ) ;
 				//$entryResult=$this->processSyncEntry($this->ID,$logItem['item']) ;
 				//if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
 				//	echo "<div class'error'>Got fatal Error, will exit</div>";
@@ -414,9 +433,11 @@ class Server {
 			foreach($hashRemote as $testHash=>$remoteInfo) {
 				if (is_array($hashLocal[$testHash]) ) {
 					// if we have this user in the local db continue
-					if ($hashRemote[$testHash]['userID']==$hashLocal[$testHash]['userID'] && $hashLocal[$testHash]['userServerID']==$this->ID) continue;
+					if ($hashRemote[$testHash]['pilot']['userID']==$hashLocal[$testHash]['userID'] && $hashLocal[$testHash]['userServerID']==$this->ID) continue;
 
-					$samePilots[ $hashRemote[$testHash]['userID'] ] [$hashRemote[$testHash]['userServerID'] ] [ $hashLocal[$testHash]['userID'] ] [ $hashLocal[$testHash]['userServerID'] ] ++; 
+					$samePilots[ $hashRemote[$testHash]['pilot']['userID'] ] [$hashRemote[$testHash]['pilot']['userServerID'] ] [ $hashLocal[$testHash]['userID'] ] [ $hashLocal[$testHash]['userServerID'] ] ++; 
+					
+					$remotePilotNames[ $hashRemote[$testHash]['pilot']['userID'] ] [$hashRemote[$testHash]['pilot']['userServerID'] ] =$hashRemote[$testHash]['pilot']; 
 					//echo "match REMOTE ".$hashRemote[$testHash]['userID']." [ ".$hashRemote[$testHash]['userServerID']." ] <=>  ".$hashLocal[$testHash]['userID']." [ ".$hashLocal[$testHash]['userServerID']." ] LOCAL<BR>"; 
 				}
 			}
@@ -433,11 +454,17 @@ class Server {
 				foreach($arr2 as $localUserID=>$arr3)  
 					foreach($arr3 as $localUserServerID=>$arr4)  {
 						$counts=$arr4;
-
+						$pilotInfo=getPilotInfo($localUserID,$localUserServerID );
+						
+						$remotePilotInfo=$remotePilotNames[$remoteUserID][$remoteUserServerID];
 						echo "$remoteUserServerID _$remoteUserID  $localUserServerID _$localUserID  = $counts <BR>";
+						echo " [ ".$remotePilotInfo['lName']." ".$remotePilotInfo['fName']." country: ".$remotePilotInfo['country']." sex: ".$remotePilotInfo['sex']." birthdate: ".$remotePilotInfo['birthdate']." CIVL ID: ".$remotePilotInfo['CIVL_ID']." ] <BR>";
+
+						echo " [ ".$pilotInfo['0']." ".$pilotInfo['1']." country: ".$pilotInfo['2']." sex: ".$pilotInfo['3']." birthdate: ".$pilotInfo['4']." CIVL ID: ".$pilotInfo['5']." ] <BR>";
+					
 					}
 		echo "<div class='ok'>Sync-log replication finished</div><br>";
-		echo "Proccessed $entriesNum log entries ($entriesNumOK inserted OK) out of $item_num<br>";
+		echo "Proccessed $entriesNum flight's hashes out of $item_num<br>";
 
 	}
 

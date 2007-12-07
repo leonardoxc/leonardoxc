@@ -114,8 +114,12 @@ if ($action==1) { // server info
 	echo $server->url_op;
 	echo "<BR>$action<br>";
 	
-	list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(49.4619,-8.67848);
-	echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
+	
+	$pilotsList=$server->getPilots( 3 );
+	print_r($pilotsList);
+	
+	//list($nearestWaypoint,$minTakeoffDistance)=$server->findTakeoff(49.4619,-8.67848);
+	//echo "wpt: ".$nearestWaypoint->intName. "~ $minTakeoffDistance<BR>";
 }
 
 
