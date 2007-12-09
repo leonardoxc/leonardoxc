@@ -160,7 +160,11 @@ function flights_submit($args) {
 		return  new IXR_Error(202, "Cannot open file ($filename)");
 	} 
 
-	$igcStr=fetchURL(html_entity_decode($igcURL),10); // timeout 10 secs
+	// $igcURL=html_entity_decode($igcURL);
+	$igcURL=rawurldecode($igcURL);
+	// return  new IXR_Error(203, "Cannot get igcURL ($igcURL)");
+	
+	$igcStr=fetchURL($igcURL,10); // timeout 10 secs
 	if (!$igcStr) {
 		return  new IXR_Error(203, "Cannot get igcURL ($igcURL)");
 	}

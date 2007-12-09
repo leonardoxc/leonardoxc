@@ -12,6 +12,7 @@
 /************************************************************************/
 
 require_once dirname(__FILE__)."/CL_gpsPoint.php";
+require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/FN_kml.php";
 require_once dirname(__FILE__)."/FN_pilot.php";
 
