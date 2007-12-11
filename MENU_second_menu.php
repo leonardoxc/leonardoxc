@@ -82,6 +82,19 @@
   else $isCompDisplay=0;
 
 ?>
+<script language="javascript">
+function changeBrand(sl) {
+	// var sl=MWJ_findObj("brandSelect");
+	var brandID= sl.options[sl.selectedIndex].value ;			
+	var Url='<?=CONF_MODULE_ARG?>&brandID='+brandID;
+	window.location=Url;
+}
+function changeCountry(sl) {
+	var countryCode= sl.options[sl.selectedIndex].value ;			
+	var Url='<?=CONF_MODULE_ARG?>&country='+countryCode;
+	window.location=Url;
+}
+</script>
 <div class="mainBox" align="left">  	
   	
 		<? if ($_SESSION["filter_clause"]) {  ?>
@@ -225,17 +238,27 @@ if (! $dontShowCountriesSelection ) {
 
 		// echo $brandID;
 	}
+	
+	$brandsListFilter=brands::getBrandsList(1);
 ?></a>
-	<ul>
-  	    <?
-			$brandsListFilter=brands::getBrandsList(1);
-			echo "<li><a href='".CONF_MODULE_ARG."&brandID=0'>"._All_Brands."</a></li>";
-  	    	foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
-				echo "<li><a href='".CONF_MODULE_ARG."&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
+ 	    <?
+			if ( count($brandsListFilter) > 10 ) {
+				echo "<ul><select name='selectBrand' id='selectBrand' onchange='changeBrand(this)'>
+						<option value=0>"._All_Brands."</option>";
+				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+					if ($brandIDfilter==$brandID) $sel='selected';
+					else $sel='';
+					echo "<option $sel value=$brandIDfilter>$brandNameFilter</option>";
+				}
+				echo "</select></ul>\n";
+			} else {
+				echo "<ul>\n<li><a href='".CONF_MODULE_ARG."&brandID=0'>"._All_Brands."</a></li>";
+				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+					echo "<li><a href='".CONF_MODULE_ARG."&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
+				}
+				echo "</ul>\n";
 			}
   	    ?>
-
-	</ul>
 </li>
 </ul>
 </div>

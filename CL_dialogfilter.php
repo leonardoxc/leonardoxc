@@ -235,6 +235,7 @@ class dialogfilter {
 						break;
 
 					case 'server':
+						$in_string=str_replace('-1','0',$in_string);
 						$clause=$flightsTable.'.serverID';
 						break;
 
@@ -623,12 +624,18 @@ WHERE
 			$parts=split(',',$in_string);
 			// print_r($parts);
 			foreach ($CONF['servers']['list'] as $serverID=>$serverName) {
-				if ( in_array($serverID,$parts)  )
+				if ($serverID==0) $serverID=-1;
+				if ( in_array($serverID,$parts)  ) {
 					$servers[$serverID]=$serverName;
+				}
 			}
 			return $servers;
 		} else {
-			return $CONF['servers']['list'] ;
+			foreach ($CONF['servers']['list'] as $serverID=>$serverName) {
+					if ($serverID==0) $serverID=-1;
+					$servers[$serverID]=$serverName;
+			}
+			return $servers;
 		}
 
 	}

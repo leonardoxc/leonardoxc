@@ -13,7 +13,20 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+if ( $countriesNum > 30 ) {
+	echo "<ul><select name='selectCountry' id='selectCountry' onchange='changeCountry(this)'>
+			<option value=0>---- "._SELECT_COUNTRY." ----</option>
+			<option value=0>"._Display_ALL."</option>";
+	foreach($countriesCodes as $i=>$cCode) {
+		$countryName=$countriesNames[$i];
+		if ($cCode==$country) $sel='selected';
+		else $sel='';
+		echo "<option $sel value='".$cCode."'>$countryName</option>";
+	}
+	echo "</select></ul>\n";
 	
+} else {
+			
 	$num_of_cols=ceil($countriesNum/15);
 	$num_of_rows=ceil($countriesNum/$num_of_cols);
 
@@ -77,3 +90,5 @@ if ($countriesNum) {
 	<td colspan=<? echo $num_of_cols ; ?> height=8 class="main_text" ></td>
 </tr>
 </TABLE>
+
+<? } ?>
