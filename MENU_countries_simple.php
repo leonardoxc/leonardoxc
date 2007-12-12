@@ -14,17 +14,44 @@
 /************************************************************************/
 
 if ( $countriesNum > 30 ) {
-	echo "<ul><select name='selectCountry' id='selectCountry' onchange='changeCountry(this)'>
-			<option value=0>---- "._SELECT_COUNTRY." ----</option>
-			<option value=0>"._Display_ALL."</option>";
+	$tblWidth=300;
+
+?>
+<table class="dropDownBox" width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
+<tr>
+	<td  height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_SELECT_COUNTRY?> <?=_OR?></strong>
+	  </div>
+	</td>
+</tr>
+<tr>
+	<td class="dropDownBoxH2">
+		<div class="dropDownBoxH2">
+			<a style='text-align:center; text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&country=0'><?=_Display_ALL?></a>
+		</div>
+	</td>
+</tr>
+<tr>
+<td align="center" height=80 valign="top">
+<div align="center">
+<?
+	echo "<select name='selectCountry' id='selectCountry' onchange='changeCountry(this)'>";
+		echo "<option value=0>---- "._SELECT_COUNTRY." ----</option>";
+//		echo "	<option value=0>"._Display_ALL."</option>";
 	foreach($countriesCodes as $i=>$cCode) {
 		$countryName=$countriesNames[$i];
 		if ($cCode==$country) $sel='selected';
 		else $sel='';
 		echo "<option $sel value='".$cCode."'>$countryName</option>";
 	}
-	echo "</select></ul>\n";
+	echo "</select>\n";
 	
+?></div>
+</td></tr>
+<tr>
+	<td  height=8 class="main_text" ></td>
+</tr>
+</TABLE>
+<?
 } else {
 			
 	$num_of_cols=ceil($countriesNum/15);

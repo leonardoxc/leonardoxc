@@ -111,7 +111,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
 	global $CONF_use_leonardo_names,$PREFS,$CONF;
-	
+
 	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID 
 			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
 	$res= $db->sql_query($query);
@@ -229,6 +229,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	global $countries,$langEncodings;
 	global $CONF_use_leonardo_names,$PREFS,$CONF;
 
+
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
 	
@@ -260,7 +261,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">$realName ".$pilotLang."#".$pilotCountry."$<br>";	
+			// echo ">$realName#$pilotLang#$pilotCountry#<br>";	
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);

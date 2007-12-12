@@ -230,7 +230,7 @@ class Charset{
 		if($charset!='gb2312'){
 			$str = self::convert($str,$charset,'gb2312');
 		}
-		self::$table = include(TABLE_DIR.'./pinyin.php');
+		self::$table = include(TABLE_DIR.'/pinyin.php');
 		$gblen = strlen($str);
 		$pin = '';
 		for($i=0;$i<$gblen;$i++){

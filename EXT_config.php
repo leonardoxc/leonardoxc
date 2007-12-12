@@ -50,4 +50,5 @@
 	session_start();
 	$userID = $_SESSION['userID'];
 
+	if ($CONF_use_utf) $db->sql_query("SET NAMES utf8");
 ?>

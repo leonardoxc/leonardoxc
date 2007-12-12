@@ -243,14 +243,27 @@ if (! $dontShowCountriesSelection ) {
 ?></a>
  	    <?
 			if ( count($brandsListFilter) > 10 ) {
-				echo "<ul><select name='selectBrand' id='selectBrand' onchange='changeBrand(this)'>
+?>
+<ul>
+<table class="dropDownBox" width="200" cellpadding="1" cellspacing="0">
+<tr>
+	<td  height=80 class="main_text" valign="top"><div align="center">
+<?
+				echo "<select name='selectBrand' id='selectBrand' onchange='changeBrand(this)'>
 						<option value=0>"._All_Brands."</option>";
 				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
 					if ($brandIDfilter==$brandID) $sel='selected';
 					else $sel='';
 					echo "<option $sel value=$brandIDfilter>$brandNameFilter</option>";
 				}
-				echo "</select></ul>\n";
+				echo "</select>\n";
+?>
+	  </div>
+	</td>
+</tr>
+</table>
+</ul>
+<?
 			} else {
 				echo "<ul>\n<li><a href='".CONF_MODULE_ARG."&brandID=0'>"._All_Brands."</a></li>";
 				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
