@@ -71,6 +71,9 @@
 	set_time_limit( 60 + floor($count/4) );
 	
 	if ($op=="get_hash") {	
+		if (!$CONF_use_utf) 
+		 	require_once dirname(__FILE__).'/lib/ConvertCharset/ConvertCharset.class.php';
+
 		 $format='JSON';
 		 $query="SELECT ID, userID, serverID,hash, userServerID,originalUserID ,original_ID  FROM $flightsTable WHERE  hash<>'' ";
 		  //$query.=" LIMIT 1000 "; 
@@ -81,8 +84,21 @@
 			$RSS_str='';
 			 $item_num=0;
 			 while ($row = mysql_fetch_assoc($res)) { 
-			 
-			 		$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
+					$pilotID=$row['userID'].'_'.$row['userServerID'];
+					if ( ! $pilotNames[$pilotID]){
+						$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
+						$NewEncoding = new ConvertCharset;
+						$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+						$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+
+						$pilotNames[$pilotID]['lname']=$lName;
+						$pilotNames[$pilotID]['fname']=$fName;
+						$pilotNames[$pilotID]['country']=$pilotInfo[2];
+						$pilotNames[$pilotID]['sex']=$pilotInfo[3];
+						$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
+						$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
+					} 
+
 					if ($item_num>0) $RSS_str.=' , ';
 					$RSS_str.=' { "item": {
 "ID": '.$row['ID'].',
@@ -92,12 +108,12 @@
 "pilot" : {
 	"userID": 	  '.$row['userID'].',
 	"userServerID": '.$row['userServerID'].',
-	"lName": "'.$pilotInfo[0].'",
-	"fName": "'.$pilotInfo[1].'",
-	"country": "'.$pilotInfo[2].'",
-	"sex": "'.$pilotInfo[3].'",
-	"birthdate": "'.$pilotInfo[4].'",
-	"CIVL_ID": "'.$pilotInfo[5].'"
+	"lName": "'.$pilotNames[$pilotID]['lname'].'",
+	"fName": "'.$pilotNames[$pilotID]['fname'].'",
+	"country": "'.$pilotNames[$pilotID]['country'].'",
+	"sex": "'.$pilotNames[$pilotID]['sex'].'",
+	"birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",
+	"CIVL_ID": "'.$pilotNames[$pilotID]['CIVL_ID'].'"
 }	
 	}} ';
 				$item_num++;
@@ -105,6 +121,7 @@
 		 }
 
 		$RSS_str='{ "log_item_num": '.$item_num.', "log": [ '.$RSS_str.' ] } ';
+
 
 	} else if ($op=="latest") {
  		 $sync_type = makeSane($_GET['sync_type'],1);		 

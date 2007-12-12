@@ -217,11 +217,11 @@ function delete_takeoff(id) {
 <?
 	$legendRight="";
 
-	if (auth::isAdmin($userID) ) {
+	if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
 		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
-	if ( $flight->belongsToUser($userID) || auth::isAdmin($userID) ) {
+	if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
 		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}

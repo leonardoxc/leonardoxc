@@ -14,7 +14,7 @@
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
-  if ( 	$flight->belongsToUser($userID) ||	auth::isAdmin($userID)  ) {
+  if ( 	$flight->belongsToUser($userID) ||	auth::isModerator($userID)  ) {
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
