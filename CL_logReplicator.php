@@ -100,6 +100,7 @@ class logReplicator {
 	}
 
 	function checkPilot($serverID,$pilotArray){
+		global $remotePilotsTable ,$db;
 		/*  [pilot] => Array
 			(
 				[userID] => 347
@@ -112,6 +113,19 @@ class logReplicator {
 				[pilotSex] => 
 			)
 		*/
+
+		// first see if a mapping exists
+		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID'];	
+		$res= $db->sql_query($query);		
+		if($res <= 0){
+			echo("<H3> Error in findFlight query! $query</H3>\n");
+			return array(0,0);
+		}		
+		if (  $row = $db->sql_fetchrow($res) ) {
+			if ($row['userID']) 
+				return array($row['serverID'],$row['userID']);		
+		}
+		
 		$update=1;
 		$pilot=new pilot($serverID,$pilotArray['userID']) ;
 		$pilot->createDirs();
@@ -131,6 +145,8 @@ class logReplicator {
 		$pilot->Sex=$pilotArray['pilotSex'];
 
 		$pilot->putToDB($update);
+		
+		return array( $serverID,$pilotArray['userID'] );
 	}
 	
 	function findFlight($serverID,$flightIDoriginal) {
@@ -184,10 +200,14 @@ class logReplicator {
 
 			//	check 'alien' pilot  and insert him or update him anyway
 			$userServerID=$e['ActionXML']['flight']['serverID'];
-			if ($userServerID==0)  $userServerID=$serverID;	
-			$userIDstr=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
+			if ($userServerID==0)  $userServerID=$serverID;				
 
-			logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
+			list ($effectiveServerID,$effectiveUserID )= 
+					logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
+					
+			// $userIDstr=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
+			$userIDstr=$effectiveServerID.'_'.$effectiveUserID;
+						
 			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,
 								$e['ActionXML']['flight']['location'],$e['ActionXML']['flight']['bounds']);
 
@@ -273,8 +293,13 @@ class logReplicator {
 
 					// no userid will be assgined to this flight since it will not be inserted locally
 					// so userID= userServerID;
-					$extFlight->userID=$extFlight->originalUserID;
-
+					
+					// $extFlight->userID=$extFlight->originalUserID;
+					
+					// now we take care of mapping between users
+					$extFlight->userID=$effectiveUserID;
+					$extFlight->userServerID=$effectiveServerID;
+					
 					$extFlight->dateAdded	=$e['ActionXML']['flight']['dateAdded'];
 
 					$extFlight->DATE 		=$e['ActionXML']['flight']['time']['date'];

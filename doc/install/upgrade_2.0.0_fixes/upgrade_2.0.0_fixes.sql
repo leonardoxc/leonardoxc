@@ -201,3 +201,14 @@ ADD `use_zip` TINYINT UNSIGNED NOT NULL DEFAULT '0' AFTER `sync_type` ;
 # 2007/12/03
 
 ALTER TABLE `leonardo_pilots` ADD `BirthdateHideMask` VARCHAR( 10 ) DEFAULT 'xx.xx.xxxx' NOT NULL AFTER `Birthdate` ;
+
+
+# 2007/12/12
+
+CREATE TABLE `leonardo_remote_pilots` (
+`remoteServerID` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+`remoteUserID` BIGINT UNSIGNED NOT NULL DEFAULT '0',
+`serverID` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+`userID` BIGINT UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE = MYISAM ;
+

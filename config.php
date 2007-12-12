@@ -223,7 +223,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $areasTable	=		$CONF_tables_prefix."_areas";
  $areasTakeoffsTable=	$CONF_tables_prefix."_areas_takeoffs";
  $photosTable  	=		$CONF_tables_prefix."_photos";
- 
+ $remotePilotsTable =	$CONF_tables_prefix."_remote_pilots";
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
