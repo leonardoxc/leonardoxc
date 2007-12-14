@@ -58,7 +58,9 @@ require_once dirname(__FILE__)."/CL_statsLogger.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
  // if we use utf
- if ($CONF_use_utf) $db->sql_query("SET NAMES utf8");
+if ($CONF_use_utf) {
+		$db->sql_query("SET NAMES utf8");
+}
 
 $pagetitle = _PAGE_TITLE;
 

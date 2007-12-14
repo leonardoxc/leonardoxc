@@ -264,6 +264,11 @@ function selectWaypointLocation($name,$intName,$countryCode,$forceIntl=-1) {
 	return $tname;
 }
 
+function countryCodeToLanguage($countryCode) {
+	global $lang2iso;
+	if ( ($lang=array_search(strtolower($countryCode),$lang2iso)) === NULL )  $lang='';
+	return $lang;
+}
 function  countryHasLang($countryCode,$language) {
 	 global $CONFIG_langsSpoken;
 

@@ -449,6 +449,10 @@ class Server {
 		}
 
 		// print_r($samePilots);
+		echo "<hr><pre>";
+		echo "# ------------------------------------\n";
+		echo "DELETE FROM leonardo_remote_pilots  WHERE remoteServerID=".$this->ID."; \n";
+
 		foreach($samePilots as $remoteUserID=>$arr1) 
 			foreach($arr1 as $remoteUserServerID=>$arr2) 
 				foreach($arr2 as $localUserID=>$arr3)  
@@ -457,13 +461,17 @@ class Server {
 						$pilotInfo=getPilotInfo($localUserID,$localUserServerID );
 						
 						$remotePilotInfo=$remotePilotNames[$remoteUserID][$remoteUserServerID];
-						echo "$remoteUserServerID _$remoteUserID  $localUserServerID _$localUserID  = $counts <BR>";
-						echo " [ ".$remotePilotInfo['lName']." ".$remotePilotInfo['fName']." country: ".$remotePilotInfo['country']." sex: ".$remotePilotInfo['sex']." birthdate: ".$remotePilotInfo['birthdate']." CIVL ID: ".$remotePilotInfo['CIVL_ID']." ] <BR>";
 
-						echo " [ ".$pilotInfo['0']." ".$pilotInfo['1']." country: ".$pilotInfo['2']." sex: ".$pilotInfo['3']." birthdate: ".$pilotInfo['4']." CIVL ID: ".$pilotInfo['5']." ] <BR>";
+						if ($remoteUserServerID==0) $remoteUserServerID=$this->ID;
+						echo "# ------------------------------------\n";
+						echo "# REMOTE [ ".$remotePilotInfo['lName']." ".$remotePilotInfo['fName']." country: ".$remotePilotInfo['country']." sex: ".$remotePilotInfo['sex']." birthdate: ".$remotePilotInfo['birthdate']." CIVL ID: ".$remotePilotInfo['CIVL_ID']." ] \n";
+						echo "# LOCAL [ ".$pilotInfo['0']." ".$pilotInfo['1']." country: ".$pilotInfo['2']." sex: ".$pilotInfo['3']." birthdate: ".$pilotInfo['4']." CIVL ID: ".$pilotInfo['5']." ] \n";
+						echo "# $remoteUserServerID"."_$remoteUserID  $localUserServerID"."_$localUserID  = $counts \n";	
+						echo "INSERT INTO leonardo_remote_pilots VALUES ( $remoteUserServerID,$remoteUserID,$localUserServerID,$localUserID);\n";	
 					
 					}
-		echo "<div class='ok'>Sync-log replication finished</div><br>";
+		echo "</pre>";
+		echo "<div class='ok'>Finished guessing pilots</div><br>";
 		echo "Proccessed $entriesNum flight's hashes out of $item_num<br>";
 
 	}

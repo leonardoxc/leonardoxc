@@ -100,6 +100,8 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table (NOT USED !!!)</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table (NOT USED !!!)</a> ";
+	echo "<hr>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> ";
 echo "</ul>";
 
 echo "<h3>Sync Log oparations</h3>";
@@ -131,6 +133,64 @@ echo "</ul><br><hr>";
 		deleteFiles(dirname(__FILE__)."/flights",0,".json.js");
     } else if ($admin_op=="cleanOldJSfiles") {
 		deleteFiles(dirname(__FILE__)."/flights",0,".1.js");
+    } else if ($admin_op=="convertTakeoffs") {
+		$res= $db->sql_query('SET NAMES latin1');	
+		// $query="SELECT * from $waypointsTable WHERE countryCode='RU'";
+		$query="SELECT * from $waypointsTable order By countryCode ";
+
+		//$query=" UPDATE leonardo_waypoints SET  name='Schwand', intName='Schwand', lat='47.0142', lon='-8.58312', type='1000', countryCode='CH', location='Brunnen', intLocation='Brunnen', link='http://paragliding.ch/index.php?id=129', description='Startplatz Schwand:   47° 00' 50'' N,8° 35' 05'' O 1250m Bisenstartplatz. In 15 minutigem Fussmarsch zu erreichen ab Bergstation. Gute Soaring Moglichkeiten bei Bise und Nordwind. Flug nach Seewen oder zuruck zur Talstation. Um zur Talstation zu fliegen nach dem Start rechts dem Hang entlang fliegen und vor der Hochspannungsleitung rechts ins Lee fliegen. Das zuruckfliegen im Lee ist bei nicht allzu starkem Wind kein Problem. ', modifyDate='2007-01-24' WHERE ID=9265";
+		$res= $db->sql_query($query);
+//echo "#$res#";
+//return;
+		echo "<pre>";
+		while ($row = mysql_fetch_assoc($res)) { 	
+			$convertInAction=0;
+			$sqlStr="  UPDATE $waypointsTable SET ";
+			$orgValues="# UPDATE $waypointsTable SET ";
+
+			$enc=$langEncodings[ countryCodeToLanguage($row['countryCode']) ];
+			if (!$enc) $enc='iso-8859-1';
+
+			// $orgValues.=" [$enc] ";
+			// echo "ecn: $enc <BR>";
+			foreach($row as $varName=>$varVal ) {
+
+				$varVal=str_replace("\r\n",'',trim($varVal));
+				$varVal=str_replace("\n",'',trim($varVal));
+				// $varVal=htmlspecialchars($varVal,ENT_QUOTES,"UTF-8");
+				//$varVal=str_replace('&amp;','&',$varVal);
+				// $varVal=str_replace('&quot;','"',$varVal);
+				//$varVal=str_replace('&lt;','<',$varVal);
+				//$varVal=str_replace('&gt;','>',$varVal);
+				// $varVal=prep_for_DB($varVal);
+
+
+				$varValUtf8=iconv($enc,'utf8',$varVal);
+				if ($varValUtf8!=$varVal) $convertInAction=1;
+
+//				$varValUtf8=str_replace("\r\n",'<br>',trim($varValUtf8));
+//				$varValUtf8=str_replace("\n",'<br>',trim($varValUtf8));
+
+				$varValUtf8=htmlspecialchars($varValUtf8,ENT_QUOTES,"UTF-8");
+				// $varValUtf8=str_replace('&amp;','&',$varValUtf8);
+				$varValUtf8=str_replace('&quot;','"',$varValUtf8);
+				$varValUtf8=str_replace('&lt;','<',$varValUtf8);
+				$varValUtf8=str_replace('&gt;','>',$varValUtf8);
+
+				if ($varName!='ID') { 
+					$sqlStr.=" $varName='".$varValUtf8."',";
+					$orgValues.=" $varName='$varVal',";
+				}
+			}
+			$sqlStr=substr($sqlStr,0,-1);
+			$orgValues=substr($orgValues,0,-1);
+			$sqlStr.=" WHERE ID=".$row['ID'];
+			$orgValues.=" WHERE ID=".$row['ID'];
+			//if ($convertInAction || $row['ID']==9265) echo "$orgValues\n$sqlStr;\n#\n";
+			if ($convertInAction ) echo "$orgValues\n$sqlStr;\n#\n";
+		}
+		echo "</pre>";
+
     } else if ($admin_op=="fixTakeoffNames") {
 		$ar1=array('name'=>'intName','intName'=>'name','location'=>'intLocation','intLocation'=>'location');
 		foreach ($ar1 as $n1=>$n2){
