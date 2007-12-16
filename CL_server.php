@@ -529,8 +529,10 @@ class Server {
 		flush2Browser();
 		flush2Browser();
 
-
-		$rssStr=fetchURL($urlToPull,60+floor($chunkSize/5) );
+		$timeout=60+floor($chunkSize/5);
+		if ($this->sync_type& SYNC_INSERT_FLIGHT_LOCAL && $this->use_zip ) $timeout*=5;
+		$rssStr=fetchURL($urlToPull,$timeout );
+		
 		if (!$rssStr) {
 			echo "<div class='error'>Cannot get data from server</div><BR>";
 			return 0;
@@ -609,6 +611,7 @@ class Server {
 			flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 			$arr=json::decode($rssStr);
+					
 			echo " <div class='ok'>DONE</div><br>";
 			flush2Browser();
 			//print_r($arr);
@@ -619,6 +622,10 @@ class Server {
 				foreach ($arr['log'] as $i=>$logItem) {
 					if (!is_numeric($i) ) continue;		
 					echo ($entriesNum+1)." / $chunkSize ";
+
+					// add path of temp folder into array
+					$logItem['item']['tmpDir']=$tmpZIPfolder;
+					
 					$entryResult=$this->processSyncEntry($this->ID,$logItem['item']) ;
 					if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
 						echo "<div class'error'>Got fatal Error, will exit</div>";

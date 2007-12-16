@@ -143,7 +143,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 
  open_inner_table(_FILTER_PAGE_TITLE,700); echo "<tr><td>";
  if ($_REQUEST["FILTER_dateType"])  {
-	echo "<center><a href='?name=".$module_name."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
+	echo "<center><a href='".CONF_MODULE_ARG."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
 	// echo "<a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
  }
 /* old: if ($_SESSION["filter_clause"]) {
@@ -193,7 +193,7 @@ window.location = "<? echo  $redirectUrl ?>"
 </script>
 <? } ?>
 <script language='javascript'>
-	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
 
 	var language = '<?=$calLang?>';
 	var startAt = 1;		// 0 - sunday ; 1 - monday

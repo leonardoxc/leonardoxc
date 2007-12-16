@@ -10,7 +10,6 @@
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	//	setDEBUGfromGET();
-
 	
 	$flightID=makeSane($_GET['id'],1);
 	if ($flightID<=0) exit;
@@ -45,10 +44,11 @@
 //	$END_TIME=$max_time;
 //	$DURATION=$END_TIME-$START_TIME;
 
+	$lang_enc='utf-8';
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+<meta http-equiv="Content-Type" content="text/html; charset=<?=$lang_enc?>">
 <title>Google Maps</title>
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
 <script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>

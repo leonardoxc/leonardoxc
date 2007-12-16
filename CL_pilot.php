@@ -62,6 +62,8 @@ class pilot{
 
 	function createDirs() {
 		$pilotPath=$this->getAbsPath();
+		if (! is_dir($pilotPath) ) @mkdir($pilotPath);
+		
 		@mkdir($pilotPath."/flights");
 		@mkdir($pilotPath."/charts");
 		@mkdir($pilotPath."/maps");

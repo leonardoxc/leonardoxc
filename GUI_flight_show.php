@@ -641,7 +641,14 @@ if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metric
 	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
 
+$extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID].
+"</i>. <a href='".$flight->originalURL."' target='_blank'>"._Ext_text3."
+<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
+
+
 $Ltemplate->assign_vars(array(
+	'extFlightLegend'=> $extFlightLegend,
+	
 	'M_PATH'=> $moduleRelPath,
 	'T_PATH'=> $moduleRelPath.'/templates/'.$PREFS->themeName,
 	
@@ -667,6 +674,10 @@ $Ltemplate->assign_vars(array(
 
 ));
 
+if ($flight->externalFlightType) {
+   	$Ltemplate->assign_block_vars('EXT_FLIGHT', array() );
+}
+ 
 if ($comments) {
    	$Ltemplate->assign_block_vars('COMMENTS', array() );
 }

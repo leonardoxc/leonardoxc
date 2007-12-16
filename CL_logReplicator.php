@@ -258,7 +258,7 @@ class logReplicator {
 				// print_r($argArray);
 
 
-				if ($e['action']==1 && ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL)  ) {
+				if ($e['action']==1 && ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL &  SYNC_INSERT_FLIGHT_REPROCESS_LOCALLY)  ) {
 					if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 						return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
 					}
@@ -271,10 +271,29 @@ class logReplicator {
 					} 
 					return array(1,"Flight *pulled* OK with local ID $flightID");
 
-				} else if ( ( $e['action']==1 && $sync_mode & SYNC_INSERT_FLIGHT_LINK  ) || $e['action']==2 ){
-					// inserting in LINK mode or updates
+				} else { 
+					// if ( ( $e['action']==1 && $sync_mode & SYNC_INSERT_FLIGHT_LINK  ) || $e['action']==2 ){
+					// inserting in LINK / LOCAL mode or updates - NOT reproccess
 					if ( $e['action']==1) {
 						$extFlight=new flight();
+						// get igc if required
+						if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL) {
+							echo " Geting IGC file : ";
+							
+							$igcFileTmp=$e['tmpDir'].'/'.$e['ActionXML']['flight']['id'].'.igc';
+							
+							if ( ! is_file($igcFileTmp) ) {
+								echo "NOT in zip -> will fetch ...";
+								if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
+									return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
+								}
+								writeFile($igcFileTmp,$igcFileStr);
+							
+							} else {
+								echo "IN zip -> will use that ...";								
+							}				
+						}						
+						
 					} else {
 						$extFlight=new flight();
 						$extFlight->getFlightFromDB($flightIDlocal,0);
@@ -366,9 +385,25 @@ class logReplicator {
 					$extFlight->checkGliderBrand();
 
 					if ( $e['action']==1) {
+						
+						if ( $sync_mode & SYNC_INSERT_FLIGHT_LOCAL) {
+							$tmpPilot=new pilot($effectiveServerID,$effectiveUserID);
+							$tmpPilot->createDirs();
+							
+							$extFlight->filename=$igcFilename;
+							$extFlight->checkDirs();
+							if ($DBGlvl>0) echo "Moving file into place: ".$extFlight->getIGCFilename()."<BR>";	
+							@rename($igcFileTmp, $extFlight->getIGCFilename() );
+							
+							$opString='*inserted*';
+						}	else {
+							$opString='*linked*';
+						}		
+						
 						// insert flight
 						$extFlight->putFlightToDB(0);
-						return array(1,"Flight *linked* OK with local ID $extFlight->flightID");
+
+						return array(1,"Flight $opString OK with local ID $extFlight->flightID");
 					} else {
 						//update flight
 						$extFlight->putFlightToDB(1);

@@ -178,7 +178,7 @@
 			window.open('<?=$CONF['profile']['CIVL_ID_enter_url']?>', '_blank',	'scrollbars=auto,resizable=yes,WIDTH=700,HEIGHT=550,LEFT=100,TOP=100',false);
 	}
 
-	var imgDir = 'modules/<?=$module_name ?>/js/cal/';
+	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
 
 	var language = '<?=$calLang?>';
 	var startAt = 1;		// 0 - sunday ; 1 - monday

@@ -166,6 +166,21 @@ var $maxPointNum=1000;
 		}
 	}
 
+	function checkDirs() {
+		$pilotPath=$this->getPilotAbsDir();
+		$flightYear=$this->getYear();
+		
+		$yearPath	="$pilotPath/flights/$flightYear"; 
+		$maps_dir	="$pilotPath/maps/$flightYear";
+		$charts_dir	="$pilotPath/charts/$flightYear";
+		$photos_dir	="$pilotPath/photos/$flightYear";
+	
+		if (!is_dir($yearPath))  	mkdir($yearPath,0755);
+		if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
+		if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
+		if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
+	}
+	
 	function toXML(){
 		/*	maybe also include these	
 		"forceBounds"		"autoScore"
@@ -1830,166 +1845,166 @@ $kml_file_contents=
 	}
 	
 	function getFlightFromIGC($filename) {
-	set_time_limit (100);
-	if ($this->forceBounds) {
-		$startTime=$this->START_TIME;
-		$endTime=$this->END_TIME;
-	}
-	$this->resetData();
-	if ($this->forceBounds) {
-		$this->START_TIME=$startTime;
-		$this->END_TIME=$endTime;
-	}
-	$this->setAllowedParams();
-	$this->filename=basename($filename);
-
-	$this->checkForOLCfile($filename);
-
-	$done=0;
-	$try_no_takeoff_detection=0;	
-	while(!$done) {	
+		set_time_limit (100);
+		if ($this->forceBounds) {
+			$startTime=$this->START_TIME;
+			$endTime=$this->END_TIME;
+		}
+		$this->resetData();
+		if ($this->forceBounds) {
+			$this->START_TIME=$startTime;
+			$this->END_TIME=$endTime;
+		}
+		$this->setAllowedParams();
+		$this->filename=basename($filename);
 	
-		$lines = file ($filename);			 
-		$linesNum =count($lines);
-		DEBUG("IGC",1,"File has total $linesNum lines<br>");
-		$points=0;
-		$outputBuffer="";
-
-		// process points
-		// filter bad ones
-		$p=0;
-		$Brecords=0;
-		$getPointsNum=5 ; // + 4 points + this one 
-		for($i=0;$i< count($lines)-10 ;$i++) {		
-			$pointOK=1;
-			$line=trim($lines[$i]);
-						
-			if  (strlen($line)==0) continue;
-			if  ( $line{0}!='B' ) continue;
-			$Brecords++;
-			if  ( strlen($line)  < 23 ) { 
-				$lines[$i]{1}='X';
-				continue;
-			}
-			$neighboors=array();
-			$nextPointPos=$i;
-			for ($t1= 0 ;$t1 <  $getPointsNum ;$t1++ ) {
-				$thisPoint=new gpsPoint( trim($lines[$nextPointPos]) ,$this->timezone );
-				$neighboors[$t1] = $thisPoint;
-
-				$nextPointPos=$this->getNextPointPos($lines,$nextPointPos);				
-			} // got all next points
-
-			// find mean values
-			$mean_speed=0;
-			$mean_vario=0;
-			for ($t1= 1 ;$t1 < $getPointsNum ;$t1++ ) {  // for 4 (5-1) points in a row 
-					// create arrays 
-					$T_distance[$t1] = $neighboors[$t1]->calcDistance($neighboors[$t1-1]);
-					$T_alt[$t1] = $neighboors[$t1]->getAlt();
-					$T_deltaseconds[$t1] = $neighboors[$t1]->getTime() -  $neighboors[$t1-1]->getTime() ;						
-					$T_speed[$t1] = ($T_deltaseconds[$t1])?$T_distance[$t1]*3.6/($T_deltaseconds[$t1]):0.0; /* in km/h */
-					if ($T_deltaseconds[$t1]) $T_vario[$t1]=($T_alt[$t1]-$neighboors[$t1-1]->getAlt() ) / $T_deltaseconds[$t1];
-
-					$mean_speed+=$T_speed[$t1];
-					$mean_vario+=$T_vario[$t1];
-			}
-			$mean_speed = $mean_speed/($getPointsNum-1);
-			$mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
-
-			if ( ($neighboors[0]->getTime() - $neighboors[1]->getTime()  ) > 0   )  {  // the next point is more than one hour in the past
-				 	// echo "#"; $pointOK=0;
-			}
-
-			if ($T_distance[1] < 0.5 && $T_deltaseconds[1] >2 ) {  // less than 0.5 m distance
-			 	$pointOK=0;
-				DEBUG("IGC",8,"[$Brecords-$p] Distance <0.5 m <br>");
-				$REJ_T_distance++;
-
-				// we dont go through the other tests
-				//echo "{$lines[$i]} =>";
-				$lines[$i]{1}='X';
-				//echo "{$lines[$i]}<br>";
-				continue;
-				//echo $T_distance[1]."*<br>";
-			}
-			if ( abs ($mean_speed - $T_speed[1] ) > 40 ) { // diff more than 40 km/h
-				$pointOK=0;
-				$REJ_T_mean_speed++;
-				DEBUG("IGC",8,"[$Brecords-$p] Mean speed > 40 km/h <br>");
-				//echo "@";
-			}
-			//if ( abs ($mean_vario - $T_vario[1] ) > 6 ) {  // diff more than 6 m/sec
-			//	$pointOK=0; 
-				//echo "#";
-			//}
-			if ( $T_deltaseconds[1] == 0 ) {  
-				$pointOK=0; 
-				$REJ_T_zero_time_diff++;
-				DEBUG("IGC",8,"[$Brecords-$p] No time Diff<br>");
-			}
-			if ( $T_alt[1]   > $this->maxAllowedHeight ) {  $pointOK=0;	$REJ_max_alt++; }
-			if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) { 
-				 $pointOK=0; 
-				 $REJ_max_speed++;
-				 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_speed[1])."km/h max allowed speed<br>");
-				// echo "S"; 
-			}
-			if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
-				// echo "V";
-				 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_vario[1]) ."m/sec  > max allowed vario<br>");
-			}
-			if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care 
-				$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
-				DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." max:$takeoffMaxSpeed<br>");
-				if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {  
-					$pointOK=0;	
-					$REJ_max_speed_start++;
-					// echo "s"; 
+		$this->checkForOLCfile($filename);
+	
+		$done=0;
+		$try_no_takeoff_detection=0;	
+		while(!$done) {	
+		
+			$lines = file ($filename);			 
+			$linesNum =count($lines);
+			DEBUG("IGC",1,"File has total $linesNum lines<br>");
+			$points=0;
+			$outputBuffer="";
+	
+			// process points
+			// filter bad ones
+			$p=0;
+			$Brecords=0;
+			$getPointsNum=5 ; // + 4 points + this one 
+			for($i=0;$i< count($lines)-10 ;$i++) {		
+				$pointOK=1;
+				$line=trim($lines[$i]);
+							
+				if  (strlen($line)==0) continue;
+				if  ( $line{0}!='B' ) continue;
+				$Brecords++;
+				if  ( strlen($line)  < 23 ) { 
+					$lines[$i]{1}='X';
+					continue;
 				}
-				if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.4) ) {  
+				$neighboors=array();
+				$nextPointPos=$i;
+				for ($t1= 0 ;$t1 <  $getPointsNum ;$t1++ ) {
+					$thisPoint=new gpsPoint( trim($lines[$nextPointPos]) ,$this->timezone );
+					$neighboors[$t1] = $thisPoint;
+	
+					$nextPointPos=$this->getNextPointPos($lines,$nextPointPos);				
+				} // got all next points
+	
+				// find mean values
+				$mean_speed=0;
+				$mean_vario=0;
+				for ($t1= 1 ;$t1 < $getPointsNum ;$t1++ ) {  // for 4 (5-1) points in a row 
+						// create arrays 
+						$T_distance[$t1] = $neighboors[$t1]->calcDistance($neighboors[$t1-1]);
+						$T_alt[$t1] = $neighboors[$t1]->getAlt();
+						$T_deltaseconds[$t1] = $neighboors[$t1]->getTime() -  $neighboors[$t1-1]->getTime() ;						
+						$T_speed[$t1] = ($T_deltaseconds[$t1])?$T_distance[$t1]*3.6/($T_deltaseconds[$t1]):0.0; /* in km/h */
+						if ($T_deltaseconds[$t1]) $T_vario[$t1]=($T_alt[$t1]-$neighboors[$t1-1]->getAlt() ) / $T_deltaseconds[$t1];
+	
+						$mean_speed+=$T_speed[$t1];
+						$mean_vario+=$T_vario[$t1];
+				}
+				$mean_speed = $mean_speed/($getPointsNum-1);
+				$mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
+	
+				if ( ($neighboors[0]->getTime() - $neighboors[1]->getTime()  ) > 0   )  {  // the next point is more than one hour in the past
+						// echo "#"; $pointOK=0;
+				}
+	
+				if ($T_distance[1] < 0.5 && $T_deltaseconds[1] >2 ) {  // less than 0.5 m distance
+					$pointOK=0;
+					DEBUG("IGC",8,"[$Brecords-$p] Distance <0.5 m <br>");
+					$REJ_T_distance++;
+	
+					// we dont go through the other tests
+					//echo "{$lines[$i]} =>";
+					$lines[$i]{1}='X';
+					//echo "{$lines[$i]}<br>";
+					continue;
+					//echo $T_distance[1]."*<br>";
+				}
+				if ( abs ($mean_speed - $T_speed[1] ) > 40 ) { // diff more than 40 km/h
+					$pointOK=0;
+					$REJ_T_mean_speed++;
+					DEBUG("IGC",8,"[$Brecords-$p] Mean speed > 40 km/h <br>");
+					//echo "@";
+				}
+				//if ( abs ($mean_vario - $T_vario[1] ) > 6 ) {  // diff more than 6 m/sec
+				//	$pointOK=0; 
+					//echo "#";
+				//}
+				if ( $T_deltaseconds[1] == 0 ) {  
 					$pointOK=0; 
-					$REJ_max_vario_start++;
-					//echo "v"; 
+					$REJ_T_zero_time_diff++;
+					DEBUG("IGC",8,"[$Brecords-$p] No time Diff<br>");
 				}
+				if ( $T_alt[1]   > $this->maxAllowedHeight ) {  $pointOK=0;	$REJ_max_alt++; }
+				if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) { 
+					 $pointOK=0; 
+					 $REJ_max_speed++;
+					 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_speed[1])."km/h max allowed speed<br>");
+					// echo "S"; 
+				}
+				if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
+					// echo "V";
+					 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_vario[1]) ."m/sec  > max allowed vario<br>");
+				}
+				if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care 
+					$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
+					DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." max:$takeoffMaxSpeed<br>");
+					if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {  
+						$pointOK=0;	
+						$REJ_max_speed_start++;
+						// echo "s"; 
+					}
+					if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.4) ) {  
+						$pointOK=0; 
+						$REJ_max_vario_start++;
+						//echo "v"; 
+					}
+				}
+				if (!$pointOK)  {
+					$lines[$i]{1}='X';
+				} else  {
+					$p++;
+					if ($p==5) DEBUG("IGC",1,"Passed the strict testing (p=5)<br>");
+				}
+	
 			}
-			if (!$pointOK)  {
-				$lines[$i]{1}='X';
-			} else  {
-				$p++;
-				if ($p==5) DEBUG("IGC",1,"Passed the strict testing (p=5)<br>");
+	
+	
+			DEBUG("IGC",1,"REJ: [$REJ_T_distance] <0.5 distance<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_T_zero_time_diff] zero_time_diff<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_T_mean_speed] mean_speed diff >40km/h<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_max_alt] >max_alt<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_max_speed] >max_speed<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_max_vario] >max_vario<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_max_speed_start] >max_speed_start<br>");
+			DEBUG("IGC",1,"REJ: [$REJ_max_vario_start] >max_vario_start<br>");
+	
+			DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
+			
+			if ($p>0) {
+				$done=1;
+			} else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
+				$lines = file ($filename); 
+				$done=1;
+				$garminSpecialCase=1;
+				$p=$Brecords;
+				DEBUG("IGC",1,"Many Stopped points, it is a Garmin Special Case<br>");
+			} else if (	!$try_no_takeoff_detection ) {
+				$try_no_takeoff_detection=1; 
+				DEBUG("IGC",1,"Will try no_takeoff_detection<br>");
+			} else { 
+				$done=1;
 			}
-
-		}
-
-
-		DEBUG("IGC",1,"REJ: [$REJ_T_distance] <0.5 distance<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_T_zero_time_diff] zero_time_diff<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_T_mean_speed] mean_speed diff >40km/h<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_max_alt] >max_alt<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_max_speed] >max_speed<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_max_vario] >max_vario<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_max_speed_start] >max_speed_start<br>");
-		DEBUG("IGC",1,"REJ: [$REJ_max_vario_start] >max_vario_start<br>");
-
-		DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
-		
-		if ($p>0) {
-			$done=1;
-		} else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
-			$lines = file ($filename); 
-			$done=1;
-			$garminSpecialCase=1;
-			$p=$Brecords;
-			DEBUG("IGC",1,"Many Stopped points, it is a Garmin Special Case<br>");
-		} else if (	!$try_no_takeoff_detection ) {
-			$try_no_takeoff_detection=1; 
-			DEBUG("IGC",1,"Will try no_takeoff_detection<br>");
-		} else { 
-			$done=1;
-		}
-		
-	} // while not done
+			
+		} // while not done
 
 		//	 
 		if ($p==0)  {
@@ -3072,6 +3087,11 @@ $kml_file_contents=
 	}
 
 	function updateAll($forceRefresh=0) {
+		// chack for saned igc in case it wasnt created in the first place or if the flight was synced
+	 	if (  !is_file( $this->getIGCFilename(1) ) || $forceRefresh ) { 
+			 $this->getFlightFromIGC($this->getIGCFilename(0) ) ;
+		}
+		
  	    if (  !is_file( $this->getMapFilename() ) || $forceRefresh ) {
 			 $this->getMapFromServer();		
 	    } 	

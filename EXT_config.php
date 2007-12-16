@@ -37,6 +37,7 @@
 		require($phpbb_root_path . 'common.'.$phpEx);
 	}
 
+
 	if ($CONF_use_utf) {
 		define('CONF_LANG_ENCODING_TYPE','utf8');
 		$lang['ENCODING']='utf-8';
