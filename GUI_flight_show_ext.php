@@ -13,7 +13,7 @@
 
 
 	$Ltemplate ->set_filenames(array(
-		'body' => 'flight_show.html'));
+		'body' => 'flight_show_ext.html'));
 
 
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
@@ -123,83 +123,11 @@ function delete_takeoff(id) {
 	</div>
 </div>
 
-
-
-
-<div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
-<form name="geOptionsForm" method="POST">
-<input type="hidden" name="flightID" value="<?=$flightID?>">
-
-<table bgcolor="#EEEEEE" cellpadding="0" cellspacing="0" width="100%" border="0" >
-<tr>
-<td  colspan=2 class="tableBox" style="background-color:#6F9ED3">
-<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
-		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-</td>
-</tr>
-<tr >
-	<td class="infoBox" align>
-	<?=_Line_Color?>
-	</td>
-	<td class="tableBox">
-	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
-	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='0000FF' style='background-color: #0000FF'>&nbsp;&nbsp;&nbsp;</option>	
-	<option value='FFD700' style='background-color: #FFD700'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FF1493' style='background-color: #FF1493'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FFFFFF' style='background-color: #FFFFFF'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FF4500' style='background-color: #FF4500'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>
-	
-
-	</select> 
-	</td>
-	
-</tr>
-<tr>
-	<td class="infoBox" align="right">
-		<?=_Line_width?>
-	</td>
-	<td class="tableBox" align="left">
-		<select  name="lineWidth">	
-		<option value='1' >1</option>
-		<option value='2' selected >2</option>
-		<option value='3' >3</option>
-		<option value='4' >4</option>
-		<option value='5' >5</option>
-		</select> 
-		<input name="ex" type="hidden" value="1" />
-	</td>
-</tr>
-
-<tr>
-	<td colspan=2 class="infoBox">
-	<?
-	echo "<a href='javascript:submitForm(0)'>"._Display_on_Google_Earth."</a><br>"; 
-	?>
-	</td>
-</tr>
-<tr>
-	<td colspan=2 class="infoBox">
-<?
-	echo "<a href='javascript:submitForm(1)'>"._Use_Man_s_Module."</a><br>"; 
-	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
-	?>
-
-	</td>
-</tr>
-</TABLE>
-
-</form>
-</div>
 <?
 	$legendRight="";
 
 	if (auth::isAdmin($userID) ) {
-		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
+	//	$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
 	if ( $flight->belongsToUser($userID) || auth::isAdmin($userID) ) {
@@ -490,9 +418,15 @@ $localMap="";
 $googleMap="";
 $margin="";
 
+$extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID].
+"</i>. <a href='".$flight->originalURL."' target='_blank'>"._Ext_text2."
+<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
+
 
 
 $Ltemplate->assign_vars(array(
+	'extFlightLegend'=> $extFlightLegend,
+	
 	'M_PATH'=> $moduleRelPath,
 	'T_PATH'=> $moduleRelPath.'/templates/'.$PREFS->themeName,
 	
@@ -510,6 +444,7 @@ $Ltemplate->assign_vars(array(
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
+	'geLink'=>$flight->originalKML,
 
 	'linkToInfoHdr1'=>$linkToInfoHdr1,
 	'linkToInfoHdr2'=>$linkToInfoHdr2,

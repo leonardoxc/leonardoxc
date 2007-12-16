@@ -110,6 +110,13 @@ if ($action==1) { // server info
 	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$server->guessPilots();
+} else if ($action==8) { // delete pilots -> only use if you know what you are doing , must be sed only after delete flights
+	$server->deleteAllSyncedPilots();
+	
+} else if ($action==9) { // move sync pointer back (in effect will reprocess last n log entries next time
+	echo "Sync Pointer was ".$server->lastPullUpdateID."<BR>";
+	$server->rewindSyncPointer($_GET['moveCounterBack']+0);
+	echo "Sync Pointer is ".$server->lastPullUpdateID."<BR>";
 } else if ($action==99) { //test
 	echo $server->url_op;
 	echo "<BR>$action<br>";

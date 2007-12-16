@@ -13,7 +13,7 @@
 
   $query = 'SELECT DISTINCT userID, max( FLIGHT_KM ) AS BestFreeTriangle '			
   		. ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.$where_clause.' AND  BEST_FLIGHT_TYPE = "FREE_TRIANGLE" '
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FREE_TRIANGLE" '
         . ' GROUP BY userID'
         . ' ';
   $res= $db->sql_query($query);
@@ -28,7 +28,7 @@
 
   $query = 'SELECT DISTINCT userID, max( FLIGHT_KM ) AS BestFAITriangle '			
   		. ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.$where_clause.' AND  BEST_FLIGHT_TYPE = "FAI_TRIANGLE" '
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FAI_TRIANGLE" '
         . ' GROUP BY userID'
         . ' ';
   $res= $db->sql_query($query);
@@ -59,7 +59,7 @@
 		. ' sum( FLIGHT_POINTS ) as totalOlcScore, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause
         . ' GROUP BY userID'
         . ' ';
 
@@ -74,8 +74,8 @@
   
   $realName=getPilotRealName($pilotIDview,$serverID);	
   $legend="<b>$realName</b> "._flights_stats;
-  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=$pilotIDview'>"._Pilot_Profile."</a>";
+  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$serverID."_$pilotIDview'>"._Pilot_Profile."</a>";
   
 
 if ($row["totalFlights"]) {
@@ -118,7 +118,7 @@ $mean_duration="N/A";
 
     $query = 'SELECT count(*) as flightsCount, SUM(DURATION) as sum_duration, DATE_FORMAT(DATE,"%Y-%m") as flightDate '
         . ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause
         . ' GROUP  BY DATE_FORMAT(DATE,"%Y-%m") '
         . ' ';
 
@@ -225,7 +225,7 @@ $mean_duration="N/A";
 
 }
 
-  open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=300 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
+  open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=340 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
   open_tr();  
   echo "<td>";
 ?>

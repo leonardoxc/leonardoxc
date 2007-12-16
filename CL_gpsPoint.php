@@ -309,8 +309,16 @@ Time to launch from landing
     }
 
 	function exportXML() {	
+		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
+		
+		if ($CONF['sync']['protocol']['format']=='JSON') {
+			$useJSON=1;
+			require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		} else $useJSON=0;
+		
 		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_waypoint&waypointIDview=".$this->waypointID);
 	
+		if (!$useJSON) {
 return "<waypoint>
 <id>".htmlspecialchars($this->waypointID)."</id>
 <name>".htmlspecialchars($this->name)."</name>
@@ -326,6 +334,26 @@ return "<waypoint>
 <description>".htmlspecialchars($this->description)."</description>
 <modifyDate>".htmlspecialchars($this->modifyDate)."</modifyDate>
 </waypoint>";
+} else {
+return '{ 
+"waypoint": {
+"id" : "'.json::prepStr($this->waypointID).'",
+"name" : "'.json::prepStr($this->name).'",
+"intName" : "'.json::prepStr($this->intName).'",
+"location" : "'.json::prepStr($this->location).'",
+"intLocation" : "'.json::prepStr($this->intLocation).'",
+"countryCode" : "'.json::prepStr($this->countryCode).'",
+"type" : "'.json::prepStr($this->type).'",
+"lat" : "'.json::prepStr($this->lat).'",
+"lon" : "'.json::prepStr(-$this->lon).'",
+"link" : "'.json::prepStr($this->link).'",
+"displayLink" : "'.$link.'",
+"description" : "'.json::prepStr($this->description).'",
+"modifyDate" : "'.json::prepStr($this->modifyDate).'"
+}
+}';
+
+}
 	
 	}
 
@@ -423,7 +451,7 @@ return "<waypoint>
 		
 		
 	    if($res <= 0){
-		  echo "Error putting waypount to DB $query<BR>";
+		  echo "Error putting waypoint to DB $query<BR>";
 		  return 0;
 	    }					
 		return 1;

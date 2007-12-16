@@ -13,6 +13,7 @@
 
 require_once dirname(__FILE__).'/FN_functions.php';
 require_once dirname(__FILE__).'/CL_logReplicator.php';
+require_once dirname(__FILE__).'/CL_pilot.php';
 
 class Server {
 	var $ID;
@@ -359,6 +360,40 @@ class Server {
 		$this->lastPullUpdateID=0;
 		$this->putToDB(1);
 
+	}
+
+	function deleteAllSyncedPilots() {
+		global $db,$pilotsTable;
+		// if (!$this->gotValues) $this->getFromDB();
+		
+		$res= $db->sql_query("SELECT * FROM $pilotsTable WHERE  serverID=$this->ID ");
+  		if($res <= 0){   
+			 echo "Error getting server's pilots from local DB<BR>";
+		     return;
+	    }
+
+		echo "Deleting all pilots of server ".$this->ID." from local DB <HR>";
+	    while( $row= $db->sql_fetchrow($res) ) {
+			echo "Deleting pilot ".$row['pilotID']." : ".$row['FirstName'].' '.$row['LastName'] ."<BR>";
+			 
+			$pilotToDelete=new pilot($this->ID,$row['pilotID']);
+			$pilotToDelete->deletePilot(0,1); // delete dir of pilot
+		} 
+
+		//	reset the counter
+		//$this->lastPullUpdateID=0;
+		// $this->putToDB(1);
+
+	}
+	
+	function rewindSyncPointer($count) {
+		$this->lastPullUpdateID-=$count;
+		$this->putToDB(1);
+	}
+
+	function advanceSyncPointer($count) {
+		$this->lastPullUpdateID+=$count;
+		$this->putToDB(1);
 	}
 
 	function guessPilots($chunkSize=5) { // we pull data from this server

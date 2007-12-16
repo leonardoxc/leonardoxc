@@ -221,9 +221,14 @@ var $maxPointNum=1000;
 		$userServerID=$this->userServerID;
 		if ($userServerID==0) $userServerID=$CONF_server_id;
 
+		// will be changed when dateAdded will be UTC
 		$dateAdded=$this->dateAdded;
 		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
 
+
+		if (  $this->serverID==0 || $this->serverID==$CONF_server_id ) $isLocal=1;
+		else $isLocal=0;
+		
 		if (!$useJSON) {
 		$resStr=
 "<flight>
@@ -309,8 +314,8 @@ $photosXML
 		} else {
 $resStr='{ 
 "flight": {
-	"serverID": '.$CONF_server_id.',
-	"id": '.$this->flightID.',
+	"serverID": '. ( $this->serverID?$this->serverID:$CONF_server_id).',
+	"id": '.($isLocal ? $this->flightID : $this->original_ID  ).',
 	"dateAdded": "'.$dateAdded.'",
 	"filename": "'.json::prepStr($this->filename).'",
 	"linkIGC": "'.$this->getIGC_URL().'",
@@ -2885,7 +2890,7 @@ $kml_file_contents=
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
 		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
-		$log->ServerItemID	=$CONF_server_id ;
+		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
 		$log->ActionID  = 4 ;  //1  => add  2  => edit; 4  => delete
 		$log->ActionXML	= $this->toXML();
 		$log->Modifier	= 0;
@@ -3016,7 +3021,7 @@ $kml_file_contents=
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
 		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
-		$log->ServerItemID	=$CONF_server_id ;
+		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = $update+1 ;  //1  => add  2  => edit;
 		$log->ActionXML	= $this->toXML();
 		$log->Modifier	= 0;
@@ -3034,7 +3039,7 @@ $kml_file_contents=
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
 		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
-		$log->ServerItemID	=$CONF_server_id ;
+		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 1 ;  //1  => add  2  => edit;
 		$log->ActionXML	= $this->toXML();
 		$log->Modifier	= 0;

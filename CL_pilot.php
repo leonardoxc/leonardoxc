@@ -52,17 +52,41 @@ class pilot{
 		else return 0;	
 	}
 
-	function createDirs() {
+	function getAbsPath() {
 		global $flightsAbsPath,$CONF_server_id;
 		if ( $this->isPilotLocal() ) $sPrefix='';
 		else $sPrefix=$this->serverID.'_';
-		$pilotPath=$flightsAbsPath.'/'.$sPrefix.$this->pilotID;
+		return $flightsAbsPath.'/'.$sPrefix.$this->pilotID;
+		
+	}
+
+	function createDirs() {
+		$pilotPath=$this->getAbsPath();
 		@mkdir($pilotPath."/flights");
 		@mkdir($pilotPath."/charts");
 		@mkdir($pilotPath."/maps");
 		@mkdir($pilotPath."/photos");
 	}
 
+	function deletePilot($deleteFlights=0,$deleteFiles=0) {
+		global $db,$pilotsTable;
+		
+		$err=0;
+		$sql="DELETE FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
+		$res= $db->sql_query($sql);
+  		if($res <= 0){   
+			 echo "Error deleting pilot from DB $sql<BR>";
+		     $err=1;
+	    }
+		
+		if ($deleteFiles) {
+			$pilotPath=$this->getAbsPath();
+			delDir($pilotPath);
+		}		
+		
+		return $err;
+	}
+	
 	function getFromDB() {
 		global $db,$pilotsTable;
 		$res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID );

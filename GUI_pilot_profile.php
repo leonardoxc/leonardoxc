@@ -45,7 +45,7 @@
   }
   else $legendRight.="";
   
-  open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=430 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
+  open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=350 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
   open_tr();
   echo "<td>";
 ?> 
