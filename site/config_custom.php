@@ -32,10 +32,7 @@
   // rely on  leonardo_pilots name fields  entirely
  $CONF_use_leonardo_names=1;
  
- // mod_users 
- // put in this array the userID of the users you want ot grand mod status
- // You can leave this blank
- $mod_users=array();
+
 
  $CONF_main_page="index_full";
 
