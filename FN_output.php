@@ -304,7 +304,7 @@ $offset=date('O',$tm);
 	return $secs;
 }
 
-function generate_flights_pagination($base_url, $num_items, $per_page, $start_item, $add_prevnext_text = TRUE)
+function generate_flights_pagination($base_url, $num_items, $per_page, $start_item, $add_prevnext_text = TRUE,	$begin_end = 2,	$from_middle = 2)
 {
 
 
@@ -323,8 +323,8 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 
 	Change $begin_end and $from_middle to suit your needs appropriately
 */
-	$begin_end = 2;
-	$from_middle = 2;
+//	$begin_end = 2;
+//	$from_middle = 2;
 	
 	$total_pages = ceil($num_items/$per_page);
 

@@ -1,6 +1,6 @@
 <? 
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                                */
+/* Leonardo: Gliding XC Server					                        */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
@@ -20,9 +20,39 @@
   //$page_num=$_REQUEST["page_num"]+0;
   //if ($page_num==0)  $page_num=1;
 
+	$query="SELECT count(*) as itemNum FROM ".$logTable;
+	 // echo "#count query#$query<BR>";
+	$res= $db->sql_query($query);
+	if($res <= 0){   
+	 echo("<H3> Error in count items query! $query</H3>\n");
+	 exit();
+	}
+	$row = $db->sql_fetchrow($res);
+	$itemsNum=$row["itemNum"];   
+	
+	$page_num=$_REQUEST["page_num"]+0;
+	if ($page_num==0)  $page_num=1;
+	
+	$startNum=($page_num-1)*$PREFS->itemsPerPage;
+	$pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
+	
 //-----------------------------------------------------------------------------------------------------------
+	
+	$legend="Log entries";
+	$legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=admin_logs&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE , 3, 3); 
 
-  	$query="SELECT * FROM ".$logTable." ORDER BY $sortOrder DESC ";	
+	$endNum=$startNum+$PREFS->itemsPerPage;
+	if ($endNum>$itemsNum) $endNum=$itemsNum;
+	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
+	if ($itemsNum==0) $legendRight="[ 0 ]";
+
+	echo  "<div class='tableTitle shadowBox'>
+	<div class='titleDiv'>$legend</div>
+	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
+	</div>" ;
+	
+
+  	$query="SELECT * FROM ".$logTable." ORDER BY $sortOrder DESC LIMIT $startNum,".$PREFS->itemsPerPage;	
    // echo $query;
 	$res= $db->sql_query($query);		
     if($res <= 0){
@@ -30,12 +60,7 @@
 		return ;
     }
 
-	$legend="Log entries";
-	$legendRight="";
-   echo  "<div class='tableTitle shadowBox'>
-   <div class='titleDiv'>$legend</div>
-   <div class='pagesDiv'>$legendRight</div>
-   </div>" ;
+
 
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;

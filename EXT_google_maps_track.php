@@ -170,7 +170,7 @@ DisplayCrosshair(1);
 
 <script type="text/javascript">
 	
-	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_PHYSICAL_MAP,G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
+	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
