@@ -690,5 +690,9 @@ define('_LAST_DIGIT','last digit');
 define('_Filter_Items_nationality','nationality');
 define('_Filter_Items_server','server');
 
+// New on 2007/12/15
+define('_Ext_text1','This is a flight originally submited at ');
+define('_Ext_text2','Link to full flight maps and charts');
+define('_Ext_text3','Link to original flight');
 
 ?>

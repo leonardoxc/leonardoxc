@@ -659,6 +659,16 @@ define('_Altitude','Υψόμετρο');
 define('_Speed','Ταχύτητα');
 define('_Distance_from_takeoff','Αππόσταση απο απογείωση');
 
+// New on 2007/12/03
+define('_LAST_DIGIT','τελευταίο ψηφίο');
+
+define('_Filter_Items_nationality','εθνικότητα');
+define('_Filter_Items_server','server');
+
+// New on 2007/12/15
+define('_Ext_text1','Αυτή η πτήση είχε αρχικά υποβληθεί στο ');
+define('_Ext_text2','Πατήστε εδώ για τους χάρτες και τα γραφήματα');
+define('_Ext_text3','Σύνδεσμος στην πρωτότυπη πτήση');
 
 //--------------------------------------------------------
 //--------------------------------------------------------
@@ -682,8 +692,5 @@ define("_EmailInvalid","The email address is invalid.");
 define("_EmailSaved","The email address was saved"); 
 define("_EmailNotSaved","The email address has not been saved."); 
 define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_LAST_DIGIT","last digit"); 
-define("_Filter_Items_nationality","nationality"); 
-define("_Filter_Items_server","server"); 
 
 ?>
