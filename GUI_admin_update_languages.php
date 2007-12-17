@@ -35,7 +35,7 @@
 
 		// get the english file definitions
 		$baseLang='english';
-		$baseDefines=getDefinesAsArray("lang-$baseLang.php");		
+		$baseDefines=getDefinesAsArray("source/lang-$baseLang.php");		
 		// print_r($baseDefines);
 		
 		foreach($availableLanguages as $lang) {
@@ -50,9 +50,9 @@
 			 }	
 			*/	
 			
-			$FileName = LANG_ABS_PATH."/lang-$lang.php";
+			$FileName = LANG_ABS_PATH."/source/lang-$lang.php";
 			
-			$langDefines=getDefinesAsArray("lang-$lang.php");
+			$langDefines=getDefinesAsArray("source/lang-$lang.php");
 			$definesMissing=array();	
 			foreach($baseDefines as $defineStr=>$translateStr) {
 				//	echo " $defineStr => $translateStr<BR>";
@@ -109,7 +109,7 @@
 			// Now do the countries files
 			// ----------------------------------
 			
-			$FileName = LANG_ABS_PATH."/countries-$lang.php";
+			$FileName = LANG_ABS_PATH."/source/countries-$lang.php";
 			$File = file($FileName);
 			$FileText = implode("",$File);
 			
