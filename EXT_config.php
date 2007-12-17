@@ -15,7 +15,7 @@
 	setVarFromRequest("lng",$PREFS->language); 
 
 	$currentlang=$lng;
-	// $lang=$currentlang;
+	$lang=$currentlang;
 	$language=$currentlang;
 
 	if ( $opMode==1) {
