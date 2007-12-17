@@ -42,6 +42,7 @@ class dialogfilter {
 	var $dialog_initialised=false;
 
 	var $dialog_width=480; # width of the dialog window
+	var $dialog_height=0; // by default fill in the whole height
 
 	var $errmsg=''; #
 
@@ -83,7 +84,8 @@ class dialogfilter {
 					break;
 
 				case 'server':
-					$this->dialog_width=430;
+					$this->dialog_width=250;
+					$this->dialog_height=420;
 					break;
 					
 				case 'nacclub':
@@ -317,7 +319,7 @@ class dialogfilter {
 		var el=document.getElementById('$this->dataelement');
 		if (el) {
 			var url='$baseurl&$this->selecteddata_key='+el.value;
-			popupwindow(url, $this->dialog_width);
+			popupwindow(url, $this->dialog_width, $this->dialog_height);
 		}";
 		return $js;
 	}
@@ -329,11 +331,20 @@ class dialogfilter {
 			$js="
 <script type=\"text/javascript\">
 <!--
-function popupwindow(url, winwidth){
+function popupwindow(url, winwidth,winheight){
 	if (url){
-		var newheight=screen.availHeight*0.9;
+		var newheight=winheight;
+		if (newheight==0) newheight=screen.availHeight*0.9;
+
 		var newwidth=winwidth;
-		var newtop=screen.availHeight*0.1;
+		var newtop=0;
+		if (winheight==0) {
+			newtop=screen.availHeight*0.1;
+		} else {
+			newtop=( screen.availHeight-newheight )/2 ;
+		}
+		if (newtop <0) newtop=0;
+
 		var newleft=screen.availWidth-winwidth;
 		var optionstring='height='+Math.round(newheight);
 		optionstring+=',width='+Math.round(newwidth);
@@ -486,7 +497,9 @@ function setValToMaster(){
 			}
 		}
 	}
-}// -->
+}
+
+// -->
 </script>
 ";
 		return $js;
