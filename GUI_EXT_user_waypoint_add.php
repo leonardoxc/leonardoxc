@@ -92,9 +92,8 @@
     mysql_freeResult($res);
 
 	//echo $nearestCountryCode."^^";
-  ?>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+  ?><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
 	 body {margin:0px; background-color:#E9E9E9}
@@ -181,7 +180,8 @@ function fillInForm(name,area,countrycode){
 	a.value=countrycode;
 }
 </script>
-      <form name="form1" method="post" action="GUI_EXT_user_waypoint_add.php" >
+      
+<form name="form1" method="post" action="GUI_EXT_user_waypoint_add.php" >
 
         <table width="700" border="0" align="center">
           <tr>

@@ -30,9 +30,8 @@
 	if (! auth::isAdmin($userID)) {
 		// return;
     }
-?>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+?><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   <style type="text/css">
   body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
   body {margin:0px}
@@ -60,6 +59,7 @@
   open_tr();
   echo "<td>";	
 ?>
+
 <style type="text/css">
 <!--
 .style1 {font-weight: bold}

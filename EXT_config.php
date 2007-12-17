@@ -15,7 +15,7 @@
 	setVarFromRequest("lng",$PREFS->language); 
 
 	$currentlang=$lng;
-	$lang=$currentlang;
+	// $lang=$currentlang;
 	$language=$currentlang;
 
 	if ( $opMode==1) {
@@ -40,11 +40,13 @@
 
 	if ($CONF_use_utf) {
 		define('CONF_LANG_ENCODING_TYPE','utf8');
-		$lang['ENCODING']='utf-8';
+		$CONF_ENCODING='utf-8';
 	} else  {
 		define('CONF_LANG_ENCODING_TYPE','iso');
-		$lang['ENCODING']=$langEncodings[$currentlang];
+		$CONF_ENCODING=$langEncodings[$currentlang];
 	}
+	if (is_array($lang) )
+		$lang['ENCODING']=$CONF_ENCODING;
 
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 

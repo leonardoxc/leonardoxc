@@ -22,8 +22,16 @@
 		'overall_header' => 'tpl/overall_header.html')
 	);
 
-	if ($CONF_use_utf) $lang['ENCODING']='utf-8';
-	else  $lang['ENCODING']=$langEncodings[$currentlang];
+	if ($CONF_use_utf) {
+		define('CONF_LANG_ENCODING_TYPE','utf8');
+		$CONF_ENCODING='utf-8';
+	} else  {
+		define('CONF_LANG_ENCODING_TYPE','iso');
+		$CONF_ENCODING=$langEncodings[$currentlang];
+	}
+	if (is_array($lang) )
+		$lang['ENCODING']=$CONF_ENCODING;
+
 
 	$Ltemplate->assign_vars(array(	
 		'STYLE_LINK'=> $moduleRelPath."/templates/".$PREFS->themeName."/style.css",

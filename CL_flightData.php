@@ -665,8 +665,8 @@ $resStr='{
 	}
 
 	function getFlightKML($includeLang=1) {
-		global $current_lang;
-		if ($includeLang) $langStr="&lang=$current_lang";
+		global $currentlang;
+		if ($includeLang) $langStr="&lng=$currentlang";
 		else  $langStr="";
 		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID.$langStr;
 	}

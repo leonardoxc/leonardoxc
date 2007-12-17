@@ -51,7 +51,7 @@
 <html>
 <head>
   <title><?=_Select_Club?></title>
-  <meta http-equiv="content-type" content="text/html; charset=<?=$lang['ENCODING']?>">
+  <meta http-equiv="content-type" content="text/html; charset=<?=$CONF_ENCODING?>">
 
 <style type="text/css">
 	html {

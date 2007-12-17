@@ -32,9 +32,8 @@
     if (! auth::isAdmin($userID)) {
 		 return;
     }
-?>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+?><head>
+  <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   <style type="text/css">
   body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
   body {margin:0px}
@@ -63,7 +62,8 @@
 	} else {
 ?> 
 
-      <form name="form1" method="post" action="">
+      
+<form name="form1" method="post" action="">
 
         <table width="350" border="0" align="center" cellpadding="2" class="shadowBox main_text">
           <tr>

@@ -39,7 +39,7 @@
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=<?=$lang['ENCODING']?>">
+<meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
 <title>Google Maps</title>
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
 <script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
