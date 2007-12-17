@@ -642,7 +642,7 @@ if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metric
 
 
 $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID].
-"</i>. <a href='".$flight->originalURL."' target='_blank'>"._Ext_text3."
+"</i>. <a href='".$flight->originalURL."&lng=$currentlang' target='_blank'>"._Ext_text3."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 

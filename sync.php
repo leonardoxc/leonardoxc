@@ -202,7 +202,7 @@
 			$filesToServe=array();
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 			
-			if ($getIGCfiles) {
+			if ($getIGCfiles && count($flightsToServe) ) {
 				$sql="select ID, DATE, userID, filename from $flightsTable WHERE ID IN ( ";		
 				for($i=0;$i<count($flightsToServe);$i++) {
 					if ($i>0) $sql.=' , ';

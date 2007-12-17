@@ -281,6 +281,7 @@ border:0;
 .listIcons { margin-right:1px; }
 
 .flagIcon { margin-right:0.5em; vertical-align:middle; text-decoration:none; border: 0 none;  }
+.extIcon { margin:0; padding:0; vertical-align:middle; text-decoration:none; border: 0 none;  }
 
 .numeration { display:inline; }
 .numeration  a, .numeration  a:visited { color:#FFFFFF; }

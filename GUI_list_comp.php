@@ -389,7 +389,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
    <td class="SortHeader"><div align=left><? echo _PILOT ?></div></td>
    <td class="SortHeader" width="70"><? echo $header ?></td>
    <? for ($ii=1;$ii<=$countHowMany;$ii++) { ?>
-   <td class="SortHeader" width="55">#<? echo $ii?></td>
+   <td class="SortHeader" width="70">#<? echo $ii?></td>
    <? } ?>
    <td class="SortHeader" width="50">&nbsp;</td>
    </tr>
@@ -436,7 +436,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 
-			if ($flights[$flightID]['ext']) $extFlightImg="<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry."'>";
+			if ($flights[$flightID]['ext']) $extFlightImg="<img class='extIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry."'>";
 			else $extFlightImg='';
 
 			// $descr="flight $flightID";
