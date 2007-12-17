@@ -17,7 +17,7 @@ if ( $_SERVER['SERVER_NAME'] =="pgforum.home" ) {
 	$dbpasswd = '321ox';
 } else {
 	$dbhost = 'localhost';
-	$dbname = 'paraglidingforum';
+	$dbname = 'paraglidingforum4';
 	$dbuser = 'pgforumftp';
 	$dbpasswd = 'K7v#3E!2';
 }

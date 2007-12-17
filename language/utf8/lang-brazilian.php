@@ -62,7 +62,7 @@ define("_DURATION_HOURS_MIN","Duração (h:m)");
 define("_SHOW","Mostrar");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","O voo será activado dentro de 1-2 minutos.");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","O voo será ativado dentro de 1-2 minutos.");
 define("_TRY_AGAIN","Por favor tente de novo");
 
 define("_TAKEOFF_LOCATION","Decolagem");
@@ -471,7 +471,7 @@ define("_VIEW_COUNTRY","Ver país");
 define("_UNITS_SYSTEM" ,"Unidades");
 define("_METRIC_SYSTEM","Métrico (km,m)");
 define("_IMPERIAL_SYSTEM","Imperial (milhas,pés)");
-define("_ITEMS_PER_PAGE","Items por página");
+define("_ITEMS_PER_PAGE","Itens por página");
 
 define("_MI","mi");
 define("_KM","km");
@@ -496,171 +496,172 @@ define("_INDEX_MESSAGE","Utilize o menu principal para navegar ou as preferênci
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","First (Summary) Page");
-define("_Display_ALL","Display ALL");
-define("_Display_NONE","Display NONE");
-define("_Reset_to_default_view","Reset to default view");
-define("_No_Club","No Club");
-define("_This_is_the_URL_of_this_page","This is the URL of this page");
-define("_All_glider_types","All glider types");
+define("_MENU_SUMMARY_PAGE","Primeira (Resumo) Página");
+define("_Display_ALL","Mostrar Tudo");
+define("_Display_NONE","Esconder Tudo");
+define("_Reset_to_default_view","Retornar à visualização pré definida");
+define("_No_Club","Sem Clube");
+define("_This_is_the_URL_of_this_page","Esta é a URL desta página");
+define("_All_glider_types","Todos os tiposde aeronaves");
 
-define("_MENU_SITES_GUIDE","Flying Sites Guide");
-define("_Site_Guide","Site Guide");
+define("_MENU_SITES_GUIDE","Guia de locais de vôo");
+define("_Site_Guide","Guia de Locais");
 
-define("_Search_Options","Search Options");
-define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
-define("_Clear_this_list","Clear this list");
-define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
-define("_Available_Takeoffs","Available Takeoffs");
-define("_Search_site_by_name","Search site by name");
-define("_give_at_least_2_letters","give at least 2 letters");
-define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
-define("_Takeoff_Details","Takeoff Details");
-
-
-define("_Takeoff_Info","Takeoff Info");
-define("_XC_Info","XC Info");
-define("_Flight_Info","Flight Info");
-
-define("_MENU_LOGOUT","Logout");
-define("_MENU_LOGIN","Login");
-define("_MENU_REGISTER","Open an account");
+define("_Search_Options","Opções de busca");
+define("_Below_is_the_list_of_selected_sites","Abaixo está a lista de locais selecionada");
+define("_Clear_this_list","Limpar a lista");
+define("_See_the_selected_sites_in_Google_Earth","Ver os locais selecionados no Google Earth");
+define("_Available_Takeoffs","Decolagens Registradas");
+define("_Search_site_by_name","Procurar por nome");
+define("_give_at_least_2_letters","dê ao menos 2 (duas) letras");
+define("_takeoff_move_instructions_1","Você pode mover todas as decolagens registradas para a lista de seleção à direita do painel ao usar >> ou selecione uma usando o símbolo > ");
+define("_Takeoff_Details","Detalhes da decolagem");
 
 
-define("_Africa","Africa");
-define("_Europe","Europe");
-define("_Asia","Asia");
-define("_Australia","Australia");
-define("_North_Central_America","North/Central America");
-define("_South_America","South America");
+define("_Takeoff_Info","Informação da Decolagem");
+define("_XC_Info","Informações XC");
+define("_Flight_Info","Informações do vôo");
 
-define("_Recent","Recent");
-
-
-define("_Unknown_takeoff","Unknown takeoff");
-define("_Display_on_Google_Earth","Display on Google Earth");
-define("_Use_Man_s_Module","Use Man's Module");
-define("_Line_Color","Line Color");
-define("_Line_width","Line width");
-define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
-define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
-define("_EDIT_WAYPOINT","Edit Takeoff Info");
-define("_DELETE_WAYPOINT","Delete Takeoff");
-define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+define("_MENU_LOGOUT","Sair");
+define("_MENU_LOGIN","Entrar");
+define("_MENU_REGISTER","Abrir uma conta");
 
 
-define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
-define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
-define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
-define("_Takeoff_Name","Takeoff Name");
-define("_In_Local_Language","In Local Language");
-define("_In_English","In English");
+define("_Africa","África");
+define("_Europe","Europa");
+define("_Asia","Ásia");
+define("_Australia","Austrália");
+define("_North_Central_America","América do Norte e Central");
+define("_South_America","América do Sul");
+
+define("_Recent","Recente");
+
+
+define("_Unknown_takeoff","Decolagem desconhecida");
+define("_Display_on_Google_Earth","Mostrar no Google Earth");
+define("_Use_Man_s_Module","Usar o Módulo Man's");
+define("_Line_Color","Cor da linha");
+define("_Line_width","Espessura da linha");
+define("_unknown_takeoff_tooltip_1","Vôo a partir de uma decolagem desconhecida");
+define("_unknown_takeoff_tooltip_2","Se voce sabe de qual Decolagem/local este vôo começou, por favor clique para inserir o nome !");
+define("_EDIT_WAYPOINT","Editar informações da Decolagem");
+define("_DELETE_WAYPOINT","Remover Decolagem");
+define("_SUBMISION_DATE","Data de Envio"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Quantidade de visualizações"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","Você pode entrar com as informações da decolagem se a conhecer. Se não estiver certo é seguro fechar esta janela");
+define("_takeoff_add_help_2","Se o seu vôo é de uma destas decolagens acima da 'Decolagem desconhecida', então não é necessário entrar com ela novamente. Somente feche esta janela. ");
+define("_takeoff_add_help_3","Se você vê o nome da decolagem abaixo, clique sobre ele para auto preencher os campos à esquerda.");
+define("_Takeoff_Name","Nome da decolagem");
+define("_In_Local_Language","Em Português");
+define("_In_English","Em Inglês");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Please enter your username and password to log in.");
-define("_SEND_PASSWORD","I forgot my password");
-define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
-define("_AUTO_LOGIN","Log me on automatically each visit");
-define("_USERNAME","Username");
-define("_PASSWORD","Password");
-define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+define("_ENTER_PASSWORD","Indique seu usuário ou senha para entrar.");
+define("_SEND_PASSWORD","Esqueci a senha");
+define("_ERROR_LOGIN","Você indicou um nome de usuario incorreto / inativo ou senha inválida.");
+define("_AUTO_LOGIN","Entrar automaticamente a cada visita");
+define("_USERNAME","Usuário");
+define("_PASSWORD","Senha");
+define("_PROBLEMS_HELP","Se você tem problemas, entre em contato com o administrador");
 
-define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
-define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
+define("_LOGIN_TRY_AGAIN","Clique %sAqui%s para tentar novamente");
+define("_LOGIN_RETURN","Clique %sAqui%s para retornar ao índice");
 // end 2007/02/20
 
-define("_Category","Category");
-define("_MEMBER_OF","Member of");
-define("_MemberID","Member ID");
-define("_EnterID","Enter ID");
-define("_Clubs_Leagues","Clubs / Leagues");
-define("_Pilot_Statistics","Pilot Statistics");
-define("_National_Rankings","National Rankings");
+define("_Category","Categorla");
+define("_MEMBER_OF","Utilizador de");
+define("_MemberID","ID do utilizador");
+define("_EnterID","Entre com ID");
+define("_Clubs_Leagues","Clubes / Ligas");
+define("_Pilot_Statistics","Estatísticas do piloto");
+define("_National_Rankings","Ranking Nacional");
 
 
 
 
 // new on 2007/03/08
-define("_Select_Club","Select Club");
-define("_Close_window","Close window");
-define("_EnterID","Enter ID");
-define("_Club","Club");
-define("_Sponsor","Sponsor");
+define("_Select_Club","Selecionar Grupo");
+define("_Close_window","Fechar Janela");
+define("_EnterID","Entrar com a ID");
+define("_Club","Clube");
+define("_Sponsor","Patrocinador");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Go To Current Month');
-define('_Today_is','Today is');
-define('_Wk','Wk');
-define('_Click_to_scroll_to_previous_month','Click to scroll to previous month. Hold mouse button to scroll automatically.');
-define('_Click_to_scroll_to_next_month','Click to scroll to next month. Hold mouse button to scroll automatically.');
-define('_Click_to_select_a_month','Click to select a month.');
-define('_Click_to_select_a_year','Click to select a year.');
-define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
+define('_Go_To_Current_Month','Mês corrente');
+define('_Today_is','Hoje é');
+define('_Wk','Fd');
+define('_Click_to_scroll_to_previous_month','Clique para ir ao mês anterior. Clique e segure para ir automaticamente.');
+define('_Click_to_scroll_to_next_month','Click para ir ao próximo mês. Segure o botão do mouse para navegar automaticamente.');
+define('_Click_to_select_a_month','Selecionar o mês.');
+define('_Click_to_select_a_year','Selecionar o Ano.');
+define('_Select_date_as_date.','Selecionar Data.'); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
+// end 2007/03/13
+
+define("_SEASON","Temporada"); 
+define("_SUBMIT_TO_OLC","Submeter à OLC"); 
+define("_pilot_email","Endereço de E-mail"); 
+define("_Sex","Sexo"); 
+define("_Login_Stuff","Mudar dados de entrada"); 
+define("_PASSWORD_CONFIRMATION","Confirmar senha"); 
+define("_EnterPasswordOnlyToChange","Entre somente com a senha, se quiser mudá-la:"); 
+define("_PwdAndConfDontMatch","Senha e confirmação da senha não são iguais."); 
+define("_PwdTooShort","A Senha é muito curta, Deverar ter ao menos $passwordMinLength caracteres."); 
+define("_PwdConfEmpty","A senha não foi confirmada."); 
+define("_PwdChanged","A Senha foi mudada."); 
+define("_PwdNotChanged","A senha NÃO foi mudada."); 
+define("_PwdChangeProblem","Ocorreu um problema mudando a senha."); 
+define("_EmailEmpty","O Endereço de e-mail não pode ser vazio."); 
+define("_EmailInvalid","O Endereço de e-mail é inválido."); 
+define("_EmailSaved","O Endereço de e-mail foi salvo"); 
+define("_EmailNotSaved","O endereço de e-mail NÃO foi salvo."); 
+define("_EmailSaveProblem","Ocorreu um problema ao salvar o endereço de e-mail."); 
+define("_PROJECT_HELP","Ajuda"); 
+define("_PROJECT_NEWS","Novidades"); 
+define("_PROJECT_RULES","Regras 2007"); 
+define("_Filter_NoSelection","Nada Selecionado"); 
+define("_Filter_CurrentlySelected","Seleção Corrente"); 
+define("_Filter_DialogMultiSelectInfo","Pressione control para seleção Multipla."); 
+define("_Filter_FilterTitleIncluding","Somente [itens] Selecionados"); 
+define("_Filter_FilterTitleExcluding","Excluir [itens]"); 
+define("_Filter_DialogTitleIncluding","Selecionar [itens]"); 
+define("_Filter_DialogTitleExcluding","Selecionar [itens]"); 
+define("_Filter_Items_pilot","pilotos"); 
+define("_Filter_Items_nacclub","clubes"); 
+define("_Filter_Items_country","Países"); 
+define("_Filter_Items_takeoff","Decolagens"); 
+define("_Filter_Button_Select","Selecionar"); 
+define("_Filter_Button_Delete","Remover"); 
+define("_Filter_Button_Accept","Aceitar seleção"); 
+define("_Filter_Button_Cancel","Cancelar"); 
+define("_MENU_FILTER_NEW","Filtrar **VERSÃO NOVA**"); 
+define("_ALL_NACCLUBS","Todos os Clubes"); 
+define("_SELECT_NACCLUB","Selecione [nomenac]-Clube"); 
+define("_FirstOlcYear","Primeiro ano de participação em uma Competição de XC online"); 
+define("_FirstOlcYearComment","Por favor, selecione o ano de sua primeira participação de uma competição de XC Online, que não esta.<br/>Este campo é relevante para &quot;newcomer&quot;-Classificação."); 
+define("_Select_Brand","Selecione o cadastro"); 
+define("_All_Brands","Todos os cadastrados"); 
+define("_DAY","DIA"); 
+define("_Glider_Brand","Aeronave cadastrada"); 
+define("_Or_Select_from_previous","Ou selecione anteriores"); 
+define("_Explanation_AddToBookmarks_IE","Adicionar estes filtros para os Favoritos no IE"); 
+define("_Msg_AddToBookmarks_IE","Clique aqui para adicionar estas definições de filtro nos Favoritos do IE."); 
+define("_Explanation_AddToBookmarks_nonIE","(Salvar este link nos Favoritos.)"); 
+define("_Msg_AddToBookmarks_nonIE","Para salvar estas definições de filtro no seu livro de favoritos, use a função Salvar nos favoritos do Navegador."); 
+define("_PROJECT_RULES2","Regras 2008"); 
+define("_MEAN_SPEED1","Velocidade média"); 
+define("_External_Entry","Entradas Externas"); 
+define("_Altitude","Altitude"); 
+define("_Speed","Velocidade"); 
+define("_Distance_from_takeoff","Distância da decolagem"); 
+define("_LAST_DIGIT","Último dígito");
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
-define("_SEASON","Season"); 
-define("_SUBMIT_TO_OLC","Submit to OLC"); 
-define("_pilot_email","Email Address"); 
-define("_Sex","Sex"); 
-define("_Login_Stuff","Change Login-Data"); 
-define("_PASSWORD_CONFIRMATION","Confirm password"); 
-define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
-define("_PwdAndConfDontMatch","Password and confirmation are different."); 
-define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
-define("_PwdConfEmpty","The password has not be confirmed."); 
-define("_PwdChanged","The password was changed."); 
-define("_PwdNotChanged","The password has NOT been changed."); 
-define("_PwdChangeProblem","A problem occurred when changing the password."); 
-define("_EmailEmpty","The email address must not be empty."); 
-define("_EmailInvalid","The email address is invalid."); 
-define("_EmailSaved","The email address was saved"); 
-define("_EmailNotSaved","The email address has not been saved."); 
-define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_PROJECT_HELP","Help"); 
-define("_PROJECT_NEWS","News"); 
-define("_PROJECT_RULES","Regulations 2007"); 
-define("_Filter_NoSelection","No selection"); 
-define("_Filter_CurrentlySelected","Current selection"); 
-define("_Filter_DialogMultiSelectInfo","Press Ctrl for multiple selection."); 
-define("_Filter_FilterTitleIncluding","Only selected [items]"); 
-define("_Filter_FilterTitleExcluding","Exclude [items]"); 
-define("_Filter_DialogTitleIncluding","Select [items]"); 
-define("_Filter_DialogTitleExcluding","Select [items]"); 
-define("_Filter_Items_pilot","pilots"); 
-define("_Filter_Items_nacclub","clubs"); 
-define("_Filter_Items_country","countries"); 
-define("_Filter_Items_takeoff","take offs"); 
-define("_Filter_Button_Select","Select"); 
-define("_Filter_Button_Delete","Delete"); 
-define("_Filter_Button_Accept","Accept selection"); 
-define("_Filter_Button_Cancel","Cancel"); 
-define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
-define("_ALL_NACCLUBS","All Clubs"); 
-define("_SELECT_NACCLUB","Select [nacname]-Club"); 
-define("_FirstOlcYear","First year of participation in an online XC contest"); 
-define("_FirstOlcYearComment","Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings."); 
-define("_Select_Brand","Select Brand"); 
-define("_All_Brands","All Brands"); 
-define("_DAY","DAY"); 
-define("_Glider_Brand","Glider Brand"); 
-define("_Or_Select_from_previous","Or Select from previous"); 
-define("_Explanation_AddToBookmarks_IE","Add these filter settings to your favourites"); 
-define("_Msg_AddToBookmarks_IE","Click here to add these filter settings to your bookmarks."); 
-define("_Explanation_AddToBookmarks_nonIE","(Save this link to your bookmarks.)"); 
-define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
-define("_PROJECT_RULES2","Regulations 2008"); 
-define("_MEAN_SPEED1","Mean Speed"); 
-define("_External_Entry","External Entry"); 
-define("_Altitude","Altitude"); 
-define("_Speed","Speed"); 
-define("_Distance_from_takeoff","Distance from takeoff"); 
-define("_LAST_DIGIT","last digit"); 
 define("_Filter_Items_nationality","nationality"); 
 define("_Filter_Items_server","server"); 
 define("_Ext_text1","This is a flight originally submited at "); 
