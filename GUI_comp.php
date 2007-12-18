@@ -74,7 +74,7 @@
   $page_num=$_REQUEST["page_num"]+0;
   if ($page_num==0)  $page_num=1;
   
-    $itemsNum=count($pilots);   
+   $itemsNum=count($pilots);   
 
   $startNum=($page_num-1)*$CONF_compItemsPerPage;
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);

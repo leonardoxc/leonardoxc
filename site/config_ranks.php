@@ -21,140 +21,405 @@ $ranksList=array(
 		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
 		 
 		 'useCustomYears'=>1, 
-		 'years'=>array (
-				'use_calendar_years'=>0,
-				'start_year'=>2005,
-				'end_year'=>date("Y"),
-		 ),
-
+		 'years'=>array ('use_calendar_years'=>0),
 		 'useCustomSeasons'=>1, // definition must follow !		 
 		 'seasons'=>array (
-	
 			'use_season_years'=>1,	
-		
-			
-			// IF this is set then all info on which sesons to display in the menu
-			//     will be taken from the $CONF['dates']
-			// ELSE 
-			//    the menu will display season starting from $CONF['start_season'] to $CONF['end_season']
-			//    BOTH VALUES MUST BE defined
-			//    In this case also the season start/end will be defined from 
-			//    $CONF['season_default_start'] and $CONF['season_default_end']	
-			'use_defined_seasons'=>0,
-
-			// The next 4 values will be used in case of 	$CONF['use_defined_seasons']=0
-			'season_default_start'=>'10-1',
-			'season_default_end'=>'9-31',
-			
-			// UNCOMMENT ONLY ONE of the 3 next cases
-
-			// if the season 2007 is 2006-10-1 till  2007-9-30
-			'season_start_year_diff'=>-1,
-			'season_end_year_diff'=>0,
-
-			// else if season 2007 is 2007-4-1 till  2008-3-31
-			//'season_start_year_diff'=>0,
-			//'season_end_year_diff'=>1,
-
-			// else if season 2007 is 2007-1-1 till  2007-12-31
-			//'season_start_year_diff'=>0,
-			//'season_end_year_diff'=>0,
-
-				
-			'start_season'=>2006,
-			'end_season'=>'current',
-		
-		
-			// The next array will be used in case of 	$CONF['use_defined_seasons']=1
+			'use_defined_seasons'=>1,
 			'seasons'=>array(
-				2008=>array('start'=>'2007-10-1','end'=>'2008-09-30'),		
-				2007=>array('start'=>'2006-10-1','end'=>'2007-9-30',
-							'subseasons'=>array(
-								'winter'=>array('start'=>'2006-10-1','end'=>'2007-3-31','localName'=>'winterInLocalLanguage'),
-								'summer'=>array('start'=>'2007-3-1','end'=>'2007-9-30','localName'=>'summerInLocalLanguage'),
-							)					
-						),					
-			)					 
-		 
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
 		 ),
 		 
 		 'subranks'=>array(
-		 		1=>array('id'=>1, 
-						'name'=>'Paraglider (FAI 3) Sport',
-						'localName'=>'Paraglider (FAI 3) Sport (in german)',
-						),
-		 		2=>array('id'=>2, 
-						'name'=>'Paraglider (FAI 3) Open',
-						'localName'=>'Paraglider (FAI 3) Open (in german)',
-						),
-		 		3=>array('id'=>3, 
-						'name'=>'Paraglider (FAI 3) Tandem',
-						'localName'=>'Paraglider (FAI 3) Tandem (in german)',
-						),
-		 		4=>array('id'=>4, 
-						'name'=>'Hangglider (FAI 1)',
-						'localName'=>'Hangglider (FAI 1) (in german)',
-						),
-		 		5=>array('id'=>5, 
-						'name'=>'Rigid Wing (FAI 5)',
-						'localName'=>'Rigid Wing (FAI 5) (in german)',
-						),
-		 
+			1=>array('id'=>1,
+				'name'=>'PG Sport',
+				'localName'=>'PG Sport',
 			),
-		),
-
-2=>array('id'=>2,
-		 'type'=>'national',
-		 'entity'=>'club',
-		 'name'=>'German Club Ranking',
-		 'localName'=>'Deutsche Drachenwertung',
-		 'localLanguage'=>'german',
-		 'dontShowCatSelection'=>1, // no glider type selection menu on top
- 		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+			2=>array('id'=>2,
+				'name'=>'PG Open',
+				'localName'=>'PG Open',
+			),
+			3=>array('id'=>3,
+				'name'=>'PG Tandem',
+				'localName'=>'PG Tandem',
+			),
+			/*4=>array('id'=>4,
+				'name'=>'Hangglider',
+				'localName'=>'Drachenflieger',
+			),
+			5=>array('id'=>5,
+				'name'=>'Rigid Wing',
+				'localName'=>'Starrflügel',
+			),*/
+			6=>array('id'=>6,
+				'name'=>'Junior PG',
+				'localName'=>'Junior PG',
+			),
+			/*7=>array('id'=>7,
+				'name'=>'Junior HG',
+				'localName'=>'Junior HG',
+			),*/
+			8=>array('id'=>8,
+				'name'=>'Womens PG',
+				'localName'=>'Damen PG',
+			),
+			/*9=>array('id'=>9,
+				'name'=>'Womens HG',
+				'localName'=>'Damen HG',
+			),*/
+			10=>array('id'=>10,
+				'name'=>'Newcomer PG',
+				'localName'=>'Newcomer PG',
+			),
+			/*11=>array('id'=>11,
+				'name'=>'Newcomer HG',
+				'localName'=>'Newcomer HG',
+			),*/
+			12=>array('id'=>12,
+				'name'=>'FAI3',
+				'localName'=>'FAI3',
+			),
 		 
- 		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		),
+	),
+4=>array(
+		'id'=>1,
+		'type'=>'national',
+		'entity'=>'pilot',
+		'name'=>'German HG Ranking',
+		'localName'=>'Deutsche Drachenwertung',
+		'localLanguage'=>'german',
+		'dontShowCatSelection'=>1, // no glider type selection menu on top
+		'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
 		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
 		'forceNacId'=>1, // the only NAC ID to be used
-
-		 
- 		  // Ths configures the top menu links to point to a specific year/season
+		
+		//P. Wild 31.08.2007
+		//'dontShowManufacturers'=>1, //Manufacturers selection menu on top
+   		//'dontShowDatesSelection'=>1, //no date selection menu
+		
+		
+		  // Ths configures the top menu links to point to a specific year/season
 		 'datesMenu'=>'seasons',	
-		 'menuYear'=>'current' ,
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
 		 
 		 'useCustomYears'=>1, 
-		 'years'=>array (
-				'use_calendar_years'=>0,
-				'start_year'=>2003,
-				'end_year'=>date("Y"),
-		 ),
-
-
-		 'useCustomSeasons'=>1, 
-		 'seasons'=>array (	
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>1, // definition must follow !		 
+		 'seasons'=>array (
 			'use_season_years'=>1,	
-			'use_defined_seasons'=>0,
-			// The next 4 values will be used in case of 	$CONF['use_defined_seasons']=0
-			'season_default_start'=>'10-1',
-			'season_default_end'=>'9-31',
-			// if the season 2007 is 2006-10-1 till  2007-9-30
-			'season_start_year_diff'=>-1,
-			'season_end_year_diff'=>0,				
-			'start_season'=>2007,
-			'end_season'=>'current',
+			'use_defined_seasons'=>1,
+			'seasons'=>array(
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
+		 ),
+		 
+		'subranks'=>array(
+/*			1=>array('id'=>1,
+				'name'=>'PG Sport',
+				'localName'=>'PG Sport',
+			),
+			2=>array('id'=>2,
+				'name'=>'PG Open',
+				'localName'=>'PG Open',
+			),
+			3=>array('id'=>3,
+				'name'=>'PG Tandem',
+				'localName'=>'PG Tandem',
+			),*/
+			4=>array('id'=>4,
+				'name'=>'Hangglider',
+				'localName'=>'Drachenflieger',
+			),
+			5=>array('id'=>5,
+				'name'=>'Rigid Wing',
+				'localName'=>'Starrflügel',
+			),
+			/*6=>array('id'=>6,
+				'name'=>'Junior PG',
+				'localName'=>'Junior PG',
+			),*/
+			7=>array('id'=>7,
+				'name'=>'Junior HG',
+				'localName'=>'Junior HG',
+			),
+			/*8=>array('id'=>8,
+				'name'=>'Womens PG',
+				'localName'=>'Damen PG',
+			),*/
+			9=>array('id'=>9,
+				'name'=>'Womens HG',
+				'localName'=>'Damen HG',
+			),
+			/*10=>array('id'=>10,
+				'name'=>'Newcomer PG',
+				'localName'=>'Newcomer PG',
+			),*/
+			11=>array('id'=>11,
+				'name'=>'Newcomer HG',
+				'localName'=>'Newcomer HG',
+			),
+			
+		),
+
+	),
+
+	2=>array(
+		'id'=>2,
+		'type'=>'national',
+		'entity'=>'club',
+		'name'=>'German Club Ranking',
+		'localName'=>'Deutsche Vereinswertung',
+		'localLanguage'=>'german',
+		'dontShowCatSelection'=>1, // no glider type selection menu on top
+		'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		'dontShowNacClubSelection'=>1, // NAC club selection menu on top
+		'dontShowDatesSelection'=>1, //no date selection menu
+		//P. Wild 31.08.2007
+		'dontShowManufacturers'=>1, //Manufacturers selection menu on top
+
+		  // Ths configures the top menu links to point to a specific year/season
+		 'datesMenu'=>'seasons',	
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
+		 
+		 'useCustomYears'=>1, 
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>1, // definition must follow !		 
+		 'seasons'=>array (
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>1,
+			'seasons'=>array(
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
+		 ),
+		 
+		'subranks'=>array(
+			1=>array('id'=>1,
+				'name'=>'Paraglider',
+				'localName'=>'Paraglider',
+			),
+			2=>array('id'=>2,
+				'name'=>'Hangglider',
+				'localName'=>'Drachen',
+			),
+
+		),
+	),
+
+	3=>array('id'=>3,
+		'type'=>'national',
+		'entity'=>'pilot',
+		'name'=>'Austrian Hangglider Ranking',
+		'localName'=>'Österreichische Drachenwertung',
+		'localLanguage'=>'german',
+		'dontShowCatSelection'=>1, // no glider type selection menu on top
+		'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
+		'forceNacId'=>2, // the only NAC ID to be used
+		
+		//P. Wild 31.08.2007
+		'dontShowManufacturers'=>1, //Manufacturers selection menu on top
+        'dontShowDatesSelection'=>1, //no date selection menu
+
+		  // Ths configures the top menu links to point to a specific year/season
+		 'datesMenu'=>'seasons',	
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
+		 
+		 'useCustomYears'=>1, 
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>1, // definition must follow !		 
+		 'seasons'=>array (
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>1,
+			'seasons'=>array(
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
 		 ),
 		 
 		 'subranks'=>array(
-		 		1=>array('id'=>1, 
-						'name'=>'Paraglider',
-						'localName'=>'Paraglider (in german)',
-						),
-		 		2=>array('id'=>2, 
-						'name'=>'Hangglider',
-						'localName'=>'Hangglider (in german)',
-						),
+/*			1=>array('id'=>1,
+				'name'=>'PG Sport',
+				'localName'=>'PG Sport',
+			),
+			2=>array('id'=>2,
+				'name'=>'PG Open',
+				'localName'=>'PG Open',
+			),
+			3=>array('id'=>3,
+				'name'=>'PG Tandem',
+				'localName'=>'PG Tandem',
+			),*/
+			4=>array('id'=>4,
+				'name'=>'Hangglider',
+				'localName'=>'Drachenflieger',
+			),
+			5=>array('id'=>5,
+				'name'=>'Rigid Wing',
+				'localName'=>'Starrflügel',
+			),
+			/*6=>array('id'=>6,
+				'name'=>'Junior PG',
+				'localName'=>'Junior PG',
+			),
+			7=>array('id'=>7,
+				'name'=>'Junior HG',
+				'localName'=>'Junior HG',
+			),
+			/*8=>array('id'=>8,
+				'name'=>'Womens PG',
+				'localName'=>'Damen PG',
+			),
+			9=>array('id'=>9,
+				'name'=>'Womens HG',
+				'localName'=>'Damen HG',
+			),
+			/*10=>array('id'=>10,
+				'name'=>'Newcomer PG',
+				'localName'=>'Newcomer PG',
+			),
+			11=>array('id'=>11,
+				'name'=>'Newcomer HG',
+				'localName'=>'Newcomer HG',
+			), */
+   ),
+  ),
+  
+6=>array(
+		'id'=>6,
+		'type'=>'national',
+		'entity'=>'club',
+		'name'=>'Austrian Club Ranking',
+		'localName'=>'Österreichische Vereinswertung',
+		'localLanguage'=>'german',
+		'dontShowCatSelection'=>1, // no glider type selection menu on top
+		'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		/* Martin Jursa 22.05.2007: Support for NAC club filtering */
+		'dontShowNacClubSelection'=>1, // NAC club selection menu on top
+		'dontShowDatesSelection'=>1, //no date selection menu
+		//P. Wild 31.08.2007
+		'dontShowManufacturers'=>1, //Manufacturers selection menu on top
+
+		  // Ths configures the top menu links to point to a specific year/season
+		 'datesMenu'=>'seasons',	
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
 		 
+		 'useCustomYears'=>1, 
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>1, // definition must follow !		 
+		 'seasons'=>array (
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>1,
+			'seasons'=>array(
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
+		 ),
+		 
+		'subranks'=>array(
+			/*1=>array('id'=>1,
+				'name'=>'Paraglider',
+				'localName'=>'Paraglider',
+			),*/
+			2=>array('id'=>2,
+				'name'=>'Hangglider',
+				'localName'=>'Drachen & Starflügel',
+			),
+
+		),
+	),
+	
+5=>array('id'=>5,
+		'type'=>'national',
+		'entity'=>'pilot',
+		'name'=>'Odenwald Cup',
+		'localName'=>'Odenwald Cup',
+		'localLanguage'=>'german',
+		'dontShowCatSelection'=>1, // no glider type selection menu on top
+		'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+
+		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
+		'forceNacId'=>1, // the only NAC ID to be used
+		
+		//P. Wild 31.08.2007
+		'dontShowManufacturers'=>1, //Manufacturers selection menu on top
+        'dontShowDatesSelection'=>1, //no date selection menu
+		
+		  // Ths configures the top menu links to point to a specific year/season
+		 'datesMenu'=>'seasons',	
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
+		 
+		 'useCustomYears'=>1, 
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>1, // definition must follow !		 
+		 'seasons'=>array (
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>1,
+			'seasons'=>array(
+				2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
+				2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
+			)					 		 
+		 ),
+		 
+		'subranks'=>array(
+			1=>array('id'=>1,
+				'name'=>'PG Sport',
+				'localName'=>'PG Sport',
+			),
+			2=>array('id'=>2,
+				'name'=>'PG Open',
+				'localName'=>'PG Open',
+			),
+			3=>array('id'=>3,
+				'name'=>'PG Tandem',
+				'localName'=>'PG Tandem',
+			),
+			4=>array('id'=>4,
+				'name'=>'Hangglider',
+				'localName'=>'Drachenflieger',
+			),
+			5=>array('id'=>5,
+				'name'=>'Rigid Wing',
+				'localName'=>'Starrflügel',
+			),
+			6=>array('id'=>6,
+				'name'=>'Jun.PG',
+				'localName'=>'Jun.PG',
+			),
+			7=>array('id'=>7,
+				'name'=>'Jun.HG',
+				'localName'=>'Jun.HG',
+			),
+			8=>array('id'=>8,
+				'name'=>'Womens PG',
+				'localName'=>'Damen PG',
+			),
+			9=>array('id'=>9,
+				'name'=>'Womens HG',
+				'localName'=>'Damen HG',
+			),
+			10=>array('id'=>10,
+				'name'=>'New.PG',
+				'localName'=>'New.PG',
+			),
+			11=>array('id'=>11,
+				'name'=>'New.HG',
+				'localName'=>'New.HG',
 			),
 		),
+
+  ),
 );
 
 require_once dirname(__FILE__)."/../CL_dates.php";
