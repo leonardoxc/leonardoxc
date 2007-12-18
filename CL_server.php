@@ -511,7 +511,7 @@ class Server {
 
 	}
 
-	function sync($chunkSize=5) { // we pull data from this server
+	function sync($chunkSize=5,$verbose=1) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path;
 		
 		if (!$this->gotValues) $this->getFromDB();
@@ -525,9 +525,9 @@ class Server {
 
 		
 
-		echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
-		flush2Browser();
-		flush2Browser();
+		if ($verbose) echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
+		if ($verbose) flush2Browser();
+		if ($verbose) flush2Browser();
 
 		$timeout=60+floor($chunkSize/5);
 		if ($this->sync_type& SYNC_INSERT_FLIGHT_LOCAL && $this->use_zip ) $timeout*=5;
@@ -537,11 +537,12 @@ class Server {
 			echo "<div class='error'>Cannot get data from server</div><BR>";
 			return 0;
 		}
-		echo " <div class='ok'>DONE</div><br>";
-		flush2Browser();
+
+		if ($verbose) echo " <div class='ok'>DONE</div><br>";
+		if ($verbose) flush2Browser();
 
 		if ($this->use_zip) { // we have a zip file in $rssStr, unzip it
-			echo "Unziping sync-log ... ";
+			if ($verbose) echo "Unziping sync-log ... ";
 			$tmpZIPfolder=$CONF_tmp_path.'/'.$this->ID."_".time();
 			mkdir($tmpZIPfolder);
 			
@@ -554,14 +555,14 @@ class Server {
 			$list 	 = $archive->extract(PCLZIP_OPT_PATH, $tmpZIPfolder,
 										PCLZIP_OPT_REMOVE_ALL_PATH,
 										PCLZIP_OPT_BY_PREG, "/(\.igc)|(\.olc)|(\.txt)$/i");
-			echo " <div class='ok'>DONE</div><br>";
+			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			echo "<br><b>List of uploaded igc/olc/txt files</b><BR>";
 			$f_num=1;
 			foreach($list as $fileInZip) {
 				echo "$f_num) ".$fileInZip['stored_filename']. ' ('.floor($fileInZip['size']/1024).'Kb)<br>';
 				$f_num++;
 			}
-			flush2Browser();
+			if ($verbose) flush2Browser();
 
 			if (is_file($tmpZIPfolder.'/sync.txt') ) {
 				$rssStr=implode('',file($tmpZIPfolder.'/sync.txt') );
@@ -607,13 +608,13 @@ class Server {
 				$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
 			}
 		} else if ($this->sync_format=='JSON') {
-			echo "Decoding log from JSON format ...";
-			flush2Browser();
+			if ($verbose) echo "Decoding log from JSON format ...";
+			if ($verbose) flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 			$arr=json::decode($rssStr);
 					
-			echo " <div class='ok'>DONE</div><br>";
-			flush2Browser();
+			if ($verbose) echo " <div class='ok'>DONE</div><br>";
+			if ($verbose) flush2Browser();
 			//print_r($arr);
 			//exit;
 			$entriesNum=0;
@@ -626,7 +627,7 @@ class Server {
 					// add path of temp folder into array
 					$logItem['item']['tmpDir']=$tmpZIPfolder;
 					
-					$entryResult=$this->processSyncEntry($this->ID,$logItem['item']) ;
+					$entryResult=$this->processSyncEntry($this->ID,$logItem['item'],$verbose) ;
 					if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
 						echo "<div class'error'>Got fatal Error, will exit</div>";
 						break;
@@ -636,23 +637,28 @@ class Server {
 					$entriesNum++;
 				}
 			} else {
-				echo "The sync-log returned error. Error: <br />";
-				print_r($arr);
-				echo "<hr><pre>$rssStr</pre>";
+				if ($verbose) {
+					echo "The sync-log returned error. Error: <br />";
+					print_r($arr);
+					echo "<hr><pre>$rssStr</pre>";
+				} else {
+					echo "The sync-log returned error. Error: $rssStr<br>";
+				}
 			}
 
 		}
-		
-		echo "<div class='ok'>Sync-log replication finished</div><br>";
-		echo "Proccessed $entriesNum log entries ($entriesNumOK inserted OK) out of $chunkSize<br>";
-		
+		if ( $verbose || $entriesNum>0 ) {
+			echo "<div class='ok'>Sync-log replication finished</div><br>";
+			echo "Proccessed $entriesNum log entries ($entriesNumOK inserted OK) out of $chunkSize<br>";
+		}
+
 		// clean up
 		delDir($tmpZIPfolder);			
 	}
 
-	function processSyncEntry($ID,$logItem) {
+	function processSyncEntry($ID,$logItem,$verbose=1) {
 		echo "Processing entry ".($logItem['transactionID']+0)." ...  ";
-		flush2Browser();
+		if ($verbose) flush2Browser();
 
 		//	print_r($logItem);
 		// return 1;
