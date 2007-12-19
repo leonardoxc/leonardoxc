@@ -21,8 +21,8 @@
 	$where_clause.=" AND (category=1 OR category=2 OR category=3) ";
 	require_once dirname(__FILE__)."/common_pre.php";
 	// pilots must younger than 28 at 15.09.2007 ie birthdate = 16.09.1979 or later
-         $where_clause.=" AND Birthdate>='1979-09-16' ";
-         //echo $where_clause;
+     $where_clause.=" AND Birthdate>='1979-09-16' ";
+     //echo $where_clause;
 
 	//TEST!!! $where_clause.=" AND leonardo_flights.NACclubID=4 AND NACid=1";
 

@@ -20,8 +20,8 @@
 	
 	$where_clause.=" AND (category=1 OR category=2 OR category=3) ";
 	require_once dirname(__FILE__)."/common_pre.php";
-         $where_clause.=" AND Sex='F'";
-         //echo $where_clause;
+    $where_clause.=" AND Sex='F'";
+    //echo $where_clause;
 
 	$query = "SELECT $flightsTable.ID, userID, takeoffID , userServerID,
   				 gliderBrandID, $flightsTable.glider as glider,cat,

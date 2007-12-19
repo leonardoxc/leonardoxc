@@ -16,8 +16,11 @@
 //-----------------------------------------------------------------------
 	// 	sport class ,   category=1";
 	// Some config
-	 	$cat='1'; // pg
-		
+
+/*	 	$cat='1'; // pg
+		$org_where_clause=$where_clause;
+
+		$where_clause='';
 		//	$where_clause.=" AND category=1 ";
 		require dirname(__FILE__)."/common_pre.php";
 		// pilots must younger than 28 at 15.09.2007 ie birthdate = 16.09.1988 or later
@@ -44,8 +47,25 @@
 		    		(userID!=0 AND  private=0)
 		    		AND $flightsTable.userID=$pilotsTable.pilotID
 					AND $flightsTable.userServerID=$pilotsTable.serverID
+					$org_where_clause
 		    		AND (($where_clause2) OR ($where_clause4))";
 
+*/
 
+		$cat='1';
+		require dirname(__FILE__)."/common_pre.php";
+
+		$query = "SELECT
+					$flightsTable.ID, userID, takeoffID ,  userServerID,
+					gliderBrandID, $flightsTable.glider as glider, cat,
+					IF(cat=4, FLIGHT_POINTS*1, FLIGHT_POINTS) AS FLIGHT_POINTS,
+					FLIGHT_KM, BEST_FLIGHT_TYPE
+				FROM $flightsTable,$pilotsTable
+		    	WHERE
+		    		(userID!=0 AND  private=0)
+		    		AND $flightsTable.userID=$pilotsTable.pilotID
+					AND $flightsTable.userServerID=$pilotsTable.serverID
+		    		$where_clause ";
+					
 require_once dirname(__FILE__)."/common.php";
 ?>

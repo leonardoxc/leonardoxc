@@ -113,6 +113,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
+	insertMenuItems('home','bottom'); 
+	
 	if (count($clubsList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
