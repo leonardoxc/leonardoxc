@@ -355,10 +355,15 @@ function getPilotStatsFilename($pilotID,$num) {
 function getNationalityDescription($cCode,$img=1,$text=1) {
 	global 	$moduleRelPath,$countries;	
 	$cCode=strtolower($cCode);
-	if (strlen($cCode) !=2) return "";
+	if (strlen($cCode) !=2) { 
+		$cCode='unknown';
+		$str='unknown';
+	} else {
+		$str=$countries[strtoupper($cCode)];
+	}
 
-	if ($img) $imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='".$countries[strtoupper($cCode)]."'>";
-	if ($text) $textStr=$countries[strtoupper($cCode)];
+	if ($img) $imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='$str'>";
+	if ($text) $textStr=$str;
 	return "$imgStr$textStr";
 }
 
