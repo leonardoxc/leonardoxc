@@ -316,6 +316,6 @@
 	$CONF['brands']['filterList']=array(1,2,4);
 
 	//$CONF['servers']['list']=array( );
-	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",3=>"cyclone.com.br" );
+	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",3=>"cyclone.com.br",9=>"ypforum.com" );
 	
 ?>
