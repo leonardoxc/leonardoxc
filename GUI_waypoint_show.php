@@ -124,15 +124,8 @@
   </tr>
   <tr> 
     <td colspan="1">
-		<div align="center">
-        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td valign="top"><img src="<? echo $moduleRelPath ?>/EXT_showWaypointGlobe.php?type=small&lat=<? echo $wpInfo->lat?>&lon=<? echo $wpInfo->lon ?>" ></td>
-            <td valign="top"><img src="<? echo $moduleRelPath ?>/EXT_showWaypointGlobe.php?type=big&zoomFactor=2&lat=<? echo $wpInfo->lat ?>&lon=<? echo $wpInfo->lon ?>" ></td>
-          </tr>
-        </table>
-        </div>
-		<? list($browser_agent,$browser_version)=getBrowser();
+	<div align="center">
+		<?  list($browser_agent,$browser_version)=getBrowser();
 			if ( $CONF_google_maps_api_key  ) { ?> 
 		<iframe align="center"
 		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
@@ -141,7 +134,15 @@
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.
 		You should upgrade to a more current browser.
 		</iframe>
-		<? } ?>
+		<? } else { ?>	
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top"><img src="<? echo $moduleRelPath ?>/EXT_showWaypointGlobe.php?type=small&lat=<? echo $wpInfo->lat?>&lon=<? echo $wpInfo->lon ?>" ></td>
+            <td valign="top"><img src="<? echo $moduleRelPath ?>/EXT_showWaypointGlobe.php?type=big&zoomFactor=2&lat=<? echo $wpInfo->lat ?>&lon=<? echo $wpInfo->lon ?>" ></td>
+          </tr>
+        </table>      
+		<? } ?> 
+	</div>
 	</td>
   </tr>
 </table>

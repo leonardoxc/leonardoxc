@@ -182,7 +182,7 @@ DisplayCrosshair(1);
 
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	
-	displayTask(tp);
+//	displayTask(tp);
 	
 	GDownloadUrl(polylineURL, process_polyline);
 		
@@ -396,6 +396,9 @@ function toggleAirspace(radioObj) {
 		echo " polys.push(poly); \n";
 		echo " labels.push('".$area->Name.' ['.$area->Type.'] ('.floor($area->Base->Altitude).'m-'.floor($area->Top->Altitude).'m)'."'); \n";
 		echo " map.addOverlay(poly);\n";	
+		
+		echo " GEvent.addListener(poly,'click', function(point) { checkPoint(point); }  ); ";
+
 	}
 	
 
@@ -425,8 +428,8 @@ function toggleAirspace(radioObj) {
         return oddNodes;
       }
 
-      GEvent.addListener(map, "click", function(overlay,point) {
-        if (point) {
+	function checkPoint(point) {
+        if (point) {		
 		  var infoStr='';
           for (var i=0; i<polys.length; i++) {
             if (polys[i].Contains(point)) {
@@ -437,8 +440,7 @@ function toggleAirspace(radioObj) {
             map.openInfoWindowHtml(point,infoStr);
 		  }
         }
-      });
-
+	}
 </script>
 <? } ?>
 </body>

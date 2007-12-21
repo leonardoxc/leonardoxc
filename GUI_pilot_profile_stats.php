@@ -13,7 +13,7 @@
 
   $query = 'SELECT DISTINCT userID, max( FLIGHT_KM ) AS BestFreeTriangle '			
   		. ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FREE_TRIANGLE" '
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FREE_TRIANGLE" '
         . ' GROUP BY userID'
         . ' ';
   $res= $db->sql_query($query);
@@ -28,7 +28,7 @@
 
   $query = 'SELECT DISTINCT userID, max( FLIGHT_KM ) AS BestFAITriangle '			
   		. ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FAI_TRIANGLE" '
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause.' AND  BEST_FLIGHT_TYPE = "FAI_TRIANGLE" '
         . ' GROUP BY userID'
         . ' ';
   $res= $db->sql_query($query);
@@ -59,7 +59,7 @@
 		. ' sum( FLIGHT_POINTS ) as totalOlcScore, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause
         . ' GROUP BY userID'
         . ' ';
 
@@ -118,7 +118,7 @@ $mean_duration="N/A";
 
     $query = 'SELECT count(*) as flightsCount, SUM(DURATION) as sum_duration, DATE_FORMAT(DATE,"%Y-%m") as flightDate '
         . ' FROM '.$flightsTable
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.serverID = '.$serverID.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause
         . ' GROUP  BY DATE_FORMAT(DATE,"%Y-%m") '
         . ' ';
 

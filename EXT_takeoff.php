@@ -23,9 +23,40 @@
 	setDEBUGfromGET();
 
 	$op=makeSane($_GET['op']);
-	if (!in_array($op,array("find_wpt","get_latest")) ) return;
+	if (!in_array($op,array("find_wpt","get_nearest","get_latest")) ) return;
 
-	if ($op=="find_wpt") {
+	if ($op=="get_nearest") {
+		$lat=$_GET['lat']+0;
+		$lon=$_GET['lon']+0;
+
+		$firstPoint=new gpsPoint();
+		$firstPoint->lat=$lat;
+		$firstPoint->lon=$lon;
+
+		// calc TAKEOFF - LANDING PLACES	
+		if (count($waypoints)==0) 
+			$waypoints=getWaypoints();
+	
+		$takeoffIDTmp=0;
+		$minTakeoffDistance=10000000;
+		$i=0;
+
+		foreach($waypoints as $i=>$waypoint) {
+		   $waypoints[$i]['distance']=$firstPoint->calcDistance($waypoint);
+		}
+/*
+		 $nearestWaypoint=new waypoint($takeoffIDTmp);
+		 $nearestWaypoint->getFromDB();
+
+		 header ('Content-Type: text/xml');
+		 echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+		 echo "<search>\n";
+		 echo $nearestWaypoint->exportXML('XML');
+		 echo "\n<distance>".sprintf("%.0f",$minTakeoffDistance)."</distance>\n";
+		 echo "</search>\n";
+*/
+	
+	} else if ($op=="find_wpt") {
 		$lat=$_GET['lat']+0;
 		$lon=$_GET['lon']+0;
 
@@ -56,7 +87,7 @@
 		 header ('Content-Type: text/xml');
 		 echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
 		 echo "<search>\n";
-		 echo $nearestWaypoint->exportXML();
+		 echo $nearestWaypoint->exportXML('XML');
 		 echo "\n<distance>".sprintf("%.0f",$minTakeoffDistance)."</distance>\n";
 		 echo "</search>\n";
 
@@ -80,7 +111,7 @@
 		while ($row = mysql_fetch_assoc($res)) { 
 		  $resWaypoint=new waypoint($row["ID"]);
 		  $resWaypoint->getFromDB();
-		  echo $resWaypoint->exportXML();
+		  echo $resWaypoint->exportXML('XML');
 		  $i++;	  
 		}     
 

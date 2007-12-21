@@ -308,14 +308,18 @@ Time to launch from landing
 		}
     }
 
-	function exportXML() {	
+	function exportXML($forceProtocol='') {	
 		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
 		
-		if ($CONF['sync']['protocol']['format']=='JSON') {
-			$useJSON=1;
-			require_once dirname(__FILE__).'/lib/json/CL_json.php';
-		} else $useJSON=0;
-		
+		if ($forceProtocol=='') {
+			if ($CONF['sync']['protocol']['format']=='JSON') {
+				$useJSON=1;
+				require_once dirname(__FILE__).'/lib/json/CL_json.php';
+			} else $useJSON=0;
+		} else {
+			if ($forceProtocol=='XML') $useJSON=0;
+			else $useJSON=1;
+		}
 		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_waypoint&waypointIDview=".$this->waypointID);
 	
 		if (!$useJSON) {

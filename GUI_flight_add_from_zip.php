@@ -185,6 +185,9 @@ function setValue(obj)
 	 $igcFilesSubmited=0;
 	 $dir=	$tmpZIPfolder;
 	 $current_dir = opendir($dir);
+
+	 global $alreadyValidatedInPage;
+	 
 	 while($entryname = readdir($current_dir)){
 		if( ! is_dir("$dir/$entryname") && ($entryname != "." and $entryname!="..")  && 
 			( strtolower(substr($entryname,-4))==".igc" ||  strtolower(substr($entryname,-4))==".olc" )  ) {					
@@ -196,7 +199,7 @@ function setValue(obj)
 			flush2Browser();
 			sleep(1);
 
-		
+			$alreadyValidatedInPage=0;
 			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
 								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,'glider'=>$glider,'category'=>$category) 
 			) ;

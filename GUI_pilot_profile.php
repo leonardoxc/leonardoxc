@@ -11,27 +11,25 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-  // edit function
-  if ( $pilotIDview == $userID || auth::isAdmin($userID)  ) {
-  }
-  if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
+	if (!$pilotIDview && $userID>0) {
+		$pilotIDview=$userID;
+		$serverID=0;
+	}
+	
+	//$selQuery="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
+	//					" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'];
+						
+	$selQuery="SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview." AND serverID=$serverID ";
+	
+    $res= $db->sql_query($selQuery);
 
-  $res= $db->sql_query("SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
-						" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'] );
-
-  if($res <= 0){
-     echo("<H3>Error in pilot query</H3>\n");
-     return;
-  } else if ( mysql_num_rows($res)==0){
-  	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverID)" );
-	 //echo("<H3>No info for this pilot</H3>\n");
-	 //return;
-  	// $res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview );
-	$res= $db->sql_query("SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
-						" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'] );
-
-
-  }
+	if($res <= 0){
+		echo("<H3>Error in pilot query</H3>\n");
+		return;
+	} else if ( mysql_num_rows($res)==0){
+		$res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverID)" );
+		$res= $db->sql_query($selQuery);			
+	}
   
   $pilot = mysql_fetch_assoc($res);
   
