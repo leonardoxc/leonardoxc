@@ -184,11 +184,13 @@ fieldset.legendBox {
 .legend3 legend {	background-color: #D7F5CB }
 
 </style>
- 
+<? 
+require_once dirname(__FILE__).'/FN_editor.php';
+?>
   <form action="" enctype="multipart/form-data" method="post">	
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
-  <?  open_inner_table(_CHANGE_FLIGHT_DATA,730,"change_icon.png"); echo "<tr><td>"; ?>
+  <?  open_inner_table(_CHANGE_FLIGHT_DATA,760,"change_icon.png"); echo "<tr><td>"; ?>
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
 <? if ($enablePrivateFlights) { ?>
@@ -451,7 +453,7 @@ fieldset.legendBox {
       <td colspan="2" valign="middle">
 	  <fieldset class="legendBox legend3"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
 	  <div align="left">
-	    <textarea name="comments" cols="100" rows="5"><? echo  $flight->comments ?></textarea>
+	    <? createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,'LeonardoSimple',693,400); ?>	    
 	    </div>
 	  </fieldset>	</td>
     </tr>

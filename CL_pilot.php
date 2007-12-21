@@ -60,6 +60,14 @@ class pilot{
 		
 	}
 
+	function getRelPath() {
+		global $flightsWebPath,$CONF_server_id;
+		if ( $this->isPilotLocal() ) $sPrefix='';
+		else $sPrefix=$this->serverID.'_';
+		return $flightsWebPath.'/'.$sPrefix.$this->pilotID;
+		
+	}
+
 	function createDirs() {
 		$pilotPath=$this->getAbsPath();
 		if (! is_dir($pilotPath) ) @mkdir($pilotPath);

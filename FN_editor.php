@@ -1,8 +1,9 @@
 <?
 
 require_once dirname(__FILE__)."/js/fckeditor/fckeditor.php";
+require_once dirname(__FILE__)."/CL_pilot.php";
 
-function createTextArea($name,$value,$toolbarSet,$width=750,$height=800) {
+function createTextArea($userServerID,$userID,$name,$value,$toolbarSet,$width=750,$height=800) {
 		global $CONF;
 		if (!$CONF['editor']['use_wysiwyg']) {
 			$cols=floor($width/10);
@@ -17,7 +18,16 @@ function createTextArea($name,$value,$toolbarSet,$width=750,$height=800) {
 		global $currentlang,$lang2isoEditor;
 
 		$sBasePath = "/$moduleRelPath/js/fckeditor/";
-		$FCKEuploadPath ="/$moduleRelPath/data/files/";
+		if ($userServerID==0 && $userID==0) {
+			$FCKEuploadPath ="/$moduleRelPath/data/files/";
+		} else {
+			
+			// no uploads allowed
+			// $thisPilot=new pilot ($userServerID,$userID);
+			// $FCKEuploadPath =$thisPilot->getRelPath().'/files/';			
+			// if ( !is_dir($FCKEuploadPath) ) $thisPilot->createDirs();
+			$FCKEuploadPath ='';
+		}
 		$_SESSION['FCKEuploadPath']=$FCKEuploadPath;
 		
 		$oFCKeditor = new FCKeditor($name);
@@ -27,6 +37,15 @@ function createTextArea($name,$value,$toolbarSet,$width=750,$height=800) {
 		$oFCKeditor->ToolbarSet = $toolbarSet; 
 		$oFCKeditor->Value = $value; 
 		$oFCKeditor->BasePath	= $sBasePath ;
+
+		if ($userServerID!=0 || $userID!=0) {
+			$oFCKeditor->Config['LinkBrowser']=false;
+			$oFCKeditor->Config['ImageBrowser']=false;
+			$oFCKeditor->Config['FlashBrowser']=false;
+			$oFCKeditor->Config['LinkUpload']=false;
+			$oFCKeditor->Config['ImageUpload']=false;
+			$oFCKeditor->Config['FlashUpload']=false;
+		}
 
 		$oFCKeditor->Config['ImageBrowserURL']=$sBasePath. 'editor/filemanager/browser/default/browser.html?Type=Image&Connector=../../connectors/php/connector.php';
 		$oFCKeditor->Config['LinkBrowserURL']=$sBasePath. 'editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php';
