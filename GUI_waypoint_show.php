@@ -22,79 +22,39 @@
 
   if ( auth::isAdmin($userID)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
   $titleString=_Waypoint_Name." : ".$wpName." (".$countries[$wpInfo->countryCode].") &nbsp;";
-
-  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>".$titleString."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",720,"icon_pin.png");
-  open_tr();
-  echo "<td>";	
 ?>
+
 <style type="text/css">
 <!--
-.style1 {font-weight: bold}
+.titleText {font-weight: bold}
+.col1 { background-color:#9FBC7F; }
+.col2 { background-color:#BE8C80; }
+.col3 { background-color:#7F91BF; }
+
+.col1_in { background-color:#EEF3E7; }
+.col2_in { background-color:#F8F3F2; }
+.col3_in { background-color:#DAE5F0; }
 -->
 </style>
- 
+
+<?
+  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>".$titleString."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",760,"icon_pin.png");
+  open_tr();
+  echo "<td>";	
+?> 
 <table width="100%" border="0" bgcolor="#EFEFEF" class=main_text>
 
   <tr>
     <td valign="middle">
-      <table class="Box" width="600"  align="center">
+      <table width="710"  align="center" class="Box">
         <tr align="center" bgcolor="#D0E2CD">
-          <td width="196"><strong><? echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$waypointIDview."'>"._Navigate_with_Google_Earth."</a>"; ?>
-            </strong>
-          <div align="center"></div></td>
-          <td width="218"><strong><? echo "<a href='http://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?>
-            </strong>
-          <div align="center"></div></td>
-          <td width="170"><strong><? echo "<a href='http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=address&latlongtype=decimal&latitude=".$wpInfo->lat."&longitude=".-$wpInfo->lon."' target='_blank'>"._See_it_in_MapQuest."</a>"; ?>
-            </strong>
-          <div align="center"></div></td>
+          <td bgcolor="#49766D" class="col1"><div align="center" class="titleWhite titleText"><? echo _FLIGHTS ?></div></td>
+          <td bgcolor="#49766D" class="col2"><div align="center" class="titleWhite titleText"><? echo _COORDINATES ?></div></td>
+          <td width="150" class="col3"><div align="center" class="titleWhite titleText">Navigate</div></td>
         </tr>
-      </table>
-<? if ($wpLocation || $wpInfo->description || $wpInfo->link) { ?>
-	 <br>
-      <table class="Box"  align="center" width=600>
-        <tr bgcolor="#49766D">
-          <td colspan="2">             
-              <div align="center" class="titleWhite"><strong><? echo _SITE_INFO ?></strong></div></td>
-        </tr>
-		<? if ($wpLocation) { ?>
-        <tr bgcolor="#F2ECDB">
-          <td width=200><? echo _SITE_REGION ?></td>
-          <td valign="top"><? echo $wpLocation ?>&nbsp;</td>
-        </tr>
-		<? } ?>
-		<? if ($wpInfo->link) { ?>
-        <tr bgcolor="#F2ECDB">
-          <td width=200><? echo _SITE_LINK ?></td>
-          <td valign="top"><a href='<? echo formatURL($wpInfo->link) ?>' target="_blank"><? echo formatURL($wpInfo->link) ?></a>&nbsp;</td>
-        </tr>
-		<? } ?>
-		<? if ($wpInfo->description) { ?>
-        <tr bgcolor="#F2ECDB">
-          <td width=200><? echo _SITE_DESCR ?></td>
-          <td valign="top"><? echo $wpInfo->description ?>&nbsp;</td>
-        </tr>
-		<? } ?>
-      </table>    
-	  <? } ?>  
-      <br>
-      <table class="Box" width="600"  align="center">
-        <tr bgcolor="#49766D">
-          <td><div align="left" ></div>
-              <div align="left" class="titleWhite"><b><? echo _COORDINATES ?></b></div></td>
-          <td><span class="titleWhite"><b><? echo _FLIGHTS ?></b></span></td>
-        </tr>
-        <tr bgcolor="#EBE1C5">
-          <td width="271" bgcolor="#EBE1C5"><p><strong>lat/lon (WGS84):</strong><br>
-		  <? 	echo $wpInfo->lat." , ".-$wpInfo->lon ;
-				echo "<br>".$wpInfo->getLatMinDec()." , ".$wpInfo->getLonMinDec();
-				echo "<br>".$wpInfo->getLatDMS()." , ".$wpInfo->getLonDMS();
-				echo "<p>";
-				list($UTM_X,$UTM_Y,$UTMzone,$UTMlatZone)=$wpInfo->getUTM();
-				echo "<b>UTM:</b> $UTMzone$UTMlatZone X: ".floor($UTM_X)." Y: ".floor($UTM_Y);
-		 ?>
-		  </td>
-          <td width="317" bgcolor="#EBE1C5" valign="top"><b><? echo _SITE_RECORD ?></b>:
+        <tr align="center" bgcolor="#D0E2CD">
+          <td rowspan="3" class="col1_in">
+<b><? echo _SITE_RECORD ?></b>:
 	<?
 	 $query="SELECT  MAX(MAX_LINEAR_DISTANCE) as record_km, ID FROM $flightsTable  WHERE takeoffID =".$waypointIDview." GROUP BY ID ORDER BY record_km DESC ";
 
@@ -111,19 +71,59 @@
 
 ?>
 <p>
-<strong><? echo "<a href='".CONF_MODULE_ARG."&op=list_flights&takeoffID=$waypointIDview'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong></td>
+<strong><? echo "<a href='".CONF_MODULE_ARG."&op=list_flights&takeoffID=$waypointIDview'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong>
+			</td>
+          <td rowspan="3" class="col2_in"><p><strong>lat/lon (WGS84):</strong><br>
+		  <? 	echo $wpInfo->lat." , ".-$wpInfo->lon ;
+				echo "<br>".$wpInfo->getLatMinDec()." , ".$wpInfo->getLonMinDec();
+				echo "<br>".$wpInfo->getLatDMS()." , ".$wpInfo->getLonDMS();
+				echo "<p>";
+				list($UTM_X,$UTM_Y,$UTMzone,$UTMlatZone)=$wpInfo->getUTM();
+				echo "<b>UTM:</b> $UTMzone$UTMlatZone X: ".floor($UTM_X)." Y: ".floor($UTM_Y);
+		 ?></td>
+          <td class="col3_in"><div align="center"><strong><? echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$waypointIDview."'>"._Navigate_with_Google_Earth."</a>"; ?></strong></div></td>
         </tr>
-      </table></td>
-    <td>&nbsp;</td>
+        <tr align="center" class="col3_in">
+          <td><strong><? echo "<a href='http://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?></strong></td>
+        </tr>
+        <tr align="center" class="col3_in">
+          <td><strong><? echo "<a href='http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=address&latlongtype=decimal&latitude=".$wpInfo->lat."&longitude=".-$wpInfo->lon."' target='_blank'>"._See_it_in_MapQuest."</a>"; ?></strong></td>
+        </tr>
+      </table>
+<? if ($wpLocation || $wpInfo->description || $wpInfo->link) { ?>
+	 <br>
+      <table class="Box"  align="center" width=710>
+        <tr >
+          <td colspan="2" class="col3">             
+          <div align="center" class="titleWhite titleText"><? echo _SITE_INFO ?></div></td>
+        </tr>
+		<? if ($wpLocation) { ?>
+        <tr bgcolor="white">
+          <td width=200 class="col3_in"> <? echo _SITE_REGION ?></td>
+          <td valign="top" ><? echo $wpLocation ?>&nbsp;</td>
+        </tr>
+		<? } ?>
+		<? if ($wpInfo->link) { ?>
+        <tr bgcolor="white">
+          <td width=200 class="col3_in"><? echo _SITE_LINK ?></td>
+          <td valign="top"><a href='<? echo formatURL($wpInfo->link) ?>' target="_blank"><? echo formatURL($wpInfo->link) ?></a>&nbsp;</td>
+        </tr>
+		<? } ?>
+		<? if ($wpInfo->description) { ?>
+        <tr bgcolor="#49766D">
+          <td colspan=2 class="col3"><div align="center" class="titleWhite  titleText"><? echo _SITE_DESCR ?>
+          </div></td>
+        </tr>
+        <tr>
+          <td colspan=2 valign="top"><? echo $wpInfo->description ?>&nbsp;</td>
+        </tr>
+		<? } ?>
+      </table>    
+	  <? } ?>  
+      </td>
   </tr>
   <tr> 
-    <td>
-      <br>      <div align="center"></div>
-    <div align="center"></div></td>
-    <td>&nbsp;</td>
-  </tr>
-  <tr> 
-    <td colspan="2">
+    <td colspan="1">
 		<div align="center">
         <table width="100%"  border="0" cellspacing="0" cellpadding="0">
           <tr>
@@ -134,9 +134,9 @@
         </div>
 		<? list($browser_agent,$browser_version)=getBrowser();
 			if ( $CONF_google_maps_api_key  ) { ?> 
-		<iframe align="right"
+		<iframe align="center"
 		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
-		  TITLE="Google Map" width="680px" height="400px"
+		  TITLE="Google Map" width="710px" height="420px"
 		  scrolling="no" frameborder="0">
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.
 		You should upgrade to a more current browser.

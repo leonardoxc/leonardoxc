@@ -317,5 +317,7 @@
 
 	//$CONF['servers']['list']=array( );
 	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",3=>"cyclone.com.br",9=>"ypforum.com" );
-	
+
+	// use a WYSIWYG editor for editing takeoff information
+    $CONF['editor']['use_wysiwyg']=1;
 ?>

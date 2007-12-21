@@ -124,6 +124,12 @@ require_once dirname(__FILE__)."/site/config_version.php";
 			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
 			"danish"=>"dk","chinese"=>"cn","hebrew"=>"il");
 
+ $lang2isoEditor=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
+ 			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"pt-br","greek"=>"el","turkish"=>"tr",
+			"swedish"=>"sv","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
+			"croatian"=>"hr","mexican"=>"es","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
+			"danish"=>"da","chinese"=>"zh","hebrew"=>"he");
+
   $CONFIG_langsSpoken=array(
 	"albanian"=>array("al"),"arabic"=>array("eg"),"bulgarian"=>array("bg"),
 	"catalan"=>array("es"),"chinese"=>array("cn"),"czech"=>array("cz"),"danish"=>array("dk"),
@@ -376,6 +382,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
   // dont enable statistics by default, it uses a lot of space !!!
   $CONF['stats']['enable']=0;
+
+  // use a WYSIWYG editor for editing takeoff information
+  $CONF['editor']['use_wysiwyg']=0;
 
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
