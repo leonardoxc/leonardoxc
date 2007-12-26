@@ -182,7 +182,7 @@ DisplayCrosshair(1);
 
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	
-//	displayTask(tp);
+	displayTask(tp);
 	
 	GDownloadUrl(polylineURL, process_polyline);
 		

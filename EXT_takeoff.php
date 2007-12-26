@@ -13,6 +13,7 @@
 	
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
+//	$CONF_use_utf=1;
  	require_once "EXT_config.php";
 
 	require_once "CL_flightData.php";
@@ -27,34 +28,63 @@
 
 	if ($op=="get_nearest") {
 		$lat=$_GET['lat']+0;
-		$lon=$_GET['lon']+0;
+		$lon=-$_GET['lon']+0;
+		
+		$distance=$_GET['distance']+0;
+		if ( $distance <= 0 ) $distance=100; 
+		if ( $distance > 200 ) $distance=200;
+		
+		$limit=$_GET['limit']+0;
+		if ( $limit <= 0 ) $limit=50; 
+		if ( $limit > 200 ) $limit =200;
+		
+		
+	$sql = "SELECT *,\n";
+$sql .= "ROUND((ACOS((SIN(" . $lat . "/57.2958) * ";
+$sql .= "SIN(lat/57.2958)) + (COS(" . $lat . "/57.2958) * ";
+$sql .= "COS(lat/57.2958) * ";
+$sql .= "COS(lon/57.2958 - " . $lon . "/57.2958)))) ";
+$sql .= "* 6392 , 3) AS distance\n";
+$sql .= "FROM  $waypointsTable\n";
+$sql .= "WHERE ROUND((ACOS((SIN(" . $lat . "/57.2958) * ";
+$sql .= "SIN(lat/57.2958)) + (COS(" . $lat . "/57.2958) * ";
+$sql .= "COS(lat/57.2958) * ";
+$sql .= "COS(lon/57.2958 - " . $lon . "/57.2958)))) ";
+$sql .= "* 6392 , 3) <= " . $distance. " AND type >=1000 \n";
+$sql .= "ORDER BY distance LIMIT $limit \n";
 
-		$firstPoint=new gpsPoint();
-		$firstPoint->lat=$lat;
-		$firstPoint->lon=$lon;
+//  3963 for miles  6392 for km
 
-		// calc TAKEOFF - LANDING PLACES	
-		if (count($waypoints)==0) 
-			$waypoints=getWaypoints();
-	
-		$takeoffIDTmp=0;
-		$minTakeoffDistance=10000000;
+
+		$dbres= $db->sql_query($sql);
+
+		$res='{ "waypoints": [ ';
+		
+//		header ('Content-Type: text/xml');
+//		echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ? >";
+//		echo "<search>";
+		
+	    if($dbres <= 0){
+		    echo "</search>";
+			return;
+    	}
+
 		$i=0;
-
-		foreach($waypoints as $i=>$waypoint) {
-		   $waypoints[$i]['distance']=$firstPoint->calcDistance($waypoint);
-		}
-/*
-		 $nearestWaypoint=new waypoint($takeoffIDTmp);
-		 $nearestWaypoint->getFromDB();
-
-		 header ('Content-Type: text/xml');
-		 echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
-		 echo "<search>\n";
-		 echo $nearestWaypoint->exportXML('XML');
-		 echo "\n<distance>".sprintf("%.0f",$minTakeoffDistance)."</distance>\n";
-		 echo "</search>\n";
-*/
+		while ($row = mysql_fetch_assoc($dbres)) { 
+			if ($i>0)$res.=" ,\n";
+			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.$row['intName'].'", "type":'.$row['type'].' } ';
+			//print_r($row);
+			//echo "<HR>";
+		  //$resWaypoint=new waypoint($row["ID"]);
+		  //$resWaypoint->getFromDB();
+		  //echo $resWaypoint->exportXML('XML');
+		  $i++;	  
+		}     
+		
+		$res.=' ]  }';
+		echo $res;
+	    mysql_freeResult($dbres);
+//	    echo "</search>";
 	
 	} else if ($op=="find_wpt") {
 		$lat=$_GET['lat']+0;
