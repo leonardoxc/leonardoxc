@@ -117,6 +117,8 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
+<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+
 <script src="js/chartFX/wz_jsgraphics.js"></script>
 <script src='js/chartFX/excanvas.js'></script>
 <script src='js/chartFX/chart.js'></script>
@@ -126,7 +128,7 @@
 
 
 <script type="text/javascript">
-
+var wpID=<?=$flight->takeoffID?>;
 var relpath="<?=$moduleRelPath?>";
 var polylineURL="<?=$flight->getPolylineRelPath() ?>";
 // var jsonURL="<?=$flight->getJsonRelPath() ?>";
@@ -164,6 +166,8 @@ CurrTime[1] = 0;
 CurrTime[2] = EndTime;
 DisplayCrosshair(1);
 
+var lat=0;
+var lon=0;
 </script>
 
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
@@ -203,6 +207,10 @@ DisplayCrosshair(1);
 					flight.speed[j]=flightArray.speed[i];
 					flight.vario[j]=flightArray.vario[i];
 					flight.distance[j]=flightArray.distance[i];
+					if (j==0) {
+							lat=flight.lat[j]=flightArray.lat[i];
+							lon=flight.lon[j]=flightArray.lon[i];
+					}
 
 					if ( flight.elev[j] > flight.max_alt ) flight.max_alt=flight.elev[j];
 					if ( flight.elevGnd[j] > flight.max_alt ) flight.max_alt=flight.elevGnd[j];
@@ -261,49 +269,70 @@ DisplayCrosshair(1);
 		c.draw();
 	}
 
-	function startChartAjax(url, vars, callbackFunction){
-     	//  var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP.3.0");
-		// var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");	  
-		
-		if (window.XMLHttpRequest) {
-		 	// browser has native support for XMLHttpRequest object
-			var request= new XMLHttpRequest();
-		} else if (window.ActiveXObject) {
-		 	// try XMLHTTP ActiveX (Internet Explorer) version
-			var request = new ActiveXObject("Microsoft.XMLHTTP");
-			// alert("ie");
-		} else   {
-         alert('Your browser does not seem to support XMLHttpRequest.');
-	    }
 
-		// alert(url);
-        request.open("GET", url, true);
-        request.onreadystatechange = function(){
-			if (request.readyState == 4 || request.readyState=='complete') {
-				if (request.status == 200) {
-					//  alert("OK  URL.");
-					callbackFunction(request.responseText);
-					//the_object = eval("(" + http_request.responseText + ")");
-				} else {
-					alert("There was a problem with the URL "+url);
-				}
-				request = null;
-			}
-		};
-		// i have moved this below see
-		// http://keelypavan.blogspot.com/2006/03/reusing-xmlhttprequest-object-in-ie.html
-		// http://blog.davber.com/2006/08/22/ajax-and-ie-caching-problems/
-		request.setRequestHeader("content-type","application/x-www-form-urlencoded");
-	 	request.send(vars);
-	}
 
 	drawChart();
-//	startChartAjax(jsonURL,null,drawChart );
+	//	getAjax(jsonURL,null,drawChart );
 	//window.onload = function() {
-		//ieCanvasInit('js/chartFX/iecanvas.htc');
-		// draw(); 
+	//	ieCanvasInit('js/chartFX/iecanvas.htc');
+	//	draw(); 
 	//};
+	
+	// Creates a marker whose info window displays the given description 
+	function createWaypoint(point, id , description, iconUrl, shadowUrl ) {
+		if (iconUrl){
+			var baseIcon = new GIcon();
+			
+			var sizeFactor;
+			if (id==wpID) sizeFactor=1.1;
+			else sizeFactor=1;
+			
+			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
+			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
+			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
+			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
+			  
+			var newIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
+				
+			var marker = new GMarker(point,newIcon);
+		} else {
+			var marker = new GMarker(point);		
+		}	
+	  // Show this marker's index in the info window when it is clicked
+	  var html = "<b>" + description + "</b><br>";
+	  html+="<img src='img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=getRelMainFileName()?>&op=list_flights&takeoffID="+id+"&year=0&month=0&pilotID=0&country=0&cat=0'><? echo  _See_flights_near_this_point ?></a>";
+	  
+	  GEvent.addListener(marker, "click", function() {
+		marker.openInfoWindowHtml(html);
+	  });
+	
+	  return marker;
+	}
 
+	function drawTakeoffs(jsonString){
+	 	var results= eval("(" + jsonString + ")");		
+		// document.writeln(results.waypoints.length);
+		for(i=0;i<results.waypoints.length;i++) {	
+			var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
+			
+		if (results.waypoints[i].id ==wpID ) {
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+		} else if (results.waypoints[i].type<1000) {
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+		} else {
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
+		}
+		
+		var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
+			map.addOverlay(takeoffMarker);
+		}	
+	}
+
+	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	
 </script>
 
 <? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>

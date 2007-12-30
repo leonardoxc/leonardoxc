@@ -1,5 +1,6 @@
 
     if (GBrowserIsCompatible()) {
+		
       // this variable will collect the html which will eventually be placed in the side_bar
       var side_bar_html = "";
     
@@ -9,43 +10,74 @@
       var htmls = [];
       var i = 0;
 
-      var background = [];
-          background["green"] = "img/pin_1.png";
-          background["red"]   = "img/pin_2.png";
+      // var background = [];
+      // background["green"] = "img/pin_1.png";
+      // background["red"]   = "img/pin_2.png";
 
+      var side_bar_html = "";     
+	  var center_lat;
+	  var center_lon;
+	  var bounds ;
+	  
+	  
       // A function to create the marker and set up the event window
-      function createMarker(point,name,html,ba,normalMarker) {      
-		//	  	var mylabel = {"url":overlay[ov], "anchor":new GLatLng(4,4), "size":new GSize(12,12)};
-		//        var Icon = new GIcon(G_DEFAULT_ICON, background[ba], mylabel);
+      function createMarker(point,name,html,iconName,normalMarker) {      
+
 		if (normalMarker){ 
-			var Icon = new GIcon(G_DEFAULT_ICON, background[ba]);
+			if (iconName=='start') {
+				iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon61.png";
+				shadowUrl="http://maps.google.com/mapfiles/kml/pal4/icon61s.png";
+			} else {
+				iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon53.png";
+				shadowUrl="http://maps.google.com/mapfiles/kml/pal4/icon53s.png";
+			}
+			
+			var baseIcon = new GIcon();
+			var sizeFactor=1;
+			
+			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
+			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
+			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
+			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
+			  
+			var Icon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
+							
 		} else {
+			// the running icon
 			var Icon = new GIcon();
+			
 			//Icon.image = "http://maps.google.com/mapfiles/kml/pal3/icon60.png";
 			Icon.image =markerBg;
-			 Icon.iconSize=new GSize(24,24);
-			// Icon.iconSize=new GSize(16,16);
 			Icon.shadow = "http://maps.google.com/mapfiles/kml/pal3/icon61s.png";
+			
+			Icon.iconSize=new GSize(24,24);
+			// Icon.iconSize=new GSize(16,16);			
 			Icon.shadowSize=new GSize(59,32);
 			Icon.iconAnchor=new GPoint(12,16);
-
 			Icon.infoWindowAnchor=new GPoint(16,0);
 		}
-       		var marker = new GMarker(point,Icon,{title:name});
-//        var marker = new GMarker(point,{title:name});
- 	    GEvent.addListener(marker, "click", function() {
-         	marker.openInfoWindowHtml(html);
-        });
+		
+       	var marker = new GMarker(point,Icon,{title:name});
+		
+
+		
         // save the info we need to use later for the side_bar
 		if (normalMarker) {
 			gmarkers[i] = marker;
 			htmls[i] = html;
+
+			GEvent.addListener(marker, "click", function() {
+         		marker.openInfoWindowHtml(htmls[i]);
+	        });
 			// add a line to the side_bar html
 			side_bar_html += '<a href="javascript:myclick(' + i + ')">' + name + '</a><br>';
 			i++;
 		} else {
-				posMarker=marker;
+			posMarker=marker;
 		}
+		
+
+		
         return marker;
       }
 
@@ -54,19 +86,6 @@
       function myclick(i) {
         gmarkers[i].openInfoWindowHtml(htmls[i]);
       }
-
-
-      // create the map
-//      var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
-//      map.addControl(new GLargeMapControl());
-//      map.addControl(new GMapTypeControl());
-//      map.setCenter(new GLatLng(0,0), 4);
-
-      var side_bar_html = "";
-      
-	  var center_lat;
-	  var center_lon;
-	  var bounds ;
 
 	  process_polyline   = function(doc) {
         // === split the document into lines ===
@@ -109,12 +128,14 @@
             var html = parts[2];
             var label = parts[3];
             var point = new GLatLng(lat,lng);
+			
             // create the marker
-			var bg;
-			if (j==0) bg="green";
-			else bg="red";
-            var marker = createMarker(point,label,html,bg,1);
+			var iconName;
+			if (j==0) iconName="start";
+			else iconName="stop";
+            var marker = createMarker(point,label,html,iconName,1);
             map.addOverlay(marker);
+			
 			if (j==0) { //create  also the running icon
 				 var marker = createMarker(point,label,html,markerBg,0);
 	             map.addOverlay(marker);
