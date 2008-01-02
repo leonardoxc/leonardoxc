@@ -384,8 +384,13 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF['stats']['enable']=0;
 
   // use a WYSIWYG editor for editing takeoff information
-  $CONF['editor']['use_wysiwyg']=0;
+  $CONF['editor']['use_wysiwyg']['global']=0;
+  $CONF['editor']['use_wysiwyg']['takeoff_description']=0;
+  $CONF['editor']['use_wysiwyg']['flight_comments']=0;
 
+  // default user prefs 
+  $CONF['default_user_prefs']['useEditor']=1;
+  
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
@@ -475,14 +480,17 @@ if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) 
 
 	$PREFS->nameOrder=$CONF_defaultNameOrder;
 	$PREFS->googleMaps=$CONF_googleMapsShow;
+	$PREFS->useEditor=$CONF['default_user_prefs']['useEditor'];
+	
 }
 
 if (isset($_REQUEST['updatePrefs'])) {// submit form 	   		
 	$PREFS->themeName= $_POST['PREFS_themeName'];
-	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage'];
-	$PREFS->metricSystem=$_POST['PREFS_metricSystem'];
-	$PREFS->googleMaps=$_POST['PREFS_googleMaps'];
-	$PREFS->nameOrder=$_POST['PREFS_nameOrder'];
+	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage']+0;
+	$PREFS->metricSystem=$_POST['PREFS_metricSystem']+0;
+	$PREFS->googleMaps=$_POST['PREFS_googleMaps']+0;
+	$PREFS->nameOrder=$_POST['PREFS_nameOrder']+0;
+	$PREFS->useEditor=$_POST['PREFS_useEditor']+0;
 	
 	$PREFS->language=$_POST['PREFS_language'];
 	$_SESSION["lng"]= $PREFS->language;

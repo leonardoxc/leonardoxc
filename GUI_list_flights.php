@@ -500,37 +500,22 @@ function removeClubFlight(clubID,flightID) {
 
 
 	    if ( $isExternalFlight == 0 || $isExternalFlight ==2 ) { 
-			echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='displayIcons' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 			
-		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='listIcons' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
+		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='displayIcons' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
 		} else {
-			echo "<TD $airspaceProblem align=left><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			echo "<TD $airspaceProblem align=left><a  href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='displayIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 			// echo "<TD $airspaceProblem align=left><a href='".$row["originalURL"]."' target='_blank'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._External_Entry."'  width='16' height='16' /></a>";
 			if ($row["originalKML"]) 
-			    echo "<a href='".$row["originalKML"]."'><img class='listIcons' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
+			    echo "<a  href='".$row["originalKML"]."'><img class='displayIcons ' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 			else
-			    echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
+			    echo "<img class='displayIcons ' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
 			// echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 		}
 
-
-
-		if (1) {
-			$photos_exist=0;
-			for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
-				if ($row["photo".$photo_i."Filename"]) { 
-					$photos_exist=1; break; 
-				}
-			}	
-		} else {
-			$photos_exist=$row["hasPhotos"];
-		}
-
-	   if ($photos_exist) echo "<img  class='listIcons'src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' valign='top' />";
-	   else echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
-
+		
 		// echo "<BR>";
 	   if ($row["userID"]==$userID || auth::isAdmin($userID) ) {  
 			echo "<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$row["ID"]."'><img src='".$moduleRelPath."/img/x_icon.gif' width='16' height='16' border='0' align='bottom' /></a>"; 
@@ -544,11 +529,34 @@ function removeClubFlight(clubID,flightID) {
 			echo $checkedByStr;
 		}
 
+		// second line 
+		echo "<BR>";	
+		if (1) {
+			$photos_exist=0;
+			for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
+				if ($row["photo".$photo_i."Filename"]) { 
+					$photos_exist=1; break; 
+				}
+			}	
+		} else {
+			$photos_exist=$row["hasPhotos"];
+		}
 
+		if ($row["comments"]) $hasComments=1;
+		else $hasComments=0;
+		
+//		echo "<div style='display:inline; width:16px; height:16px; margin:0; padding:0; clear:none'>";
+
+		if ($hasComments) echo "<img  class='photoIcon' src='".$moduleRelPath."/img/icon_comments.gif' width='16' height='10'  />";
+	   	else echo "<img class='photoIcon' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='10' />";
+		
+		if ($photos_exist) echo "<img  class='photoIcon' src='".$moduleRelPath."/img/icon_camera3.gif' width='16' height='10'  />";
+	   	else echo "<img class='photoIcon' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='10' />";
+
+//		echo "</div>";
 				
 
-		if ( ( auth::isClubAdmin($userID,$clubID) || auth::isAdmin($userID) )&&  $add_remove_mode )  {
-				 echo "<BR>";	   
+		if ( ( auth::isClubAdmin($userID,$clubID) || auth::isAdmin($userID) )&&  $add_remove_mode )  {			    
 				if (in_array($flightID,$clubFlights ) ){
 					echo "<div id='fl_$flightID' style='display:inline'><a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">$removeFromClubIcon</a></div>";
 				} else {
@@ -556,7 +564,8 @@ function removeClubFlight(clubID,flightID) {
 				}				
 		}  else {
 		    if ($isExternalFlight) {
-			echo "<br><img src='$moduleRelPath/img/servers/".sprintf("%03d",$row["serverID"])."_text.gif' border=0>";
+				echo "<img class='photoIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry."'>";
+				// echo "<br><img src='$moduleRelPath/img/servers/".sprintf("%03d",$row["serverID"])."_text.gif' border=0>";
 			}
 		}
 			

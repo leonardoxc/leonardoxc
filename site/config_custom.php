@@ -319,5 +319,7 @@
 	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",3=>"cyclone.com.br",9=>"ypforum.com" );
 
 	// use a WYSIWYG editor for editing takeoff information
-    $CONF['editor']['use_wysiwyg']=1;
+    $CONF['editor']['use_wysiwyg']['global']=1;
+	$CONF['editor']['use_wysiwyg']['takeoff_description']=1;
+	$CONF['editor']['use_wysiwyg']['flight_comments']=1;
 ?>

@@ -453,7 +453,15 @@ require_once dirname(__FILE__).'/FN_editor.php';
       <td colspan="2" valign="middle">
 	  <fieldset class="legendBox legend3"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
 	  <div align="left">
-	    <? createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,'LeonardoSimple',693,400); ?>	    
+	    <?  if ( auth::isModerator($userID) ) {
+				$toolbar='Leonardo';
+				$allowUploads=false;
+			} else{
+				$toolbar='LeonardoSimple';
+ 				$allowUploads=false;
+			}
+			createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,
+							'flight_comments', $toolbar , $allowUploads, 693,350); ?>	    
 	    </div>
 	  </fieldset>	</td>
     </tr>

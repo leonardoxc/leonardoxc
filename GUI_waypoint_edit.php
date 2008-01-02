@@ -110,8 +110,9 @@
           </tr>
           <tr>
             <td colspan="4" valign="top" bgcolor="#CFE2CF">
-			  <? createTextArea(0,0,'description',$waypt->description ,'Leonardo',710,600);
-			?>            </td>
+			  <? createTextArea(0,0,'description',$waypt->description ,'takeoff_description','Leonardo',true,710,600);
+			?>            
+			</td>
           </tr>
           <tr>
             <td colspan="4"><div align="right"></div>

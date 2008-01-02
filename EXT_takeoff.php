@@ -24,9 +24,54 @@
 	setDEBUGfromGET();
 
 	$op=makeSane($_GET['op']);
-	if (!in_array($op,array("find_wpt","get_nearest","get_latest")) ) return;
+	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info")) ) return;
 
-	if ($op=="get_nearest") {
+	if ($op=="get_info") {
+		$wpID=$_GET['wpID']+0;
+		
+		echo '{ "takeoffID": '.$wpID.' , "html": "';
+		
+		$query="SELECT intName , countryCode from $waypointsTable WHERE ID=$wpID ";
+		$res= $db->sql_query($query);
+		if($res > 0){		
+			if ($row = mysql_fetch_assoc($res)) {
+				$description=$row['intName'];
+			} else {
+				echo "no results inquery :$query";			
+			}
+			
+		} else {
+			echo "error in query :$query";
+		}
+		
+		echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a  target=\'_top\' href=\'".getRelMainFileName()."&op=show_waypoint&waypointIDview=$wpID\'>"._SITE_INFO."</a><br>";
+		
+		
+	
+		$query="SELECT  MAX(MAX_LINEAR_DISTANCE) as record_km, ID  FROM $flightsTable  WHERE takeoffID =".$wpID." GROUP BY ID ORDER BY record_km DESC ";
+		
+		$flightNum=0;
+		$res= $db->sql_query($query);
+		if($res > 0){
+			$flightNum=mysql_num_rows($res);
+			
+			if ($flightNum>0) {
+				echo "<img src=\'img/icon_magnify_small.gif\' align=\'absmiddle\' border=0> <a href=\'".getRelMainFileName().
+		"&op=list_flights&takeoffID=".$wpID."&year=0&month=0&season=0&pilotID=0&country=0&cat=0\' target=\'_top\'>".
+		_See_flights_near_this_point." [ ".$flightNum." ]</a><br>";
+		echo "<img src=\'img/icon_trophy.gif\' align=\'absmiddle\' border=0> <b>"._SITE_RECORD."</b>:";
+
+			$row = mysql_fetch_assoc($res);
+		
+			echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].getRelMainFileName().'&op=show_flight&flightID='.$row['ID'].'\'>'.
+			formatDistance($row['record_km'],1).'</a>';
+			} else {
+				echo " No flights from this location";
+			}
+		} 
+		echo ' " } ';
+	 
+	} else if ($op=="get_nearest") {
 		$lat=$_GET['lat']+0;
 		$lon=-$_GET['lon']+0;
 		

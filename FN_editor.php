@@ -3,9 +3,17 @@
 require_once dirname(__FILE__)."/js/fckeditor/fckeditor.php";
 require_once dirname(__FILE__)."/CL_pilot.php";
 
-function createTextArea($userServerID,$userID,$name,$value,$toolbarSet,$width=750,$height=800) {
-		global $CONF;
-		if (!$CONF['editor']['use_wysiwyg']) {
+function createTextArea($userServerID,$userID,$name,$value,
+						$where,$toolbarSet,$allowUploads=false,$width=750,$height=800) {
+		global $CONF,$PREFS;
+		
+		$useTextArea=false;
+
+		if ( ! $CONF['editor']['use_wysiwyg'][$where] ) $useTextArea=true;
+		else if ( ! $PREFS->useEditor) $useTextArea=true;
+		
+		
+		if ( $useTextArea) {
 			$cols=floor($width/10);
 			$rows=floor($height/40);
 			if ($rows<3) $rows=3;
@@ -38,7 +46,7 @@ function createTextArea($userServerID,$userID,$name,$value,$toolbarSet,$width=75
 		$oFCKeditor->Value = $value; 
 		$oFCKeditor->BasePath	= $sBasePath ;
 
-		if ($userServerID!=0 || $userID!=0) {
+		if (! $allowUploads) {
 			$oFCKeditor->Config['LinkBrowser']=false;
 			$oFCKeditor->Config['ImageBrowser']=false;
 			$oFCKeditor->Config['FlashBrowser']=false;

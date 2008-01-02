@@ -581,7 +581,9 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 $divsToShow=0;
 if ($localMap) $divsToShow++;
 if ($googleMap) $divsToShow++;
+if ($comments) $divsToShow++;
 if ($images) $divsToShow++;
+
 
 if ( $divsToShow>1) { // use tabber 
 	$defaultTabStr1="";
@@ -609,6 +611,12 @@ if ( $divsToShow>1) { // use tabber
 				 </div>\n";
 	}
 
+	if ($comments) {
+		$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
+			  $comments
+			  </div>";
+	}	
+	
 	if ($images) {
 		$mapImg.="<div class='tabbertab' title='Photos' style='height:400px; background-color:#ECF0EA;'>
 			  $images
@@ -661,7 +669,7 @@ $Ltemplate->assign_vars(array(
 	'images'=>$images,
 	'2col'=>($images?"2col":""),
 	'margin'=>$margin,
-	'comments'=>$comments,
+	// 'comments'=>$comments,
 	'linkURL'=>$linkURL,
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
@@ -678,9 +686,9 @@ if ($flight->externalFlightType) {
    	$Ltemplate->assign_block_vars('EXT_FLIGHT', array() );
 }
  
-if ($comments) {
-   	$Ltemplate->assign_block_vars('COMMENTS', array() );
-}
+//if ($comments) {
+//   	$Ltemplate->assign_block_vars('COMMENTS', array() );
+//}
 
 if ($adminPanel) {
    	$Ltemplate->assign_block_vars('ADMIN_PANEL', array() );

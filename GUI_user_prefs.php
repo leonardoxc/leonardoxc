@@ -32,22 +32,20 @@
 
 ?>
 <form name=userPrefs  method="POST" action="<?=CONF_MODULE_ARG?>&op=user_prefs" >
+<BR />
 <?
-  open_inner_table(_MENU_MY_SETTINGS,500,"icon_profile.png");
+  open_inner_table(_MENU_MY_SETTINGS,400,"icon_profile.png");
   
   open_tr();  
-  echo "<td bgcolor='#EEF3E9'>";
+  echo "<td>";
 ?>
 
-  <table  width="100%" border="0" bgcolor="#EEF3E9"  class=main_text>
-    <tr> 
-      <td colspan="3" bgcolor="006699" height=3></td>
-    </tr>
-	<tr> 
+  <table  width="100%" border="0" bgcolor="#F4F3F1"  align="left" class="box main_text" style="background-color:#F4F3F1">
+  	<tr> 
       <td colspan="3" >&nbsp;</td>
     </tr>
     <tr> 
-      <td width="284" bgcolor="#F8F8E4"><div align="right"><? echo _THEME ?></div></td>
+      <td width="284" bgcolor="#E0E2F0"><div align="right"><? echo _THEME ?></div></td>
       <td width="236"><select name="PREFS_themeName">		
 <? 
 			$themes=getAvailableThemes();
@@ -58,12 +56,11 @@
 					echo '<option value="'.$tmpTheme.'" selected>'.$tmpTheme.'</option>';
 			}
 ?>	
-	  </select>
-	  </td>
+	  </select>	  </td>
       <td width="1">&nbsp;</td>
     </tr>
     <tr> 
-      <td width="284" bgcolor="#F8F8E4"><div align="right"><? echo _LANGUAGE ?></div></td>
+      <td width="284" bgcolor="#EAEDEE"><div align="right"><? echo _LANGUAGE ?></div></td>
       <td width="236">        <select name="PREFS_language">		
 		<? foreach  ($availableLanguages as $tmpLang ) {
 			if ($tmpLang!= $PREFS->language )
@@ -77,7 +74,7 @@
       <td width="1">&nbsp;</td>
     </tr>
     <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo _VIEW_CATEGORY ?></div></td>
+      <td bgcolor="#E0E2F0"><div align="right"><? echo _VIEW_CATEGORY ?></div></td>
       <td> 
 		<select name="PREFS_viewCat">        
       	<?
@@ -91,12 +88,11 @@
 				echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
 			}
 		?>
-	  </select>
-	 </td>
+	  </select>	 </td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo _VIEW_COUNTRY ?></div></td>
+      <td bgcolor="#EAEDEE"><div align="right"><? echo _VIEW_COUNTRY ?></div></td>
       <td>      <select name="PREFS_viewCountry">
 <? 
 		if (!$countriesNum) {
@@ -119,53 +115,63 @@
 		}
 
 ?> 
-        </select>	  </td>
+      </select></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo _UNITS_SYSTEM ?></div></td>
+      <td bgcolor="#E0E2F0"><div align="right"><? echo _UNITS_SYSTEM ?></div></td>
       <td>
         <select name="PREFS_metricSystem">
           <option value="1" <? echo ($PREFS->metricSystem==1)?"selected":"" ?>><? echo _METRIC_SYSTEM ?></option>
           <option value="2" <? echo ($PREFS->metricSystem==2)?"selected":"" ?>><? echo _IMPERIAL_SYSTEM ?></option>
-        </select></td>
+      </select></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo _ITEMS_PER_PAGE ?></div></td>
+      <td bgcolor="#EAEDEE"><div align="right"><? echo _ITEMS_PER_PAGE ?></div></td>
       <td> <input name="PREFS_itemsPerPage" type="text" value="<? echo $PREFS->itemsPerPage ?>" size="5" maxlength="120"></td>
       <td>&nbsp;</td>
     </tr>
 	<? if ($CONF_google_maps_track) { ?>
     <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo "Google Maps"?></div></td>
+      <td bgcolor="#E0E2F0"><div align="right"><? echo "Google Maps"?></div></td>
       <td>
         <select name="PREFS_googleMaps">
           <option value="1" <? echo ($PREFS->googleMaps==1)?"selected":"" ?>><? echo _YES ?></option>
           <option value="0" <? echo ($PREFS->googleMaps==0)?"selected":"" ?>><? echo _NO ?></option>
-        </select></td>
+      </select></td>
       <td>&nbsp;</td>
     </tr>
 	<? } ?>
+	<? if ($CONF['editor']['use_wysiwyg']['global']) { ?>
+    <tr> 
+      <td bgcolor="#EAEDEE"><div align="right"><? echo "Advanced Editor"?></div></td>
+      <td>
+        <select name="PREFS_useEditor">
+          <option value="1" <? echo ($PREFS->useEditor==1)?"selected":"" ?>><? echo _YES ?></option>
+          <option value="0" <? echo ($PREFS->useEditor==0)?"selected":"" ?>><? echo _NO ?></option>
+      </select></td>
+      <td>&nbsp;</td>
+    </tr>
+	<? } else { ?>
+	<input type="hidden" name="PREFS_useEditor" value=0 />
+	<?  } ?>
 	 <tr> 
-      <td bgcolor="#F8F8E4"><div align="right"><? echo _PILOT_NAME ?></div></td>
+      <td bgcolor="#E0E2F0"><div align="right"><? echo _PILOT_NAME ?></div></td>
       <td>
         <select name="PREFS_nameOrder">
           <option value="1" <? echo ($PREFS->nameOrder==1)?"selected":"" ?>><? echo _First_Name.' / '._Last_Name ?></option>
           <option value="2" <? echo ($PREFS->nameOrder==2)?"selected":"" ?>><? echo _Last_Name.' / '._First_Name  ?></option>
-        </select></td>
+       </select></td>
       <td>&nbsp;</td>
     </tr>
     <tr> 
-      <td colspan="3"><div align="center"> 
-          <input type="submit" name="Submit" value="<? echo _Submit_Change_Data ?>">
+      <td colspan="3"><div align="center"> <br />
+      <input type="submit" name="Submit" value="<? echo _Submit_Change_Data ?>">
       </div></td>
     </tr>
     <tr> 
       <td colspan="3" >&nbsp; </td>
-    </tr>
-    <tr> 
-      <td colspan="3" bgcolor="006699" height=3></td>
     </tr>
   </table>
   <input type=hidden name=updatePrefs value=1>

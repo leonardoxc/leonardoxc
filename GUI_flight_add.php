@@ -135,8 +135,7 @@ function setValue(obj)
 				?>
 				</select>
 				<?=_GLIDER ?>
-				 <input name="glider" type="text" size="20" > 
-			</td>
+				 <input name="glider" type="text" size="20" >			</td>
 			</tr>	 
 				 		<? 
 			$gliders=  getUsedGliders($userID) ;
@@ -160,8 +159,7 @@ function setValue(obj)
 						}
 					?>
 				</select>
-			<? } ?>	
-				</td>
+			<? } ?>				</td>
     </tr>
 	<? if ( auth::isAdmin($userID)) { ?>
     <tr>
@@ -171,11 +169,19 @@ function setValue(obj)
     </tr>
  	<? }?>
     <tr>
-      <td valign="middle"><div align="right" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
-	  <span class="styleSmallRed"><br>
-        <?=_NOTE_TAKEOFF_NAME ?></span></div></td>
-      <td colspan="3" valign="top">
-        <textarea name="comments" cols="60" rows="4"></textarea>		</td>
+      <td colspan="4" valign="middle"><div align="left" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
+	 </div>
+	    <? 	require_once dirname(__FILE__).'/FN_editor.php';
+	  		if ( auth::isModerator($userID) ) {
+				$toolbar='Leonardo';
+				$allowUploads=false;
+			} else{
+				$toolbar='LeonardoSimple';
+ 				$allowUploads=false;
+			}
+			createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,
+							'flight_comments', $toolbar , $allowUploads, 700,250);
+							?>	  </td>
     </tr>
 
     <tr>

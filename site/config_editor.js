@@ -1,7 +1,7 @@
 ﻿
-FCKConfig.Plugins.Add('EmbedMovies') ;
-FCKConfig.Plugins.Add( 'insertHtmlCode' ) ;
-// FCKLang[InsertHtmlCode]="Insert HTML Code";
+//FCKConfig.Plugins.Add('EmbedMovies') ;
+//FCKConfig.Plugins.Add( 'insertHtmlCode' ) ;
+//FCKConfig.Plugins.Add( 'snippets','en') ;
 
 FCKConfig.ToolbarSets["Leonardo"] = [
 ['Source','DocProps','-','Save','NewPage','Preview','-','Templates'],
@@ -18,9 +18,10 @@ FCKConfig.ToolbarSets["Leonardo"] = [
 ] ;
 
 FCKConfig.ToolbarSets["LeonardoSimple"] = [
-['Bold','Italic','Underline','TextColor','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
-['OrderedList','UnorderedList','Outdent','Indent'],
-['Link','Unlink','Flash','EmbedMovies','insertHtmlCode','Smiley','Rule'],
-['Undo','Redo','-','SelectAll','RemoveFormat','-','Cut','Copy','Paste','PasteText','PasteWord','About']
+['Bold','Italic','Underline','TextColor','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull',
+'-','OrderedList','UnorderedList','Outdent','Indent','-',
+'Link','Unlink','Flash','Smiley','Rule'],
+// ['Link','Unlink','Flash','EmbedMovies','insertHtmlCode','Snippets','Smiley','Rule','PasteText'],
+['Undo','Redo','-','SelectAll','RemoveFormat','-','Cut','Copy','Paste','PasteWord','About']
 ] ;
 

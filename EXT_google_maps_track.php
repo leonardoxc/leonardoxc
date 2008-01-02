@@ -299,34 +299,46 @@ var lon=0;
 			var marker = new GMarker(point);		
 		}	
 	  // Show this marker's index in the info window when it is clicked
-	  var html = "<b>" + description + "</b><br>";
+	 /* var html = "<b>" + description + "</b><br>";
 	  html+="<img src='img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=getRelMainFileName()?>&op=list_flights&takeoffID="+id+"&year=0&month=0&pilotID=0&country=0&cat=0'><? echo  _See_flights_near_this_point ?></a>";
-	  
-	  GEvent.addListener(marker, "click", function() {
-		marker.openInfoWindowHtml(html);
+	  */
+
+	 GEvent.addListener(marker, "click", function() {
+	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
+		
 	  });
-	
+	  
 	  return marker;
 	}
 
+	function openMarkerInfoWindow(jsonString) {
+		var results= eval("(" + jsonString + ")");			
+		var i=results.takeoffID;
+		var html=results.html;
+		takeoffMarkers[i].openInfoWindowHtml(html);
+	}
+	
+	var takeoffMarkers=[];
+		
 	function drawTakeoffs(jsonString){
 	 	var results= eval("(" + jsonString + ")");		
 		// document.writeln(results.waypoints.length);
 		for(i=0;i<results.waypoints.length;i++) {	
 			var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
 			
-		if (results.waypoints[i].id ==wpID ) {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
-		} else if (results.waypoints[i].type<1000) {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
-		} else {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
-		}
-		
-		var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
+			if (results.waypoints[i].id ==wpID ) {
+				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
+				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+			} else if (results.waypoints[i].type<1000) {
+				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
+				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+			} else {
+				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
+				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
+			}
+			
+			var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
+			takeoffMarkers[takeoffPoint,results.waypoints[i].id] = takeoffMarker;
 			map.addOverlay(takeoffMarker);
 		}	
 	}

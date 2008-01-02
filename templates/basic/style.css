@@ -278,7 +278,10 @@ border:0;
 .distance   { color:#4400aa; text-align:right; }
 .dateString div { color:#003366; text-align:right; font-size:9px; vertical-align:top; }
 .OLCScore   { color:#000066; text-align:right; }
-.listIcons { margin-right:1px; }
+.listIcons { margin-right:1px;  }
+
+.displayIcons { margin:0; margin-right:0px; clear:none; display:inline;  }
+.photoIcon { margin:0; padding:0; clear:right; display:inline; }
 
 .flagIcon { margin-right:0.5em; vertical-align:middle; text-decoration:none; border: 0 none;  }
 .extIcon { margin:0; padding:0; vertical-align:middle; text-decoration:none; border: 0 none;  }
