@@ -304,6 +304,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 			if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
 				$flight->NACclubID=$pilotNACclubID;
+				$flight->NACid=$pilotNACID;
 			}
 		}
 	}
