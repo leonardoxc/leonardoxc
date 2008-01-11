@@ -316,7 +316,8 @@
 	$CONF['brands']['filterList']=array(1,2,4);
 
 	//$CONF['servers']['list']=array( );
-	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",3=>"cyclone.com.br",9=>"ypforum.com" );
+	$CONF['servers']['list']=array( 0=>"Local Server", 1=>"paraglidingforum.com", 2=>"sky.gr",
+			3=>"cyclone.com.br",4=>"www.xcportugal.com",9=>"ypforum.com" );
 
 	// use a WYSIWYG editor for editing takeoff information
     $CONF['editor']['use_wysiwyg']['global']=1;
