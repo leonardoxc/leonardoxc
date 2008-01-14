@@ -1991,7 +1991,7 @@ $kml_file_contents=
 			
 			if ($p>0) {
 				$done=1;
-			} else if ( $REJ_T_zero_time_diff/$Brecords > 0.9) { // more than 90% stopped points
+			} else if ($Brecords>0 && ( $REJ_T_zero_time_diff/$Brecords > 0.9 ) ) { // more than 90% stopped points
 				$lines = file ($filename); 
 				$done=1;
 				$garminSpecialCase=1;

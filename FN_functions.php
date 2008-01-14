@@ -14,7 +14,7 @@
 require_once dirname(__FILE__)."/CL_auth.php"; 
 
 function fetchURL( $url, $timeout=5) {
-   $url_parsed = parse_url($url);
+	$url_parsed = parse_url(str_replace(' ','%20',$url) );
    $host = $url_parsed["host"];
    $port = $url_parsed["port"];
    if ($port==0)
