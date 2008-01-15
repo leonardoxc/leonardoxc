@@ -13,7 +13,10 @@
 	
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
-//	$CONF_use_utf=1;
+
+	$op=makeSane($_GET['op']);
+	if ($op=="get_info") $CONF_use_utf=1;
+
  	require_once "EXT_config.php";
 
 	require_once "CL_flightData.php";
@@ -24,6 +27,7 @@
 	setDEBUGfromGET();
 
 	$op=makeSane($_GET['op']);
+
 	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info")) ) return;
 
 	if ($op=="get_info") {
