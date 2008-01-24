@@ -158,7 +158,16 @@ var $maxPointNum=1000;
 			$gliderBrandID=brands::guessBrandID($this->glider );
 			if ($gliderBrandID){
 				global $CONF;
-				$gliderName=str_ireplace($CONF['brands']['list'][$gliderBrandID],'',$this->glider);
+
+				if (!function_exists('str_ireplace')) {
+				    function str_ireplace($needle, $str, $haystack) {
+				        $needle = preg_quote($needle, '/');
+				        return preg_replace("/$needle/i", $str, $haystack);
+				    }
+				}  else {
+					$gliderName=str_ireplace($CONF['brands']['list'][$gliderBrandID],'',$this->glider);
+				}
+
 				$gliderName=brands::sanitizeGliderName($gliderName);
 				$this->glider=$gliderName;
 				$this->gliderBrandID=$gliderBrandID;

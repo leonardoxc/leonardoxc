@@ -606,4 +606,11 @@ else $CONF['os']='windows';
  // profile options
  $CONF['profile']['CIVL_ID_enter_url']=getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
 
+if (!function_exists('str_ireplace')) {
+    function str_ireplace($needle, $str, $haystack) {
+        $needle = preg_quote($needle, '/');
+        return preg_replace("/$needle/i", $str, $haystack);
+    }
+} 
+
 ?>
