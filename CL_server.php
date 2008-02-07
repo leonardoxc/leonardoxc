@@ -587,6 +587,7 @@ class Server {
 		//return;
 
 		// echo "<PRE>$rssStr</pre>";
+
 		if ($this->sync_format=='XML')	{	
 			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 			$xmlDoc = new MiniXMLDoc();
@@ -611,6 +612,8 @@ class Server {
 			if ($verbose) echo "Decoding log from JSON format ...";
 			if ($verbose) flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
+
+			$rssStr=str_replace('\\\\"','\"',$rssStr);
 			$arr=json::decode($rssStr);
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";

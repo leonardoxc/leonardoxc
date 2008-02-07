@@ -39,8 +39,9 @@
 	if (!in_array($op,array("latest")) ) return;
 
 	// $encoding="iso-8859-1";
-	//$encoding="utf-8";
+	
 	$encoding=$langEncodings[$lng];
+$encoding="utf-8";
 
 	//require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 
@@ -81,7 +82,8 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 			 $nearestWaypoint->getFromDB();
 
 
-     $name=getPilotRealName($row["userID"],$row["userServerID"]);
+     $name=getPilotRealName($row["userID"],$row["userServerID"],0,2);
+  //$name="33";
 	 $takeoffName=getWaypointName($row["takeoffID"]);
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $duration=sec2Time($row['DURATION'],1);
@@ -91,6 +93,8 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 	$score=formatOLCScore($row["FLIGHT_POINTS"],false);
 
 			$title="OLCscore: $score :: Pilot: $name :: takeoff: $takeoffName :: duration: $duration :: open distance: $linKM";
+			$title=str_replace("&nbsp;"," ",$title);
+
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['flightID']);
 
 		if ($row['takeoffVinicity'] > $takeoffRadious ) 
@@ -121,12 +125,15 @@ $desc="Pilot:  $name".
 ;
 
 $desc=htmlspecialchars ($desc);
+$desc=str_replace("&nbsp;"," ",$desc);
 
 			$RSS_str.="<item>
 <title>$title</title>
 <link>$link</link>
 <description>
+
 $desc
+
 </description>
 </item>
 ";
