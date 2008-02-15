@@ -104,7 +104,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",
-				    "greek","turkish","danish","swedish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");
+				    "greek","turkish","danish","swedish","finnish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");
 
  $langEncodings=array(
 	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"iso-8859-5","brazilian"=>"iso-8859-1",
@@ -126,7 +126,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
 
  $lang2isoEditor=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
  			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"pt-br","greek"=>"el","turkish"=>"tr",
-			"swedish"=>"sv","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
+			"swedish"=>"sv","finnish"=>"fi","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
 			"croatian"=>"hr","mexican"=>"es","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
 			"danish"=>"da","chinese"=>"zh","hebrew"=>"he");
 
@@ -391,6 +391,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
   // default user prefs 
   $CONF['default_user_prefs']['useEditor']=1;
   
+  //  live thumbnails 
+  $CONF['photos']['mid']['max_width']=600;
+  $CONF['photos']['mid']['max_height']=600;
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

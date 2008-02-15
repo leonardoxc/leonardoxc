@@ -189,7 +189,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 <tr>
 <?
 	if ($CONF['seasons']['use_season_years'] ) {
-		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong></td>';
+		echo '<td class="tableBox" valign="top" style="width:70px"><strong>'._SEASON.'</strong></td>';
 	} else {
 		echo '<td></td>';
 	}

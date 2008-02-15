@@ -17,6 +17,7 @@
   ?>
 
 
+
   
 <div align="center"> 
   <p> 
@@ -76,9 +77,11 @@
           <li>
             <a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></li>
           <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>
-          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">Canadian League</a></li>
+          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL
+              Canadian League</a></li>
           <li>
             <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></li>
+          <li><a href="http://cnd.favl.info/modules.php?name=leonardo&op=list_flights" target="_blank">FAVL - Argentine League</a> </li>
           <li>
             <a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
           <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
@@ -141,6 +144,8 @@
           <li> <a href="http://www.volfik.com/" target="_blank"><strong>Peter Volf</strong></a> for the <strong>Czech</strong> translation </li>
           <li> <strong>Xiaozhong</strong> for the <strong>Chinese</strong> translation</li>
           <li><strong>Dmitry Korogodin</strong> for the <strong>Hebrew</strong> translation</li>
+          <li> <strong>Juha Niinimaki</strong>  for the <strong>Finnish</strong> translation<br>
+          </li>
         </ul>        
         <hr></td>
     </tr>

@@ -545,8 +545,30 @@ $images="";
 for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 	$photoFilename="photo".$photoNum."Filename";
 	if ($flight->$photoFilename) {
+		//$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+		//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+
+		$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
+		$imgBigRel=$flight->getPhotoRelPath($photoNum);
+
+		$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
+		$imgBig=$flight->getPhotoFilename($photoNum);
+
+		if (file_exists($imgBig) ) {
+			list($width, $height, $type, $attr) = getimagesize($imgBig);
+			list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+			$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+		} else 	if (file_exists($imgIcon) ) {
+			list($width, $height, $type, $attr) = getimagesize($imgIcon);
+			list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+			$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+		}else {
+			$imgStr="&nbsp;";
+		}
+
 		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-				"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+				"' target=_blank>$imgStr</a>";
+
 	}		
 }
 
@@ -611,18 +633,30 @@ if ( $divsToShow>1) { // use tabber
 				 </div>\n";
 	}
 
-	if ($comments) {
-		$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
-			  $comments
-			  </div>";
-	}	
-	
-	if ($images) {
-		$mapImg.="<div class='tabbertab' title='Photos' style='height:400px; background-color:#ECF0EA;'>
-			  $images
-			  </div>";
-	}		  
+
+	if ($comments && $images) {
+			$mapImg.="<div class='tabbertab' title='"._COMMENTS." & "._PHOTOS."' style='width:745px; height:400px; text-align:left;'>
+				  <div style='float:left; width:445px; clear:left;'>$comments</div>
+				  <div style='float:right; width:295px; clear:right;'>$images</div>
+				  </div>";
+	} else {
+		if ($comments) {
+			$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
+				  $comments
+				  </div>";
+		}	
+		
+		if ($images) {
+			$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>
+				  $images
+				  </div>";
+		}		  
+	}
+
 	$mapImg.="</div>";
+
+	if ($images) 
+		$mapImg.="<script type='text/javascript' src='$moduleRelPath/js/xns.js'></script>";
 
 } else { // only the one div that is present (we know that only one (or zero) is here)
 	$mapImg=$localMap.$googleMap.$images;	
@@ -666,7 +700,7 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
-	'images'=>$images,
+	// 'images'=>$images,
 	'2col'=>($images?"2col":""),
 	'margin'=>$margin,
 	// 'comments'=>$comments,

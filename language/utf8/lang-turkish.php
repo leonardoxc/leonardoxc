@@ -600,74 +600,89 @@ define('_Click_to_select_a_month','Ay seçmek için tıklayın.');
 define('_Click_to_select_a_year','Yıl seçmek için tıklayın.');
 define('_Select_date_as_date.',' [date] tarih olarak seçin'); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
+// end 2007/03/13
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","The flight will be activated in 1-2 minutes. "); 
-define("_SEASON","Season"); 
-define("_CATEGORY_TOTAL_DURATION","Category 'DURACELL' - Total duration of flights"); 
-define("_SUBMIT_TO_OLC","Submit to OLC"); 
-define("_pilot_email","Email Address"); 
-define("_Sex","Sex"); 
-define("_Login_Stuff","Change Login-Data"); 
-define("_PASSWORD_CONFIRMATION","Confirm password"); 
-define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
-define("_PwdAndConfDontMatch","Password and confirmation are different."); 
-define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
-define("_PwdConfEmpty","The password has not be confirmed."); 
-define("_PwdChanged","The password was changed."); 
-define("_PwdNotChanged","The password has NOT been changed."); 
-define("_PwdChangeProblem","A problem occurred when changing the password."); 
-define("_EmailEmpty","The email address must not be empty."); 
-define("_EmailInvalid","The email address is invalid."); 
-define("_EmailSaved","The email address was saved"); 
-define("_EmailNotSaved","The email address has not been saved."); 
-define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_PROJECT_HELP","Help"); 
-define("_PROJECT_NEWS","News"); 
-define("_PROJECT_RULES","Regulations 2007"); 
-define("_Filter_NoSelection","No selection"); 
-define("_Filter_CurrentlySelected","Current selection"); 
-define("_Filter_DialogMultiSelectInfo","Press Ctrl for multiple selection."); 
-define("_Filter_FilterTitleIncluding","Only selected [items]"); 
-define("_Filter_FilterTitleExcluding","Exclude [items]"); 
-define("_Filter_DialogTitleIncluding","Select [items]"); 
-define("_Filter_DialogTitleExcluding","Select [items]"); 
-define("_Filter_Items_pilot","pilots"); 
-define("_Filter_Items_nacclub","clubs"); 
-define("_Filter_Items_country","countries"); 
-define("_Filter_Items_takeoff","take offs"); 
-define("_Filter_Button_Select","Select"); 
-define("_Filter_Button_Delete","Delete"); 
-define("_Filter_Button_Accept","Accept selection"); 
-define("_Filter_Button_Cancel","Cancel"); 
-define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
-define("_ALL_NACCLUBS","All Clubs"); 
-define("_SELECT_NACCLUB","Select [nacname]-Club"); 
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Uçuşunuz bir kaç dakika sonra aktif olacaktır. "); 
+define("_SEASON","Sezon"); 
+define("_CATEGORY_TOTAL_DURATION","Category 'DURACELL' - Ucuşların toplam 
+süresi"); 
+define("_SUBMIT_TO_OLC","OLC ye gönder"); 
+define("_pilot_email","Email Adres"); 
+define("_Sex","Cinsiyet"); 
+define("_Login_Stuff","Değiştir Giriş-Data"); 
+define("_PASSWORD_CONFIRMATION","Şifreyi doğrulama"); 
+define("_EnterPasswordOnlyToChange","Değiştirmek istiyorsanız sadece şifreyi giriniz:"); 
+define("_PwdAndConfDontMatch","Şifre ve şifreyi doğrulama alanları uyuşmuyor."); 
+define("_PwdTooShort","Şifre çok kısa. Şifreniz $passwordMinLength karekterden fazla olmalı."); 
+define("_PwdConfEmpty","Şifre doğrulandı."); 
+define("_PwdChanged","Şifre değişti."); 
+define("_PwdNotChanged","Şifre değişmedi."); 
+define("_PwdChangeProblem","Şifre değiştirirken problem oluştu."); 
+define("_EmailEmpty","Email alanı boş olamaz."); 
+define("_EmailInvalid","Email hatalı."); 
+define("_EmailSaved","Bu Email adresi önceden sistemde kayıtlı"); 
+define("_EmailNotSaved","Email adresi kayıt edilmedi."); 
+define("_EmailSaveProblem","Email i kayıt ederken problem oluştu."); 
+define("_PROJECT_HELP","Yardım"); 
+define("_PROJECT_NEWS","Haberler"); 
+define("_PROJECT_RULES","2007 Düzenlemeler"); 
+define("_Filter_NoSelection","Seçim yapılmamış"); 
+define("_Filter_CurrentlySelected","Seçilenler"); 
+define("_Filter_DialogMultiSelectInfo","Ctrl ye basılı tutarak birdn fazla seçim yapabilirsiniz."); 
+define("_Filter_FilterTitleIncluding","Seçilenler [items]"); 
+define("_Filter_FilterTitleExcluding","Çıkar [items]"); 
+define("_Filter_DialogTitleIncluding","Seç [items]"); 
+define("_Filter_DialogTitleExcluding","Seç [items]"); 
+define("_Filter_Items_pilot","pilotlar"); 
+define("_Filter_Items_nacclub","kulüb"); 
+define("_Filter_Items_country","ülkeler"); 
+define("_Filter_Items_takeoff","kalkış pistleri"); 
+define("_Filter_Button_Select","Seç"); 
+define("_Filter_Button_Delete","Sil"); 
+define("_Filter_Button_Accept","Seçimi kaydet"); 
+define("_Filter_Button_Cancel","İptal"); 
+define("_MENU_FILTER_NEW","Filter **Yeni Versiyon**"); 
+define("_ALL_NACCLUBS","Tüm Kulüpler"); 
+define("_SELECT_NACCLUB","Seç, [nacname]-Kulüb"); 
 define("_FirstOlcYear","First year of participation in an online XC contest"); 
 define("_FirstOlcYearComment","Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings."); 
-define("_Select_Brand","Select Brand"); 
-define("_All_Brands","All Brands"); 
-define("_DAY","DAY"); 
-define("_Glider_Brand","Glider Brand"); 
-define("_Or_Select_from_previous","Or Select from previous"); 
-define("_Explanation_AddToBookmarks_IE","Add these filter settings to your favourites"); 
-define("_Msg_AddToBookmarks_IE","Click here to add these filter settings to your bookmarks."); 
-define("_Explanation_AddToBookmarks_nonIE","(Save this link to your bookmarks.)"); 
+define("_Select_Brand","Marka Seç"); 
+define("_All_Brands","Tüm Markalar"); 
+define("_DAY","Gün"); 
+define("_Glider_Brand","Marka"); 
+define("_Or_Select_from_previous","ya da öncekinden seç"); 
+define("_Explanation_AddToBookmarks_IE","Bu filtre ayarlarını favorilerinize ekleyin"); 
+define("_Msg_AddToBookmarks_IE","Bookmarks a bu filtre ayarlarını ekleyin"); 
+define("_Explanation_AddToBookmarks_nonIE","(Bookmarks a bu linki kaydedin)"); 
 define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
-define("_PROJECT_RULES2","Regulations 2008"); 
-define("_MEAN_SPEED1","Mean Speed"); 
-define("_External_Entry","External Entry"); 
-define("_Altitude","Altitude"); 
-define("_Speed","Speed"); 
-define("_Distance_from_takeoff","Distance from takeoff"); 
-define("_LAST_DIGIT","last digit"); 
-define("_Filter_Items_nationality","nationality"); 
+define("_PROJECT_RULES2","2008 Düzenlemeler"); 
+define("_MEAN_SPEED1","Ortalama Hız"); 
+define("_External_Entry","Başka site girdisi"); 
+define("_Altitude","Yükseklik"); 
+define("_Speed","Hız"); 
+define("_Distance_from_takeoff","Kalkış pistine olan mesafe"); 
+define("_LAST_DIGIT",",son rakamını gizle"); 
+define("_Filter_Items_nationality","ulus"); 
 define("_Filter_Items_server","server"); 
-define("_Ext_text1","This is a flight originally submited at "); 
-define("_Ext_text2","Link to full flight maps and charts"); 
-define("_Ext_text3","Link to original flight"); 
+define("_Ext_text1","Bu uçuşun orjinal adresi "); 
+define("_Ext_text2","Uçuşun tüm detayları için tıklayın"); 
+define("_Ext_text3","Uçuşun orjinal linki");
+
+// New on 2008/2/15
+define('_Male_short','E');
+define('_Female_short','K');
+define('_Male','Erkek');
+define('_Female','kadın');
+define('_Pilot_Statistics','Pilot Statistics');
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_CATEGORY_TOTAL_DURATION","Category 'DURACELL' - Total duration of flights"); 
 
 ?>

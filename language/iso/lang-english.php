@@ -695,4 +695,12 @@ define('_Ext_text1','This is a flight originally submited at ');
 define('_Ext_text2','Link to full flight maps and charts');
 define('_Ext_text3','Link to original flight');
 
+
+// New on 2008/2/15
+define('_Male_short','M');
+define('_Female_short','F');
+define('_Male','Male');
+define('_Female','Female');
+define('_Pilot_Statistics','Pilot Statistics');
+
 ?>

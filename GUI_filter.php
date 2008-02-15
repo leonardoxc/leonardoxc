@@ -91,6 +91,9 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 			$filter_clause.=' AND '.implode(' AND ', $AND_clauses);
 		}
 
+		if ($FILTER_sex) 
+			$filter_clause.=" AND $pilotsTable.Sex='$FILTER_sex' ";
+
 		if ($FILTER_linear_distance_select)
 			$filter_clause.=" AND LINEAR_DISTANCE ".$FILTER_linear_distance_op." ".($FILTER_linear_distance_select*1000)." ";
 
@@ -140,6 +143,8 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 	}
 
 }
+
+// echo "#".$filter_clause;
 
  open_inner_table(_FILTER_PAGE_TITLE,700); echo "<tr><td>";
  if ($_REQUEST["FILTER_dateType"])  {
@@ -310,6 +315,17 @@ foreach ($filterkeys as $filterkey) {
       <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _OTHER_FILTERS ?></strong></span></div></td>
       <td>&nbsp;</td>
     </tr>
+
+	<tr>
+ 		<td><div align="right"><? echo _Sex ?> </div></td>		
+		<td><select name="FILTER_sex">
+          <option value=""></option>
+          <option value="M" <? if ($FILTER_sex=="M") echo "selected" ?>><?=_Male?></option>
+          <option value="F" <? if ($FILTER_sex=="F") echo "selected" ?>><?=_Female?></option>
+        </select>
+		</td>
+	</tr>
+
     <tr>
       <td><div align="right"><? echo _LINEAR_DISTANCE_SHOULD_BE ?> </div></td>
       <td><select name="FILTER_linear_distance_op">

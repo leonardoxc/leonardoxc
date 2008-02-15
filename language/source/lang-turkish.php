@@ -601,4 +601,82 @@ define('_Click_to_select_a_year','Yýl seçmek için týklayýn.');
 define('_Select_date_as_date.',' [date] tarih olarak seçin'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Uçuþunuz bir kaç dakika sonra aktif olacaktýr. "); 
+define("_SEASON","Sezon"); 
+define("_CATEGORY_TOTAL_DURATION","Category 'DURACELL' - Ucuþlarýn toplam 
+süresi"); 
+define("_SUBMIT_TO_OLC","OLC ye gönder"); 
+define("_pilot_email","Email Adres"); 
+define("_Sex","Cinsiyet"); 
+define("_Login_Stuff","Deðiþtir Giriþ-Data"); 
+define("_PASSWORD_CONFIRMATION","Þifreyi doðrulama"); 
+define("_EnterPasswordOnlyToChange","Deðiþtirmek istiyorsanýz sadece þifreyi giriniz:"); 
+define("_PwdAndConfDontMatch","Þifre ve þifreyi doðrulama alanlarý uyuþmuyor."); 
+define("_PwdTooShort","Þifre çok kýsa. Þifreniz $passwordMinLength karekterden fazla olmalý."); 
+define("_PwdConfEmpty","Þifre doðrulandý."); 
+define("_PwdChanged","Þifre deðiþti."); 
+define("_PwdNotChanged","Þifre deðiþmedi."); 
+define("_PwdChangeProblem","Þifre deðiþtirirken problem oluþtu."); 
+define("_EmailEmpty","Email alaný boþ olamaz."); 
+define("_EmailInvalid","Email hatalý."); 
+define("_EmailSaved","Bu Email adresi önceden sistemde kayýtlý"); 
+define("_EmailNotSaved","Email adresi kayýt edilmedi."); 
+define("_EmailSaveProblem","Email i kayýt ederken problem oluþtu."); 
+define("_PROJECT_HELP","Yardým"); 
+define("_PROJECT_NEWS","Haberler"); 
+define("_PROJECT_RULES","2007 Düzenlemeler"); 
+define("_Filter_NoSelection","Seçim yapýlmamýþ"); 
+define("_Filter_CurrentlySelected","Seçilenler"); 
+define("_Filter_DialogMultiSelectInfo","Ctrl ye basýlý tutarak birdn fazla seçim yapabilirsiniz."); 
+define("_Filter_FilterTitleIncluding","Seçilenler [items]"); 
+define("_Filter_FilterTitleExcluding","Çýkar [items]"); 
+define("_Filter_DialogTitleIncluding","Seç [items]"); 
+define("_Filter_DialogTitleExcluding","Seç [items]"); 
+define("_Filter_Items_pilot","pilotlar"); 
+define("_Filter_Items_nacclub","kulüb"); 
+define("_Filter_Items_country","ülkeler"); 
+define("_Filter_Items_takeoff","kalkýþ pistleri"); 
+define("_Filter_Button_Select","Seç"); 
+define("_Filter_Button_Delete","Sil"); 
+define("_Filter_Button_Accept","Seçimi kaydet"); 
+define("_Filter_Button_Cancel","Ýptal"); 
+define("_MENU_FILTER_NEW","Filter **Yeni Versiyon**"); 
+define("_ALL_NACCLUBS","Tüm Kulüpler"); 
+define("_SELECT_NACCLUB","Seç, [nacname]-Kulüb"); 
+define("_FirstOlcYear","First year of participation in an online XC contest"); 
+define("_FirstOlcYearComment","Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings."); 
+define("_Select_Brand","Marka Seç"); 
+define("_All_Brands","Tüm Markalar"); 
+define("_DAY","Gün"); 
+define("_Glider_Brand","Marka"); 
+define("_Or_Select_from_previous","ya da öncekinden seç"); 
+define("_Explanation_AddToBookmarks_IE","Bu filtre ayarlarýný favorilerinize ekleyin"); 
+define("_Msg_AddToBookmarks_IE","Bookmarks a bu filtre ayarlarýný ekleyin"); 
+define("_Explanation_AddToBookmarks_nonIE","(Bookmarks a bu linki kaydedin)"); 
+define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
+define("_PROJECT_RULES2","2008 Düzenlemeler"); 
+define("_MEAN_SPEED1","Ortalama Hýz"); 
+define("_External_Entry","Baþka site girdisi"); 
+define("_Altitude","Yükseklik"); 
+define("_Speed","Hýz"); 
+define("_Distance_from_takeoff","Kalkýþ pistine olan mesafe"); 
+define("_LAST_DIGIT",",son rakamýný gizle"); 
+define("_Filter_Items_nationality","ulus"); 
+define("_Filter_Items_server","server"); 
+define("_Ext_text1","Bu uçuþun orjinal adresi "); 
+define("_Ext_text2","Uçuþun tüm detaylarý için týklayýn"); 
+define("_Ext_text3","Uçuþun orjinal linki");
+
+// New on 2008/2/15
+define('_Male_short','E');
+define('_Female_short','K');
+define('_Male','Erkek');
+define('_Female','kadýn');
+define('_Pilot_Statistics','Pilot Statistics');
+
 ?>

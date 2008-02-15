@@ -127,7 +127,8 @@
 				else $countryCodeQuery=0;
 			}
 	}
-	
+
+	if ( ! strpos($filter_clause,$pilotsTable.".Sex")=== false )  $pilotsTableQuery=1;
 	
 	
 	$where_clause.=$filter_clause;

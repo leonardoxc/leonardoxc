@@ -136,6 +136,23 @@ function validJPGfile($filename) {
 	  else return 0;
 }
 
+
+function getJPG_NewSize($forcedwidth, $forcedheight, $source_width, $source_height)
+{	
+	$dest_width_max   = $forcedwidth;
+	$dest_height_max  = $forcedheight;
+	// The two lines beginning with (int) are the super important magic formula part.
+	(int)$dest_width  = ($source_width <= $source_height) ? round(($source_width  * $dest_height_max)/$source_height) : $dest_width_max;
+	(int)$dest_height = ($source_width >  $source_height) ? round(($source_height * $dest_width_max) /$source_width)  : $dest_height_max;
+	
+	if ($dest_width > $source_width ) {
+		$dest_width = $source_width;
+		$dest_height = $source_height;
+	}
+	return array($dest_width,$dest_height);
+}
+
+
 function resizeJPG($forcedwidth, $forcedheight, $sourcefile, $destfile, $imgcomp)
 {
 	$g_imgcomp=100-$imgcomp;

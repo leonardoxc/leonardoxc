@@ -94,7 +94,9 @@
   <tr>
     <td valign="top" bgcolor="#E9EDF5">
     <div align="right"><? echo _Sex ?></div></td>
-    <td valign="top" bgcolor="#F5F5F5"><? echo $pilot['Sex'] ?>	</td>
+    <td valign="top" bgcolor="#F5F5F5"><? 
+		echo getPilotSexString($pilot['Sex'] ,true);
+	?>	</td>
     <td>&nbsp;</td>
   </tr>
   <tr>

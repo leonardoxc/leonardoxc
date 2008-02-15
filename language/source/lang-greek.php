@@ -670,4 +670,11 @@ define('_Ext_text1','Αυτή η πτήση είχε αρχικά υποβληθεί στο ');
 define('_Ext_text2','Πατήστε εδώ για τους χάρτες και τα γραφήματα');
 define('_Ext_text3','Σύνδεσμος στην πρωτότυπη πτήση');
 
+// New on 2008/2/15
+define('_Male_short','Α');
+define('_Female_short','Θ');
+define('_Male','¶νδρας');
+define('_Female','Γυνάικα');
+define('_Pilot_Statistics','Στατιστικά Πιλότων');
+
 ?>

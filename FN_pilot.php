@@ -223,17 +223,17 @@ function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	}
 }
 
-function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExternalIndicator=1) {
+function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExternalIndicator=1,$gender=1) {
 	global $db,$pilotsTable,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_use_leonardo_names,$PREFS,$CONF;
+	global $CONF_use_leonardo_names,$PREFS,$CONF,$moduleRelPath;
 
 
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
 	
-	$query="SELECT $nOrder as realName ,countryCode,serverID FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
+	$query="SELECT $nOrder as realName ,countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
 	$res= $db->sql_query($query);
 	// echo $query;
 
@@ -269,9 +269,13 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			// else return as is.
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
-
-			return $str.getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 			
+			if ($gender==1 && $pilot['Sex']=='F') 
+				$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+
+			$str=$str.getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
+
+			return $str;
 		}
 					
 		/*
@@ -323,8 +327,12 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	}
 
 	$str.=getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
-	if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0).$str; 
-	else return $str; 
+	if ($getAlsoCountry ) $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
+	
+	if ($gender==1 && $pilot['Sex']=='F') 
+		$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+
+	return $str; 
 }
 
 function getPilotPhotoRelFilename($pilotID,$icon=0) {
@@ -401,16 +409,30 @@ function getSexDropDown($sex, $disabled=false) {
 	$disabled_attr=$disabled ? ' disabled' : '';
 	if ($sex!='M' && $sex!='F') $sex='';
 	$str="<select name='Sex' $disabled_attr>\n";
-	$values=array('', 'M', 'F');
-	foreach ($values as $value) {
+	$values=array(''=>'', 'M'=>_Male_short, 'F'=>_Female_short);
+	foreach ($values as $value=>$desc) {
 		$selected=$sex==$value ? ' selected ' : '';
-		$str.="<option value='$value' $selected>$value</option>\n";
+		$str.="<option value='$value' $selected>$desc</option>\n";
 	}
 	$str.='</select>
 ';
 	return $str;
 }
 
+function getPilotSexString($sex,$icon=true){
+	global $moduleRelPath;
+
+	if ($sex=='M') $str=_Male_short;
+	else if ($sex=='F') $str=_Female_short;
+
+	if ($icon) {
+		if ($sex=='M') $str="<img src='$moduleRelPath/img/icon_male.gif' border=0 align='absmiddle'> ".$str;
+		else if ($sex=='F') $str="<img src='$moduleRelPath/img/icon_female.gif' border=0 align='absmiddle'> ".$str;
+	}
+
+	return $str;
+
+}
 /**
  * Martin Jursa 26.04.2007
  * Save email and password to user table if the respective options are set

@@ -76,3 +76,31 @@ sync.php -> special pilot sync mode
  only output pilot info + flight hash for add operations
  so to have pilots that have submitted same hash igc
 
+
+
+
+BUGS
+
+1) time/date issues (date is on next day in australia)
+2) more timezones 
+3) B record bad altitude (V instead of A)
+4) wrong names in sync (mpourazanis - proitsakis)
+5) bug of country dropdown in ie
+
+
+
+FEATURES
+1) FAI alt calculate
+2) Female icon - filter ---- OK 
+3) More scrores into DB
+4) Ruby script ?
+5) photos + description on same tab! ----- OK 
+
+
+
+
+
+
+
+
+
