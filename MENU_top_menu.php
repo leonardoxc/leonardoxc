@@ -52,6 +52,18 @@ sfHover = function() {
 			sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
 		}
 	}
+
+	var sfMenu=document.getElementById("vnav");
+	if (sfMenu) {
+		var sfEls = sfMenu.getElementsByTagName("LI");	
+		for (var i=0; i<sfEls.length; i++) {
+			sfEls[i].onmouseover=function() { this.className+=" sfhover";}
+			sfEls[i].onmouseout=function()  { this.className=this.className.replace(new RegExp(" sfhover\\b"), ""); }
+		}
+	}
+
+
+
 }
 
  // done through htc files

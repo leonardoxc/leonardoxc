@@ -677,6 +677,17 @@ define('_Male','¶νδρας');
 define('_Female','Γυνάικα');
 define('_Pilot_Statistics','Στατιστικά Πιλότων');
 
+// New on 2008/2/19
+define('_Altitude_Short','Υψος');
+define("_Vario_Short","Vario");
+define("_Time_Short","Ώρα");
+define("_Info","Πληρ/ρίες");
+define("_Control","Έλεχγος");
+
+define("_Zoom_to_flight","Ζουμ στην<br>πτήση");
+define("_Follow_Glider","Ακολούθηση<br>πιλότου");
+define("_Show_Task","Εμφάνιση<br>Τασκ");
+define("_Show_Airspace","Εμφάνιση<br>Airspace");
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

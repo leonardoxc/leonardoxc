@@ -334,12 +334,15 @@ function exitPage($exitNow=1){
    $pageTime=$pageEnd-$pageStart;
    DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
    DEBUG_END();
+
    
    require_once dirname(__FILE__)."/BLOCKS_end.php";
+
    if ($opMode==1) {   
 		CloseTable();
 		include("footer.php");
    } else if ($opMode==3 || $opMode==4) {
+
 		require_once dirname(__FILE__)."/GUI_footer.php";
    }
   

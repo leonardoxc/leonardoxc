@@ -684,5 +684,14 @@ define('_Pilot_Statistics','Pilot Statistics');
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
 define("_CATEGORY_TOTAL_DURATION","Category 'DURACELL' - Total duration of flights"); 
+define("_Altitude_Short","Alt"); 
+define("_Vario_Short","Vario"); 
+define("_Time_Short","Time"); 
+define("_Info","Info"); 
+define("_Control","Control"); 
+define("_Zoom_to_flight","Zoom to<br>flight"); 
+define("_Follow_Glider","Follow<br>Glider"); 
+define("_Show_Task","Show<br>Task"); 
+define("_Show_Airspace","Show<br>Airspace"); 
 
 ?>

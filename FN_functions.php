@@ -13,6 +13,48 @@
 
 require_once dirname(__FILE__)."/CL_auth.php"; 
 
+
+if( !function_exists('str_ireplace') ){
+ function str_ireplace($search,$replace,$subject){
+   $token = chr(1);
+   $haystack = strtolower($subject);
+   $needle = strtolower($search);
+   while (($pos=strpos($haystack,$needle))!==FALSE){
+     $subject = substr_replace($subject,$token,$pos,strlen($search));
+     $haystack = substr_replace($haystack,$token,$pos,strlen($search));
+   }
+   $subject = str_replace($token,$replace,$subject);
+   return $subject;
+ }
+} 
+
+function toLatin1($str,$enc=""){
+	if ( ! preg_match("/[^\w\.\-\@\!\#\$\%\^\&\*\?\[\]\{\}\.\+\/]/",$str) ) {
+		return $str;
+	}
+	//echo "non latin char in name<BR>";
+
+	$orgNum=substr_count($str,"?");
+
+	// check utf
+	require_once dirname(__FILE__)."/lib/utf8_to_ascii/utf8_to_ascii.php";
+	$newString=utf8_to_ascii($str);
+
+	$newNum=substr_count($newString,"?");
+	if ($newNum<=$orgNum) { // no extra ? were added, this was a valid utf string
+		return $newString;
+	}
+
+	global $langEncodings,$nativeLanguage;
+	if ($enc=="" ) $enc=$langEncodings[$nativeLanguage];
+
+	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+	$NewEncoding = new ConvertCharset;
+	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);	
+	return utf8_to_ascii($str_utf8);
+
+}
+
 function fetchURL( $url, $timeout=5) {
 	$url_parsed = parse_url(str_replace(' ','%20',$url) );
    $host = $url_parsed["host"];

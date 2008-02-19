@@ -68,7 +68,10 @@
 			} else if ($photoName ) {  // upload new
 				$flight->deletePhoto($i);  //first delete old
 				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
-					$flight->$var_name=$photoName;
+
+					$newPhotoName=toLatin1($photoName);
+
+					$flight->$var_name=$newPhotoName;
 					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
 						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
 						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);

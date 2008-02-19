@@ -45,8 +45,9 @@ function renderBlock($thisBlock) {
 	echo "<BR>";
 
 	$outRes = ob_get_contents();
-	// ob_end_clean();
-	while (@ob_end_clean()); 
+	ob_end_clean();
+	//while (@ob_end_clean()); 
+
 	return $outRes ;
 }
 ?>

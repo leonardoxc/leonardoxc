@@ -129,6 +129,12 @@
             var label = parts[3];
             var point = new GLatLng(lat,lng);
 			
+			label=label.replace("Takeoff",takeoffString);
+			label=label.replace("Landing",landingString);
+
+			html=html.replace("Takeoff",takeoffString);
+			html=html.replace("Landing",landingString);
+
             // create the marker
 			var iconName;
 			if (j==0) iconName="start";

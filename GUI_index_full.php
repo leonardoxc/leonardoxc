@@ -57,16 +57,16 @@
 	}
 
 
-$lgStr='<div id="vnav">
+$lgStr='<div class="vnav">
 <ul>
   <li><a href="javascript:jumpToLeague(0)"><b>'._WORLD_WIDE.'</b></a></li>
    
 ';
-$ctStr='<div id="vnav">
+$ctStr='<div class="vnav">
 <ul>
   <li><a href="javascript:jumpToFlights(0)"><b>'._WORLD_WIDE.'</b></a></li>
 ';
-$tkStr='<div id="vnav">
+$tkStr='<div class="vnav">
 <ul>
   <li><a href="javascript:jumpToTakeoffs(0)"><b>'._WORLD_WIDE.'</b></a></li>
 ';

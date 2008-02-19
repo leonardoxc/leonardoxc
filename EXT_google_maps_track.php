@@ -83,26 +83,26 @@
 			<a href='javascript:toogleFullScreen();'><img src='img/icon_maximize.gif' border=0></a>
 		</div>
 		<br>
- 		<fieldset class="legendBox"><legend>Info</legend><BR />
+ 		<fieldset class="legendBox"><legend><?=_Info?></legend><BR />
 			<table align="center" cellpadding="2" cellspacing="0">
-				<TR><td><div align="left">Time:</div></td></TR><tr><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Speed:</div></td></TR><tr><TD><span id='speed' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Alt:</div></td></TR><tr><TD><span id='alt' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left">Vario:</div></td></TR><tr><TD><span id='vario' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Time_Short?>:</div></td></TR><tr><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Speed?>:</div></td></TR><tr><TD><span id='speed' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td></TR><tr><TD><span id='alt' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Vario_Short?>:</div></td></TR><tr><TD><span id='vario' class='infoString'>-</span></TD></TR>
 		</table>
 		</fieldset>
 
 
-		<fieldset class="legendBox"><legend>Control</legend><BR />
+		<fieldset class="legendBox"><legend><?=_Control?></legend><BR />
 	
-		<a href='javascript:zoomToFlight()'>Zoom to<br>flight</a><hr />
+		<a href='javascript:zoomToFlight()'><?=_Zoom_to_flight?></a><hr />
 		<div id="side_bar">
 		</div> 
 		<hr>
-		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)">Follow<br>Glider<br>
-		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)">Show<br>Task<br>
+		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)"><?=_Follow_Glider?><br>
+		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)"><?=_Show_Task?><br>
 		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
-			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)">Show<br>Airspace
+			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
 		<?  } ?>
 		</fieldset>
 
@@ -141,6 +141,9 @@ var showTask=1;
 var taskLayer=[];
 
 var metricSystem=<?=$PREFS->metricSystem?>;
+
+var takeoffString="<? echo _TAKEOFF_LOCATION ?>";
+var landingString="<? echo _LANDING_LOCATION ?>";
 
 var altUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M:_FT) ; ?>";
 var speedUnits="<? echo ' '.(($PREFS->metricSystem==1)?_KM_PER_HR:_MPH) ; ?>";

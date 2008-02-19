@@ -83,10 +83,9 @@ function submitFlightToServer($serverURL, $username, $passwd, $igcURL, $igcFilen
 }
 
 function addFlightFromFile($filename,$calledFromForm,$userIDstr,
-
 		// $is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
-		$argArray=array()
-	 ) {
+		$argArray=array()	 )  {
+
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
 	global $userID;
@@ -119,6 +118,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	// now is the time to remove bad chars from the filename!
 	$newFilename=str_replace("'"," ",$filename);
+	$newFilename=toLatin1($newFilename);
+
 	if ($newFilename!=$filename) {
 		rename($filename,$newFilename);
 		$filename=$newFilename;
@@ -272,7 +273,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			
 			if ( $photoName ) {  
 				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
-					$flight->$var_name=$photoName;
+					$newPhotoName=toLatin1($photoName);
+					$flight->$var_name=$newPhotoName;
 					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
 						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
 						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);

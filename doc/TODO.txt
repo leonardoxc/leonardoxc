@@ -18,12 +18,12 @@ v. 1.6.01
 
 Suggestions by Mark Dowsett
 
-- Submit flights as user XXX for zip files (done)
+- Submit flights as user XXX for zip files ******* DONE *******
 
 Suggestions by Ryan ( euroryan@gmail.com ) 
-- Pagenation in Leagae results (done)
+- Pagenation in Leagae results ******* DONE *******
 
-- Filter to filter by pilot nationality
+- Filter to filter by pilot nationality ******* DONE *******
 
 - Also if possible a filter to view your top 6 olc scores within two chosen   dates
 
@@ -33,7 +33,7 @@ Suggestions by Ryan ( euroryan@gmail.com )
 ************** 
 FN_flight.php
 
-adjust code when submiting flight for "Nac club seasons / years"
+adjust code when submiting flight for "Nac club seasons / years" ******* DONE *******
 
 
 
@@ -64,11 +64,11 @@ JSON better encoding;
 todo
 2007/12/05
 
-Filter on nationality
-Option to xc league only on local flights
+Filter on nationality ******* DONE *******
+Option to xc league only on local flights ******* DONE *******
 
 sync
-1) correct dateadded
+1) correct dateadded ******* DONE *******
 2) info on whether to propagate flight or not 
 3) pilot sync mapping table
 
@@ -91,10 +91,10 @@ BUGS
 
 FEATURES
 1) FAI alt calculate
-2) Female icon - filter ---- OK 
+2) Female icon - filter ---- OK ******* DONE *******
 3) More scrores into DB
 4) Ruby script ?
-5) photos + description on same tab! ----- OK 
+5) photos + description on same tab! ----- OK  ******* DONE *******
 
 
 
