@@ -266,6 +266,29 @@ function getTZ($lat,$lon, $theDate) {
 	require_once dirname(__FILE__).'/FN_timezones.php';
 	// $TZone=getTZforCountry($countryCode);
 	$TZone= $Countries2timeZones[strtoupper($countryCode)];
+
+	if (strtoupper($countryCode)=='AU' ){
+		DEBUG('getTZ',128,"getTZ: Australia timezones<BR>");
+/* 
+australia
+http://www.statoids.com/tau.html
+central - west is on 129E
+
+central - east is on 
+lon > 141E for lat < -26 (S)
+lon > 138E for lat > -26 (S)
+
+east - > Australia/Sydney
+west
+central
+*/
+		if ( $lon > -129 )  $TZone='Australia/Perth'; // West
+		else if ( $lon > -138 && $lat  > -26 ) $TZone='Australia/Darwin';   // central north
+		else if ( $lon > -141 && $lat  < -26 ) $TZone='Australia/Adelaide'; // central south
+		else if ( $lat > -29) $TZone='Australia/Brisbane';  // queensland - North East
+		else $TZone='Australia/Sydney';  //  South-East
+	}
+
 	if ($TZone=='') { 
 		DEBUG('getTZ',128,"getTZ: Country $countryCode has more than one timezones.. Back to rough method<BR>");
 		return  getUTMtimeOffset($lat,$lon, $theDate );

@@ -2037,6 +2037,8 @@ $kml_file_contents=
 		$slow_points_dt=0;
 		$stillOnGround=1;
 		
+		$tmpDate=0;
+
 		foreach($lines as $line) {
 			if ($foundNewTrack) break;
 			$outputLine=$line;
@@ -2093,6 +2095,17 @@ $kml_file_contents=
 						$this->timezone= getTZ( $firstPoint->lat,$firstPoint->lon, $this->DATE );						
 						// echo 	$this->timezone;
 						$firstPoint->timezone=$this->timezone;
+					}
+
+					// take care of day change for timezones in australia/nz etc
+
+					if (  ( $firstPoint->gpsTime +  ($firstPoint->timezone*60*60) ) > 86400  && $tmpDate==0 )  {
+						// this means the UTC date in the igc file  needs to be +1 
+						$tmpParts=split("-",$this->DATE);
+						$tmpDate=mktime(0,0,0,$tmpParts[1],$tmpParts[2],$tmpParts[0]);
+						$tmpDate+=86400;
+						$this->DATE=date("Y-m-d",$tmpDate);
+
 					}
 
 					// sanity checks	

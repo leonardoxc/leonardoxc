@@ -36,7 +36,7 @@ Simple Rule  if lon < -11  (- is W )  then TZ=Atlantic/Canary
 
 
 new zeland
-http://www.statoids.com/tnz.html
+http://www.statoids.com/tnz.html  -> WILL USE Pacific/Auckland for all !!
 Canada
 http://www.statoids.com/tca.html
 Brazil
@@ -207,6 +207,8 @@ $Countries2timeZones=array(
 'TR'=>'Europe/Istanbul',
 'VA'=>'Europe/Vatican',
 
+// Asia / pacific
+'NZ'=>'Pacific/Auckland',
 
 );
 
