@@ -15,6 +15,7 @@
 	border-width: 1px 1px;
 	border-left-width:0px;
 	margin: 0 0 0.3em 0;
+z-index:-1;
 }
 #nav ul {
 	border-style: solid; 

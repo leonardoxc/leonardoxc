@@ -245,11 +245,12 @@ if (! $dontShowCountriesSelection ) {
 			if ( count($brandsListFilter) > 10 ) {
 ?>
 <ul>
+
 <table class="dropDownBox" width="200" cellpadding="1" cellspacing="0">
 <tr>
 	<td  height=80 class="main_text" valign="top"><div align="center">
 <?
-				echo "<select name='selectBrand' id='selectBrand' onchange='changeBrand(this)'>
+				echo "<select name='selectBrand' id='selectBrand' size='15' onchange='changeBrand(this)'>
 						<option value=0>"._All_Brands."</option>";
 				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
 					if ($brandIDfilter==$brandID) $sel='selected';

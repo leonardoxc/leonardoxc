@@ -102,6 +102,11 @@ $tkStr.='
 		else $is_type_sel ="";
 		$sel_cat.="<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
 	}
+
+	if ( ! $CONF_use_htc_ie_hack ) { 
+		$Ltemplate->assign_block_vars('ieHoverJS', array() );
+	}
+
 	if ($userID>0) {
 		$Ltemplate->assign_block_vars('myMenu', array(	 	
 			'LINK_MY_FLIGHTS' =>"".CONF_MODULE_ARG."&op=list_flights&pilotID=$userID&takeoffID=0&country=0&year=0&month=0",

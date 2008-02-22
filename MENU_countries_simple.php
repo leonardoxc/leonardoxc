@@ -13,7 +13,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if ( $countriesNum > 30 ) {
+if ( $countriesNum > 30 && false ) {
 	$tblWidth=300;
 
 ?>
