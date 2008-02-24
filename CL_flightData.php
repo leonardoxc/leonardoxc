@@ -2143,12 +2143,15 @@ $kml_file_contents=
         		    } else 	if (  $time_diff > $this->max_allowed_time_gap  )  {  // found time gap
 						// if we are forceBounds check to see if inside window
 						if ( ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() )  ) || !$this->forceBounds ) { 
-							// not inside time window  OR not checking go ahead				
-							$lastPoint=$prevPoint;
-							$foundNewTrack=1;
-							DEBUG("IGC",1,"[$points] $line<br>");
-							DEBUG("IGC",1,"[$points] Found a new track (Time diff of $time_diff secs)<br>");
-							continue;	
+							// if we are still on the ground  we dont care about time gap 
+							if ( !$stillOnGround ) {
+								// not inside time window  OR not checking go ahead				
+								$lastPoint=$prevPoint;
+								$foundNewTrack=1;
+								DEBUG("IGC",1,"[$points] $line<br>");
+								DEBUG("IGC",1,"[$points] Found a new track (Time diff of $time_diff secs)<br>");
+								continue;	
+							}
 						} else { // inside the window, forced to continue 
 						
 						}

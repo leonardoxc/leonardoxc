@@ -129,6 +129,7 @@ $desc=str_replace("&nbsp;"," ",$desc);
 
 			$RSS_str.="<item>
 <title>$title</title>
+<guid isPermaLink=\"false\">".$row['flightID']."</guid>
 <link>$link</link>
 <description>
 
