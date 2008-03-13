@@ -44,6 +44,8 @@
 			 $convert_to_utf_manually=0;		
 				
 			// if ( ! in_array($lang,array('greek','german','english')) ) continue;
+			// if ( ! in_array($lang,array('chinese')) ) continue;
+
 			 /*if ( in_array($lang,array('hebrew') )  ) {
 			 	$convert_to_utf_manually=1;
 			 	continue;
