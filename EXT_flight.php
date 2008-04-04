@@ -66,7 +66,7 @@
 		";
 
 		 $XML_str.="<waypoints>\n";
-		 $XML_str.=$nearestWaypoint->exportXML();
+		 $XML_str.=$nearestWaypoint->exportXML('XML');
 		 $XML_str.="\n<distance>".sprintf("%.0f",$minTakeoffDistance)."</distance>\n";
 		 $XML_str.="</waypoints>\n
 ";
