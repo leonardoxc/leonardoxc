@@ -535,7 +535,7 @@ class Server {
 		
 		if (!$rssStr) {
 			echo "<div class='error'>Cannot get data from server</div><BR>";
-			return 0;
+			return array(-1,"Cannot get data from $urlToPull");
 		}
 
 		if ($verbose) echo " <div class='ok'>DONE</div><br>";
@@ -569,7 +569,7 @@ class Server {
 			} else {
 				echo "Could not find sync.txt. <div class='error'>Aborting</div>";
 				delDir($tmpZIPfolder);			
-				return 0;
+				return array(-2,"Could not find sync.txt");
 			}
 			
 			//delDir($tmpZIPfolder);			
@@ -614,11 +614,19 @@ class Server {
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 
 			$rssStr=str_replace('\\\\"','\"',$rssStr);
+
+			// for testing emply log
+			// $rssStr='{ "log": [  ] }';
+
+			// for testing bad log
+			// $rssStr='{ "log": [   }';
+
 			$arr=json::decode($rssStr);
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			if ($verbose) flush2Browser();
 			//print_r($arr);
+
 			//exit;
 			$entriesNum=0;
 			$entriesNumOK=0;
@@ -633,6 +641,7 @@ class Server {
 					$entryResult=$this->processSyncEntry($this->ID,$logItem['item'],$verbose) ;
 					if (  $entryResult <= -128 ) { // if we got an error break the loop, the admin must solve the error
 						echo "<div class'error'>Got fatal Error, will exit</div>";
+						$errorInProccess=1;
 						break;
 					} 
 					
@@ -640,13 +649,22 @@ class Server {
 					$entriesNum++;
 				}
 			} else {
+				if ( is_array($arr['log']) ) { // no log entries to proccess
+					delDir($tmpZIPfolder);	
+					echo "No new log entries to proccess<br />";
+					return array(0,0);
+				}
+
 				if ($verbose) {
-					echo "The sync-log returned error. Error: <br />";
+					echo "Sync-log format error:<br />";
 					print_r($arr);
 					echo "<hr><pre>$rssStr</pre>";
 				} else {
-					echo "The sync-log returned error. Error: $rssStr<br>";
+					echo "Sync-log format error:<br><pre>$rssStr</pre><br>";
 				}
+				delDir($tmpZIPfolder);	
+				return array(-4,"Sync-log format error: <pre>$rssStr</pre>");
+
 			}
 
 		}
@@ -656,7 +674,12 @@ class Server {
 		}
 
 		// clean up
-		delDir($tmpZIPfolder);			
+		delDir($tmpZIPfolder);	
+		if ($errorInProccess) 
+			return array(-3,$entriesNum);
+		else
+			return array(1,$entriesNum);
+
 	}
 
 	function processSyncEntry($ID,$logItem,$verbose=1) {

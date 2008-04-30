@@ -35,6 +35,10 @@ $server->getFromDB();
 // set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
 if (($_GET['init']+0) == 1 ) {
+
+}
+
+function  initHtml () {
 ?><head>
 
 <style type="text/css">
@@ -64,7 +68,6 @@ body , p, table, td {
 <?
 }
 
-echo "<hr><strong>".date("d/m/Y H:i:s")."</strong>";
 if ($action==1) { // server info 
 	list($server_version,$server_releaseDate, $server_opMode,
 		 $server_isMasterServer, $server_admin_email,
@@ -101,7 +104,58 @@ if ($action==1) { // server info
 	$chunkSize=$_GET['chunkSize']+0;
 	if (! $chunkSize ) $chunkSize=5;
 
-	$server->sync($chunkSize,0);
+	$sParts=split("/",$server->url);
+	$serverName=$sParts[0];
+
+	// make dirs and 
+
+ 	$logDir=dirname(__FILE__).'/site/sync/'.$serverName;
+	$logFilename=$logDir.'/'.date("Y_m_d").".html";
+
+	if ( ! is_dir($logDir) ) {
+		mkdir($logDir);
+	}
+
+	$logStr='';
+	if ( ! is_file($logFilename) ) {
+		ob_start();
+		initHtml();
+		$logStr= ob_get_contents();
+		ob_end_clean();
+	}
+
+	ob_start();
+	list($result,$extra)=$server->sync($chunkSize,0);
+	$outStr = ob_get_contents();
+	ob_end_clean();
+
+
+	if ($result==0) {
+		$logStr.="<b>".date("d/m/Y H:i:s")."</b> No entries<BR>\n";
+	} else {
+		$logStr.="<hr><strong>".date("d/m/Y H:i:s")."</strong>";
+		if ($result==1) {
+			$logStr.=" <span class='ok'>OK</span> ";
+		} else if ($result<0) {
+			$logStr.=" <span class='error'>ERROR</span> ";
+			$msg=date("d/m/Y H:i:s")."\r\nServer: ". $serverName." [".$server->ID."]\r\nError code: $result\r\nError: $extra \r\n ";
+			mail($CONF_admin_email,"Problem in sync of master ".$_SERVER['SERVER_NAME'],$msg);
+
+		}
+		$logStr.=$outStr;
+	}
+
+    if (!$handle = fopen($logFilename, 'a')) {
+         echo "Cannot open file ($logFilename)";
+         exit;
+    }
+    if (fwrite($handle, $logStr) === FALSE) {
+        echo "Cannot write to file ($logFilename)";
+        exit;
+    } 
+    fclose($handle);
+
+
 } else if ($action==6) { // delete all external flights from this server
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;

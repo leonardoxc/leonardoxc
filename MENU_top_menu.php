@@ -98,7 +98,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
-				<? if ($CONF_isMasterServer) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li><? } ?>
+				<? if ($CONF_isMasterServer) { ?>
+					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
+					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">See the Sync logs</a></li>
+				<? } ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Administer the Logs</a></li>
