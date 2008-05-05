@@ -87,34 +87,7 @@ function getTakeoffList() {
 
 }
 
-function getAreasTakeoffs($areaID) {
-	global $db;
-	global $waypointsTable ,$areasTakeoffsTable;
 
-  	$query="SELECT * FROM $waypointsTable,$areasTakeoffsTable	
-		WHERE $areasTakeoffsTable.takeoffID = $waypointsTable.ID AND $areasTakeoffsTable.areaID=$areaID";
-	// echo $query;
-	$res= $db->sql_query($query);		
-    if($res <= 0){
-		echo "No takeoffs found for area ID $areaID<BR>";
-		return array( array (),array () );
-    }
-
-	$takeoffs=array();
-	$takeoffsID=array();
-	while ($row = $db->sql_fetchrow($res)) { 
- 		 $tnames[$row["takeoffID"]]=getWaypointName($row["takeoffID"],-1,1);
-	}
-	if (!empty($tnames)) {
-		asort($tnames);
-		foreach($tnames as $takeoffID=>$takeoffName) {
-				 array_push($takeoffs,$takeoffName );
-				 array_push($takeoffsID,$takeoffID );
-		}
-	}
-	return array($takeoffs,$takeoffsID);
-
-}
 
 function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	global $db;

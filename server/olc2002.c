@@ -18,7 +18,7 @@
 #define EOS '\0'
 #endif
 #define MAXPOINTS 5000
-#define RELEASE "$Revision: 1.1 $ $Date: 2006/05/14 22:59:54 $"
+#define RELEASE "$Revision: 1.2 $ $Date: 2008/05/05 14:05:22 $"
 
 /*
  *	Liste der eingelesenen Längen- und Breitengarde
@@ -255,6 +255,19 @@ static void comparedistances(int p1, int p2) {
    
       if ( freeFlightPoints > freeTrianglePoints && freeFlightPoints > FAITrianglePoints ) {
          printf("OUT BEST_FLIGHT_TYPE FREE_FLIGHT\n");
+      } else if ( freeTrianglePoints > FAITrianglePoints ) {      
+	      /*
+	      *	Die Dreiecke bestehen aus den Schenkeln a, b und c. Von dieser Strecke
+	      * wird die Distanz d zwischen Start- und Endpunkt abgezogen
+	      */
+	         printf("OUT BEST_FLIGHT_TYPE FREE_TRIANGLE\n");
+	   } else {
+          printf("OUT BEST_FLIGHT_TYPE FAI_TRIANGLE\n");
+       }
+
+		/* Print all opti results          */
+		
+         printf("OUT TYPE FREE_FLIGHT\n");
          printf("OUT FLIGHT_KM %.3lf\n",freeFlightKm );
          printf("OUT FLIGHT_POINTS %.3lf\n",freeFlightPoints );
       
@@ -269,14 +282,8 @@ static void comparedistances(int p1, int p2) {
          printf ("OUT "); printpoint(max5); printf(" %3.3lf km\n",
             ((double)distance[max4+pnts*max5])/((double)1000.0) );
       
-      } 
-      else if ( freeTrianglePoints > FAITrianglePoints ) {
-      
-      /*
-      *	Die Dreiecke bestehen aus den Schenkeln a, b und c. Von dieser Strecke
-      * wird die Distanz d zwischen Start- und Endpunkt abgezogen
-      */
-         printf("OUT BEST_FLIGHT_TYPE FREE_TRIANGLE\n");
+    
+         printf("OUT TYPE FREE_TRIANGLE\n");
          printf("OUT FLIGHT_KM %.3lf\n",freeTriangleKm );
          printf("OUT FLIGHT_POINTS %.3lf\n",freeTrianglePoints );
       
@@ -291,9 +298,9 @@ static void comparedistances(int p1, int p2) {
             ((double)distance[max3flach+pnts*max4flach])/(double)1000.0);
          printf ("OUT "); printpoint(max5flach); printf(" %3.3lf km=c\n",
             ((double)distance[max2flach+pnts*max4flach])/(double)1000.0);
-      } 
-      else { /* FAI is best */
-         printf("OUT BEST_FLIGHT_TYPE FAI_TRIANGLE\n");
+
+
+         printf("OUT TYPE FAI_TRIANGLE\n");
          printf("OUT FLIGHT_KM %.3lf\n",FAITriangleKm );
          printf("OUT FLIGHT_POINTS %.3lf\n",FAITrianglePoints );
       
@@ -308,7 +315,9 @@ static void comparedistances(int p1, int p2) {
             ((double)distance[max3fai+pnts*max4fai])/(double)1000.0);
          printf ("OUT "); printpoint(max5fai); printf(" %3.3lf km=c\n",
             ((double)distance[max2fai+pnts*max4fai])/(double)1000.0);
-      }
+      
+      
+      
    }
 
 /*

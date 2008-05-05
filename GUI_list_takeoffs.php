@@ -37,24 +37,6 @@
 
   if ($clubID)   {
    require dirname(__FILE__)."/INC_club_where_clause.php";
-   /*
-	 $areaID=$clubsList[$clubID]['areaID'];
-  	 $addManual=$clubsList[$clubID]['addManual'];
-
-	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
-				 			$clubsPilotsTable.clubID=$clubID ";
-	$extra_table_str.=",$clubsPilotsTable ";
-
-	if ($areaID) {
-		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
-							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
-	 	 $extra_table_str.=",$areasTakeoffsTable ";
-	}	
-	if ($addManual) {
-		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
-							AND $clubsFlightsTable.clubID=$clubID ";
-	 	 $extra_table_str.=",$clubsFlightsTable ";
-	}*/
   } 
   
   /* not needed -->  is included by default in this list
@@ -81,9 +63,9 @@
 	if ( ! strpos($filter_clause,$pilotsTable.".Sex")=== false )  $pilotsTableQuery=1;
 	
 
-	if ($pilotsTableQuery ){
+	if ($pilotsTableQuery  && !$pilotsTableQueryIncluded  ){
 		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	
-		$extra_table_str.=",$pilotsTable";
+		$extra_table_str.=",$pilotsTable ";
 	}	
 
  $where_clause.=$where_clause_country;

@@ -13,6 +13,8 @@
 
 if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
 
+require_once dirname(__FILE__).'/CL_area.php';
+
 $areaID=makeSane($_GET['areaID'],1);
 
 $pilotsList=array();
@@ -164,7 +166,7 @@ if ( $_REQUEST["addTakeoffForm"] ) { // form submitted
 <table>
 <?
 
-  list($takeoffs,$takeoffsID)=getAreasTakeoffs($areaID);
+  list($takeoffs,$takeoffsID)=area::getTakeoffs($areaID);
 
   $i=0;
   foreach ($takeoffs as $name) {

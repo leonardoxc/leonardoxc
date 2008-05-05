@@ -30,12 +30,13 @@
 	}
 	
 	if ( is_array($clubsList[$clubID]['pilotNationality'])  ) {
-		$where_clause.=" AND $flightsTable.userID=$pilotsTable.pilotID ";
+	    $where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	
+
 		foreach ($clubsList[$clubID]['pilotNationality'] as $pCountryCode ) {
 			$where_clause.=" AND $pilotsTable.countryCode='$pCountryCode ' ";
 		}
 		$extra_table_str.=",$pilotsTable ";
-		$pilotTableQuery=1;
+		$pilotsTableQueryIncluded=1;
 	}
 	
 	if ( is_array($clubsList[$clubID]['gliderCat'])  ) {
@@ -48,9 +49,18 @@
 	
 	
 	if ($areaID) {
-		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
-							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
-	 	 $extra_table_str.=",$areasTakeoffsTable ";
+		$clubArea=new area($areaID);
+		$clubArea->getFromDB();
+
+		if ($clubArea->areaType==0) {
+			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+			 $extra_table_str.=",$areasTakeoffsTable ";
+		} else if ($clubArea->areaType==1) { // bounding box
+			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
+			 $extra_table_str.=",$areasTakeoffsTable ";
+		}
 	}
 
 	

@@ -66,24 +66,6 @@
 
   if ($clubID)   {
 	 require dirname(__FILE__)."/INC_club_where_clause.php";
-/*	 $areaID=$clubsList[$clubID]['areaID'];
-  	 $addManual=$clubsList[$clubID]['addManual'];
-
-	 $where_clause.=" AND 	$flightsTable.userID=$clubsPilotsTable.pilotID AND 
-				 			$clubsPilotsTable.clubID=$clubID ";
-	$extra_table_str.=",$clubsPilotsTable ";
-
-	if ($areaID) {
-		 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
-							AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
-	 	 $extra_table_str.=",$areasTakeoffsTable ";
-	}	
-	if ($addManual) {
-		 $where_clause.= " 	AND $clubsFlightsTable.flightID=$flightsTable.ID 
-							AND $clubsFlightsTable.clubID=$clubID ";
-	 	 $extra_table_str.=",$clubsFlightsTable ";
-	}
-	*/
   } 
   
   if ($countryCodeQuery || $country)   {

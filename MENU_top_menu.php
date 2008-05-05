@@ -107,6 +107,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Administer the Logs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_areas">Administer the Areas</a></li>
 				<li class='li_space long'></li>
 				<?  if ($DBGlvl==0)  { ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=255">Activate DEBUG</a></li>

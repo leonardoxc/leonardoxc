@@ -118,6 +118,7 @@
 	} 
 	
 	$filter_clause=$_SESSION["filter_clause"];
+	//echo $filter_clause;
 	if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
 	else {
 			if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $countryCodeQuery=1;
@@ -145,20 +146,20 @@
 	 $extra_table_str.=",".$waypointsTable;
 	} else $extra_table_str.="";
 
-	 if ($pilotsTableQuery2 ){
-		$where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	 
+	 if ($pilotsTableQuery2 && !$pilotsTableQueryIncluded){
+		$where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	 
 		$extra_table_str2.=",$pilotsTable";		
 	}
 
-	if ($pilotsTableQuery && !$pilotsTableQuery2){
-		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	
+	if ($pilotsTableQuery && !$pilotsTableQuery2 && !$pilotsTableQueryIncluded){
+		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	
 		$extra_table_str.=",$pilotsTable";
 	}	 
 	 		
 	$where_clause.=$where_clause_country;
 	
 	$query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
-	 // echo "#count query#$query<BR>";
+	// echo "#count query#$query<BR>";
 
 	$res= $db->sql_query($query);
 	if($res <= 0){   

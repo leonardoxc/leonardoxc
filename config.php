@@ -395,6 +395,30 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF['photos']['mid']['max_width']=600;
   $CONF['photos']['mid']['max_height']=600;
 
+  // the socring co-efficients 
+  $CONF['scoring']['default_set']=1;
+  $CONF['scoring']['sets']=array(
+		1=>array('name'=>'XC scoring',
+				 'code'=>'OLC',
+				 'types'=>array('FREE_FLIGHT'=>1.5,
+								'FREE_TRIANGLE'=>1.75,
+								'FAI_TRIANGLE'=>2,
+						)
+			),
+
+/*
+Triangle conform to the FAI definition 
+(the shortest leg of the triangle must be at least 28% of the total triangle)
+*/
+		2=>array('name'=>'FAI scoring',
+				 'code'=>'FAI',
+				 'types'=>array('FREE_FLIGHT'=>1,
+								'FREE_TRIANGLE'=>1.2,
+								'FAI_TRIANGLE'=>1.4,
+						)
+			),
+	);
+
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

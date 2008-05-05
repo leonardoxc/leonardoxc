@@ -11,7 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+
+require_once dirname(__FILE__).'/CL_area.php';
   
 $areaID=makeSane($_GET['areaID'],1);
 
@@ -77,7 +79,7 @@ if ( $_REQUEST["addTakeoffForm"] ) { // form submitted
 <table>
 <?
 
-  list($takeoffs,$takeoffsID)=getAreasTakeoffs($areaID);
+  list($takeoffs,$takeoffsID)=area::getTakeoffs($areaID);
 
   $i=0;
   foreach ($takeoffs as $name) {

@@ -2447,7 +2447,7 @@ $kml_file_contents=
 				$lon= str_replace(" ","0",trim($line_parts[2]));
 				$var_value =$lat." ".$lon;
 				$turnpointNum++;
-			};
+			}
 			
 			if (! $manualScore) {
 				$this->$var_name=trim($var_value);				

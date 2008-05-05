@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_tail_leonardo.php,v 1.3 2007/07/11 15:10:51 manolis Exp $
+ *   $Id: page_tail_leonardo.php,v 1.4 2008/05/05 14:05:22 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -27,7 +27,8 @@ if ( !defined('IN_PHPBB') )
 
 $Ltemplate->set_filenames(array('overall_footer' => 'tpl/overall_footer.html'));
 $Ltemplate->assign_vars(array(
-	'SIDE_BLOCKS_HTML' => $side_blocks_html
+	'SIDE_BLOCKS_HTML' => $side_blocks_html,
+	'CUSTOM_FOOTER_CODE'=> 	$CONF['footer']['custom_code'],
 ) );
 $Ltemplate->pparse('overall_footer');
 
