@@ -538,7 +538,7 @@ function removeClubFlight(clubID,flightID) {
 
 		// second line 
 		echo "<BR>";	
-		if (1) {
+		if (0) {
 			$photos_exist=0;
 			for($photo_i=1;$photo_i<$CONF_photosPerFlight;$photo_i++) {
 				if ($row["photo".$photo_i."Filename"]) { 

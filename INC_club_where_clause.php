@@ -49,17 +49,19 @@
 	
 	
 	if ($areaID) {
+		require_once dirname(__FILE__)."/CL_area.php";
 		$clubArea=new area($areaID);
 		$clubArea->getFromDB();
 
-		if ($clubArea->areaType==0) {
-			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+		if ($clubArea->areaType==0 && 0) {
+			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$areaID 
 								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
 			 $extra_table_str.=",$areasTakeoffsTable ";
 		} else if ($clubArea->areaType==1) { // bounding box
-			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
+			/* $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
 								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
 			 $extra_table_str.=",$areasTakeoffsTable ";
+			*/
 		}
 	}
 

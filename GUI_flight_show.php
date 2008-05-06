@@ -541,35 +541,47 @@ if (auth::isAdmin($userID) ) {
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
-$images="";
-for ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
-	$photoFilename="photo".$photoNum."Filename";
-	if ($flight->$photoFilename) {
-		//$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-		//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+if ($flight->hasPhotos) {
+	require_once dirname(__FILE__)."/CL_flightPhotos.php";
 
-		$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
-		$imgBigRel=$flight->getPhotoRelPath($photoNum);
+	$flightPhotos=new flightPhotos($flight->flightID);
+	$flightPhotos->getFromDB();
 
-		$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
-		$imgBig=$flight->getPhotoFilename($photoNum);
-
-		if (file_exists($imgBig) ) {
-			list($width, $height, $type, $attr) = getimagesize($imgBig);
-			list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
-			$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
-		} else 	if (file_exists($imgIcon) ) {
-			list($width, $height, $type, $attr) = getimagesize($imgIcon);
-			list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
-			$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
-		}else {
-			$imgStr="&nbsp;";
-		}
-
-		$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-				"' target=_blank>$imgStr</a>";
-
-	}		
+print_r($flightPhotos->photos);
+exit;
+	$images="";
+	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
+	// ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
+		$photoFilename="photo".$photoNum."Filename";
+	//	if ($flight->$photoFilename) {
+		if ($photoInfo['name']) {
+			echo $photoInfo['name'];
+			//$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+			//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+	
+			$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
+			$imgBigRel=$flight->getPhotoRelPath($photoNum);
+	
+			$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
+			$imgBig=$flight->getPhotoFilename($photoNum);
+	
+			if (file_exists($imgBig) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgBig);
+				list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+			} else 	if (file_exists($imgIcon) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgIcon);
+				list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+			}else {
+				$imgStr="&nbsp;";
+			}
+	
+			$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+					"' target=_blank>$imgStr</a>";
+	
+		}		
+	}
 }
 
 // add support for google maps

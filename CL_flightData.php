@@ -2758,6 +2758,8 @@ $kml_file_contents=
 		$this->gliderBrandID =$row["gliderBrandID"];  
 		$this->linkURL=$row["linkURL"];
 
+		$this->hasPhotos=$row["hasPhotos"];
+
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			$this->$var_name=$row[$var_name];

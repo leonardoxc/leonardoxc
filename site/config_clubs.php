@@ -19,7 +19,7 @@
 	3=>array(	"desc"=>"Greece 2006 XC league",
 				"id"=>3,
 				"lang"=>"greek",
-				"areaID"=>0,
+				"areaID"=>1,
 				"addManual"=>0,
 				"adminID"=>76,
 

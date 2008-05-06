@@ -233,3 +233,28 @@ ALTER TABLE `leonardo_areas` CHANGE `areaID` `areaID` MEDIUMINT( 8 ) UNSIGNED NO
 ALTER TABLE `leonardo_areas` CHANGE `areaID` `ID` MEDIUMINT( 8 ) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `leonardo_areas` CHANGE `ID` `ID` MEDIUMINT( 8 ) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
+
+CREATE TABLE `leonardo_flights_score` (
+`ID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`flightID` BIGINT UNSIGNED NOT NULL ,
+`method` TINYINT UNSIGNED NOT NULL ,
+`type` TINYINT UNSIGNED NOT NULL ,
+`isBest` BOOL NOT NULL ,
+`distance` FLOAT NOT NULL ,
+`score` FLOAT NOT NULL ,
+`turnpoint1` VARCHAR( 50 ) NOT NULL ,
+`turnpoint2` VARCHAR( 50 ) NOT NULL ,
+`turnpoint3` VARCHAR( 50 ) NOT NULL ,
+`turnpoint4` VARCHAR( 50 ) NOT NULL ,
+`turnpoint5` VARCHAR( 50 ) NOT NULL ,
+`turnpoint6` VARCHAR( 50 ) NOT NULL ,
+`turnpoint7` VARCHAR( 50 ) NOT NULL ,
+PRIMARY KEY ( `ID` ) ,
+INDEX ( `flightID` , `method` , `type` , `isBest` )
+) TYPE = MYISAM ;
+
+
+ALTER TABLE `leonardo_photos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+ALTER TABLE `leonardo_photos` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+

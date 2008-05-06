@@ -390,12 +390,18 @@ echo "</ul><br><hr>";
 		echo "<BR><br><br>DONE !!! processed $i flights<BR>";
 
 	} else if ($admin_op=="cleanPhotosTable") {
-		$query="DELETE from $photosTable ";
-		$res= $db->sql_query($query);
-		
+		$query="TRUNCATE TABLE $photosTable ";
+		$res= $db->sql_query($query);		
 		if(!$res){
 			echo "Problem in empting $photosTable : $query<BR>";
 		}
+
+		$query="UPDATE $flightsTable SET hasPhotos=0 ";
+		$res= $db->sql_query($query);		
+		if(!$res){
+			echo "Problem in setting hasPhotos=0: $query<BR>";
+		}
+		echo "Cleared photos table<BR>";
 		clearBatchBit();
 	} else if ($admin_op=="makePhotosNew") {
 
@@ -403,6 +409,7 @@ echo "</ul><br><hr>";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
+			 $photoNumTotal=0;
 			 while ($row = mysql_fetch_assoc($res)) { 
 				$hasPhotos=0;
 				$photos=array();
@@ -420,7 +427,7 @@ echo "</ul><br><hr>";
 					$query1="INSERT INTO $photosTable  (flightID,path,name) values (".$row['ID'].",'$path','$photo') ";
 					$res1= $db->sql_query($query1);					
 					if (!$res1) {
-						echo "Problem in instering photo : $query1<BR>";
+						echo "Problem in inserting photo : $query1<BR>";
 					}
 					$photoNumTotal++;
 				}
