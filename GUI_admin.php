@@ -422,7 +422,15 @@ echo "</ul><br><hr>";
 				}
 
 				$year=substr($row['DATE'],0,4);
-				$path=$row['ID']."/photos/$year";
+		
+				if ($row['userServerID']) $path=$row['userServerID'].'_';
+				else $path='';
+				
+				$path.=$row['userID']."/photos/$year";
+
+				$path=prep_for_DB($path);
+				$name=prep_for_DB($name);
+				
 				foreach($photos as $photo) {
 					$query1="INSERT INTO $photosTable  (flightID,path,name) values (".$row['ID'].",'$path','$photo') ";
 					$res1= $db->sql_query($query1);					

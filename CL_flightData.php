@@ -12,6 +12,7 @@
 /************************************************************************/
 
 require_once dirname(__FILE__)."/CL_gpsPoint.php";
+require_once dirname(__FILE__)."/CL_flightPhotos.php";
 require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/FN_kml.php";
 require_once dirname(__FILE__)."/FN_pilot.php";
@@ -2922,11 +2923,18 @@ $kml_file_contents=
 				@unlink($this->getChartFilename("takeoff_distance",$metric_system,$raw) ); 		
 			}
 		}
+		
+		if ($this->hasPhotos) {
+			$flightPhotos=new flightPhotos($this->flightID);
+			$flightPhotos->deleteAllPhotos(0);
+		}
 
+		/*
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$this->deletePhoto($i);
 		}
-
+		*/
+		
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
@@ -2986,6 +2994,7 @@ $kml_file_contents=
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
 		timezone,
+		hasPhotos,
 		MAX_SPEED ,
 		MEAN_SPEED ,
 		MAX_ALT ,
@@ -3023,6 +3032,7 @@ $kml_file_contents=
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',
 		$this->timezone,
+		$this->hasPhotos,
 		$this->MAX_SPEED ,
 		$this->MEAN_SPEED ,
 		$this->MAX_ALT ,

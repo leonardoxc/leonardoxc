@@ -476,29 +476,50 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </div>
 	  </fieldset></td>
     </tr>
-	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+	<?	
+		$photoNum=0;
+		if ($flight->hasPhotos) {
+			require_once dirname(__FILE__)."/CL_flightPhotos.php";
+			$flightPhotos=new flightPhotos($flight->flightID);
+			$flightPhotos->getFromDB();
+
+		?>
+		<tr>
+	      <td valign="top">
+		  		<table align="center">
+		  			<tr>				 
+    	  
+	  <?
+			foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {	
+				echo '<td valign="top" align=center>'._PHOTO.' #'.($i+1).
+						'<BR />'._DELETE_PHOTO.
+						'<input type="checkbox" name="photo'.$photoNum.'Delete" value="1">'.
+						'<BR><img src="'.$flightPhotos->getPhotoRelPath($photoNum).'.icon.jpg" border=0>'.
+						'</td>';
+				if ( $photoNum % 4 ==0 && $photoNum>0 ) echo "</tr><tr>";
+			}
+		?>
+					</tr>
+				</table>
+		 </td>
+		</tr>
+		<?	
+			
+	 	}
+		
+		for($i=$photoNum;$i<$CONF_photosPerFlight;$i++) {
 		$var_name="photo".$i."Filename";
+		
+		 
 	?>
     <tr>
-      <td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo $i?></div></td>
-      <td>
-	  
-	  		<? if ( $flight->$var_name) { ?>
-			<table width="100%"  border="0" cellspacing="0" cellpadding="2" class="main_text">
-				<tr>
-				  <td width="120"><img src="<? echo $flight->getPhotoRelPath($i).".icon.jpg"; ?>" border=0></td>
-				  <td ><div align="center">
-				    <? echo _DELETE_PHOTO ?>
-				      <input type="checkbox" name="photo<? echo $i?>Delete" value="1">
-				    	 <br><br><strong><? echo _OR ?> </strong><br><br> <? echo _NEW_PHOTO ?>
-					  <input name="photo<? echo $i?>Filename" type="file" size="30">					
-				  </div></td>
-				</tr>
-	    </table> <? } else {?>     
-        <input name="photo<? echo $i?>Filename" type="file" size="30">
-		<? } ?>      </td>
+		<td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo ($i+1)?></div></td>
+		<td>  
+        	<input name="photo<? echo $i?>Filename" type="file" size="30">
+		</td>
     </tr>
 	<? } // end for ?>
+	
 	 <tr>
       <td><div align="right" class="style2"></div></td>
       <td>  <div align="center" class="style222">

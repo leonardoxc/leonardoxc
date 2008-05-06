@@ -547,24 +547,32 @@ if ($flight->hasPhotos) {
 	$flightPhotos=new flightPhotos($flight->flightID);
 	$flightPhotos->getFromDB();
 
-print_r($flightPhotos->photos);
-exit;
+
 	$images="";
 	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 	// ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 		$photoFilename="photo".$photoNum."Filename";
 	//	if ($flight->$photoFilename) {
 		if ($photoInfo['name']) {
-			echo $photoInfo['name'];
+			
 			//$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
 			//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
+			if (0) {
+				$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgBigRel=$flight->getPhotoRelPath($photoNum);
+		
+				$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
+				$imgBig=$flight->getPhotoFilename($photoNum);
+			}	else {		
+			
+			$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+			$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
 	
-			$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
-			$imgBigRel=$flight->getPhotoRelPath($photoNum);
-	
-			$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
-			$imgBig=$flight->getPhotoFilename($photoNum);
-	
+			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
+			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
+			
+			}
+			
 			if (file_exists($imgBig) ) {
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
 				list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
@@ -577,8 +585,7 @@ exit;
 				$imgStr="&nbsp;";
 			}
 	
-			$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-					"' target=_blank>$imgStr</a>";
+			$images.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
 	
 		}		
 	}
