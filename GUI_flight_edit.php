@@ -58,31 +58,48 @@
 		if ($_REQUEST['is_private']=="1")  $flight->private=1; 
 		else $flight->private=0;
 
-		
-		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+		require_once dirname(__FILE__)."/CL_flightPhotos.php";
+		$flightPhotos=new flightPhotos($flight->flightID);
+		$flightPhotos->getFromDB();
+
+		for($i=0;$i<$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			$photoName=$_FILES[$var_name]['name'];
 			$photoFilename=$_FILES[$var_name]['tmp_name'];
 			if ($_REQUEST["photo".$i."Delete"]=="1") {		// DELETE photo
-				$flight->deletePhoto($i);
+				// echo "deleting photo $i<HR>";
+				$flightPhotos->deletePhoto($i);
+				$flight->hasPhotos--;
 			} else if ($photoName ) {  // upload new
-				$flight->deletePhoto($i);  //first delete old
+				// $flight->deletePhoto($i);  //first delete old
 				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
 
 					$newPhotoName=toLatin1($photoName);
 
-					$flight->$var_name=$newPhotoName;
-					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
-						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+					//$flight->$var_name=$newPhotoName;
+
+					$phNum=$flightPhotos->addPhoto($i,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
+					$flight->hasPhotos++;
+
+					$photoAbsPath=$flightPhotos->getPhotoAbsPath($i);
+
+					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
+						resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
+						resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
 					} else { //upload not successfull
-						$flight->$var_name="";
+						$flightPhotos->deletePhoto($i);
+						$flight->hasPhotos--;
+						//$flight->$var_name="";
 					}
 				}
 			}
 		} 
+
+		$flight->putFlightToDB(1);
+
+		// $flightPhotos->putToDB();
 		 
-		 $flight->putFlightToDB(1);
+		 
 	   } // end else
 		 open_inner_table(_CHANGE_FLIGHT_DATA,650);
 
@@ -491,13 +508,14 @@ require_once dirname(__FILE__).'/FN_editor.php';
     	  
 	  <?
 			foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {	
-				echo '<td valign="top" align=center>'._PHOTO.' #'.($i+1).
+				echo '<td valign="top" align=center>'._PHOTO.' #'.($photoNum+1).
 						'<BR />'._DELETE_PHOTO.
 						'<input type="checkbox" name="photo'.$photoNum.'Delete" value="1">'.
 						'<BR><img src="'.$flightPhotos->getPhotoRelPath($photoNum).'.icon.jpg" border=0>'.
 						'</td>';
-				if ( $photoNum % 4 ==0 && $photoNum>0 ) echo "</tr><tr>";
+				if ( ( $photoNum +1) % 5 == 0  ) echo "</tr><tr>";
 			}
+			$photoNum= $flightPhotos->photosNum;
 		?>
 					</tr>
 				</table>
@@ -508,17 +526,17 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	 	}
 		
 		for($i=$photoNum;$i<$CONF_photosPerFlight;$i++) {
-		$var_name="photo".$i."Filename";
-		
-		 
-	?>
-    <tr>
-		<td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo ($i+1)?></div></td>
-		<td>  
-        	<input name="photo<? echo $i?>Filename" type="file" size="30">
-		</td>
-    </tr>
-	<? } // end for ?>
+			$var_name="photo".$i."Filename";
+			?>
+			<tr>
+				<td><div align="right" class="style2"><? echo _PHOTO ?> #<? echo ($i+1)?></div></td>
+				<td>  
+					<input name="photo<? echo $i?>Filename" type="file" size="30">
+				</td>
+			</tr>
+			<? 
+		} // end for 
+		?>
 	
 	 <tr>
       <td><div align="right" class="style2"></div></td>

@@ -541,6 +541,11 @@ $resStr='{
 	}
 
 
+	function getPilotID() {
+		if ($this->userServerID) $extra_prefix=$this->userServerID.'_';
+		else $extra_prefix='';
+		return $extra_prefix.$this->userID;
+	}
 	// ---------------------------------
 	// Relative (web) paths
 	// ---------------------------------

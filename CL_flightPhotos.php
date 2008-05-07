@@ -44,6 +44,40 @@ class flightPhotos {
 		return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];		
 	}
 
+	function addPhoto($num,$path,$name,$description,$updateFlightsTable=1) {
+		global $db,$photosTable,$flightsTable;
+		// $this->photos[$this->photosNum]['ID']=$row['ID'];
+		$this->photos[$num]['path']=$path;
+		$this->photos[$num]['name']=$name;
+		$this->photos[$num]['description']=$description;
+		$this->photosNum++;	
+
+		$query="INSERT INTO $photosTable  (flightID,path,name,description) VALUES (".
+			$this->flightID.",'".prep_for_DB($path)."','".
+								 prep_for_DB($name)."','".
+								 prep_for_DB($description)."' ) ";
+	
+		// echo $query;
+		$res= $db->sql_query($query);
+		if($res <= 0){
+		  echo "Error putting photo for flight ".$this->flightID." to DB: $query<BR>";
+		  return 0;
+		}		
+
+		$newID=$db->sql_nextid();
+		$this->photos[$num]['ID']=$newID;
+
+		if ($updateFlightsTable) {
+			$query="UPDATE $flightsTable SET hasPhotos=".$this->photosNum." WHERE ID=".$this->flightID;
+			$res= $db->sql_query($query );
+			if($res <= 0){   
+				 echo "Error updating hasPhotos for flight ".$this->flightID." : $query<BR>";
+			}
+		}	
+
+		return $newID;	
+	}
+
 	function deletePhoto($photoNum,$updateFlightsTable=1) {
 		if (!$this->gotValues) $this->getFromDB();
 		
@@ -51,27 +85,30 @@ class flightPhotos {
 		$imgNormal=$this->getPhotoAbsPath($photoNum);
 		$imgIcon=$imgNormal.'.icon.jpg';
 		@unlink($imgNormal); 
-		@unlink($imgNormal); 			
+		@unlink($imgIcon); 			
 	
 		
 		global $db,$photosTable,$flightsTable;
 		
 		if ($updateFlightsTable) {
-			$res= $db->sql_query("UPDATE $flightsTable SET hasPhotos=hasPhotos-1 WHERE flightID=".$this->flightID );
+			$res= $db->sql_query("UPDATE $flightsTable SET hasPhotos=hasPhotos-1 WHERE ID=".$this->flightID );
 			if($res <= 0){   
 				 echo "Error updating hasPhotos for flight".$this->flightID."<BR>";
 			}
 		}		
 		
+		// echo "###".$this->photos[$photoNum]['ID'];
 		$res= $db->sql_query("DELETE FROM  $photosTable WHERE ID=".$this->photos[$photoNum]['ID'] );
   		if($res <= 0){   
 			 echo "Error deleting photo $photoNum for flight".$this->flightID."<BR>";
 	    }
-
+		unset($this->photos[$photoNum]);
 
 	}
 
 	function deleteAllPhotos($updateFlightsTable=1) {
+		global $db,$photosTable,$flightsTable;
+
 		if (!$this->gotValues) $this->getFromDB();
 		
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
@@ -80,13 +117,12 @@ class flightPhotos {
 			@unlink($imgNormal); 
 			@unlink($imgNormal); 			
 		}
-		
-		global $db,$photosTable,$flightsTable;
+				
 		
 		if ($updateFlightsTable) {
-			$res= $db->sql_query("UPDATE $flightsTable SET hasPhotos=0 WHERE flightID=".$this->flightID );
+			$res= $db->sql_query("UPDATE $flightsTable SET hasPhotos=0 WHERE ID=".$this->flightID );
 			if($res <= 0){   
-				 echo "Error updating hasPhotos for flight".$this->flightID."<BR>";
+				 echo "Error updating hasPhotos for flight ".$this->flightID."<BR>";
 			}
 		}		
 		
@@ -100,7 +136,7 @@ class flightPhotos {
 	
 	function getFromDB() {
 		global $db,$photosTable;
-		$res= $db->sql_query("SELECT * FROM $photosTable WHERE flightID=".$this->flightID );
+		$res= $db->sql_query("SELECT * FROM $photosTable WHERE flightID=".$this->flightID ." ORDER BY ID ASC");
   		if($res <= 0){   
 			 echo "Error getting photos from DB for flight".$this->flightID."<BR>";
 		     return 0;
@@ -112,6 +148,7 @@ class flightPhotos {
 			$this->photos[$this->photosNum]['path']=$row['path'];
 			$this->photos[$this->photosNum]['name']=$row['name'];
 			$this->photos[$this->photosNum]['description']=$row['description'];
+			//print_r($this->photos[$this->photosNum]);
 			$this->photosNum++;			
 		}
 
@@ -126,13 +163,13 @@ class flightPhotos {
 		
 
 		
-		$res= $db->sql_query("DELETE FROM  $photosTable WHERE flightID=".$this->flightID );
+		$res= $db->sql_query("DELETE FROM  $photosTable WHERE ID=".$this->flightID );
   		if($res <= 0){   
-			 echo "Error deleting photos for flight".$this->flightID."<BR>";
+			 echo "Error deleting photos for flight ".$this->flightID."<BR>";
 	    }
 		
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
-			$query="INSERT INTO $photosTable  ('flightID','path','name','description') VALUES (".
+			$query="INSERT INTO $photosTable  (flightID,path,name,description) VALUES (".
 				$this->flightID.",'".prep_for_DB($photoInfo['path'])."','".
 									 prep_for_DB($photoInfo['name'])."','".
 									 prep_for_DB($photoInfo['description'])."' ) ";
@@ -140,15 +177,16 @@ class flightPhotos {
 			// echo $query;
 			$res= $db->sql_query($query);
 			if($res <= 0){
-			  echo "Error putting photo for flight ".$this->flightID." to DB<BR>";
+			  echo "Error putting photo for flight ".$this->flightID." to DB: $query<BR>";
 			  return 0;
 			}		
 		}
 		
 		if ($updateFlightsTable) {
-			$res= $db->sql_query("UPDATE $flightsTable SET hasPhotos=".$this->photosNum." WHERE flightID=".$this->flightID );
+			$query="UPDATE $flightsTable SET hasPhotos=".$this->photosNum." WHERE ID=".$this->flightID;
+			$res= $db->sql_query($query );
 			if($res <= 0){   
-				 echo "Error updating hasPhotos for flight".$this->flightID."<BR>";
+				 echo "Error updating hasPhotos for flight ".$this->flightID." : $query<BR>";
 			}
 		}	
 		
