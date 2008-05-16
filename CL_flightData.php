@@ -297,7 +297,7 @@ var $maxPointNum=1000;
 
 <location>
 	<firstLat>$firstPoint->lat</firstLat>
-	<firstLon>".-$firstPoint->lon."</firstLon>
+	<firstLon>".$firstPoint->lon()."</firstLon>
 	<takeoffID>$this->takeoffID</takeoffID>
 	<serverID>$CONF_server_id</serverID>
 	<takeoffVinicity>$this->takeoffVinicity</takeoffVinicity>
@@ -307,7 +307,7 @@ var $maxPointNum=1000;
 	<takeoffLocation>$takeoff->location</takeoffLocation>
 	<takeoffLocationInt>$takeoff->intlocation</takeoffLocationInt>
 	<takeoffLat>$takeoff->lat</takeoffLat>
-	<takeoffLon>".-$takeoff->lon."</takeoffLon>
+	<takeoffLon>".$takeoff->lon()."</takeoffLon>
 </location>
 
 <stats>
@@ -368,12 +368,12 @@ $resStr='{
 	
 	"bounds": {
 		"forceBounds": '.$this->forceBounds.',
-		"firstLat": '.($firstPoint->lat()+0).',
-		"firstLon": '.($firstPoint->lon()+0).',
+		"firstLat": '.$firstPoint->lat().',
+		"firstLon": '.$firstPoint->lon().',
 		"firstTM": '.($firstPoint->gpsTime+0).',
-		"lastLat": '.($lastPoint->lat()+0).',
-		"lastLon": '.($lastPoint->lon()+0).',
-		"lastTM": '.($lastPoint->gpsTime+0).'
+		"lastLat": '.$lastPoint->lat().',
+		"lastLon": '.$lastPoint->lon().',
+		"lastTM": '.$lastPoint->gpsTime.'
 	},
 		
 	"pilot": {

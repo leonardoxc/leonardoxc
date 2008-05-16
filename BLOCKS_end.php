@@ -39,9 +39,9 @@ function renderBlock($thisBlock) {
 
 	ob_start();
 
-	open_box($blockTitle,$blockwidth,"icon_help.png");
+	if (!$blockHideBox)	open_box($blockTitle,$blockwidth,"icon_help.png");
 	require_once dirname(__FILE__)."/blocks/$thisBlock/index.php";
-	close_box();
+	if (!$blockHideBox)	close_box();
 	echo "<BR>";
 
 	$outRes = ob_get_contents();
