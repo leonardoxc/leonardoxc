@@ -98,9 +98,12 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
+	echo "<hr>";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table (NOT USED !!!)</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table (NOT USED !!!)</a> ";
 	echo "<hr>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateStartPoints'>Update Takeoff coordinates to new format</a> ";
+	echo "<hr>";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> ";
 echo "</ul>";
 
@@ -316,6 +319,32 @@ echo "</ul><br><hr>";
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
+	} else if ($admin_op=="updateStartPoints") {
+		global $flightsAbsPath;
+		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
+		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 ";
+		$res= $db->sql_query($query);
+		
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+					$files_total++;
+
+					$firstPoint=new gpsPoint($row['FIRST_POINT'],$row['timezone']);
+
+					$firstTime=$firstPoint->gpsTime+0;
+
+					$query2="UPDATE $flightsTable SET firstLat=".$firstPoint->lat().",
+							firstLon=".$firstPoint->lon().", firstPointTM=".$firstTime.", batchOpProcessed=1 WHERE ID=".$row['ID']." ";
+					$res2= $db->sql_query($query2);
+					
+					if(!$res2){
+						echo "Problem in query:$query2<BR>";
+						exit;
+					}
+			 }
+		}
+		echo "<BR><br><br>DONE !!!<BR>";
+		echo "<BR><br>Flights total: $files_total<BR>";
 	} else if ($admin_op=="makehash") {
 		global $flightsAbsPath;
 		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";

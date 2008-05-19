@@ -57,7 +57,7 @@ class dates {
 			}	
 			
 			if 	($seasonValid) {
-				$where_clause=" AND DATE >='$thisSeasonStart' AND DATE < '$thisSeasonEnd' "; 
+				$where_clause=" AND DATE >='$thisSeasonStart' AND DATE <= '$thisSeasonEnd' "; 
 				$legend.=" :: ".SEASON." ".$season;
 			}	
 			
@@ -68,13 +68,18 @@ class dates {
 			return $where_clause;
 	} // end of makeWhereClause
 	
-	function getCurrentSeason($rankID) {
-		global $ranksList,$CONF;
+	function getCurrentSeason($rankID,$clubID=0) {
+		global $ranksList,$clubsList,$CONF;
 		$thisSeason=0;
 
 		if ($rankID) {
 			if ( $ranksList[$rankID]['useCustomSeasons'] ) 
 				$conf=&$ranksList[$rankID]['seasons'];			
+			else 
+				$conf=&$CONF['seasons'];
+		} else if ($clubID) {
+			if ( $clubsList[$clubID]['useCustomSeasons'] ) 
+				$conf=&$clubsList[$clubID]['seasons'];			
 			else 
 				$conf=&$CONF['seasons'];
 		} else {

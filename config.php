@@ -225,12 +225,12 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $statsTable		=  $CONF_tables_prefix."_stats";
  $airspaceTable		=  $CONF_tables_prefix."_airspace";
 
-
  $areasTable	=		$CONF_tables_prefix."_areas";
  $areasTakeoffsTable=	$CONF_tables_prefix."_areas_takeoffs";
  $photosTable  	=		$CONF_tables_prefix."_photos";
  $remotePilotsTable =	$CONF_tables_prefix."_remote_pilots";
- 
+ $scoresTable		=  $CONF_tables_prefix."_flights_score";
+
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
  $minMrSidResolution=28.5; // m/pixel

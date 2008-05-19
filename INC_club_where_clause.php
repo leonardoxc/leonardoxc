@@ -58,14 +58,16 @@
 								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
 			 $extra_table_str.=",$areasTakeoffsTable ";
 		} else if ($clubArea->areaType==1) { // bounding box
-			/* $where_clause.= " 	AND $areasTakeoffsTable.areaID=$clubsTable.areaID 
-								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
-			 $extra_table_str.=",$areasTakeoffsTable ";
-			*/
+			 $where_clause.= " 	AND firstLat >=".$clubArea->min_lat."
+								AND firstLat <=".$clubArea->max_lat." 
+								AND firstLon >=".$clubArea->min_lon."
+								AND firstLon <=".$clubArea->max_lon."
+								";
+
 		}
 	}
-
 	
+
 	if ($addManual) {
 		 $clubFlights=getClubFlightsID($clubID);
 
@@ -75,6 +77,23 @@
 	 	 $extra_table_str.=",$clubsFlightsTable ";
 		}
 	}
+
+
+  // SEASON MOD
+  // we do a little trick here!
+  // if the rank has custom seasons we just replace the global $CONF['seasons'] array 
+  // since both have the same structure
+  if ( $clubsList[$clubID]['useCustomSeasons'] ) { 
+	  $CONF['seasons']=$clubsList[$clubID]['seasons'];
+  }
+/*
+  if ( $ranksList[$rank]['useCustomYears'] ) { 
+	  $CONF['years']=$clubsList[$clubID]['years'];
+  }
+*/
+  $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
+
+//$where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
 
 
 ?>

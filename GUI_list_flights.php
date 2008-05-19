@@ -35,8 +35,9 @@
 	$legend="<b>"._MENU_FLIGHTS."</b> ";
 	
 	// SEASON MOD
-	$where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
-	
+	if (! $clubID) { // if we are viewing a club, the dates will be taken care wit hthe CLUB code
+		$where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
+	}
 	// BRANDS MOD  
 	$where_clause.= brands::makeWhereClause($brandID);
 	

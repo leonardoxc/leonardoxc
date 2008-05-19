@@ -323,7 +323,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	set_time_limit (200);
 	$flight->getOLCscore();
 	$flight->updateTakeoffLanding();
-	$flight->putFlightToDB(1); // update
+	// $flight->putFlightToDB(1); // update
 	
 	return array(1,$flight->flightID); // ALL OK;
 }
