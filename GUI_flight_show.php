@@ -258,12 +258,14 @@ function delete_takeoff(id) {
 	$flight->putFlightToDB(1); // 1== UPDATE
   }
 
-  if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
-		$flight->getOLCscore();
-		$flight->putFlightToDB(1); // 1== UPDATE
-  }
 	
   $flight->updateAll(0);
+
+  if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
+		$flight->computeScore();
+		// $flight->putFlightToDB(1); // 1== UPDATE
+  }
+
   
   if ($CONF_use_validation) {
 		if ($flight->grecord==0) $flight->validate(1);
@@ -541,6 +543,7 @@ if (auth::isAdmin($userID) ) {
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }
 
+
 if ($flight->hasPhotos) {
 	require_once dirname(__FILE__)."/CL_flightPhotos.php";
 
@@ -548,14 +551,14 @@ if ($flight->hasPhotos) {
 	$flightPhotos->getFromDB();
 
 
-	$images="";
+	$imagesHtml="";
 	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 	// ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
 		$photoFilename="photo".$photoNum."Filename";
 	//	if ($flight->$photoFilename) {
 		if ($photoInfo['name']) {
 			
-			//$images.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
+			//$imagesHtml.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
 			//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
 			if (0) {
 				$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
@@ -585,7 +588,7 @@ if ($flight->hasPhotos) {
 				$imgStr="&nbsp;";
 			}
 	
-			$images.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
+			$imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
 	
 		}		
 	}
@@ -623,7 +626,7 @@ $divsToShow=0;
 if ($localMap) $divsToShow++;
 if ($googleMap) $divsToShow++;
 if ($comments) $divsToShow++;
-if ($images) $divsToShow++;
+if ($imagesHtml) $divsToShow++;
 
 
 if ( $divsToShow>1) { // use tabber 
@@ -653,10 +656,10 @@ if ( $divsToShow>1) { // use tabber
 	}
 
 
-	if ($comments && $images) {
+	if ($comments && $imagesHtml) {
 			$mapImg.="<div class='tabbertab' title='"._COMMENTS." & "._PHOTOS."' style='width:745px; height:400px; text-align:left;'>
 				  <div style='float:left; width:445px; clear:left;'>$comments</div>
-				  <div style='float:right; width:295px; clear:right;'>$images</div>
+				  <div style='float:right; width:295px; clear:right;'>$imagesHtml</div>
 				  </div>";
 	} else {
 		if ($comments) {
@@ -665,20 +668,20 @@ if ( $divsToShow>1) { // use tabber
 				  </div>";
 		}	
 		
-		if ($images) {
+		if ($imagesHtml) {
 			$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>
-				  $images
+				  $imagesHtml
 				  </div>";
 		}		  
 	}
 
 	$mapImg.="</div>";
 
-	if ($images) 
+	if ($imagesHtml) 
 		$mapImg.="<script type='text/javascript' src='$moduleRelPath/js/xns.js'></script>";
 
 } else { // only the one div that is present (we know that only one (or zero) is here)
-	$mapImg=$localMap.$googleMap.$images;	
+	$mapImg=$localMap.$googleMap.$imagesHtml;	
 }
 
  // if google maps are present put photos lower down
@@ -719,8 +722,8 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
-	// 'images'=>$images,
-	'2col'=>($images?"2col":""),
+	// 'images'=>$imagesHtml,
+	'2col'=>($imagesHtml?"2col":""),
 	'margin'=>$margin,
 	// 'comments'=>$comments,
 	'linkURL'=>$linkURL,

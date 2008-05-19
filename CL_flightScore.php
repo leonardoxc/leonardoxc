@@ -152,14 +152,33 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 				// sample line 
 				// p0181 12:45:43 N53:20.898 W 1:48.558 
 				// p0181 12:45:43 N53:20.898 W12:48.558 
-				preg_match("/.+ .+ ([NS][ \d][^ ]+) ([WE][ \d][^ ]+)/i",$line,$line_parts);
+				
+				// preg_match("/.+ .+ ([NS][ \d][^ ]+) ([WE][ \d][^ ]+)/i",$line,$line_parts);
+				
+				
+				preg_match("/.+ ([ \d]+):([ \d]+):([ \d]+) +([NS])([ \d]+):([ \d]+)\.([ \d]+) ([EW])([ \d]+):([ \d]+)\.([ \d]+)/",$line,$matches);
+
+				// $lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
+				//	$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
+
+				$alt=0;
+				$pointStringFaked=sprintf("B%02d%02d%02d%02d%02d%03d%1s%03d%02d%03d%1sA00000%05d",
+							$matches[1],$matches[2],$matches[3],
+							$matches[5]+0,$matches[6]+0,$matches[7]+0,$matches[4],
+							$matches[9]+0,$matches[10]+0,$matches[11]+0,$matches[8] , $alt);
+			
+			/*
 				$var_name="turnpoint".$turnpointNum;
 				$lat= str_replace(" ","0",trim($line_parts[1]));
 				$lon= str_replace(" ","0",trim($line_parts[2]));
 				$var_value =$lat." ".$lon;
+			*/
+			
+				$thisTP=new gpsPoint( $pointStringFaked , 0 );	
+				$tpStr=$thisTP->to_IGC_Record();
 
-				$this->scores[1][$scoreType]['tp'][$turnpointNum]=trim($var_value);
-				$this->scores[2][$scoreType]['tp'][$turnpointNum]=trim($var_value);
+				$this->scores[1][$scoreType]['tp'][$turnpointNum]=$tpStr;
+				$this->scores[2][$scoreType]['tp'][$turnpointNum]=$tpStr;
 				$turnpointNum++;
 
 			} else if ($var_name=='FLIGHT_KM') {
@@ -180,18 +199,18 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
 		}
 
-echo "<pre>";
+		echo "<pre>";
 		print_r($this->scores);
-echo "</pre>";
+		echo "</pre>";
 
 	}
 
 
 	function getFromDB() {
-		global $db,$scoresTable ;
+		global $db,$scoresTable,$flightsTable ;
 		$res= $db->sql_query("SELECT * FROM $scoresTable WHERE flightID=".$this->flightID ." ORDER BY ID ASC");
   		if($res <= 0){   
-			 echo "Error getting photos from DB for flight".$this->flightID."<BR>";
+			 echo "Error getting scores from DB for flight".$this->flightID."<BR>";
 		     return 0;
 	    }
 
@@ -267,7 +286,7 @@ echo "</pre>";
 							 ", FLIGHT_KM=".($defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000).
 							 ", FLIGHT_POINTS=".$defaultScore['bestScore'].							
 						" WHERE ID=".$this->flightID;
-
+			// echo $query."<HR>";
 			$res= $db->sql_query($query );
 			if($res <= 0){   
 				 echo "Error updating scoring details  for flight ".$this->flightID." : $query<BR>";

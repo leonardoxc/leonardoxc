@@ -78,13 +78,15 @@ var $LANDING_ALT=0;
 var $MAX_VARIO=0 ;
 var $MIN_VARIO=0 ;
 var $LINEAR_DISTANCE=0 ;
-var $MAX_LINEAR_DISTANCE=0 ;
+
 var $START_TIME=0;
 var $END_TIME=0; 
-var $DURATION=0;  
-var $BEST_FLIGHT_TYPE="";
-var $FLIGHT_KM=0;
-var $FLIGHT_POINTS=0;
+var $DURATION=0; 
+
+//var $MAX_LINEAR_DISTANCE=0 ; 
+//var $BEST_FLIGHT_TYPE="";
+//var $FLIGHT_KM=0;
+//var $FLIGHT_POINTS=0;
 
 var $FIRST_POINT="";
 var $LAST_POINT="";
@@ -492,6 +494,15 @@ $resStr='{
 		
 		$this->FIRST_POINT="";
 		$this->LAST_POINT="";
+	
+		$this->firstPointTM=0;
+		$this->firstLat=0;
+		$this->firstLat=0;
+		$this->firstLon=0;
+		$this->lastPointTM=0;
+		$this->lastLat=0;
+		$this->lastLat=0;
+
 	}
 
 	function checkBound($time){
@@ -2121,6 +2132,10 @@ $kml_file_contents=
 					if ( $this->forceBounds && ! $this->checkBound($firstPoint->getTime() ) ) continue; // not inside time window
 
 					$this->FIRST_POINT=$line;
+					$this->firstPointTM= $firstPoint->gpsTime;
+					$this->firstLat=$firstPoint->lat();
+					$this->firstLon=$firstPoint->lon();
+					
 					$this->TAKEOFF_ALT= $firstPoint->getAlt();
 					$this->MIN_ALT= $firstPoint->getAlt();
 					if ( ! $this->forceBounds) $this->START_TIME = $firstPoint->getTime();
@@ -2165,6 +2180,7 @@ $kml_file_contents=
 					}
 				
 					$this->LAST_POINT=$line;
+					
 					// compute some things
 					$tmp = $lastPoint->calcDistance($prevPoint);
 					$alt = $lastPoint->getAlt();
@@ -2268,6 +2284,10 @@ $kml_file_contents=
 		//fwrite($handle, $outputBuffer) ;
 		//fclose($handle);
 
+		$this->lastPointTM=$lastPoint->gpsTime;
+		$this->lastLon=$lastPoint->lon();
+		$this->lastLat=$lastPoint->lat();
+
 		$this->LANDING_ALT= $lastPoint->getAlt();
 		$this->END_TIME =   $lastPoint->getTime();
 		$this->DURATION =   $this->END_TIME - $this->START_TIME ;
@@ -2340,7 +2360,7 @@ $kml_file_contents=
 		return $ok;
 	}
 	
-	function getOLCscore() {
+	function computeScore() {
 		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
 		global $baseInstallationPath,$CONF_allow_olc_files,$CONF;
 
@@ -2396,9 +2416,16 @@ $kml_file_contents=
 			$results=$flightScore->getScore( $this->getIGCRelPath(1) , 0  );
 		}
 		$flightScore->parseScore($results);
-		//put only in scores table, the flight might not be present yet in flights table
+		//put also in scores table, the flight is sure to be present in flights table
 		$flightScore->putToDB(1,1);
 
+		$defaultMethodID= $CONF['scoring']['default_set'];
+		$defaultScore=$flightScore->scores[$defaultMethodID];
+		
+		$this->MAX_LINEAR_DISTANCE=$flightScore->MAX_LINEAR_DISTANCE;
+		$this->BEST_FLIGHT_TYPE	=$defaultScore['bestScoreType'];
+		$this->FLIGHT_POINTS	=$defaultScore['bestScore'];
+		$this->FLIGHT_KM		=$defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000;
 
 /*
 
@@ -2481,7 +2508,7 @@ $kml_file_contents=
 		*/
 
 
-		if (! $manualScore) $this->FLIGHT_KM=$this->FLIGHT_KM*1000;
+	//		if (! $manualScore) $this->FLIGHT_KM=$this->FLIGHT_KM*1000;
 
 	}
 
@@ -2802,13 +2829,16 @@ $kml_file_contents=
 		$this->MAX_VARIO =$row["MAX_VARIO"];
 		$this->MIN_VARIO =$row["MIN_VARIO"];
 		$this->LINEAR_DISTANCE =$row["LINEAR_DISTANCE"];
-		$this->MAX_LINEAR_DISTANCE =$row["MAX_LINEAR_DISTANCE"];
+
 		$this->START_TIME=$row["START_TIME"];
 		$this->END_TIME=$row["END_TIME"];
 		$this->DURATION=$row["DURATION"];
+
+		$this->MAX_LINEAR_DISTANCE =$row["MAX_LINEAR_DISTANCE"];		
 		$this->BEST_FLIGHT_TYPE=$row["BEST_FLIGHT_TYPE"];
 		$this->FLIGHT_KM=$row["FLIGHT_KM"];
 		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];	  	  
+		
 		$this->autoScore=$row["autoScore"];	
 
 		$this->externalFlightType=$row["externalFlightType"];
@@ -3027,13 +3057,13 @@ $kml_file_contents=
 		MAX_VARIO ,
 		MIN_VARIO ,
 		LINEAR_DISTANCE , ".
-//		MAX_LINEAR_DISTANCE ,
+		"MAX_LINEAR_DISTANCE ,".
 		"START_TIME,
 		END_TIME,
 		DURATION, ".
-//		BEST_FLIGHT_TYPE,
-//		FLIGHT_KM,
-//		FLIGHT_POINTS,
+		"BEST_FLIGHT_TYPE,
+		FLIGHT_KM,
+		FLIGHT_POINTS,".
 
 		"autoScore,
 		forceBounds,
@@ -3066,13 +3096,13 @@ $kml_file_contents=
 		$this->MAX_VARIO ,
 		$this->MIN_VARIO ,
 		$this->LINEAR_DISTANCE , ".
-//		$this->MAX_LINEAR_DISTANCE ,
+		($this->MAX_LINEAR_DISTANCE +0).",".
 		"$this->START_TIME,
 		$this->END_TIME,
 		$this->DURATION, ".
-//		'$this->BEST_FLIGHT_TYPE',
-//		$this->FLIGHT_KM,
-//		$this->FLIGHT_POINTS,
+		"'$this->BEST_FLIGHT_TYPE',
+		".($this->FLIGHT_KM+0).",
+		".($this->FLIGHT_POINTS+0).",".
 		"$this->autoScore,
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,

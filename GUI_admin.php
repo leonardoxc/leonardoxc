@@ -330,11 +330,15 @@ echo "</ul><br><hr>";
 					$files_total++;
 
 					$firstPoint=new gpsPoint($row['FIRST_POINT'],$row['timezone']);
+					$lastPoint=new gpsPoint($row['LAST_POINT'],$row['timezone']);
 
 					$firstTime=$firstPoint->gpsTime+0;
-
-					$query2="UPDATE $flightsTable SET firstLat=".$firstPoint->lat().",
-							firstLon=".$firstPoint->lon().", firstPointTM=".$firstTime.", batchOpProcessed=1 WHERE ID=".$row['ID']." ";
+					$lastTime=$lastPoint->gpsTime+0;
+					
+					$query2="UPDATE $flightsTable SET 
+							firstLat=".$firstPoint->lat().",firstLon=".$firstPoint->lon().", firstPointTM=".$firstTime.",
+							lastLat=".$lastPoint->lat().",lastLon=".$lastPoint->lon().", lastPointTM=".$lastTime.",
+							 batchOpProcessed=1 WHERE ID=".$row['ID']." ";
 					$res2= $db->sql_query($query2);
 					
 					if(!$res2){
@@ -389,7 +393,7 @@ echo "</ul><br><hr>";
 
 				  if ($flight->FLIGHT_POINTS==0) {
 					  set_time_limit(200);
-					  $flight->getOLCscore();
+					  $flight->computeScore();
 				  }	 			
 				  $flight->putFlightToDB(1);
 			 }

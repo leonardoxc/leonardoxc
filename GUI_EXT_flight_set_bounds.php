@@ -54,13 +54,12 @@
 
 		$flight->deleteSecondaryFiles();
 
-		$flight->updateTakeoffLanding();
-		$flight->getOLCscore();
-		
+		$flight->updateTakeoffLanding();		
 		$flight->getMapFromServer();		
 		$flight->updateCharts(1);		
-
 		$flight->putFlightToDB(1); // 1== UPDATE
+		
+		$flight->computeScore();
 		?>
 		  <script language="javascript">
 			  function refreshParent() {

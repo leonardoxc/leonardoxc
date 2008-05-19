@@ -264,27 +264,6 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	@unlink($tmpIGCPath.".olc");
 	@unlink($tmpIGCPath);
 	
-    if ($calledFromForm) {	
-		
-		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
-			$var_name="photo".$i."Filename";
-			$photoName=$_FILES[$var_name]['name'];
-			$photoFilename=$_FILES[$var_name]['tmp_name'];
-			
-			if ( $photoName ) {  
-				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
-					$newPhotoName=toLatin1($photoName);
-					$flight->$var_name=$newPhotoName;
-					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
-						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
-					} else { //upload not successfull
-						$flight->$var_name="";
-					}
-				}
-			}
-		}  
-    } // took care of photos
 
 	// if we use NACclubs
 	// get the NACclubID for userID
@@ -320,8 +299,54 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	}
 
 	$flight->putFlightToDB(0);
+	
+	// now do the photos
+	if ($calledFromForm) {	
+		
+		require_once dirname(__FILE__)."/CL_flightPhotos.php";
+		$flightPhotos=new flightPhotos($flight->flightID);
+		// $flightPhotos->getFromDB();
+		$j=1;
+		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+			$var_name="photo".$i."Filename";
+			$photoName=$_FILES[$var_name]['name'];
+			$photoFilename=$_FILES[$var_name]['tmp_name'];
+			
+			if ( $photoName ) {  
+				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
+				
+					$newPhotoName=toLatin1($photoName);
+
+					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
+					$flight->hasPhotos++;
+					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
+					$j++;
+
+					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
+						resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
+						resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
+					} else { //upload not successfull
+						$flightPhotos->deletePhoto($j-1);
+						$j--;
+						$flight->hasPhotos--;						
+					}
+					
+					/*
+					$flight->$var_name=$newPhotoName;
+					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
+						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+					} else { //upload not successfull
+						$flight->$var_name="";
+					}
+					*/
+				}
+			}
+		}  
+    } // took care of photos
+	
 	set_time_limit (200);
-	$flight->getOLCscore();
+	$flight->computeScore();
 	$flight->updateTakeoffLanding();
 	// $flight->putFlightToDB(1); // update
 	
