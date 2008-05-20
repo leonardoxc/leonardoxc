@@ -214,16 +214,11 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		     return 0;
 	    }
 
-		$this->photosNum=0;
+		echo "<pre>";
 	    while ($row = $db->sql_fetchrow($res) ) {
-			$this->photos[$this->photosNum]['ID']=$row['ID'];
-			$this->photos[$this->photosNum]['path']=$row['path'];
-			$this->photos[$this->photosNum]['name']=$row['name'];
-			$this->photos[$this->photosNum]['description']=$row['description'];
-			//print_r($this->photos[$this->photosNum]);
-			$this->photosNum++;			
+			print_r($row);
 		}
-
+		echo "</pre>";
 		$this->gotValues=1;
 		return 1;
     }

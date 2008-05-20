@@ -16,7 +16,7 @@
  * Enable edit login data
  * Martin Jursa 23.05.2007: FirstOlcYear added
  */
-
+  require_once dirname(__FILE__)."/CL_image.php";
   require_once dirname(__FILE__)."/CL_NACclub.php";
 
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
@@ -43,8 +43,8 @@
 		if (!is_dir($path)) @mkdir($path,0777);
 
 		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  getPilotPhotoFilename($pilotIDview) ) ) {
-			resizeJPG(120,120, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview,1), 15);
-			resizeJPG(800,800, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview), 15);
+			CLimage::resizeJPG(120,120, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview,1), 15);
+			CLimage::resizeJPG(800,800, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview), 15);
 			$PilotPhoto=1;
 		} else { //upload not successfull
 			@unlink(getPilotPhotoFilename($pilotIDview,1) );

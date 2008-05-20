@@ -441,6 +441,39 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	return $page_string;
 }
 
+function makeFlightActionsPopup() {
+	global $moduleRelPath,$opMode;
+	ob_start();
+
+?>
+<script language="javascript">
+var flightActionTip = new TipObj('flightActionTip');
+with (flightActionTip)
+{
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader"><? echo "Actions"; ?></td></tr>'+
+  '<tr><td class="infoBox">'+
+  "<img src='<?=$moduleRelPath?>/img/change_icon.png' width='16' height='16' border='0' align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=edit_flight&flightID=%4%'><? echo 'Edit flight'; ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+	"<img src='<?=$moduleRelPath?>/img/x_icon.gif'  width='16' height='16' border='0' align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=delete_flight&flightID=%4%'><? echo 'Delete flight'; ?></a>"+
+	'</td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 700;
+ doFades = false;
+}
+</script>
+<div id="flightActionTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; 
+visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<?
+	$c=ob_get_contents();
+	ob_end_clean();
+	return  $c;
+}
+
+
 function makePilotPopup() {
 	global $moduleRelPath,$opMode;
 	ob_start();

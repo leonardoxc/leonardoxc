@@ -189,9 +189,9 @@ function setValue(obj)
       <td colspan="3">
         http://<input name="linkURL" type="text" id="linkURL" size="50" value="">		</td>
     </tr>
-	<? for($i=1;$i<=$CONF_photosPerFlight;$i++) { ?>
+	<? for($i=0;$i<$CONF_photosPerFlight;$i++) { ?>
     <tr>
-      <td><div align="right" class="styleItalic"><? echo _PHOTO." #$i"; ?></div></td>
+      <td><div align="right" class="styleItalic"><? echo _PHOTO.' #'.($i+1); ?></div></td>
       <td colspan="3">
         <input name="photo<?=$i?>Filename" type="file" size="50">	  </td>
     </tr>

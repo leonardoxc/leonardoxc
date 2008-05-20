@@ -14,6 +14,7 @@
 require_once dirname(__FILE__).'/FN_functions.php';
 require_once dirname(__FILE__).'/FN_output.php';
 require_once dirname(__FILE__).'/CL_flightData.php';
+require_once dirname(__FILE__).'/CL_image.php';
 
 define("ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE",-1);
 define("ADD_FLIGHT_ERR_NO_SUCH_FILE",-2);
@@ -306,36 +307,33 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		require_once dirname(__FILE__)."/CL_flightPhotos.php";
 		$flightPhotos=new flightPhotos($flight->flightID);
 		// $flightPhotos->getFromDB();
-		$j=1;
-		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
+		$j=0;
+		for($i=0;$i<$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			$photoName=$_FILES[$var_name]['name'];
 			$photoFilename=$_FILES[$var_name]['tmp_name'];
 			
 			if ( $photoName ) {  
-				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
+				if ( CLimage::validJPGfilename($photoName) && CLimage::validJPGfile($photoFilename) ) {
 				
 					$newPhotoName=toLatin1($photoName);
-
 					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
-					$flight->hasPhotos++;
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
-					$j++;
 
 					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
-						resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
-						resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
+						CLimage::resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
+						CLimage::resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
+						$flight->hasPhotos++;
+						$j++;
 					} else { //upload not successfull
-						$flightPhotos->deletePhoto($j-1);
-						$j--;
-						$flight->hasPhotos--;						
+						$flightPhotos->deletePhoto($j);						
 					}
 					
 					/*
 					$flight->$var_name=$newPhotoName;
 					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
-						resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-						resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+						CLimage::resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
+						CLimage::resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
 					} else { //upload not successfull
 						$flight->$var_name="";
 					}

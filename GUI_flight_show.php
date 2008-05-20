@@ -11,8 +11,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-
+	require_once $moduleRelPath."/CL_image.php";
 	require_once $moduleRelPath."/CL_template.php";
+
 	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 
 
@@ -258,7 +259,6 @@ function delete_takeoff(id) {
 	$flight->putFlightToDB(1); // 1== UPDATE
   }
 
-	
   $flight->updateAll(0);
 
   if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
@@ -385,38 +385,6 @@ if ($flight->is3D()) {
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 */
 
-  if ( $flight->olcFilename  || ( $flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) ) $showOLCsubmit=1;
-  else  $showOLCsubmit=0;
-  if ( $enableOLCsubmission && $showOLCsubmit && 0) {
-	  open_tr();
-		//   echo "<TD>&nbsp</td>";
-		   echo "<TD bgcolor=".$Theme->color2."><div align=".$Theme->table_cells_align.">OLC</div></TD>";
-		   echo "<TD  colspan=4><div align=left>";
-			if ($flight->olcFilename) {
-			  $olc_url="http://www2.onlinecontest.org/holc/".$flight->getOLCYear();
-			  $olcName=strtolower (substr($flight->olcFilename,0,-4) );
-			  echo "[ <a href='$olc_url/map/".$olcName.".jpg' target='_blank'>"._OLC_MAP."</a> ] ";
-			  echo "[ <a href='$olc_url/ENL/".$olcName.".png' target='_blank'>"._OLC_BARO."</a> ] ";
-			  echo "[".substr($flight->olcDateSubmited,0,10)."] ";
-			  if ( auth::isAdmin($userID)  || $flight->belongsToUser($userID) ) echo "(Ref: ".$flight->olcRefNum.") ";
-			  echo "<img src='".$moduleRelPath."/img/olc_icon_submited.gif' border=0 align=bottom>";
-			  // echo _SUBMITED_SUCCESSFULLY_ON." ".$flight->olcDateSubmited;
-			  if ($flight->insideOLCsubmitWindow()  && ( auth::isAdmin($userID)  || $flight->belongsToUser($userID)  )  ) {
-				echo "<a href='".CONF_MODULE_ARG."&op=olc_remove&flightID=".$flight->flightID."'>";	
-				echo "<img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>";
-			  }
-			}
-			else if ($flight->insideOLCsubmitWindow() && $flight->FLIGHT_POINTS ) {
-				echo _READY_FOR_SUBMISSION;
-				if ( auth::isAdmin($userID)  || $flight->userID==$userID  ) 
-				echo " <a href='".CONF_MODULE_ARG."&op=olc_submit&flightID=".$flight->flightID."'>"._SUBMIT_TO_OLC."</a>";
-			}
-			else  echo _CANNOT_BE_SUBMITTED;
-		   echo "</div></TD>";
-	//	   echo "<TD>&nbsp</td>";
-	  close_tr();
-  }
-
 if ($flight->comments) {
 	 $comments=$flight->comments;
 }
@@ -437,11 +405,11 @@ if ($flight->linkURL) {
 	
 	$gliderBrandImg=brands::getBrandImg($flight->gliderBrandID,$flight->glider,$flight->cat);
 	
-	$glider=$gliderBrandImg.$flight->glider;
+	$glider=$gliderBrandImg.' '.$flight->glider;
 
 
-$gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
-$gliderCatList[$flight->cat]." ]";
+	$gliderCat = " [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
+				$gliderCatList[$flight->cat]." ]";
  
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
@@ -550,41 +518,25 @@ if ($flight->hasPhotos) {
 	$flightPhotos=new flightPhotos($flight->flightID);
 	$flightPhotos->getFromDB();
 
-
 	$imagesHtml="";
 	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
-	// ( $photoNum=1;$photoNum<=$CONF_photosPerFlight;$photoNum++){
-		$photoFilename="photo".$photoNum."Filename";
-	//	if ($flight->$photoFilename) {
-		if ($photoInfo['name']) {
-			
-			//$imagesHtml.="<a class='shadowBox imgBox' href='".$flight->getPhotoRelPath($photoNum).
-			//		"' target=_blank><img src='".$flight->getPhotoRelPath($photoNum).".icon.jpg' border=0></a>";
-			if (0) {
-				$imgIconRel=$flight->getPhotoRelPath($photoNum).".icon.jpg";
-				$imgBigRel=$flight->getPhotoRelPath($photoNum);
 		
-				$imgIcon=$flight->getPhotoFilename($photoNum).".icon.jpg";
-				$imgBig=$flight->getPhotoFilename($photoNum);
-			}	else {		
-			
+		if ($photoInfo['name']) {
 			$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 			$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
 	
 			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
-			
-			}
-			
+						
 			if (file_exists($imgBig) ) {
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
-				list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
 				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
 			} else 	if (file_exists($imgIcon) ) {
 				list($width, $height, $type, $attr) = getimagesize($imgIcon);
-				list($width, $height)=getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
 				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
-			}else {
+			} else {
 				$imgStr="&nbsp;";
 			}
 	

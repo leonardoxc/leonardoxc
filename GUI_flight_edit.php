@@ -10,11 +10,16 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+  require_once dirname(__FILE__).'/CL_image.php';
 
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
   if ( 	$flight->belongsToUser($userID) ||	auth::isModerator($userID)  ) {
+
+	require_once dirname(__FILE__)."/CL_flightScore.php";
+	$flightScore=new flightScore($flight->flightID);
+	$flightScore->getFromDB();
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
@@ -62,38 +67,39 @@
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
 
+		$j= $flightPhotos->photosNum ;
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			$photoName=$_FILES[$var_name]['name'];
 			$photoFilename=$_FILES[$var_name]['tmp_name'];
-			if ($_REQUEST["photo".$i."Delete"]=="1") {		// DELETE photo
-				// echo "deleting photo $i<HR>";
-				$flightPhotos->deletePhoto($i);
-				$flight->hasPhotos--;
-			} else if ($photoName ) {  // upload new
+			if ( $photoName ) {  // upload new
 				// $flight->deletePhoto($i);  //first delete old
-				if ( validJPGfilename($photoName) && validJPGfile($photoFilename) ) {
+				if ( CLimage::validJPGfilename($photoName) && CLimage::validJPGfile($photoFilename) ) {
 
 					$newPhotoName=toLatin1($photoName);
-
-					//$flight->$var_name=$newPhotoName;
-
-					$phNum=$flightPhotos->addPhoto($i,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
-					$flight->hasPhotos++;
-
-					$photoAbsPath=$flightPhotos->getPhotoAbsPath($i);
-
+					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);								
+					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
+					
 					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
-						resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
-						resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
-					} else { //upload not successfull
-						$flightPhotos->deletePhoto($i);
-						$flight->hasPhotos--;
-						//$flight->$var_name="";
+						CLimage::resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
+						CLimage::resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
+						$flight->hasPhotos++;
+						$j++;
+					} else { //upload not successfull - track back
+						$flightPhotos->deletePhoto($j);
 					}
 				}
 			}
 		} 
+
+		// now delete photos if requested
+		for($i=0;$i<$CONF_photosPerFlight;$i++) {
+			if ($_REQUEST["photo".$i."Delete"]=="1") {		// DELETE photo
+				// echo "deleting photo $i<HR>";
+				$flightPhotos->deletePhoto($i);
+				$flight->hasPhotos--;
+			} 
+		}
 
 		$flight->putFlightToDB(1);
 

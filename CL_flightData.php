@@ -3187,6 +3187,7 @@ $kml_file_contents=
  	    if (  !is_file( $this->getMapFilename() ) || $forceRefresh ) {
 			 $this->getMapFromServer();		
 	    } 	
+
 	    $this->updateCharts($forceRefresh);
  	    $this->updateCharts($forceRefresh,1);
 	}
@@ -3222,10 +3223,9 @@ $kml_file_contents=
 
 			if (!count($data_time) ) return; // empty timeseries
 
-
 			require_once dirname(__FILE__)."/lib/graph/jpgraph_gradient.php";
 			require_once dirname(__FILE__)."/lib/graph/jpgraph_plotmark.inc" ;
-	
+
 			require_once dirname(__FILE__)."/lib/graph/jpgraph.php";
 			require_once dirname(__FILE__)."/lib/graph/jpgraph_line.php";
 

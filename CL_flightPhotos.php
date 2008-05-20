@@ -40,7 +40,7 @@ class flightPhotos {
 
 	function getPhotoAbsPath($id) {
 		global $flightsAbsPath;	
-		if ($id > $this->photosNum) return '';		
+		if ($id >=$this->photosNum) return '';		
 		return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];		
 	}
 
