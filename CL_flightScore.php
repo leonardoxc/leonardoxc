@@ -20,7 +20,8 @@ class flightScore {
 	var $valuesArray;
 	var $gotValues;
 	var $flightTypes=array('FREE_FLIGHT'=>1,'FREE_TRIANGLE'=>2,'FAI_TRIANGLE'=>3 );
-
+	var $flightTypesID=array(1=>'FREE_FLIGHT',2=>'FREE_TRIANGLE',3=>'FAI_TRIANGLE');
+	
 	function flightScore($flightID="") {
 		if ($flightID) {
 			$this->flightID=$flightID;
@@ -207,19 +208,54 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 
 	function getFromDB() {
-		global $db,$scoresTable,$flightsTable ;
+		global $db,$scoresTable,$flightsTable,$CONF ;
 		$res= $db->sql_query("SELECT * FROM $scoresTable WHERE flightID=".$this->flightID ." ORDER BY ID ASC");
   		if($res <= 0){   
 			 echo "Error getting scores from DB for flight".$this->flightID."<BR>";
 		     return 0;
 	    }
-
-		echo "<pre>";
+		
+		//reset everything
+		$this->scores=array();
+					
 	    while ($row = $db->sql_fetchrow($res) ) {
-			print_r($row);
+			$type=$this->flightTypesID[$row['type']];
+			$this->scores[$row['method']][$type]=array();
+			$this->scores[$row['method']][$type]['isBest']	=$row['isBest'];
+			$this->scores[$row['method']][$type]['distance']=$row['distance'];
+			$this->scores[$row['method']][$type]['score']	=$row['score'];
+			
+			if ($row['isBest']==1)  {
+				$this->scores[$row['method']]['bestScoreType']=$type;
+				$this->scores[$row['method']]['bestScore']=$row['score'];
+				$this->scores[$row['method']]['bestDistance']=$row['distance'];
+				
+				if ($row['method']==$CONF['scoring']['default_set']) {
+					$this->bestScoreType=$type;
+					$this->bestScore=$row['score'];	
+					$this->bestDistance=$row['distance'];
+				}
+			}					
+					
+			$this->scores[$row['method']][$type]['tp']=array();
+			for($i=1;$i<=7;$i++) {
+				$this->scores[$row['method']][$type]['tp'][$i]=$row['turnpoint'.$i];
+			}
+			
 		}
-		echo "</pre>";
+		
+		//	echo "<pre>";		
+		//	print_r($this->scores);
+		//	echo "</pre>";
+			
 		$this->gotValues=1;
+
+		echo "<pre>";		
+		//	print_r($this->scores);
+		echo $this->toJSON();
+		echo "</pre>";
+		
+
 		return 1;
     }
 
@@ -232,6 +268,55 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 	    }
 	}
 
+	function toJSON() {
+		global $db,$scoresTable ,$flightsTable,$CONF;
+
+		if (!$this->gotValues) $this->getFromDB();		
+
+		$str='';
+		$k=0;
+		foreach ( $this->scores as $methodID=>$scoreForMethod) {
+			$l=0;
+			foreach($scoreForMethod as $scoreType=>$scoreDetails ) {
+				if (!is_array($scoreDetails) ) continue;
+				if ($scoreType==$scoreForMethod['bestScoreType']) $isBest=1; 
+				else $isBest=0;
+				if ($l!=0) $str.=",\n";
+			$str.="\n\n".'{	"XCscoreMethod": "'.$methodID.'", '."\n".
+					'	"XCtype": "'.($this->flightTypes[$scoreType]+0).'", '."\n".
+					'	"isBest" :"'.$isBest.'", '."\n".
+					'	"XCdistance" :"'.$scoreDetails['distance'].'", '."\n".
+					'	"XCscore" :"'.$scoreDetails['score'].'", '."\n";			
+										
+					$tpNum=0;
+					$tpStr='';
+					for($i=1;$i<=7;$i++) {
+						if ($scoreDetails['tp'][$i]) {
+							$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
+							if ($tpNum>0) $tpStr.=" ,\n		";
+							$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
+							$tpNum++;
+						}	
+					}
+					$str.='	"turnpoints": [ '.$tpStr.' ] ';
+					$str.="\n }";
+
+					$l++;
+			
+			}
+			$k++;
+		}
+		
+		$str=' "score": { '.
+	 '		"XCtype": "'.$this->bestScoreType.'", '."\n".
+	 '		"XCdistance": "'.$this->bestDistance.'", '."\n".
+	 '		"XCscore": "'.$this->bestScore.'", '."\n".
+	 '		"XCscoreMethod": "'. $CONF['scoring']['default_set'].'", '."\n".
+	 '		"scores": [ '.
+		 $str." ] \n } \n";
+
+		return $str;	
+	}	
 
 	function putToDB($updateScoringTable=1,$updateFlightsTable=1) {
 		global $db,$scoresTable ,$flightsTable;

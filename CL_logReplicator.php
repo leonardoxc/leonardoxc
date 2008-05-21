@@ -194,6 +194,30 @@ class logReplicator {
 				return array(1,"Flight with local ID: $flightIDlocal DELETED");
 			}
 
+			if ($e['action']==8) {	// scoring info
+			
+				$flightIDlocal=logReplicator::findFlight($e['serverId'],$e['id']);
+				if (!$flightIDlocal) {
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverId']." and original ID : ".
+							$e['id']." is not found in the local DB -> Wont update scoring<BR>");
+				}
+								
+				// echo "Will update scoring  info for flight $flightIDlocal<BR>";
+				
+				$extFlight=new flight();			
+				$extFlight->getFlightFromDB($flightIDlocal,0);					
+			
+				$flightScore=new flightScore($this->flightID);
+
+!!!!!!!! parse json into $flightScore
+
+				//put also in scores table, the flight is sure to be present in flights table
+				$flightScore->putToDB(1,1);
+		
+		
+				return array(1,"Flight Score was *pulled* for local ID $flightIDlocal");
+			}
+			
 			// now deal with add/update
 			$getValidationData=1;
 			$getScoreData =1;		

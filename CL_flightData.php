@@ -224,6 +224,27 @@ var $maxPointNum=1000;
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
 		if ($photosJSON) $photosJSON=' , "photos": [ '.$photosJSON.' ]  ';
 
+
+		$flightScore=new flightScore($this->flightID);
+		$flightScore->getFromDB();
+
+		$defaultMethodID= $CONF['scoring']['default_set'];
+		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
+				
+		$tpNum=0;
+		$tpStr='';
+		for($i=1;$i<=7;$i++) {
+			if ($scoreDetails['tp'][$i]) {
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
+				if ($tpNum>0) $tpStr.=" ,\n		";
+				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
+				$tpNum++;
+			}	
+		}
+		
+/*
+		
+		
 		$tpNum=0;
 		$tpStr='';
 		for($i=1;$i<=5;$i++) {
@@ -235,6 +256,8 @@ var $maxPointNum=1000;
 				$tpNum++;
 			}	
 		}
+	*/
+	
 		
 //		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
 
@@ -406,10 +429,10 @@ $resStr='{
 	
 	"stats":  {
 		"FlightType": "'.$this->BEST_FLIGHT_TYPE.'",
-		"MaxStraightDistance": '.$this->MAX_LINEAR_DISTANCE.',
+		"MaxStraightDistance": '.($this->MAX_LINEAR_DISTANCE+0).',
 		"StraightDistance": '.$this->LINEAR_DISTANCE.',
-		"XCdistance": "'.$this->FLIGHT_KM.'",
-		"XCscore": "'.$this->FLIGHT_POINTS.'",
+		"XCdistance": "'.($this->FLIGHT_KM+0).'",
+		"XCscore": "'.($this->FLIGHT_POINTS+0).'",
 		"MaxSpeed": "'.$this->MAX_SPEED.'",
 		"MeanGliderSpeed": "'.$this->MEAN_SPEED.'",		
 		"MaxVario": "'.$this->MAX_VARIO.'",
@@ -2427,6 +2450,21 @@ $kml_file_contents=
 		$this->FLIGHT_POINTS	=$defaultScore['bestScore'];
 		$this->FLIGHT_KM		=$defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000;
 
+
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
+		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
+		$log->ActionXML	= $flightScore->toJSON();
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = 1;
+		// if (!$log->Result) $log->ResultDescription ="Problem in puting flight to DB $query";
+		if (!$log->put()) echo "Problem in logger<BR>";
 /*
 
 		if ($OLCScoringServerUseInternal ) {

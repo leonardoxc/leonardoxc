@@ -19,6 +19,11 @@ function remakeLog(id,action,DBGlvl) {
 	var extraStr='&logEntries='+logEntries;	
 	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=remakeLog'+extraStr;
 }
+function scoreFlights(id,action,DBGlvl) {	 	
+	var scoreFlightsNum=MWJ_findObj('scoreFlightsNum').value;
+	var extraStr='&scoreFlightsNum='+logEntries;	
+	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=updateScoring'+extraStr;
+}
 </script>
 	
 <?
@@ -54,6 +59,11 @@ function chmodDir($dir){
 		$logEntries=500; 
 	}
 
+	$scoreFlightsNum=makeSane($_GET['scoreFlightsNum'],1);	
+	if ( $scoreFlightsNum=='' ) {
+		$scoreFlightsNum=100; 
+	}
+
 //echo "<br>";
 
 echo "<h3>Update operations</h3>";
@@ -68,6 +78,12 @@ This is a *heavy* operation and will take long to complete. It will check all un
 	This is a *heavy* operation and will take long to complete. It will re-compute  the takeoff/landing  for ALL flights ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a><BR>
 	This is a *heavy* operation and will take long to complete. It will re-compute Scoring for ALL flights either scored or not";
+	
+	echo "<li><a href='javascript:scoreFlights()'>Update XC Scoring</a>  Process <input type='textbox' size='4' id='scoreFlightsNum' name='scoreFlightsNum' value='$scoreFlightsNum'> entries at a time (set -1 to proccess all)<br>
+	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
+	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
+	
+	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateMaps'>Update Flight Maps</a><br>
 	This is a *heavy* operation and will take long to complete. It will re-draw the static Maps for ALL flights either present or not ";
 echo "</ul>";
@@ -382,7 +398,10 @@ echo "</ul><br><hr>";
 		echo "<BR><br>Files total: $files_total<BR>";
 		
 	} else if ($admin_op=="updateScoring") {
-		$query="SELECT ID from $flightsTable WHERE active=1 ORDER BY ID ASC";
+		if ($scoreFlightsNum > 0) $limitStr= " LIMIT $scoreFlightsNum ";
+		else $limitStr='';
+		
+		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
@@ -391,11 +410,13 @@ echo "</ul><br><hr>";
 				  $flight=new flight();
 				  $flight->getFlightFromDB($row["ID"],0);
 
-				  if ($flight->FLIGHT_POINTS==0) {
+				  if ($flight->FLIGHT_POINTS==0 || true ) { // PROCCESS ALL , remove '|| true' to process only unscored
 					  set_time_limit(200);
 					  $flight->computeScore();
+					  setBatchBit($row["ID"]);
+					  //$flight->putFlightToDB(1);
 				  }	 			
-				  $flight->putFlightToDB(1);
+				  
 			 }
 		}
 		echo "<BR><br><br>DONE !!!<BR>";
