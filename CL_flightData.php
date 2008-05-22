@@ -207,6 +207,9 @@ var $maxPointNum=1000;
 		
 		$photosXML='';
 		$photosJSON='';
+
+// WE DONT PUT PHOTO INTO MAIN FLIGHT SYNC, WE DEAL WITH THEM WITH A SEPARATE FEED
+if (false) {
 		$photosNum=0;
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
@@ -223,7 +226,7 @@ var $maxPointNum=1000;
 		}
 		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
 		if ($photosJSON) $photosJSON=' , "photos": [ '.$photosJSON.' ]  ';
-
+}
 
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->getFromDB();
@@ -237,7 +240,7 @@ var $maxPointNum=1000;
 			if ($scoreDetails['tp'][$i]) {
 				$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
 				if ($tpNum>0) $tpStr.=" ,\n		";
-				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
+				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
 				$tpNum++;
 			}	
 		}
@@ -771,9 +774,27 @@ $resStr='{
 
 
 	function gMapsGetTaskJS($useJSapi=0){
+		global  $CONF;
 
-		$jsonStr=' { "turnpoints":  [ ';
+		$tpStr=' { "turnpoints":  [ ';
 		
+		$flightScore=new flightScore($this->flightID);
+		$flightScore->getFromDB();
+
+		$defaultMethodID= $CONF['scoring']['default_set'];
+		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
+				
+		$tpNum=0;		
+		for($i=1;$i<=7;$i++) {
+			if ($scoreDetails['tp'][$i]) {
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);	
+				if ($tpNum>0) $tpStr.=" ,\n		";
+				$tpStr.=' {"id": "'.$i.'" , "name": "TP'.$i.'" , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "secs": '.$newPoint->getTime().' } ';
+				$tpNum++;
+			}	
+		}
+
+		/*
 		$j=0;
 		for($i=1;$i<=5;$i++) {
 			$varname="turnpoint$i";
@@ -802,10 +823,12 @@ $resStr='{
 				$j++;
 		
 			}
-		}
 
-		$jsonStr.=' ] } ';
-		return $jsonStr;
+		}
+*/
+
+		$tpStr.=' ] } ';
+		return $tpStr;
 	}
 
 
@@ -840,6 +863,44 @@ $resStr='{
 		4=>array("root://icons/palette-3.png",96,192),
 		5=>array("root://icons/palette-3.png",128,192) );
 		
+
+		global  $CONF;
+		$tpStr=' { "turnpoints":  [ ';
+		
+		$flightScore=new flightScore($this->flightID);
+		$flightScore->getFromDB();
+
+		$defaultMethodID= $CONF['scoring']['default_set'];
+		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
+				
+		$j=0;	
+		for($i=1;$i<=7;$i++) {
+			if ($scoreDetails['tp'][$i]) {
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);				
+				$kml_file_contents.=$newPoint->lon().",".$newPoint->lat().",0 ";		
+				$turnpointPlacemark[$j]="
+		<Placemark>
+				 <Style>
+				  <IconStyle>
+					<scale>0.4</scale>
+					<Icon>
+					  <href>".$icons[$j+1][0]."</href>
+					  <x>".$icons[$j+1][1]."</x>
+					  <y>".$icons[$j+1][2]."</y>
+					  <w>32</w>
+					  <h>32</h>
+					</Icon>
+				  </IconStyle>
+				</Style>
+		 <Point>
+			<coordinates>".$newPoint->lon().",".$newPoint->lat().",0</coordinates>
+		  </Point>
+		</Placemark>";
+				$j++;
+
+			}	
+		}
+/*
 		$j=0;
 		for($i=1;$i<=5;$i++) {
 			$varname="turnpoint$i";
@@ -881,7 +942,8 @@ $resStr='{
 		
 			}
 		}
-		
+		*/
+
 		$kml_file_contents.="
 		</coordinates>
 		</LineString>
@@ -1094,12 +1156,12 @@ $resStr='{
 		return $kml_file_contents;
 	}
 
-	function createEncodedPolyline() {
+	function createEncodedPolyline($forceRefresh=0) {
 		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 		
-		if ( is_file($this->getPolylineFilename())  ) return ;
+		if ( is_file($this->getPolylineFilename())  && !$forceRefresh ) return ;
 
 		$filename=$this->getIGCFilename(1);  
 		$lines = file ($filename); 
@@ -2432,6 +2494,31 @@ $kml_file_contents=
 				
 		set_time_limit (240);	
 		
+		// so some basic check for saned igc file
+		if (!is_file($this->getIGCFilename(1) ) ) {
+			// we have to create it 
+			echo "Saned file is missing for flight: ".$this->flightID.", we will create it<BR>";
+			if (!is_file($this->getIGCFilename(0) ) ) {
+				echo "Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>";
+				require_once dirname(__FILE__).'/CL_actionLogger.php';
+				$log=new Logger();
+				$log->userID  	=$this->userID;
+				$log->ItemType	=1 ; // flight; 
+				$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
+				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
+				$log->ActionXML	= "{ }";
+				$log->Modifier	= 0;
+				$log->ModifierID= 0;
+				$log->ServerModifierID =0;
+				$log->Result = 0;
+				if (!$log->Result) $log->ResultDescription ="IGC file misssing";
+				if (!$log->put()) echo "Problem in logger<BR>";
+				return 0;
+			}
+			$this->getFlightFromIGC($this->getIGCFilename(0) ) ;
+		}
+
 		$flightScore=new flightScore($this->flightID);
 		if ($OLCScoringServerUseInternal ) {
 			$results=$flightScore->getScore( $this->getIGCFilename(1) ,1  );
@@ -2458,7 +2545,7 @@ $kml_file_contents=
 		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
-		$log->ActionXML	= $flightScore->toJSON();
+		$log->ActionXML	= "{\n". $flightScore->toJSON()."\n}";
 		$log->Modifier	= 0;
 		$log->ModifierID= 0;
 		$log->ServerModifierID =0;

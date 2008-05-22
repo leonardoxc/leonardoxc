@@ -255,7 +255,10 @@ function delete_takeoff(id) {
   if ($_REQUEST['updateData'])  {
 	$flight->getFlightFromIGC( $flight->getIGCFilename() );
 	$flight->updateTakeoffLanding();
+
+	$flight->createEncodedPolyline(1);
 	$flight->makeJSON(1);
+
 	$flight->putFlightToDB(1); // 1== UPDATE
   }
 

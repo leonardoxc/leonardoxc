@@ -98,16 +98,17 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
-				<? if ($CONF_isMasterServer) { ?>
+				<? if ($CONF_isMasterServer && 0) { ?>
 					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
 					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">See the Sync logs</a></li>
 				<? } ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Administer the Logs</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_areas">Administer the Areas</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Display server's SyncLog</a></li>
+				<li class='li_space long'></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
+				<? if (0) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_areas">Administer the Areas</a></li><? } ?>
 				<li class='li_space long'></li>
 				<?  if ($DBGlvl==0)  { ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=255">Activate DEBUG</a></li>
@@ -116,6 +117,15 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<? } ?>
 			</ul>
 		</li>
+		<? if ($CONF_isMasterServer) { ?>
+		<li><a href='#'><STRONG>XCnet <?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
+			<ul>
+					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
+					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">Sync logs of Slave-Servers</a></li>
+			</ul>
+		</li>
+		<? } ?>
+
 <? } ?>
 
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>

@@ -263,3 +263,7 @@ ALTER TABLE `leonardo_photos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci
 
 ALTER TABLE `leonardo_photos` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 
+
+# 2008/05/22
+
+ALTER TABLE `leonardo_flights` DROP INDEX `takeoffID_2`  

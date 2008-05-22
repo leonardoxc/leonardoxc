@@ -190,7 +190,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 					if ( $this->scores[$i][$scoreType]['score'] > $this->scores[$i]['bestScore'] ) {
 						$this->scores[$i]['bestScore']=$this->scores[$i][$scoreType]['score'] ;
 						$this->scores[$i]['bestScoreType']=$scoreType;
-
+						$this->scores[$i]['bestDistance']=$distanceTmp;
 					}
 				}
 			}
@@ -200,10 +200,14 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
 		}
 
+		$this->bestScoreType=$this->scores[ $CONF['scoring']['default_set'] ] ['bestScoreType'];
+		$this->bestScore=$this->scores[ $CONF['scoring']['default_set'] ] ['bestScore'];
+		$this->bestDistance=$this->scores[ $CONF['scoring']['default_set'] ] ['bestDistance'];
+/*
 		echo "<pre>";
 		print_r($this->scores);
 		echo "</pre>";
-
+*/
 	}
 
 
@@ -250,10 +254,10 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			
 		$this->gotValues=1;
 
-		echo "<pre>";		
+		//echo "<pre>";		
 		//	print_r($this->scores);
-		echo $this->toJSON();
-		echo "</pre>";
+		//echo $this->toJSON();
+		//echo "</pre>";
 		
 
 		return 1;
@@ -277,6 +281,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		$k=0;
 		foreach ( $this->scores as $methodID=>$scoreForMethod) {
 			$l=0;
+			if ($k!=0) $str.=",\n";
 			foreach($scoreForMethod as $scoreType=>$scoreDetails ) {
 				if (!is_array($scoreDetails) ) continue;
 				if ($scoreType==$scoreForMethod['bestScoreType']) $isBest=1; 
@@ -294,12 +299,12 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 						if ($scoreDetails['tp'][$i]) {
 							$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
 							if ($tpNum>0) $tpStr.=" ,\n		";
-							$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
+							$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
 							$tpNum++;
 						}	
 					}
 					$str.='	"turnpoints": [ '.$tpStr.' ] ';
-					$str.="\n }";
+					$str.="\n}";
 
 					$l++;
 			

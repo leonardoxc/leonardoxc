@@ -21,7 +21,7 @@ function remakeLog(id,action,DBGlvl) {
 }
 function scoreFlights(id,action,DBGlvl) {	 	
 	var scoreFlightsNum=MWJ_findObj('scoreFlightsNum').value;
-	var extraStr='&scoreFlightsNum='+logEntries;	
+	var extraStr='&scoreFlightsNum='+scoreFlightsNum;	
 	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=updateScoring'+extraStr;
 }
 </script>
@@ -76,10 +76,11 @@ This is a *heavy* operation and will take long to complete. It will check all un
 
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a><br>
 	This is a *heavy* operation and will take long to complete. It will re-compute  the takeoff/landing  for ALL flights ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a><BR>
+/*	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateScoring'>Update OLC Scoring</a><BR>
 	This is a *heavy* operation and will take long to complete. It will re-compute Scoring for ALL flights either scored or not";
-	
-	echo "<li><a href='javascript:scoreFlights()'>Update XC Scoring</a>  Process <input type='textbox' size='4' id='scoreFlightsNum' name='scoreFlightsNum' value='$scoreFlightsNum'> entries at a time (set -1 to proccess all)<br>
+*/	
+	echo "<li><a href='javascript:scoreFlights()'>Update XC Scoring</a>  Process <input type='textbox' size='4' id='scoreFlightsNum' name='scoreFlightsNum' value='$scoreFlightsNum'> flights at a time (set -1 to proccess all)<br>
+	This is a *heavy* operation and will take long to complete. It will re-compute Scoring for ALL flights either scored or not<BR>
 	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
 	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
 	
@@ -113,20 +114,24 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
+//	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
 	echo "<hr>";	
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table (NOT USED !!!)</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table (NOT USED !!!)</a> ";
-	echo "<hr>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> Use it when you switch from running Leoanardo
+from ISO to UTF encodings and takeoff names appear with bad characters.<BR>
+This will output a list of SQL commands that you must manually copy and then execute inside MYSQL with your preferred tool.";
+
+	echo "<li><b>Migrate to changes 2008/05/20</b>";	
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateStartPoints'>Update Takeoff coordinates to new format</a> ";
-	echo "<hr>";	
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> ";
 echo "</ul>";
 
 echo "<h3>Sync Log oparations</h3>";
 echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLog'>Clean sync-log </a> ";
-	echo "<li><a href='javascript:remakeLog()'>Remake sync-log </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set -1 to proccess all)<br>
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLogFlights'>Clean local SyncLog (all flights entries) </a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanLogScores'>Clean local SyncLog (only scoring entries) </a> ";
+
+	echo "<li><a href='javascript:remakeLog()'>Remake local SyncLog (flights) </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set -1 to proccess all)<br>
 	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
 	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
 echo "</ul>";
@@ -142,9 +147,7 @@ echo "</ul><br><hr>";
     if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
-
 		echo "</ol>";    
-
 	} else if ($admin_op=="cleanGEFiles") {
 		deleteFiles(dirname(__FILE__)."/flights",0,".kmz");
 		deleteFiles(dirname(__FILE__)."/flights",0,".kml");
@@ -152,64 +155,6 @@ echo "</ul><br><hr>";
 		deleteFiles(dirname(__FILE__)."/flights",0,".json.js");
     } else if ($admin_op=="cleanOldJSfiles") {
 		deleteFiles(dirname(__FILE__)."/flights",0,".1.js");
-    } else if ($admin_op=="convertTakeoffs") {
-		$res= $db->sql_query('SET NAMES latin1');	
-		// $query="SELECT * from $waypointsTable WHERE countryCode='RU'";
-		$query="SELECT * from $waypointsTable order By countryCode ";
-
-		//$query=" UPDATE leonardo_waypoints SET  name='Schwand', intName='Schwand', lat='47.0142', lon='-8.58312', type='1000', countryCode='CH', location='Brunnen', intLocation='Brunnen', link='http://paragliding.ch/index.php?id=129', description='Startplatz Schwand:   47° 00' 50'' N,8° 35' 05'' O 1250m Bisenstartplatz. In 15 minutigem Fussmarsch zu erreichen ab Bergstation. Gute Soaring Moglichkeiten bei Bise und Nordwind. Flug nach Seewen oder zuruck zur Talstation. Um zur Talstation zu fliegen nach dem Start rechts dem Hang entlang fliegen und vor der Hochspannungsleitung rechts ins Lee fliegen. Das zuruckfliegen im Lee ist bei nicht allzu starkem Wind kein Problem. ', modifyDate='2007-01-24' WHERE ID=9265";
-		$res= $db->sql_query($query);
-//echo "#$res#";
-//return;
-		echo "<pre>";
-		while ($row = mysql_fetch_assoc($res)) { 	
-			$convertInAction=0;
-			$sqlStr="  UPDATE $waypointsTable SET ";
-			$orgValues="# UPDATE $waypointsTable SET ";
-
-			$enc=$langEncodings[ countryCodeToLanguage($row['countryCode']) ];
-			if (!$enc) $enc='iso-8859-1';
-
-			// $orgValues.=" [$enc] ";
-			// echo "ecn: $enc <BR>";
-			foreach($row as $varName=>$varVal ) {
-
-				$varVal=str_replace("\r\n",'',trim($varVal));
-				$varVal=str_replace("\n",'',trim($varVal));
-				// $varVal=htmlspecialchars($varVal,ENT_QUOTES,"UTF-8");
-				//$varVal=str_replace('&amp;','&',$varVal);
-				// $varVal=str_replace('&quot;','"',$varVal);
-				//$varVal=str_replace('&lt;','<',$varVal);
-				//$varVal=str_replace('&gt;','>',$varVal);
-				// $varVal=prep_for_DB($varVal);
-
-
-				$varValUtf8=iconv($enc,'utf8',$varVal);
-				if ($varValUtf8!=$varVal) $convertInAction=1;
-
-//				$varValUtf8=str_replace("\r\n",'<br>',trim($varValUtf8));
-//				$varValUtf8=str_replace("\n",'<br>',trim($varValUtf8));
-
-				$varValUtf8=htmlspecialchars($varValUtf8,ENT_QUOTES,"UTF-8");
-				// $varValUtf8=str_replace('&amp;','&',$varValUtf8);
-				$varValUtf8=str_replace('&quot;','"',$varValUtf8);
-				$varValUtf8=str_replace('&lt;','<',$varValUtf8);
-				$varValUtf8=str_replace('&gt;','>',$varValUtf8);
-
-				if ($varName!='ID') { 
-					$sqlStr.=" $varName='".$varValUtf8."',";
-					$orgValues.=" $varName='$varVal',";
-				}
-			}
-			$sqlStr=substr($sqlStr,0,-1);
-			$orgValues=substr($orgValues,0,-1);
-			$sqlStr.=" WHERE ID=".$row['ID'];
-			$orgValues.=" WHERE ID=".$row['ID'];
-			//if ($convertInAction || $row['ID']==9265) echo "$orgValues\n$sqlStr;\n#\n";
-			if ($convertInAction ) echo "$orgValues\n$sqlStr;\n#\n";
-		}
-		echo "</pre>";
-
     } else if ($admin_op=="fixTakeoffNames") {
 		$ar1=array('name'=>'intName','intName'=>'name','location'=>'intLocation','intLocation'=>'location');
 		foreach ($ar1 as $n1=>$n2){
@@ -319,6 +264,60 @@ echo "</ul><br><hr>";
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
+    } else if ($admin_op=="convertTakeoffs") {
+		$res= $db->sql_query('SET NAMES latin1');	
+		$query="SELECT * from $waypointsTable order By countryCode ";
+
+		//$query=" UPDATE leonardo_waypoints SET  name='Schwand', intName='Schwand', lat='47.0142', lon='-8.58312', type='1000', countryCode='CH', location='Brunnen', intLocation='Brunnen', link='http://paragliding.ch/index.php?id=129', description='Startplatz Schwand:   47° 00' 50'' N,8° 35' 05'' O 1250m Bisenstartplatz. In 15 minutigem Fussmarsch zu erreichen ab Bergstation. Gute Soaring Moglichkeiten bei Bise und Nordwind. Flug nach Seewen oder zuruck zur Talstation. Um zur Talstation zu fliegen nach dem Start rechts dem Hang entlang fliegen und vor der Hochspannungsleitung rechts ins Lee fliegen. Das zuruckfliegen im Lee ist bei nicht allzu starkem Wind kein Problem. ', modifyDate='2007-01-24' WHERE ID=9265";
+		$res= $db->sql_query($query);
+		echo "<pre>";
+		while ($row = mysql_fetch_assoc($res)) { 	
+			$convertInAction=0;
+			$sqlStr="  UPDATE $waypointsTable SET ";
+			$orgValues="# UPDATE $waypointsTable SET ";
+
+			$enc=$langEncodings[ countryCodeToLanguage($row['countryCode']) ];
+			if (!$enc) $enc='iso-8859-1';
+
+			// $orgValues.=" [$enc] ";
+			// echo "ecn: $enc <BR>";
+			foreach($row as $varName=>$varVal ) {
+
+				$varVal=str_replace("\r\n",'',trim($varVal));
+				$varVal=str_replace("\n",'',trim($varVal));
+				// $varVal=htmlspecialchars($varVal,ENT_QUOTES,"UTF-8");
+				//$varVal=str_replace('&amp;','&',$varVal);
+				// $varVal=str_replace('&quot;','"',$varVal);
+				//$varVal=str_replace('&lt;','<',$varVal);
+				//$varVal=str_replace('&gt;','>',$varVal);
+				// $varVal=prep_for_DB($varVal);
+
+
+				$varValUtf8=iconv($enc,'utf8',$varVal);
+				if ($varValUtf8!=$varVal) $convertInAction=1;
+
+//				$varValUtf8=str_replace("\r\n",'<br>',trim($varValUtf8));
+//				$varValUtf8=str_replace("\n",'<br>',trim($varValUtf8));
+
+				$varValUtf8=htmlspecialchars($varValUtf8,ENT_QUOTES,"UTF-8");
+				// $varValUtf8=str_replace('&amp;','&',$varValUtf8);
+				$varValUtf8=str_replace('&quot;','"',$varValUtf8);
+				$varValUtf8=str_replace('&lt;','<',$varValUtf8);
+				$varValUtf8=str_replace('&gt;','>',$varValUtf8);
+
+				if ($varName!='ID') { 
+					$sqlStr.=" $varName='".$varValUtf8."',";
+					$orgValues.=" $varName='$varVal',";
+				}
+			}
+			$sqlStr=substr($sqlStr,0,-1);
+			$orgValues=substr($orgValues,0,-1);
+			$sqlStr.=" WHERE ID=".$row['ID'];
+			$orgValues.=" WHERE ID=".$row['ID'];
+			//if ($convertInAction || $row['ID']==9265) echo "$orgValues\n$sqlStr;\n#\n";
+			if ($convertInAction ) echo "$orgValues\n$sqlStr;\n#\n";
+		}
+		echo "</pre>";
 
 	} else if ($admin_op=="updateLocations") {
 		$query="SELECT ID from $flightsTable WHERE active=1";
@@ -401,9 +400,10 @@ echo "</ul><br><hr>";
 		if ($scoreFlightsNum > 0) $limitStr= " LIMIT $scoreFlightsNum ";
 		else $limitStr='';
 		
-		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 ORDER BY ID ASC $limitStr";
+		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND filename<>'' ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
-		
+
+		$j=0;
 		if($res > 0){
 			 $waypoints=getWaypoints();
 			 while ($row = mysql_fetch_assoc($res)) { 
@@ -414,14 +414,18 @@ echo "</ul><br><hr>";
 					  set_time_limit(200);
 					  $flight->computeScore();
 					  setBatchBit($row["ID"]);
+					  $j++;
 					  //$flight->putFlightToDB(1);
 				  }	 			
 				  
 			 }
 		}
-		echo "<BR><br><br>DONE !!!<BR>";
-	} else if ($admin_op=="cleanLog") {
+		echo "<BR><br><br>$j Flights re-scored !!!<BR>";
+	} else if ($admin_op=="cleanLogFlights") {
 		Logger::deleteLogsFromDB(1);
+		clearBatchBit();
+	} else if ($admin_op=="cleanLogScores") {
+		Logger::deleteLogsFromDB(1,8);
 		clearBatchBit();
 	} else if ($admin_op=="remakeLog") {
 		if ($logEntries > 0) $limitStr= " LIMIT $logEntries ";

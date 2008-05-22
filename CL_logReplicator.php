@@ -170,7 +170,7 @@ class logReplicator {
 	}
 	
 	function processEntry($serverID,$e,$sync_mode=SYNC_INSERT_FLIGHT_LINK) {
-		global $flightsAbsPath;
+		global $flightsAbsPath,$CONF;
 		global $DBGcat,$DBGlvl;
 		if ($DBGlvl>0) {
 			echo "<PRE>";
@@ -203,14 +203,48 @@ class logReplicator {
 				}
 								
 				// echo "Will update scoring  info for flight $flightIDlocal<BR>";
-				
-				$extFlight=new flight();			
-				$extFlight->getFlightFromDB($flightIDlocal,0);					
-			
+
+				// no need to pull flight info
+				//$extFlight=new flight();			
+				//$extFlight->getFlightFromDB($flightIDlocal,0);					
+
+				require_once dirname(__FILE__).'/CL_flightScore.php';			
 				$flightScore=new flightScore($this->flightID);
+			
+				// we have the score array in $e['ActionXML']['score']
+				// $sArr=$e['ActionXML']['score'];
+				$sArr=$e['ActionXML']['score'];
 
-!!!!!!!! parse json into $flightScore
+				$flightScore->bestScoreType=$sArr['XCtype'];
+				$flightScore->bestScore=$sArr['XCdistance'];
+				$flightScore->bestDistance=$sArr['XCscore'];
+				$flightScore->scores=array();
+				foreach($sArr['scores'] as $i=>$score) {
+					$mID=$score['XCscoreMethod'];
+					$type=$flightScore->flightTypesID[ $score['XCtype'] ];
 
+					$flightScore->scores[$mID][$type] =
+						array (
+							'isBest'=>$score['isBest'],
+							'distance'=>$score['XCdistance'],
+							'score'=>$score['XCscore'],
+						);
+
+					foreach($score['turnpoints'] as $j=>$tp) {
+						$thisTP=new gpsPoint();
+						$thisTP->setLat($tp['lat']);
+						$thisTP->setLon($tp['lon']);
+						$thisTP->gpsTime=$tp['UTCsecs'];
+						
+						$flightScore->scores[$mID][$type]['tp'][ $tp['id'] ] = $thisTP->to_IGC_Record();
+					}
+
+				}
+/*
+				echo "<pre>";
+				print_r($flightScore->scores);
+				echo "</pre>";
+*/
 				//put also in scores table, the flight is sure to be present in flights table
 				$flightScore->putToDB(1,1);
 		
