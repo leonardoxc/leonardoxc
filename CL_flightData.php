@@ -2517,6 +2517,25 @@ $kml_file_contents=
 				return 0;
 			}
 			$this->getFlightFromIGC($this->getIGCFilename(0) ) ;
+			if (!is_file($this->getIGCFilename(1) ) ) {
+				 //saned file could no be created!!!
+				echo "Saned file could no be created for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>";
+				require_once dirname(__FILE__).'/CL_actionLogger.php';
+				$log=new Logger();
+				$log->userID  	=$this->userID;
+				$log->ItemType	=1 ; // flight; 
+				$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
+				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
+				$log->ActionXML	= "{ }";
+				$log->Modifier	= 0;
+				$log->ModifierID= 0;
+				$log->ServerModifierID =0;
+				$log->Result = 0;
+				if (!$log->Result) $log->ResultDescription ="Saned file could no be created";
+				if (!$log->put()) echo "Problem in logger<BR>";
+				return 0;
+			}
 		}
 
 		$flightScore=new flightScore($this->flightID);
