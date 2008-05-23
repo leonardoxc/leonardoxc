@@ -20,7 +20,7 @@
 	3=>array(	"desc"=>"Greece 2006 XC league",
 				"id"=>3,
 				"lang"=>"greek",
-				"areaID"=>0,
+				"areaID"=>1,
 				"addManual"=>0,
 				"adminID"=>76,
 
@@ -30,11 +30,11 @@
 				"defaultDisplayLanguage"=>"greek",
 				"defaultDisplayTheme"=>"basic",
 
-				"countryCodes"=>array("gr"),
-				"pilotNationality"=>array("gr"),
+				//"countryCodes"=>array("gr"),
+				//"pilotNationality"=>array("gr"),
 				"gliderCat"=>array(1,2),
 				
-
+/*
 				 'useCustomYears'=>1, 
 				 'years'=>array ('use_calendar_years'=>0),
 				 'useCustomSeasons'=>1, // definition must follow !		 
@@ -42,9 +42,6 @@
 				 'seasons'=>array (
 					'use_season_years'=>1,	
 					'use_defined_seasons'=>0,
-					'season_default_start'=>'10-1',
-					'season_default_end'=>'9-31',
-
 					'season_default_start'=>'4-1',
 					'season_default_end'=>'3-31',
 
@@ -62,8 +59,8 @@
 					//'season_end_year_diff'=>0;
 
 					'start_season'=>2006,
-					'end_season' =>2006,
-					//'end_season' => dates::getCurrentSeason(0,3),
+					//'end_season' =>2006,
+					'end_season' => dates::getCurrentSeason(0,3),
 					'seasons'=>array(
 						2008=>array('start'=>'2007-09-16','end'=>'2008-09-15'),	
 						2007=>array('start'=>'2006-10-11','end'=>'2007-9-15'),
@@ -77,7 +74,7 @@
 				"endYear"=>"2006",
 				"endMonth"=>"0",
 				"endDay"=>"0",
-
+*/
 			) ,
 
 	5=>array(	"desc"=>"Danish XC league",
@@ -107,6 +104,18 @@
 
 			) ,
 
+        10=>array(       "desc"=>" XC Madeira Open",
+                        "id"=>10,
+                        "lang"=>"english",
+                        "areaID"=>1,
+                        "addManual"=>0,
+                        "adminID"=>72,
+                               
+                        "noSpecificMembers"=>1,
+                        "defaultDisplayLanguage"=>"basic",
+                        "defaultDisplayTheme"=>"basic",
+                        "gliderCat"=>array(1),
+                        ) ,
  );
 
 foreach($clubsList as $i=>$clubInfo) {

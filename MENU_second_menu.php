@@ -233,7 +233,9 @@ if (! $dontShowCountriesSelection ) {
 		echo _Select_Brand ;
 		$brandImg='';
 	} else { 
-		$brandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
+
+		$brandImg=brands::getBrandImg($brandID,'',$cat);	
+		//$brandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
 		echo $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];		
 
 		// echo $brandID;

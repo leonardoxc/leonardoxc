@@ -402,7 +402,7 @@ $resStr='{
 		"firstTM": '.($firstPoint->gpsTime+0).',
 		"lastLat": '.$lastPoint->lat().',
 		"lastLon": '.$lastPoint->lon().',
-		"lastTM": '.$lastPoint->gpsTime.'
+		"lastTM": '.($lastPoint->gpsTime+0).'
 	},
 		
 	"pilot": {
@@ -1957,6 +1957,11 @@ $kml_file_contents=
 	}
 	
 	function getFlightFromIGC($filename) {
+		if ( !is_file($filename) ) {
+			DEBUG("IGC",1,"getFlightFromIGC: File was not found:$filename<br>");
+			return 0;
+		}
+
 		set_time_limit (100);
 		if ($this->forceBounds) {
 			$startTime=$this->START_TIME;
@@ -3076,6 +3081,77 @@ $kml_file_contents=
 		$this->$var_name="";
 	}
 
+	function renameTracklog($newName,$oldName='') {
+		global $db;
+		global $flightsTable;
+		global $CONF_server_id;
+
+		if ($oldName) {
+			$orgFilename=$this->filename;
+			$this->filename=$oldName;
+		}
+
+		@unlink($this->getJsonFilename() ) ;
+		@unlink($this->getPointsFilename(1) ) ;
+		@unlink($this->getJsFilename(1) );			
+		@unlink($this->getIGCFilename(0).".kmz" ); 
+		@unlink($this->getIGCFilename(0).".man.kmz" ); 
+		@unlink($this->getIGCFilename(0).".poly.txt" ); 
+
+		@unlink($this->getMapFilename() ); 
+
+		for ($metric_system=1;$metric_system<=2;$metric_system++) {
+			for ($raw=0;$raw<=1;$raw++) {
+				@unlink($this->getChartFilename("alt",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("speed",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("vario",$metric_system,$raw) ); 
+				@unlink($this->getChartFilename("takeoff_distance",$metric_system,$raw) ); 		
+			}
+		}
+
+		$oldFilename=$this->getIGCFilename() ;
+		$oldFilenameSaned=$this->getIGCFilename(1) ; 
+		$oldOLCfile=$this->getIGCFilename(0).".olc"; 
+		
+		$this->filename=$newName;
+
+		rename($oldFilename,$this->getIGCFilename() );
+		rename($oldFilenameSaned,$this->getIGCFilename(1) );
+		rename($oldOLCfile,$this->getIGCFilename(0).".olc");
+
+
+		$query="UPDATE $flightsTable SET filename='".$this->filename."' WHERE ID=".$this->flightID;
+		// echo $query."<HR>";
+		$res= $db->sql_query($query );
+		if($res <= 0){   
+			 echo "Error renaming IGC file for flight ".$this->flightID." : $query<BR>";
+		}
+
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
+		$log->ActionID  = 16 ;  //1  => add  2  => edit; 4  => delete ; 16 -> rename trackog
+		$log->ActionXML	= 
+'{ 
+	"serverID": '. ( $this->serverID?$this->serverID:$CONF_server_id).',
+	"id": '.($isLocal ? $this->flightID : $this->original_ID  ).',
+	"linkIGC": "'.$this->getIGC_URL().'",
+	"linkIGCzip": "'.$this->getZippedIGC_URL().'",
+	"newFilename": "'.json::prepStr($this->filename).'",
+	"oldFilename": "'.json::prepStr($oldName).'"
+}';
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = 1;
+		if (!$log->Result) $log->ResultDescription ="Problem in deleting flight  $query";
+		if (!$log->put()) echo "Problem in logger<BR>";
+	}
+
 	function deleteSecondaryFiles(){	
 			@unlink($this->getJsonFilename() ) ;
 			@unlink($this->getPointsFilename(1) ) ;
@@ -3126,12 +3202,6 @@ $kml_file_contents=
 			$flightPhotos=new flightPhotos($this->flightID);
 			$flightPhotos->deleteAllPhotos(0);
 		}
-
-		/*
-		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
-			$this->deletePhoto($i);
-		}
-		*/
 		
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
@@ -3325,7 +3395,10 @@ $kml_file_contents=
 	function updateAll($forceRefresh=0) {
 		// chack for saned igc in case it wasnt created in the first place or if the flight was synced
 	 	if (  !is_file( $this->getIGCFilename(1) ) || $forceRefresh ) { 
-			 $this->getFlightFromIGC($this->getIGCFilename(0) ) ;
+			if (! $this->getFlightFromIGC($this->getIGCFilename(0) ) ) {
+				$this->getFlightFromDB($this->flightID,0);
+				return;
+			}
 		}
 		
  	    if (  !is_file( $this->getMapFilename() ) || $forceRefresh ) {

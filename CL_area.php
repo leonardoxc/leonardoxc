@@ -83,6 +83,7 @@ class area{
 	
 	function getFromDB() {
 		global $db,$areasTable ;
+
 		$res= $db->sql_query("SELECT * FROM $areasTable WHERE ID=".$this->ID );
   		if($res <= 0){   
 			 echo "Error getting club from DB<BR>";

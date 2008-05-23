@@ -98,6 +98,7 @@ echo "</ul>";
 echo "<h3>Troubleshoot operations</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findMissingFiles'>Find missing IGC</a><br> It will find flights that for some 'strange' reason dont have their IGC files present where they should have  ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findBadFilenames'>Find bad filenames (due to non-latin chars)</a><br>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=findUnusedIGCfiles'>Find unused (rejected) IGC files</a><BR>It will find all IGC files that were rejected during submission BUT for some strange reason were not auto-clened by the system. ";
 echo "</ul>";
 
@@ -166,7 +167,7 @@ echo "</ul><br><hr>";
 		}
 		echo "<BR><BR>Takeoff Names fixed<BR><BR>";
     } else if ($admin_op=="findMissingFiles") {
-		$query="SELECT ID,active,dateAdded from $flightsTable ";
+		$query="SELECT ID,active,dateAdded from $flightsTable WHERE filename <> '' ";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
@@ -187,6 +188,84 @@ echo "</ul><br><hr>";
 		}
 		echo "<BR><br>IGC files missing: $i <hr><BR>";
 		echo "<BR><br><BR>DONE !!!<BR>";
+    } else if ($admin_op=="findBadFilenames") {
+
+
+		$query="SELECT ID, filename ,dateAdded, userID , DATE  from $flightsTable WHERE  filename <> ''";
+		$res= $db->sql_query($query);
+
+		$i=0;
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$newfilename=toLatin1($row['filename']) ;
+				if ($newfilename=='') {
+					echo "Latin filename for [ ".$row['filename']." ] is NULL!!!!!<BR>";
+					continue;				
+				}
+				if ( $newfilename != $row['filename']){
+					$year=substr($row['DATE'],0,4);
+					$fdir=$flightsAbsPath."/".$row['userID']."/flights/".$year."/";
+
+					require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+					$NewEncoding = new ConvertCharset;
+					$enc='iso-8859-1';
+					$filenameUTF= $NewEncoding->Convert($row['filename'], $enc, "utf-8", $Entities);
+					$filenameGR= $NewEncoding->Convert(filenameUTF, "utf-8", "iso-8859-7", $Entities);
+
+						if (is_file($fdir.$filenameUTF) ) { 
+							echo "[UTF]";
+							$oldFilename=$filenameUTF;
+						} else if (is_file($fdir.$row['filename']) ) { 
+							echo "[ORG]";
+							$oldFilename=$row['filename'];
+						} else if (is_file($fdir.$filenameGR) ) { 
+							echo "[GR]";
+							$oldFilename=$filenameGR;
+						}
+
+						$i++;
+						$newfilename=safeFilename( $newfilename);
+					     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] to [ $newfilename ]  <br>";
+
+						if ( true ) {
+							$flight=new flight();
+							$flight->getFlightFromDB($row["ID"],0);		
+							$flight->renameTracklog($newfilename,$oldFilename);
+						}
+if ($i>5 ) break;
+						//break;
+
+				}
+/*
+					$files_total++;
+					$year=substr($row['DATE'],0,4);
+					$fdir=$flightsAbsPath."/".$row['userID']."/flights/".$year."/";
+					$filename=$fdir.$row['filename'];  
+					if (!is_file($filename) ) { 
+						 $i++;
+						 $status="/".$row['userID']."/flights/".$year."/".$row['filename'];
+
+
+
+	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+	$NewEncoding = new ConvertCharset;
+	$enc='iso-8859-1';
+	$filenameUTF= urlencode($NewEncoding->Convert($row['filename'], $enc, "utf-8", $Entities));
+		if (is_file($fdir.$filenameUTF) ) { 
+			echo "FOUND UTF !!!!!! :<HR>";
+		}
+						 $newfilename=toLatin1($row['filename']);
+					     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [ $newfilename ] [".$row["dateAdded"]."] $status <br>";
+						echo "$filenameUTF<BR>";
+						continue;
+					}
+*/
+			}
+		}
+
+		echo "<BR><br>Bad IGC filesnames: $i <hr><BR>";
+		echo "<BR><br><BR>DONE !!!<BR>";
+
 	} else if ($admin_op=="updateNAC_Clubs") {
 		$query="SELECT $flightsTable.DATE , $flightsTable.ID as flightID, $pilotsTable.NACid  as NACid , $pilotsTable.NACclubID  as NACclubID from $flightsTable, $pilotsTable 
 				WHERE $flightsTable.userID=$pilotsTable.pilotID AND $pilotsTable.NACid <> 0  AND $pilotsTable.NACclubID <> 0 ";

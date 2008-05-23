@@ -28,6 +28,15 @@ if( !function_exists('str_ireplace') ){
  }
 } 
 
+function safeFilename($str){
+	$str=str_replace('"','_',$str);
+	$str=str_replace("'",'_',$str);
+	$str=str_replace("`",'_',$str);
+	$str=str_replace('/','_',$str);
+	$str=str_replace('\\','_',$str);
+	return $str;
+}
+
 function toLatin1($str,$enc=""){
 	if ( ! preg_match("/[^\w\.\-\@\!\#\$\%\^\&\*\?\[\]\{\}\.\+\/]/",$str) ) {
 		return $str;
@@ -51,6 +60,7 @@ function toLatin1($str,$enc=""){
 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 	$NewEncoding = new ConvertCharset;
 	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);	
+
 	return utf8_to_ascii($str_utf8);
 
 }

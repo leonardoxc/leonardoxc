@@ -237,7 +237,6 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 		$flightBrandID=array_shift(array_keys($pilotBrands));
 
 		$gliderBrandImg=brands::getBrandImg($flightBrandID,'',$cat);	
-		//$gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$flightBrandID).".gif' border=0 align=abs_middle>";
 
 		echo "<td align='center'>$gliderBrandImg</td>";
    	}	// next pilot

@@ -55,16 +55,21 @@
 	"WillsWing",
 	"Moyes", //39
 	"AIR", // 40
-//	"Aeros",	
 	"Airborne",
 	"Bautek",
 	"Seedwings",
-	// to be added
-	//	"FlyingPlanet", // not found
-	//	"ADG",      // not found
-
+	44=>'Finsterwalder',
+	45=>'Team5',
+	46=>'Thalhofer',
+	47=>'Airea',
+	48=>'La Mouette',
+	49=>'Impuls',
+	50=>'Team Impact',
+	51=>'Guggenmos',
+	52=>'Flying Planet',
+	53=>'Enterprise Wings',
+	54=>'CaliptAir',
 
  );
-
 
 ?>

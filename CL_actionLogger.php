@@ -25,7 +25,7 @@ ActionID  - what the user does
 2  => edit
 4  => delete
 8  => Score  (flight only)
-16 => Create charts (flight only)
+16 => Rename TrackLog (flight only)
 32 => Create Map (flight only)
 64 => 
 128=>
@@ -150,7 +150,7 @@ $actionTypes=array(
 2  => "Edit",
 4  => "Delete",
 8  => "Score  (flight only)",
-16 => "Create charts (flight only)",
+16 => "Rename TrackLog",
 32 => "Create Map (flight only)",
 );
 

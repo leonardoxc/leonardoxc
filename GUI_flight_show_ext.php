@@ -291,13 +291,8 @@ if ($flight->linkURL) {
  	//$flightBrandID=guessBrandID($flight->cat,$flight->glider);
 
 
-/*	if ($flightBrandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/$flight->cat/".sprintf("%03d",$flightBrandID).".gif' border=0 align='absmiddle'> ";
-	else $gliderBrandImg="";
-	*/
-	
 	$gliderBrandImg=brands::getBrandImg($flight->gliderBrandID,$flight->glider,$flight->cat);
-	
-	$glider=$gliderBrandImg.$flight->glider;
+	$glider=$gliderBrandImg.' '.$flight->glider;
 
 
 $gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	

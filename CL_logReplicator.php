@@ -22,7 +22,7 @@ ActionID  - what the user does
 2  => edit
 4  => delete
 8  => Score  (flight only)
-16 => Create charts (flight only)
+16 => Rename TrackLog (flight only)
 32 => Create Map (flight only)
 64 => 
 128=>
@@ -192,6 +192,18 @@ class logReplicator {
 				$extFlight->getFlightFromDB($flightIDlocal,0);
 				$extFlight->deleteFlight();			
 				return array(1,"Flight with local ID: $flightIDlocal DELETED");
+			}
+
+			if ($e['action']==16) {	// rename tracklog
+				$flightIDlocal=logReplicator::findFlight($e['serverId'],$e['id']);
+				if (!$flightIDlocal) {
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverId']." and original ID : ".
+							$e['id']." is not found in the local DB -> Wont rename tracklog<BR>");
+				}
+				$extFlight=new flight();			
+				$extFlight->getFlightFromDB($flightIDlocal,0);		
+				$extFlight->renameTracklog($e['ActionXML']['newFilename'],$e['ActionXML']['oldFilename']);
+				return array(1,"Flight tracklog renamed for local ID $flightIDlocal");
 			}
 
 			if ($e['action']==8) {	// scoring info

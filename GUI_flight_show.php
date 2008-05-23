@@ -39,12 +39,11 @@
 	$Ltemplate ->set_filenames(array(
 		'body' => 'flight_show.html'));
 
-  $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
-  $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
-
  
-  ?>
+?>
+
   <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>
 <script language="javascript">
@@ -263,6 +262,10 @@ function delete_takeoff(id) {
   }
 
   $flight->updateAll(0);
+
+  $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
+  $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+
 
   if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
 		$flight->computeScore();

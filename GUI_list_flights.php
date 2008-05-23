@@ -201,7 +201,7 @@
 		FROM $flightsTable $extra_table_str $extra_table_str2
 		WHERE (1=1) $where_clause $where_clause2
 		ORDER BY $sortOrderFinal $ord LIMIT $startNum,".$PREFS->itemsPerPage ;
-	//  echo $query;
+	// echo "<!-- $query -->"; 
 	$res= $db->sql_query($query);
 	
 	if($res <= 0){
@@ -440,12 +440,6 @@ function removeClubFlight(clubID,flightID) {
 			$olcScoreTypeImg="photo_icon_blank.gif";
 		}
 
-	  // $brandID=guessBrandID($gliderType,$row['glider']);
-		//	   $thisBrandID=$row["gliderBrandID"];
-	   //if ($brandID) $gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' width='50' height='24' border='0' />";
-	   //else $gliderBrandImg="&nbsp;";
-   
-  
 	    $gliderBrandImg=brands::getBrandImg($row["gliderBrandID"],$row['flight_glider'],$gliderType);
 
 

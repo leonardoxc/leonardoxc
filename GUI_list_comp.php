@@ -392,8 +392,6 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 		 
 	 	 $flightBrandID=$pilotGlidersMax[$pilotID]+0;
 
-		 //$brandName=$brandsList[$cat][$flightBrandID];
-		 //$gliderBrandImg="<img src='$moduleRelPath/img/brands/$cat/".sprintf("%03d",$flightBrandID).".gif' alt='$brandName' title='$brandName' border=0 align=abs_middle>";
 		 $gliderBrandImg=brands::getBrandImg($flightBrandID,'',$cat);
 //		 if ($flightBrandID) 
 //		 else $gliderBrandImg="&nbsp;";
