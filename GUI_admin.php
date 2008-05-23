@@ -167,7 +167,9 @@ echo "</ul><br><hr>";
 		}
 		echo "<BR><BR>Takeoff Names fixed<BR><BR>";
     } else if ($admin_op=="findMissingFiles") {
-		$query="SELECT ID,active,dateAdded from $flightsTable WHERE filename <> '' ";
+
+
+		$query="SELECT * from $flightsTable WHERE filename <> '' AND serverID=2 ";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
@@ -182,6 +184,7 @@ echo "</ul><br><hr>";
 				 else {
 					 $i++;
 					 $status=$flight->getIGCRelPath();
+					 $status.=" ".$row['original_ID'];
 				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."] $status <br>";
 				 }
 			 }
@@ -190,18 +193,97 @@ echo "</ul><br><hr>";
 		echo "<BR><br><BR>DONE !!!<BR>";
     } else if ($admin_op=="findBadFilenames") {
 
+/*	
+$fl_arr=array( 
+2337 =>"2006-10-29-CGP-xYYY-01TSIKAS.IGC",
+2428 =>"2006-11-18- TSIKAS.IGC", 
+2439 =>"2006-11-19- TSIKAS.IGC", 
+2440 =>"2006-11-20- TSIKAS.IGC", 
+2446 =>"2006-11-26- TSIKAS.IGC", 
+2461 =>"2006-12-01-TSIKAS.IGC", 
+2464 =>"2006-12-03-Nikos.IGC", 
+2492 =>"2006-12-13-TSIKAS.IGC",
+2532 =>"2006-12-30- TSIKAS.IGC",
+2556 =>"2007-01-06- TSIKAS.IGC",
+2648 =>"2007-02-03-NIKOS TSIKAS.IGC",
+2690 =>"2007-02-12-TSIKAS.IGC",
+2722 =>"ASPRRAGGELOI.IGC",
+2797 =>"2007-03-04-Nikos.IGC",
+3294 =>"13-05-07 ASPRRAGGELOI.IGC",
+786 =>"ASPRRAGGELOI 11-9-2005.IGC",
 
-		$query="SELECT ID, filename ,dateAdded, userID , DATE  from $flightsTable WHERE  filename <> ''";
+
+);
+
+foreach($fl_arr as $fl_id=>$newname) {
+		$flight=new flight();
+		$flight->getFlightFromDB($fl_id,0);		
+		$flight->renameTracklog($newname);	
+}
+
+return;*/
+
+/*
+$fl_arr=array( 
+
+13265=>"2005-06-15-CGP-xYYY-01-Vlakherna.IGC",
+13279=>"drama.IGC",
+13295=>"2005-06-22-CGP-xYYY-01-Varupetro.IGC",
+13332=>"2005-07-09-CGP-xYYY-01-%7EQiu%20golpIGC",
+13391=>"2005-08-03-CGP-xYYY-01-Menidi.IGC",
+13392=>"2005-08-07-CGP-xYYY-01-Exantheia.IGC",
+);
+foreach($fl_arr as $fl_id=>$newname) {
+		$query="UPDATE $flightsTable SET filename='$newname' WHERE  ID=$fl_id  ";		
+		$res= $db->sql_query($query);
+}
+
+return;
+*/
+
+
+
+		$query="SELECT ID, filename ,dateAdded, userID ,userServerID, DATE  from $flightsTable WHERE  filename <> ''  ";		
 		$res= $db->sql_query($query);
 
 		$i=0;
+		$j=0;
+
+$mNames=array(		
+3545=>"2007-06-15-gkiona.IGC",
+3553=>"gkiona.IGC",
+3554=>"Gyros Fokidas.IGC",
+3705=>"1-7-07 psili-stavraki.IGC",
+4459=>"Kitheronas 15-09-07 Proti Ptisi.igc",
+4835=>"2007-10-26 Psili-douraxani.IGC",
+4836=>"2007-10-27 psili-.IGC",
+4988=>"25-11-07 psili mitsikeli.IGC",
+);
+
+/*
+bad chars in 
+http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
+*/
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				$newfilename=toLatin1($row['filename']) ;
 				if ($newfilename=='') {
+					echo "$j. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> ";
 					echo "Latin filename for [ ".$row['filename']." ] is NULL!!!!!<BR>";
-					continue;				
+					$j++;
+
+					if ($mNames[$row["ID"]]) {
+						$newfilename=$mNames[$row["ID"]];
+						$latinAvailable=1;
+					} else {
+						$latinAvailable=0;
+					}				
+					
+					// continue;				
+				} else {
+					$latinAvailable=1;
 				}
+				
 				if ( $newfilename != $row['filename']){
 					$year=substr($row['DATE'],0,4);
 					$fdir=$flightsAbsPath."/".$row['userID']."/flights/".$year."/";
@@ -225,14 +307,14 @@ echo "</ul><br><hr>";
 
 						$i++;
 						$newfilename=safeFilename( $newfilename);
-					     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] to [ $newfilename ]  <br>";
+					    echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
 
-						if ( true ) {
+						if ( $latinAvailable && $newfilename ) {
 							$flight=new flight();
 							$flight->getFlightFromDB($row["ID"],0);		
 							$flight->renameTracklog($newfilename,$oldFilename);
 						}
-if ($i>5 ) break;
+	// if ($i>5 ) break;
 						//break;
 
 				}

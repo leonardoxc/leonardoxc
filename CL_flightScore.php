@@ -364,10 +364,13 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			global $CONF;
 			$defaultMethodID= $CONF['scoring']['default_set'];
 			$defaultScore=$this->scores[$defaultMethodID];
-
-			$query="UPDATE $flightsTable SET 
-							 MAX_LINEAR_DISTANCE=".$this->MAX_LINEAR_DISTANCE.
-							 ", BEST_FLIGHT_TYPE='".$defaultScore['bestScoreType']."'".
+			if ( $this->MAX_LINEAR_DISTANCE )
+				$maxDistStr=" MAX_LINEAR_DISTANCE=".$this->MAX_LINEAR_DISTANCE.', ';
+			else 		
+				$maxDistStr='';
+			
+			$query="UPDATE $flightsTable SET $maxDistStr
+							 BEST_FLIGHT_TYPE='".$defaultScore['bestScoreType']."'".
 							 ", FLIGHT_KM=".($defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000).
 							 ", FLIGHT_POINTS=".$defaultScore['bestScore'].							
 						" WHERE ID=".$this->flightID;

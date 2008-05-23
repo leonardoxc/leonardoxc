@@ -149,9 +149,9 @@ $actionTypes=array(
 1  => "Add",
 2  => "Edit",
 4  => "Delete",
-8  => "Score  (flight only)",
+8  => "Score",
 16 => "Rename TrackLog",
-32 => "Create Map (flight only)",
+32 => "Create Map",
 );
 
 class Logger { 

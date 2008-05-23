@@ -46,7 +46,7 @@
 
 
 	if (!$op) $op="latest";	
-	if (!in_array($op,array("latest","get_hash")) ) return;
+	if (!in_array($op,array("latest","get_hash","get_igc")) ) return;
 
 	$encoding="utf-8";
 

@@ -23,8 +23,8 @@
  if ($cat==0 && $is_comp) {  
 	 if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
 		$cat=$clubsList[$clubID]['gliderCat'][0];
-	 } else $cat=1;
- }
+	 } else $cat=$CONF_default_cat_pilots;
+ } 
  
  if ($cat==0) $where_clause.="";
  else $where_clause.=" AND cat=$cat ";

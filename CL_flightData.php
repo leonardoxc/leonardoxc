@@ -2452,7 +2452,7 @@ $kml_file_contents=
 	
 	function computeScore() {
 		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
-		global $baseInstallationPath,$CONF_allow_olc_files,$CONF;
+		global $baseInstallationPath,$CONF_allow_olc_files,$CONF,$CONF_server_id;
 
 		if (! $scoringServerActive) return 0;
 		$manualScore=0;

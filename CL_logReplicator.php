@@ -221,7 +221,7 @@ class logReplicator {
 				//$extFlight->getFlightFromDB($flightIDlocal,0);					
 
 				require_once dirname(__FILE__).'/CL_flightScore.php';			
-				$flightScore=new flightScore($this->flightID);
+				$flightScore=new flightScore($flightIDlocal);
 			
 				// we have the score array in $e['ActionXML']['score']
 				// $sArr=$e['ActionXML']['score'];
@@ -242,6 +242,11 @@ class logReplicator {
 							'score'=>$score['XCscore'],
 						);
 
+					if ($score['isBest']) {
+						$flightScore->scores[$mID]['bestScoreType'] = $type;
+						$flightScore->scores[$mID]['bestScore'] = $score['XCscore'];
+					}
+					
 					foreach($score['turnpoints'] as $j=>$tp) {
 						$thisTP=new gpsPoint();
 						$thisTP->setLat($tp['lat']);
