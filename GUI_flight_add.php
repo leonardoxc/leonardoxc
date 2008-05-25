@@ -291,7 +291,13 @@ function setValue(obj)
 
 
 <?
-			$firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);
+			// $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);
+			
+			$firstPoint=new gpsPoint('',$flight->timezone);
+			$firstPoint->setLat($flight->firstLat);
+			$firstPoint->setLon($flight->firstLon);
+			$firstPoint->gpsTime=$flight->firstPointTM;				
+
 			$takeoffLink="<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle> 
 The takeoff/launch of your flight is not registered in Leonardo. <img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br>
 This is nothing to worry about, but you can easily provide this info <br>by clicking on the 'Register Takeoff' link below.

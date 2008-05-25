@@ -267,8 +267,18 @@ if (false) {
 		$takeoff=new waypoint($this->takeoffID);
 		$takeoff->getFromDB();
 
-		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
-		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
+//		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
+//		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);			
+
+		$firstPoint=new gpsPoint('',$this->timezone);
+		$firstPoint->setLat($this->firstLat);
+		$firstPoint->setLon($this->firstLon);
+		$firstPoint->gpsTime=$this->firstPointTM;				
+
+		$lastPoint=new gpsPoint('',$this->timezone);
+		$lastPoint->setLat($this->lastLat);
+		$lastPoint->setLon($this->lastLon);
+		$lastPoint->gpsTime=$this->lastPointTM;
 		
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
@@ -2221,7 +2231,7 @@ $kml_file_contents=
 					// echo "times: ".$firstPoint->gpsTime.", ".$firstPoint->getTime()." start_time: ".$this->START_TIME ."<BR> ";
 					if ( $this->forceBounds && ! $this->checkBound($firstPoint->getTime() ) ) continue; // not inside time window
 
-					$this->FIRST_POINT=$line;
+					// $this->FIRST_POINT=$line;
 					$this->firstPointTM= $firstPoint->gpsTime;
 					$this->firstLat=$firstPoint->lat();
 					$this->firstLon=$firstPoint->lon();
@@ -2373,13 +2383,22 @@ $kml_file_contents=
 		//$handle=fopen($this->getIGCFilename(1),"w");
 		//fwrite($handle, $outputBuffer) ;
 		//fclose($handle);
-
-		$this->lastPointTM=$lastPoint->gpsTime;
-		$this->lastLon=$lastPoint->lon();
-		$this->lastLat=$lastPoint->lat();
-
-		$this->LANDING_ALT= $lastPoint->getAlt();
-		$this->END_TIME =   $lastPoint->getTime();
+		if ($lastPoint) {
+			$this->lastPointTM=$lastPoint->gpsTime;
+			$this->lastLon=$lastPoint->lon();
+			$this->lastLat=$lastPoint->lat();
+	
+			$this->LANDING_ALT= $lastPoint->getAlt();
+			$this->END_TIME =   $lastPoint->getTime();
+		} else {
+			$this->lastPointTM=0;
+			$this->lastLon=0;
+			$this->lastLat=0;
+	
+			$this->LANDING_ALT= 0;
+			$this->END_TIME =   0;		
+		}
+		
 		$this->DURATION =   $this->END_TIME - $this->START_TIME ;
 		$this->MEAN_SPEED = $this->MEAN_SPEED / $points;
 				
@@ -2502,9 +2521,9 @@ $kml_file_contents=
 		// so some basic check for saned igc file
 		if (!is_file($this->getIGCFilename(1) ) ) {
 			// we have to create it 
-			echo "Saned file is missing for flight: ".$this->flightID.", we will create it<BR>";
+			DEBUG('OLC_SCORE',1,"Saned file is missing for flight: ".$this->flightID.", we will create it<BR>");
 			if (!is_file($this->getIGCFilename(0) ) ) {
-				echo "Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>";
+				DEBUG('OLC_SCORE',1,"Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>");
 				require_once dirname(__FILE__).'/CL_actionLogger.php';
 				$log=new Logger();
 				$log->userID  	=$this->userID;
@@ -3002,6 +3021,7 @@ $kml_file_contents=
 
 		$this->hash=$row["hash"];	
 
+//to be deleted START 
 		$this->FIRST_POINT=$row["FIRST_POINT"];
 		$this->LAST_POINT=$row["LAST_POINT"];
 
@@ -3014,7 +3034,8 @@ $kml_file_contents=
 		$this->olcRefNum=$row["olcRefNum"];
 		$this->olcFilename=$row["olcFilename"];
 		$this->olcDateSubmited =$row["olcDateSubmited"];
-		
+//to be deleted END
+
 	  	$db->sql_freeresult($res);
 		if ($this->filename && $updateTakeoff) $this->updateTakeoffLanding();
 		return 1;	
@@ -3024,8 +3045,18 @@ $kml_file_contents=
 		global $db;
 		global $flightsTable, $waypoints;
 
-		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
-		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
+		$firstPoint=new gpsPoint('',$this->timezone);
+		$firstPoint->setLat($this->firstLat);
+		$firstPoint->setLon($this->firstLon);
+		$firstPoint->gpsTime=$this->firstPointTM;				
+
+		$lastPoint=new gpsPoint('',$this->timezone);
+		$lastPoint->setLat($this->lastLat);
+		$lastPoint->setLon($this->lastLon);
+		$lastPoint->gpsTime=$this->lastPointTM;
+		
+		//$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
+		//$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
 
 		// calc TAKEOFF - LANDING PLACES	
 		if (count($waypoints)==0) 

@@ -47,6 +47,7 @@
 		if (!$zip ) {
 			$outputStr=implode("",file($flight->getIGCFilename(0)) );
 			$outputFilename=$flight->filename;
+			$attachmentMIME ='text/plain';
 		} else {
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 			$tmpZipFile="$flightID.zip";
@@ -65,16 +66,18 @@
 			$outputStr=implode("",file($CONF_tmp_path.'/'.$tmpZipFile) );
 			@unlink($CONF_tmp_path.'/'.$tmpZipFile);
 			$outputFilename=$tmpZipFile;
+			$attachmentMIME ='application/zip';
 		}
 		
 		// echo "$outputFilename <BR>";exit;
-		$attachmentMIME ='application/octet-stream';
+		
+		
 		header("Content-type: $attachmentMIME");
 		header('Content-Disposition: inline; filename="'.$outputFilename.'"');
 		header("Content-Transfer-Encoding: binary");
 		header("Content-length: ".strlen($outputStr));
 		echo $outputStr;
-		
+		return;
 		
 	} else if ($type=="kml_task") {
 		//$isExternalFile=0;

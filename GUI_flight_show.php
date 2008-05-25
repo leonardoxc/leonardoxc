@@ -264,7 +264,13 @@ function delete_takeoff(id) {
   $flight->updateAll(0);
 
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
-  $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+
+
+  // $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+	$firstPoint=new gpsPoint('',$flight->timezone);
+	$firstPoint->setLat($flight->firstLat);
+	$firstPoint->setLon($flight->firstLon);
+	$firstPoint->gpsTime=$flight->firstPointTM;				
 
 
   if ($_REQUEST['updateScore'] || $flight->FLIGHT_POINTS==0) { 
@@ -469,8 +475,15 @@ if (auth::isAdmin($userID) ) {
 	//	$adminPanel.='<pre>'.processIGC($flight->getIGCFilename());
 
 	// DEBUG TIMEZONE DETECTION 
-	$firstPoint=new gpsPoint($flight->FIRST_POINT);
-	$time=substr($flight->FIRST_POINT,1,6);
+	// $firstPoint=new gpsPoint($flight->FIRST_POINT);
+	$firstPoint=new gpsPoint('',$flight->timezone);
+	$firstPoint->setLat($flight->firstLat);
+	$firstPoint->setLon($flight->firstLon);
+	$firstPoint->gpsTime=$flight->firstPointTM;				
+
+
+	// $time=substr($flight->FIRST_POINT,1,6);
+	$time=date('H:i:s',$firstPoint->gpsTime);
 	$zone= getUTMzoneLocal( $firstPoint->lon,$firstPoint->lat);
 	$timezone1= ceil(-$firstPoint->lon / (180/12) );
 

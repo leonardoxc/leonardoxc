@@ -117,6 +117,21 @@ function flights_find($arg) {
 
 }
 
+/*$serverFunctions['flights.getIGCurl']='flights_getIGCurl';
+function flights_getIGCurl($args) {
+		global $db,$flightsTable;
+		global $takeoffRadious;	
+
+		$sitePass=$arg[0];
+		$flightID=$arg[1];
+
+		if ( ! securityCheck($sitePass) ) return  new IXR_Error(4000, 'Access Denied');;
+
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID,0);		
+
+}
+*/
 
 // this runs on the master so that slaves can upload flights
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!

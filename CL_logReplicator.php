@@ -408,7 +408,7 @@ class logReplicator {
 					$extFlight->firstPointTM=$e['ActionXML']['flight']['bounds']['firstTM']+0 ;
 					$extFlight->lastPointLon=$e['ActionXML']['flight']['bounds']['lastLon']+0;
 					$extFlight->lastPointLat=$e['ActionXML']['flight']['bounds']['lastLat']+0;
-					$extFlight->lastPointTM=$e['ActionXML']['flight']['bounds']['lastTM'] ;
+					$extFlight->lastPointTM=$e['ActionXML']['flight']['bounds']['lastTM']+0 ;
 					
 					$firstPoint=new  gpsPoint();
 					$lastPoint=new  gpsPoint();
@@ -420,8 +420,8 @@ class logReplicator {
 					$lastPoint->setLat(		$e['ActionXML']['flight']['bounds']['lastLat']);
 					$lastPoint->gpsTime=(	$e['ActionXML']['flight']['bounds']['lastTM'] % 86400);
 
-					$extFlight->FIRST_POINT=$firstPoint->to_IGC_Record();
-					$extFlight->LAST_POINT=$lastPoint->to_IGC_Record();
+					// $extFlight->FIRST_POINT=$firstPoint->to_IGC_Record();
+					// $extFlight->LAST_POINT=$lastPoint->to_IGC_Record();
 
 					foreach ($e['ActionXML']['flight']['turnpoints'] as $i=>$tp){
 						$tpNum=$tp['id'];

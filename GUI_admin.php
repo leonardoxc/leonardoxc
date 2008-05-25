@@ -11,6 +11,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+require_once dirname(__FILE__)."/FN_functions.php";	
+
 ?>
 <script language="javascript">
 
@@ -169,25 +171,103 @@ echo "</ul><br><hr>";
     } else if ($admin_op=="findMissingFiles") {
 
 
-		$query="SELECT * from $flightsTable WHERE filename <> '' AND serverID=2 ";
+		$query="SELECT * from $flightsTable WHERE filename <> ''  ";
 		$res= $db->sql_query($query);
+		
+		require_once dirname(__FILE__)."/CL_server.php";
 			
+
 		if($res > 0){
 			 echo "<br><br>";
-			 $flight=new flight();
-			$i=0;
+			 // $flight=new flight();
+			 $i=0;
+			 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 // $flight=new flight();
-				 $flight->getFlightFromDB($row["ID"],0);		
+				 //$flight->getFlightFromDB($row["ID"],0);		
 
-				 if ( is_file( $flight->getIGCFilename() ) ) $status="OK"; 
-				 else {
+				$year=substr($row['DATE'],0,4);
+				$userServerID=$row['userServerID'];
+				if ($userServerID) $srvStr=$userServerID.'_';
+				else $srvStr='';
+				$fdir=$flightsAbsPath."/".$srvStr.$row['userID']."/flights/".$year."/";
+				$rdir=$flightsRelPath."/".$srvStr.$row['userID']."/flights/".$year."/";
+				$orgFilename=$fdir.$row['filename'];
+						
+				 if ( is_file( $orgFilename ) ){
+				  	$status="OK"; 
+					continue;
+				 }	
+				 
+				 	$serverID=$row['serverID'];
+					if ($serverID) {
+						$server=new Server($serverID);
+						$server->getFromDB();
+					}
 					 $i++;
-					 $status=$flight->getIGCRelPath();
-					 $status.=" ".$row['original_ID'];
-				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."] $status <br>";
-				 }
-			 }
+					 //$status=$flight->getIGCRelPath();
+					 //$status.=" ".$row['original_ID'];
+					 
+				
+					$NewEncoding = new ConvertCharset;
+					$enc='iso-8859-1';
+					$filenameUTF= $NewEncoding->Convert($row['filename'], 'iso-8859-1', "utf-8", $Entities);
+					$filenameISO= $NewEncoding->Convert($row['filename'], "utf-8",'iso-8859-1' , $Entities);
+					$filenameGR= $NewEncoding->Convert($filenameUTF, "utf-8", "iso-8859-7", $Entities);
+
+						$oldFilename='';
+						if (is_file($fdir.$filenameUTF) ) { 
+							echo "[UTF]";
+							$oldFilename=$filenameUTF;
+						} 
+						
+						if (is_file($fdir.$filenameISO) ) { 
+							echo "[ISO]";
+							$oldFilename=$filenameISO;
+						} 
+						
+						if (is_file($fdir.$row['filename']) ) { 
+							echo "[ORG]";
+							$oldFilename=$row['filename'];
+						}
+						
+						if (is_file($fdir.$filenameGR) ) { 
+							echo "[GR]";
+							$oldFilename=$filenameGR;
+						}
+						
+ 					 $orgIgcURL= "http://".$server->url_base."/download.php?type=igc&zip=0&flightID=".$row["original_ID"];
+				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."]  ";
+
+//					 echo " [ ".$row['filename']." ] ";
+					 echo " <a href='$moduleRelPath/$rdir/".$row['filename']."'>IGC</a> ";
+					 
+					 
+					 if ($oldFilename || 1 ) {
+					 	$newfilename=toLatin1($row['filename']) ;
+						//$newfilename2=toLatin1($filenameUTF) ;
+						//$newfilename3=toLatin1($filenameISO) ;
+						
+						echo "[ ".$row['filename']." ] -> [ $newfilename ] ";
+						if ($serverID) {						
+						 	echo "<a href='$orgIgcURL'>ORG URL</a> <BR>";
+							if (0){ 
+								$webRes=getWebpage($orgIgcURL);
+								// print_r($webRes);
+								if ($webRes['http_code']=='200') {
+									echo "Pulled OK !!!!!<BR>";
+									writeFile($flight->getIGCFilename(),$webRes['content'] );
+								} else {
+									echo "Error #".$webRes['errno']." ( http_code:".$webRes['http_code'].") : ".$webRes['errmsg']."<BR>";
+								}	
+							}
+						}
+						
+					}
+					// echo "<BR>";
+					 if ($i>400) break;
+									
+			 } //sql while loop
 		}
 		echo "<BR><br>IGC files missing: $i <hr><BR>";
 		echo "<BR><br><BR>DONE !!!<BR>";
@@ -285,18 +365,27 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				}
 				
 				if ( $newfilename != $row['filename']){
-					$year=substr($row['DATE'],0,4);
-					$fdir=$flightsAbsPath."/".$row['userID']."/flights/".$year."/";
 
-					require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
-					$NewEncoding = new ConvertCharset;
-					$enc='iso-8859-1';
-					$filenameUTF= $NewEncoding->Convert($row['filename'], $enc, "utf-8", $Entities);
-					$filenameGR= $NewEncoding->Convert(filenameUTF, "utf-8", "iso-8859-7", $Entities);
+						
+						if ( ! is_file( $fdir.$row["filename"] )  ) {
+							$year=substr($row['DATE'],0,4);
+							$fdir=$flightsAbsPath."/".$row['userID']."/flights/".$year."/";
+		
+							require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+							$NewEncoding = new ConvertCharset;
+		
+		
+							$filenameUTF= $NewEncoding->Convert($row['filename'], 'iso-8859-1', "utf-8", $Entities);
+							$filenameISO= $NewEncoding->Convert($row['filename'], "utf-8",'iso-8859-1' , $Entities);
+							$filenameGR= $NewEncoding->Convert($filenameUTF, "utf-8", "iso-8859-7", $Entities);
 
+						$oldFilename='';
 						if (is_file($fdir.$filenameUTF) ) { 
 							echo "[UTF]";
 							$oldFilename=$filenameUTF;
+						} else if (is_file($fdir.$filenameISO) ) { 
+							echo "[ISO]";
+							$oldFilename=$filenameISO;
 						} else if (is_file($fdir.$row['filename']) ) { 
 							echo "[ORG]";
 							$oldFilename=$row['filename'];
@@ -305,18 +394,18 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 							$oldFilename=$filenameGR;
 						}
 
-						$i++;
-						$newfilename=safeFilename( $newfilename);
-					    echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
-
-						if ( $latinAvailable && $newfilename ) {
-							$flight=new flight();
-							$flight->getFlightFromDB($row["ID"],0);		
-							$flight->renameTracklog($newfilename,$oldFilename);
+							$i++;
+							$newfilename=safeFilename( $newfilename);
+							echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
+	
+							if ( $latinAvailable && $newfilename && 0) {
+								$flight=new flight();
+								$flight->getFlightFromDB($row["ID"],0);		
+								$flight->renameTracklog($newfilename,$oldFilename);
+							}
+							// if ($i>5 ) break;
+							//break;
 						}
-	// if ($i>5 ) break;
-						//break;
-
 				}
 /*
 					$files_total++;
@@ -481,7 +570,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		echo "</pre>";
 
 	} else if ($admin_op=="updateLocations") {
-		$query="SELECT ID from $flightsTable WHERE active=1";
+		$query="SELECT ID from $flightsTable WHERE 1";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
@@ -561,7 +650,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if ($scoreFlightsNum > 0) $limitStr= " LIMIT $scoreFlightsNum ";
 		else $limitStr='';
 		
-		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND filename<>'' ORDER BY ID ASC $limitStr";
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 AND filename<>'' ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 
 		$j=0;
@@ -592,7 +681,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if ($logEntries > 0) $limitStr= " LIMIT $logEntries ";
 		else $limitStr='';
 		
-		$query="SELECT ID from $flightsTable WHERE active=1 AND batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC $limitStr";
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 
 		$i=0;
@@ -678,7 +767,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 	} else if ($admin_op=="clearBatchBit") {
 		clearBatchBit();
 	} else if ($admin_op=="updateMaps") {
-		$query="SELECT ID from $flightsTable WHERE active=1 ORDER BY ID ASC";
+		$query="SELECT ID from $flightsTable WHERE 1 ORDER BY ID ASC";
 		$res= $db->sql_query($query);
 		
 		if($res > 0) {
