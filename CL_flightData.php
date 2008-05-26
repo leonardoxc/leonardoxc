@@ -204,29 +204,7 @@ var $maxPointNum=1000;
 			$useJSON=1;
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 		} else $useJSON=0;
-		
-		$photosXML='';
-		$photosJSON='';
 
-// WE DONT PUT PHOTO INTO MAIN FLIGHT SYNC, WE DEAL WITH THEM WITH A SEPARATE FEED
-if (false) {
-		$photosNum=0;
-		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
-			$var_name="photo".$i."Filename";
-			if ($this->$var_name) {
-				$photosXML.="<photo>\n<id>$i</id>\n<name>".$this->$var_name."</name>\n<link>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$this->getPhotoRelPath($i)."</link>\n</photo>\n";
-				if ($photosNum>0) $photosJSON.=" , \n";
-				$photosJSON.=' { 
-	"id": '.$i.', 
-	"name": "'.json::prepStr($this->$var_name).'",
-	"link": "http://'.json::prepStr($_SERVER['SERVER_NAME'].$baseInstallationPath.'/'.$this->getPhotoRelPath($i)).'" 
-	}';
-				$photosNum++;
-			}
-		}
-		if ($photosXML) $photosXML="<photos>\n$photosXML</photos>\n";
-		if ($photosJSON) $photosJSON=' , "photos": [ '.$photosJSON.' ]  ';
-}
 
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->getFromDB();
@@ -245,25 +223,7 @@ if (false) {
 			}	
 		}
 		
-/*
 		
-		
-		$tpNum=0;
-		$tpStr='';
-		for($i=1;$i<=5;$i++) {
-			$varname="turnpoint$i";
-			if ($this->{$varname}) {
-				$newPoint=gpsPoint::fromStr($this->{$varname});	
-				if ($tpNum>0) $tpStr.=" ,\n		";
-				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().' } ';
-				$tpNum++;
-			}	
-		}
-	*/
-	
-		
-//		list($wid,$takeoffName,$takeoffNameInt,$takeoffCountry)=getWaypointFull($this->takeoffID);
-
 		$takeoff=new waypoint($this->takeoffID);
 		$takeoff->getFromDB();
 
@@ -372,7 +332,6 @@ if (false) {
 	<airspaceCheckMsg>$this->airspaceCheckMsg</airspaceCheckMsg>
 </validation>
 
-$photosXML
 
 </flight>\n";
 		} else {
@@ -468,8 +427,8 @@ $resStr='{
 		"airspaceCheckFinal": "'.json::prepStr($this->airspaceCheckFinal).'",
 		"airspaceCheckMsg": "'.json::prepStr($this->airspaceCheckMsg).'"
 	}
-	
-	'.$photosJSON.'
+
+
 }
 }';
 		}
@@ -3031,9 +2990,9 @@ $kml_file_contents=
 		$this->turnpoint4=$row["turnpoint4"];		
 		$this->turnpoint5=$row["turnpoint5"];		
 
-		$this->olcRefNum=$row["olcRefNum"];
-		$this->olcFilename=$row["olcFilename"];
-		$this->olcDateSubmited =$row["olcDateSubmited"];
+//		$this->olcRefNum=$row["olcRefNum"];
+//		$this->olcFilename=$row["olcFilename"];
+//		$this->olcDateSubmited =$row["olcDateSubmited"];
 //to be deleted END
 
 	  	$db->sql_freeresult($res);
@@ -3316,8 +3275,8 @@ $kml_file_contents=
 		firstPointTM, firstLat, firstLon,
 		lastPointTM, lastLat, lastLon ,
 		FIRST_POINT,LAST_POINT,
-		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5,
-		olcRefNum,olcFilename,olcDateSubmited
+		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5
+		
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
@@ -3355,8 +3314,7 @@ $kml_file_contents=
 		$this->lastPointTM, $this->lastLat, $this->lastLon ,
 		'$this->FIRST_POINT',
 		'$this->LAST_POINT',
-		'$this->turnpoint1','$this->turnpoint2','$this->turnpoint3','$this->turnpoint4','$this->turnpoint5',
-		'$this->olcRefNum','$this->olcFilename','$this->olcDateSubmited'
+		'$this->turnpoint1','$this->turnpoint2','$this->turnpoint3','$this->turnpoint4','$this->turnpoint5'
 		)";
 	
 		//echo $query;

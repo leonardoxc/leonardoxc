@@ -423,7 +423,7 @@ $localMap="";
 $googleMap="";
 $margin="";
 
-$extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID].
+$extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['name'].
 "</i>. <a href='".$flight->originalURL."&lng=$currentlang' target='_blank'>"._Ext_text2."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 

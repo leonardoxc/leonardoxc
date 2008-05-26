@@ -636,17 +636,26 @@ WHERE
 		if ($in_string) {
 			$parts=split(',',$in_string);
 			// print_r($parts);
-			foreach ($CONF['servers']['list'] as $serverID=>$serverName) {
+			foreach ($CONF['servers']['list'] as $serverID=>$serverInfo) {
+				if (!$serverInfo['is_active'])  continue;
+				if ($serverInfo['id_filter'])  
+					$serverID=$serverInfo['id_filter'];
+
 				if ($serverID==0) $serverID=-1;
 				if ( in_array($serverID,$parts)  ) {
-					$servers[$serverID]=$serverName;
+					$servers[$serverID]=$serverInfo['name'];
 				}
 			}
 			return $servers;
 		} else {
-			foreach ($CONF['servers']['list'] as $serverID=>$serverName) {
+			foreach ($CONF['servers']['list'] as $serverID=>$serverInfo) {
+					if (!$serverInfo['is_active'])  continue;
+
+					if ($serverInfo['id_filter'])  
+						$serverID=$serverInfo['id_filter'];
+
 					if ($serverID==0) $serverID=-1;
-					$servers[$serverID]=$serverName;
+					$servers[$serverID]=$serverInfo['name'];
 			}
 			return $servers;
 		}

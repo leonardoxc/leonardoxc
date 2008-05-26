@@ -403,19 +403,19 @@ class logReplicator {
 					$extFlight->END_TIME	=$extFlight->START_TIME+$extFlight->DURATION;
 					$extFlight->forceBounds	=$e['ActionXML']['flight']['bounds']['forceBounds'];
 
-					$extFlight->firstPointLon=$e['ActionXML']['flight']['bounds']['firstLon']+0;
-					$extFlight->firstPointLat=$e['ActionXML']['flight']['bounds']['firstLat']+0;
+					$extFlight->firstLon=$e['ActionXML']['flight']['bounds']['firstLon']+0;
+					$extFlight->firstLat=$e['ActionXML']['flight']['bounds']['firstLat']+0;
 					$extFlight->firstPointTM=$e['ActionXML']['flight']['bounds']['firstTM']+0 ;
-					$extFlight->lastPointLon=$e['ActionXML']['flight']['bounds']['lastLon']+0;
-					$extFlight->lastPointLat=$e['ActionXML']['flight']['bounds']['lastLat']+0;
+					$extFlight->lastLon=$e['ActionXML']['flight']['bounds']['lastLon']+0;
+					$extFlight->lastLat=$e['ActionXML']['flight']['bounds']['lastLat']+0;
 					$extFlight->lastPointTM=$e['ActionXML']['flight']['bounds']['lastTM']+0 ;
 					
-					$firstPoint=new  gpsPoint();
-					$lastPoint=new  gpsPoint();
+					$firstPoint=new  gpsPoint();				
 					$firstPoint->setLon( 	$e['ActionXML']['flight']['bounds']['firstLon']);
 					$firstPoint->setLat(	$e['ActionXML']['flight']['bounds']['firstLat']);
 					$firstPoint->gpsTime=(	$e['ActionXML']['flight']['bounds']['firstTM'] % 86400);
-					
+
+					$lastPoint=new  gpsPoint();
 					$lastPoint->setLon(		$e['ActionXML']['flight']['bounds']['lastLon']);
 					$lastPoint->setLat(		$e['ActionXML']['flight']['bounds']['lastLat']);
 					$lastPoint->gpsTime=(	$e['ActionXML']['flight']['bounds']['lastTM'] % 86400);
@@ -486,16 +486,6 @@ class logReplicator {
 					}
 				}
 
-				/* now take care of photos 
-				
-					<photos>
-						<photo>
-						<id>1</id>
-						<name>164_6443.jpg</name>
-						<link>http://www.sky.gr/modules/leonardo/flights/11/photos/2004/164_6443.jpg</link>
-						</photo>
-					</photos>
-				*/
 			
 			return array(0,"Unknown error, we should have returned by this far...");
 		}		 // if type==1

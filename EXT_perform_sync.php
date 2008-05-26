@@ -34,9 +34,7 @@ $server->getFromDB();
 
 // set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
-if (($_GET['init']+0) == 1 ) {
 
-}
 
 function  initHtml () {
 ?><head>
