@@ -105,16 +105,16 @@ echo "<table class='main_text simpleTable' cellspacing=0 cellpadding=3><tr>";
 echo "<th>ACTIONS</th><th>ID</th><th>URL</th><th>version</th><th>active</th><th>wpt exchange</th><th>isLeo</th><th>Type</th><th></th>";
 echo "</tr>";
 foreach ($servers as $server) {
-	if ($server->installation_type==1) $type="phpNuke";
-	else if ($server->installation_type==2) $type="phpBB";
-	else if ($server->installation_type==3) $type="standalone";
+	if ($server->data['installation_type']==1) $type="phpNuke";
+	else if ($server->data['installation_type']==2) $type="phpBB";
+	else if ($server->data['installation_type']==3) $type="standalone";
 
-	if ($server->gives_waypoints ) {
+	if ($server->data['gives_waypoints'] ) {
 		$wpt="YES";
-		if ( $server->waypoint_countries ) $wpt.=" (".$server->waypoint_countries.")";
+		if ( $server->data['waypoint_countries'] ) $wpt.=" (".$server->data['waypoint_countries'].")";
 	} else $wpt="NO";
 
-	$url="<a href='http://".$server->url."' target='_blank'>".substr($server->url_base,0,50)."</a>";
+	$url="<a href='http://".$server->data['url']."' target='_blank'>".substr($server->data['url_base'],0,50)."</a>";
 
 //	echo "<td  >";
 //	echo "";
@@ -127,10 +127,10 @@ foreach ($servers as $server) {
 			</td>".
 			"<td valign=top>".$server->ID."</td>
 			<td valign=top>".$url."</td>
-			<td valign=top>".$server->leonardo_version."</td>
-			<td valign=top> ".$server->is_active."</td>
+			<td valign=top>".$server->data['leonardo_version']."</td>
+			<td valign=top> ".$server->data['is_active']."</td>
 			<td valign=top>".$wpt."</td>
-			<td valign=top>".$server->isLeo."</td>
+			<td valign=top>".$server->data['isLeo']."</td>
 			<td valign=top>".$type."</td>
 			<td valign=top></td>
 		</tr>";
@@ -158,12 +158,22 @@ foreach ($servers as $server) {
 						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",6,$DBGlvl);'>Delete all Flights</a></td>
 						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",8,$DBGlvl);'>Delete all pilots</a></td>
 
-						<td valign='top'><a href='javascript:serverAction(".$server->ID.",9,$DBGlvl);'>Move counter back</a>
-								 <input type=textbox id='moveCounterBack_$id' name='moveCounterBack_$id' value=10 size=3> </td>
+						<td valign='top'><a href='javascript:serverAction(".$server->ID.",9,$DBGlvl);'>Move counter</a>
+								 <input type=textbox id='moveCounterBack_$id' name='moveCounterBack_$id' value='-10' size=3> </td>
 						<td width=30 valign='top'><a href='javascript:toggleVisibility(\"display_$id\")'>>></a></td>
 					</TR></TD></TABLE>
 				</tr>
-	
+					<tr>
+					<TD><TABLE WIDTH=100% cellpadding=2 cellspacing=0 border=1 class='actionRow1'><TR>					
+						<td width=100 valign='top'><b>Exclude all flights<b/></td>
+						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",10,$DBGlvl);'> ... from Leagues</a></td>
+						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",11,$DBGlvl);'> ... from Lists (will remove from Leagues too) </a></td>
+						<td width=100 valign='top'><b>Include all flights</b></td>
+						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",12,$DBGlvl);'> ... to Leagues  (will add to lists too)</a></td>
+						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",13,$DBGlvl);'> ... to Lists </a></td>
+						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",14,$DBGlvl);'> ... EVERYWHERE </a></td>
+					</TR></TD></TABLE>
+				</tr>
 				<TR >
 				<td colspan='1' bgcolor='#ffffff' >
 					<div style='display:none' id='display_$id' bgcolor='#ff0000'>

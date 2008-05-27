@@ -28,7 +28,7 @@ $id=makeSane($_GET['id'],1);
 $action=makeSane($_GET['action']);
 $DBGlvl=makeSane($_GET['DBGlvl'],1);
 $server=new Server($id);
-$server->getFromDB();
+// $server->getFromDB();
 
 // set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
@@ -114,11 +114,38 @@ if ($action==1) { // server info
 	$server->deleteAllSyncedPilots();
 	
 } else if ($action==9) { // move sync pointer back (in effect will reprocess last n log entries next time
+	$server->getFromDB();
 	echo "Sync Pointer was ".$server->lastPullUpdateID."<BR>";
-	$server->rewindSyncPointer($_GET['moveCounterBack']+0);
+	$server->moveSyncPointer($_GET['moveCounterBack']+0);
 	echo "Sync Pointer is ".$server->lastPullUpdateID."<BR>";
+} else if ($action==10) { // exclude all flights from this server from apearing in leagues
+	$query="UPDATE $flightsTable SET excludeFrom=(excludeFrom | 2) WHERE serverID=".$server->ID;
+	$res= $db->sql_query($query);
+	if ($res) echo "Flights updated OK $query";
+	else  echo "Problem in updating flights: $query<BR> ";
+} else if ($action==11) { // exclude all flights from this server from apearing in lists
+	$query="UPDATE $flightsTable SET excludeFrom=(excludeFrom | 3) WHERE serverID=".$server->ID;
+	$res= $db->sql_query($query);
+	if ($res) echo "Flights updated OK $query";
+	else  echo "Problem in updating flights: $query<BR> ";
+} else if ($action==12) { // include all flights from this server from apearing in leagues
+	$query="UPDATE $flightsTable SET excludeFrom=(excludeFrom & ( ~0x03&0xff) ) WHERE serverID=".$server->ID;
+	$res= $db->sql_query($query);
+	if ($res) echo "Flights updated OK $query";
+	else  echo "Problem in updating flights: $query<BR> ";
+} else if ($action==13) { // include all flights from this server from apearing in lists
+	$query="UPDATE $flightsTable SET excludeFrom=(excludeFrom & ( ~0x01&0xff) ) WHERE serverID=".$server->ID;
+	$res= $db->sql_query($query);
+	if ($res) echo "Flights updated OK $query";
+	else  echo "Problem in updating flights: $query<BR> ";
+} else if ($action==14) { // include all flights from this server from apearing EVERYWHERE (reset)
+	$query="UPDATE $flightsTable SET excludeFrom=0 WHERE serverID=".$server->ID;
+	$res= $db->sql_query($query);
+	if ($res) echo "Flights updated OK $query";
+	else  echo "Problem in updating flights: $query<BR> ";
+
 } else if ($action==99) { //test
-	echo $server->url_op;
+	echo $server->data['url_op'];
 	echo "<BR>$action<br>";
 	
 	

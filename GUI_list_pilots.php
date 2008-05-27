@@ -36,10 +36,14 @@
   
   // SEASON MOD
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
-  
-  
+    
   // BRANDS MOD  
   $where_clause.= brands::makeWhereClause($brandID);
+
+	// take care of exluding flights
+	// 1-> first bit -> means flight will not be counted anywhere!!!
+	$bitMask=1 & ~( $includeMask & 0x01 );
+	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
 
   if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";

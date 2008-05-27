@@ -202,7 +202,6 @@ echo "</ul><br><hr>";
 				 	$serverID=$row['serverID'];
 					if ($serverID) {
 						$server=new Server($serverID);
-						$server->getFromDB();
 					}
 					 $i++;
 					 //$status=$flight->getIGCRelPath();
@@ -236,7 +235,7 @@ echo "</ul><br><hr>";
 							$oldFilename=$filenameGR;
 						}
 						
- 					 $orgIgcURL= "http://".$server->url_base."/download.php?type=igc&zip=0&flightID=".$row["original_ID"];
+ 					 $orgIgcURL= "http://".$server->data['url_base']."/download.php?type=igc&zip=0&flightID=".$row["original_ID"];
 				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."]  ";
 
 //					 echo " [ ".$row['filename']." ] ";

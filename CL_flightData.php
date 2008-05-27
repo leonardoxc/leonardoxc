@@ -59,6 +59,8 @@ class flight {
 	var $hash='';
 
 	var $serverID=0;
+	var $excludeFrom=0;
+
 	var $originalURL='';
 	var $originalKML='';
 	var $original_ID=0;
@@ -2897,6 +2899,8 @@ $kml_file_contents=
 		$this->userName=$name;		
 		 
 		$this->serverID=$row["serverID"];
+		$this->excludeFrom=$row["excludeFrom"];
+
 		$this->originalURL=$row["originalURL"];
 		$this->originalKML=$row["originalKML"];
 
@@ -3244,6 +3248,7 @@ $kml_file_contents=
 		validated,grecord,validationMessage, 
 		hash, serverID, originalURL, originalKML, original_ID,
 		originalUserID ,userServerID,
+		excludeFrom,
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,NACid,
@@ -3283,6 +3288,7 @@ $kml_file_contents=
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$this->originalURL', '$this->originalKML',  $this->original_ID, 
 		$this->originalUserID , $this->userServerID,
+		$this->excludeFrom,
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,

@@ -109,6 +109,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li class='li_space long'></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
 				<? if (0) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_areas">Administer the Areas</a></li><? } ?>
+
+				<li class='li_space long'></li>
+				<?  if ($includeMask==0)  { ?>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&includeMask=255">See Excluded flights</a></li>
+				<? } else { ?>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&includeMask=0">Hide Excluded flights</a></li>
+				<? } ?>
+
 				<li class='li_space long'></li>
 				<?  if ($DBGlvl==0)  { ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=255">Activate DEBUG</a></li>

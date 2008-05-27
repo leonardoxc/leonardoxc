@@ -304,6 +304,12 @@ border:0;
 .photoIcon2 { display:block; position:absolute; top:1px; left:32px; float:none; clear:none; z-index:1;}
 
 .extLink 	{ display:block; position:absolute; top:13px; left:2px; float:none; clear:none; z-index:1;}
+.extLinkName { display:block; position:absolute; top:15px; left:12px; float:none; clear:none; z-index:-2; 
+	font-size:8px;
+	line-height:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#999999;
+}
 .commentDiv { display:block; position:absolute; top:0px; left:44px; float:none; clear:none; z-index:1;}
 
 .checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px; float:none; clear:none; z-index:1;

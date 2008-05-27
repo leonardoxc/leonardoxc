@@ -211,8 +211,9 @@ function getPilotInfo($pilotIDview,$serverID) {
 
 function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) { 
 	// $typeOfLink=1 img, 0->none, 2->text (*)
-	global $CONF_server_id,$moduleRelPath;
-	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ) return '';
+	global $CONF,$CONF_server_id,$moduleRelPath;
+	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ||
+		 $CONF['servers']['list'][$serverID]['treat_flights_as_local'] ) return '';
 	else if ($typeOfLink==1) return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." $linkURL'>";
 	else if ($typeOfLink==2) return " (*)";
 	else if ($typeOfLink==3) {

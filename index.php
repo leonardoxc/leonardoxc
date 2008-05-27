@@ -91,6 +91,8 @@ $_SESSION['userID']=$userID;
 setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0,1);
 
+setVarFromRequest("includeMask",0);
+
 setVarFromRequest("waypointIDview",0,1);
 setVarFromRequest("flightID",0,1);
 setVarFromRequest("pilotIDview",0,0);

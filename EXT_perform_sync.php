@@ -30,7 +30,6 @@ $action=makeSane($_GET['action']);
 $DBGlvl=makeSane($_GET['DBGlvl'],1);
 
 $server=new Server($id);
-$server->getFromDB();
 
 // set to 1 for debug
 if ($DBGlvl) $server->DEBUG=1;
@@ -102,7 +101,7 @@ if ($action==1) { // server info
 	$chunkSize=$_GET['chunkSize']+0;
 	if (! $chunkSize ) $chunkSize=5;
 
-	$sParts=split("/",$server->url);
+	$sParts=split("/",$server->data['url']);
 	$serverName=$sParts[0];
 
 	// make dirs and 
@@ -171,11 +170,12 @@ if ($action==1) { // server info
 	$server->deleteAllSyncedPilots();
 	
 } else if ($action==9) { // move sync pointer back (in effect will reprocess last n log entries next time
+	$server->getFromDB();
 	echo "Sync Pointer was ".$server->lastPullUpdateID."<BR>";
-	$server->rewindSyncPointer($_GET['moveCounterBack']+0);
+	$server->moveSyncPointer($_GET['moveCounterBack']+0);
 	echo "Sync Pointer is ".$server->lastPullUpdateID."<BR>";
 } else if ($action==99) { //test
-	echo $server->url_op;
+	echo $server->data['url_op'];
 	echo "<BR>$action<br>";
 	
 	

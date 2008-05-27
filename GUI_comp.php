@@ -39,6 +39,10 @@
   // BRANDS MOD  
   $where_clause.= brands::makeWhereClause($brandID);
 
+	// take care of exluding flights
+	// 1-> first bit -> means flight will not be counted anywhere!!!
+	$bitMask=2 & ~( $includeMask & 0x03 );
+	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
 
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];

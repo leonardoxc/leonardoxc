@@ -40,22 +40,30 @@ class Server {
 	var $DEBUG;
 
 	function Server($id="") {
-		if ($id!="") {
-			$this->ID=$id;
+		global $CONF;
+		if (!$id) {
+			$this->gotValues=0;
+			return;
 		}
 
+		$this->ID=$id;
+/*
 	    $this->valuesArray=array("ID","isLeo","installation_type","leonardo_version","url", "url_base",
 			"sync_format", "sync_type", "use_zip",
 			"url_op","admin_email","site_pass","lastPullUpdateID","serverPass","clientPass","is_active","gives_waypoints","waypoint_countries"
 		);
-		$this->gotValues=0;
+*/
+	    $this->valuesArray=array("ID","lastPullUpdateID");
+
+		$this->data=$CONF['servers']['list'][$id];
+		$this->gotValues=1;
 		$this->DEBUG=0;
 	}
 
 	function uploadFile($filename,$remoteFilename) {
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
-			$serverURL="http://".$this->url_op;
+			$serverURL="http://".$this->data['url_op'];
 			$client = new IXR_Client($serverURL);
 			if ($this->DEBUG) $client->debug=true;
 		
@@ -65,7 +73,7 @@ class Server {
 			}
 
 			$fileStr_base64=base64_encode($fileStr);
-			if ( ! $client->query('server.uploadFileInline',$this->site_pass, $fileStr_base64,$remoteFilename) ) {
+			if ( ! $client->query('server.uploadFileInline',$this->data['site_pass'], $fileStr_base64,$remoteFilename) ) {
 				echo 'uploadFile: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return 0; 
 			} else {
@@ -83,7 +91,7 @@ class Server {
 	}
 
 	function version() {
-		if ($this->isLeo) {
+		if ($this->data['isLeo']) {
 			list($version,$sub_version,$revision)=explode(".",$this->leonardo_version);
 			return array($version,$sub_version,$revision);
 		} else return array(0,0,0);
@@ -92,11 +100,11 @@ class Server {
 	function getInfo() {
 		require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 
-		$serverURL="http://".$this->url_op;
+		$serverURL="http://".$this->data['url_op'];
 		$client = new IXR_Client($serverURL);
 		if ($this->DEBUG) $client->debug=true;
 	
-		if ( ! $client->query('server.info',$this->site_pass) ) {
+		if ( ! $client->query('server.info',$this->data['site_pass']) ) {
 			echo 'server: info '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 			return 0;  // $client->getErrorCode();
 		} else {
@@ -110,12 +118,12 @@ class Server {
 	function getPilots($pilotIDarray) {
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
-			$serverURL="http://".$this->url_op;
+			$serverURL="http://".$this->data['url_op'];
 			$client = new IXR_Client($serverURL);
 			if ($this->DEBUG) $client->debug=true;
 
 
-			if ( ! $client->query('pilots.getPilots',$this->site_pass, 11 ) ) {
+			if ( ! $client->query('pilots.getPilots',$this->data['site_pass'], 11 ) ) {
 				echo 'getPilots: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return array();  // $client->getErrorCode();
 			} else {
@@ -127,12 +135,12 @@ class Server {
 	function getTakeoffs($tm) {
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
-			$serverURL="http://".$this->url_op;
+			$serverURL="http://".$this->data['url_op'];
 			$client = new IXR_Client($serverURL);
 			if ($this->DEBUG) $client->debug=true;
 
 			$onlyTakeoffs=1;
-			if ( ! $client->query('takeoffs.getTakeoffs',$this->site_pass, $tm ,$onlyTakeoffs) ) {
+			if ( ! $client->query('takeoffs.getTakeoffs',$this->data['site_pass'], $tm ,$onlyTakeoffs) ) {
 				echo 'getTakeoffs: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return array(0,array());  // $client->getErrorCode();
 			} else {
@@ -147,11 +155,11 @@ class Server {
 		if ($version>=2) { // new rpc method
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
-			$serverURL="http://".$this->url_op;
+			$serverURL="http://".$this->data['url_op'];
 			$client = new IXR_Client($serverURL);
 			if ($this->DEBUG) $client->debug=true;
 		
-			if ( ! $client->query('takeoffs.findTakeoff',$this->site_pass, $lat, $lon ) ) {
+			if ( ! $client->query('takeoffs.findTakeoff',$this->data['site_pass'], $lat, $lon ) ) {
 				echo 'findTakeoff: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 				return array(0,-1);  // $client->getErrorCode();
 			} else {
@@ -163,11 +171,11 @@ class Server {
 
 		} else if ($version==1 && $sub_version >=4) { // use EXT_takeoff.php method
 			require_once dirname(__FILE__)."/FN_functions.php";
-			$serverURL="http://".$this->url_base."/EXT_takeoff.php?op=find_wpt&lat=$lat&lon=$lon";
+			$serverURL="http://".$this->data['url_base']."/EXT_takeoff.php?op=find_wpt&lat=$lat&lon=$lon";
 			//echo $serverURL;
 			$contents=fetchURL($serverURL);
 			if (!$contents) {
-				echo "SERVER at: ".$this->url_base." is NOT ACTIVE<br>"; 
+				echo "SERVER at: ".$this->data['url_base']." is NOT ACTIVE<br>"; 
 				return array(0,-1);
 			}
 			//echo $contents;
@@ -197,7 +205,7 @@ class Server {
 		} else if ( $version==0 && !$this->isLeo ) { // we are dealing with 'alien' servers
 			require_once dirname(__FILE__)."/FN_functions.php";
 			//the installation_type in this case point to the ID of the alien server			
-			$takeoffsList=getExtrernalServerTakeoffs($this->installation_type,$lat,$lon,1000,1);			
+			$takeoffsList=getExtrernalServerTakeoffs($this->data['installation_type'],$lat,$lon,1000,1);			
 			$wpt=new waypoint();
 			$distance=$takeoffsList[0]['distance'];
 
@@ -216,16 +224,18 @@ class Server {
 	}
 	
 	function registerServerToMaster() {
+		global $CONF_master_server_id;
+
 		require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 		$masterServer=new Server($CONF_master_server_id);
 		$masterServer->getFromDB();
 		
-		$masterServerURL="http://".$masterServer->url_op;	
-		$thisServerURL="http://".$this->url_op;
+		$masterServerURL="http://".$masterServer->data['url_op'];	
+		$thisServerURL="http://".$this->data['url_op'];
 		$client = new IXR_Client($masterServerURL);
 		if ($this->DEBUG) $client->debug=true;
 	
-		if ( ! $client->query('server.registerSlave',$this->site_pass, $lat, $lon ) ) {
+		if ( ! $client->query('server.registerSlave',$this->data['site_pass'], $lat, $lon ) ) {
 			echo 'registerSlave: Error '.$client->getErrorCode()." -> ".$client->getErrorMessage();
 			return 0;  // $client->getErrorCode();
 		} else {
@@ -235,11 +245,18 @@ class Server {
 	}
 	
 	function getServers() {
-		global $db,$serversTable;
+		global $db,$serversTable,$CONF;
+		$i=0;
+		foreach($CONF['servers']['list'] as $sID=>$sInfo) {
+			$servers[$i]=new Server($sID);
+			$i++;
+		}
+
+/*
 		$res= $db->sql_query("SELECT * FROM $serversTable order BY ID");
-  		if($res <= 0){   
-			 echo "Error getting all servers from DB<BR>";
-		     return;
+  		if($res <= 0){   	
+			echo "Error getting all servers from DB<BR>";
+		    return;
 	    }
 
 		$i=0;
@@ -251,6 +268,7 @@ class Server {
 			$servers[$i]->gotValues=1;
 			$i++;
 		}
+*/
 		return $servers;
 	}
 
@@ -260,15 +278,20 @@ class Server {
 		global $db,$serversTable;
 		$res= $db->sql_query("SELECT * FROM $serversTable WHERE ID=".$id );
   		if($res <= 0){   
-			 echo "Error getting server from DB<BR>";
+			 $query2="INSERT INTO $serversTable  ( ID, lastPullUpdateID)  VALUES ( $id, 0 ) ";
+			 $res2= $db->sql_query($query2);
+	  		 if($res <= 0){   
+				 echo "Error in putting new server to DB $query2<BR>";
+			 }
 		     return;
 	    }
 
 	    $row= $db->sql_fetchrow($res);
-		foreach ($this->valuesArray as $valStr) {
-			$this->$valStr=$row["$valStr"];
-		}
-		$this->gotValues=1;
+		$this->lastPullUpdateID=$row["lastPullUpdateID"];
+		//foreach ($this->valuesArray as $valStr) {
+		//	$this->$valStr=$row["$valStr"];
+		//}
+		// $this->gotValues=1;
     }
 
 	function getNextFreeID() {
@@ -287,6 +310,15 @@ class Server {
 	function putToDB($update=0) {
 		global $db,$serversTable;
 
+		$query="REPLACE INTO $serversTable  ( ID, lastPullUpdateID)  VALUES ( $this->ID, $this->lastPullUpdateID ) ";
+		$res= $db->sql_query($query);
+		if($res <= 0){   
+			echo "Error in putting new server to DB $query<BR>";
+			return 0;
+		}
+		return 1;
+
+/*
 		if ($update) {
 			$query="REPLACE INTO ";		
 			$fl_id_1="ID,";
@@ -318,6 +350,7 @@ class Server {
 	    }		
 		$this->gotValues=1;			
 		return 1;
+*/
     }
 
 	// serverPass -> the password that the client server with the speficic ID must provide
@@ -326,6 +359,11 @@ class Server {
 	// they are the same only in the entry of the local server
 
 	function checkServerPass($serverID,$pass) {
+		global $CONF;
+		if ( !$pass && $pass==$CONF['servers']['list'][$serverID]['serverPass']) return 1;
+		
+		return 0;
+/*
 		global $db,$serversTable;
 		$res= $db->sql_query("SELECT * FROM $serversTable WHERE ID=$serverID AND serverPass='$pass' ");
   		if($res <= 0){   
@@ -338,6 +376,7 @@ class Server {
 		} else {
 			return 0;
 		}
+*/
     }
 
 	function deleteAllSyncedFlights() {
@@ -386,23 +425,21 @@ class Server {
 
 	}
 	
-	function rewindSyncPointer($count) {
-		$this->lastPullUpdateID-=$count;
-		$this->putToDB(1);
-	}
+	function moveSyncPointer($count) {
+		if ( !is_numeric($count) ) return 0;
 
-	function advanceSyncPointer($count) {
 		$this->lastPullUpdateID+=$count;
-		$this->putToDB(1);
+		if ($this->lastPullUpdateID<0 ) $this->lastPullUpdateID=0;
+		$this->putToDB();
 	}
 
 	function guessPilots($chunkSize=5) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path,$db,$flightsTable;
 		
-		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
-		$urlToPull.="&op=get_hash&format=".$this->sync_format;
-		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass.
-					"&use_zip=".$this->use_zip;
+		$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
+		$urlToPull.="&op=get_hash&format=".$this->data['sync_format'];
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
+					"&use_zip=".$this->data['use_zip'];
 
 		echo "Getting flight hashes from $urlToPull ... ";
 		flush2Browser();
@@ -514,23 +551,24 @@ class Server {
 	function sync($chunkSize=5,$verbose=1) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path;
 		
-		if (!$this->gotValues) $this->getFromDB();
+		// if (!$this->gotValues) $this->getFromDB();
+		$this->getFromDB();
 
 		$startID=$this->lastPullUpdateID+1;
-		$urlToPull='http://'.$this->url_base.'/sync.php?type=1';
-		$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->sync_format;
-		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->clientPass.
-					"&sync_type=".$this->sync_type."&use_zip=".$this->use_zip;
+		$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
+		$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->data['sync_format'];
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
+					"&sync_type=".$this->data['sync_type']."&use_zip=".$this->data['use_zip'];
 
 
 		
 
-		if ($verbose) echo "Getting <strong>$this->sync_format</strong> sync-log from $urlToPull ... ";
+		if ($verbose) echo "Getting <strong>".$this->data['sync_format']."</strong> sync-log from $urlToPull ... ";
 		if ($verbose) flush2Browser();
 		if ($verbose) flush2Browser();
 
 		$timeout=60+floor($chunkSize/5);
-		if ($this->sync_type& SYNC_INSERT_FLIGHT_LOCAL && $this->use_zip ) $timeout*=5;
+		if ($this->data['sync_type'] & SYNC_INSERT_FLIGHT_LOCAL && $this->data['use_zip'] ) $timeout*=5;
 		$rssStr=fetchURL($urlToPull,$timeout );
 		
 		if (!$rssStr) {
@@ -541,7 +579,7 @@ class Server {
 		if ($verbose) echo " <div class='ok'>DONE</div><br>";
 		if ($verbose) flush2Browser();
 
-		if ($this->use_zip) { // we have a zip file in $rssStr, unzip it
+		if ($this->data['use_zip']) { // we have a zip file in $rssStr, unzip it
 			if ($verbose) echo "Unziping sync-log ... ";
 			$tmpZIPfolder=$CONF_tmp_path.'/'.$this->ID."_".time();
 			mkdir($tmpZIPfolder);
@@ -588,7 +626,7 @@ class Server {
 
 		// echo "<PRE>$rssStr</pre>";
 
-		if ($this->sync_format=='XML')	{	
+		if ($this->data['sync_format']=='XML')	{	
 			require_once dirname(__FILE__).'/lib/miniXML/minixml.inc.php';
 			$xmlDoc = new MiniXMLDoc();
 			$xmlDoc->fromString($rssStr);
@@ -608,7 +646,7 @@ class Server {
 			} else {
 				$this->processSyncEntry($this->ID,$xmlArray['log']['item']);
 			}
-		} else if ($this->sync_format=='JSON') {
+		} else if ($this->data['sync_format']=='JSON') {
 			if ($verbose) echo "Decoding log from JSON format ...";
 			if ($verbose) flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
@@ -689,8 +727,8 @@ class Server {
 		//	print_r($logItem);
 		// return 1;
 
-		list($result,$message)=logReplicator::processEntry($ID,$logItem,$this->sync_type);
-		if ($result < 0 ) {
+		list($result,$message)=logReplicator::processEntry($ID,$logItem,$this->data['sync_type']);
+		if ($result < -10 ) {
 			echo "<div class='error'>ERROR </div>: $message <BR>";
 			return 0;
 		} else {

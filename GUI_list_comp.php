@@ -46,6 +46,12 @@
   // BRANDS MOD  
   $where_clause.= brands::makeWhereClause($brandID);
 
+
+	// take care of exluding flights
+	// 1-> first bit -> means flight will not be counted anywhere!!!
+	$bitMask=2 & ~( $includeMask & 0x03 );
+	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
+
    $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_CATEGORY_FLIGHT_NUMBER, "totalDistance"=>_TOTAL_DISTANCE, 
 			     "totalDuration"=>_CATEGORY_TOTAL_DURATION, "bestDistance"=>_CATEGORY_OPEN_DISTANCE, 
 			     "totalOlcKm"=>_TOTAL_OLC_DISTANCE, "totalOlcPoints"=>_TOTAL_OLC_SCORE, "bestOlcScore"=>_BEST_OLC_SCORE, 

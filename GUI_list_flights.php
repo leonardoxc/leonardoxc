@@ -41,6 +41,11 @@
 	// BRANDS MOD  
 	$where_clause.= brands::makeWhereClause($brandID);
 	
+	// take care of exluding flights
+	// 1-> first bit -> means flight will not be counted anywhere!!!
+	$bitMask=1 & ~( $includeMask & 0x01 );
+	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
+
 	if ($pilotID!=0) {
 		$where_clause.=" AND userID='".$pilotID."'  AND userServerID=$serverID ";		
 	} else {  // 0 means all flights BUT not test ones 
@@ -410,6 +415,7 @@ function removeClubFlight(clubID,flightID) {
 			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
   	   } 
 
+		if ($row['excludeFrom'] | 0x01 ) $date2row.="*";
 		//$extLinkImgStr=getExternalLinkIconStr($row["serverID"],$row["originalURL"],3);
 		//if ($extLinkImgStr) $extLinkImgStr="<a href='".$row["originalURL"]."' target='_blank'>$extLinkImgStr</a>";
 
@@ -499,7 +505,9 @@ function removeClubFlight(clubID,flightID) {
 		echo "<TD $airspaceProblem align=left valign='top'>";
 		echo "<div class='smallInfo'>";
 
-	    if ( $isExternalFlight == 0 || $isExternalFlight ==2 ) { 
+	    if ( $isExternalFlight == 0 || 
+			$isExternalFlight ==2 || 
+			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			echo "<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 			
 		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
@@ -525,7 +533,12 @@ function removeClubFlight(clubID,flightID) {
 		if ($hasComments ) echo "<img  class='commentDiv' src='".$moduleRelPath."/img/icon_comments.gif' width='12' height='8'  />";
 		// else echo "<img class='commentDiv' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='12' height='8' />";
 
-		if ($isExternalFlight) echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry."'>";
+		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
+ 			 $extServerStr=$CONF['servers']['list'][$row['serverID']]['name'];
+ 			 $extServerStrShort=$CONF['servers']['list'][$row['serverID']]['short_name'];
+			 echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry.": $extServerStr'>";
+			 echo "<div class='extLinkName'>$extServerStrShort</div>";
+		}
 		// else echo "<img class='photoIcon' src='$moduleRelPath/img/photo_icon_blank.gif' border=0>";			
 
 		if ($row["userID"]==$userID || auth::isAdmin($userID) ) {  

@@ -259,11 +259,33 @@ INDEX ( `flightID` , `method` , `type` , `isBest` )
 ) TYPE = MYISAM ;
 
 
-ALTER TABLE `leonardo_photos` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-ALTER TABLE `leonardo_photos` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
+# ALTER TABLE `leonardo_photos` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' ;
 
 
 # 2008/05/22
 
 ALTER TABLE `leonardo_flights` DROP INDEX `takeoffID_2`  
+
+
+#2008/05/27
+
+ALTER TABLE `leonardo_servers` DROP `isLeo` ,
+DROP `installation_type` ,
+DROP `leonardo_version` ,
+DROP `url` ,
+DROP `url_base` ,
+DROP `url_op` ,
+DROP `admin_email` ,
+DROP `site_pass` ,
+DROP `serverPass` ,
+DROP `clientPass` ,
+DROP `sync_format` ,
+DROP `sync_type` ,
+DROP `use_zip` ,
+DROP `is_active` ,
+DROP `gives_waypoints` ,
+DROP `waypoint_countries` ;
+
+
+ALTER TABLE `leonardo_flights` ADD `excludeFrom` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `active` ;
+

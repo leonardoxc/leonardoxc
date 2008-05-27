@@ -101,7 +101,7 @@ function registerSlave($arg) {
 	global $CONF_isMasterServer;	
 	if (!$CONF_isMasterServer)	
 		return new IXR_Error(5001, "Not a Master server");	
-
+if (0){
 	$newServer=new Server();
 	$newServer->ID= Server::getNextFreeID();
 	$newServer->isLeo=1;
@@ -117,9 +117,10 @@ function registerSlave($arg) {
 	$newServer->waypoint_countries	='';
 
 	$res=$newServer->putToDB();
+}
 
-/*
-	$fileStr="$installType#$leonardo_version#$url#$adminEmail#$sitePass\n";
+
+	$fileStr="$installType#$leonardo_version#$url#$url_op#$adminEmail#$sitePass\n";
 	$filename=dirname(__FILE__)."/DB_of_servers.txt";
     if (!$handle = fopen($filename, 'a'))  
 		return new IXR_Error(5002, "Cannot open file ($filename)");	
@@ -128,7 +129,7 @@ function registerSlave($arg) {
 		return new IXR_Error(5003, "Cannot write to file ($filename)");	
 		
     fclose($handle); 
-*/
+
 	return 1;
 }
 
