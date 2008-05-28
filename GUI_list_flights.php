@@ -415,7 +415,7 @@ function removeClubFlight(clubID,flightID) {
 			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
   	   } 
 
-		if ($row['excludeFrom'] | 0x01 ) $date2row.="*";
+		if ($row['excludeFrom'] & 0x01 ) $date2row.="*";
 		//$extLinkImgStr=getExternalLinkIconStr($row["serverID"],$row["originalURL"],3);
 		//if ($extLinkImgStr) $extLinkImgStr="<a href='".$row["originalURL"]."' target='_blank'>$extLinkImgStr</a>";
 

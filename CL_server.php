@@ -551,17 +551,20 @@ class Server {
 	function sync($chunkSize=5,$verbose=1) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path;
 		
-		// if (!$this->gotValues) $this->getFromDB();
 		$this->getFromDB();
-
 		$startID=$this->lastPullUpdateID+1;
-		$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
-		$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->data['sync_format'];
-		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
+
+		if ( $this->data['isLeo'] )  {
+			$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
+			$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->data['sync_format'];
+			$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
 					"&sync_type=".$this->data['sync_type']."&use_zip=".$this->data['use_zip'];
 
+		} else {
+			$urlToPull='http://'.$this->data['url_sync']."?count=$chunkSize&startID=$startID";
+		}
 
-		
+
 
 		if ($verbose) echo "Getting <strong>".$this->data['sync_format']."</strong> sync-log from $urlToPull ... ";
 		if ($verbose) flush2Browser();
@@ -621,7 +624,7 @@ class Server {
 
 
 		// for debugging json
-		// writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
+		 writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
 		//return;
 
 		// echo "<PRE>$rssStr</pre>";
@@ -663,8 +666,9 @@ class Server {
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			if ($verbose) flush2Browser();
-			//print_r($arr);
-
+echo "<pre>";
+			print_r($arr);
+echo "</pre>";
 			//exit;
 			$entriesNum=0;
 			$entriesNumOK=0;

@@ -190,27 +190,35 @@ $CONF['servers']['list']=array(
 
 8=>array(
 	'id'=>8,
-	'name'=>"nhpcorguk",
-	'short_name'=>'NHPC',
+	'name'=>"xcontest",
+	'short_name'=>'XC',
 
-	'isLeo'=>1,
-	'installation_type'=>2,
-	'leonardo_version'=>"2.0.0",
-	'url'=>"nhpcorguk.site.securepod.com/nhpc/modules.php?name=leonardo",
-	'url_base'=>"nhpcorguk.site.securepod.com/nhpc/modules/leonardo",
-	'url_op'=>"nhpcorguk.site.securepod.com/nhpc/modules/leonardo/op.php",
-	'admin_email'=>"sales@custodiancomputers.co.uk",
-	'site_pass'=>"dfb9loow92n12sqhde23ncsq03",
-	'serverPass'=>"",
+	'isLeo'=>0,
+	'installation_type'=>1, // 1-> xcontest
+	'leonardo_version'=>"0",
+	'url'=>"www.xcontest.org",
+	'url_base'=>"www.xcontest.org",
+	'url_sync'=>"sync.xcontest.org/", // startID=1&count=5	
+	'url_op'=>"www.xcontest.org",
+	'admin_email'=>"petr@pgweb.cz",
+
+	'site_pass'=>"",
+	'serverPass'=>"gorw245vcvii4293dghj",
 	'clientPass'=>"",
-	'sync_format'=>"XML",
-	'sync_type'=>"0",
+
+	'sync_format'=>"JSON",
+	'sync_type'=>"1",
 	'use_zip'=>"0",
 
-	'is_active'=>0,
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
 
-	'gives_waypoints'=>1,
-	'waypoint_countries'=>"GB",
+	'is_active'=>1,
+
+	'gives_waypoints'=>0,
+	'waypoint_countries'=>"",
 ),
 
 9=>array(
@@ -238,30 +246,31 @@ $CONF['servers']['list']=array(
 	'waypoint_countries'=>"TR",
 ),
 
-20=>array(
-	'id'=>20,
-	'name'=>"xcontest",
-	'short_name'=>'XC',
+11=>array(
+	'id'=>11,
+	'name'=>"nhpcorguk",
+	'short_name'=>'NHPC',
 
-	'isLeo'=>0,
-	'installation_type'=>0,
-	'leonardo_version'=>"0",
-	'url'=>"www.xcontest.org",
-	'url_base'=>"www.xcontest.org",
-	'url_op'=>"www.xcontest.org",
-	'admin_email'=>"petr@pgweb.cz",
-	'site_pass'=>"",
-	'serverPass'=>"gorw245vcvii4293dghj",
+	'isLeo'=>1,
+	'installation_type'=>2,
+	'leonardo_version'=>"2.0.0",
+	'url'=>"nhpcorguk.site.securepod.com/nhpc/modules.php?name=leonardo",
+	'url_base'=>"nhpcorguk.site.securepod.com/nhpc/modules/leonardo",
+	'url_op'=>"nhpcorguk.site.securepod.com/nhpc/modules/leonardo/op.php",
+	'admin_email'=>"sales@custodiancomputers.co.uk",
+	'site_pass'=>"dfb9loow92n12sqhde23ncsq03",
+	'serverPass'=>"",
 	'clientPass'=>"",
-	'sync_format'=>"JSON",
-	'sync_type'=>"1",
+	'sync_format'=>"XML",
+	'sync_type'=>"0",
 	'use_zip'=>"0",
 
 	'is_active'=>0,
 
-	'gives_waypoints'=>0,
-	'waypoint_countries'=>"",
+	'gives_waypoints'=>1,
+	'waypoint_countries'=>"GB",
 ),
+
 
 99=>array(
 	'id'=>99,
