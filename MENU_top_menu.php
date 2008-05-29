@@ -129,6 +129,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href='#'><STRONG>XCnet <?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
 					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
+					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_duplicates">Resolve Duplicate Flights</a></li>
 					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">Sync logs of Slave-Servers</a></li>
 			</ul>
 		</li>

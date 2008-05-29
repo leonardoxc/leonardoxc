@@ -392,12 +392,17 @@ function removeClubFlight(clubID,flightID) {
 
 	   $days_from_submission =	floor( ( mktime() - datetime2UnixTimestamp($row["dateAdded"]) ) / 86400 );  // 60*60*24 sec per day
 
-	   if ( $is_private ) {
-			// $first_col_back_color=" bgcolor=#33dd33 ";
-			$privateIcon="<img src='".$moduleRelPath."/img/icon_private.gif' align='absmiddle'' width='13' height='13'>";
-	   } else  { 
-			//$first_col_back_color="";
+	   if ( ! $is_private ) {
 			$privateIcon='&nbsp;';
+	   } else{
+			$privateIcon='';
+			if ( $is_private  & 0x01 ) { 
+				$privateIcon.="<img src='".$moduleRelPath."/img/icon_private.gif' align='absmiddle' width='13' height='13'>";
+		   	} 
+
+			if ( $is_private & 0x02 ) { 
+				$privateIcon.="<img src='".$moduleRelPath."/img/icon_disabled.gif' align='absmiddle' width='13' height='13'>";
+			}
 	   }
 	   	   
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {

@@ -60,8 +60,20 @@
 		 $flight->linkURL=$_REQUEST["linkURL"];
   		 if ( substr($flight->linkURL,0,7) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
-		if ($_REQUEST['is_private']=="1")  $flight->private=1; 
-		else $flight->private=0;
+		if ($_REQUEST['is_private']=="1") {
+		 	$flight->private = $flight->private | 1; 
+		} else {
+			$flight->private = $flight->private & (~0x01 & 0xff ); 
+			// dont make any changes
+			// $flight->private=0;
+		}
+
+		if ($_REQUEST['is_disabled']=="1") {
+		 	$flight->private = $flight->private | 2; 
+		} else {
+			$flight->private = $flight->private & (~0x02 & 0xff ); 
+		}
+
 
 		require_once dirname(__FILE__)."/CL_flightPhotos.php";
 		$flightPhotos=new flightPhotos($flight->flightID);
@@ -223,13 +235,22 @@ require_once dirname(__FILE__).'/FN_editor.php';
     <tr>
       <td colspan=2 valign="top">        
 		<div align="right">
-              <input type="checkbox" name="is_private" value="1" <? echo ($flight->private)?"checked":"" ?> >
+              <input type="checkbox" name="is_private" value="1" <? echo ($flight->private & 1)?"checked":"" ?> >
              <? echo  _IS_PRIVATE ?>    
 		</div>         
 		</td>
     </tr>
 <? } ?>
-
+<? if ( auth::isAdmin($userID) ) { ?>
+    <tr>
+      <td colspan=2 valign="top">        
+		<div align="right">
+              <input type="checkbox" name="is_disabled" value="1" <? echo ($flight->private & 2)?"checked":"" ?> >
+             <? echo  "Disable Flight"; ?>    
+		</div>         
+		</td>
+    </tr>
+<? } ?>
     <tr>
       <td colspan="2"  valign="top">
         <table width="100%"  border="0" cellspacing="0" cellpadding="0">

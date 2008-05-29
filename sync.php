@@ -71,8 +71,10 @@
 	set_time_limit( 60 + floor($count/4) );
 	
 	if ($op=="get_hash") {	
-		if (!$CONF_use_utf) 
+
+		if (!$CONF_use_utf) {
 		 	require_once dirname(__FILE__).'/lib/ConvertCharset/ConvertCharset.class.php';
+		}
 
 		 $format='JSON';
 		 $query="SELECT ID, userID, serverID,hash, userServerID,originalUserID ,original_ID  FROM $flightsTable WHERE  hash<>'' ";
@@ -87,10 +89,14 @@
 					$pilotID=$row['userID'].'_'.$row['userServerID'];
 					if ( ! $pilotNames[$pilotID]){
 						$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
-						$NewEncoding = new ConvertCharset;
-						$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
-						$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
-
+						if (!$CONF_use_utf ) {
+							$NewEncoding = new ConvertCharset;
+							$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+							$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+						} else {
+							$lName=$pilotInfo[0];
+							$fName=$pilotInfo[1];
+						}
 						$pilotNames[$pilotID]['lname']=$lName;
 						$pilotNames[$pilotID]['fname']=$fName;
 						$pilotNames[$pilotID]['country']=$pilotInfo[2];
@@ -103,8 +109,16 @@
 					$RSS_str.=' { "item": {
 "ID": '.$row['ID'].',
 "serverID": '.$row['serverID'].',
-"hash": "'.$row['hash'].'",
-
+"hash": "'.$row['hash'].'", '.
+'
+"pilot" : {
+"userID":'.$row['userID'].',
+"userServerID":'.$row['userServerID'].',
+"lName":"'.$pilotNames[$pilotID]['lname'].'",
+"fName":"'.$pilotNames[$pilotID]['fname'].'",
+}	'.
+/*
+'
 "pilot" : {
 	"userID": 	  '.$row['userID'].',
 	"userServerID": '.$row['userServerID'].',
@@ -114,8 +128,9 @@
 	"sex": "'.$pilotNames[$pilotID]['sex'].'",
 	"birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",
 	"CIVL_ID": "'.$pilotNames[$pilotID]['CIVL_ID'].'"
-}	
-	}} ';
+}	'.
+*/
+'	}} ';
 				$item_num++;
 			}
 		 }

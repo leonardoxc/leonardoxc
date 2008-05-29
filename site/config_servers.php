@@ -337,7 +337,7 @@ $CONF['servers']['list']=array(
 	'site_pass'=>"af5uk04l2ftjd5jzsekgt31ko",
 	'serverPass'=>"fdsdfg343hwero250235423",
 
-	'clientPass'=>"4285372987592345425",        
+	'clientPass'=>"jj3f3249g33asa348914",        
 
 	'treat_flights_as_local'=>1,
 	'exclude_from_list'=>1,

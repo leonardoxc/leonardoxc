@@ -84,13 +84,16 @@ function transliterate($str,$enc) {
 			require_once dirname(__FILE__)."/lib/ConvertCharset/convert_gb2312.php";	
 			return gb2312_to_latin($str);		
 		} else {
-			require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
-			$gb2312_str= Charset::convert($str,'utf-8','gb2312');
-			$str2=Charset::PinYin($gb2312_str,'gb2312');
-			// echo "^gb2312_str : $gb2312_str ^ ";			
-			// echo "^str2: $str2 ^ ";
-			return $str2;
-
+			if (  substr( phpversion(),0,1 ) >=5 ) {
+				require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
+				$gb2312_str= Charset::convert($str,'utf-8','gb2312');
+				$str2=Charset::PinYin($gb2312_str,'gb2312');
+				// echo "^gb2312_str : $gb2312_str ^ ";			
+				// echo "^str2: $str2 ^ ";
+				return $str2;
+			} else {
+				return $str;
+			}
 		}
 	}
 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
