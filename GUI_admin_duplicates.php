@@ -43,7 +43,7 @@ while ($row0 = $db->sql_fetchrow($res0)) {
 	 exit();
 	}
 echo "<table>";
-echo "<tr><td>Flight</td><td>PilotID<td>Pilot</td></tr>\n";
+echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
 	while (	$row = $db->sql_fetchrow($res) ) {
 		$pilotID=$row['userServerID'].'_'.$row['userID'];
 		if ( ! $pilotNames[$pilotID]){
@@ -64,6 +64,8 @@ echo "<tr><td>Flight</td><td>PilotID<td>Pilot</td></tr>\n";
 			$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
 		} 
 		echo "<tr><td>ID: <a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a></td>
+<td>".$row['serverID']."</td>
+<td>".$row['original_ID']."</td>		
 <td>$pilotID</td>
 			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID'>".$pilotNames[$pilotID]['lname']." ".$pilotNames[$pilotID]['fname']." [ ".$pilotNames[$pilotID]['country']." ] CIVLID: ".$pilotNames[$pilotID]['CIVL_ID']."</td>
 </tr>

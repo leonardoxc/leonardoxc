@@ -168,9 +168,6 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
-	$hash=md5( implode('',$lines)  );
-
-	$flight->hash=$hash;
 
 	if ( count ($lines)==1) {
 		if ($lines[0]=preg_replace("/\r([^\n])/","\r\n\\1",$lines[0])) {		
@@ -186,6 +183,10 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			fclose($handle); 
 		} 
 	}
+
+	$hash=md5( implode('',$lines)  );
+	$flight->hash=$hash;
+
 	unset($lines);
 
 	//  we must cope with some cases here
@@ -202,6 +203,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	// check for dates in the furure
 	if ( $flight->DATE	> date("Y-m-d",time()+3600*10)  ) {
 		@unlink($flight->getIGCFilename(1));
+		@unlink($tmpIGCPath.".olc");
+		@unlink($tmpIGCPath);
 		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);
 		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);	
@@ -210,6 +213,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	$oldFlightID= $flight->findSameFlightID();
 	if ($oldFlightID>0) {
 		@unlink($flight->getIGCFilename(1));
+		@unlink($tmpIGCPath.".olc");
+		@unlink($tmpIGCPath);
 		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
 		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$oldFlightID);	
@@ -217,10 +222,18 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	$sameFilenameID=$flight->findSameFilename( basename($filename) );
 	if ($sameFilenameID>0) 	 {
-		@unlink($flight->getIGCFilename(1));
-		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,0);
-		if (!$log->put()) echo "Problem in logger<BR>";
-		return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
+		if ( $flight->allowDuplicates ) {
+			while ( is_file($flight->getIGCFilename()) ) {
+				$flight->filename='_'.$flight->filename;
+			}
+		} else {
+			@unlink($flight->getIGCFilename(1));
+			@unlink($tmpIGCPath.".olc");
+			@unlink($tmpIGCPath);
+			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,0);
+			if (!$log->put()) echo "Problem in logger<BR>";
+			return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
+		}
 	}
 
 	// Two week time limit check - P.Wild
@@ -229,6 +242,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		if (! isModerator($userID) ) {
 			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
 				@unlink($flight->getIGCFilename(1));
+				@unlink($tmpIGCPath.".olc");
+				@unlink($tmpIGCPath);
 				$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
 				if (!$log->put()) echo "Problem in logger<BR>";
 				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
@@ -237,15 +252,17 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	}
 	// end martin / peter
 
-	
-	$sameHashID=$flight->findSameHash( $hash );
-	if ($sameHashID>0) 	 {
-		@unlink($flight->getIGCFilename(1));
-		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
-		if (!$log->put()) echo "Problem in logger<BR>";
-		return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameHashID);	
+	if ( ! $flight->allowDuplicates ) {
+		$sameHashID=$flight->findSameHash( $hash );
+		if ($sameHashID>0) 	 {
+			@unlink($flight->getIGCFilename(1));
+			@unlink($tmpIGCPath.".olc");
+			@unlink($tmpIGCPath);
+			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
+			if (!$log->put()) echo "Problem in logger<BR>";
+			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameHashID);	
+		}
 	}
-
 
 
 	// move the flight to corresponding year

@@ -666,9 +666,10 @@ class Server {
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			if ($verbose) flush2Browser();
-echo "<pre>";
-			print_r($arr);
-echo "</pre>";
+			//echo "<pre>";
+			//print_r($arr);
+			//echo "</pre>";
+			
 			//exit;
 			$entriesNum=0;
 			$entriesNumOK=0;

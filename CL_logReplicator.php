@@ -118,7 +118,7 @@ class logReplicator {
 		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID'];	
 		$res= $db->sql_query($query);		
 		if($res <= 0){
-			echo("<H3> Error in findFlight query! $query</H3>\n");
+			echo("<H3> Error in checkPilot query! $query</H3>\n");
 			return array(0,0);
 		}		
 		if (  $row = $db->sql_fetchrow($res) ) {
@@ -289,6 +289,8 @@ class logReplicator {
 			// get only the first 2 bits
 			$externalFlightType=$sync_mode & 0x03 ;
 
+			$addFlightNote='';
+			
 			if ($e['action']==1) {	// add
 				$igcFilename=$e['ActionXML']['flight']['filename'];
 				$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
@@ -296,10 +298,21 @@ class logReplicator {
 				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
 
 				$hash=$e['ActionXML']['flight']['validation']['hash'];
-				$sameHashID=flight::findSameHash( $hash );
-				if ($sameHashID>0) 	 {
-					return array(-1,"Flight already exists in local with ID: $sameHashID");
-					continue;
+				if ($CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['allow_duplicate_flights']) {
+					$sameHashID=flight::findSameHash( $hash , $e['ActionXML']['flight']['serverID'] );
+					if ($sameHashID>0 )  {
+						return array(-1,"Flight already exists in local with ID: $sameHashID (dups allowed)");
+						continue;
+					} else {
+						// $addFlightNote="*(Duplicate Flight)*";
+					}
+				
+				} else {
+					$sameHashID=flight::findSameHash( $hash );
+					if ($sameHashID>0 ) 	 {
+						return array(-1,"Flight already exists in local with ID: $sameHashID");
+						continue;
+					}
 				}
 			} else if ($e['action']==2) {	// update
 				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
@@ -321,14 +334,14 @@ class logReplicator {
 						"category"	=>$e['ActionXML']['flight']['info']['cat'],
 
 						"dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
-						"originalURL"	=>$e['ActionXML']['flight']['linkDisplay'],
-						"originalKML"	=>$e['ActionXML']['flight']['linkGE'],								
+						"originalURL"	=>htmlDecode($e['ActionXML']['flight']['linkDisplay']),
+						"originalKML"	=>htmlDecode($e['ActionXML']['flight']['linkGE']),
 						"original_ID"	=>$e['ActionXML']['flight']['id'],
 						"serverID"		=>$e['ActionXML']['flight']['serverID'],
 						"userServerID"	=>$e['ActionXML']['flight']['serverID'],
 						"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
 						"externalFlightType"=> $externalFlightType	,
-
+						"allowDuplicates"=>($CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['allow_duplicate_flights']+0),
 				);
 				// print_r($argArray);
 
@@ -376,6 +389,14 @@ class logReplicator {
 
 					$igcFilename=$e['ActionXML']['flight']['filename'];
 					$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];				
+	
+	
+					if ( $CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['exclude_from_list'] ) {
+						$extFlight->excludeFrom |= 3;
+					}					
+					if ( $CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['exclude_from_league'] ) {
+						$extFlight->excludeFrom |= 2;
+					}
 	
 					foreach($argArray as $fieldName=>$fieldValue) {
 						$extFlight->$fieldName=$fieldValue;
@@ -467,7 +488,11 @@ class logReplicator {
 							
 							$extFlight->filename=$igcFilename;
 							$extFlight->checkDirs();
-							if ($DBGlvl>0) echo "Moving file into place: ".$extFlight->getIGCFilename()."<BR>";	
+							if ($DBGlvl>0) echo "Moving file into place: ".$extFlight->getIGCFilename()."<BR>";
+							while ( is_file($extFlight->getIGCFilename()) ) {
+								if ($DBGlvl>0) echo "Same filename is already present<BR>";
+								$extFlight->filename='_'.$extFlight->filename;
+							}
 							@rename($igcFileTmp, $extFlight->getIGCFilename() );
 							
 							$opString='*inserted*';
@@ -478,7 +503,7 @@ class logReplicator {
 						// insert flight
 						$extFlight->putFlightToDB(0);
 
-						return array(1,"Flight $opString OK with local ID $extFlight->flightID");
+						return array(1,"Flight $opString OK $addFlightNote with local ID $extFlight->flightID");
 					} else {
 						//update flight
 						$extFlight->putFlightToDB(1);

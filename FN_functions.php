@@ -14,6 +14,11 @@
 require_once dirname(__FILE__)."/CL_auth.php"; 
 
 
+function htmlDecode($encoded) {
+	return strtr($encoded,array_flip(get_html_translation_table(HTML_ENTITIES)));
+}
+
+
 if( !function_exists('str_ireplace') ){
  function str_ireplace($search,$replace,$subject){
    $token = chr(1);

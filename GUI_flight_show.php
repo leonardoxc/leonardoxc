@@ -217,6 +217,7 @@ function delete_takeoff(id) {
 <?
 	$legendRight="";
 
+			
 	if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
 		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
@@ -226,6 +227,14 @@ function delete_takeoff(id) {
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
+	if ( $flight->private  & 0x01 ) { 
+		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_private.gif' align='bottom' width='13' height='13'>";
+	} 
+
+	if ( $flight->private & 0x02 ) { 
+		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_disabled.gif' align='bottom' width='13' height='13'>";
+	}
+	
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
 			$flight->userServerID."_".$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".

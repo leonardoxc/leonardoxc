@@ -21,6 +21,13 @@ function remakeLog(id,action,DBGlvl) {
 	var extraStr='&logEntries='+logEntries;	
 	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=remakeLog'+extraStr;
 }
+
+function remakeScoreLog(id,action,DBGlvl) {	 	
+	var logScoreEntries=MWJ_findObj('logScoreEntries').value;
+	var extraStr='&logScoreEntries='+logScoreEntries;	
+	document.location='<?=CONF_MODULE_ARG?>&op=admin&admin_op=remakeScoreLog'+extraStr;
+}
+
 function scoreFlights(id,action,DBGlvl) {	 	
 	var scoreFlightsNum=MWJ_findObj('scoreFlightsNum').value;
 	var extraStr='&scoreFlightsNum='+scoreFlightsNum;	
@@ -61,9 +68,14 @@ function chmodDir($dir){
 		$logEntries=500; 
 	}
 
+	$logScoreEntries=makeSane($_GET['logScoreEntries'],1);	
+	if ( $logScoreEntries=='' ) {
+		$logScoreEntries=2000; 
+	}
+	
 	$scoreFlightsNum=makeSane($_GET['scoreFlightsNum'],1);	
 	if ( $scoreFlightsNum=='' ) {
-		$scoreFlightsNum=100; 
+		$scoreFlightsNum=200; 
 	}
 
 //echo "<br>";
@@ -137,6 +149,10 @@ echo "<ul>";
 	echo "<li><a href='javascript:remakeLog()'>Remake local SyncLog (flights) </a>  Process <input type='textbox' size='4' id='logEntries' name='logEntries' value='$logEntries'> entries at a time (set -1 to proccess all)<br>
 	Uses the 'batchProcessed' field  in flights DB so if the operation times out it can be resumed where it left of.
 	You must use the 'Clean the batchProcessed' option in order to aply to all fligths from scratch!	";
+	
+		echo "<li><a href='javascript:remakeScoreLog()'>Remake local SyncLog (ONLY scoring) </a>  Process <input type='textbox' size='4' id='logScoreEntries' name='logScoreEntries' value='$logScoreEntries'> entries at a time (set -1 to proccess all)<br>
+	Uses the 'batchProcessed' field  as in  'Remake local SyncLog' above";
+
 echo "</ul>";
 
 echo "<ul>";
@@ -680,7 +696,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if ($logEntries > 0) $limitStr= " LIMIT $logEntries ";
 		else $limitStr='';
 		
-		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 AND serverID=0 ORDER BY ID ASC $limitStr";
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 AND serverID>1 ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 
 		$i=0;
@@ -689,6 +705,25 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				  $flight=new flight();
 				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
 				  $flight->makeLogEntry();
+				  setBatchBit($row["ID"]);
+				  $i++;
+				  set_time_limit(300);
+			 }
+		}
+		echo "<BR><br><br>DONE !!! processed $i flights<BR>";
+	} else if ($admin_op=="remakeScoreLog") {
+		if ($logEntries > 0) $limitStr= " LIMIT $logScoreEntries ";
+		else $limitStr='';
+		
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 ORDER BY ID ASC $limitStr";
+		$res= $db->sql_query($query);
+
+		$i=0;
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				  $flight=new flight();
+				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
+				  $flight->makeScoreLogEntry();
 				  setBatchBit($row["ID"]);
 				  $i++;
 				  set_time_limit(300);

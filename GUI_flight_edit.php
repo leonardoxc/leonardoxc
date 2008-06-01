@@ -61,7 +61,7 @@
   		 if ( substr($flight->linkURL,0,7) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
 		if ($_REQUEST['is_private']=="1") {
-		 	$flight->private = $flight->private | 1; 
+		 	$flight->private = $flight->private | 0x01; 
 		} else {
 			$flight->private = $flight->private & (~0x01 & 0xff ); 
 			// dont make any changes
@@ -69,7 +69,7 @@
 		}
 
 		if ($_REQUEST['is_disabled']=="1") {
-		 	$flight->private = $flight->private | 2; 
+		 	$flight->private = $flight->private | 0x02; 
 		} else {
 			$flight->private = $flight->private & (~0x02 & 0xff ); 
 		}
@@ -231,22 +231,18 @@ require_once dirname(__FILE__).'/FN_editor.php';
   <?  open_inner_table(_CHANGE_FLIGHT_DATA,760,"change_icon.png"); echo "<tr><td>"; ?>
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
-<? if ($enablePrivateFlights) { ?>
+<? if ($enablePrivateFlights || auth::isAdmin($userID) ) { ?>
     <tr>
-      <td colspan=2 valign="top">        
-		<div align="right">
+      <td colspan=2 valign="top">  
+	  <div align="right">
+		  <? if ($enablePrivateFlights ) { ?>      	
               <input type="checkbox" name="is_private" value="1" <? echo ($flight->private & 1)?"checked":"" ?> >
              <? echo  _IS_PRIVATE ?>    
-		</div>         
-		</td>
-    </tr>
-<? } ?>
-<? if ( auth::isAdmin($userID) ) { ?>
-    <tr>
-      <td colspan=2 valign="top">        
-		<div align="right">
+		<? } ?>
+		<? if ( auth::isAdmin($userID) ) { ?>
               <input type="checkbox" name="is_disabled" value="1" <? echo ($flight->private & 2)?"checked":"" ?> >
              <? echo  "Disable Flight"; ?>    
+		<? } ?>
 		</div>         
 		</td>
     </tr>
@@ -302,7 +298,29 @@ require_once dirname(__FILE__).'/FN_editor.php';
 		</select>
 		</b>	  </div>
 	    </fieldset>			</td>
-            <td>
+		    <td>
+			   <fieldset class="legendBox legend2">
+	    <legend><? echo _Category ?></legend>
+	  <div align="left">	  
+           <select name="category">
+           <?
+				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+					if ($flight->category==$gl_id) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+				}
+			?>
+		</select>
+			  </div>
+	    </fieldset>	
+			
+			</td>
+			</tr></table>
+			</td>
+		</tr>
+		<tr>
+	      <td colspan="2"  valign="top">			
+            
 			   <fieldset class="legendBox legend2"><legend><? echo _GLIDER ?></legend>
 	  <div align="left">
 	  
@@ -351,30 +369,14 @@ require_once dirname(__FILE__).'/FN_editor.php';
 					?>
 				</select>
 			<? } ?>	
-			</td>
-			</tr>
-			</table>
-		       </div>
-	  </fieldset>			</td>
-            <td>
-			   <fieldset class="legendBox legend2">
-	    <legend><? echo _Category ?></legend>
-	  <div align="left">	  
-           <select name="category">
-           <?
-				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
-					if ($flight->category==$gl_id) $is_type_sel ="selected";
-					else $is_type_sel ="";
-					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-				}
-			?>
-		</select>
-			  </div>
-	    </fieldset>	
-			
-			</td>
-          </tr>
-        </table>		</td>
+					</td>
+					</tr>
+				</table>
+				</div>
+				</fieldset>		
+		  	</td>
+
+        	</td>
     </tr>
 	<? if ($CONF_use_validation && auth::isAdmin($userID) ) {?>
     <tr>

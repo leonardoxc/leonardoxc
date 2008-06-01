@@ -345,8 +345,10 @@ $resStr='{
 	"filename": "'.json::prepStr($this->filename).'",
 	"linkIGC": "'.$this->getIGC_URL().'",
 	"linkIGCzip": "'.$this->getZippedIGC_URL().'",
-	"linkDisplay": "'.htmlspecialchars($this->getFlightLinkURL()).'",
-	"linkGE": "'.htmlspecialchars($this->getFlightKML(0)).'",
+	"linkDisplay": "'.($isLocal ? 	htmlspecialchars($this->getFlightLinkURL()): 
+									htmlspecialchars($this->originalURL) ).'",
+	"linkGE": "'.($isLocal ? htmlspecialchars($this->getFlightKML(0)) :
+							 htmlspecialchars($this->originalKML) ).'",	
 	"isLive": '.$this->isLive.',
 	
 	"info": {
@@ -2489,7 +2491,7 @@ $kml_file_contents=
 				$log=new Logger();
 				$log->userID  	=$this->userID;
 				$log->ItemType	=1 ; // flight; 
-				$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+				$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
 				$log->ActionXML	= "{ }";
@@ -2509,7 +2511,7 @@ $kml_file_contents=
 				$log=new Logger();
 				$log->userID  	=$this->userID;
 				$log->ItemType	=1 ; // flight; 
-				$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+				$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
 				$log->ActionXML	= "{ }";
@@ -2546,7 +2548,7 @@ $kml_file_contents=
 		$log=new Logger();
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
-		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
 		$log->ActionXML	= "{\n". $flightScore->toJSON()."\n}";
@@ -2641,6 +2643,27 @@ $kml_file_contents=
 
 	}
 
+	function makeScoreLogEntry(){
+		global $CONF_server_id;
+		
+		$flightScore=new flightScore($this->flightID);
+		$flightScore->getFromDB();
+	
+		require_once dirname(__FILE__).'/CL_actionLogger.php';
+		$log=new Logger();
+		$log->userID  	=$this->userID;
+		$log->ItemType	=1 ; // flight; 
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
+		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
+		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
+		$log->ActionXML	= "{\n". $flightScore->toJSON()."\n}";
+		$log->Modifier	= 0;
+		$log->ModifierID= 0;
+		$log->ServerModifierID =0;
+		$log->Result = 1;
+		// if (!$log->Result) $log->ResultDescription ="Problem in puting flight to DB $query";
+		if (!$log->put()) echo "Problem in logger<BR>";
+	}
 
 	function getMapFromServerDEM($num=0) {
 		global  $CONF;
@@ -3126,7 +3149,7 @@ $kml_file_contents=
 		$log=new Logger();
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
-		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
 		$log->ActionID  = 16 ;  //1  => add  2  => edit; 4  => delete ; 16 -> rename trackog
 		$log->ActionXML	= 
@@ -3201,7 +3224,7 @@ $kml_file_contents=
 		$log=new Logger();
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
-		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
 		$log->ActionID  = 4 ;  //1  => add  2  => edit; 4  => delete
 		$log->ActionXML	= $this->toXML();
@@ -3336,7 +3359,7 @@ $kml_file_contents=
 		$log=new Logger();
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
-		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = $update+1 ;  //1  => add  2  => edit;
 		$log->ActionXML	= $this->toXML();
@@ -3354,7 +3377,7 @@ $kml_file_contents=
 		$log=new Logger();
 		$log->userID  	=$this->userID;
 		$log->ItemType	=1 ; // flight; 
-		$log->ItemID	= $this->flightID; // 0 at start will fill in later if successfull
+		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 1 ;  //1  => add  2  => edit;
 		$log->ActionXML	= $this->toXML();
@@ -3568,10 +3591,14 @@ foreach ($data_time as $i=>$tm) {
 		return $row["ID"]; // found duplicate retrun the ID; 
 	}
 
-	function findSameHash($hash) {
+	function findSameHash($hash,$serverIDtoCheck=0 ) {
 		global $db;
 		global $flightsTable;
-		$query="SELECT ID FROM $flightsTable WHERE hash='$hash' ";
+		
+		$where_clause='';
+		if ($serverIDtoCheck) $where_clause=" AND serverID=$serverIDtoCheck ";
+		
+		$query="SELECT ID FROM $flightsTable WHERE hash='$hash' $where_clause ";
 		// echo $query;
 		$res= $db->sql_query($query);
 		if ($res<=0) return 0; // no duplicate found

@@ -20,6 +20,12 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"fdsdfg343hwero250235423", // we GET
 
 	'is_active'=>1,
+	
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+	
 
 	'sync_format'=>"JSON",
 	'sync_type'=>"1", // ONLY BASIC FLIGHT INFO
@@ -34,6 +40,15 @@ $CONF['servers']['list']=array(
 	'name'=>"sky.gr",
 	'short_name'=>'GR',
 	'is_active'=>1,
+	
+	'url'=>"www.sky.gr/modules.php?name=leonardo",
+	'url_base'=>"www.sky.gr/modules/leonardo",
+	'url_op'=>"www.sky.gr/modules/leonardo/op.php",
+
+
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
 ),
 
 3=>array(
@@ -41,6 +56,14 @@ $CONF['servers']['list']=array(
 	'name'=>"xc.ciclone.com.br",
 	'short_name'=>'BR',
 	'is_active'=>1,
+	
+	'url'=>"xc.ciclone.com.br/modules.php?name=leonardo",
+	'url_base'=>"xc.ciclone.com.br/modules/leonardo",
+	'url_op'=>"xc.ciclone.com.br/modules/leonardo/op.php",
+	
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
 ),
 
 4=>array( // We dont pull directly, but VIA pgforum
@@ -48,6 +71,14 @@ $CONF['servers']['list']=array(
 	'name'=>"xcportugal.com",
 	'short_name'=>'PT',
 	'is_active'=>1,
+	
+	'url'=>"www.xcportugal.com/modules.php?name=leonardo",
+	'url_base'=>"www.xcportugal.com/modules/leonardo",
+	'url_op'=>"www.xcportugal.com/modules/leonardo/op.php",
+	
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
 ),
 	
 5=>array(
@@ -80,6 +111,24 @@ $CONF['servers']['list']=array(
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"DE",
+),
+
+9=>array(
+	'id'=>9,
+	'name'=>"ypforum",
+	'short_name'=>'TR',
+	
+	'isLeo'=>1,
+
+	'url'=>"www.ypforum.com/modules.php?name=leonardo",
+	'url_base'=>"www.ypforum.com/modules/leonardo",
+	'url_op'=>"www.ypforum.com/modules/leonardo/op.php",
+
+	'is_active'=>1,
+	
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
 ),
 
 99=>array(

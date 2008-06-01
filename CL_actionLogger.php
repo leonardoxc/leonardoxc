@@ -189,6 +189,8 @@ class Logger {
 		if ($type)  {
 			$where_clause=" WHERE ItemType=$type ";
 			if ($actionType)  $where_clause.=" AND ActionID=$actionType ";
+
+			if (! $actionType) $where_clause.=" AND ServerItemID>1 ";
 		}
 
 		$query = "DELETE from $logTable $where_clause";

@@ -273,7 +273,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 	}
 
 	function toJSON() {
-		global $db,$scoresTable ,$flightsTable,$CONF;
+		global $db,$scoresTable ,$flightsTable,$CONF,$CONF_server_id;
 
 		if (!$this->gotValues) $this->getFromDB();		
 
