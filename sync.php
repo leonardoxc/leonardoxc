@@ -179,10 +179,10 @@
 "serverUTCoffset": "'.date('Z').'",
 "type": 	  '.$row['ItemType'].',
 "id": 		  '.$row['ItemID'].',
-"serverId":   '.$row['ServerItemID'].',
+"serverID":   '.$row['ServerItemID'].',
 "action":     '.$row['ActionID'].',
 "userID":	  '.$row['userID'].',
-"ActionXML":  '.$row['ActionXML'].'
+"ActionData":  '.$row['ActionXML'].'
 }} ';
 									
 			} else if ($format=='XML') {

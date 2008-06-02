@@ -25,7 +25,13 @@ class json {
 	}
 
 	function prepStr($str){
-		return str_replace('"','\"',$str);
+		$newStr=json::encode($str);
+		if ($newStr[0]=='"') {
+			return substr($newStr,1,-1);
+		} else {
+			return $newStr;
+		}
+		// return str_replace('"','\"',$str);
 	}
 
 	function decode($str) {

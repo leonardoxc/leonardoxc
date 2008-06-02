@@ -178,13 +178,23 @@ class logReplicator {
 			echo "</PRE>";
 		}
 
+		if ( is_array($e['ActionXML']) ) {
+			$actionData=& $e['ActionXML'];
+		} else 	if ( is_array($e['ActionData']) ) {
+			$actionData=& $e['ActionData'];
+		} else 	if ( is_array($e['flight']) ) {
+			$actionData=& $e;
+		} else {
+			return array(0,"logReplicator::processEntry : ActionData section not found");
+		}
+
 		if ($e['type']=='1') { // flight
 
 			if ($e['action']==4) {	// delete
-				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
+				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
 				if (!$flightIDlocal) {
-					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." and original ID : ".
-							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont delete it");
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$actionData['flight']['serverID']." and original ID : ".
+							$actionData['flight']['id']." is not found in the local DB -> Wont delete it");
 				}
 				// echo "Will delete flight $flightIDlocal<BR>";
 				
@@ -195,22 +205,22 @@ class logReplicator {
 			}
 
 			if ($e['action']==16) {	// rename tracklog
-				$flightIDlocal=logReplicator::findFlight($e['serverId'],$e['id']);
+				$flightIDlocal=logReplicator::findFlight($e['serverID'],$e['id']);
 				if (!$flightIDlocal) {
-					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverId']." and original ID : ".
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverID']." and original ID : ".
 							$e['id']." is not found in the local DB -> Wont rename tracklog<BR>");
 				}
 				$extFlight=new flight();			
 				$extFlight->getFlightFromDB($flightIDlocal,0);		
-				$extFlight->renameTracklog($e['ActionXML']['newFilename'],$e['ActionXML']['oldFilename']);
+				$extFlight->renameTracklog($actionData['newFilename'],$actionData['oldFilename']);
 				return array(1,"Flight tracklog renamed for local ID $flightIDlocal");
 			}
 
 			if ($e['action']==8) {	// scoring info
 			
-				$flightIDlocal=logReplicator::findFlight($e['serverId'],$e['id']);
+				$flightIDlocal=logReplicator::findFlight($e['serverID'],$e['id']);
 				if (!$flightIDlocal) {
-					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverId']." and original ID : ".
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['serverID']." and original ID : ".
 							$e['id']." is not found in the local DB -> Wont update scoring<BR>");
 				}
 								
@@ -223,9 +233,9 @@ class logReplicator {
 				require_once dirname(__FILE__).'/CL_flightScore.php';			
 				$flightScore=new flightScore($flightIDlocal);
 			
-				// we have the score array in $e['ActionXML']['score']
-				// $sArr=$e['ActionXML']['score'];
-				$sArr=$e['ActionXML']['score'];
+				// we have the score array in $actionData['score']
+				// $sArr=$actionData['score'];
+				$sArr=& $actionData['score'];
 
 				$flightScore->bestScoreType=$sArr['XCtype'];
 				$flightScore->bestScore=$sArr['XCdistance'];
@@ -274,17 +284,17 @@ class logReplicator {
 			$getScoreData =1;		
 
 			//	check 'alien' pilot  and insert him or update him anyway
-			$userServerID=$e['ActionXML']['flight']['serverID'];
+			$userServerID=$actionData['flight']['serverID'];
 			if ($userServerID==0)  $userServerID=$serverID;				
 
 			list ($effectiveServerID,$effectiveUserID )= 
-					logReplicator::checkPilot($userServerID,$e['ActionXML']['flight']['pilot']);
+					logReplicator::checkPilot($userServerID,$actionData['flight']['pilot']);
 					
-			// $userIDstr=$userServerID.'_'.$e['ActionXML']['flight']['pilot']['userID'];
+			// $userIDstr=$userServerID.'_'.$actionData['flight']['pilot']['userID'];
 			$userIDstr=$effectiveServerID.'_'.$effectiveUserID;
 						
 			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,
-								$e['ActionXML']['flight']['location'],$e['ActionXML']['flight']['bounds']);
+								$actionData['flight']['location'],$actionData['flight']['bounds']);
 
 			// get only the first 2 bits
 			$externalFlightType=$sync_mode & 0x03 ;
@@ -292,14 +302,14 @@ class logReplicator {
 			$addFlightNote='';
 			
 			if ($e['action']==1) {	// add
-				$igcFilename=$e['ActionXML']['flight']['filename'];
-				$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];
-				$igcZipFileURL	=$e['ActionXML']['flight']['linkIGCzip'];
+				$igcFilename=$actionData['flight']['filename'];
+				$igcFileURL	=$actionData['flight']['linkIGC'];
+				$igcZipFileURL	=$actionData['flight']['linkIGCzip'];
 				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
 
-				$hash=$e['ActionXML']['flight']['validation']['hash'];
-				if ($CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['allow_duplicate_flights']) {
-					$sameHashID=flight::findSameHash( $hash , $e['ActionXML']['flight']['serverID'] );
+				$hash=$actionData['flight']['validation']['hash'];
+				if ($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']) {
+					$sameHashID=flight::findSameHash( $hash , $actionData['flight']['serverID'] );
 					if ($sameHashID>0 )  {
 						return array(-1,"Flight already exists in local with ID: $sameHashID (dups allowed)");
 						continue;
@@ -315,33 +325,33 @@ class logReplicator {
 					}
 				}
 			} else if ($e['action']==2) {	// update
-				$flightIDlocal=logReplicator::findFlight($e['ActionXML']['flight']['serverID'],$e['ActionXML']['flight']['id']);
+				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
 				if (!$flightIDlocal) {
-					return array(0,"logReplicator::processEntry : Flight with serverID ".$e['ActionXML']['flight']['serverID']." and original ID : ".
-							$e['ActionXML']['flight']['id']." is not found in the local DB -> Wont update<BR>");
+					return array(0,"logReplicator::processEntry : Flight with serverID ".$actionData['flight']['serverID']." and original ID : ".
+							$actionData['flight']['id']." is not found in the local DB -> Wont update<BR>");
 				}
 				// echo "Will update flight $flightIDlocal<BR>";
 				
 			}
 
 				$argArray=array(
-						"private"	=>$e['ActionXML']['flight']['info']['private'],
-						"cat"		=>$e['ActionXML']['flight']['info']['gliderCat'],
-						"linkURL"	=>$e['ActionXML']['flight']['info']['linkURL'],
-						"comments"	=>$e['ActionXML']['flight']['info']['comments'],
-						"glider"	=>$e['ActionXML']['flight']['info']['glider'],
-						"gliderBrandID"	=>$e['ActionXML']['flight']['info']['gliderBrandID'],
-						"category"	=>$e['ActionXML']['flight']['info']['cat'],
+						"private"	=>$actionData['flight']['info']['private'],
+						"cat"		=>$actionData['flight']['info']['gliderCat'],
+						"linkURL"	=>$actionData['flight']['info']['linkURL'],
+						"comments"	=>$actionData['flight']['info']['comments'],
+						"glider"	=>$actionData['flight']['info']['glider'],
+						"gliderBrandID"	=>$actionData['flight']['info']['gliderBrandID'],
+						"category"	=>$actionData['flight']['info']['cat'],
 
-						"dateAdded"		=>$e['ActionXML']['flight']['dateAdded'],
-						"originalURL"	=>htmlDecode($e['ActionXML']['flight']['linkDisplay']),
-						"originalKML"	=>htmlDecode($e['ActionXML']['flight']['linkGE']),
-						"original_ID"	=>$e['ActionXML']['flight']['id'],
-						"serverID"		=>$e['ActionXML']['flight']['serverID'],
-						"userServerID"	=>$e['ActionXML']['flight']['serverID'],
-						"originalUserID"=>$e['ActionXML']['flight']['pilot']['userID'],
+						"dateAdded"		=>$actionData['flight']['dateAdded'],
+						"originalURL"	=>htmlDecode($actionData['flight']['linkDisplay']),
+						"originalKML"	=>htmlDecode($actionData['flight']['linkGE']),
+						"original_ID"	=>$actionData['flight']['id'],
+						"serverID"		=>$actionData['flight']['serverID'],
+						"userServerID"	=>$actionData['flight']['serverID'],
+						"originalUserID"=>$actionData['flight']['pilot']['userID'],
 						"externalFlightType"=> $externalFlightType	,
-						"allowDuplicates"=>($CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['allow_duplicate_flights']+0),
+						"allowDuplicates"=>($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']+0),
 				);
 				// print_r($argArray);
 
@@ -368,7 +378,7 @@ class logReplicator {
 						if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL) {
 							echo " Geting IGC file : ";
 							
-							$igcFileTmp=$e['tmpDir'].'/'.$e['ActionXML']['flight']['id'].'.igc';
+							$igcFileTmp=$e['tmpDir'].'/'.$actionData['flight']['id'].'.igc';
 							
 							if ( ! is_file($igcFileTmp) ) {
 								echo "NOT in zip -> will fetch ...";
@@ -387,14 +397,14 @@ class logReplicator {
 						$extFlight->getFlightFromDB($flightIDlocal,0);
 					}
 
-					$igcFilename=$e['ActionXML']['flight']['filename'];
-					$igcFileURL	=$e['ActionXML']['flight']['linkIGC'];				
+					$igcFilename=$actionData['flight']['filename'];
+					$igcFileURL	=$actionData['flight']['linkIGC'];				
 	
 	
-					if ( $CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['exclude_from_list'] ) {
+					if ( $CONF['servers']['list'][$actionData['flight']['serverID']]['exclude_from_list'] ) {
 						$extFlight->excludeFrom |= 3;
 					}					
-					if ( $CONF['servers']['list'][$e['ActionXML']['flight']['serverID']]['exclude_from_league'] ) {
+					if ( $CONF['servers']['list'][$actionData['flight']['serverID']]['exclude_from_league'] ) {
 						$extFlight->excludeFrom |= 2;
 					}
 	
@@ -415,36 +425,36 @@ class logReplicator {
 					$extFlight->userID=$effectiveUserID;
 					$extFlight->userServerID=$effectiveServerID;
 					
-					$extFlight->dateAdded	=$e['ActionXML']['flight']['dateAdded'];
+					$extFlight->dateAdded	=$actionData['flight']['dateAdded'];
 
-					$extFlight->DATE 		=$e['ActionXML']['flight']['time']['date'];
-					$extFlight->timezone 	=$e['ActionXML']['flight']['time']['Timezone'];
-					$extFlight->START_TIME 	=$e['ActionXML']['flight']['time']['StartTime'];
-					$extFlight->DURATION 	=$e['ActionXML']['flight']['time']['Duration'];
+					$extFlight->DATE 		=$actionData['flight']['time']['date'];
+					$extFlight->timezone 	=$actionData['flight']['time']['Timezone'];
+					$extFlight->START_TIME 	=$actionData['flight']['time']['StartTime'];
+					$extFlight->DURATION 	=$actionData['flight']['time']['Duration'];
 					$extFlight->END_TIME	=$extFlight->START_TIME+$extFlight->DURATION;
-					$extFlight->forceBounds	=$e['ActionXML']['flight']['bounds']['forceBounds'];
+					$extFlight->forceBounds	=$actionData['flight']['bounds']['forceBounds'];
 
-					$extFlight->firstLon=$e['ActionXML']['flight']['bounds']['firstLon']+0;
-					$extFlight->firstLat=$e['ActionXML']['flight']['bounds']['firstLat']+0;
-					$extFlight->firstPointTM=$e['ActionXML']['flight']['bounds']['firstTM']+0 ;
-					$extFlight->lastLon=$e['ActionXML']['flight']['bounds']['lastLon']+0;
-					$extFlight->lastLat=$e['ActionXML']['flight']['bounds']['lastLat']+0;
-					$extFlight->lastPointTM=$e['ActionXML']['flight']['bounds']['lastTM']+0 ;
+					$extFlight->firstLon=$actionData['flight']['bounds']['firstLon']+0;
+					$extFlight->firstLat=$actionData['flight']['bounds']['firstLat']+0;
+					$extFlight->firstPointTM=$actionData['flight']['bounds']['firstTM']+0 ;
+					$extFlight->lastLon=$actionData['flight']['bounds']['lastLon']+0;
+					$extFlight->lastLat=$actionData['flight']['bounds']['lastLat']+0;
+					$extFlight->lastPointTM=$actionData['flight']['bounds']['lastTM']+0 ;
 					
 					$firstPoint=new  gpsPoint();				
-					$firstPoint->setLon( 	$e['ActionXML']['flight']['bounds']['firstLon']);
-					$firstPoint->setLat(	$e['ActionXML']['flight']['bounds']['firstLat']);
-					$firstPoint->gpsTime=(	$e['ActionXML']['flight']['bounds']['firstTM'] % 86400);
+					$firstPoint->setLon( 	$actionData['flight']['bounds']['firstLon']);
+					$firstPoint->setLat(	$actionData['flight']['bounds']['firstLat']);
+					$firstPoint->gpsTime=(	$actionData['flight']['bounds']['firstTM'] % 86400);
 
 					$lastPoint=new  gpsPoint();
-					$lastPoint->setLon(		$e['ActionXML']['flight']['bounds']['lastLon']);
-					$lastPoint->setLat(		$e['ActionXML']['flight']['bounds']['lastLat']);
-					$lastPoint->gpsTime=(	$e['ActionXML']['flight']['bounds']['lastTM'] % 86400);
+					$lastPoint->setLon(		$actionData['flight']['bounds']['lastLon']);
+					$lastPoint->setLat(		$actionData['flight']['bounds']['lastLat']);
+					$lastPoint->gpsTime=(	$actionData['flight']['bounds']['lastTM'] % 86400);
 
 					// $extFlight->FIRST_POINT=$firstPoint->to_IGC_Record();
 					// $extFlight->LAST_POINT=$lastPoint->to_IGC_Record();
 
-					foreach ($e['ActionXML']['flight']['turnpoints'] as $i=>$tp){
+					foreach ($actionData['flight']['turnpoints'] as $i=>$tp){
 						$tpNum=$tp['id'];
 						$tpPoint=new gpsPoint();
 						$tpPoint->setLon($tp['lon']);
@@ -454,28 +464,28 @@ class logReplicator {
 					}					
 
 					if ($getValidationData) {
-						$extFlight->validated =$e['ActionXML']['flight']['validation']['validated'];
-						$extFlight->grecord =$e['ActionXML']['flight']['validation']['grecord'];
-						$extFlight->hash=$e['ActionXML']['flight']['validation']['hash'];
-						$extFlight->validationMessage =$e['ActionXML']['flight']['validation']['validationMessage'];
-						$extFlight->airspaceCheck =$e['ActionXML']['flight']['validation']['airspaceCheck'];
-						$extFlight->airspaceCheckFinal =$e['ActionXML']['flight']['validation']['airspaceCheckFinal'];
-						$extFlight->airspaceCheckMsg =$e['ActionXML']['flight']['validation']['airspaceCheckMsg'];
+						$extFlight->validated =$actionData['flight']['validation']['validated'];
+						$extFlight->grecord =$actionData['flight']['validation']['grecord'];
+						$extFlight->hash=$actionData['flight']['validation']['hash'];
+						$extFlight->validationMessage =$actionData['flight']['validation']['validationMessage'];
+						$extFlight->airspaceCheck =$actionData['flight']['validation']['airspaceCheck'];
+						$extFlight->airspaceCheckFinal =$actionData['flight']['validation']['airspaceCheckFinal'];
+						$extFlight->airspaceCheckMsg =$actionData['flight']['validation']['airspaceCheckMsg'];
 					}
 					
 					if ( $getScoreData ) {
-						$extFlight->BEST_FLIGHT_TYPE=$e['ActionXML']['flight']['stats']['FlightType'];
-						$extFlight->LINEAR_DISTANCE	=$e['ActionXML']['flight']['stats']['StraightDistance']+0;
-						$extFlight->MAX_LINEAR_DISTANCE=$e['ActionXML']['flight']['stats']['MaxStraightDistance']+0;
-						$extFlight->FLIGHT_KM	=$e['ActionXML']['flight']['stats']['XCdistance'];
-						$extFlight->FLIGHT_POINTS=$e['ActionXML']['flight']['stats']['XCscore'];
-						$extFlight->MEAN_SPEED	=$e['ActionXML']['flight']['stats']['MeanGliderSpeed']+0;
-						$extFlight->MAX_SPEED	=$e['ActionXML']['flight']['stats']['MaxSpeed'];
-						$extFlight->MAX_VARIO	=$e['ActionXML']['flight']['stats']['MaxVario'];
-						$extFlight->MIN_VARIO	=$e['ActionXML']['flight']['stats']['MinVario'];
-						$extFlight->MAX_ALT		=$e['ActionXML']['flight']['stats']['MaxAltASL'];
-						$extFlight->MIN_ALT		=$e['ActionXML']['flight']['stats']['MinAltASL'];
-						$extFlight->TAKEOFF_ALT	=$e['ActionXML']['flight']['stats']['TakeoffAlt'];
+						$extFlight->BEST_FLIGHT_TYPE=$actionData['flight']['stats']['FlightType'];
+						$extFlight->LINEAR_DISTANCE	=$actionData['flight']['stats']['StraightDistance']+0;
+						$extFlight->MAX_LINEAR_DISTANCE=$actionData['flight']['stats']['MaxStraightDistance']+0;
+						$extFlight->FLIGHT_KM	=$actionData['flight']['stats']['XCdistance'];
+						$extFlight->FLIGHT_POINTS=$actionData['flight']['stats']['XCscore'];
+						$extFlight->MEAN_SPEED	=$actionData['flight']['stats']['MeanGliderSpeed']+0;
+						$extFlight->MAX_SPEED	=$actionData['flight']['stats']['MaxSpeed'];
+						$extFlight->MAX_VARIO	=$actionData['flight']['stats']['MaxVario'];
+						$extFlight->MIN_VARIO	=$actionData['flight']['stats']['MinVario'];
+						$extFlight->MAX_ALT		=$actionData['flight']['stats']['MaxAltASL'];
+						$extFlight->MIN_ALT		=$actionData['flight']['stats']['MinAltASL'];
+						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt'];
 					}
 					
 					$extFlight->checkGliderBrand();

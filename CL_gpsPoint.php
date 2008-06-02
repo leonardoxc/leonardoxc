@@ -355,7 +355,7 @@ return '{
 "lat" : "'.json::prepStr($this->lat).'",
 "lon" : "'.json::prepStr(-$this->lon).'",
 "link" : "'.json::prepStr($this->link).'",
-"displayLink" : "'.$link.'",
+"displayLink" : "'.json::prepStr($link).'",
 "description" : "'.json::prepStr($this->description).'",
 "modifyDate" : "'.json::prepStr($this->modifyDate).'"
 }

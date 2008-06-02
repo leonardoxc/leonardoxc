@@ -343,8 +343,8 @@ $resStr='{
 	"id": '.($isLocal ? $this->flightID : $this->original_ID  ).',
 	"dateAdded": "'.$dateAdded.'",
 	"filename": "'.json::prepStr($this->filename).'",
-	"linkIGC": "'.$this->getIGC_URL().'",
-	"linkIGCzip": "'.$this->getZippedIGC_URL().'",
+	"linkIGC": "'.json::prepStr($this->getIGC_URL()).'",
+	"linkIGCzip": "'.json::prepStr($this->getZippedIGC_URL()).'",
 	"linkDisplay": "'.($isLocal ? 	htmlspecialchars($this->getFlightLinkURL()): 
 									htmlspecialchars($this->originalURL) ).'",
 	"linkGE": "'.($isLocal ? htmlspecialchars($this->getFlightKML(0)) :
@@ -354,7 +354,7 @@ $resStr='{
 	"info": {
 		"glider": "'.json::prepStr($this->glider).'",
 		"gliderBrandID": '.$this->gliderBrandID.',
-		"gliderCat": '.$this->cat.',
+		"gliderCat": '.json::prepStr($this->cat).',
 		"cat": '.$this->category.',
 		"linkURL": "'.json::prepStr($this->linkURL).'",
 		"private": '.$this->private.',
@@ -362,7 +362,7 @@ $resStr='{
 	},
 	
 	"time": {
-		"date": "'.$this->DATE.'",
+		"date": "'.json::prepStr($this->DATE).'",
 		"Timezone": "'.$this->timezone.'",
 		"StartTime": "'.$this->START_TIME.'",
 		"Duration": "'.$this->DURATION.'"	
@@ -416,6 +416,10 @@ $resStr='{
 		"MaxAltASL": "'.$this->MAX_ALT.'",
 		"MinAltASL": "'.$this->MIN_ALT.'",
 		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'"
+	},
+
+	"score": {
+
 	},
 
 	"turnpoints": [
@@ -2908,7 +2912,7 @@ $kml_file_contents=
 	  $res= $db->sql_query($query);	
 	  # Error checking
 	  if($res <= 0){
-		 echo("<H3> Error in FlightShow query! $query</H3>\n");
+		 echo("<H3> Error in getFlightFromDB() query! $query</H3>\n");
 		 exit();
 	  }
 		

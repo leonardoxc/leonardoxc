@@ -360,7 +360,7 @@ class Server {
 
 	function checkServerPass($serverID,$pass) {
 		global $CONF;
-		if ( !$pass && $pass==$CONF['servers']['list'][$serverID]['serverPass']) return 1;
+		if ( $pass && $pass==$CONF['servers']['list'][$serverID]['serverPass']) return 1;
 		
 		return 0;
 /*
@@ -666,9 +666,9 @@ class Server {
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			if ($verbose) flush2Browser();
-			//echo "<pre>";
-			//print_r($arr);
-			//echo "</pre>";
+			echo "<pre>";
+			print_r($arr);
+			echo "</pre>";
 			
 			//exit;
 			$entriesNum=0;

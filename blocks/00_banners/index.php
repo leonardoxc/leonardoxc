@@ -36,7 +36,7 @@
 		echo $adArray[$i]['html'];
 		//echo "</div>";
 		if ($adArray[$i]['html']) 
-			echo "<div style='margin:10px;'></div>";
+			echo "<div style='margin:10px;'></div>\n";
 	}
 
 ?>

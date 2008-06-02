@@ -481,6 +481,13 @@ if (auth::isAdmin($userID) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 
+
+	// see all scoring:
+	require_once dirname(__FILE__).'/CL_flightScore.php';			
+	$flightScore=new flightScore($flight->flightID);
+	$flightScore->getFromDB();
+	$adminPanel.="<PRE>".$flightScore->toJSON()."</PRE>";
+
 	//	$adminPanel.='<pre>'.processIGC($flight->getIGCFilename());
 
 	// DEBUG TIMEZONE DETECTION 
