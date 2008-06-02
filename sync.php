@@ -182,7 +182,7 @@
 "serverID":   '.$row['ServerItemID'].',
 "action":     '.$row['ActionID'].',
 "userID":	  '.$row['userID'].',
-"ActionData":  '.$row['ActionXML'].'
+"actionData":  '.$row['ActionXML'].'
 }} ';
 									
 			} else if ($format=='XML') {

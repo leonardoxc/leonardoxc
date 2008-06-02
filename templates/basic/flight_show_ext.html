@@ -206,7 +206,7 @@ html>body .flightShowBox {
               <td class='borderTop'><div align="right">{LANDING_TIME}</div></td>
             </tr>
             <tr>
-              <td colspan="2" height=29><div align="left">&nbsp;</div></td>
+              <td colspan="2" height=29><div align="left">{LANDING_LOCATION}</div></td>
             </tr>
           </table>            <table class="main_text flightShadowBox col1" width="300" border="0" cellpadding="0" style="margin-top:8px;">
               <tr>
@@ -229,8 +229,8 @@ html>body .flightShowBox {
                 <td><div align="right"><strong>{OLC_SCORE}</strong>{VALI}</div></td>
               </tr>
               <tr>
-                <td><div align="left">{#_OLC_SCORE_TYPE}</div></td>
-                <td><div align="right">{OLC_TYPE}</div></td>
+                <td><div align="left" id="showScoreInfo">{#_OLC_SCORE_TYPE}</div></td>
+                <td><div align="right">{SCORE_INFO_LINK}{OLC_TYPE}</div></td>
               </tr>
             </table></td>
           <td width="280" valign="top" align="center">

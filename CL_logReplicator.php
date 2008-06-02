@@ -180,12 +180,12 @@ class logReplicator {
 
 		if ( is_array($e['ActionXML']) ) {
 			$actionData=& $e['ActionXML'];
-		} else 	if ( is_array($e['ActionData']) ) {
-			$actionData=& $e['ActionData'];
+		} else 	if ( is_array($e['actionData']) ) {
+			$actionData=& $e['actionData'];
 		} else 	if ( is_array($e['flight']) ) {
 			$actionData=& $e;
 		} else {
-			return array(0,"logReplicator::processEntry : ActionData section not found");
+			return array(0,"logReplicator::processEntry : actionData section not found");
 		}
 
 		if ($e['type']=='1') { // flight
@@ -296,6 +296,9 @@ class logReplicator {
 			list($nearestTakeoffID,$nearestDistance)=logReplicator::checkLocation($userServerID,
 								$actionData['flight']['location'],$actionData['flight']['bounds']);
 
+			list( $nearestLandingID,$nearestLandingDistance )=
+					findNearestWaypoint($actionData['flight']['bounds']['lastLat'],$actionData['flight']['bounds']['lastLon']);
+
 			// get only the first 2 bits
 			$externalFlightType=$sync_mode & 0x03 ;
 
@@ -335,7 +338,7 @@ class logReplicator {
 			}
 
 				$argArray=array(
-						"private"	=>$actionData['flight']['info']['private'],
+						"private"	=>$actionData['flight']['info']['private']+0,
 						"cat"		=>$actionData['flight']['info']['gliderCat'],
 						"linkURL"	=>$actionData['flight']['info']['linkURL'],
 						"comments"	=>$actionData['flight']['info']['comments'],
@@ -357,6 +360,9 @@ class logReplicator {
 
 
 				if ($e['action']==1 && ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL &  SYNC_INSERT_FLIGHT_REPROCESS_LOCALLY)  ) {
+
+				echo "will add FULL<BR><BR><BR><BR>";
+
 					if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 						return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
 					}
@@ -416,6 +422,9 @@ class logReplicator {
 					$extFlight->takeoffID = $nearestTakeoffID;
 					$extFlight->takeoffVinicity = $nearestDistance ;
 
+					$extFlight->landingID = $nearestLandingID;
+					$extFlight->landingVinicity = $nearestLandingDistance ;
+					
 					// no userid will be assgined to this flight since it will not be inserted locally
 					// so userID= userServerID;
 					
@@ -428,11 +437,11 @@ class logReplicator {
 					$extFlight->dateAdded	=$actionData['flight']['dateAdded'];
 
 					$extFlight->DATE 		=$actionData['flight']['time']['date'];
-					$extFlight->timezone 	=$actionData['flight']['time']['Timezone'];
-					$extFlight->START_TIME 	=$actionData['flight']['time']['StartTime'];
-					$extFlight->DURATION 	=$actionData['flight']['time']['Duration'];
+					$extFlight->timezone 	=$actionData['flight']['time']['Timezone']+0;
+					$extFlight->START_TIME 	=$actionData['flight']['time']['StartTime']+0;
+					$extFlight->DURATION 	=$actionData['flight']['time']['Duration']+0;
 					$extFlight->END_TIME	=$extFlight->START_TIME+$extFlight->DURATION;
-					$extFlight->forceBounds	=$actionData['flight']['bounds']['forceBounds'];
+					$extFlight->forceBounds	=$actionData['flight']['bounds']['forceBounds']+0;
 
 					$extFlight->firstLon=$actionData['flight']['bounds']['firstLon']+0;
 					$extFlight->firstLat=$actionData['flight']['bounds']['firstLat']+0;
@@ -454,22 +463,24 @@ class logReplicator {
 					// $extFlight->FIRST_POINT=$firstPoint->to_IGC_Record();
 					// $extFlight->LAST_POINT=$lastPoint->to_IGC_Record();
 
-					foreach ($actionData['flight']['turnpoints'] as $i=>$tp){
-						$tpNum=$tp['id'];
-						$tpPoint=new gpsPoint();
-						$tpPoint->setLon($tp['lon']);
-						$tpPoint->setLat($tp['lat']);
-						$varname="turnpoint$tpNum" ;
-						$extFlight->$varname = $tpPoint->getLatMin().' '.$tpPoint->getLonMin() ;
-					}					
-
+					if (	is_array($actionData['flight']['turnpoints']) ) {
+						foreach ($actionData['flight']['turnpoints'] as $i=>$tp){
+							$tpNum=$tp['id'];
+							$tpPoint=new gpsPoint();
+							$tpPoint->setLon($tp['lon']);
+							$tpPoint->setLat($tp['lat']);
+							$varname="turnpoint$tpNum" ;
+							$extFlight->$varname = $tpPoint->getLatMin().' '.$tpPoint->getLonMin() ;
+						}					
+					}
+					
 					if ($getValidationData) {
 						$extFlight->validated =$actionData['flight']['validation']['validated'];
 						$extFlight->grecord =$actionData['flight']['validation']['grecord'];
 						$extFlight->hash=$actionData['flight']['validation']['hash'];
 						$extFlight->validationMessage =$actionData['flight']['validation']['validationMessage'];
-						$extFlight->airspaceCheck =$actionData['flight']['validation']['airspaceCheck'];
-						$extFlight->airspaceCheckFinal =$actionData['flight']['validation']['airspaceCheckFinal'];
+						$extFlight->airspaceCheck =$actionData['flight']['validation']['airspaceCheck']+0;
+						$extFlight->airspaceCheckFinal =$actionData['flight']['validation']['airspaceCheckFinal']+0;
 						$extFlight->airspaceCheckMsg =$actionData['flight']['validation']['airspaceCheckMsg'];
 					}
 					
@@ -480,15 +491,17 @@ class logReplicator {
 						$extFlight->FLIGHT_KM	=$actionData['flight']['stats']['XCdistance'];
 						$extFlight->FLIGHT_POINTS=$actionData['flight']['stats']['XCscore'];
 						$extFlight->MEAN_SPEED	=$actionData['flight']['stats']['MeanGliderSpeed']+0;
-						$extFlight->MAX_SPEED	=$actionData['flight']['stats']['MaxSpeed'];
-						$extFlight->MAX_VARIO	=$actionData['flight']['stats']['MaxVario'];
-						$extFlight->MIN_VARIO	=$actionData['flight']['stats']['MinVario'];
-						$extFlight->MAX_ALT		=$actionData['flight']['stats']['MaxAltASL'];
-						$extFlight->MIN_ALT		=$actionData['flight']['stats']['MinAltASL'];
-						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt'];
+						$extFlight->MAX_SPEED	=$actionData['flight']['stats']['MaxSpeed']+0;
+						$extFlight->MAX_VARIO	=$actionData['flight']['stats']['MaxVario']+0;
+						$extFlight->MIN_VARIO	=$actionData['flight']['stats']['MinVario']+0;
+						$extFlight->MAX_ALT		=$actionData['flight']['stats']['MaxAltASL']+0;
+						$extFlight->MIN_ALT		=$actionData['flight']['stats']['MinAltASL']+0;
+						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt']+0;
 					}
 					
 					$extFlight->checkGliderBrand();
+
+echo "will add LINK<BR><BR><BR><BR>";
 
 					if ( $e['action']==1) {
 						

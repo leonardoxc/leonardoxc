@@ -227,6 +227,10 @@ function delete_takeoff(id) {
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
+	if (  auth::isModerator($userID) ) {
+		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
+	}
+	
 	if ( $flight->private  & 0x01 ) { 
 		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_private.gif' align='bottom' width='13' height='13'>";
 	} 
@@ -234,6 +238,7 @@ function delete_takeoff(id) {
 	if ( $flight->private & 0x02 ) { 
 		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_disabled.gif' align='bottom' width='13' height='13'>";
 	}
+	
 	
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
@@ -691,10 +696,13 @@ if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
 if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
 	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
+$extLinkLanguageStr="";
+if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
 
 $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['name'].
-"</i>. <a href='".$flight->originalURL."&lng=$currentlang' target='_blank'>"._Ext_text3."
+"</i>. <a href='".$flight->originalURL.$extLinkLanguageStr."' target='_blank'>"._Ext_text3."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
+
 
 
 $Ltemplate->assign_vars(array(

@@ -97,6 +97,21 @@ function delete_takeoff(id) {
 </script>
 <? }  ?>
 <script language="javascript">
+	function flight_db_info(id) {
+		MWJ_changeContents('takeoffBoxTitle',"Flight DB record");
+		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_info.php?flightID='+id;		
+		MWJ_changeSize('addTakeoffFrame',740,395);
+		MWJ_changeSize( 'takeoffAddID', 745,415 );
+		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
+	}
+	function flight_scores_info(id) {
+		MWJ_changeContents('takeoffBoxTitle',"Optimization");
+		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;		
+		MWJ_changeSize('addTakeoffFrame',340,195);
+		MWJ_changeSize( 'takeoffAddID', 345,215 );
+		toggleVisible('takeoffAddID','showScoreInfo',18,-10,325,235);	
+	}
+	
 	function set_flight_bounds(id) {
 		MWJ_changeContents('takeoffBoxTitle',"Set Start - Stop time for flight");
 		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;		
@@ -129,6 +144,8 @@ function delete_takeoff(id) {
 <?
 	$legendRight="";
 
+	$legendRight.="<div id='setBoundsPos'></div>";
+
 	if (auth::isAdmin($userID) ) {
 	//	$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
@@ -138,6 +155,13 @@ function delete_takeoff(id) {
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
+	if (  auth::isModerator($userID) ) {
+		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
+	}
+	
+	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_trophy.gif' title='optimization Results' border=0 align=bottom></a> ";
+	
+	
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
 			$flight->userServerID."_".$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
@@ -240,6 +264,7 @@ if ( $scoringServerActive ) {
 		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." <img src='$moduleRelPath/img/$olcScoreTypeImg' align='absmiddle'>",
 		'OLC_KM'=>formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)",
 		'OLC_SCORE'=>formatOLCScore($flight->FLIGHT_POINTS),
+		'SCORE_INFO_LINK'=>$showScoreInfo,
 	));
 } else {
 	$Ltemplate->assign_vars(array(
@@ -423,8 +448,12 @@ $localMap="";
 $googleMap="";
 $margin="";
 
+$extLinkLanguageStr="";
+if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
+
+
 $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['name'].
-"</i>. <a href='".$flight->originalURL."&lng=$currentlang' target='_blank'>"._Ext_text2."
+"</i>. <a href='".$flight->originalURL.$extLinkLanguageStr."' target='_blank'>"._Ext_text2."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 
