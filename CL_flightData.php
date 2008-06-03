@@ -418,9 +418,8 @@ $resStr='{
 		"TakeoffAlt": "'.$this->TAKEOFF_ALT.'"
 	},
 
-	"score": {
+	'.$flightScore->toSyncJSON().' ,
 
-	},
 
 	"turnpoints": [
 		'.$tpStr.'		

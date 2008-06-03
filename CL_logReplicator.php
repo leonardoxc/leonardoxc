@@ -231,51 +231,13 @@ class logReplicator {
 				//$extFlight->getFlightFromDB($flightIDlocal,0);					
 
 				require_once dirname(__FILE__).'/CL_flightScore.php';			
-				$flightScore=new flightScore($flightIDlocal);
-			
-				// we have the score array in $actionData['score']
-				// $sArr=$actionData['score'];
+				$flightScore=new flightScore($flightIDlocal);			
+				// we have the score array in $actionData['score']				
 				$sArr=& $actionData['score'];
-
-				$flightScore->bestScoreType=$sArr['XCtype'];
-				$flightScore->bestScore=$sArr['XCdistance'];
-				$flightScore->bestDistance=$sArr['XCscore'];
-				$flightScore->scores=array();
-				foreach($sArr['scores'] as $i=>$score) {
-					$mID=$score['XCscoreMethod'];
-					$type=$flightScore->flightTypesID[ $score['XCtype'] ];
-
-					$flightScore->scores[$mID][$type] =
-						array (
-							'isBest'=>$score['isBest'],
-							'distance'=>$score['XCdistance'],
-							'score'=>$score['XCscore'],
-						);
-
-					if ($score['isBest']) {
-						$flightScore->scores[$mID]['bestScoreType'] = $type;
-						$flightScore->scores[$mID]['bestScore'] = $score['XCscore'];
-					}
-					
-					foreach($score['turnpoints'] as $j=>$tp) {
-						$thisTP=new gpsPoint();
-						$thisTP->setLat($tp['lat']);
-						$thisTP->setLon($tp['lon']);
-						$thisTP->gpsTime=$tp['UTCsecs'];
-						
-						$flightScore->scores[$mID][$type]['tp'][ $tp['id'] ] = $thisTP->to_IGC_Record();
-					}
-
-				}
-/*
-				echo "<pre>";
-				print_r($flightScore->scores);
-				echo "</pre>";
-*/
+				$flightScore->fromSyncArray($sArr);
 				//put also in scores table, the flight is sure to be present in flights table
 				$flightScore->putToDB(1,1);
-		
-		
+				
 				return array(1,"Flight Score was *pulled* for local ID $flightIDlocal");
 			}
 			

@@ -203,7 +203,7 @@ $CONF['servers']['list']=array(
 	'admin_email'=>"petr@pgweb.cz",
 
 	'site_pass'=>"",
-	'serverPass'=>"gorw245vcvii4293dghj",
+	'serverPass'=>"gorw245vcvii4293dghj", // we GIVE to xcc
 	'clientPass'=>"",
 
 	'sync_format'=>"JSON",

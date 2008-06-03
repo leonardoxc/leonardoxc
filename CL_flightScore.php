@@ -22,6 +22,18 @@ class flightScore {
 	var $flightTypes=array('FREE_FLIGHT'=>1,'FREE_TRIANGLE'=>2,'FAI_TRIANGLE'=>3 );
 	var $flightTypesID=array(1=>'FREE_FLIGHT',2=>'FREE_TRIANGLE',3=>'FAI_TRIANGLE');
 	
+	var $syncTypesNames=array('FreeFlight3TP'=>1,'FreeTriangle20'=>2,'FAITriangle20'=>3 ,'FreeFlight0TP'=>4,'FreeFlightTakeoffDistance'=>5);
+	var $syncTypesID=array(1=>'FreeFlight3TP',2=>'FreeTriangle20',3=>'FAITriangle20',4=>'FreeFlight0TP',5=>'FreeFlightTakeoffDistance');
+/* 
+new types:
+
+1=>[FreeFlight3TP] 
+2=>[FreeTriangle20%]
+3=>[FAITriangle20%]
+4=>[FreeFlight0TP]
+5=>[FreeFlightTakeoffDistance]
+
+*/
 	function flightScore($flightID="") {
 		if ($flightID) {
 			$this->flightID=$flightID;
@@ -319,6 +331,119 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 	 '		"XCscoreMethod": "'. $CONF['scoring']['default_set'].'", '."\n".
 	 '		"scores": [ '.
 		 $str." ] \n } \n";
+
+		return $str;	
+	}	
+
+	function fromSyncArray($sArr) {
+	/*
+		echo "<pre>";
+		print_r($flightScore->scores);
+		echo "</pre>";
+	*/
+
+/* Array   (
+	[0] => Array
+		(	[XCtype] => FreeFlight3TP
+			[XCdistance] => 36.482
+			[turnpoints] => Array(
+					[0] => Array([id] => 1,[lat] => 36.761466,[lon] => -119.09663,[UTCsecs] => 70730 )
+					[1] => Array([id] =>2 ,[lat] => 36.7794333, [lon] => -119.117866,[UTCsecs] => 71966)
+*/
+		global $CONF;
+
+		$this->scores=array();
+		
+		foreach($sArr as $i=>$score) {
+			//$mID=$score['XCscoreMethod'];
+			$type=$this->flightTypesID[ $this->syncTypesNames[$score['XCtype']] ];
+
+			//$bestScore=0;
+			//$bestScoreType='';
+
+			foreach($CONF['scoring']['sets'] as $mID=>$mArray) {
+				$thisScore=$score['XCdistance']*$mArray['types'][$type];
+				if ($thisScore>=$this->scores[$mID]['bestScore']) {					
+					$this->scores[$mID]['bestScoreType'] = $type;
+					$this->scores[$mID]['bestScore'] = $thisScore;
+				}
+
+				$this->scores[$mID][$type]['distance'] =$score['XCdistance'];
+				$this->scores[$mID][$type]['score'] =$thisScore;
+
+				$tpNum=1;
+				foreach($score['turnpoints'] as $j=>$tp) {
+					$thisTP=new gpsPoint();
+					$thisTP->setLat($tp['lat']);
+					$thisTP->setLon($tp['lon']);
+					$thisTP->gpsTime=$tp['UTCsecs'];
+					
+					$this->scores[$mID][$type]['tp'][ $tpNum ] = $thisTP->to_IGC_Record();
+					$tpNum++;
+				}
+			}
+
+		}
+
+		// now iterate through $this->scores and update best values
+		//foreach ($this->scores as $l=>$score) {
+		//				$this->scores[$mID][$type]['isBest'] 
+
+		//$this->bestScoreType=$sArr['XCtype'];
+		//$this->bestScore=$sArr['XCdistance'];
+		//$this->bestDistance=$sArr['XCscore'];
+
+		echo "<pre>";
+		print_r($this->scores);
+		echo "</pre>";
+	
+	}
+
+
+	function toSyncJSON() {
+		global $db,$scoresTable ,$flightsTable,$CONF,$CONF_server_id;
+
+		if (!$this->gotValues) $this->getFromDB();		
+
+		$str='';
+		$k=0;
+//		foreach ( $this->scores as $methodID=>$scoreForMethod) {
+			$methodID=1;
+			$scoreForMethod=&$this->scores[$methodID];
+
+			$l=0;
+			if ($k!=0) $str.=",\n";
+			foreach($scoreForMethod as $scoreType=>$scoreDetails ) {
+				if (!is_array($scoreDetails) ) continue;
+				if ($scoreType==$scoreForMethod['bestScoreType']) $isBest=1; 
+				else $isBest=0;
+				if ($l!=0) $str.=",\n";
+
+				$str.="\t\t{ \"XCtype\": \"".$this->syncTypesID[$this->flightTypes[$scoreType]]."\",\n";
+				$str.="\t\t\"XCdistance\" :\"".$scoreDetails['distance']."\",\n";
+										
+					$tpNum=0;
+					$tpStr='';
+					for($i=1;$i<=7;$i++) {
+						if ($scoreDetails['tp'][$i]) {
+							$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
+							if ($tpNum>0) $tpStr.=" ,\n		";
+							$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
+							$tpNum++;
+						}	
+					}
+					$str.='		"turnpoints": [ '.$tpStr.' ] ';
+					$str.="\n\t\t}";
+
+					$l++;
+			
+			}
+			$k++;
+
+		// }
+		
+		$str='"score": ['."\n".
+		 $str."\n\t]";
 
 		return $str;	
 	}	
