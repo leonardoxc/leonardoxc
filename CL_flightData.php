@@ -409,6 +409,7 @@ $resStr='{
 		"StraightDistance": '.$this->LINEAR_DISTANCE.',
 		"XCdistance": "'.($this->FLIGHT_KM+0).'",
 		"XCscore": "'.($this->FLIGHT_POINTS+0).'",
+		
 		"MaxSpeed": "'.$this->MAX_SPEED.'",
 		"MeanGliderSpeed": "'.$this->MEAN_SPEED.'",		
 		"MaxVario": "'.$this->MAX_VARIO.'",
@@ -2554,7 +2555,7 @@ $kml_file_contents=
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
-		$log->ActionXML	= "{\n". $flightScore->toJSON()."\n}";
+		$log->ActionXML	= "{\n". $flightScore->toSyncJSON()."\n}";
 		$log->Modifier	= 0;
 		$log->ModifierID= 0;
 		$log->ServerModifierID =0;
@@ -2659,7 +2660,7 @@ $kml_file_contents=
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
-		$log->ActionXML	= "{\n". $flightScore->toJSON()."\n}";
+		$log->ActionXML	= "{\n". $flightScore->toSyncJSON()."\n}";
 		$log->Modifier	= 0;
 		$log->ModifierID= 0;
 		$log->ServerModifierID =0;

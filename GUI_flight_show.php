@@ -120,12 +120,13 @@ function delete_takeoff(id) {
 		MWJ_changeSize( 'takeoffAddID', 745,415 );
 		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
 	}
+	
 	function flight_scores_info(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Optimization");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',440,195);
-		MWJ_changeSize( 'takeoffAddID', 445,215 );
-		toggleVisible('takeoffAddID','showScoreInfo',18,-10,425,235);	
+		MWJ_changeContents('scoreInfoBoxTitle',"Optimization");
+		document.getElementById('scoreInfoFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;		
+		MWJ_changeSize('scoreInfoFrame',440,195);
+		MWJ_changeSize( 'scoreInfoID', 445,215 );
+		toggleVisible('scoreInfoID','showScoreInfo',18,-5,425,235);
 	}
 
 	function set_flight_bounds(id) {
@@ -158,6 +159,17 @@ function delete_takeoff(id) {
 </div>
 
 
+<div id="scoreInfoID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+	<table width="100%" cellpadding="0" cellspacing="0">
+	<tr><td class="infoBoxHeader" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="scoreInfoBoxTitle"></div>
+	<div align="right" style="display:inline; float:right; clear:right;">
+	<a href='#' onclick="toggleVisible('scoreInfoID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	</td></tr></table>
+	<div id='scoreInfofDiv'>
+		<iframe name="scoreInfoFrame" id="scoreInfoFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	</div>
+</div>
 
 
 <div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
@@ -246,7 +258,7 @@ function delete_takeoff(id) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
-	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_trophy.gif' title='optimization Results' border=0 align=bottom></a> ";
+	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_olc_manual.gif' title='"._Show_Optimization_details."' border=0 align='absmiddle'>"._Show_Optimization_details."&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' title='"._Show_Optimization_details."' border=0 align=bottom></a> ";
 	
 
 	if ( $flight->private  & 0x01 ) { 
@@ -507,13 +519,14 @@ if (auth::isAdmin($userID) ) {
 
 
 	// see all scoring:
-	require_once dirname(__FILE__).'/CL_flightScore.php';			
-	$flightScore=new flightScore($flight->flightID);
-	$flightScore->getFromDB();
-	$adminPanel.="<PRE>".$flightScore->toSyncJSON()."</PRE>";
-	$adminPanel.= "<hr><HR>";
-	$adminPanel.="<PRE>".$flightScore->toJSON()."</PRE>";
-
+	if (0) {
+		require_once dirname(__FILE__).'/CL_flightScore.php';			
+		$flightScore=new flightScore($flight->flightID);
+		$flightScore->getFromDB();
+		$adminPanel.="<PRE>".$flightScore->toSyncJSON()."</PRE>";
+		$adminPanel.= "<hr><HR>";
+		$adminPanel.="<PRE>".print_r($flightScore->scores,1)."</PRE>";
+	}
 
 	//	$adminPanel.='<pre>'.processIGC($flight->getIGCFilename());
 

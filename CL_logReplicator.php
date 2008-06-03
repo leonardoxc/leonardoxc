@@ -322,9 +322,7 @@ class logReplicator {
 
 
 				if ($e['action']==1 && ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL &  SYNC_INSERT_FLIGHT_REPROCESS_LOCALLY)  ) {
-
-				echo "will add FULL<BR><BR><BR><BR>";
-
+				
 					if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 						return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
 					}
@@ -459,11 +457,20 @@ class logReplicator {
 						$extFlight->MAX_ALT		=$actionData['flight']['stats']['MaxAltASL']+0;
 						$extFlight->MIN_ALT		=$actionData['flight']['stats']['MinAltASL']+0;
 						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt']+0;
+						
+						if ( is_array( $actionData['flight']['score'] ) && count($actionData['flight']['score']) >0 ) {
+							require_once dirname(__FILE__).'/CL_flightScore.php';			
+							$flightScore=new flightScore($extFlight->flightID);			
+							// we have the score array in $actionData['score']				
+							$sArr=& $actionData['flight']['score'];
+							$flightScore->fromSyncArray($sArr);
+							//put also in scores table, the flight is sure to be present in flights table
+							$flightScore->putToDB(1,1);
+						}
+						
 					}
 					
 					$extFlight->checkGliderBrand();
-
-echo "will add LINK<BR><BR><BR><BR>";
 
 					if ( $e['action']==1) {
 						

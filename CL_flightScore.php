@@ -22,18 +22,14 @@ class flightScore {
 	var $flightTypes=array('FREE_FLIGHT'=>1,'FREE_TRIANGLE'=>2,'FAI_TRIANGLE'=>3 );
 	var $flightTypesID=array(1=>'FREE_FLIGHT',2=>'FREE_TRIANGLE',3=>'FAI_TRIANGLE');
 	
-	var $syncTypesNames=array('FreeFlight3TP'=>1,'FreeTriangle20'=>2,'FAITriangle20'=>3 ,'FreeFlight0TP'=>4,'FreeFlightTakeoffDistance'=>5);
-	var $syncTypesID=array(1=>'FreeFlight3TP',2=>'FreeTriangle20',3=>'FAITriangle20',4=>'FreeFlight0TP',5=>'FreeFlightTakeoffDistance');
-/* 
-new types:
+	var $syncTypesNames=array('FreeFlight3TP'=>1,'FreeTriangle20p'=>2,'FAITriangle20p'=>3 ,'FreeFlight0TP'=>4,'FreeFlightTakeoffDistance'=>5);
+	var $syncTypesID=array(1=>'FreeFlight3TP',2=>'FreeTriangle20p',3=>'FAITriangle20p',4=>'FreeFlight0TP',5=>'FreeFlightTakeoffDistance');
 
-1=>[FreeFlight3TP] 
-2=>[FreeTriangle20%]
-3=>[FAITriangle20%]
-4=>[FreeFlight0TP]
-5=>[FreeFlightTakeoffDistance]
+	var $flightTypesDescriptions=array(1=>_FREE_FLIGHT, 
+					2=>_FREE_TRIANGLE,
+					3=>_FAI_TRIANGLE
+				);
 
-*/
 	function flightScore($flightID="") {
 		if ($flightID) {
 			$this->flightID=$flightID;
@@ -366,10 +362,12 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 				if ($thisScore>=$this->scores[$mID]['bestScore']) {					
 					$this->scores[$mID]['bestScoreType'] = $type;
 					$this->scores[$mID]['bestScore'] = $thisScore;
+					$this->scores[$mID]['bestDistance'] = $score['XCdistance'];					
 				}
 
 				$this->scores[$mID][$type]['distance'] =$score['XCdistance'];
 				$this->scores[$mID][$type]['score'] =$thisScore;
+				$this->scores[$mID][$type]['isBest'] =0; // will update later
 
 				$tpNum=1;
 				foreach($score['turnpoints'] as $j=>$tp) {
@@ -386,16 +384,21 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		}
 
 		// now iterate through $this->scores and update best values
-		//foreach ($this->scores as $l=>$score) {
-		//				$this->scores[$mID][$type]['isBest'] 
+		foreach ($this->scores as $mID=>$score) {
+			$bestType=$this->scores[$mID]['bestScoreType'];
+			$this->scores[$mID][$bestType]['isBest']=1;
+		}
+		
+		$defaultMethodID= $CONF['scoring']['default_set'];
+		$defaultScore=$this->scores[$defaultMethodID];
+			
+		$this->bestScoreType=$this->scores[$defaultMethodID]['bestScoreType'];
+		$this->bestScore	=$this->scores[$defaultMethodID]['bestScore'];
+		$this->bestDistance	=$this->scores[$defaultMethodID]['bestDistance'];
 
-		//$this->bestScoreType=$sArr['XCtype'];
-		//$this->bestScore=$sArr['XCdistance'];
-		//$this->bestDistance=$sArr['XCscore'];
-
-		echo "<pre>";
-		print_r($this->scores);
-		echo "</pre>";
+		//echo "<pre>";
+		//print_r($this->scores);
+		//echo "</pre>";
 	
 	}
 

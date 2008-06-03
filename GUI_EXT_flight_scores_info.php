@@ -50,7 +50,7 @@
 <style type="text/css">
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
 	 td {border:1px solid #777777; }
-	 body {margin:0px; background-color:#E9E9E9}
+	 body {margin:0px; background-color:#FFFFFF}
 	.box {
 		 background-color:#F4F0D5;
 		 border:1px solid #555555;
@@ -58,24 +58,36 @@
 		margin-bottom:5px;
 	}
 	.boxTop {margin:0; }
+	
+	.header1 { background-color:#E2ECF8 }
+	.header2 { background-color:#F9F8E1 }
+	.header3 { background-color:#E6EEE7 }
+
+	
 </style>
 </head>
 <?
-	echo "<PRE>";
-	print_r($flightScore->scores);		
-	echo "</pre>";
-	return;
+	//echo "<PRE>";
+	//print_r($flightScore->scores);		
+	//echo "</pre>";
+	//return;
 	
-	echo "<table width='400'>";
-	$fieldNum=count($row);
+	echo "<table width='360'>";
 
-	$i=0;
-	foreach ($row as $var_name=>$var_value) {
-		echo "<tr>";
-		echo "<td >$var_name</td><td >$var_value</td>";
-		
-		echo "</tr>\n";
-		$i++;
+	foreach ($flightScore->scores as $mID=>$mScores) {
+		echo "<tr><td colspan=4 class='header1'>Scoring Factors Used: ".$CONF['scoring']['sets'][$mID]['name']."</td></tr>\n";
+		echo "<tr><td class='header2'>Type of Flight</td><td class='header2'>Factor</td><td  class='header2' align='right'>XC distance</td><td  class='header2' align='right'>XC Score</td></tr>\n";
+		foreach($mScores as $type=>$score) {
+			$typeID=$flightScore->flightTypes[$type];
+			if (!$typeID) continue;
+			echo "<tr><td class='header3'>";
+			if ($score['isBest']) echo "(*) ";
+			echo $flightScore->flightTypesDescriptions[$typeID]."</td>";
+			echo "<td>x".$CONF['scoring']['sets'][$mID]['types'][$type]."</td>";
+			echo "<td align='right'>".sprintf('%2.3f ',$score['distance'])._KM."</td>";
+			echo "<td align='right'>".sprintf('%2.3f',$score['score'])."</td>";
+			echo "</tr>\n";
+		}
 	}		
 	echo "</table>";
 ?>
