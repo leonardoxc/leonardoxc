@@ -18,7 +18,7 @@
 #define EOS '\0'
 #endif
 #define MAXPOINTS 5000
-#define RELEASE "$Revision: 1.2 $ $Date: 2008/05/05 14:05:22 $"
+#define RELEASE "$Revision: 1.3 $ $Date: 2008/06/04 14:12:40 $"
 
 /*
  *	Liste der eingelesenen Längen- und Breitengarde
@@ -100,89 +100,6 @@ static void comparedistances(int p1, int p2) {
 	);
 } */
 
-/*
- *	Alle Distanzen zwischen allen Punkten berechnen und in Distanzmatrix speichern
- * Die Berechnung erfolgt mit doubles, das Ergbnis wird auf ganze Meter gerundet
- * ganzzahig gespeichert, um später schneller damit rechnen zu können
- * Vorsicht: Rechnerabhängiger Ganzzahlenbereich muß 25mal so groß sein,
- * wie die maximale Länge einer Strecke in Metern!
- */
-    static void initdmval() {
-      static double pi_div_180 = ((double)M_PI)/((double)180.0); /* Umrechnung Grad ins Bogenmaß */
-      static double d_fak = ((double)6371000.0); /* FAI-Erdradius in metern */
-      double *sinlat; /* Für schnellere Berechnung sin/cos-Werte merken */
-      double *coslat;
-      double *lonrad;
-      t_point *old;
-      double latrad, sli, cli, lri;
-      register int i, j, dist, cmp;
-      long  duration;
-   	
-      if (latpnts) free(latpnts);
-      if (lonpnts) free(lonpnts);
-      if (timepnts) free(timepnts);
-      if (!(timepnts=(t_daytime*)malloc(sizeof(t_daytime)*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(lonpnts=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(latpnts=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(distance=(t_distance*)malloc(sizeof(t_distance)*pnts*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(sinlat=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(coslat=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
-      if (!(lonrad=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
-      printf("DEBUG initializing cos/sin/rad..\n");
-      cmp = pnts+1; /* für indexberechnung i,i */
-      for(i=0;i<pnts;i++) { /* alle Punkte ins Bogenmaß umrechnen und sin/cos Speichern */
-         lonrad[i] = (lonpnts[i] = pointlist->lon) * pi_div_180;
-         sinlat[i] = sin( (latrad = (latpnts[i]=pointlist->lat) * pi_div_180) );
-         coslat[i] = cos(latrad);
-         timepnts[i] = pointlist->seconds;
-         pointlist = (old=pointlist)->next;
-         free(old);
-         distance[cmp*i] = 0; /* Diagonale der Matrix mit Distanz 0 füllen */
-      }
-      printf("DEBUG initializing distances..\n");
-      maxdist = 0; /* maximale Distanz zwischen zwei beliebigen Punkten neu berechnen */
-      max2dist = 0; /* maximale Distanz zwischen zwei aufeinanderfolgenden Punkten neu berechnen */
-      cmp = pnts-1; /* Schleifenvergleichswert für schnelle Berechnung vorher merken */
-      for(i=0;i<cmp;i++) { /* diese Schleife NICHT RÜCKWÄRTS!!! */
-         sli = sinlat[i]; cli = coslat[i]; lri = lonrad[i];
-         j = i+1;
-         if ( (distance[i+pnts*j] = dist = (int)(d_fak*acos(
-         						sli*sinlat[j] + cli*coslat[j]* cos(lri-lonrad[j])
-         										)+((double)0.5))  /* auf meter runden */
-         ) > max2dist) max2dist = dist; /* weiteste Distanz merken */
-         for(j=i+2;j<pnts;j++) { /* Durchlauf j=i+1 rausgezogen */
-            if ( (distance[i+pnts*j] = dist = (int)(d_fak*acos(
-            					sli*sinlat[j] + cli*coslat[j]* cos(lri-lonrad[j])
-            									)+((double)0.5))  /* auf meter runden */
-            	) > maxdist) maxdist = dist; /* ggf. weiteste Distanz merken */
-         /* DEBUG if (i+1==j) { comparedistances(i,j); } */
-         }
-      }
-      free(lonrad); free(coslat); free(sinlat);
-      if (max2dist > maxdist) maxdist = max2dist;
-      printf("DEBUG maximal distance between any 2 points: %d meters\n", maxdist);
-      printf("OUT MAX_LINEAR_DISTANCE %d\n", maxdist);
-      printf("DEBUG START_TIME %d\n", timepnts[0]);
-      printf("DEBUG END_TIME %d\n", timepnts[pnts-1]);
-   	duration= timepnts[pnts-1]- timepnts[0];
-   	printf("DEBUG DURATION_SEC %d\n",duration);
-   	printf("DEBUG DURATION %2d:%2d:%2d\n",duration/3600,(duration%3600 )/60,duration%60);
-      printf("DEBUG maximal distance between 2 successive points: %d meters\n", max2dist);
-   }
-
-/*
- *	Indexe der 5 besten Punkte für: freie Strecke, FAI-Dreieck und flaches Dreieck
- */
-   static int max1=0, max2=0, max3=0, max4=0, max5=0;
-   static int max1fai=0, max2fai=0, max3fai=0, max4fai=0, max5fai=0;
-   static int max1flach=0, max2flach=0, max3flach=0, max4flach=0, max5flach=0;
-   static int maxroute = 0, bestfai=0, bestflach=0;
-
-/*
- *	laufende Indexe während der Berechnung, für die asynchrone Ausgabe von
- * Zwischenergebnissen, z.B. in der Signalbehandlungsroutine
- */
-   static int i1, i2, i3, i4, i5;
 
 /*
  *	Ausgabe von Grad in Grad:Minuten.huntertstel Minuten, wie im OLC-Formular
@@ -223,6 +140,154 @@ static void comparedistances(int p1, int p2) {
       printf(" %c", (signlon<0)?'E':'W');
       printdegrees(lon);
    }
+
+
+/*
+ *	Alle Distanzen zwischen allen Punkten berechnen und in Distanzmatrix speichern
+ * Die Berechnung erfolgt mit doubles, das Ergbnis wird auf ganze Meter gerundet
+ * ganzzahig gespeichert, um später schneller damit rechnen zu können
+ * Vorsicht: Rechnerabhängiger Ganzzahlenbereich muß 25mal so groß sein,
+ * wie die maximale Länge einer Strecke in Metern!
+ */
+    static void initdmval() {
+      static double pi_div_180 = ((double)M_PI)/((double)180.0); /* Umrechnung Grad ins Bogenmaß */
+      static double d_fak = ((double)6371000.0); /* FAI-Erdradius in metern */
+      double *sinlat; /* Für schnellere Berechnung sin/cos-Werte merken */
+      double *coslat;
+      double *lonrad;
+      t_point *old;
+      double latrad, sli, cli, lri;
+      register int i, j, dist, cmp;
+      long  duration;
+      int maxp1,maxp2,max2p1,max2p2;
+      int max_t1,max_t2;
+      t_distance max_t_dist;
+   	
+      if (latpnts) free(latpnts);
+      if (lonpnts) free(lonpnts);
+      if (timepnts) free(timepnts);
+      if (!(timepnts=(t_daytime*)malloc(sizeof(t_daytime)*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(lonpnts=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(latpnts=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(distance=(t_distance*)malloc(sizeof(t_distance)*pnts*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(sinlat=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(coslat=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
+      if (!(lonrad=(double*)malloc(sizeof(double)*pnts))) { perror("optigc mem: "); exit(1); }
+      printf("DEBUG initializing cos/sin/rad..\n");
+      cmp = pnts+1; /* für indexberechnung i,i */
+      for(i=0;i<pnts;i++) { /* alle Punkte ins Bogenmaß umrechnen und sin/cos Speichern */
+         lonrad[i] = (lonpnts[i] = pointlist->lon) * pi_div_180;
+         sinlat[i] = sin( (latrad = (latpnts[i]=pointlist->lat) * pi_div_180) );
+         coslat[i] = cos(latrad);
+         timepnts[i] = pointlist->seconds;
+         pointlist = (old=pointlist)->next;
+         free(old);
+         distance[cmp*i] = 0; /* Diagonale der Matrix mit Distanz 0 füllen */
+      }
+      printf("DEBUG initializing distances..\n");
+
+      maxdist = 0; /* maximale Distanz zwischen zwei beliebigen Punkten neu berechnen */
+      max2dist = 0; /* maximale Distanz zwischen zwei aufeinanderfolgenden Punkten neu berechnen */
+      max_t_dist=0; /* max takeoff distance */
+
+      cmp = pnts-1; /* Schleifenvergleichswert für schnelle Berechnung vorher merken */
+
+      maxp1=maxp2=max2p1=max2p2=0;
+
+      max_t1=max_t2=0;
+      max_t_dist=0;
+
+      for(i=0;i<cmp;i++) { /* diese Schleife NICHT RÜCKWÄRTS!!! */
+
+         sli = sinlat[i]; 
+	 cli = coslat[i]; 
+	 lri = lonrad[i];
+
+         j = i+1;
+
+         if ( (distance[i+pnts*j] = 
+		dist = 
+		(int)(d_fak*acos(sli*sinlat[j] + cli*coslat[j]* cos(lri-lonrad[j]))+((double)0.5))  /* auf meter runden */
+         	) > max2dist) {
+
+		max2p1=i;
+		max2p2=j;
+		max2dist = dist; /* weiteste Distanz merken */
+	 }
+
+	 /* compute max distnace from point 0 (takeoff */
+         if ( ((int)distance[pnts*j])  > max_t_dist) {
+		max_t2=i;
+		max_t_dist = (int)distance[pnts*j]; 
+	 }
+
+
+         for(j=i+2;j<pnts;j++) { /* Durchlauf j=i+1 rausgezogen */
+            if ( (distance[i+pnts*j] = dist = (int)(d_fak*acos(
+            					sli*sinlat[j] + cli*coslat[j]* cos(lri-lonrad[j])
+            									)+((double)0.5))  /* auf meter runden */
+            	) > maxdist) {
+
+		maxp1=i;
+		maxp2=j;
+
+		maxdist = dist; /* ggf. weiteste Distanz merken */
+	  }
+
+         /* DEBUG if (i+1==j) { comparedistances(i,j); } */
+         }
+      }
+      free(lonrad); free(coslat); free(sinlat);
+      if (max2dist > maxdist) {
+	maxdist = max2dist;
+	maxp1=max2p1;
+	maxp2=max2p2;
+      }
+
+      printf("DEBUG maximal distance between any 2 points: %d meters\n", maxdist);
+      printf("OUT MAX_LINEAR_DISTANCE %d\n", maxdist);
+      printf("DEBUG P1: %d\n", maxp1);
+      printf("DEBUG P2: %d\n", maxp2);
+
+
+	 printf("OUT TYPE FreeFlight0TP\n");
+         printf("OUT FLIGHT_KM %.3lf\n",(float)maxdist/1000 );
+         printf("OUT FLIGHT_POINTS %.3lf\n",(float)maxdist/1000 );
+         printf ("OUT "); printpoint(maxp1); printf("\n");
+         printf ("OUT "); printpoint(maxp2); printf(" %3.3lf km\n",
+            ((double)distance[maxp1+pnts*maxp2])/((double)1000.0) );
+
+
+	 printf("OUT TYPE MaxTakeoffDistance\n");
+         printf("OUT FLIGHT_KM %.3lf\n",(float)max_t_dist/1000 );
+         printf("OUT FLIGHT_POINTS %.3lf\n",(float)max_t_dist/1000 );
+         printf ("OUT "); printpoint(max_t1); printf("\n");
+         printf ("OUT "); printpoint(max_t2); printf(" %3.3lf km\n",
+            ((double)distance[max_t1+pnts*max_t2])/((double)1000.0) );
+
+
+      printf("DEBUG START_TIME %d\n", timepnts[0]);
+      printf("DEBUG END_TIME %d\n", timepnts[pnts-1]);
+   	duration= timepnts[pnts-1]- timepnts[0];
+   	printf("DEBUG DURATION_SEC %d\n",duration);
+   	printf("DEBUG DURATION %2d:%2d:%2d\n",duration/3600,(duration%3600 )/60,duration%60);
+      printf("DEBUG maximal distance between 2 successive points: %d meters\n", max2dist);
+   }
+
+/*
+ *	Indexe der 5 besten Punkte für: freie Strecke, FAI-Dreieck und flaches Dreieck
+ */
+   static int max1=0, max2=0, max3=0, max4=0, max5=0;
+   static int max1fai=0, max2fai=0, max3fai=0, max4fai=0, max5fai=0;
+   static int max1flach=0, max2flach=0, max3flach=0, max4flach=0, max5flach=0;
+   static int maxroute = 0, bestfai=0, bestflach=0;
+
+/*
+ *	laufende Indexe während der Berechnung, für die asynchrone Ausgabe von
+ * Zwischenergebnissen, z.B. in der Signalbehandlungsroutine
+ */
+   static int i1, i2, i3, i4, i5;
+
 
 /*
  *	Beste Lösungen für Freie Strecke, flaches Dreieck und FAI-Dreieck

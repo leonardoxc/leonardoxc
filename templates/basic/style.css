@@ -466,14 +466,14 @@ background-color:#FCEBFB
 .infoBoxHeader {
  
 text-decoration:none;
-border-left-color:#94081C; border-left-width:8px; border-left-style:solid;
+border-left-color:#4967A0; border-left-width:8px; border-left-style:solid;
 border-right-color:#CCCCCC; border-right-width:3px; border-right-style:solid;
 border-top-color:#CCCCCC; border-top-width:1px; border-top-style:solid;
 /* border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;*/
 
 margin:0;
 padding:3px;
-background-color:#94081C;
+background-color:#4967A0;
 font-size:12px;
 font-family:Verdana, Arial, Helvetica, sans-serif;
 font-weight:bold;
@@ -482,6 +482,8 @@ width:220px;
 text-align:center;
 
 }
+
+.infoBoxHeader td {color:#FFFFFF;}
 
 .menu1 { 
     display:block;

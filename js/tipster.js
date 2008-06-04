@@ -124,12 +124,19 @@ ToPt.position = function(forcePos) { with (this)
 
  // manolis hack!
  // set mx and my to the positioning element x and y values
-mX=0;
-mY=0;
- posEl=getRef(t[2]);
- posArr=MWJ_getPosition(posEl);
- mX=posArr[0];
- mY=posArr[1];
+	var hackActive=false;
+	if ( typeof(t[2])!='number') hackActive=true;	
+
+	if (hackActive)
+	{
+		var posEl=getRef(t[2]);
+		mX=0;
+		mY=0;		
+		posArr=MWJ_getPosition(posEl);
+		mX=posArr[0];
+		mY=posArr[1];
+	}
+
 
  // Add mouse position onto relatively positioned tips.
  if (typeof(t[0])=='number') tipX += mX;
@@ -153,8 +160,10 @@ mY=0;
 
  // Otherwise move the tip towards the calculated position by the stickiness factor.
  // Low stickinesses will result in slower catchup times.
-// xPos += (tipX - xPos) * tipStick;
-// yPos += (tipY - yPos) * tipStick;
+if (!hackActive) {
+	xPos += (tipX - xPos) * tipStick;
+	yPos += (tipY - yPos) * tipStick;
+}
 
  div.x(xPos);
  div.y(yPos);

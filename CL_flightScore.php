@@ -19,15 +19,17 @@ class flightScore {
 
 	var $valuesArray;
 	var $gotValues;
-	var $flightTypes=array('FREE_FLIGHT'=>1,'FREE_TRIANGLE'=>2,'FAI_TRIANGLE'=>3 );
-	var $flightTypesID=array(1=>'FREE_FLIGHT',2=>'FREE_TRIANGLE',3=>'FAI_TRIANGLE');
+	var $flightTypes=array('FREE_FLIGHT'=>1,'FREE_TRIANGLE'=>2,'FAI_TRIANGLE'=>3,'FreeFlight0TP'=>4 ,'MaxTakeoffDistance'=>5);
+	var $flightTypesID=array(1=>'FREE_FLIGHT',2=>'FREE_TRIANGLE',3=>'FAI_TRIANGLE',4=>'FreeFlight0TP',5=>'MaxTakeoffDistance');
 	
-	var $syncTypesNames=array('FreeFlight3TP'=>1,'FreeTriangle20p'=>2,'FAITriangle20p'=>3 ,'FreeFlight0TP'=>4,'FreeFlightTakeoffDistance'=>5);
-	var $syncTypesID=array(1=>'FreeFlight3TP',2=>'FreeTriangle20p',3=>'FAITriangle20p',4=>'FreeFlight0TP',5=>'FreeFlightTakeoffDistance');
+	var $syncTypesNames=array('FreeFlight3TP'=>1,'FreeTriangle20p'=>2,'FAITriangle20p'=>3 ,'FreeFlight0TP'=>4,'MaxTakeoffDistance'=>5);
+	var $syncTypesID=array(1=>'FreeFlight3TP',2=>'FreeTriangle20p',3=>'FAITriangle20p',4=>'FreeFlight0TP',5=>'MaxTakeoffDistance');
 
 	var $flightTypesDescriptions=array(1=>_FREE_FLIGHT, 
 					2=>_FREE_TRIANGLE,
-					3=>_FAI_TRIANGLE
+					3=>_FAI_TRIANGLE,
+					4=>_MAX_DISTANCE,
+					5=>_MAX_LINEAR_DISTANCE
 				);
 
 	function flightScore($flightID="") {

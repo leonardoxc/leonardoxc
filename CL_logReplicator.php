@@ -301,12 +301,12 @@ class logReplicator {
 
 				$argArray=array(
 						"private"	=>$actionData['flight']['info']['private']+0,
-						"cat"		=>$actionData['flight']['info']['gliderCat'],
+						"cat"		=>$actionData['flight']['info']['gliderCat']+0,
 						"linkURL"	=>$actionData['flight']['info']['linkURL'],
 						"comments"	=>$actionData['flight']['info']['comments'],
 						"glider"	=>$actionData['flight']['info']['glider'],
-						"gliderBrandID"	=>$actionData['flight']['info']['gliderBrandID'],
-						"category"	=>$actionData['flight']['info']['cat'],
+						"gliderBrandID"	=>$actionData['flight']['info']['gliderBrandID']+0,
+						"category"	=>$actionData['flight']['info']['cat']+0,
 
 						"dateAdded"		=>$actionData['flight']['dateAdded'],
 						"originalURL"	=>htmlDecode($actionData['flight']['linkDisplay']),
@@ -465,7 +465,9 @@ class logReplicator {
 							$sArr=& $actionData['flight']['score'];
 							$flightScore->fromSyncArray($sArr);
 							//put also in scores table, the flight is sure to be present in flights table
-							$flightScore->putToDB(1,1);
+							if ($e['action']==2) { // update so we already know the flightID
+								$flightScore->putToDB(1,1);
+							}
 						}
 						
 					}
@@ -494,11 +496,15 @@ class logReplicator {
 						
 						// insert flight
 						$extFlight->putFlightToDB(0);
-
+						if ($getScoreData) {
+							$flightScore->flightID=$extFlight->flightID;
+							$flightScore->putToDB(1,1);
+						}
 						return array(1,"Flight $opString OK $addFlightNote with local ID $extFlight->flightID");
 					} else {
 						//update flight
 						$extFlight->putFlightToDB(1);
+
 						return array(1,"Flight with local ID $flightIDlocal UDDATED OK");
 					}
 				}

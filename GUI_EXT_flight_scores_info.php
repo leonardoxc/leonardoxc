@@ -80,6 +80,8 @@
 		foreach($mScores as $type=>$score) {
 			$typeID=$flightScore->flightTypes[$type];
 			if (!$typeID) continue;
+			if (!$CONF['scoring']['sets'][$mID]['types'][$type]) continue;
+
 			echo "<tr><td class='header3'>";
 			if ($score['isBest']) echo "(*) ";
 			echo $flightScore->flightTypesDescriptions[$typeID]."</td>";

@@ -85,111 +85,98 @@ with (unknownTakeoffTip)
 <script language="javascript">
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
-	document.getElementById('takeoffBoxTitle').innerHTML = "<?=_ADD_WAYPOINT?>";	
-	document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,320);
-	 MWJ_changeSize( 'takeoffAddID', 410,350 );
-	toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
+	popupBox('takeoffAdd','<?=_ADD_WAYPOINT?>',url,410,320,0,14);
 }
 	 
 function edit_takeoff(id) {	 
-	 takeoffTip.hide();
-	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,320);
-	 MWJ_changeSize( 'takeoffAddID', 410,350 );
-	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
- }
+	takeoffTip.hide();
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
+	popupBox('takeoffAdd','Change Takeoff',url,410,320,0,14);
+}
 
 function delete_takeoff(id) {	 
-	 takeoffTip.hide();
-	 document.getElementById('takeoffBoxTitle').innerHTML = "Delete Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,220);
-	 MWJ_changeSize( 'takeoffAddID', 410,250 );
-	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,220);
- }
+	takeoffTip.hide();
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
+	popupBox('takeoffAdd',"Delete Takeoff",url,410,220,0,14);
+}
 
+function flight_db_info(id) {
+	var url='<?=getRelMainDir(1)?>GUI_EXT_flight_info.php?flightID='+id;
+	popupBox('setBounds',"Flight DB record",url,725,395,-670,18);
+}
 </script>
 <? }  ?>
 <script language="javascript">
-	function flight_db_info(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Flight DB record");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_info.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',740,395);
-		MWJ_changeSize( 'takeoffAddID', 745,415 );
-		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
-	}
-	
 	function flight_scores_info(id) {
-		MWJ_changeContents('scoreInfoBoxTitle',"Optimization");
-		document.getElementById('scoreInfoFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;		
-		MWJ_changeSize('scoreInfoFrame',440,195);
-		MWJ_changeSize( 'scoreInfoID', 445,215 );
-		toggleVisible('scoreInfoID','showScoreInfo',18,-5,425,235);
+		var url='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;
+		popupBox('scoreInfo',"Optimization",url,360,195,-5,18);
 	}
 
 	function set_flight_bounds(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Set Start - Stop time for flight");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',740,395);
-		MWJ_changeSize( 'takeoffAddID', 745,415 );
-		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
+		var url='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;
+		popupBox('setBounds',"Set Start - Stop time for flight",url,725,395,-670,18);
 	}
 	
-	 function user_add_takeoff(lat,lon,id) {	 
-		MWJ_changeContents('takeoffBoxTitle',"<?=_ADD_WAYPOINT?>");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		MWJ_changeSize('addTakeoffFrame',720,380);
-		MWJ_changeSize( 'takeoffAddID', 725,400 );
-		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,455);
-	 }
+	function user_add_takeoff(lat,lon,id) {	 
+		var url='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
+		popupBox('takeoffAdd','<?=_ADD_WAYPOINT?>',url,720,380,0,30);
+	}
+
+	function popupBox(prefix,title,url,width,height,x,y) {
+		MWJ_changeContents(prefix+'BoxTitle',title);
+		document.getElementById(prefix+'Frame').src=url;
+		MWJ_changeSize(prefix+'Frame',width+5,height);
+		MWJ_changeSize( prefix+'ID', width+10,height+20);
+		toggleVisible(prefix+'ID',prefix+'Pos',y,x,width,height+40);
+	}
+
 </script>
 
-<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+<? function makePopupBox($name) { 
+	global $moduleRelPath,$PREFS;
+?>
+<div id="<?=$name ?>ID" class="dropBox" style="visibility:hidden;">
 	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr><td class="infoBoxHeader" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle"><?=_ADD_WAYPOINT?></div>
+	<tr class="<?=$name ?>Header"><td class="infoBoxHeader <?=$name ?>Header" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="<?=$name ?>BoxTitle"></div>
 	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	<a href='#' onclick="toggleVisible('<?=$name ?>ID','<?=$name ?>Pos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 	</td></tr></table>
-	<div id='addTakeoffDiv'>
-		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	<div id='<?=$name ?>Div'>
+		<iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
 	</div>
 </div>
+<? } ?>
 
+<?
+ makePopupBox('scoreInfo'); 
+ makePopupBox('setBounds'); 
+ makePopupBox('takeoffAdd'); 
 
-<div id="scoreInfoID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
-	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr><td class="infoBoxHeader" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="scoreInfoBoxTitle"></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('scoreInfoID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-	</td></tr></table>
-	<div id='scoreInfofDiv'>
-		<iframe name="scoreInfoFrame" id="scoreInfoFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
-	</div>
-</div>
-
+?>
 
 <div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
 <form name="geOptionsForm" method="POST">
 <input type="hidden" name="flightID" value="<?=$flightID?>">
 
-<table bgcolor="#EEEEEE" cellpadding="0" cellspacing="0" width="100%" border="0" >
+<table cellpadding="0" cellspacing="0" width="100%" border="0" >
 <tr>
-<td  colspan=2 class="tableBox" style="background-color:#6F9ED3">
-<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
+<td  colspan=2 class="infoBoxHeader">
+	<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
 	<div align="right" style="display:inline; float:right; clear:right;">
 		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
 		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 </td>
 </tr>
+</table>
+
+<table>
 <tr >
-	<td class="infoBox" align>
+	<td align='right'>
 	<?=_Line_Color?>
 	</td>
-	<td class="tableBox">
+	<td >
 	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
 	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
@@ -206,10 +193,10 @@ function delete_takeoff(id) {
 	
 </tr>
 <tr>
-	<td class="infoBox" align="right">
+	<td align="right">
 		<?=_Line_width?>
 	</td>
-	<td class="tableBox" align="left">
+	<td align="left">
 		<select  name="lineWidth">	
 		<option value='1' >1</option>
 		<option value='2' selected >2</option>
@@ -222,14 +209,14 @@ function delete_takeoff(id) {
 </tr>
 
 <tr>
-	<td colspan=2 class="infoBox">
+	<td colspan=2 >
 	<?
 	echo "<a href='javascript:submitForm(0)'>"._Display_on_Google_Earth."</a><br>"; 
 	?>
 	</td>
 </tr>
 <tr>
-	<td colspan=2 class="infoBox">
+	<td colspan=2>
 <?
 	echo "<a href='javascript:submitForm(1)'>"._Use_Man_s_Module."</a><br>"; 
 	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
@@ -254,7 +241,7 @@ function delete_takeoff(id) {
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
-	if (  auth::isModerator($userID) ) {
+	if (  auth::isAdmin($userID) ) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
