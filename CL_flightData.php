@@ -105,6 +105,8 @@ var $olcRefNum="";
 var $olcFilename="";
 var $olcDateSubmited;
 
+var $flightScore;
+
 /*
 #externalFlightType
 #	0 -> local flight
@@ -158,20 +160,29 @@ var $maxPointNum=1000;
 	
 	}
 	
-	function checkGliderBrand() {
+	function checkGliderBrand($gliderBrand='') {
 
-		if (! $this->gliderBrandID ) {				
-			$gliderBrandID=brands::guessBrandID($this->glider );
+		if (! $this->gliderBrandID ) {
+		
+			if ($gliderBrand) {
+				$gliderBrandID=brands::guessBrandID($gliderBrand );
+			}	else {
+				$gliderBrandID=brands::guessBrandID($this->glider );
+			}
+			
 			if ($gliderBrandID){
 				global $CONF;
-
-				if (!function_exists('str_ireplace')) {
-				    function str_ireplace($needle, $str, $haystack) {
-				        $needle = preg_quote($needle, '/');
-				        return preg_replace("/$needle/i", $str, $haystack);
-				    }
-				}  else {
-					$gliderName=str_ireplace($CONF['brands']['list'][$gliderBrandID],'',$this->glider);
+				if (!$gliderBrand) {
+					if (!function_exists('str_ireplace')) {
+						function str_ireplace($needle, $str, $haystack) {
+							$needle = preg_quote($needle, '/');
+							return preg_replace("/$needle/i", $str, $haystack);
+						}
+					}  else {
+						$gliderName=str_ireplace($CONF['brands']['list'][$gliderBrandID],'',$this->glider);
+					}
+				} else {
+					$gliderName=$this->glider;
 				}
 
 				$gliderName=brands::sanitizeGliderName($gliderName);
@@ -207,9 +218,15 @@ var $maxPointNum=1000;
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 		} else $useJSON=0;
 
-
-		$flightScore=new flightScore($this->flightID);
-		$flightScore->getFromDB();
+		if ($this->flightScore) {
+			$flightScore=&$this->flightScore;
+			if (!$flightScore->gotValues) {
+				$flightScore->getFromDB();
+			}			
+		}  else {
+			$flightScore=new flightScore($this->flightID);
+			$flightScore->getFromDB();
+		}
 
 		$defaultMethodID= $CONF['scoring']['default_set'];
 		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
@@ -354,6 +371,7 @@ $resStr='{
 	"info": {
 		"glider": "'.json::prepStr($this->glider).'",
 		"gliderBrandID": '.$this->gliderBrandID.',
+		"gliderBrand": "'.$CONF['brands']['list'][$this->gliderBrandID].'",
 		"gliderCat": '.json::prepStr($this->cat).',
 		"cat": '.$this->category.',
 		"linkURL": "'.json::prepStr($this->linkURL).'",
@@ -3197,7 +3215,11 @@ $kml_file_contents=
 		  echo("<H3> Error in delete Flight query! </H3>\n");
 		  exit();
  	    }
-
+		
+		// save a copy 
+		$this->flightScore=new flightScore($this->flightID);
+		$this->flightScore->getFromDB();
+		
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->deleteFromDB();
 		// Now delete the files
@@ -3373,6 +3395,8 @@ $kml_file_contents=
 		$log->Result = ($result?1:0);
 		if (!$log->Result) $log->ResultDescription ="Problem in puting flight to DB $query";
 		if (!$log->put()) echo "Problem in logger<BR>";
+
+		return $result;
 	}
 
 	function makeLogEntry() {

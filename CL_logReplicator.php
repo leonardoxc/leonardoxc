@@ -298,7 +298,8 @@ class logReplicator {
 				// echo "Will update flight $flightIDlocal<BR>";
 				
 			}
-
+				$thisCat=$actionData['flight']['info']['cat']+0;
+				
 				$argArray=array(
 						"private"	=>$actionData['flight']['info']['private']+0,
 						"cat"		=>$actionData['flight']['info']['gliderCat']+0,
@@ -306,7 +307,7 @@ class logReplicator {
 						"comments"	=>$actionData['flight']['info']['comments'],
 						"glider"	=>$actionData['flight']['info']['glider'],
 						"gliderBrandID"	=>$actionData['flight']['info']['gliderBrandID']+0,
-						"category"	=>$actionData['flight']['info']['cat']+0,
+						"category"	=> ($thisCat>=0?$thisCat:0),
 
 						"dateAdded"		=>$actionData['flight']['dateAdded'],
 						"originalURL"	=>htmlDecode($actionData['flight']['linkDisplay']),
@@ -464,6 +465,9 @@ class logReplicator {
 							// we have the score array in $actionData['score']				
 							$sArr=& $actionData['flight']['score'];
 							$flightScore->fromSyncArray($sArr);
+							
+							$extFlight->flightScore=$flightScore;
+							
 							//put also in scores table, the flight is sure to be present in flights table
 							if ($e['action']==2) { // update so we already know the flightID
 								$flightScore->putToDB(1,1);
@@ -472,7 +476,8 @@ class logReplicator {
 						
 					}
 					
-					$extFlight->checkGliderBrand();
+					// we also have [gliderBrand] => GRADIENT													
+					$extFlight->checkGliderBrand($actionData['flight']['info']['gliderBrand']);
 
 					if ( $e['action']==1) {
 						

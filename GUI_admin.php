@@ -704,6 +704,19 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
 				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
+				  
+				  // only proccess flights that we have their IGC files !
+			  	  if (!is_file($flight->getIGCFilename() )   ) continue;
+				  // now see if the scroing is present
+				  $flight->flightScore=new flightScore($flight->flightID);
+				  
+				  $flight->flightScore->getFromDB();
+				  if (!$flight->flightScore->gotValues) {
+ 					unset($flight->flightScore);
+				  	set_time_limit(200);
+					$flight->computeScore();
+				  }
+						  
 				  $flight->makeLogEntry();
 				  setBatchBit($row["ID"]);
 				  $i++;
@@ -722,7 +735,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				  $flight=new flight();
-				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff
+				  $flight->getFlightFromDB($row["ID"],0); // dont update takeoff				 
 				  $flight->makeScoreLogEntry();
 				  setBatchBit($row["ID"]);
 				  $i++;

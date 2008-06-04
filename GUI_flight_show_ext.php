@@ -20,7 +20,7 @@
 
 	//echo "$flight->takeoffID : $location <BR>";
 
- // $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+ 	// $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
 	$firstPoint=new gpsPoint('',$flight->timezone);
 	$firstPoint->setLat($flight->firstLat);
 	$firstPoint->setLon($flight->firstLon);
@@ -67,81 +67,80 @@ with (unknownTakeoffTip)
 
 <? if ( auth::isAdmin($userID) ) { ?>
 <script language="javascript">
+
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
-	document.getElementById('takeoffBoxTitle').innerHTML = "<?=_ADD_WAYPOINT?>";	
-	document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,320);
-	 MWJ_changeSize( 'takeoffAddID', 410,350 );
-	toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
+	popupBox('takeoffAdd','<?=_ADD_WAYPOINT?>',url,410,320,0,14);
 }
 	 
 function edit_takeoff(id) {	 
-	 takeoffTip.hide();
-	 document.getElementById('takeoffBoxTitle').innerHTML = "Change Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,320);
-	 MWJ_changeSize( 'takeoffAddID', 410,350 );
-	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,320);
- }
+	takeoffTip.hide();
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_edit.php?waypointIDedit='+id;
+	popupBox('takeoffAdd','Change Takeoff',url,410,320,0,14);
+}
 
 function delete_takeoff(id) {	 
-	 takeoffTip.hide();
-	 document.getElementById('takeoffBoxTitle').innerHTML = "Delete Takeoff";		 
- 	 document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
-	 MWJ_changeSize('addTakeoffFrame',410,220);
-	 MWJ_changeSize( 'takeoffAddID', 410,250 );
-	 toggleVisible('takeoffAddID','takeoffAddPos',14,0,410,220);
- }
+	takeoffTip.hide();
+	var url='<?=getRelMainDir(1)?>GUI_EXT_waypoint_delete.php?waypointIDdelete='+id;
+	popupBox('takeoffAdd',"Delete Takeoff",url,410,220,0,14);
+}
+
+function flight_db_info(id) {
+	var url='<?=getRelMainDir(1)?>GUI_EXT_flight_info.php?flightID='+id;
+	popupBox('setBounds',"Flight DB record",url,725,395,-670,18);
+}
 
 </script>
 <? }  ?>
 <script language="javascript">
-	function flight_db_info(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Flight DB record");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_info.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',740,395);
-		MWJ_changeSize( 'takeoffAddID', 745,415 );
-		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
-	}
 	function flight_scores_info(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Optimization");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',340,195);
-		MWJ_changeSize( 'takeoffAddID', 345,215 );
-		toggleVisible('takeoffAddID','showScoreInfo',18,-10,325,235);	
+		var url='<?=getRelMainDir(1)?>GUI_EXT_flight_scores_info.php?flightID='+id;
+		popupBox('scoreInfo',"Optimization",url,360,195,-5,18);
 	}
-	
+
 	function set_flight_bounds(id) {
-		MWJ_changeContents('takeoffBoxTitle',"Set Start - Stop time for flight");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;		
-		MWJ_changeSize('addTakeoffFrame',740,395);
-		MWJ_changeSize( 'takeoffAddID', 745,415 );
-		toggleVisible('takeoffAddID','setBoundsPos',18,-690,725,435);	
+		var url='<?=getRelMainDir(1)?>GUI_EXT_flight_set_bounds.php?flightID='+id;
+		popupBox('setBounds',"Set Start - Stop time for flight",url,725,395,-670,18);
 	}
 	
-	 function user_add_takeoff(lat,lon,id) {	 
-		MWJ_changeContents('takeoffBoxTitle',"<?=_ADD_WAYPOINT?>");
-		document.getElementById('addTakeoffFrame').src='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;		
-		MWJ_changeSize('addTakeoffFrame',720,380);
-		MWJ_changeSize( 'takeoffAddID', 725,400 );
-		toggleVisible('takeoffAddID','takeoffAddPos',30,0,725,455);
-	 }
+	function user_add_takeoff(lat,lon,id) {	 
+		var url='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
+		popupBox('takeoffAdd','<?=_ADD_WAYPOINT?>',url,720,380,0,30);
+	}
+
+	function popupBox(prefix,title,url,width,height,x,y) {
+		MWJ_changeContents(prefix+'BoxTitle',title);
+		document.getElementById(prefix+'Frame').src=url;
+		MWJ_changeSize(prefix+'Frame',width+5,height);
+		MWJ_changeSize( prefix+'ID', width+10,height+20);
+		toggleVisible(prefix+'ID',prefix+'Pos',y,x,width,height+40);
+	}
+
 </script>
 
-<div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
+<? function makePopupBoxDiv($name) { 
+	global $moduleRelPath,$PREFS;
+?>
+<div id="<?=$name ?>ID" class="dropBox" style="visibility:hidden;">
 	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr><td class="infoBoxHeader" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="takeoffBoxTitle"><?=_ADD_WAYPOINT?></div>
+	<tr class="<?=$name ?>Header"><td class="infoBoxHeader <?=$name ?>Header" style="width:725px;" >
+	<div align="left" style="display:inline; float:left; clear:left;" id="<?=$name ?>BoxTitle"></div>
 	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('takeoffAddID','takeoffAddPos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+	<a href='#' onclick="toggleVisible('<?=$name ?>ID','<?=$name ?>Pos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
 	</td></tr></table>
-	<div id='addTakeoffDiv'>
-		<iframe name="addTakeoffFrame" id="addTakeoffFrame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+	<div id='<?=$name ?>Div'>
+		<iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
 	</div>
 </div>
+<? } ?>
 
 <?
+makePopupBoxDiv('scoreInfo'); 
+makePopupBoxDiv('setBounds'); 
+makePopupBoxDiv('takeoffAdd'); 
+
+
 	$legendRight="";
 
 	$legendRight.="<div id='setBoundsPos'></div>";
@@ -159,7 +158,15 @@ function delete_takeoff(id) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
-	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_trophy.gif' title='optimization Results' border=0 align=bottom></a> ";
+	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_olc_manual.gif' title='"._Show_Optimization_details."' border=0 align='absmiddle'>"._Show_Optimization_details."&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' title='"._Show_Optimization_details."' border=0 align=bottom></a> ";
+	
+	if ( $flight->private  & 0x01 ) { 
+		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_private.gif' align='bottom' width='13' height='13'>";
+	} 
+
+	if ( $flight->private & 0x02 ) { 
+		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_disabled.gif' align='bottom' width='13' height='13'>";
+	}
 	
 	
 	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".

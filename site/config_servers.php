@@ -198,7 +198,7 @@ $CONF['servers']['list']=array(
 	'leonardo_version'=>"0",
 	'url'=>"www.xcontest.org",
 	'url_base'=>"www.xcontest.org",
-	'url_sync'=>"sync.xcontest.org/", // startID=1&count=5	
+	'url_sync'=>"sync.xcontest.org/v1.rbx?", // startID=1&count=5	
 	'url_op'=>"www.xcontest.org",
 	'admin_email'=>"petr@pgweb.cz",
 

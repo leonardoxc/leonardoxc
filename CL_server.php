@@ -561,7 +561,7 @@ class Server {
 					"&sync_type=".$this->data['sync_type']."&use_zip=".$this->data['use_zip'];
 
 		} else {
-			$urlToPull='http://'.$this->data['url_sync']."?count=$chunkSize&startID=$startID";
+			$urlToPull='http://'.$this->data['url_sync']."count=$chunkSize&startID=$startID";
 		}
 
 

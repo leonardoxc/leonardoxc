@@ -213,6 +213,8 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		$this->bestScoreType=$this->scores[ $CONF['scoring']['default_set'] ] ['bestScoreType'];
 		$this->bestScore=$this->scores[ $CONF['scoring']['default_set'] ] ['bestScore'];
 		$this->bestDistance=$this->scores[ $CONF['scoring']['default_set'] ] ['bestDistance'];
+
+		$this->gotValues=1;
 /*
 		echo "<pre>";
 		print_r($this->scores);
@@ -231,8 +233,11 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		
 		//reset everything
 		$this->scores=array();
-					
+		$this->gotValues=0;		
+			
 	    while ($row = $db->sql_fetchrow($res) ) {
+			$this->gotValues=1;
+			
 			$type=$this->flightTypesID[$row['type']];
 			$this->scores[$row['method']][$type]=array();
 			$this->scores[$row['method']][$type]['isBest']	=$row['isBest'];
@@ -261,9 +266,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		//	echo "<pre>";		
 		//	print_r($this->scores);
 		//	echo "</pre>";
-			
-		$this->gotValues=1;
-
+					
 		//echo "<pre>";		
 		//	print_r($this->scores);
 		//echo $this->toJSON();
@@ -401,6 +404,8 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		//echo "<pre>";
 		//print_r($this->scores);
 		//echo "</pre>";
+
+		$this->gotValues=1;
 	
 	}
 
@@ -412,9 +417,13 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 		$str='';
 		$k=0;
+		
+		echo "<PRE>";
+		print_r($this->scores);
+		echo "</PRE>";
 //		foreach ( $this->scores as $methodID=>$scoreForMethod) {
 			$methodID=1;
-			$scoreForMethod=&$this->scores[$methodID];
+			$scoreForMethod=& $this->scores[$methodID];
 
 			$l=0;
 			if ($k!=0) $str.=",\n";
