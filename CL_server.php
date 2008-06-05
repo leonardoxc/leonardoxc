@@ -550,6 +550,7 @@ class Server {
 
 	function sync($chunkSize=5,$verbose=1) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path;
+		global $DBGlvl;
 		
 		$this->getFromDB();
 		$startID=$this->lastPullUpdateID+1;
@@ -654,7 +655,8 @@ class Server {
 			if ($verbose) flush2Browser();
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 
-			$rssStr=str_replace('\\\\"','\"',$rssStr);
+			// is this needed ?
+			// $rssStr=str_replace('\\\\"','\"',$rssStr);
 
 			// for testing emply log
 			// $rssStr='{ "log": [  ] }';
@@ -666,9 +668,12 @@ class Server {
 					
 			if ($verbose) echo " <div class='ok'>DONE</div><br>";
 			if ($verbose) flush2Browser();
-			echo "<pre>";
-			print_r($arr);
-			echo "</pre>";
+
+			if ($DBGlvl>0) {
+				echo "<PRE>";
+				print_r($arr);
+				echo "</PRE>";
+			}
 			
 			//exit;
 			$entriesNum=0;

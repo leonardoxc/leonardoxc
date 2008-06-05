@@ -18,8 +18,9 @@ $CONF['servers']['list']=array(
 	'url_op'=>"www.paraglidingforum.com/modules/leonardo/op.php",
 	'admin_email'=>"andread@thenet.gr",
 	'site_pass'=>"er252k2342kk3fvv932295jjdfg",
+
 	'serverPass'=>"",
-	'clientPass'=>"",
+	'clientPass'=>"pforumThenetMustUseThisPassToConnectToP19484823", // we get
 
 	'is_active'=>1,
 

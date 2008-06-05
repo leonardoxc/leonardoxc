@@ -445,6 +445,8 @@ class logReplicator {
 						$extFlight->airspaceCheckMsg =$actionData['flight']['validation']['airspaceCheckMsg'];
 					}
 					
+					$getScoreDataExtra=0;
+
 					if ( $getScoreData ) {
 						$extFlight->BEST_FLIGHT_TYPE=$actionData['flight']['stats']['FlightType'];
 						$extFlight->LINEAR_DISTANCE	=$actionData['flight']['stats']['StraightDistance']+0;
@@ -460,6 +462,7 @@ class logReplicator {
 						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt']+0;
 						
 						if ( is_array( $actionData['flight']['score'] ) && count($actionData['flight']['score']) >0 ) {
+							
 							require_once dirname(__FILE__).'/CL_flightScore.php';			
 							$flightScore=new flightScore($extFlight->flightID);			
 							// we have the score array in $actionData['score']				
@@ -467,6 +470,7 @@ class logReplicator {
 							$flightScore->fromSyncArray($sArr);
 							
 							$extFlight->flightScore=$flightScore;
+							$getScoreDataExtra=1;
 							
 							//put also in scores table, the flight is sure to be present in flights table
 							if ($e['action']==2) { // update so we already know the flightID
@@ -501,7 +505,7 @@ class logReplicator {
 						
 						// insert flight
 						$extFlight->putFlightToDB(0);
-						if ($getScoreData) {
+						if ($getScoreData && $getScoreDataExtra) {
 							$flightScore->flightID=$extFlight->flightID;
 							$flightScore->putToDB(1,1);
 						}

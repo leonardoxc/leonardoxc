@@ -362,16 +362,16 @@ $resStr='{
 	"filename": "'.json::prepStr($this->filename).'",
 	"linkIGC": "'.json::prepStr($this->getIGC_URL()).'",
 	"linkIGCzip": "'.json::prepStr($this->getZippedIGC_URL()).'",
-	"linkDisplay": "'.($isLocal ? 	htmlspecialchars($this->getFlightLinkURL()): 
-									htmlspecialchars($this->originalURL) ).'",
-	"linkGE": "'.($isLocal ? htmlspecialchars($this->getFlightKML(0)) :
-							 htmlspecialchars($this->originalKML) ).'",	
+	"linkDisplay": "'.($isLocal ? 	json::prepStr($this->getFlightLinkURL()): 
+									json::prepStr($this->originalURL) ).'",
+	"linkGE": "'.($isLocal ? json::prepStr($this->getFlightKML(0)) :
+							 json::prepStr($this->originalKML) ).'",	
 	"isLive": '.$this->isLive.',
 	
 	"info": {
 		"glider": "'.json::prepStr($this->glider).'",
 		"gliderBrandID": '.$this->gliderBrandID.',
-		"gliderBrand": "'.$CONF['brands']['list'][$this->gliderBrandID].'",
+		"gliderBrand": "'.json::prepStr($CONF['brands']['list'][$this->gliderBrandID]).'",
 		"gliderCat": '.json::prepStr($this->cat).',
 		"cat": '.$this->category.',
 		"linkURL": "'.json::prepStr($this->linkURL).'",
@@ -2126,9 +2126,12 @@ $kml_file_contents=
 
 		$mod=0;
 		if ($p > $this->maxPointNum ){
-			$mod= ceil( $p / $this->maxPointNum );
+			$reduceArray=getReduceArray($p ,$this->maxPointNum);
+			// print_r($recudeArray);
+			$mod=count($reduceArray);
+			// $mod= ceil( $p / $this->maxPointNum );
 		}
-		DEBUG("IGC",1,"will use a mod of $mod<br>");
+		DEBUG("IGC",1,"will use a reduce array of length $mod<br>");
 
 		$alreadyInPoints=0;
 		$stopReadingPoints=0;
@@ -2341,8 +2344,8 @@ $kml_file_contents=
 					// end computing					
 					$prevPoint=new gpsPoint($line,$this->timezone);
 					$prevPoint->gpsTime+=$day_offset;
-					if ($mod>1)  {
-						if ( ($points % $mod) != 0  ) $outputLine="";
+					if ($mod>=1)  {
+						if ( $reduceArray[ $points % $mod]  == 0  ) $outputLine="";
 					}
 				}
 				$points++;		   
@@ -2554,6 +2557,10 @@ $kml_file_contents=
 			$results=$flightScore->getScore( $this->getIGCRelPath(1) , 0  );
 		}
 		$flightScore->parseScore($results);
+
+		// make a second pass 
+		// $flightScore->computeSecondPass($this->getIGCFilename());
+
 		//put also in scores table, the flight is sure to be present in flights table
 		$flightScore->putToDB(1,1);
 

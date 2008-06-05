@@ -99,6 +99,7 @@ class flightScore {
 	
 	}
 
+
 	function parseScore($contents) {
 		global $CONF;
 /*
@@ -222,6 +223,83 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 */
 	}
 
+	function makeSecondPassFile($file){
+		// we assume we have values OK 
+		global $CONF;
+
+		$mID=$CONF['scoring']['default_set'];
+		$type=$this->scores[$mID]['bestScoreType'];
+
+		//$type='FREE_FLIGHT';
+		//$type='FREE_TRIANGLE';
+		//$type='FAI_TRIANGLE';
+
+		foreach ($this->scores[$mID] as $type=>$sArr){
+			if (is_array($sArr['tp']) ) {
+				foreach($sArr['tp'] as $i=>$tp) {
+					$tpArray[substr($tp,1,6)]=$tp;
+				}
+			}
+		}
+		// $tpArray=$this->scores[$mID][$type]['tp'];
+
+		print_r($tpArray);
+
+		$tpNum=1;
+
+		$lines=file($file);
+		$out='';
+		$outLines=array();
+		$bRecs=0;
+
+		for ($i=0;$i<count($lines);$i++) {
+			if ($lines[$i]{0}!='B') {
+				$outLines[$i]=$lines[$i];
+				continue;
+			}
+
+			$bRecs++;
+			$lastBrecLine=$i;
+			if (  $tpArray[ substr($lines[$i],1,6) ] ) {
+				echo "Found TP $tpNum at line $i<BR>";
+				for ($k=$i-10; $k<=$i+10; $k++) {
+					if ($k>=0 && $k<count($lines) )	$outLines[$k]=$lines[$k];
+				}
+				$tpNum++;
+			} else {
+/*				if ($bRecs==1) {
+					for ($k=$i; $k<=$i+20; $k++) {
+						if ($k>=0 && $k<count($lines) )	$outLines[$k]=$lines[$k];
+					}
+				} else if ($i%10==0) {
+					$outLines[$i]=$lines[$i];
+				}
+*/
+			}
+		}
+
+//		for ($i=$lastBrecLine;$i>$lastBrecLine-20;$i--) {
+//			$outLines[$i]=$lines[$i];
+//		}
+
+		foreach ($outLines as $j=>$line) {
+				if (strlen($line) >1 ) $out.=$line;
+		}
+
+		$tmpFilename=dirname(__FILE__).'/files/tmp/'.sprintf('%d.igc',rand(1,999999) );
+		echo "Will write to $tmpFilename";
+		writeFile($tmpFilename,$out);
+		return $tmpFilename;
+	}
+
+	function computeSecondPass($file) {
+		$tmpFile=$this->makeSecondPassFile($file);
+
+		$results=$this->getScore( $tmpFile,1  );		
+		$this->parseScore($results);
+		//@unlink($tmpFile);
+
+	}
 
 	function getFromDB() {
 		global $db,$scoresTable,$flightsTable,$CONF ;
@@ -412,15 +490,20 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 	function toSyncJSON() {
 		global $db,$scoresTable ,$flightsTable,$CONF,$CONF_server_id;
+		global $DBGcat,$DBGlvl;
 
 		if (!$this->gotValues) $this->getFromDB();		
 
 		$str='';
 		$k=0;
 		
-		echo "<PRE>";
-		print_r($this->scores);
-		echo "</PRE>";
+
+		if ($DBGlvl>0) {
+			echo "<PRE>";
+			print_r($this->scores);
+			echo "</PRE>";
+		}
+
 //		foreach ( $this->scores as $methodID=>$scoreForMethod) {
 			$methodID=1;
 			$scoreForMethod=& $this->scores[$methodID];

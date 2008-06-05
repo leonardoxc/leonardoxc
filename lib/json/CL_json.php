@@ -40,9 +40,9 @@ class json {
 		$lib='jsonrpc';
 		
 		// dirty trick to correct bad json for photos
-		$str = preg_replace('/\t} {/','}, {', $str);
+		//$str = preg_replace('/\t} {/','}, {', $str);
 		// remove trailing , 
-		$str = preg_replace('/,[ \r\n\t]+}/',' }', $str);
+		//$str = preg_replace('/,[ \r\n\t]+}/',' }', $str);
 
 	    // echo "Using $lib<BR>";
 		// echo $str;

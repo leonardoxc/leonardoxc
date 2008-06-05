@@ -547,4 +547,99 @@ function InterpolateArray(&$array, $startVal, $endVal, $startIdx, $endIdx)
     $array[$endIdx] = $endVal;
 }
 
+
+
+$dec2fracArray=array(
+	'0.111111111'=>array(1,9),
+	'0.125'=>array(1,8),
+	'0.142857143'=>array(1,7),
+	'0.166666667'=>array(1,6),
+	'0.2'=>array(1,5),
+	'0.222222222'=>array(2,9),
+	'0.25'=>array(1,4),
+	'0.285714286'=>array(2,7),
+	'0.333333333'=>array(1,3),
+	'0.375'=>array(3,8),
+	'0.4'=>array(2,5),
+	'0.428571429'=>array(3,7),
+	'0.444444444'=>array(4,9),
+	'0.5'=>array(1,2),
+	'0.555555556'=>array(5,9),
+	'0.571428571'=>array(4,7),
+	'0.6'=>array(3,5),
+	'0.625'=>array(5,8),
+	'0.666666667'=>array(2,3),
+	'0.714285714'=>array(5,7),
+	'0.75'=>array(3,4),
+	'0.777777778'=>array(7,9),
+	'0.8'=>array(4,5),
+	'0.833333333'=>array(5,6),
+	'0.857142857'=>array(6,7),
+	'0.875'=>array(7,8),
+	'0.888888889'=>array(8,9),
+	'0.916666667'=>array(11,12),
+);
+
+
+$reduceArray=array();
+$reduceArray[2][5]=array(1,0,0,1,0);
+$reduceArray[3][5]=array(1,0,1,0,1);
+$reduceArray[2][7]=array(1,0,0,0,1,0,0);
+$reduceArray[3][7]=array(1,0,0,1,0,1,0);
+$reduceArray[4][7]=array(1,0,1,0,1,0,1);
+$reduceArray[5][7]=array(1,0,1,1,1,0,1);
+$reduceArray[3][8]=array(1,0,0,1,0,0,1,0);
+$reduceArray[5][8]=array(1,0,1,1,1,0,1,0);
+$reduceArray[2][9]=array(1,0,0,0,1,0,0,0,0);
+$reduceArray[4][9]=array(1,0,1,0,1,0,1,0,0);
+$reduceArray[5][9]=array(1,0,1,0,1,1,0,1,0);
+$reduceArray[7][9]=array(1,0,1,1,1,0,1,1,1);
+
+function dec2frac($dec){
+	global $dec2fracArray;
+	$minD=1;
+	$selD=0;
+	foreach($dec2fracArray as $d=>$dArr){		
+		//echo $d.'#';
+		if ( abs($d-$dec) < $minD) {
+			$minD=abs($d-$dec);
+			$selD=$d;
+		}
+	}
+	return array($dec2fracArray[$selD][0],$dec2fracArray[$selD][1]);
+}
+
+function getReduceArray($pointsNum,$maxPointsNum) {
+	global $reduceArray;
+
+	if ($pointsNum<=$maxPointsNum) return array(1);
+	$ratio=$maxPointsNum/$pointsNum;
+	list($n,$d)=dec2frac($ratio);
+
+	//echo "$pointsNum / $maxPointsNum have ratio=$ratio, we selected ".($n/$d)." with $n/$d<BR>";
+	//echo "it will result in ".$pointsNum*($n/$d)." points<BR>";
+
+	$arr=array();
+	if ($n==1) { //simple case mod $d
+		$arr[0]=1;
+		for ($i=1;$i<$d;$i++) {
+			$arr[$i]=0;
+		}
+	} else if ( ($d-$n)==1) { // also simple fill in all slots with 1 except last
+		for ($i=0;$i<$d-1;$i++) {
+			$arr[$i]=1;
+		}
+		$arr[$d-1]=0;
+	} else {
+		if ( is_array($reduceArray[$n][$d]) ) {
+			return $reduceArray[$n][$d];
+		} else {
+			echo "getReduceArray() internal error<BR>";
+		}
+	}
+
+	return $arr;
+}
+
+
 ?>

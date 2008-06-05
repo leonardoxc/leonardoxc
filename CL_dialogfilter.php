@@ -643,7 +643,7 @@ WHERE
 
 				if ($serverID==0) $serverID=-1;
 				if ( in_array($serverID,$parts)  ) {
-					$servers[$serverID]=$serverInfo['name'];
+					$servers[$serverID]=$serverInfo['name_filter']?$serverInfo['name_filter']:$serverInfo['name'];
 				}
 			}
 			return $servers;
@@ -655,7 +655,7 @@ WHERE
 						$serverID=$serverInfo['id_filter'];
 
 					if ($serverID==0) $serverID=-1;
-					$servers[$serverID]=$serverInfo['name'];
+					$servers[$serverID]=$serverInfo['name_filter']?$serverInfo['name_filter']:$serverInfo['name'];
 			}
 			return $servers;
 		}

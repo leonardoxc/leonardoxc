@@ -4,6 +4,7 @@ $CONF['servers']['list']=array(
 1=>array(
 	'id'=>1,
 	'name'=>"paraglidingforum.com", 
+	'short_name'=>'PGF',
 
 	'id_filter'=>0,
 	'name_filter'=>"Local Server",
@@ -33,6 +34,8 @@ $CONF['servers']['list']=array(
 2=>array(
 	'id'=>2,
 	'name'=>"sky.gr",
+	'short_name'=>'GR',
+	'name_filter'=>"Leonardo XC Greece",
 
 	'isLeo'=>1,
 	'installation_type'=>2,
@@ -62,6 +65,9 @@ $CONF['servers']['list']=array(
 	'id'=>3,
 	'name'=>"xc.ciclone.com.br",
 
+	'short_name'=>'BR',
+	'name_filter'=>"Leonardo XC Brazil",
+
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
@@ -83,6 +89,8 @@ $CONF['servers']['list']=array(
 4=>array(
 	'id'=>4,
 	'name'=>"xcportugal.com",
+	'short_name'=>'PT',
+	'name_filter'=>"Leonardo XC Portugal",
 
 	'isLeo'=>1,
 	'installation_type'=>1,
@@ -105,7 +113,9 @@ $CONF['servers']['list']=array(
 5=>array(
 	'id'=>5,
 	'name'=>"DHV",
-
+	'short_name'=>'DHV',
+	'name_filter'=>"Leonardo XC DHV",
+	
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
@@ -122,6 +132,14 @@ $CONF['servers']['list']=array(
 	'sync_type'=>"0",
 	'use_zip'=>"0",
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
+
+	'dont_give_servers'=>array(8,10002),	
+	'accept_also_servers'=>array(10002),
+	
 	'is_active'=>0,
 
 	'gives_waypoints'=>1,
@@ -180,13 +198,14 @@ $CONF['servers']['list']=array(
 	'id'=>8,
 	'name'=>"xcontest",
 	'short_name'=>'XC',
-
+	'name_filter'=>"XC Contest",
+	
 	'isLeo'=>0,
 	'installation_type'=>1, // 1-> xcontest
 	'leonardo_version'=>"0",
 	'url'=>"www.xcontest.org",
 	'url_base'=>"www.xcontest.org",
-	'url_sync'=>"sync.xcontest.org/", // startID=1&count=5	
+	'url_sync'=>"sync.xcontest.org/v1.rbx?", // startID=1&count=5	
 	'url_op'=>"www.xcontest.org",
 	'admin_email'=>"petr@pgweb.cz",
 
@@ -203,7 +222,10 @@ $CONF['servers']['list']=array(
 	'exclude_from_league'=>1,
 	'allow_duplicate_flights'=>1,
 
-	'is_active'=>0,
+	'dont_give_servers'=>array(5,10002),	
+	'accept_also_servers'=>array(),
+	
+	'is_active'=>1,
 
 	'gives_waypoints'=>0,
 	'waypoint_countries'=>"",
@@ -212,7 +234,9 @@ $CONF['servers']['list']=array(
 9=>array(
 	'id'=>9,
 	'name'=>"ypforum",
-
+	'short_name'=>'TR',
+	'name_filter'=>"Leonardo XC Turkey",
+	
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
@@ -314,7 +338,7 @@ $CONF['servers']['list']=array(
 
 10002=>array(
 	'id'=>10002,
-	'name'=>"DHV2",
+	'name'=>"Leonardo XC DHV2",
 
 	'isLeo'=>1,
 	'installation_type'=>2,
@@ -333,8 +357,16 @@ $CONF['servers']['list']=array(
 	'sync_type'=>"1",
 	'use_zip'=>"1",
 
-	'is_active'=>1,
+	'is_active'=>0,
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
+
+	'dont_give_servers'=>array(5,8),	
+	'accept_also_servers'=>array(5),
+	
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"DE",
 ),

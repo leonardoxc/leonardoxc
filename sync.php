@@ -38,11 +38,22 @@
 	$clientID	= makeSane($_GET['clientID'],1);	
 	$clientPass	= makeSane($_GET['clientPass'],0);
 
+	
 	if ($count) $limit="LIMIT $count";
 	else $limit="";
 
 	$where_clause='';
 	if ($type) $where_clause=" AND ItemType=$type ";
+
+	$dont_give_servers=$CONF['servers']['list'][$clientID]['dont_give_servers'];
+	
+	$where_clause.=" AND ServerItemID NOT IN ( ";
+	if ( is_array($dont_give_servers) ) {
+		foreach($dont_give_servers as $tmpServerID) {
+			$where_clause.=$tmpServerID.', ';
+		}
+	}
+	$where_clause.=$clientID .' )';
 
 
 	if (!$op) $op="latest";	
