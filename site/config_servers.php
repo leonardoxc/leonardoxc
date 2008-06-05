@@ -216,6 +216,9 @@ $CONF['servers']['list']=array(
 	'exclude_from_league'=>1,
 	'allow_duplicate_flights'=>1,
 
+	'dont_give_servers'=>array(5,10002),	
+	'accept_also_servers'=>array(),
+	
 	'is_active'=>1,
 
 	'gives_waypoints'=>0,

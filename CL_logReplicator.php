@@ -172,6 +172,7 @@ class logReplicator {
 	function processEntry($serverID,$e,$sync_mode=SYNC_INSERT_FLIGHT_LINK) {
 		global $flightsAbsPath,$CONF;
 		global $DBGcat,$DBGlvl;
+		
 		if ($DBGlvl>0) {
 			echo "<PRE>";
 			print_r($e);
@@ -188,6 +189,22 @@ class logReplicator {
 			return array(0,"logReplicator::processEntry : actionData section not found");
 		}
 
+		// if this log entry is not for a flight of the specific server
+		// then check if we are allowesd to accpet these flights from this server
+		if ($actionData['flight']['serverID'] != $serverID ) { 
+			$wrongServer=1;
+
+			if ( is_array($CONF['servers']['list'][$serverID]['accept_also_servers'] ) ) {
+			
+				if (in_array($actionData['flight']['serverID'],
+					$CONF['servers']['list'][$serverID]['accept_also_servers'] ) )			$wrongServer=0;
+					
+			} 
+			
+			if ($wrongServer)
+				return array(0,"logReplicator::processEntry : We dont accept flights originally from server ".$actionData['flight']['serverID']);			
+		}	
+		
 		if ($e['type']=='1') { // flight
 
 			if ($e['action']==4) {	// delete

@@ -223,7 +223,7 @@ $CONF['servers']['list']=array(
 	'allow_duplicate_flights'=>1,
 
 	'dont_give_servers'=>array(5,10002),	
-	'accept_also_servers'=>array(),
+	'accept_also_servers'=>'',
 	
 	'is_active'=>1,
 
