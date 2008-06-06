@@ -274,8 +274,9 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
 			
-			if ($gender==1 && $pilot['Sex']=='F') 
+			if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
 				$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+			}
 
 			$str=$str.getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 
@@ -333,8 +334,9 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	$str.=getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 	if ($getAlsoCountry ) $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
 	
-	if ($gender==1 && $pilot['Sex']=='F') 
+	if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
 		$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+	}
 
 	return $str; 
 }

@@ -5,7 +5,9 @@ $CONF['servers']['list']=array(
 	'id'=>1,
 	'name'=>"paraglidingforum.com", 
 	'short_name'=>'PGF',
-	
+
+	'name_filter'=>"ParaglidingForum",
+
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
@@ -22,10 +24,12 @@ $CONF['servers']['list']=array(
 	'is_active'=>1,
 	
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
+	'exclude_from_list'=>0,
 	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
 	
+	'dont_give_servers'=>array(8),	// DONT GIVE TO PGF flights from xcontest
+	'accept_also_servers'=>array(2,3,4,9),   // accept from PGF also flights from GR BR PT TR
 
 	'sync_format'=>"JSON",
 	'sync_type'=>"1", // ONLY BASIC FLIGHT INFO
@@ -41,6 +45,8 @@ $CONF['servers']['list']=array(
 	'short_name'=>'GR',
 	'is_active'=>1,
 	
+	'name_filter'=>"Leonardo XC Greece",
+
 	'url'=>"www.sky.gr/modules.php?name=leonardo",
 	'url_base'=>"www.sky.gr/modules/leonardo",
 	'url_op'=>"www.sky.gr/modules/leonardo/op.php",
@@ -56,12 +62,13 @@ $CONF['servers']['list']=array(
 	'name'=>"xc.ciclone.com.br",
 	'short_name'=>'BR',
 	'is_active'=>1,
-	
+	'name_filter'=>"Leonardo XC Brazil",
+
 	'url'=>"xc.ciclone.com.br/modules.php?name=leonardo",
 	'url_base'=>"xc.ciclone.com.br/modules/leonardo",
 	'url_op'=>"xc.ciclone.com.br/modules/leonardo/op.php",
 	
-	'exclude_from_list'=>1,
+	'exclude_from_list'=>0,
 	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
 ),
@@ -71,7 +78,8 @@ $CONF['servers']['list']=array(
 	'name'=>"xcportugal.com",
 	'short_name'=>'PT',
 	'is_active'=>1,
-	
+	'name_filter'=>"Leonardo XC Portugal",
+
 	'url'=>"www.xcportugal.com/modules.php?name=leonardo",
 	'url_base'=>"www.xcportugal.com/modules/leonardo",
 	'url_op'=>"www.xcportugal.com/modules/leonardo/op.php",
@@ -85,7 +93,8 @@ $CONF['servers']['list']=array(
 	'id'=>5,
 	'name'=>"DHV",
 	'short_name'=>'DHV',
-	
+	'name_filter'=>"Leonardo XC DHV",
+
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
@@ -109,15 +118,56 @@ $CONF['servers']['list']=array(
 	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
 
+	//'dont_give_servers'=>array(8,10002),	
+	'accept_also_servers'=>'',
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"DE",
+),
+
+8=>array(
+	'id'=>8,
+	'name'=>"xcontest",
+	'short_name'=>'XC',
+	'name_filter'=>"XC Contest",
+	
+	'isLeo'=>0,
+	'installation_type'=>1, // 1-> xcontest
+	'leonardo_version'=>"0",
+	'url'=>"www.xcontest.org",
+	'url_base'=>"www.xcontest.org",
+	'url_sync'=>"sync.xcontest.org/v1.rbx?", // startID=1&count=5	
+	'url_op'=>"www.xcontest.org",
+	'admin_email'=>"petr@pgweb.cz",
+
+	'site_pass'=>"",
+	'serverPass'=>"rgerg934983hg323ggbb44", // we GIVE to xccontest
+	'clientPass'=>"",
+
+	'sync_format'=>"JSON",
+	'sync_type'=>"1",
+	'use_zip'=>"0",
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
+
+	'dont_give_servers'=>array(1,2,3,4,9),	// DONT GIVE TO xcontest flights from PGF ,GR,BR,PT,TR
+	'accept_also_servers'=>'',  // ACCPET ONLY flifghts origianlly submitted to XContest
+	
+	'is_active'=>1,
+
+	'gives_waypoints'=>0,
+	'waypoint_countries'=>"",
 ),
 
 9=>array(
 	'id'=>9,
 	'name'=>"ypforum",
 	'short_name'=>'TR',
-	
+	'name_filter'=>"Leonardo XC Turkey",
+
 	'isLeo'=>1,
 
 	'url'=>"www.ypforum.com/modules.php?name=leonardo",
@@ -152,6 +202,9 @@ $CONF['servers']['list']=array(
 	'use_zip'=>"0",
 
 	'is_active'=>0,
+
+	'dont_give_servers'=>array(8),	// DONT GIVE TO PGF flights from xcontest
+	'accept_also_servers'=>array(2,3,4,9),   // accept from PGF also flights from GR BR PT TR
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"",

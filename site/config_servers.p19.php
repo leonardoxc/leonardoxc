@@ -142,6 +142,11 @@ $CONF['servers']['list']=array(
 	
 	'is_active'=>0,
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"DE",
 ),
@@ -160,6 +165,7 @@ $CONF['servers']['list']=array(
 	'site_pass'=>"c42b8fb082ba01545cfba2dd955e46f9",
 	'serverPass'=>"",
 	'clientPass'=>"",
+
 	'sync_format'=>"JSON",
 	'sync_type'=>"1",
 	'use_zip'=>"1",

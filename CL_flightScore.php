@@ -510,31 +510,34 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 			$l=0;
 			if ($k!=0) $str.=",\n";
-			foreach($scoreForMethod as $scoreType=>$scoreDetails ) {
-				if (!is_array($scoreDetails) ) continue;
-				if ($scoreType==$scoreForMethod['bestScoreType']) $isBest=1; 
-				else $isBest=0;
-				if ($l!=0) $str.=",\n";
-
-				$str.="\t\t{ \"XCtype\": \"".$this->syncTypesID[$this->flightTypes[$scoreType]]."\",\n";
-				$str.="\t\t\"XCdistance\" :\"".$scoreDetails['distance']."\",\n";
-										
-					$tpNum=0;
-					$tpStr='';
-					for($i=1;$i<=7;$i++) {
-						if ($scoreDetails['tp'][$i]) {
-							$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
-							if ($tpNum>0) $tpStr.=" ,\n		";
-							$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
-							$tpNum++;
-						}	
-					}
-					$str.='		"turnpoints": [ '.$tpStr.' ] ';
-					$str.="\n\t\t}";
-
-					$l++;
-			
+			if (is_array($scoreForMethod)) {
+				foreach($scoreForMethod as $scoreType=>$scoreDetails ) {
+					if (!is_array($scoreDetails) ) continue;
+					if ($scoreType==$scoreForMethod['bestScoreType']) $isBest=1; 
+					else $isBest=0;
+					if ($l!=0) $str.=",\n";
+	
+					$str.="\t\t{ \"XCtype\": \"".$this->syncTypesID[$this->flightTypes[$scoreType]]."\",\n";
+					$str.="\t\t\"XCdistance\" :\"".$scoreDetails['distance']."\",\n";
+											
+						$tpNum=0;
+						$tpStr='';
+						for($i=1;$i<=7;$i++) {
+							if ($scoreDetails['tp'][$i]) {
+								$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
+								if ($tpNum>0) $tpStr.=" ,\n		";
+								$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
+								$tpNum++;
+							}	
+						}
+						$str.='		"turnpoints": [ '.$tpStr.' ] ';
+						$str.="\n\t\t}";
+	
+						$l++;
+				
+				}
 			}
+
 			$k++;
 
 		// }

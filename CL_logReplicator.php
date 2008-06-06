@@ -191,18 +191,26 @@ class logReplicator {
 
 		// if this log entry is not for a flight of the specific server
 		// then check if we are allowesd to accpet these flights from this server
-		if ($actionData['flight']['serverID'] != $serverID ) { 
+		if ( isset($actionData['flight']['serverID']) ) {
+			$thisEntryServerID=$actionData['flight']['serverID'];
+		} else if ( isset($e['serverID']) ){
+			$thisEntryServerID=$e['serverID'];
+		} else {
+			return array(0,"logReplicator::processEntry : ServerID for Log entry cpould not be determined ".$thisEntryServerID );			
+		}
+
+		if ($thisEntryServerID != $serverID ) { 
 			$wrongServer=1;
 
 			if ( is_array($CONF['servers']['list'][$serverID]['accept_also_servers'] ) ) {
 			
-				if (in_array($actionData['flight']['serverID'],
-					$CONF['servers']['list'][$serverID]['accept_also_servers'] ) )			$wrongServer=0;
+				if (in_array($thisEntryServerID,$CONF['servers']['list'][$serverID]['accept_also_servers'] ) )
+					$wrongServer=0;
 					
 			} 
 			
 			if ($wrongServer)
-				return array(0,"logReplicator::processEntry : We dont accept flights originally from server ".$actionData['flight']['serverID']);			
+				return array(0,"logReplicator::processEntry : We dont accept flights originally from server ".$thisEntryServerID );			
 		}	
 		
 		if ($e['type']=='1') { // flight
@@ -465,11 +473,14 @@ class logReplicator {
 					$getScoreDataExtra=0;
 
 					if ( $getScoreData ) {
+						// we should get these from the [score] section  also 
 						$extFlight->BEST_FLIGHT_TYPE=$actionData['flight']['stats']['FlightType'];
-						$extFlight->LINEAR_DISTANCE	=$actionData['flight']['stats']['StraightDistance']+0;
-						$extFlight->MAX_LINEAR_DISTANCE=$actionData['flight']['stats']['MaxStraightDistance']+0;
 						$extFlight->FLIGHT_KM	=$actionData['flight']['stats']['XCdistance'];
 						$extFlight->FLIGHT_POINTS=$actionData['flight']['stats']['XCscore'];
+
+						$extFlight->LINEAR_DISTANCE	=$actionData['flight']['stats']['StraightDistance']+0;
+						$extFlight->MAX_LINEAR_DISTANCE=$actionData['flight']['stats']['MaxStraightDistance']+0;
+
 						$extFlight->MEAN_SPEED	=$actionData['flight']['stats']['MeanGliderSpeed']+0;
 						$extFlight->MAX_SPEED	=$actionData['flight']['stats']['MaxSpeed']+0;
 						$extFlight->MAX_VARIO	=$actionData['flight']['stats']['MaxVario']+0;
@@ -487,8 +498,12 @@ class logReplicator {
 							$flightScore->fromSyncArray($sArr);
 							
 							$extFlight->flightScore=$flightScore;
-							$getScoreDataExtra=1;
-							
+							$getScoreDataExtra=1;							
+
+							$extFlight->BEST_FLIGHT_TYPE=$flightScore->bestScoreType;
+							$extFlight->FLIGHT_KM		=$flightScore->bestDistance;
+							$extFlight->FLIGHT_POINTS	=$flightScore->bestScore;
+
 							//put also in scores table, the flight is sure to be present in flights table
 							if ($e['action']==2) { // update so we already know the flightID
 								$flightScore->putToDB(1,1);

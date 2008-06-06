@@ -11,20 +11,42 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+define('JSON_LIB_DECODE','jsonrpc');
+define('JSON_LIB_ENCODE','services_JSON');
 
 class json {
+	// var $lib='native';
+	// var $lib='services_JSON';
+
 
 	function encode($object) {
-		if ( function_exists('json_encode') ) {
+		if ( function_exists('json_encode') && JSON_LIB_ENCODE=='native' ) {	
 			return json_encode($object);
-		} else {
+		} else if (JSON_LIB_ENCODE=='services_JSON') {
 			require_once dirname(__FILE__).'/json.php';
 			$json=new Services_JSON( SERVICES_JSON_LOOSE_TYPE );
 			return $json->encode($object);
+		} else if (JSON_LIB_ENCODE=='jsonrpc'){
+			require_once dirname(__FILE__).'/jsonrpc/xmlrpc.php';
+			require_once dirname(__FILE__).'/jsonrpc/jsonrpc.php';
+
+			$GLOBALS['xmlrpc_internalencoding'] = 'UTF-8';
+			$GLOBALS['xmlrpc_internalencoding'] = 'iso-8859-7';
+
+			return php_jsonrpc_encode($value, array());
 		}
+
 	}
 
 	function prepStr($str){
+		global $CONF_use_utf,$langEncodings,$nativeLanguage;
+
+		if (!$CONF_use_utf) {
+		 	require_once dirname(__FILE__).'/../ConvertCharset/ConvertCharset.class.php';
+			$NewEncoding = new ConvertCharset;
+			$str = $NewEncoding->Convert($str,$langEncodings[$nativeLanguage], "utf-8", $Entities);
+		}
+
 		$newStr=json::encode($str);
 		if ($newStr[0]=='"') {
 			return substr($newStr,1,-1);
@@ -37,7 +59,7 @@ class json {
 	function decode($str) {
 		//$lib='native';
 		// $lib='services_JSON';
-		$lib='jsonrpc';
+		// $lib='jsonrpc';
 		
 		// dirty trick to correct bad json for photos
 		//$str = preg_replace('/\t} {/','}, {', $str);
@@ -46,16 +68,18 @@ class json {
 
 	    // echo "Using $lib<BR>";
 		// echo $str;
-		if ( function_exists('json_decode') && $lib=='native' ) {	
+		if ( function_exists('json_decode') && JSON_LIB_DECODE=='native' ) {	
 			$arr=json_decode($str, true);
-		} else if ($lib=='services_JSON') {
+		} else if (JSON_LIB_DECODE=='services_JSON') {
 			require_once dirname(__FILE__).'/json.php';
 			$json=new Services_JSON( SERVICES_JSON_LOOSE_TYPE );
 			$arr=$json->decode($str);
-		} else if ($lib=='jsonrpc'){
+		} else if (JSON_LIB_DECODE=='jsonrpc'){
 			require_once dirname(__FILE__).'/jsonrpc/xmlrpc.php';
 			require_once dirname(__FILE__).'/jsonrpc/jsonrpc.php';
+
 			$GLOBALS['xmlrpc_internalencoding'] = 'UTF-8';
+
 			//require_once dirname(__FILE__).'/jsonrpc/json_extension_api.php';
 			//$arr=json_decode($str, true);
 			

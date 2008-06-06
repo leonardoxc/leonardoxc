@@ -372,7 +372,7 @@ $resStr='{
 		"glider": "'.json::prepStr($this->glider).'",
 		"gliderBrandID": '.$this->gliderBrandID.',
 		"gliderBrand": "'.json::prepStr($CONF['brands']['list'][$this->gliderBrandID]).'",
-		"gliderCat": '.json::prepStr($this->cat).',
+		"gliderCat": '.$this->cat.',
 		"cat": '.$this->category.',
 		"linkURL": "'.json::prepStr($this->linkURL).'",
 		"private": '.$this->private.',

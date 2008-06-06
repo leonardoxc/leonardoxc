@@ -335,8 +335,8 @@ return "<waypoint>
 <intLocation>".htmlspecialchars($this->intLocation)."</intLocation>
 <countryCode>".htmlspecialchars($this->countryCode)."</countryCode>
 <type>".htmlspecialchars($this->type)."</type>
-<lat>".htmlspecialchars($this->lat)."</lat>
-<lon>".htmlspecialchars(-$this->lon)."</lon>
+<lat>".htmlspecialchars($this->lat())."</lat>
+<lon>".htmlspecialchars($this->lon())."</lon>
 <link>".htmlspecialchars($this->link)."</link>
 <displayLink>".$link."</displayLink>
 <description>".htmlspecialchars($this->description)."</description>
@@ -345,15 +345,15 @@ return "<waypoint>
 } else {
 return '{ 
 "waypoint": {
-"id" : "'.json::prepStr($this->waypointID).'",
+"id" : '.($this->waypointID+0).',
 "name" : "'.json::prepStr($this->name).'",
 "intName" : "'.json::prepStr($this->intName).'",
 "location" : "'.json::prepStr($this->location).'",
 "intLocation" : "'.json::prepStr($this->intLocation).'",
 "countryCode" : "'.json::prepStr($this->countryCode).'",
-"type" : "'.json::prepStr($this->type).'",
-"lat" : "'.json::prepStr($this->lat).'",
-"lon" : "'.json::prepStr(-$this->lon).'",
+"type" : '.($this->type+0).',
+"lat" : '.$this->lat().',
+"lon" : '.$this->lon().',
 "link" : "'.json::prepStr($this->link).'",
 "displayLink" : "'.json::prepStr($link).'",
 "description" : "'.json::prepStr($this->description).'",
