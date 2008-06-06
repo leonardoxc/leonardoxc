@@ -1,5 +1,7 @@
 <?
 
+$CONF['servers']['syncLog']['dontLog']=array(1,2,3,4,9 ); // we dont log PGF,GR, BR,PT,TR
+
 $CONF['servers']['list']=array( 
 1=>array(
 	'id'=>1,
@@ -110,6 +112,7 @@ $CONF['servers']['list']=array(
 	'sync_format'=>"JSON",
 	'sync_type'=>"2", // FULL SYNC
 	'use_zip'=>"1",
+	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 
 	'is_active'=>1,
 	

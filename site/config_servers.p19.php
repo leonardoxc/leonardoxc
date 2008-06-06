@@ -1,5 +1,7 @@
 <?
 
+$CONF['servers']['syncLog']['dontLog']=array(5,8,10002); // we dont log DHV, DHV mirror and XCONTEST
+
 $CONF['servers']['list']=array( 
 1=>array(
 	'id'=>1,
@@ -24,9 +26,9 @@ $CONF['servers']['list']=array(
 	'is_active'=>1,
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
-	'use_zip'=>"1",
-	
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,		
+		
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"",
 ),
@@ -52,8 +54,8 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"p19MustUseThisPassToConnectToSky234882374",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"2",
-	'use_zip'=>"1",
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1, 
 
 	'is_active'=>1,
 
@@ -78,9 +80,11 @@ $CONF['servers']['list']=array(
 	'site_pass'=>"dnquo348246kvbnsd230f3289",
 	'serverPass'=>"", // we dont GIVE 
 	'clientPass'=>"dsf33453vvrtt2t25tg54f453",
+
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
-	'use_zip'=>"1",
+	'sync_type'=>1, // LINK
+	'use_zip'=>1,
+	
 	'is_active'=>1,
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"BR",
@@ -102,9 +106,12 @@ $CONF['servers']['list']=array(
 	'site_pass'=>"s39cjfya924pdms82kd90fj21",
 	'serverPass'=>"", // we dont GIVE 
 	'clientPass'=>"942jghrlotgplhv4294522adky",
-	'sync_format'=>"JSON",
-	'sync_type'=>"2",
-	'use_zip'=>"1",
+
+	'sync_format'=>"JSON",	
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,
+	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
+		
 	'is_active'=>1,
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"PT",
@@ -129,8 +136,9 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"0",
-	'use_zip'=>"0",
+	
+	'sync_type'=>1, // LINK
+	'use_zip'=>0,
 
 	'treat_flights_as_local'=>0,
 	'exclude_from_list'=>1,
@@ -140,12 +148,7 @@ $CONF['servers']['list']=array(
 	'dont_give_servers'=>array(8,10002),	
 	'accept_also_servers'=>array(10002),
 	
-	'is_active'=>0,
-
-	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
-	'exclude_from_league'=>1,
-	'allow_duplicate_flights'=>1,
+	'is_active'=>1,
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"DE",
@@ -167,8 +170,8 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
-	'use_zip'=>"1",
+	'sync_type'=>2,  // LOCAL
+	'use_zip'=>1,
 
 	'is_active'=>0,
 
@@ -191,8 +194,9 @@ $CONF['servers']['list']=array(
 	'serverPass'=>"",
 	'clientPass'=>"",
 	'sync_format'=>"XML",
-	'sync_type'=>"0",
-	'use_zip'=>"0",
+	
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,
 
 	'is_active'=>0,
 
@@ -220,7 +224,7 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
+	'sync_type'=>"1", // LINK
 	'use_zip'=>"0",
 
 	'treat_flights_as_local'=>0,
@@ -256,9 +260,10 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"joer3i2456u3423uuvmsdfgoa",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"2",
+	'sync_type'=>"2", // LOCAL
 	'use_zip'=>"1",
-
+	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
+	
 	'is_active'=>1,
 
 	'gives_waypoints'=>1,
@@ -360,8 +365,8 @@ $CONF['servers']['list']=array(
 
 	'clientPass'=>"4285372987592345425",        // WE TAKE
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
-	'use_zip'=>"1",
+	'sync_type'=>1, // LINK
+	'use_zip'=>0,
 
 	'is_active'=>0,
 

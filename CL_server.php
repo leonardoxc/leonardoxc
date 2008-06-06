@@ -594,28 +594,35 @@ class Server {
 			require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 			
 			$archive = new PclZip($zipFile);
+						
 			$list 	 = $archive->extract(PCLZIP_OPT_PATH, $tmpZIPfolder,
-										PCLZIP_OPT_REMOVE_ALL_PATH,
-										PCLZIP_OPT_BY_PREG, "/(\.igc)|(\.olc)|(\.txt)$/i");
-			if ($verbose) echo " <div class='ok'>DONE</div><br>";
-			echo "<br><b>List of uploaded igc/olc/txt files</b><BR>";
-			$f_num=1;
-			foreach($list as $fileInZip) {
-				echo "$f_num) ".$fileInZip['stored_filename']. ' ('.floor($fileInZip['size']/1024).'Kb)<br>';
-				$f_num++;
-			}
-			if ($verbose) flush2Browser();
+											PCLZIP_OPT_REMOVE_ALL_PATH,
+											PCLZIP_OPT_BY_PREG, "/(\.igc)|(\.olc)|(\.txt)$/i");
+					
+			if ($list) {
+				if ($verbose) echo " <div class='ok'>DONE</div><br>";
+				echo "<br><b>List of uploaded igc/olc/txt files</b><BR>";
+				$f_num=1;
+				foreach($list as $fileInZip) {
+					echo "$f_num) ".$fileInZip['stored_filename']. ' ('.floor($fileInZip['size']/1024).'Kb)<br>';
+					$f_num++;
+				}
+				if ($verbose) flush2Browser();
+				
+				if (is_file($tmpZIPfolder.'/sync.txt') ) {
+					$rssStr=implode('',file($tmpZIPfolder.'/sync.txt') );
+				} else {
+					echo "Could not find sync.txt. <div class='error'>Aborting</div>";
+					delDir($tmpZIPfolder);			
+					return array(-2,"Could not find sync.txt");
+				}
+				
+				//delDir($tmpZIPfolder);			
+				//exit;		
+		   } else {
+				echo " <div class='error'>This is not a zip file (".$archive->errorInfo().")</div><br>";				
+		   }
 
-			if (is_file($tmpZIPfolder.'/sync.txt') ) {
-				$rssStr=implode('',file($tmpZIPfolder.'/sync.txt') );
-			} else {
-				echo "Could not find sync.txt. <div class='error'>Aborting</div>";
-				delDir($tmpZIPfolder);			
-				return array(-2,"Could not find sync.txt");
-			}
-			
-			//delDir($tmpZIPfolder);			
-			//exit;		
 		}
 		
 	
@@ -625,7 +632,7 @@ class Server {
 
 
 		// for debugging json
-		 writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
+		// writeFile(dirname(__FILE__).'/sync.txt',$rssStr);
 		//return;
 
 		// echo "<PRE>$rssStr</pre>";
@@ -679,6 +686,10 @@ class Server {
 			$entriesNum=0;
 			$entriesNumOK=0;
 			if ( count($arr['log']) ) {
+			
+				if ($verbose) echo "Log Entries: <div class='ok'>".count($arr['log'])."</div><br>";
+				if ($verbose) flush2Browser();
+			
 				foreach ($arr['log'] as $i=>$logItem) {
 					if (!is_numeric($i) ) continue;		
 					echo ($entriesNum+1)." / $chunkSize ";

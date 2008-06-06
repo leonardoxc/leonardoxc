@@ -696,7 +696,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if ($logEntries > 0) $limitStr= " LIMIT $logEntries ";
 		else $limitStr='';
 		
-		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0 ORDER BY ID ASC $limitStr";
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0  ORDER BY ID ASC $limitStr";
 		$res= $db->sql_query($query);
 
 		$i=0;

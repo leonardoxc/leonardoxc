@@ -400,7 +400,7 @@ $resStr='{
 		"userID": "'.$this->userID.'",
 		"serverID": "'.$userServerID.'",
 		"civlID": "'.$CIVL_ID.'",
-		"userName": "'.json::prepStr($this->userName).'",
+		"userName": "'.json::prepStr($lastName.' '.$firstName).'",
 		"pilotFirstName": "'.json::prepStr($firstName).'",
 		"pilotLastName": "'.json::prepStr($lastName).'",
 		"pilotCountry": "'.$pilotCountry.'",

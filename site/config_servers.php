@@ -1,5 +1,8 @@
 <?
 
+$CONF['servers']['syncLog']['dontLog']=array(5);
+
+
 $CONF['servers']['list']=array( 
 1=>array(
 	'id'=>1,
@@ -25,8 +28,10 @@ $CONF['servers']['list']=array(
 	'is_active'=>1,
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"1",
+	'sync_type'=>"1", // FULL 
 	'use_zip'=>"1",
+	
+	'accept_also_servers'=>array(2),
 	
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"",
@@ -53,8 +58,8 @@ $CONF['servers']['list']=array(
 	'clientPass'=>"skyClientPass332sdlnne0294nfrg93",
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"2",
-	'use_zip'=>"1",
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,
 
 	'is_active'=>1,
 
@@ -121,18 +126,23 @@ $CONF['servers']['list']=array(
 	'url_op'=>"xc.dhv.de/xc/modules/leonardo/op.php",
 	'admin_email'=>"Admin@dhv.de",
 	'site_pass'=>"af5uk04l2ftjd5jzsekgt31ko",
+	
 	'serverPass'=>"",
-	'clientPass'=>"",
+	'clientPass'=>"iuerotq32j283iuwbjd436", // WE TAKE
+	
 	'sync_format'=>"JSON",
-	'sync_type'=>"0",
-	'use_zip'=>"0",
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,
+	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 
-	'is_active'=>0,
+	'is_active'=>1,
 
-
+	'dont_give_servers'=>array(8,10002),	
+	'accept_also_servers'=>array(10002),
+	
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
-	'exclude_from_league'=>1,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
 
 	'gives_waypoints'=>1,

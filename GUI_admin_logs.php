@@ -115,7 +115,8 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 		
 		$i++;
 		echo "<TR class='$sortRowClass'>";	
-	   	echo "<TD>".($i-1+$startNum)."</TD>";
+	   	echo "<TD>".($i-1+$startNum)." (".$row['transactionID'].")</TD>";
+		 
 		
 		echo "<td>".date("d/m/y H:i:s",$row['actionTime'])."</td>\n";
 		echo "<td>".$serverStr."</td>\n";

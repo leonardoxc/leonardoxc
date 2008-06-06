@@ -471,7 +471,8 @@ class logReplicator {
 					}
 					
 					$getScoreDataExtra=0;
-
+					$getScoreDataExtraMissing=0;
+					
 					if ( $getScoreData ) {
 						// we should get these from the [score] section  also 
 						$extFlight->BEST_FLIGHT_TYPE=$actionData['flight']['stats']['FlightType'];
@@ -489,6 +490,7 @@ class logReplicator {
 						$extFlight->MIN_ALT		=$actionData['flight']['stats']['MinAltASL']+0;
 						$extFlight->TAKEOFF_ALT	=$actionData['flight']['stats']['TakeoffAlt']+0;
 						
+						
 						if ( is_array( $actionData['flight']['score'] ) && count($actionData['flight']['score']) >0 ) {
 							
 							require_once dirname(__FILE__).'/CL_flightScore.php';			
@@ -501,13 +503,15 @@ class logReplicator {
 							$getScoreDataExtra=1;							
 
 							$extFlight->BEST_FLIGHT_TYPE=$flightScore->bestScoreType;
-							$extFlight->FLIGHT_KM		=$flightScore->bestDistance;
+							$extFlight->FLIGHT_KM		=$flightScore->bestDistance*1000;
 							$extFlight->FLIGHT_POINTS	=$flightScore->bestScore;
 
 							//put also in scores table, the flight is sure to be present in flights table
 							if ($e['action']==2) { // update so we already know the flightID
 								$flightScore->putToDB(1,1);
 							}
+						} else {
+							$getScoreDataExtraMissing=1;
 						}
 						
 					}
@@ -537,15 +541,34 @@ class logReplicator {
 						
 						// insert flight
 						$extFlight->putFlightToDB(0);
+						
 						if ($getScoreData && $getScoreDataExtra) {
 							$flightScore->flightID=$extFlight->flightID;
 							$flightScore->putToDB(1,1);
+						} else if ( $getScoreDataExtraMissing &&
+									$CONF['servers']['list'][$actionData['flight']['serverID']]['rescore_if_missing']  &&
+									( $sync_mode & SYNC_INSERT_FLIGHT_LOCAL)   ) {		
+								echo " [Re-score] ";					
+								$extFlight->computeScore();									
+							
 						}
+						
 						return array(1,"Flight $opString OK $addFlightNote with local ID $extFlight->flightID");
 					} else {
 						//update flight
 						$extFlight->putFlightToDB(1);
-
+						if ( $getScoreDataExtraMissing &&
+									$CONF['servers']['list'][$actionData['flight']['serverID']]['rescore_if_missing']  &&
+									( $sync_mode & SYNC_INSERT_FLIGHT_LOCAL)   ) {
+							echo " [Re-score] ";
+							require_once dirname(__FILE__).'/CL_flightScore.php';			
+							$flightScore=new flightScore($extFlight->flightID);									
+							$flightScore->getFromDB();
+							if ($flightScore->gotValues) 
+								echo "[not needed] ";
+							else 
+								$extFlight->computeScore();									
+						} 
 						return array(1,"Flight with local ID $flightIDlocal UDDATED OK");
 					}
 				}

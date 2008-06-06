@@ -104,38 +104,6 @@ ObjectAfter  ->blog serialized class
 
 */
 
-
-
-
-
-$other_typesIDs=array(
-1=>"News"
-
-);
-
-$actionIDs=array(
-1=>"Login",
-2=>"Logout",
-
-4=>"23",
-8=>"Credits",
-32=>"Payment",
-64=>"3",
-
-128 =>"Add Comp",
-256 =>"Add Task",
-512 =>"Add News",
-
-1024=>"Delete Comp",
-2048=>"Delete Task",
-4096=>"Delete News",
-
-8192=>"Edit Comp",
-16384=>"Edit Task",
-32768=>"Edit News",
-
-);
-
 $itemTypes=array(
 1 => "Flight",
 2 => "Pilot",
@@ -205,8 +173,13 @@ class Logger {
 	}
 	
 	function put(){
-		global $db, $logTable, $userID;
+		global $db, $logTable, $userID, $CONF;
 	
+		if ( @in_array($this->ServerItemID,$CONF['servers']['syncLog']['dontLog']) ) {
+			// we dont put log entries for these servers
+			return 1;
+		}
+
 		$this->ActionXML=addslashes($this->ActionXML);
 		$DBvars=array(	'actionTime',	'userID',	'effectiveUserID',
 	'ItemType',	'ItemID',	'ServerItemID',	'ActionID',	'ActionXML',
@@ -236,61 +209,14 @@ class Logger {
 		}
 		return 1;
 	}
-	
-	function get($user_id,$comp_id,$task_id,$other_id,$other_type,$action,$action_cat){
-		global $db, $logTable;
-		$DBvars=array('user_id','comp_id','task_id','other_id','other_type','action','action_cat','time','details','status','ip','effective_user_id');
 		
-		//construct query
-		$wc=" (1=1) ";
-		if ($user_id) $wc.=" AND user_id=$user_id ";
-		if ($comp_id) $wc.=" AND comp_id=$comp_id ";
-		if ($task_id) $wc.=" AND task_id=$task_id ";		
-		if ($other_id) $wc.=" AND other_id=$other_id ";
-		if ($other_type) $wc.=" AND other_type=$other_type ";		
-		if ($action) $wc.=" AND action=$action ";
-		if ($action_cat) $wc.=" AND action_cat=$action_cat ";		
-		
-		$query = "select * from $logTable WHERE $wc ORDER BY time DESC";
-		$res = $db->sql_query($query);
-		if (!$res) {
-			echo "Problem in geting log from DB $query<br>";
-			return 0;		
-		}
-		$i=0;
-
-		while ($row=$db->sql_fetchrow($res)) {
-			foreach($DBvars as $DBvar) 	$ret[$i][$DBvar]=$row[$DBvar];
-			$i++;
-		}
-		return $ret;
-	}		
-
-	function actionByName($actionID) {
-		global $actionIDs;
-		return $actionIDs[$actionID];
-	}
-
-	function actionByID($actionName) {
-		global $actionIDs;
-		return array_search($actionName, $actionIDs); 
-	}
-
-	function otherByName($other_type_id) {
-		global $other_typesIDs;
-		return $other_typesIDs[$$other_type_id];
-	}
-
-	function otherByID($otherName) {
-		global $other_typesIDs;
-		return array_search($otherName, $other_typesIDs); 
-	}
 
 	function formatTime($time) {
 		return date("Y/m/d H:i:s",$time);
 	//	preg_match("/(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/",$time,$parts);
 	//	return $parts[1]."/".$parts[2]."/".$parts[3]." ".$parts[4].":".$parts[5].":".$parts[6];
 	}
+	
 } // end of class
 
 ?>
