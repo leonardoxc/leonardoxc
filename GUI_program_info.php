@@ -56,6 +56,10 @@
       <td><a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph Copyright (C) 2001,2002,2003 Johan Persson</a></td>
     </tr>
     <tr> 
+      <td><div align="right">Tipster: </div></td>
+      <td><a href="http://www.twinhelix.com" target="_blank">TIPSTER (c) 2001-2006 Angus Turnbull</a></td>
+    </tr>
+    <tr> 
       <td><div align="right"><? echo _VERSION ?>: </div></td>
       <td><? echo "$CONF_version (released $CONF_releaseDate)"; ?> </td>
     </tr>
@@ -72,7 +76,7 @@
             <a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
               Leonardo</a></li>
           <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></li>
-          <li><a href="http://xc.ciclone.com.br/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Brazilian Leonardo</a></li>
+          <li><a href="http://www.xcbrasil.org/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Brazilian Leonardo</a></li>
           <li> <a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
           <li>
             <a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></li>

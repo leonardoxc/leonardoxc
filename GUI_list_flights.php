@@ -416,7 +416,7 @@ function removeClubFlight(clubID,flightID) {
 
 	   $date2row="";	   
   	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
-			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"];
+			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"].' GMT';
 			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
   	   } 
 

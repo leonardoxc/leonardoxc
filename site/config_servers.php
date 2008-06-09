@@ -69,15 +69,16 @@ $CONF['servers']['list']=array(
 
 3=>array(
 	'id'=>3,
-	'name'=>"xc.ciclone.com.br",
+	'name'=>"www.xcbrasil.org",
 	'short_name'=>'BR',
 
 	'isLeo'=>1,
 	'installation_type'=>2,
 	'leonardo_version'=>"2.9.0",
-	'url'=>"xc.ciclone.com.br/modules.php?name=leonardo",
-	'url_base'=>"xc.ciclone.com.br/modules/leonardo",
-	'url_op'=>"xc.ciclone.com.br/modules/leonardo/op.php",
+	'url'=>"www.xcbrasil.org/modules.php?name=leonardo",
+	'url_base'=>"www.xcbrasil.org/modules/leonardo",
+	'url_op'=>"www.xcbrasil.org/modules/leonardo/op.php",
+
 	'admin_email'=>"durval@ciclone.com.br",
 	'site_pass'=>"dnquo348246kvbnsd230f3289",
 	'serverPass'=>"",

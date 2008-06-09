@@ -15,6 +15,7 @@ require_once dirname(__FILE__)."/CL_gpsPoint.php";
 require_once dirname(__FILE__)."/CL_flightPhotos.php";
 require_once dirname(__FILE__).'/CL_flightScore.php';
 require_once dirname(__FILE__)."/CL_brands.php";
+require_once dirname(__FILE__)."/CL_dates.php";
 require_once dirname(__FILE__)."/FN_kml.php";
 require_once dirname(__FILE__)."/FN_pilot.php";
 
@@ -266,7 +267,10 @@ var $maxPointNum=1000;
 
 		// will be changed when dateAdded will be UTC
 		$dateAdded=$this->dateAdded;
-		$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
+
+		// We changed this, dateAdded is in UTC from now on !!!!
+		// So the conversion is not needed
+		//$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
 
 
 		if (  $this->serverID==0 || $this->serverID==$CONF_server_id ) $isLocal=1;
@@ -2201,17 +2205,19 @@ $kml_file_contents=
 						$this->timezone= getTZ( $firstPoint->lat,$firstPoint->lon, $this->DATE );						
 						// echo 	$this->timezone;
 						$firstPoint->timezone=$this->timezone;
+
 					}
 
+					$tmpTime=$firstPoint->gpsTime + $this->timezone*3600;
+					// Now also check if we are one day minus (for US flights )
+					if ( $tmpTime < 0  && $tmpDate==0 ) { // one day before!
+						$this->DATE=dates::moveDaysFromDate($this->DATE,-1);
+						$tmpDate=1;
+					}
 					// take care of day change for timezones in australia/nz etc
-
-					if (  ( $firstPoint->gpsTime +  ($firstPoint->timezone*60*60) ) > 86400  && $tmpDate==0 )  {
-						// this means the UTC date in the igc file  needs to be +1 
-						$tmpParts=split("-",$this->DATE);
-						$tmpDate=mktime(0,0,0,$tmpParts[1],$tmpParts[2],$tmpParts[0]);
-						$tmpDate+=86400;
-						$this->DATE=date("Y-m-d",$tmpDate);
-
+					if (  $tmpTime > 86400  && $tmpDate==0 )  { // UTC date in the igc file  needs to be +1 
+						$this->DATE=dates::moveDaysFromDate($this->DATE,1);
+						$tmpDate=1;
 					}
 
 					// sanity checks	
@@ -2981,6 +2987,7 @@ $kml_file_contents=
 
 		$this->timesViewed=$row["timesViewed"];		
 		$this->dateAdded=$row["dateAdded"];		
+		$this->dateUpdated=$row["dateUpdated"];		
 		$this->timezone=$row["timezone"];		
 
 		$this->filename=$row["filename"];
@@ -3284,7 +3291,7 @@ $kml_file_contents=
 
 			$this->active=0;
 			if (!$this->dateAdded )
-				$this->dateAdded= date("Y-m-d H:i:s"); 
+				$this->dateAdded= gmdate("Y-m-d H:i:s"); 
 
 			// $fl_id_2="now(),";
 			$fl_id_2=" '".$this->dateAdded."',";
@@ -3292,6 +3299,8 @@ $kml_file_contents=
 			$this->timesViewed=0;
 		}
 		
+		$this->dateUpdated = gmdate("Y-m-d H:i:s"); 
+
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";			
 			$p1.="$var_name, ";
@@ -3299,7 +3308,7 @@ $kml_file_contents=
 		}
 		
 		/// Martin Jursa 17.05.2007: adding NACid
-		$query.=" $flightsTable (".$fl_id_1."filename,userID,
+		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
 		cat,subcat,category,active, private ,
 		validated,grecord,validationMessage, 
 		hash, serverID, originalURL, originalKML, original_ID,
@@ -3339,7 +3348,7 @@ $kml_file_contents=
 		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5
 		
 		)
-		VALUES (".$fl_id_2."'$this->filename',$this->userID,  
+		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$this->originalURL', '$this->originalKML',  $this->original_ID, 

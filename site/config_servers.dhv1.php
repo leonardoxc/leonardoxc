@@ -61,14 +61,14 @@ $CONF['servers']['list']=array(
 
 3=>array(
 	'id'=>3, // We dont pull directly, but VIA pgforum
-	'name'=>"xc.ciclone.com.br",
+	'name'=>"www.xcbrasil.org",
 	'short_name'=>'BR',
 	'is_active'=>1,
 	'name_filter'=>"Leonardo XC Brazil",
 
-	'url'=>"xc.ciclone.com.br/modules.php?name=leonardo",
-	'url_base'=>"xc.ciclone.com.br/modules/leonardo",
-	'url_op'=>"xc.ciclone.com.br/modules/leonardo/op.php",
+	'url'=>"www.xcbrasil.org/modules.php?name=leonardo",
+	'url_base'=>"www.xcbrasil.org/modules/leonardo",
+	'url_op'=>"www.xcbrasil.org/modules/leonardo/op.php",
 	
 	'exclude_from_list'=>0,
 	'exclude_from_league'=>0,

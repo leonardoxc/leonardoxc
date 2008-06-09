@@ -47,6 +47,10 @@
 		$where_clause.=" ) ";
 	}
 	
+	// only locally submitted flights for this club ?
+	if ( $clubsList[$clubID]['onlyLocalFlights']  ) {
+		$where_clause.=" AND externalFlightType = 0 ";
+	}
 	
 	if ($areaID) {
 		require_once dirname(__FILE__)."/CL_area.php";

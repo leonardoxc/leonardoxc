@@ -13,7 +13,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.0",
+	'leonardo_version'=>"2.9.99",
 
 	'url'=>"www.paraglidingforum.com/modules.php?name=leonardo",
 	'url_base'=>"www.paraglidingforum.com/modules/leonardo",
@@ -41,7 +41,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.0",
+	'leonardo_version'=>"2.9.99",
 
 	'url'=>"www.sky.gr/modules.php?name=leonardo",
 	'url_base'=>"www.sky.gr/modules/leonardo",
@@ -57,6 +57,11 @@ $CONF['servers']['list']=array(
 	'sync_type'=>2, // LOCAL
 	'use_zip'=>1, 
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 	'is_active'=>1,
 
 	'gives_waypoints'=>1,
@@ -65,17 +70,17 @@ $CONF['servers']['list']=array(
 
 3=>array(
 	'id'=>3,
-	'name'=>"xc.ciclone.com.br",
-
+	'name'=>"www.xcbrasil.org",
 	'short_name'=>'BR',
 	'name_filter'=>"Leonardo XC Brazil",
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.0",
-	'url'=>"xc.ciclone.com.br/modules.php?name=leonardo",
-	'url_base'=>"xc.ciclone.com.br/modules/leonardo",
-	'url_op'=>"xc.ciclone.com.br/modules/leonardo/op.php",
+	'leonardo_version'=>"2.9.99",
+	'url'=>"www.xcbrasil.org/modules.php?name=leonardo",
+	'url_base'=>"www.xcbrasil.org/modules/leonardo",
+	'url_op'=>"www.xcbrasil.org/modules/leonardo/op.php",
+
 	'admin_email'=>"durval@ciclone.com.br",
 	'site_pass'=>"dnquo348246kvbnsd230f3289",
 	'serverPass'=>"", // we dont GIVE 
@@ -85,6 +90,11 @@ $CONF['servers']['list']=array(
 	'sync_type'=>1, // LINK
 	'use_zip'=>1,
 	
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 	'is_active'=>1,
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"BR",
@@ -112,6 +122,11 @@ $CONF['servers']['list']=array(
 	'use_zip'=>1,
 	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 		
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 	'is_active'=>1,
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"PT",
@@ -265,6 +280,11 @@ $CONF['servers']['list']=array(
 	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 	
 	'is_active'=>1,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"TR",

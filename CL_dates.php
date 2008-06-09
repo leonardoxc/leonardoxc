@@ -139,5 +139,15 @@ class dates {
 	
 	}
 
+	// general utility functions
+	function date2tm($date) { // date in yyyy-mm-dd format
+		return mktime(0,0,0,substr($date,5,2),substr($date,8,2),substr($date,0,4) );
+	}
+
+	function moveDaysFromDate($date,$days) { // date in yyyy-mm-dd format
+		$tm=dates::date2tm($date)+$days*3600*24;
+		return date("Y-m-d",$tm);
+	}
+
 }
 ?>

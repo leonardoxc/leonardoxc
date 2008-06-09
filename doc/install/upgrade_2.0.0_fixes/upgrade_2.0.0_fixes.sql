@@ -289,3 +289,9 @@ DROP `waypoint_countries` ;
 
 ALTER TABLE `leonardo_flights` ADD `excludeFrom` TINYINT UNSIGNED DEFAULT '0' NOT NULL AFTER `active` ;
 
+
+# 2008/06/09
+
+ALTER TABLE `leonardo_flights` ADD `dateUpdated` DATETIME NOT NULL AFTER `dateAdded` ;
+
+UPDATE `leonardo_flights` SET dateUpdated=dateAdded;

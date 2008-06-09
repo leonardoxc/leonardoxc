@@ -115,6 +115,9 @@
                         "defaultDisplayLanguage"=>"basic",
                         "defaultDisplayTheme"=>"basic",
                         "gliderCat"=>array(1),
+
+						'onlyLocalFlights'=>1,
+
                         ) ,
  );
 
