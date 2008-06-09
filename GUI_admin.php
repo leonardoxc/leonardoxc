@@ -138,7 +138,8 @@ This will output a list of SQL commands that you must manually copy and then exe
 	echo "<li><b>Migrate to changes 2008/05/20</b>";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanPhotosTable'>Clean Photos Table</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateStartPoints'>Update Takeoff coordinates to new format</a> ";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateStartPoints'>Update Takeoff coordinates to new format</a> ";	
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertNewlines'>Convert newlines to DOS format</a> ";
 echo "</ul>";
 
 echo "<h3>Sync Log oparations</h3>";
@@ -184,14 +185,67 @@ echo "</ul><br><hr>";
 			}
 		}
 		echo "<BR><BR>Takeoff Names fixed<BR><BR>";
-    } else if ($admin_op=="findMissingFiles") {
+    } else if ($admin_op=="convertNewlines") {
+		$query="SELECT * from $flightsTable WHERE filename <> ''  ";
+		$res= $db->sql_query($query);
 
+		if($res > 0){
+			 echo "<br><br>";
+
+			 $i=0;
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$year=substr($row['DATE'],0,4);
+				$userServerID=$row['userServerID'];
+				if ($userServerID) $srvStr=$userServerID.'_';
+				else $srvStr='';
+				$fdir=$flightsAbsPath."/".$srvStr.$row['userID']."/flights/".$year."/";				
+				$filename =$fdir.$row['filename'];
+
+				if (! is_file ($filename) ) continue;
+
+
+				$handle = fopen ($filename, "rb"); 
+				$contents = fread ($handle, 200); 
+				fclose ($handle); 
+
+				if (preg_match("/\r([^\n])/",$contents )) {		
+					echo "MAC NEWLINES FOR FLIGHT <a href='modules.php?name=leonardo&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a><br>";
+					$mac++;
+					
+					$handle = fopen ($filename, "r"); 
+					$contents = fread ($handle, filesize ($filename)); 
+					fclose ($handle); 
+					if ($contents=preg_replace("/\r([^\n])/","\r\n#\\1",$contents) ) {		
+						$handle = fopen($filename.'.1', 'w');
+						fwrite($handle, $contents);
+						fclose($handle); 
+					} 
+		
+				} else if (preg_match("/([^\r])\n/",$contents )) {		
+					echo "UNIX NEWLINES FOR FLIGHT <a href='modules.php?name=leonardo&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a><br>";
+
+					$handle = fopen ($filename, "r"); 
+					$contents = fread ($handle, filesize ($filename)); 
+					fclose ($handle); 
+					if ( $contents=preg_replace("/([^\r])\n/","\\1\r\n",$contents) ) {		
+						$handle = fopen($filename.'.1', 'w');
+						fwrite($handle, $contents);
+						fclose($handle); 
+					} 
+					
+					$unix++;
+				}
+		
+			}
+			echo "MAC $mac  , Unix $unix <BR>";
+		}
+
+    } else if ($admin_op=="findMissingFiles") {
 
 		$query="SELECT * from $flightsTable WHERE filename <> ''  ";
 		$res= $db->sql_query($query);
-		
-		require_once dirname(__FILE__)."/CL_server.php";
 			
+		require_once dirname(__FILE__)."/CL_server.php";
 
 		if($res > 0){
 			 echo "<br><br>";
