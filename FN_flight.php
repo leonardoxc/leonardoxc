@@ -88,7 +88,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		$argArray=array()	 )  {
 
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
-	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ;
+	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ,$CONF_server_id;
 	global $userID;
 
 	set_time_limit (120);
@@ -168,7 +168,11 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	// check for mac newlines
 	$lines=file($tmpIGCPath);
+	$hash=md5( implode('',$lines)  );
+	$flight->hash=$hash;
 
+	// we now use auto_detect_line_endings=true;
+/*
 	if ( count ($lines)==1) {
 		if ($lines[0]=preg_replace("/\r([^\n])/","\r\n\\1",$lines[0])) {		
 			DEBUG('addFlightFromFile',1,"addFlightFromFile: MAC newlines found<BR>");
@@ -183,9 +187,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			fclose($handle); 
 		} 
 	}
-
-	$hash=md5( implode('',$lines)  );
-	$flight->hash=$hash;
+*/
+	
 
 	unset($lines);
 
@@ -210,14 +213,31 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		return array(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);	
 	}
 
-	$oldFlightID= $flight->findSameFlightID();
-	if ($oldFlightID>0) {
-		@unlink($flight->getIGCFilename(1));
-		@unlink($tmpIGCPath.".olc");
-		@unlink($tmpIGCPath);
-		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
-		if (!$log->put()) echo "Problem in logger<BR>";
-		return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$oldFlightID);	
+	$sameFlightsArray= $flight->findSameFlightID();
+	if (count($sameFlightsArray)>0) {
+
+		if ( $flight->allowDuplicates ) { // we allow duplicates if they are from another server
+			$dupFound=0;
+			foreach($sameFlightsArray as $k=>$fArr){
+				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
+					$dupFound=1;
+				}
+			}
+
+		} else {
+			$dupFound=1;
+		}
+
+		if ($dupFound) {
+			@unlink($flight->getIGCFilename(1));
+			@unlink($tmpIGCPath.".olc");
+			@unlink($tmpIGCPath);
+			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
+			if (!$log->put()) echo "Problem in logger<BR>";
+			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+		} else {
+			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate DATE/TIME flight will be inserted<br>");
+		}
 	}
 
 	$sameFilenameID=$flight->findSameFilename( basename($filename) );
@@ -252,18 +272,49 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	}
 	// end martin / peter
 
-	if ( ! $flight->allowDuplicates ) {
-		$sameHashID=$flight->findSameHash( $hash );
-		if ($sameHashID>0) 	 {
+
+	$sameFlightsArray= $flight->findSameHash( $hash );
+	if (count($sameFlightsArray)>0) {
+		if ( $flight->allowDuplicates ) { // we allow duplicates if they are from another server
+echo "searching in dups ";
+print_r($sameFlightsArray);
+			$dupFound=0;
+			foreach($sameFlightsArray as $k=>$fArr){
+				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
+					$dupFound=1;
+				}
+			}
+
+		} else {
+echo "no dups allowesd";
+			$dupFound=1;
+		}
+
+		if ($dupFound) {
 			@unlink($flight->getIGCFilename(1));
 			@unlink($tmpIGCPath.".olc");
 			@unlink($tmpIGCPath);
 			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
 			if (!$log->put()) echo "Problem in logger<BR>";
-			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameHashID);	
+			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+		} else {
+			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate HASH flight will be inserted<br>");
+echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
 		}
 	}
-
+/*
+	if ( ! $flight->allowDuplicates ) {
+		$sameHashIDArray=$flight->findSameHash( $hash );
+		if (count($sameHashIDArray)>0) 	 {
+			@unlink($flight->getIGCFilename(1));
+			@unlink($tmpIGCPath.".olc");
+			@unlink($tmpIGCPath);
+			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
+			if (!$log->put()) echo "Problem in logger<BR>";
+			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameHashIDArray[0]['serverID'].'_'.$sameHashIDArray[0]['ID']);	
+		}
+	}
+*/
 
 	// move the flight to corresponding year
 	$yearPath=$flightsAbsPath."/".$userIDstr."/flights/".$flight->getYear(); 
@@ -394,7 +445,7 @@ function getAddFlightErrMsg($result,$flightID) {
 						_CHANGE_THE_FILENAME;
 			break;
 		case ADD_FLIGHT_ERR_SAME_HASH_FLIGHT:
-			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
+			$errMsg=_THERE_IS_SAME_DATE_FLIGHT." (HASH) <br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
 							 "<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	

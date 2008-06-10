@@ -13,6 +13,7 @@
 
 // set this to always use . in sprintf 
 setlocale(LC_NUMERIC, 'en_US') ;
+ini_set('auto_detect_line_endings',true);
 
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead

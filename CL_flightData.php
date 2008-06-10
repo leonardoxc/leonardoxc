@@ -3615,12 +3615,19 @@ foreach ($data_time as $i=>$tm) {
 	function findSameFlightID() {
 		global $db;
 		global $flightsTable;
-		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->userID." AND DATE='".$this->DATE."'  AND START_TIME=".$this->START_TIME." ";
+		$query="SELECT serverID,ID FROM $flightsTable WHERE userID=".$this->userID." AND DATE='".$this->DATE."'  AND START_TIME=".$this->START_TIME." ";
 		$res= $db->sql_query($query);
-		if ($res<=0) return 0; // no duplicate found
+		if ($res<=0) return array(); // no duplicate found		
 
-		$row = $db->sql_fetchrow($res);
-		return $row["ID"]; // found duplicate retrun the ID; 
+		$i=0;
+		$dup=array();
+		while  ( $row = $db->sql_fetchrow($res) ) {
+			$dup[$i]['ID']=$row["ID"];
+			$dup[$i]['serverID']=$row["serverID"];
+			$i++;
+		}
+		return $dup; // found duplicate return the array of IDs; 
+
 	}
 
 	function findSameFilename($filename) {
@@ -3642,13 +3649,20 @@ foreach ($data_time as $i=>$tm) {
 		$where_clause='';
 		if ($serverIDtoCheck) $where_clause=" AND serverID=$serverIDtoCheck ";
 		
-		$query="SELECT ID FROM $flightsTable WHERE hash='$hash' $where_clause ";
+		$query="SELECT serverID,ID FROM $flightsTable WHERE hash='$hash' $where_clause ";
 		// echo $query;
 		$res= $db->sql_query($query);
-		if ($res<=0) return 0; // no duplicate found
+		if ($res<=0) return array(); // no duplicate found
 
-		$row = $db->sql_fetchrow($res);
-		return $row["ID"]; // found duplicate retrun the ID; 
+		$i=0;
+		$dup=array();
+		while  ( $row = $db->sql_fetchrow($res) ) {
+			$dup[$i]['ID']=$row["ID"];
+			$dup[$i]['serverID']=$row["serverID"];
+			$i++;
+		}
+		return $dup; // found duplicate return the array of IDs; 
+
 	}
 
 	function getOLCpilotData() {

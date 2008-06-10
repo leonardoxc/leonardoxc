@@ -31,6 +31,11 @@ $CONF['servers']['list']=array(
 	'sync_type'=>"1", // FULL 
 	'use_zip'=>"1",
 	
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 	'accept_also_servers'=>array(2),
 	
 	'gives_waypoints'=>1,
@@ -63,6 +68,12 @@ $CONF['servers']['list']=array(
 
 	'is_active'=>1,
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"GR",
 ),
@@ -87,6 +98,13 @@ $CONF['servers']['list']=array(
 	'sync_type'=>"1",
 	'use_zip'=>"1",
 	'is_active'=>1,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"BR",
 ),
@@ -110,6 +128,12 @@ $CONF['servers']['list']=array(
 	'sync_type'=>"2",
 	'use_zip'=>"1",
 	'is_active'=>1,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"PT",
 ),
@@ -137,6 +161,12 @@ $CONF['servers']['list']=array(
 	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 
 	'is_active'=>1,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 
 	'dont_give_servers'=>array(8,10002),	
 	'accept_also_servers'=>array(10002),
@@ -170,6 +200,12 @@ $CONF['servers']['list']=array(
 	'use_zip'=>"1",
 
 	'is_active'=>0,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"",
@@ -257,6 +293,12 @@ $CONF['servers']['list']=array(
 
 	'is_active'=>1,
 
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
+
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"TR",
 ),
@@ -307,6 +349,11 @@ $CONF['servers']['list']=array(
 	'use_zip'=>"1",
 
 	'is_active'=>0,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"",
