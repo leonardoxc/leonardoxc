@@ -46,6 +46,37 @@ class pilot{
 		else return 0;
 	}
 
+	function pilotMapping() {
+		global $db,$pilotsTable,$remotePilotsTable;
+		// first see if a mapping exists
+		
+		$query="SELECT * FROM $remotePilotsTable  
+				WHERE	( serverID=".$this->serverID." AND userID=".$this->pilotID ." ) OR 
+						( remoteServerID=".$this->serverID." AND remoteUserID=".$this->pilotID. " ) ";
+		
+		$res= $db->sql_query($query);		
+		if($res <= 0){
+			echo("<H3> Error in checkPilot query! $query</H3>\n");
+			return array();
+		}		
+
+		$i=0;
+		$map=array();
+		while (  $row = $db->sql_fetchrow($res) ) {	
+			if ($this->serverID==$row['serverID']  && $this->pilotID==$row['userID'])
+				$map[$i]['serverID']=$row['remoteServerID'];
+				$map[$i]['userID']=$row['remoteUserID'];			
+			} else {
+				$map[$i]['serverID']=$row['serverID'];
+				$map[$i]['userID']=$row['userID'];
+			}				
+			$i++;
+		}
+		
+		return $map;
+	}
+	
+	
 	function isPilotLocal() {
 		global $CONF_server_id;
 		if (! $this->serverID || $this->serverID==$CONF_server_id) return 1;

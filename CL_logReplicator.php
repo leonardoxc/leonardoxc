@@ -114,7 +114,8 @@ class logReplicator {
 			)
 		*/
 
-		// first see if a mapping exists
+
+		// first see if a mapping exists	
 		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID'];	
 		$res= $db->sql_query($query);		
 		if($res <= 0){
@@ -298,9 +299,46 @@ class logReplicator {
 				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
 
 				$hash=$actionData['flight']['validation']['hash'];
+				$sameHashIDarray=flight::findSameHash( $hash );
+				if (count($sameHashIDarray)>0 ) {
+					$isFlightDup=0;
+
+					$markFlightAsDisabled=1;
+					
+					if ($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']) {
+						foreach($sameHashIDarray as $sameHashFlightInfo) {
+							if ( $sameHashFlightInfo['serverID'] == $actionData['flight']['serverID'] ) { // from same server
+								$isFlightDup=1;
+								break;
+							} else {
+								// we have a flight with same hash that is not from this specific server.
+								// HERE we must make the decision whether to mark this flight as DISABLED
+								// WE always mark this new flight as DISABLED because :
+								// the local flight takes precedence anyway.
+							
+								// ONE case 
+								// we are DHV mirror , the new flight is from DHV and there is a dup from XContest
+								// we should insert, 
+								
+								// SO INSERT TAKES PRECEDENCE OVER LINKED FLIGHTS
+							}
+						
+						}
+					
+					} else {					
+						$isFlightDup=1;
+					}
+					
+					if ($isFlightDup) {
+						return array(-1,"Flight already exists in local with ID: $sameHashID");
+						continue;
+					}
+				} 
+				
+				/*
 				if ($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']) {
-					$sameHashID=flight::findSameHash( $hash , $actionData['flight']['serverID'] );
-					if ($sameHashID>0 )  {
+					$sameHashIDarray=flight::findSameHash( $hash , $actionData['flight']['serverID'] );
+					if (count($sameHashIDarray)>0 )  {
 						return array(-1,"Flight already exists in local with ID: $sameHashID (dups allowed)");
 						continue;
 					} else {
@@ -308,12 +346,15 @@ class logReplicator {
 					}
 				
 				} else {
-					$sameHashID=flight::findSameHash( $hash );
-					if ($sameHashID>0 ) 	 {
+					$sameHashIDarray=flight::findSameHash( $hash );
+					if (count($sameHashIDarray)>0 ) 	 {
 						return array(-1,"Flight already exists in local with ID: $sameHashID");
 						continue;
 					}
 				}
+				*/
+				
+				
 			} else if ($e['action']==2) {	// update
 				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
 				if (!$flightIDlocal) {
