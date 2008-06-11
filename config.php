@@ -13,7 +13,7 @@
 
 // set this to always use . in sprintf 
 setlocale(LC_NUMERIC, 'en_US') ;
-ini_set('auto_detect_line_endings',true);
+@ini_set('auto_detect_line_endings',true);
 
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
@@ -386,9 +386,9 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF['stats']['enable']=0;
 
   // use a WYSIWYG editor for editing takeoff information
-  $CONF['editor']['use_wysiwyg']['global']=0;
-  $CONF['editor']['use_wysiwyg']['takeoff_description']=0;
-  $CONF['editor']['use_wysiwyg']['flight_comments']=0;
+  $CONF['editor']['use_wysiwyg']['global']=1;
+  $CONF['editor']['use_wysiwyg']['takeoff_description']=1;
+  $CONF['editor']['use_wysiwyg']['flight_comments']=1;
 
   // default user prefs 
   $CONF['default_user_prefs']['useEditor']=1;
