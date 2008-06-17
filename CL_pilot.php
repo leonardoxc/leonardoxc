@@ -63,7 +63,7 @@ class pilot{
 		$i=0;
 		$map=array();
 		while (  $row = $db->sql_fetchrow($res) ) {	
-			if ($this->serverID==$row['serverID']  && $this->pilotID==$row['userID'])
+			if ($this->serverID==$row['serverID']  && $this->pilotID==$row['userID']) {
 				$map[$i]['serverID']=$row['remoteServerID'];
 				$map[$i]['userID']=$row['remoteUserID'];			
 			} else {
