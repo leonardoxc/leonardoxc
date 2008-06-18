@@ -398,15 +398,24 @@ return;
 		$i=0;
 		$j=0;
 
-$mNames=array(		
-3545=>"2007-06-15-gkiona.IGC",
-3553=>"gkiona.IGC",
-3554=>"Gyros Fokidas.IGC",
-3705=>"1-7-07 psili-stavraki.IGC",
-4459=>"Kitheronas 15-09-07 Proti Ptisi.igc",
-4835=>"2007-10-26 Psili-douraxani.IGC",
-4836=>"2007-10-27 psili-.IGC",
-4988=>"25-11-07 psili mitsikeli.IGC",
+$mNames=array(	
+203  => "evora 12-08-05 1.IGC",
+607  => "2006-04-24 ze manel.IGC",
+1022 => "evora 19-08-06.IGC",
+1093 => "02-APR-06 voo-sra-graca.IGC",
+1226 => "evora-aljustrel 9-9-06.IGC",
+1862 => "1 CURSO PARAPENTE - BARRA DO KWANZA 2007-02-17.IGC",
+2218 => "Arrabida 2007-04-07.IGC",
+3980 => "Alvaiazere 010907 a.igc",
+5217 => "Arrabida 2008-01-20.IGC",
+6194 => "covilha 23-03-08 LS1.IGC",
+6032 => "2008-03-02-Rabacal - Madalena (patos).IGC",
+6055 => "pocarica 3.IGC",
+6057 => "15032008Poco d Cruz.IGC",
+6763 => "Castelo de Vide 3 2008-04-27-.IGC",
+6764 => "Castelo de Vide 2 2008-04-26.IGC",
+7652 => "2008-06-15 - Canhas 1 Prova Regional.IGC",
+7664 => "080614 Rabacal.igc",
 );
 
 /*
@@ -416,6 +425,11 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 				$newfilename=toLatin1($row['filename']) ;
+
+				if ($mNames[$row["ID"]]) {
+					$newfilename=$mNames[$row["ID"]];				
+				}
+				
 				if ($newfilename=='') {
 					echo "$j. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> ";
 					echo "Latin filename for [ ".$row['filename']." ] is NULL!!!!!<BR>";
@@ -467,7 +481,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 							$newfilename=safeFilename( $newfilename);
 							echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
 	
-							if ( $latinAvailable && $newfilename && 0) {
+							if ( $latinAvailable && $newfilename ) {
 								$flight=new flight();
 								$flight->getFlightFromDB($row["ID"],0);		
 								$flight->renameTracklog($newfilename,$oldFilename);
@@ -639,7 +653,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		echo "</pre>";
 
 	} else if ($admin_op=="updateLocations") {
-		$query="SELECT ID from $flightsTable WHERE 1";
+		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
@@ -650,6 +664,14 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				 $flight->getFlightFromDB($row["ID"],1); // this computes takeoff/landing also
 				 //$flight->updateTakeoffLanding();
 				 //$flight->putFlightToDB(1);
+				 unset($flight);
+				 
+				 $query2="UPDATE $flightsTable SET batchOpProcessed=1 WHERE ID=".$row['ID']." ";
+				 $res2= $db->sql_query($query2);			
+				 if(!$res2){
+					echo "Problem in query:$query2<BR>";					
+				 }
+				 
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
