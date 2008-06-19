@@ -91,8 +91,8 @@ var $DURATION=0;
 //var $FLIGHT_KM=0;
 //var $FLIGHT_POINTS=0;
 
-var $FIRST_POINT="";
-var $LAST_POINT="";
+//var $FIRST_POINT="";
+//var $LAST_POINT="";
 
 var $turnpoint1="";
 var $turnpoint2="";
@@ -517,8 +517,8 @@ $resStr='{
 		//$this->FLIGHT_KM=0;
 		//$this->FLIGHT_POINTS=0;
 		
-		$this->FIRST_POINT="";
-		$this->LAST_POINT="";
+		//$this->FIRST_POINT="";
+		//$this->LAST_POINT="";
 	
 		$this->firstPointTM=0;
 		$this->firstLat=0;
@@ -2999,11 +2999,12 @@ $kml_file_contents=
 		$this->linkURL=$row["linkURL"];
 
 		$this->hasPhotos=$row["hasPhotos"];
-
+/*
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
 			$this->$var_name=$row[$var_name];
 		}
+*/
 
 		$this->takeoffID=$row["takeoffID"];
 		$this->takeoffVinicity=$row["takeoffVinicity"];
@@ -3044,14 +3045,17 @@ $kml_file_contents=
 		$this->hash=$row["hash"];	
 
 //to be deleted START 
-		$this->FIRST_POINT=$row["FIRST_POINT"];
-		$this->LAST_POINT=$row["LAST_POINT"];
+//		$this->FIRST_POINT=$row["FIRST_POINT"];
+//		$this->LAST_POINT=$row["LAST_POINT"];
 
+/*
 		$this->turnpoint1=$row["turnpoint1"];		
 		$this->turnpoint2=$row["turnpoint2"];		
 		$this->turnpoint3=$row["turnpoint3"];		
 		$this->turnpoint4=$row["turnpoint4"];		
 		$this->turnpoint5=$row["turnpoint5"];		
+*/
+
 
 //		$this->olcRefNum=$row["olcRefNum"];
 //		$this->olcFilename=$row["olcFilename"];
@@ -3301,11 +3305,13 @@ $kml_file_contents=
 		
 		$this->dateUpdated = gmdate("Y-m-d H:i:s"); 
 
+	/*
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";			
 			$p1.="$var_name, ";
 			$p2.="'".$this->$var_name."',";
 		}
+	*/
 		
 		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
@@ -3318,7 +3324,7 @@ $kml_file_contents=
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,NACid,
 		comments, glider, gliderBrandID, linkURL, timesViewed,
-		$p1
+		
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
 		timezone,
@@ -3343,9 +3349,7 @@ $kml_file_contents=
 		forceBounds,
 		externalFlightType,	isLive,
 		firstPointTM, firstLat, firstLon,
-		lastPointTM, lastLat, lastLon ,
-		FIRST_POINT,LAST_POINT,
-		turnpoint1,turnpoint2,turnpoint3,turnpoint4,turnpoint5
+		lastPointTM, lastLat, lastLon 
 		
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
@@ -3358,7 +3362,7 @@ $kml_file_contents=
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
-		$p2
+		
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',
 		$this->timezone,
@@ -3382,10 +3386,8 @@ $kml_file_contents=
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,
 		$this->firstPointTM, $this->firstLat, $this->firstLon,
-		$this->lastPointTM, $this->lastLat, $this->lastLon ,
-		'$this->FIRST_POINT',
-		'$this->LAST_POINT',
-		'$this->turnpoint1','$this->turnpoint2','$this->turnpoint3','$this->turnpoint4','$this->turnpoint5'
+		$this->lastPointTM, $this->lastLat, $this->lastLon 
+
 		)";
 	
 		//echo $query;

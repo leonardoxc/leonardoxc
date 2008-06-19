@@ -490,6 +490,8 @@ class logReplicator {
 					// $extFlight->FIRST_POINT=$firstPoint->to_IGC_Record();
 					// $extFlight->LAST_POINT=$lastPoint->to_IGC_Record();
 
+// not used!!
+/*
 					if (	is_array($actionData['flight']['turnpoints']) ) {
 						foreach ($actionData['flight']['turnpoints'] as $i=>$tp){
 							$tpNum=$tp['id'];
@@ -500,6 +502,7 @@ class logReplicator {
 							$extFlight->$varname = $tpPoint->getLatMin().' '.$tpPoint->getLonMin() ;
 						}					
 					}
+									*/
 					
 					if ($getValidationData) {
 						$extFlight->validated =$actionData['flight']['validation']['validated'];

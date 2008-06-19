@@ -678,13 +678,19 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 	} else if ($admin_op=="updateStartPoints") {
 		global $flightsAbsPath;
 		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
-		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 ";
+		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 AND  
+			 (firstLat=0 or firstLon=0 or lastLon=0 or lastLat=0 )";
 		$res= $db->sql_query($query);
 		
 		if($res > 0){
 			 while ($row = mysql_fetch_assoc($res)) { 
 					$files_total++;
 
+					if (! $row['FIRST_POINT'] || ! $row['LAST_POINT']) {
+						$not_set++;
+						continue;
+					}
+					
 					$firstPoint=new gpsPoint($row['FIRST_POINT'],$row['timezone']);
 					$lastPoint=new gpsPoint($row['LAST_POINT'],$row['timezone']);
 
@@ -704,7 +710,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			 }
 		}
 		echo "<BR><br><br>DONE !!!<BR>";
-		echo "<BR><br>Flights total: $files_total<BR>";
+		echo "<BR><br>Flights total: $files_total, not proccessed: $not_set<BR>";
 	} else if ($admin_op=="makehash") {
 		global $flightsAbsPath;
 		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";

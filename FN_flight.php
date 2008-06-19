@@ -234,7 +234,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			@unlink($tmpIGCPath);
 			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
 			if (!$log->put()) echo "Problem in logger<BR>";
-			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+//			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['ID']);
 		} else {
 			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate DATE/TIME flight will be inserted<br>");
 		}
@@ -296,7 +297,7 @@ echo "no dups allowesd";
 			@unlink($tmpIGCPath);
 			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,0);
 			if (!$log->put()) echo "Problem in logger<BR>";
-			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameFlightsArray[0]['ID']);
 		} else {
 			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate HASH flight will be inserted<br>");
 echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
@@ -421,7 +422,9 @@ echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
 
 function getAddFlightErrMsg($result,$flightID) {
 	$callingURL="http://".$_SERVER['SERVER_NAME'].getRelMainFileName();
-	
+	if (is_array($flightID) ) {
+		$flightID=$flightID[0]['ID'];
+	}
 	switch ($result) {
 		case ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE:
 			$errMsg=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE;

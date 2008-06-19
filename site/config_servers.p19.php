@@ -13,7 +13,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.99",
+	'leonardo_version'=>"2.9.99a",
 
 	'url'=>"www.paraglidingforum.com/modules.php?name=leonardo",
 	'url_base'=>"www.paraglidingforum.com/modules/leonardo",
@@ -41,7 +41,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.99",
+	'leonardo_version'=>"2.9.99a",
 
 	'url'=>"www.sky.gr/modules.php?name=leonardo",
 	'url_base'=>"www.sky.gr/modules/leonardo",
@@ -76,7 +76,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.99",
+	'leonardo_version'=>"2.9.99a",
 	'url'=>"www.xcbrasil.org/modules.php?name=leonardo",
 	'url_base'=>"www.xcbrasil.org/modules/leonardo",
 	'url_op'=>"www.xcbrasil.org/modules/leonardo/op.php",
@@ -108,7 +108,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>1,
-	'leonardo_version'=>"2.9.0",
+	'leonardo_version'=>"2.9.99a",
 	'url'=>"www.xcportugal.com/modules.php?name=leonardo",
 	'url_base'=>"www.xcportugal.com/modules/leonardo",
 	'url_op'=>"www.xcportugal.com/modules/leonardo/op.php",
@@ -321,7 +321,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.0",
+	'leonardo_version'=>"2.9.99a",
 	'url'=>"pgforum.thenet.gr/modules.php?name=leonardo",
 	'url_base'=>"pgforum.thenet.gr/modules/leonardo",
 	'url_op'=>"pgforum.thenet.gr/modules/leonardo/op.php",
@@ -373,7 +373,7 @@ $CONF['servers']['list']=array(
 
 	'isLeo'=>1,
 	'installation_type'=>2,
-	'leonardo_version'=>"2.9.0",
+	'leonardo_version'=>"2.9.99a",
 	'url'=>"dhvxc.dhv1.de/phpBB/modules?name=leonardo",
 	'url_base'=>"dhvxc.dhv1.de/phpBB/modules/leonardo",
 	'url_op'=>"dhvxc.dhv1.de/phpBB/modules/leonardo/op.php",
