@@ -28,7 +28,7 @@ $CONF['servers']['list']=array(
 	'is_active'=>1,
 
 	'sync_format'=>"JSON",
-	'sync_type'=>"1", // FULL 
+	'sync_type'=>"2", // FULL 
 	'use_zip'=>"1",
 	
 	'treat_flights_as_local'=>0,
@@ -326,6 +326,42 @@ $CONF['servers']['list']=array(
 
 	'gives_waypoints'=>1,
 	'waypoint_countries'=>"GB",
+),
+
+
+12=>array(
+	'id'=>12,
+	'name'=>"HPAC",
+	'short_name'=>'HPAC',
+
+	'isLeo'=>1,
+	'installation_type'=>2,
+	'leonardo_version'=>"2.9.99a",
+	'url'=>"forums.dowsett.ca/modules.php?name=leonardo",
+	'url_base'=>"forums.dowsett.ca/modules/leonardo",
+	'url_op'=>"forums.dowsett.ca/modules/leonardo/op.php",
+	'admin_email'=>"mdowsett@mac.com",
+	'site_pass'=>"mfd92n20nvn023jhf56ng932",
+	
+	'serverPass'=>"",
+	'clientPass'=>"32skja7vb9j8ysd623gvasdv",// we GET 
+	
+	'sync_format'=>"JSON",
+	'sync_type'=>2, // LOCAL
+	'use_zip'=>1,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>0,
+	'exclude_from_league'=>0,
+	'allow_duplicate_flights'=>1,
+
+	'dont_give_servers'=>array(5,10002),	
+	'accept_also_servers'=>array(),
+	
+	'is_active'=>1,
+
+	'gives_waypoints'=>1,
+	'waypoint_countries'=>"CA",	
 ),
 
 
