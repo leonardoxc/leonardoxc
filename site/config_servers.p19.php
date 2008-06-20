@@ -337,9 +337,11 @@ $CONF['servers']['list']=array(
 	'use_zip'=>1,
 
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>0,
+	'exclude_from_list'=>1,
 	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
+
+	'rescore_if_missing'=>1, // if sync_type=LOCAL and the EXTENTED scoring INFO is missing rescore flight
 
 	'dont_give_servers'=>array(5,10002),	
 	'accept_also_servers'=>array(),

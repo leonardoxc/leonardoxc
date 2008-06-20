@@ -262,6 +262,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_pilot_olc_profile_edit.php";
 } else if ($op=="pilot_profile_stats") {
 	require $moduleRelPath."/GUI_pilot_profile_stats.php";
+} else if ($op=="pilot_flights") {
+	require $moduleRelPath."/GUI_pilot_flights.php";
 } else if ($op=="user_prefs") { 
 	require $moduleRelPath."/GUI_user_prefs.php";
 //--------------------------
