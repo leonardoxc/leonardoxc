@@ -304,11 +304,13 @@ class logReplicator {
 					$isFlightDup=0;
 
 					$markFlightAsDisabled=1;
+					$msg='';
 					
 					if ($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']) {
 						foreach($sameHashIDarray as $sameHashFlightInfo) {
 							if ( $sameHashFlightInfo['serverID'] == $actionData['flight']['serverID'] ) { // from same server
 								$isFlightDup=1;
+								$msg.=" local flight: ".$sameHashFlightInfo['serverID'].'_'.$sameHashFlightInfo['ID']." , new entry:".$actionData['flight']['serverID'].'_'.$actionData['flight']['id'];
 								break;
 							} else {
 								// we have a flight with same hash that is not from this specific server.
@@ -330,7 +332,7 @@ class logReplicator {
 					}
 					
 					if ($isFlightDup) {
-						return array(-1,"Flight already exists in local with ID: $sameHashID");
+						return array(-1,"Flight already exists : $msg");
 						continue;
 					}
 				} 

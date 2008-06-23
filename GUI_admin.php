@@ -728,6 +728,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 					}
 
 					$fileContents=implode('',file($filename));
+					$hash='';
 					$hash=md5($fileContents);
 
 					$query2="UPDATE $flightsTable SET hash='$hash' , batchOpProcessed=1 WHERE ID=".$row['ID']." ";
