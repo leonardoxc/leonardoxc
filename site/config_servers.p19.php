@@ -147,11 +147,10 @@ $CONF['servers']['list']=array(
 	'admin_email'=>"Admin@dhv.de",
 	'site_pass'=>"af5uk04l2ftjd5jzsekgt31ko",
 
-	'serverPass'=>"",
-	'clientPass'=>"",
+	'serverPass'=>"", // we dont GIVE 
+	'clientPass'=>"oi309gqqng38285729verfgkw25", // WE GET
 
 	'sync_format'=>"JSON",
-	
 	'sync_type'=>1, // LINK
 	'use_zip'=>0,
 

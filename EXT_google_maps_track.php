@@ -51,7 +51,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang_enc?>">
 <title>Google Maps</title>
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
-<script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
 
 
@@ -177,7 +177,8 @@ var lon=0;
 
 <script type="text/javascript">
 	
-	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
+	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
+
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());

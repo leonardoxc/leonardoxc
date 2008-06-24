@@ -398,15 +398,7 @@ echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
 						$flightPhotos->deletePhoto($j);						
 					}
 					
-					/*
-					$flight->$var_name=$newPhotoName;
-					if ( move_uploaded_file($photoFilename, $flight->getPhotoFilename($i) ) ) {
-						CLimage::resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-						CLimage::resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
-					} else { //upload not successfull
-						$flight->$var_name="";
-					}
-					*/
+
 				}
 			}
 		}  

@@ -153,7 +153,7 @@ $CONF['servers']['list']=array(
 	'site_pass'=>"af5uk04l2ftjd5jzsekgt31ko",
 	
 	'serverPass'=>"",
-	'clientPass'=>"iuerotq32j283iuwbjd436", // WE TAKE
+	'clientPass'=>"hdfjer6u63jytjwe54uwgjw", // WE TAKE
 	
 	'sync_format'=>"JSON",
 	'sync_type'=>2, // LOCAL
@@ -286,7 +286,7 @@ $CONF['servers']['list']=array(
 	'admin_email'=>"yucer_ali@hotmail.com",
 	'site_pass'=>"yp135forum",
 	'serverPass'=>"",
-	'clientPass'=>"joer3i2456u3423uuvmsdfgoa",
+	'clientPass'=>"gge03423jg2251143259yhynm2",
 	'sync_format'=>"JSON",
 	'sync_type'=>"2",
 	'use_zip'=>"1",
