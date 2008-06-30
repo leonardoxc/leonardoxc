@@ -264,7 +264,7 @@ INDEX ( `flightID` , `method` , `type` , `isBest` )
 
 # 2008/05/22
 
-ALTER TABLE `leonardo_flights` DROP INDEX `takeoffID_2`  
+ALTER TABLE `leonardo_flights` DROP INDEX `takeoffID_2`  ;
 
 
 #2008/05/27

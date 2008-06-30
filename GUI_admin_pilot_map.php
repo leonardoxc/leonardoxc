@@ -13,69 +13,30 @@
  
   if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
-  ?>
-  
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
-<script language="javascript">
-
-function mapPilot(divID,pilotID1,pilotID2) {
-	url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
-	pars='op=mapPilot&pilotID1='+pilotID1+'&pilotID2='+pilotID2;
-	
-	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	// newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><?=$removeFromClubIcon?></a>";
-	
-	div=MWJ_findObj(divID);
-	div.innerHTML='';
-
-	//toggleVisible(divID,divPos);
-}
-
-</script>
-  <?
 	$compareField='hash';
 
-	$query0="SELECT $compareField, count( $compareField) AS num FROM $flightsTable GROUP BY $compareField HAVING count( $compareField) >1  AND $compareField<>'' ORDER BY num DESC";
+	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID ASC";
 	 // echo "#count query#$query<BR>";
-	$res0= $db->sql_query($query0);
-	if($res0 <= 0){   
+	$res= $db->sql_query($query);
+	if($res <= 0){   
 	 echo("<H3> Error in count items query! $query0</H3>\n");
 	 exit();
 	}	
 	
 //-----------------------------------------------------------------------------------------------------------
 	
-	$legend="Duplicate Flights";
+	$legend="Pilot Mapping Tables";
 
 	echo  "<div class='tableTitle shadowBox'>
 	<div class='titleDiv'>$legend</div>
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
 	
-	echo "<div id='updateDiv' style='display:block'>Result</div>";
-		
 	echo "<pre>";
-	$i=0;
-while ($row0 = $db->sql_fetchrow($res0)) {  
-	echo "<b>".$row0[$compareField].': '.$row0['num'].'</b><hr>';
-	$query="SELECT * FROM $flightsTable WHERE $compareField='".$row0[$compareField]."'";
-	 // echo "#count query#$query<BR>";
-	$res= $db->sql_query($query);
-	if($res <= 0){   
-	 echo("<H3> Error in query! $query</H3>\n");
-	 exit();
-	}
-echo "<table>";
-echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
-	$suggestedMappings=array();
-	$pilots=array();
-	$k=0;
+	echo "<table>";
+	echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
 	while (	$row = $db->sql_fetchrow($res) ) {
 		$pilotID=$row['userServerID'].'_'.$row['userID'];
-		$pilots[$pilotID]['serverID']=$row['userServerID'];
-		$pilots[$pilotID]['userID']=$row['userID'];
-		
 		if ( ! $pilotNames[$pilotID]){
 			$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
 			if (!$CONF_use_utf ) {
@@ -100,27 +61,9 @@ echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilo
 			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID'>".$pilotNames[$pilotID]['lname']." ".$pilotNames[$pilotID]['fname']." [ ".$pilotNames[$pilotID]['country']." ] CIVLID: ".$pilotNames[$pilotID]['CIVL_ID']."</td>
 </tr>
 		\n";
-		$k++;
 	}
-	
-	echo "</table>";
-	
-	echo "Suggested Mappings: <BR>";
-	$j=1;
-	foreach($pilots as $pilotID1=>$pData1) {
-		foreach($pilots as $pilotID2=>$pData2) {
-			if ($pData1['serverID'] > $pData2['serverID'] ) {
-				$div_id=$i.'_'.$j;
-				echo "<div id='map_$div_id'>$j : <a href='javascript:mapPilot(\"map_$div_id\",\"$pilotID1\",\"$pilotID2\")'>$pilotID1 <-> $pilotID2</a> </div>";
-				$j++;
-			}
-		}		
-	}
-	//print_r($pilots);
-	echo "<BR><BR>";
-	$i++;
-}
-echo "</pre>";
+	echo "</table><BR><BR>";
+	echo "</pre>";
 return;
 
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {

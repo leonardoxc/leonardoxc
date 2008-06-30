@@ -289,6 +289,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_area_admin.php";
 } else if ($op=="admin_duplicates") {
 	require $moduleRelPath."/GUI_admin_duplicates.php";
+} else if ($op=="admin_pilot_map") {
+	require $moduleRelPath."/GUI_admin_pilot_map.php";
 } else if ($op=="validation_review") {
 	require $moduleRelPath."/GUI_validation_review.php";
 } else if ($op=="servers_manage") {

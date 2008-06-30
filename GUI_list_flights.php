@@ -312,7 +312,7 @@ $addToClubIcon		="<img src='".$moduleRelPath."/img/icon_club_add.gif' width=12 h
 <script language="javascript">
 
 function addClubFlight(clubID,flightID) {
-	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	url='<?=$moduleRelPath?>/EXT_club_functions.php';
 	pars='op=add&clubID='+clubID+'&flightID='+flightID;
 	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
@@ -327,7 +327,7 @@ function addClubFlight(clubID,flightID) {
 }
 
 function removeClubFlight(clubID,flightID) {
-	url='/<?=$moduleRelPath?>/EXT_club_functions.php';
+	url='<?=$moduleRelPath?>/EXT_club_functions.php';
 	pars='op=remove&clubID='+clubID+'&flightID='+flightID;
 	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
