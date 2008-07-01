@@ -113,7 +113,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 	global $db,$pilotsTable,$opMode;
 	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
 	global $countries,$langEncodings;
-	global $CONF_use_leonardo_names,$PREFS,$CONF;
+	global $CONF_use_leonardo_names,$PREFS,$CONF,$CONF_server_id;
 
 	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID 
 			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
@@ -167,8 +167,13 @@ function getPilotInfo($pilotIDview,$serverID) {
 			else return $realName; 
 		}*/
 		
-	} 
-
+	}
+	
+	// we dont have a local user , return ! 
+	if ($serverID!=0 && $serverID!=$CONF_server_id ) {
+		return array('','','','','',0);
+	}
+	
     if ($opMode==1) { // phpNuke 
 		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
 		if ($res) {

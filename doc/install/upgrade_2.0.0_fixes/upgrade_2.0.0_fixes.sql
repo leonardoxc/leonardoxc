@@ -295,3 +295,7 @@ ALTER TABLE `leonardo_flights` ADD `excludeFrom` TINYINT UNSIGNED DEFAULT '0' NO
 ALTER TABLE `leonardo_flights` ADD `dateUpdated` DATETIME NOT NULL AFTER `dateAdded` ;
 
 UPDATE `leonardo_flights` SET dateUpdated=dateAdded;
+
+
+#2008/07/01
+ALTER TABLE `leonardo_remote_pilots` ADD PRIMARY KEY ( `remoteServerID` , `remoteUserID` , `serverID` , `userID` );

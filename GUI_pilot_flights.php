@@ -32,16 +32,26 @@
   
 
 ?>
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/ext-2.1/ext-all.css" />
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/ext-2.1/xtheme-gray.css" />
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/ext-2.1/grid-examples.css" />
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/ext-2.1/examples.css" />
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/ext-2.1/lib.css" />
 
-<script language="javascript" src="<?=$moduleRelPath?>/js/ext-2.1/adapter/ext/ext-base.js"></script>
-<script language="javascript" src="<?=$moduleRelPath?>/js/ext-2.1/ext-all.js"></script>
-<script language="javascript" src="<?=$moduleRelPath?>/js/ext-2.1/pager.js"></script>
-<script language="javascript" src="<?=$moduleRelPath?>/js/ext-2.1/examples.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/extJS/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/extJS/resources/css/xtheme-default.css" />
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/extJS/grid-examples.css" />
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/extJS/shared/examples.css" />
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/extJS/shared/lib.css" />
+<script type="text/javascript" >
+	var pilotIDview=<?=$pilotIDview?>;
+	var serverID=<?=$serverID?>;
+</script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/extJS/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/extJS/ext-all.js"></script> 
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/extJS/paging.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/extJS/shared/examples.js"></script>
+
+
+<div id="topic-grid"></div>
+
+<? return; ?>
+
 <?
 
   open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=340 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");

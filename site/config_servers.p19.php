@@ -155,7 +155,7 @@ $CONF['servers']['list']=array(
 	'use_zip'=>0,
 
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
+	'exclude_from_list'=>0,
 	'exclude_from_league'=>1,
 	'allow_duplicate_flights'=>1,
 
@@ -242,7 +242,7 @@ $CONF['servers']['list']=array(
 	'use_zip'=>"0",
 
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
+	'exclude_from_list'=>0,
 	'exclude_from_league'=>1,
 	'allow_duplicate_flights'=>1,
 
@@ -336,7 +336,7 @@ $CONF['servers']['list']=array(
 	'use_zip'=>1,
 
 	'treat_flights_as_local'=>0,
-	'exclude_from_list'=>1,
+	'exclude_from_list'=>0,
 	'exclude_from_league'=>0,
 	'allow_duplicate_flights'=>1,
 

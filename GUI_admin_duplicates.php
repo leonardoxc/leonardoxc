@@ -34,6 +34,22 @@ function mapPilot(divID,pilotID1,pilotID2) {
 
 </script>
   <?
+  
+  // first get the mappings
+  $query="SELECT *  FROM $remotePilotsTable ";
+  // echo "#count query#$query<BR>";
+	$res= $db->sql_query($query);
+	if($res <= 0){   
+	 echo("<H3> Error in count items query! $query0</H3>\n");
+	 exit();
+	}	
+	while (	$row = $db->sql_fetchrow($res) ) {
+		$pilotID1=$row['serverID'].'_'.$row['userID'];
+		$pilotID2=$row['remoteServerID'].'_'.$row['remoteUserID'];
+		$pilotMappingTable[$pilotID1]=$pilotID2;
+		$pilotMappingTable[$pilotID2]=$pilotID1;
+	}		
+  
 	$compareField='hash';
 
 	$query0="SELECT $compareField, count( $compareField) AS num FROM $flightsTable GROUP BY $compareField HAVING count( $compareField) >1  AND $compareField<>'' ORDER BY num DESC";
@@ -58,7 +74,7 @@ function mapPilot(divID,pilotID1,pilotID2) {
 	echo "<pre>";
 	$i=0;
 while ($row0 = $db->sql_fetchrow($res0)) {  
-	echo "<b>".$row0[$compareField].': '.$row0['num'].'</b><hr>';
+	$outStr="<b>".$row0[$compareField].': '.$row0['num'].'</b><hr>';
 	$query="SELECT * FROM $flightsTable WHERE $compareField='".$row0[$compareField]."'";
 	 // echo "#count query#$query<BR>";
 	$res= $db->sql_query($query);
@@ -66,9 +82,14 @@ while ($row0 = $db->sql_fetchrow($res0)) {
 	 echo("<H3> Error in query! $query</H3>\n");
 	 exit();
 	}
-echo "<table>";
-echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
+	
+	$output2screen=false;
+	
+	$outStr.="<table>";
+	$outStr.="<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
+
 	$suggestedMappings=array();
+
 	$pilots=array();
 	$k=0;
 	while (	$row = $db->sql_fetchrow($res) ) {
@@ -93,7 +114,8 @@ echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilo
 			$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
 			$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
 		} 
-		echo "<tr><td>ID: <a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a></td>
+		
+		$outStr.="<tr><td>ID: <a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a></td>
 <td>".$row['serverID']."</td>
 <td>".$row['original_ID']."</td>		
 <td>$pilotID</td>
@@ -103,21 +125,30 @@ echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilo
 		$k++;
 	}
 	
-	echo "</table>";
+	$outStr.= "</table>";
 	
-	echo "Suggested Mappings: <BR>";
+	$outStr.="Suggested Mappings: <BR>";
 	$j=1;
 	foreach($pilots as $pilotID1=>$pData1) {
 		foreach($pilots as $pilotID2=>$pData2) {
 			if ($pData1['serverID'] > $pData2['serverID'] ) {
 				$div_id=$i.'_'.$j;
-				echo "<div id='map_$div_id'>$j : <a href='javascript:mapPilot(\"map_$div_id\",\"$pilotID1\",\"$pilotID2\")'>$pilotID1 <-> $pilotID2</a> </div>";
+				$outStr.="<div id='map_$div_id'>$j : <a href='javascript:mapPilot(\"map_$div_id\",\"$pilotID1\",\"$pilotID2\")'>$pilotID1 <-> $pilotID2</a>";
+				if ($pilotMappingTable[$pilotID2]==$pilotID1 || $pilotMappingTable[$pilotID1]==$pilotID2 ) {
+					$outStr.= " * ALREADY MAPPED * ";
+				} else { 
+					$output2screen=true;
+				}
+				$outStr.=" </div>";
 				$j++;
 			}
 		}		
 	}
 	//print_r($pilots);
-	echo "<BR><BR>";
+	$outStr.="<BR><BR>";
+	if ($output2screen) {
+		echo $outStr;
+	}
 	$i++;
 }
 echo "</pre>";

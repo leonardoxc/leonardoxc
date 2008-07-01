@@ -122,11 +122,23 @@ class logReplicator {
 			echo("<H3> Error in checkPilot query! $query</H3>\n");
 			return array(0,0);
 		}		
+		
+		// if a mapping exists return the local user instead
+		// we must take care for this case :
+		// 1 : 12_101678 <-> 0_2527
+		// 2 : 12_101678 <-> 5_3219
+		// 3 : 5_3219 <-> 0_2527 
+
+		// if we have 12_101678 and we are on server 1 (pgforum) we must map to 0_2527 instead of 5_3219
+		// if we have 12_101678 and we are on server 10002 (dhv mirror) we must map to 5_3219 instead of 1_2527
+		
 		if (  $row = $db->sql_fetchrow($res) ) {
 			if ($row['userID']) 
 				return array($row['serverID'],$row['userID']);		
 		}
 		
+		
+		// else we insert/update the external pilot
 		$update=1;
 		$pilot=new pilot($serverID,$pilotArray['userID']) ;
 		$pilot->createDirs();

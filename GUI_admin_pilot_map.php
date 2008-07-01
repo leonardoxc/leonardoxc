@@ -34,38 +34,52 @@
 	
 	echo "<pre>";
 	echo "<table>";
-	echo "<tr><td>Flight</td><td>serverID</td><td>orgID</td><td>PilotID</td><td>Pilot</td></tr>\n";
+	echo "<tr><td>#</td><td>Srv</td><td>UserID</td><td>Name</td><td>Srv</td><td>UserID</td><td>Name</td></tr>\n";
+	$i=1;
 	while (	$row = $db->sql_fetchrow($res) ) {
-		$pilotID=$row['userServerID'].'_'.$row['userID'];
-		if ( ! $pilotNames[$pilotID]){
-			$pilotInfo=getPilotInfo($row['userID'],$row['userServerID'] );
-			if (!$CONF_use_utf ) {
-				$NewEncoding = new ConvertCharset;
-				$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
-				$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
-			} else {
-				$lName=$pilotInfo[0];
-				$fName=$pilotInfo[1];
-			}
-			$pilotNames[$pilotID]['lname']=$lName;
-			$pilotNames[$pilotID]['fname']=$fName;
-			$pilotNames[$pilotID]['country']=$pilotInfo[2];
-			$pilotNames[$pilotID]['sex']=$pilotInfo[3];
-			$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
-			$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
-		} 
-		echo "<tr><td>ID: <a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a></td>
-<td>".$row['serverID']."</td>
-<td>".$row['original_ID']."</td>		
-<td>$pilotID</td>
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID'>".$pilotNames[$pilotID]['lname']." ".$pilotNames[$pilotID]['fname']." [ ".$pilotNames[$pilotID]['country']." ] CIVLID: ".$pilotNames[$pilotID]['CIVL_ID']."</td>
+		$pilotID1=$row['serverID'].'_'.$row['userID'];
+		fillPilotInfo($pilotID1,$row['serverID'],$row['userID']);			
+		
+		$pilotID2=$row['remoteServerID'].'_'.$row['remoteUserID'];
+		fillPilotInfo($pilotID2,$row['remoteServerID'],$row['remoteUserID']);
+		
+		echo "<tr><td>$i</td><td>".$row['serverID']."</td>
+			<td>".$row['userID']."</td>
+			
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']."</td>
+			<td>".$row['remoteServerID']."</td>		
+			<td>".$row['remoteUserID']."</td>
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']."</td>
 </tr>
 		\n";
+		$i++;
 	}
 	echo "</table><BR><BR>";
 	echo "</pre>";
 return;
 
+function fillPilotInfo($pilotID,$userServerID,$userID) {
+	global $pilotNames,$CONF_use_utf;
+	
+	if ( ! $pilotNames[$pilotID]){
+		$pilotInfo=getPilotInfo($userID,$userServerID );
+		if (!$CONF_use_utf ) {
+			$NewEncoding = new ConvertCharset;
+			$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+			$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+		} else {
+			$lName=$pilotInfo[0];
+			$fName=$pilotInfo[1];
+		}
+		$pilotNames[$pilotID]['lname']=$lName;
+		$pilotNames[$pilotID]['fname']=$fName;
+		$pilotNames[$pilotID]['country']=$pilotInfo[2];
+		$pilotNames[$pilotID]['sex']=$pilotInfo[3];
+		$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
+		$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
+	} 
+	
+}
 function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
   global $moduleRelPath;
   global $Theme;
