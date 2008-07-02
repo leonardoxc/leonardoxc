@@ -380,6 +380,19 @@ class logReplicator {
 			}
 				$thisCat=$actionData['flight']['info']['cat']+0;
 				
+				
+				// when we get data from leonardo servers, we just ignore these fields 
+				// since they can be computed on the fly
+				$originalURL = htmlDecode($actionData['flight']['linkDisplay']);
+				$originalKML = htmlDecode($actionData['flight']['linkGE']) ;	
+				if ( $actionData['flight']['serverID'] != 0 ) {
+					global $CONF;
+					if ( $CONF['servers']['list'][$actionData['flight']['serverID']]['isLeo'] == 1  ) {
+						$originalURL='';
+						$originalKML='';				
+					}
+				}
+				
 				$argArray=array(
 						"private"	=>$actionData['flight']['info']['private']+0,
 						"cat"		=>$actionData['flight']['info']['gliderCat']+0,
@@ -390,8 +403,8 @@ class logReplicator {
 						"category"	=> ($thisCat>=0?$thisCat:0),
 
 						"dateAdded"		=>$actionData['flight']['dateAdded'],
-						"originalURL"	=>htmlDecode($actionData['flight']['linkDisplay']),
-						"originalKML"	=>htmlDecode($actionData['flight']['linkGE']),
+						"originalURL"	=>$originalURL,
+						"originalKML"	=>$originalKML,
 						"original_ID"	=>$actionData['flight']['id'],
 						"serverID"		=>$actionData['flight']['serverID'],
 						"userServerID"	=>$actionData['flight']['serverID'],

@@ -234,7 +234,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			@unlink($tmpIGCPath);
 			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,0);
 			if (!$log->put()) echo "Problem in logger<BR>";
-//			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['serverID'].'_'.$sameFlightsArray[0]['ID']);
+			//	return  array( ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['serverID'].'_'. $sameFlightsArray[0]['ID']);
 			return array(ADD_FLIGHT_ERR_SAME_DATE_FLIGHT,$sameFlightsArray[0]['ID']);
 		} else {
 			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate DATE/TIME flight will be inserted<br>");
@@ -277,8 +277,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	$sameFlightsArray= $flight->findSameHash( $hash );
 	if (count($sameFlightsArray)>0) {
 		if ( $flight->allowDuplicates ) { // we allow duplicates if they are from another server
-echo "searching in dups ";
-print_r($sameFlightsArray);
+			//echo "searching in dups ";
+			//print_r($sameFlightsArray);
 			$dupFound=0;
 			foreach($sameFlightsArray as $k=>$fArr){
 				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
@@ -287,7 +287,7 @@ print_r($sameFlightsArray);
 			}
 
 		} else {
-echo "no dups allowesd";
+			// echo "no dups allowesd";
 			$dupFound=1;
 		}
 
@@ -300,7 +300,7 @@ echo "no dups allowesd";
 			return array(ADD_FLIGHT_ERR_SAME_HASH_FLIGHT,$sameFlightsArray[0]['ID']);
 		} else {
 			DEBUG("FLIGHT",1,"addFlightFromFile: Duplicate HASH flight will be inserted<br>");
-echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
+			// echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
 		}
 	}
 /*

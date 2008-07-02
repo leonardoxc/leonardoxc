@@ -722,7 +722,7 @@ $extLinkLanguageStr="";
 if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
 
 $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['name'].
-"</i>. <a href='".$flight->originalURL.$extLinkLanguageStr."' target='_blank'>"._Ext_text3."
+"</i>. <a href='".$flight->getOriginalURL().$extLinkLanguageStr."' target='_blank'>"._Ext_text3."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 

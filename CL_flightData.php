@@ -64,6 +64,7 @@ class flight {
 
 	var $originalURL='';
 	var $originalKML='';
+	
 	var $original_ID=0;
 
 	var $originalUserID =0;
@@ -367,9 +368,9 @@ $resStr='{
 	"linkIGC": "'.json::prepStr($this->getIGC_URL()).'",
 	"linkIGCzip": "'.json::prepStr($this->getZippedIGC_URL()).'",
 	"linkDisplay": "'.($isLocal ? 	json::prepStr($this->getFlightLinkURL()): 
-									json::prepStr($this->originalURL) ).'",
+									json::prepStr($this->getOriginalURL()) ).'",
 	"linkGE": "'.($isLocal ? json::prepStr($this->getFlightKML(0)) :
-							 json::prepStr($this->originalKML) ).'",	
+							 json::prepStr($this->getOriginalKML()) ).'",	
 	"isLive": '.$this->isLive.',
 	
 	"info": {
@@ -583,6 +584,37 @@ $resStr='{
 		else $extra_prefix='';
 		return $extra_prefix.$this->userID;
 	}
+	
+	//---------------------------------
+	// external flights
+
+	function getOriginalKML() {
+		if ( $this->serverID  != 0 && ! $this->originalURL) {
+			global $CONF;
+			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] ==1  ) {
+			 	if (! $this->originalKML )  {				
+					$this->originalKML='http://'.$CONF['servers']['list'][$this->serverID]['url_base'].
+										'/download.php?type=kml_trk&flightID='.$this->original_ID;
+				}
+			
+			}
+		}
+		return $this->originalKML;
+	}
+
+	function getOriginalURL() {
+		if ( $this->serverID  != 0 && ! $this->originalURL) {
+			global $CONF;
+			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] ==1  ) {
+			 	if (! $this->originalURL )  {
+					$this->originalURL='http://'.$CONF['servers']['list'][$this->serverID]['url'].
+										'&op=show_flight&flightID='.$this->original_ID;
+				}
+			}
+		}
+		return $this->originalURL;
+	}
+	
 	// ---------------------------------
 	// Relative (web) paths
 	// ---------------------------------
@@ -3062,6 +3094,13 @@ $kml_file_contents=
 //		$this->olcDateSubmited =$row["olcDateSubmited"];
 //to be deleted END
 
+
+		// now recompute the 
+		// $this->originalURL
+		// $this->originalKML		
+		$this->getOriginalKML();
+		$this->getOriginalURL();
+		
 	  	$db->sql_freeresult($res);
 		if ($this->filename && $updateTakeoff) $this->updateTakeoffLanding();
 		return 1;	
@@ -3313,6 +3352,18 @@ $kml_file_contents=
 		}
 	*/
 		
+		// we dont store $originalURL $originalKML. for leonardo originated flights...
+		
+		$originalURL = $this->originalURL ;
+		$originalKML = $this->originalKML ;	
+		if ( $this->serverID != 0 ) {
+			global $CONF;
+			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] == 1  ) {
+				$originalURL='';
+				$originalKML='';				
+			}
+		}
+		
 		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
 		cat,subcat,category,active, private ,
@@ -3355,7 +3406,7 @@ $kml_file_contents=
 		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
-		'$this->hash',  $this->serverID, '$this->originalURL', '$this->originalKML',  $this->original_ID, 
+		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID, 
 		$this->originalUserID , $this->userServerID,
 		$this->excludeFrom,
 

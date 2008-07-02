@@ -460,7 +460,7 @@ if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr=
 
 
 $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['name'].
-"</i>. <a href='".$flight->originalURL.$extLinkLanguageStr."' target='_blank'>"._Ext_text2."
+"</i>. <a href='".$flight->getOriginalURL().$extLinkLanguageStr."' target='_blank'>"._Ext_text2."
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 
@@ -485,7 +485,7 @@ $Ltemplate->assign_vars(array(
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
-	'geLink'=>$flight->originalKML,
+	'geLink'=>$flight->getOriginalKML(),
 
 	'linkToInfoHdr1'=>$linkToInfoHdr1,
 	'linkToInfoHdr2'=>$linkToInfoHdr2,

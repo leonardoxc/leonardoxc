@@ -299,3 +299,9 @@ UPDATE `leonardo_flights` SET dateUpdated=dateAdded;
 
 #2008/07/01
 ALTER TABLE `leonardo_remote_pilots` ADD PRIMARY KEY ( `remoteServerID` , `remoteUserID` , `serverID` , `userID` );
+
+
+#2008/07/02
+# delete unused fields , leonardo servers have a uniform way to access flights and KML
+update  `leonardo_flights`  set `originalURL`='' , `originalKML`='' WHERE `serverID`<>8
+

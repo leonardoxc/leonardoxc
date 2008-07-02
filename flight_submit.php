@@ -101,7 +101,11 @@
 	else if ($klasse==4) { $cat=1 ;  $category=1; } // pg sport
 	else if ($klasse==5) { $cat=1 ;  $category=3; } // pg tandem
 
-	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	array('category'=>$category,'cat'=>$cat ) ) ;
+	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
+		array('category'=>$category,
+				'cat'=>$cat,
+				'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) 
+				 ) ) ;
 
 	if ($errCode!=1) {
 		echo "problem<br>";
