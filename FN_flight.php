@@ -166,11 +166,23 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	// if no brand was given , try to detect
 	$flight->checkGliderBrand();
 
-	// check for mac newlines
+	//  we must cope with some cases here
+	//  1. more flights in the igc
+	//  2. garmin saved paths -> zero time difference -> SOLVED!
+
+	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) {
+		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
+		if (!$log->put()) echo "Problem in logger<BR>";
+		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
+	}
+
+	// Compute hash now
 	$lines=file($tmpIGCPath);
 	$hash=md5( implode('',$lines)  );
 	$flight->hash=$hash;
-
+	unset($lines);
+	
+	// check for mac newlines -> NOT USED NOW
 	// we now use auto_detect_line_endings=true;
 /*
 	if ( count ($lines)==1) {
@@ -188,19 +200,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		} 
 	}
 */
-	
 
-	unset($lines);
 
-	//  we must cope with some cases here
-	//  1. more flights in the igc
-	//  2. garmin saved paths -> zero time difference -> SOLVED!
-
-	if ( ! $flight->getFlightFromIGC( $tmpIGCPath ) ) {
-		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
-		if (!$log->put()) echo "Problem in logger<BR>";
-		return array(ADD_FLIGHT_ERR_THIS_ISNT_A_VALID_IGC_FILE,0);
-	}
 
 	// echo $flight->DATE	." >  ". date("Y-m-d",time()+3600*10) ."<BR>";
 	// check for dates in the furure

@@ -39,7 +39,7 @@
 		foreach($_POST as $varName=>$varValue) {
 			echo "$varName => $varValue<BR>";
 		}
-		exit;
+		 exit;
 	}	
 
 	$user=str_replace("\\'", "''", $_POST['user'] );
@@ -104,15 +104,16 @@
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,
 				'cat'=>$cat,
-				'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) 
+				// 'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) 
+				'allowDuplicates'=>1 ,
 				 ) ) ;
 
 	if ($errCode!=1) {
 		echo "problem<br>";
 		echo getAddFlightErrMsg($errCode,$flightID);
 	} else {
-		echo "response=$flightID<br>";
-		echo "flight scored<br>";
+		// echo "response=$flightID<br>";
+		echo _YOUR_FLIGHT_HAS_BEEN_SUBMITTED."<br><br><a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=$flightID'>"._PRESS_HERE_TO_VIEW_IT.'</a>';
 
 	}
     // DEBUG_END();

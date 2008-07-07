@@ -1934,6 +1934,9 @@ $kml_file_contents=
 					}
 					$km_triangle=($u-$d)/1000;
 					$score_triangle=$km_triangle*$factor1;
+				} else { // no triangle
+					$km_triangle=0;
+					$score_triangle=0;				
 				}
 					
 				//now for straight distance				
@@ -1956,7 +1959,7 @@ $kml_file_contents=
 				// check if $mindist>0 and  the triangle km are < $mindist, then we check
 				// if the straight distance km are > $mindist and use that instead	
 				if ($km_triangle<$mindist) {
-					if ($km_straight>=$mindist) $str.="$km_straight\n$score_straight\n$factor\n";
+					if ($km_straight>=$mindist || $km_triangle==0) $str.="$km_straight\n$score_straight\n$factor\n";
 					else $str.="$km_triangle\n$score_triangle\n$factor1\n";
 				} else {				
 					if ($score_triangle>=$score_straight) 
@@ -2500,51 +2503,10 @@ $kml_file_contents=
 		global $baseInstallationPath,$CONF_allow_olc_files,$CONF,$CONF_server_id;
 
 		if (! $scoringServerActive) return 0;
-		$manualScore=0;
-		
-		if ($CONF_allow_olc_files) {
-			// see if there is an OLC file present
-			$OLCfilename=$this->getIGCFilename().".olc";
-	
-			if (file_exists($OLCfilename) ) { 
-				DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
-			
-				$lines=file($OLCfilename);
-	/*
-	4624328N00805128E
-	4632522N00819212E
-	4617978N00733326E
-	4609910N00755225E
-	4609910N00755225E
-	118.68765887809
-	207.70340303666
-	1.75
-	*/
-				$this->FLIGHT_KM=$lines[5]*1000;
-				$this->FLIGHT_POINTS=$lines[6]+0;
-				$factor=$lines[7]+0;
-				if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
-				if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
-				if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
-				
-				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_KM: ".$this->FLIGHT_KM."<BR>");
-				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_POINTS: ".$this->FLIGHT_POINTS."<BR>");
-				DEBUG('OLC_SCORE',1,"MANUAL BEST_FLIGHT_TYPE: ".$this->BEST_FLIGHT_TYPE."<BR>");
-				for($i=0;$i<5;$i++) {				
-				    //              01234567890123456
-					// must convert 4624328N00805128E to N54:54.097 W02:40.375 
-					$str=substr($lines[$i],7,1) .substr($lines[$i],0,2).':'.substr($lines[$i],2,2).'.'.substr($lines[$i],4,3).' '.
-						 substr($lines[$i],16,1).substr($lines[$i],8,3).':'.substr($lines[$i],11,2).'.'.substr($lines[$i],13,3);
-					DEBUG('OLC_SCORE',1,"MANUAL TurnPoint ".($i+1).": $str<BR>");
-					$this->{'turnpoint'.($i+1)}=$str;				
-				}
-				$manualScore=1;
-			}
-		}
 				
 		set_time_limit (240);	
 		
-		// so some basic check for saned igc file
+		// do some basic check for saned igc file
 		if (!is_file($this->getIGCFilename(1) ) ) {
 			// we have to create it 
 			DEBUG('OLC_SCORE',1,"Saned file is missing for flight: ".$this->flightID.", we will create it<BR>");
@@ -2599,6 +2561,94 @@ $kml_file_contents=
 		// make a second pass 
 		// $flightScore->computeSecondPass($this->getIGCFilename());
 
+		// now is the time to search for the OLC files, manually optimization
+		// and 'inject' these values into the $flightScore object 
+		$manualScore=0;
+		
+		if ($CONF_allow_olc_files) {
+			// see if there is an OLC file present
+			$OLCfilename=$this->getIGCFilename().".olc";
+	
+			if (file_exists($OLCfilename) ) { 
+				DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
+			
+				$lines=file($OLCfilename);
+	/*
+	4624328N00805128E
+	4632522N00819212E
+	4617978N00733326E
+	4609910N00755225E
+	4609910N00755225E
+	118.68765887809
+	207.70340303666
+	1.75
+	*/
+				$this->FLIGHT_KM=$lines[5]*1000;
+				$this->FLIGHT_POINTS=$lines[6]+0;
+
+				//$manualScoreInfo['FLIGHT_KM']=$lines[5]*1000;
+				//$manualScoreInfo['FLIGHT_POINTS']=$lines[6]+0;
+				
+				$factor=$lines[7]+0;
+				if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
+				if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
+				if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
+				
+				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_KM: ".$this->FLIGHT_KM."<BR>");
+				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_POINTS: ".$this->FLIGHT_POINTS."<BR>");
+				DEBUG('OLC_SCORE',1,"MANUAL BEST_FLIGHT_TYPE: ".$this->BEST_FLIGHT_TYPE."<BR>");
+				
+				$manualScoreTP=array();
+				for($i=0;$i<5;$i++) {				
+				    //              01234567890123456
+					// must convert 4624328N00805128E to N54:54.097 W02:40.375 
+					$str=substr($lines[$i],7,1) .substr($lines[$i],0,2).':'.substr($lines[$i],2,2).'.'.substr($lines[$i],4,3).' '.
+						 substr($lines[$i],16,1).substr($lines[$i],8,3).':'.substr($lines[$i],11,2).'.'.substr($lines[$i],13,3);
+					DEBUG('OLC_SCORE',1,"MANUAL TurnPoint ".($i+1).": $str<BR>");
+					// $manualScoreTP[$i+1]=$str;	
+					$manualScoreTP[$i+1]=sprintf("B%02d%02d%02d%sA0000000000",00,00,00,$lines[$i]);
+						
+				}
+				
+				$defaultMethodID= $CONF['scoring']['default_set'];
+				$defaultScore=$flightScore->scores[$defaultMethodID];
+				$this->autoScore=$defaultScore['bestScore'];
+				//echo "<pre>";			
+				//print_r($flightScore->scores);
+				//echo "</pre>";
+				
+				foreach ( $flightScore->scores as $methodID=>$scoreForMethod) {
+					$distance=$this->FLIGHT_KM/1000;
+					$flightScore->scores[$methodID][$this->BEST_FLIGHT_TYPE]['distance']=$distance;
+					$flightScore->scores[$methodID][$this->BEST_FLIGHT_TYPE]['score']=
+							$distance * $CONF['scoring']['sets'][$methodID]['types'][$this->BEST_FLIGHT_TYPE] ;
+					for($j=1;$j<=5;$j++) {
+						$flightScore->scores[$methodID][$this->BEST_FLIGHT_TYPE]['tp'][$j]=$manualScoreTP[$j];
+					}
+					
+					// update the best score, in case we have a new bestScoreType
+					foreach($flightScore->scores[$methodID] as $scoreType=>$scoreDetails ) {
+						//echo "<h1>$scoreType</h1>";
+						if (!is_array($scoreDetails) ) { continue; }
+						//echo $scoreDetails['score']." > ".$scoreForMethod['bestScore']." <BR>";
+						if ($scoreDetails['score'] > $scoreForMethod['bestScore'] ) {
+							//echo "FOUND BETTER SCORE !!!!!!!!!<BR><BR>";
+							$flightScore->scores[$methodID]['bestScore']=$scoreDetails['score'];
+							$flightScore->scores[$methodID]['bestScoreType']=$this->BEST_FLIGHT_TYPE;	
+							$flightScore->scores[$methodID]['bestDistance']=$scoreDetails['distance'];	
+							
+						}
+					}			
+				}					
+				//echo "<pre>";
+				//print_r($flightScore->scores);
+				//echo "</pre>";	
+							 
+				$manualScore=1;								
+				
+			}
+		}
+
 		//put also in scores table, the flight is sure to be present in flights table
 		$flightScore->putToDB(1,1);
 
@@ -2606,10 +2656,13 @@ $kml_file_contents=
 		$defaultScore=$flightScore->scores[$defaultMethodID];
 		
 		$this->MAX_LINEAR_DISTANCE=$flightScore->MAX_LINEAR_DISTANCE;
-		$this->BEST_FLIGHT_TYPE	=$defaultScore['bestScoreType'];
-		$this->FLIGHT_POINTS	=$defaultScore['bestScore'];
-		$this->FLIGHT_KM		=$defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000;
-
+		if ($manualScore) {
+			// $this->autoScore=$defaultScore['bestScore'];
+		} else {
+			$this->BEST_FLIGHT_TYPE	=$defaultScore['bestScoreType'];
+			$this->FLIGHT_POINTS	=$defaultScore['bestScore'];
+			$this->FLIGHT_KM		=$defaultScore[ $defaultScore['bestScoreType'] ]['distance']*1000;
+		}
 
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();

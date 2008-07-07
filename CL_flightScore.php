@@ -297,7 +297,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 		$results=$this->getScore( $tmpFile,1  );		
 		$this->parseScore($results);
-		//@unlink($tmpFile);
+		@unlink($tmpFile);
 
 	}
 
