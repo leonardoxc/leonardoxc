@@ -262,7 +262,10 @@ function setValue(obj)
 		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,
 				array('gliderBrandID'=>$gliderBrandID,'private'=>$is_private,
 					  '$linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider,'category'=>$category,'cat'=>$gliderCat ,
-					'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0)   ) 
+					//	'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) ,
+						'allowDuplicates'=>1, // we always allow duplicates when locally submitted. (will take over eternal flights) 
+					
+					  ) 
 				) ;
 		
 	}

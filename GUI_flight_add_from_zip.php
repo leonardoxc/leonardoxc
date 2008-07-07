@@ -201,7 +201,8 @@ function setValue(obj)
 
 			$alreadyValidatedInPage=0;
 			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
-								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,'glider'=>$glider,'category'=>$category) 
+								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,
+										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ) 
 			) ;
 			 
 			 if ($res==1) { 
