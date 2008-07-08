@@ -3717,11 +3717,31 @@ foreach ($data_time as $i=>$tm) {
 
 		$graph->Stroke($img_filename);
 	}
-
-	function findSameFlightID() {
+	
+	function findSameFilename($filename) {
 		global $db;
 		global $flightsTable;
-		$query="SELECT serverID,ID FROM $flightsTable WHERE userID=".$this->userID." AND DATE='".$this->DATE."'  AND START_TIME=".$this->START_TIME." ";
+		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->userID." AND userServerID=".$this->userServerID.
+						" AND filename=\"".$filename."\" ";
+		// echo $query;
+		$res= $db->sql_query($query);
+		if ($res<=0) return 0; // no duplicate found
+
+		$row = $db->sql_fetchrow($res);
+		return $row["ID"]; // found duplicate retrun the ID; 
+	}
+	
+	function findSameTime() {
+		global $db;
+		global $flightsTable;
+		$query="SELECT serverID,ID FROM $flightsTable WHERE userID=".$this->userID." AND userServerID=".$this->userServerID.
+					"AND DATE='".$this->DATE."'  AND  
+						( 
+							( ".$this->START_TIME." >= START_TIME AND ".$this->START_TIME." <= END_TIME )  
+							OR 
+							( ".$this->END_TIME." >= START_TIME AND ".$this->END_TIME." <= END_TIME )  							
+						)
+							";
 		$res= $db->sql_query($query);
 		if ($res<=0) return array(); // no duplicate found		
 
@@ -3736,18 +3756,6 @@ foreach ($data_time as $i=>$tm) {
 
 	}
 
-	function findSameFilename($filename) {
-		global $db;
-		global $flightsTable;
-		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->userID." AND filename=\"".$filename."\" ";
-		// echo $query;
-		$res= $db->sql_query($query);
-		if ($res<=0) return 0; // no duplicate found
-
-		$row = $db->sql_fetchrow($res);
-		return $row["ID"]; // found duplicate retrun the ID; 
-	}
-
 	function findSameHash($hash,$serverIDtoCheck=0 ) {
 		global $db;
 		global $flightsTable;
@@ -3755,7 +3763,7 @@ foreach ($data_time as $i=>$tm) {
 		$where_clause='';
 		if ($serverIDtoCheck) $where_clause=" AND serverID=$serverIDtoCheck ";
 		
-		$query="SELECT serverID,ID FROM $flightsTable WHERE hash='$hash' $where_clause ";
+		$query="SELECT serverID,ID,userID,userServerID FROM $flightsTable WHERE hash='$hash' $where_clause ";
 		// echo $query;
 		$res= $db->sql_query($query);
 		if ($res<=0) return array(); // no duplicate found
@@ -3765,12 +3773,63 @@ foreach ($data_time as $i=>$tm) {
 		while  ( $row = $db->sql_fetchrow($res) ) {
 			$dup[$i]['ID']=$row["ID"];
 			$dup[$i]['serverID']=$row["serverID"];
+			$dup[$i]['userServerID']=$row["userServerID"];
+			$dup[$i]['userID']=$row["userID"];			 
 			$i++;
 		}
 		return $dup; // found duplicate return the array of IDs; 
 
 	}
 
+	function hideSameFlights() {
+		// now is a good time to disable duplicate flights we have found from other servers
+		// AND are from the same user (using pilot's mapping table to find that out)
+		global $db,$flightsTable;
+				
+		$query="SELECT serverID,ID FROM $flightsTable 
+					WHERE hash='".$this->hash."' AND userID=".$this->userID." AND userServerID=".$this->userServerID.
+					" ORDER BY serverID ASC, ID ASC";
+		// echo $query;
+		$res= $db->sql_query($query);
+		if ($res<=0) return array(); // no duplicate found
+
+		$i=0;
+		$disableFlightsList=array();
+		$enableFlightsList=array();
+		
+		while  ( $row = $db->sql_fetchrow($res) ) {
+			if ( $row['serverID'] == 0 )  {
+				$enableFlightsList[$row["ID"]]++;
+			} else if ( count($enableFlightsList) == 0  && $i==0 )  {
+				$enableFlightsList[$row["ID"]]++;
+			} else  {
+				$disableFlightsList[$row["ID"]]++;
+			}	
+			$i++;	
+		}
+	
+		//print_r($disableFlightsList);
+		//echo "#";
+		//print_r($enableFlightsList);
+		
+		foreach ($disableFlightsList as $dFlightID=>$num) {
+			$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
+			$res= $db->sql_query($query);	
+			# Error checking
+			if($res <= 0){
+				echo("<H3> Error in query: $query</H3>\n");
+			}
+		}
+		foreach ($enableFlightsList as $dFlightID=>$num) {
+			$query="UPDATE $flightsTable SET private = private & (~0x02 & 0xff ) WHERE  ID=$dFlightID ";
+			$res= $db->sql_query($query);	
+			# Error checking
+			if($res <= 0){
+				echo("<H3> Error in query: $query</H3>\n");
+			}
+		}
+	}
+	
 	function getOLCpilotData() {
 		global $db;
 		global $pilotsTable;
@@ -3843,6 +3902,7 @@ foreach ($data_time as $i=>$tm) {
 			}
 		}
 
+		//	this is old code, does not work nay more!
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";			
 			$file=$this->$var_name;
@@ -3865,7 +3925,11 @@ foreach ($data_time as $i=>$tm) {
 
 		$this->userID=$newUserID;
 		$this->userServerID=$newUserServerID;
+		
 		$this->putFlightToDB(1);
+
+		// take care of same flights (hide /unhide)
+		$this->hideSameFlights();		
 
 	}
 

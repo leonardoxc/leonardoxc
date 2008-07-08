@@ -613,6 +613,9 @@ class logReplicator {
 						// insert flight
 						$extFlight->putFlightToDB(0);
 						
+						// take care of sme flights (hide /unhide)
+						$extFlight->hideSameFlights();
+						
 						if ($getScoreData && $getScoreDataExtra) {
 							$flightScore->flightID=$extFlight->flightID;
 							$flightScore->putToDB(1,1);

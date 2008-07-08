@@ -36,7 +36,7 @@ class pilot{
 
 	function pilotExists() {
 		global $db,$pilotsTable;
-		$query="SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
+		$query="SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".($this->serverID+0) ;
 		$res= $db->sql_query($query);
   		if($res <= 0){   
 			 echo "Error in pilotExists() $query<BR>";
@@ -51,8 +51,8 @@ class pilot{
 		// first see if a mapping exists
 		
 		$query="SELECT * FROM $remotePilotsTable  
-				WHERE	( serverID=".$this->serverID." AND userID=".$this->pilotID ." ) OR 
-						( remoteServerID=".$this->serverID." AND remoteUserID=".$this->pilotID. " ) ";
+				WHERE	( serverID=".($this->serverID+0)." AND userID=".$this->pilotID ." ) OR 
+						( remoteServerID=".($this->serverID+0)." AND remoteUserID=".$this->pilotID. " ) ";
 		
 		$res= $db->sql_query($query);		
 		if($res <= 0){
@@ -63,6 +63,10 @@ class pilot{
 		$i=0;
 		$map=array();
 		while (  $row = $db->sql_fetchrow($res) ) {	
+			$map[ $row['remoteServerID'] ][ $row['remoteUserID'] ] ++;
+			$map[ $row['serverID'] ][ $row['userID'] ] ++;
+
+			/*			
 			if ($this->serverID==$row['serverID']  && $this->pilotID==$row['userID']) {
 				$map[$i]['serverID']=$row['remoteServerID'];
 				$map[$i]['userID']=$row['remoteUserID'];			
@@ -70,6 +74,7 @@ class pilot{
 				$map[$i]['serverID']=$row['serverID'];
 				$map[$i]['userID']=$row['userID'];
 			}				
+			*/
 			$i++;
 		}
 		

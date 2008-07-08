@@ -15,6 +15,7 @@ require_once dirname(__FILE__).'/FN_functions.php';
 require_once dirname(__FILE__).'/FN_output.php';
 require_once dirname(__FILE__).'/CL_flightData.php';
 require_once dirname(__FILE__).'/CL_image.php';
+require_once dirname(__FILE__).'/CL_pilot.php';
 
 define("ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE",-1);
 define("ADD_FLIGHT_ERR_NO_SUCH_FILE",-2);
@@ -214,8 +215,42 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		if (!$log->put()) echo "Problem in logger<BR>";
 		return array(ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE,0);	
 	}
-
-	$sameFlightsArray= $flight->findSameFlightID();
+	
+	
+	// Two week time limit check - P.Wild
+	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
+	if ($CONF_new_flights_submit_window>0) {
+		if (! isModerator($userID) ) {
+			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
+				@unlink($flight->getIGCFilename(1));
+				@unlink($tmpIGCPath.".olc");
+				@unlink($tmpIGCPath);
+				$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
+				if (!$log->put()) echo "Problem in logger<BR>";
+				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
+			}
+		}
+	}
+	// end martin / peter
+	
+	
+	$sameFilenameID=$flight->findSameFilename( basename($filename) );
+	if ($sameFilenameID>0) 	 {
+		if ( $flight->allowDuplicates ) {
+			while ( is_file($flight->getIGCFilename()) ) {
+				$flight->filename='_'.$flight->filename;
+			}
+		} else {
+			@unlink($flight->getIGCFilename(1));
+			@unlink($tmpIGCPath.".olc");
+			@unlink($tmpIGCPath);
+			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,0);
+			if (!$log->put()) echo "Problem in logger<BR>";
+			return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
+		}
+	}
+	
+	$sameFlightsArray= $flight->findSameTime();
 	if (count($sameFlightsArray)>0) {
 
 		if ( $flight->allowDuplicates ) { // we allow duplicates if they are from another server
@@ -223,6 +258,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			foreach($sameFlightsArray as $k=>$fArr){
 				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
 					$dupFound=1;
+					break;
 				} else { // fill in ids of flights to 'disable'
 					$disableFlightsList[$fArr['ID']]++;
 				}
@@ -246,49 +282,31 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		}
 	}
 
-	$sameFilenameID=$flight->findSameFilename( basename($filename) );
-	if ($sameFilenameID>0) 	 {
-		if ( $flight->allowDuplicates ) {
-			while ( is_file($flight->getIGCFilename()) ) {
-				$flight->filename='_'.$flight->filename;
-			}
-		} else {
-			@unlink($flight->getIGCFilename(1));
-			@unlink($tmpIGCPath.".olc");
-			@unlink($tmpIGCPath);
-			$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,0);
-			if (!$log->put()) echo "Problem in logger<BR>";
-			return array(ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT,$sameFilenameID);	
-		}
-	}
-
-	// Two week time limit check - P.Wild
-	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
-	if ($CONF_new_flights_submit_window>0) {
-		if (! isModerator($userID) ) {
-			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
-				@unlink($flight->getIGCFilename(1));
-				@unlink($tmpIGCPath.".olc");
-				@unlink($tmpIGCPath);
-				$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
-				if (!$log->put()) echo "Problem in logger<BR>";
-				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
-			}
-		}
-	}
-	// end martin / peter
-
-
 	$sameFlightsArray= $flight->findSameHash( $hash );
 	if (count($sameFlightsArray)>0) {
 		if ( $flight->allowDuplicates ) { // we allow duplicates if they are from another server
 			//echo "searching in dups ";
 			//print_r($sameFlightsArray);
 			$dupFound=0;
+			
+			$flightPilot= new pilot($flight->userServerID+0,$flight->userID+0); 
+			$flightPilotMapTable=$flightPilot->pilotMapping();
+			// print_r($flightPilotMapTable);
+			
 			foreach($sameFlightsArray as $k=>$fArr){
-				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
+				if ($fArr['serverID'] == $flight->serverID )  {// if a same flight from this server is present we dont re-insert
 					$dupFound=1;
-				} else { // fill in ids of flights to 'disable'
+					break;
+				} else { 
+					// check that the existing flight belongs to a pilot that is 'mapped' to 
+					// $flight->userID + $flight->userServerID
+					if ( ! $flightPilotMapTable[ $fArr['userServerID'] ][ $fArr['userID'] ] ) {
+						DEBUG("FLIGHT",1,"addFlightFromFile: Same hash from external Server BUT from the pilot was not mapped into local <br>");
+						$dupFound=1;
+						break;
+					}
+					
+					// fill in ids of flights to 'disable'					
 					$disableFlightsList[$fArr['ID']]++;
 				}
 			}
@@ -326,6 +344,10 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	}
 */
 
+	//******************************************************
+	// PASSED ALL TESTS , NOW DO SOME WORK WITH OUR FLIGHT
+	//******************************************************
+	
 	// move the flight to corresponding year
 	$yearPath=$flightsAbsPath."/".$userIDstr."/flights/".$flight->getYear(); 
 	$maps_dir=$flightsAbsPath."/".$userIDstr."/maps/".$flight->getYear();
@@ -413,16 +435,22 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		}  
     } // took care of photos
 
-	//now is a good time to disable flights we have found from other servers
+	// now is a good time to disable duplicate flights we have found from other servers
+	// AND are from the same user (using pilot's mapping table to find that out)
 	global $db;
-	foreach ($disableFlightsList as $dFlightID=>$num) {
-		$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
-		$res= $db->sql_query($query);	
-	  	# Error checking
-	  	if($res <= 0){
-			echo("<H3> Error in query: $query</H3>\n");
-	  	}
-	}
+	if (0) {
+		foreach ($disableFlightsList as $dFlightID=>$num) {
+			$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
+			$res= $db->sql_query($query);	
+			# Error checking
+			if($res <= 0){
+				echo("<H3> Error in query: $query</H3>\n");
+			}
+		}
+	}	
+	//or 
+	$flight->hideSameFlights();
+	
 	
 	set_time_limit (200);
 	$flight->computeScore();
