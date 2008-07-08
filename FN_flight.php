@@ -90,6 +90,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
 	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ,$CONF_server_id;
 	global $userID;
+	global $flightsTable;
 
 	set_time_limit (120);
 
@@ -222,7 +223,10 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			foreach($sameFlightsArray as $k=>$fArr){
 				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
 					$dupFound=1;
+				} else { // fill in ids of flights to 'disable'
+					$disableFlightsList[$fArr['ID']]++;
 				}
+
 			}
 
 		} else {
@@ -284,6 +288,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			foreach($sameFlightsArray as $k=>$fArr){
 				if ($fArr['serverID']==$flight->serverID)  {// if a same flight from this server is present we dont re-insert
 					$dupFound=1;
+				} else { // fill in ids of flights to 'disable'
+					$disableFlightsList[$fArr['ID']]++;
 				}
 			}
 
@@ -304,6 +310,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			// echo "addFlightFromFile: Duplicate HASH flight will be inserted<br>";
 		}
 	}
+	
+	// print_r($disableFlightsList);
 /*
 	if ( ! $flight->allowDuplicates ) {
 		$sameHashIDArray=$flight->findSameHash( $hash );
@@ -404,6 +412,17 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			}
 		}  
     } // took care of photos
+
+	//now is a good time to disable flights we have found from other servers
+	global $db;
+	foreach ($disableFlightsList as $dFlightID=>$num) {
+		$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
+		$res= $db->sql_query($query);	
+	  	# Error checking
+	  	if($res <= 0){
+			echo("<H3> Error in query: $query</H3>\n");
+	  	}
+	}
 	
 	set_time_limit (200);
 	$flight->computeScore();
