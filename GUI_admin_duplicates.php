@@ -46,8 +46,10 @@ function mapPilot(divID,pilotID1,pilotID2) {
 	while (	$row = $db->sql_fetchrow($res) ) {
 		$pilotID1=$row['serverID'].'_'.$row['userID'];
 		$pilotID2=$row['remoteServerID'].'_'.$row['remoteUserID'];
-		$pilotMappingTable[$pilotID1]=$pilotID2;
-		$pilotMappingTable[$pilotID2]=$pilotID1;
+		// only remote -> local 
+		//$pilotMappingTable[$pilotID1]=$pilotID2;
+		
+		$pilotMappingTable[$pilotID2][$pilotID1]++;
 	}		
   
 	$compareField='hash';
@@ -134,7 +136,7 @@ while ($row0 = $db->sql_fetchrow($res0)) {
 			if ($pData1['serverID'] > $pData2['serverID'] ) {
 				$div_id=$i.'_'.$j;
 				$outStr.="<div id='map_$div_id'>$j : <a href='javascript:mapPilot(\"map_$div_id\",\"$pilotID1\",\"$pilotID2\")'>$pilotID1 <-> $pilotID2</a>";
-				if ($pilotMappingTable[$pilotID2]==$pilotID1 || $pilotMappingTable[$pilotID1]==$pilotID2 ) {
+				if ($pilotMappingTable[$pilotID2][$pilotID1] || $pilotMappingTable[$pilotID1][$pilotID2] ) {
 					$outStr.= " * ALREADY MAPPED * ";
 				} else { 
 					$output2screen=true;

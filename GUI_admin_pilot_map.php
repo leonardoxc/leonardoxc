@@ -13,13 +13,65 @@
  
   if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
+  
+	if ($_GET['moveFlights']) {
+		echo "MOVING ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID<BR><BR>";
+	
+		$compareField='hash';
+	
+		$query="SELECT * , $remotePilotsTable.userID as localUserID, $remotePilotsTable.serverID as localServerID FROM $remotePilotsTable , $flightsTable WHERE 
+					 $flightsTable.userID = $remotePilotsTable.remoteUserID AND 
+					  $flightsTable.userServerID = $remotePilotsTable.remoteServerID  AND 
+					  $remotePilotsTable.serverID  = 0
+					  
+					ORDER BY remoteServerID ASC";
+		 // echo "#count query#$query<BR>";
+		$res= $db->sql_query($query);
+		if($res <= 0){   
+		 echo("<H3> Error in query: $query</H3>\n");
+		 exit();
+		}	
+
+		echo "<pre>";
+		echo "<table>";
+		echo "<tr><td>#</td><td>FlightID</td><td>user</td><td>Name</td><td>localUser</td><td>Name</td></tr>\n";
+		$i=1;
+		while (	$row = $db->sql_fetchrow($res) ) {
+			
+			$pilotID1=$row['serverID'].'_'.$row['userID'];
+			fillPilotInfo($pilotID1,$row['serverID'],$row['userID']);			
+		
+			$pilotID2=$row['localServerID'].'_'.$row['localUserID'];
+			fillPilotInfo($pilotID2,$row['localServerID'],$row['localUserID']);
+					
+			echo "<tr><td>$i</td>
+				<td><a href='".CONF_MODULE_ARG."&op=flight_show&flightID=".$row['ID']."'>".$row['ID']."</a></td>
+				<td>".$pilotID1."</td>
+			
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']."</td>
+			<td>".$pilotID2."</td>		
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']."</td>
+</tr>
+		\n";
+		
+			// move the flight from one pilot to another:
+			
+			
+			$i++;
+		
+		}		
+		echo "</table><BR><BR>";
+		echo "</pre>";
+		return;
+	}
+  
 	$compareField='hash';
 
 	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID ASC";
 	 // echo "#count query#$query<BR>";
 	$res= $db->sql_query($query);
 	if($res <= 0){   
-	 echo("<H3> Error in count items query! $query0</H3>\n");
+	 echo("<H3> Error in query: $query</H3>\n");
 	 exit();
 	}	
 	
@@ -31,6 +83,8 @@
 	<div class='titleDiv'>$legend</div>
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
+
+	echo "<BR><a href='".CONF_MODULE_ARG."&op=admin_pilot_map&moveFlights=1'>PRESS HERE TO MOVE ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID</a>";
 	
 	echo "<pre>";
 	echo "<table>";

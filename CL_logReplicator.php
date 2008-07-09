@@ -116,7 +116,7 @@ class logReplicator {
 
 
 		// first see if a mapping exists	
-		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID'];	
+		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID']. " ORDER BY serverID ASC" ;	
 		$res= $db->sql_query($query);		
 		if($res <= 0){
 			echo("<H3> Error in checkPilot query! $query</H3>\n");
