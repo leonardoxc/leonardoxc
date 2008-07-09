@@ -10,20 +10,36 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 //************************************************************************/
+
+ //test of pilot priority mapping
+ /* 
+ 	require_once dirname(__FILE__).'/CL_logReplicator.php';
+	 logReplicator::checkPilot(12,array(userID=>101678));
+	exit; 
+ */
  
   if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
   
-  
+
 	if ($_GET['moveFlights']) {
+		$confirmMove=$_GET['confirmMoveFlights']+0;
 		echo "MOVING ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID<BR><BR>";
 	
+		if (!$confirmMove) {
+			echo "The listing below is what will be moved. <a href='".CONF_MODULE_ARG."&op=admin_pilot_map&moveFlights=1&confirmMoveFlights=1'>***PRESS HERE TO CONFIRM ***</a><BR><BR>\n";
+		}
+		
 		$compareField='hash';
-	
+		if (1) {
+			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  = 0 ";
+		} else {
+			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  <> 0 ";
+		}
+		
 		$query="SELECT * , $remotePilotsTable.userID as localUserID, $remotePilotsTable.serverID as localServerID FROM $remotePilotsTable , $flightsTable WHERE 
 					 $flightsTable.userID = $remotePilotsTable.remoteUserID AND 
-					  $flightsTable.userServerID = $remotePilotsTable.remoteServerID  AND 
-					  $remotePilotsTable.serverID  = 0
-					  
+					  $flightsTable.userServerID = $remotePilotsTable.remoteServerID  
+					  $localServerOnlyClause
 					ORDER BY remoteServerID ASC";
 		 // echo "#count query#$query<BR>";
 		$res= $db->sql_query($query);
@@ -55,7 +71,11 @@
 		\n";
 		
 			// move the flight from one pilot to another:
-			
+			if ($confirmMove) {
+				$flight2move=new flight();
+				$flight2move->getFlightFromDB($row['ID']);
+				$flight2move->changeUser($row['localUserID'],$row['localServerID']);
+			}
 			
 			$i++;
 		

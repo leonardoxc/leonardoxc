@@ -2,6 +2,11 @@
 
 $CONF['servers']['syncLog']['dontLog']=array(5);
 
+$CONF['servers']['pilotServerOrder']=array(0=>1,
+										   5=>2,
+										   8=>3
+										   );
+
 
 $CONF['servers']['list']=array( 
 1=>array(

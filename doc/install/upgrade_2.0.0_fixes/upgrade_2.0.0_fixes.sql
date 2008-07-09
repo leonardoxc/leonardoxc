@@ -305,3 +305,13 @@ ALTER TABLE `leonardo_remote_pilots` ADD PRIMARY KEY ( `remoteServerID` , `remot
 # delete unused fields , leonardo servers have a uniform way to access flights and KML
 update  `leonardo_flights`  set `originalURL`='' , `originalKML`='' WHERE `serverID`<>8
 
+#2008/07/10
+# we store the full original ID as string
+
+ALTER TABLE `leonardo_flights` CHANGE `originalUserID` `originalUserID` VARCHAR( 30 ) NOT NULL ;
+UPDATE `leonardo_flights` SET originalUserID='' WHERE originalUserID=0 ;
+
+UPDATE `leonardo_flights` SET originalUserID=concat(serverID,'_',originalUserID)  WHERE originalUserID<>'' AND originalUserID<>userID ;
+
+UPDATE `leonardo_flights` SET originalUserID=concat(userServerID,'_',originalUserID)  WHERE originalUserID=userID AND userServerID=serverID ;
+

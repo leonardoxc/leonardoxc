@@ -63,7 +63,6 @@ class logReplicator {
 	}
 
 
-
 	function checkLocation($serverID,$locationArray,$bounds) {
 		//  print_r($locationArray);
 
@@ -116,7 +115,10 @@ class logReplicator {
 
 
 		// first see if a mapping exists	
-		$query="SELECT * FROM $remotePilotsTable  WHERE remoteServerID=$serverID AND remoteUserID=".$pilotArray['userID']. " ORDER BY serverID ASC" ;	
+		$query="SELECT * FROM $remotePilotsTable  
+		WHERE 		
+				( serverID=".($serverID+0)." AND userID=".$pilotArray['userID'] ." ) OR 
+				( remoteServerID=".($serverID+0)." AND remoteUserID=".$pilotArray['userID']. " ) ORDER BY serverID ASC" ;	
 		$res= $db->sql_query($query);		
 		if($res <= 0){
 			echo("<H3> Error in checkPilot query! $query</H3>\n");
@@ -131,12 +133,34 @@ class logReplicator {
 
 		// if we have 12_101678 and we are on server 1 (pgforum) we must map to 0_2527 instead of 5_3219
 		// if we have 12_101678 and we are on server 10002 (dhv mirror) we must map to 5_3219 instead of 1_2527
+		$map=array();
+		while (  $row = $db->sql_fetchrow($res) ) {	
+			if ($serverID==$row['serverID']  && $pilotArray['userID']==$row['userID']) {
+				$map[$row['remoteServerID']]=$row['remoteUserID'];			
+			} else {
+				$map[$row['serverID']]=$row['userID'];				
+			}	
+		}
+		if (count($map) ) {
+			// print_r($map);
+			uksort($map, "pilotServerCmp"); 
+			$ar1=array_keys($map);
+			$ar2=array_values($map);
+			
+			//echo $ar1[0] .", ".$ar2[0] ."<BR>";
+			
+			// a mapping is taking place, we must log this somehow when we return from this function!!!						
+			return array( $ar1[0],$ar2[0] );
+		}
+
+
 		
+		/*				 old way 
 		if (  $row = $db->sql_fetchrow($res) ) {
 			if ($row['userID']) 
 				return array($row['serverID'],$row['userID']);		
 		}
-		
+		*/
 		
 		// else we insert/update the external pilot
 		$update=1;
@@ -289,6 +313,14 @@ class logReplicator {
 
 			list ($effectiveServerID,$effectiveUserID )= 
 					logReplicator::checkPilot($userServerID,$actionData['flight']['pilot']);
+
+			// check if a maping took place and LOG it!!
+			if ($effectiveServerID != $userServerID || $effectiveUserID != $actionData['flight']['pilot']['userID'] ) {
+				$orgUserIDstr= ($userServerID+0).'_'.$actionData['flight']['pilot']['userID'];
+			} else {
+				$orgUserIDstr='';
+			}
+			
 					
 			// $userIDstr=$userServerID.'_'.$actionData['flight']['pilot']['userID'];
 			$userIDstr=$effectiveServerID.'_'.$effectiveUserID;
@@ -408,7 +440,8 @@ class logReplicator {
 						"original_ID"	=>$actionData['flight']['id'],
 						"serverID"		=>$actionData['flight']['serverID'],
 						"userServerID"	=>$actionData['flight']['serverID'],
-						"originalUserID"=>$actionData['flight']['pilot']['userID'],
+						// "originalUserID"=>$actionData['flight']['pilot']['userID'],
+						"originalUserID"=>$orgUserIDstr,
 						"externalFlightType"=> $externalFlightType	,
 						"allowDuplicates"=>($CONF['servers']['list'][$actionData['flight']['serverID']]['allow_duplicate_flights']+0),
 				);

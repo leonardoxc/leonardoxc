@@ -3356,6 +3356,9 @@ $kml_file_contents=
 			$flightPhotos->deleteAllPhotos(0);
 		}
 		
+		// Now also hide/unhide same flights 
+		$this->hideSameFlights();
+		
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
@@ -3460,7 +3463,7 @@ $kml_file_contents=
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID, 
-		$this->originalUserID , $this->userServerID,
+		'$this->originalUserID' , $this->userServerID,
 		$this->excludeFrom,
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
@@ -3923,13 +3926,18 @@ foreach ($data_time as $i=>$tm) {
 			@rename($src,$target);
 		}
 
+		// store away the original userID 
+		$this->originalUserID=($this->userServerID+0).'_'.$this->userID;
+		
 		$this->userID=$newUserID;
 		$this->userServerID=$newUserServerID;
 		
 		$this->putFlightToDB(1);
 
 		// take care of same flights (hide /unhide)
-		$this->hideSameFlights();		
+		$this->hideSameFlights();	
+
+		// now also log this action
 
 	}
 

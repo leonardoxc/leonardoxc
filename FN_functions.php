@@ -641,5 +641,19 @@ function getReduceArray($pointsNum,$maxPointsNum) {
 	return $arr;
 }
 
+function pilotServerCmp($a, $b) { 
+	global $CONF;
+	
+	$aPos=$CONF['servers']['pilotServerOrder'][$a];
+	if (!$aPos)  $aPos=999;
+	$bPos=$CONF['servers']['pilotServerOrder'][$b];
+	if (!$bPos)  $bPos=999;
+
+	if ($aPos == $bPos) { 
+	   if ($a == $b) return 0;
+	   return ($a > $b) ? 1 : -1; 
+   } 
+   return ($aPos > $bPos) ? 1 : -1; 
+} 
 
 ?>
