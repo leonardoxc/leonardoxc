@@ -30,10 +30,10 @@
 		}
 		
 		$compareField='hash';
-		if (1) {
+		if (0) {
 			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  = 0 ";
 		} else {
-			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  <> 0 ";
+			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  = 5 ";
 		}
 		
 		$query="SELECT * , $remotePilotsTable.userID as localUserID, $remotePilotsTable.serverID as localServerID FROM $remotePilotsTable , $flightsTable WHERE 
@@ -61,7 +61,7 @@
 			fillPilotInfo($pilotID2,$row['localServerID'],$row['localUserID']);
 					
 			echo "<tr><td>$i</td>
-				<td><a href='".CONF_MODULE_ARG."&op=flight_show&flightID=".$row['ID']."'>".$row['ID']."</a></td>
+				<td><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row['ID']."'>".$row['ID']."</a></td>
 				<td>".$pilotID1."</td>
 			
 			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']."</td>
@@ -75,6 +75,7 @@
 				$flight2move=new flight();
 				$flight2move->getFlightFromDB($row['ID']);
 				$flight2move->changeUser($row['localUserID'],$row['localServerID']);
+				if ($i>1000) {echo 'We are doing this in batches of 1000 , repeat unitil none left, exiting now !'; exit; }				
 			}
 			
 			$i++;
@@ -87,7 +88,7 @@
   
 	$compareField='hash';
 
-	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID ASC";
+	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID,remoteUserID,serverID ASC";
 	 // echo "#count query#$query<BR>";
 	$res= $db->sql_query($query);
 	if($res <= 0){   
@@ -98,7 +99,50 @@
 //-----------------------------------------------------------------------------------------------------------
 	
 	$legend="Pilot Mapping Tables";
+?>
+<div id="stickyEl" style="position:fixed;bottom:0px;left:0px;z-index:3; background-color:#FFFFFF;width:250px;height:80px;">Results HERE</div>
 
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
+<script language="javascript">
+
+function getPilotInfo(pilotID) {
+	url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
+	pars='op=getExternalPilotInfo&pilotID='+pilotID;
+	var myAjax = new Ajax.Updater('stickyEl', url, {method:'get',parameters:pars});
+	//div=MWJ_findObj(divID);
+	// MWJ_changePosition('stickyEl',5,document.html.scrollTop+200);
+	// div.style.top= document.documentElement.scrollTop+300+'px';
+	
+}
+
+</script>
+
+<script language="javascript" type="text/javascript" >
+
+var ltop2=300;
+var scrollSpeed2=20; //Screen refresh rate in msec.
+
+function checkScrolled2() { //backTo Top link stays in lower right
+  window.status=document.documentElement.scrollTop // show results
+  document.getElementById('stickyEl').style.top =
+      document.documentElement.scrollTop+ltop2+'px';
+  setTimeout(checkScrolled2,scrollSpeed2) ;
+}
+  
+function stickyInit(){
+	showResults('Results Area');
+	ltop2=parseInt(document.getElementById('stickyEl').style.top,10);
+	checkScrolled2();
+}
+
+function showResults(textStr) {
+  document.getElementById('stickyEl').innerHTML=textStr; 
+}
+
+ if (window.attachEvent) window.attachEvent("onload", stickyInit);
+ stickyInit();
+</script>  
+<?
 	echo  "<div class='tableTitle shadowBox'>
 	<div class='titleDiv'>$legend</div>
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
@@ -108,7 +152,7 @@
 	
 	echo "<pre>";
 	echo "<table>";
-	echo "<tr><td>#</td><td>Srv</td><td>UserID</td><td>Name</td><td>Srv</td><td>UserID</td><td>Name</td></tr>\n";
+	echo "<tr><td>#</td><td>Srv</td><td>UserID</td><td>Name</td><td></td><td>Srv</td><td>UserID</td><td>Name</td></tr>\n";
 	$i=1;
 	while (	$row = $db->sql_fetchrow($res) ) {
 		$pilotID1=$row['serverID'].'_'.$row['userID'];
@@ -117,13 +161,16 @@
 		$pilotID2=$row['remoteServerID'].'_'.$row['remoteUserID'];
 		fillPilotInfo($pilotID2,$row['remoteServerID'],$row['remoteUserID']);
 		
-		echo "<tr><td>$i</td><td>".$row['serverID']."</td>
-			<td>".$row['userID']."</td>
-			
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']."</td>
+		echo "<tr><td>$i</td>
 			<td>".$row['remoteServerID']."</td>		
 			<td>".$row['remoteUserID']."</td>
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']."</td>
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']." <a href='javascript:getPilotInfo(\"$pilotID2\")'>[INFO]</a></td>
+			<td> -> </td>
+			<td>".$row['serverID']."</td>
+			<td>".$row['userID']."</td>
+			
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']." <a href='javascript:getPilotInfo(\"$pilotID1\")'>[INFO]</a></td>
+
 </tr>
 		\n";
 		$i++;

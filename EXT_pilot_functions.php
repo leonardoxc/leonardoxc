@@ -42,6 +42,19 @@
 		  if($res <= 0){   
 			 echo("<H3> Error in mapping pilots: $query</H3>\n");
 		  } else echo "Pilot Mapping successfull";
-	} 
+	}  if ($op=='getExternalPilotInfo'){	
+		$pilotID1=makeSane($_GET['pilotID'],0);
+		list($serverID1,$userID1)=explode('_',$pilotID1);
+		
+		require_once dirname(__FILE__)."/CL_server.php";				
+		$server=new Server($serverID1);
+		
+		// set to 1 for debug
+		if ($DBGlvl) $server->DEBUG=1;
+		$pilotInfo=$server->getPilots( $userID1 );
+		echo "$serverID1,$userID1 <BR>";
+		print_r($pilotInfo);		
+	}
+	
 
 ?>

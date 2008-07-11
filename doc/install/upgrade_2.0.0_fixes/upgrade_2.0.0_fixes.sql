@@ -307,11 +307,11 @@ update  `leonardo_flights`  set `originalURL`='' , `originalKML`='' WHERE `serve
 
 #2008/07/10
 # we store the full original ID as string
-
 ALTER TABLE `leonardo_flights` CHANGE `originalUserID` `originalUserID` VARCHAR( 30 ) NOT NULL ;
+
 UPDATE `leonardo_flights` SET originalUserID='' WHERE originalUserID=0 ;
 
-UPDATE `leonardo_flights` SET originalUserID=concat(serverID,'_',originalUserID)  WHERE originalUserID<>'' AND originalUserID<>userID ;
+UPDATE `leonardo_flights` SET originalUserID='' WHERE originalUserID=userID AND userServerID=serverID ;
 
-UPDATE `leonardo_flights` SET originalUserID=concat(userServerID,'_',originalUserID)  WHERE originalUserID=userID AND userServerID=serverID ;
+UPDATE `leonardo_flights` SET originalUserID=concat(serverID,'_',originalUserID)  WHERE originalUserID<>''  ;
 

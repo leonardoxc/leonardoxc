@@ -2,6 +2,19 @@
 
 $CONF['servers']['syncLog']['dontLog']=array(5,8,10002); // we dont log DHV, DHV mirror and XCONTEST
 
+$CONF['servers']['pilotServerOrder']=
+array(
+0=>1,
+1=>2,
+2=>3,
+3=>4,
+4=>5,
+9=>6,
+12=>7,
+5=>8,
+8=>9
+);
+										   
 $CONF['servers']['list']=array( 
 1=>array(
 	'id'=>1,

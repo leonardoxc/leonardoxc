@@ -425,7 +425,7 @@ class logReplicator {
 					}
 				}
 				
-				$argArray=array(
+				$argArray=array(						
 						"private"	=>$actionData['flight']['info']['private']+0,
 						"cat"		=>$actionData['flight']['info']['gliderCat']+0,
 						"linkURL"	=>$actionData['flight']['info']['linkURL'],
@@ -502,6 +502,16 @@ class logReplicator {
 					}
 	
 					foreach($argArray as $fieldName=>$fieldValue) {
+						// if the flight is already present 
+						// we must tkae care to honor ONLY 
+						// the 1st bit of 'private' , the others are used locally !!
+						if ($fieldName=='private') {
+							if ( $fieldValue & 0x01 ) {
+								$fieldValue= $extFlight->private | 0x01 ;
+							} else {
+								$fieldValue= $extFlight->private & 0xFE  ;
+							}							
+						}
 						$extFlight->$fieldName=$fieldValue;
 					}
 
