@@ -509,9 +509,36 @@ with (pilotTip)
  hideDelay = 0;
  doFades = false;
 }
+
+var pilotTipExt = new TipObj('pilotTipExt');
+with (pilotTipExt)
+{
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader">%5%</td></tr>'+
+    '<tr><td class="infoBox">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=list_flights&year=0&month=0&pilotID=%4%&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=pilot_profile_stats&pilotIDview=%4%'><? echo _flights_stats ?></a>"+
+
+
+	'</td></tr></table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 0;
+ doFades = false;
+}
+
 </script>
 <div id="pilotTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; 
 visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
+<div id="pilotTipExtLayer" class="shadowBox" style="position: absolute; z-index: 10000; 
+visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
 <?
 	$c=ob_get_contents();
 	ob_end_clean();

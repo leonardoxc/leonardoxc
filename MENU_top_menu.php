@@ -104,6 +104,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<? } ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoff_resolve">Administer Duplicate Takeoffs</a></li>				
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Display server's SyncLog</a></li>
 				<li class='li_space long'></li>

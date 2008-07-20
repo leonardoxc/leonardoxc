@@ -470,9 +470,15 @@ function removeClubFlight(clubID,flightID) {
 
 	      echo  "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
-		
+
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
-		echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		$thisPilot=new pilot($row["userServerID"],$row["userID"]);
+		if ( $thisPilot->isPilotLocal() || 	auth::isAdmin($userID)  ) {
+			echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		} else {
+			echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		}	
+		
 		echo "</div>";
 		echo "<div id='t_$i' class='takeoffLink'>";
 		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".addslashes($takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
@@ -551,8 +557,30 @@ function removeClubFlight(clubID,flightID) {
 		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
  			 $extServerStr=$CONF['servers']['list'][$row['serverID']]['name'];
  			 $extServerStrShort=$CONF['servers']['list'][$row['serverID']]['short_name'];
-			 echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry.": $extServerStr'>";
-			 echo "<div class='extLinkName'>$extServerStrShort</div>";
+			 
+			 if ($isExternalFlight ==2 ) {
+				 echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry.": $extServerStr'>";
+				 echo "<div class='extLinkName'>$extServerStrShort</div>";
+			 } else { 
+				 
+				 
+				 if ( $CONF['servers']['list'][$row['serverID']]['isLeo'] ) {
+					$extFlightLink='http://'.$CONF['servers']['list'][$row['serverID']]['url'].
+									'&op=show_flight&flightID='.$row['original_ID']."&lng=$currentlang";
+				 } else {
+					 $extFlightLink=$row['originalURL'];
+				 }	
+	
+	
+				 echo "<a href='$extFlightLink' target='_blank' class='extLinkDiv' title='$extServerStr: "._Ext_text2."' >";
+					 // also put the direct link in the place of the photo
+					 echo "<img class='extServerLogo' src='".$moduleRelPath."/img/servers/".sprintf("%03d",$row['serverID']).".gif' width='16' height='16'  border='0'/>";
+					 echo "<img class='extLinkIcon' src='$moduleRelPath/img/icon_link_dark.gif' border=0 >";
+					 echo "<div class='extLinkDescr'>$extServerStrShort</div>";
+					 //echo "<span class='extLinkDescr'>$extServerStrShort</span>";
+				 echo "</a>";
+			}
+						 
 		}
 		// else echo "<img class='photoIcon' src='$moduleRelPath/img/photo_icon_blank.gif' border=0>";			
 

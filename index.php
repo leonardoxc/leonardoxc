@@ -287,6 +287,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_admin_takeoffs.php";
 } else if ($op=="admin_areas") {
 	require $moduleRelPath."/GUI_area_admin.php";
+} else if ($op=="admin_takeoff_resolve") {
+	require $moduleRelPath."/GUI_admin_takeoff_resolve.php";
 } else if ($op=="admin_duplicates") {
 	require $moduleRelPath."/GUI_admin_duplicates.php";
 } else if ($op=="admin_pilot_map") {

@@ -42,6 +42,9 @@ class area{
 	var $valuesArray;
 	var $gotValues;
 
+	// areaType=0 collection of takeoffs
+	// areaType=1 , bounding box 
+		
 	function area($id="") {
 		if ($id!="") {
 			$this->ID=$id;

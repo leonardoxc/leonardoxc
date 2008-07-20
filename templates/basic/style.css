@@ -310,9 +310,39 @@ border:0;
 	font-family:Arial, Helvetica, sans-serif;
 	color:#999999;
 }
+
+.extLinkDiv { 
+	display:block; position:absolute; top:0px; left:31px; float:none; clear:none; z-index:2; 
+	font-size:8px;
+	line-height:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#999999;
+}
+
+.extServerLogo { display:block; position:absolute; top:0px; left:1px; float:none; clear:none; z-index:2;}
+.extLinkIcon {display:block; position:absolute; top:14px; left:0px; float:none; clear:none; z-index:2; }
+
+.extLinkDescr { 
+	display:block; position:absolute; top:17px; left:10px; width:25px; height:8px; 
+	overflow:hidden; float:none; clear:none; z-index:2;
+	cursor:hand;
+	text-decoration:none;	
+}
+
+.extLinkDescr a , a.extLinkDescr , div.extLinkDescr  {
+	font-size:9px;
+	line-height:8px;
+	height:8px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration:none;	
+	color:#999999;
+	
+}
+
 .commentDiv { display:block; position:absolute; top:0px; left:44px; float:none; clear:none; z-index:1;}
 
-.checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px; float:none; clear:none; z-index:1;
+.checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px;
+	 float:none; clear:none; z-index:-1;
 
 	font-size:9px;
 	font-family:Arial, Helvetica, sans-serif;
