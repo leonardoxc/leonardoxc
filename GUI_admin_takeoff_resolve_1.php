@@ -45,7 +45,11 @@ tr.deleted td {
 	text-decoration:line-through;
 }
 
-div#floatDiv
+tr.marked td {
+	background:#CDECBB;
+}
+
+div#floatDiv , div#takeoffInfoDiv
 {
   width: 20%;
   float: right;
@@ -60,13 +64,23 @@ div#floatDiv
    width    :15em;
 }
 
-div#floatDiv h3
+div#takeoffInfoDiv {
+	float :left;
+	left : 0.5em;
+}
+
+div#floatDiv h3, div#takeoffInfoDiv h3
 {
 	margin:0;
 	font-size:12px;
 	background-color:#336699;
 	color:#FFFFFF;
 }
+
+.takeoffLink {
+  cursor: pointer;
+  text-decoration:underline;
+} 
 
 -->
 </style>
@@ -87,18 +101,26 @@ $(document).ready(function(){
 	$('.stripeMe tr:even:gt(0)').addClass('alt');
 	$('.stripeMe tr:odd').addClass('alt2');
 
+
+  
 	$(".takeoffLink").click(function() {		
-		// $("#resDiv").append($(this).html());
-	  	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff.php?op=get_info&wpID="+$(this).html() ); 
+
+	  //	$("#infoDiv").load("<?=$moduleRelPath?>/EXT_takeoff.php?op=get_info&wpID="+$(this).html() ); 
+	  	$("#infoDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=getTakeoffInfo&wpID="+$(this).html() ); 
+		
+		//var x = e.pageX - this.offsetLeft;
+		//var y = e.pageY - this.offsetTop;
 
 	});
 	
 	$(":checkbox").click(function() {		
 		if ( $(this).attr("checked")!="" ) {
 		
-			$(this).addClass("red");
-			var rn="row_"+$(this).val();
-			$(this).css(  "border", "2px solid red"  );
+			$(this).parent().parent().addClass("marked");
+			//var rn="row_"+$(this).val();
+			//$(this).css(  "border", "2px solid red"  );
+		} else {
+			$(this).parent().parent().removeClass("marked");
 		}
 	  
 	});
@@ -136,8 +158,14 @@ function deleteMarked(j){
 
 
 </script>
+
+<div id ='takeoffInfoDiv'>
+	<h3>Information</h3>
+	<div id ='infoDiv'><BR /><BR /></div>
+</div>
+
 <div id ='floatDiv'>
-	<h3>Results </h3>
+	<h3>Results</h3>
 	<div id ='resDiv'><BR /><BR /></div>
 </div>
 <?
@@ -148,7 +176,7 @@ function deleteMarked(j){
 	echo "<tr><td>#</td><td>Soudex</td><td>#Same names</td><td></td></tr>\n";
 
 	while ($row = mysql_fetch_assoc($res)) {
-		if ($i>3) break;
+		// if ($i>3) break;
 		
 		if ($row['nameSoundex']=='') continue;
 		
@@ -160,9 +188,12 @@ function deleteMarked(j){
 		echo "<tr><td></td><td colspan=3>";
 			$j=1;
 			echo "<table border=1 class='stripeMe'>";
-			echo "<tr ><td>#</td><td>Takeoff ID</td><td>Country</td><td>Takeoff name</td><td>Int name</td><td>lat</td><td>lon</td><td>Distance in m</td><td>Select</td><td>Metric 1</td><td>Metric 2</td></tr>\n";
+			echo "<tr ><td>#</td><td>Takeoff ID</td><td>Country</td><td># of flights</td><td>Takeoff name</td><td>Int name</td><td>lat</td><td>lon</td><td>Distance in m</td><td>Select</td><td>Metric 1</td><td>Metric 2</td></tr>\n";
 		
-			$query2="SELECT * FROM  $waypointsTable WHERE soundex(name)='".$row['nameSoundex']."' order by lat , lon ";		
+			$query2="SELECT $waypointsTable.*, count($flightsTable.ID) as flightsNum FROM  $waypointsTable LEFT JOIN $flightsTable ON ( $flightsTable.takeoffID=$waypointsTable.ID ) 
+				WHERE soundex(name)='".$row['nameSoundex']."'  
+				group by $waypointsTable.ID
+				order by lat , lon ";		
 
 			$lastLat=0;
 			$lastLon=0; 
@@ -204,7 +235,7 @@ function deleteMarked(j){
 				}
 				
 				$ij=$i."_".$j;
-				echo "<tr id='row_$ij'><td>$j</td><td><div class='takeoffLink'>".$row2['ID']."</div></td><td>".$row2['countryCode']."</td><td>".
+				echo "<tr id='row_$ij'><td>$j</td><td><div class='takeoffLink'>".$row2['ID']."</div></td><td>".$row2['countryCode']."</td><td>".$row2['flightsNum']."</td><td>".
 				$row2['name']."</td><td>".$row2['intName']."</td><td>".$row2['lat']."</td><td>".
 				$row2['lon']."</td><td>".$distanceFromPrevious."</td>
 				<td><input type='checkbox' class='sel_$i' name='sel_$ij' id='sel_$ij' value='$j'><input type='hidden' id='takeoff_id_$ij' value='".$row2['ID']."'></td>

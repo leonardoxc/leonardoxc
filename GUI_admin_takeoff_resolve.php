@@ -33,12 +33,7 @@
 	
 	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=1'>1. Detect Soundex similar takeoffs</a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=2'>2. Detect nearby takeoffs</a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=3'>3. </a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=4'>4. </a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=5'>5. </a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=6'>6. </a><BR>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_takeoff_resolve&admin_op=7'>7. </a><BR>";
+
 	echo "<hr>";
 
 
