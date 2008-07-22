@@ -36,6 +36,10 @@
 
  $CONF_main_page="index_full";
 
+ 
+ $CONF_main_page="list_takeoffs";
+ $CONF['custom_top_menu']='SITES';
+
  // use utf language files 
  $CONF_use_utf= 1;
 
@@ -258,6 +262,8 @@
   $CONF_use_htc_ie_hack=0;
 
   $CONF['list_flights']['fields']['scoring'][0]='SCORE_SPEED'; // LINEAR_DISTANCE or SCORE_SPEED
+  
+  $CONF['list_flights']['fields']['scoring'][0]='LINEAR_DISTANCE'; // LINEAR_DISTANCE or SCORE_SPEED
   
 // SEASON MOD
 

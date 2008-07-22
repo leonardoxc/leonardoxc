@@ -3787,34 +3787,83 @@ foreach ($data_time as $i=>$tm) {
 	function hideSameFlights() {
 		// now is a good time to disable duplicate flights we have found from other servers
 		// AND are from the same user (using pilot's mapping table to find that out)
+		
+		// addition: 2008/07/21 we search for all flight no only from same user/server
 		global $db,$flightsTable;
 				
-		$query="SELECT serverID,ID FROM $flightsTable 
+		$query="SELECT serverID,ID,externalFlightType, FROM $flightsTable 
 					WHERE hash='".$this->hash."' AND userID=".$this->userID." AND userServerID=".$this->userServerID.
 					" ORDER BY serverID ASC, ID ASC";
+					
+		$query="SELECT serverID,ID,externalFlightType,userID,userServerID FROM $flightsTable 
+			WHERE hash='".$this->hash."' ORDER BY serverID ASC, ID ASC";
+
 		// echo $query;
 		$res= $db->sql_query($query);
-		if ($res<=0) return array(); // no duplicate found
-
-		$i=0;
-		$disableFlightsList=array();
-		$enableFlightsList=array();
-		
-		while  ( $row = $db->sql_fetchrow($res) ) {
-			if ( $row['serverID'] == 0 )  {
-				$enableFlightsList[$row["ID"]]++;
-			} else if ( count($enableFlightsList) == 0  && $i==0 )  {
-				$enableFlightsList[$row["ID"]]++;
-			} else  {
-				$disableFlightsList[$row["ID"]]++;
-			}	
-			$i++;	
+		if ($res<=0) {
+			DEBUG("FLIGHT",1,"flightData: Error in query: $query<br>");
+			return array(); // no duplicate found
 		}
-	
-		//print_r($disableFlightsList);
-		//echo "#";
-		//print_r($enableFlightsList);
+
+		// we must disable all flights BUT one
+		// rules: 
+		// 1. locally submitted flights have priority
+		// 2. between external flights , the full synced have priority over simple links
+		// 3. between equal cases the first submitted has priority.
 		
+		$i=0;
+		while  ( $row = $db->sql_fetchrow($res) ) {
+			$fList[$i]=$row;
+			$i++;
+		}
+		usort($fList, "sameFlightsCmp"); 
+
+		$i=0;	
+		$msg='';	
+		foreach($fList as $i=>$fEntry) {
+			if (0) {
+				echo "<pre>";
+				echo "-------------------------<BR>";
+				print_r($fEntry);
+				echo "-------------------------<BR>";
+				echo "</pre>";
+			}
+				
+			if ($i==0)  {// enable
+				$msg.= " Enabling ";
+				$query="UPDATE $flightsTable SET private = private & (~0x02 & 0xff ) WHERE  ID=".$fEntry['ID'];
+			} else  {// disable
+				$msg.= " Disabling ";
+				$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=".$fEntry['ID'];
+			}	
+			$msg.= " <a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
+			"&op=show_flight&flightID=".$fEntry['ID']."'>Flight ".$fEntry['ID'].
+			"</a> from <a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
+			"&op=pilot_profile&pilotIDview=".$fEntry['userServerID'].'_'.$fEntry['userID']."'>PILOT ".
+			$fEntry['userServerID'].'_'.$fEntry['userID']."</a><BR>\n";
+
+			$res= $db->sql_query($query);	
+			# Error checking
+			if($res <= 0){
+				echo("<H3> Error in query: $query</H3>\n");
+			}
+			
+			$i++;
+		}	
+		
+		// now also make a test to see if all flights are from same user (alien mapped  to local)
+		// if not , send a mail to admin to warn him and suggest a new mapping
+		$pList=array();
+		foreach($fList as $i=>$fEntry) {
+			$pList[$fEntry['userServerID'].'_'.$fEntry['userID']]++;
+		}
+		
+		if ( count($pList) > 1  ) { // more than one pilot involved in this 
+			sendMailToAdmin("Duplicate flights",$msg);				
+			//echo "Duplicate flights".$msg;
+		}		
+		
+		/*
 		foreach ($disableFlightsList as $dFlightID=>$num) {
 			$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
 			$res= $db->sql_query($query);	
@@ -3830,7 +3879,8 @@ foreach ($data_time as $i=>$tm) {
 			if($res <= 0){
 				echo("<H3> Error in query: $query</H3>\n");
 			}
-		}
+		}*/
+		
 	}
 	
 	function getOLCpilotData() {

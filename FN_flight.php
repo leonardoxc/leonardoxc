@@ -302,8 +302,9 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 					// $flight->userID + $flight->userServerID
 					if ( ! $flightPilotMapTable[ $fArr['userServerID'] ][ $fArr['userID'] ] ) {
 						DEBUG("FLIGHT",1,"addFlightFromFile: Same hash from external Server BUT from the pilot was not mapped into local <br>");
-						$dupFound=1;
-						break;
+						// We allow the flight to be submitted but then we must check and disable all duplicates but one 
+						//$dupFound=1;
+						//break;
 					}
 					
 					// fill in ids of flights to 'disable'					

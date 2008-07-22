@@ -222,6 +222,49 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		echo "</pre>";
 */
 	}
+	
+	function computeMaxTakeoffDistance( $takeoffPoint ) {
+		// get all turnpoints
+		//echo "<pre>";
+		//print_r($this->scores[1]);
+		//echo "</pre>";
+		foreach ($this->scores[1] as $scoreType=>$scoreArray) {
+			if (is_array($scoreArray) ) {
+				foreach	( $scoreArray['tp'] as $tpStr) {
+					if (strlen($tpStr)>20)
+						$tp[$tpStr]++;
+				}			
+			}
+		}
+		// print_r($tp);		
+		$maxDistance=0;
+		$maxTP=0;
+		foreach($tp as $tpStr=>$count) {
+			$newPoint=new gpsPoint($tpStr,0);
+			$thisDistance= $takeoffPoint->calcDistance($newPoint);
+			// echo "TP  : $thisDistance, ".$newPoint->lat().",".$newPoint->lon()."<BR>";
+			if ($thisDistance> $maxDistance) {
+				$maxDistance=$thisDistance;
+				$maxTPstr=$tpStr;
+			}
+		}		
+		
+		$this->scores[1]['MaxTakeoffDistance']=array(
+            'distance'	=>$maxDistance,
+            'score'		=> 0,
+            'isBest' 	=> 0,
+            'tp' => array(
+                    1 => $takeoffPoint->to_IGC_Record(),
+                    2 => $maxTPstr
+                	)		
+		);
+		
+		$this->scores[2]['MaxTakeoffDistance']=	$this->scores[1]['MaxTakeoffDistance'];
+
+		//echo "MAX distance from takeoff : $maxDistance , ".$takeoffPoint->lat().",".$takeoffPoint->lon()."<BR>";
+		return $maxDistance ;
+
+	}
 
 	function makeSecondPassFile($file){
 		// we assume we have values OK 
@@ -243,7 +286,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		}
 		// $tpArray=$this->scores[$mID][$type]['tp'];
 
-		print_r($tpArray);
+		// print_r($tpArray);
 
 		$tpNum=1;
 

@@ -140,6 +140,8 @@ This will output a list of SQL commands that you must manually copy and then exe
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makePhotosNew'>Migrate to new Photos table</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateStartPoints'>Update Takeoff coordinates to new format</a> ";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertNewlines'>Convert newlines to DOS format</a> ";
+	
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=computeMaxTakeoffDistance'>Compute MaxTakeoffDistance for xcontest flights</a> ";
 echo "</ul>";
 
 echo "<h3>Sync Log oparations</h3>";
@@ -163,8 +165,42 @@ echo "</ul><br><hr>";
 
 
 
+	if ($admin_op=="computeMaxTakeoffDistance")  {
+		
+		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 AND serverID=8  AND LINEAR_DISTANCE=0 ";
+		$res= $db->sql_query($query);
 
-    if ($admin_op=="findUnusedIGCfiles") {
+		$files_total=0;
+		
+		if($res > 0){
+			 while ($row = mysql_fetch_assoc($res)) { 
+				$files_total++;
+
+				if (! $row['firstLat'] || ! $row['firstLon']) {
+					$not_set++;
+					continue;
+				}
+				
+				$firstPoint=new gpsPoint();
+				$firstPoint->setLat($row['firstLat']);
+				$firstPoint->setLon($row['firstLon']);
+	
+				$flightScore=new flightScore($row['ID']);
+				$flightScore->getFromDB();	
+				$lDistance=$flightScore->computeMaxTakeoffDistance($firstPoint);
+						
+				$query2="UPDATE $flightsTable SET LINEAR_DISTANCE=$lDistance , batchOpProcessed=1 WHERE ID=".$row['ID'];
+				$res2= $db->sql_query($query2);					
+				if(!$res2){
+					echo "Problem in query:$query2<BR>";
+					exit;
+				}
+			 }
+		}
+		echo "<BR><br><br>DONE !!!<BR>";
+		echo "<BR><br>Flights total: $files_total, not proccessed: $not_set<BR>";
+		
+	} else if ($admin_op=="findUnusedIGCfiles") {
 		echo "<ol>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
 		echo "</ol>";    

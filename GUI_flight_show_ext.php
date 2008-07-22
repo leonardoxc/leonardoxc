@@ -25,7 +25,13 @@
 	$firstPoint->setLat($flight->firstLat);
 	$firstPoint->setLon($flight->firstLon);
 	$firstPoint->gpsTime=$flight->firstPointTM;		
- 
+	
+	if (false) {
+		$flightScore=new flightScore($flightID);
+		$flightScore->getFromDB();	
+		$flightScore->computeMaxTakeoffDistance($firstPoint);
+	}
+	 
   ?>
   <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makePilotPopup(); ?>

@@ -36,6 +36,7 @@
 	return;
   }
 
+
 	$Ltemplate ->set_filenames(array(
 		'body' => 'flight_show.html'));
 

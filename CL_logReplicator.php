@@ -620,6 +620,12 @@ class logReplicator {
 							$extFlight->FLIGHT_KM		=$flightScore->bestDistance*1000;
 							$extFlight->FLIGHT_POINTS	=$flightScore->bestScore;
 
+							// check for missing linear distance
+							if ($extFlight->LINEAR_DISTANCE	==0 && $extFlight->MAX_LINEAR_DISTANCE>0 ){
+								// echo "compute MAxtakeoffDistance";
+								$extFlight->LINEAR_DISTANCE=$flightScore->computeMaxTakeoffDistance($firstPoint);								
+							}
+														
 							//put also in scores table, the flight is sure to be present in flights table
 							if ($e['action']==2) { // update so we already know the flightID
 								$flightScore->putToDB(1,1);

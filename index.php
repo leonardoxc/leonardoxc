@@ -175,7 +175,11 @@ if ($clubID) {
 	$clubName=_No_Club;
 }
 
-require_once dirname(__FILE__)."/MENU_menu.php";
+if ( ! $CONF['custom_top_menu'] ) {
+	require_once dirname(__FILE__)."/MENU_menu.php";
+} else {
+	require_once dirname(__FILE__).'/MENU_'.$CONF['custom_top_menu'].'_top_menu.php';
+}
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <?

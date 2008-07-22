@@ -656,4 +656,48 @@ function pilotServerCmp($a, $b) {
    return ($aPos > $bPos) ? 1 : -1; 
 } 
 
+function sameFlightsCmp($a, $b) { 
+	// we must disable all flights BUT one
+	// rules: 
+	// 1. locally submitted flights have priority
+	// 2. between external flights , the full synced have priority over simple links
+	// 3. between equal cases the first submitted has priority.
+
+	// locally vs non-local
+	if ($a['serverID'] ==0 && $b['serverID']!=0 ) return -1;	 // local flight  ($a) is better
+	if ($b['serverID'] ==0 && $a['serverID']!=0 ) return 1; // local flight  ($b) is better
+
+	// both locals	
+	if ($a['serverID'] ==0 && $b['serverID']==0 ) {
+		if ( $a['ID'] < $b['ID'] ) return -1; // smallest ID ($a) is better
+		else return 1;
+	}
+	
+	// both externals
+	
+	if ( $a['externalFlightType'] ==2 && $b['externalFlightType']!=2 ) return -1;	 // ext type 2 ($a) is better
+	if ( $b['externalFlightType'] ==2 && $a['externalFlightType']!=2 ) return 1;	 // ext type 2 ($b) is better
+	
+	
+	//final compare the ids again 
+	if ( $a['ID'] < $b['ID'] ) return -1; // smallest ID ($a) is better
+	else return 1;
+	
+}
+
+function sendMail($to,$subject,$msg) {
+	$headers ='MIME-Version: 1.0' . "\r\n";
+	$headers.='Content-type: text/html; charset=iso-8859-1' . "\r\n";
+	$headers.='From: $CONF_admin_email' . "\r\n";
+			
+	mail($to,$_SERVER['SERVER_NAME'].": $subject",$msg,$headers);
+}
+
+
+function sendMailToAdmin($subject,$msg) {
+	global  $CONF_admin_email;
+	sendMail($CONF_admin_email,$subject,$msg) ;
+	
+}
+
 ?>

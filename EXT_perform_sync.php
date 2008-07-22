@@ -135,8 +135,9 @@ if ($action==1) { // server info
 			$logStr.=" <span class='ok'>OK</span> ";
 		} else if ($result<0) {
 			$logStr.=" <span class='error'>ERROR</span> ";
-			$msg=date("d/m/Y H:i:s")."\r\nServer: ". $serverName." [".$server->ID."]\r\nError code: $result\r\nError: $extra \r\n ";
-			mail($CONF_admin_email,"Problem in sync of master ".$_SERVER['SERVER_NAME'],$msg);
+			$msg="<pre>".date("d/m/Y H:i:s")."<br>\r\nServer: ". $serverName." [".$server->ID."]<br>\r\nError code: $result<br>\r\nError: $extra <br></pre>\r\n ";
+			sendMailToAdmin("Problem in syncing",$msg);
+			// mail($CONF_admin_email,"Problem in sync of master ".$_SERVER['SERVER_NAME'],$msg);
 
 		}
 		$logStr.=$outStr;
