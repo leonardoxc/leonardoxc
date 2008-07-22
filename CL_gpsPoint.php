@@ -402,14 +402,19 @@ return '{
 	    if($res <= 0){
 		  echo "Error getting flights with deleted waypoint <BR>";
 		  return 0;
-	    }		
-		$waypoints=getWaypoints();
+	    }
+		
 		global $waypoints;
+		if (!$waypoints) 
+			$waypoints=getWaypoints();
+		
 		while(  $row = $db->sql_fetchrow($res)) {
 			$flightID=$row['ID'];
 			$flight=new flight();
-			$flight->getFlightFromDB($flightID);
-			$flight->updateTakeoffLanding();
+			$flight->getFlightFromDB($flightID,1); // this computes takeoff/landing also
+			//$flight->updateTakeoffLanding();
+			//$flight->putFlightToDB(1);
+			unset($flight);				 
 		}
 		return 1;		
 	}

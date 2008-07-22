@@ -44,7 +44,7 @@
 	$waypt=new waypoint($waypointIDdelete);
 	$waypt->getFromDB();
 
-	if ( $_POST['deleteWaypoint']==1 ) { // CHANGE waypoint
+	if ( $_POST['deleteWaypoint']==1 ) { // DELETE waypoint
 		$waypt=new waypoint($waypointIDdelete);
 		if ( $waypt->delete() ) {
 		?>

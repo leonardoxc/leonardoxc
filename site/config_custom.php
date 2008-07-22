@@ -37,8 +37,8 @@
  $CONF_main_page="index_full";
 
  
- $CONF_main_page="list_takeoffs";
- $CONF['custom_top_menu']='SITES';
+ //$CONF_main_page="list_takeoffs";
+ //$CONF['custom_top_menu']='SITES';
 
  // use utf language files 
  $CONF_use_utf= 1;
