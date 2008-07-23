@@ -104,11 +104,11 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 <script language="javascript">
   
 function selectAll(i){
-	$(".sel_"+i+",:checkbox").filter(":enabled").attr("checked","checked");	
+	$(".sel_"+i).filter(":checkbox").filter(":enabled").attr("checked","checked").parent().parent().addClass("marked");	
 }
 
 function unselectAll(i){
-	$(".sel_"+i+",:checkbox").filter(":enabled").attr("checked","");		
+	$(".sel_"+i).filter(":checkbox").filter(":enabled").attr("checked","").parent().parent().removeClass("marked");;
 }
 
 $(document).ready(function(){

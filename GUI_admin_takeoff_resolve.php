@@ -98,8 +98,8 @@ value='<?=$_GET['countryCode']?>' /> (give country code)
 
 	if ($admin_op>=1 && $admin_op<=2 ) {
 		 require_once dirname(__FILE__).'/GUI_admin_takeoff_resolve_1.php';
-	} else {
-		 require_once dirname(__FILE__).'/GUI_admin_takeoff_resolve_'.$admin_op.'.php';
+	} else if ($admin_op>0 ) {
+		  require_once dirname(__FILE__).'/GUI_admin_takeoff_resolve_'.$admin_op.'.php';
 	}
 
 	echo "</td></tr>";
