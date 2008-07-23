@@ -13,9 +13,24 @@
 
 	if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
 	
-  
-	$query="SELECT * , count(ID) as sameNum, soundex(name) as nameSoundex
-	 FROM  $waypointsTable WHERE type=1000 and name<>'' AND soundex(name) <>'' GROUP BY soundex(name) HAVING count(ID) > 1  order by count(ID) DESC	 ";		
+    $countryCode=strtoupper($_GET['countryCode'] );
+ 	if ($countryCode) 
+		$countryCodeWhere=" AND countryCode='$countryCode' ";
+	else 
+		$countryCodeWhere='';
+		
+	if ($_GET['intName'] == 1) 
+		$nameField='intName';
+	else 
+		$nameField='name';	
+		
+	if ($admin_op==1)
+		$groupStr=" $nameField ";
+	else 
+		$groupStr=" soundex($nameField) ";
+		
+	$query="SELECT * , count(ID) as sameNum, $groupStr as nameSoundex
+	 FROM  $waypointsTable WHERE type=1000 and name<>'' AND $groupStr <>'' $countryCodeWhere GROUP BY $groupStr HAVING count(ID) > 1  order by count(ID) ASC	 ";		
 	 
 	$res= $db->sql_query($query);
 	$i=1;
@@ -89,11 +104,11 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 <script language="javascript">
   
 function selectAll(i){
-	$(".sel_"+i).attr("checked","checked");	
+	$(".sel_"+i+",:checkbox").filter(":enabled").attr("checked","checked");	
 }
 
 function unselectAll(i){
-	$(".sel_"+i+",:checkbox").attr("checked","");		
+	$(".sel_"+i+",:checkbox").filter(":enabled").attr("checked","");		
 }
 
 $(document).ready(function(){
@@ -104,21 +119,18 @@ $(document).ready(function(){
 
   
 	$(".takeoffLink").click(function() {		
-
-	  //	$("#infoDiv").load("<?=$moduleRelPath?>/EXT_takeoff.php?op=get_info&wpID="+$(this).html() ); 
-	  	$("#infoDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=getTakeoffInfo&wpID="+$(this).html() ); 
 		
+	  	$("#infoDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=getTakeoffInfo&wpID="+$(this).html() ); 
 		//var x = e.pageX - this.offsetLeft;
 		//var y = e.pageY - this.offsetTop;
 
 	});
 	
-	$(":checkbox").click(function() {		
-		if ( $(this).attr("checked")!="" ) {
-		
+	$(":checkbox").click(function() {	
+		if ($(this).attr("disabled")=="disabled" )  return ;
+			
+		if ( $(this).attr("checked")!="" ) {	
 			$(this).parent().parent().addClass("marked");
-			//var rn="row_"+$(this).val();
-			//$(this).css(  "border", "2px solid red"  );
 		} else {
 			$(this).parent().parent().removeClass("marked");
 		}
@@ -128,32 +140,25 @@ $(document).ready(function(){
 });
  
 function deleteMarked(j){
-	var marked=$(".sel_"+j).get();
+	var marked=$(".sel_"+j).filter(":checked").filter(":enabled");
 
 	$("#resDiv").html('');
 	var resStr='';
-	for(i=0;i<marked.length;i++) {
-		if (marked[i].checked ) {
-			if (resStr!='') 
-				resStr+='_';
-			
-			var ij=j+"_"+marked[i].value;
-				
-			// resStr+=marked[i].value;
-			resStr+= $("#takeoff_id_"+ij).val();
-			$("#row_"+ij).addClass('deleted');
-			$("#sel_"+ij).attr("disabled","disabled");
-			// $("#resDiv").append(marked[i].value+ "_" );
-		}
-	}
 	
-	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=deleteTakeoffs&takeoffs="+resStr ); 
-	/*
-		 jQuery.each(marked, function(j, val) {
-			  $("#" + j).attr("checked","");
-			   $("#" + j).append(document.createTextNode(" - " + val));
+    jQuery.each(marked, function(c) {
+			var ij=j+"_"+$(this).val();
+			
+			if (resStr!='') resStr+='_';
+			resStr+= $("#takeoff_id_"+ij).val();
+			
+			$("#row_"+ij).removeClass("marked").addClass('deleted');
+			$("#sel_"+ij).attr("disabled","disabled");
 		});
-	*/
+		
+	$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");
+	// $("#resDiv").append('<br>'+resStr);
+	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=deleteTakeoffs&takeoffs="+resStr ); 
+	
 }
 
 
@@ -176,7 +181,7 @@ function deleteMarked(j){
 	echo "<tr><td>#</td><td>Soudex</td><td>#Same names</td><td></td></tr>\n";
 
 	while ($row = mysql_fetch_assoc($res)) {
-		// if ($i>3) break;
+		// if ($i>30) break;
 		
 		if ($row['nameSoundex']=='') continue;
 		
@@ -191,7 +196,7 @@ function deleteMarked(j){
 			echo "<tr ><td>#</td><td>Takeoff ID</td><td>Country</td><td># of flights</td><td>Takeoff name</td><td>Int name</td><td>lat</td><td>lon</td><td>Distance in m</td><td>Select</td><td>Metric 1</td><td>Metric 2</td></tr>\n";
 		
 			$query2="SELECT $waypointsTable.*, count($flightsTable.ID) as flightsNum FROM  $waypointsTable LEFT JOIN $flightsTable ON ( $flightsTable.takeoffID=$waypointsTable.ID ) 
-				WHERE soundex(name)='".$row['nameSoundex']."'  
+				WHERE $groupStr='".$row['nameSoundex']."'  $countryCodeWhere
 				group by $waypointsTable.ID
 				order by lat , lon ";		
 
@@ -237,7 +242,7 @@ function deleteMarked(j){
 				$ij=$i."_".$j;
 				echo "<tr id='row_$ij'><td>$j</td><td><div class='takeoffLink'>".$row2['ID']."</div></td><td>".$row2['countryCode']."</td><td>".$row2['flightsNum']."</td><td>".
 				$row2['name']."</td><td>".$row2['intName']."</td><td>".$row2['lat']."</td><td>".
-				$row2['lon']."</td><td>".$distanceFromPrevious."</td>
+				(-$row2['lon'])."</td><td>".$distanceFromPrevious."</td>
 				<td><input type='checkbox' class='sel_$i' name='sel_$ij' id='sel_$ij' value='$j'><input type='hidden' id='takeoff_id_$ij' value='".$row2['ID']."'></td>
 				<td>$nameDistanceFromPrevious1</td><td>".sprintf("%.1f",$nameDistanceFromPrevious2)."%</td></tr>\n";
 

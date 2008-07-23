@@ -38,6 +38,11 @@
 	$clientID	= makeSane($_GET['clientID'],1);	
 	$clientPass	= makeSane($_GET['clientPass'],0);
 
+	if ( $_GET['getOnlyServersList'] ) {
+		$getOnlyServersListClause	= " AND ServerItemID IN ( ".$_GET['getOnlyServersList']." ) " ;		
+	} else {
+		$getOnlyServersListClause = '';
+	}
 	
 	if ($count) $limit="LIMIT $count";
 	else $limit="";
@@ -55,6 +60,7 @@
 	}
 	$where_clause.=$clientID .' )';
 
+	$where_clause.=	$getOnlyServersListClause;
 
 	if (!$op) $op="latest";	
 	if (!in_array($op,array("latest","get_hash","get_igc")) ) return;

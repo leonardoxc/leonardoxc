@@ -315,3 +315,7 @@ UPDATE `leonardo_flights` SET originalUserID='' WHERE originalUserID=userID AND 
 
 UPDATE `leonardo_flights` SET originalUserID=concat(serverID,'_',originalUserID)  WHERE originalUserID<>''  ;
 
+# 2008/07/23
+# speed up sync.php
+
+ALTER TABLE `leonardo_log` ADD INDEX ( `ItemType` , `ServerItemID` )  ; 

@@ -364,6 +364,46 @@ return '{
 }
 	
 	}
+	
+	function deleteBulk($takeoffList) {
+		global $waypointsTable ,$db,$flightsTable;
+
+		$listStr=implode(",",$takeoffList);
+		
+		if (!is_array($takeoffList) || count($takeoffList)==0 || !$listStr ) {
+			return 0;
+		}		
+
+		$query="DELETE from $waypointsTable  WHERE ID IN ( $listStr ) ";		
+		$res= $db->sql_query($query);
+		if($res <= 0){
+			echo "Error deleting bulk waypoints from DB : $query <BR>";
+		} 
+		
+
+		$query="SELECT ID FROM $flightsTable WHERE takeoffID IN ( $listStr) OR landingID IN ($listStr)";
+		// echo $query;
+		$res= $db->sql_query($query);	
+	    if($res <= 0){
+		  echo "Error getting flights with deleted waypoint: $query <BR>";
+		  return 0;
+	    }
+
+		$flighsNum=0;
+		global $waypoints;
+		if (!$waypoints) 
+			$waypoints=getWaypoints();
+		
+		while(  $row = $db->sql_fetchrow($res)) {
+			$flightID=$row['ID'];
+			$flight=new flight();
+			$flight->getFlightFromDB($flightID,1); // this computes takeoff/landing also
+			$flighsNum++;
+			unset($flight);				 
+		}
+		return $flighsNum;
+		
+	}	
 
 	function delete() {
 		global $userID,$CONF_server_id,$waypointsTable ,$db,$flightsTable;
