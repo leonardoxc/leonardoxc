@@ -30,7 +30,36 @@
 
 	$op=makeSane($_GET['op']);	
 
-	if ($op=='deleteTakeoffs'){	
+	if ($op=='addToArea'){	
+		$tID=makeSane($_GET['tID']);
+		$aID=makeSane($_GET['aID']);
+
+		$query="INSERT INTO $areasTakeoffsTable	(areaID,takeoffID) VALUES ($aID,$tID)" ;
+		// echo $query;
+		$res= $db->sql_query($query);		
+		if($res <= 0){
+			echo "Problem in inserting takeoff to area";		
+		} else {
+			echo "Takeoff added to area<br>";
+		}
+		
+	} else if ($op=='removeFromArea'){	
+		$tID=makeSane($_GET['tID']);
+		$aID=makeSane($_GET['aID']);
+
+		$query="DELETE FROM $areasTakeoffsTable	WHERE areaID=$aID AND takeoffID=$tID" ;
+		// echo $query;
+		$res= $db->sql_query($query);		
+		if($res <= 0){
+			echo "Problem in removing takeoff from  area QUERY";				
+		} else {
+			if (mysql_affected_rows() ) 
+				echo "Takeoff removed from area<br>";
+			else 
+				echo "Problem in removing takeoff from  area";			
+		}
+		
+	}else  if ($op=='deleteTakeoffs'){	
 		 $toDeleteStr=$_GET['takeoffs'];
 		 $toDeleteList=split('_',$toDeleteStr);
 
@@ -46,7 +75,7 @@
 	}  if ($op=='getTakeoffInfo'){	
 	
 	
-	$wpID=$_GET['wpID']+0;
+		$wpID=$_GET['wpID']+0;
 		
 		echo "<b>$wpID</b><BR>";
 		

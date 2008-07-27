@@ -28,10 +28,11 @@
 
 	$op=makeSane($_GET['op']);
 
-	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info")) ) return;
+	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info","getTakeoffsForArea")) ) return;
 
 	if ($op=="get_info") {
 		$wpID=$_GET['wpID']+0;
+		$inPageLink=$_GET['inPageLink']+0;
 		
 		echo '{ "takeoffID": '.$wpID.' , "html": "';
 		
@@ -47,9 +48,15 @@
 		} else {
 			echo "error in query :$query";
 		}
+
+		if ($inPageLink) {
+			echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a href=\'javascript:show_waypoint($wpID);\' >"._SITE_INFO."</a><br>";
+			
+			// echo "<b>".$description."</b><br><img src='img/icon_pin.png' align='absmiddle' border=0> <a  href='GUI_EXT_waypoint_info.php?wID=$wpID' rel='facebox'>"._SITE_INFO."</a><br>";
 		
-		echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a  target=\'_top\' href=\'".getRelMainFileName()."&op=show_waypoint&waypointIDview=$wpID\'>"._SITE_INFO."</a><br>";
-		
+		} else {
+			echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a  target=\'_top\' href=\'".getRelMainFileName()."&op=show_waypoint&waypointIDview=$wpID\'>"._SITE_INFO."</a><br>";
+		}	
 		
 	
 		$query="SELECT  MAX(MAX_LINEAR_DISTANCE) as record_km, ID  FROM $flightsTable  WHERE takeoffID =".$wpID." GROUP BY ID ORDER BY record_km DESC ";
@@ -74,6 +81,29 @@
 			}
 		} 
 		echo ' " } ';
+	} else if ($op=="getTakeoffsForArea") {
+		$areaID=$_GET['areaID']+0;	
+		$sql = "SELECT * FROM $waypointsTable,$areasTakeoffsTable	
+			WHERE $areasTakeoffsTable.takeoffID = $waypointsTable.ID AND $areasTakeoffsTable.areaID=$areaID";
+
+		$dbres= $db->sql_query($sql);
+	    if($dbres <= 0){
+		    echo '{ "waypoints": [ ]  }';
+			return;
+    	}
+		
+		$res='{ "waypoints": [ ';
+		$i=0;
+		while ($row = mysql_fetch_assoc($dbres)) { 
+			if ($i>0)$res.=" ,\n";
+			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.$row['intName'].'", "type":'.$row['type'].' } ';
+		  $i++;	  
+		}     
+		
+		$res.=' ]  }';
+		echo $res;
+	    mysql_freeResult($dbres);
+
 	 
 	} else if ($op=="get_nearest") {
 		$lat=$_GET['lat']+0;

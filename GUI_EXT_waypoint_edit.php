@@ -41,7 +41,8 @@
 </head>
 <?
 	$waypointIDedit=makeSane($_REQUEST['waypointIDedit'],1);
-
+echo $waypointIDedit."#"
+;
 	if ( $_POST['editWaypoint']==1 ) { // CHANGE waypoint
 		$waypt=new waypoint($waypointIDedit);
 		

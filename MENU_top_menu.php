@@ -105,7 +105,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoff_resolve">Administer Duplicate Takeoffs</a></li>				
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">Administer the Takeoffs</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=area_admin">Administer Takeoff Areas</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_sites">Administer Takeoffs</a></li>
+				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">See the Takeoff Log</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Display server's SyncLog</a></li>
 				<li class='li_space long'></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
@@ -249,6 +251,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li><a href="#"><?=_MENU_TAKEOFFS." ".$arrDownImg ?></a>
 	<ul>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=sites"><?=_MENU_SITES_GUIDE ?></a></li>
+		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_areas">Area Guide</a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_takeoffs"><?=_MENU_TAKEOFFS ?></a></li>
 	</ul>
 </li>

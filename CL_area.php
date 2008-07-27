@@ -16,6 +16,8 @@
 
 */
 
+$areaTypeTextArray=array(0=>"List of takeoffs",1=>"Bouding box",2=>"Bounding Circle",3=>"Bounding polygon" );
+
 
 class area{
 	var $areaID;
@@ -45,6 +47,7 @@ class area{
 	// areaType=0 collection of takeoffs
 	// areaType=1 , bounding box 
 		
+	
 	function area($id="") {
 		if ($id!="") {
 			$this->ID=$id;
@@ -54,6 +57,11 @@ class area{
 		$this->gotValues=0;
 	}
 
+	function areaTypeText($id) {
+		global $areaTypeTextArray;
+		return $areaTypeTextArray[$id];
+	}
+		
 	function getTakeoffs($areaID) {
 		global $db;
 		global $waypointsTable ,$areasTakeoffsTable;
@@ -83,13 +91,31 @@ class area{
 	
 	}
 
+
+	function deleteArea() {
+		global $db,$areasTable,$areasTakeoffsTable ;
+
+		$res= $db->sql_query("DELETE * FROM $areasTable WHERE ID=".$this->ID );
+  		if($res <= 0){   
+			 echo "Error deleting area from DB<BR>";
+		     return;
+	    }
+
+		$res= $db->sql_query("DELETE * FROM $areasTakeoffsTable WHERE areaID".$this->ID );
+  		if($res <= 0){   
+			 echo "Error removing takeoffs from area <BR>";
+		     return;
+	    }
+
+		$this->gotValues=0;
+    }
 	
 	function getFromDB() {
 		global $db,$areasTable ;
 
 		$res= $db->sql_query("SELECT * FROM $areasTable WHERE ID=".$this->ID );
   		if($res <= 0){   
-			 echo "Error getting club from DB<BR>";
+			 echo "Error getting area from DB<BR>";
 		     return;
 	    }
 
@@ -116,7 +142,7 @@ class area{
 
 		$query.=" $areasTable  ( ";
 		foreach ($this->valuesArray as $valStr) {
-				$query.= $valStr.",";		
+				$query.= "`$valStr`,";		
 		}
 		$query=substr($query,0,-1);
 
@@ -129,7 +155,7 @@ class area{
 		// echo $query;
 	    $res= $db->sql_query($query);
 	    if($res <= 0){
-		  echo "Error putting club to DB<BR>";
+		  echo "Error putting area to DB: $query<BR>";
 		  return 0;
 	    }		
 		$this->gotValues=1;			

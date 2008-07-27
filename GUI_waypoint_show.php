@@ -129,7 +129,7 @@
 			if ( $CONF_google_maps_api_key  ) { ?> 
 		<iframe align="center"
 		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpID=".$wpInfo->waypointID."&wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
-		  TITLE="Google Map" width="710px" height="420px"
+		  TITLE="Google Map" width="710px" height="400px"
 		  scrolling="no" frameborder="0">
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.
 		You should upgrade to a more current browser.

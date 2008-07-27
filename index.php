@@ -213,6 +213,8 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_club_admin.php";
 } else if ($op=="area_admin") { 
 	require $moduleRelPath."/GUI_area_admin.php";
+} else if ($op=="admin_sites") { 
+	require $moduleRelPath."/GUI_admin_sites.php";
 // Listing output
 //--------------------------
 } else if ($op=="list_clubs") { 
@@ -229,6 +231,11 @@ if ($op=="users") {
 	require $moduleRelPath."/GUI_list_takeoffs.php";	
 } else if ($op=="sites") {
 	require $moduleRelPath."/GUI_sites.php";	
+} else if ($op=="list_areas") {
+	require $moduleRelPath."/GUI_list_areas.php";	
+} else if ($op=="area_show") {
+	require $moduleRelPath."/GUI_area_show.php";	
+
 //--------------------------
 // "Flight" related actions
 //--------------------------
