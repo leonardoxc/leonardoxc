@@ -2559,7 +2559,7 @@ $kml_file_contents=
 		$flightScore->parseScore($results);
 
 		// make a second pass 
-		// $flightScore->computeSecondPass($this->getIGCFilename());
+		$flightScore->computeSecondPass($this->getIGCFilename());
 
 		// now is the time to search for the OLC files, manually optimization
 		// and 'inject' these values into the $flightScore object 

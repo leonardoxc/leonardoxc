@@ -304,7 +304,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			$bRecs++;
 			$lastBrecLine=$i;
 			if (  $tpArray[ substr($lines[$i],1,6) ] ) {
-				echo "Found TP $tpNum at line $i<BR>";
+				DEBUG("SCORE",1,"Found TP $tpNum at line $i<BR>");				
 				for ($k=$i-10; $k<=$i+10; $k++) {
 					if ($k>=0 && $k<count($lines) )	$outLines[$k]=$lines[$k];
 				}
@@ -330,14 +330,16 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		}
 
 		$tmpFilename=dirname(__FILE__).'/files/tmp/'.sprintf('%d.igc',rand(1,999999) );
-		echo "Will write to $tmpFilename";
+		DEBUG("SCORE",1,"Will write to $tmpFilename");
 		writeFile($tmpFilename,$out);
 		return $tmpFilename;
 	}
 
 	function computeSecondPass($file) {
+		DEBUG("SCORE",1,"Making igc file with points around the Turnpoints");
 		$tmpFile=$this->makeSecondPassFile($file);
 
+		DEBUG("SCORE",1,"Scoring file");
 		$results=$this->getScore( $tmpFile,1  );		
 		$this->parseScore($results);
 		@unlink($tmpFile);

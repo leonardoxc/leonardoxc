@@ -319,3 +319,9 @@ UPDATE `leonardo_flights` SET originalUserID=concat(serverID,'_',originalUserID)
 # speed up sync.php
 
 ALTER TABLE `leonardo_log` ADD INDEX ( `ItemType` , `ServerItemID` )  ; 
+
+
+
+# change area table types
+ALTER TABLE `leonardo_areas` CHANGE `desc` `desc` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
+ALTER TABLE `leonardo_areas` CHANGE `descInt` `descInt` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ;
