@@ -24,14 +24,31 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	$op=makeSane($_REQUEST['op'],1);
+
+
+
+	$op=makeSane($_REQUEST['op'],0);
+
 	if (!$op) $op="get_map";	
 
-	if (!in_array($op,array("get_map")) ) return;
+	if (!in_array($op,array("get_map","get_height")) ) return;
 
 	$encoding="iso-8859-1";
 
-	if ($op=="get_map") {
+	if ($op=="get_height") {
+		require_once dirname(__FILE__)."/CL_dem.php";
+		$latArray=split(",",$_GET['lat']);
+		$lonArray=split(",",$_GET['lon']);
+
+		foreach ($latArray as $i=>$lat) {
+			$lon=$lonArray[$i];	
+			//echo "$lon,$lat<BR>";
+			$ground[$i]=DEM::getAlt($lat,$lon);
+			if ($i>0) echo ",";
+			echo $ground[$i];		
+		}
+		return;
+	} else if ($op=="get_map") {
 		require_once $moduleRelPath."/CL_map.php";
 
 		$min_lat=$_GET[min_lat]+0;

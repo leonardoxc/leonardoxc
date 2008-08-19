@@ -74,16 +74,16 @@ class DEM {
 				
 		// find the file to use!
 		// $demFile="N40E023";
-		$demFile=sprintf("%s%02d%s%03d.zip",$latStr,$latSouth,$lonStr,$lonWest);
+		$demFile=sprintf("%s%02d%s%03d.hgt.zip",$latStr,$latSouth,$lonStr,$lonWest);
 		
-		$demZipFile=$CONF_DEMpath.'/'.$demFile.'.zip';
+		$demZipFile=$CONF_DEMpath.'/'.$demFile;
 		
 		if ($missingDEMfiles[$demFile]) return -9999;
 		
 		// see if it already open
 		if ( ! $openDEMfiles[$demFile] ) {
 		
-			  if (!is_file($demZipFile)) {
+			  if (!is_file($demZipFile)) {			  
 			  	$missingDEMfiles[$demFile]=1;
 				return -9999;
 			  }
@@ -110,6 +110,8 @@ class DEM {
 				
 		$alt=ord($openDEMfiles[$demFile][$pointOffset])*256+ord($openDEMfiles[$demFile][$pointOffset+1]);
 
+		if ($alt>10000) $alt=0;		
+	
 		DEBUG("DEM",255,"$latD $lonD $x $y  $pointOffset alt=$alt");		
 		return $alt;	
 	}
