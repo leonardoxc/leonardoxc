@@ -1056,6 +1056,11 @@ $resStr='{
 					if  (strlen($line)==0) continue;				
 					if ($line{0}=='B') {
 							if  ( strlen($line) < 23 ) 	continue;
+							// also check for bad points 
+							// 012345678901234567890123456789
+							// B1522144902558N00848090EV0058400000
+							if ($line{24}=='V') continue;
+							
 							$thisPoint=new gpsPoint($line,$this->timezone);
 							$alt=$thisPoint->getAlt();
 							$lon=-$thisPoint->lon;
@@ -1167,6 +1172,11 @@ $resStr='{
 			if  (strlen($line)==0) continue;				
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
+					// also check for bad points 
+					// 012345678901234567890123456789
+					// B1522144902558N00848090EV0058400000
+					if ($line{24}=='V') continue;
+
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
 					if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
@@ -1211,7 +1221,7 @@ $resStr='{
 		// compute num of B lines
 		$numLines=0;
 		foreach($lines as $line) {
-			if ($line{0}=='B' && strlen($line) >= 23 ) $numLines++;
+			if ($line{0}=='B' && strlen($line) >= 23 && $line{24}!='V' ) $numLines++;
 		}
 
 		if ($numLines<200 ) {
@@ -1235,6 +1245,11 @@ $resStr='{
 			if  (strlen($line)==0) continue;				
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
+					// also check for bad points 
+					// 012345678901234567890123456789
+					// B1522144902558N00848090EV0058400000
+					if ($line{24}=='V') continue;
+
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$lat=$thisPoint->lat;
 					$lon=-$thisPoint->lon;
@@ -1384,6 +1399,11 @@ $kml_file_contents=
 			if  (strlen($line)==0) continue;				
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
+					// also check for bad points 
+					// 012345678901234567890123456789
+					// B1522144902558N00848090EV0058400000
+					if ($line{24}=='V') continue;
+
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$thisPoint->gpsTime+=$day_offset;
 										
@@ -1608,10 +1628,11 @@ $kml_file_contents=
 		$lines = file ($filename); 
 		$i=0;
 
+
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;				
-			if ($line{0}=='B') {
+			if ($line{0}=='B' && $line{24}!='V') {
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$data_X[$i]=$thisPoint->lat;
 					$data_Y[$i]=$thisPoint->lon;
@@ -1673,6 +1694,11 @@ $kml_file_contents=
 			
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
+					// also check for bad points 
+					// 012345678901234567890123456789
+					// B1522144902558N00848090EV0058400000
+					if ($line{24}=='V') continue;
+
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$thisPoint->gpsTime+=$day_offset;
 					// $goodPoints[$i]['time']=sec2Time($thisPoint->getTime(),1);
@@ -2033,7 +2059,12 @@ $kml_file_contents=
 				if  (strlen($line)==0) continue;
 				if  ( $line{0}!='B' ) continue;
 				$Brecords++;
-				if  ( strlen($line)  < 23 ) { 
+
+				// also check for bad points 
+				// 012345678901234567890123456789
+				// B1522144902558N00848090EV0058400000
+
+				if  ( strlen($line)  < 23  || $line{24}=='V') { 
 					$lines[$i]{1}='X';
 					continue;
 				}
