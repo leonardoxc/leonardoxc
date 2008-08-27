@@ -30,6 +30,23 @@ class brands {
 		else
 			return $where_clause;
 	}
+	
+	function getBrandText($brandID,$gliderName='',$glidetCat=0){
+		global $moduleRelPath,$CONF_abs_path,$CONF;
+				
+		if (!$brandID) {
+			$brandID=brands::guessBrandID($gliderName);	
+			$brandName='';
+		}
+		
+		if ($brandID) {
+			if (!isset($brandName) ) $brandName=$CONF['brands']['list'][$brandID];
+	 		$gliderBrandImg="$brandName $gliderName";
+		} else 
+	 		$gliderBrandImg="$gliderName";
+			
+		return $gliderBrandImg;
+	}
 
 	function getBrandImg($brandID,$gliderName='',$glidetCat=0){
 		global $moduleRelPath,$CONF_abs_path,$CONF;

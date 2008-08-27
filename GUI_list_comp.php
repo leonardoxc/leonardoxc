@@ -296,7 +296,17 @@
   sortArrayBest("triangleKm",$countHowMany); 
 */
 ?>
+<link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.unpacked.js"></script>
+
+<script type="text/javascript">
+
+var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
+
+</script>
+
 <? echo makePilotPopup();  ?>
 
 <? if (0) { ?>
@@ -427,8 +437,13 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 
 			// $descr="flight $flightID";
 			// alt='$descr' title='$descr'
-			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' >$extFlightImg".$outVal."</a></TD>"; 	 		  
-			else echo "<TD>".$outVal."</TD>"; 	 		  
+
+			if ($val) {
+				echo "<TD>$extFlightImg<a class='betterTip' id='tp_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a>";
+				// echo " <a id='t_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' class='betterTip' title='$descr'>?</a>";
+				echo "</TD>"; 	 		  
+			} else echo "<TD>".$outVal."</TD>";   
+					  
 			$k++;
 			if ($k>=$countHowMany) break;
 		}

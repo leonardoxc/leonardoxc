@@ -1,4 +1,18 @@
 
+
+.short_info tr.hr td {
+	border-top:1px solid #cccccc;
+}
+
+.short_info td {
+	padding: 1px;
+	padding-top: 1px;
+	line-height:90%;
+	
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
 .boldFont , .boldFont a {
 	font-weight:bold;	
 	text-decoration:underline;

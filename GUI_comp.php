@@ -128,7 +128,14 @@ echo "<BR><BR>";
 	}
 
 ?>
+<link rel="stylesheet" href=""<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
+
+<script  type="text/javascript" >
+
+</script>
 <? echo makePilotPopup();  ?>
 
 <div class="tabber" id="compTabber">
@@ -225,8 +232,11 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
 			$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
-			if ($val) echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
-			else echo "<TD>".$outVal."</TD>"; 	 		  
+			if ($val) {
+				echo "<TD><a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a>";
+				echo " <a id='t_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' class='betterTip' title='$descr'>?</a>";
+				echo "</TD>"; 	 		  
+			} else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
 			if ($k>=$countHowMany) break;
 		}

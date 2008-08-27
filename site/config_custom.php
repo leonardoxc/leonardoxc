@@ -120,7 +120,7 @@
  $takeoffRadious= 500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
- $CONF_compItemsPerPage=200;
+ $CONF_compItemsPerPage=25;
  $CONF_defaultThemeName="basic";
  $CONF_metricSystem=1; //  1=km,m     2=miles,feet
 

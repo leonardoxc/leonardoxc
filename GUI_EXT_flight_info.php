@@ -27,18 +27,86 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
+
+	$op=makeSane($_GET['op'],0);
+	if (!$op) $op='sql';
+	
 	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
 		
-	$flight=new flight();
-	$flight->getFlightFromDB($flightID);
 
-    if (  !auth::isModerator($userID) ) {
-		echo "go away";
-		return;
-    }
+if ($op=='info_short'){
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
 
+//  echo "<pre class='short_info'>";
+  echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
+	echo "<TR><TD width=160>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
 
+	$gliderBrandImg=brands::getBrandText($flight->gliderBrandID,$flight->glider,$flight->cat);
+	echo "<TR><TD>"._GLIDER."</td><td>"."<img src='".moduleRelPath()."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".				$gliderBrandImg."<td></tr>\n";
+
+ 
+	$flightHours=$flight->DURATION/3600;
+	if ($flightHours) {
+		$openDistanceSpeed=formatSpeed($flight->LINEAR_DISTANCE/($flightHours*1000));
+		$maxDistanceSpeed=formatSpeed($flight->MAX_LINEAR_DISTANCE/($flightHours*1000));
+		$olcDistanceSpeed=formatSpeed($flight->FLIGHT_KM/($flightHours*1000));
+	} else {
+		$openDistanceSpeed=0;
+		$maxDistanceSpeed=0;
+		$olcDistanceSpeed=0;	
+	}
+	
+if ( $scoringServerActive ) {
+		$olcScoreType=$flight->BEST_FLIGHT_TYPE;
+		if ($olcScoreType=="FREE_FLIGHT") {
+			$olcScoreTypeImg="icon_turnpoints.gif";
+		} else if ($olcScoreType=="FREE_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_free.gif";
+		} else if ($olcScoreType=="FAI_TRIANGLE") {
+			$olcScoreTypeImg="icon_triangle_fai.gif";
+		} else { 
+			$olcScoreTypeImg="photo_icon_blank.gif";
+		}
+
+	echo "<TR class='hr'><TD>"._OLC_SCORE_TYPE."</td><td>".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." <img src='".moduleRelPath()."/img/$olcScoreTypeImg' align='absmiddle'>\n";
+	echo "<TR><TD>"._OLC_DISTANCE."</td><td>".formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)\n";
+	echo "<TR><TD>"._OLC_SCORING."</td><td>".formatOLCScore($flight->FLIGHT_POINTS)."<td></tr>\n";
+	echo "<TR class='hr'><TD>"._OPEN_DISTANCE."</td><td>".formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)"."<td></tr>\n";		
+	echo "<TR><TD>"._MAX_DISTANCE."</td><td>".formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)\n";
+	
+} 
+
+	
+echo "<TR class='hr'><TD>"._TAKEOFF_LOCATION."</td><td>".formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious)."<td></tr>\n";
+echo "<TR><TD>"._TAKEOFF_TIME."</td><td>".sec2Time($flight->START_TIME)."<td></tr>\n";
+echo "<TR><TD>"._DURATION."</td><td>".sec2Time($flight->DURATION)."<td></tr>\n";
+
+echo	"<TR class='hr'><TD>"._MAX_SPEED."</td><td>".formatSpeed($flight->MAX_SPEED)."<td></tr>\n";
+echo    "<TR><TD>"._MAX_VARIO."</td><td>".formatVario($flight->MAX_VARIO)."<td></tr>\n";
+echo   	"<TR><TD>"._MIN_VARIO."</td><td>".formatVario($flight->MIN_VARIO)."<td></tr>\n";
+
+if ($flight->is3D()) {
+	echo "<TR><TD>"._MAX_ALTITUDE."</td><td>".formatAltitude($flight->MAX_ALT)."<td></tr>\n";
+	echo "<TR><TD>"._TAKEOFF_ALTITUDE."</td><td>".formatAltitude($flight->TAKEOFF_ALT)."<td></tr>\n";
+}
+
+if ($flight->comments) {
+	echo "<TR class='hr'><TD>"._COMMENTS."</td><td>".$flight->comments."</td></tr>\n";
+}
+
+  echo "</table>";
+ //  echo "</pre>";
+
+} else if ($op=='sql'){
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+	
+		if (  !auth::isModerator($userID) ) {
+			echo "go away";
+			return;
+		}
   ?><head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
 
@@ -47,8 +115,8 @@
 	 td {border:1px solid #777777; }
 	 body {margin:0px; background-color:#E9E9E9}
 	.box {
-		 background-color:#F4F0D5;
-		 border:1px solid #555555;
+		background-color:#F4F0D5;
+		border:1px solid #555555;
 		padding:3px; 
 		margin-bottom:5px;
 	}
@@ -81,4 +149,5 @@
 		$i++;
 	}		
 	echo "</table>";
+}
 ?>
