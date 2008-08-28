@@ -25,6 +25,33 @@
 }
 
 
+#BT_bottom_arrow_left{
+	background-image: url(arrow_left.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	position: absolute;
+	z-index:101;
+	left:-12px;
+	height:23px;
+	width:10px;
+
+	top:-40px;
+}
+
+#BT_bottom_arrow_right{
+	background-image: url(arrow_right.gif);
+	background-repeat: no-repeat;
+	background-position: left top;
+	position: absolute;
+	z-index:101;
+	height:23px;
+	width:11px;
+	top:-40px;;
+	margin-left:0px;
+	padding-left:0px;
+}
+
+
 #BT_arrow_title_left{
 	background-image: url(arrow_title_left.gif);
 	background-repeat: no-repeat;

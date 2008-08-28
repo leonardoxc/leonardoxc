@@ -351,7 +351,7 @@ function getPilotPhotoRelFilename($pilotID,$icon=0) {
 	
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
-	return $moduleRelPath."/flights/".$pilotID."/PilotPhoto".$suffix;
+	return moduleRelPath()."/flights/".$pilotID."/PilotPhoto".$suffix;
 }
 
 

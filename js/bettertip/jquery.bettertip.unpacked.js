@@ -72,6 +72,7 @@ function BT_remove()
 	$('#BT').remove();
 }
 
+
 function BT_show(id) {
 
 	if(BT_events[id] == 0)
@@ -118,6 +119,7 @@ function BT_show(id) {
 				
 	var left = act_left + act_width + 12;
 	var top = BT_getTop(id);
+
 	
 	var arrowDir = "left";
 	
@@ -156,12 +158,16 @@ function BT_show(id) {
 					"<div class='BT_loader'></div>" +
 				"</div>" +
 			"</div>"+
+			"<div id='BT_bottom_arrow_"+arrowDir+"' style='display:none; top: 30px; left:"+arrowLeft+"px;'></div>" +
 		"</div></div></div></div>");
+	
+	
 	
 	if(urlParts[0].charAt(0) == '$')
 	{
 		$('#BT_content').html($("#"+urlParts[0].substr(1)).html());
 		$('#BT').show();
+		BT_checkBounds();
 	}
 	else if(BT_cache_enabled)
 	{
@@ -177,8 +183,37 @@ function BT_show(id) {
 		$.post(url, {}, function(data){
 			$('#BT_content').html(data);
 			$('#BT').show();
+			BT_checkBounds();
 		})
 	}
+	
+}
+
+function BT_checkBounds() {
+
+	var window_scrollTop= $(window).scrollTop();
+	var window_height= 	$(window).height();
+
+	var h = $('#BT');
+
+	var divHeight=h.height();	
+	var offset= h.offset();
+	
+	var top=offset.top;
+	
+	if (window_scrollTop + window_height  <  divHeight+ offset.top  ) {				
+		var oldTop=divHeight-35;
+		top -=  divHeight - 31  ;
+		$('#BT').css({top: top + 'px'}).addClass("viewport-bottom");
+
+		$('#BT_arrow_left').hide();
+		$('#BT_arrow_right').hide();
+
+		$('#BT_bottom_arrow_left').show().css({top: oldTop + 'px'});
+		$('#BT_bottom_arrow_right').show().css({top: oldTop + 'px'});
+		
+	}
+		
 }
 
 function BT_createCacheElement(id, data)
@@ -193,6 +228,7 @@ function BT_loadCache(id)
 {
 	$('#BT_content').html($('#BT_cache_'+id).html());
 	$('#BT').show();
+	BT_checkBounds();
 }
 
 function BT_getWidth(id) {

@@ -163,7 +163,18 @@
       exit();
     }
 ?>
+<link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.unpacked.js"></script>
+
+
+<script type="text/javascript">
+var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotID=';
+var BT_default_width=500;
+</script>
+
 <? echo makePilotPopup() ?>
 
 <?
@@ -261,7 +272,8 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	echo "<TD><div align=left id='p_$i'>";
 
 	echo getNationalityDescription($row["countryCode"],1,0);
-	echo "<a href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
+	
+	echo "<a class='betterTip' id='pl_".$row["userServerID"]."u".$row["userID"]."' href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
 		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
 			
 	 echo "<TD>".$row["totalFlights"]."</TD>". 	 
