@@ -71,9 +71,11 @@
 		 $XML_str.="</waypoints>\n
 ";
 
-		 $where_clause ="AND takeoffID=$nearestWaypoint->waypointID";
+		 $where_clause ="AND takeoffID=$nearestWaypoint->waypointID AND filename<>'' ";
 		 $query="SELECT * FROM $flightsTable WHERE private=0 $where_clause ORDER BY FLIGHT_POINTS  DESC $lim ";
 		 //echo $query;
+		 //exit;
+		 
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
 			 echo("<H3> Error in query! $query </H3>\n");

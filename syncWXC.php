@@ -62,8 +62,8 @@ if (isset($_GET['zerocivl'])) {
 $clientID	= makeSane($_GET['clientID'],1);	
 $clientPass	= makeSane($_GET['clientPass'],0);
 
-//if ($count) $limit="LIMIT $count";
-// else $limit="";
+if ($count) $limit="LIMIT $count";
+ else $limit="";
 
 $where_clause=" AND ItemType=1 ";
 
