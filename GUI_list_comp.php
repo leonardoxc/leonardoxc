@@ -38,9 +38,24 @@
 
 	$dontShowNacClubSelection=1;
 
+
+  // SEASON MOD
+  // we do a little trick here!
+  // if the rank has custom seasons we just replace the global $CONF['seasons'] array 
+  // since both have the same structure
+  if ( $clubsList[$clubID]['useCustomSeasons'] ) { 
+	  $CONF['seasons']=$clubsList[$clubID]['seasons'];
+  }
+  //if ( $clubsList[$clubID]['useCustomYears'] ) { 
+  //	  $CONF['years']=$clubsList[$clubID]['years'];
+  //}
+
+
   // SEASON MOD
   list($dates_where_clause,$dates_legend) = dates::makeWhereClause(0,$season,$year,$month,0 , 1);
-  $where_clause.=$dates_where_clause;
+  if (!$clubID)  {
+  	$where_clause.=$dates_where_clause;
+  }
   $legend.=$dates_legend;
 
   // BRANDS MOD  
@@ -166,7 +181,8 @@
         . ' ';
 */
    $res= $db->sql_query($query);
-		// echo $query;
+	//	echo $query;
+
    if($res <= 0){
       echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY." $query </H3>\n");
       exit();
@@ -231,6 +247,7 @@
      $i++;
   } 
 
+
   // find the glider that was used most by each pilot
   foreach ( $pilotGliders as $pID=>$gliderArray) {
 	  arsort($gliderArray);
@@ -283,9 +300,15 @@
 	if ($itemsNum==0) $legendRight="[ 0 ]";
 
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div><div class='pagesDiv'>$legendRight</div></div>" ;
+
   require_once dirname(__FILE__)."/MENU_second_menu.php";
   
-  $countHowMany= $CONF_countHowManyFlightsInComp;
+  if (	$clubID &&  $clubsList[$clubID]['flightsInLeague'] ){
+ 	  $countHowMany= $clubsList[$clubID]['flightsInLeague'] ;
+  } else {			
+	  $countHowMany= $CONF_countHowManyFlightsInComp;
+  }	  
+
   sortArrayBest($leagueCategories[$leagueCategory]['arrayName'],$countHowMany);
 /*
   sortArrayBest("duration",$countHowMany);

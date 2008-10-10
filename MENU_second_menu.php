@@ -186,6 +186,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 } // end of  $dontShowCatSelection  if 
 
 
+
 if (! $dontShowCountriesSelection ) {
 	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList(0,0,$clubID);
 	$countriesNum=count($countriesNames);
@@ -199,6 +200,7 @@ if (! $dontShowCountriesSelection ) {
 		$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 	}
 }	
+
 ?>
 <ul id="dropMenu">
 <? if (! $dontShowCountriesSelection ) { ?>

@@ -303,7 +303,7 @@ ALTER TABLE `leonardo_remote_pilots` ADD PRIMARY KEY ( `remoteServerID` , `remot
 
 #2008/07/02
 # delete unused fields , leonardo servers have a uniform way to access flights and KML
-update  `leonardo_flights`  set `originalURL`='' , `originalKML`='' WHERE `serverID`<>8
+update  `leonardo_flights`  set `originalURL`='' , `originalKML`='' WHERE `serverID`<>8;
 
 #2008/07/10
 # we store the full original ID as string

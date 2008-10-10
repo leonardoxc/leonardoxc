@@ -23,7 +23,7 @@
 				"areaID"=>1,
 				"addManual"=>0,
 				"adminID"=>76,
-
+				"flightsInLeague"=>3,
 				// extra fields to expand club functionality
 				"noSpecificMembers"=>1,
 
@@ -34,7 +34,7 @@
 				//"pilotNationality"=>array("gr"),
 				"gliderCat"=>array(1,2),
 				
-/*
+
 				 'useCustomYears'=>1, 
 				 'years'=>array ('use_calendar_years'=>0),
 				 'useCustomSeasons'=>1, // definition must follow !		 
@@ -74,7 +74,7 @@
 				"endYear"=>"2006",
 				"endMonth"=>"0",
 				"endDay"=>"0",
-*/
+
 			) ,
 
 	5=>array(	"desc"=>"Danish XC league",
