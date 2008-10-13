@@ -30,7 +30,7 @@
 		$groupStr=" soundex($nameField) ";
 		
 	$query="SELECT * , count(ID) as sameNum, $groupStr as nameSoundex
-	 FROM  $waypointsTable WHERE type=1000 and name<>'' AND $groupStr <>'' $countryCodeWhere GROUP BY $groupStr HAVING count(ID) > 1  order by count(ID) ASC	 ";		
+	 FROM  $waypointsTable WHERE type=1000 and name<>'' AND $groupStr <>'' $countryCodeWhere GROUP BY $groupStr HAVING count(ID) > 1  order by sameNum ASC	 ";		
 	 
 	$res= $db->sql_query($query);
 	$i=1;

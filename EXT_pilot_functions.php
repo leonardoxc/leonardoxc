@@ -38,7 +38,7 @@
 		}
 		$pilotName=stripslashes  ($_GET['q']);
 	
-		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%'  LIMIT 15";
+		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' ) LIMIT 15";
 		// echo "a|$query|0";
 		//return;
 		$res= $db->sql_query($query);
@@ -56,7 +56,13 @@
 			if ($row['Sex']=='F') $sexIcon="<img src='".moduleRelPath()."/img/icon_female.gif' border=0> ";
 			else $sexIcon='';
 			
-			echo $row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$row['FirstName'].' '.$row['LastName'].'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+			
+			$name=$row['FirstName'].' '.$row['LastName'];
+			$name=str_replace($pilotName,"<b>$pilotName</b>",$name);
+			$pilotName=strtoupper($pilotName{0}).substr($pilotName,1);
+			$name=str_replace($pilotName,"<b>$pilotName</b>",$name);
+
+			echo $row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
 			
 		}
 	}
