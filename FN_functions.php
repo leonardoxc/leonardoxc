@@ -700,4 +700,7 @@ function sendMailToAdmin($subject,$msg) {
 	
 }
 
+function makeHash($scriptName)  {
+	return md5($CONF_SitePassword.$scriptName);
+}
 ?>

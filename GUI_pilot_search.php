@@ -97,7 +97,9 @@ function selectItem(li) {
 function formatItem(row) {
 	return row[1];
 }
-
+<?
+$_SESSION['sessionHashCode']=makeHash('EXT_pilot_functions');
+?>
 $(document).ready(function() {
 	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10, onItemSelect:selectItem, formatItem:formatItem, selectOnly:1 });
 

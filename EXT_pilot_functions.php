@@ -31,9 +31,16 @@
 	$op=makeSane($_GET['op']);	
 
 	if ($op=='findPilot'){
-		$pilotName=makeSane($_GET['q']);
+		$hash=$_SESSION['sessionHashCode'];
+		if ( makeHash('EXT_pilot_functions') != $hash   ) {
+			echo "Access Denied";
+			return;
+		}
+		$pilotName=stripslashes  ($_GET['q']);
 	
-		$query="SELECT * FROM $pilotsTable WHERE FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%'  LIMIT 15";
+		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%'  LIMIT 15";
+		// echo "a|$query|0";
+		//return;
 		$res= $db->sql_query($query);
 		
 		if($res <= 0){   
