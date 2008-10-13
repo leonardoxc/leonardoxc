@@ -259,6 +259,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li><a href="#"><?=_MENU_SHOW_PILOTS." ".$arrDownImg?></a>
 	<ul>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&comp=0"><?=_MENU_SHOW_PILOTS ?></a></li>
+   		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_search"><?=_MENU_SEARCH_PILOTS ?></a></li>
 		<li class='li_h1'>.:: Pilot Statistics ::.</li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=bestOlcScore&comp=1"><?=_MENU_OLC ?></a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_pilots&sortOrder=bestDistance&comp=1"><?=_MENU_OPEN_DISTANCE ?></a></li>

@@ -718,4 +718,7 @@ define("_Show_Airspace","Show<br>Airspace");
 
 // New on 2008/06/04
 define("_Show_Optimization_details","Show Optimization Details");
+
+define("_MENU_SEARCH_PILOTS","Search");
+
 ?>

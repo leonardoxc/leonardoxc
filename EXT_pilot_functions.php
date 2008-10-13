@@ -26,9 +26,35 @@
 	setDEBUGfromGET();
 
 	
-	if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+
 
 	$op=makeSane($_GET['op']);	
+
+	if ($op=='findPilot'){
+		$pilotName=makeSane($_GET['q']);
+	
+		$query="SELECT * FROM $pilotsTable WHERE FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%'  LIMIT 15";
+		$res= $db->sql_query($query);
+		
+		if($res <= 0){   
+			echo("<H3> Error in query: $query</H3>\n");
+			return;			 
+		} 
+		while($row= $db->sql_fetchrow($res) ){
+			if ($row['countryCode']) $flag=	strtolower($row['countryCode']);
+			else $flag='unknown';
+			
+			$flagIcon="<img src='".moduleRelPath()."/img/flags/$flag.gif' border=0> ";
+			
+			if ($row['Sex']=='F') $sexIcon="<img src='".moduleRelPath()."/img/icon_female.gif' border=0> ";
+			else $sexIcon='';
+			
+			echo $row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$row['FirstName'].' '.$row['LastName'].'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+			
+		}
+	}
+	
+	if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
 
 	if ($op=='mapPilot'){	
 			$pilotID1=makeSane($_GET['pilotID1'],0);

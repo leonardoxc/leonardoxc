@@ -264,6 +264,8 @@ if ($op=="users") {
 //--------------------------
 // "Pilots" related actions
 //--------------------------
+} else if ($op=="pilot_search") {
+	require $moduleRelPath."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {
 	if ($userID>0 || $CONF_showProfilesToGuests ) require $moduleRelPath."/GUI_pilot_profile.php";
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";			

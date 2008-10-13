@@ -677,5 +677,7 @@ define("_Zoom_to_flight","Zoom to<br>flight");
 define("_Follow_Glider","Follow<br>Glider"); 
 define("_Show_Task","Show<br>Task"); 
 define("_Show_Airspace","Show<br>Airspace"); 
+define("_Show_Optimization_details","Show Optimization Details"); 
+define("_MENU_SEARCH_PILOTS","Search"); 
 
 ?>

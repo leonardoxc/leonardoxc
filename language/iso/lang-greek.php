@@ -710,5 +710,7 @@ define("_EmailInvalid","The email address is invalid.");
 define("_EmailSaved","The email address was saved"); 
 define("_EmailNotSaved","The email address has not been saved."); 
 define("_EmailSaveProblem","A problem occurred when saving the email address."); 
+define("_Show_Optimization_details","Show Optimization Details"); 
+define("_MENU_SEARCH_PILOTS","Search"); 
 
 ?>

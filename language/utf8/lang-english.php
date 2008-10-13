@@ -43,9 +43,9 @@ define("_MEAN_KM","Mean # km per flight");
 define("_TOTAL_KM","Total flight km");
 define("_TOTAL_DURATION_OF_FLIGHTS","Total flight duration");
 define("_MEAN_DURATION","Mean flight duration");
-define("_TOTAL_OLC_KM","Total OLC distance");
-define("_TOTAL_OLC_SCORE","Total OLC scoring");
-define("_BEST_OLC_SCORE","Best OLC score");
+define("_TOTAL_OLC_KM","Total XC distance");
+define("_TOTAL_OLC_SCORE","Total XC scoring");
+define("_BEST_OLC_SCORE","Best XC score");
 define("_From","from");
 
 // list_flights()
@@ -62,9 +62,9 @@ define("_LANDING_LOCATION","Landing");
 define("_LANDING_TIME","Landing Time");
 define("_OPEN_DISTANCE","Linear distance");
 define("_MAX_DISTANCE","Max Distance");
-define("_OLC_SCORE_TYPE","OLC score type");
-define("_OLC_DISTANCE","OLC Distance");
-define("_OLC_SCORING","OLC score");
+define("_OLC_SCORE_TYPE","XC score type");
+define("_OLC_DISTANCE","XC Distance");
+define("_OLC_SCORING","XC score");
 define("_MAX_SPEED","Max speed");
 define("_MAX_VARIO","Max vario");
 define("_MEAN_SPEED","Mean speed");
@@ -102,8 +102,8 @@ define("_PILOT_NAME","Pilot's Name");
 define("_TAKEOFF","Takeoff");
 define("_DURATION","Duration");
 define("_LINEAR_DISTANCE","Open Distance");
-define("_OLC_KM","OLC km");
-define("_OLC_SCORE","OLC score");
+define("_OLC_KM","XC km");
+define("_OLC_SCORE","XC score");
 define("_DATE_ADDED","Latest submissions");
 
 define("_SORTED_BY","Sort by:");
@@ -158,7 +158,7 @@ define("_MENU_XCLEAGUE","XC League");
 define("_MENU_ADMIN","Admin");
 
 define("_MENU_COMPETITION_LEAGUE","League - all categories");
-define("_MENU_OLC","OLC");
+define("_MENU_OLC","XC");
 define("_MENU_OPEN_DISTANCE","Open Distance");
 define("_MENU_DURATION","Duration");
 define("_MENU_ALL_FLIGHTS","Show all flights");
@@ -187,9 +187,9 @@ define("_NUMBER_OF_FLIGHTS","Number of flights");
 define("_TOTAL_DISTANCE","Total distance");
 define("_TOTAL_DURATION","Total duration");
 define("_BEST_OPEN_DISTANCE","Best distance");
-define("_TOTAL_OLC_DISTANCE","Total OLC distance");
-define("_TOTAL_OLC_SCORE","Total OLC score");
-define("_BEST_OLC_SCORE","Best OLC score");
+define("_TOTAL_OLC_DISTANCE","Total XC distance");
+define("_TOTAL_OLC_SCORE","Total XC score");
+define("_BEST_OLC_SCORE","Best XC score");
 define("_MEAN_DURATION","Mean duration");
 define("_MEAN_DISTANCE","Mean distance");
 define("_PILOT_STATISTICS_SORT_BY","Pilots - Sort by");
@@ -216,8 +216,8 @@ define("_NO","NO");
 
 define("_LEAGUE_RESULTS","League results");
 define("_N_BEST_FLIGHTS"," best flights");
-define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","OLC total score");
+define("_OLC","XC");
+define("_OLC_TOTAL_SCORE","XC total score");
 define("_KILOMETERS","Kilometers");
 define("_TOTAL_ALTITUDE_GAIN","Total altitude gain");
 define("_TOTAL_KM","Total km");
@@ -252,8 +252,8 @@ define("_COUNTRY","Country");
 define("_SELECT_COUNTRY","Select Country");
 define("_OTHER_FILTERS","Other Filters");
 define("_LINEAR_DISTANCE_SHOULD_BE","The linear distance should be");
-define("_OLC_DISTANCE_SHOULD_BE","The OLC distance should be");
-define("_OLC_SCORE_SHOULD_BE","The OLC score should be");
+define("_OLC_DISTANCE_SHOULD_BE","The XC distance should be");
+define("_OLC_SCORE_SHOULD_BE","The XC score should be");
 define("_DURATION_SHOULD_BE","The duration should be");
 define("_ACTIVATE_CHANGE_FILTER","Activate / change FILTER");
 define("_DEACTIVATE_FILTER","Deactivate FILTER");
@@ -407,7 +407,7 @@ define("_First_flight_logged","First flight logged");
 define("_Last_flight_logged","Last flight logged");
 define("_Flying_period_covered","Flying period covered");
 define("_Total_Distance","Total Distance");
-define("_Total_OLC_Score","Total OLC Score");
+define("_Total_OLC_Score","Total XC Score");
 define("_Total_Hours_Flown","Total Hours Flown");
 define("_Total_num_of_flights","Total # of flights ");
 
@@ -416,7 +416,7 @@ define("_Best_Open_Distance","Best Open Distance");
 define("_Best_FAI_Triangle","Best FAI Triangle");
 define("_Best_Free_Triangle","Best Free Triangle");
 define("_Longest_Flight","Longest Flight");
-define("_Best_OLC_score","Best OLC score");
+define("_Best_OLC_score","Best XC score");
 
 define("_Absolute_Height_Record","Absolute Height Record");
 define("_Altitute_gain_Record","Altitute gain Record");
@@ -715,5 +715,10 @@ define("_Zoom_to_flight","Zoom to<br>flight");
 define("_Follow_Glider","Follow<br>Glider");
 define("_Show_Task","Show<br>Task");
 define("_Show_Airspace","Show<br>Airspace");
+
+// New on 2008/06/04
+define("_Show_Optimization_details","Show Optimization Details");
+
+define("_MENU_SEARCH_PILOTS","Search");
 
 ?>

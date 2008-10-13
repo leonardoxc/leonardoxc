@@ -39,6 +39,7 @@ if ($op=='info_short'){
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 
+
 //  echo "<pre class='short_info'>";
   echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
 	echo "<TR><TD width=160>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
