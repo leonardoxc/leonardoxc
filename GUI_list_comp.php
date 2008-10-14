@@ -320,9 +320,9 @@
 */
 ?>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.unpacked.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 
 <script type="text/javascript">
 
@@ -331,26 +331,6 @@ var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&fligh
 </script>
 
 <? echo makePilotPopup();  ?>
-
-<? if (0) { ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tabber.js"></script>
-<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber.css" TYPE="text/css" MEDIA="screen">
-<link rel="stylesheet" href="<?=$themeRelPath ?>/tabber-print.css" TYPE="text/css" MEDIA="print">
-
-<script type="text/javascript">
-
-/* Optional: Temporarily hide the "tabber" class so it does not "flash"
-   on the page as plain HTML. After tabber runs, the class is changed
-   to "tabberlive" and it will appear. */
-
-document.write('<style type="text/css">.tabber{display:none;}<\/style>');
-</script>
-
-<div class="tabber" id="compTabber">
-<?
-} else {
-?>
-
 <? 
 	foreach($leagueCategories as $subcatID=>$subcatArray) {
 		$subcatTitle=$subcatArray['legend'];			
@@ -360,7 +340,8 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
 		echo " <div class='menu1' $style ><a href='".CONF_MODULE_ARG."&op=competition&comp=$subcatID'>$subcatTitle</a></div>";	
 	}
 	echo "<BR>";
-}
+
+
   listCategory($leagueCategories[$leagueCategory]['legend'],$leagueCategories[$leagueCategory]['header'],
 				$leagueCategories[$leagueCategory]['arrayName'],$leagueCategories[$leagueCategory]['formatFunction']);
 /*
@@ -370,12 +351,8 @@ document.write('<style type="text/css">.tabber{display:none;}<\/style>');
   listCategory(_DURATION,			_TOTAL_DURATION,"duration","sec2Time"); 
   listCategory(_ALTITUDE_GAIN,		_TOTAL_ALTITUDE_GAIN,"alt_gain","formatAltitude"); 
 */
-if (0) {
-?>
 
-</div>
-<?	
-}
+
 function listCategory($legend,$header, $arrayName, $formatFunction="") {
    global $$arrayName;
    global $pilotNames,$pilotGlidersMax;

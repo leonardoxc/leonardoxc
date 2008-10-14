@@ -12,9 +12,9 @@
 /************************************************************************/
 ?>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.unpacked.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.autocomplete.js"></script>
 
 <style type="text/css">
@@ -72,26 +72,20 @@ var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotI
 var BT_default_width=500;
 
 function selectItem(li) {
-	if (li.extra) {
-		// alert("That's '" + li.extra[0] + "' you picked.")
-		// $("#pilotNameStr").val(row[0]);
+	if (li.extra) {		
 		var pilotID=li.extra[1].replace('u','_');
 		var html=
 		"<hr><b>"+li.selectValue+"</b><Br>"+
-  "<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview="+pilotID+"'><? echo _Pilot_Profile ?></a>"+
-	'<BR>'+
-
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID="+pilotID+"&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a>"+
-	'<br>'+
-
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview="+pilotID+"'><? echo _flights_stats ?></a>";
+		"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview="+pilotID+"'><? echo _Pilot_Profile ?></a><BR>"+
+		"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID="+pilotID+"&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a><br>"+
+		"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview="+pilotID+"'><? echo _flights_stats ?></a>";
 
 		$("#pilotMenu").html(html);		
 		
 		$("#pilotNameStr").val(li.extra[1]);
 		$("#pilotInfo").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");
   	    $("#pilotInfo").load("<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?pilotID="+li.extra[1]); 
-		// $("#pilotName").val(li.extra[1]);
+		
 	}
 }
 function formatItem(row) {
@@ -110,10 +104,7 @@ $_SESSION['sessionHashCode']=makeHash('EXT_pilot_functions');
 $(document).ready(function() {
 	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10, onItemSelect:selectItem, formatItem:formatItem, selectOnly:1 , enc:'<?=$CONF_ENCODING?>' });
 
-//	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10 });
-
 });
-
 
 </script>
 <?

@@ -48,8 +48,8 @@
 		$pilotName=stripslashes  ($_GET['q']);
 	
 		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' ) LIMIT 15";
-		 echo "a|$query|0";
-		return;
+		// echo "a|$query|0";
+		//return;
 		$res= $db->sql_query($query);
 		
 		if($res <= 0){   

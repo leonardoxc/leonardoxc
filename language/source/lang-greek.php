@@ -688,4 +688,9 @@ define("_Zoom_to_flight","Ζουμ στην<br>πτήση");
 define("_Follow_Glider","Ακολούθηση<br>πιλότου");
 define("_Show_Task","Εμφάνιση<br>Τασκ");
 define("_Show_Airspace","Εμφάνιση<br>Airspace");
+
+// New on 2008/06/04
+define("_Show_Optimization_details","Αναλυτικά η βαθμολόγηση");
+
+define("_MENU_SEARCH_PILOTS","Εύρευση πιλότου");
 ?>

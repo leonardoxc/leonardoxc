@@ -26,8 +26,6 @@
 -->
 </style>
 
-<script language="javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
-
 <script language="javascript">
 
 $(document).ready(function(){

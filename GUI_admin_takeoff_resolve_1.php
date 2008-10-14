@@ -99,7 +99,7 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 
 -->
 </style>
-<script language="javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
+
 
 <script language="javascript">
   

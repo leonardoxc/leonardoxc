@@ -181,6 +181,7 @@ if ( ! $CONF['custom_top_menu'] ) {
 	require_once dirname(__FILE__).'/MENU_'.$CONF['custom_top_menu'].'_top_menu.php';
 }
 ?>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 <?
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {

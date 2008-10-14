@@ -308,36 +308,21 @@ $addToClubIcon		="<img src='".$moduleRelPath."/img/icon_club_add.gif' width=12 h
 
    if ( $clubID  && (auth::isClubAdmin($userID,$clubID) || auth::isAdmin($userID))  )  {
 ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
+
 <script language="javascript">
 
 function addClubFlight(clubID,flightID) {
-	url='<?=$moduleRelPath?>/EXT_club_functions.php';
-	pars='op=add&clubID='+clubID+'&flightID='+flightID;
+	$("#updateDiv").load('<?=$moduleRelPath?>/EXT_club_functions.php?op=add&clubID='+clubID+'&flightID='+flightID);
+	$('#fl_'+flightID).html("<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><?=$removeFromClubIcon?></a>");
 	
-	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><?=$removeFromClubIcon?></a>";
-	div=MWJ_findObj('fl_'+flightID);
-	div.innerHTML=newHTML;
-
-	div=MWJ_findObj('fl_'+flightID);
-	div.innerHTML=newHTML;
-	//toggleVisible(divID,divPos);
 }
 
 function removeClubFlight(clubID,flightID) {
-	url='<?=$moduleRelPath?>/EXT_club_functions.php';
-	pars='op=remove&clubID='+clubID+'&flightID='+flightID;
-	
-	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	newHTML="<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><?=$addToClubIcon?></a>";
-	div=MWJ_findObj('fl_'+flightID);
-	div.innerHTML=newHTML;
-	//toggleVisible(divID,divPos);
+	$("#updateDiv").load('<?=$moduleRelPath?>/EXT_club_functions.php?op=remove&clubID='+clubID+'&flightID='+flightID);
+	$('#fl_'+flightID).html("<a href=\"#\" onclick=\"addClubFlight("+clubID+","+flightID+");return false;\"><?=$addToClubIcon?></a>");
 }
 </script>
+
 <?
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {

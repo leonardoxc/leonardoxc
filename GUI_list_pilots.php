@@ -164,10 +164,9 @@
     }
 ?>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.unpacked.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 
 
 <script type="text/javascript">

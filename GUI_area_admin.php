@@ -197,7 +197,7 @@ if (!$areaID && $areaAction!='Add') {
 	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 
 ?>
-<script language="javascript" src="<?=$moduleRelPath ?>/js/jquery.js"></script>
+
 <script language="javascript">
 
 	function removeTakeoffFromArea() {
