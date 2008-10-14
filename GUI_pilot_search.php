@@ -99,9 +99,16 @@ function formatItem(row) {
 }
 <?
 $_SESSION['sessionHashCode']=makeHash('EXT_pilot_functions');
+
+	if ($CONF_use_utf) {		
+		$CONF_ENCODING='utf-8';
+	} else  {		
+		$CONF_ENCODING=$langEncodings[$currentlang];
+	}
+		
 ?>
 $(document).ready(function() {
-	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10, onItemSelect:selectItem, formatItem:formatItem, selectOnly:1 });
+	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10, onItemSelect:selectItem, formatItem:formatItem, selectOnly:1 , enc:'<?=$CONF_ENCODING?>' });
 
 //	$("#pilotName").autocomplete("<?=$moduleRelPath?>/EXT_pilot_functions.php?op=findPilot", { minChars:3, matchSubset:1, matchContains:1, cacheLength:10 });
 
@@ -119,9 +126,11 @@ Enter at least 3 letters of the First or Last Name
 Pilot Name: <input id="pilotName" name="pilotName" type="text" />
 <input id="pilotNameStr" name="pilotNameStr" type="hidden" />
 
-<div id="pilotMenu">
-</div>
-<div id="pilotInfo">
+<div style="width:500px">
+	<div id="pilotMenu">
+	</div>
+	<div id="pilotInfo">
+	</div>
 </div>
 <BR /><BR />
 <?

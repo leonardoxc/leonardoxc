@@ -371,7 +371,12 @@ jQuery.autocomplete = function(input, options) {
 
 	function makeUrl(q) {
 		var sep = options.url.indexOf('?') == -1 ? '?' : '&'; 
-		var url = options.url + sep + "q=" + encodeURI(q);
+		
+		var url = options.url + sep + "q=" ; 
+		
+		if (options.enc!='utf-8') url=url+q;
+		else url=url+encodeURI(q);
+		
 		for (var i in options.extraParams) {
 			url += "&" + i + "=" + encodeURI(options.extraParams[i]);
 		}
@@ -516,6 +521,7 @@ jQuery.fn.autocomplete = function(url, options, data) {
 		selectOnly: false,
 		maxItemsToShow: -1,
 		autoFill: false,
+		enc:"utf-8",
 		width: 0
 	}, options);
 	options.width = parseInt(options.width, 10);

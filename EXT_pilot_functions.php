@@ -36,11 +36,20 @@
 			echo "Access Denied";
 			return;
 		}
+
+		if ($CONF_use_utf) {		
+			$CONF_ENCODING='utf-8';
+		} else  {		
+			$CONF_ENCODING=$langEncodings[$currentlang];
+		}
+
+		header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
+
 		$pilotName=stripslashes  ($_GET['q']);
 	
 		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' ) LIMIT 15";
-		// echo "a|$query|0";
-		//return;
+		 echo "a|$query|0";
+		return;
 		$res= $db->sql_query($query);
 		
 		if($res <= 0){   

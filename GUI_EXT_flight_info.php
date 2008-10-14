@@ -39,6 +39,13 @@ if ($op=='info_short'){
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 
+	if ($CONF_use_utf) {		
+		$CONF_ENCODING='utf-8';
+	} else  {		
+		$CONF_ENCODING=$langEncodings[$currentlang];
+	}
+
+	header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
 
 //  echo "<pre class='short_info'>";
   echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";

@@ -35,6 +35,15 @@
 		return;
 	}
 	
+	
+	if ($CONF_use_utf) {		
+		$CONF_ENCODING='utf-8';
+	} else  {		
+		$CONF_ENCODING=$langEncodings[$currentlang];
+	}
+
+	header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
+	
 	//$selQuery="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
 	//					" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'];
 						
@@ -112,7 +121,7 @@
     <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['HoursFlown'] ?></td>
   </tr>
   <tr>
-    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Per_Year?></div></td>
+    <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo  _Hours_Per_Year?></div></td>
     <td valign="top" bgcolor="#F5F5F5"> <? echo $pilot['HoursPerYear'] ?></td>
   </tr>
 
