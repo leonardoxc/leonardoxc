@@ -643,8 +643,8 @@
 		}
 	}
 
-	document.onkeypress = function hidecal1 () {
-		if (event.keyCode == 27) hideCalendar();
+	document.onkeypress = function hidecal1 (e) {
+		if (e.keyCode == 27) hideCalendar();
 	}
 	document.onclick = function hidecal2 () {
 		if (!bShow) hideCalendar();

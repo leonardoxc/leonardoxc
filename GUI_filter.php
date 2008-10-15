@@ -103,6 +103,10 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		if ($FILTER_olc_score_select)
 			$filter_clause.=" AND FLIGHT_POINTS ".$FILTER_olc_score_op." ".$FILTER_olc_score_select." ";
 
+		if ($FILTER_olc_type) 
+			$filter_clause.=" AND BEST_FLIGHT_TYPE='$FILTER_olc_type' ";
+
+
 		if ($FILTER_duration_hours_select || $FILTER_duration_minutes_select ) {
 			$dur=$FILTER_duration_hours_select*60*60 + $FILTER_duration_minutes_select*60;
 			$filter_clause.=" AND DURATION ".$FILTER_duration_op." ".$dur." ";
@@ -345,15 +349,27 @@ foreach ($filterkeys as $filterkey) {
     <tr>
       <td><div align="right"><? echo _OLC_SCORE_SHOULD_BE ?> </div></td>
       <td><select name="FILTER_olc_score_op">
-          <option value=">=" <? if ($FILTER_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="<=" <? if ($FILTER_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
+          <option value=">=" <? if ($FILTER_olc_score_op==">=") echo "selected" ?>>&gt;=</option>
+          <option value="<=" <? if ($FILTER_olc_score_op=="<=") echo "selected" ?>>&lt;=</option>
         </select> <input name="FILTER_olc_score_select" type="text" size="5" value="<? echo $FILTER_olc_score_select ?>"></td>
     </tr>
+	
+	<tr>
+ 		<td><div align="right"><? echo _OLC_SCORE_TYPE ?> </div></td>		
+		<td><select name="FILTER_olc_type">
+          <option value=""></option>
+          <option value="FREE_FLIGHT"   <? if ($FILTER_olc_type=="FREE_FLIGHT") echo "selected" ?>><?=_FREE_FLIGHT?></option>
+          <option value="FREE_TRIANGLE" <? if ($FILTER_olc_type=="FREE_TRIANGLE") echo "selected" ?>><?=_FREE_TRIANGLE?></option>
+		  <option value="FAI_TRIANGLE"  <? if ($FILTER_olc_type=="FAI_TRIANGLE") echo "selected" ?>><?=_FAI_TRIANGLE?></option>
+        </select>
+		</td>
+	</tr>
+	
     <tr>
       <td><div align="right"><? echo _DURATION_SHOULD_BE ?> </div></td>
       <td><select name="FILTER_duration_op">
-          <option value=">=" <? if ($FILTER_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="<=" <? if ($FILTER_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
+          <option value=">=" <? if ($FILTER_duration_op==">=") echo "selected" ?>>&gt;=</option>
+          <option value="<=" <? if ($FILTER_duration_op=="<=") echo "selected" ?>>&lt;=</option>
         </select> <input name="FILTER_duration_hours_select" type="text" size="2" value="<? echo $FILTER_duration_hours_select ?>">
         <? echo _HOURS ?> :
         <input name="FILTER_duration_minutes_select" type="text" size="2" value="<? echo $FILTER_duration_minutes_select ?>">

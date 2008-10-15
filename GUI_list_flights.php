@@ -265,8 +265,8 @@ BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&fligh
 BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=photos&flightID=';
 BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightID=';
 
-var BT_open_wait = 700; 
-var BT_close_wait = 1000; 
+// BT_open_wait = 500; 
+BT_close_wait = 400; 
 </script>
 
 <? echo makePilotPopup(); ?>
@@ -518,7 +518,7 @@ function removeClubFlight(clubID,flightID) {
 	    if ( $isExternalFlight == 0 || 
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
-			echo "<a  id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
+			echo "<a class='betterTip' id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
 			
 		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
