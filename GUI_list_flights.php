@@ -254,7 +254,21 @@ TR .newDate {
 }
 
 </style>
+<link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type="text/javascript">
+
+var BT_base_urls=[];
+BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
+BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=photos&flightID=';
+BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightID=';
+
+var BT_open_wait = 700; 
+var BT_close_wait = 1000; 
+</script>
+
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
 <? echo makeFlightActionsPopup(); ?>
@@ -504,7 +518,7 @@ function removeClubFlight(clubID,flightID) {
 	    if ( $isExternalFlight == 0 || 
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
-			echo "<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			echo "<a class='betterTip' id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
 			
 		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
@@ -530,13 +544,13 @@ function removeClubFlight(clubID,flightID) {
 		}
 
 		$photosNum=$row["hasPhotos"];
-		if ($photosNum) echo "<img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' title='$photosNum "._PHOTOS."' />";
+		if ($photosNum) echo "<a class='betterTip' id='tpa1_$flightID' href='javascript:nop();'><img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' border=0 title='$photosNum "._PHOTOS."' /></a>";
 		// else echo "<img class='photoIcon2' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
  
 		if ($row["comments"]) $hasComments=1;
 		else $hasComments=0;
 	
-		if ($hasComments ) echo "<img  class='commentDiv' src='".$moduleRelPath."/img/icon_comments.gif' width='12' height='8'  />";
+		if ($hasComments ) echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'><img  class='commentDiv' src='".$moduleRelPath."/img/icon_comments.gif' width='12' height='8' border='0' /></a>";
 		// else echo "<img class='commentDiv' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='12' height='8' />";
 
 		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {

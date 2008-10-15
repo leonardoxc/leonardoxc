@@ -34,8 +34,32 @@
 	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
 		
+if ($op=='photos'){
+	$flight=new flight();
+	$flight->getFlightFromDB($flightID);
 
-if ($op=='info_short'){
+	if ($flight->hasPhotos) {
+		require_once dirname(__FILE__)."/CL_flightPhotos.php";
+	
+		$flightPhotos=new flightPhotos($flight->flightID);
+		$flightPhotos->getFromDB();
+			
+		foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
+			
+			if ($photoInfo['name']) {
+				$imgIconRel=moduleRelPath().'/'.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgStr="<img src='$imgIconRel'  class=\"photos\" border=\"0\">";		
+				echo "<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";		
+			}		
+		}
+	}
+
+} else if ($op=='comments'){
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID);
+		echo $flight->comments;
+		
+} else if ($op=='info_short'){
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 

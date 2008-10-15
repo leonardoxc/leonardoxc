@@ -1,1 +1,296 @@
-$(BT_init);var BT_default_width=350;var BT_open_wait=500;var BT_close_wait=0;var BT_cache_enabled=true;var BT_events=new Array();var BT_titles=new Array();function BT_init(){$("a.betterTip").parent("div.betterTip").hover(function(){BT_hoverIn($(this).children("a.betterTip")[0]);return false},function(){BT_hoverOut($(this).children("a.betterTip")[0])});$("a.betterTip").filter(function(a){return $(this).parent("div.betterTip").length==0}).hover(function(){BT_hoverIn(this)},function(){BT_hoverOut(this)})}function BT_setOptions(a){if(a["openWait"]!=null)BT_open_wait=a["openWait"];if(a["closeWait"]!=null)BT_close_wait=a["closeWait"];if(a["cacheEnabled"]!=null)BT_cache_enabled=a["cacheEnabled"]}function BT_hoverIn(a){var b=BT_open_wait;if($('#BT_cache_'+a.id).length>0)b=0;var c=a.title;if(!BT_titles[a.id]){if(!c||c.toLowerCase()=="$none")c="";else if(c.toLowerCase()=="$content")c=$(a).text();BT_titles[a.id]=c;a.title=""}BT_events[a.id]=1;setTimeout(function(){BT_show(a.id)},BT_open_wait)}function BT_hoverOut(a){BT_events[a.id]=0;setTimeout(function(){BT_remove()},BT_close_wait)}function BT_remove(){$('#BT').remove()}function BT_show(b){if(BT_events[b]==0)return;var c=$("#"+b);var d='';if(BT_base_url!=''){var e=b.split("_",2);var f=e[1];d=BT_base_url+f}else{d=c[0].href}var g=BT_titles[b];$("#BT").remove();var h=$("#"+b).parent("div.betterTip");if(h.length>0)b=$("#"+b).parent("div.betterTip")[0].id;c=$("#"+b);var i=true;if(g.length==0)i=false;var j=d.split("\?",2);var k=BT_parseQuery(j[1]);j[0]=j[0].substr(j[0].lastIndexOf('/')+1);if(!k["width"]||k["width"].length==0)k["width"]=BT_default_width;var l=parseInt(k["width"]);var m=BT_getLeft(b);var n=BT_getWidth(b);var o=m+n+12;var p=BT_getTop(b);var q="left";var r=self.innerWidth||(document.documentElement&&document.documentElement.clientWidth)||document.body.clientWidth;var s=m+n+11+l+20;var t=-10;var u=-3;var v=-7;var w=-7;if(r<s){q="right";o=m-12-l;t=l;u=-1;if(document.all)t-=2}else if(i)u=-2;if(i)q="title_"+q;$("body").append("<div id='BT' class='BT_shadow0' style='top:"+(p-v-8)+"px; left:"+(o-w-8)+"px;'>"+"<div class='BT_shadow1'>"+"<div class='BT_shadow2'>"+"<div id='BT_main' style='width:"+k["width"]+"px; top:"+v+"px; left:"+w+"px;'>"+"<div id='BT_arrow_"+q+"' style='top: "+u+"px; left:"+t+"px;'></div>"+(i?"<div id='BT_title'>"+g+"</div>":"")+"<div style='padding:5px'>"+"<div id='BT_content'>"+"<div class='BT_loader'></div>"+"</div>"+"</div>"+"<div id='BT_bottom_arrow_"+q+"' style='display:none; top: 30px; left:"+t+"px;'></div>"+"</div></div></div></div>");if(j[0].charAt(0)=='$'){$('#BT_content').html($("#"+j[0].substr(1)).html());$('#BT').show();BT_checkBounds()}else if(BT_cache_enabled){if($('#BT_cache_'+b).length>0)BT_loadCache(b);else $.post(d,{},function(a){BT_createCacheElement(b,a)})}else{$.post(d,{},function(a){$('#BT_content').html(a);$('#BT').show();BT_checkBounds()})}}function BT_checkBounds(){var a=$(window).scrollTop();var b=$(window).height();var h=$('#BT');var c=h.height();var d=h.offset();var e=d.top;if(a+b<c+d.top){var f=c-35;e-=c-31;$('#BT').css({top:e+'px'}).addClass("viewport-bottom");$('#BT_arrow_left').hide();$('#BT_arrow_right').hide();$('#BT_bottom_arrow_left').show().css({top:f+'px'});$('#BT_bottom_arrow_right').show().css({top:f+'px'})}}function BT_createCacheElement(a,b){$("body").append("<div id='BT_cache_"+a+"' style='display:none'>"+b+"</div>");BT_loadCache(a)}function BT_loadCache(a){$('#BT_content').html($('#BT_cache_'+a).html());$('#BT').show();BT_checkBounds()}function BT_getWidth(a){var x=document.getElementById(a);return x.offsetWidth}function BT_getLeft(a){var b=$('#'+a)[0];var c=b.offsetLeft;var d=b.offsetParent;while(d){c+=d.offsetLeft;d=d.offsetParent}return c}function BT_getTop(a){var b=$('#'+a)[0];var c=b.offsetTop;var d=b.offsetParent;while(d){c+=d.offsetTop;d=d.offsetParent}return c}function BT_parseQuery(a){var b=new Object();if(!a)return b;var c=a.split(/[;&]/);for(var i=0;i<c.length;i++){var d=c[i].split('=');if(!d||d.length!=2)continue;var e=unescape(d[0]);var f=unescape(d[1]);f=f.replace(/\+/g,' ');b[e]=f}return b}
+/*
+ * BetterTip
+ * Created by Edgar Verle
+ * BetterTip is made for the jQuery library.
+ */
+
+$(BT_init);
+
+var BT_default_width=350;
+var BT_open_wait = 500; //time in millis to wait before showing dialog
+var BT_close_wait = 0; //time in millis to wait before closing dialog
+var BT_cache_enabled = true;
+var BT_events = new Array();
+var BT_titles = new Array();
+
+function BT_init(){
+	
+    $("a.betterTip").parent("div.betterTip")
+    .hover(function(){BT_hoverIn($(this).children("a.betterTip")[0]); return false;},
+    	   function(){BT_hoverOut($(this).children("a.betterTip")[0])})
+    ;
+    
+    $("a.betterTip").filter(function(index){
+    	return $(this).parent("div.betterTip").length == 0;
+    })
+    .hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
+	//.click(function(){return false});	
+}
+
+function BT_setOptions(hash)
+{
+	if(hash["openWait"] != null)
+		BT_open_wait = hash["openWait"];
+	if(hash["closeWait"] != null)
+		BT_close_wait = hash["closeWait"];
+	if(hash["cacheEnabled"] != null)
+		BT_cache_enabled = hash["cacheEnabled"];
+}
+
+function BT_hoverIn(a)
+{
+	var timeout = BT_open_wait;
+	
+	if($('#BT_cache_'+a.id).length > 0)
+		timeout = 0;
+	
+	var title = a.title;
+	
+	if(!BT_titles[a.id])
+	{
+		if(!title || title.toLowerCase() == "$none")
+			title = "";
+		else if(title.toLowerCase() == "$content")
+			title = $(a).text();
+		
+		BT_titles[a.id] = title;
+		a.title = "";
+	}
+		
+	BT_events[a.id] = 1;
+	setTimeout(function(){BT_show(a.id)}, BT_open_wait);
+}
+
+function BT_hoverOut(a)
+{
+	BT_events[a.id] = 0;
+	setTimeout(function(){BT_remove();}, BT_close_wait);
+}
+
+function BT_remove()
+{
+	$('#BT').remove();
+}
+
+
+function BT_show(id) {
+
+	if(BT_events[id] == 0)
+		return;
+
+	var obj = $("#"+id);
+	var url='';
+
+	if ( typeof BT_base_urls != 'undefined' ) {
+		var idParts = id.split("_", 2);
+		var extID= idParts[1];		
+		var idParts2 = idParts[0].split("a", 2);
+		var BT_base_url2=BT_base_urls[idParts2[1]];
+		url=BT_base_url2+extID;	
+	} else if (BT_base_url!='') {
+		var idParts = id.split("_", 2);
+		var extID= idParts[1];
+		url=BT_base_url+extID;	
+	} else {	
+		url = obj[0].href;
+	}
+	
+	var title = BT_titles[id];
+	
+	$("#BT").remove();
+
+	var parents = $("#"+id).parent("div.betterTip");
+	
+	if(parents.length > 0)
+		id = $("#"+id).parent("div.betterTip")[0].id;
+
+	obj = $("#"+id);
+	
+	var showTitle = true;
+
+	if(title.length == 0)
+		showTitle = false;
+	
+	var urlParts = url.split("\?", 2);
+	var query = BT_parseQuery(urlParts[1]);
+	urlParts[0] = urlParts[0].substr(urlParts[0].lastIndexOf('/')+1);
+	
+	if(!query["width"] || query["width"].length == 0)
+		query["width"] = BT_default_width;
+	
+	var tipWidth = parseInt(query["width"]);
+	
+	var act_left = BT_getLeft(id);
+	var act_width = BT_getWidth(id);
+				
+	var left = act_left + act_width + 12;
+	var top = BT_getTop(id);
+
+	
+	var arrowDir = "left";
+	
+	var docWidth = self.innerWidth || (document.documentElement&&document.documentElement.clientWidth) || document.body.clientWidth;
+	var right = act_left + act_width + 11 + tipWidth + 20;
+	var arrowLeft = -10;
+	var arrowTop = -3;
+	var shadowTop = -7;
+	var shadowLeft = -7;
+
+	if(docWidth < right)
+	{
+		arrowDir = "right";
+		left = act_left - 12 - tipWidth;
+		arrowLeft = tipWidth;
+		arrowTop = -1;
+		
+		if(document.all)
+			arrowLeft -= 2;
+	}
+	else if(showTitle)
+		arrowTop = -2;
+	
+	if(showTitle)
+		arrowDir = "title_" +arrowDir;
+	
+	$("body").append(
+		"<div id='BT' class='BT_shadow0' style='top:"+(top-shadowTop-8)+"px; left:"+(left-shadowLeft - 8)+"px;'>" +
+		"<div class='BT_shadow1'>"+
+		"<div class='BT_shadow2'>" +
+		"<div id='BT_main' style='width:"+query["width"]+"px; top:"+shadowTop+"px; left:"+shadowLeft+"px;'>" +
+			"<div id='BT_arrow_"+arrowDir+"' style='top: "+arrowTop+"px; left:"+arrowLeft+"px;'></div>" +
+			(showTitle?"<div id='BT_title'>"+title+"</div>":"") +
+			"<div style='padding:5px'>" +
+				"<div id='BT_content'>" +
+					"<div class='BT_loader'></div>" +
+				"</div>" +
+			"</div>"+
+			"<div id='BT_bottom_arrow_"+arrowDir+"' style='display:none; top: 30px; left:"+arrowLeft+"px;'></div>" +
+		"</div></div></div></div>");
+	
+	
+	
+	if(urlParts[0].charAt(0) == '$')
+	{
+		$('#BT_content').html($("#"+urlParts[0].substr(1)).html());
+		$('#BT').show();
+		BT_checkBounds();
+	}
+	else if(BT_cache_enabled)
+	{
+		if($('#BT_cache_'+id).length > 0)
+			BT_loadCache(id);
+		else
+			$.post(url, {}, function(data){
+				BT_createCacheElement(id, data);
+			});
+	}
+	else
+	{
+		$.post(url, {}, function(data){
+			$('#BT_content').html(data);
+			$('#BT').show();
+			BT_checkBounds();
+		})
+	}
+	
+}
+
+function BT_checkBounds() {
+
+	var window_scrollTop= $(window).scrollTop();
+	var window_height= 	$(window).height();
+
+	var h = $('#BT');
+
+	var divHeight=h.height();	
+	var offset= h.offset();
+	
+	var top=offset.top;
+	
+	if (window_scrollTop + window_height  <  divHeight+ offset.top  ) {				
+		var oldTop=divHeight-35;
+		top -=  divHeight - 31  ;
+		$('#BT').css({top: top + 'px'}).addClass("viewport-bottom");
+
+		$('#BT_arrow_left').hide();
+		$('#BT_arrow_right').hide();
+
+		$('#BT_bottom_arrow_left').show().css({top: oldTop + 'px'});
+		$('#BT_bottom_arrow_right').show().css({top: oldTop + 'px'});
+		
+	}
+		
+}
+
+function BT_createCacheElement(id, data)
+{
+	$("body").append("<div id='BT_cache_"+id+"' style='display:none'>"+
+		data+"</div>");
+	
+	BT_loadCache(id);
+}
+
+function BT_loadCache(id)
+{
+	$('#BT_content').html($('#BT_cache_'+id).html());
+	$('#BT').show();
+	BT_checkBounds();
+}
+
+function BT_getWidth(id) {
+	var x = document.getElementById(id);
+	return x.offsetWidth;
+}
+
+function BT_getLeft(id) {
+	
+	var obj = $('#'+id)[0];
+	var left = obj.offsetLeft;
+	var parent = obj.offsetParent;
+	
+	while(parent) {
+		left += parent.offsetLeft;
+		parent = parent.offsetParent;
+	}
+	
+	return left
+}
+
+function BT_getTop(id) {
+	var obj = $('#'+id)[0];
+	var top = obj.offsetTop;
+	var parent = obj.offsetParent;
+	
+	while(parent) {
+		top += parent.offsetTop;
+		parent = parent.offsetParent;
+	}
+	
+	return top;
+}
+
+function BT_parseQuery ( query ) {
+	
+	var params = new Object ();
+   
+	if ( ! query ) 
+		return params;
+		
+	var pairs = query.split(/[;&]/);
+	
+	for ( var i = 0; i < pairs.length; i++ ) {
+		
+		var kv = pairs[i].split('=');
+		
+		if ( ! kv || kv.length != 2 ) 
+			continue;
+			
+		var key = unescape( kv[0] );	
+		var val = unescape( kv[1] );
+		
+		val = val.replace(/\+/g, ' ');
+		params[key] = val;
+	}
+	
+	return params;
+}
