@@ -452,6 +452,40 @@ $CONF['servers']['list']=array(
 	'waypoint_countries'=>"DE",
 ),
 
+11001=>array(
+	'id'=>11001,
+	'name'=>"FAI Test Server",
+
+	'isLeo'=>1,
+	'installation_type'=>2,
+	'leonardo_version'=>"2.9.99a",
+	'url'=>"leogateway.xccomp.net/modules.php?name=leonardo",
+	'url_base'=>"leogateway.xccomp.net/modules/leonardo",
+	'url_op'=>"leogateway.xccomp.net/modules/leonardo/op.php",
+	'admin_email'=>"andreas@4rieck.net",
+
+	'site_pass'=>"", 
+
+	'serverPass'=>"27hgju3j2we20fha2ldofg46qhha18rc",  // WE GIVE 
+	'clientPass'=>"",        // WE  DONT TAKE
+	'sync_format'=>"JSON",
+	'sync_type'=>2, // IGC
+	'use_zip'=>1,
+
+	'is_active'=>0,
+
+	'treat_flights_as_local'=>0,
+	'exclude_from_list'=>1,
+	'exclude_from_league'=>1,
+	'allow_duplicate_flights'=>1,
+
+	'dont_give_servers'=>array(5,8,10002),	// dont dont give DHV,XContest,DHV mirror
+	'accept_also_servers'=>array(),
+	
+	'gives_waypoints'=>0,
+	'waypoint_countries'=>"",
+),
+
 );
 
 
