@@ -269,6 +269,7 @@ BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightI
 BT_close_wait = 400; 
 </script>
 
+<? echo makeGoogleEarthPopup() ?>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
 <? echo makeFlightActionsPopup(); ?>
@@ -520,7 +521,9 @@ function removeClubFlight(clubID,flightID) {
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			echo "<a class='betterTip' id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
 			
-		    echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang'><img class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
+			//echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+			// ".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang
+		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -340, 14, 'ac_$i', 300, '".$row["ID"]."' )\"  onmouseout=\"geTip.hide()\"><img class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
 		} else {
 			echo "<a  href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";

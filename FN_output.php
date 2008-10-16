@@ -474,6 +474,43 @@ visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 }
 
 
+function makeGoogleEarthPopup() {
+	global $moduleRelPath,$opMode;
+	ob_start();
+
+?>
+<script language="javascript">
+var geTip = new TipObj('geTip');
+with (geTip)
+{
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  '<tr><td class="infoBoxHeader"><? echo "Google Earth"; ?></td></tr>'+
+  '<tr><td class="infoBox">'+
+  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=2'><? echo 'IGC2KMZ'; ?></a>"+
+	'</td></tr>'+
+	'<tr><td class="infoBox">'+
+  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=1'><? echo 'Man '; ?></a>"+
+	'</td></tr>'+
+	'<tr><td class="infoBox">'+
+  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=0'><? echo 'Simple'; ?></a>"+
+	'</td></tr>'+
+	
+	'</table>';
+
+ tipStick = 0;
+ showDelay = 0;
+ hideDelay = 700;
+ doFades = false;
+}
+</script>
+<div id="geTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; 
+visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
+<?
+	$c=ob_get_contents();
+	ob_end_clean();
+	return  $c;
+}
+
 function makePilotPopup() {
 	global $moduleRelPath,$opMode;
 	ob_start();

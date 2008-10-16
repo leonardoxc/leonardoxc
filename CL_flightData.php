@@ -931,49 +931,6 @@ $resStr='{
 
 			}	
 		}
-/*
-		$j=0;
-		for($i=1;$i<=5;$i++) {
-			$varname="turnpoint$i";
-			if ($this->{$varname}) {
-				$pointString=explode(" ",$this->{$varname});
-				// make this string 
-				// B1256514029151N02310255EA0000000486
-				// from N40:29.151 E23:10.255
-				preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$this->{$varname},$matches);
-		
-				$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
-				$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
-		
-				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",$matches[2],$matches[3],$matches[4],$matches[1],
-					$matches[6],$matches[7],$matches[8],$matches[5] );
-		
-				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );			
-				$kml_file_contents.=-$newPoint->lon.",".$newPoint->lat.",0 ";
-		
-				$turnpointPlacemark[$j]="
-		<Placemark>
-				 <Style>
-				  <IconStyle>
-					<scale>0.4</scale>
-					<Icon>
-					  <href>".$icons[$j+1][0]."</href>
-					  <x>".$icons[$j+1][1]."</x>
-					  <y>".$icons[$j+1][2]."</y>
-					  <w>32</w>
-					  <h>32</h>
-					</Icon>
-				  </IconStyle>
-				</Style>
-		 <Point>
-			<coordinates>".(-$newPoint->lon).",".$newPoint->lat.",0</coordinates>
-		  </Point>
-		</Placemark>";
-				$j++;
-		
-			}
-		}
-		*/
 
 		$kml_file_contents.="
 		</coordinates>
@@ -997,7 +954,7 @@ $resStr='{
 
 		$getFlightKML=$this->getFlightKML()."&c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 
-		if ($extended) {
+		if ($extended==1) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
 			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
 			//$kml_file_contents.="</Placemark>";
@@ -1012,6 +969,24 @@ $resStr='{
   <flyToView>0</flyToView>
   <Link>
 	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".man.kmz</href>
+  </Link>
+</NetworkLink>";
+
+			return $kml_file_contents;
+		} else if ($extended==2) {
+			require_once dirname(__FILE__).'/FN_igc2kmz.php';
+			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->userName,$this->glider);
+			$kml_file_contents="
+<NetworkLink>
+  <name>Extended analysis</name>
+  <visibility>1</visibility>
+  <open>1</open>
+  <description>Tom Payne\'s igz2kmz (http://github.com/twpayne/igc2kmz)</description>
+  <refreshVisibility>0</refreshVisibility>
+  <flyToView>0</flyToView>
+  <Link>
+	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).
+	".igc2kmz.".$igc2kmzVersion.".kmz</href>
   </Link>
 </NetworkLink>";
 
