@@ -168,16 +168,32 @@ function flight_db_info(id) {
 	<div align="right" style="display:inline; float:right; clear:right;">
 		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
 		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+		
 </td>
 </tr>
 </table>
 
 <table>
+<tr>
+<td colspan=2 >
+	Please choose the module to use<BR>for Google Earth Display
+  </td>
+</tr>
+<tr>
+<td colspan=2 >
+	<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='javascript:submitForm(2)'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
+	<br>
+	<? } ?>
+  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='javascript:submitForm(1)'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
+	<br>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='javascript:submitForm(0)'><? echo 'Simple (Only Task, very small)'; ?></a>
+  </td>
+</tr>
 <tr >
-	<td align='right'>
+	<td  colspan=2 align='right'>
 	<?=_Line_Color?>
-	</td>
-	<td >
+	
 	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
 	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
@@ -186,18 +202,10 @@ function flight_db_info(id) {
 	<option value='FF1493' style='background-color: #FF1493'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='FFFFFF' style='background-color: #FFFFFF'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='FF4500' style='background-color: #FF4500'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>
-	
+	<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>	
 
 	</select> 
-	</td>
-	
-</tr>
-<tr>
-	<td align="right">
-		<?=_Line_width?>
-	</td>
-	<td align="left">
+		<?=_Line_width?>	
 		<select  name="lineWidth">	
 		<option value='1' >1</option>
 		<option value='2' selected >2</option>
@@ -208,7 +216,7 @@ function flight_db_info(id) {
 		<input name="ex" type="hidden" value="1" />
 	</td>
 </tr>
-
+<? if (0) { ?>
 <tr>
 	<td colspan=2 >
 	<?
@@ -225,6 +233,7 @@ function flight_db_info(id) {
 
 	</td>
 </tr>
+<? }?>
 </TABLE>
 
 </form>

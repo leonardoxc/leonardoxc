@@ -475,7 +475,7 @@ visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 function makeGoogleEarthPopup() {
-	global $moduleRelPath,$opMode;
+	global $moduleRelPath,$opMode,$CONF;
 	ob_start();
 
 ?>
@@ -483,6 +483,8 @@ function makeGoogleEarthPopup() {
 var geTip = new TipObj('geTip');
 with (geTip)
 {
+	<? if (0) { ?>
+/*
   template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader"><? echo "Google Earth"; ?></td></tr>'+
   '<tr><td class="infoBox">'+
@@ -495,11 +497,51 @@ with (geTip)
   "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=0'><? echo 'Simple'; ?></a>"+
 	'</td></tr>'+
 	
-	'</table>';
+	'</table>';*/
+	<? } ?>
+	
+	var showTitle=true;
+	var title='Please choose the module to use<BR>for Google Earth Display';
+	var arrowDir = "right";
+	var arrowLeft = -10;
+	var arrowTop = -3;
+	var shadowTop = -7;
+	var shadowLeft = -7;
+	
+	arrowDir = "right";
+	// arrowLeft = tipWidth;
+	arrowTop = -1;
+	
+	if(document.all)
+		arrowLeft -= 2;
+			
+	template=	"<div id='BT' class='BT_shadow0' >" +
+		"<div class='BT_shadow1'>"+
+		"<div class='BT_shadow2'>" +
+		"<div id='BT_main' style='width:%3%px; top:"+shadowTop+"px; left:"+shadowLeft+"px;'>" +
+			"<div id='BT_arrow_"+arrowDir+"' style='top: "+arrowTop+"px; left:%3%px;'></div>" +
+			(showTitle?"<div id='BT_title'>"+title+"</div>":"") +
+			"<div style='padding:5px'>" +
+				"<div id='BT_content' style='line-height:140%'>"+
+				
+				<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
+				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>"+
+	'<br>'+
+				<? } ?>
+  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>"+
+	'<br>'+
+
+  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>"+
+  
+					
+				"</div>" +
+			"</div>"+
+			"<div id='BT_bottom_arrow_"+arrowDir+"' style='display:none; top: 30px; left:"+arrowLeft+"px;'></div>" +
+		"</div></div></div></div>";
 
  tipStick = 0;
  showDelay = 0;
- hideDelay = 700;
+ hideDelay = 900;
  doFades = false;
 }
 </script>
