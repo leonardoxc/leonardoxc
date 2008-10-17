@@ -144,15 +144,15 @@ html>body .flightShowBox {
 .col3 th { 	background:none; background-color:#E0F1D9;  }
 
 .dropBox {
-	display:block;
+	display:none;
 	position:absolute;
 
 	top:0px;
-	left: -999em;
+/*	left: -999em;*/
 	width:auto;
 	height:auto;
 	
-	visibility:hidden;
+/*	visibility:hidden;*/
 
 	border-style: solid; 
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
@@ -164,7 +164,11 @@ html>body .flightShowBox {
 	margin-bottom:0px;
 
 }
-.googleEarthDropDown { width:310px; }
+
+
+#geOptionsID { width:310px; background-color:#F3F5C5}
+#takeoffArea1 {width:320px; background-color:#F3F5C5} 
+
 .takeoffOptionsDropDown {width:410px; }
 
 .scoreInfoHeader {background-color: #4967A0 ; border-left-color: #4967A0 ; }
@@ -178,12 +182,11 @@ html>body .flightShowBox {
 	height:14px;
 	float:right;
 	clear:none;
-	margin:0;
-	padding:0;
-	background-repeat:no-repeat;
-	background-position:left top;
-	background-image:url({M_PATH}/img/icon_x_white.gif);
 	
+	margin:0;
+	margin-right:2px;
+	padding:0;
+	background:url('{M_PATH}/img/icon_x_white.gif') no-repeat left top ;	
 }
 -->
 </style>
@@ -210,20 +213,16 @@ with (docTips)
 <div id="docTipsLayer" style="position: absolute; z-index: 10000; visibility: hidden;
  left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
-<div id="takeoffArea1" class="dropBox" style="visibility:hidden; position:absolute; top:0px; width:320px; left: -999em;">
-	<table cellpadding="0" cellspacing="0" width="320" border="0" >
-	<tr>
-	<td class='infoBoxHeader'>
-		<div align="left" style="display:inline; float:left; clear:left;">{#_FLYING_AREA_INFO}</div>
-		<div align="right" style="display:inline; float:right; clear:right;">
-			<a href='#' onclick="toggleVisible('takeoffArea1','takeoffArea1Pos',14,-20,0,0);return false;">
-			<img src='{T_PATH}/img/exit.png' border=0></a></div>
-	</td>
-	</tr>
-	</table>
-	<table class="main_text" bgcolor="#FFFFFF" cellpadding="4" cellspacing="0" width="100%" border="0" >
-	<tr>
-	<td bgcolor="#FFFFFF">{linkToInfoStr1}</td></tr></table>
+
+
+<div id="takeoffArea1" class="dropBox" >
+	<div class="infoBoxHeader">
+		<div class='title'>{#_FLYING_AREA_INFO}</div>
+		<div class='closeButton'></div>        
+	</div>	
+	<div class='content main_text'>
+	{linkToInfoStr1}
+	</div>
 </div>
 
 <div class='flightShowBoxHeader'>
@@ -349,9 +348,9 @@ with (docTips)
               <th height="22"><div align="center">{#_FLIGHT_FILE}</div></th>
             </tr>
             <tr>
-              <td><div aling=center id="geOptionsPos" style="height:28px; text-align:center"><a href="{igcPath}" target="_blank">IGC</a> :: 
-					<a href="javascript:nop()" onClick="toggleDiv('geOptionsID','geOptionsPos',14,-160);return false;">Google
-                    Earth&nbsp;<img src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
+              <td><div aling=center  style="height:28px; text-align:center"><a href="{igcPath}" target="_blank">IGC</a> :: 
+					<a href="#" onClick="toggleDiv('geOptionsID','geOptionsPos',14,-305);return false;">Google
+                    Earth&nbsp;<img id="geOptionsPos" src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
             </tr>
 			</table>
 			<table class="main_text flightShadowBox col3" width="170" border="0" cellpadding="3" style='margin-top:8px;'>
@@ -367,13 +366,13 @@ with (docTips)
               <th>{#_FLYING_AREA_INFO}</th>
             </tr>
             <tr>
-              <td valign="middle" height="39"><div id="takeoffArea111Pos" align="right"><a href="javascript:nop()" 
-				onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,320,'auto');return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
+              <td valign="middle" height="39"><div align="right"><a href="javascript:nop()" 
+				onClick="toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
               </a></div></td>
             </tr>
             <tr>
-              <td valign="middle" height="40"><div id="takeoffArea1Pos" align="right"><a href="javascript:nop()" 
-				onClick="toggleVisible('takeoffArea1','takeoffArea1Pos',20,-156,320,'auto');return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0"><br>
+              <td valign="middle" height="40"><div  align="right"><a href="javascript:nop()" 
+				onClick="toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0" id="takeoffArea1Pos"><br>
               </a></div></td>
             </tr>
           </table>

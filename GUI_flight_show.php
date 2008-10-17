@@ -50,38 +50,17 @@
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>
 <script language="javascript">
-function submitForm(extendedInfo) {
-/*	var flightID= document.geOptionsForm.flightID.value;
-	var lineWidth= document.geOptionsForm.lineWidth.value;
-	var lineColor= document.geOptionsForm.lineColor.value;
-	var ex= document.geOptionsForm.ex.value;  
-	*/
+
+function changeGEoptions() {
+
 	var flightID= $("#flightID").val();
-	var lineWidth= $("#lineWidth.").val();
+	var lineWidth= $("#lineWidth").val();
 	var lineColor= $("#lineColor").val();
-	var ex= $("#ex").val();
 
-	window.location = "<?=$geUrl?>&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
-	return false;
-}
-
-function setSelectColor(theDiv) {
-	oColour="#"+theDiv.options[theDiv.selectedIndex].value;
-	//oColour="#00ff00";
-	if( theDiv.style ) { theDiv = theDiv.style; } if( typeof( theDiv.bgColor ) != 'undefined' ) {
-		theDiv.bgColor = oColour; } else if( theDiv.backgroundColor ) { theDiv.backgroundColor = oColour; }
-	else { theDiv.background = oColour; }
-	
-	
-	var flightID= $("#flightID").val();
-	var lineWidth= $("#lineWidth.").val();
-	var lineColor= $("#lineColor").val();
-	var ex= $("#ex").val();
-	
-	for (var i=0;i<=2;i++) {
-	
-		var newURL= "<?=$geUrl?>&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+i;
-
+	$("#lineColor").css("background-color",lineColor);
+		
+	for (var i=0;i<=2;i++) {	
+		var newURL= "<?=$geUrl?>&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&an="+i;
 		$("#ge_s"+i).attr("href",newURL);
 	}	
 }
@@ -146,11 +125,18 @@ function flight_db_info(id) {
 	}
 
 	function popupBox(prefix,title,url,width,height,x,y) {
-		MWJ_changeContents(prefix+'BoxTitle',title);
-		document.getElementById(prefix+'Frame').src=url;
-		MWJ_changeSize(prefix+'Frame',width+5,height);
-		MWJ_changeSize( prefix+'ID', width+10,height+20);
-		toggleVisible(prefix+'ID',prefix+'Pos',y,x,width,height+40);
+		$(".dropBox").hide();
+		
+		$("#"+prefix+'BoxTitle').html(title);
+		///$("#"+prefix+'Frame').load(url);
+		 document.getElementById(prefix+'Frame').src=url;
+
+		$("#"+prefix+'Frame').css("width",width);
+		$("#"+prefix+'Frame').css("height",height);
+	
+		$("#"+prefix+'ID').css("width",width+10);
+		$("#"+prefix+'ID').css("height",height+25);
+		toggleDiv(prefix+'ID',prefix+'Pos',y,x);
 	}
 
 $(document).ready(function(){
@@ -165,17 +151,14 @@ $(document).ready(function(){
 <? function makePopupBox($name) { 
 	global $moduleRelPath,$PREFS;
 ?>
-<div id="<?=$name ?>ID" class="dropBox" style="visibility:hidden;">
-	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr class="<?=$name ?>Header"><td class="infoBoxHeader <?=$name ?>Header" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="<?=$name ?>BoxTitle"></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('<?=$name ?>ID','<?=$name ?>Pos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-    
-	</td></tr></table>
-	<div id='<?=$name ?>Div'>
-		<iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
-	</div>
+<div id="<?=$name ?>ID" class="dropBox" >
+<div class="infoBoxHeader">
+	<div id="<?=$name ?>BoxTitle" class='title'></div>
+	<div class='closeButton'></div>        
+</div>	
+<div id='<?=$name ?>Div' class='content' style='padding:0'>
+  <iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+</div>
 </div>
 <? } ?>
 
@@ -186,76 +169,43 @@ $(document).ready(function(){
 
 ?>
 
-<div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
-<div  class="infoBoxHeader">
-	<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
+<div id="geOptionsID" class="dropBox" >
+<div class="infoBoxHeader">
+	<div class='title'>Google Earth</div>
 	<div class='closeButton'></div>        
 </div>	
-<div >
-<table>
-<tr>
-<td colspan=2 >
-	Please choose the module to use<BR>for Google Earth Display
-  </td>
-</tr>
-<tr>
-<td colspan=2 >
+<div class='content'>
+	Please choose the module to use<BR>for Google Earth Display<br />
+
 	<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
 	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
 	<br>
 	<? } ?>
-  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s1' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
+  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s1' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
 	<br>
-	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s0' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>
-  </td>
-</tr>
-<tr >
-	<td  colspan=2 align='right'>
-	<?=_Line_Color?>
-	
-	 <select name="lineColor" id="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
-	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='0000FF' style='background-color: #0000FF'>&nbsp;&nbsp;&nbsp;</option>	
-	<option value='FFD700' style='background-color: #FFD700'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FF1493' style='background-color: #FF1493'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FFFFFF' style='background-color: #FFFFFF'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='FF4500' style='background-color: #FF4500'>&nbsp;&nbsp;&nbsp;</option>
-	<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>	
-
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s0' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>
+  <br />
+	<?=_Line_Color?>	
+	<select  id="lineColor" style="background-color:#ff0000" onChange="changeGEoptions()">
+		<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='0000FF' style='background-color: #0000FF'>&nbsp;&nbsp;&nbsp;</option>	
+		<option value='FFD700' style='background-color: #FFD700'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='FF1493' style='background-color: #FF1493'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='FFFFFF' style='background-color: #FFFFFF'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='FF4500' style='background-color: #FF4500'>&nbsp;&nbsp;&nbsp;</option>
+		<option value='8B0000' style='background-color: #8B0000'>&nbsp;&nbsp;&nbsp;</option>	
 	</select> 
-		<?=_Line_width?>	
-		<select  name="lineWidth" id="lineWidth" onChange="setSelectColor(this)">	
+
+	<?=_Line_width?>	
+	<select  id="lineWidth" onChange="changeGEoptions()">	
 		<option value='1' >1</option>
 		<option value='2' selected >2</option>
 		<option value='3' >3</option>
 		<option value='4' >4</option>
 		<option value='5' >5</option>
-		</select> 
-        
-	<input id="ex" type="hidden" value="1" />
+	</select>         	
     <input type="hidden" id="flightID" value="<?=$flightID?>">
-	</td>
-</tr>
-<? if (0) { ?>
-<tr>
-	<td colspan=2 >
-	<?
-	echo "<a href='javascript:submitForm(0)'>"._Display_on_Google_Earth."</a><br>"; 
-	?>
-	</td>
-</tr>
-<tr>
-	<td colspan=2>
-<?
-	echo "<a href='javascript:submitForm(1)'>"._Use_Man_s_Module."</a><br>"; 
-	//	echo "<a href='".$moduleRelPath."/download.php?type=kml_trk&flightID=".$flight->flightID."'>Display on Google Earth</a>"; 
-	?>
-
-	</td>
-</tr>
-<? }?>
-	</TABLE>
 	</div>
 </div>
 <?
