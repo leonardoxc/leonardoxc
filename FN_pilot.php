@@ -381,7 +381,10 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 		$str=$countries[strtoupper($cCode)];
 	}
 
-	if ($img) $imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='$str'>";
+	if ($img) {
+		$imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='$str'>";
+		// $imgStr="<span class='fl sprite-$cCode'></span>";
+	}
 	if ($text) $textStr=$str;
 	return "$imgStr$textStr";
 }

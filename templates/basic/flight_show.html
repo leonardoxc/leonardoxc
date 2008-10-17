@@ -170,6 +170,21 @@ html>body .flightShowBox {
 .scoreInfoHeader {background-color: #4967A0 ; border-left-color: #4967A0 ; }
 .scoreInfoHeader  td {color:#FFFFFF}
 
+.closeButton {
+	cursor: hand;
+	cursor: pointer;
+	display:block;
+	width:14px;
+	height:14px;
+	float:right;
+	clear:none;
+	margin:0;
+	padding:0;
+	background-repeat:no-repeat;
+	background-position:left top;
+	background-image:url({M_PATH}/img/icon_x_white.gif);
+	
+}
 -->
 </style>
 
@@ -335,7 +350,7 @@ with (docTips)
             </tr>
             <tr>
               <td><div aling=center id="geOptionsPos" style="height:28px; text-align:center"><a href="{igcPath}" target="_blank">IGC</a> :: 
-					<a href="javascript:nop()" onClick="toggleVisible('geOptionsID','geOptionsPos',14,-160,170,'auto');return false;">Google
+					<a href="javascript:nop()" onClick="toggleDiv('geOptionsID','geOptionsPos',14,-160);return false;">Google
                     Earth&nbsp;<img src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
             </tr>
 			</table>

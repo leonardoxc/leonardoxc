@@ -256,6 +256,7 @@ TR .newDate {
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type="text/javascript">
@@ -470,6 +471,8 @@ function removeClubFlight(clubID,flightID) {
 
 	      echo  "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
+		
+		//echo "<span class='fl sprite-gr'></span>";
 
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		$thisPilot=new pilot($row["userServerID"],$row["userID"]);

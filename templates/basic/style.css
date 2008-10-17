@@ -508,10 +508,14 @@ background-color:#FCEBFB
 }
 
 .infoBoxHeader {
- 
+display:block;
+clear:both;
+
 text-decoration:none;
 border-left-color:#4967A0; border-left-width:8px; border-left-style:solid;
+border-left:none;
 border-right-color:#CCCCCC; border-right-width:3px; border-right-style:solid;
+border-right:none;
 border-top-color:#CCCCCC; border-top-width:1px; border-top-style:solid;
 /* border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;*/
 
@@ -525,6 +529,12 @@ color:#FFFFFF;
 width:220px;
 text-align:center;
 
+width:100%;
+padding:0;
+padding-bottom:3px;
+padding-top:3px;
+height:18px;
+z-index:1000;
 }
 
 .infoBoxHeader td {color:#FFFFFF;}

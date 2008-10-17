@@ -40,6 +40,8 @@
 	$Ltemplate ->set_filenames(array(
 		'body' => 'flight_show.html'));
 
+	$geUrl=$moduleRelPath."/download.php?lang=$lng&type=kml_trk";
+
  
 ?>
 
@@ -49,11 +51,17 @@
 <? echo maketakeoffPopup(1,$userID); ?>
 <script language="javascript">
 function submitForm(extendedInfo) {
-	var flightID= document.geOptionsForm.flightID.value;
+/*	var flightID= document.geOptionsForm.flightID.value;
 	var lineWidth= document.geOptionsForm.lineWidth.value;
 	var lineColor= document.geOptionsForm.lineColor.value;
 	var ex= document.geOptionsForm.ex.value;  
-	window.location = "<?=$moduleRelPath?>/download.php?lang=<?=$lng?>&type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
+	*/
+	var flightID= $("#flightID").val();
+	var lineWidth= $("#lineWidth.").val();
+	var lineColor= $("#lineColor").val();
+	var ex= $("#ex").val();
+
+	window.location = "<?=$geUrl?>&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
 	return false;
 }
 
@@ -63,6 +71,19 @@ function setSelectColor(theDiv) {
 	if( theDiv.style ) { theDiv = theDiv.style; } if( typeof( theDiv.bgColor ) != 'undefined' ) {
 		theDiv.bgColor = oColour; } else if( theDiv.backgroundColor ) { theDiv.backgroundColor = oColour; }
 	else { theDiv.background = oColour; }
+	
+	
+	var flightID= $("#flightID").val();
+	var lineWidth= $("#lineWidth.").val();
+	var lineColor= $("#lineColor").val();
+	var ex= $("#ex").val();
+	
+	for (var i=0;i<=2;i++) {
+	
+		var newURL= "<?=$geUrl?>&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+i;
+
+		$("#ge_s"+i).attr("href",newURL);
+	}	
 }
 
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
@@ -132,6 +153,13 @@ function flight_db_info(id) {
 		toggleVisible(prefix+'ID',prefix+'Pos',y,x,width,height+40);
 	}
 
+$(document).ready(function(){
+	$(".closeButton").click(function(f) {
+		$(this).parent().parent().hide();
+	});
+
+});
+
 </script>
 
 <? function makePopupBox($name) { 
@@ -143,6 +171,7 @@ function flight_db_info(id) {
 	<div align="left" style="display:inline; float:left; clear:left;" id="<?=$name ?>BoxTitle"></div>
 	<div align="right" style="display:inline; float:right; clear:right;">
 	<a href='#' onclick="toggleVisible('<?=$name ?>ID','<?=$name ?>Pos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
+    
 	</td></tr></table>
 	<div id='<?=$name ?>Div'>
 		<iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
@@ -158,21 +187,11 @@ function flight_db_info(id) {
 ?>
 
 <div id="geOptionsID" class="dropBox googleEarthDropDown" style="visibility:hidden;">
-<form name="geOptionsForm" method="POST">
-<input type="hidden" name="flightID" value="<?=$flightID?>">
-
-<table cellpadding="0" cellspacing="0" width="100%" border="0" >
-<tr>
-<td  colspan=2 class="infoBoxHeader">
+<div  class="infoBoxHeader">
 	<div align="left" style="display:inline; float:left; clear:left;">&nbsp;<b>Google Earth</b></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-		<a href='#' onclick="toggleVisible('geOptionsID','geOptionsPos',14,-20,0,0);return false;">
-		<img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-		
-</td>
-</tr>
-</table>
-
+	<div class='closeButton'></div>        
+</div>	
+<div >
 <table>
 <tr>
 <td colspan=2 >
@@ -182,19 +201,19 @@ function flight_db_info(id) {
 <tr>
 <td colspan=2 >
 	<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
-	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='javascript:submitForm(2)'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
 	<br>
 	<? } ?>
-  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='javascript:submitForm(1)'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
+  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s1' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
 	<br>
-	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='javascript:submitForm(0)'><? echo 'Simple (Only Task, very small)'; ?></a>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s0' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>
   </td>
 </tr>
 <tr >
 	<td  colspan=2 align='right'>
 	<?=_Line_Color?>
 	
-	 <select name="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
+	 <select name="lineColor" id="lineColor" style="background-color:#ff0000" onChange="setSelectColor(this)">
 	<option value='FF0000' style='background-color: #FF0000'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='00FF00' style='background-color: #00FF00'>&nbsp;&nbsp;&nbsp;</option>
 	<option value='0000FF' style='background-color: #0000FF'>&nbsp;&nbsp;&nbsp;</option>	
@@ -206,14 +225,16 @@ function flight_db_info(id) {
 
 	</select> 
 		<?=_Line_width?>	
-		<select  name="lineWidth">	
+		<select  name="lineWidth" id="lineWidth" onChange="setSelectColor(this)">	
 		<option value='1' >1</option>
 		<option value='2' selected >2</option>
 		<option value='3' >3</option>
 		<option value='4' >4</option>
 		<option value='5' >5</option>
 		</select> 
-		<input name="ex" type="hidden" value="1" />
+        
+	<input id="ex" type="hidden" value="1" />
+    <input type="hidden" id="flightID" value="<?=$flightID?>">
 	</td>
 </tr>
 <? if (0) { ?>
@@ -234,9 +255,8 @@ function flight_db_info(id) {
 	</td>
 </tr>
 <? }?>
-</TABLE>
-
-</form>
+	</TABLE>
+	</div>
 </div>
 <?
 	$legendRight="";

@@ -106,6 +106,7 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 	if (!width) width=330;
 	if (!height)height=220;
 	
+	// $(elId).toogle();
 	if ( MWJ_getStyle( elId ,'visibility') == true ) {
 		MWJ_changeVisibility( elId , false );	
 		MWJ_changePosition( elId,  -999 ,  0 , true );
@@ -118,6 +119,45 @@ function toggleVisible(elId,pos_elId,verOffset,horOffset,width,height) {
 
 		MWJ_changeVisibility( elId ,true );	
 	}
+}
+
+
+function toggleDiv(divName,positioningDiv,y,x) {	
+	//if (!verOffset) verOffset=28;
+	//if (!horOffset) horOffset=0;
+
+	
+	
+
+	//var pos = $("#"+positioningDiv).position();	
+	
+	
+    var coordinates = $("#"+positioningDiv).offset();
+
+    var x1 = coordinates.left;
+    var y1 = coordinates.top;
+	
+	$("#"+divName).css("left",x1+x);
+	$("#"+divName).css("top",y1+y);
+	
+	$("#"+divName).css("left",100);
+	$("#"+divName).css("top",100);
+	
+	$("#"+divName).toggle();
+	
+/*if ( MWJ_getStyle( elId ,'visibility') == true ) {
+		MWJ_changeVisibility( elId , false );	
+		MWJ_changePosition( elId,  -999 ,  0 , true );
+	//	MWJ_changeSize( elId ,1,1);
+	} else {		
+		//MWJ_changeSize( elId ,width,height);
+		
+		oMC = MWJ_getPosition( MWJ_findObj(pos_elId) );
+		MWJ_changePosition( elId,  oMC[0]+ horOffset ,  oMC[1] + verOffset , true );
+
+		MWJ_changeVisibility( elId ,true );	
+	}
+	*/
 }
 
 function toggleVisibility(elId) {	
