@@ -14,7 +14,7 @@
 	// Version Martin Jursa 20.05.2007
 	// Support for filtering by NACclubs via $_REQUEST[nacclub] added
 	// computed column "SCORE_SPEED"=FLIGHT_KM/DURATION added
-
+	
 	function replace_spaces($str) {
 		return str_replace(" ","&nbsp;",$str);
 	}
@@ -384,7 +384,7 @@ function removeClubFlight(clubID,flightID) {
      $name=getPilotRealName($row["userID"],$row["userServerID"],1);
 	 $name=prepare_for_js($name);
 
-	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"]) );
+	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"],-1,0,20) ) ;
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 	 

@@ -52,6 +52,14 @@ function formatURL($linkURL,$numChars=0) {
 	else return "http://".$linkURL;
 }
 
+function trimText($text,$numChars=0) {
+	if ($numChars>0) {
+		 if (strlen($text) > $numChars - 3 )
+			 $text=substr($text,0,$numChars)."...";
+	}
+	return $text;	
+}
+
 function formatDate($date,$html_output=true) {
   // from 2002-07-14 -> 14/07/2004
   $dt_str=sprintf("%02d/%02d/%4d",substr($date,8,2),substr($date,5,2),substr($date,0,4));

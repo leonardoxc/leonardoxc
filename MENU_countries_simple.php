@@ -13,7 +13,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if ( $countriesNum > 30 && false ) {
+if ( $countriesNum > 30 || 1 ) {
 	$tblWidth=300;
 
 ?>
@@ -31,8 +31,8 @@ if ( $countriesNum > 30 && false ) {
 	</td>
 </tr>
 <tr>
-<td align="center" height=80 valign="top">
-<div align="center">
+<td align="center" height=180 valign="top">
+<div align="center" style="display:block; z-index:1000; height:180px; ">
 <?
 	echo "<select name='selectCountry' id='selectCountry' onchange='changeCountry(this)'>";
 		echo "<option value=0>---- "._SELECT_COUNTRY." ----</option>";

@@ -10,6 +10,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+require_once dirname(__FILE__).'/FN_output.php';
 
 function findNearestWaypoint($lat,$lon) {
 	global $waypoints;
@@ -192,7 +193,7 @@ function getWaypointFull($ID) {
 	return array($ID,$row["name"],$row["intName"],$row["countryCode"]);
 }
 
-function getWaypointName($ID,$forceIntl=-1,$countryFirst=0) {
+function getWaypointName($ID,$forceIntl=-1,$countryFirst=0,$maxChars=0) {
 	global $db,$waypointsTable;
 	global $CONFIG_forceIntl;
 
@@ -206,7 +207,8 @@ function getWaypointName($ID,$forceIntl=-1,$countryFirst=0) {
 	$db->sql_freeresult($res);
 
 	$tname=selectWaypointName($row["name"],$row["intName"],$row["countryCode"],$forceIntl);
-
+	$tname=trimText($tname,$maxChars);
+	
 	if ($countryFirst)	return $row["countryCode"]." - ".$tname;	
 	else return $tname." - ".$row["countryCode"];	
 }
