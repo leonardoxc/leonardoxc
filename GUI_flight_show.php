@@ -178,12 +178,12 @@ $(document).ready(function(){
 	Please choose the module to use<BR>for Google Earth Display<br />
 
 	<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || auth::isModerator($userID) )  ) { ?>
-	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
 	<br>
 	<? } ?>
-  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s1' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
+  <img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s1' href='<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=1'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>
 	<br>
-	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s0' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>
+	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a id='ge_s0' href='<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FF0000&ex=1&an=0'><? echo 'Simple (Only Task, very small)'; ?></a>
   <br />
 	<?=_Line_Color?>	
 	<select  id="lineColor" style="background-color:#ff0000" onChange="changeGEoptions()">

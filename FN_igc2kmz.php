@@ -35,17 +35,17 @@ function igc2kmz($file,$timezone,$pilot,$glider,$photos) {
 	deleteOldKmzFiles($file,$version);
 	
 	// exit;
-	// if ( is_file($kmzFile) ) return $version;
+	if ( is_file($kmzFile) ) return $version;
 
 	$path=$CONF['googleEarth']['igc2kmz']['path'];
 	
 	$photoStr='';
 	if (count($photos)) {
 		foreach($photos as $i=>$photo){
-			$photoStr.=" -p \"$photo\" ";
+			$photoStr.=" -p '$photo' ";
 		}
 	}
-	$cmd="cd $path/bin ; ./igc2kmz.py -i $file -o $kmzFile -z $timezone -n '$pilot' -g '$glider' $photoStr";
+	$cmd="cd $path/bin ; ./igc2kmz.py -i '$file' -o '$kmzFile' -z $timezone -n '$pilot' -g '$glider' $photoStr";
 	exec($cmd,$res);
 
 	if (0) {
