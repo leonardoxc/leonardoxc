@@ -13,7 +13,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if ( $countriesNum > 30 || 1 ) {
+if ( $countriesNum > 30 && 0 ) {
 	$tblWidth=300;
 
 ?>
@@ -100,6 +100,7 @@ if ($countriesNum) {
 			$i= $c * $num_of_rows +( $r % $num_of_rows);
 			if ($i<$countriesNum) {
 				$countryName=$countriesNames[$i];
+				$countryName=trimText($countryName,20);
 				if ($currentlang=='hebrew')
 					echo "<a href='".CONF_MODULE_ARG."&country=".$countriesCodes[$i]."'>(".$countriesFlightsNum[$i].") $countryName</a>\n";
 				else

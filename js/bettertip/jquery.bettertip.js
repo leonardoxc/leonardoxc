@@ -24,7 +24,9 @@ function BT_init(){
     	return $(this).parent("div.betterTip").length == 0;
     })
     .hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
-	//.click(function(){return false});	
+	//.attr('href','javascript:nop()')
+	//.click(function(){BT_hoverIn(this)} );
+	// .click(function(){return false});	
 }
 
 function BT_setOptions(hash)
@@ -136,7 +138,7 @@ function BT_show(id) {
 	var shadowTop = -7;
 	var shadowLeft = -7;
 
-	if(docWidth < right)
+	if(docWidth < right || true)
 	{
 		arrowDir = "right";
 		left = act_left - 12 - tipWidth;
@@ -158,6 +160,10 @@ function BT_show(id) {
 		"<div class='BT_shadow2'>" +
 		"<div id='BT_main' style='width:"+query["width"]+"px; top:"+shadowTop+"px; left:"+shadowLeft+"px;'>" +
 			"<div id='BT_arrow_"+arrowDir+"' style='top: "+arrowTop+"px; left:"+arrowLeft+"px;'></div>" +
+			//"<div class='infoBoxHeader'>"+
+			//	"<div class='title'></div>"+
+			//"<div class='closeButton'></div>"+
+			//"</div>"+
 			(showTitle?"<div id='BT_title'>"+title+"</div>":"") +
 			"<div style='padding:5px'>" +
 				"<div id='BT_content'>" +

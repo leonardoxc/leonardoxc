@@ -423,7 +423,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
 						CLimage::resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
-						CLimage::resizeJPG(1280,1280, $photoAbsPath, $photoAbsPath, 15);
+						CLimage::resizeJPG(1600,1600, $photoAbsPath, $photoAbsPath, 15);
 						$flight->hasPhotos++;
 						$j++;
 					} else { //upload not successfull

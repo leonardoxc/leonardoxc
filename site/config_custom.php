@@ -347,7 +347,8 @@ pageTracker._trackPageview();
 	$CONF['footer']['custom_code']='';
 	
 	$CONF['googleEarth']['igc2kmz']['active']	=true;
-	$CONF['googleEarth']['igc2kmz']['version']	= 1;
+	$CONF['googleEarth']['igc2kmz']['visible'] = false;
+	$CONF['googleEarth']['igc2kmz']['version']	= 0;
 	$CONF['googleEarth']['igc2kmz']['path']=dirname(__FILE__).'/../lib/igc2kmz';
 // 	$CONF['googleEarth']['igc2kmz']['path']='/home/httpd/html/inhouse/andread/pgforum.thenet.gr/modules/leonardo/lib/igc2kmz';
 

@@ -1,5 +1,8 @@
 <?
 /*
+Copyright Tom Payne
+http://github.com/twpayne/igc2kmz/wikis/quickstart
+
 Usage: igc2kmz.py [options]
 
 IGC to Google Earth converter
@@ -22,7 +25,7 @@ Options:
     -p FILENAME, --photo=FILENAME
     -d STRING, --description=STRING
 */
-function igc2kmz($file,$timezone,$pilot,$glider) {
+function igc2kmz($file,$timezone,$pilot,$glider,$photos) {
 	global $CONF;
 	$str="";
 
@@ -36,7 +39,13 @@ function igc2kmz($file,$timezone,$pilot,$glider) {
 
 	$path=$CONF['googleEarth']['igc2kmz']['path'];
 	
-	$cmd="cd $path ; $path/igc2kmz.py -i $file -o $kmzFile -z $timezone -n '$pilot' -g '$glider' ";
+	$photoStr='';
+	if (count($photos)) {
+		foreach($photos as $i=>$photo){
+			$photoStr.=" -p \"$photo\" ";
+		}
+	}
+	$cmd="cd $path/bin ; ./igc2kmz.py -i $file -o $kmzFile -z $timezone -n '$pilot' -g '$glider' $photoStr";
 	exec($cmd,$res);
 
 	if (0) {

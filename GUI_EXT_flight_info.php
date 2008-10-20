@@ -57,9 +57,10 @@ if ($op=='photos'){
 } else if ($op=='comments'){
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-		 echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
+//		echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
+//		echo '<tr><td>'.$flight->comments.'</td></tr></table>';
 
-		echo '<tr><td>'.$flight->comments.'</td></tr></table>';
+		echo "<span class='short_info'>".$flight->comments.'</span>';
 		
 } else if ($op=='info_short'){
 		$flight=new flight();

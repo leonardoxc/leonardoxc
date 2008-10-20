@@ -53,9 +53,21 @@ function formatURL($linkURL,$numChars=0) {
 }
 
 function trimText($text,$numChars=0) {
+	global $CONF_use_utf;
 	if ($numChars>0) {
+		if ($CONF_use_utf) {
+		 if (function_exists('mb_strlen')  ) {
+			 if (mb_strlen($text,'UTF-8') > $numChars - 3 )
+				 $text=mb_substr($text,0,$numChars,'UTF-8')."...";
+		  } else {
+			 $numChars*=2;
+			 if (strlen($text) > $numChars - 3 )
+				 $text=substr($text,0,$numChars)."...";		  
+		  }		
+		} else {
 		 if (strlen($text) > $numChars - 3 )
 			 $text=substr($text,0,$numChars)."...";
+		}	 
 	}
 	return $text;	
 }
@@ -483,7 +495,7 @@ visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
 function makeGoogleEarthPopup() {
-	global $moduleRelPath,$opMode,$CONF;
+	global $moduleRelPath,$opMode,$CONF, $userID;
 	ob_start();
 
 ?>
@@ -491,22 +503,6 @@ function makeGoogleEarthPopup() {
 var geTip = new TipObj('geTip');
 with (geTip)
 {
-	<? if (0) { ?>
-/*
-  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
-  '<tr><td class="infoBoxHeader"><? echo "Google Earth"; ?></td></tr>'+
-  '<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=2'><? echo 'IGC2KMZ'; ?></a>"+
-	'</td></tr>'+
-	'<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=1'><? echo 'Man '; ?></a>"+
-	'</td></tr>'+
-	'<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/geicon.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=0'><? echo 'Simple'; ?></a>"+
-	'</td></tr>'+
-	
-	'</table>';*/
-	<? } ?>
 	
 	var showTitle=true;
 	var title='Please choose the module to use<BR>for Google Earth Display';
@@ -532,7 +528,7 @@ with (geTip)
 			"<div style='padding:5px'>" +
 				"<div id='BT_content' style='line-height:140%'>"+
 				
-				<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
+				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || auth::isModerator($userID) )   ) { ?>
 				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>"+
 	'<br>'+
 				<? } ?>
@@ -549,7 +545,7 @@ with (geTip)
 
  tipStick = 0;
  showDelay = 0;
- hideDelay = 900;
+ hideDelay = 500;
  doFades = false;
 }
 </script>

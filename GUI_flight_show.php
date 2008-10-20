@@ -177,7 +177,7 @@ $(document).ready(function(){
 <div class='content'>
 	Please choose the module to use<BR>for Google Earth Display<br />
 
-	<? if ($CONF['googleEarth']['igc2kmz']['active']) { ?>
+	<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || auth::isModerator($userID) )  ) { ?>
 	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='"<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
 	<br>
 	<? } ?>

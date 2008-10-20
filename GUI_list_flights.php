@@ -256,7 +256,7 @@ TR .newDate {
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
-
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type="text/javascript">
@@ -268,6 +268,15 @@ BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightI
 
 // BT_open_wait = 500; 
 BT_close_wait = 400; 
+
+$(document).ready(function(){
+
+
+	$(".closeButton").livequery('click', function(e) {
+		$(this).parent().parent().parent().parent().parent().hide();
+	});
+
+});
 </script>
 
 <? echo makeGoogleEarthPopup() ?>
@@ -522,7 +531,8 @@ function removeClubFlight(clubID,flightID) {
 	    if ( $isExternalFlight == 0 || 
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
-			echo "<a class='betterTip' id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
+			// add class='betterTip' for tooltip
+			echo "<a  id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
 			
 			//echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 			// ".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang

@@ -68,10 +68,22 @@ class CLimage {
 		  (int)$dest_height = ($source_width >  $source_height) ? round(($source_height * $dest_width_max) /$source_width)  : $dest_height_max;
 	  
 		   if ($dest_width > $source_width ) {
+		   		if ( $sourcefile == $destfile) { 
+					// if the current image is small enough, 
+					// and is an overright of it's self
+					// dont do anything
+					return true; 
+				}
 				$dest_width = $source_width;
 				$dest_height = $source_height;
 		   }
 	
+	
+			// get exif info
+			//require_once dirname(__FILE__).'/lib/phpexifrw/exifWriter.inc';
+			//$exif = new phpExifWriter($g_srcfile);
+			// $exif->getImageInfo();
+
 		   $img_src=imagecreatefromjpeg($g_srcfile);
 	
 		   if (function_exists("gd_info")) {
@@ -89,6 +101,7 @@ class CLimage {
 			}
 	
 			imagejpeg($img_dst, $g_dstfile, $g_imgcomp);
+			//$exif->writeImage($g_dstfile.'.exif.jpg');
 			imagedestroy($img_dst);
 			return true;
 		}

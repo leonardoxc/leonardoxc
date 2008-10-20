@@ -975,7 +975,19 @@ $resStr='{
 			return $kml_file_contents;
 		} else if ($extended==2) {
 			require_once dirname(__FILE__).'/FN_igc2kmz.php';
-			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->userName,$this->glider);
+			
+			// gather photos into array
+			$photoArray=array();
+			if ($this->hasPhotos) {
+				$flightPhotos=new flightPhotos($this->flightID);
+				$flightPhotos->getFromDB();
+				
+				foreach($flightPhotos->photos as $photoNum=>$photoObj ) {
+					$photoArray[]="http://".$_SERVER['SERVER_NAME'].'/'.$flightPhotos->getPhotoRelPath($photoNum);
+				}
+			}
+		
+			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->userName,$this->glider,$photoArray);
 			$kml_file_contents="
 <NetworkLink>
   <name>Extended analysis</name>
