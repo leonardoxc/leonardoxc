@@ -37,22 +37,6 @@
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>
 <script language="javascript">
-function submitForm(extendedInfo) {
-	var flightID= document.geOptionsForm.flightID.value;
-	var lineWidth= document.geOptionsForm.lineWidth.value;
-	var lineColor= document.geOptionsForm.lineColor.value;
-	var ex= document.geOptionsForm.ex.value;  
-	window.location = "<?=$moduleRelPath?>/download.php?lang=<?=$lng?>&type=kml_trk&flightID="+flightID+"&w="+lineWidth+"&c="+lineColor+"&ex="+ex+"&an="+extendedInfo;
-	return false;
-}
-
-function setSelectColor(theDiv) {
-	oColour="#"+theDiv.options[theDiv.selectedIndex].value;
-	//oColour="#00ff00";
-	if( theDiv.style ) { theDiv = theDiv.style; } if( typeof( theDiv.bgColor ) != 'undefined' ) {
-		theDiv.bgColor = oColour; } else if( theDiv.backgroundColor ) { theDiv.backgroundColor = oColour; }
-	else { theDiv.background = oColour; }
-}
 
 var unknownTakeoffTip = new TipObj('unknownTakeoffTip');
 with (unknownTakeoffTip)
@@ -113,15 +97,29 @@ function flight_db_info(id) {
 	function user_add_takeoff(lat,lon,id) {	 
 		var url='<?=getRelMainDir(1)?>GUI_EXT_user_waypoint_add.php?lat='+lat+'&lon='+lon+'&takeoffID='+id;
 		popupBox('takeoffAdd','<?=_ADD_WAYPOINT?>',url,720,380,0,30);
-	}
+	}	
 
 	function popupBox(prefix,title,url,width,height,x,y) {
-		MWJ_changeContents(prefix+'BoxTitle',title);
-		document.getElementById(prefix+'Frame').src=url;
-		MWJ_changeSize(prefix+'Frame',width+5,height);
-		MWJ_changeSize( prefix+'ID', width+10,height+20);
-		toggleVisible(prefix+'ID',prefix+'Pos',y,x,width,height+40);
+		$(".dropBox").hide();
+		
+		$("#"+prefix+'BoxTitle').html(title);
+		///$("#"+prefix+'Frame').load(url);
+		 document.getElementById(prefix+'Frame').src=url;
+
+		$("#"+prefix+'Frame').css("width",width);
+		$("#"+prefix+'Frame').css("height",height);
+	
+		$("#"+prefix+'ID').css("width",width+10);
+		$("#"+prefix+'ID').css("height",height+25);
+		toggleDiv(prefix+'ID',prefix+'Pos',y,x);
 	}
+	
+$(document).ready(function(){
+	$(".closeButton").click(function(f) {
+		$(this).parent().parent().hide();
+	});
+
+});
 
 </script>
 
