@@ -397,6 +397,14 @@ require_once dirname(__FILE__)."/site/config_version.php";
   $CONF['photos']['mid']['max_width']=600;
   $CONF['photos']['mid']['max_height']=600;
 
+  $CONF['photos']['normal']['max_width']=1600;
+  $CONF['photos']['normal']['max_height']=1600;
+  
+  $CONF['photos']['thumbs']['max_width']=130;
+  $CONF['photos']['thumbs']['max_height']=130;
+  
+  $CONF['photos']['compression']=20;
+  
   // the socring co-efficients 
   $CONF['scoring']['default_set']=1;
   $CONF['scoring']['sets']=array(

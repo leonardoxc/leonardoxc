@@ -79,6 +79,8 @@
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
 
+		$photosChanged=false;
+		
 		$j= $flightPhotos->photosNum ;
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
 			$var_name="photo".$i."Filename";
@@ -93,9 +95,16 @@
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
 					
 					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
-						CLimage::resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
-						CLimage::resizeJPG(1600,1600, $photoAbsPath, $photoAbsPath, 15);
+						CLimage::resizeJPG( $CONF['photos']['thumbs']['max_width'],
+						 					$CONF['photos']['thumbs']['max_height'],
+											$photoAbsPath, $photoAbsPath.".icon.jpg", 
+											$CONF['photos']['compression']);
+						CLimage::resizeJPG(
+						 $CONF['photos']['normal']['max_width'],
+						 $CONF['photos']['normal']['max_height'], $photoAbsPath, $photoAbsPath, 
+						 $CONF['photos']['compression']);
 						$flight->hasPhotos++;
+						$photosChanged=true;
 						$j++;
 					} else { //upload not successfull - track back
 						$flightPhotos->deletePhoto($j);
@@ -110,9 +119,16 @@
 				// echo "deleting photo $i<HR>";
 				$flightPhotos->deletePhoto($i);
 				$flight->hasPhotos--;
+				$photosChanged=true;
 			} 
 		}
-
+		
+		if ( $photosChanged ){
+			//delete igc2kmz.kmz file
+			require_once dirname(__FILE__).'/FN_igc2kmz.php';			
+			deleteOldKmzFiles($flight->getIGCFilename(0),'xxx'); // delete all versions
+		}
+		
 		$flight->putFlightToDB(1);
 
 		// $flightPhotos->putToDB();

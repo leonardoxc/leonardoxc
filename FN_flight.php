@@ -88,7 +88,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		// $is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
 		$argArray=array()	 )  {
 
-	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight;
+	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight,$CONF;
 	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ,$CONF_server_id;
 	global $userID;
 	global $flightsTable;
@@ -422,8 +422,17 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
 
 					if ( move_uploaded_file($photoFilename, $photoAbsPath ) ) {
-						CLimage::resizeJPG(130,130, $photoAbsPath, $photoAbsPath.".icon.jpg", 15);
-						CLimage::resizeJPG(1600,1600, $photoAbsPath, $photoAbsPath, 15);
+					
+						CLimage::resizeJPG( $CONF['photos']['thumbs']['max_width'],
+						 					$CONF['photos']['thumbs']['max_height'],
+											$photoAbsPath, $photoAbsPath.".icon.jpg", 
+											$CONF['photos']['compression']);
+						CLimage::resizeJPG(
+						 $CONF['photos']['normal']['max_width'],
+						 $CONF['photos']['normal']['max_height'], $photoAbsPath, $photoAbsPath, 
+						 $CONF['photos']['compression']
+						 );
+						 
 						$flight->hasPhotos++;
 						$j++;
 					} else { //upload not successfull

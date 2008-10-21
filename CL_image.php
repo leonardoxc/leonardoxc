@@ -1,6 +1,6 @@
 <?
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
+/* Leonardo: Gliding XC Server						                    */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
@@ -55,58 +55,76 @@ class CLimage {
 		$g_dstfile=$destfile;
 		$g_fw=$forcedwidth;
 		$g_fh=$forcedheight;
-		if(file_exists($g_srcfile))
-		{
-		  $image_details = getimagesize($g_srcfile);
-		  $source_width  = $image_details[0];
-		  $source_height = $image_details[1];
-	
-		  $dest_width_max   = $forcedwidth;
-		  $dest_height_max  = $forcedheight;
-		  // The two lines beginning with (int) are the super important magic formula part.
-		  (int)$dest_width  = ($source_width <= $source_height) ? round(($source_width  * $dest_height_max)/$source_height) : $dest_width_max;
-		  (int)$dest_height = ($source_width >  $source_height) ? round(($source_height * $dest_width_max) /$source_width)  : $dest_height_max;
-	  
-		   if ($dest_width > $source_width ) {
-		   		if ( $sourcefile == $destfile) { 
-					// if the current image is small enough, 
-					// and is an overright of it's self
-					// dont do anything
-					return true; 
-				}
-				$dest_width = $source_width;
-				$dest_height = $source_height;
-		   }
-	
-	
-			// get exif info
-			//require_once dirname(__FILE__).'/lib/phpexifrw/exifWriter.inc';
-			//$exif = new phpExifWriter($g_srcfile);
-			// $exif->getImageInfo();
-
-		   $img_src=imagecreatefromjpeg($g_srcfile);
-	
-		   if (function_exists("gd_info")) {
-			   $gdinfo=gd_info();
-			   if ( strpos($gdinfo["GD Version"],"2.") ===false ) $gd2=0;
-			   else $gd2=1;
-		   } else $gd2=false;
-	
-		   if ( $gd2 ) { 
-			   $img_dst=imagecreatetruecolor($dest_width,$dest_height);
-			   imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height,  $source_width, $source_height);
-			} else {
-			   $img_dst=imagecreate($dest_width,$dest_height);
-			   imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height,  $source_width, $source_height);
-			}
-	
-			imagejpeg($img_dst, $g_dstfile, $g_imgcomp);
-			//$exif->writeImage($g_dstfile.'.exif.jpg');
-			imagedestroy($img_dst);
-			return true;
-		}
-		else
+		if(!file_exists($g_srcfile)) {		
 			return false;
+		}
+				
+		$image_details = getimagesize($g_srcfile);
+		$source_width  = $image_details[0];
+		$source_height = $image_details[1];
+
+		$dest_width_max   = $forcedwidth;
+		$dest_height_max  = $forcedheight;
+		// The two lines beginning with (int) are the super important magic formula part.
+		(int)$dest_width  = ($source_width <= $source_height) ? round(($source_width  * $dest_height_max)/$source_height) : $dest_width_max;
+		(int)$dest_height = ($source_width >  $source_height) ? round(($source_height * $dest_width_max) /$source_width)  : $dest_height_max;
+  
+		 if ($dest_width > $source_width ) {
+			if ( $sourcefile == $destfile) { 
+				// if the current image is small enough, 
+				// and is an overright of it's self
+				// dont do anything
+				return true; 
+			}
+			$dest_width = $source_width;
+			$dest_height = $source_height;
+		 }
+
+
+		require_once dirname(__FILE__).'/lib/pel/PelJpeg.php';
+		/* The input file is now loaded into a PelJpeg object. */		
+		$input_jpeg = new PelJpeg($sourcefile);			
+		
+		/* The input image is already loaded, so we can reuse the bytes stored
+		 * in $input_jpeg when creating the Image resource. */
+		$img_src = ImageCreateFromString($input_jpeg->getBytes());		
+		 // instead of 
+		 //$img_src=imagecreatefromjpeg($g_srcfile);
+
+		 if (function_exists("gd_info")) {
+			 $gdinfo=gd_info();
+			 if ( strpos($gdinfo["GD Version"],"2.") ===false ) $gd2=0;
+			 else $gd2=1;
+		 } else $gd2=false;
+
+		 if ( $gd2 ) { 
+			 $img_dst=imagecreatetruecolor($dest_width,$dest_height);
+			 imagecopyresampled($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height,  $source_width, $source_height);
+		} else {
+			 $img_dst=imagecreate($dest_width,$dest_height);
+			 imagecopyresized($img_dst, $img_src, 0, 0, 0, 0, $dest_width, $dest_height,  $source_width, $source_height);
+		}
+
+		/* We want the raw JPEG data from $img_dst. Luckily, one can create a
+		 * PelJpeg object from an image resource directly: */
+		$output_jpeg = new PelJpeg($img_dst,$g_imgcomp);
+		
+		/* Retrieve the original Exif data in $jpeg (if any). */
+		$exif = $input_jpeg->getExif();
+		
+		/* If no Exif data was present, then $exif is null. */
+		if ($exif != null)
+			$output_jpeg->setExif($exif);
+		
+		/* We can now save the scaled image. */
+		file_put_contents($destfile, $output_jpeg->getBytes());
+		// instead of 
+		// imagejpeg($img_dst, $g_dstfile, $g_imgcomp);
+		//$exif->writeImage($g_dstfile.'.exif.jpg');
+
+		imagedestroy($img_dst);
+		return true;
+
 	}
 
 
