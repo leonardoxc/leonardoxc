@@ -45,7 +45,7 @@
  
 ?>
 
-  <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 
 <? echo makePilotPopup(); ?>
 <? echo maketakeoffPopup(1,$userID); ?>

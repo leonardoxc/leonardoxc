@@ -138,7 +138,7 @@ function BT_show(id) {
 	var shadowTop = -7;
 	var shadowLeft = -7;
 
-	if(docWidth < right || true)
+	if(docWidth < right )
 	{
 		arrowDir = "right";
 		left = act_left - 12 - tipWidth;

@@ -126,16 +126,14 @@ $(document).ready(function(){
 <? function makePopupBoxDiv($name) { 
 	global $moduleRelPath,$PREFS;
 ?>
-<div id="<?=$name ?>ID" class="dropBox" style="visibility:hidden;">
-	<table width="100%" cellpadding="0" cellspacing="0">
-	<tr class="<?=$name ?>Header"><td class="infoBoxHeader <?=$name ?>Header" style="width:725px;" >
-	<div align="left" style="display:inline; float:left; clear:left;" id="<?=$name ?>BoxTitle"></div>
-	<div align="right" style="display:inline; float:right; clear:right;">
-	<a href='#' onclick="toggleVisible('<?=$name ?>ID','<?=$name ?>Pos',14,-20,0,0);return false;"><img src='<? echo $moduleRelPath."/templates/".$PREFS->themeName ?>/img/exit.png' border=0></a></div>
-	</td></tr></table>
-	<div id='<?=$name ?>Div'>
-		<iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
-	</div>
+<div id="<?=$name ?>ID" class="dropBox" >
+<div class="infoBoxHeader">
+	<div id="<?=$name ?>BoxTitle" class='title'></div>
+	<div class='closeButton'></div>        
+</div>	
+<div id='<?=$name ?>Div' class='content' style='padding:0'>
+  <iframe name="<?=$name ?>Frame" id="<?=$name ?>Frame" width="700" height="320" frameborder=0 style='border-width:0px'></iframe>
+</div>
 </div>
 <? } ?>
 
