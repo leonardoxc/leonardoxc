@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 //************************************************************************/
 
-  	if (!auth::isAdmin($userID)) {
+  	if (!L_auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}

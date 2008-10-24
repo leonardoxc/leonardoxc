@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-	if ( !auth::isAdmin($userID) ) { echo "Go away"; return; }
+	if ( !L_auth::isAdmin($userID) ) { echo "Go away"; return; }
 	
 	$airspaceDir=dirname(__FILE__).'/data/airspace';
 	

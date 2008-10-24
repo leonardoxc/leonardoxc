@@ -66,7 +66,7 @@
   $legend=_Pilot_Profile.": <b>$pilotName</b>";
   $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=".$serverID."_$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
   $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_stats&pilotIDview=".$serverID."_$pilotIDview'>"._pilot_stats."</a>";
-  if ( $pilotIDview == $userID || auth::isAdmin($userID) && $serverID==0  ) {
+  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) && $serverID==0  ) {
 	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>"._edit_profile."</a>";
   }
   else $legendRight.="";

@@ -35,7 +35,7 @@
 	$flight->getFlightFromDB($flightID);
 
 		
-//   if (  !auth::isModerator($userID) ) {
+//   if (  !L_auth::isModerator($userID) ) {
 //		echo "go away";
 //		return;
 //   }

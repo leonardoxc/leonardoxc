@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+  if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
   $sortOrder=makeSane($_REQUEST["sortOrder"]);
   if ( $sortOrder=="")  $sortOrder="actionTime";
@@ -107,7 +107,7 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
    	$currCountry="";
    	$i=1;
 	while ($row = $db->sql_fetchrow($res)) {  
-		if ( auth::isAdmin($row['userID'])  ) $admStr="*ADMIN*";
+		if ( L_auth::isAdmin($row['userID'])  ) $admStr="*ADMIN*";
 		else $admStr="";
 
 		if ($row['ServerItemID']==0) $serverStr="Local";

@@ -161,7 +161,7 @@ function setValue(obj)
 				</select>
 			<? } ?>				</td>
     </tr>
-	<? if ( auth::isAdmin($userID)) { ?>
+	<? if ( L_auth::isAdmin($userID)) { ?>
     <tr>
       <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
@@ -172,7 +172,7 @@ function setValue(obj)
       <td colspan="4" valign="middle"><div align="left" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
 	 </div>
 	    <? 	require_once dirname(__FILE__).'/FN_editor.php';
-	  		if ( auth::isModerator($userID) ) {
+	  		if ( L_auth::isModerator($userID) ) {
 				$toolbar='Leonardo';
 				$allowUploads=false;
 			} else{
@@ -218,7 +218,7 @@ function setValue(obj)
 	set_time_limit (120);
 	ignore_user_abort(true);	
 
-	if ($_POST['insert_as_user_id'] >0 && auth::isAdmin($userID) ) $flights_user_id=$_POST['insert_as_user_id']+0;
+	if ($_POST['insert_as_user_id'] >0 && L_auth::isAdmin($userID) ) $flights_user_id=$_POST['insert_as_user_id']+0;
 	else $flights_user_id=$userID;
 
 	if ($_POST['is_private'] ==1 ) $is_private=1;

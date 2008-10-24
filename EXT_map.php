@@ -49,7 +49,7 @@
 		}
 		return;
 	} else if ($op=="get_map") {
-		require_once $moduleRelPath."/CL_map.php";
+		require_once dirname(__FILE__)."/CL_map.php";
 
 		$min_lat=$_GET[min_lat]+0;
 		$max_lat=$_GET[max_lat]+0;

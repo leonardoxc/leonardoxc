@@ -172,18 +172,20 @@ function splitLines($line) {
  return $sline;
 }
 
-function delDir($dir){
- if ( !is_dir($dir) ) return;
- $current_dir = opendir($dir);
- while($entryname = readdir($current_dir)){
-    if(is_dir("$dir/$entryname") and ($entryname != "." and $entryname!="..")){
-       deldir("${dir}/${entryname}");
-    }elseif($entryname != "." and $entryname!=".."){
-       unlink("${dir}/${entryname}");
-    }
- }
- closedir($current_dir);
- @rmdir(${dir});
+if( !function_exists('delDir') ){
+	function delDir($dir){
+	 if ( !is_dir($dir) ) return;
+	 $current_dir = opendir($dir);
+	 while($entryname = readdir($current_dir)){
+		if(is_dir("$dir/$entryname") and ($entryname != "." and $entryname!="..")){
+		   deldir("${dir}/${entryname}");
+		}elseif($entryname != "." and $entryname!=".."){
+		   unlink("${dir}/${entryname}");
+		}
+	 }
+	 closedir($current_dir);
+	 @rmdir(${dir});
+	}
 }
 
 function makeDir($path, $rights = 0777) {

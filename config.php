@@ -447,7 +447,7 @@ function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	}
 
 	global $$varname;
-	// echo "SES:".$_SESSION[$varname]."#REQ:".$_REQUEST[$varname]."#".$varname.", $def_value<BR>";
+	 // echo "SES:".$_SESSION[$varname].", REQ:".$_REQUEST[$varname].", varname:".$varname.", def_value: $def_value<BR>";
 	if (isset($_REQUEST[$varname])) {
 	  $$varname=$_REQUEST[$varname];
 	  $_SESSION[$varname]=$$varname;

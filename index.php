@@ -30,7 +30,14 @@ $module_name = basename(dirname(__FILE__));
 //$moduleAbsPath=dirname(__FILE__);
 // $moduleRelPath="modules/$module_name";
 
+// ugly joomla 1.5 hack
+@include dirname(__FILE__)."/site/predefined/5/globals_include.php";
+
 require_once dirname(__FILE__)."/config.php";
+
+// ugly joomla 1.5 hack
+@include dirname(__FILE__)."/site/predefined/5/globals_include.php";
+
 
 setVarFromRequest("lng",$PREFS->language); 
 $currentlang=$lng;
@@ -42,12 +49,14 @@ if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF'])  ) {
 if ($CONF_use_utf) define('CONF_LANG_ENCODING_TYPE','utf8');
 else  define('CONF_LANG_ENCODING_TYPE','iso');
 
+
 require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 require_once dirname(__FILE__)."/FN_UTM.php";
 require_once dirname(__FILE__)."/FN_functions.php";	
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 require_once dirname(__FILE__)."/FN_brands.php";
+
 require_once dirname(__FILE__)."/FN_pilot.php";	
 require_once dirname(__FILE__)."/FN_flight.php";	
 require_once dirname(__FILE__)."/FN_output.php";
@@ -83,6 +92,15 @@ if ($opMode==1 ) { // phpnuke
 } else if ($opMode==5 ) { // joomla
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
+} else if ($opMode==6 ) { // phpbb3
+
+	if ($user->data['user_type'] == 2) {
+		$userID=0;
+		$userName='guest';	
+	} else {
+		$userID=$user->data['user_id'];
+		$userName=$user->data['username'];
+	}	
 }
 
 $_SESSION['userID']=$userID;
@@ -146,7 +164,7 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
-if ($opMode==3 || $opMode==4)  // stand alone
+if ($opMode==3 || $opMode==4 || $opMode==6)  // stand alone , we use phpbb3 as standalone too
 	require_once dirname(__FILE__)."/GUI_header.php";
 
 // phpnuke
@@ -192,134 +210,135 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
 //---------------------------------------------
 // MAIN SWITCH
 //---------------------------------------------
+$LeoCodeBase=dirname(__FILE__);
 
 if ($op=="users") { 
-	if ($opMode==3 ) require $moduleRelPath."/USERS_index.php";
+	if ($opMode==3 ) require $LeoCodeBase."/USERS_index.php";
 } else if ($op=="login") { 
 	$noFooterMenu=1;
-	if ($opMode==2 || $opMode==3 || $opMode==4) require $moduleRelPath."/GUI_login.php";
+	if ($opMode==2 || $opMode==3 || $opMode==4 || $opMode==6 ) require $LeoCodeBase."/GUI_login.php";
 } else if ($op=="register") { 
 	echo "<BR><BR>Parameter Not used !!<BR>";
 	// Not used 
-	//	if ($opMode==2 || $opMode==3) require $moduleRelPath."/GUI_register.php";
+	//	if ($opMode==2 || $opMode==3) require $LeoCodeBase."/GUI_register.php";
 } else if ($op=="index_full") { 
-	require $moduleRelPath."/GUI_index_full.php";
+	require $LeoCodeBase."/GUI_index_full.php";
 } else if ($op=="index_help") {
-	require $moduleRelPath."/GUI_index_help.php";
+	require $LeoCodeBase."/GUI_index_help.php";
 } else if ($op=="index_news") {
-	require $moduleRelPath."/GUI_index_news.php";
+	require $LeoCodeBase."/GUI_index_news.php";
 // Clubs - areas admin
 //--------------------------
 } else if ($op=="club_admin") { 
-	require $moduleRelPath."/GUI_club_admin.php";
+	require $LeoCodeBase."/GUI_club_admin.php";
 } else if ($op=="area_admin") { 
-	require $moduleRelPath."/GUI_area_admin.php";
+	require $LeoCodeBase."/GUI_area_admin.php";
 } else if ($op=="admin_sites") { 
-	require $moduleRelPath."/GUI_admin_sites.php";
+	require $LeoCodeBase."/GUI_admin_sites.php";
 // Listing output
 //--------------------------
 } else if ($op=="list_clubs") { 
-	require $moduleRelPath."/GUI_list_clubs.php";
+	require $LeoCodeBase."/GUI_list_clubs.php";
 } else if ($op=="list_flights") { 
-	require $moduleRelPath."/GUI_list_flights.php";
+	require $LeoCodeBase."/GUI_list_flights.php";
 } else if ($op=="list_pilots" ) {  
-	require $moduleRelPath."/GUI_list_pilots.php";
+	require $LeoCodeBase."/GUI_list_pilots.php";
 } else if ($op=="competition") {
-    require $moduleRelPath."/GUI_list_comp.php";
+    require $LeoCodeBase."/GUI_list_comp.php";
 } else if ($op=="comp") {
-    require $moduleRelPath."/GUI_comp.php";
+    require $LeoCodeBase."/GUI_comp.php";
 } else if ($op=="list_takeoffs") {
-	require $moduleRelPath."/GUI_list_takeoffs.php";	
+	require $LeoCodeBase."/GUI_list_takeoffs.php";	
 } else if ($op=="sites") {
-	require $moduleRelPath."/GUI_sites.php";	
+	require $LeoCodeBase."/GUI_sites.php";	
 } else if ($op=="list_areas") {
-	require $moduleRelPath."/GUI_list_areas.php";	
+	require $LeoCodeBase."/GUI_list_areas.php";	
 } else if ($op=="area_show") {
-	require $moduleRelPath."/GUI_area_show.php";	
+	require $LeoCodeBase."/GUI_area_show.php";	
 
 //--------------------------
 // "Flight" related actions
 //--------------------------
 } else if ($op=="show_flight" ) {  
-    require $moduleRelPath."/GUI_flight_show.php";		
+    require $LeoCodeBase."/GUI_flight_show.php";		
 } else if ($op=="add_flight") {
-	if ($userID>0) require $moduleRelPath."/GUI_flight_add.php";
+	if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php";
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";
 } else if ($op=="add_from_zip") {
-	require $moduleRelPath."/GUI_flight_add_from_zip.php";		
+	require $LeoCodeBase."/GUI_flight_add_from_zip.php";		
 } else if ($op=="delete_flight") {
-	require $moduleRelPath."/GUI_flight_delete.php";
+	require $LeoCodeBase."/GUI_flight_delete.php";
 } else if ($op=="edit_flight") {
-	require $moduleRelPath."/GUI_flight_edit.php";	
+	require $LeoCodeBase."/GUI_flight_edit.php";	
 }  else if ($op=="addTestFlightFromURL") {
 	addTestFlightFromURL(urldecode ($_REQUEST[flightURL]) );
 //--------------------------
 // "Waypoints" related actions
 //--------------------------
 } else if ($op=="show_waypoint") {
-	require $moduleRelPath."/GUI_waypoint_show.php";	
+	require $LeoCodeBase."/GUI_waypoint_show.php";	
 } else if ($op=="add_waypoint") {
-    require $moduleRelPath."/GUI_waypoint_add.php";
+    require $LeoCodeBase."/GUI_waypoint_add.php";
 } else if ($op=="edit_waypoint") {
-    require $moduleRelPath."/GUI_waypoint_edit.php";
+    require $LeoCodeBase."/GUI_waypoint_edit.php";
 //--------------------------
 // "Pilots" related actions
 //--------------------------
 } else if ($op=="pilot_search") {
-	require $moduleRelPath."/GUI_pilot_search.php";
+	require $LeoCodeBase."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {
-	if ($userID>0 || $CONF_showProfilesToGuests ) require $moduleRelPath."/GUI_pilot_profile.php";
+	if ($userID>0 || $CONF_showProfilesToGuests ) require $LeoCodeBase."/GUI_pilot_profile.php";
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";			
 } else if ($op=="pilot_profile_edit") {
-	require $moduleRelPath."/GUI_pilot_profile_edit.php";
+	require $LeoCodeBase."/GUI_pilot_profile_edit.php";
 } else if ($op=="pilot_olc_profile_edit") {
-	require $moduleRelPath."/GUI_pilot_olc_profile_edit.php";
+	require $LeoCodeBase."/GUI_pilot_olc_profile_edit.php";
 } else if ($op=="pilot_profile_stats") {
-	require $moduleRelPath."/GUI_pilot_profile_stats.php";
+	require $LeoCodeBase."/GUI_pilot_profile_stats.php";
 } else if ($op=="pilot_flights") {
-	require $moduleRelPath."/GUI_pilot_flights.php";
+	require $LeoCodeBase."/GUI_pilot_flights.php";
 } else if ($op=="user_prefs") { 
-	require $moduleRelPath."/GUI_user_prefs.php";
+	require $LeoCodeBase."/GUI_user_prefs.php";
 //--------------------------
 // Misc related actions
 //--------------------------
 } else if ($op=="admin") {
-	require $moduleRelPath."/GUI_admin.php";
+	require $LeoCodeBase."/GUI_admin.php";
 } else if ($op=="admin_languages") {
-	require $moduleRelPath."/GUI_admin_update_languages.php";
+	require $LeoCodeBase."/GUI_admin_update_languages.php";
 } else if ($op=="admin_brands") {
-	require $moduleRelPath."/GUI_admin_brands.php";
+	require $LeoCodeBase."/GUI_admin_brands.php";
 } else if ($op=="admin_airspace") {
-	require $moduleRelPath."/GUI_admin_airspace.php";
+	require $LeoCodeBase."/GUI_admin_airspace.php";
 } else if ($op=="admin_test") {
-	require $moduleRelPath."/GUI_admin_test.php";
+	require $LeoCodeBase."/GUI_admin_test.php";
 } else if ($op=="admin_logs") {
-	require $moduleRelPath."/GUI_admin_logs.php";
+	require $LeoCodeBase."/GUI_admin_logs.php";
 } else if ($op=="admin_stats") {
-	require $moduleRelPath."/GUI_admin_stats.php";
+	require $LeoCodeBase."/GUI_admin_stats.php";
 } else if ($op=="admin_takeoffs") {
-	require $moduleRelPath."/GUI_admin_takeoffs.php";
+	require $LeoCodeBase."/GUI_admin_takeoffs.php";
 } else if ($op=="admin_areas") {
-	require $moduleRelPath."/GUI_area_admin.php";
+	require $LeoCodeBase."/GUI_area_admin.php";
 } else if ($op=="admin_takeoff_resolve") {
-	require $moduleRelPath."/GUI_admin_takeoff_resolve.php";
+	require $LeoCodeBase."/GUI_admin_takeoff_resolve.php";
 } else if ($op=="admin_duplicates") {
-	require $moduleRelPath."/GUI_admin_duplicates.php";
+	require $LeoCodeBase."/GUI_admin_duplicates.php";
 } else if ($op=="admin_pilot_map") {
-	require $moduleRelPath."/GUI_admin_pilot_map.php";
+	require $LeoCodeBase."/GUI_admin_pilot_map.php";
 } else if ($op=="validation_review") {
-	require $moduleRelPath."/GUI_validation_review.php";
+	require $LeoCodeBase."/GUI_validation_review.php";
 } else if ($op=="servers_manage") {
-	require $moduleRelPath."/GUI_servers_manage.php";
+	require $LeoCodeBase."/GUI_servers_manage.php";
 } else if ($op=="filter") {
-	require $moduleRelPath."/GUI_filter.php";
+	require $LeoCodeBase."/GUI_filter.php";
 } else if ($op=="rss_conf") {
 	$noFooterMenu=1;
-	require $moduleRelPath."/GUI_rss_conf.php";
+	require $LeoCodeBase."/GUI_rss_conf.php";
 } else if ($op=="stats") {
-	require $moduleRelPath."/GUI_stats.php";
+	require $LeoCodeBase."/GUI_stats.php";
 } else if ($op=="program_info") {
-	require $moduleRelPath."/GUI_program_info.php";
+	require $LeoCodeBase."/GUI_program_info.php";
 } 
 	
 exitPage(0);
@@ -367,7 +386,7 @@ function exitPage($exitNow=1){
    if ($opMode==1) {   
 		CloseTable();
 		include("footer.php");
-   } else if ($opMode==3 || $opMode==4) {
+   } else if ($opMode==3 || $opMode==4 || $opMode==6) {
 
 		require_once dirname(__FILE__)."/GUI_footer.php";
    }

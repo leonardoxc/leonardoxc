@@ -119,7 +119,7 @@
 		$sortOrderFinal="$scoreSpeedSql DESC, FLIGHT_POINTS ";
 	}
 	
-	if ( ! ($pilotID>0 && $pilotID==$userID ) && !auth::isAdmin($userID) ) {
+	if ( ! ($pilotID>0 && $pilotID==$userID ) && !L_auth::isAdmin($userID) ) {
 		$where_clause.=" AND private=0 ";
 	} 
 	
@@ -331,7 +331,7 @@ $clubIcon	="<img src='".$moduleRelPath."/img/icon_club_small.gif' width=12 heigh
 $removeFromClubIcon	="<img src='".$moduleRelPath."/img/icon_club_remove.gif' width=22 height=12 border=0 align='absmiddle' title='Remove flight from this league'>";
 $addToClubIcon		="<img src='".$moduleRelPath."/img/icon_club_add.gif' width=12 height=12 border=0 align='absmiddle' title='Add flight to this league'>";
 
-   if ( $clubID  && (auth::isClubAdmin($userID,$clubID) || auth::isAdmin($userID))  )  {
+   if ( $clubID  && (L_auth::isClubAdmin($userID,$clubID) || L_auth::isAdmin($userID))  )  {
 ?>
 
 <script language="javascript">
@@ -467,7 +467,7 @@ function removeClubFlight(clubID,flightID) {
 	   echo "\n<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
 	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row";
 
-			if ( ( auth::isClubAdmin($userID,$clubID) || auth::isAdmin($userID) )&&  $add_remove_mode )  {
+			if ( ( L_auth::isClubAdmin($userID,$clubID) || L_auth::isAdmin($userID) )&&  $add_remove_mode )  {
 				// echo "<BR>";	   
 				if (in_array($flightID,$clubFlights ) ){
 					echo "<div id='fl_$flightID' style='display:inline;margin:0px;padding:0px'><a href=\"#\" onclick=\"removeClubFlight($clubID,$flightID);return false;\">$removeFromClubIcon</a></div>";
@@ -485,7 +485,7 @@ function removeClubFlight(clubID,flightID) {
 
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		$thisPilot=new pilot($row["userServerID"],$row["userID"]);
-		if ( $thisPilot->isPilotLocal() || 	auth::isAdmin($userID)  ) {
+		if ( $thisPilot->isPilotLocal() || 	L_auth::isAdmin($userID)  ) {
 			echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		} else {
 			echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
@@ -517,7 +517,7 @@ function removeClubFlight(clubID,flightID) {
 	   echo "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
    	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
-		if ($CONF_airspaceChecks && auth::isAdmin($userID) ) {
+		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
 			if ( $row['airspaceCheckFinal']==-1 ) {
 				$airspaceProblem=' bgcolor=#F7E5C9 ';
 			} else 
@@ -599,7 +599,7 @@ function removeClubFlight(clubID,flightID) {
 		}
 		// else echo "<img class='photoIcon' src='$moduleRelPath/img/photo_icon_blank.gif' border=0>";			
 
-		if ($row["userID"]==$userID || auth::isAdmin($userID) ) {  
+		if ($row["userID"]==$userID || L_auth::isAdmin($userID) ) {  
 			echo "<div id='ac_$i' class='actionLink'>";
 			echo "<a href=\"javascript:flightActionTip.newTip('inline', -100, 13, 'ac_$i', 120, ".$row["ID"]." )\"  onmouseout=\"flightActionTip.hide()\">".
 					"<img src='".$moduleRelPath."/img/icon_action_select.gif' width='16' height='10' border='0' align='bottom' /></a>";
@@ -607,7 +607,7 @@ function removeClubFlight(clubID,flightID) {
 	   }			
 
 		$checkedByStr='';
-		if ($row['checkedBy'] && auth::isAdmin($userID)){
+		if ($row['checkedBy'] && L_auth::isAdmin($userID)){
 			$checkedByArray=explode(" ",$row['checkedBy']);
 			$checkedByStr="<div class='checkedBy' align=right>".$checkedByArray[0]."</div>";
 			echo $checkedByStr;

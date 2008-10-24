@@ -11,10 +11,10 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	require_once $moduleRelPath."/CL_image.php";
-	require_once $moduleRelPath."/CL_template.php";
+	require_once $LeoCodeBase."/CL_image.php";
+	require_once $LeoCodeBase."/CL_template.php";
 
-	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
+	$Ltemplate = new LTemplate($LeoCodeBase.'/templates/'.$PREFS->themeName);
 
 
   $flightID+=0;
@@ -24,7 +24,7 @@
 	return;  
   }
   
-  if ( $flight->private && ! $flight->belongsToUser($userID) && ! auth::isAdmin($userID) ) {
+  if ( $flight->private && ! $flight->belongsToUser($userID) && ! L_auth::isAdmin($userID) ) {
 		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
   }
@@ -82,7 +82,7 @@ with (unknownTakeoffTip)
 <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
-<? if ( auth::isAdmin($userID) ) { ?>
+<? if ( L_auth::isAdmin($userID) ) { ?>
 <script language="javascript">
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
@@ -177,7 +177,7 @@ $(document).ready(function(){
 <div class='content'>
 	Please choose the module to use<BR>for Google Earth Display<br />
 
-	<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || auth::isModerator($userID) )  ) { ?>
+	<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || L_auth::isModerator($userID) )  ) { ?>
 	<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a id='ge_s2' href='<?=$geUrl?>&flightID=<?=$flightID?>&w=2&c=FFFFFF&ex=1&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>
 	<br>
 	<? } ?>
@@ -212,16 +212,16 @@ $(document).ready(function(){
 	$legendRight="";
 
 			
-	if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
+	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
 		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
-	if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
+	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
 		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
-	if (  auth::isAdmin($userID) ) {
+	if (  L_auth::isAdmin($userID) ) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
@@ -480,7 +480,7 @@ if ($flight->linkURL) {
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
 $adminPanel="";
-if (auth::isAdmin($userID) ) {
+if (L_auth::isAdmin($userID) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 

@@ -15,7 +15,7 @@
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
-  if ( 	$flight->belongsToUser($userID) ||	auth::isModerator($userID)  ) {
+  if ( 	$flight->belongsToUser($userID) ||	L_auth::isModerator($userID)  ) {
 
 	require_once dirname(__FILE__)."/CL_flightScore.php";
 	$flightScore=new flightScore($flight->flightID);
@@ -167,7 +167,7 @@ function setValue(obj)
 }
 </script>
 
-<? if ( auth::isAdmin($userID) && $CONF_airspaceChecks ) { ?>
+<? if ( L_auth::isAdmin($userID) && $CONF_airspaceChecks ) { ?>
 <script language="javascript">
 function update_comment(area_id) {	 	
 	document.getElementById('addTakeoffFrame').src='<?=$moduleRelPath?>/GUI_EXT_airspace_update_comment.php?area_id='+area_id;
@@ -247,7 +247,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
   <?  open_inner_table(_CHANGE_FLIGHT_DATA,760,"change_icon.png"); echo "<tr><td>"; ?>
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
-<? if ($enablePrivateFlights || auth::isAdmin($userID) ) { ?>
+<? if ($enablePrivateFlights || L_auth::isAdmin($userID) ) { ?>
     <tr>
       <td colspan=2 valign="top">  
 	  <div align="right">
@@ -255,7 +255,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
               <input type="checkbox" name="is_private" value="1" <? echo ($flight->private & 1)?"checked":"" ?> >
              <? echo  _IS_PRIVATE ?>    
 		<? } ?>
-		<? if ( auth::isAdmin($userID) ) { ?>
+		<? if ( L_auth::isAdmin($userID) ) { ?>
               <input type="checkbox" name="is_disabled" value="1" <? echo ($flight->private & 2)?"checked":"" ?> >
              <? echo  "Disable Flight"; ?>    
 		<? } ?>
@@ -394,7 +394,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 
         	</td>
     </tr>
-	<? if ($CONF_use_validation && auth::isAdmin($userID) ) {?>
+	<? if ($CONF_use_validation && L_auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan="2"  valign="top">
 	    <fieldset class="legendBox legend2">
@@ -443,7 +443,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset></td>
     </tr>
 	<? } ?>
-	<? if ($CONF_airspaceChecks && auth::isAdmin($userID) ) {?>
+	<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan="2"  valign="top">
 	    <fieldset class="legendBox legend2">
@@ -518,7 +518,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
       <td colspan="2" valign="middle">
 	  <fieldset class="legendBox legend3"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
 	  <div align="left">
-	    <?  if ( auth::isModerator($userID) ) {
+	    <?  if ( L_auth::isModerator($userID) ) {
 				$toolbar='Leonardo';
 				$allowUploads=false;
 			} else{
@@ -589,7 +589,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
         <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb'; ?></div>
       </div></td>
     </tr>
-<? if ( auth::isAdmin($userID) ) {?>
+<? if ( L_auth::isAdmin($userID) ) {?>
     <tr>
       <td colspan=2 valign="top">        
 	    <fieldset class="legendBox legend3">

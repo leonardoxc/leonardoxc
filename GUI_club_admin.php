@@ -12,7 +12,7 @@
 /************************************************************************/
 
 
-if ( ! auth::isClubAdmin($userID,$clubID) && !auth::isAdmin($userID) ) { echo "go away"; return; }
+if ( ! L_auth::isClubAdmin($userID,$clubID) && !L_auth::isAdmin($userID) ) { echo "go away"; return; }
 
 $pilotsList=array();
 $pilotsID=array();

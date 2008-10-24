@@ -79,7 +79,7 @@ require_once dirname(__FILE__)."/common.php";
 $userdata = session_pagestart($user_ip, PAGE_LEONARDO); 
 // init_userprefs($userdata); 
 
-$lang['ENCODING']= $langEncodings[$currentlang];
+$LEO_lang['ENCODING']= $langEncodings[$currentlang];
 // set page title 
 $page_title = 'LEONARDO';
 

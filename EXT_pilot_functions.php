@@ -22,7 +22,7 @@
 	require_once "FN_output.php";
 	require_once "FN_pilot.php";
 	require_once "FN_flight.php";
-	require_once $moduleRelPath."/templates/".$PREFS->themeName."/theme.php";
+	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
 
 	
@@ -76,7 +76,7 @@
 		}
 	}
 	
-	if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
 
 	if ($op=='mapPilot'){	
 			$pilotID1=makeSane($_GET['pilotID1'],0);

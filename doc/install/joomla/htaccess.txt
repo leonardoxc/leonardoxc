@@ -1,0 +1,5 @@
+#
+
+RewriteEngine On
+RewriteBase /
+RewriteRule ^(.*)$ /your/path/to/leonardo/$1

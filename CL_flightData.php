@@ -2958,7 +2958,7 @@ $kml_file_contents=
 		global $moduleRelPath,$mapServerActive;
 		if (!$mapServerActive) return;
 	
-		require_once $moduleRelPath."/CL_map.php";
+		require_once dirname(__FILE__)."/CL_map.php";
 	
 		$filename=$this->getIGCFilename(1);  
 		$lines = @file ($filename); 
@@ -3756,7 +3756,7 @@ foreach ($data_time as $i=>$tm) {
 		global $db;
 		global $flightsTable;
 		$query="SELECT serverID,ID FROM $flightsTable WHERE userID=".$this->userID." AND userServerID=".$this->userServerID.
-					"AND DATE='".$this->DATE."'  AND  
+					" AND DATE='".$this->DATE."'  AND  
 						( 
 							( ".$this->START_TIME." >= START_TIME AND ".$this->START_TIME." <= END_TIME )  
 							OR 

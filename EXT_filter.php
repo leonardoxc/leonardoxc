@@ -22,7 +22,7 @@
 	require_once "FN_output.php";
 	require_once "FN_pilot.php";
 	require_once "FN_flight.php";
-	require_once $moduleRelPath."/templates/".$PREFS->themeName."/theme.php";
+	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
 
 	require_once dirname(__FILE__)."/GUI_filter.php";

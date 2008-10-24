@@ -4,7 +4,7 @@
 // Description:	PHP4 Graph Plotting library. Base module.
 // Created: 	2001-01-08
 // Author:	Johan Persson (johanp@aditus.nu)
-// Ver:		$Id: jpgraph.php,v 1.2 2007/12/02 15:15:13 manolis Exp $
+// Ver:		$Id: jpgraph.php,v 1.3 2008/10/24 15:32:31 manolis Exp $
 //
 // License:	This code is released under QPL 1.0
 // Copyright (C) 2001,2002,2003 Johan Persson
@@ -627,7 +627,7 @@ function sign($a) {return $a >= 0 ? 1 : -1;}
 // (top level), i.e it is safe to call this function
 // from a script that uses JpGraph
 function GenImgName() {
-    global $HTTP_SERVER_VARS;
+    
     global $_SERVER;
 
     // Determine what format we should use when we save the images
@@ -636,9 +636,9 @@ function GenImgName() {
     elseif( $supported & IMG_GIF ) $img_format="gif";
     elseif( $supported & IMG_JPG ) $img_format="jpeg";
 
-    if( !isset($HTTP_SERVER_VARS['PHP_SELF']) )
+    if( !isset($_SERVER['PHP_SELF']) )
 	JpGraphError::Raise(" Can't access PHP_SELF, PHP global variable. You can't run PHP from command line if you want to use the 'auto' naming of cache or image files.");
-    $fname = basename($HTTP_SERVER_VARS['PHP_SELF']);
+    $fname = basename($_SERVER['PHP_SELF']);
     $q = @$_SERVER['QUERY_STRING'];
     if( !empty($q) ) {
 	$fname .= '?'.preg_replace("/\W/", "_", $q).'.'.$img_format;
@@ -1461,10 +1461,10 @@ class Graph {
     }
 
     function CheckCSIMCache($aCacheName,$aTimeOut=60) {
-	global $HTTP_SERVER_VARS;
+	global $_SERVER;
 
 	if( $aCacheName=='auto' )
-	    $aCacheName=basename($HTTP_SERVER_VARS['PHP_SELF']);
+	    $aCacheName=basename($_SERVER['PHP_SELF']);
 
 	$this->csimcachename = CSIMCACHE_DIR.$aCacheName;
 	$this->csimcachetimeout = $aTimeOut;

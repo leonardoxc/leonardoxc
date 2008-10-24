@@ -101,7 +101,7 @@
 		<hr>
 		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)"><?=_Follow_Glider?><br>
 		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)"><?=_Show_Task?><br>
-		<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
+		<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>
 			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
 		<?  } ?>
 		</fieldset>
@@ -351,7 +351,7 @@ var lon=0;
 	
 </script>
 
-<? if ($CONF_airspaceChecks && auth::isAdmin($userID)  ) { ?>
+<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>
 <script language="javascript">
 
 function toggleAirspace(radioObj) {

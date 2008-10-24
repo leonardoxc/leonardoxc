@@ -11,7 +11,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	require $moduleRelPath."/CL_template.php";
+	require_once dirname(__FILE__).'/CL_template.php';
+
 	$Ltemplate = new LTemplate($moduleRelPath."/templates/".$PREFS->themeName);
 
 //	$Ltemplate ->set_filenames(array(
@@ -41,7 +42,7 @@
 	if (!$userID) $Ltemplate->assign_block_vars('SWITCH_ANON_USER', array() );
 	else $Ltemplate->assign_block_vars('SWITCH_LOGIN_USER', array() );
 
-	if (auth::isAdmin($userID) ) $Ltemplate->assign_block_vars('SWITCH_ADMIN', array() );
+	if (L_auth::isAdmin($userID) ) $Ltemplate->assign_block_vars('SWITCH_ADMIN', array() );
 
 // new code ----------------------------------
 
@@ -74,6 +75,7 @@ if ($ap) { // a league
 	$topCustomLogo='';
 }
 */
+
 if ($clubID) { // a league
 	$topCustomLogo=$clubsList[$clubID]['desc'];
 } else {
@@ -127,6 +129,7 @@ $Ltemplate->assign_vars(array(
 
 	'T_PATH' => $tplPath.'/',
 	'TOP_CUSTOM_LOGO'=>$topCustomLogo,
+	'TOP_CUSTOM_LOGO_DISPLAY'=>$topCustomLogo?'block':'none',
 	
 	'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
 	'U_INDEX' => append_sid('index.'.$phpEx),

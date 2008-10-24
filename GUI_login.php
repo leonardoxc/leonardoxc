@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.8 2007/11/03 22:43:36 manolis Exp $
+ *   $Id: GUI_login.php,v 1.9 2008/10/24 15:32:31 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -193,7 +193,7 @@ else
 	{
 		$page_title = $lang['Login'];
 		
-		require_once $moduleRelPath."/CL_template.php";
+		require_once dirname(__FILE__)."/CL_template.php";
 		$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
 	
 		$Ltemplate ->set_filenames(array(

@@ -12,7 +12,7 @@
 //************************************************************************/
 
  
-  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+  if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
 ?>
 
@@ -69,7 +69,7 @@ $(document).ready(function(){
   open_tr();
   echo "<td align=left>";	
 
-	if (!auth::isAdmin($userID)) {
+	if (!L_auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}

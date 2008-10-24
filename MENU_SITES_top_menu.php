@@ -104,11 +104,11 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li class="smallItem long"><a class="smallItem" href='#'><?=$iconImg?></a>
 	<ul class="long">
 
-<? if ( auth::isAdmin($userID) )  {  ?>
+<? if ( L_auth::isAdmin($userID) )  {  ?>
 		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin">ADMIN MENU</a></li>
-				<? if ( auth::isAdmin($userID) && $opMode==3 )  {  ?>
+				<? if ( L_auth::isAdmin($userID) && $opMode==3 )  {  ?>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=users&page=admin">User Administration</a></li>
 				<? } ?>
 				<li class='li_space long'></li>
@@ -168,7 +168,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			else $a_class="";
 			echo "<li $a_class><a $a_class href='".CONF_MODULE_ARG."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
 			if (  $clubsItem['id'] == $clubID && 
-					(  ( $clubID  && (auth::isClubAdmin($userID,$clubID) )  || auth::isAdmin($userID))  	)	 
+					(  ( $clubID  && (L_auth::isClubAdmin($userID,$clubID) )  || L_auth::isAdmin($userID))  	)	 
 			    )  {  ?>
 				<li style='background-color:#FF9933'><a href="<?="".CONF_MODULE_ARG."" ?>&op=club_admin&club_to_admin_id=<?=$clubID?>"><img 
 				src="<?=$moduleRelPath?>/img/icon_arrow_up.png" border=0 align="absmiddle" /> Administer this Club</a></li>		
@@ -240,7 +240,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=0_<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile&pilotIDview=0_<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
 		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile_stats&pilotIDview=0_<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
-        <? if ( auth::isAdmin($userID) )  {  ?>
+        <? if ( L_auth::isAdmin($userID) )  {  ?>
    		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_flights&pilotIDview=0_<?=$userID ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>
         <? } ?>
 		<li class='li_space'></li>

@@ -94,7 +94,7 @@
 
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-	//	if ( $flight->userID!=$userID && ! auth::isAdmin($userID) && $flight->private) {
+	//	if ( $flight->userID!=$userID && ! L_auth::isAdmin($userID) && $flight->private) {
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}
@@ -170,7 +170,7 @@
 
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
-	//	if ( $flight->userID!=$userID && ! auth::isAdmin($userID) && $flight->private) {
+	//	if ( $flight->userID!=$userID && ! L_auth::isAdmin($userID) && $flight->private) {
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}

@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+  if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
 function chmodDir($dir){
  $current_dir = opendir($dir);
@@ -34,7 +34,7 @@ function chmodDir($dir){
   open_tr();
   echo "<td align=left>";	
 
-	if (!auth::isAdmin($userID)) {
+	if (!L_auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
 		exitPage();
 	}

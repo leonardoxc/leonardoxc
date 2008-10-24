@@ -27,7 +27,7 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
-	if (! auth::isAdmin($userID)) {
+	if (! L_auth::isAdmin($userID)) {
 		//		return;
     }
 	$waypointLat=$_REQUEST['lat']+0;

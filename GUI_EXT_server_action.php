@@ -20,7 +20,7 @@ require_once dirname(__FILE__)."/FN_functions.php";
 require_once dirname(__FILE__).'/CL_brands.php';
 
 
-if (! auth::isAdmin($userID)) {
+if (! L_auth::isAdmin($userID)) {
 	return;
 }
 

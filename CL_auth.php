@@ -12,7 +12,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-class auth {
+class L_auth {
 	function auth() {
 
 	}

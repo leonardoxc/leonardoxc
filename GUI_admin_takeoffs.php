@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 //************************************************************************/
 
-  if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+  if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
  ?>
  <script language="javascript">
@@ -159,7 +159,7 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 		echo "<tr><td colspan=7><strong>$takeoffID</strong></td><tr>";
 		foreach($takeoff as $actionTime=>$details ) {
 	
-			if ( auth::isAdmin($details['userID'])  ) $admStr="*ADMIN*";
+			if ( L_auth::isAdmin($details['userID'])  ) $admStr="*ADMIN*";
 			else $admStr="";
 
 			

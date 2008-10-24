@@ -29,7 +29,7 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
 	// echo "# $userID #";
-    if (! auth::isAdmin($userID)) {
+    if (! L_auth::isAdmin($userID)) {
 		 return;
     }
 ?><head>

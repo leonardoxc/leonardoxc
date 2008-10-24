@@ -528,7 +528,7 @@ with (geTip)
 			"<div style='padding:5px'>" +
 				"<div id='BT_content' style='line-height:140%'>"+
 				
-				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || auth::isModerator($userID) )   ) { ?>
+				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || L_auth::isModerator($userID) )   ) { ?>
 				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=$moduleRelPath?>/download.php?type=kml_trk&flightID=%4%&lng=%5%&an=2'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>"+
 	'<br>'+
 				<? } ?>
@@ -647,7 +647,7 @@ with (takeoffTip)
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
 	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%4%'><? echo _Navigate_with_Google_Earth ?></a>"+
-	<? if ( $ext && auth::isAdmin($userID) ) { ?>
+	<? if ( $ext && L_auth::isAdmin($userID) ) { ?>
     '</td></tr><tr><td class="infoBox adminBox">'+
 	 "<img src='<?=$moduleRelPath?>/img/icon_add.png' align='absmiddle' border=0> <a href='javascript:add_takeoff(%6%,%7%,%4%)'><?=_ADD_WAYPOINT?></a>"+
 

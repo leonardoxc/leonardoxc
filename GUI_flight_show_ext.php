@@ -55,7 +55,7 @@ with (unknownTakeoffTip)
 <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
 
-<? if ( auth::isAdmin($userID) ) { ?>
+<? if ( L_auth::isAdmin($userID) ) { ?>
 <script language="javascript">
 
 function add_takeoff(lat,lon,id) {	 
@@ -147,16 +147,16 @@ makePopupBoxDiv('takeoffAdd');
 
 	$legendRight.="<div id='setBoundsPos'></div>";
 
-	if (auth::isAdmin($userID) ) {
+	if (L_auth::isAdmin($userID) ) {
 	//	$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 	}
 
-	if ( $flight->belongsToUser($userID) || auth::isAdmin($userID) ) {
+	if ( $flight->belongsToUser($userID) || L_auth::isAdmin($userID) ) {
 		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
 				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 	}
 
-	if (  auth::isModerator($userID) ) {
+	if (  L_auth::isModerator($userID) ) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
@@ -380,7 +380,7 @@ $gliderCatList[$flight->cat]." ]";
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
 $adminPanel="";
-if (auth::isAdmin($userID) ) {
+if (L_auth::isAdmin($userID) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 

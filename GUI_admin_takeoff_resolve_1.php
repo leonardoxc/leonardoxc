@@ -11,7 +11,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 //************************************************************************/
 
-	if ( !auth::isAdmin($userID) ) { echo "go away"; return; }
+	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
 	
     $countryCode=strtoupper($_GET['countryCode'] );
  	if ($countryCode) 

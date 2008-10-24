@@ -22,7 +22,7 @@
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
 
   // edit function
-  if ( $pilotIDview != $userID && !auth::isAdmin($userID) && !auth::isModerator($userID ) ) { 
+  if ( $pilotIDview != $userID && !L_auth::isAdmin($userID) && !L_auth::isModerator($userID ) ) { 
  	echo "<div>You dont have permission to edit this profile<br></div>";
     return;
   }
@@ -167,7 +167,7 @@
   $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
   $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
   $legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
-/*  if ( $pilotIDview == $userID || auth::isAdmin($userID) || in_array($userID,$mod_users)  ) 
+/*  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) || in_array($userID,$mod_users)  ) 
 	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
   else $legendRight.="";
 */ 
@@ -229,7 +229,7 @@
 
 			$list2.="NAC_select_clubs[$NACid]  = ".( ( $NAC['club_change_period_active'] || 
 				($NAC['add_to_club_period_active'] && !$pilot['NACclubID'] )|| 
-				auth::isAdmin($userID)|| auth::isModerator($userID) )? 1 : 0).";\n";
+				L_auth::isAdmin($userID)|| L_auth::isModerator($userID) )? 1 : 0).";\n";
 
 			$externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
 			if ($ext_input && !empty($NAC['external_fields'])) {
@@ -256,7 +256,7 @@
 			<? 
 				$firstNameReadOnly='';
 				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && !auth::isModerator($userID)					 
+					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID)					 
 				) $firstNameReadOnly='"readonly"';
 				if ( in_array('FirstName', $readonly_fields) ) $firstNameReadOnly='"readonly"';
 			?> 
@@ -362,7 +362,7 @@
 
 			if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
 				( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
-				auth::isAdmin($userID) || auth::isModerator($userID) 
+				L_auth::isAdmin($userID) || L_auth::isModerator($userID) 
 			) $showChangeClubLink="inline";
 			else $showChangeClubLink="none";
 			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub();return false;\">"._Select_Club."</a> ]</div>";
@@ -396,7 +396,7 @@
 			<?
 				$lastNameReadOnly='';
 				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
-					  !auth::isAdmin($userID) && !auth::isModerator($userID) 
+					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID) 
 				) $lastNameReadOnly='"readonly"';
 				if ( in_array('LastName', $readonly_fields) ) $lastNameReadOnly='"readonly"';
 			?>

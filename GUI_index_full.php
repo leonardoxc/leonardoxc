@@ -12,8 +12,8 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	require_once $moduleRelPath."/CL_template.php";
-	$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
+	require_once dirname(__FILE__)."/CL_template.php";
+	$Ltemplate = new LTemplate(dirname(__FILE__).'/templates/'.$PREFS->themeName);
 
 	$Ltemplate ->set_filenames(array(
 		'body' => 'index_full.html')
