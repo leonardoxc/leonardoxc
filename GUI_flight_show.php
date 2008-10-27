@@ -211,14 +211,24 @@ $(document).ready(function(){
 <?
 	$legendRight="";
 
-			
-	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
-		$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
+	$inWindow=true;
+	# martin jursa 24.06.2008/ peter wild: taking into account the setting for $CONF_new_flights_submit_window and editing only if flight date is inside the window
+	if (isset($CONF_new_flights_submit_window) && $CONF_new_flights_submit_window>0) {
+		$tsFlight=strtotime($flight->DATE);
+		if ($tsFlight>0) {
+			$inWindow=$tsFlight>(time()-$CONF_new_flights_submit_window*24*3600);
+		}
 	}
+    if ( $inWindow  || auth::isAdmin($userID) ){   //P.Wild 29.6.2007 Admin override to edit outside time window
+	//old if (  $flight->DATE	> date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 ) ){ // P.Wild mod. 19.5.2008
+		if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
+			$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
+		}
 
-	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
-		$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
-				   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+		if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
+			$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
+					   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+		}
 	}
 
 	if (  L_auth::isAdmin($userID) ) {
@@ -480,7 +490,7 @@ if ($flight->linkURL) {
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
 $adminPanel="";
-if (L_auth::isAdmin($userID) ) {
+if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 15.2.2008 extension
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 
@@ -524,13 +534,22 @@ if (L_auth::isAdmin($userID) ) {
 	//echo "<hr> ";
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
 
-	if ($flight->airspaceCheckFinal==-1) { // problem
-		$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+	
+if ($flight->airspaceCheckFinal==-1) { // problem
+			
 		$checkLines=explode("\n",$flight->airspaceCheckMsg);
+		if (strrchr($flight->airspaceCheckMsg,"Punkte")){
+			$adminPanel.="<br><strong>Deutschland Pokal</strong><BR>";		
+			if ((strrchr($flight->airspaceCheckMsg,"HorDist"))) {
+				$adminPanel.="<br><strong>Airspace PROBLEM (Deutschland Pokal)</strong><BR>";
+			}
+		} else{
+			$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+		}
 		for($i=1;$i<count($checkLines); $i++) {
 			$adminPanel.=$checkLines[$i]."<br>";
 		}
-	}
+}
 
 	if ($CONF_show_DBG_XML) {
 		$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
