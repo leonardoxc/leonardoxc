@@ -7,5 +7,8 @@
 // 5 = joomla
 $opMode= 2; 
 
+// override 
+if ( defined('Leonardo_as_joomla_com') ) $opMode= 5; 
+
 $CONF_isMasterServer=1; 
 ?>

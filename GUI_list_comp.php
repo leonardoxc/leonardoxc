@@ -201,6 +201,7 @@
    $pilotGlidersMax=array();
    
 	$arrayName= $leagueCategories[$leagueCategory]['arrayName'];
+	global ${$arrayName};
 	${$arrayName}=array();
 
    while ($row = $db->sql_fetchrow($res)) { 
@@ -266,8 +267,7 @@
   } 
   
   function sortArrayBest($arrayName,$countHowMany) {
-	  global $$arrayName;
-	
+	  global $$arrayName;	
 	  //get some stats now 
 	  foreach (${$arrayName} as $pilotID=>$pilotArray) {
 			// arsort($pilotArray);
@@ -308,6 +308,7 @@
   } else {			
 	  $countHowMany= $CONF_countHowManyFlightsInComp;
   }	  
+
 
   sortArrayBest($leagueCategories[$leagueCategory]['arrayName'],$countHowMany);
 /*

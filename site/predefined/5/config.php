@@ -84,6 +84,7 @@ function append_sid($a,$b="") {
 }
 
 // we need to get the db login information 
+// require_once Leonardo_Joomla_main_dir."/configuration.php";
 require_once $CONF_abs_path."/site/config_db.php";
 
 // also load the required functions
