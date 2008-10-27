@@ -165,6 +165,11 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	if ($flight->cat==-1) $flight->cat=$CONF_default_cat_add;
 
+	# martin jursa 22.06.2008:
+	# in case the glider is not given otherwise, try to extract it from the IGC file
+	if (empty($flight->glider)) {
+		$flight->glider=extractGlider($lines);
+	}
 	// if no brand was given , try to detect
 	$flight->checkGliderBrand();
 
@@ -359,13 +364,27 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
     if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
     if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
     if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
-	
-	@rename($tmpIGCPath, $flight->getIGCFilename() );
+
+/**
+ * Martin Jursa; to avoid error log flooding
+ */
+	if (file_exists($tmpIGCPath)) {
+		@rename($tmpIGCPath, $flight->getIGCFilename() );
+	}
+	// in case an olc file was created too
+	if (file_exists($tmpIGCPath.".olc")) {
+		@rename($tmpIGCPath.".olc", $flight->getIGCFilename().".olc" );
+	}
+	// these commands seem redundant:
+	//@unlink($tmpIGCPath.".olc");
+	//@unlink($tmpIGCPath);
+
+/*old:	@rename($tmpIGCPath, $flight->getIGCFilename() );
 	// in case an olc file was created too
 	@rename($tmpIGCPath.".olc", $flight->getIGCFilename().".olc" );
 	@unlink($tmpIGCPath.".olc");
 	@unlink($tmpIGCPath);
-	
+*/
 
 	// if we use NACclubs
 	// get the NACclubID for userID
@@ -470,6 +489,26 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	return array(1,$flight->flightID); // ALL OK;
 }
 
+/**
+ * martin jursa, 22.06.2008
+ * Extract the glider from the IGC file rows
+ * @param array $lines
+ * @return string
+ */
+function extractGlider($lines) {
+	$glider='';
+	if (count($lines)>0) {
+		foreach ($lines as $line) {
+			if (strpos($line, 'HOGTYGLIDERTYPE:')!==false) {
+				$parts=explode(':', $line);
+				$glider=trim($parts[1]);
+				break;
+			}
+		}
+	}
+	return $glider;
+}
+
 function getAddFlightErrMsg($result,$flightID) {
 	$callingURL="http://".$_SERVER['SERVER_NAME'].getRelMainFileName();
 	if (is_array($flightID) ) {
@@ -530,6 +569,70 @@ function getClubFlightsID($clubID) {
  		 array_push($flightsID,$row["flightID"]);
 	}
 	return $flightsID;
+}
+
+/**
+ * Martin Jursa 28.5.2008
+ * Function returning the javascript for form validation for add_flight and add_flight_from_zip
+ *
+ * @return string
+ */
+function getFormValidationJs() {
+	global $CONF_require_glider, $CONF_addflight_js_validation;
+	$js='';
+	if (!empty($CONF_addflight_js_validation)) {
+		$js="
+var ok=true;
+var el=document.forms[0].datafile;
+if (ok) {
+	if (el && !el.value) {
+		el.focus();
+		alert('"._FLIGHTADD_IGC_MISSING."');
+		ok=false;
+	}
+}
+if (ok) {
+	el=document.forms[0].zip_datafile;
+	if (el && !el.value) {
+		el.focus();
+		alert('"._FLIGHTADD_IGCZIP_MISSING."');
+		ok=false;
+	}
+}
+if (ok) {
+	el=document.forms[0].category;
+	if (el && el.options[el.selectedIndex].value=='0') {
+		el.focus();
+		alert('"._FLIGHTADD_CATEGORY_MISSING."');
+		ok=false;
+	}
+}
+";
+		if (!empty($CONF_require_glider)) {
+			$js.="
+if (ok) {
+	el=document.forms[0].gliderBrandID;
+	if (el && el.options[el.selectedIndex].value=='0') {
+		el.focus();
+		alert('"._FLIGHTADD_BRAND_MISSING."');
+		ok=false;
+	}
+}
+if (ok) {
+	el=document.forms[0].glider;
+	if (!el.value) {
+		el.focus();
+		alert('"._FLIGHTADD_GLIDER_MISSING."');
+		ok=false;
+	}
+}
+";
+		}
+		$js.="
+return ok;
+";
+	}
+	return $js;
 }
 
 ?>

@@ -1,4 +1,4 @@
-<? 
+<?
 /************************************************************************/
 /* Leonardo: Gliding XC Server					                                */
 /* ============================================                         */
@@ -22,7 +22,7 @@ if ( L_auth::isAdmin($userID)  ) {
 		 $flight->linkURL=$_REQUEST["linkURL"];
   		 if ( substr($flight->linkURL,0,7) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
-		if ($_REQUEST['is_private']=="1")  $flight->private=1; 
+		if ($_REQUEST['is_private']=="1")  $flight->private=1;
 		else $flight->private=0;
 
 		 for($i=1;$i<=$CONF_photosPerFlight;$i++) {
@@ -33,13 +33,22 @@ if ( L_auth::isAdmin($userID)  ) {
 				$flight->deletePhoto($i);  //first delete old
 				$flight->$var_name=$_FILES[$var_name]['name'];
 				if ( move_uploaded_file($_FILES[$var_name]['tmp_name'],  $flight->getPhotoFilename($i) ) ) {
-					resizeJPG(130,130, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i).".icon.jpg", 15);
-					resizeJPG(1280,1280, $flight->getPhotoFilename($i), $flight->getPhotoFilename($i), 15);
+						CLimage::resizeJPG( $CONF['photos']['thumbs']['max_width'],
+						 					$CONF['photos']['thumbs']['max_height'],
+											$flight->getPhotoFilename($i),
+											$flight->getPhotoFilename($i).".icon.jpg",											
+											$CONF['photos']['compression']);
+						CLimage::resizeJPG(
+						 $CONF['photos']['normal']['max_width'],
+						 $CONF['photos']['normal']['max_height'], 
+						 $flight->getPhotoFilename($i),
+						 $flight->getPhotoFilename($i),
+						 $CONF['photos']['compression']);
 				} else { //upload not successfull
 					$flight->$var_name="";
 				}
 			}
-		 }  
+		 }
 
 		 $flight->putFlightToDB(1);
 
@@ -52,7 +61,7 @@ if ( L_auth::isAdmin($userID)  ) {
 	} else { // show the form
 
 	?>
-  <form action="" enctype="multipart/form-data" method="post">	
+  <form action="" enctype="multipart/form-data" method="post">
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
   <?  open_inner_table("Review Validation Status",650,"change_icon.png"); echo "<tr><td>"; ?>
@@ -71,7 +80,7 @@ if ( L_auth::isAdmin($userID)  ) {
     </tr>
     <tr>
       <td  valign="top"><div align="right" class="style2"> <? echo _GLIDER_TYPE ?></div></td>
-      <td  valign="top"><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0><select name="gliderCat">        
+      <td  valign="top"><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0><select name="gliderCat">
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -89,7 +98,7 @@ if ( L_auth::isAdmin($userID)  ) {
      </td>
     </tr>
   </table>
-  
+
 </form>
 <?
 			echo "</td></tr>";

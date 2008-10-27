@@ -38,6 +38,7 @@ sory.title {
 .main_text , .main_text td , .main_text th , .main_text div {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 11px;
+	line-height:110%;
 }
 
 .main_text { color: #003366; }
@@ -150,10 +151,13 @@ html>body .tableTitle {
 	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 */
-border:0;
+	border:0;
 	padding: 1px 3px 3px 1px;
 	margin-bottom:10px;
 	width:760px;
+	
+	
+	float:left;
 }
 
 html>body .mainBox {
@@ -664,3 +668,4 @@ table.dropDownBox td {
 	padding:0;
 	background:url('img/icon_x_white.gif') no-repeat left top ;	
 }
+

@@ -13,7 +13,7 @@
 /************************************************************************/
  if (!$userID) return;
  
- open_inner_table( _SUBMIT_FLIGHT,650,"icon_add.png");
+ open_inner_table( _SUBMIT_FLIGHT,720,"icon_add.png");
  echo "<tr><td>";
 
  if (!isset($_FILES['zip_datafile']['name'])) {
@@ -59,14 +59,27 @@ function setValue(obj)
 				echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
 			}
 		?>
-	  </select></td>
-      <td width="172"  valign="top"><? echo _Category; ?> <select name="category">
-	  <? 
-			foreach ( $CONF_category_types as $gl_id=>$gl_type) {
-					if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
-					else $is_type_sel ="";
-					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-			}
+	  		</select>
+	  	</td>
+    </tr>
+    <tr>
+		<td  valign="top"><div align="right" class="styleItalic"><? echo _Category; ?></div></td>
+     	<td  valign="top" colspan="2"> <select name="category">
+	  <?
+      		# martin jursa 18.05.2008
+      		# in case of javascript validation ignore the default to force the user to select the category
+      		if (!empty($CONF_addflight_js_validation)) {
+      			echo "<option value=0></option>\n";
+				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+						echo "<option value=$gl_id>".$gl_type."</option>\n";
+				}
+      		}else {
+				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+						if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
+						else $is_type_sel ="";
+						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+				}
+      		}
 		?></select>		</td>
       <td width=155 align="center"  valign="top"><? if ($enablePrivateFlights) { ?>
 		<span class="styleItalic">
@@ -133,8 +146,16 @@ function setValue(obj)
 </font></p>
       </td>
     </tr>
-  </table>
-  
+<? if ( defined('_FLIGHTADD_CONFIRMATIONTEXT')) { //_FLIGHTADD_CONFIRMATIONTEXT?>
+    <tr>
+      <td>&nbsp;</td>
+      <td colspan="3" style="font-weight:bold"">
+      	<?=_FLIGHTADD_CONFIRMATIONTEXT?>
+      </td>
+    </tr>
+ <? } ?>
+ </table>
+
 </form>
 <?  
 } else {  
@@ -144,12 +165,20 @@ function setValue(obj)
 	$filename=$_FILES['zip_datafile']['name'];
 	$gliderCat=$_POST['gliderCat'];
 
-	$category=$_POST['category']+0;
+	if (!$filename) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+
+	# modification martin jursa 17.05.2008: require glider and brandid
 	$glider=$_POST["glider"];
 	$gliderBrandID=$_POST["gliderBrandID"]+0;
-		
-		
-	if (!$filename) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
+	if (!empty($CONF_require_glider) && (empty($glider) || empty($gliderBrandID))) {
+		addFlightError(_YOU_HAVENT_ENTERED_GLIDER);
+	}
+	$category=$_POST['category']+0;
+	if (empty($category)) {
+		$category=$CONF_default_category;
+	}
+
+
 	if (strtolower(substr($filename,-4))!=".zip") addFlightError(_FILE_DOESNT_END_IN_ZIP);
 
 

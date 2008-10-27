@@ -1104,7 +1104,7 @@ $resStr='{
 				require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 				$archive = new PclZip($kmzFile);
 				$v_list = $archive->create($kmlTempFile, PCLZIP_OPT_REMOVE_ALL_PATH);
-				@unlink($kmlTempFile);
+				$this->deleteFile($kmlTempFile);
 			}
 		}
 
@@ -3242,8 +3242,9 @@ $kml_file_contents=
 	function deletePhoto($photoNum) {
 		$var_name="photo".$photoNum."Filename";
 		if ( is_file($this->getPhotoFilename($photoNum) )  ) {
-				@unlink($this->getPhotoFilename($photoNum) ); 
-				@unlink($this->getPhotoFilename($photoNum).".icon.jpg" ); 
+			# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
+			$this->deleteFile($this->getPhotoFilename($photoNum) );
+			$this->deleteFile($this->getPhotoFilename($photoNum).".icon.jpg" );
 		}
 		$this->$var_name="";
 	}
@@ -3258,21 +3259,22 @@ $kml_file_contents=
 			$this->filename=$oldName;
 		}
 
-		@unlink($this->getJsonFilename() ) ;
-		@unlink($this->getPointsFilename(1) ) ;
-		@unlink($this->getJsFilename(1) );			
-		@unlink($this->getIGCFilename(0).".kmz" ); 
-		@unlink($this->getIGCFilename(0).".man.kmz" ); 
-		@unlink($this->getIGCFilename(0).".poly.txt" ); 
+		# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
+		$this->deleteFile($this->getJsonFilename() ) ;
+		$this->deleteFile($this->getPointsFilename(1) ) ;
+		$this->deleteFile($this->getJsFilename(1) );
+		$this->deleteFile($this->getIGCFilename(0).".kmz" );
+		$this->deleteFile($this->getIGCFilename(0).".man.kmz" );
+		$this->deleteFile($this->getIGCFilename(0).".poly.txt" );
 
-		@unlink($this->getMapFilename() ); 
+		$this->deleteFile($this->getMapFilename() );
 
 		for ($metric_system=1;$metric_system<=2;$metric_system++) {
 			for ($raw=0;$raw<=1;$raw++) {
-				@unlink($this->getChartFilename("alt",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("speed",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("vario",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("takeoff_distance",$metric_system,$raw) ); 		
+				$this->deleteFile($this->getChartFilename("alt",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("speed",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("vario",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("takeoff_distance",$metric_system,$raw) );
 			}
 		}
 
@@ -3319,15 +3321,28 @@ $kml_file_contents=
 		if (!$log->put()) echo "Problem in logger<BR>";
 	}
 
-	function deleteSecondaryFiles(){	
-			@unlink($this->getJsonFilename() ) ;
-			@unlink($this->getPointsFilename(1) ) ;
-			@unlink($this->getJsFilename(1) );			
-			@unlink($this->getIGCFilename(0).".kmz" ); 
-			@unlink($this->getIGCFilename(0).".man.kmz" ); 
-			@unlink($this->getIGCFilename(0).".poly.txt" ); 
+	function deleteSecondaryFiles(){
+		# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
+		$this->deleteFile($this->getJsonFilename() ) ;
+		$this->deleteFile($this->getPointsFilename(1) ) ;
+		$this->deleteFile($this->getJsFilename(1) );
+		$this->deleteFile($this->getIGCFilename(0).".kmz" );
+		$this->deleteFile($this->getIGCFilename(0).".man.kmz" );
+		$this->deleteFile($this->getIGCFilename(0).".poly.txt" );
 	}
 
+
+/**
+ * Martin Jursa 28.05.2008
+ * Delete function avoiding the @unlink expression which throws warnings if error handling is turned on
+ *
+ * @param string $filename
+ */
+	function deleteFile($filename) {
+		if (file_exists($filename)) {
+			unlink($filename);
+		}
+	}
 
 	function deleteFlight() {
  		global $db;
@@ -3352,20 +3367,21 @@ $kml_file_contents=
 		$flightScore->deleteFromDB();
 		// Now delete the files
 
-		@unlink($this->getIGCFilename() ); 
-		@unlink($this->getIGCFilename(1) ); 
-		@unlink($this->getIGCFilename(0).".olc" ); 
+		$this->deleteFile($this->getIGCFilename() );
+		$this->deleteFile($this->getIGCFilename(1) );
+		$this->deleteFile($this->getIGCFilename(0).".olc" );
 
 		$this->deleteSecondaryFiles();
 
-		@unlink($this->getMapFilename() ); 
+		$this->deleteFile($this->getMapFilename());
 
 		for ($metric_system=1;$metric_system<=2;$metric_system++) {
 			for ($raw=0;$raw<=1;$raw++) {
-				@unlink($this->getChartFilename("alt",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("speed",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("vario",$metric_system,$raw) ); 
-				@unlink($this->getChartFilename("takeoff_distance",$metric_system,$raw) ); 		
+				# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
+				$this->deleteFile($this->getChartFilename("alt",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("speed",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("vario",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("takeoff_distance",$metric_system,$raw) );
 			}
 		}
 		

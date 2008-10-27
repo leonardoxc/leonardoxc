@@ -238,6 +238,13 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	global $countries,$langEncodings;
 	global $CONF_use_leonardo_names,$PREFS,$CONF,$moduleRelPath;
 
+	# martin jursa may 2008:
+	# make the function error-tolerant, in case $pilotIDview is submitted in the form [serverid]_[userid]
+	if (strpos($pilotIDview, '_')!==false) {
+		$parts=explode('_', $pilotIDview);
+		$pilotIDview=$parts[1];
+		$serverID=$parts[0];
+	}
 
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
@@ -528,4 +535,21 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 
 
 
+/**
+ * martin jursa 2007
+ * Checking email address and returning an empty string if invalid
+ *
+ * @param string $email
+ * @return string
+ */
+function emailChecked($email) {
+	$retVal='';
+	$email=strtolower(trim($email));
+	$pattern="^[-_a-z0-9]+([-\\._a-z0-9]+)*@([-_a-z0-9]+[\\.]+)+([a-z]{2,4})$";
+	if (ereg($pattern, $email)) {
+		$retVal=$email;
+	}
+	return $retVal;
+
+}
 ?>

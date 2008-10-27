@@ -219,9 +219,9 @@ $(document).ready(function(){
 			$inWindow=$tsFlight>(time()-$CONF_new_flights_submit_window*24*3600);
 		}
 	}
-    if ( $inWindow  || auth::isAdmin($userID) ){   //P.Wild 29.6.2007 Admin override to edit outside time window
+    if ( $inWindow  || L_auth::isAdmin($userID) ){   //P.Wild 29.6.2007 Admin override to edit outside time window
 	//old if (  $flight->DATE	> date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 ) ){ // P.Wild mod. 19.5.2008
-		if ( $flight->belongsToUser($userID) || auth::isModerator($userID) ) {
+		if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
 			$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
 		}
 

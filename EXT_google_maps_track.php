@@ -45,6 +45,15 @@
 //	$DURATION=$END_TIME-$START_TIME;
 
 	$lang_enc='utf-8';
+
+	# martin jursa 22.06.2008: enable configuration of map type
+	$GMapType='G_SATELLITE_MAP';
+	if ( in_array( $CONF['google_maps']['default_maptype'],
+			 array('G_NORMAL_MAP', 'G_HYBRID_MAP', 'G_PHYSICAL_MAP', 'G_SATELLITE_MAP','G_SATELLITE_3D_MAP'))) {
+		$GMapType= $CONF['google_maps']['default_maptype'];
+	}
+
+
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
@@ -182,7 +191,7 @@ var lon=0;
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
-	map.setCenter (new GLatLng(0,0), 4);
+	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
 
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=5251");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
@@ -214,6 +223,10 @@ var lon=0;
 					if (j==0) {
 							lat=flight.lat[j]=flightArray.lat[i];
 							lon=flight.lon[j]=flightArray.lon[i];
+					}else {
+                      	//P.Wild ground height hack  3.4.08
+                    	if ( flight.elevGnd[j] == 0) flight.elevGnd[j] = (flight.elevGnd[j-1] *0.95 ) + (flight.elevGnd[j-1]* 0.1* (Math.random()));
+
 					}
 
 					if ( flight.elev[j] > flight.max_alt ) flight.max_alt=flight.elev[j];

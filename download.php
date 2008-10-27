@@ -178,7 +178,11 @@
 		//$xml=$flight->createKMLfile("ff0000",1,2);
 
 		$file_name=$flight->filename.".kml";	
-		DEBUG("DL",1,"KML Filepath= $file_path<BR>");
+		DEBUG("DL",1,"KML Filepath= $file_name<BR>");
+		
+		//echo "<pre>$xml</pre>";
+		//DEBUG_END();
+		//exit;
 	} else if ($type=="gpx_trk") {
 		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
@@ -237,6 +241,7 @@
 
 		DEBUG("DL",1,"browser_agent=$browser_agent, browser version=$browser_version<BR>");
 
+	if (!headers_sent()) { /// martin jursa 19.6.2008
 		header("Pragma: public"); // required
 		header("Expires: 0");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -249,6 +254,7 @@
 
 		$size = strlen($xml);
 		header("Content-length: $size");
+	}
 		echo $xml;
 
 ?>

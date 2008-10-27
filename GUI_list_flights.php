@@ -519,8 +519,21 @@ function removeClubFlight(clubID,flightID) {
 
 		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
 			if ( $row['airspaceCheckFinal']==-1 ) {
-				$airspaceProblem=' bgcolor=#F7E5C9 ';
-			} else 
+				//original: $airspaceProblem=' bgcolor=#F7E5C9 ';
+				# peter Wild hack taking into account the deutschlandpokal-hack
+				$tmpairspaceName=$row['airspaceCheckMsg'];
+				if (strrchr( $tmpairspaceName,"Punkte"))
+				{
+					$airspaceProblem=' bgcolor=#009cff ';
+					if (strrchr($tmpairspaceName,"HorDist")) {
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					}
+				}
+				else{
+					$airspaceProblem=' bgcolor=#FF0008 ';
+				}
+				# end hack
+			} else
 				$airspaceProblem='';
 		}
 
@@ -599,12 +612,15 @@ function removeClubFlight(clubID,flightID) {
 		}
 		// else echo "<img class='photoIcon' src='$moduleRelPath/img/photo_icon_blank.gif' border=0>";			
 
-		if ($row["userID"]==$userID || L_auth::isAdmin($userID) ) {  
+		# P.Wild, martin jursa: considering $CONF_new_flights_days_threshold
+		global $CONF_new_flights_days_threshold;
+		$inWindow=empty($CONF_new_flights_days_threshold) ? true : $days_from_submission<=$CONF_new_flights_days_threshold;
+		if (($row["userID"]==$userID && $inWindow) || L_auth::isAdmin($userID) ) {
 			echo "<div id='ac_$i' class='actionLink'>";
 			echo "<a href=\"javascript:flightActionTip.newTip('inline', -100, 13, 'ac_$i', 120, ".$row["ID"]." )\"  onmouseout=\"flightActionTip.hide()\">".
 					"<img src='".$moduleRelPath."/img/icon_action_select.gif' width='16' height='10' border='0' align='bottom' /></a>";
 			echo "</div>";
-	   }			
+	   }
 
 		$checkedByStr='';
 		if ($row['checkedBy'] && L_auth::isAdmin($userID)){

@@ -624,6 +624,7 @@ if (defined('CONF_MODULE_ARG') )	exit;
 
 	$flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
 	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+
 }
 
 define('SYNC_INSERT_FLIGHT_LINK',1);

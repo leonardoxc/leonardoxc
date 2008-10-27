@@ -1,4 +1,5 @@
 <?
+global $CONF_addflight_js_validation,$CONF_require_glider;
 
 global $year,$month,$day,$season,$brandID;
 
@@ -8,8 +9,11 @@ global $NACclubsTable, $pilotsTable, $CONF_NAC_list, $debugActive, $dbgStr, $fli
 
 global  $Rotation, $CenterX, $CenterY, $Radius, $LineCount, $bWaiting, $TempArea, $TempPoint, $TempString; 
 
+global $EQ_RAD, $f, $ECC2, $ECC4, $ECC6, $ECC, $e1, $t_e2, $t_c1, $t_c2, $t_c3, $t_c4, $t_ic1, $t_ic2, $t_ic3, $t_ic4, $central_meridian, $map_scale_factor, $D2R, $R2D, $workingUTMzone, $NORTH;
 
-global $currentlang, $language, $prefix, $user_prefix, $useflags, $cookie, $EditedMessage, $datetime, $locale, $nukeuser, $itemTypes, $actionTypes, $logTable, $EQ_RAD, $f, $ECC2, $ECC4, $ECC6, $ECC, $e1, $t_e2, $t_c1, $t_c2, $t_c3, $t_c4, $t_ic1, $t_ic2, $t_ic3, $t_ic4, $central_meridian, $map_scale_factor, $D2R, $R2D, $workingUTMzone, $NORTH;
+
+global $currentlang, $language, $prefix, $user_prefix, $useflags, $cookie, $EditedMessage, $datetime, $locale, $nukeuser, $itemTypes, $actionTypes, $logTable;
+
 
 global $takeoffRadious, $PREFS, $CONF_use_date_for_TZ_detection;
 

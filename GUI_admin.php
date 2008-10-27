@@ -689,7 +689,8 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		echo "</pre>";
 
 	} else if ($admin_op=="updateLocations") {
-		$query="SELECT ID from $flightsTable WHERE  batchOpProcessed=0";
+		# Martin Jursa 22.06.2008 use batchOpProcessed because script can easily time out
+		$query="SELECT ID from $flightsTable WHERE batchOpProcessed=0 ORDER BY ID";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
@@ -701,13 +702,9 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				 //$flight->updateTakeoffLanding();
 				 //$flight->putFlightToDB(1);
 				 unset($flight);
-				 
-				 $query2="UPDATE $flightsTable SET batchOpProcessed=1 WHERE ID=".$row['ID']." ";
-				 $res2= $db->sql_query($query2);			
-				 if(!$res2){
-					echo "Problem in query:$query2<BR>";					
-				 }
-				 
+				# martin jursa update batchOpProcessed field
+				setBatchBit($row["ID"]);
+				
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
@@ -906,6 +903,8 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				$name=prep_for_DB($name);
 				
 				foreach($photos as $photo) {
+					#martin jursa 22.06.2008 prep_for db also for $photo
+					$photo=prep_for_DB($photo);
 					$query1="INSERT INTO $photosTable  (flightID,path,name) values (".$row['ID'].",'$path','$photo') ";
 					$res1= $db->sql_query($query1);					
 					if (!$res1) {

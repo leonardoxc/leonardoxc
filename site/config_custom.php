@@ -80,6 +80,8 @@
  $CONF_google_maps_track_order=1; // will apear in the first tab
  $CONF_google_maps_track_only=0;  // use only google maps,  discard the local map server
 
+ $CONF['google_maps']['default_maptype']='G_PHYSICAL_MAP';
+
  // set to 1 if you have an scoring server running
  // set to 0 if you dont know what a scoring server is ...
  // ... but you will not have the OLC score

@@ -81,6 +81,9 @@ width:auto;
 	display: block;	
 	color: #000022;
 	text-decoration: none;
+
+	line-height:100%;
+
 }
 
 #dropMenu>li a {

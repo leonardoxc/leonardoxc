@@ -14,6 +14,13 @@
 	$wpLat=makeSane($_GET['lat'],1);
 	$wpName=makeSane($_GET['wpName']);
 	$wpID=makeSane($_GET['wpID'],1);
+
+	# martin jursa 22.06.2008: enable configuration of map type
+	$GMapType='G_SATELLITE_MAP';
+	if ( in_array( $CONF['google_maps']['default_maptype'],
+					array('G_NORMAL_MAP', 'G_HYBRID_MAP', 'G_PHYSICAL_MAP', 'G_SATELLITE_MAP'))) {
+		$GMapType= $CONF['google_maps']['default_maptype'];
+	}
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
   <head>
@@ -86,8 +93,8 @@
 
 
 	var takeoffPoint= new GLatLng(lat, lon) ;
-	map.setCenter(takeoffPoint , 8);
-		
+	map.setCenter(takeoffPoint , 8, <?=$GMapType?>);
+
 	var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
 	var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";	
 			

@@ -174,10 +174,14 @@ class Logger {
 	
 	function put(){
 		global $db, $logTable, $userID, $CONF;
-	
-		if ( @in_array($this->ServerItemID,$CONF['servers']['syncLog']['dontLog']) ) {
-			// we dont put log entries for these servers
-			return 1;
+
+		# martin jursa 21.6.2008 to avoid error log flooding
+		if (!empty($CONF['servers']['syncLog']['dontLog']) && is_array($CONF['servers']['syncLog']['dontLog'])) {
+			//old: if ( @in_array($this->ServerItemID,$CONF['servers']['syncLog']['dontLog']) ) {
+			if ( in_array($this->ServerItemID,$CONF['servers']['syncLog']['dontLog']) ) {
+				// we dont put log entries for these servers
+				return 1;
+			}
 		}
 
 		$this->ActionXML=addslashes($this->ActionXML);
