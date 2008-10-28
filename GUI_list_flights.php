@@ -299,11 +299,11 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$sort=1)
   if ($sort) {
 	  if ($sortOrder==$fieldName) { 
 	   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
-			<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
+			<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$fieldName) )."'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
 			</td>\n";
 	  } else {  
 	   echo "<td class='SortHeader $alignClass' $widthStr>
-			<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$fieldName$query_str'>$fieldDesc</a>
+			<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$fieldName) )."'>$fieldDesc</a>
 			</td>\n";
 	  } 
    	}else {
@@ -545,14 +545,14 @@ function removeClubFlight(clubID,flightID) {
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			// add class='betterTip' for tooltip
-			echo "<a  id='tpa0_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
+			echo "<a  id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
 			
 			//echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 			// ".$moduleRelPath."/download.php?type=kml_trk&flightID=".$row["ID"]."&lng=$currentlang
 		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"]."' , '$currentlang')\"  onmouseout=\"geTip.hide()\"><img id='ge_$i' class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 		    // echo "<a target='_blank'  href='".$moduleRelPath."/visugps.php?flightID=".$row["ID"]."&lang=$lng'><img class='listIcons' src='".$moduleRelPath."/img/icon_googlemap.gif' border=0 valign=top title='"._Navigate_with_Google_Maps."' width='16' height='16' /></a>";
 		} else {
-			echo "<a  href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$row["ID"]."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			echo "<a  href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 			// echo "<TD $airspaceProblem align=left><a href='".$row["originalURL"]."' target='_blank'><img class='listIcons' src='".$moduleRelPath."/img/icon_look_ext.gif' border=0 valign=top title='"._External_Entry."'  width='16' height='16' /></a>";
 
 			$originalKML=$row["originalKML"];

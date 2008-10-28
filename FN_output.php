@@ -569,7 +569,7 @@ with (pilotTip)
   template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
   '<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=pilot_profile&pilotIDview=%4%'><? echo _Pilot_Profile ?></a>"+
+  "<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'%4%')  )?>'><? echo _Pilot_Profile ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
@@ -577,7 +577,7 @@ with (pilotTip)
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=pilot_profile_stats&pilotIDview=%4%'><? echo _flights_stats ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
 	<?  if ($opMode==2)  { ?>// phpbb only 
 	'</td></tr>'+

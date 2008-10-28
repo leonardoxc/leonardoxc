@@ -705,4 +705,92 @@ function sendMailToAdmin($subject,$msg) {
 function makeHash($scriptName)  {
 	return md5($CONF_SitePassword.$scriptName);
 }
+
+// the method to use for links in the menu and other parts of leonardo
+// 1 -> current old way, using &name=value args + session variables
+// 2 -> same as 1 but all sessions vars are in the url, this means that the url 
+// 3 -> SEO urls
+
+function getLeonardoLink($argArray) {
+	global $CONF;
+	if ($CONF['links']['type']==1) {
+	
+		foreach($argArray as $argName=>$argValue){
+			if ($argValue!='useCurrent')
+				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+		}	
+		return CONF_MODULE_ARG.$args;
+	} else 	if ($CONF['links']['type']==2) {
+		global $op,$rank,$subrank;
+		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
+		global $nacid,$nacclubid;
+
+		foreach($argArray as $argName=>$argValue){
+			if ($argValue=='useCurrent') {
+				global ${$argName};
+				$args.='&'.$argName.'='.${$argName};
+			} else {
+				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+			}	
+		}	
+		
+		$thisURL=CONF_MODULE_ARG.$args;
+		if ($op=="comp") 
+			$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
+		else
+			$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+		# Martin Jursa 25.05.2007: support for nacclub-filtering
+		if (!empty($CONF_use_NAC)) {
+			if ($nacclubid && $nacid) {
+				$thisURL.="&nacid=$nacid&nacclubid=$nacclubid";
+			}
+		}
+		return $thisURL;
+		
+	} else 	if ($CONF['links']['type']==3) {
+		global $op,$rank,$subrank;
+		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
+		global $nacid,$nacclubid;
+
+		if ($argArray['op']=='useCurrent') {
+			$argArray['op']=$op;
+		}
+				
+		$opTmp=$argArray['op'];
+		if ($opTmp=='list_flights') {
+			$args='flights/';
+		} else if ($opTmp=='list_pilots') {
+			$args='pilots/';
+		} else if ($opTmp=='competition') {
+			$args='ranks/';
+		} else if ($opTmp=='list_takeoffs') {
+			$args='takeoffs/';
+		} else if ($opTmp=='pilot_profile') {	
+			$args='pilots/details/'	;
+			if ($argArray['pilotIDview']!='skipValue')
+				$args.=$argArray['pilotIDview'];			
+			return $CONF['links']['baseURL'].'/'.$args;
+		} else if ($opTmp=='pilot_profile_stats') {	
+			$args='pilots/stats/';	
+			if ($argArray['pilotIDview']!='skipValue')
+				$args.=$argArray['pilotIDview'];
+			return $CONF['links']['baseURL'].'/'.$args;
+		} else if ($opTmp=='show_flight') {	
+			$args='flights/details/';	
+			if ($argArray['flightID']!='skipValue')
+				$args.=$argArray['flightID'];
+			return $CONF['links']['baseURL'].'/'.$args;
+		} 
+		
+		if ($args) $opProccessed=1;
+		else $opProccessed=0;
+		
+		foreach($argArray as $argName=>$argValue){
+			if ($argName!='op' || !$opProccessed )
+				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+		}
+	
+		return $CONF['links']['baseURL'].'/'.$args;
+	}
+}
 ?>

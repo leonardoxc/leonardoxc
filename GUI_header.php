@@ -13,7 +13,7 @@
 
 	require_once dirname(__FILE__).'/CL_template.php';
 
-	$Ltemplate = new LTemplate($moduleRelPath."/templates/".$PREFS->themeName);
+	$Ltemplate = new LTemplate(dirname(__FILE__)."/templates/".$PREFS->themeName);
 
 //	$Ltemplate ->set_filenames(array(
 //		'body' => 'header.html')

@@ -16,14 +16,19 @@
 
 // Path settings
 $CONF['path']['direct_call']=1;
+global $module_name;
+$module_name='leonardo';
 
 function moduleRelPath($forUtilityFiles=0){
-	global $module_name;
-	if ($forUtilityFiles) // for EXT_ files
-		return "./";
-	else 
-		return "./";
+	global $module_name,$CONF;
+
+	if ( $CONF['links']['type']==3 ) {
+		return $CONF['links']['baseURL'];
+	} else  {
+		return './';	
+	}	
 }
+
 // bridge to the users table of different forum/portal/cms systems
 $CONF['userdb']['users_table']='leonardo_users';
 $CONF['userdb']['user_id_field']='user_id';

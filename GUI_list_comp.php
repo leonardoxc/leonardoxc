@@ -338,7 +338,7 @@ var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&fligh
 		if ($subcatID==$leagueCategory) $style ="style='background-color:#E1E6F3;' ";
 		else $style="";
 
-		echo " <div class='menu1' $style ><a href='".CONF_MODULE_ARG."&op=competition&comp=$subcatID'>$subcatTitle</a></div>";	
+		echo " <div class='menu1' $style ><a href='".getLeonardoLink(array('op'=>'competition','comp'=>$subcatID) )."'>$subcatTitle</a></div>";	
 	}
 	echo "<BR>";
 
@@ -440,7 +440,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 			// alt='$descr' title='$descr'
 
 			if ($val) {
-				echo "<TD>$extFlightImg<a class='betterTip' id='tp_$flightID' href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flightID."' alt='$descr'  title='$descr'>".$outVal."</a>";
+				echo "<TD>$extFlightImg<a class='betterTip' id='tp_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID) )."' alt='$descr'  title='$descr'>".$outVal."</a>";
 				// echo " <a id='t_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' class='betterTip' title='$descr'>?</a>";
 				echo "</TD>"; 	 		  
 			} else echo "<TD>".$outVal."</TD>";   
