@@ -86,12 +86,15 @@
 function changeBrand(sl) {
 	// var sl=MWJ_findObj("brandSelect");
 	var brandID= sl.options[sl.selectedIndex].value ;			
-	var Url='<?=CONF_MODULE_ARG?>&brandID='+brandID;
+	//var Url='<?=CONF_MODULE_ARG?>&brandID='+brandID;
+	var Url='<?=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'%brandID%'))?>';
+	Url=Url.replace('%brandID%',brandID);
 	window.location=Url;
 }
 function changeCountry(sl) {
 	var countryCode= sl.options[sl.selectedIndex].value ;			
-	var Url='<?=CONF_MODULE_ARG?>&country='+countryCode;
+	var Url='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'%country%'))?>';
+	Url=Url.replace('%country%',countryCode);
 	window.location=Url;
 }
 </script>
@@ -127,7 +130,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLiStr="";
 
 	if (count($clubsList[$clubID]['gliderCat']) >1 ) {
-		$catLink=CONF_MODULE_ARG."&cat=0";
+		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0')); 
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";	
@@ -136,7 +139,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	}
 	
 	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
-		  $catLink=CONF_MODULE_ARG."&cat=".$c_gliderCat;
+		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$c_gliderCat)); 
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 		  
@@ -150,13 +153,13 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	if ( count($CONF_glider_types) > 1 ) { 
 		$catLiStr="";
 	
-		$catLink=CONF_MODULE_ARG."&cat=0";
+		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0')); 
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
 	
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
-		  $catLink=CONF_MODULE_ARG."&cat=".$tmpcat;
+		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat)); 		  
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 		  
@@ -270,9 +273,11 @@ if (! $dontShowCountriesSelection ) {
 </ul>
 <?
 			} else {
-				echo "<ul>\n<li><a href='".CONF_MODULE_ARG."&brandID=0'>"._All_Brands."</a></li>";
+				echo "<ul>\n<li><a href='".$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'0'))."'>"._All_Brands."</a></li>";
 				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
-					echo "<li><a href='".CONF_MODULE_ARG."&brandID=$brandIDfilter'>$brandNameFilter</a></li>";
+					echo "<li><a href='".
+							$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>$brandIDfilter)).
+							"'>$brandNameFilter</a></li>";
 				}
 				echo "</ul>\n";
 			}

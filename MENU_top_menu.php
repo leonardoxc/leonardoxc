@@ -90,12 +90,15 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <? if ( L_auth::isAdmin($userID) )  {  ?>
 		<li><a href='#'><STRONG><?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin">ADMIN MENU</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin')) ?>">ADMIN MENU</a></li>
 				<? if ( L_auth::isAdmin($userID) && $opMode==3 )  {  ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=users&page=admin">User Administration</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'users','page'=>'admin')) ?>">User Administration</a></li>
 				<? } ?>
 				<li class='li_space long'></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=takeoffVinicity&year=0&month=0&pilotID=0&takeoffID=0&country=0&cat=0&clubID=0">Flights with unknown takeoffs</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
+				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
+				'takeoffID'=>'0','country'=>'0','cat'=>'0>',
+				'clubID'=>'0'))?>">Flights with unknown takeoffs</a></li>
 				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
 				<li class='li_space long'></li>
 				<? if ($CONF_isMasterServer && 0) { ?>
@@ -115,25 +118,25 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 				<li class='li_space long'></li>
 				<?  if ($includeMask==0)  { ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&includeMask=255">See Excluded flights</a></li>
+				<li><a href="<?=getLeonardoLink(array('includeMask='=>'255')) ?>">See Excluded flights</a></li>
 				<? } else { ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&includeMask=0">Hide Excluded flights</a></li>
+				<li><a href="<?=getLeonardoLink(array('includeMask='=>'0')) ?>">Hide Excluded flights</a></li>
 				<? } ?>
 
 				<li class='li_space long'></li>
 				<?  if ($DBGlvl==0)  { ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=255">Activate DEBUG</a></li>
+				<li><a href="<?=getLeonardoLink(array('DBGlvl'=>'255')) ?>">Activate DEBUG</a></li>
 				<? } else { ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&DBGlvl=0">Deactivate DEBUG</a></li>
+				<li><a href="<?=getLeonardoLink(array('DBGlvl'=>'0')) ?>">Deactivate DEBUG</a></li>
 				<? } ?>
 			</ul>
 		</li>
 		<? if ($CONF_isMasterServer) { ?>
 		<li><a href='#'><STRONG>XCnet <?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>
-					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
-					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_pilot_map">External Pilot Mapping</a></li>
-					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_duplicates">Resolve Duplicate Flights</a></li>
+					<li><a href="<?=getLeonardoLink(array('op'=>'servers_manage')) ?>">Manage Leonardo Servers</a></li>
+					<li><a href="<?=getLeonardoLink(array('op'=>'admin_pilot_map')) ?>">External Pilot Mapping</a></li>
+					<li><a href="<?=getLeonardoLink(array('op'=>'admin_duplicates')) ?>">Resolve Duplicate Flights</a></li>
 					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">Sync logs of Slave-Servers</a></li>
 			</ul>
 		</li>
@@ -141,8 +144,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 <? } ?>
 
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=index_full"><?=_MENU_SUMMARY_PAGE ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=rss_conf"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'index_full')) ?>"><?=_MENU_SUMMARY_PAGE ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'rss_conf')) ?>"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
 <?	
 	insertMenuItems('home','bottom'); 
 	
@@ -151,11 +154,11 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
-			echo "<li $a_class><a $a_class href='".CONF_MODULE_ARG."&op=list_flights&clubID=".$clubsItem['id']."'>".$clubsItem['desc']."</a></li>\n";
+			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'list_flights','clubID'=>$clubsItem['id']))."'>".$clubsItem['desc']."</a></li>\n";
 			if (  $clubsItem['id'] == $clubID && 
 					(  ( $clubID  && (L_auth::isClubAdmin($userID,$clubID) )  || L_auth::isAdmin($userID))  	)	 
 			    )  {  ?>
-				<li style='background-color:#FF9933'><a href="<?="".CONF_MODULE_ARG."" ?>&op=club_admin&club_to_admin_id=<?=$clubID?>"><img 
+				<li style='background-color:#FF9933'><a href="<?=getLeonardoLink(array('op'=>'club_admin','club_to_admin_id'=>$clubID )) ?>"><img 
 				src="<?=$moduleRelPath?>/img/icon_arrow_up.png" border=0 align="absmiddle" /> Administer this Club</a></li>		
 			<? } 
 		}
@@ -164,14 +167,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	if (count($apList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
-			echo "<li><a href='".CONF_MODULE_ARG."&ap=$apName'>".$apItem['desc']."</a></li>\n";
+			echo "<li><a href='".getLeonardoLink(array('ap'=>apName ))."'>".$apItem['desc']."</a></li>\n";
 	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","",CONF_MODULE_ARG.'&ap='.$apName.'"));';
 		}
 	}
 
 	if (count($clubsList) >0 || count($apList) >0) {
 		echo "<li class='li_space long'></li>\n";
-		echo "<li><a href='".CONF_MODULE_ARG."&op=list_flights&clubID=0&ap=0'>"._Reset_to_default_view."</a></li>\n";
+		echo "<li><a href='".getLeonardoLink(array('op'=>list_flights,'clubID'=>'0','ap'=>'0' ))."'>"._Reset_to_default_view."</a></li>\n";
 	}
 ?>
 	</ul>
@@ -181,7 +184,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	$langLiStr="";
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
-	  $flagLink="".CONF_MODULE_ARG."&lng=".$tmpLang;
+	  $flagLink=getLeonardoLink(array('op'=>'useCurrent','lng'=>$tmpLang ));
+	  
  	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
 	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
 	  if ($currentlang==$tmpLang) {
