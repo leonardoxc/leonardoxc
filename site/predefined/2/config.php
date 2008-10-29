@@ -18,11 +18,18 @@
 $CONF['path']['direct_call']=0;
 
 function moduleRelPath($forUtilityFiles=0){
-	global $module_name;
-	if ($forUtilityFiles) // for EXT_ files
-		return "./";
-	else 
-		return "modules/$module_name";
+	global $module_name,$CONF;
+
+	if ( $CONF['links']['type']==3 ) {
+		return $CONF['links']['baseURL'];
+	} else  {
+		if ($forUtilityFiles) // for EXT_ files
+			return "./";
+		else 
+			return "modules/$module_name";	
+	}	
+	
+
 }
 
 // bridge to the users table of different forum/portal/cms systems

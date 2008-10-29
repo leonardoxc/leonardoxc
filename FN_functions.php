@@ -758,7 +758,7 @@ function getLeonardoLink($argArray) {
 				
 		$opTmp=$argArray['op'];
 		if ($opTmp=='list_flights') {
-			$args='flights/';
+			$args='tracks/';
 		} else if ($opTmp=='list_pilots') {
 			$args='pilots/';
 		} else if ($opTmp=='competition') {
@@ -776,7 +776,7 @@ function getLeonardoLink($argArray) {
 				$args.=$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
 		} else if ($opTmp=='show_flight') {	
-			$args='flights/details/';	
+			$args='tracks/details/';	
 			if ($argArray['flightID']!='skipValue')
 				$args.=$argArray['flightID'];
 			return $CONF['links']['baseURL'].'/'.$args;
