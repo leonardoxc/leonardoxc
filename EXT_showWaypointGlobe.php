@@ -15,9 +15,9 @@
 $lat=$_GET['lat']+0.0;
 $lon=$_GET['lon']+0.0;
 
-  if ($_GET['type']=="small") $globeFilename="images/earth_340_170.jpg";
-  else  $globeFilename="images/earth_2400_1200.jpg";
-//  else  $globeFilename="images/earth_1280_640.jpg";
+  if ($_GET['type']=="small") $globeFilename="img/earth/earth_340_170.jpg";
+  else  $globeFilename="img/earth/earth_2400_1200.jpg";
+//  else  $globeFilename="img/earth/earth_1280_640.jpg";
   $globalMap = imagecreatefromjpeg($globeFilename);
   $dotColor =imagecolorallocate ( $globalMap , 250,0,0);
   $waypointSize=3;
