@@ -99,22 +99,22 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
 				'takeoffID'=>'0','country'=>'0','cat'=>'0>',
 				'clubID'=>'0'))?>">Flights with unknown takeoffs</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=-1&year=0&month=0">Show test flights</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'-1','year'=>'0','month'=>'0')) ?>">Show test flights</a></li>
 				<li class='li_space long'></li>
 				<? if ($CONF_isMasterServer && 0) { ?>
-					<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=servers_manage">Manage Leonardo Servers</a></li>
+					<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'-1','year'=>'0','month'=>'0')) ?>&op=servers_manage">Manage Leonardo Servers</a></li>
 					<li><a href="<?=$moduleRelPath?>/site/sync"  target="_blank">See the Sync logs</a></li>
 				<? } ?>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_languages">Administer Language Translations</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_airspace">Administer Airspace checking</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoff_resolve">Administer Duplicate Takeoffs</a></li>				
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=area_admin">Administer Takeoff Areas</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_sites">Administer Takeoffs</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_takeoffs">See the Takeoff Log</a></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_logs">Display server's SyncLog</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_languages')) ?>">Administer Language Translations</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_airspace')) ?>">Administer Airspace checking</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_takeoff_resolve')) ?>">Administer Duplicate Takeoffs</a></li>				
+				<li><a href="<?=getLeonardoLink(array('op'=>'area_admin')) ?>">Administer Takeoff Areas</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_sites')) ?>">Administer Takeoffs</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_takeoffs')) ?>">See the Takeoff Log</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_logs')) ?>">Display server's SyncLog</a></li>
 				<li class='li_space long'></li>
-				<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_stats">Usage Statistics</a></li>
-				<? if (0) { ?><li><a href="<?="".CONF_MODULE_ARG."" ?>&op=admin_areas">Administer the Areas</a></li><? } ?>
+				<li><a href="<?=getLeonardoLink(array('op'=>'admin_stats')) ?>">Usage Statistics</a></li>
+				<? if (0) { ?><li><a href="<?=getLeonardoLink(array('op'=>'admin_areas')) ?>">Administer the Areas</a></li><? } ?>
 
 				<li class='li_space long'></li>
 				<?  if ($includeMask==0)  { ?>
@@ -227,21 +227,21 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			<li class='li_space'></li>
 		<? } ?>
   		<? if (is_user($user) || $userID>0)  { ?>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=add_flight"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=add_from_zip"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'add_flight')) ?>"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'add_from_zip')) ?>"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&pilotID=0_<?=$userID ?>&takeoffID=0&country=0&year=0&month=0"><?=_MENU_MY_FLIGHTS ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile&pilotIDview=0_<?=$userID ?>"><?=_MENU_MY_PROFILE ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_profile_stats&pilotIDview=0_<?=$userID ?>"><?=_MENU_MY_STATS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
         <? if ( L_auth::isAdmin($userID) )  {  ?>
-   		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=pilot_flights&pilotIDview=0_<?=$userID ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>
+   		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_flights','pilotIDview'=>'0_'.$userID)) ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>
         <? } ?>
 		<li class='li_space'></li>
 		<? } ?>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=user_prefs"><?=_MENU_MY_SETTINGS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'user_prefs')) ?>"><?=_MENU_MY_SETTINGS ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=stats"><?=_FLIGHTS_STATS ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=program_info"><?=_PROJECT_INFO ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'stats')) ?>"><?=_FLIGHTS_STATS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'program_info')) ?>"><?=_PROJECT_INFO ?></a></li>
 		<? insertMenuItems('main_menu','bottom'); ?>
 	</ul>
 </li>
@@ -249,7 +249,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li><a href="#"><?=_MENU_FLIGHTS." ".$arrDownImg?></a>
 	<ul>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights') )?>"><?=_MENU_FLIGHTS ?></a></li>
-		<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','sortOrder'=>'dateAdded','takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0','pilotID'=>'0')) ?>"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a></li>
 		<li class='li_space'></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',

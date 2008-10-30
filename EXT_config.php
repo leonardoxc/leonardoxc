@@ -38,6 +38,12 @@
 	}
 
 
+	if ( strlen($currentlang)==2) { 
+		$currentlang=array_search($currentlang,$lang2iso);
+		if (!$currentlang) $currentlang=$PREFS->language;
+	}
+
+
 	if ($CONF_use_utf) {
 		define('CONF_LANG_ENCODING_TYPE','utf8');
 		$CONF_ENCODING='utf-8';

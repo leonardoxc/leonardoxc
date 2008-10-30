@@ -712,7 +712,8 @@ function makeHash($scriptName)  {
 // 3 -> SEO urls
 
 function getLeonardoLink($argArray) {
-	global $CONF;
+	global $CONF,$lng, $lang2iso;
+	
 	if ($CONF['links']['type']==1) {
 	
 		foreach($argArray as $argName=>$argValue){
@@ -755,28 +756,37 @@ function getLeonardoLink($argArray) {
 		if ($argArray['op']=='useCurrent') {
 			$argArray['op']=$op;
 		}
-				
+			
+		if ( isset($argArray['lng']) ){
+			$lngCode= $lang2iso[$argArray['lng']];							
+		} else {
+			$lngCode= $lang2iso[$lng];
+		}	
+		$args=$lngCode.'/';
+		unset($argArray['lng']);
+		unset($argArray['newlang']);
+		
 		$opTmp=$argArray['op'];
 		if ($opTmp=='list_flights') {
-			$args='tracks/';
+			$args.='tracks/';
 		} else if ($opTmp=='list_pilots') {
-			$args='pilots/';
+			$args.='pilots/';
 		} else if ($opTmp=='competition') {
-			$args='ranks/';
+			$args.='ranks/';
 		} else if ($opTmp=='list_takeoffs') {
-			$args='takeoffs/';
+			$args.='takeoffs/';
 		} else if ($opTmp=='pilot_profile') {	
-			$args='pilots/details/'	;
+			$args.='pilots/details/'	;
 			if ($argArray['pilotIDview']!='skipValue')
 				$args.=$argArray['pilotIDview'];			
 			return $CONF['links']['baseURL'].'/'.$args;
 		} else if ($opTmp=='pilot_profile_stats') {	
-			$args='pilots/stats/';	
+			$args.='pilots/stats/';	
 			if ($argArray['pilotIDview']!='skipValue')
 				$args.=$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
 		} else if ($opTmp=='show_flight') {	
-			$args='tracks/details/';	
+			$args.='tracks/details/';	
 			if ($argArray['flightID']!='skipValue')
 				$args.=$argArray['flightID'];
 			return $CONF['links']['baseURL'].'/'.$args;
@@ -784,6 +794,50 @@ function getLeonardoLink($argArray) {
 		
 		if ($args) $opProccessed=1;
 		else $opProccessed=0;
+		
+		$listings=array('list_flights','list_takeoffs','list_pilots','competition');
+		$args2process=array('year','month','day','season','country');
+		$args2Array=array();
+		
+		// add the date, country in the path
+		if (in_array($opTmp ,$listings)) {
+
+			//see if we have some variables in the argArray		
+			foreach($args2process as $argName) {
+				if (isset($argArray[$argName])){
+					$args2Array[$argName]=$argArray[$argName];				
+				}else {
+					$args2Array[$argName]=${$argName};
+				}
+			}
+
+			
+			if ($args2Array['country']){
+				$args.=$args2Array['country'].'/';
+			} else {
+				$args.='world/';
+			}
+			
+			if ($args2Array['season']) {
+				$args.='season'.$args2Array['season'].'/';
+			} else {
+				if ($args2Array['year'] && $args2Array['month'] && $args2Array['day'])
+					//$args.=sprintf("%04d.%02d.%02d",$args2Array['year'],$args2Array['month'],$args2Array['day']).'/';
+					$args.=$args2Array['year'].'.'.$args2Array['month'].'.'.$args2Array['day'].'/';
+				else if ($args2Array['year'] && $args2Array['month'])
+					$args.=sprintf("%04d.%02d",$args2Array['year'],$args2Array['month']).'/';
+				else if ($args2Array['year']  )
+					$args.=sprintf("%04d",$args2Array['year']).'/';	
+				else 
+					$args.='alltimes/';
+			}
+
+			unset($argArray['season']);
+			unset($argArray['year']);
+			unset($argArray['month']);	
+			unset($argArray['day']);
+			unset($argArray['country']);
+		}
 		
 		foreach($argArray as $argName=>$argValue){
 			if ($argName!='op' || !$opProccessed )

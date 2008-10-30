@@ -40,6 +40,10 @@ require_once dirname(__FILE__)."/config.php";
 
 
 setVarFromRequest("lng",$PREFS->language); 
+if ( strlen($lng)==2) { 
+	$lng=array_search($lng,$lang2iso);
+	if (!$lng) $lng=$PREFS->language;
+}
 $currentlang=$lng;
 
 if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF'])  ) {
@@ -127,6 +131,39 @@ if ($season) {
 	setVar("day",0);
 }
 
+setVarFromRequest("l_date",-1);
+if ($l_date=='alltimes'){
+	setVar("year",0);
+	setVar("month",0);
+	setVar("day",0);
+	setVar("season",0);
+}else if ($l_date>=0) {
+	if ( preg_match('/^(\d{4})\.(\d{2})\.(\d{2})$/',$l_date,$matches) ) {
+		setVar("year",$matches[1]);
+		setVar("month",$matches[2]);
+		setVar("day",$matches[3]);				
+		setVar("season",0);
+	} else if ( preg_match('/^(\d{4})\.(\d{2})$/',$l_date,$matches) ) {
+		setVar("year",$matches[1]);
+		setVar("month",$matches[2]);
+		setVar("day",0);				
+		setVar("season",0);
+	}else if ( preg_match('/^(\d{4})$/',$l_date,$matches) ) {
+		setVar("year",$matches[1]);
+		setVar("month",0);
+		setVar("day",0);				
+		setVar("season",0);
+	} else if ( preg_match('/^season(\d{4})$/',$l_date,$matches) ) {
+		setVar("year",0);
+		setVar("month",0);
+		setVar("day",0);				
+		setVar("season",$matches[1]);
+	}
+
+
+
+}
+
 // BRANDS MOD
 setVarFromRequest("brandID",0,1); // numeric
 if (! brands::isValidBrandForFilter($brandID) ) setVar("brandID",0);
@@ -134,6 +171,8 @@ if (! brands::isValidBrandForFilter($brandID) ) setVar("brandID",0);
 setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);
+if ($country=='world') setVar('country',0);
+
 setVarFromRequest("op",$CONF_main_page);
 setVarFromRequest("cat",$PREFS->viewCat,1);
 setVarFromRequest("subcat","pg");

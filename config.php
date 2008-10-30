@@ -462,11 +462,12 @@ function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	if ($isNumeric) { // just add 0, this should do the trick
 	  $$varname=$$varname+0;
 	} else { // is string : allow only  a-zA-Z0-9_
-	  $$varname=preg_replace("/[^\w_]/","",$$varname);
+	  $$varname=preg_replace("/[^\w_\.]/","",$$varname);
 	}
 	$_SESSION[$varname]=$$varname;
 	if ($varname=='day' || $varname=='month' || $varname=='year' )   $_SESSION[$varname.'leo']=$$varname;
 	
+	// echo "$varname=".$$varname."#";
 }
 
 function makeSane($str,$type=0) {
@@ -491,6 +492,7 @@ function setVar($varname,$value) {
 	 // $_GET[$varname]=$$varname;
 	 // $_POST[$varname]=$$varname;
 	 // $_REQUEST[$varname]=$$varname;
+	 // echo "SETVAR: $varname=".$$varname."#";
 }
 
 // you should probably set  $OLCScoringServerPath to the same server 
