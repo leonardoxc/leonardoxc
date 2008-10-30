@@ -5,7 +5,7 @@
 // 3 = standalone -- still work in progress
 // 4 = discuz
 // 5 = joomla
-$opMode= 2; 
+$opMode= 3; 
 
 // the method to use for links in the menu and other parts of leonardo
 // 1 -> current old way, using &name=value args + session variables
