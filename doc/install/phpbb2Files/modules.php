@@ -19,6 +19,7 @@ if (isset($name)) {
     die ("Sorry, you can't access this file directly.");
 }
 
+
 require_once("mainfile.php");
 $module = 1;
 $prefix="phpbb";

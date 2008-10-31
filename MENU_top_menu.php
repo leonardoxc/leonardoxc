@@ -79,7 +79,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 // http://www.seoconsultants.com/css/menus/horizontal/
 // http://www.cssplay.co.uk/menus/final_drop.html
 
-	 $iconLink="".CONF_MODULE_ARG."&op=index_full";
+	 $iconLink=getLeonardoLink(array('op'=>'index_full'));
 	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
@@ -167,8 +167,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	if (count($apList) >0) {
 		echo "<li class='li_h1 long_li_h1'>.:: XC Leagues ::.</li>\n";
 		foreach( $apList as $apName=>$apItem) {
-			echo "<li><a href='".getLeonardoLink(array('ap'=>apName ))."'>".$apItem['desc']."</a></li>\n";
-	    	//echo 'addMenuItem(new menuItem("'.$apItem['desc'].'","",CONF_MODULE_ARG.'&ap='.$apName.'"));';
+			echo "<li><a href='".getLeonardoLink(array('ap'=>apName ))."'>".$apItem['desc']."</a></li>\n";	
 		}
 	}
 
@@ -205,21 +204,34 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	<ul>
 		<? if ( $CONF_use_own_template ) { // we must put register/login menut items ?>
 			<? 	if ( $userID <=0 ) { 
-					if ($CONF_use_own_login) $login_url=str_replace("%module_name%",$module_name,$CONF['bridge']['login_url']);
-					else $login_url="login.php?redirect=modules.php&name=$module_name";
+					if ($CONF_use_own_login) {
+						if ( is_array($CONF['bridge']['login_url']) )
+							$login_url=getLeonardoLink($CONF['bridge']['login_url']);
+						else 
+							$login_url=str_replace("%module_name%",$module_name,$CONF['bridge']['login_url']);
+					} else {
+						$login_url="login.php?redirect=modules.php&name=$module_name";
+					}	
 
-					$register_url=str_replace("%module_name%",$module_name,$CONF['bridge']['register_url']);
+					if ( is_array($CONF['bridge']['register_url']) )
+						$register_url=getLeonardoLink($CONF['bridge']['register_url']);
+					else 
+						$register_url=str_replace("%module_name%",$module_name,$CONF['bridge']['register_url']);
 
 			?>
 			<li><a href="<?=$login_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>			
 			<li><a href="<?=$register_url?>"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
+            
 			<? } else { // user alredy logged in  
 					if ($CONF_use_own_login) {
-						$logout_url=str_replace("%module_name%",$module_name,$CONF['bridge']['logout_url']);
+						if ( is_array($CONF['bridge']['logout_url']) )
+							$logout_url=getLeonardoLink($CONF['bridge']['logout_url']);
+						else 
+							$logout_url=str_replace("%module_name%",$module_name,$CONF['bridge']['logout_url']);
 						if ($opMode==6) {					
 							$logout_url.='&sid='.$user->data['session_id'];
 						}	
-					}else $logout_url="login.php?logout=true";
+					} else $logout_url="login.php?logout=true";
 			?>
 					<li><a href="<?=$logout_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
 			
@@ -282,11 +294,11 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	<ul class="long">
 		<li><a href="<?=getLeonardoLink(array('op'=>'competition','clubID'=>'0') )?>"><?=_MENU_XCLEAGUE ?></a></li>
 		<? if (0) { ?>
-			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
+			<li><a href="<?=getLeonardoLink(array('op'=>'competition') ) ?>"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
 			<li class='li_space long'></li>
-			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=0"><?=_MENU_OLC ?></a></li>
-			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=1"><?=_FAI_TRIANGLE ?></a></li>
-			<li><a href="<?="".CONF_MODULE_ARG."" ?>&op=competition&comp=2"><?=_MENU_OPEN_DISTANCE ?></a></li>
+			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'0') ) ?>"><?=_MENU_OLC ?></a></li>
+			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'1') ) ?>"><?=_FAI_TRIANGLE ?></a></li>
+			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'2') ) ?>"><?=_MENU_OPEN_DISTANCE ?></a></li>
 		<? }?>
 		<? 
 			if ( count($ranksList) ) {
@@ -295,20 +307,31 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 					$rname=$rankArray['name'];
 					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
 					
+					$rankArgArray=array();
 					if  ($rankArray['menuYear']) {
-						if ($rankArray['datesMenu']=='years' ) 
-							$yearToForceStr="&year=".$rankArray['menuYear']."&month=0&season=0";
-						else
-							$yearToForceStr="&season=".$rankArray['menuYear'];
-
-					}	else $yearToForceStr="";
-
+						if ($rankArray['datesMenu']=='years' ) {
+							$rankArgArray['year']=$rankArray['menuYear'];
+							$rankArgArray['month']='0';
+							$rankArgArray['season']='0';
+							// $yearToForceStr="&year=".$rankArray['menuYear']."&month=0&season=0";
+						}else {
+							$rankArgArray['year']=$rankArray['menuYear'];
+							$rankArgArray['month']='0';
+							$rankArgArray['season']=$rankArray['menuYear'];						
+							//$yearToForceStr="&season=".$rankArray['menuYear'];
+						}
+					}	else {
+						// no action 
+						// $yearToForceStr="";
+					}
 					# Loop modified by Martin Jursa 24.05.2007 to obtain the first subrank-id from the array keys of the subranks-array					
 					$subrankkeys=array_keys($rankArray['subranks']);
 					$firstSubrank=$subrankkeys[0];
 					// $firstSubrank=$rankArray['subranks'][0]['id'];
-					echo "<li><a href='".getLeonardoLink(array('op'=>'comp','clubID'=>'0',
-											'rank'=>$rankID,'subrank'=>$firstSubrank,$yearToForceStr) ). "'>".$rname."</a></li>";
+					
+					echo "<li><a href='".getLeonardoLink(
+						array('op'=>'comp','clubID'=>'0',	'rank'=>$rankID,'subrank'=>$firstSubrank)+
+						$rankArgArray ). "'>".$rname."</a></li>";
 				
 				}			
 			}
@@ -351,7 +374,7 @@ function insertMenuItems($top_menu_item,$position) {
 			}
 
 			echo '<li>';
-			if ($menuEntry['linkType']=='leonardo') $hrefStr=CONF_MODULE_ARG."&".$menuEntry['link'];
+			if ($menuEntry['linkType']=='leonardo') $hrefStr=getLeonardoLink($menuEntry['link']);
 			else $hrefStr=$menuEntry['link'];
 
 			if ( $menuEntry['target'] ) 

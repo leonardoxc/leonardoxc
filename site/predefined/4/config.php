@@ -12,7 +12,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-// Specific settigns for standalone operation ($opMode=3)
+// Specific settigns for discuz operation ($opMode=4)
 
 // Path settings
 $CONF['path']['direct_call']=1;

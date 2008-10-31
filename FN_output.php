@@ -473,10 +473,10 @@ with (flightActionTip)
   template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader"><? echo "Actions"; ?></td></tr>'+
   '<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/change_icon.png' width='16' height='16' border='0' align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=edit_flight&flightID=%4%'><? echo 'Edit flight'; ?></a>"+
+  "<img src='<?=$moduleRelPath?>/img/change_icon.png' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'edit_flight','flightID'=>'%4%'))?>'><? echo 'Edit flight'; ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/x_icon.gif'  width='16' height='16' border='0' align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=delete_flight&flightID=%4%'><? echo 'Delete flight'; ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/x_icon.gif'  width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'delete_flight','flightID'=>'%4%'))?>'><? echo 'Delete flight'; ?></a>"+
 	'</td></tr></table>';
 
  tipStick = 0;
@@ -573,7 +573,8 @@ with (pilotTip)
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=list_flights&year=0&month=0&pilotID=%4%&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
+	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) ?>'><? echo _PILOT_FLIGHTS ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
@@ -600,11 +601,14 @@ with (pilotTipExt)
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=list_flights&year=0&month=0&pilotID=%4%&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=
+	getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
+	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) 
+	?>'><? echo _PILOT_FLIGHTS ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=CONF_MODULE_ARG?>&op=pilot_profile_stats&pilotIDview=%4%'><? echo _flights_stats ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
 
 	'</td></tr></table>';
@@ -640,10 +644,12 @@ with (takeoffTip)
  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
   '<tr><td class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=CONF_MODULE_ARG?>&op=list_flights&takeoffID=%4%&year=0&month=0&pilotID=0&country=0&cat=0'><? echo  _See_flights_near_this_point ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=
+	getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'%4%',
+	'year'=>'0','month'=>'0','pilotID'=>'0','country'=>'0','cat'=>'0')  )?>'><? echo  _See_flights_near_this_point ?></a>"+
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='<?=CONF_MODULE_ARG?>&op=show_waypoint&waypointIDview=%4%'><? echo _SITE_INFO  ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='<?=getLeonardoLink(array('op'=>'show_waypoint','waypointIDview'=>'%4%'))?>'><? echo _SITE_INFO  ?></a>"+
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
 	"<img src='<?=$moduleRelPath?>/img/gearth_icon.png' align='absmiddle' border=0> <a href='<?=$moduleRelPath?>/download.php?type=kml_wpt&wptID=%4%'><? echo _Navigate_with_Google_Earth ?></a>"+

@@ -86,7 +86,6 @@
 function changeBrand(sl) {
 	// var sl=MWJ_findObj("brandSelect");
 	var brandID= sl.options[sl.selectedIndex].value ;			
-	//var Url='<?=CONF_MODULE_ARG?>&brandID='+brandID;
 	var Url='<?=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'%brandID%'))?>';
 	Url=Url.replace('%brandID%',brandID);
 	window.location=Url;
@@ -101,7 +100,7 @@ function changeCountry(sl) {
 <div class="mainBox" align="left">  	
   	
 		<? if ($_SESSION["filter_clause"]) {  ?>
-   	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=CONF_MODULE_ARG?>&op=filter"><img 
+   	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=getLeonardoLink(array('op'=>'filter'))?>"><img 
 		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
 		</div>
 		<? } ?>

@@ -20,7 +20,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.9 2008/10/24 15:32:31 manolis Exp $
+ *   $Id: GUI_login.php,v 1.10 2008/10/31 16:26:25 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -83,7 +83,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		{
 			if( $row['user_level'] != ADMIN && $board_config['board_disable'] )
 			{
-				redirect(append_sid($CONF_mainfile."".CONF_MODULE_ARG."", true));
+				redirect(append_sid( getLeonardoLink(array('op'=>$CONF_main_page)), true));
 			}
 			else
 			{
@@ -97,7 +97,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 					if( $session_id )
 					{
 						$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : 
-								$CONF_mainfile.CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$row['user_id'];
+								getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$row['user_id']) );
 												
 						?>
 						<script language="javascript">window.location="<?=$url?>"; </script>
@@ -123,9 +123,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 						'META' => "<meta http-equiv=\"refresh\" content=\"3;url=login.$phpEx?redirect=$redirect\">")
 					);
 
-					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".
-						CONF_MODULE_ARG."&op=login\">", '</a>') .
-					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.CONF_MODULE_ARG.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".getLeonardoLink(array('op'=>'login'))."\">", '</a>') .
+					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.getLeonardoLink(array('op'=>'$CONF_main_page')).'">', '</a>')."</div>";
 					echo "$message";
 				}
 			}
@@ -145,9 +144,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 			);
 
 //			$message = $lang['Error_login'] . '<br /><br />' . sprintf($lang['Click_return_login'], "<a href=\"login.$phpEx?redirect=$redirect\">", '</a>') . '<br /><br />' .  sprintf($lang['Click_return_index'], '<a href="' . append_sid("index.$phpEx") . '">', '</a>');
-			$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".
-				CONF_MODULE_ARG."&op=login\">", '</a>') .
-			 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.CONF_MODULE_ARG.'&op='.$CONF_main_page.'">', '</a>')."</div>";
+			$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"". getLeonardoLink(array('op'=>'login'))."\">", '</a>') .
+			 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.getLeonardoLink(array('op'=>$CONF_main_page)).'">', '</a>')."</div>";
 			echo "$message";
 			//message_die(GENERAL_MESSAGE, $message);
 		}
@@ -170,8 +168,8 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		}
 		else
 		{
-			$url="$CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
-			// redirect(append_sid("CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page", true));
+			$url=getLeonardoLink(array('op'=>$CONF_main_page)); 
+			
 			?>
 			<script language="javascript">window.location="<?=$url?>"; </script>
 			<?
@@ -179,7 +177,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 	}
 	else
 	{
-		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : "CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
+		$url = ( !empty($HTTP_POST_VARS['redirect']) ) ? str_replace('&amp;', '&', htmlspecialchars($HTTP_POST_VARS['redirect'])) : getLeonardoLink(array('op'=>$CONF_main_page)); 
 		redirect(append_sid($url, true));
 	}
 }
@@ -194,7 +192,7 @@ else
 		$page_title = $lang['Login'];
 		
 		require_once dirname(__FILE__)."/CL_template.php";
-		$Ltemplate = new LTemplate($moduleRelPath.'/templates/'.$PREFS->themeName);
+		$Ltemplate = new LTemplate(dirname(__FILE__).'/templates/'.$PREFS->themeName);
 	
 		$Ltemplate ->set_filenames(array(
 			'body' => 'tpl/login.html')
@@ -238,6 +236,7 @@ else
 			$forward_page = '';
 		}
 
+
 		$username = ( $userdata['user_id'] != ANONYMOUS ) ? $userdata['username'] : '';
 
 		$s_hidden_fields = '<input type="hidden" name="redirect" value="' . $forward_page . '" />';
@@ -262,8 +261,7 @@ else
 	}
 	else
 	{
-			$url="$CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page";
-			// redirect(append_sid("CONF_mainfile".CONF_MODULE_ARG."&op=$CONF_main_page", true));
+			$url=getLeonardoLink(array('op'=>$CONF_main_page) );
 			?>
 			<script language="javascript">window.location="<?=$url?>"; </script>
 			<?

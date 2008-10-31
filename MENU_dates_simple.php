@@ -71,7 +71,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 	else $seasonLegend=_SELECT_SEASON;
 
 	$seasonStr="";
-	//	$seasonStr.="<a href='".CONF_MODULE_ARG."&season=0'>"._NO_SEASON."</a>\n";		
+	
 	if ($CONF['seasons']['use_defined_seasons']) {
 	
 		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
@@ -140,7 +140,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 
 	<td class="sp " valign="top">
 	<?  
-		// echo "<a href='".CONF_MODULE_ARG."&year=0&month=0'>"._ALL_YEARS."</a>";		
+			
 		 for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
 			echo "<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>$i,'month'=>'0','day'=>'0'))."'>$i</a>";		
 		}
@@ -211,16 +211,16 @@ if ($CONF['seasons']['use_season_years'] ) {
 	else $seasonLegend=_SELECT_SEASON;
 
 	$seasonStr="";
-	//	$seasonStr.="<a href='".CONF_MODULE_ARG."&season=0'>"._NO_SEASON."</a>\n";		
+			
 	if ($CONF['seasons']['use_defined_seasons']) {
 	
 		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
-			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";		
+			$seasonStr.="<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>$thisSeason,'year'=>'0','month'=>'0','day'=>'0'))."'>$thisSeason</a>\n";		
 		}
 	
 	} else {
 		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
-			$seasonStr.="<a href='".CONF_MODULE_ARG."&season=$thisSeason'>$thisSeason</a>\n";
+			$seasonStr.="<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>$thisSeason,'year'=>'0','month'=>'0','day'=>'0'))."'>$thisSeason</a>\n";
 		}
 	}	
 	echo $seasonStr."";

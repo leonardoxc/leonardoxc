@@ -33,7 +33,7 @@ $CONF_MENU['main_menu']['bottom']=array(
 		),
 		array('name'=>'Instructions',
 			'linkType'=>'leonardo', // leonardo or external
-			'link'=>'op=instructions',
+			'link'=>array('op'=>'instructions'),
 			'target'=>'_blank',
 		),
 		array('name'=>_PROJECT_HELP,

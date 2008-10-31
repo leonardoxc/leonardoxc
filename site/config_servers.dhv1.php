@@ -1,6 +1,6 @@
 <?
 
-$CONF['servers']['syncLog']['dontLog']=array(1,2,3,4,9 ); // we dont log PGF,GR, BR,PT,TR
+$CONF['servers']['syncLog']['dontLog']=array(1,2,3,4,8,9 ); // we dont log PGF,GR, BR,PT,XContest,TR
 
 $CONF['servers']['list']=array( 
 1=>array(
