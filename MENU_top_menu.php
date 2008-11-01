@@ -131,6 +131,11 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<? } ?>
 			</ul>
 		</li>
+		<li><a href='#'><STRONG>Configuration <?=$arrDownImg ?></STRONG></a>
+			<ul>
+				<li><a href="<?=getLeonardoLink(array('op'=>'conf_htaccess')) ?>">SEO Urls</a></li>
+			</ul>
+		</li>
 		<? if ($CONF_isMasterServer) { ?>
 		<li><a href='#'><STRONG>XCnet <?=_MENU_ADMIN." ".$arrDownImg ?></STRONG></a>
 			<ul>

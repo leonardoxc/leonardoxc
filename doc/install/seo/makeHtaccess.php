@@ -18,7 +18,8 @@ RewriteRule ^$virtPath/(\w{2})/tracks/ge/(\d*)$ $basePath/download.php?type=kml_
 
 RewriteRule ^$virtPath/(\w{2})/tracks/(.*)/(.*)/(.*)$ $baseUrl&lng=$1&op=list_flights&country=$2&l_date=$3&$4 [L]
 RewriteRule ^$virtPath/(\w{2})/pilots/(.*)/(.*)/(.*)$  $baseUrl&lng=$1&op=list_pilots&country=$2&l_date=$3&$4 [L]
-RewriteRule ^$virtPath/(\w{2})/ranks/(.*)/(.*)/(.*)$  $baseUrl&lng=$1&op=competition&country=$2&l_date=$3&$4 [L]
+RewriteRule ^$virtPath/(\w{2})/league/(.*)/(.*)/(.*)$  $baseUrl&lng=$1&op=competition&country=$2&l_date=$3&$4 [L]
+RewriteRule ^$virtPath/(\w{2})/ranks/(.*)/(.*)/(.*)$  $baseUrl&lng=$1&op=comp&rank=$2&l_date=$3&$4 [L]
 RewriteRule ^$virtPath/(\w{2})/takeoffs/(.*)/(.*)/(.*)$  $baseUrl&lng=$1&op=list_takeoffs&country=$2&l_date=$3&$4 [L]
 
 

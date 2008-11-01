@@ -762,11 +762,13 @@ function getLeonardoLink($argArray) {
 		} else {
 			$lngCode= $lang2iso[$lng];
 		}	
-		$args=$lngCode.'/';
+		
+		// $args=$lngCode.'/';
+		$args='';
 		$opProccessed=1;
 		
-		unset($argArray['lng']);
-		unset($argArray['newlang']);
+		//unset($argArray['lng']);
+		//unset($argArray['newlang']);
 		
 		$opTmp=$argArray['op'];
 		if ($opTmp=='list_flights') {
@@ -800,7 +802,7 @@ function getLeonardoLink($argArray) {
 		
 		
 		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
-		$args2process=array('year','month','day','season','country','rank');
+		$args2process=array('year','month','day','season','country','rank','subrank');
 		$args2Array=array();
 		
 		// add the date, country in the path
@@ -815,19 +817,19 @@ function getLeonardoLink($argArray) {
 				}
 			}
 
-			if ($opTmp!='comp') {
+			if ($opTmp=='comp') {
+				if ($args2Array['rank']){
+					$args.=$args2Array['rank'].'.'.$args2Array['subrank'].'/';
+				} else {
+					$args.='all/';
+				}
+				unset($argArray['clubID']);
+			} else {
 				if ($args2Array['country']){
 					$args.=$args2Array['country'].'/';
 				} else {
 					$args.='world/';
-				}
-			} else {
-				if ($args2Array['rank']){
-					$args.=$args2Array['rank'].'/';
-				} else {
-					$args.='all/';
-				}
-			
+				}			
 			}
 						
 			if ($args2Array['season']) {
@@ -850,6 +852,7 @@ function getLeonardoLink($argArray) {
 			unset($argArray['day']);
 			unset($argArray['country']);
 			unset($argArray['rank']);
+			unset($argArray['subrank']);
 		}
 		
 		foreach($argArray as $argName=>$argValue){

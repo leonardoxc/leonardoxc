@@ -339,7 +339,7 @@ if ($op=="users") {
 } else if ($op=="user_prefs") { 
 	require $LeoCodeBase."/GUI_user_prefs.php";
 //--------------------------
-// Misc related actions
+// Admin related actions
 //--------------------------
 } else if ($op=="admin") {
 	require $LeoCodeBase."/GUI_admin.php";
@@ -369,6 +369,12 @@ if ($op=="users") {
 	require $LeoCodeBase."/GUI_validation_review.php";
 } else if ($op=="servers_manage") {
 	require $LeoCodeBase."/GUI_servers_manage.php";
+} else if ($op=="conf_htaccess") {
+	require $LeoCodeBase."/GUI_conf_htaccess.php";
+//--------------------------
+//--------------------------
+// Misc related actions
+//--------------------------
 } else if ($op=="filter") {
 	require $LeoCodeBase."/GUI_filter.php";
 } else if ($op=="rss_conf") {
