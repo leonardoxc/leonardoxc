@@ -96,7 +96,7 @@
 		$i=0;
 		while ($row = mysql_fetch_assoc($dbres)) { 
 			if ($i>0)$res.=" ,\n";
-			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.$row['intName'].'", "type":'.$row['type'].' } ';
+			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.str_replace('"','\"',$row['intName']).'", "type":'.$row['type'].' } ';
 		  $i++;	  
 		}     
 		
@@ -151,7 +151,7 @@ $sql .= "ORDER BY distance LIMIT $limit \n";
 		$i=0;
 		while ($row = mysql_fetch_assoc($dbres)) { 
 			if ($i>0)$res.=" ,\n";
-			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.$row['intName'].'", "type":'.$row['type'].' } ';
+			$res.=' { "id":'.$row[ID].', "lat":'.$row['lat'].', "lon":'.-$row['lon'].' , "name":"'.str_replace('"','\"',$row['intName']).'", "type":'.$row['type'].' } ';
 			//print_r($row);
 			//echo "<HR>";
 		  //$resWaypoint=new waypoint($row["ID"]);

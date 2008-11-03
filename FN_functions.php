@@ -854,9 +854,64 @@ function getLeonardoLink($argArray) {
 			unset($argArray['rank']);
 			unset($argArray['subrank']);
 		}
+
+		if (!$opProccessed && isset($argArray['op'])  ) {
+			$args.='op:'.$argArray['op'];
+			unset($argArray['op']);
+		}
 		
 		foreach($argArray as $argName=>$argValue){
-			if ($argName!='op' || !$opProccessed )
+			if ($argName!='op' )
+				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+		}
+	
+		return $CONF['links']['baseURL'].'/'.$args;
+	}
+}
+
+
+// the method to use for download.php
+// 1 -> current old way, using &name=value args + session variables
+// 2 -> same as 1 but all sessions vars are in the url, this means that the url 
+// 3 -> SEO urls
+
+function getDownloadLink($argArray) {
+	global $CONF,$lng, $lang2iso;
+	
+	if ($CONF['links']['type']==1 || $CONF['links']['type']== 2 ) {
+	
+		foreach($argArray as $argName=>$argValue){
+			if ($argName!='type')
+				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+		}	
+		return getRelMainDir().'download.php?type='.$argArray['type'].$args;
+		
+	} else 	if ($CONF['links']['type']==3) {
+
+
+		// $args=$lngCode.'/';
+		$args='';
+		$opProccessed=1;
+		
+		// "kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc"
+		$opTmp=$argArray['type'];
+		if ($opTmp=='igc') {
+			$args.='tracks/igc/'.$argArray['flightID'].'/';
+			unset($argArray['flightID']);
+		} else if ($opTmp=='kml_trk') {		
+			$args.='tracks/kml/'.$argArray['flightID'].'/';
+			unset($argArray['flightID']);
+		} else if ($opTmp=='kml_wpt') {		
+			$args.='takeoffs/kml/'.$argArray['wptID'].'/';
+			unset($argArray['wptID']);
+		} else {
+		
+			$opProccessed=0;
+		}
+			
+		
+		foreach($argArray as $argName=>$argValue){
+			if ($argName!='type' || !$opProccessed )
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}
 	

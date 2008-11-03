@@ -247,3 +247,4 @@ function nop()
 		}
 		return {width : myWidth, height : myHeight};
 	}
+

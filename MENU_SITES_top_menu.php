@@ -96,7 +96,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 // http://www.seoconsultants.com/css/menus/horizontal/
 // http://www.cssplay.co.uk/menus/final_drop.html
 
-	 $iconLink="".CONF_MODULE_ARG."&op=index_full";
+	 $iconLink=getLeonardoLink(array('op'=>'index_full'));
 	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>

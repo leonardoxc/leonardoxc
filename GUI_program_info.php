@@ -143,7 +143,7 @@
           <li><a href="http://www.paraglidingforum.com/profile.php?mode=viewprofile&u=5393" target="_blank"><strong>Rado
             Voglar</strong></a> for the <strong>Slovenian</strong> translation </li>
           <li> <a href="http://www.pgnord.dk/" target="_blank"><strong>Morten Fabricius Olesen</strong></a> for the <strong>Danish</strong> translation </li>
-          <li> <a href="http://para-nimbus.xhost.ro/" target="_blank"><strong>Ciprian
+          <li> <a href="http://www.paranimbus.com" target="_blank"><strong>Ciprian
             Chis</strong></a> for the <strong>Romanian</strong> translation</li>
           <li> <a href="http://www.volfik.com/" target="_blank"><strong>Peter Volf</strong></a> for the <strong>Czech</strong> translation </li>
           <li> <strong>Xiaozhong</strong> for the <strong>Chinese</strong> translation</li>

@@ -45,11 +45,15 @@ RewriteEngine On
 RewriteBase /
 
 # various operations on a flight
-RewriteRule ^$virtPath/tracks/details/(\d*)$ $baseUrl&op=show_flight&flightID=$1 [L,NC]
-RewriteRule ^$virtPath/tracks/ge/(\d*)$ $basePath/download.php?type=kml_trk&flightID=$1&lng=english&an=1 [L,NC]
+RewriteRule ^$virtPath/tracks/details/(\d*)/{0,1}$ $baseUrl&op=show_flight&flightID=$1 [L,NC]
+RewriteRule ^$virtPath/tracks/kml/(\d*)/(.*)$ $basePath/download.php?type=kml_trk&flightID=$1&$2 [L,NC]
+RewriteRule ^$virtPath/tracks/igc/(\d*)/(.*)$ $basePath/download.php?type=igc&flightID=$1&$2 [L,NC]
+
+# various operations on a takeoff
+RewriteRule ^$virtPath/takeoffs/details/(\d*)/{0,1}$ $baseUrl&op=show_waypoint&waypointIDview=$1 [L,NC]
+RewriteRule ^$virtPath/takeoffs/kml/(\d*)/{0,1}$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]
 
 # all 'list' ops that are /lang/opname/countryCode/date/....
-
 RewriteRule ^$virtPath/tracks/(.*)/(.*)/(.*)$ $baseUrl&op=list_flights&country=$1&l_date=$2&$3 [L]
 RewriteRule ^$virtPath/pilots/(.*)/(.*)/(.*)$  $baseUrl&op=list_pilots&country=$1&l_date=$2&$3 [L]
 RewriteRule ^$virtPath/league/(.*)/(.*)/(.*)$  $baseUrl&op=competition&country=$1&l_date=$2&$3 [L]
@@ -63,7 +67,7 @@ RewriteRule ^$virtPath/pilots/stats/([\d_]*)$   $baseUrl&op=pilot_profile_stats&
 RewriteRule ^$virtPath/pilots/flights/([\d_]*)$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
 
 
-RewriteRule ^$virtPath/&(.*)$ $baseUrl&$1 [L]
+RewriteRule ^$virtPath/op:(.*)$ $baseUrl&$1 [L]
 
 
 RewriteRule ^$virtPath/(.*)$ $basePath/$1

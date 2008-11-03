@@ -745,18 +745,25 @@ $resStr='{
 	}
 
 	function getZippedIGC_URL() {
-		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=igc&zip=1&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].
+			getDownloadLink(array('type'=>'igc','zip'=>'1','flightID'=>$this->flightID)) ;
+		// getRelMainDir()."download.php?type=igc&zip=1&flightID=".$this->flightID;
 	}
 
 	function getFlightKML($includeLang=1) {
 		global $currentlang;
-		if ($includeLang) $langStr="&lng=$currentlang";
-		else  $langStr="";
-		return "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID.$langStr;
+		if ($includeLang) $langArray=array("lng">=$currentlang);
+		else  $langArray=array();
+		
+		return "http://".$_SERVER['SERVER_NAME'].
+			getDownloadLink(array('type'=>'kml_trk','flightID'=>$this->flightID)+$langArray) ;
+		// getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID.$langStr;
 	}
 
 	function getFlightGPX() {
-		return "http://".$_SERVER['SERVER_NAME'].$getRelMainDir()."download.php?type=gpx_trk&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].
+			getDownloadLink(array('type'=>'gpx_trk','flightID'=>$this->flightID)) ;
+		//getRelMainDir()."download.php?type=gpx_trk&flightID=".$this->flightID;
 	}
 
 	//------------------------------

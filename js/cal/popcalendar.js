@@ -206,12 +206,21 @@
 		return sTmp.replace ('yy',padZero(y%100));
 	}
 
+
+function zeroPad(n, digits) {
+	n = n.toString();
+	while (n.length < digits) {
+		n = '0' + n;
+	}
+	return n;
+}
+
 	function closeCalendar() {
 		if (ctlToPlaceValue.name =='DAY_SELECT') { // dont hide it
 		
 			thisUrl=thisUrl.replace('%year%',yearSelected);
-			thisUrl=thisUrl.replace('%month%',(monthSelected+1));
-			thisUrl=thisUrl.replace('%day%',dateSelected);
+			thisUrl=thisUrl.replace('%month%',zeroPad((monthSelected+1),2));
+			thisUrl=thisUrl.replace('%day%',zeroPad(dateSelected,2));
 			// window.location=thisUrl+'&year='+yearSelected+'&month='+(monthSelected+1)+'&day='+dateSelected;
 			window.location=thisUrl;
 			return;

@@ -193,9 +193,9 @@ var lon=0;
 	map.addControl(new GMapTypeControl());
 	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
 
-	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=5251");
+	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=14142&t=a.kml");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
-	// map.addOverlay(kmlOverlay);
+	//map.addOverlay(kmlOverlay);
 
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	

@@ -110,7 +110,7 @@ $(document).ready(function(){
       <p>&nbsp;</p>
       <table class="Box" width="530"  align="center">
         <tr align="center" bgcolor="#D0E2CD">
-          <td width="196"><strong><? echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$waypointIDview."'>"._Navigate_with_Google_Earth."</a>"; ?>
+          <td width="196"><strong><? echo "<a href='".getDownloadLink(array('type'=>'kml_wpt','wptID'=>$waypointIDview))."'>"._Navigate_with_Google_Earth."</a>"; ?>
             </strong>
           <div align="center"></div></td>
           <td width="218"><strong><? echo "<a href='http://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?>

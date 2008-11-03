@@ -81,7 +81,9 @@
 				list($UTM_X,$UTM_Y,$UTMzone,$UTMlatZone)=$wpInfo->getUTM();
 				echo "<b>UTM:</b> $UTMzone$UTMlatZone X: ".floor($UTM_X)." Y: ".floor($UTM_Y);
 		 ?></td>
-          <td class="col3_in"><div align="center"><strong><? echo "<a href='".$moduleRelPath."/download.php?type=kml_wpt&wptID=".$waypointIDview."'>"._Navigate_with_Google_Earth."</a>"; ?></strong></div></td>
+          <td class="col3_in"><div align="center"><strong><? echo "<a href='".
+		  getDownloadLink(array('type'=>'kml_wpt','wptID'=>$waypointIDview))
+		  ."'>"._Navigate_with_Google_Earth."</a>"; ?></strong></div></td>
         </tr>
         <tr align="center" class="col3_in">
           <td><strong><? echo "<a href='http://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?></strong></td>

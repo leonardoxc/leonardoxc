@@ -292,7 +292,7 @@ if (! $dontShowCountriesSelection ) {
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='".CONF_MODULE_ARG."&clubID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
   	    <? } ?>
@@ -302,7 +302,7 @@ if (! $dontShowCountriesSelection ) {
    	    <?
   	    	echo "<b>$pilotLegend</b>";
   	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='".CONF_MODULE_ARG."&pilotID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>		
   	    <? } ?>
@@ -311,7 +311,7 @@ if (! $dontShowCountriesSelection ) {
    	    <?
   	    	echo "<b>$takeoffLegend</b>";
   	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='".CONF_MODULE_ARG."&takeoffID=0'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
 		</div>
 		<? } ?>  	

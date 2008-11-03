@@ -234,12 +234,14 @@ if ($CONF['seasons']['use_season_years'] ) {
     <? 	if ($CONF['years']['use_calendar_years'] ) { ?>
 	<td class="sp " valign="top">
 	<?  
-		// echo "<a href='".CONF_MODULE_ARG."&year=0&month=0'>"._ALL_YEARS."</a>";		
+		
 		for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
-			echo "<a href='".CONF_MODULE_ARG."&season=0&year=$i&month=0&day=0'>$i</a>";		
+			echo "<a href='".
+			getLeonardoLink(array('op'=>'useCurrent','season'=>0,'year'=>$i,'month'=>'0','day'=>'0'))
+			."'>$i</a>";		
 		}
 	?>
-	<a style='text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&year=0&month=0&day=0&season=0'><?=_ALL_YEARS?></a>
+	<a style='text-decoration:underline;' href='<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'0','month'=>'0','day'=>'0'))?>'><?=_ALL_YEARS?></a>
 	</td>
 	<? } else { ?>
 	

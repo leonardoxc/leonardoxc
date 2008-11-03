@@ -26,7 +26,7 @@ if ( $countriesNum > 30 && 0 ) {
 <tr>
 	<td class="dropDownBoxH2">
 		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='<?=CONF_MODULE_ARG?>&country=0'><?=_Display_ALL?></a>
+			<a style='text-align:center; text-decoration:underline;' href='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'0'))?>'><?=_Display_ALL?></a>
 		</div>
 	</td>
 </tr>
