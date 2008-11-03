@@ -13,7 +13,12 @@
 
  	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
 ?> 
-
+<script language="javascript">
+function writeHtaccessFile(){
+	$("#writeFile").val('1');
+	$("#htaccessConfForm").submit();
+}
+</script>
  <h3> SEO URLS - uses mod_rewrite of apache </h3>
 
 <?
@@ -28,7 +33,7 @@ if ($_POST['baseUrl']) {
 }
 ?>
 Use the auto - detected values to create the htaccess file that will enable SEO URLS in Leonardo<BR /><BR />
-<FORM method="post">
+<FORM method="post" name='htaccessConfForm' id='htaccessConfForm'>
 File & params of running Leonardo<BR />
 <input type="text"  value='<?=$baseUrl?>' name ='baseUrl'  size="50"/><BR />
 The path to Leonardo files<BR />
@@ -36,7 +41,7 @@ The path to Leonardo files<BR />
 The virtual path that will be used<BR />
 <input type="text"  value='<?=$virtPath?>' name ='virtPath' size="50" /><BR />
 <input type="submit" value="Generate htaccess file" /><BR />
-
+<input type="hidden" id='writeFile' name="writeFile" value="0" />
 <hr />
 <?
 $str="
@@ -75,10 +80,31 @@ RewriteRule ^$virtPath/(.*)$ $basePath/$1
 
 echo "<pre>$str</pre>";
 
+if ($_POST['htaccessFile']) {
+	$htaccessFile= $_POST['htaccessFile'];
+} else {
+	$htaccessFileName=$CONF['os']=='linux'?'.htaccess':'htaccess.txt';
+	$htaccessFile=realpath(dirname(__FILE__).'/../../'.$htaccessFileName);
+}	
+
+if ($_POST['writeFile']==1) {
+	writeFile($htaccessFile,$str);
+	echo "<hr /><h3>htaccess file written</h3>";
+}
+
 
 ?>
 
 <hr />
 
-Copy and paste this configuration to the htaccess file located on the roo directory of your installattion (forum/cms/ etc..)
+Copy and paste this configuration to the htaccess file located on the root directory of your installattion (forum/cms/ etc..)
+
+<br />
+or press the button below to write the file automatically.
+
+<br /><br />Location of htaccess File<BR />
+<input type="text"  value='<?=$htaccessFile?>' name ='htaccessFile' size="70" />
+<input type="button" value="Write htaccess file to disk" onclick='writeHtaccessFile()'/><BR />
+
+
 </FORM>
