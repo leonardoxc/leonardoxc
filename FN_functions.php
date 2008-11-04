@@ -781,25 +781,26 @@ function getLeonardoLink($argArray) {
 			$args.='ranks/';
 		} else if ($opTmp=='list_takeoffs') {
 			$args.='takeoffs/';
+			
 		} else if ($opTmp=='pilot_profile') {	
-			$args.='pilots/details/'	;
-			if ($argArray['pilotIDview']!='skipValue')
-				$args.=$argArray['pilotIDview'];			
+			$args.='pilot/'.$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
+						
 		} else if ($opTmp=='pilot_profile_stats') {	
-			$args.='pilots/stats/';	
-			if ($argArray['pilotIDview']!='skipValue')
-				$args.=$argArray['pilotIDview'];
+			$args.='pilot/'.$argArray['pilotIDview'].'/stats/';
 			return $CONF['links']['baseURL'].'/'.$args;
+			
 		} else if ($opTmp=='show_waypoint') {
-			$args.='takeoffs/details/';	
-			$args.=$argArray['waypointIDview'];
+			$args.='takeoff/'.$argArray['waypointIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
+			
 		} else if ($opTmp=='show_flight') {	
-			$args.='tracks/details/';	
-			if ($argArray['flightID']!='skipValue')
+			$args.='flight/';	
+			if ($argArray['flightID']!='skipValue') {
 				$args.=$argArray['flightID'];
-			return $CONF['links']['baseURL'].'/'.$args;
+				unset($argArray['flightID']);
+			}	
+			// return $CONF['links']['baseURL'].'/'.$args;
 		} else {
 			$opProccessed=0;
 		}
@@ -904,13 +905,13 @@ function getDownloadLink($argArray) {
 		// "kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc"
 		$opTmp=$argArray['type'];
 		if ($opTmp=='igc') {
-			$args.='tracks/igc/'.$argArray['flightID'].'/';
+			$args.='flight/'.$argArray['flightID'].'/igc/';
 			unset($argArray['flightID']);
 		} else if ($opTmp=='kml_trk') {		
-			$args.='tracks/kml/'.$argArray['flightID'].'/';
+			$args.='flight/'.$argArray['flightID'].'/kml/';
 			unset($argArray['flightID']);
 		} else if ($opTmp=='kml_wpt') {		
-			$args.='takeoffs/kml/'.$argArray['wptID'].'/';
+			$args.='takeoff/'.$argArray['wptID'].'/kml/';
 			unset($argArray['wptID']);
 		} else {
 		

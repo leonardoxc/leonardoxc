@@ -25,9 +25,9 @@ function createTextArea($userServerID,$userID,$name,$value,
 		global $moduleRelPath,$baseInstallationPath;	
 		global $currentlang,$lang2isoEditor;
 
-		$sBasePath = "$baseInstallationPath/$moduleRelPath/js/fckeditor/";
+		$sBasePath = getRelMainDir(1)."js/fckeditor/";
 		if ($userServerID==0 && $userID==0) {
-			$FCKEuploadPath ="$baseInstallationPath/$moduleRelPath/data/files/";
+			$FCKEuploadPath =getRelMainDir(1)."data/files/";
 		} else {
 			
 			// no uploads allowed
@@ -39,7 +39,7 @@ function createTextArea($userServerID,$userID,$name,$value,
 		$_SESSION['FCKEuploadPath']=$FCKEuploadPath;
 		
 		$oFCKeditor = new FCKeditor($name);
-		$oFCKeditor->Config['CustomConfigurationsPath'] ="$baseInstallationPath/$moduleRelPath/site/config_editor.js";
+		$oFCKeditor->Config['CustomConfigurationsPath'] =getRelMainDir(1)."site/config_editor.js";
 		$oFCKeditor->Width = $width; 
 		$oFCKeditor->Height = $height; 
 		$oFCKeditor->ToolbarSet = $toolbarSet; 

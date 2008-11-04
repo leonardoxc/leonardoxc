@@ -47,7 +47,7 @@ if ($op=='photos'){
 		foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 			
 			if ($photoInfo['name']) {
-				$imgIconRel=moduleRelPath().'/'.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 				$imgStr="<img src='$imgIconRel'  class=\"photos\" border=\"0\">";		
 				echo "<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";		
 			}		

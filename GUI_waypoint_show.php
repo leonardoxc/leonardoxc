@@ -20,7 +20,9 @@
   $wpName= selectWaypointName($wpInfo->name,$wpInfo->intName,$wpInfo->countryCode);
   $wpLocation = selectWaypointLocation($wpInfo->location,$wpInfo->intLocation,$wpInfo->countryCode);
 
-  if ( L_auth::isAdmin($userID)  ) $opString="<a href='".CONF_MODULE_ARG."&op=edit_waypoint&waypointIDedit=".$waypointIDview."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+  if ( L_auth::isAdmin($userID)  ) $opString="<a href='".
+  		getLeonardoLink(array('op'=>'edit_waypoint','waypointIDedit'=>$waypointIDview))
+		."'><img src='".$moduleRelPath.	"/img/change_icon.png' border=0 align=bottom></a>"; 
   $titleString=_Waypoint_Name." : ".$wpName." (".$countries[$wpInfo->countryCode].") &nbsp;";
 ?>
 
@@ -71,7 +73,7 @@
 
 ?>
 <p>
-<strong><? echo "<a href='".CONF_MODULE_ARG."&op=list_flights&takeoffID=$waypointIDview'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong>
+<strong><? echo "<a href='".getLeonardoLink(array('op'=>'list_flights','takeoffID'=>$waypointIDview))."'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong>
 			</td>
           <td rowspan="3" class="col2_in"><p><strong>lat/lon (WGS84):</strong><br>
 		  <? 	echo $wpInfo->lat." , ".-$wpInfo->lon ;

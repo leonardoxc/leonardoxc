@@ -50,13 +50,18 @@ RewriteEngine On
 RewriteBase /
 
 # various operations on a flight
-RewriteRule ^$virtPath/tracks/details/(\d*)/{0,1}$ $baseUrl&op=show_flight&flightID=$1 [L,NC]
-RewriteRule ^$virtPath/tracks/kml/(\d*)/(.*)$ $basePath/download.php?type=kml_trk&flightID=$1&$2 [L,NC]
-RewriteRule ^$virtPath/tracks/igc/(\d*)/(.*)$ $basePath/download.php?type=igc&flightID=$1&$2 [L,NC]
+RewriteRule ^$virtPath/flight/(\d*)/kml/(.*)$ $basePath/download.php?type=kml_trk&flightID=$1&$2 [L,NC]
+RewriteRule ^$virtPath/flight/(\d*)/igc/(.*)$ $basePath/download.php?type=igc&flightID=$1&$2 [L,NC]
+RewriteRule ^$virtPath/flight/(\d*)(.*)$ $baseUrl&op=show_flight&flightID=$1$2 [L,NC]
 
 # various operations on a takeoff
-RewriteRule ^$virtPath/takeoffs/details/(\d*)/{0,1}$ $baseUrl&op=show_waypoint&waypointIDview=$1 [L,NC]
-RewriteRule ^$virtPath/takeoffs/kml/(\d*)/{0,1}$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]
+RewriteRule ^$virtPath/takeoff/(\d*)/kml/{0,1}$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]
+RewriteRule ^$virtPath/takeoff/(\d*)/{0,1}$ $baseUrl&op=show_waypoint&waypointIDview=$1 [L,NC]
+
+# various operations on a pilot
+RewriteRule ^$virtPath/pilot/([\d_]*)/stats/$   $baseUrl&op=pilot_profile_stats&pilotIDview=$1 [L,NC]
+RewriteRule ^$virtPath/pilot/([\d_]*)/flights/$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
+RewriteRule ^$virtPath/pilot/([\d_]*)$ $baseUrl&op=pilot_profile&pilotIDview=$1  [L,NC]
 
 # all 'list' ops that are /lang/opname/countryCode/date/....
 RewriteRule ^$virtPath/tracks/(.*)/(.*)/(.*)$ $baseUrl&op=list_flights&country=$1&l_date=$2&$3 [L]
@@ -64,12 +69,6 @@ RewriteRule ^$virtPath/pilots/(.*)/(.*)/(.*)$  $baseUrl&op=list_pilots&country=$
 RewriteRule ^$virtPath/league/(.*)/(.*)/(.*)$  $baseUrl&op=competition&country=$1&l_date=$2&$3 [L]
 RewriteRule ^$virtPath/ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&$4 [L]
 RewriteRule ^$virtPath/takeoffs/(.*)/(.*)/(.*)$  $baseUrl&op=list_takeoffs&country=$1&l_date=$2&$3 [L]
-
-
-# various operations on a pilot
-RewriteRule ^$virtPath/pilots/details/([\d_]*)$ $baseUrl&op=pilot_profile&pilotIDview=$1  [L,NC]
-RewriteRule ^$virtPath/pilots/stats/([\d_]*)$   $baseUrl&op=pilot_profile_stats&pilotIDview=$1 [L,NC]
-RewriteRule ^$virtPath/pilots/flights/([\d_]*)$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
 
 
 RewriteRule ^$virtPath/op:(.*)$ $baseUrl&op=$1 [L]

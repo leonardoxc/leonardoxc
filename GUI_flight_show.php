@@ -227,8 +227,8 @@ $(document).ready(function(){
 		}
 
 		if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) ) {
-			$legendRight.="<a href='".CONF_MODULE_ARG."&op=delete_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
-					   <a href='".CONF_MODULE_ARG."&op=edit_flight&flightID=".$flightID."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+			$legendRight.="<a href='".getLeonardoLink(array('op'=>'delete_flight','flightID'=>$flightID))."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
+					   <a href='".getLeonardoLink(array('op'=>'edit_flight','flightID'=>$flightID))."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 		}
 	}
 
@@ -565,10 +565,10 @@ if ($flight->airspaceCheckFinal==-1) { // problem
 	}
 	
 	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
-	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateData=1'>"._UPDATE_DATA."</a> | ";
-	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateMap=1'>"._UPDATE_MAP."</a> | ";
-	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateCharts=1'>"._UPDATE_GRAPHS."</a> | ";
-	$adminPanel.="<a href='".CONF_MODULE_ARG."&op=show_flight&flightID=".$flight->flightID."&updateScore=1'>"._UPDATE_SCORE."</a> ";
+	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateData'=>'1'))."'>"._UPDATE_DATA."</a> | ";
+	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateMap'=>'1'))."'>"._UPDATE_MAP."</a> | ";
+	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateCharts'=>'1'))."'>"._UPDATE_GRAPHS."</a> | ";
+	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateScore'=>'1'))."'>"._UPDATE_SCORE."</a> ";
 
 	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
 }

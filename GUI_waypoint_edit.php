@@ -33,8 +33,8 @@
 
 		if ( $waypt->putToDB(1) ) {
 			 echo "<center>"._THE_CHANGES_HAVE_BEEN_APPLIED."<br>";
-			 echo "<a href='".CONF_MODULE_ARG."&op=show_waypoint&waypointIDview=".$waypointIDedit."'>RETURN to view mode</a> or "; 
-			 echo "<a href='".CONF_MODULE_ARG."&op=list_flights'>RETURN to flights</a>"; 
+			 echo "<a href='".getLeonardoLink(array('op'=>'show_waypoint','waypointIDedit'=>$waypointIDedit))."'>RETURN to view mode</a> or "; 
+			 echo "<a href='".getLeonardoLink(array('op'=>'list_flights'))."'>RETURN to flights</a>"; 
 			 echo "<br></center>";
 		} else echo("<H3> Error in puting waypoint info into DB! </H3>\n");			
 	}

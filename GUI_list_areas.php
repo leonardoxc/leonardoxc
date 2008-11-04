@@ -37,7 +37,7 @@ open_inner_table("Flying Areas",730,'icon_takeoff.gif'); echo "<tr><td>";
 		echo "<tr> 
       <td>".$row['name']."</td>
 	  <td> ";	  
-	  echo "<a href='".CONF_MODULE_ARG."&op=area_show&areaID=".$row['ID']."'>See the details and takeoffs for this area</a>";	
+	  echo "<a href='".	getLeonardoLink(array('op'=>'area_show','areaID'=>$row['ID']))."'>See the details and takeoffs for this area</a>";	
 	  echo "</td></tr> \n";
 
 	}
