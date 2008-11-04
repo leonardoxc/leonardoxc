@@ -30,7 +30,7 @@
 	if ($cat==0) $where_clause="";
 	else $where_clause=" AND cat=$cat ";
 	
-	$query_str="";
+	$queryExtraArray=array();
 	$legend="";
 	$legend="<b>"._MENU_FLIGHTS."</b> ";
 	
@@ -38,6 +38,7 @@
 	if (! $clubID) { // if we are viewing a club, the dates will be taken care wit hthe CLUB code
 		$where_clause.= dates::makeWhereClause(0,$season,$year,$month,($CONF_use_calendar?$day:0) );
 	}
+	
 	// BRANDS MOD  
 	$where_clause.= brands::makeWhereClause($brandID);
 	
@@ -142,7 +143,7 @@
 	
 	if ($clubID)   {
 	 $add_remove_mode=makeSane($_GET['a_r'],1);
-	 $query_str.="&a_r=$add_remove_mode";
+	 $queryExtraArray+=array("a_r"=>$add_remove_mode);
 	
 	 require dirname(__FILE__)."/INC_club_where_clause.php";
 	} 
@@ -214,8 +215,11 @@
 	 exit();
 	}
 	
+	
 	$legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);
-	$legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+	$legendRight=generate_flights_pagination(
+			getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$sortOrder)+$queryExtraArray),			
+			$itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
 	if ($endNum>$itemsNum) $endNum=$itemsNum;
@@ -226,8 +230,10 @@
 	<div class='titleDiv'>$legend</div>
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
+	
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
-	listFlights($res,$legend,	$query_str,$sortOrder);
+
+	listFlights($res,$legend, $queryExtraArray,$sortOrder);
 
 ?>
 <style type="text/css">
@@ -286,7 +292,7 @@ $(document).ready(function(){
 
 <?
 
-function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$sort=1) {
+function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$sort=1) {
   global $moduleRelPath;
   global $Theme;
 
@@ -313,7 +319,7 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$sort=1)
 	}
 }
 
-function listFlights($res,$legend, $query_str="",$sortOrder="DATE") {
+function listFlights($res,$legend, $queryExtraArray=array(),$sortOrder="DATE") {
    global $db,$Theme;
    global $takeoffRadious;
    global $userID;
@@ -351,11 +357,14 @@ function removeClubFlight(clubID,flightID) {
 <?
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {
-			if ($add_remove_mode)
-				echo "<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str&a_r=0'>Return to normal view</a>";
-			else
-				echo "<a href='".CONF_MODULE_ARG."&op=list_flights&sortOrder=$sortOrder$query_str&a_r=1'>Add / remove flights</a>";
-
+			if ($add_remove_mode){
+				echo "<a href='".
+					getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$sortOrder)+
+							$queryExtraArray+array('a_r'=>'0') )."'>Return to normal view</a>";
+			} else {
+				echo "<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$sortOrder)+
+							$queryExtraArray+array('a_r'=>'1') )."'>Add / remove flights</a>";
+			}
 		}
 		echo "<div id='updateDiv' style='display:block'></div>";
 	 	echo  "</div>";
@@ -367,17 +376,17 @@ function removeClubFlight(clubID,flightID) {
 	<tr> 
 	  <td class='SortHeader' width="25"><? echo _NUM ?></td>
 		 <?
-		   printHeader(60,$sortOrder,"DATE",_DATE_SORT,$query_str) ;
-		   printHeader(160,$sortOrder,"pilotName",_PILOT,$query_str) ;
-		   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$query_str) ;
-		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$query_str) ;
+		   printHeader(60,$sortOrder,"DATE",_DATE_SORT,$queryExtraArray) ;
+		   printHeader(160,$sortOrder,"pilotName",_PILOT,$queryExtraArray) ;
+		   printHeader(0,$sortOrder,"takeoffID",_TAKEOFF,$queryExtraArray) ;
+		   printHeader(40,$sortOrder,"DURATION",_DURATION_HOURS_MIN,$queryExtraArray) ;
 		   if ($CONF['list_flights']['fields']['scoring'][0]=='LINEAR_DISTANCE' ){
-			   printHeader(60,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$query_str) ;
+			   printHeader(60,$sortOrder,"LINEAR_DISTANCE",_LINEAR_DISTANCE,$queryExtraArray) ;
 		   }else {
-		   	   printHeader(60,$sortOrder,"SCORE_SPEED",_MEAN_SPEED1,$query_str) ;
+		   	   printHeader(60,$sortOrder,"SCORE_SPEED",_MEAN_SPEED1,$queryExtraArray) ;
 		   }
-		   printHeader(60,$sortOrder,"FLIGHT_KM",_OLC_KM,$query_str) ;
-		   printHeader(65,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$query_str) ;
+		   printHeader(60,$sortOrder,"FLIGHT_KM",_OLC_KM,$queryExtraArray) ;
+		   printHeader(65,$sortOrder,"FLIGHT_POINTS",_OLC_SCORE,$queryExtraArray) ;
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
   	  <td width="50" class='SortHeader'>&nbsp;</td>

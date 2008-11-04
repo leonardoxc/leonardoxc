@@ -214,6 +214,7 @@ if (! $dontShowCountriesSelection ) {
 		<? } ?>
 	</li>
 <? } ?>	
+
 	<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
 		<ul>
 		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>

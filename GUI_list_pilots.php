@@ -103,8 +103,7 @@
 	 $legend.=$sortDesc;
  }
 
-  $query_str="";
-  $query_str.="&comp=".$is_comp;
+  $queryExtraArray=array('comp'=>$is_comp);
 
 
   if (! $pilotsTableQueryIncluded ) { // we have NOT already put the pilot table in -> do it now 
@@ -178,8 +177,9 @@ var BT_default_width=500;
 
 <?
 
-	$legendRight=generate_flights_pagination("".CONF_MODULE_ARG."&op=$op&sortOrder=$sortOrder$query_str", 
-											 $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
+	$legendRight=generate_flights_pagination(
+			getLeonardoLink(array('op'=>$op,'sortOrder'=>$sortOrder)+$queryExtraArray),			
+			$itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
 	if ($endNum>$itemsNum) $endNum=$itemsNum;
@@ -192,9 +192,9 @@ var BT_default_width=500;
    </div>" ;
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
 
-    listPilots($res,$legend,$query_str,$sortOrder,$is_comp);
+    listPilots($res,$legend,$queryExtraArray,$sortOrder,$is_comp);
 
-function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_str,$is_comp) {
+function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$is_comp) {
 	global $moduleRelPath , $Theme;
 	
 	if ($width==0) $widthStr="";
@@ -217,11 +217,13 @@ function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$query_
 	if ($is_comp) {
 		echo "<td $widthStr align=$align class='$cList'><div align=$align>$fieldDesc$img</div></td>";
 	} else {
-		echo "<td $widthStr align=$align class='$cList'><a href='".CONF_MODULE_ARG."&op=list_pilots&sortOrder=$fieldName$query_str'>$fieldDesc$img</a></td>";
+		echo "<td $widthStr align=$align class='$cList'><a href='".
+			getLeonardoLink(array('op'=>'list_pilots','sortOrder'=>$fieldName)+$queryExtraArray)		
+			."'>$fieldDesc$img</a></td>";
 	}
 }
 
-function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_comp=0) {
+function listPilots($res,$legend,$queryExtraArray=array(),$sortOrder="bestDistance",$is_comp=0) {
    global $db,$Theme;
    global $moduleRelPath;
    global $PREFS;
@@ -242,16 +244,16 @@ function listPilots($res,$legend,$query_str="",$sortOrder="bestDistance",$is_com
 	} else  {
 		$OPEN_DISTANCE_str=_TOTAL_DISTANCE." "._MI;
 	}
-   printHeaderPilotsTotals(0,$sortOrder,"pilotName",_PILOT,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$query_str,$is_comp);
-   printHeaderPilotsTotals(80,$sortOrder,"bestDistance",_BEST_DISTANCE,$query_str,$is_comp);
-   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_distance",_MEAN_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(80,$sortOrder,"totalDistance",$OPEN_DISTANCE_str,$query_str,$is_comp);
-   printHeaderPilotsTotals(80,$sortOrder,"totalDuration",_TOTAL_DURATION_OF_FLIGHTS,$query_str,$is_comp);
-   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_duration",_MEAN_DURATION,$query_str,$is_comp);
-   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"totalOlcKm",_TOTAL_OLC_KM,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$sortOrder,"totalOlcPoints",_TOTAL_OLC_SCORE,$query_str,$is_comp);
-   printHeaderPilotsTotals(60,$sortOrder,"bestOlcScore",_BEST_OLC_SCORE,$query_str,$is_comp);
+   printHeaderPilotsTotals(0,$sortOrder,"pilotName",_PILOT,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"totalFlights",_NUMBER_OF_FLIGHTS,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"bestDistance",_BEST_DISTANCE,$queryExtraArray,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_distance",_MEAN_KM,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"totalDistance",$OPEN_DISTANCE_str,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(80,$sortOrder,"totalDuration",_TOTAL_DURATION_OF_FLIGHTS,$queryExtraArray,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"mean_duration",_MEAN_DURATION,$queryExtraArray,$is_comp);
+   if (!is_comp) printHeaderPilotsTotals(60,$sortOrder,"totalOlcKm",_TOTAL_OLC_KM,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"totalOlcPoints",_TOTAL_OLC_SCORE,$queryExtraArray,$is_comp);
+   printHeaderPilotsTotals(60,$sortOrder,"bestOlcScore",_BEST_OLC_SCORE,$queryExtraArray,$is_comp);
    echo "</tr>";
    
    $i=1;

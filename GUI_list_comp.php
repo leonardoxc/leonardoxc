@@ -78,8 +78,8 @@
   $sortOrderFinal=$sortOrder;
   //$legend.=$sortDesc;
 
-  $query_str="";
-  $query_str.="&comp=".$comp;
+  $queryExtraArray=array('comp'=>$comp);
+  // $queryExtraArray=array();
 
   if ($country) {
 		$where_clause_country.=" AND $waypointsTable.countryCode='".$country."' ";
@@ -291,7 +291,8 @@
   $pagesNum=ceil ($itemsNum/$CONF_compItemsPerPage);
   $endNum=$startNum+$CONF_compItemsPerPage;
 	
-  $legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=competition$query_str", 
+  $legendRight=generate_flights_pagination(
+			getLeonardoLink(array('op'=>'competition')+$queryExtraArray),  			
 			$itemsNum,$CONF_compItemsPerPage,$page_num*$CONF_compItemsPerPage-1, TRUE); 
 			
 

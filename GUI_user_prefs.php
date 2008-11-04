@@ -26,12 +26,13 @@
 	$PREFS->viewCountry=makeSane($_POST['PREFS_viewCountry']);
 	$_SESSION["country"]= $PREFS->viewCountry;
 
-    echo "<div align=center>"._Your_settings_have_been_updated."<br><br><a href='".CONF_MODULE_ARG."&op=list_flights'>"._RETURN_TO_FLIGHTS."</a><br><br></div>";
+    echo "<div align=center>"._Your_settings_have_been_updated."<br><br><a href='".
+			getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN_TO_FLIGHTS."</a><br><br></div>";
   }
    
 
 ?>
-<form name=userPrefs  method="POST" action="<?=CONF_MODULE_ARG?>&op=user_prefs" >
+<form name=userPrefs  method="POST" >
 <BR />
 <?
   open_inner_table(_MENU_MY_SETTINGS,400,"icon_profile.png");

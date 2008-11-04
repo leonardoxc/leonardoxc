@@ -50,7 +50,6 @@
 
 		$Ltemplate->assign_block_vars('tk', array(	 	
 			'link'=> "javascript:jumpToTakeoffs('".$countriesCodes[$i]."')",
-//			'link'=> CONF_MODULE_ARG.'&op=list_takeoffs&year=0&takeoffID=0&pilotID=0&country='.$countriesCodes[$i],
 			'name'=>$countryName			
 		));
 		$i++;
@@ -109,10 +108,12 @@ $tkStr.='
 
 	if ($userID>0) {
 		$Ltemplate->assign_block_vars('myMenu', array(	 	
-			'LINK_MY_FLIGHTS' =>"".CONF_MODULE_ARG."&op=list_flights&pilotID=$userID&takeoffID=0&country=0&year=0&month=0",
-			'LINK_MY_PROFILE' =>"".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=$userID",
-			'LINK_MY_STATS'   =>"".CONF_MODULE_ARG."&op=pilot_profile_stats&pilotIDview=$userID",
-			'LINK_MY_SETTINGS'=>"".CONF_MODULE_ARG."&op=user_prefs",
+			'LINK_MY_FLIGHTS' =>getLeonardoLink(array('op'=>'list_flights','pilotID'=>$userID,
+						'takeoffID'=>'0','country'=>'0',
+						'year'=>'0','month'=>'0','season'=>'0')),
+			'LINK_MY_PROFILE' =>getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$userID)),
+			'LINK_MY_STATS'   =>getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>$userID)),
+			'LINK_MY_SETTINGS'=>getLeonardoLink(array('op'=>'user_prefs')),
 		));
 	}
 	$Ltemplate->assign_vars( array(	 
@@ -122,16 +123,19 @@ $tkStr.='
 		'YEARS_OPTION'=>$sel_years,
 		'CATS_OPTION'=>$sel_cat,
 
-		'LINK_SITES_GUIDE'=>"".CONF_MODULE_ARG."&op=sites",
-		'LINK_SHOW_LAST_ADDED'=>"".CONF_MODULE_ARG."&op=list_flights&sortOrder=dateAdded&year=0&month=0&takeoffID=0&country=0&pilotID=0",
-		'LINK_SHOW_PILOTS'    =>"".CONF_MODULE_ARG."&op=list_pilots&comp=0",
-		'LINK_SUBMIT_FLIGHT'  =>"".CONF_MODULE_ARG."&op=add_flight",
+		'LINK_SITES_GUIDE'=>getLeonardoLink(array('op'=>'sites')),
+		'LINK_SHOW_LAST_ADDED'=>getLeonardoLink(array('op'=>'list_flights','sortOrder'=>'dateAdded',
+						'year'=>'0','month'=>'0','season'=>'0',
+						'country'=>'0','takeoffID'=>'0','pilotID'=>'0')),
+		'LINK_SHOW_PILOTS'    =>getLeonardoLink(array('op'=>'list_pilots','comp'=>'0')),
+		'LINK_SUBMIT_FLIGHT'  =>getLeonardoLink(array('op'=>'add_flight')),
 
-		'SHOW_LEAGUE_URL'=> getRelMainFileName()."&op=competition",
-		'SHOW_FLIGHTS_URL'=> getRelMainFileName()."&op=list_flights&takeoffID=0&pilotID=0",
-		'SHOW_TAKEOFFS_URL'=> getRelMainFileName()."&op=list_takeoffs&pilotID=0"
+		'SHOW_LEAGUE_URL'=> getLeonardoLink(array('op'=>'competition')),
+		'SHOW_FLIGHTS_URL'=> getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'0','pilotID'=>'0')),
+		'SHOW_TAKEOFFS_URL'=> getLeonardoLink(array('op'=>'list_takeoffs','pilotID'=>'0')),
 	));
 
    	$Ltemplate->pparse('body');
 	$noFooterMenu=1;
+	
 ?>

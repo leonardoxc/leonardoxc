@@ -39,7 +39,9 @@
 //-----------------------------------------------------------------------------------------------------------
 	
 	$legend="Log entries";
-	$legendRight=generate_flights_pagination(CONF_MODULE_ARG."&op=admin_logs&sortOrder=$sortOrder$query_str", $itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE , 3, 3); 
+	$legendRight=generate_flights_pagination(
+			getLeonardoLink(array('op'=>='admin_logs','sortOrder'=>$sortOrder)),		
+			$itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE , 3, 3); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
 	if ($endNum>$itemsNum) $endNum=$itemsNum;

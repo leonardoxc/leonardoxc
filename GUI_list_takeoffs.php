@@ -21,7 +21,7 @@
   if ($cat==0) $where_clause="";
   else $where_clause=" AND cat=$cat ";
 
-  $query_str="";
+  $queryExtraArray=array();
   $legend=_MENU_TAKEOFFS;
   
   // SEASON MOD
@@ -94,12 +94,12 @@
    </div>" ;
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
 
-  listTakeoffs($res,$legend,$query_str,$sortOrder);
+  listTakeoffs($res,$legend,$queryExtraArray,$sortOrder);
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <? echo makeTakeoffPopup(); ?>
 <?
-function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
+function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray) {
   global $moduleRelPath ,$Theme;
 
   if ($width==0) $widthStr="";
@@ -110,14 +110,16 @@ function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str)
 
   if ($sortOrder==$fieldName) { 
    echo "<td $widthStr  class='SortHeader activeSortHeader $alignClass'>
-			<a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
+			$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
 		</td>";
   } else {  
-	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='".CONF_MODULE_ARG."&op=list_takeoffs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
+	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='".
+	   		getLeonardoLink(array('op'=>'list_takeoffs','sortOrder'=>$fieldName)+$queryExtraArray)
+			."'>$fieldDesc</td>";
    } 
 }
 
-function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
+function listTakeoffs($res,$legend, $queryExtraArray=array(),$sortOrder="CountryCode") {
    global $db,$Theme, $takeoffRadious, $userID, $moduleRelPath;
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
@@ -131,10 +133,10 @@ function listTakeoffs($res,$legend, $query_str="",$sortOrder="CountryCode") {
   <tr>
   	<td width="25" class='SortHeader'><? echo _NUM ?></td>
  	<?
-		printHeaderTakeoffs(100,$sortOrder,"CountryCode",_COUNTRY,$query_str) ;
-		printHeaderTakeoffs(0,$sortOrder,"intName",_TAKEOFF,$query_str) ;
-		printHeaderTakeoffs(80,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$query_str) ;
-		printHeaderTakeoffs(100,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$query_str) ;
+		printHeaderTakeoffs(100,$sortOrder,"CountryCode",_COUNTRY,$queryExtraArray) ;
+		printHeaderTakeoffs(0,$sortOrder,"intName",_TAKEOFF,$queryExtraArray) ;
+		printHeaderTakeoffs(80,$sortOrder,"FlightsNum",_NUMBER_OF_FLIGHTS,$queryExtraArray) ;
+		printHeaderTakeoffs(100,$sortOrder,"max_distance",_SITE_RECORD_OPEN_DISTANCE,$queryExtraArray) ;
 	?>
 	</tr>
 <?

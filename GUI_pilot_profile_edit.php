@@ -164,8 +164,12 @@
   $pilot = mysql_fetch_assoc($res);
 
   $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
-  $legendRight="<a href='".CONF_MODULE_ARG."&op=list_flights&pilotID=$pilotIDview&year=0&country='>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile&pilotIDview=".$pilotIDview."'>"._View_Profile."</a>";
+  $legendRight="<a href='".
+	  getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
+	  ."'>"._PILOT_FLIGHTS."</a>";
+  $legendRight.=" | <a href='".
+	getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview))	
+  	."'>"._View_Profile."</a>";
   $legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
 /*  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) || in_array($userID,$mod_users)  ) 
 	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
@@ -200,7 +204,7 @@
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
-<form name=pilotProfile  enctype="multipart/form-data" method="POST" action="<?=CONF_MODULE_ARG?>&op=pilot_profile_edit&pilotIDview=<?=$pilotIDview?>" >
+<form name=pilotProfile  enctype="multipart/form-data" method="POST" >
 <?
   open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=\"370\" align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
 

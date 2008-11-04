@@ -93,11 +93,18 @@ if ($CONF['seasons']['use_season_years'] ) {
 <? if ($op=="list_flights" && $CONF_use_calendar) {?>
 	<td class="calBox" valign="top" style="width:255px">		
 <? 
+
 		$calLang=$lang2iso[$currentlang]; 
-		if (!$day) $day=date("d");
-		if (!$month) $month=date("m");
-		if (!$year)  $year=date("Y");
-		$dateStr=sprintf("%02d.%02d.%04d",$day,$month,$year);
+
+		$calDay=$day;
+		$calMonth=$month;
+		$calYear=$year;		
+		if (!$calDay) $calDay=date("d");
+		if (!$calMonth) $calMonth=date("m");
+		if (!$calYear)  $calYear=date("Y");
+		$dateStr=sprintf("%02d.%02d.%04d",$calDay,$calMonth,$calYear);
+		
+		// echo "$year $month, $day ####";exit;
  ?>
 <script language='javascript'>
 	var thisUrl= '<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'%year%','month'=>'%month%','day'=>'%day%'))?>';

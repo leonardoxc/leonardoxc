@@ -791,6 +791,10 @@ function getLeonardoLink($argArray) {
 			if ($argArray['pilotIDview']!='skipValue')
 				$args.=$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
+		} else if ($opTmp=='show_waypoint') {
+			$args.='takeoffs/details/';	
+			$args.=$argArray['waypointIDview'];
+			return $CONF['links']['baseURL'].'/'.$args;
 		} else if ($opTmp=='show_flight') {	
 			$args.='tracks/details/';	
 			if ($argArray['flightID']!='skipValue')
@@ -835,10 +839,14 @@ function getLeonardoLink($argArray) {
 			if ($args2Array['season']) {
 				$args.='season'.$args2Array['season'].'/';
 			} else {
-				if ($args2Array['year'] && $args2Array['month'] && $args2Array['day'])
-					//$args.=sprintf("%04d.%02d.%02d",$args2Array['year'],$args2Array['month'],$args2Array['day']).'/';
+				if ($args2Array['year'] && $args2Array['month'] && $args2Array['day']) {
+					//printf("date : %04d.%02d.%02d ***",
+					//	$args2Array['year'],$args2Array['month'],$args2Array['day']);
+
+						//$args.=sprintf("%04d.%02d.%02d",
+						//$args2Array['year'],$args2Array['month'],$args2Array['day']).'/';
 					$args.=$args2Array['year'].'.'.$args2Array['month'].'.'.$args2Array['day'].'/';
-				else if ($args2Array['year'] && $args2Array['month'])
+				} else if ($args2Array['year'] && $args2Array['month'])
 					$args.=sprintf("%04d.%02d",$args2Array['year'],$args2Array['month']).'/';
 				else if ($args2Array['year']  )
 					$args.=sprintf("%04d",$args2Array['year']).'/';	

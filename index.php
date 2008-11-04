@@ -149,10 +149,10 @@ if ($l_date=='alltimes'){
 		setVar("day",0);				
 		setVar("season",0);
 	}else if ( preg_match('/^(\d{4})$/',$l_date,$matches) ) {
-		setVar("year",$matches[1]);
+		setVar("year",$matches[1]);		
 		setVar("month",0);
 		setVar("day",0);				
-		setVar("season",0);
+		setVar("season",0);		
 	} else if ( preg_match('/^season(\d{4})$/',$l_date,$matches) ) {
 		setVar("year",0);
 		setVar("month",0);

@@ -72,8 +72,9 @@ RewriteRule ^$virtPath/pilots/stats/([\d_]*)$   $baseUrl&op=pilot_profile_stats&
 RewriteRule ^$virtPath/pilots/flights/([\d_]*)$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
 
 
-RewriteRule ^$virtPath/op:(.*)$ $baseUrl&$1 [L]
+RewriteRule ^$virtPath/op:(.*)$ $baseUrl&op=$1 [L]
 
+RewriteRule ^$virtPath/&(.*)$ $baseUrl&$1 [L]
 
 RewriteRule ^$virtPath/(.*)$ $basePath/$1
 ";
