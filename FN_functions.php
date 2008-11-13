@@ -807,7 +807,7 @@ function getLeonardoLink($argArray) {
 		
 		
 		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
-		$args2process=array('year','month','day','season','country','rank','subrank');
+		$args2process=array('year','month','day','season','country','rank','subrank','cat');
 		$args2Array=array();
 		
 		// add the date, country in the path
@@ -855,6 +855,17 @@ function getLeonardoLink($argArray) {
 					$args.='alltimes/';
 			}
 
+			if ($opTmp=='comp') {
+			
+			} else {
+				$args.='cat:'.$args2Array['cat'].'';
+			}
+
+			$args.=',brandID:'.($args2Array['brandID']+0).'';
+
+			//unset($argArray['nac_club']);
+			//unset($argArray['brandID']);
+			unset($argArray['cat']);
 			unset($argArray['season']);
 			unset($argArray['year']);
 			unset($argArray['month']);	
