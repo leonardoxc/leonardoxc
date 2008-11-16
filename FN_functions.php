@@ -712,16 +712,28 @@ function makeHash($scriptName)  {
 // 3 -> SEO urls
 
 function getLeonardoLink($argArray) {
-	global $CONF,$lng, $lang2iso;
+	global $CONF,$lng, $lang2iso,$op;
 	
-	if ($CONF['links']['type']==1) {
+	$linkType=	$CONF['links']['type'];
 	
+	if (in_array($argArray['op'],array('login','admin','conf_htaccess') ) ) {
+		$linkType=1;
+	}
+	
+	if ($linkType==1) {
+		global $baseInstallationPath,$CONF_mainfile;
+		
 		foreach($argArray as $argName=>$argValue){
 			if ($argValue!='useCurrent')
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
+		$lnk='';
+		if (!$baseInstallationPath) $lnk='/';
+		$lnk.=$baseInstallationPath.$CONF_mainfile.CONF_MODULE_ARG.$args;
+		// echo $lnk;
+		//return $lnk;
 		return CONF_MODULE_ARG.$args;
-	} else 	if ($CONF['links']['type']==2) {
+	} else 	if ($linkType==2) {
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
 		global $nacid,$nacclubid;
@@ -748,7 +760,7 @@ function getLeonardoLink($argArray) {
 		}
 		return $thisURL;
 		
-	} else 	if ($CONF['links']['type']==3) {
+	} else 	if ($linkType==3) {
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
 		global $nacid,$nacclubid;
@@ -807,12 +819,14 @@ function getLeonardoLink($argArray) {
 		
 		
 		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
-		$args2process=array('year','month','day','season','country','rank','subrank','cat');
+		$args2process=array('year','month','day','season','country','rank','subrank','cat','brandID',
+							'clubID','nacclubid','nacid');
 		$args2Array=array();
 		
+		$isListing=false;
 		// add the date, country in the path
 		if (in_array($opTmp ,$listings)) {
-
+			$isListing=true;
 			//see if we have some variables in the argArray		
 			foreach($args2process as $argName) {
 				if (isset($argArray[$argName])){
@@ -848,23 +862,31 @@ function getLeonardoLink($argArray) {
 						//$args2Array['year'],$args2Array['month'],$args2Array['day']).'/';
 					$args.=$args2Array['year'].'.'.$args2Array['month'].'.'.$args2Array['day'].'/';
 				} else if ($args2Array['year'] && $args2Array['month'])
-					$args.=sprintf("%04d.%02d",$args2Array['year'],$args2Array['month']).'/';
+					$args.=$args2Array['year'].'.'.$args2Array['month'].'/';
 				else if ($args2Array['year']  )
-					$args.=sprintf("%04d",$args2Array['year']).'/';	
+					$args.=$args2Array['year'].'/';	
 				else 
 					$args.='alltimes/';
 			}
 
+			$args.='brand:'.($args2Array['brandID']?$args2Array['brandID']:'all').',';
+			
 			if ($opTmp=='comp') {
 			
 			} else {
-				$args.='cat:'.$args2Array['cat'].'';
+				$args.='cat:'.$args2Array['cat'].',';
 			}
 
-			$args.=',brandID:'.($args2Array['brandID']+0).'';
-
-			//unset($argArray['nac_club']);
-			//unset($argArray['brandID']);
+			if ( $args2Array['nacid'] && $args2Array['nacclubid'] ) {
+				$args.='club:'.$args2Array['nacid'].'.'.$args2Array['nacclubid'];
+			} else {
+				$args.='club:'.($args2Array['clubID']?$args2Array['clubID']:'all');
+			}
+			
+			unset($argArray['nacclubid']);
+			unset($argArray['nacid']);
+			unset($argArray['clubID']);
+			unset($argArray['brandID']);
 			unset($argArray['cat']);
 			unset($argArray['season']);
 			unset($argArray['year']);
@@ -880,9 +902,13 @@ function getLeonardoLink($argArray) {
 			unset($argArray['op']);
 		}
 		
+		$i=0;
 		foreach($argArray as $argName=>$argValue){
-			if ($argName!='op' )
+			if ($argName!='op' ) {
+				// if (! $isListing || $i>0) $args.='&';
+									
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+			}	
 		}
 	
 		return $CONF['links']['baseURL'].'/'.$args;

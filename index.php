@@ -109,6 +109,38 @@ if ($opMode==1 ) { // phpnuke
 
 $_SESSION['userID']=$userID;
 
+if ($_GET['leoSeo']) {
+	// inject some $_GET values
+	$seoParamsOrg=split(',',$_GET['leoSeo']);
+	foreach($seoParamsOrg as $seoParam) {
+		$t1=split(':',$seoParam);
+		$seoParams[$t1[0]]=$t1[1];
+	}
+	
+	if (isset($seoParams['cat'])) {	
+		$_REQUEST['cat']=$seoParams['cat'];
+	}
+
+	if (isset($seoParams['brand'])) {
+		$_REQUEST['brandID']=$seoParams['brand'];
+		if ($_REQUEST['brandID']=='all') $_REQUEST['brandID']=0;
+	}
+	
+	if (isset($seoParams['club'])) {
+		if (strpos($seoParams['club'],'.')) {
+			$tmpNac=split('\.',$seoParams['club']);			
+			$_REQUEST['nacid']=$tmpNac[0];
+			$_REQUEST['nacclubid']=$tmpNac[1];
+			$_REQUEST['clubID']=0;
+		} else {
+			$_REQUEST['clubID']=$seoParams['club'];
+			if ($_REQUEST['clubID']=='all') $_REQUEST['clubID']=0;
+			$_REQUEST['nacid']=0;
+			$_REQUEST['nacclubid']=0;
+		}	
+	}
+}
+
 // DEBUG
 setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0,1);
@@ -163,6 +195,12 @@ if ($l_date=='alltimes'){
 
 
 }
+
+/*
+echo 'REQUEST_URI:'.$_SERVER['REQUEST_URI'];
+echo 'QUERY_STRING:'.$_SERVER['QUERY_STRING'];
+print_r($_REQUEST);
+*/
 
 // BRANDS MOD
 setVarFromRequest("brandID",0,1); // numeric

@@ -318,17 +318,22 @@ if (! $dontShowCountriesSelection ) {
 		<? } ?>  	
   	    <div class="menu1" >
 		<? // display this url 	
-			$thisURL=CONF_MODULE_ARG."&op=$op";
+			// New way , all is taken care from getLeonardoLink()
+			$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),'pilotID'=>($pilotID+0) ) );
+			/*
 			if ($op=="comp") 
 				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
 			else
 				$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+				
 			# Martin Jursa 25.05.2007: support for nacclub-filtering
 			if (!empty($CONF_use_NAC)) {
 				if ($nacclubid && $nacid) {
-					$thisURL.="&nacid=$nacid&nacclubid=$nacclubid";
+					 $thisURL.="&nacid=$nacid&nacclubid=$nacclubid";
 				}
 			}
+ 		*/
+
 		?>
 		<a  href='<? echo $thisURL;
 		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>

@@ -63,19 +63,23 @@ RewriteRule ^$virtPath/pilot/([\d_]*)/stats/$   $baseUrl&op=pilot_profile_stats&
 RewriteRule ^$virtPath/pilot/([\d_]*)/flights/$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
 RewriteRule ^$virtPath/pilot/([\d_]*)$ $baseUrl&op=pilot_profile&pilotIDview=$1  [L,NC]
 
-# all 'list' ops that are /lang/opname/countryCode/date/....
-RewriteRule ^$virtPath/tracks/(.*)/(.*)/(.*)$ $baseUrl&op=list_flights&country=$1&l_date=$2&$3 [L]
-RewriteRule ^$virtPath/pilots/(.*)/(.*)/(.*)$  $baseUrl&op=list_pilots&country=$1&l_date=$2&$3 [L]
-RewriteRule ^$virtPath/league/(.*)/(.*)/(.*)$  $baseUrl&op=competition&country=$1&l_date=$2&$3 [L]
-RewriteRule ^$virtPath/ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&$4 [L]
-RewriteRule ^$virtPath/takeoffs/(.*)/(.*)/(.*)$  $baseUrl&op=list_takeoffs&country=$1&l_date=$2&$3 [L]
+# all 'list' ops that are /opname/countryCode/date/....
+RewriteRule ^$virtPath/tracks/(.*)/(.*)/(.*)$ $baseUrl&op=list_flights&country=$1&l_date=$2&leoSeo=$3 [L,NC]
+RewriteRule ^$virtPath/pilots/(.*)/(.*)/(.*)$  $baseUrl&op=list_pilots&country=$1&l_date=$2&leoSeo=$3 [L,NC]
+RewriteRule ^$virtPath/league/(.*)/(.*)/(.*)$  $baseUrl&op=competition&country=$1&l_date=$2&leoSeo=$3 [L,NC]
+RewriteRule ^$virtPath/takeoffs/(.*)/(.*)/(.*)$  $baseUrl&op=list_takeoffs&country=$1&l_date=$2&leoSeo=$3 [L,NC]
+
+RewriteRule ^$virtPath/ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&$4 [L,NC]
 
 
-RewriteRule ^$virtPath/op:(.*)$ $baseUrl&op=$1 [L]
 
-RewriteRule ^$virtPath/&(.*)$ $baseUrl&$1 [L]
+RewriteRule ^$virtPath/op:(.*)$ $baseUrl&op=$1 [L,NC]
 
-RewriteRule ^$virtPath/(.*)$ $basePath/$1
+RewriteRule ^$virtPath/&(.*)$ $baseUrl&$1 [L,NC]
+
+RewriteRule ^$virtPath/?[^.]*$ /$virtPath/tracks/world/%{TIME_YEAR}/ [R,NC]
+
+RewriteRule ^$virtPath/(.*)$ $basePath/$1 [L,NC]
 ";
 
 echo "<pre>$str</pre>";

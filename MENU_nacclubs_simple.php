@@ -17,7 +17,11 @@
  * PopUp Menu for NACclubs
  * Martin Jursa 22.05.2007
  */
-	$urlparameters=urlencode('name='.$module_name);
+ 
+ 	$thisPageUrl=getLeonardoLink(array('op'=>'useCurrent','nacid'=>'%nacid%','nacclubid'=>'%nacclubid%'));
+	//$urlparameters=urlencode('name='.$module_name);	
+	$urlparameters=urlencode($thisPageUrl);
+	
 	$js="<script type=\"text/javascript\" laguage=\"javascript\"><!--
 	function setClub(nacid, nacclubid) {
 		var h=screen.availHeight*0.9;

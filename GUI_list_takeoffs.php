@@ -147,7 +147,9 @@ function listTakeoffs($res,$legend, $queryExtraArray=array(),$sortOrder="Country
 		$sortRowClass="l_row1";
 		if ( $countries[$row["countryCode"]] != $currCountry || $sortOrder!='CountryCode' ) {
 			$currCountry=$countries[$row["countryCode"]] ;
-			$country_str= "<a href='".CONF_MODULE_ARG."&op=list_flights&country=".$row["countryCode"]."&takeoffID=0'>".$currCountry."</a>";
+			$country_str= "<a href='".getLeonardoLink(
+					array('op'=>'list_flights','country'=>$row["countryCode"],'takeoffID'=>'0') )
+					."'>".$currCountry."</a>";
 
 			if ($sortOrder=='CountryCode') $sortRowClass="l_row2";
 			else $sortRowClass=($i%2)?"l_row1":"l_row2"; 

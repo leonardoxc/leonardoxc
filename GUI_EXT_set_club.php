@@ -117,16 +117,17 @@ function setValToMaster() {
 		alert('Parent window not available');
 	}else {
 		var masterDoc=window.opener.document;
-		var urlParams='<?=$params?>';
-		if (urlParams=='') {
+		var pageUrl='<?=$params?>';
+		if (pageUrl=='') {
 			alert('Parameter params is missing.');
 		}else {
-			var parts=masterDoc.location.href.split('?');
+			//var parts=masterDoc.location.href.split('?');
 			var el=document.getElementById('clubList');
 			if (el) {
 				var nacclubId=el.options[el.selectedIndex].value;
 				if (!nacclubId) nacclubId='0';
-				var hrefNew=parts[0]+'?'+urlParams+'&nacclubid='+nacclubId+'&nacid=<?=$NAC_ID?>';
+				// var hrefNew=parts[0]+'?'+urlParams+'&nacclubid='+nacclubId+'&nacid=<?=$NAC_ID?>';
+				var hrefNew=pageUrl.replace('%nacclubid%',nacclubId).replace('%nacid%',<?=$NAC_ID?>);
 				masterDoc.location.href=hrefNew;
 			}
 		}
@@ -159,7 +160,7 @@ function setValToMaster() {
 			?>
 		    </select>
 		    <br>
-		    <input type="button" name="Submit" value="<? echo _Select_Club ?>" onclick="setValToMaster()"/>
+		    <input type="button" name="Submit" value="<? echo _Select_Club ?>" onClick="setValToMaster()"/>
 		    <input type="button" name="Submit2" value="<? echo _Close_window ?>"  onclick="window.close();" />
 		  </div>
 		 </td>

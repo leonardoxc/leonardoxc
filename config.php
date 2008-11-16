@@ -577,7 +577,7 @@ function setLeonardoPaths () {
 	global 	$module_name,$moduleAbsPath,$moduleRelPath;
 	global 	$waypointsRelPath,	$waypointsAbsPath,	$waypointsWebPath;
 	global 	$flightsRelPath,	$flightsAbsPath,	$flightsWebPath;
-	global  $CONF_arg_name;
+	global  $CONF_arg_name,$CONF_mainfile;
 	global 	$isExternalFile;
 
 
@@ -612,7 +612,9 @@ function setLeonardoPaths () {
 if (defined('CONF_MODULE_ARG') )	exit;
 */
 	if (!defined('CONF_MODULE_ARG') ){
-		define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
+		if (!$baseInstallationPath) $lnk='/';
+		$lnk.=$baseInstallationPath.$CONF_mainfile."?$CONF_arg_name=$module_name";
+		define('CONF_MODULE_ARG',$lnk);
 	}
 
 	$moduleAbsPath=dirname(__FILE__);	

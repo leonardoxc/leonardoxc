@@ -130,9 +130,14 @@ $tkStr.='
 		'LINK_SHOW_PILOTS'    =>getLeonardoLink(array('op'=>'list_pilots','comp'=>'0')),
 		'LINK_SUBMIT_FLIGHT'  =>getLeonardoLink(array('op'=>'add_flight')),
 
-		'SHOW_LEAGUE_URL'=> getLeonardoLink(array('op'=>'competition')),
-		'SHOW_FLIGHTS_URL'=> getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'0','pilotID'=>'0')),
-		'SHOW_TAKEOFFS_URL'=> getLeonardoLink(array('op'=>'list_takeoffs','pilotID'=>'0')),
+		'SHOW_LEAGUE_URL'=> getLeonardoLink(array('op'=>'competition',
+								'country'=>'%country%','year'=>'%year%','month'=>'0','cat'=>'%cat%')),
+		'SHOW_FLIGHTS_URL'=> getLeonardoLink(array('op'=>'list_flights',
+								'country'=>'%country%','year'=>'%year%','month'=>'0','cat'=>'%cat%',
+								'takeoffID'=>'0','pilotID'=>'0')),
+		'SHOW_TAKEOFFS_URL'=> getLeonardoLink(array('op'=>'list_takeoffs',
+								'country'=>'%country%','takeoffID'=>'0','pilotID'=>'0','year'=>'0','month'=>'0','cat'=>'0')),
+		
 	));
 
    	$Ltemplate->pparse('body');

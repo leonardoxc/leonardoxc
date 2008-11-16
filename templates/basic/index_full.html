@@ -156,19 +156,27 @@ div#b_nav ul li.header a.on {
     function jumpToLeague(countryCode) {
 	  var leagueYear = document.navForm.leagueYear.value;
 	  var leagueCat  = document.navForm.leagueCat.value;
-      window.location = "{SHOW_LEAGUE_URL}"+"&country="+countryCode+"&year="+leagueYear+"&cat="+leagueCat;
+	  
+	  var flightsUrl  = "{SHOW_LEAGUE_URL}";
+	  flightsUrl=flightsUrl.replace('%cat%',leagueCat).replace('%country%',countryCode).replace('%year%',leagueYear);
+	  window.location =flightsUrl;
+      //window.location = "{SHOW_LEAGUE_URL}"+"&country="+countryCode+"&year="+leagueYear+"&cat="+leagueCat;
       return false;
     }
     function jumpToFlights(countryCode) {
 	  var flightsYear = document.navForm.flightsYear.value;
 	  var flightsCat  = document.navForm.flightsCat.value;
-      window.location = "{SHOW_FLIGHTS_URL}"+"&country="+countryCode+"&year="+flightsYear+"&cat="+flightsCat;
+	  var flightsUrl  = "{SHOW_FLIGHTS_URL}";
+	  flightsUrl=flightsUrl.replace('%cat%',flightsCat).replace('%country%',countryCode).replace('%year%',flightsYear);
+	  window.location =flightsUrl;
+      
       return false;
     }
     function jumpToTakeoffs(countryCode) {
-	  var takeoffsYear = 0;
-	  var takeoffsCat  = 0;
-      window.location = "{SHOW_TAKEOFFS_URL}"+"&country="+countryCode+"&year="+takeoffsYear+"&cat="+takeoffsCat;
+	  var takeoffsUrl  = "{SHOW_TAKEOFFS_URL}";
+	  takeoffsUrl=takeoffsUrl.replace('%country%',countryCode);
+	  window.location= takeoffsUrl;
+     // window.location = "{SHOW_TAKEOFFS_URL}"+"&country="+countryCode+"&year="+takeoffsYear+"&cat="+takeoffsCat;
       return false;
     }
 
