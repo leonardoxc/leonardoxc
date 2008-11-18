@@ -820,7 +820,7 @@ function getLeonardoLink($argArray) {
 		
 		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
 		$args2process=array('year','month','day','season','country','rank','subrank','cat','brandID',
-							'clubID','nacclubid','nacid');
+							'clubID','nacclubid','nacid','pilotID','takeoffID');
 		$args2Array=array();
 		
 		$isListing=false;
@@ -883,8 +883,16 @@ function getLeonardoLink($argArray) {
 				$args.='club:'.($args2Array['clubID']?$args2Array['clubID']:'all');
 			}
 			
+			if ($opTmp!='comp' && $opTmp!='list_pilots' && $opTmp!='list_takeoffs') {
+				$args.=',';
+				$args.='pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all').',';			
+				$args.='takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');
+			}
+						
 			unset($argArray['nacclubid']);
 			unset($argArray['nacid']);
+			unset($argArray['takeoffID']);
+			unset($argArray['pilotID']);			
 			unset($argArray['clubID']);
 			unset($argArray['brandID']);
 			unset($argArray['cat']);

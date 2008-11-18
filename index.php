@@ -126,6 +126,16 @@ if ($_GET['leoSeo']) {
 		if ($_REQUEST['brandID']=='all') $_REQUEST['brandID']=0;
 	}
 	
+	if (isset($seoParams['takeoff'])) {
+		$_REQUEST['takeoffID']=$seoParams['takeoff'];
+		if ($_REQUEST['takeoffID']=='all') $_REQUEST['takeoffID']=0;
+	}
+	
+	if (isset($seoParams['pilot'])) {
+		$_REQUEST['pilotID']=$seoParams['pilot'];
+		if ($_REQUEST['pilotID']=='all') $_REQUEST['pilotID']=0;
+	}
+	
 	if (isset($seoParams['club'])) {
 		if (strpos($seoParams['club'],'.')) {
 			$tmpNac=split('\.',$seoParams['club']);			

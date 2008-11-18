@@ -95,7 +95,9 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 			$title="OLCscore: $score :: Pilot: $name :: takeoff: $takeoffName :: duration: $duration :: open distance: $linKM";
 			$title=str_replace("&nbsp;"," ",$title);
 
-			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['flightID']);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['flightID'])) );
+//			getRelMainFileName()."&op=show_flight&flightID=".$row['flightID']);
 
 		if ($row['takeoffVinicity'] > $takeoffRadious ) 
 			$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

@@ -67,14 +67,17 @@
 			$flightNum=mysql_num_rows($res);
 			
 			if ($flightNum>0) {
-				echo "<img src=\'img/icon_magnify_small.gif\' align=\'absmiddle\' border=0> <a href=\'".getRelMainFileName().
-		"&op=list_flights&takeoffID=".$wpID."&year=0&month=0&season=0&pilotID=0&country=0&cat=0\' target=\'_top\'>".
+				echo "<img src=\'img/icon_magnify_small.gif\' align=\'absmiddle\' border=0> <a href=\'".
+					getLeonardoLink(array('op'=>'list_flights','takeoffID'=>$wpID,'year'=>'0','month'=>'0',
+											'season'=>'0','pilotID'=>'0','country'=>'0','cat'=>'0'
+					))."\' target=\'_top\'>".
 		_See_flights_near_this_point." [ ".$flightNum." ]</a><br>";
 		echo "<img src=\'img/icon_trophy.gif\' align=\'absmiddle\' border=0> <b>"._SITE_RECORD."</b>:";
 
 			$row = mysql_fetch_assoc($res);
 		
-			echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].getRelMainFileName().'&op=show_flight&flightID='.$row['ID'].'\'>'.
+			echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].
+				getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])).'\'>'.
 			formatDistance($row['record_km'],1).'</a>';
 			} else {
 				echo " No flights from this location";
