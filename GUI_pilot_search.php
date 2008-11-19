@@ -74,11 +74,20 @@ var BT_default_width=500;
 function selectItem(li) {
 	if (li.extra) {		
 		var pilotID=li.extra[1].replace('u','_');
+		
+	var url1="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'%pilotID%'))?>";
+	var url2="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%pilotID%','year'=>'0',
+	'country'=>'0','takeoffID'=>'0','cat'=>'0'))?>";
+	var url3="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%pilotID%'))?>";
+	
 		var html=
 		"<hr><b>"+li.selectValue+"</b><Br>"+
-		"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile&pilotIDview="+pilotID+"'><? echo _Pilot_Profile ?></a><BR>"+
-		"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=list_flights&year=0&month=0&pilotID="+pilotID+"&takeoffID=0&country=0&cat=0'><? echo _PILOT_FLIGHTS ?></a><br>"+
-		"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='?name=<?=$module_name?>&op=pilot_profile_stats&pilotIDview="+pilotID+"'><? echo _flights_stats ?></a>";
+		"<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='"+
+		url1.replace('%pilotID%',pilotID)+"'><? echo _Pilot_Profile ?></a><BR>"+
+		"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='"+
+		url2.replace('%pilotID%',pilotID)+"'><? echo _PILOT_FLIGHTS ?></a><br>"+
+		"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='"+
+		url3.replace('%pilotID%',pilotID)+"'><? echo _flights_stats ?></a>";
 
 		$("#pilotMenu").html(html);		
 		

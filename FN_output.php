@@ -566,18 +566,22 @@ function makePilotPopup() {
 var pilotTip = new TipObj('pilotTip');
 with (pilotTip)
 {
-  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="250" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
   '<tr><td class="infoBox">'+
   "<img src='<?=$moduleRelPath?>/img/icon_pilot.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'%4%')  )?>'><? echo _Pilot_Profile ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
-	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) ?>'><? echo _PILOT_FLIGHTS ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%') ) ?>'><? echo _PILOT_FLIGHTS .' ('._MENU_FILTER.')'?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
+	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) ?>'><? echo _PILOT_FLIGHTS.' ('._ALL.')' ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+	
 	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
 	<?  if ($opMode==2)  { ?>// phpbb only 
@@ -597,16 +601,20 @@ with (pilotTip)
 var pilotTipExt = new TipObj('pilotTipExt');
 with (pilotTipExt)
 {
-  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
+  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="250" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
     '<tr><td class="infoBox">'+
 
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=
-	getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
-	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) 
-	?>'><? echo _PILOT_FLIGHTS ?></a>"+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%') ) ?>'><? echo _PILOT_FLIGHTS .' ('._MENU_FILTER.')'?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
+
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'%4%',
+	'year'=>'0','month'=>'0','takeoffID'=>'0','country'=>'0','cat'=>'0') ) ?>'><? echo _PILOT_FLIGHTS.' ('._ALL.')' ?></a>"+
+	'</td></tr>'+
+    '<tr><td class="infoBox">'+
+	
 
 	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
@@ -644,11 +652,19 @@ with (takeoffTip)
  template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader">%5%</td></tr>'+
   '<tr><td class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=
-	getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'%4%',
-	'year'=>'0','month'=>'0','pilotID'=>'0','country'=>'0','cat'=>'0')  )?>'><? echo  _See_flights_near_this_point ?></a>"+
+  
+  
+  	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=
+	getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'%4%')  )?>'><? echo  _See_flights_near_this_point.' ('._MENU_FILTER.')' ?></a>"+
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+
+	
+	"<img src='<?=$moduleRelPath?>/img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=
+	getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'%4%',
+	'year'=>'0','month'=>'0','pilotID'=>'0','country'=>'0','cat'=>'0')  )?>'><? echo  _See_flights_near_this_point.' ('._ALL.')' ?></a>"+
+	'</td></tr>'+
+    '<tr><td  class="infoBox">'+
+	
 	"<img src='<?=$moduleRelPath?>/img/icon_pin.png' align='absmiddle' border=0> <a href='<?=getLeonardoLink(array('op'=>'show_waypoint','waypointIDview'=>'%4%'))?>'><? echo _SITE_INFO  ?></a>"+
 	'</td></tr>'+
     '<tr><td  class="infoBox">'+

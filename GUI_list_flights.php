@@ -259,6 +259,8 @@ TR .newDate {
 	text-align:right;	
 }
 
+#filterDropDownID { width:230px; background-color:##F6F5FA;}
+
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
@@ -279,12 +281,22 @@ $(document).ready(function(){
 
 
 	$(".closeButton").livequery('click', function(e) {
-		$(this).parent().parent().parent().parent().parent().hide();
+		//$(this).parent().parent().parent().parent().parent().hide();
+		$(this).parent().parent().hide();
 	});
 
 });
 </script>
 
+<div id="filterDropDownID" class="dropBox" >
+<div class="infoBoxHeader">
+	<div class='title'><?=_MENU_FILTER?></div>
+	<div class='closeButton'></div>        
+</div>	
+<div class='content'>
+<a href='<?= getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0','takeoffID'=>'0')) ?>'><img src='<?=$moduleRelPath?>/img/icon_x.png' border=0/> <?=_DEACTIVATE_FILTER?> </a>
+</div>
+</div>
 <? echo makeGoogleEarthPopup() ?>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
@@ -495,7 +507,7 @@ function removeClubFlight(clubID,flightID) {
 		//echo  getNationalityDescription($row["pilotCountryCode"],1,0);
 		$thisPilot=new pilot($row["userServerID"],$row["userID"]);
 		if ( $thisPilot->isPilotLocal() || 	L_auth::isAdmin($userID)  ) {
-			echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+			echo " <a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 250, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		} else {
 			echo " <a href=\"javascript:pilotTipExt.newTip('inline', 0, 13, 'p_$i', 200, '".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
 		}	

@@ -215,7 +215,6 @@ print_r($_REQUEST);
 // BRANDS MOD
 setVarFromRequest("brandID",0,1); // numeric
 if (! brands::isValidBrandForFilter($brandID) ) setVar("brandID",0);
-
 setVarFromRequest("pilotID",0,0);
 setVarFromRequest("takeoffID",0,1);
 setVarFromRequest("country",$PREFS->viewCountry);

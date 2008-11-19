@@ -762,7 +762,7 @@ function getLeonardoLink($argArray) {
 		
 	} else 	if ($linkType==3) {
 		global $op,$rank,$subrank;
-		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
+		global $year,$month,$day,$season,$serverID,$pilotID,$takeoffID,$country,$cat,$clubID;
 		global $nacid,$nacclubid;
 
 		if ($argArray['op']=='useCurrent') {
@@ -831,8 +831,12 @@ function getLeonardoLink($argArray) {
 			foreach($args2process as $argName) {
 				if (isset($argArray[$argName])){
 					$args2Array[$argName]=$argArray[$argName];				
-				}else {
-					$args2Array[$argName]=${$argName};
+				}else {				
+					if ( $argName=='pilotID') {
+						$args2Array[$argName]=($serverID+0).'_'.($pilotID);					
+					}else {
+						$args2Array[$argName]=${$argName};
+					}	
 				}
 			}
 
@@ -883,7 +887,7 @@ function getLeonardoLink($argArray) {
 				$args.='club:'.($args2Array['clubID']?$args2Array['clubID']:'all');
 			}
 			
-			if ($opTmp!='comp' && $opTmp!='list_pilots' && $opTmp!='list_takeoffs') {
+			if ($opTmp!='comp' && $opTmp!='list_pilots' && $opTmp!='list_takeoffs' && $opTmp!='competition') {
 				$args.=',';
 				$args.='pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all').',';			
 				$args.='takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');

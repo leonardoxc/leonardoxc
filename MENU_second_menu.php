@@ -296,26 +296,33 @@ if (! $dontShowCountriesSelection ) {
   	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
-  	    <? } ?>
+<? } ?>
 
-  	    <? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
-		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
-   	    <?
-  	    	echo "<b>$pilotLegend</b>";
-  	    	if (!$allPilotsDisplay) 
-  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	    ?>
-		</div>		
-  	    <? } ?>
-  	    <? if ($op!='competition' && $op!='comp' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
-		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
-   	    <?
-  	    	echo "<b>$takeoffLegend</b>";
-  	    	if (!$allTakeoffDisplay) 
-  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	    ?>
-		</div>
-		<? } ?>  	
+
+
+<? if (0) { ?>
+<? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
+    <div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
+    <?
+        echo "<b>$pilotLegend</b>";
+        if (!$allPilotsDisplay) 
+            echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+    ?>
+    </div>		
+<? } ?>
+
+
+<? if ($op!='competition' && $op!='comp' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
+    <div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
+    <?
+        echo "<b>$takeoffLegend</b>";
+        if (!$allTakeoffDisplay) 
+            echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+    ?>
+    </div>
+<? } ?>
+  	
+<? } ?>
   	    <div class="menu1" >
 		<? // display this url 	
 			// New way , all is taken care from getLeonardoLink()
@@ -340,3 +347,7 @@ if (! $dontShowCountriesSelection ) {
 		</div>
 
 </div>
+
+<? 
+require_once dirname(__FILE__).'/MENU_filter_menu.php'; 
+?>

@@ -667,3 +667,25 @@ table.dropDownBox td {
 	background:url('img/icon_x_white.gif') no-repeat left top ;	
 }
 
+
+.dropBox {
+	display:none;
+	position:absolute;
+
+	top:0px;
+/*	left: -999em;*/
+	width:auto;
+	height:auto;
+	
+/*	visibility:hidden;*/
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+
+}
