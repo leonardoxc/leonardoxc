@@ -131,6 +131,16 @@ if ($_GET['leoSeo']) {
 		if ($_REQUEST['takeoffID']=='all') $_REQUEST['takeoffID']=0;
 	}
 	
+	if (isset($seoParams['class'])) {
+		$_REQUEST['class']=$seoParams['class'];
+		if ($_REQUEST['class']=='all') $_REQUEST['class']=0;
+	}
+	
+	if (isset($seoParams['xctype'])) {
+		$_REQUEST['xctype']=$seoParams['xctype'];
+		if ($_REQUEST['xctype']=='all') $_REQUEST['xctype']=0;
+	}
+	
 	if (isset($seoParams['pilot'])) {
 		$_REQUEST['pilotID']=$seoParams['pilot'];
 		if ($_REQUEST['pilotID']=='all') $_REQUEST['pilotID']=0;
@@ -222,6 +232,8 @@ if ($country=='world') setVar('country',0);
 
 setVarFromRequest("op",$CONF_main_page);
 setVarFromRequest("cat",$PREFS->viewCat,1);
+setVarFromRequest("class",0,1);
+setVarFromRequest("xctype",0,1);
 setVarFromRequest("subcat","pg");
 setVarFromRequest("comp",0,1);
 setVarFromRequest("rank",0,1);

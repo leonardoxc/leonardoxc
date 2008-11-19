@@ -184,6 +184,76 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 </li>
 </ul>
 </div>
+
+
+<?
+	$catLiStr="";
+
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0')); 
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0>All classes</a></li>\n";
+		
+   if ( count($CONF_category_types) > 1 ) { 
+		foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id)); 		  
+			  $catImg="<img src='".$moduleRelPath."/img/icon_class_".$gl_id.".gif' border=0>";
+			  if ($cat==$tmpcat) $current_catImg=$catImg;
+		  
+			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
+		  
+		}
+	}
+	
+	if ($class) { 
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Category.": ".$CONF_category_types[$class]."'>";
+		//$gliderCatList[$cat]
+  }	else {		
+		$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Category.": "._All_glider_types."'>";
+  }
+  
+?>
+<div id="nav2">
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<li class="smallItem"><a  class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
+	<ul>
+	<? echo $catLiStr;?>
+	</ul>
+</li>
+</ul>
+</div>
+
+<?
+$catLiStr="";
+
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0')); 
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0>All XC types</a></li>\n";
+		
+   if ( count($CONF_xc_types) > 1 ) { 
+		foreach ( $CONF_xc_types as $gl_id=>$gl_type) {
+			$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>$gl_id)); 		  
+			  $catImg="<img src='".$moduleRelPath."/img/icon_xctype_".$gl_id.".gif' border=0>";			  		  
+			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
+		  
+		}
+	}
+	
+	if ($xctype) { 
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": ".$CONF_category_types[$class]."'>";
+		//$gliderCatList[$cat]
+  }	else {		
+		$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": "._All_xc_types."'>";
+  }
+  
+?>
+<div id="nav2">
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<li class="smallItem"><a  class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
+	<ul>
+	<? echo $catLiStr;?>
+	</ul>
+</li>
+</ul>
+</div>
+
 <? 
 } // end of  $dontShowCatSelection  if 
 
@@ -326,7 +396,8 @@ if (! $dontShowCountriesSelection ) {
   	    <div class="menu1" >
 		<? // display this url 	
 			// New way , all is taken care from getLeonardoLink()
-			$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),'pilotID'=>($pilotID+0) ) );
+			$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
+				'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
 			/*
 			if ($op=="comp") 
 				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";

@@ -263,6 +263,10 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
 				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
 // $CONF_glider_types=array(1=>"Paraglider");
+
+ $CONF_xc_types=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
+ $CONF_xc_types_db=array(1=>"FREE_FLIGHT",2=>"FREE_TRIANGLE",4=>"FAI_TRIANGLE");				
+				
  $CONF_default_cat_view=0; // pg
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
  $CONF_default_cat_pilots=1; // the default cat to display pilots for
@@ -405,7 +409,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
   
   $CONF['photos']['compression']=20;
   
-  // the socring co-efficients 
+  // the scoring co-efficients 
   $CONF['scoring']['default_set']=1;
   $CONF['scoring']['sets']=array(
 		1=>array('name'=>'XC scoring',

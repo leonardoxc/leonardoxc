@@ -762,7 +762,7 @@ function getLeonardoLink($argArray) {
 		
 	} else 	if ($linkType==3) {
 		global $op,$rank,$subrank;
-		global $year,$month,$day,$season,$serverID,$pilotID,$takeoffID,$country,$cat,$clubID;
+		global $year,$month,$day,$season,$serverID,$pilotID,$takeoffID,$country,$cat,$class,$xctype,$clubID;
 		global $nacid,$nacclubid;
 
 		if ($argArray['op']=='useCurrent') {
@@ -819,7 +819,7 @@ function getLeonardoLink($argArray) {
 		
 		
 		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
-		$args2process=array('year','month','day','season','country','rank','subrank','cat','brandID',
+		$args2process=array('year','month','day','season','country','rank','subrank','cat','class','xctype','brandID',
 							'clubID','nacclubid','nacid','pilotID','takeoffID');
 		$args2Array=array();
 		
@@ -880,7 +880,12 @@ function getLeonardoLink($argArray) {
 			} else {
 				$args.='cat:'.$args2Array['cat'].',';
 			}
-
+			
+			if ($opTmp!='list_takeoffs') {
+				$args.='class:'.($args2Array['class']?$args2Array['class']:'all').',';
+				$args.='xctype:'.($args2Array['xctype']?$args2Array['xctype']:'all').',';
+			}
+						
 			if ( $args2Array['nacid'] && $args2Array['nacclubid'] ) {
 				$args.='club:'.$args2Array['nacid'].'.'.$args2Array['nacclubid'];
 			} else {
@@ -900,6 +905,8 @@ function getLeonardoLink($argArray) {
 			unset($argArray['clubID']);
 			unset($argArray['brandID']);
 			unset($argArray['cat']);
+			unset($argArray['class']);
+			unset($argArray['xctype']);
 			unset($argArray['season']);
 			unset($argArray['year']);
 			unset($argArray['month']);	

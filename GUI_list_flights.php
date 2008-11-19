@@ -66,6 +66,15 @@
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
 	}
 	
+	if ($class) {
+		$where_clause.=" AND  $flightsTable.category='".$class."' ";
+	}
+
+	if ($xctype) {
+		$where_clause.=" AND  $flightsTable.BEST_FLIGHT_TYPE='".$CONF_xc_types_db[$xctype]."' ";
+	}
+
+	
 	if ($sortOrder=="dateAdded" && $year ) $sortOrder="DATE";
 
 	# Martin Jursa 20.05.2007; have all possible descriptions in this array
