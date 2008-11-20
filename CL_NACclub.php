@@ -68,7 +68,7 @@ class NACclub {
 			$query="SELECT * FROM $NACclubsTable WHERE NAC_ID=$NAC_ID ORDER BY clubName";
 		}
 		$res= $db->sql_query($query);
-		//echo $query;
+		// echo $query;
   		if($res <= 0){   
 			 echo "Error getting NAC clubs from DB<BR>";
 		     return;

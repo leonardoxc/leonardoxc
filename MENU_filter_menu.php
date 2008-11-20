@@ -35,7 +35,7 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-  if ($allPilotsDisplay &&  $allTakeoffDisplay ||
+  if (!$clubID && $allPilotsDisplay &&  $allTakeoffDisplay ||
   		($op=='competition' || $op=='comp' || $op=='list_pilots' || $op=='list_takeoffs' || $isCompDisplay ) 
   		) return;
 
@@ -66,6 +66,17 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
   $allCatDisplay=0;  
 
 ?>
+
+<? if ($clubID) {  ?>
+  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <?
+  	    	echo "<b>$clubName</b>";
+  	    	if (!$noClubDisplay) 
+  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_x_white.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    ?>
+  	    </div>
+<? } ?>
+
 
   	    <? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>

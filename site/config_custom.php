@@ -227,7 +227,7 @@
 		// IF they havent done it before.
 		// the admin must set this to 0 when he wishes to stop pilots registering for clubs.
 		"add_to_club_period_active"=>1,
-		"current_year"=>2007
+		"current_year"=>2009
 	)					
  );
  $CONF_use_NAC=1; 

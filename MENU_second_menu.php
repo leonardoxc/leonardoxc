@@ -358,12 +358,12 @@ if (! $dontShowCountriesSelection ) {
 
 <? }?>
 
-<? if ($clubID) {  ?>
+<? if ($clubID&&0) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
-  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_x_white.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
   	    ?>
   	    </div>
 <? } ?>

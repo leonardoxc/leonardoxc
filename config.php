@@ -218,7 +218,7 @@ require_once dirname(__FILE__)."/site/config_version.php";
  $mapsTable		=  $CONF_tables_prefix."_maps";
  $waypointsTable=  $CONF_tables_prefix."_waypoints";
  $clubsTable	=  $CONF_tables_prefix."_clubs";
- $NACclubsTable =  $CONF_tables_prefix."_NAC_clubs";
+ $NACclubsTable =  $CONF_tables_prefix."_nac_clubs";
  $clubsPilotsTable	=  $CONF_tables_prefix."_clubs_pilots";
  $clubsFlightsTable	=  $CONF_tables_prefix."_clubs_flights";
  $serversTable	=  $CONF_tables_prefix."_servers";
