@@ -36,7 +36,15 @@
 		$legend.=" :: ".$countries[$country]." ";				
   }
 
-	$dontShowNacClubSelection=1;
+	if ($class) {
+		$where_clause.=" AND  $flightsTable.category='".$class."' ";
+	}
+
+	if ($xctype) {
+		$where_clause.=" AND  $flightsTable.BEST_FLIGHT_TYPE='".$CONF_xc_types_db[$xctype]."' ";
+	}
+	
+	// $dontShowNacClubSelection=1;
 
 
   // SEASON MOD
@@ -50,6 +58,12 @@
   //	  $CONF['years']=$clubsList[$clubID]['years'];
   //}
 
+  # Martin Jursa 23.05.2007: support for NacClub Filtering
+  if (!empty($CONF_use_NAC)) {
+	  if ($nacid && $nacclubid) {
+	  		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid";
+	  }
+  }
 
   // SEASON MOD
   list($dates_where_clause,$dates_legend) = dates::makeWhereClause(0,$season,$year,$month,0 , 1);

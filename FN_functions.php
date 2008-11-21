@@ -847,6 +847,8 @@ function getLeonardoLink($argArray) {
 					$args.='all/';
 				}
 				unset($argArray['clubID']);
+				unset($argArray['nacid']);
+				unset($argArray['nacclubid']);
 			} else {
 				if ($args2Array['country']){
 					$args.=$args2Array['country'].'/';
@@ -881,7 +883,7 @@ function getLeonardoLink($argArray) {
 				$args.='cat:'.$args2Array['cat'].',';
 			}
 			
-			if ($opTmp!='list_takeoffs') {
+			if ($opTmp!='list_takeoffs' && $opTmp!='comp') {
 				$args.='class:'.($args2Array['class']?$args2Array['class']:'all').',';
 				$args.='xctype:'.($args2Array['xctype']?$args2Array['xctype']:'all').',';
 			}

@@ -49,11 +49,19 @@
 		$where_clause.=" AND takeoffID='".$takeoffID."' ";
 	}
 	
+	
   if ($country) {
-		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
-			
+		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";	
   }
 
+	if ($class) {
+		$where_clause.=" AND  $flightsTable.category='".$class."' ";
+	}
+
+	if ($xctype) {
+		$where_clause.=" AND  $flightsTable.BEST_FLIGHT_TYPE='".$CONF_xc_types_db[$xctype]."' ";
+	}
+	
   # Martin Jursa 23.05.2007: support for NacClub Filtering
   if (!empty($CONF_use_NAC)) {
 	  if ($nacid && $nacclubid) {

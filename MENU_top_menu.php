@@ -297,14 +297,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 
 <li class="long lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul class="long">
-		<li><a href="<?=getLeonardoLink(array('op'=>'competition','clubID'=>'0') )?>"><?=_MENU_XCLEAGUE ?></a></li>
-		<? if (0) { ?>
-			<li><a href="<?=getLeonardoLink(array('op'=>'competition') ) ?>"><?=_MENU_COMPETITION_LEAGUE ?></a></li>
-			<li class='li_space long'></li>
-			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'0') ) ?>"><?=_MENU_OLC ?></a></li>
-			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'1') ) ?>"><?=_FAI_TRIANGLE ?></a></li>
-			<li><a href="<?=getLeonardoLink(array('op'=>'competition','comp'=>'2') ) ?>"><?=_MENU_OPEN_DISTANCE ?></a></li>
-		<? }?>
+		<li><a href="<?=getLeonardoLink(array('op'=>'competition') )?>"><?=_MENU_XCLEAGUE ?></a></li>
 		<? 
 			if ( count($ranksList) ) {
 				echo "<li class='li_h1 long_li_h1'>.:: "._National_Rankings." ::.</li>";
@@ -342,7 +335,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			}
 		?>
 	<?
-	if (count($clubsList) >0) {
+	if (count($clubsList) >0 && 0) {
 		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";

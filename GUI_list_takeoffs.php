@@ -45,7 +45,22 @@
 		$where_clause_country.=" AND  ".$waypointsTable.".countryCode='".$country."' ";
 		//$legend.=" (".$countries[$country].") | ";
   }    
+  
+  	if ($class) {
+		$where_clause.=" AND  $flightsTable.category='".$class."' ";
+	}
 
+	if ($xctype) {
+		$where_clause.=" AND  $flightsTable.BEST_FLIGHT_TYPE='".$CONF_xc_types_db[$xctype]."' ";
+	}
+
+  # Martin Jursa 23.05.2007: support for NacClub Filtering
+  if (!empty($CONF_use_NAC)) {
+	  if ($nacid && $nacclubid) {
+	  		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid";
+	  }
+  }
+  
   if ($clubID)   {
    require dirname(__FILE__)."/INC_club_where_clause.php";
   } 

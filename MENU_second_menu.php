@@ -151,7 +151,8 @@ $(document).ready(function(){
 		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
 		</div>
 		<? } ?>
-        
+
+<? if ($op!='comp'  ) { // custom ranks ?>
 <? if ($_SESSION["filter_clause"]) {  
 		$filterIcon='icon_filter_active.png';
 	} else {
@@ -162,6 +163,7 @@ $(document).ready(function(){
     <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('filterDropDownID','filterDropDownPos',18,-5);return false;"><img
 	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' align="absmiddle" border=0 title=""><? echo $arrDownImg; ?></a>
     </div>
+<? } ?>
 
 <? 
 
