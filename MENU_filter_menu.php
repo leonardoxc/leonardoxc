@@ -35,10 +35,32 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-  if (!$clubID && $allPilotsDisplay &&  $allTakeoffDisplay ||
+	// echo "$showNacClubSelection && $nacid && $nacclubid ##";
+
+	// we must decide here if this menu row is to be displayed
+	$displayFilterMenu=0;	
+	// if no specific takeoff or piliot is sleected -> no display
+	if ($allPilotsDisplay &&  $allTakeoffDisplay ) $displayFilterMenu=0;	
+	
+	if (! $allPilotsDisplay ) $displayFilterMenu|=0x01;	
+	if (! $allTakeoffDisplay ) $displayFilterMenu|=0x02;
+
+	if ( $op=='list_pilots' ) $displayFilterMenu&=~0x01;	
+	if ( $op=='list_takeoffs' ) $displayFilterMenu&=~0x02;	
+	
+	// but if we have a club or nac club -> do display!
+	if ($clubID  || ($showNacClubSelection && $nacid  && $nacclubid) ) 	$displayFilterMenu|=0x04;
+	if ($op=='comp')$displayFilterMenu&=~0x04;
+
+	
+	//if ($op=='competition' || $op=='comp' || $op=='list_pilots' || $op=='list_takeoffs' )
+	/*
+  if (!$clubID && $allPilotsDisplay &&  $allTakeoffDisplay &&  
+	
   		($op=='competition' || $op=='comp' || $op=='list_pilots' || $op=='list_takeoffs' || $isCompDisplay ) 
   		) return;
-
+		*/
+	if ( ! $displayFilterMenu) return;
 ?>
 
 <div class="mainBox" align="left" style="margin-top:0px; margin-bottom:4px;">  	
@@ -51,15 +73,23 @@
 <? } ?>    
 
 <? 
-
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
-
-
   $catLegend="";
   $allCatDisplay=0;  
 
+
 ?>
+
+<? if ($showNacClubSelection && $nacid && $nacclubid ) {  ?>
+  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <?
+  	    	echo "<b>$nacClubLegend</b>";
+  	    	if (1) 
+  	    		echo " <a href='".
+				getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0','nacid'=>'0','nacclubid'=>'0')).
+				"'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_x_white.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
+  	    ?>
+  	    </div>
+<? } ?>
 
 <? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
@@ -72,7 +102,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 <? } ?>
 
 
-  	    <? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
+  	    <? if ($op!='competition' && $op!='comp'  && $op!='list_pilots'  && !$isCompDisplay  && !$allPilotsDisplay) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$pilotLegend</b>";
@@ -81,7 +111,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
   	    ?>
 		</div>		
   	    <? } ?>
-  	    <? if ($op!='competition' && $op!='comp' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
+  	    <? if ($op!='competition' && $op!='comp'  && $op!='list_takeoffs' &&  !$allTakeoffDisplay) { ?>
 		<div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
    	    <?
   	    	echo "<b>$takeoffLegend</b>";

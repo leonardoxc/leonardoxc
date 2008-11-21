@@ -283,6 +283,7 @@ BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightI
 // BT_open_wait = 500; 
 BT_close_wait = 400; 
 
+</script>
 
 <? echo makeGoogleEarthPopup() ?>
 <? echo makePilotPopup(); ?>

@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.8 2008/10/29 13:23:03 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.9 2008/11/21 15:17:23 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -102,6 +102,11 @@ if ($ap) { // a league
 	$topCustomLogo='';
 }
 */
+if ($_GET['leoSeo']) {
+	$clubID=0;
+	if ( preg_match('/club\:0\.(\d+)/',$_GET['leoSeo'],$matches) )  $clubID=$matches[1];
+}
+
 if ($clubID) { // a league
 	$topCustomLogo=$clubsList[$clubID]['desc'];
 } else {

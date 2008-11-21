@@ -81,9 +81,13 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
+
 ?>
 <style type="text/css">
 #filterDropDownID { width:300px; background-color:##F6F5FA;}
+#clubDropDownID { width:300px; background-color:##F6F5FA;}
 </style>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script language="javascript">
@@ -101,6 +105,12 @@ function changeCountry(sl) {
 	window.location=Url;
 }
 
+
+function resetFilter() {
+	$("#filterResultDiv").load('<?=$moduleRelPath?>/EXT_filter_functions.php?filter_op=reset');
+}
+
+
 $(document).ready(function(){
 
 	$(".closeButton").livequery('click', function(e) {
@@ -109,9 +119,9 @@ $(document).ready(function(){
 	});
 
 });
-</script>
 
 </script>
+
 <div id="filterDropDownID" class="dropBox" >
 <div class="infoBoxHeader">
 	<div class='title'><?=_MENU_FILTER?></div>
@@ -122,15 +132,17 @@ $(document).ready(function(){
 <img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>
 <hr/>
 <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a><hr>
-<a href='<?= getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0','takeoffID'=>'0')) ?>'><?=_DEACTIVATE_FILTER?> </a>
+<a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
 	
 <?	} else { ?>
 <img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?><hr />
 <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
 <?  } ?>
+<div id='filterResultDiv'></div>
 </div>
 </div>
 
+<? require_once  dirname(__FILE__).'/MENU_clubs.php'; ?>
 
 <div class="mainBox" align="left">  	
   	
@@ -148,14 +160,10 @@ $(document).ready(function(){
 ?>
         
     <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('filterDropDownID','filterDropDownPos',18,-5);return false;"><img
-	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' align="absmiddle" border=0 title=""></a>
+	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' align="absmiddle" border=0 title=""><? echo $arrDownImg; ?></a>
     </div>
 
 <? 
-
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
-
 
   $catLegend="";
   $allCatDisplay=0;  
@@ -236,7 +244,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0')); 
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0>All classes</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0> All classes</a></li>\n";
 		
    if ( count($CONF_category_types) > 1 ) { 
 		foreach ( $CONF_category_types as $gl_id=>$gl_type) {
@@ -271,7 +279,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 $catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0')); 
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0>All XC types</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0> All XC types</a></li>\n";
 		
    if ( count($CONF_xc_types) > 1 ) { 
 		foreach ( $CONF_xc_types as $gl_id=>$gl_type) {
@@ -341,19 +349,25 @@ if (! $dontShowCountriesSelection ) {
     
     
 <? # Martin Jursa 22.05.2007 NACClub Menu
- 	if ($showNacClubSelection ) { 
+ 	if ($showNacClubSelection && 0 ) {  // new popup , see below
 	
 
 		
 	?>
-	<li><a href="#"><img src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=nacClubLegend?>"> <? echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
+	<li><a href="#"><img src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"> <? // echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
 		<ul>
 		 <li><?  require dirname(__FILE__)."/MENU_nacclubs_simple.php"; ?></li>
 		</ul>
 	</li>
+    
 <? } ?>
 </ul>
 
+<?	if ($showNacClubSelection ) { ?>
+    <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('clubDropDownID','clubDropDownPos',18,-276);return false;">
+    <img id='clubDropDownPos' src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><? echo $arrDownImg; ?></a>
+    </div>
+<? } ?>
 
 
 <? if ($CONF['brands']['filter_brands'] ) {  ?>

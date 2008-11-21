@@ -889,13 +889,15 @@ function getLeonardoLink($argArray) {
 			if ( $args2Array['nacid'] && $args2Array['nacclubid'] ) {
 				$args.='club:'.$args2Array['nacid'].'.'.$args2Array['nacclubid'];
 			} else {
-				$args.='club:'.($args2Array['clubID']?$args2Array['clubID']:'all');
+				$args.='club:'.($args2Array['clubID']?'0.'.$args2Array['clubID']:'all');
 			}
 			
-			if ($opTmp!='comp' && $opTmp!='list_pilots' && $opTmp!='list_takeoffs' && $opTmp!='competition') {
-				$args.=',';
-				$args.='pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all').',';			
-				$args.='takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');
+			if ($opTmp!='comp' &&  $opTmp!='competition') {
+				
+				if ($opTmp!='list_pilots')
+					$args.=',pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all');			
+				if ( $opTmp!='list_takeoffs' )	
+					$args.=',takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');
 			}
 						
 			unset($argArray['nacclubid']);

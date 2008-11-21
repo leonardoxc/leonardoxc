@@ -149,14 +149,22 @@ if ($_GET['leoSeo']) {
 	if (isset($seoParams['club'])) {
 		if (strpos($seoParams['club'],'.')) {
 			$tmpNac=split('\.',$seoParams['club']);			
-			$_REQUEST['nacid']=$tmpNac[0];
-			$_REQUEST['nacclubid']=$tmpNac[1];
-			$_REQUEST['clubID']=0;
+			$_REQUEST['nacid']=$tmpNac[0]+0;
+			if ($_REQUEST['nacid']) {
+				$_REQUEST['nacclubid']=$tmpNac[1]+0;
+				$_REQUEST['clubID']=0;
+			} else {		
+				$_REQUEST['nacclubid']=0;
+				$_REQUEST['clubID']=$tmpNac[1]+0;
+			}	
 		} else {
 			$_REQUEST['clubID']=$seoParams['club'];
-			if ($_REQUEST['clubID']=='all') $_REQUEST['clubID']=0;
-			$_REQUEST['nacid']=0;
-			$_REQUEST['nacclubid']=0;
+			
+			if ($_REQUEST['clubID']=='all') {
+				$_REQUEST['clubID']=0;
+				$_REQUEST['nacid']=0;
+				$_REQUEST['nacclubid']=0;
+			}	
 		}	
 	}
 }

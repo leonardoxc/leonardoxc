@@ -45,6 +45,10 @@
 	$bitMask=1 & ~( $includeMask & 0x01 );
 	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
 
+	if ($takeoffID) {
+		$where_clause.=" AND takeoffID='".$takeoffID."' ";
+	}
+	
   if ($country) {
 		$where_clause_country.=" AND  $waypointsTable.countryCode='".$country."' ";
 			

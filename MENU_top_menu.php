@@ -159,7 +159,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
-			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'list_flights','clubID'=>$clubsItem['id']))."'>".$clubsItem['desc']."</a></li>\n";
+			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'list_flights','clubID'=>$clubsItem['id'],'nacclubid'=>'0','nacid'=>'0'))."'>".$clubsItem['desc']."</a></li>\n";
 			if (  $clubsItem['id'] == $clubID && 
 					(  ( $clubID  && (L_auth::isClubAdmin($userID,$clubID) )  || L_auth::isAdmin($userID))  	)	 
 			    )  {  ?>
@@ -347,7 +347,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
-			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'competition','clubID'=>$clubsItem['id']))."'>".$clubsItem['desc']."</a></li>\n";
+			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'competition','clubID'=>$clubsItem['id'],'nacclubid'=>'0','nacid'=>'0'))."'>".$clubsItem['desc']."</a></li>\n";
 		}
 	}
 

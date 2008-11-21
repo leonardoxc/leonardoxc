@@ -35,6 +35,12 @@
 	$bitMask=1 & ~( $includeMask & 0x01 );
 	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
 
+	if ($pilotID!=0) {
+		$where_clause.=" AND userID='".$pilotID."'  AND userServerID=$serverID ";		
+	} else {  // 0 means all flights BUT not test ones 
+		$where_clause.=" AND userID>0 ";		
+	}
+	
   if ($country) {
 		$where_clause_country.=" AND  ".$waypointsTable.".countryCode='".$country."' ";
 		//$legend.=" (".$countries[$country].") | ";
