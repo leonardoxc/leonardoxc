@@ -268,12 +268,9 @@ TR .newDate {
 	text-align:right;	
 }
 
-#filterDropDownID { width:230px; background-color:##F6F5FA;}
-
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type="text/javascript">
@@ -286,26 +283,7 @@ BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightI
 // BT_open_wait = 500; 
 BT_close_wait = 400; 
 
-$(document).ready(function(){
 
-
-	$(".closeButton").livequery('click', function(e) {
-		//$(this).parent().parent().parent().parent().parent().hide();
-		$(this).parent().parent().hide();
-	});
-
-});
-</script>
-
-<div id="filterDropDownID" class="dropBox" >
-<div class="infoBoxHeader">
-	<div class='title'><?=_MENU_FILTER?></div>
-	<div class='closeButton'></div>        
-</div>	
-<div class='content'>
-<a href='<?= getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0','takeoffID'=>'0')) ?>'><img src='<?=$moduleRelPath?>/img/icon_x.png' border=0/> <?=_DEACTIVATE_FILTER?> </a>
-</div>
-</div>
 <? echo makeGoogleEarthPopup() ?>
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>

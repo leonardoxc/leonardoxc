@@ -40,21 +40,15 @@
   		) return;
 
 ?>
-<script type="text/javascript">
-
-function filterDropDown() {
-
-}
-
-</script>
 
 <div class="mainBox" align="left" style="margin-top:0px; margin-bottom:4px;">  	
   	
 		
+<? if (0) {?>
     <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('filterDropDownID','filterDropDownPos',18,-5);return false;"><img
 	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/icon_filter_down.png' align="absmiddle" border=0 title=""></a>
     </div>
-    
+<? } ?>    
 
 <? 
 

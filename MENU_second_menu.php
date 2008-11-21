@@ -82,6 +82,10 @@
   else $isCompDisplay=0;
 
 ?>
+<style type="text/css">
+#filterDropDownID { width:300px; background-color:##F6F5FA;}
+</style>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script language="javascript">
 function changeBrand(sl) {
 	// var sl=MWJ_findObj("brandSelect");
@@ -96,14 +100,56 @@ function changeCountry(sl) {
 	Url=Url.replace('%country%',countryCode);
 	window.location=Url;
 }
+
+$(document).ready(function(){
+
+	$(".closeButton").livequery('click', function(e) {
+		//$(this).parent().parent().parent().parent().parent().hide();
+		$(this).parent().parent().hide();
+	});
+
+});
 </script>
+
+</script>
+<div id="filterDropDownID" class="dropBox" >
+<div class="infoBoxHeader">
+	<div class='title'><?=_MENU_FILTER?></div>
+	<div class='closeButton'></div>        
+</div>	
+<div class='content'>
+<? if ($_SESSION["filter_clause"]) {   ?>
+<img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>
+<hr/>
+<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a><hr>
+<a href='<?= getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0','takeoffID'=>'0')) ?>'><?=_DEACTIVATE_FILTER?> </a>
+	
+<?	} else { ?>
+<img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?><hr />
+<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
+<?  } ?>
+</div>
+</div>
+
+
 <div class="mainBox" align="left">  	
   	
-		<? if ($_SESSION["filter_clause"]) {  ?>
+		<? if ($_SESSION["filter_clause"] && 0) {  ?>
    	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=getLeonardoLink(array('op'=>'filter'))?>"><img 
 		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
 		</div>
 		<? } ?>
+        
+<? if ($_SESSION["filter_clause"]) {  
+		$filterIcon='icon_filter_active.png';
+	} else {
+		$filterIcon='icon_filter_down.png';
+	}
+?>
+        
+    <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('filterDropDownID','filterDropDownPos',18,-5);return false;"><img
+	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' align="absmiddle" border=0 title=""></a>
+    </div>
 
 <? 
 
@@ -274,6 +320,8 @@ if (! $dontShowCountriesSelection ) {
 }	
 
 ?>
+
+
 <ul id="dropMenu">
 <? if (! $dontShowCountriesSelection ) { ?>
 	<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
@@ -290,15 +338,24 @@ if (! $dontShowCountriesSelection ) {
 		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 		</ul>
 	</li>
+    
+    
 <? # Martin Jursa 22.05.2007 NACClub Menu
- 	if ($showNacClubSelection ) { ?>
-	<li><a href="#"> <? echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
+ 	if ($showNacClubSelection ) { 
+	
+
+		
+	?>
+	<li><a href="#"><img src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=nacClubLegend?>"> <? echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
 		<ul>
 		 <li><?  require dirname(__FILE__)."/MENU_nacclubs_simple.php"; ?></li>
 		</ul>
 	</li>
 <? } ?>
 </ul>
+
+
+
 <? if ($CONF['brands']['filter_brands'] ) {  ?>
 <div id="nav3">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
