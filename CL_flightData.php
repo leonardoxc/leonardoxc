@@ -736,7 +736,8 @@ $resStr='{
 	// Full url functions
 	//----------------------------------------
 	function getFlightLinkURL() {
-		return "http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$this->flightID;
+		return "http://".$_SERVER['SERVER_NAME'].
+			getLeonardoLink(array('op'=>'show_flight','flightID'=>$this->flightID));
 	}
 
 	function getIGC_URL($saned=0) {
@@ -3877,10 +3878,12 @@ foreach ($data_time as $i=>$tm) {
 				$msg.= " Disabling ";
 				$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=".$fEntry['ID'];
 			}	
-			$msg.= " <a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
-			"&op=show_flight&flightID=".$fEntry['ID']."'>Flight ".$fEntry['ID'].
-			"</a> from <a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
-			"&op=pilot_profile&pilotIDview=".$fEntry['userServerID'].'_'.$fEntry['userID']."'>PILOT ".
+			$msg.= " <a href='http://".$_SERVER['SERVER_NAME'].
+				getLeonardoLink(array('op'=>'show_flight','flightID'=>$fEntry['ID'])).
+				"'>Flight ".$fEntry['ID'].
+			"</a> from <a href='http://".$_SERVER['SERVER_NAME'].
+				getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$fEntry['userServerID'].'_'.$fEntry['userID'])).
+				"'>PILOT ".
 			$fEntry['userServerID'].'_'.$fEntry['userID']."</a><BR>\n";
 
 			$res= $db->sql_query($query);	

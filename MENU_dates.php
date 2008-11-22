@@ -135,14 +135,12 @@ if ($CONF['seasons']['use_season_years'] ) {
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 <form name="formFilter" id="formFilter">
-          <input id="DAY_SELECT" name="DAY_SELECT" type="text" size="10" maxlength="10" value="<?=$dateStr ?>" >
-          <a href="javascript:showCalendar(document.formFilter.cal_from_button, document.formFilter.FILTER_from_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,2,40)"> 
-          <img name='cal_from_button' id='cal_from_button' src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0"></a> 
+    <input style='visibility:hidden;' id="DAY_SELECT" name="DAY_SELECT" type="text" size="10" maxlength="10" value="<?=$dateStr ?>" >
 </form>
 <script language='javascript'>
 
  init();
- showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?76:6)?>,67);
+ showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?78:8)?>,43);
 </script>
 </td>
 <? } else { ?>

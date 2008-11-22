@@ -68,7 +68,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <channel>
 	<docs>http://leonardo.thenet.gr</docs>
 	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</title>
-	<link>http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."</link>
+	<link>http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'))."</link>
 	<language>el</language>
 	<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</description>
 	<managingEditor>".$CONF_admin_email."</managingEditor>
@@ -97,7 +97,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
 			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['flightID'])) );
-//			getRelMainFileName()."&op=show_flight&flightID=".$row['flightID']);
+
 
 		if ($row['takeoffVinicity'] > $takeoffRadious ) 
 			$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

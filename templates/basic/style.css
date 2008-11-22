@@ -187,11 +187,18 @@ html>body .mainBox {
 
 .pagesDiv {
 	float:right;
-	width:auto; 
-	padding-right:5px;
-	margin:0px 0px 0px 0px;
+	width:auto; 	
+	margin:12px 0px 0px 0px;
 	text-align:right;
 	padding:3px;
+	padding-top:0;
+	overflow:visible;
+	
+	float:none;
+	display:block;
+	position:absolute;
+	bottom:2px;
+	right:10px;
 }
 
 .flightOpDiv {
@@ -398,7 +405,7 @@ table.listTable tr:hover , table.listTable tr.sfhover {
 
 /*  listTable for tabber needs to be 15 px less*/
 .listTableTabber {
-width:745px;
+width:760px;
 }
 
 
@@ -686,4 +693,10 @@ table.dropDownBox td {
 	padding: 1px 1px 1px 1px;
 	margin-bottom:0px;
 
+}
+
+.brandImageDiv {
+	height:16px;
+	overflow:visible;
+	display:inline;
 }

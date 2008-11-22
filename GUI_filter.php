@@ -13,9 +13,8 @@
 
 
 
-$filterUrl="http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=filter&fl_url=1";
-$redirectUrl="http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0";
-
+$filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'filter','fl_url'=>'1'));
+$redirectUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'));
 
 require_once dirname(__FILE__).'/CL_dialogfilter.php';
 $dlgfilters=array();

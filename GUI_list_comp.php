@@ -314,7 +314,7 @@
 	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
 	if ($itemsNum==0) $legendRight="[ 0 ]";
 
-  echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div><div class='pagesDiv'>$legendRight</div></div>" ;
+ // echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div><div class='pagesDiv'>$legendRight</div></div>" ;
 
   require_once dirname(__FILE__)."/MENU_second_menu.php";
   
@@ -355,8 +355,16 @@ var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&fligh
 
 		echo " <div class='menu1' $style ><a href='".getLeonardoLink(array('op'=>'competition','comp'=>$subcatID) )."'>$subcatTitle</a></div>";	
 	}
-	echo "<BR>";
-
+	
+	
+   echo "<div style='height:5px;clear:both;'></div>";
+   
+   echo "<div class='list_header'>
+				<div class='list_header_r'></div>
+				<div class='list_header_l'></div>
+				<h1>$legend</h1>
+				<div class='pagesDiv'>$legendRight</div>
+			</div>";
 
   listCategory($leagueCategories[$leagueCategory]['legend'],$leagueCategories[$leagueCategory]['header'],
 				$leagueCategories[$leagueCategory]['arrayName'],$leagueCategories[$leagueCategory]['formatFunction']);
@@ -387,14 +395,16 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 	global $flights;
 	
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
-   if ($tabID ==  ($_GET['comp']+0) ) $defaultTabStr=" tabbertabdefault";
+
+/*   if ($tabID ==  ($_GET['comp']+0) ) $defaultTabStr=" tabbertabdefault";
    else  $defaultTabStr="";
    
    $tabID++;
    echo "<div class='tabbertab $defaultTabStr' title='$legend'>";
+  */
    
    $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
-   echo "<br><table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
+   echo "<table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($countHowMany+4)."'>$legend</td></tr>";
    
    ?>

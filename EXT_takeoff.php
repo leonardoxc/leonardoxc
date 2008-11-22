@@ -55,7 +55,9 @@
 			// echo "<b>".$description."</b><br><img src='img/icon_pin.png' align='absmiddle' border=0> <a  href='GUI_EXT_waypoint_info.php?wID=$wpID' rel='facebox'>"._SITE_INFO."</a><br>";
 		
 		} else {
-			echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a  target=\'_top\' href=\'".getRelMainFileName()."&op=show_waypoint&waypointIDview=$wpID\'>"._SITE_INFO."</a><br>";
+			echo "<b>".$description."</b><br><img src=\'img/icon_pin.png\' align=\'absmiddle\' border=0> <a  target=\'_top\' href=\'".
+			getLeonardoLink(array('op'=>'show_waypoint','waypointIDview'=>$wpID)) 
+			."\'>"._SITE_INFO."</a><br>";
 		}	
 		
 	

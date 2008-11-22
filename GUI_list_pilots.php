@@ -198,12 +198,22 @@ var BT_default_width=500;
 	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
 	if ($itemsNum==0) $legendRight="[ 0 ]";
 
-   echo  "<div class='tableTitle shadowBox'>
+
+	require_once dirname(__FILE__)."/MENU_second_menu.php";
+
+  if (0) echo  "<div class='tableTitle shadowBox'>
    <div class='titleDiv'>$legend</div>
    <div class='pagesDiv'>$legendRight</div>
    </div>" ;
-	require_once dirname(__FILE__)."/MENU_second_menu.php";
-
+   
+   
+   echo "<div class='list_header'>
+				<div class='list_header_r'></div>
+				<div class='list_header_l'></div>
+				<h1>$legend</h1>
+				<div class='pagesDiv'>$legendRight</div>
+			</div>";
+   
     listPilots($res,$legend,$queryExtraArray,$sortOrder,$is_comp);
 
 function printHeaderPilotsTotals($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$is_comp) {

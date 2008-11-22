@@ -305,12 +305,17 @@ function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {
 		$flightNum=mysql_num_rows($res);
 		$row = $db->sql_fetchrow($res);
 	
-		$siteRecordLink="<a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']."'>".
+		$siteRecordLink="<a href='http://".$_SERVER['SERVER_NAME'].
+			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID']))."'>".
 			formatDistance($row['record_km'],1)."</a>";
 	 } else $siteRecordLink="";
 	
-	 $pointFlightsLink="<a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=list_flights&takeoffID=$waypointID&year=0'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>";
-	 $countryFlightsLink="<a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=list_flights&year=0&takeoffID=0&country=".$wpInfo->countryCode."'>".$countries[$wpInfo->countryCode]."</a>";
+	 $pointFlightsLink="<a href='http://".$_SERVER['SERVER_NAME'].
+		getLeonardoLink(array('op'=>'list_flights','takeoffID'=>$waypointID,'year'=>'0','season'=>'0'))
+		."'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>";
+	 $countryFlightsLink="<a href='http://".$_SERVER['SERVER_NAME'].
+		 getLeonardoLink(array('op'=>'list_flights','takeoffID'=>'0','year'=>'0','season'=>'0','country'=>$wpInfo->countryCode))
+		."'>".$countries[$wpInfo->countryCode]."</a>";
 	 if ($wpInfo->link) $siteLink='<a href="'.formatURL($wpInfo->link).'" target="_blank">'.formatURL($wpInfo->link).'</a>';
 	 else $siteLink="-";
 

@@ -109,12 +109,19 @@
 		return ;
     }
 	$legendRight="";
-   echo  "<div class='tableTitle shadowBox'>
+   if (0) echo  "<div class='tableTitle shadowBox'>
    <div class='titleDiv'>$legend</div>
    <div class='pagesDiv'>$legendRight</div>
    </div>" ;
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
 
+   echo "<div class='list_header'>
+				<div class='list_header_r'></div>
+				<div class='list_header_l'></div>
+				<h1>$legend</h1>
+				<div class='pagesDiv'>$legendRight</div>
+			</div>";
+			
   listTakeoffs($res,$legend,$queryExtraArray,$sortOrder);
 ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>

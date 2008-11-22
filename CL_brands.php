@@ -59,11 +59,11 @@ class brands {
 		if ($brandID) {
 			if (!isset($brandName) ) $brandName=$CONF['brands']['list'][$brandID];
 			if (is_file("$CONF_abs_path/img/brands/".sprintf("%03d",$brandID).".gif") )
-		 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
+		 		$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
 			else
-	 			$gliderBrandImg="<img src='$moduleRelPath/img/space.gif' width=10 height=10 title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
+	 			$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/space.gif' width=10 height=10 title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
 		} else 
-	 		$gliderBrandImg="<img src='$moduleRelPath/img/brands/unknown_".sprintf("%03d",$glidetCat).".gif' title='$gliderName'  alt='$gliderName' border='0' />";
+	 		$gliderBrandImg="<img align='absmiddle'  src='$moduleRelPath/img/brands/unknown_".sprintf("%03d",$glidetCat).".gif' title='$gliderName'  alt='$gliderName' border='0' />";
 		return $gliderBrandImg;
 	}
 

@@ -92,7 +92,9 @@
 			echo "error in query :$query";
 		}
 		
-		echo "<a  target='_blank' href='".getRelMainFileName()."&op=show_waypoint&waypointIDview=$wpID'>$description</a><br>";
+		echo "<a  target='_blank' href='".
+						getLeonardoLink(array('op'=>'show_waypoint','waypointIDview'=>$wpID)) 
+					."'>$description</a><br>";
 		
 		
 	
@@ -104,14 +106,17 @@
 			$flightNum=mysql_num_rows($res);
 			
 			if ($flightNum>0) {
-				echo "<b><a href='".getRelMainFileName().
-		"&op=list_flights&takeoffID=".$wpID."&year=0&month=0&season=0&pilotID=0&country=0&cat=0' target='_blank'> Flights[ ".$flightNum." ]</a></b><br>";
-		echo "<b>"._SITE_RECORD."</b>:";
+				echo "<b><a href='".
+					getLeonardoLink(array('op'=>'list_flights','takeoffID'=>$wpID,
+							'year'=>0,'month'=>'0','season'=>'0','pilotID'='0_0','country'=>'0','cat'=>'0'					
+					))."' target='_blank'> Flights[ ".$flightNum." ]</a></b><br>";
+				echo "<b>"._SITE_RECORD."</b>:";
 
-			$row = mysql_fetch_assoc($res);
+				$row = mysql_fetch_assoc($res);
 		
-			echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].getRelMainFileName().'&op=show_flight&flightID='.$row['ID'].'\'>'.
-			formatDistance($row['record_km'],1).'</a>';
+				echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].
+					getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])).'\'>'.
+					formatDistance($row['record_km'],1).'</a>';
 			} else {
 				echo " No flights from this location";
 			}

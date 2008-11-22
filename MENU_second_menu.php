@@ -86,7 +86,6 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 
 ?>
 <style type="text/css">
-#filterDropDownID { width:300px; background-color:##F6F5FA;}
 
 .secondMenuDropLayer { 
 	display:none;	
@@ -99,13 +98,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 	padding:3px;
 	border:1px solid #d3cfe4;;
 	
-	
-	
 background-color: #ffb400;
 background-image: url(<?=$moduleRelPath?>/img/toppanel_bg.png);
+
+background-color:#B4C48D;
+background-image: url(<?=$moduleRelPath?>/img/toppanel_bg2.png);
+
 background-repeat: repeat-x;
-background-x-position: 0;
-background-position:bottom;
+background-position:top left;
 
 }
 
@@ -123,8 +123,10 @@ text-decoration:underline;
 }
 
 .secondMenu {
-padding-bottom:0; 
-margin-bottom:0;
+padding-bottom:0;
+margin-left:0;
+margin-bottom:0px;
+margin-top:8px;
 }
 
 .menuButton {
@@ -159,9 +161,60 @@ border-bottom-style:solid;
 }
 
 .menuButtonActive {
+/* yellow */
 background-color:#ffb400;
+/* green */
+background-color:#E0E8CC;
 padding-bottom:5px;
 border-bottom-style:none;
+}
+
+
+
+
+.list_header {
+	background:left top transparent repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_c.gif);
+	margin-top: 0px 0px 0px 0px;
+	padding:0;
+	height: 38px;
+	color: white;
+	display:block;
+	position:relative;
+	clear:both;
+}
+
+.list_header_l {
+	background:left top repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_l.gif);
+	float: left;
+	width: 12px;
+	height: 38px;
+}
+
+.list_header_r {
+	background:left top  repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_r.gif);
+	float: right;
+	width: 12px;
+	height: 38px;
+}
+
+.list_header h1 {
+	float: none;
+	display:block;
+	position:absolute;
+	top:0px;
+	left:11px;
+	margin:0;
+
+	padding-top: 7px;
+	padding-right: 0pt;
+	padding-bottom: 0pt;
+	padding-left: 10px;
+
+	height: 16px;
+	font-family: Verdana;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
 }
 
 </style>
@@ -207,7 +260,6 @@ function toogleMenu(name) {
 $(document).ready(function(){
 
 	$(".closeButton").livequery('click', function(e) {
-		
 		// $(this).parent().parent().hide();
 	});
 
@@ -222,34 +274,9 @@ $(document).ready(function(){
 
 </script>
 
-<div id="filterDropDownID" class="dropBox" >
-<div class="infoBoxHeader">
-	<div class='title'><?=_MENU_FILTER?></div>
-	<div class='closeButton'></div>        
-</div>	
-<div class='content'>
-<? if ($_SESSION["filter_clause"]) {   ?>
-<img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>
-<hr/>
-<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a><hr>
-<a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
-	
-<?	} else { ?>
-<img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?><hr />
-<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
-<?  } ?>
-<div id='filterResultDiv'></div>
-</div>
-</div>
-
 
 <div class="mainBox secondMenu" align="left">  	
   	
-		<? if ($_SESSION["filter_clause"] && 0) {  ?>
-   	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=getLeonardoLink(array('op'=>'filter'))?>"><img 
-		src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_filter.gif' align="absmiddle" border=0 title="<?=_THE_FILTER_IS_ACTIVE?>"></a>
-		</div>
-		<? } ?>
 
 <? if ($op!='comp'  ) { // custom ranks ?>
 <? if ($_SESSION["filter_clause"]) {  
@@ -258,12 +285,10 @@ $(document).ready(function(){
 		$filterIcon='icon_filter_down.png';
 	}
 ?>
-        
-    <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('filterDropDownID','filterDropDownPos',18,-5);return false;"><img
-	    id='filterDropDownPos' 	src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' align="absmiddle" border=0 title=""><? echo $arrDownImg; ?></a>
-    </div>
+	<div id='filterMenuID' class="menuButton"><a href="#" onClick="toogleMenu('filter');return false;"><img src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' title='' align="absmiddle" border=0><? echo $arrDownImg; ?></a>
+    </div>	
 <? } ?>
-
+	
 <? 
 
   $catLegend="";
@@ -468,31 +493,67 @@ if (! $dontShowCountriesSelection ) {
 <? } ?>
 
 
-<? if ($CONF['brands']['filter_brands'] ) {  ?>
-<div id="nav3">
-<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
-<li ><a href='#'>
-<? 
+<? if ($CONF['brands']['filter_brands'] ) {  
+
 	if (!$brandID) {
-		echo _Select_Brand ;
-		$brandImg='';
+		
+		$brandImg="<img  src='$moduleRelPath/img/space.gif' height='16' width='2' align='absmiddle' border=0 title=''>";
+		$brandLegend= $brandImg._Select_Brand ;
 	} else { 
-
 		$brandImg=brands::getBrandImg($brandID,'',$cat);	
-		//$brandImg="<img src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' border=0 align='absmiddle'> ";
-		echo $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];		
-
-		// echo $brandID;
+		$brandLegend= $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];		
 	}
 	
-	$brandsListFilter=brands::getBrandsList(1);
-?></a>
- 	    <?
-			if ( count($brandsListFilter) > 10 ) {
 ?>
-<ul>
 
-<table class="dropDownBox" width="200" cellpadding="1" cellspacing="0">
+    <div id='brandMenuID' class="menuButton">
+		<div class='brandImageDiv'>
+			<a href="#" onClick="toogleMenu('brand');return false;"><?=$brandLegend?> <? echo $arrDownImg; ?></a>
+		</div>	
+    </div>		
+
+<? }?>
+
+
+<div class="menu1" >
+	<? // display this url 	, New way , all is taken care from getLeonardoLink()
+		$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
+								'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
+	?>
+	<a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+</div>
+
+</div>
+
+
+
+<div id="filterDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>        
+<div class='content'>
+
+<? if ($_SESSION["filter_clause"]) {   ?>
+<img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>
+<hr/>
+<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a><hr>
+<a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
+	
+<?	} else { ?>
+<img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?><hr />
+<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
+<?  } ?>
+<div id='filterResultDiv'></div>
+</div>
+</div>
+
+
+<div id="brandDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>        
+<div class='content'>
+<?
+	$brandsListFilter=brands::getBrandsList(1);
+	if ( count($brandsListFilter) > 10 ) {
+?>
+<table  width="200" cellpadding="1" cellspacing="0">
 <tr>
 	<td  height=80 class="main_text" valign="top"><div align="center">
 <?
@@ -509,33 +570,18 @@ if (! $dontShowCountriesSelection ) {
 	</td>
 </tr>
 </table>
-</ul>
 <?
-			} else {
-				echo "<ul>\n<li><a href='".$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'0'))."'>"._All_Brands."</a></li>";
-				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
-					echo "<li><a href='".
-							$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>$brandIDfilter)).
-							"'>$brandNameFilter</a></li>";
-				}
-				echo "</ul>\n";
-			}
-  	    ?>
-</li>
-</ul>
+	} else {
+		echo "<ul>\n<li><a href='".$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'0'))."'>"._All_Brands."</a></li>";
+		foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
+			echo "<li><a href='".
+					$catLink=getLeonardoLink(array('op'=>'useCurrent','brandID'=>$brandIDfilter)).
+					"'>$brandNameFilter</a></li>";
+		}
+		echo "</ul>\n";
+	}
+?>
 </div>
-
-<? }?>
-
-
-<div class="menu1" >
-	<? // display this url 	, New way , all is taken care from getLeonardoLink()
-		$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
-								'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
-	?>
-	<a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
-</div>
-
 </div>
 
 <? 
@@ -548,3 +594,5 @@ require dirname(__FILE__)."/MENU_dates.php";
 
 require_once dirname(__FILE__).'/MENU_filter_menu.php'; 
 ?>
+
+<div style='height:5px;clear:both; '></div>

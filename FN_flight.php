@@ -510,7 +510,7 @@ function extractGlider($lines) {
 }
 
 function getAddFlightErrMsg($result,$flightID) {
-	$callingURL="http://".$_SERVER['SERVER_NAME'].getRelMainFileName();
+	$callingURL="http://".$_SERVER['SERVER_NAME'];
 	if (is_array($flightID) ) {
 		$flightID=$flightID[0]['ID'];
 	}
@@ -529,16 +529,22 @@ function getAddFlightErrMsg($result,$flightID) {
 			break;
 		case ADD_FLIGHT_ERR_SAME_DATE_FLIGHT:	
 			$errMsg=_THERE_IS_SAME_DATE_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-							 "<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
+							 "<a href='$callingURL".
+							 getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID)).
+							 "'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_SAME_FILENAME_FLIGHT:
 			$errMsg=_THERE_IS_SAME_FILENAME_FLIGHT."<br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-						"<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a><br><br>".
+						"<a href='$callingURL".
+						getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID)).
+						"'>"._DELETE_THE_OLD_ONE."</a><br><br>".
 						_CHANGE_THE_FILENAME;
 			break;
 		case ADD_FLIGHT_ERR_SAME_HASH_FLIGHT:
 			$errMsg=_THERE_IS_SAME_DATE_FLIGHT." (HASH) <br><br>"._IF_YOU_WANT_TO_SUBSTITUTE_IT." ".
-							 "<a href='$callingURL&op=show_flight&flightID=$flightID'>"._DELETE_THE_OLD_ONE."</a>";
+						"<a href='$callingURL".
+						getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID)).
+						"'>"._DELETE_THE_OLD_ONE."</a>";
 			break;
 		case ADD_FLIGHT_ERR_DATE_IN_THE_FUTURE:	
 			$errMsg="The date of the flight is in the future<BR>Please use the Year-month-day not the US Year-day-month format";

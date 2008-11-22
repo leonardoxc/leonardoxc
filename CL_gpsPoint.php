@@ -324,7 +324,10 @@ Time to launch from landing
 			if ($forceProtocol=='XML') $useJSON=0;
 			else $useJSON=1;
 		}
-		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_waypoint&waypointIDview=".$this->waypointID);
+		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+					getLeonardoLink(array('op'=>'show_waypoint','waypointIDview'=>$this->waypointID)) 
+					);
+		
 	
 		if (!$useJSON) {
 return "<waypoint>

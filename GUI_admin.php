@@ -342,7 +342,9 @@ echo "</ul><br><hr>";
 						}
 						
  					 $orgIgcURL= "http://".$server->data['url_base']."/download.php?type=igc&zip=0&flightID=".$row["original_ID"];
-				     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."]  ";
+				     echo "$i. Flight ID: <a href='".
+					 		getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"])) 
+							."' target=_blank>".$row["ID"]."</a> [".$row["dateAdded"]."]  ";
 
 //					 echo " [ ".$row['filename']." ] ";
 					 echo " <a href='$moduleRelPath/$rdir/".$row['filename']."'>IGC</a> ";
@@ -467,7 +469,9 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 				}
 				
 				if ($newfilename=='') {
-					echo "$j. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> ";
+					echo "$j. Flight ID: <a href='".
+						getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"])) 
+						."' target=_blank>".$row["ID"]."</a> ";
 					echo "Latin filename for [ ".$row['filename']." ] is NULL!!!!!<BR>";
 					$j++;
 
@@ -515,7 +519,9 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 
 							$i++;
 							$newfilename=safeFilename( $newfilename);
-							echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
+							echo "$i. Flight ID: <a href='".
+								getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"])) 
+								."' target=_blank>".$row["ID"]."</a> will rename [".$row["filename"]."] ( $oldFilename ) to [ $newfilename ]  <br>";
 	
 							if ( $latinAvailable && $newfilename ) {
 								$flight=new flight();
@@ -545,7 +551,9 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			echo "FOUND UTF !!!!!! :<HR>";
 		}
 						 $newfilename=toLatin1($row['filename']);
-					     echo "$i. Flight ID: <a href='".getRelMainFileName()."&op=show_flight&flightID=".$row["ID"]."' target=_blank>".$row["ID"]."</a> [ $newfilename ] [".$row["dateAdded"]."] $status <br>";
+					     echo "$i. Flight ID: <a href='".
+						 		getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"])) 
+								."' target=_blank>".$row["ID"]."</a> [ $newfilename ] [".$row["dateAdded"]."] $status <br>";
 						echo "$filenameUTF<BR>";
 						continue;
 					}

@@ -64,9 +64,7 @@
 			var marker = new GMarker(point);		
 		}	
 	  // Show this marker's index in the info window when it is clicked
-	 /* var html = "<b>" + description + "</b><br>";
-	 // html+="<img src='img/icon_magnify_small.gif' align='absmiddle' border=0> <a href='<?=getRelMainFileName()?>&op=list_flights&takeoffID="+id+"&year=0&month=0&season=0&pilotID=0&country=0&cat=0' target='_top'><? echo  _See_flights_near_this_point ?></a>";
-	  */
+
 	  
 	  GEvent.addListener(marker, "click", function() {
 	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);

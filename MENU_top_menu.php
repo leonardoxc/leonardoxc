@@ -271,6 +271,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li class='li_space'></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
 						'year'=>'0','month'=>'0','pilotID'=>'0','takeoffID'=>'0',
+						'xctype'=>'all','class'=>'all',
 						'country'=>'0','cat'=>'0','clubID'=>'0','brandID'=>'0','nacclubid'=>'0','nacid'=>'0') )?>"><?=_MENU_ALL_FLIGHTS ?></a></li>
 	</ul>
 </li>

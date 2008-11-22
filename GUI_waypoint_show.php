@@ -66,7 +66,8 @@
 		$flightNum=mysql_num_rows($res);
 		$row = mysql_fetch_assoc($res);
 
-		echo "<a href='http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=show_flight&flightID=".$row['ID']."'>".
+		echo "<a href='http://".$_SERVER['SERVER_NAME'].
+			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID']))."'>".
 			formatDistance($row['record_km'],1)."</a>";
 	 } 
 

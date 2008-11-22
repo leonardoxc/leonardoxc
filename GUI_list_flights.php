@@ -235,12 +235,19 @@
 	$legendRight.=" [&nbsp;".($startNum+1)."-".$endNum."&nbsp;"._From."&nbsp;".$itemsNum ."&nbsp;]";
 	if ($itemsNum==0) $legendRight="[ 0 ]";
 
-	echo  "<div class='tableTitle'>
+	if (0)echo  "<div class='tableTitle'>
 	<div class='titleDiv'>$legend</div>
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
-	
+
 	require_once dirname(__FILE__)."/MENU_second_menu.php";
+	
+    echo "<div class='list_header'>
+				<div class='list_header_r'></div>
+				<div class='list_header_l'></div>
+				<h1>$legend</h1>
+				<div class='pagesDiv'>$legendRight</div>
+			</div>";
 
 	listFlights($res,$legend, $queryExtraArray,$sortOrder);
 

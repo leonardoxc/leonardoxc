@@ -48,7 +48,7 @@
 	
 	// but if we have a club or nac club -> do display!
 	if ($clubID  || ($showNacClubSelection && $nacid  && $nacclubid) ) 	$displayFilterMenu|=0x04;
-	if ($op=='comp')$displayFilterMenu&=~0x04;
+	if ($op=='comp' || $op=='competition'  ) $displayFilterMenu&=~(0x04|0x02|0x01);
 	
 	if ( ! $displayFilterMenu) return;
 	
@@ -56,7 +56,7 @@
 	$allCatDisplay=0;  
 ?>
 
-<div class="mainBox" align="left" style="margin-top:0px; margin-bottom:4px;">  	
+<div class="mainBox" align="left" style="margin-top:5px; margin-bottom:0px;">  	
 
 <? if ($showNacClubSelection && $nacid && $nacclubid ) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/img/icon_club.gif'  align="absmiddle" border=0>
