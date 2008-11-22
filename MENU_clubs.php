@@ -18,8 +18,7 @@
  * Martin Jursa 22.05.2007
  */
  
- 	$thisPageUrl=getLeonardoLink(array('op'=>'useCurrent','nacid'=>'%nacid%','nacclubid'=>'%nacclubid%'));
-	//$urlparameters=urlencode('name='.$module_name);	
+ 	$thisPageUrl=getLeonardoLink(array('op'=>'useCurrent','nacid'=>'%nacid%','nacclubid'=>'%nacclubid%'));	
 	$urlparameters=urlencode($thisPageUrl);
 	
 	$js="<script type=\"text/javascript\" laguage=\"javascript\"><!--
@@ -53,13 +52,10 @@
 	}
 
 ?>
-<div id="clubDropDownID" class="dropBox" >
-<div class="infoBoxHeader">
-	<div class='title'><?=_MENU_FILTER?></div>
-	<div class='closeButton'></div>        
-</div>	
+<div id="clubDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>        
 <div class='content'>
-<table class="dropDownBox" width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
+<table  width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
 <? foreach ($nacids as $nid) {
 	$nacname=$nacnames[$nid];
 	// Manolis 2007/11/06

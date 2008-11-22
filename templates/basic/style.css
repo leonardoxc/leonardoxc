@@ -558,9 +558,7 @@ background-color:#FCEBFB
     display:block;
     float:left;
 	background-color: #f6f5fa;
-	border-width: 1px; 
-	border-style: solid; 
-	border-color: #d3cfe4;
+	border: 1px solid #d3cfe4;
 	padding: 3px 3px 3px 3px;
 	margin-left:2px;
 	margin-right:2px;
@@ -647,7 +645,7 @@ table.dropDownBox td {
 }
 
 
-.countryList a:link {
+.countryList2 a:link {
 	font-size:80%;	
 	border-right:1px solid #CCCCCC;
 }

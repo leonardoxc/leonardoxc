@@ -87,7 +87,83 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 ?>
 <style type="text/css">
 #filterDropDownID { width:300px; background-color:##F6F5FA;}
-#clubDropDownID { width:300px; background-color:##F6F5FA;}
+
+.secondMenuDropLayer { 
+	display:none;	
+	width:750px; 
+	background-color:#D8CEAE;
+	position:relative;
+	margin:0;
+	margin-left:3px;
+	margin-bottom:10px;
+	padding:3px;
+	border:1px solid #d3cfe4;;
+	
+	
+	
+background-color: #ffb400;
+background-image: url(<?=$moduleRelPath?>/img/toppanel_bg.png);
+background-repeat: repeat-x;
+background-x-position: 0;
+background-position:bottom;
+
+}
+
+
+.secondMenuDropLayer a,.secondMenuDropLayer a:link,.secondMenuDropLayer a:visited {
+text-decoration:none; 
+color:#031238;
+line-height:130%;
+padding:2px;
+}
+
+.secondMenuDropLayer a:hover {
+background-color:#F8C90C;
+text-decoration:underline;
+}
+
+.secondMenu {
+padding-bottom:0; 
+margin-bottom:0;
+}
+
+.menuButton {
+    display:block;
+   	clear:none; 
+	float:left;
+	
+	background-color: #f6f5fa;
+	border: 1px solid #d3cfe4;
+	padding: 3px 3px 3px 3px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-bottom:0px;
+	margin-top:0px;	
+}
+
+.buttonLink {
+border: 1px solid #333333;
+display:inline;
+padding:5px;
+background-color:#FFCC33;
+float:none;
+clear:none;
+}
+
+.menuButton a,.menuButton a:link,.menuButton a:visited {text-decoration:none; color:#333333;}
+
+.menuButtonNormal {
+background-color:#F6F5FA;
+padding-bottom:3px;
+border-bottom-style:solid;
+}
+
+.menuButtonActive {
+background-color:#ffb400;
+padding-bottom:5px;
+border-bottom-style:none;
+}
+
 </style>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script language="javascript">
@@ -111,12 +187,36 @@ function resetFilter() {
 }
 
 
+function toogleMenu(name) {
+	// first hide/restore other open layers
+	$(".menuButton").removeClass("menuButtonActive");
+	$(".menuButton").addClass("menuButtonNormal");
+	$(".secondMenuDropLayer").not("#"+name+"DropDownID").hide(200);
+	
+   if ( $("#"+name+"DropDownID").is(':visible') ) {	 	   
+  		$("#"+name+"MenuID").removeClass("menuButtonActive");
+		$("#"+name+"MenuID").addClass("menuButtonNormal");
+   } else {
+   		$("#"+name+"MenuID").removeClass("menuButtonNormal");
+   		$("#"+name+"MenuID").addClass("menuButtonActive");
+   }   
+   $("#"+name+"DropDownID").slideToggle(200);
+
+}
+
 $(document).ready(function(){
 
 	$(".closeButton").livequery('click', function(e) {
-		//$(this).parent().parent().parent().parent().parent().hide();
-		$(this).parent().parent().hide();
+		
+		// $(this).parent().parent().hide();
 	});
+
+	$(".closeLayerButton").livequery('click', function(e) {		
+		$(this).parent().slideToggle(200);
+		$(".menuButton").removeClass("menuButtonActive");
+		$(".menuButton").addClass("menuButtonNormal");
+	});
+
 
 });
 
@@ -142,9 +242,8 @@ $(document).ready(function(){
 </div>
 </div>
 
-<? require_once  dirname(__FILE__).'/MENU_clubs.php'; ?>
 
-<div class="mainBox" align="left">  	
+<div class="mainBox secondMenu" align="left">  	
   	
 		<? if ($_SESSION["filter_clause"] && 0) {  ?>
    	    <div class="menu1" style="clear:none; float:left;" ><a href="<?=getLeonardoLink(array('op'=>'filter'))?>"><img 
@@ -331,7 +430,7 @@ if (! $dontShowCountriesSelection ) {
 
 ?>
 
-
+<?  if (0 ) { ?>
 <ul id="dropMenu">
 <? if (! $dontShowCountriesSelection ) { ?>
 	<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
@@ -345,29 +444,26 @@ if (! $dontShowCountriesSelection ) {
 
 	<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
 		<ul>
-		 <?  require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
+		 <?  // require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
 		</ul>
 	</li>
     
-    
-<? # Martin Jursa 22.05.2007 NACClub Menu
- 	if ($showNacClubSelection && 0 ) {  // new popup , see below
-	
-
-		
-	?>
-	<li><a href="#"><img src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"> <? // echo "$nacClubLegend" ?> <? echo $arrDownImg; ?></a>
-		<ul>
-		 <li><?  require dirname(__FILE__)."/MENU_nacclubs_simple.php"; ?></li>
-		</ul>
-	</li>
-    
-<? } ?>
 </ul>
+<? } ?>
+
+
+
+<? if (! $dontShowCountriesSelection ) { ?>
+    <div id='countryMenuID' class="menuButton"><a href="#" onClick="toogleMenu('country');return false;"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
+    </div>
+<? } ?>	
+
+    <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
+    </div>	
 
 <?	if ($showNacClubSelection ) { ?>
-    <div class="menu1" style="clear:none; float:left;" ><a href="#" onClick="toggleDiv('clubDropDownID','clubDropDownPos',18,-276);return false;">
-    <img id='clubDropDownPos' src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><? echo $arrDownImg; ?></a>
+    <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
+    <img  src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><? echo $arrDownImg; ?></a>
     </div>
 <? } ?>
 
@@ -431,67 +527,24 @@ if (! $dontShowCountriesSelection ) {
 
 <? }?>
 
-<? if ($clubID&&0) {  ?>
-  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
-  	    <?
-  	    	echo "<b>$clubName</b>";
-  	    	if (!$noClubDisplay) 
-  	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_x_white.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-  	    ?>
-  	    </div>
-<? } ?>
 
-
-
-<? if (0) { ?>
-<? if ($op!='competition' && $op!='comp'  && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay  && !$allPilotsDisplay) { ?>
-    <div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_pilot.gif'  title='<?=_PILOT?>' align="absmiddle" border=0>
-    <?
-        echo "<b>$pilotLegend</b>";
-        if (!$allPilotsDisplay) 
-            echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','pilotID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-    ?>
-    </div>		
-<? } ?>
-
-
-<? if ($op!='competition' && $op!='comp' && $op!='list_pilots' && $op!='list_takeoffs' && !$isCompDisplay && !$allTakeoffDisplay) { ?>
-    <div class="menu1"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_takeoff.gif' title='<?=_TAKEOFF_LOCATION?>' align="absmiddle" border=0>
-    <?
-        echo "<b>$takeoffLegend</b>";
-        if (!$allTakeoffDisplay) 
-            echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_remove.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";
-    ?>
-    </div>
-<? } ?>
-  	
-<? } ?>
-  	    <div class="menu1" >
-		<? // display this url 	
-			// New way , all is taken care from getLeonardoLink()
-			$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
-				'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
-			/*
-			if ($op=="comp") 
-				$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
-			else
-				$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
-				
-			# Martin Jursa 25.05.2007: support for nacclub-filtering
-			if (!empty($CONF_use_NAC)) {
-				if ($nacclubid && $nacid) {
-					 $thisURL.="&nacid=$nacid&nacclubid=$nacclubid";
-				}
-			}
- 		*/
-
-		?>
-		<a  href='<? echo $thisURL;
-		?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
-		</div>
+<div class="menu1" >
+	<? // display this url 	, New way , all is taken care from getLeonardoLink()
+		$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
+								'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
+	?>
+	<a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+</div>
 
 </div>
 
 <? 
+require_once  dirname(__FILE__).'/MENU_clubs.php'; 
+
+if ($countriesNum>1) 
+	require_once  dirname(__FILE__).'/MENU_countries.php'; 
+
+require dirname(__FILE__)."/MENU_dates.php";
+
 require_once dirname(__FILE__).'/MENU_filter_menu.php'; 
 ?>
