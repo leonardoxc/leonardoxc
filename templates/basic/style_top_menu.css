@@ -23,6 +23,7 @@
 	border-style: solid; 
 	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
 	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	overflow:visible;
 }
 
 #nav a {
@@ -53,6 +54,9 @@ padding:0;
 	
 	padding: 0;
 	width: 12.5em;
+	
+	width: 136px; /* */
+	
 	height:22px;
 	
 	/*border: solid #eda;*/
@@ -63,6 +67,7 @@ padding:0;
 	border-width:0px;
 	border-left-width:1px;
 }
+
 
 #nav>li {
 	border-width: 0px 0.5px;
@@ -224,3 +229,7 @@ margin-left:8em;
 #nav li:hover, #nav li.hover {
   position:static;
 } 
+
+#nav li.lastItem , #nav li.lastItem a {
+	border-right:none;
+}

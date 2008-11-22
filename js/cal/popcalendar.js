@@ -116,7 +116,7 @@
 			img[i] = new Image;
 			img[i].src = imgDir + imgsrc[i];
 		}
-		document.write ('<div onclick="bShow=true" id="calendar" style="z-index:+1999;position:absolute;visibility:hidden;"><table width="'+((showWeekNumber==1)?240:205)+'" style="font-family:Arial;font-size:11px;border: 1px solid #A0A0A0;" bgcolor="#ffffff"><tr bgcolor="#000066"><td><table width="'+((showWeekNumber==1)?238:203)+'"><tr><td style="padding:1px;font-family:Arial;font-size:11px;"><font color="#ffffff' + '' /*C9D3E9*/ +'"><b><span id="caption"></span></b></font></td><td align="right">');
+		document.write ('<div onclick="bShow=true" id="calendar" style="z-index:10;position:absolute;visibility:hidden;"><table width="'+((showWeekNumber==1)?240:205)+'" style="font-family:Arial;font-size:11px;border: 1px solid #A0A0A0;" bgcolor="#ffffff"><tr bgcolor="#000066"><td><table width="'+((showWeekNumber==1)?238:203)+'"><tr><td style="padding:1px;font-family:Arial;font-size:11px;"><font color="#ffffff' + '' /*C9D3E9*/ +'"><b><span id="caption"></span></b></font></td><td align="right">');
 		if (!hideCloseButton) document.write ('<a href="javascript:hideCalendar()"><img src="'+imgDir+'close.gif" width="15" height="13" border="0" /></a>');
 		document.write ('</td></tr></table></td></tr><tr><td style="padding:2px" bgcolor="#ffffff"><span id="content"></span></td></tr>');
 
@@ -124,7 +124,7 @@
 			document.write ('<tr bgcolor="#f0f0f0"><td style="padding: 2px" align="center"><span id="lblToday"></span></td></tr>');
 		}
 			
-		document.write ('</table></div><div id="selectMonth" style="z-index:+1999;position:absolute;visibility:hidden;"></div><div id="selectYear" style="z-index:+1999;position:absolute;visibility:hidden;"></div>');
+		document.write ('</table></div><div id="selectMonth" style="z-index:+999;position:absolute;visibility:hidden;"></div><div id="selectYear" style="z-index:+999;position:absolute;visibility:hidden;"></div>');
 	}
 
 	var	styleAnchor = 'text-decoration:none;color:black;';
