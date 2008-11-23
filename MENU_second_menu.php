@@ -145,13 +145,51 @@ margin-top:8px;
 
 .buttonLink {
 border: 1px solid #333333;
+border-top:none;
+border-left:none;
+
 display:inline;
 padding:5px;
-background-color:#FFCC33;
+padding-bottom:2px;
+padding-top:3px;
+
 float:none;
 clear:none;
 }
 
+.buttonLink , .buttonLink a, .buttonLink a:link, .buttonLink a:visited {
+	background-color:#C4E379;
+	background-color:#DDDC71;
+}
+
+.datesColumn {
+	line-height: 1.5em;
+	background:url(<?=$moduleRelPath ?>/img/toppanel_bg4.png) repeat-x top left;
+}
+
+.datesColumnHeader {
+	background-color:#B6C58D;
+	color:#FFFFFF;
+	font-weight:bold;
+	vertical-align:top;
+	border-bottom:1px solid #ffffff;
+}
+
+.ContinentHeader {	
+	padding:3px;
+	padding-top:4px;
+}
+
+.countryContinent { border-left:1px solid #CCCCCC; }
+.countryContinent a { display:block; clear:both; font-size:9px;}
+.countryContinent1 {  background-color:#FAFAE4; }
+.countryContinent2 {  background-color:#E8ECDE; }
+.countryContinent3 {  background-color:#FAFAE4; }
+.countryContinent4 {  background-color:#E8ECDE; }
+.countryContinent5 {  background-color:#FAFAE4; }
+.countryContinent6 {  background-color:#E8ECDE; }
+
+	
 .menuButton a,.menuButton a:link,.menuButton a:visited {text-decoration:none; color:#333333;}
 
 .menuButtonNormal {
@@ -553,9 +591,9 @@ if (! $dontShowCountriesSelection ) {
 	$brandsListFilter=brands::getBrandsList(1);
 	if ( count($brandsListFilter) > 10 ) {
 ?>
-<table  width="200" cellpadding="1" cellspacing="0">
+<table  width="100%" cellpadding="1" cellspacing="0" >
 <tr>
-	<td  height=80 class="main_text" valign="top"><div align="center">
+	<td  height=80 class="main_text" valign="top"><div align="right">
 <?
 				echo "<select name='selectBrand' id='selectBrand' size='15' onchange='changeBrand(this)'>
 						<option value=0>"._All_Brands."</option>";
@@ -568,6 +606,7 @@ if (! $dontShowCountriesSelection ) {
 ?>
 	  </div>
 	</td>
+	<td width=100></td>
 </tr>
 </table>
 <?

@@ -460,26 +460,8 @@ exitPage(0);
 function exitPage($exitNow=1){
    global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
    global $sqlQueriesDebug,$sqlFetchTime;
-   global $pageStart;
+   global $pageStart,$DBGlvl;
  
-  /*
-   $sqlQueriesTime=0;
-   $i=0;
-   foreach ($sqlQueriesDebug as $tm) {
-      $sqlQueriesTime+=$tm;
-	  $i++;
-   }
-   echo "<hr> total sql query time: $sqlQueriesTime secs in $i queries <hr>";
-   
-   
-   $sqlQueriesTime=0;
-   $i=0;
-   foreach ($sqlFetchTime as $tm) {
-      $sqlQueriesTime+=$tm;
-	  $i++;
-   }
-   echo "<hr> total sql fetch time: $sqlQueriesTime secs in $i fetches <hr>";
-*/
 
    echo "<br>";
    if (!$noFooterMenu ) {
@@ -502,7 +484,32 @@ function exitPage($exitNow=1){
 
 		require_once dirname(__FILE__)."/GUI_footer.php";
    }
-  
+   
+	if ($DBGlvl) {   
+		// db execution time
+		$sqlQueriesTime=0;
+		$i=0;
+		foreach ($sqlQueriesDebug as $tm) {
+		  $sqlQueriesTime+=$tm;
+		  $i++;
+		}
+		
+		echo "<div class='debugBoxTop'>";
+		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$i); 
+		
+		$sqlQueriesFetchTime=0;
+		$i=0;
+		foreach ($sqlFetchTime as $tm) {
+		  $sqlQueriesFetchTime+=$tm;
+		  $i++;
+		}
+		printf("DB fetch: <b>%.4f</b> secs in %d fetches <hr>",$sqlQueriesFetchTime,$i);
+		printf("DB Total: <b>%.5f</b> secs<hr>",($sqlQueriesTime + sqlQueriesFetchTime )) ;
+		printf("Page Total: <b>%.5f</b> secs<hr>",$pageTime) ;
+		echo "</div>";
+		// end db
+	}
+	
    statsLogger::Log($pageTime);
 		
    if ($exitNow) exit;

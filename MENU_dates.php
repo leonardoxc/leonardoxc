@@ -20,21 +20,21 @@
 if ( $op!='comp' ) {
 	if (! $CONF['seasons']['use_season_years'] ) $season=0;
 
-	$tblWidth=240;
-	if ($op=="list_flights" && $CONF_use_calendar) $tblWidth=495;
+	$tblWidth=280;
+	if ($op=="list_flights" && $CONF_use_calendar) $tblWidth+=255;
 	
 	if ($CONF['seasons']['use_season_years']) $tblWidth+=70;
 
 	//$tblWidth="100%";
 ?>
-
-<table  width="<?=$tblWidth?>" cellpadding="2" cellspacing="0">
+<div style='height:4px;'></div>
+<table  width="<?=$tblWidth?>" cellpadding="3" cellspacing="0">
 <tr>
 	<td colspan=5  class="main_text" >
 		<strong>
 			<?=_SELECT_DATE?> <?=_OR?>
 		</strong>		
-		<div class='menuButton buttonLink'>			
+		<div class='buttonLink'>			
 		<a href='<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'0','month'=>'0','day'=>'0','season'=>'0'))?>'><?=_ALL_YEARS?></a>
 		</div>
 
@@ -44,33 +44,33 @@ if ( $op!='comp' ) {
 <tr>
 <?
 	if ($CONF['seasons']['use_season_years'] ) {
-		echo '<td class="tableBox" valign="top" style="width:70px"><strong>SEASON</strong>';
+		echo '<td class="datesColumnHeader" style="width:70px">SEASON';
 	} else {
-		echo '<td>';
+		echo '<td class="datesColumnHeader">';
 	}
 	echo '</td>';
 
 	if ($op=="list_flights" &&  $CONF_use_calendar ) {
-		echo '<td class="tableBox" valign="top" style="width:255px"><strong>'._DAY.'</strong>';
+		echo '<td class="datesColumnHeader" valign="top" style="width:255px"><strong>'._DAY;
 	} else { 
-		echo '<td>';
+		echo '<td class="datesColumnHeader">';
 	}
 	echo '</td>';
 
 ?>
 
-	<td class="tableBox" valign="top" style="width:60px">
-		<strong><?=_YEAR?></strong>
+	<td class="datesColumnHeader" style="width:60px">
+		<?=_YEAR?>
 	</td>
-	<td class="tableBox" valign="top" style="width:90px">
-		<strong><?=_MONTH?></strong>
+	<td class="datesColumnHeader" style="width:90px">
+		<?=_MONTH?>
 	</td>
-    <td class="tableBox" valign="top" style="width:110px"><strong><?=_Recent?></strong></td>
+    <td class="datesColumnHeader" style="width:110px"><?=_Recent?></td>
 </tr>
 <tr>
 <?
 if ($CONF['seasons']['use_season_years'] ) {
-	echo '<td class="sp " valign="top">';
+	echo '<td class="datesColumn"" valign="top">';
    	if ($season) $seasonLegend=_SEASON.' '.$season;
 	else $seasonLegend=_SELECT_SEASON;
 
@@ -95,7 +95,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 ?>
 
 <? if ($op=="list_flights" && $CONF_use_calendar) {?>
-	<td class="calBox" valign="top" style="width:255px">		
+	<td class="calBox datesColumn"" valign="top" style="width:255px">		
 <? 
 
 		$calLang=$lang2iso[$currentlang]; 
@@ -133,21 +133,21 @@ if ($CONF['seasons']['use_season_years'] ) {
 	var dayName = {'<?=$calLang?>' : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
 </script>
-<script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
+<script language='javascript' src='<?=$moduleRelPath ?>/js/cal/popcalendar.js'></script>
 <form name="formFilter" id="formFilter">
     <input style='visibility:hidden;' id="DAY_SELECT" name="DAY_SELECT" type="text" size="10" maxlength="10" value="<?=$dateStr ?>" >
 </form>
 <script language='javascript'>
 
  init();
- showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?78:8)?>,43);
+ showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?81:11)?>,49);
 </script>
 </td>
 <? } else { ?>
 <td></td>
 <? } ?>
 
-	<td class="sp " valign="top">
+	<td class="datesColumn" valign="top">
 	<?  
 			
 		 for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
@@ -155,7 +155,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 		}
 	?>
 	</td>
-	<td valign="top">
+	<td class="datesColumn" valign="top">
 	<?
 		$i=1;
 		foreach ($monthList as $monthName)  {		 
@@ -165,7 +165,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 		 }
 	?>
 	</td>
-    <td valign="top">
+    <td class="datesColumn" valign="top">
 <? 
 	 $month_num=date("m");
 	 $year_num=date("Y");

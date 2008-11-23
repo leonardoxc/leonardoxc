@@ -23,17 +23,13 @@ if ( $countriesNum > 30 &&0 ) {
 	$tblWidth="400";
 
 ?>
-<table  width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
+<table  width="<?=$tblWidth?>" cellpadding="3" cellspacing="0">
 <tr>
-	<td  height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_SELECT_COUNTRY?> <?=_OR?></strong>
-	  </div>
-	</td>
-</tr>
-<tr>
-	<td class="dropDownBoxH2">
-		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'0'))?>'><?=_Display_ALL?></a>
-		</div>
+	<td  height=25 class="main_text" bgcolor="#40798C">
+		<div align="center" class="style1">
+			<strong><?=_SELECT_COUNTRY?> <?=_OR?></strong>
+			<a href='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'0'))?>'><?=_Display_ALL?></a>
+		</div>	
 	</td>
 </tr>
 <tr>
@@ -60,9 +56,9 @@ if ( $countriesNum > 30 &&0 ) {
 <?
 } else {
 			
-	$num_of_cols=ceil($countriesNum/15);
-	$num_of_cols=5;
-	$num_of_rows=ceil($countriesNum/$num_of_cols);
+	$num_of_cols=ceil(($countriesNum+6)/17);
+	// $num_of_cols=5;
+	$num_of_rows=ceil(($countriesNum+6)/$num_of_cols);
 
 	$countriesDivWidth=100;
 	$countriesDivWidthTot=$countriesDivWidth*$num_of_cols;
@@ -71,12 +67,24 @@ if ( $countriesNum > 30 &&0 ) {
 	$tblWidth=740;
 
 ?>
+
+<?
+	require_once dirname(__FILE__)."/FN_areas.php";
+	$i=0;
+	foreach($countriesNames as $countryName) {	
+		$continentNum=$countries2continent[$countriesCodes[$i]];	
+		$continentArray[$continentNum][]=$i;
+		$i++;
+	}		
+	
+?>
+<div style='height:4px;'></div>
 <table  width="<?=$tblWidth?>" cellpadding="1" cellspacing="0" align="center">
 <tr>
 	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
 		<strong><?=_SELECT_COUNTRY?> <?=_OR?>
 		</strong>
-		<div class="menuButton buttonLink">
+		<div class="buttonLink">
 			<a  href='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'0'))?>'><?=_Display_ALL?></a>
 		</div>
 	</td>
@@ -87,15 +95,50 @@ if ( $countriesNum > 30 &&0 ) {
 	</td>
 </tr>
 
+
 <? 
-//require_once dirname(__FILE__)."/FN_areas.php";
 
-//echo "\n\n<tr style='text-align:left'><td>";
-//echo "<div ><ul id='countriesList'>\n";
-
-$ii=0;
 if ($countriesNum) {
 	$percent=floor(100/$num_of_cols);
+	$sortRowClass=($ii%2)?"l_row1":"l_row2"; 	
+	$ii=0; 
+	echo "\n\n<tr><td class='countryContinent countryContinent1'  valign='top' width='$percent%'>";
+	
+	for($c=1;$c<=6;$c++) {
+		
+		if ($ii>=$num_of_rows-1) {
+				echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
+				$ii=0;
+		}
+		echo "<div class='datesColumnHeader ContinentHeader'><strong>".$continents[$c]."</strong></div>";
+		$ii++;
+		
+		foreach($continentArray[$c] as $i) {
+			
+			if ($ii>=$num_of_rows) {
+				echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
+				$ii=0;
+			}
+			//$i=$continentArray[$c][$ii];	
+			$countryName=$countriesNames[$i];
+			$countryName=trimText($countryName,20);
+			$linkTmp=getLeonardoLink(array('op'=>'useCurrent','country'=>$countriesCodes[$i]));
+					
+			echo "<a  class='countryContinent$c' href='$linkTmp'>$countryName</a>\n";
+			$ii++; 
+		}	
+	}
+	echo "</tr>";
+}	
+
+
+$ii=0;
+if ($countriesNum && 0) {
+
+
+
+	$percent=floor(100/$num_of_cols);
+
 	for( $r=0;$r<$num_of_rows;$r++) {
 		$sortRowClass=($ii%2)?"l_row1":"l_row2"; 	
 		$ii++; 

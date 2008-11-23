@@ -700,3 +700,16 @@ table.dropDownBox td {
 	overflow:visible;
 	display:inline;
 }
+
+.debugBoxTop {
+	display:block;
+	float:left;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:200px;
+	font-size:9px;
+	background-color:#FFFFFF;
+	border:1px solid #888888;
+
+}

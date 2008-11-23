@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.2 2007/12/02 09:17:06 manolis Exp $
+ *   $Id: mysql.php,v 1.3 2008/11/23 23:59:14 manolis Exp $
  *
  ***************************************************************************/
 
@@ -23,6 +23,14 @@ if(!defined("SQL_LAYER"))
 {
 
 define("SQL_LAYER","mysql");
+if (! function_exists(getmicrotime) ){
+
+	function getmicrotime() {
+	   list($usec, $sec) = explode(" ", microtime());
+	   return ((float)$usec + (float)$sec);
+	}
+
+}
 
 class sql_db
 {
@@ -64,8 +72,8 @@ class sql_db
 					@mysql_close($this->db_connect_id);
 					$this->db_connect_id = $dbselect;
 				}
-				$this->sql_query("SET SESSION sql_mode='ALLOW_INVALID_DATES' ");
 			}
+			$this->sql_query("SET SESSION sql_mode='ALLOW_INVALID_DATES' ");
 			return $this->db_connect_id;
 		}
 		else
@@ -99,6 +107,11 @@ class sql_db
 	//
 	function sql_query($query = "", $transaction = FALSE)
 	{
+		global $sqlQueriesDebug;
+		global $DBGlvl;
+		if (!is_array($sqlQueriesDebug) ) $sqlQueriesDebug=array();
+		
+		if ($DBGlvl) { $start=getmicrotime(); }
 		// Remove any pre-existing queries
 		unset($this->query_result);
 		if($query != "")
@@ -111,6 +124,12 @@ class sql_db
 		{
 			unset($this->row[$this->query_result]);
 			unset($this->rowset[$this->query_result]);
+			if ($DBGlvl) {
+				$end=getmicrotime();
+				$tm=$end-$start; 
+				array_push($sqlQueriesDebug,$tm);
+				// echo "<hr>$tm#<hr>";
+			}
 			return $this->query_result;
 		}
 		else
@@ -200,6 +219,11 @@ class sql_db
 	}
 	function sql_fetchrow($query_id = 0)
 	{
+		global $sqlFetchTime;
+		global $DBGlvl;
+		if (!is_array($sqlFetchTime) ) $sqlFetchTime=array();		
+		if ($DBGlvl) { $start=getmicrotime(); }
+
 		if(!$query_id)
 		{
 			$query_id = $this->query_result;
@@ -207,6 +231,13 @@ class sql_db
 		if($query_id)
 		{
 			$this->row[$query_id] = @mysql_fetch_array($query_id);
+			
+			if ($DBGlvl) {
+				$end=getmicrotime();
+				$tm=$end-$start; 
+				array_push($sqlFetchTime,$tm);
+				// echo "<hr>$tm#<hr>";
+			}
 			return $this->row[$query_id];
 		}
 		else

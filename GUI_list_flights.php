@@ -406,7 +406,7 @@ function removeClubFlight(clubID,flightID) {
      $is_private=$row["private"];
 	 $flightID=$row['ID'];
 
-     $name=getPilotRealName($row["userID"],$row["userServerID"],1);
+     $name=getPilotRealName($row["userID"],$row["userServerID"],1);	
 	 $name=prepare_for_js($name);
 
 	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"],-1,0,20) ) ;
