@@ -175,14 +175,29 @@ clear:none;
 	border-bottom:1px solid #ffffff;
 }
 
-.ContinentHeader {	
-	padding:3px;
-	padding-top:4px;
+
+.countryContinentLink {
+display:block; clear:both;
+padding:0;
+padding-left:12px;
+background:#ffffff no-repeat url(<?=$moduleRelPath ?>/img/icon_c1.gif);
 }
 
-.countryContinent { border-left:1px solid #CCCCCC; }
-.countryContinent a { display:block; clear:both; font-size:9px;}
-.countryContinent1 {  background-color:#FAFAE4; }
+.ContinentHeader { padding:3px; padding-top:4px; }
+
+.ContinentHeader1 {	background-color:#B6C58D; }
+.ContinentHeader2 {	background-color:#DABE74; }
+.ContinentHeader3 {	background-color:#B0BED2; }
+.ContinentHeader4 {	background-color:#BCA7A0; }
+.ContinentHeader5 {	background-color:#B6C58D; }
+.ContinentHeader6 {	background-color:#9791BD; }
+
+.countryContinent { border-left:1px solid #CCCCCC;  }
+
+
+.countryContinent a { display:block; clear:both; font-size:9px; }
+
+.countryContinent1 {  background-color:#FAFAE4;  }
 .countryContinent2 {  background-color:#E8ECDE; }
 .countryContinent3 {  background-color:#FAFAE4; }
 .countryContinent4 {  background-color:#E8ECDE; }
@@ -487,7 +502,7 @@ if (! $dontShowCountriesSelection ) {
 	if ($country) {
 		$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
 	} else {
-		$countryFlagImg="<img src='$moduleRelPath/img/globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+		$countryFlagImg="<img src='$moduleRelPath/img/icon_globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 	}
 }	
 
@@ -526,7 +541,7 @@ if (! $dontShowCountriesSelection ) {
 
 <?	if ($showNacClubSelection || (count($clubsList) && $op!='comp')  ) { ?>
     <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
-    <img  src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><? echo $arrDownImg; ?></a>
+    <img  src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><?=' '._Club.' '.$arrDownImg; ?></a>
     </div>
 <? } ?>
 

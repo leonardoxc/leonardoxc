@@ -110,16 +110,16 @@ if ($countriesNum) {
 			continue;
 		}
 		if ($ii>=$num_of_rows-1) {
-				echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
+				echo "</td><td class='countryContinent countryContinent1' valign='top' width='$percent%'>";
 				$ii=0;
 		}
-		echo "<div class='datesColumnHeader ContinentHeader'><strong>".$continents[$c]."</strong></div>";
+		echo "<div class='datesColumnHeader ContinentHeader ContinentHeader$c'><strong>".$continents[$c]."</strong></div>";
 		$ii++;
 		if (count($continentArray[$c])>0) {
 			foreach($continentArray[$c] as $i) {
 				
 				if ($ii>=$num_of_rows) {
-					echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
+					echo "</td><td class='countryContinent countryContinent1' valign='top' width='$percent%'>";
 					$ii=0;
 				}
 				//$i=$continentArray[$c][$ii];	
@@ -127,7 +127,7 @@ if ($countriesNum) {
 				$countryName=trimText($countryName,20);
 				$linkTmp=getLeonardoLink(array('op'=>'useCurrent','country'=>$countriesCodes[$i]));
 						
-				echo "<a  class='countryContinent$c' href='$linkTmp'>$countryName</a>\n";
+				echo "<div class='countryContinentLink ContinentHeader$c'><a class='countryContinent1' href='$linkTmp'>$countryName</a></div>\n";
 				$ii++; 
 			}	
 		}	
