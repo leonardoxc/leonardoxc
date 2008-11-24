@@ -151,8 +151,8 @@
 	$where_clause.=$filter_clause;
 	
 	if ($clubID)   {
-	 $add_remove_mode=makeSane($_GET['a_r'],1);
-	 $queryExtraArray+=array("a_r"=>$add_remove_mode);
+	 $add_remove_mode=makeSane($_REQUEST['admClub'],1);
+	 $queryExtraArray+=array("admClub"=>$add_remove_mode);
 	
 	 require dirname(__FILE__)."/INC_club_where_clause.php";
 	} 
@@ -365,12 +365,14 @@ function removeClubFlight(clubID,flightID) {
 	 	echo  "<div class='tableInfo shadowBox'>You can administer this club ";
 		if ( $clubsList[$clubID]['addManual'] ) {
 			if ($add_remove_mode){
+				$queryExtraArray['admClub']='0';
 				echo "<a href='".
 					getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$sortOrder)+
-							$queryExtraArray+array('a_r'=>'0') )."'>Return to normal view</a>";
+							$queryExtraArray)."'>Return to normal view</a>";
 			} else {
+				$queryExtraArray['admClub']='1';
 				echo "<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$sortOrder)+
-							$queryExtraArray+array('a_r'=>'1') )."'>Add / remove flights</a>";
+						$queryExtraArray )."'>Add / remove flights</a>";
 			}
 		}
 		echo "<div id='updateDiv' style='display:block'></div>";

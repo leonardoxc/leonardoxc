@@ -127,4 +127,6 @@ foreach($clubsList as $i=>$clubInfo) {
 	}
 }
 
+// uncomment this to disable clubs
+// $clubsList=array();
 ?>

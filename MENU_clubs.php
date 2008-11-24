@@ -12,7 +12,20 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+?>
 
+<div id="clubDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>        
+<div class='content'>
+<div style='height:4px;'></div>
+<table  cellpadding="4" cellspacing="0"><tr><td valign="top">
+
+<?
+
+$num_of_cols=1;
+$tblWidth=$num_of_cols*260;
+
+if ($showNacClubSelection ) {
 /**
  * PopUp Menu for NACclubs
  * Martin Jursa 22.05.2007
@@ -34,10 +47,7 @@
 		optionstring+=',dependent=yes,resizable=yes,scrollbars=yes,status=yes ';
 		window.open('$moduleRelPath/GUI_EXT_set_club.php?NAC_ID='+nacid+'&clubID='+nacclubid+'&option=2&params=$urlparameters', '_blank',	optionstring, false);
 	}//--></script>";
-
-	$num_of_cols=1;
-
-	$tblWidth=$num_of_cols*200;
+	
 	if (!empty($forceNacId)) {
 		$nacids=array($forceNacId);
 	}else {
@@ -52,37 +62,40 @@
 	}
 
 ?>
-<div id="clubDropDownID" class="secondMenuDropLayer"  >
-<div class='closeButton closeLayerButton'></div>        
-<div class='content'>
-<table  width="<?=$tblWidth?>" cellpadding="1" cellspacing="0">
+<?=$js?>
+<table  width="<?=$tblWidth?>" cellpadding="0" cellspacing="0">
+<tr>
+	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
+      
+      <strong><?=_Select_Club?> <?=_OR?></strong>&nbsp;
+    	<div class="buttonLink">
+			<a style='text-align:center; text-decoration:underline;' href='<?=
+					getLeonardoLink(array('op'=>'useCurrent','nacid'=>(!empty($forceNacId) ? $forceNacId:'0'),
+					'nacclubid'=>'0' ))	?>'><?=_Display_ALL?></a>
+		</div>
+	  
+	</td>
+</tr>
+</table>
+<table  width="<?=$tblWidth?>" cellpadding="0" cellspacing="0">
+<tr>
+	<td colspan='<?=$num_of_cols ?>'  class="datesColumn">	
+     <ul class='simpleList'>
 <? foreach ($nacids as $nid) {
 	$nacname=$nacnames[$nid];
 	// Manolis 2007/11/06
 	// use [nacname] instread of eval to be able to use " at the defines
 	$labelSelectNacclub=str_replace('[nacname]',$nacname,_SELECT_NACCLUB);
+	
+	//if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
+	//		else $a_class="";
+	
 	// eval('$labelSelectNacclub="'._SELECT_NACCLUB.'";');
 	?>
-<tr>
-	<td colspan=<?=$num_of_cols ?> class="dropDownBoxH2">
-		<div class="dropDownBoxH2">
-			<a style='text-align:center; text-decoration:underline;' href='#' onclick="setClub(<?=$nid?>, <?=($nid==$nacid) ? $nacclubid : '0'?>)"><?=$labelSelectNacclub?></a>
-		</div>
-	</td>
-</tr>
+	<li><a href='#' onclick="setClub(<?=$nid?>, <?=($nid==$nacid) ? $nacclubid : '0'?>)"><?=$labelSelectNacclub?></a></li>
+
 <? } ?>
-<tr>
-	<td colspan=<?=$num_of_cols ?> height=25 class="main_text" bgcolor="#40798C"><div align="center" class="style1"><strong><?=_OR?></strong>
-	  </div>
-	</td>
-</tr>
-<tr>
-	<td colspan=<?=$num_of_cols ?> class="dropDownBoxH2">
-		<div class="dropDownBoxH2"><?=$js?>
-			<a style='text-align:center; text-decoration:underline;' href='<?=
-					getLeonardoLink(array('op'=>'useCurrent','nacid'=>(!empty($forceNacId) ? $forceNacId:'0'),
-					'nacclubid'=>'0' ))	?>'><?=_Display_ALL?></a>
-		</div>
+	</ul>
 	</td>
 </tr>
 
@@ -124,25 +137,52 @@ if (!$useNacClubPopUp) {
 }
 */
 ?>
+</table>
+<?
+} // endif nacclub selection
+?>
+</td><td valign="top">
+<? if (count($clubsList) && $op!='comp') { ?>
+<table  width="<?=$tblWidth?>" cellpadding="0" cellspacing="0">
 <tr>
-	<td colspan=<? echo $num_of_cols ; ?> height=8 class="main_text" >
+	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
+      
+      <strong><?=_Select_Club?> <?=_OR?></strong>&nbsp;
+    	<div class="buttonLink">
+			<a style='text-align:center; text-decoration:underline;' href='<?=
+					getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0' ))	?>'><?=_Display_ALL?></a>
+		</div>
+	  
+	</td>
+</tr>
+</table>
+<table  width="<?=$tblWidth?>" cellpadding="0" cellspacing="0" >
+<tr>
+	<td colspan=<? echo $num_of_cols ; ?> height=8 class="datesColumnHeader" >
+    <?=_Clubs_Leagues?>
+    </td>
+ </tr>
+<tr>
+	<td colspan=<? echo $num_of_cols ; ?> height=8 class="datesColumn" >
+    <ul class='simpleList'>
     <?
 	
-		if (count($clubsList) >0) {
-		echo "<li class='li_h1 long_li_h1'>.:: "._Clubs_Leagues." ::.</li>\n";
 		foreach( $clubsList as $clubsItem) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
 			echo "<li $a_class><a $a_class href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>$clubsItem['id'],'nacclubid'=>'0','nacid'=>'0'))."'>".$clubsItem['desc']."</a></li>\n";
-		}
+		
 	}
 	
 	?>
-    
+    </ul>
     
     </td>
 </tr>
 </TABLE>
+<? } ?>
+
+</td></tr></table>
 
 <div id='filterResultDiv'></div>
 </div>

@@ -763,7 +763,7 @@ function getLeonardoLink($argArray) {
 	} else 	if ($linkType==3) {
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$serverID,$pilotID,$takeoffID,$country,$cat,$class,$xctype,$clubID;
-		global $nacid,$nacclubid;
+		global $nacid,$nacclubid,$brandID;
 
 		if ($argArray['op']=='useCurrent') {
 			$argArray['op']=$op;
@@ -929,8 +929,8 @@ function getLeonardoLink($argArray) {
 		foreach($argArray as $argName=>$argValue){
 			if ($argName!='op' ) {
 				// if (! $isListing || $i>0) $args.='&';
-									
-				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
+				$args.='&'.$argName.'='.($argValue!='skipValue'?($argValue):'');
+
 			}	
 		}
 	

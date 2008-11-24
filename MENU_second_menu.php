@@ -524,7 +524,7 @@ if (! $dontShowCountriesSelection ) {
     <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
     </div>	
 
-<?	if ($showNacClubSelection ) { ?>
+<?	if ($showNacClubSelection || (count($clubsList) && $op!='comp')  ) { ?>
     <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
     <img  src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><? echo $arrDownImg; ?></a>
     </div>
@@ -552,34 +552,49 @@ if (! $dontShowCountriesSelection ) {
 
 <? }?>
 
+    <div id='bookmarkMenuID' class="menuButton">
+			<a href="#" onClick="toogleMenu('bookmark');return false;">
+			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0>
+			 <? echo $arrDownImg; ?></a>
+    </div>	
 
-<div class="menu1" >
-	<? // display this url 	, New way , all is taken care from getLeonardoLink()
-		$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
-								'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
-	?>
-	<a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0></a>
+
 </div>
 
+
+
+<div id="bookmarkDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>        
+<div class='content' style='padding:5px;'>
+        <? // display this url 	, New way , all is taken care from getLeonardoLink()
+            $thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
+                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
+        ?>
+        <a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0> <?=_This_is_the_URL_of_this_page?></a>
+
 </div>
-
-
+</div>
 
 <div id="filterDropDownID" class="secondMenuDropLayer"  >
 <div class='closeButton closeLayerButton'></div>        
-<div class='content'>
+<div class='content' style='padding:5px;'>
 
-<? if ($_SESSION["filter_clause"]) {   ?>
-<img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>
-<hr/>
-<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a><hr>
-<a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
-	
-<?	} else { ?>
-<img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?><hr />
-<a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
-<?  } ?>
-<div id='filterResultDiv'></div>
+	<? if ($_SESSION["filter_clause"]) {   ?>
+    <img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
+    <div class='buttonLink'>		
+    <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
+    </div>		&nbsp;
+    <div class='buttonLink'>		
+    <a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
+    </div>	
+    <?	} else { ?>
+    <img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?>&nbsp;
+    <div class='buttonLink'>		
+    <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
+    </div>
+    <?  } ?>
+    <div id='filterResultDiv'></div>
+
 </div>
 </div>
 
@@ -591,11 +606,15 @@ if (! $dontShowCountriesSelection ) {
 	$brandsListFilter=brands::getBrandsList(1);
 	if ( count($brandsListFilter) > 10 ) {
 ?>
-<table  width="100%" cellpadding="1" cellspacing="0" >
+
+<table  cellpadding="0" cellspacing="0">
 <tr>
-	<td  height=80 class="main_text" valign="top"><div align="right">
-<?
-				echo "<select name='selectBrand' id='selectBrand' size='15' onchange='changeBrand(this)'>
+	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
+      
+      <strong><?=_Select_Brand?>
+      
+      <?
+      echo "<select name='selectBrand' id='selectBrand'  onchange='changeBrand(this)'>
 						<option value=0>"._All_Brands."</option>";
 				foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
 					if ($brandIDfilter==$brandID) $sel='selected';
@@ -603,10 +622,15 @@ if (! $dontShowCountriesSelection ) {
 					echo "<option $sel value=$brandIDfilter>$brandNameFilter</option>";
 				}
 				echo "</select>\n";
-?>
-	  </div>
+                
+                ?>
+       <?=_OR?></strong>&nbsp;
+    	<div class="buttonLink">
+			<a style='text-align:center; text-decoration:underline;' href='<?=
+					getLeonardoLink(array('op'=>'useCurrent','brandID'=>'0' ))	?>'><?=_Display_ALL?></a>
+		</div>
+	  
 	</td>
-	<td width=100></td>
 </tr>
 </table>
 <?

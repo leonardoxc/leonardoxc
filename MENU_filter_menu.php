@@ -48,7 +48,7 @@
 	
 	// but if we have a club or nac club -> do display!
 	if ($clubID  || ($showNacClubSelection && $nacid  && $nacclubid) ) 	$displayFilterMenu|=0x04;
-	if ($op=='comp' || $op=='competition'  ) $displayFilterMenu&=~(0x04|0x02|0x01);
+	if ($op=='comp' || $op=='competition'  ) $displayFilterMenu&=~(0x02|0x01);
 	
 	if ( ! $displayFilterMenu) return;
 	

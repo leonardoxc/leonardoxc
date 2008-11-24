@@ -16,7 +16,7 @@
 
 <div id="countryDropDownID" class="secondMenuDropLayer"  >
 <div class='closeButton closeLayerButton'></div>        
-<div class='content'>
+<div class='content' align="left">
 
 <?
 if ( $countriesNum > 30 &&0 ) {
@@ -79,7 +79,8 @@ if ( $countriesNum > 30 &&0 ) {
 	
 ?>
 <div style='height:4px;'></div>
-<table  width="<?=$tblWidth?>" cellpadding="1" cellspacing="0" align="center">
+<div align='left'>
+<table  cellpadding="1" cellspacing="0"  >
 <tr>
 	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
 		<strong><?=_SELECT_COUNTRY?> <?=_OR?>
@@ -105,27 +106,30 @@ if ($countriesNum) {
 	echo "\n\n<tr><td class='countryContinent countryContinent1'  valign='top' width='$percent%'>";
 	
 	for($c=1;$c<=6;$c++) {
-		
+		if (!count($continentArray[$c])) { 
+			continue;
+		}
 		if ($ii>=$num_of_rows-1) {
 				echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
 				$ii=0;
 		}
 		echo "<div class='datesColumnHeader ContinentHeader'><strong>".$continents[$c]."</strong></div>";
 		$ii++;
-		
-		foreach($continentArray[$c] as $i) {
-			
-			if ($ii>=$num_of_rows) {
-				echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
-				$ii=0;
-			}
-			//$i=$continentArray[$c][$ii];	
-			$countryName=$countriesNames[$i];
-			$countryName=trimText($countryName,20);
-			$linkTmp=getLeonardoLink(array('op'=>'useCurrent','country'=>$countriesCodes[$i]));
-					
-			echo "<a  class='countryContinent$c' href='$linkTmp'>$countryName</a>\n";
-			$ii++; 
+		if (count($continentArray[$c])>0) {
+			foreach($continentArray[$c] as $i) {
+				
+				if ($ii>=$num_of_rows) {
+					echo "</td><td class='countryContinent countryContinent$c' valign='top' width='$percent%'>";
+					$ii=0;
+				}
+				//$i=$continentArray[$c][$ii];	
+				$countryName=$countriesNames[$i];
+				$countryName=trimText($countryName,20);
+				$linkTmp=getLeonardoLink(array('op'=>'useCurrent','country'=>$countriesCodes[$i]));
+						
+				echo "<a  class='countryContinent$c' href='$linkTmp'>$countryName</a>\n";
+				$ii++; 
+			}	
 		}	
 	}
 	echo "</tr>";
@@ -177,6 +181,9 @@ if ($countriesNum && 0) {
 	<td colspan=<? echo $num_of_cols ; ?> height=8 class="main_text" ></td>
 </tr>
 </TABLE>
+</div>
+
+
 </div>
 </div>
 <style type="text/css">

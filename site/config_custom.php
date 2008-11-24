@@ -231,7 +231,7 @@
 	)					
  );
  $CONF_use_NAC=1; 
- 
+
 /**
  * Martin Jursa 26.04.2007: Options for editing login data in pilot_profile_edit
  */

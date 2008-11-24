@@ -459,7 +459,7 @@ exitPage(0);
 
 function exitPage($exitNow=1){
    global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
-   global $sqlQueriesDebug,$sqlFetchTime;
+   global $sqlQueriesDebug,$sqlFetchTime,$sqlFetchNum;
    global $pageStart,$DBGlvl;
  
 
@@ -497,14 +497,8 @@ function exitPage($exitNow=1){
 		echo "<div class='debugBoxTop'>";
 		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$i); 
 		
-		$sqlQueriesFetchTime=0;
-		$i=0;
-		foreach ($sqlFetchTime as $tm) {
-		  $sqlQueriesFetchTime+=$tm;
-		  $i++;
-		}
-		printf("DB fetch: <b>%.4f</b> secs in %d fetches <hr>",$sqlQueriesFetchTime,$i);
-		printf("DB Total: <b>%.5f</b> secs<hr>",($sqlQueriesTime + sqlQueriesFetchTime )) ;
+		printf("DB fetch: <b>%.4f</b> secs in %d fetches <hr>",$sqlFetchTime,$sqlFetchNum);
+		printf("DB Total: <b>%.5f</b> secs<hr>",($sqlQueriesTime + $sqlFetchTime )) ;
 		printf("Page Total: <b>%.5f</b> secs<hr>",$pageTime) ;
 		echo "</div>";
 		// end db

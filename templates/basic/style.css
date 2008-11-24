@@ -713,3 +713,20 @@ table.dropDownBox td {
 	border:1px solid #888888;
 
 }
+
+
+.simpleList, .simpleList ul {
+	padding: 0px;
+	padding-left:18px;
+	margin: 0;
+	width : auto;		
+}
+.simpleList li {
+	padding: 1px;
+	padding-left:0;
+	list-style:circle;
+}
+.simpleList li a {
+padding:4px;
+padding-left:0;
+}
