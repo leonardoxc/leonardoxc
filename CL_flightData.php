@@ -627,7 +627,8 @@ $resStr='{
 	}
 
 	function getIGCRelPath($saned=0) {
-		if ($saned) $suffix=".saned.igc";
+		if ($saned==2) $suffix=".saned.full.igc";
+		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
 
 		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;  
@@ -687,7 +688,8 @@ $resStr='{
 	}
 
 	function getIGCFilename($saned=0) {
-		if ($saned) $suffix=".saned.igc";
+		if ($saned==2) $suffix=".saned.full.igc";
+		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
 		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;  
 	}
@@ -2018,6 +2020,14 @@ $kml_file_contents=
 		return 1;
 	}
 	
+	
+	/****************************************************************************************
+	****************************************************************************************
+	
+		Core function of analizing an igc
+		
+	****************************************************************************************
+	****************************************************************************************/
 	function getFlightFromIGC($filename) {
 		if ( !is_file($filename) ) {
 			DEBUG("IGC",1,"getFlightFromIGC: File was not found:$filename<br>");
@@ -2195,7 +2205,7 @@ $kml_file_contents=
 			DEBUG("IGC",1,"NO VALID POINTS FOUND");
 			return 0; // no valid points found
 		}
-
+		
 		$mod=0;
 		if ($p > $this->maxPointNum ){
 			$reduceArray=getReduceArray($p ,$this->maxPointNum);
@@ -2433,18 +2443,30 @@ $kml_file_contents=
 		if ( !is_dir($path_igc) ) {
 			@mkdir($path_igc,0755);
 		} 
-		// write saned IGC file
-		if (!$handle = fopen($this->getIGCFilename(1), 'w')) { 
-			print "Cannot open file (".$this->getIGCFilename(1).")"; 		
-		} 
-		if (!fwrite($handle, $outputBuffer)) { 
-		   print "Cannot write to file (".$this->getIGCFilename(1).")"; 
-		} 
-		fclose($handle); 
 		
-		//$handle=fopen($this->getIGCFilename(1),"w");
-		//fwrite($handle, $outputBuffer) ;
-		//fclose($handle);
+		/*write the full saned file */
+		$fullSanedFile='';
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;
+			if ($line{0}=='B' && $line{1}=='X') continue ; // MARKED BAD from BEFORE 
+			if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
+			$fullSanedFile.=$line."\n";
+		}
+		
+	
+		if (! writeFile($this->getIGCFilename(2),$fullSanedFile) ) {
+		   echo "Problem writing to file (".$this->getIGCFilename(2).")"; 
+		} 
+		// echo "<HR><HR>". $this->getIGCFilename(2) .strlen($fullSanedFile)."<HR><HR>";
+		/* done wrting the full saned file */
+		
+		// write saned IGC file
+		if (! writeFile($this->getIGCFilename(1),$outputBuffer) ) {
+		   echo "Problem writing to file (".$this->getIGCFilename(1).")"; 
+		} 
+		// done write saned IGC file
+		
 		if ($lastPoint) {
 			$this->lastPointTM=$lastPoint->gpsTime;
 			$this->lastLon=$lastPoint->lon();
@@ -2592,7 +2614,7 @@ $kml_file_contents=
 		$flightScore->parseScore($results);
 
 		// make a second pass 
-		$flightScore->computeSecondPass($this->getIGCFilename());
+		$flightScore->computeSecondPass($this->getIGCFilename(2));
 
 		// now is the time to search for the OLC files, manually optimization
 		// and 'inject' these values into the $flightScore object 
@@ -3295,13 +3317,15 @@ $kml_file_contents=
 
 		$oldFilename=$this->getIGCFilename() ;
 		$oldFilenameSaned=$this->getIGCFilename(1) ; 
+		$oldFilenameSanedFull=$this->getIGCFilename(2) ; 
 		$oldOLCfile=$this->getIGCFilename(0).".olc"; 
 		
 		$this->filename=$newName;
 
-		rename($oldFilename,$this->getIGCFilename() );
-		rename($oldFilenameSaned,$this->getIGCFilename(1) );
-		rename($oldOLCfile,$this->getIGCFilename(0).".olc");
+		@rename($oldFilename,$this->getIGCFilename() );
+		@rename($oldFilenameSaned,$this->getIGCFilename(1) );		
+		@rename($oldFilenameSanedFull,$this->getIGCFilename(2) );
+		@rename($oldOLCfile,$this->getIGCFilename(0).".olc");
 
 
 		$query="UPDATE $flightsTable SET filename='".$this->filename."' WHERE ID=".$this->flightID;
