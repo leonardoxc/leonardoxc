@@ -37,6 +37,9 @@
 	$type=makeSane($_REQUEST['type']);
 	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc")) ) return;
 
+	$updateColor=makeSane($_REQUEST['updateColor']);
+	if ($updateColor) $type='kml_trk_color';
+	
 	if ($type=="igc") {
 		$zip=makeSane($_REQUEST['zip'],1);
 		
@@ -125,7 +128,8 @@
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 		
-		$getFlightKML=$flight->getFlightKML()."&c=$c&ex=$ex&w=$w&an=$an";
+		// $getFlightKML=$flight->getFlightKML()."&c=$c&ex=$ex&w=$w&an=$an";
+		
 		$getFlightKML="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getIGCRelPath(0)).".kmz";
 		
 			$KMLlineColor="ff".substr($c,4,2).substr($c,2,2).substr($c,0,2);

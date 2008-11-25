@@ -960,7 +960,7 @@ $resStr='{
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
-		$getFlightKML=$this->getFlightKML()."&c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
+		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extended";
 
 		if ($extended==1) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
@@ -1115,8 +1115,10 @@ $resStr='{
 				$this->deleteFile($kmlTempFile);
 			}
 		}
-
-
+		
+		$getFlightKMLcolorUpdater=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extended&updateColor=1";
+		
+		
 		$kml_file_contents='';
 		$kml_file_contents.="
 <NetworkLink>
@@ -1133,9 +1135,14 @@ $resStr='{
 <NetworkLink>
   <name>UpdateColor</name>
   <Link>
-    <href>".str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) )."</href></Link>
+    <href>".
+	//str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) ).
+	str_replace("&","&#38;",$getFlightKMLcolorUpdater ).
+	"</href></Link>
 </NetworkLink>
 ";
+//echo "## $getFlightKMLcolorUpdater ## ";
+//exit;
 
 		return $kml_file_contents;
 	}
@@ -1285,7 +1292,7 @@ $resStr='{
 
 		//if (file_exists($this->getKMLFilename())) return;
 
-		$getFlightKML=$this->getFlightKML()."&c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extendedInfo";
+		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo";
 		//UTF-8 or 
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
