@@ -97,7 +97,7 @@ function removeClubPilot(pilotID) {
 	$legend="Administer CLub/League";
 	echo  "<div class='tableTitle'>
 	<div class='titleDiv'>$legend</div>
-	<div class='pagesDiv'>$legendRight</div>
+	<div class='pagesDivSimple'>$legendRight</div>
 	</div>" ;
 	if ($resText) {
 		echo "<div id='updateDiv' style='display:block; background-color:#EBE6DA;padding:5px; font-weight:bold;'>$resText</div>";

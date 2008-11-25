@@ -21,7 +21,7 @@
 	$legendRight="";
 	echo  "<div class='tableTitle shadowBox'>
 	<div class='titleDiv'>$legend</div>
-	<div class='pagesDiv'>$legendRight</div>
+	<div class='pagesDivSimple'>$legendRight</div>
 	</div>" ;
 	
 	

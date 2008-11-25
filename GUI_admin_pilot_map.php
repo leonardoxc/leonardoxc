@@ -145,7 +145,7 @@ function showResults(textStr) {
 <?
 	echo  "<div class='tableTitle shadowBox'>
 	<div class='titleDiv'>$legend</div>
-	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
+	<div class='pagesDivSimple' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
 
 	echo "<BR><a href='".CONF_MODULE_ARG."&op=admin_pilot_map&moveFlights=1'>PRESS HERE TO MOVE ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID</a>";

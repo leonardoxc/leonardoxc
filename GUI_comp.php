@@ -94,7 +94,7 @@
 	if ($itemsNum==0) $legendRight="[ 0 ]";
 
   echo  "<div class='tableTitle shadowBox'><div class='titleDiv'>$legend</div>";
-  if (!$listClubs) echo "<div class='pagesDiv'>$legendRight</div>";
+  if (!$listClubs) echo "<div class='pagesDivSimple'>$legendRight</div>";
   
   echo "</div>" ;
 

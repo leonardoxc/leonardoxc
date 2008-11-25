@@ -68,7 +68,7 @@ function mapPilot(divID,pilotID1,pilotID2) {
 
 	echo  "<div class='tableTitle shadowBox'>
 	<div class='titleDiv'>$legend</div>
-	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
+	<div class='pagesDivSimple' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
 	
 	echo "<div id='updateDiv' style='display:block'>Result</div>";
