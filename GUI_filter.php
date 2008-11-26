@@ -118,6 +118,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 } else { // form not submitted
 	// copy session variables (if any) to local variables
 	foreach ($_SESSION as $key => $value ) {
+		if (is_array($value) ) continue;
 		if (substr($key,0,7)=="FILTER_")
 			$$key=$value;
 			if ($value && $key!="filter_clause") $filterUrl.="&$key=".urlencode($value);

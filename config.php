@@ -603,22 +603,31 @@ function setLeonardoPaths () {
 	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);
 	$baseInstallationPath="";
 	$queryLen=strlen($_SERVER['QUERY_STRING']);
-	$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname( substr($_SERVER['REQUEST_URI'],0,-$queryLen)     ))   );	
+	if ($queryLen) 
+		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname( substr($_SERVER['REQUEST_URI'],0,-$queryLen)     ))   );	
+	else 
+		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['REQUEST_URI']) )   );	
+	//print_r($parts);	
 	if ( count($parts)>1 )  {
 		for($i=0;$i<count($parts);$i++) 
 		   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
 	}
 
-/*
+if (0) {
+	echo "@".substr($_SERVER['REQUEST_URI'],0,-$queryLen)."@";
+	echo "queryLen : $queryLen#";
+	echo "&& _SERVER['REQUEST_URI'] : ".$_SERVER['REQUEST_URI']."&&";
 	echo dirname($_SERVER['REQUEST_URI']);
 	echo "#moduleRelPath=$moduleRelPath#moduleRelPathTemp=$moduleRelPathTemp#";
 	echo "baseInstallationPath=$baseInstallationPath#<BR>";
+}
 
-if (defined('CONF_MODULE_ARG') )	exit;
-*/
 	if (!defined('CONF_MODULE_ARG') ){
-		if (!$baseInstallationPath) $lnk='/';
-		$lnk.=$baseInstallationPath.$CONF_mainfile."?$CONF_arg_name=$module_name";
+		if (!$baseInstallationPath  ) 
+			$lnk='/'.$CONF_mainfile."?$CONF_arg_name=$module_name";
+		else 
+			$lnk=$baseInstallationPath.'/'.$CONF_mainfile."?$CONF_arg_name=$module_name";
+			
 		define('CONF_MODULE_ARG',$lnk);
 	}
 

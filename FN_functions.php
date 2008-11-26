@@ -728,8 +728,9 @@ function getLeonardoLink($argArray) {
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
 		$lnk='';
-		if (!$baseInstallationPath) $lnk='/';
-		$lnk.=$baseInstallationPath.$CONF_mainfile.CONF_MODULE_ARG.$args;
+		//echo "^^ $baseInstallationPath ^^ $CONF_mainfile ^^";
+		if (!$baseInstallationPath ) $lnk='/';
+		$lnk.=$baseInstallationPath.'/'.$CONF_mainfile.CONF_MODULE_ARG.$args;
 		// echo $lnk;
 		//return $lnk;
 		return CONF_MODULE_ARG.$args;

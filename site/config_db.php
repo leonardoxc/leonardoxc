@@ -16,10 +16,18 @@ if ( $_SERVER['SERVER_NAME'] =="pgforum.home" ) {
 	$dbuser = 'root';
 	$dbpasswd = '321ox';
 } else {
-	$dbhost = 'localhost';
-	$dbname = 'paraglidingforum4';
-	$dbuser = 'pgforumftp';
-	$dbpasswd = 'K7v#3E!2';
+
+	if ($opMode==5 || $opMode==6) {
+		$dbhost = 'localhost';
+		$dbname = 'joomla15';
+		$dbuser = 'web_admin';
+		$dbpasswd = '321ox';
+	} else {
+		$dbhost = 'localhost';
+		$dbname = 'paraglidingforum4';
+		$dbuser = 'pgforumftp';
+		$dbpasswd = 'K7v#3E!2';
+	}	
 }
 	
 

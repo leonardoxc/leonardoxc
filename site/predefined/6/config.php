@@ -14,6 +14,15 @@
 
 // Specific settigns for phpBB3 module operation ($opMode=6)
 
+// replace this with the basolute path of phpbb3 if you have placed the 'leonardo/' dir
+// not in  the root path of phpbb3
+$phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../..' );
+
+// for example :
+// phpbb3 is installed on /phpbb3 
+// leonardo/ is installed on /other/leonardo
+$phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../../phpbb3' );
+
 // Path settings
 $CONF['path']['direct_call']=1;
 
@@ -73,7 +82,7 @@ define('IN_PHPBB', true);
 define('IN_CRON', true);
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
-require_once dirname(__FILE__).'/../../../../common.php';
+require_once $phpbb3AbsPath.'/common.php';
 
 $board_config['sitename']=$_SERVER['SERVER_NAME'];
 

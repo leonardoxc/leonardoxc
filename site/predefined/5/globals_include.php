@@ -1,7 +1,7 @@
 <?
 global $CONF_addflight_js_validation,$CONF_require_glider;
 
-global $year,$month,$day,$season,$brandID;
+global $year,$month,$day,$season,$brandID,$xctype,$class,$country,$pilotID,$rank,$subrank;
 
 global $moduleRelPath, $CONF_abs_path, $CONF, $OLCScoringServerUseInternal, $OLCScoringServerPath, $scoringServerActive, $OLCScoringServerPassword, $baseInstallationPath, $CONF_allow_olc_files, $db, $scoresTable, $flightsTable, $CONF_server_id, $DBGcat, $DBGlvl, $CONF_SitePassword, $CONF_version, $CONF_releaseDate, $opMode, $CONF_isMasterServer, $CONF_admin_email; 
 
