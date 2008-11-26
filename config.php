@@ -18,7 +18,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
 
-require_once dirname(__FILE__)."/site/config_version.php";
+  $CONF_version="3.0.0";
+  $CONF_releaseDate="2008/11/27";
 
 // opMode 
 // 1 = PHPnuke module
