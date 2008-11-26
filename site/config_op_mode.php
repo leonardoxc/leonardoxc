@@ -6,7 +6,7 @@
 // 4 = discuz
 // 5 = joomla  1.0 and 1.5
 // 6 = phpbb3
-$opMode= 6; 
+$opMode= 2; 
 
 // the method to use for links in the menu and other parts of leonardo
 // 1 -> current old way, using &name=value args + session variables

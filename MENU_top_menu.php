@@ -250,7 +250,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
-        <? if ( L_auth::isAdmin($userID) )  {  ?>
+        <? if ( L_auth::isAdmin($userID) && 0 )  {  ?>
    		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_flights','pilotIDview'=>'0_'.$userID)) ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>
         <? } ?>
 		<li class='li_space'></li>
