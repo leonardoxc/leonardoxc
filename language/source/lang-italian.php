@@ -54,7 +54,7 @@ define("_MEAN_DURATION","Durata media del volo");
 define("_TOTAL_OLC_KM","Distanza OLC totale");
 define("_TOTAL_OLC_SCORE","Punteggio OLC totale");
 define("_BEST_OLC_SCORE","Punteggio OLC migliore");
-define("_From","Da");
+define("_From","di");
 
 // list_flights()
 define("_DURATION_HOURS_MIN","Durata (hh:mm)");
@@ -84,7 +84,7 @@ define("_ALTITUDE_GAIN","Guadagno quota");
 define("_FLIGHT_FILE","File del volo");
 define("_COMMENTS","Commenti");
 define("_RELEVANT_PAGE","Pagina web relativa");
-define("_GLIDER","Ala");
+define("_GLIDER","Vela");
 define("_PHOTOS","Foto");
 define("_MORE_INFO","Altre informazioni");
 define("_UPDATE_DATA","Aggiorna dati");
@@ -248,7 +248,7 @@ define("_ALL2","TUTTI");
 define("_WITH_YEAR","Con Anno");
 define("_MONTH","Mese");
 define("_YEAR","Anno");
-define("_FROM","di");
+define("_FROM","da");
 define("_from","da");
 define("_TO","A");
 define("_SELECT_PILOT","Scegli Pilota");
@@ -259,10 +259,10 @@ define("_THE_COUNTRY","Il paese");
 define("_COUNTRY","Paese");
 define("_SELECT_COUNTRY","Seleziona Paese");
 define("_OTHER_FILTERS","Altri filtri");
-define("_LINEAR_DISTANCE_SHOULD_BE","La distanza lineare sarebbe");
-define("_OLC_DISTANCE_SHOULD_BE","La distanza OLC sarebbe");
-define("_OLC_SCORE_SHOULD_BE","Il punteggio OLC sarebbe");
-define("_DURATION_SHOULD_BE","La durata sarebbe");
+define("_LINEAR_DISTANCE_SHOULD_BE","La distanza lineare deve essere");
+define("_OLC_DISTANCE_SHOULD_BE","La distanza OLC deve essere");
+define("_OLC_SCORE_SHOULD_BE","Il punteggio OLC deve essere");
+define("_DURATION_SHOULD_BE","La durata deve essere");
 define("_ACTIVATE_CHANGE_FILTER","Attiva / cambia FILTRO");
 define("_DEACTIVATE_FILTER","Disattiva FILTRO");
 define("_HOURS","ore");
@@ -433,7 +433,7 @@ define("_SITE_DESCR","Descrizione Sito/decollo");
 // KML file
 //--------------------------------------------
 define("_See_more_details","Ulteriori dettagli");
-define("_KML_file_made_by","KML file fatto da");
+define("_KML_file_made_by","KML file creato da");
 
 //--------------------------------------------
 // add_waypoint.php
@@ -449,7 +449,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record del Sito<br>(distanza libera)");
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Mezzo");
+define("_GLIDER_TYPE","Tipo Vela");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Parapendio',2=>'Ala Flessibile FAI1',4=>'Ala Rigida FAI5',8=>'Aliante');
@@ -600,4 +600,85 @@ define("_Click_to_select_a_year","Clicca per scegliere l&#39;anno.");
 define("_Select_date_as_date.","Scegli [date] come data."); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_SEASON","Stagione"); 
+define("_SUBMIT_TO_OLC","Invia a OLC"); 
+define("_pilot_email","Indirizzo Email"); 
+define("_Sex","Sesso"); 
+define("_Login_Stuff","Change Login-Data"); 
+define("_PASSWORD_CONFIRMATION","Confirm password"); 
+define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
+define("_PwdAndConfDontMatch","Password and confirmation are different."); 
+define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
+define("_PwdConfEmpty","The password has not be confirmed."); 
+define("_PwdChanged","The password was changed."); 
+define("_PwdNotChanged","The password has NOT been changed."); 
+define("_PwdChangeProblem","A problem occurred when changing the password."); 
+define("_EmailEmpty","The email address must not be empty."); 
+define("_EmailInvalid","The email address is invalid."); 
+define("_EmailSaved","The email address was saved"); 
+define("_EmailNotSaved","The email address has not been saved."); 
+define("_EmailSaveProblem","A problem occurred when saving the email address."); 
+define("_PROJECT_HELP","Aiuto"); 
+define("_PROJECT_NEWS","Novit&agrave;"); 
+define("_PROJECT_RULES","Regolamento 2007"); 
+define("_Filter_NoSelection","Nessuna selezione"); 
+define("_Filter_CurrentlySelected","Selezione corrente"); 
+define("_Filter_DialogMultiSelectInfo","Premi Ctrl per selezioni multiple."); 
+define("_Filter_FilterTitleIncluding","Solo [items] selezionati"); 
+define("_Filter_FilterTitleExcluding","Escludi [items]"); 
+define("_Filter_DialogTitleIncluding","Seleziona [items]"); 
+define("_Filter_DialogTitleExcluding","Seleziona [items]"); 
+define("_Filter_Items_pilot","piloti"); 
+define("_Filter_Items_nacclub","clubs"); 
+define("_Filter_Items_country","paesi"); 
+define("_Filter_Items_takeoff","decolli"); 
+define("_Filter_Button_Select","Seleziona"); 
+define("_Filter_Button_Delete","Elimina"); 
+define("_Filter_Button_Accept","Accetta selezione"); 
+define("_Filter_Button_Cancel","Cancella"); 
+define("_MENU_FILTER_NEW","Filtra **NUOVE VERSIONI**"); 
+define("_ALL_NACCLUBS","Tutti Clubs"); 
+define("_SELECT_NACCLUB","Seleziona [nacname]-Club"); 
+define("_FirstOlcYear","Primo anno di partecipazione in un XC contest online"); 
+define("_FirstOlcYearComment","Seleziona l'anno della tua prima partecipazione in un XC contest online, non solo questo.<br/>Questo campo &egrave; rilevante per i &quot;newcomer&quot;-rankings."); 
+define("_Select_Brand","Seleziona Marca"); 
+define("_All_Brands","Tutti i Marchi"); 
+define("_DAY","GIORNO"); 
+define("_Glider_Brand","Marca Vela"); 
+define("_Or_Select_from_previous","O scegli una precedente"); 
+define("_Explanation_AddToBookmarks_IE","Aggiungi questi filtri ai tuoi preferiti"); 
+define("_Msg_AddToBookmarks_IE","Clicca qui per aggiungere questi filtri ai tuoi preferiti."); 
+define("_Explanation_AddToBookmarks_nonIE","(Salva questo link nei tuoi preferiti.)"); 
+define("_Msg_AddToBookmarks_nonIE","Per salvare questi filtri nei tuoi preferiti, usa la funzione Aggiungi a Preferiti del tuo browser."); 
+define("_PROJECT_RULES2","Regolamento 2008"); 
+define("_MEAN_SPEED1","Velocit&agrave; Media"); 
+define("_External_Entry","External Entry"); 
+define("_Altitude","Altitudine"); 
+define("_Speed","Velocit&agrave;"); 
+define("_Distance_from_takeoff","Distanza dal decollo"); 
+define("_LAST_DIGIT","ultima cifra"); 
+define("_Filter_Items_nationality","nazionalit&agrave;"); 
+define("_Filter_Items_server","server"); 
+define("_Ext_text1","Il volo originale &egrave; stato inserito su "); 
+define("_Ext_text2","Link al volo completo di mappe"); 
+define("_Ext_text3","Link al volo originale"); 
+define("_Male_short","M"); 
+define("_Female_short","F"); 
+define("_Male","Maschio"); 
+define("_Female","Femmina"); 
+define("_Altitude_Short","Alt"); 
+define("_Vario_Short","Vario"); 
+define("_Time_Short","Tempo"); 
+define("_Info","Info"); 
+define("_Control","Controlli"); 
+define("_Zoom_to_flight","Zoom al<br>volo"); 
+define("_Follow_Glider","Segui<br>Vela"); 
+define("_Show_Task","Mostra<br>Task"); 
+define("_Show_Airspace","Mostra<br>Airspace"); 
+
 ?>

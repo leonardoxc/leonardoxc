@@ -664,7 +664,7 @@ if ( $divsToShow>1) { // use tabber
 			</div>";
 	}	
 	if ($localMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='Map'>
+		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='"._OLC_MAP."'>
 					$localMap
 				 </div>\n";
 	}

@@ -288,7 +288,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	<ul>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>0) )?>"><?=_MENU_SHOW_PILOTS ?></a></li>
    		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_search') )?>"><?=_MENU_SEARCH_PILOTS ?></a></li>
-		<li class='li_h1'>.:: Pilot Statistics ::.</li>
+		<li class='li_h1'>.:: <?=_Pilot_Statistics?> ::.</li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>1,'sortOrder'=>'bestOlcScore') )?>"><?=_MENU_OLC ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>1,'sortOrder'=>'bestDistance') )?>"><?=_MENU_OPEN_DISTANCE ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>1,'sortOrder'=>'totalDuration') )?>"><?=_MENU_DURATION ?></a></li>

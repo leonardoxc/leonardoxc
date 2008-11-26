@@ -842,4 +842,59 @@ define('_PROJECT_RULES2','Ausschreibung 2008');
 define('_MEAN_SPEED1','Durchschnitts');
 //end 2007/11/06
 
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english'
+//--------------------------------------------------------
+define("_NOTE_TAKEOFF_NAME","Please note the takeoff name location and country");
+define("_Select_Brand","Hersteller wählen");
+define("_All_Brands","Alle Hersteller");
+define("_DAY","DAY");
+define("_Glider_Brand","Hersteller");
+define("_Or_Select_from_previous","Oder von vorigem Flug wählen");
+define("_External_Entry","External Entry"); //??
+define("_Altitude","Höhe");
+define("_Speed","Speed");
+define("_Distance_from_takeoff","Abstand vom Startplatz");
+define("_LAST_DIGIT","last digit");
+define("_Filter_Items_nationality","Nationalität");
+define("_Filter_Items_server","server");
+define("_Ext_text1","Dieser Flug ist ursprünglich eingereicht worden bei ");
+define("_Ext_text2","Link zu ausführlichen Karten und Grafiken");//??
+define("_Ext_text3","Link zum Ursprungsflug");//??
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english'
+//--------------------------------------------------------
+define("_Male_short","M");
+define("_Female_short","F");
+define("_Male","Mann");
+define("_Female","Frau");
+define("_Altitude_Short","Höhe");
+define("_Vario_Short","Vario");
+define("_Time_Short","Zeit");
+define("_Info","Info");
+define("_Control","Control");
+define("_Zoom_to_flight","Zoom auf<br>den Flug");
+define("_Follow_Glider","Dem Gerät<br>folgen");
+define("_Show_Task","Task<br>zeigen");
+define("_Show_Airspace","Lufträume<br>anzeigen");
+define("_Show_Optimization_details","Optimierungsdetails zeigen");
+
+//New on 2008/05/17
+define('_MemberID_Missing', 'Die Mitgliedsnummer fehlt');
+define('_MemberID_NotNumeric', 'Die Mitgliedsnummer muss eine Zahl sein');
+
+define('_FLIGHTADD_CONFIRMATIONTEXT', 'Mit dem Abschicken dieser Daten bestätige ich, dass ich die für den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe.');
+
+define('_FLIGHTADD_IGC_MISSING', 'Bitte igc-Datei angeben');
+define('_FLIGHTADD_IGCZIP_MISSING', 'Bitte das zip-Archiv mit der igc-Datei angeben');
+define('_FLIGHTADD_CATEGORY_MISSING', 'Bitte die Klasse wählen');
+define('_FLIGHTADD_BRAND_MISSING', 'Bitte Gerätehersteller wählen');
+define('_FLIGHTADD_GLIDER_MISSING', 'Bitte Gerät eingeben');
+define('_YOU_HAVENT_ENTERED_GLIDER', 'Du hast vergessen den Gerätehersteller oder das Gerät anzugeben');
+
+define('_BRAND_NOT_IN_LIST', 'Hersteller nicht gelistet');
+
 ?>
