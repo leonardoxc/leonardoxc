@@ -1,4 +1,17 @@
-<? 
+<?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: _install.php,v 1.3 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
+
   error_reporting(E_ALL ^ E_NOTICE);
   ini_set('display_errors', 'on');
 

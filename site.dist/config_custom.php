@@ -1,15 +1,17 @@
-<? 
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://leonardo.thenet.gr 											*/
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+<?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: config_custom.php,v 1.2 2008/11/29 22:46:20 manolis Exp $                                                                 
+//
+//************************************************************************
+
 
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;

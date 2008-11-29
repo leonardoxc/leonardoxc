@@ -1,4 +1,17 @@
 <?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: GUI_stats.php,v 1.6 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
+
 	$query='SELECT count(  *  ) as flightCount, DATE_FORMAT( dateAdded ,  "%Y-%m"  )   as date_Added
 	 FROM  '.$flightsTable.'  WHERE  userID >0
 	 GROUP  BY DATE_FORMAT( dateAdded  ,  "%Y-%m"  )

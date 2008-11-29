@@ -1,4 +1,34 @@
 <?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: visugps.php,v 1.6 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
+
+/***********************************************************************
+This file is part of VisuGps
+
+VisuGps is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+VisuGps is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+Copyright (c) 2007 Victor Berchet, <http://www.victorb.fr>
+***********************************************************************/
+
+
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";

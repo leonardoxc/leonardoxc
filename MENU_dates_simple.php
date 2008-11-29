@@ -1,17 +1,16 @@
-<?php
-
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://sourceforge.net/projects/leonardoserver                       */
-/* http://leonardo.thenet.gr                                            */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+<?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: MENU_dates_simple.php,v 1.22 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
 
 if ( $op!='comp' ) {
 	if (! $CONF['seasons']['use_season_years'] ) $season=0;

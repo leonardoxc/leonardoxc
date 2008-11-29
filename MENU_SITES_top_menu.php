@@ -1,16 +1,16 @@
-<? 
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://sourceforge.net/projects/leonardoserver                       */
-/* http://leonardo.thenet.gr                                            */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+<?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: MENU_SITES_top_menu.php,v 1.4 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
 ?>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_second_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">

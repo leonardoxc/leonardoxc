@@ -1,4 +1,17 @@
-<? 
+<?
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: CL_hgt.php,v 1.5 2008/11/29 22:46:06 manolis Exp $                                                                 
+//
+//************************************************************************
+
 /*
 An HGT file covers an area of 1°x1°. Its south western corner can
  be deduced from its file name: for example, 

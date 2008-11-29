@@ -1,15 +1,16 @@
 <?
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://sourceforge.net/projects/leonardoserver                       */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+//************************************************************************
+// Leonardo XC Server, http://leonardo.thenet.gr
+//
+// Copyright (c) 2004-8 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: GUI_list_flights.php,v 1.107 2008/11/29 22:46:07 manolis Exp $                                                                 
+//
+//************************************************************************
 
 	// Version Martin Jursa 20.05.2007
 	// Support for filtering by NACclubs via $_REQUEST[nacclub] added
