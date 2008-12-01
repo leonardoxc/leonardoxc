@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.2 2008/12/01 11:11:02 manolis Exp $
+ *   $Id: mysql.php,v 1.1 2008/12/01 11:11:02 manolis Exp $
  *
  ***************************************************************************/
 
@@ -116,6 +116,8 @@ class sql_db
 		{
 			$this->num_queries++;
 
+			// conv from utf to latin1
+			// $query=iconv('utf-8','iso-8859-1',$query);
 			$this->query_result = @mysql_query($query, $this->db_connect_id);
 		}
 		if($this->query_result)
@@ -253,6 +255,9 @@ class sql_db
 			unset($this->row[$query_id]);
 			while($this->rowset[$query_id] = @mysql_fetch_array($query_id))
 			{
+				// conv from  latin1 (internal db format) to utf8
+				// $this->rowset[$query_id]=iconv('iso-8859-1','utf-8',$this->rowset[$query_id]);
+
 				$result[] = $this->rowset[$query_id];
 			}
 			return $result;

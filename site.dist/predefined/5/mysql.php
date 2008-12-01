@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.1 2008/11/27 11:57:28 manolis Exp $
+ *   $Id: mysql.php,v 1.2 2008/12/01 11:11:02 manolis Exp $
  *
  ***************************************************************************/
 
@@ -106,12 +106,10 @@ class sql_db
 	// Base query method
 	//
 	function sql_query($query = "", $transaction = FALSE)
-	{
-		global $sqlQueriesDebug;
-		global $DBGlvl;
-		if (!is_array($sqlQueriesDebug) ) $sqlQueriesDebug=array();
-		
+	{		
+		global $DBGlvl;				
 		if ($DBGlvl) { $start=getmicrotime(); }
+		
 		// Remove any pre-existing queries
 		unset($this->query_result);
 		if($query != "")
@@ -125,10 +123,10 @@ class sql_db
 			unset($this->row[$this->query_result]);
 			unset($this->rowset[$this->query_result]);
 			if ($DBGlvl) {
+				global $sqlQueriesTime ,$sqlQueriesNum;
 				$end=getmicrotime();
-				$tm=$end-$start; 
-				array_push($sqlQueriesDebug,$tm);
-				// echo "<hr>$tm#<hr>";
+				$sqlQueriesTime+=$end-$start; 
+				$sqlQueriesNum++;
 			}
 			return $this->query_result;
 		}
@@ -219,9 +217,7 @@ class sql_db
 	}
 	function sql_fetchrow($query_id = 0)
 	{
-		global $sqlFetchTime;
-		global $DBGlvl;
-		if (!is_array($sqlFetchTime) ) $sqlFetchTime=array();		
+		global $DBGlvl;			
 		if ($DBGlvl) { $start=getmicrotime(); }
 
 		if(!$query_id)
@@ -232,11 +228,11 @@ class sql_db
 		{
 			$this->row[$query_id] = @mysql_fetch_array($query_id);
 			
-			if ($DBGlvl) {
+			if ($DBGlvl ) {
+				global $sqlFetchTime,$sqlFetchNum;
 				$end=getmicrotime();
-				$tm=$end-$start; 
-				array_push($sqlFetchTime,$tm);
-				// echo "<hr>$tm#<hr>";
+				$sqlFetchTime+=$end-$start;
+				$sqlFetchNum++;
 			}
 			return $this->row[$query_id];
 		}

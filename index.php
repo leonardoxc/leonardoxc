@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.92 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: index.php,v 1.93 2008/12/01 11:11:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -460,7 +460,7 @@ exitPage(0);
 
 function exitPage($exitNow=1){
    global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
-   global $sqlQueriesDebug,$sqlFetchTime,$sqlFetchNum;
+   global $sqlQueriesTime ,$sqlQueriesNum,$sqlFetchTime,$sqlFetchNum;
    global $pageStart,$DBGlvl;
  
 
@@ -487,16 +487,10 @@ function exitPage($exitNow=1){
    }
    
 	if ($DBGlvl) {   
-		// db execution time
-		$sqlQueriesTime=0;
-		$i=0;
-		foreach ($sqlQueriesDebug as $tm) {
-		  $sqlQueriesTime+=$tm;
-		  $i++;
-		}
+		// db execution time		
 		
 		echo "<div class='debugBoxTop'>";
-		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$i); 
+		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$sqlQueriesNum); 
 		
 		printf("DB fetch: <b>%.4f</b> secs in %d fetches <hr>",$sqlFetchTime,$sqlFetchNum);
 		printf("DB Total: <b>%.5f</b> secs<hr>",($sqlQueriesTime + $sqlFetchTime )) ;
