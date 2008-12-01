@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.151 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.152 2008/12/01 13:07:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -969,7 +969,7 @@ $resStr='{
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
 			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
 			//$kml_file_contents.="</Placemark>";
-			kmlGetTrackAnalysis($this->getIGCFilename(0),$exaggeration);
+			kmlGetTrackAnalysis($this->getIGCFilename(0),$this->getIGCFilename(2),1);
 			$kml_file_contents="
 <NetworkLink>
   <name>Extended analysis</name>
@@ -998,7 +998,7 @@ $resStr='{
 				}
 			}
 		
-			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->userName,$this->glider,$photoArray);
+			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->getIGCFilename(2),$this->timezone,$this->userName,$this->glider,$photoArray);
 			$kml_file_contents="
 <NetworkLink>
   <name>Extended analysis</name>
@@ -1023,7 +1023,7 @@ $resStr='{
 
 		if ( !file_exists($kmzFile)   ) { // create the kmz file containg the points only
 
-			$filename=$this->getIGCFilename(0);  
+			$filename=$this->getIGCFilename(2);  
 			$lines = file ($filename); 
 			if ( $lines) {
 				$i=0;
@@ -1293,6 +1293,7 @@ $resStr='{
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang,	$CONF_use_utf;
 
+		$exaggeration=1;
 		//if (file_exists($this->getKMLFilename())) return;
 
 		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo";
@@ -2451,7 +2452,7 @@ $kml_file_contents=
 			$line=trim($line);
 			if  (strlen($line)==0) continue;
 			if ($line{0}=='B' && $line{1}=='X') continue ; // MARKED BAD from BEFORE 
-			if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
+			// if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
 			$fullSanedFile.=$line."\n";
 		}
 		

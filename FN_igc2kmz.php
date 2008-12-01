@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.4 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.5 2008/12/01 13:07:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,7 +38,7 @@ Options:
     -p FILENAME, --photo=FILENAME
     -d STRING, --description=STRING
 */
-function igc2kmz($file,$timezone,$pilot,$glider,$photos) {
+function igc2kmz($file,$fileReal,$timezone,$pilot,$glider,$photos) {
 	global $CONF;
 	$str="";
 
@@ -58,7 +58,7 @@ function igc2kmz($file,$timezone,$pilot,$glider,$photos) {
 			$photoStr.=" -p '$photo' ";
 		}
 	}
-	$cmd="cd $path/bin ; ./igc2kmz.py -i '$file' -o '$kmzFile' -z $timezone -n '$pilot' -g '$glider' $photoStr";
+	$cmd="cd $path/bin ; ./igc2kmz.py -i '$fileReal' -o '$kmzFile' -z $timezone -n '$pilot' -g '$glider' $photoStr";
 	exec($cmd,$res);
 
 	if (0) {

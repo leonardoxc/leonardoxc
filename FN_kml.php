@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_kml.php,v 1.5 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: FN_kml.php,v 1.6 2008/12/01 13:07:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -56,6 +56,8 @@ function parseIgcFile($szFilename,$exaggeration=1) {
                   $lonSec=parseB($aFields,20,22);
                   $lonDir=parseB($aFields,23,23);
                   $alt=parseB($aFields,30,34)*$exaggeration;
+				  if (!$alt)
+				  	$alt=parseB($aFields,25,29)*$exaggeration;
                   $lat2=convdeg($latDeg,$latMin.".".$latSec,$latDir);
                   $lon2=convdeg($lonDeg,$lonMin.".".$lonSec,$lonDir);
                   if (!isset($lat1))
@@ -167,14 +169,16 @@ function LineString($name,$description,$coords,$color,$width) {
 }
 
 
-function kmlGetTrackAnalysis($file,$exaggeration=1) {
+function kmlGetTrackAnalysis($file,$realFile,$exaggeration=1) {
+
+$exaggeration=1;
 $str="";
 $kmlTempFile=$file.".man.kml";
 $kmzFile=$file.".man.kmz";
 if ( is_file($kmzFile) ) return;
 
 
-$table=parseIgcFile($file,$exaggeration);
+$table=parseIgcFile($realFile,$exaggeration);
 
 
 extract($table[0]);
