@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.152 2008/12/01 13:07:43 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.153 2008/12/01 14:11:32 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -964,6 +964,9 @@ $resStr='{
 		global $langEncodings,$currentlang;
 
 		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extended";
+
+		// do some basic check for saned igc file
+		$this->checkSanedFiles();
 
 		if ($extended==1) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
@@ -2555,20 +2558,13 @@ $kml_file_contents=
 		return $ok;
 	}
 	
-	function computeScore() {
-		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
-		global $baseInstallationPath,$CONF_allow_olc_files,$CONF,$CONF_server_id;
-
-		if (! $scoringServerActive) return 0;
-				
-		set_time_limit (240);	
-		
+	function checkSanedFiles() {
 		// do some basic check for saned igc file
-		if (!is_file($this->getIGCFilename(1) ) ) {
+		if (!is_file($this->getIGCFilename(1)) || !is_file($this->getIGCFilename(2))   ) {
 			// we have to create it 
-			DEBUG('OLC_SCORE',1,"Saned file is missing for flight: ".$this->flightID.", we will create it<BR>");
+			DEBUG('checkSanedFiles',1,"Saned files are missing for flight: ".$this->flightID.", we will create it<BR>");
 			if (!is_file($this->getIGCFilename(0) ) ) {
-				DEBUG('OLC_SCORE',1,"Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>");
+				DEBUG('checkSanedFiles',1,"Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>");
 				require_once dirname(__FILE__).'/CL_actionLogger.php';
 				$log=new Logger();
 				$log->userID  	=$this->userID;
@@ -2586,9 +2582,9 @@ $kml_file_contents=
 				return 0;
 			}
 			$this->getFlightFromIGC($this->getIGCFilename(0) ) ;
-			if (!is_file($this->getIGCFilename(1) ) ) {
+			if (!is_file($this->getIGCFilename(1)) || !is_file($this->getIGCFilename(2)) ) {
 				 //saned file could no be created!!!
-				echo "Saned file could no be created for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>";
+				echo "Saned files could no be created for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>";
 				require_once dirname(__FILE__).'/CL_actionLogger.php';
 				$log=new Logger();
 				$log->userID  	=$this->userID;
@@ -2606,6 +2602,20 @@ $kml_file_contents=
 				return 0;
 			}
 		}
+		
+	}
+	
+	function computeScore() {
+		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
+		global $baseInstallationPath,$CONF_allow_olc_files,$CONF,$CONF_server_id;
+
+		if (! $scoringServerActive) return 0;
+				
+		set_time_limit (240);	
+		
+		// do some basic check for saned igc file
+		$this->checkSanedFiles();
+		
 
 		$flightScore=new flightScore($this->flightID);
 		if ($OLCScoringServerUseInternal ) {
