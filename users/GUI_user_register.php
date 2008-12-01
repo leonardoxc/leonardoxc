@@ -79,7 +79,7 @@ Regards,
 	$upass=md5($_GET['upass']);
 	$uemail=$_GET['uemail'];
 
-	$sql="INSERT into $users_table (username,user_password,user_email) VALUES( '$uname', '$upass', '$uemail' )";
+	$sql="INSERT into ".$CONF['userdb']['users_table']."(username,user_password,user_email) VALUES( '$uname', '$upass', '$uemail' )";
 	$register_it = $db->sql_query($sql);	
 	
 ?> 
