@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.8 2008/12/02 00:16:22 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.9 2008/12/02 16:48:45 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,9 +19,16 @@ function writeHtaccessFile(){
 	$("#writeFile").val('1');
 	$("#htaccessConfForm").submit();
 }
+
+function deleteHtaccessFile(){
+	$("#writeFile").val('-1');
+	$("#htaccessConfForm").submit();
+}
+
 </script>
  <h3> SEO URLS - uses mod_rewrite of apache </h3>
-
+ SEO URLS are currently <strong><?=($CONF['links']['type']==3?"ON":'OFF') ?></strong>
+ <hr />
 <?
 if ($_POST['baseUrl']) {
 	$baseUrl= $_POST['baseUrl'];
@@ -32,19 +39,7 @@ if ($_POST['baseUrl']) {
 	$basePath='/modules/leonardo';
 	$virtPath=$CONF['links']['baseURL'];
 }
-?>
-Use the auto - detected values to create the htaccess file that will enable SEO URLS in Leonardo<BR /><BR />
-<FORM method="post" name='htaccessConfForm' id='htaccessConfForm'>
-File & params of running Leonardo<BR />
-<input type="text"  value='<?=$baseUrl?>' name ='baseUrl'  size="50"/><BR />
-The path to Leonardo files<BR />
-<input type="text"  value='<?=$basePath?>' name ='basePath' size="50"/><BR />
-The virtual path that will be used<BR />
-<input type="text"  value='<?=$virtPath?>' name ='virtPath' size="50" /><BR />
-<input type="submit" value="Generate htaccess file" /><BR />
-<input type="hidden" id='writeFile' name="writeFile" value="0" />
-<hr />
-<?
+
 $str="
 #
 RewriteEngine On
@@ -83,25 +78,71 @@ RewriteRule ^$virtPath/?[^.]*$ /$virtPath/tracks/world/%{TIME_YEAR}/ [R,NC]
 RewriteRule ^$virtPath/(.*)$ $basePath/$1 [L,NC]
 ";
 
-echo "<pre>$str</pre>";
+
 
 if ($_POST['htaccessFile']) {
-	$htaccessFile= $_POST['htaccessFile'];
+	$htaccessFile= $_POST['htaccessFile'];	
 } else {
 	$htaccessFileName=$CONF['os']=='linux'?'.htaccess':'htaccess.txt';
-	$htaccessFile=realpath(dirname(__FILE__).'/../../'.$htaccessFileName);
+	$htaccessFile=realpath(dirname(__FILE__).'/../../').'/'.$htaccessFileName;
 }	
 
+
+$mod_conf_File=dirname(__FILE__).'/site/config_mod_rewrite.php';
 if ($_POST['writeFile']==1) {
-	writeFile($htaccessFile,$str);
-	echo "<hr /><h3>htaccess file written</h3>";
+	$conf_str='<?
+	$CONF[\'links\'][\'type\']=3;
+	$CONF[\'links\'][\'baseURL\']=\''.$virtPath.'\';
+?>';
+
+	if (writeFile($mod_conf_File,$conf_str) )
+		echo "<h3>config_mod_rewrite.php updated</h3>";
+	else 
+		echo "<h3>PROBLEM in updating config_mod_rewrite.php</h3>";
+
+
+	if (writeFile($htaccessFile,$str) )
+		echo "<h3>htaccess file written</h3>";
+	else 
+		echo "<h3>PROBLEM In writing htaccess file </h3>";
+		
+} else if ($_POST['writeFile']==-1) {
+	$conf_str='<?
+	$CONF[\'links\'][\'type\']=1;
+	$CONF[\'links\'][\'baseURL\']=\''.$virtPath.'\';
+?>';
+
+	if (writeFile($mod_conf_File,$conf_str) )
+		echo "<h3>config_mod_rewrite.php updated</h3>";
+	else 
+		echo "<h3>PROBLEM in updating config_mod_rewrite.php</h3>";
+
+
+	if (unlink($htaccessFile) )
+		echo "<h3>htaccess file DELETED</h3>";
+	else 
+		echo "<h3>PROBLEM In deleting htaccess file </h3>";
 }
 
-
 ?>
-
-<hr />
-
+<FORM method="post" name='htaccessConfForm' id='htaccessConfForm'>
+Use the auto - detected values to create the htaccess file that will enable SEO URLS in Leonardo<BR /><BR />
+<table width="100%" border="0" cellpadding="4">
+  <tr>
+    <td>File & params of running Leonardo<br />
+      <input type="text"  value='<?=$baseUrl?>' name ='baseUrl'  size="50"/>
+      <br />
+The path to Leonardo files<br />
+<input type="text"  value='<?=$basePath?>' name ='basePath' size="50"/>
+<br />
+The virtual path that will be used<br />
+<input type="text"  value='<?=$virtPath?>' name ='virtPath' size="50" />
+<br />
+<input type="submit" value="Generate htaccess file" />
+<br />
+<input type="hidden" id='writeFile' name="writeFile" value="0" /></td>
+    <td valign="top">
+    
 Copy and paste this configuration to the htaccess file located on the root directory of your installattion (forum/cms/ etc..)
 
 <br />
@@ -109,7 +150,20 @@ or press the button below to write the file automatically.
 
 <br /><br />Location of htaccess File<BR />
 <input type="text"  value='<?=$htaccessFile?>' name ='htaccessFile' size="70" />
-<input type="button" value="Write htaccess file to disk" onclick='writeHtaccessFile()'/><BR />
+<br />
+<input type="button" value="Write htaccess file to disk AND enable SEO urls" onclick='writeHtaccessFile()'/>
+<br />
+<BR />
 
+<input type="button" value="Delete htaccess file AND Disable SEO urls" onclick='deleteHtaccessFile()'/><BR />
 
+    </td>
+  </tr>
+</table>
+<hr />
+<?
+echo "<pre>$str</pre>";
+?>
+
+<hr />
 </FORM>
