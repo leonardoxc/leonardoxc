@@ -1,4 +1,17 @@
 
+h3 {
+display:block;
+clear:both;
+width:auto;
+font-size:14px;
+padding-left:20px;
+padding-right:20px;
+padding-top:15px;
+margin-top:10px;
+margin-bottom:5px;
+text-decoration:underline;
+color:#993300;
+}
 
 .short_info tr.hr td {
 	border-top:1px solid #cccccc;
@@ -738,4 +751,73 @@ table.dropDownBox td {
 .simpleList li a {
 padding:4px;
 padding-left:0;
+}
+
+
+
+span.alert, span.info, span.download, span.note , span.ok {
+	border-top-width: 3px;
+	border-top-style: solid;
+	border-bottom-width: 3px;
+	border-bottom-style: solid;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-x-position: 10px;
+	background-y-position: 50%;
+
+	display: block;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 45px;
+	
+	margin-top: 15px;
+	margin-right: 0pt;
+	margin-bottom: 15px;
+	margin-left: 0pt;
+}
+
+
+span.note {
+	color: #b79000;
+	color:#9B772B;
+	border-top-color: #fde179;
+	
+	border-bottom-color: #fde179;
+	background-color: #fef6d8;
+	background-image: url(img/status-note.png);
+}
+
+span.alert {
+	color: #cc0000;
+	border-top-color: #fe7b7a;
+	border-bottom-color: #fe7b7a;
+	background-color: #ffd6d6;
+	background-image: url(img/status-alert.png);
+}
+
+span.info {
+	color: #0055bb;
+	border-top-color: #629de3;
+	border-bottom-color: #629de3;
+	background-color: #d8e5f8;
+	background-image: url(img/status-info.png);
+}
+
+span.download  {
+	color: #57861a;
+	border-top-color: #c2df88;
+	border-bottom-color: #c2df88;
+	background-color: #eef7dd;
+	background-image: url(img/status-download.png);
+}
+
+span.ok  {
+	color: #57861a;
+	border-top-color: #c2df88;
+	border-bottom-color: #c2df88;
+	background-color: #eef7dd;
+	background-image: url(img/icon_ok.gif);
+	background-image: url(img/status-ok.png);
+	
 }

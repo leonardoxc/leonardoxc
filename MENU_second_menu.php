@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.43 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_second_menu.php,v 1.44 2008/12/02 23:43:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -226,7 +226,7 @@ border-bottom-style:none;
 
 
 .list_header {
-	background:left top transparent repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_c.gif);
+	background:left top #7FAAD9  repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_c.gif);
 	margin-top: 0px 0px 0px 0px;
 	padding:0;
 	height: 38px;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.62 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.63 2008/12/02 23:43:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -707,6 +707,22 @@ function makeHash($scriptName)  {
 	return md5($CONF_SitePassword.$scriptName);
 }
 
+
+function get_absolute_path($path) {
+	$path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+	$parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+	$absolutes = array();
+	foreach ($parts as $part) {
+		if ('.' == $part) continue;
+		if ('..' == $part) {
+			array_pop($absolutes);
+		} else {
+			$absolutes[] = $part;
+		}
+	}
+	return implode(DIRECTORY_SEPARATOR, $absolutes);
+}
+	
 // the method to use for links in the menu and other parts of leonardo
 // 1 -> current old way, using &name=value args + session variables
 // 2 -> same as 1 but all sessions vars are in the url, this means that the url 
