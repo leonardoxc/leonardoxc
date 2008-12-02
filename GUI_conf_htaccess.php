@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.7 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.8 2008/12/02 00:16:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,9 +28,9 @@ if ($_POST['baseUrl']) {
 	$basePath=$_POST['basePath'];
 	$virtPath=$_POST['virtPath'];
 } else {
-	$baseUrl= $CONF_mainfile.CONF_MODULE_ARG; // '/modules.php?name=leonardo';
+	$baseUrl= CONF_MODULE_ARG; // '/modules.php?name=leonardo';
 	$basePath='/modules/leonardo';
-	$virtPath='leonardo';
+	$virtPath=$CONF['links']['baseURL'];
 }
 ?>
 Use the auto - detected values to create the htaccess file that will enable SEO URLS in Leonardo<BR /><BR />

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.106 2008/12/01 11:32:40 manolis Exp $                                                                 
+// $Id: config.php,v 1.107 2008/12/02 00:16:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -567,11 +567,15 @@ $themeAbsPath=dirname(__FILE__)."/templates/".$PREFS->themeName;
 	}
 	
 	function getRelMainDir($noLeadingSlash=0,$noTrailingSlash=0) {
-		global $baseInstallationPath, $moduleRelPath;
+		global $baseInstallationPath, $moduleRelPath, $CONF;
 		
 		// / + modules/leonardo/
 		// / + components/com_leonardo/
 		// /leonardo + /./
+		if ( $CONF['links']['type']==3 ) {
+			return $CONF['links']['baseURL'].'/';
+		}
+
 		if ( $noLeadingSlash) 
 			return str_replace('//','/',"$baseInstallationPath/$moduleRelPath/");
 		else 
@@ -583,7 +587,7 @@ function setLeonardoPaths () {
 	global 	$module_name,$moduleAbsPath,$moduleRelPath;
 	global 	$waypointsRelPath,	$waypointsAbsPath,	$waypointsWebPath;
 	global 	$flightsRelPath,	$flightsAbsPath,	$flightsWebPath;
-	global  $CONF_arg_name,$CONF_mainfile;
+	global  $CONF_arg_name,$CONF_mainfile,$CONF;
 	global 	$isExternalFile;
 
 
@@ -600,25 +604,27 @@ function setLeonardoPaths () {
 	$moduleRelPath=moduleRelPath($isExternalFile);
 	// if ($opMode==3 || $opMode==4) $moduleRelPath="./";
 
-	// detect if the installation in not on the root
-	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);
-	$baseInstallationPath="";
-	$queryLen=strlen($_SERVER['QUERY_STRING']);
-	if ($queryLen) 
-		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname( substr($_SERVER['REQUEST_URI'],0,-$queryLen)     ))   );	
-	else 
-		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['REQUEST_URI']) )   );	
-	//print_r($parts);	
-	if ( count($parts)>1 )  {
-		for($i=0;$i<count($parts);$i++) 
-		   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
-	}
 
+
+	// detect if the installation in not on the root
+	$baseInstallationPath="";
+	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);		
+	if ( $CONF['links']['type']==3 ) {
+		$baseInstallationPath="";
+	} else {			
+		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['SCRIPT_NAME']) )   );	
+		// print_r($parts);	
+		if ( count($parts)>1 )  {
+			for($i=0;$i<count($parts);$i++) 
+			   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
+		}
+	}
+	
 if (0) {
-	echo "@".substr($_SERVER['REQUEST_URI'],0,-$queryLen)."@";
+	echo "@".substr($_SERVER['SCRIPT_NAME'],0,-$queryLen)."@";
 	echo "queryLen : $queryLen#";
-	echo "&& _SERVER['REQUEST_URI'] : ".$_SERVER['REQUEST_URI']."&&";
-	echo dirname($_SERVER['REQUEST_URI']);
+	echo "&& _SERVER['SCRIPT_NAME'] : ".$_SERVER['SCRIPT_NAME']."&&";
+	echo dirname($_SERVER['SCRIPT_NAME']);
 	echo "#moduleRelPath=$moduleRelPath#moduleRelPathTemp=$moduleRelPathTemp#";
 	echo "baseInstallationPath=$baseInstallationPath#<BR>";
 }
