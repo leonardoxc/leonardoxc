@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.10 2008/12/02 23:43:18 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.11 2008/12/03 09:53:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -92,6 +92,10 @@ if ($_POST['htaccessFile']) {
 }	
 
 
+$htaccessFileParts=split('/',$htaccessFile);
+array_pop($htaccessFileParts);
+$htaccessFiledir='/'.implode('/',$htaccessFileParts);
+
 $mod_conf_File=dirname(__FILE__).'/site/config_mod_rewrite.php';
 if ($_POST['writeFile']==1) {
 	$conf_str='<?
@@ -104,8 +108,9 @@ if ($_POST['writeFile']==1) {
 	else 
 		echo "<span class='alert'>PROBLEM in updating config_mod_rewrite.php</span>";
 
-	if (!is_dir(dirname($htaccessFile)) ) {
-		mkdir(dirname($htaccessFile));
+	if (!is_dir($htaccessFiledir) ) {	
+		echo "<span class='note'>Creating folder $htaccessFiledir</span>";
+		mkdir($htaccessFiledir);
 	}
 	
 	if (writeFile($htaccessFile,$str) )

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.63 2008/12/02 23:43:18 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.64 2008/12/03 09:53:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -720,7 +720,10 @@ function get_absolute_path($path) {
 			$absolutes[] = $part;
 		}
 	}
-	return implode(DIRECTORY_SEPARATOR, $absolutes);
+	if ($path{0}=='/') 
+		return '/'.implode(DIRECTORY_SEPARATOR, $absolutes);
+	else
+		return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
 	
 // the method to use for links in the menu and other parts of leonardo
