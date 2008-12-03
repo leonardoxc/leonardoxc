@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.154 2008/12/03 10:33:14 tom Exp $                                                                 
+// $Id: CL_flightData.php,v 1.155 2008/12/03 15:57:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,7 +17,6 @@ require_once dirname(__FILE__)."/CL_flightPhotos.php";
 require_once dirname(__FILE__).'/CL_flightScore.php';
 require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/CL_dates.php";
-require_once dirname(__FILE__)."/FN_kml.php";
 require_once dirname(__FILE__)."/FN_pilot.php";
 
 class flight {
@@ -972,6 +971,7 @@ $resStr='{
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
 			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
 			//$kml_file_contents.="</Placemark>";
+			require_once dirname(__FILE__)."/FN_kml.php";
 			kmlGetTrackAnalysis($this->getIGCFilename(0),$this->getIGCFilename(2),1);
 			$kml_file_contents="
 <NetworkLink>
@@ -1312,6 +1312,10 @@ $kml_file_contents=
 
 	function createKMZfile($c, $ex, $w, $an) {
 		global $CONF;
+		
+		// do some basic check for saned igc file
+		$this->checkSanedFiles();
+		
 		require_once dirname(__FILE__)."/FN_igc2kmz.php";
 		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->flightID);
 		$version=$CONF['googleEarth']['igc2kmz']['version'];

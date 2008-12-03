@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.6 2008/12/03 10:33:14 tom Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.7 2008/12/03 15:57:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -26,7 +26,7 @@ function igc2kmz($file,$timezone,$flightID) {
 
 	$path=$CONF['googleEarth']['igc2kmz']['path'];
 	
-	$cmd="$path/bin/leonardo2kmz.py -o '$kmzFile' -z $timezone $flightID";
+	$cmd="cd $path; ./bin/leonardo2kmz.py -o '$kmzFile' -z $timezone $flightID";
 	exec($cmd,$res);
 
 	if (0) {

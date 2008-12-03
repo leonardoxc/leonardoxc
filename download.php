@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.26 2008/12/03 10:33:14 tom Exp $                                                                 
+// $Id: download.php,v 1.27 2008/12/03 15:57:56 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -182,7 +182,11 @@
 	//	}
 		if ($an == 2) {
 		    $xml=$flight->createKMZfile($c,$ex,$w,$an);
-		    $file_name=$flight->filename.".kmz";	
+			
+			$version=$CONF['googleEarth']['igc2kmz']['version'];
+			$file_name=$flight->filename.".igc2kmz.$version.kmz";
+		    // $file_name=$flight->filename.".kmz";
+							
 		    $attachmentMIME="application/vnd.google-earth.kmz";
 		    DEBUG("DL",1,"KMZ Filepath= $file_name<BR>");
 		} else {

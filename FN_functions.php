@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.64 2008/12/03 09:53:31 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.65 2008/12/03 15:57:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -783,7 +783,8 @@ function getLeonardoLink($argArray) {
 		
 	} else 	if ($linkType==3) {
 		global $op,$rank,$subrank;
-		global $year,$month,$day,$season,$serverID,$pilotID,$takeoffID,$country,$cat,$class,$xctype,$clubID;
+		global $year,$month,$day,$season,$serverID,$pilotID,$pilotIDview;
+		global $takeoffID,$country,$cat,$class,$xctype,$clubID;
 		global $nacid,$nacclubid,$brandID;
 
 		if ($argArray['op']=='useCurrent') {
@@ -791,6 +792,10 @@ function getLeonardoLink($argArray) {
 		}
 			
 		if ( isset($argArray['lng']) ){
+			if (strpos($_SERVER['REQUEST_URI'],'&lng=') ) 
+				return preg_replace('/&lng=(\w+)/','&lng='.$argArray['lng'],$_SERVER['REQUEST_URI']);
+			else 
+				return $_SERVER['REQUEST_URI'].'&lng='.$argArray['lng'];
 			$lngCode= $lang2iso[$argArray['lng']];							
 		} else {
 			$lngCode= $lang2iso[$lng];
@@ -815,7 +820,8 @@ function getLeonardoLink($argArray) {
 		} else if ($opTmp=='list_takeoffs') {
 			$args.='takeoffs/';
 			
-		} else if ($opTmp=='pilot_profile') {	
+		} else if ($opTmp=='pilot_profile') {			
+			// if (!$argArray['pilotIDview']) $argArray['pilotIDview']=$pilotIDview;			
 			$args.='pilot/'.$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
 						

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.11 2008/12/03 09:53:31 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.12 2008/12/03 15:57:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -55,13 +55,13 @@ RewriteRule ^".$virtPath2."flight/(\d*)/igc/(.*)$ $basePath/download.php?type=ig
 RewriteRule ^".$virtPath2."flight/(\d*)(.*)$ $baseUrl&op=show_flight&flightID=$1$2 [L,NC]
 
 # various operations on a takeoff
-RewriteRule ^".$virtPath2."takeoff/(\d*)/kml/{0,1}$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]
-RewriteRule ^".$virtPath2."takeoff/(\d*)/{0,1}$ $baseUrl&op=show_waypoint&waypointIDview=$1 [L,NC]
+RewriteRule ^".$virtPath2."takeoff/(\d*)/kml/?$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]
+RewriteRule ^".$virtPath2."takeoff/(\d*)/?(.*)$ $baseUrl&op=show_waypoint&waypointIDview=$1$2 [L,NC]
 
 # various operations on a pilot
-RewriteRule ^".$virtPath2."pilot/([\d_]*)/stats/$   $baseUrl&op=pilot_profile_stats&pilotIDview=$1 [L,NC]
-RewriteRule ^".$virtPath2."pilot/([\d_]*)/flights/$ $baseUrl&op=list_flights&pilotIDview=$1   [L,NC]
-RewriteRule ^".$virtPath2."pilot/([\d_]*)$ $baseUrl&op=pilot_profile&pilotIDview=$1  [L,NC]
+RewriteRule ^".$virtPath2."pilot/([\d_]*)/stats/?(.*)$   $baseUrl&op=pilot_profile_stats&pilotIDview=$1$2 [L,NC]
+RewriteRule ^".$virtPath2."pilot/([\d_]*)/flights/?(.*)$ $baseUrl&op=list_flights&pilotIDview=$1$2   [L,NC]
+RewriteRule ^".$virtPath2."pilot/([\d_]*)/?(.*)$ $baseUrl&op=pilot_profile&pilotIDview=$1$2  [L,NC]
 
 # all 'list' ops that are /opname/countryCode/date/....
 RewriteRule ^".$virtPath2."tracks/(.*)/(.*)/(.*)$ $baseUrl&op=list_flights&country=$1&l_date=$2&leoSeo=$3 [L,NC]
