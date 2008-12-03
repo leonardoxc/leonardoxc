@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.25 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: download.php,v 1.26 2008/12/03 10:33:14 tom Exp $                                                                 
 //
 //************************************************************************
 	
@@ -41,6 +41,7 @@
 	$updateColor=makeSane($_REQUEST['updateColor']);
 	if ($updateColor) $type='kml_trk_color';
 	
+	$attachmentMIME = "application/vnd.google-earth.kml+xml";
 	if ($type=="igc") {
 		$zip=makeSane($_REQUEST['zip'],1);
 		
@@ -179,15 +180,22 @@
 	//		echo _FLIGHT_IS_PRIVATE;
 	//		return;
 	//	}
-		$xml=$flight->createKMLfile($c,$ex,$w,$an);
-		//$xml=$flight->createKMLfile("ff0000",1,2);
+		if ($an == 2) {
+		    $xml=$flight->createKMZfile($c,$ex,$w,$an);
+		    $file_name=$flight->filename.".kmz";	
+		    $attachmentMIME="application/vnd.google-earth.kmz";
+		    DEBUG("DL",1,"KMZ Filepath= $file_name<BR>");
+		} else {
+		    $xml=$flight->createKMLfile($c,$ex,$w,$an);
+		    //$xml=$flight->createKMLfile("ff0000",1,2);
 
-		$file_name=$flight->filename.".kml";	
-		DEBUG("DL",1,"KML Filepath= $file_name<BR>");
-		
-		//echo "<pre>$xml</pre>";
-		//DEBUG_END();
-		//exit;
+		    $file_name=$flight->filename.".kml";	
+		    DEBUG("DL",1,"KML Filepath= $file_name<BR>");
+		    
+		    //echo "<pre>$xml</pre>";
+		    //DEBUG_END();
+		    //exit;
+		}
 	} else if ($type=="gpx_trk") {
 		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
@@ -239,10 +247,10 @@
 
 		list($browser_agent,$browser_version)=getBrowser();
 
-		if ($browser_agent == 'opera') $attachmentMIME = 'application/kml';
-		else if ($browser_agent == 'ie'  || $browser_agent == 'netscape'   || $browser_agent == 'mozilla'  ) 
-			$attachmentMIME ="application/vnd.google-earth.kml+xml";
-		else $attachmentMIME ='application/octet-stream';
+		if ($browser_agent == 'opera')
+			$attachmentMIME = 'application/kml';
+		else if ($browser_agent != 'ie' && $browser_agent != 'netscape' && $browser_agent != 'mozilla') 
+			$attachmentMIME ="application/octet-stream";
 
 		DEBUG("DL",1,"browser_agent=$browser_agent, browser version=$browser_version<BR>");
 

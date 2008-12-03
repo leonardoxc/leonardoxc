@@ -8,37 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.5 2008/12/01 13:07:43 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.6 2008/12/03 10:33:14 tom Exp $                                                                 
 //
 //************************************************************************
 
-/*
-Copyright Tom Payne
-http://github.com/twpayne/igc2kmz/wikis/quickstart
-
-Usage: igc2kmz.py [options]
-
-IGC to Google Earth converter
-
-Options:
-  -h, --help            show this help message and exit
-  -o FILENAME, --output=FILENAME
-  -z HOURS, --timezone-offset=HOURS
-  -r FILENAME, --root=FILENAME
-
-  Per-flight options:
-    -i FILENAME, --igc=FILENAME
-    -n STRING, --pilot-name=STRING
-    -g STRING, --glider-type=STRING
-    -c COLOR, --color=COLOR
-    -w INTEGER, --width=INTEGER
-    -x FILENAME, --xc=FILENAME
-
-  Per-photo options:
-    -p FILENAME, --photo=FILENAME
-    -d STRING, --description=STRING
-*/
-function igc2kmz($file,$fileReal,$timezone,$pilot,$glider,$photos) {
+function igc2kmz($file,$timezone,$flightID) {
 	global $CONF;
 	$str="";
 
@@ -52,13 +26,7 @@ function igc2kmz($file,$fileReal,$timezone,$pilot,$glider,$photos) {
 
 	$path=$CONF['googleEarth']['igc2kmz']['path'];
 	
-	$photoStr='';
-	if (count($photos)) {
-		foreach($photos as $i=>$photo){
-			$photoStr.=" -p '$photo' ";
-		}
-	}
-	$cmd="cd $path/bin ; ./igc2kmz.py -i '$fileReal' -o '$kmzFile' -z $timezone -n '$pilot' -g '$glider' $photoStr";
+	$cmd="$path/bin/leonardo2kmz.py -o '$kmzFile' -z $timezone $flightID";
 	exec($cmd,$res);
 
 	if (0) {

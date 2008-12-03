@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.153 2008/12/01 14:11:32 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.154 2008/12/03 10:33:14 tom Exp $                                                                 
 //
 //************************************************************************
 
@@ -987,36 +987,6 @@ $resStr='{
 </NetworkLink>";
 
 			return $kml_file_contents;
-		} else if ($extended==2) {
-			require_once dirname(__FILE__).'/FN_igc2kmz.php';
-			
-			// gather photos into array
-			$photoArray=array();
-			if ($this->hasPhotos) {
-				$flightPhotos=new flightPhotos($this->flightID);
-				$flightPhotos->getFromDB();
-				
-				foreach($flightPhotos->photos as $photoNum=>$photoObj ) {
-					$photoArray[]="http://".$_SERVER['SERVER_NAME'].'/'.$flightPhotos->getPhotoRelPath($photoNum);
-				}
-			}
-		
-			$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->getIGCFilename(2),$this->timezone,$this->userName,$this->glider,$photoArray);
-			$kml_file_contents="
-<NetworkLink>
-  <name>Extended analysis</name>
-  <visibility>1</visibility>
-  <open>1</open>
-  <description>Tom Payne\'s igz2kmz (http://github.com/twpayne/igc2kmz)</description>
-  <refreshVisibility>0</refreshVisibility>
-  <flyToView>0</flyToView>
-  <Link>
-	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).
-	".igc2kmz.".$igc2kmzVersion.".kmz</href>
-  </Link>
-</NetworkLink>";
-
-			return $kml_file_contents;
 		}
 		
 
@@ -1338,6 +1308,15 @@ $kml_file_contents=
 			$kml_file_contents = $NewEncoding->Convert($kml_file_contents, $FromCharset, "utf-8", $Entities);
 		}
 		return $kml_file_contents;
+	}
+
+	function createKMZfile($c, $ex, $w, $an) {
+		global $CONF;
+		require_once dirname(__FILE__)."/FN_igc2kmz.php";
+		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->flightID);
+		$version=$CONF['googleEarth']['igc2kmz']['version'];
+		$file_name=$this->getIGCFilename(0).".igc2kmz.$version.kmz";
+		return file_get_contents($file_name);
 	}
 
 	function createGPXfile($returnAlsoXML=0) {
