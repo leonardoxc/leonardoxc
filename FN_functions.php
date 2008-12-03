@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.65 2008/12/03 15:57:56 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.66 2008/12/03 20:56:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -948,7 +948,7 @@ function getLeonardoLink($argArray) {
 		}
 
 		if (!$opProccessed && isset($argArray['op'])  ) {
-			$args.='op:'.$argArray['op'];
+			$args.='page/'.$argArray['op'];
 			unset($argArray['op']);
 		}
 		

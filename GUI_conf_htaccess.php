@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.12 2008/12/03 15:57:56 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.13 2008/12/03 20:56:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,12 +20,19 @@
 
 function writeHtaccessFile(){
 	$("#writeFile").val('1');
-	$("#htaccessConfForm").submit();
+	//$("#confForm").submit();
+	
+	//document.confForm.writeFile=1;
+	document.confForm.submit();
+	return false;
 }
 
 function deleteHtaccessFile(){
 	$("#writeFile").val('-1');
-	$("#htaccessConfForm").submit();
+	//$("#confForm").submit();
+	//document.confForm.writeFile='-1';
+	document.confForm.submit();
+	return false;
 }
 
 </script>
@@ -72,7 +79,7 @@ RewriteRule ^".$virtPath2."takeoffs/(.*)/(.*)/(.*)$  $baseUrl&op=list_takeoffs&c
 RewriteRule ^".$virtPath2."ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&$4 [L,NC]
 
 
-RewriteRule ^".$virtPath2."op:(.*)$ $baseUrl&op=$1 [L,NC]
+RewriteRule ^".$virtPath2."page/(.*)$ $baseUrl&op=$1 [L,NC]
 
 RewriteRule ^".$virtPath2."&(.*)$ $baseUrl&$1 [L,NC]
 
@@ -94,7 +101,9 @@ if ($_POST['htaccessFile']) {
 
 $htaccessFileParts=split('/',$htaccessFile);
 array_pop($htaccessFileParts);
-$htaccessFiledir='/'.implode('/',$htaccessFileParts);
+
+$htaccessFiledir=implode('/',$htaccessFileParts);
+if ($htaccessFile{0}=='/') $htaccessFiledir='/'.$htaccessFiledir;
 
 $mod_conf_File=dirname(__FILE__).'/site/config_mod_rewrite.php';
 if ($_POST['writeFile']==1) {
@@ -151,7 +160,7 @@ if ($_POST['writeFile']==1) {
 </span>
  <hr />
 <BR />
-
+<FORM method="post" id='confForm' name='confForm'  >
   <table width="100%" border="0" cellpadding="6">
   <tr>
     <td valign="top" bgcolor="#EFF1E4"><p>Use the auto - detected values to prepare the htaccess file that will enable SEO URLS in Leonardo</p>
@@ -165,7 +174,7 @@ or press the button below to write the file automatically.</td>
   </tr>
   <tr>
     <td bgcolor="#F8F9F2">
-	<FORM method="post" id='htaccessConfForm0'>
+
 		File & params of running Leonardo<br />
 		 <input type="text"  value='<?=$baseUrl?>' name ='baseUrl'  size="50"/>
 		 <br />
@@ -177,26 +186,26 @@ or press the button below to write the file automatically.</td>
 		<br />
 		<input name="submit" type="submit" value="Prepare htaccess file" />
 		<br />
-		</FORM>
+		
 	</td>
     <td valign="top" bgcolor="#EDF0F1">Location of htaccess File<br />
 	
-	<FORM method="post" id='htaccessConfForm' >
+	
 	  <input type="hidden" id='writeFile' name="writeFile" value="0" />
       <input type="text"  value='<?=$htaccessFile?>' name ='htaccessFile' size="70" />
       <br />
       <br />
-      <input name="button1" id='button1' type="button" onclick='writeHtaccessFile();return false;' value="Write htaccess file to disk AND enable SEO urls"/>
+      <input name="button1" id='button1' type="submit" onclick='writeHtaccessFile();return false;' value="Write htaccess file to disk AND enable SEO urls"/>
       <br />
       <br />
-      <input name="button2" id='button2' type="button" onclick='deleteHtaccessFile();return false;' value="Delete htaccess file AND Disable SEO urls"/>
-	  </FORM>
-	  
+      <input name="button2" id='button2' type="submit" onclick='deleteHtaccessFile();return false;' value="Delete htaccess file AND Disable SEO urls"/>
+	
 	  </td>
 	  
   </tr>
 </table>
-
+  </FORM>
+	  
 <hr />
 <?
 echo "<pre>$str</pre>";
