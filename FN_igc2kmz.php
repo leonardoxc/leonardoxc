@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.8 2008/12/04 16:59:27 tom Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.9 2008/12/04 22:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,13 +25,13 @@ function igc2kmz($file,$timezone,$flightID) {
 	if ( is_file($kmzFile) ) return $version;
 
 	$python=$CONF['googleEarth']['igc2kmz']['python'];
-	$path=$CONF['googleEarth']['igc2kmz']['path'];
+	$path=realpath($CONF['googleEarth']['igc2kmz']['path']);
 	$engine=constant('SQL_LAYER')."://".$db->user.':'.$db->password.'@'.$db->server.'/'.$db->dbname;
 	
 	$cmd="$python $path/bin/leonardo2kmz.py";
 	$cmd.=" --engine '$engine'";
 	$cmd.=" --table-prefix=$CONF_tables_prefix";
-	$cmd.=" --directory '".dirname(__FILE__)."/../..'";
+	$cmd.=" --directory '".realpath(dirname(__FILE__).'/../..')."'";
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
@@ -40,8 +40,8 @@ function igc2kmz($file,$timezone,$flightID) {
 	exec($cmd,$res);
 
 	if (0) {
-		echo " $timezone,$pilot,$glider # ";
-		echo $cmd;
+		echo "timezone: $timezone<br>";
+		echo "cmd: $cmd<BR>";
 		print_r($res);
 		exit;
 	}	
@@ -59,7 +59,7 @@ function deleteOldKmzFiles($file,$version) {
 	$current_dir = opendir($dir);
 	while($entryname = readdir($current_dir)){
 		// echo "^ $entryname ^<BR> ";
-		if (preg_match("/$name(\d)+/",$entryname,$matches) ) {
+		if (preg_match("/$name([\d\.]+)\.kmz$/",$entryname,$matches) ) {
 			// print_r($matches);
 			if ($matches[1] != $version ) {
 		   		unlink("${dir}/${entryname}");

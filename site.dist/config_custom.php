@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.3 2008/12/04 16:59:27 tom Exp $                                                                 
+// $Id: config_custom.php,v 1.4 2008/12/04 22:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -334,10 +334,26 @@
 	// for custom code to put on bottom of page , ie google analitics ...
 	$CONF['footer']['custom_code']='';
 	
-	$CONF['googleEarth']['igc2kmz']['active']	=false;
-	$CONF['googleEarth']['igc2kmz']['visible'] = false;
-	$CONF['googleEarth']['igc2kmz']['version']	= 0;
+/* 
+	http://github.com/twpayne/igc2kmz/wikis/home
+	
+	1) make a dir in lib/ called igc2kmz/ 
+		and do a 
+	   git clone git://github.com/twpayne/igc2kmz.git
+		to get it the first time or 
+	   git pull 
+	   to get the latest version
+		
+	2)	Install the python module SQLAlchemy (http://www.sqlalchemy.org/) and the
+		 	Python MySQL bindings (http://sourceforge.net/projects/mysql-python) on the server.
+*/ 
+
+	$CONF['googleEarth']['igc2kmz']['active']	=true;
+	$CONF['googleEarth']['igc2kmz']['visible'] = true;
+	$CONF['googleEarth']['igc2kmz']['version']	= 1.01;
 	$CONF['googleEarth']['igc2kmz']['python'] = '/usr/local/bin/python2.5';
+	// for windows ...
+	// $CONF['googleEarth']['igc2kmz']['python'] = 'c:\python25\python.exe';
 	$CONF['googleEarth']['igc2kmz']['path']=dirname(__FILE__).'/../lib/igc2kmz';
 
 
