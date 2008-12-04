@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.2 2008/11/29 22:46:20 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.3 2008/12/04 16:59:27 tom Exp $                                                                 
 //
 //************************************************************************
 
@@ -337,6 +337,7 @@
 	$CONF['googleEarth']['igc2kmz']['active']	=false;
 	$CONF['googleEarth']['igc2kmz']['visible'] = false;
 	$CONF['googleEarth']['igc2kmz']['version']	= 0;
+	$CONF['googleEarth']['igc2kmz']['python'] = '/usr/local/bin/python2.5';
 	$CONF['googleEarth']['igc2kmz']['path']=dirname(__FILE__).'/../lib/igc2kmz';
 
 
