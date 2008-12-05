@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.93 2008/12/01 11:11:02 manolis Exp $                                                                 
+// $Id: index.php,v 1.94 2008/12/05 15:23:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -271,7 +271,9 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
-if ($opMode==3 || $opMode==4 || $opMode==6)  // stand alone , we use phpbb3 as standalone too
+if ($opMode==3 || $opMode==4 || $opMode==6  || 
+	  ($opMode==5 &&  $CONF_use_own_template )
+	 )  // stand alone , we use phpbb3 as standalone too
 	require_once dirname(__FILE__)."/GUI_header.php";
 
 // phpnuke
