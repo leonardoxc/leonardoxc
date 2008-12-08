@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.108 2008/12/04 22:45:24 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.109 2008/12/08 22:09:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,7 +21,9 @@
 	}
 
 	$legend="";
-	
+	$legend="<b>"._MENU_FLIGHTS."</b> ";
+
+if (0) {	
 	$sortOrder=makeSane($_REQUEST["sortOrder"]);
 	if ( $sortOrder=="")  $sortOrder="DATE";
 	
@@ -212,18 +214,86 @@
 		$nOrder='username';
 	}
 	*/
-	$query="SELECT * , $flightsTable.glider as flight_glider, $flightsTable.takeoffID as flight_takeoffID , $flightsTable.ID as ID ,
-				   $scoreSpeedSql AS SCORE_SPEED
+	$query="SELECT * , 
+			$flightsTable.glider as flight_glider, 
+			$flightsTable.takeoffID as flight_takeoffID , 
+			$flightsTable.ID as ID ,
+			$scoreSpeedSql AS SCORE_SPEED
 		FROM $flightsTable $extra_table_str $extra_table_str2
 		WHERE (1=1) $where_clause $where_clause2
 		ORDER BY $sortOrderFinal $ord LIMIT $startNum,".$PREFS->itemsPerPage ;
 	// echo "<!-- $query -->"; 
+	
+	
+	}
+	
+	
+	
+	require_once dirname(__FILE__).'/SQL_list_flights.php';
+	$res= $db->sql_query($queryCount);
+	if($res <= 0){   
+	 echo("<H3> Error in count items query! $queryCount</H3>\n");
+	 exit();
+	}	
+	$row = $db->sql_fetchrow($res);
+	$itemsNum=$row["itemNum"];   
+	
+	$startNum=($page_num-1)*$PREFS->itemsPerPage;
+	$pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
+	
+	
+	if ($_GET['igc_list'] && L_auth::isAdmin($userID) ) {
+		require_once dirname(__FILE__)."/MENU_second_menu.php";
+		// now the real query	
+		$res= $db->sql_query($query);
+		
+		if($res <= 0){
+		 echo("<H3> Error in query! </H3>\n");
+		 exit();
+		}
+		
+		echo "<pre>";
+		
+		$boundBox['minLat']=43.1589;
+		$boundBox['maxLat']=48.1717;
+		
+		$boundBox['minLon']=6.11194;
+		$boundBox['maxLon']=13.5261;
+
+		
+		while ($row = $db->sql_fetchrow($res)) { 
+			if (!$row['filename']) continue;
+			
+			if ($row['firstLat'] < $boundBox['minLat'] || $row['firstLat'] > $boundBox['maxLat'] ) continue;			
+			if ($row['firstLon'] < $boundBox['minLon'] || $row['firstLon'] > $boundBox['maxLon'] ) continue;
+			
+			
+			if ($row['DATE'] < '2008-06-01' || $row['DATE']  > '2008-08-31' ) continue;
+			
+			$igcPath=''; // $flightsAbsPath;
+			if ($row['userServerID']) 
+				$igcPath.=$row['userServerID'].'_';
+			$igcPath.=$row['userID']."/flights/".substr($row['DATE'],0,4)."/".$row['filename']."\n";
+			echo $igcPath;	
+			$igcNum++;		
+		}		
+		echo "</pre>";
+		echo "#flight found : $igcNum<BR>";
+		exit;
+	}
+	
+	// Add the limit 
+	$query.="LIMIT $startNum,".$PREFS->itemsPerPage;
+	
+	// now the real query	
 	$res= $db->sql_query($query);
 	
 	if($res <= 0){
 	 echo("<H3> Error in query! </H3>\n");
 	 exit();
 	}
+	
+
 	
 	
 	$legend.=" :: "._SORTED_BY."&nbsp;".replace_spaces($sortDesc);

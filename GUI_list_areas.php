@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_areas.php,v 1.3 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_list_areas.php,v 1.4 2008/12/08 22:09:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,6 +28,7 @@ open_inner_table("Flying Areas",730,'icon_takeoff.gif'); echo "<tr><td>";
    </tr>
 <? 
 	$query="SELECT * FROM $areasTable WHERE areaType=0 ORDER BY name";
+	// $query="SELECT * FROM $areasTable ORDER BY name";
 	// echo $query;
 	$res= $db->sql_query($query);		
 	if($res <= 0){
