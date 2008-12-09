@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.155 2008/12/03 15:57:56 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.156 2008/12/09 16:47:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -1654,7 +1654,8 @@ $kml_file_contents=
 		$data_vario =array();
 		$data_takeoff_distance=array();
 
-		$filename=$this->getIGCFilename(0);  
+		$this->checkSanedFiles();
+		$filename=$this->getIGCFilename(2);  
 		$lines = @file ($filename); 
 		if (!$lines) return;
 
