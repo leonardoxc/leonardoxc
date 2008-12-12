@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.14 2008/12/05 22:07:07 manolis Exp $                                                                 
+// $Id: rss.php,v 1.15 2008/12/12 05:19:06 gus Exp $                                                                 
 //
 //************************************************************************
 	
@@ -36,7 +36,7 @@
 
 	$countryCode = ( isset($HTTP_GET_VARS['country']) ) ? substr($HTTP_GET_VARS['country'],0,2) : "";
 	$minOLCscore = ( isset($HTTP_GET_VARS['olcScore']) ) ? intval($HTTP_GET_VARS['olcScore']) : 0;
-	$maxOLDscore = ( isset($HTTP_GET_VARS['olcMaxScore']) ) ? intval($HTTP_GET_VARS['olcMaxScore']) : 0; // GUS in
+	$maxOLCscore = ( isset($HTTP_GET_VARS['olcMaxScore']) ) ? intval($HTTP_GET_VARS['olcMaxScore']) : 0; // GUS in
 
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="latest";	
