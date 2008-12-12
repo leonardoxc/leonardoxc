@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.15 2008/12/12 05:19:06 gus Exp $                                                                 
+// $Id: rss.php,v 1.16 2008/12/12 05:27:26 gus Exp $                                                                 
 //
 //************************************************************************
 	
@@ -139,9 +139,8 @@ $desc="Pilot:  $name".
 "<br>Min vario: ".sprintf("%.1f m/sec",$row['MIN_VARIO']).
 "<br>Max Alt ASL: ".$row['MAX_ALT'].
 " m<br>Min Alt ASL: ".$row['MIN_ALT'].
-" m<br>Takeoff alt: ".$row['TAKEOFF_ALT'].
-" m<br>&nbsp;<br>Comments: ".$row['comments']
-;
+" m<br>Takeoff alt: ".$row['TAKEOFF_ALT'];
+if ( $row['comments'] ) $desc.=" m<br>&nbsp;<br>Comments: ".$row['comments'];
 
 //           1111111111
 // 01234567890123456789    
