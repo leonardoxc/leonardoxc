@@ -83,12 +83,16 @@ function BT_show(id) {
 	var obj = $("#"+id);
 	var url='';
 
+	var forceDisplayOnLeft=false;
 	if ( typeof BT_base_urls != 'undefined' ) {
 		var idParts = id.split("_", 2);
 		var extID= idParts[1];		
 		var idParts2 = idParts[0].split("a", 2);
 		var BT_base_url2=BT_base_urls[idParts2[1]];
 		url=BT_base_url2+extID;	
+		
+		if (idParts2[1]>=1)
+			forceDisplayOnLeft=true;
 	} else if (BT_base_url!='') {
 		var idParts = id.split("_", 2);
 		var extID= idParts[1];
@@ -138,7 +142,7 @@ function BT_show(id) {
 	var shadowTop = -7;
 	var shadowLeft = -7;
 
-	if(docWidth < right )
+	if(docWidth < right || forceDisplayOnLeft )
 	{
 		arrowDir = "right";
 		left = act_left - 12 - tipWidth;
