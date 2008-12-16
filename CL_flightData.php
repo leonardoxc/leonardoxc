@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.156 2008/12/09 16:47:56 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.157 2008/12/16 15:26:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -468,31 +468,31 @@ $resStr='{
 
 	function setAllowedParams() {
 		if ($this->cat==1 ) { // PG
-			$this->maxAllowedSpeed=100;
+			$this->maxAllowedSpeed=140;
 			$this->maxAllowedVario=13;
 			$this->maxAllowedHeight=9000;
 		} else	if ($this->cat==2 ) { // flex wing HG
-			$this->maxAllowedSpeed=150;
+			$this->maxAllowedSpeed=200;
 			$this->maxAllowedVario=15;
 			$this->maxAllowedHeight=9000;
 		} else	if ($this->cat==4 ) { // fixed wing HG
-			$this->maxAllowedSpeed=170;
+			$this->maxAllowedSpeed=200;
 			$this->maxAllowedVario=17;
 			$this->maxAllowedHeight=9000;
 		} else	if ($this->cat==8 ) { // glider
-			$this->maxAllowedSpeed=300;
+			$this->maxAllowedSpeed=350;
 			$this->maxAllowedVario=20;
 			$this->maxAllowedHeight=9000;
 		} else if ($this->cat==16 ) { // paramotor
-			$this->maxAllowedSpeed=120;
+			$this->maxAllowedSpeed=150;
 			$this->maxAllowedVario=13;
 			$this->maxAllowedHeight=9000;
 		} else if ($this->cat==32 ) { // trike
-			$this->maxAllowedSpeed=120;
+			$this->maxAllowedSpeed=150;
 			$this->maxAllowedVario=13;
 			$this->maxAllowedHeight=9000;
 		} else if ($this->cat==64 ) { // other powered flight 
-			$this->maxAllowedSpeed=400;
+			$this->maxAllowedSpeed=500;
 			$this->maxAllowedVario=20;
 			$this->maxAllowedHeight=15000;
 		}
