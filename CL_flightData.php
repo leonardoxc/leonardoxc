@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.157 2008/12/16 15:26:34 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.158 2008/12/27 23:03:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -2427,6 +2427,11 @@ $kml_file_contents=
 
 		} // end main loop
 		
+				//	 
+		if ($stillOnGround && $this->LINEAR_DISTANCE < 50 )  {
+			DEBUG("IGC",1,"NO TAKEOFF FOUND: ");			
+			return 0; // no valid points found
+		}
 		
 		$path_igc=dirname($this->getIGCFilename(1));
 		if ( !is_dir($path_igc) ) {

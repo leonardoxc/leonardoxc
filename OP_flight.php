@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.10 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.11 2008/12/27 23:03:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -142,6 +142,7 @@ function flights_getIGCurl($args) {
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 $serverFunctions['flights.submit']='flights_submit';
 function flights_submit($args) {
+	
 	require_once dirname(__FILE__)."/FN_flight.php";
 
 	$username=$args[0];
@@ -191,15 +192,31 @@ function flights_submit($args) {
 		return  new IXR_Error(204, "Cannot write to file ($filename)");
 	} 		
 	@fclose($handle); 
-
+	
+	error_reporting(0);
+	ob_start();
+	
 	list($errCode,$flightID)=addFlightFromFile($filename,0,	$userID, 
 						array('private'=>$private,'cat'=>$cat,'category'=>1 , 
 							  'linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider) 
 					) ;
-	if ($errCode==1) { // all ok 
+	$errorBuffer=ob_get_contents();	
+	ob_end_clean();
+	
+	$flightID+=0;	
+	
+	if ($errCode==1 && $flightID!=0) { // all ok 
+		// return  new IXR_Error(500,htmlspecialchars("flightID:$flightID^errCode:$errCode^" ));
 		return $flightID;
 	} else {
-		$errStr=htmlspecialchars(getAddFlightErrMsg($errCode,$flightID) ) ;
+	
+		if ( $errCode==1 && $flightID==0) {
+			$errStr="The IGC file did not contain a valid flight";
+		} else {
+			$errStr=htmlspecialchars(getAddFlightErrMsg($errCode,$flightID) ) ;		
+		}	
+
+		// $errStr.=htmlspecialchars("#----------\n".$errorBuffer);
 		return  new IXR_Error(500,$errStr );
 	}
 
