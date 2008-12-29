@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.158 2008/12/27 23:03:09 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.159 2008/12/29 11:28:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -3566,7 +3566,7 @@ $kml_file_contents=
 		"$this->autoScore,
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,
-		$this->firstPointTM, $this->firstLat, $this->firstLon,
+		".($this->firstPointTM+0).", $this->firstLat, $this->firstLon,
 		$this->lastPointTM, $this->lastLat, $this->lastLon 
 
 		)";
