@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.159 2008/12/29 11:28:55 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.160 2008/12/29 15:34:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -3890,6 +3890,11 @@ foreach ($data_time as $i=>$tm) {
 			$fList[$i]=$row;
 			$i++;
 		}
+		
+		if ($i==0) {			
+			return array(); // no duplicate found
+		}
+		
 		usort($fList, "sameFlightsCmp"); 
 
 		$i=0;	
