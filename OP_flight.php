@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.11 2008/12/27 23:03:09 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.12 2009/01/07 15:24:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -142,6 +142,7 @@ function flights_getIGCurl($args) {
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 $serverFunctions['flights.submit']='flights_submit';
 function flights_submit($args) {
+	global $opMode;
 	
 	require_once dirname(__FILE__)."/FN_flight.php";
 
@@ -164,7 +165,11 @@ function flights_submit($args) {
 	
 	$passwdProblems=0;
 	if( $row = $db->sql_fetchrow($result) ) {
-		if( md5($passwd) != $row['user_password'] ) $passwdProblems=1;
+		if ($opMode==6) { // phpbb3 has custom way of hashing passwords
+			if( ! leonardo_check_hash($passwd,$row[$CONF['userdb']['password_field']])  ) $passwdProblems=1;			
+		} else {
+			if( md5($passwd) != $row[$CONF['userdb']['password_field']] ) $passwdProblems=1;
+		}	
 	} else 	$passwdProblems=1;
 	
 	if ($passwdProblems) {
