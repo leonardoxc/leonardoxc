@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.9 2008/12/04 22:45:24 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.10 2009/01/16 12:31:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -36,9 +36,13 @@ function igc2kmz($file,$timezone,$flightID) {
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
 	$cmd.=" $flightID";
+	
+	DEBUG('igc2kmz',1,"igc2kmz: $cmd <BR>");
+
 
 	exec($cmd,$res);
-
+	
+	
 	if (0) {
 		echo "timezone: $timezone<br>";
 		echo "cmd: $cmd<BR>";
