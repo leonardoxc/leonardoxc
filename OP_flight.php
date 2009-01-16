@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.12 2009/01/07 15:24:39 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.13 2009/01/16 14:19:27 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -158,7 +158,8 @@ function flights_submit($args) {
 
 	global $db,$CONF;
 	$sql = "SELECT ".$CONF['userdb']['user_id_field'].", ".$CONF['userdb']['username_field'].", ".$CONF['userdb']['password_field'].
-			" FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['username_field']." = '$username'";
+			" FROM ".$CONF['userdb']['users_table']." WHERE LOWER(".$CONF['userdb']['username_field'].") = '".
+			strtolower($username)."'";
 	if ( !($result = $db->sql_query($sql)) ) {
 		return  new IXR_Error(200, "Error in obtaining userdata for $username");
 	}
@@ -170,7 +171,9 @@ function flights_submit($args) {
 		} else {
 			if( md5($passwd) != $row[$CONF['userdb']['password_field']] ) $passwdProblems=1;
 		}	
-	} else 	$passwdProblems=1;
+	} else 	{		
+		return  new IXR_Error(200, "Error in obtaining userdata for $username");
+	}
 	
 	if ($passwdProblems) {
 		return  new IXR_Error(201, "Error in password for $username");
