@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.109 2008/12/08 22:09:04 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.110 2009/01/17 18:18:28 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -262,13 +262,17 @@ if (0) {
 
 		
 		while ($row = $db->sql_fetchrow($res)) { 
-			if (!$row['filename']) continue;
+			if (! $row['filename'] ||
+				  $row['MAX_LINEAR_DISTANCE'] < 10000 ||
+				  $row['DURATION'] <3600 ||
+				  ( $row['MAX_ALT'] -$row['TAKEOFF_ALT'])  < 100 
+				) continue;
 			
-			if ($row['firstLat'] < $boundBox['minLat'] || $row['firstLat'] > $boundBox['maxLat'] ) continue;			
-			if ($row['firstLon'] < $boundBox['minLon'] || $row['firstLon'] > $boundBox['maxLon'] ) continue;
+			//if ($row['firstLat'] < $boundBox['minLat'] || $row['firstLat'] > $boundBox['maxLat'] ) continue;			
+			//if ($row['firstLon'] < $boundBox['minLon'] || $row['firstLon'] > $boundBox['maxLon'] ) continue;
 			
 			
-			if ($row['DATE'] < '2008-06-01' || $row['DATE']  > '2008-08-31' ) continue;
+			// if ($row['DATE'] < '2008-06-01' || $row['DATE']  > '2008-08-31' ) continue;
 			
 			$igcPath=''; // $flightsAbsPath;
 			if ($row['userServerID']) 
