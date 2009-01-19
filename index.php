@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.94 2008/12/05 15:23:35 manolis Exp $                                                                 
+// $Id: index.php,v 1.95 2009/01/19 13:21:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -350,6 +350,8 @@ if ($op=="users") {
 	require $LeoCodeBase."/GUI_list_clubs.php";
 } else if ($op=="list_flights") { 
 	require $LeoCodeBase."/GUI_list_flights.php";
+} else if ($op=="export_flights") {  // only for admin
+	require $LeoCodeBase."/GUI_flights_export.php";
 } else if ($op=="list_pilots" ) {  
 	require $LeoCodeBase."/GUI_list_pilots.php";
 } else if ($op=="competition") {

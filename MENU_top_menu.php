@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.66 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.67 2009/01/19 13:21:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -113,6 +113,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				'takeoffID'=>'0','country'=>'0','cat'=>'0>',
 				'clubID'=>'0'))?>">Flights with unknown takeoffs</a></li>
 				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'-1','year'=>'0','month'=>'0')) ?>">Show test flights</a></li>
+				<li class='li_space long'></li>
+   				<li><a href="<?=getLeonardoLink(array('op'=>'export_flights')) ?>">Export IGC Tracklogs</a></li>
 				<li class='li_space long'></li>
 				<? if ($CONF_isMasterServer && 0) { ?>
 					<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'-1','year'=>'0','month'=>'0')) ?>&op=servers_manage">Manage Leonardo Servers</a></li>
