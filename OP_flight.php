@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.13 2009/01/16 14:19:27 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.14 2009/01/20 15:56:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -157,6 +157,14 @@ function flights_submit($args) {
 	$glider=$args[8];
 
 	global $db,$CONF;
+	
+	if ($CONF['userdb']['password_users_table']) {
+		$dbTable=$CONF['userdb']['password_users_table'];
+	} else {
+	
+	
+	}
+	
 	$sql = "SELECT ".$CONF['userdb']['user_id_field'].", ".$CONF['userdb']['username_field'].", ".$CONF['userdb']['password_field'].
 			" FROM ".$CONF['userdb']['users_table']." WHERE LOWER(".$CONF['userdb']['username_field'].") = '".
 			strtolower($username)."'";
@@ -164,12 +172,35 @@ function flights_submit($args) {
 		return  new IXR_Error(200, "Error in obtaining userdata for $username");
 	}
 	
+	$passwordHashed='';
+	
+	if ($CONF['userdb']['password_users_table']) {
+		
+		$sql2 = "SELECT  ".$CONF['userdb']['password_username_field'].", ".$CONF['userdb']['password_password_field'].
+			" FROM ".$CONF['userdb']['password_users_table']." WHERE LOWER(".$CONF['userdb']['password_username_field'].") = '".	strtolower($username)."'";
+			
+		if ( !($result2 = $db->sql_query($sql2)) ) {
+			return  new IXR_Error(200, "Error in obtaining userdata2 for $username");
+		}
+		
+
+		if( $row2 = $db->sql_fetchrow($result2) ) {
+			$passwordHashed=$row2[$CONF['userdb']['password_password_field']];
+		}	
+	}
+	
+	//echo "$passwordHashed %";
+	
 	$passwdProblems=0;
 	if( $row = $db->sql_fetchrow($result) ) {
+		if (!$passwordHashed) {
+			$passwordHashed=$row[$CONF['userdb']['password_field']];
+		}
+			
 		if ($opMode==6) { // phpbb3 has custom way of hashing passwords
-			if( ! leonardo_check_hash($passwd,$row[$CONF['userdb']['password_field']])  ) $passwdProblems=1;			
+			if( ! leonardo_check_password($passwd,$passwordHashed)  ) $passwdProblems=1;			
 		} else {
-			if( md5($passwd) != $row[$CONF['userdb']['password_field']] ) $passwdProblems=1;
+			if( md5($passwd) != $passwordHashed ) $passwdProblems=1;
 		}	
 	} else 	{		
 		return  new IXR_Error(200, "Error in obtaining userdata for $username");
