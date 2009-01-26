@@ -57,12 +57,13 @@ function do_scp($origin, $destination, $password)
 	unlink($tmpfname);
 }
 
+/*
 do_ssh("example.com", "user", "example.com", "ls");
 
 do_scp("SSH", "user@example.com:.", "password");
 
 do_ssh("example.com", "user", "password", "ls");
 do_ssh("example.com", "user", "password", "ls SSH");
-
+*/
 
 ?>

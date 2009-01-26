@@ -1,5 +1,5 @@
 <?php
- 
+exit; 
 // To test the class from the command line we need a shell with no control
 // terminal to avoid SSH from prompting interactively for the password:
 // run this with ' ssh -x -T localhost "(cd `pwd` ; php ssh_test.php)" '

@@ -1,4 +1,5 @@
 <?php
+exit;
 
 $debug=TRUE;
 $remote = "user@example.com";
