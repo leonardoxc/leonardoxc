@@ -1,1 +1,5 @@
  ALTER TABLE `leonardo_waypoints` ADD INDEX ( `countryCode` )  ;
+
+ ALTER TABLE `leonardo_flights` DROP INDEX `userID` , ADD INDEX `userID` ( `userID` , `userServerID` ) ;
+
+ ALTER TABLE `leonardo_pilots` ADD INDEX ( `FirstName` , `LastName` )  ; 

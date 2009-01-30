@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.1 2008/12/08 22:09:04 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.2 2009/01/30 13:27:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -155,14 +155,19 @@
 	 $extra_table_str.=",".$waypointsTable;
 	} else $extra_table_str.="";
 
-	 if ($pilotsTableQuery2 && !$pilotsTableQueryIncluded){
+	$pilotIncludedFields="";
+	
+	if ($pilotsTableQuery2 && !$pilotsTableQueryIncluded){
 		$where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	 
-		$extra_table_str2.=",$pilotsTable";		
+		$extra_table_str2.=",$pilotsTable";	
+		$pilotIncludedFields=" $pilotsTable.countryCode, $pilotsTable.Sex, ";	
 	}
 
+	
 	if ($pilotsTableQuery && !$pilotsTableQuery2 && !$pilotsTableQueryIncluded){
 		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	
 		$extra_table_str.=",$pilotsTable";
+		$pilotIncludedFields=" $pilotsTable.countryCode, $pilotsTable.Sex, ";
 	}	 
 	 		
 	$where_clause.=$where_clause_country;
@@ -186,7 +191,7 @@ if (0) {
 	$pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
 }
 	
-	$query="SELECT * , 
+	$query="SELECT $flightsTable.* , $pilotIncludedFields
 				$flightsTable.glider as flight_glider, 
 				$flightsTable.takeoffID as flight_takeoffID, 
 				$flightsTable.ID as ID,
