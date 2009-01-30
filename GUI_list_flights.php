@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.110 2009/01/17 18:18:28 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.111 2009/01/30 16:38:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -483,10 +483,23 @@ function removeClubFlight(clubID,flightID) {
      $is_private=$row["private"];
 	 $flightID=$row['ID'];
 
-     $name=getPilotRealName($row["userID"],$row["userServerID"],1);	
-	 $name=prepare_for_js($name);
+	if ($pilotNames[ $row["userServerID"].'_'.$row["userID"] ] ) {
+		$name=$pilotNames[ $row["userServerID"].'_'.$row["userID"] ];
+	} else {
+	    $name=getPilotRealName($row["userID"],$row["userServerID"],1);		    
+		$pilotNames[ $row["userServerID"].'_'.$row["userID"] ]=$name;
+	}	  
+	
+	$name=prepare_for_js($name);
+	
+	if ($takeoffNames[$row["flight_takeoffID"]]) {
+		$takeoffName= $row["flight_takeoffID"];
+	} else {
+		$takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"],-1,0,20) ) ;
+		$takeoffNames[$row["flight_takeoffID"]]=$takeoffName;
+	}
+	 
 
-	 $takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"],-1,0,20) ) ;
 	 $takeoffVinicity=$row["takeoffVinicity"];
 	 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 	 
