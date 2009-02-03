@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.6 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.7 2009/02/03 13:22:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -45,6 +45,20 @@ class flightPhotos {
 		return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];		
 	}
 
+	function getSafeName($path,$photoName){
+		$newName=toLatin1($photoName);
+		if ( !is_file($path.'/'.$newName) ) return $newName;
+		
+		$i=1;
+		do {
+			$newNameTmp=preg_replace("/(\.jpg|\.jpeg)$/i","_$i\${1}",$newName);
+			$i++;
+		} while ( is_file($path.'/'.$newNameTmp) );
+		
+		return $newNameTmp;
+	}
+	
+	
 	function addPhoto($num,$path,$name,$description,$updateFlightsTable=1) {
 		global $db,$photosTable,$flightsTable;
 		// $this->photos[$this->photosNum]['ID']=$row['ID'];

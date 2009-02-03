@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.47 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.48 2009/02/03 13:22:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -437,7 +437,13 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 			if ( $photoName ) {  
 				if ( CLimage::validJPGfilename($photoName) && CLimage::validJPGfile($photoFilename) ) {
 				
-					$newPhotoName=toLatin1($photoName);
+					// $newPhotoName=toLatin1($photoName);
+					// Fix for same photo filenames 2009.02.03
+					global $flightsAbsPath;	
+					$newPhotoName=flightPhotos::getSafeName(
+						$flightsAbsPath.'/'.$flight->getPilotID()."/photos/".$flight->getYear() , 
+						$photoName	) ;
+					
 					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
 

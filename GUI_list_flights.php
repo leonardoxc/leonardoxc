@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.111 2009/01/30 16:38:13 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.112 2009/02/03 13:22:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -493,7 +493,7 @@ function removeClubFlight(clubID,flightID) {
 	$name=prepare_for_js($name);
 	
 	if ($takeoffNames[$row["flight_takeoffID"]]) {
-		$takeoffName= $row["flight_takeoffID"];
+		$takeoffName= $takeoffNames[ $row["flight_takeoffID"] ];
 	} else {
 		$takeoffName= prepare_for_js(getWaypointName($row["flight_takeoffID"],-1,0,20) ) ;
 		$takeoffNames[$row["flight_takeoffID"]]=$takeoffName;
