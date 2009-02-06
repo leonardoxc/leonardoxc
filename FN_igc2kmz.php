@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.10 2009/01/16 12:31:43 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.11 2009/02/06 11:51:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,6 +25,7 @@ function igc2kmz($file,$timezone,$flightID) {
 	if ( is_file($kmzFile) ) return $version;
 
 	$python=$CONF['googleEarth']['igc2kmz']['python'];
+	putenv('PYTHON_EGG_CACHE=/tmp');
 	$path=realpath($CONF['googleEarth']['igc2kmz']['path']);
 	$engine=constant('SQL_LAYER')."://".$db->user.':'.$db->password.'@'.$db->server.'/'.$db->dbname;
 	

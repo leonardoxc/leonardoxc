@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.15 2009/01/30 13:27:31 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.16 2009/02/06 11:51:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -24,7 +24,7 @@
 	require_once "FN_pilot.php";
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
-	$DBGlvl=255;
+	// $DBGlvl=255;
 	echo "<html><body>";
 	if (! $CONF_allow_direct_upload) {
 		echo "problem<br>";
@@ -119,6 +119,6 @@
 		"'>"._PRESS_HERE_TO_VIEW_IT.'</a>';
 
 	}
-    DEBUG_END();
+    // DEBUG_END();
 	echo "</body></html>";
 ?>
