@@ -3,3 +3,27 @@
  ALTER TABLE `leonardo_flights` DROP INDEX `userID` , ADD INDEX `userID` ( `userID` , `userServerID` ) ;
 
  ALTER TABLE `leonardo_pilots` ADD INDEX ( `FirstName` , `LastName` )  ; 
+
+
+CREATE TABLE `leonardo_thermals` (
+`id` BIGINT UNSIGNED NOT NULL ,
+`type` TINYINT NOT NULL ,
+`latitude` FLOAT NOT NULL ,
+`longitude` FLOAT NOT NULL ,
+`name` CHAR( 6 ) NOT NULL ,
+`climbrate` SMALLINT NOT NULL ,
+`climbseconds` SMALLINT NOT NULL ,
+`climbmeters` SMALLINT NOT NULL ,
+`windsourcedeg` SMALLINT NOT NULL ,
+`windspeed` TINYINT NOT NULL ,
+`class` CHAR( 1 ) NOT NULL ,
+`icon` TINYINT NOT NULL ,
+`createddatetime` DATETIME NOT NULL ,
+`altitude` SMALLINT NOT NULL ,
+`notes` TEXT NOT NULL
+) TYPE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+ALTER TABLE `leonardo_thermals` ADD INDEX ( `class` ) ;
+
+ALTER TABLE `leonardo_thermals` ADD INDEX ( `latitude` , `longitude` ) 
