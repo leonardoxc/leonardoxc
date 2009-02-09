@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.48 2009/02/03 13:22:41 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.49 2009/02/09 14:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -102,7 +102,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	require_once dirname(__FILE__).'/CL_actionLogger.php';
 	$log=new Logger();
-	$log->userID  	=$userID; // the userId that is logged in , not the one that the flight will be atrributed to 
+	$log->userID  	=$userID+0; // the userId that is logged in , not the one that the flight will be atrributed to 
 	$log->ItemType	=1 ; // flight; 
 	$log->ItemID	= 0; // 0 at start will fill in later if successfull
 	$log->ServerItemID	= $thisServerID ;
@@ -113,7 +113,8 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	$log->ServerModifierID =0;
 	$log->Result = 0;
 	$log->ResultDescription ="";
-
+	
+	
 	if (!$filename) {
 		$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE,0);
 		if (!$log->put()) echo "Problem in logger<BR>";

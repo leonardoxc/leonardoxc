@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.14 2009/01/20 15:56:26 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.15 2009/02/09 14:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -235,6 +235,7 @@ function flights_submit($args) {
 	error_reporting(0);
 	ob_start();
 	
+
 	list($errCode,$flightID)=addFlightFromFile($filename,0,	$userID, 
 						array('private'=>$private,'cat'=>$cat,'category'=>1 , 
 							  'linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider) 

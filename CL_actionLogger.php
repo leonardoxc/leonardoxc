@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_actionLogger.php,v 1.16 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_actionLogger.php,v 1.17 2009/02/09 14:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -186,6 +186,7 @@ class Logger {
 	function put(){
 		global $db, $logTable, $userID, $CONF;
 
+		$userID+=0;
 		# martin jursa 21.6.2008 to avoid error log flooding
 		if (!empty($CONF['servers']['syncLog']['dontLog']) && is_array($CONF['servers']['syncLog']['dontLog'])) {
 			//old: if ( @in_array($this->ServerItemID,$CONF['servers']['syncLog']['dontLog']) ) {
