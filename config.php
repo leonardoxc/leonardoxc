@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.107 2008/12/02 00:16:22 manolis Exp $                                                                 
+// $Id: config.php,v 1.108 2009/02/10 16:07:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -234,6 +234,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $remotePilotsTable =	$CONF_tables_prefix."_remote_pilots";
  $scoresTable		=  $CONF_tables_prefix."_flights_score";
 
+ $thermalsTable		=  $CONF_tables_prefix."_thermals";
+ 
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
  $minMrSidResolution=28.5; // m/pixel
@@ -676,5 +678,7 @@ if (!function_exists('str_ireplace')) {
         return preg_replace("/$needle/i", $str, $haystack);
     }
 } 
+
+$CONF['thermals']['enable']=true;
 
 ?>
