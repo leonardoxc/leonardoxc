@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.39 2009/02/12 15:44:37 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.40 2009/02/12 15:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -66,6 +66,31 @@
 		$GMapType= $CONF['google_maps']['default_maptype'];
 	}
 
+	if ( ( $CONF_airspaceChecks && L_auth::isAdmin($userID) ) || $CONF['thermals']['enable'] ) { 
+		// find min/max lat/lon
+		$filename=$flight->getIGCFilename();
+		$lines = file ($filename); 
+		if (!$lines) { echo "Cant read file"; return; }
+		$i=0;
+	
+		// find bounding box of flight
+		$min_lat=1000;
+		$max_lat=-1000;
+		$min_lon=1000;
+		$max_lon=-1000;
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;				
+			if ($line{0}=='B') {
+					if  ( strlen($line) < 23 ) 	continue;
+					$thisPoint=new gpsPoint($line,0);
+					if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
+					if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
+					if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
+					if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
+			}
+		}
+	}
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
@@ -126,7 +151,8 @@
 			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
 		<?  } ?>
 		</fieldset>
-
+        
+		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
          <div id='thermalLoad'><a href='javascript:loadThermals()'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
@@ -138,7 +164,7 @@
           <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class<BR>
          </div>
 		</fieldset>
-        
+        <? } ?>
 		</div>
     </form>
 	</td>
@@ -150,8 +176,11 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
+<? if ( $CONF['thermals']['enable']  ) { ?>
+<script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
+<? } ?>
 
 <script src="js/chartFX/wz_jsgraphics.js"></script>
 <script src='js/chartFX/excanvas.js'></script>
@@ -208,10 +237,6 @@ var lon=0;
 </script>
 
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
-
-<script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	
@@ -387,6 +412,7 @@ var lon=0;
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
+	<? if ( $CONF['thermals']['enable']  ) { ?>
 	
 	  function createThermalMarker(point,html,class) {
         var marker = new GMarker(point, {icon:classIcons[class]});
@@ -484,9 +510,11 @@ var lon=0;
 
 	function loadThermals() {		
 		$("#thermalLoading").html("<?=_Loading_thermals?><BR><img src='img/ajax-loader.gif'>").show();
-		getAjax('EXT_thermals.php?op=get_nearest&lat='+lat+'&lon='+lon,null,importThermals);
+		// getAjax('EXT_thermals.php?op=get_nearest&lat='+lat+'&lon='+lon,null,importThermals);
+		getAjax('EXT_thermals.php?op=get_nearest&<?="max_lat=$max_lat&max_lon=$max_lon&min_lat=$min_lat&min_lon=$min_lon"?>',null,importThermals);
 	}
-
+	<? } // thermals code ?>
+	
 </script>
 
 <? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>
@@ -512,28 +540,8 @@ function toggleAirspace(radioObj) {
  var pts;
 <?
 	require_once dirname(__FILE__).'/FN_airspace.php';	
-	$filename=$flight->getIGCFilename();
-	$lines = file ($filename); 
-	if (!$lines) { echo "Cant read file"; return; }
-	$i=0;
-
-    // find bounding box of flight
-	$min_lat=1000;
-	$max_lat=-1000;
-	$min_lon=1000;
-	$max_lon=-1000;
-	foreach($lines as $line) {
-		$line=trim($line);
-		if  (strlen($line)==0) continue;				
-		if ($line{0}=='B') {
-				if  ( strlen($line) < 23 ) 	continue;
-				$thisPoint=new gpsPoint($line,0);
-				if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
-				if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
-				if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
-				if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
-		}
-	}
+	//  we have compted min/max in the start
+	
 	// echo "$min_lat,	$max_lat,$min_lon,	$max_lon<BR>";
 
 	// now find the bounding boxes that have common points
