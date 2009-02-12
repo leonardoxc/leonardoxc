@@ -876,10 +876,10 @@ define("_Vario_Short","Vario");
 define("_Time_Short","Zeit");
 define("_Info","Info");
 define("_Control","Control");
-define("_Zoom_to_flight","Zoom auf<br>den Flug");
-define("_Follow_Glider","Dem Gerät<br>folgen");
+define("_Zoom_to_flight","Zoom auf den Flug");
+define("_Follow_Glider","Dem Gerät folgen");
 define("_Show_Task","Task<br>zeigen");
-define("_Show_Airspace","Lufträume<br>anzeigen");
+define("_Show_Airspace","Lufträume anzeigen");
 define("_Show_Optimization_details","Optimierungsdetails zeigen");
 
 //New on 2008/05/17

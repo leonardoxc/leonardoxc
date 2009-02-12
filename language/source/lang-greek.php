@@ -684,10 +684,10 @@ define("_Time_Short","Ώρα");
 define("_Info","Πληρ/ρίες");
 define("_Control","Έλεχγος");
 
-define("_Zoom_to_flight","Ζουμ στην<br>πτήση");
-define("_Follow_Glider","Ακολούθηση<br>πιλότου");
-define("_Show_Task","Εμφάνιση<br>Τασκ");
-define("_Show_Airspace","Εμφάνιση<br>Airspace");
+define("_Zoom_to_flight","Ζουμ στην πτήση");
+define("_Follow_Glider","Ακολούθηση πιλότου");
+define("_Show_Task","Εμφάνιση Τασκ");
+define("_Show_Airspace","Εμφάνιση Airspace");
 
 // New on 2008/06/04
 define("_Show_Optimization_details","Αναλυτικά η βαθμολόγηση");

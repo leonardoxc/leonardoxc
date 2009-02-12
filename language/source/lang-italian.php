@@ -676,9 +676,9 @@ define("_Vario_Short","Vario");
 define("_Time_Short","Tempo"); 
 define("_Info","Info"); 
 define("_Control","Controlli"); 
-define("_Zoom_to_flight","Zoom al<br>volo"); 
-define("_Follow_Glider","Segui<br>Vela"); 
-define("_Show_Task","Mostra<br>Task"); 
-define("_Show_Airspace","Mostra<br>Airspace"); 
+define("_Zoom_to_flight","Zoom al volo"); 
+define("_Follow_Glider","Segui Vela"); 
+define("_Show_Task","Mostra Task"); 
+define("_Show_Airspace","Mostra Airspace"); 
 
 ?>

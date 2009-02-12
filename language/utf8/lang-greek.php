@@ -684,10 +684,15 @@ define("_Time_Short","Ώρα");
 define("_Info","Πληρ/ρίες");
 define("_Control","Έλεχγος");
 
-define("_Zoom_to_flight","Ζουμ στην<br>πτήση");
-define("_Follow_Glider","Ακολούθηση<br>πιλότου");
-define("_Show_Task","Εμφάνιση<br>Τασκ");
-define("_Show_Airspace","Εμφάνιση<br>Airspace");
+define("_Zoom_to_flight","Ζουμ στην πτήση");
+define("_Follow_Glider","Ακολούθηση πιλότου");
+define("_Show_Task","Εμφάνιση Τασκ");
+define("_Show_Airspace","Εμφάνιση Airspace");
+
+// New on 2008/06/04
+define("_Show_Optimization_details","Αναλυτικά η βαθμολόγηση");
+
+define("_MENU_SEARCH_PILOTS","Εύρευση πιλότου");
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
@@ -710,7 +715,16 @@ define("_EmailInvalid","The email address is invalid.");
 define("_EmailSaved","The email address was saved"); 
 define("_EmailNotSaved","The email address has not been saved."); 
 define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_Show_Optimization_details","Show Optimization Details"); 
-define("_MENU_SEARCH_PILOTS","Search"); 
+define("_Thermals","Thermals"); 
+define("_MemberID_Missing","Your member ID is missing"); 
+define("_MemberID_NotNumeric","The member ID must be numeric"); 
+define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight."); 
+define("_FLIGHTADD_IGC_MISSING","Please select your .igc-file"); 
+define("_FLIGHTADD_IGCZIP_MISSING","Please select the zip-file containing your .igc-file"); 
+define("_FLIGHTADD_CATEGORY_MISSING","Please select the category"); 
+define("_FLIGHTADD_BRAND_MISSING","Please select the brand of your glider"); 
+define("_FLIGHTADD_GLIDER_MISSING","Please enter the type of your glider"); 
+define("_YOU_HAVENT_ENTERED_GLIDER","You have not entered brand or glider"); 
+define("_BRAND_NOT_IN_LIST","Brand not in list"); 
 
 ?>

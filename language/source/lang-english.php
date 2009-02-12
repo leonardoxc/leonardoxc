@@ -711,10 +711,11 @@ define("_Time_Short","Time");
 define("_Info","Info");
 define("_Control","Control");
 
-define("_Zoom_to_flight","Zoom to<br>flight");
-define("_Follow_Glider","Follow<br>Glider");
-define("_Show_Task","Show<br>Task");
-define("_Show_Airspace","Show<br>Airspace");
+define("_Zoom_to_flight","Zoom to flight");
+define("_Follow_Glider","Follow Glider");
+define("_Show_Task","Show Task");
+define("_Show_Airspace","Show Airspace");
+define("_Thermals","Thermals");
 
 // New on 2008/06/04
 define("_Show_Optimization_details","Show Optimization Details");

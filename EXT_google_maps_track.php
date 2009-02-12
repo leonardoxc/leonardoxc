@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.38 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.39 2009/02/12 15:44:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -87,8 +87,7 @@
 	  				height:95px;  width:2px; background-color:#44FF44;" 
 				  id="timeLine1"></div>
 	   
-	  <div style="position: absolute; float:right; right:4px; top: 0px; z-index: 150; padding-right:4px; text-align:right;
-				 height:12px; width:110px; border:0px solid #777777;  background-color:none; color:FF3333;" 
+	  <div style="position: absolute; float:right; right:4px; top: 0px; z-index: 150; padding-right:4px; text-align:right; height:12px; width:110px; border:0px solid #777777;  background-color:none; color:FF3333;" 
 	  id="timeBar"><?=$title1?></div>
 
 	  <div id="chart" class="chart" style="width: 745px; height: 120px;"  onMouseMove="SetTimer(event)"></div>
@@ -107,10 +106,10 @@
 		<br>
  		<fieldset class="legendBox"><legend><?=_Info?></legend><BR />
 			<table align="center" cellpadding="2" cellspacing="0">
-				<TR><td><div align="left"><?=_Time_Short?>:</div></td></TR><tr><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left"><?=_Speed?>:</div></td></TR><tr><TD><span id='speed' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td></TR><tr><TD><span id='alt' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left"><?=_Vario_Short?>:</div></td></TR><tr><TD><span id='vario' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Time_Short?>:</div></td><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Speed?>:</div></td><TD><span id='speed' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
+				<TR><td><div align="left"><?=_Vario_Short?>:</div></td><TD><span id='vario' class='infoString'>-</span></TD></TR>
 		</table>
 		</fieldset>
 
@@ -128,6 +127,18 @@
 		<?  } ?>
 		</fieldset>
 
+		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
+         <div id='thermalLoad'><a href='javascript:loadThermals()'><?=_Load_Thermals?></a></div>
+         <div id='thermalLoading' style="display:none"></div>
+         <div id='thermalControls' style="display:none">
+	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class <BR>
+          <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class<BR>
+          <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class<BR>
+          <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class<BR>
+          <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class<BR>
+         </div>
+		</fieldset>
+        
 		</div>
     </form>
 	</td>
@@ -140,6 +151,7 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
 <script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
 
 <script src="js/chartFX/wz_jsgraphics.js"></script>
 <script src='js/chartFX/excanvas.js'></script>
@@ -196,6 +208,10 @@ var lon=0;
 </script>
 
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
+
+<script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 	
@@ -371,6 +387,106 @@ var lon=0;
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
+	
+	  function createThermalMarker(point,html,class) {
+        var marker = new GMarker(point, {icon:classIcons[class]});
+        GEvent.addListener(marker, "click", function() {
+          marker.openInfoWindowHtml(html);
+        });		
+        return marker;
+      }
+	  	  
+      function showThermalClass(class) {
+	  	cluster[class].addMarkers( thermalMarkers[class] );
+		cluster[class].refresh(true);
+        document.getElementById(class+"_box").checked = true;
+      }
+
+      function hideThermalClass(class) {		
+		cluster[class].removeMarkers();
+		cluster[class].refresh(true);
+        document.getElementById(class+"_box").checked = false;
+        // == close the info window, in case its open on a marker that we just hid
+        map.closeInfoWindow();
+      }
+	  
+      function boxclick(box,class) {
+        if (box.checked) {
+          showThermalClass(class);
+        } else {
+          hideThermalClass(class);
+        }       
+      }
+			
+	var icon = new GIcon();
+	icon.image = "img/thermals/class_1.png";
+	icon.shadow = "img/thermals/class_shadow.png";
+	icon.iconSize = new GSize(12, 20);
+	icon.shadowSize = new GSize(22, 20);
+	icon.iconAnchor = new GPoint(6, 20);
+	icon.infoWindowAnchor = new GPoint(5, 1);           
+	  
+	var classIcons=[];
+	var thermalNum=new Array ();	
+	var thermalMarkers=new Array ();
+	var cluster=[];
+
+	for(i=1;i<=5;i++) { 
+		thermalMarkers[i]=new Array();
+		thermalNum[i]=0;
+		cluster[i]=new ClusterMarker(map, { clusterClass: i,  minClusterSize:4 , clusterMarkerTitle:" Click to zoom to %count thermals" } );
+		cluster[i].intersectPadding=10;
+		
+		classIcons[i]=new GIcon(icon,"img/thermals/class_"+i+".png"); 
+	}	
+	
+		
+	function importThermals(jsonString){
+	 	var results= eval("(" + jsonString + ")");		
+		// document.writeln(results.waypoints.length);
+		for(i=0;i<results.waypoints.length;i++) {	
+			var thermalPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
+			var icon2=icon;
+			
+			var class=results.waypoints[i].c;
+			var climbmeters=results.waypoints[i].m;
+			var climbseconds=results.waypoints[i].d;
+			var climbrate=climbmeters/climbseconds;
+			climbrate=climbrate.toFixed(1);
+						
+			if (class=='A') class=1;
+			else if (class=='B') class=2;
+			else if (class=='C') class=3;
+			else if (class=='D') class=4;
+			else class=5;				
+			
+			var html="Class: " + results.waypoints[i].c+"<BR>"+
+			"Climbrate: " +climbrate +" m/sec<BR>"+
+			"Height Gain: " + climbmeters+" m<BR>"+
+			"Duration: " + climbseconds+" secs";
+			
+			var thermalMarker = createThermalMarker(thermalPoint,html,class);
+			thermalMarkers[class][ thermalNum[class]++ ] = thermalMarker ;
+			
+		}	
+
+		/*showThermalClass("1");
+		hideThermalClass("2");
+        hideThermalClass("3");
+        hideThermalClass("4");
+    	hideThermalClass("5");
+		*/
+		$("#thermalLoading").hide();
+		$("#thermalLoad").hide();		
+		$("#thermalControls").show();
+	}
+
+
+	function loadThermals() {		
+		$("#thermalLoading").html("<?=_Loading_thermals?><BR><img src='img/ajax-loader.gif'>").show();
+		getAjax('EXT_thermals.php?op=get_nearest&lat='+lat+'&lon='+lon,null,importThermals);
+	}
+
 </script>
 
 <? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>

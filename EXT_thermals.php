@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_thermals.php,v 1.1 2009/02/10 16:07:50 manolis Exp $                                                                 
+// $Id: EXT_thermals.php,v 1.2 2009/02/12 15:44:37 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -112,20 +112,34 @@
 
 	 
 	} else if ($op=="get_nearest") {
-		$lat=$_GET['lat']+0;
-		$lon=$_GET['lon']+0;
-		
-		$distance=$_GET['distance']+0;
-		if ( $distance <= 0 ) $distance=100; 
-		if ( $distance > 200 ) $distance=200;
-		
+	
 		$limit=$_GET['limit']+0;
 		if ( $limit <= 0 ) $limit=50; 
 		if ( $limit > 200 ) $limit =200;
-
 		$limit=3000;
+	
+		if ( $_GET['max_lat'] ) {
+
+			$min_lon=$_GET['min_lon'];
+			$max_lon=$_GET['max_lon'];			
+			$min_lat=$_GET['min_lat'];
+			$max_lat=$_GET['max_lat'];
+			
+			$sql = "SELECT * ";
+$sql .= "FROM  $thermalsTable\n";
+$sql .= "WHERE latitude >= $min_lat AND latitude <= $max_lat AND ";
+$sql .= " longitude >= $min_lon AND longitude <= $max_lon  ";
+$sql .= "ORDER BY class LIMIT $limit \n";
 		
-	$sql = "SELECT *,\n";
+		} else {
+			$lat=$_GET['lat']+0;
+			$lon=$_GET['lon']+0;
+			
+			$distance=$_GET['distance']+0;
+			if ( $distance <= 0 ) $distance=100; 
+			if ( $distance > 200 ) $distance=200;
+		
+			$sql = "SELECT *,\n";
 $sql .= "ROUND((ACOS((SIN(" . $lat . "/57.2958) * ";
 $sql .= "SIN(latitude/57.2958)) + (COS(" . $lat . "/57.2958) * ";
 $sql .= "COS(latitude/57.2958) * ";
@@ -139,7 +153,8 @@ $sql .= "COS(longitude /57.2958 - " . $lon . "/57.2958)))) ";
 $sql .= "* 6392 , 3) <= " . $distance. " \n";
 $sql .= "ORDER BY distance LIMIT $limit \n";
 
-//  3963 for miles  6392 for km
+		//  3963 for miles  6392 for km
+		}
 		// echo $sql;
 
 		$dbres= $db->sql_query($sql);

@@ -54,7 +54,7 @@ define("_MEAN_DURATION","Durata media del volo");
 define("_TOTAL_OLC_KM","Distanza OLC totale");
 define("_TOTAL_OLC_SCORE","Punteggio OLC totale");
 define("_BEST_OLC_SCORE","Punteggio OLC migliore");
-define("_From","Da");
+define("_From","di");
 
 // list_flights()
 define("_DURATION_HOURS_MIN","Durata (hh:mm)");
@@ -84,7 +84,7 @@ define("_ALTITUDE_GAIN","Guadagno quota");
 define("_FLIGHT_FILE","File del volo");
 define("_COMMENTS","Commenti");
 define("_RELEVANT_PAGE","Pagina web relativa");
-define("_GLIDER","Ala");
+define("_GLIDER","Vela");
 define("_PHOTOS","Foto");
 define("_MORE_INFO","Altre informazioni");
 define("_UPDATE_DATA","Aggiorna dati");
@@ -248,7 +248,7 @@ define("_ALL2","TUTTI");
 define("_WITH_YEAR","Con Anno");
 define("_MONTH","Mese");
 define("_YEAR","Anno");
-define("_FROM","di");
+define("_FROM","da");
 define("_from","da");
 define("_TO","A");
 define("_SELECT_PILOT","Scegli Pilota");
@@ -259,10 +259,10 @@ define("_THE_COUNTRY","Il paese");
 define("_COUNTRY","Paese");
 define("_SELECT_COUNTRY","Seleziona Paese");
 define("_OTHER_FILTERS","Altri filtri");
-define("_LINEAR_DISTANCE_SHOULD_BE","La distanza lineare sarebbe");
-define("_OLC_DISTANCE_SHOULD_BE","La distanza OLC sarebbe");
-define("_OLC_SCORE_SHOULD_BE","Il punteggio OLC sarebbe");
-define("_DURATION_SHOULD_BE","La durata sarebbe");
+define("_LINEAR_DISTANCE_SHOULD_BE","La distanza lineare deve essere");
+define("_OLC_DISTANCE_SHOULD_BE","La distanza OLC deve essere");
+define("_OLC_SCORE_SHOULD_BE","Il punteggio OLC deve essere");
+define("_DURATION_SHOULD_BE","La durata deve essere");
 define("_ACTIVATE_CHANGE_FILTER","Attiva / cambia FILTRO");
 define("_DEACTIVATE_FILTER","Disattiva FILTRO");
 define("_HOURS","ore");
@@ -433,7 +433,7 @@ define("_SITE_DESCR","Descrizione Sito/decollo");
 // KML file
 //--------------------------------------------
 define("_See_more_details","Ulteriori dettagli");
-define("_KML_file_made_by","KML file fatto da");
+define("_KML_file_made_by","KML file creato da");
 
 //--------------------------------------------
 // add_waypoint.php
@@ -449,7 +449,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record del Sito<br>(distanza libera)");
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Mezzo");
+define("_GLIDER_TYPE","Tipo Vela");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Parapendio',2=>'Ala Flessibile FAI1',4=>'Ala Rigida FAI5',8=>'Aliante');
@@ -600,14 +600,15 @@ define("_Click_to_select_a_year","Clicca per scegliere l&#39;anno.");
 define("_Select_date_as_date.","Scegli [date] come data."); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
-define("_SEASON","Season"); 
-define("_SUBMIT_TO_OLC","Submit to OLC"); 
-define("_pilot_email","Email Address"); 
-define("_Sex","Sex"); 
+define("_SEASON","Stagione"); 
+define("_SUBMIT_TO_OLC","Invia a OLC"); 
+define("_pilot_email","Indirizzo Email"); 
+define("_Sex","Sesso"); 
 define("_Login_Stuff","Change Login-Data"); 
 define("_PASSWORD_CONFIRMATION","Confirm password"); 
 define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
@@ -622,64 +623,80 @@ define("_EmailInvalid","The email address is invalid.");
 define("_EmailSaved","The email address was saved"); 
 define("_EmailNotSaved","The email address has not been saved."); 
 define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_PROJECT_HELP","Help"); 
-define("_PROJECT_NEWS","News"); 
-define("_PROJECT_RULES","Regulations 2007"); 
-define("_Filter_NoSelection","No selection"); 
-define("_Filter_CurrentlySelected","Current selection"); 
-define("_Filter_DialogMultiSelectInfo","Press Ctrl for multiple selection."); 
-define("_Filter_FilterTitleIncluding","Only selected [items]"); 
-define("_Filter_FilterTitleExcluding","Exclude [items]"); 
-define("_Filter_DialogTitleIncluding","Select [items]"); 
-define("_Filter_DialogTitleExcluding","Select [items]"); 
-define("_Filter_Items_pilot","pilots"); 
+define("_PROJECT_HELP","Aiuto"); 
+define("_PROJECT_NEWS","Novit&agrave;"); 
+define("_PROJECT_RULES","Regolamento 2007"); 
+define("_Filter_NoSelection","Nessuna selezione"); 
+define("_Filter_CurrentlySelected","Selezione corrente"); 
+define("_Filter_DialogMultiSelectInfo","Premi Ctrl per selezioni multiple."); 
+define("_Filter_FilterTitleIncluding","Solo [items] selezionati"); 
+define("_Filter_FilterTitleExcluding","Escludi [items]"); 
+define("_Filter_DialogTitleIncluding","Seleziona [items]"); 
+define("_Filter_DialogTitleExcluding","Seleziona [items]"); 
+define("_Filter_Items_pilot","piloti"); 
 define("_Filter_Items_nacclub","clubs"); 
-define("_Filter_Items_country","countries"); 
-define("_Filter_Items_takeoff","take offs"); 
-define("_Filter_Button_Select","Select"); 
-define("_Filter_Button_Delete","Delete"); 
-define("_Filter_Button_Accept","Accept selection"); 
-define("_Filter_Button_Cancel","Cancel"); 
-define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
-define("_ALL_NACCLUBS","All Clubs"); 
-define("_SELECT_NACCLUB","Select [nacname]-Club"); 
-define("_FirstOlcYear","First year of participation in an online XC contest"); 
-define("_FirstOlcYearComment","Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings."); 
-define("_Select_Brand","Select Brand"); 
-define("_All_Brands","All Brands"); 
-define("_DAY","DAY"); 
-define("_Glider_Brand","Glider Brand"); 
-define("_Or_Select_from_previous","Or Select from previous"); 
-define("_Explanation_AddToBookmarks_IE","Add these filter settings to your favourites"); 
-define("_Msg_AddToBookmarks_IE","Click here to add these filter settings to your bookmarks."); 
-define("_Explanation_AddToBookmarks_nonIE","(Save this link to your bookmarks.)"); 
-define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
-define("_PROJECT_RULES2","Regulations 2008"); 
-define("_MEAN_SPEED1","Mean Speed"); 
+define("_Filter_Items_country","paesi"); 
+define("_Filter_Items_takeoff","decolli"); 
+define("_Filter_Button_Select","Seleziona"); 
+define("_Filter_Button_Delete","Elimina"); 
+define("_Filter_Button_Accept","Accetta selezione"); 
+define("_Filter_Button_Cancel","Cancella"); 
+define("_MENU_FILTER_NEW","Filtra **NUOVE VERSIONI**"); 
+define("_ALL_NACCLUBS","Tutti Clubs"); 
+define("_SELECT_NACCLUB","Seleziona [nacname]-Club"); 
+define("_FirstOlcYear","Primo anno di partecipazione in un XC contest online"); 
+define("_FirstOlcYearComment","Seleziona l'anno della tua prima partecipazione in un XC contest online, non solo questo.<br/>Questo campo &egrave; rilevante per i &quot;newcomer&quot;-rankings."); 
+define("_Select_Brand","Seleziona Marca"); 
+define("_All_Brands","Tutti i Marchi"); 
+define("_DAY","GIORNO"); 
+define("_Glider_Brand","Marca Vela"); 
+define("_Or_Select_from_previous","O scegli una precedente"); 
+define("_Explanation_AddToBookmarks_IE","Aggiungi questi filtri ai tuoi preferiti"); 
+define("_Msg_AddToBookmarks_IE","Clicca qui per aggiungere questi filtri ai tuoi preferiti."); 
+define("_Explanation_AddToBookmarks_nonIE","(Salva questo link nei tuoi preferiti.)"); 
+define("_Msg_AddToBookmarks_nonIE","Per salvare questi filtri nei tuoi preferiti, usa la funzione Aggiungi a Preferiti del tuo browser."); 
+define("_PROJECT_RULES2","Regolamento 2008"); 
+define("_MEAN_SPEED1","Velocit&agrave; Media"); 
 define("_External_Entry","External Entry"); 
-define("_Altitude","Altitude"); 
-define("_Speed","Speed"); 
-define("_Distance_from_takeoff","Distance from takeoff"); 
-define("_LAST_DIGIT","last digit"); 
-define("_Filter_Items_nationality","nationality"); 
+define("_Altitude","Altitudine"); 
+define("_Speed","Velocit&agrave;"); 
+define("_Distance_from_takeoff","Distanza dal decollo"); 
+define("_LAST_DIGIT","ultima cifra"); 
+define("_Filter_Items_nationality","nazionalit&agrave;"); 
 define("_Filter_Items_server","server"); 
-define("_Ext_text1","This is a flight originally submited at "); 
-define("_Ext_text2","Link to full flight maps and charts"); 
-define("_Ext_text3","Link to original flight"); 
+define("_Ext_text1","Il volo originale &egrave; stato inserito su "); 
+define("_Ext_text2","Link al volo completo di mappe"); 
+define("_Ext_text3","Link al volo originale"); 
 define("_Male_short","M"); 
 define("_Female_short","F"); 
-define("_Male","Male"); 
-define("_Female","Female"); 
+define("_Male","Maschio"); 
+define("_Female","Femmina"); 
 define("_Altitude_Short","Alt"); 
 define("_Vario_Short","Vario"); 
-define("_Time_Short","Time"); 
+define("_Time_Short","Tempo"); 
 define("_Info","Info"); 
-define("_Control","Control"); 
-define("_Zoom_to_flight","Zoom to<br>flight"); 
-define("_Follow_Glider","Follow<br>Glider"); 
-define("_Show_Task","Show<br>Task"); 
-define("_Show_Airspace","Show<br>Airspace"); 
+define("_Control","Controlli"); 
+define("_Zoom_to_flight","Zoom al volo"); 
+define("_Follow_Glider","Segui Vela"); 
+define("_Show_Task","Mostra Task"); 
+define("_Show_Airspace","Mostra Airspace"); 
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_Thermals","Thermals"); 
 define("_Show_Optimization_details","Show Optimization Details"); 
 define("_MENU_SEARCH_PILOTS","Search"); 
+define("_MemberID_Missing","Your member ID is missing"); 
+define("_MemberID_NotNumeric","The member ID must be numeric"); 
+define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight."); 
+define("_FLIGHTADD_IGC_MISSING","Please select your .igc-file"); 
+define("_FLIGHTADD_IGCZIP_MISSING","Please select the zip-file containing your .igc-file"); 
+define("_FLIGHTADD_CATEGORY_MISSING","Please select the category"); 
+define("_FLIGHTADD_BRAND_MISSING","Please select the brand of your glider"); 
+define("_FLIGHTADD_GLIDER_MISSING","Please enter the type of your glider"); 
+define("_YOU_HAVENT_ENTERED_GLIDER","You have not entered brand or glider"); 
+define("_BRAND_NOT_IN_LIST","Brand not in list"); 
 
 ?>
