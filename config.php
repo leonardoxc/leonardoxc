@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.108 2009/02/10 16:07:50 manolis Exp $                                                                 
+// $Id: config.php,v 1.109 2009/02/17 16:16:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -216,6 +216,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // many leonardo servers sharing the same database
  $CONF_tables_prefix="leonardo";
  $flightsTable	=  $CONF_tables_prefix."_flights";
+ $deletedFlightsTable=	$CONF_tables_prefix."_flights_deleted";
  $pilotsTable	=  $CONF_tables_prefix."_pilots";
  $mapsTable		=  $CONF_tables_prefix."_maps";
  $waypointsTable=  $CONF_tables_prefix."_waypoints";
@@ -235,6 +236,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $scoresTable		=  $CONF_tables_prefix."_flights_score";
 
  $thermalsTable		=  $CONF_tables_prefix."_thermals";
+ 
+
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.

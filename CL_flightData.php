@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.160 2008/12/29 15:34:24 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.161 2009/02/17 16:16:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -3386,12 +3386,17 @@ $kml_file_contents=
 
 	function deleteFlight() {
  		global $db;
-		global $flightsTable;
+		global $flightsTable,$deletedFlightsTable;
 		global $CONF_photosPerFlight,$CONF_server_id;
+
+		$query="INSERT INTO $deletedFlightsTable SELECT $flightsTable.* from $flightsTable WHERE $flightsTable.ID=".$this->flightID." ";
+		$res= $db->sql_query($query);
+
+        $query="UPDATE $deletedFlightsTable Set dateUpdated='".gmdate("Y-m-d H:i:s")."' where ID=".$this->flightID." ";
+	    $res= $db->sql_query($query); 
 
 		$query="DELETE from $flightsTable  WHERE ID=".$this->flightID." ";
 		// echo $query;
-
 		$res= $db->sql_query($query);	
 	    # Error checking
 	    if($res <= 0){
@@ -3409,6 +3414,7 @@ $kml_file_contents=
 
 		$this->deleteFile($this->getIGCFilename() );
 		$this->deleteFile($this->getIGCFilename(1) );
+		$this->deleteFile($this->getIGCFilename(2) );
 		$this->deleteFile($this->getIGCFilename(0).".olc" );
 
 		$this->deleteSecondaryFiles();
@@ -3567,7 +3573,7 @@ $kml_file_contents=
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,
 		".($this->firstPointTM+0).", $this->firstLat, $this->firstLon,
-		$this->lastPointTM, $this->lastLat, $this->lastLon 
+		".($this->lastPointTM+0).", $this->lastLat, $this->lastLon 
 
 		)";
 	
