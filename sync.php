@@ -8,10 +8,13 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.24 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: sync.php,v 1.25 2009/02/19 16:21:04 manolis Exp $                                                                 
 //
 //************************************************************************
-	
+	if ($_GET['version']==2) {
+		require_once dirname(__FILE__)."/sync_new.php";
+		exit;
+	}
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";

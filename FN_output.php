@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.49 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.50 2009/02/19 16:21:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -29,6 +29,15 @@ function fulldate2tm($dateStr) {
 	$tm=0;
 	if (preg_match("/(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)/",$dateStr,$matches)) {
 		$tm=mktime($matches[4],$matches[5],$matches[6],$matches[2],$matches[3],$matches[1]);
+	}
+	return $tm;
+}
+
+function fulldate2tmUTC($dateStr) {
+	// expecting YYYY-MM-DD HH:MM:SS
+	$tm=0;
+	if (preg_match("/(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)/",$dateStr,$matches)) {
+		$tm=gmmktime($matches[4],$matches[5],$matches[6],$matches[2],$matches[3],$matches[1]);
 	}
 	return $tm;
 }

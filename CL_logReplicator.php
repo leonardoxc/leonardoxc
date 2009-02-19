@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.50 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.51 2009/02/19 16:21:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -201,8 +201,15 @@ class logReplicator {
 	
 	function findFlight($serverID,$flightIDoriginal) {
 	  global $db,$flightsTable;
+	  global $CONF_server_id;
 	  
-	  $query="SELECT * FROM $flightsTable  WHERE original_ID=$flightIDoriginal AND serverID=$serverID";
+	  if ($serverID==$CONF_server_id) {
+	  	$whereClause=" ( serverID=$serverID OR  serverID=0 ) ";
+	  } else {
+	  	$whereClause="  serverID=$serverID ";
+	  }
+	  // echo "find Flight $serverID,$flightIDoriginal ... ";
+	  $query="SELECT ID FROM $flightsTable  WHERE original_ID=$flightIDoriginal AND $whereClause ";
 
 	  $res= $db->sql_query($query);	
 	  # Error checking
@@ -212,9 +219,11 @@ class logReplicator {
 	  }
 		
 	  if (! $row = $db->sql_fetchrow($res) ) {
+		 // echo "not found <BR>";
 		  return 0;	  
 	  } else {
-	  	return $row['ID'];
+	  	 // echo "=>".$row['ID']."#<BR>";
+	  	return $row['ID']+0;
 	  }
 	  
 	}
@@ -246,7 +255,7 @@ class logReplicator {
 		} else if ( isset($e['serverID']) ){
 			$thisEntryServerID=$e['serverID'];
 		} else {
-			return array(0,"logReplicator::processEntry : ServerID for Log entry cpould not be determined ".$thisEntryServerID );			
+			return array(0,"logReplicator::processEntry : ServerID for Log entry could not be determined ".$thisEntryServerID );			
 		}
 
 		if ($thisEntryServerID != $serverID ) { 
@@ -349,6 +358,16 @@ class logReplicator {
 
 			$addFlightNote='';
 			
+			// if action ==update check to see if the flight exists !
+			if ($e['action']==2) {
+				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
+				if (!$flightIDlocal) { // we then INSERT IT instead
+					echo " [Not found,will insert] ";
+					$e['action']=1;
+				}
+			}
+			
+			
 			if ($e['action']==1) {	// add
 				$igcFilename=$actionData['flight']['filename'];
 				$igcFileURL	=$actionData['flight']['linkIGC'];
@@ -415,14 +434,20 @@ class logReplicator {
 				
 				
 			} else if ($e['action']==2) {	// update
+			
+				// This is not needed , we have found $flightIDlocal earlier and if it didnt exist we will insert it instead 
+				/*
 				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
 				if (!$flightIDlocal) {
 					return array(0,"logReplicator::processEntry : Flight with serverID ".$actionData['flight']['serverID']." and original ID : ".
 							$actionData['flight']['id']." is not found in the local DB -> Wont update<BR>");
 				}
+				*/
+				
 				// echo "Will update flight $flightIDlocal<BR>";
 				
 			}
+			
 				$thisCat=$actionData['flight']['info']['cat']+0;
 				
 				

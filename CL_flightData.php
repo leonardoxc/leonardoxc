@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.161 2009/02/17 16:16:23 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.162 2009/02/19 16:21:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -209,13 +209,13 @@ var $maxPointNum=1000;
 		if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
 	}
 	
-	function toXML(){
+	function toXML($forceProtocol=''){
 		/*	maybe also include these	
 		"forceBounds"		"autoScore"
 		*/
 		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
 		
-		if ($CONF['sync']['protocol']['format']=='JSON') {
+		if ($CONF['sync']['protocol']['format']=='JSON' && $forceProtocol!='XML' || $forceProtocol=='JSON') {
 			$useJSON=1;
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
 		} else $useJSON=0;
@@ -3074,23 +3074,28 @@ $kml_file_contents=
 	
 	}
 
-	function getFlightFromDB($flightID,$updateTakeoff=1) {
+	function getFlightFromDB($flightID,$updateTakeoff=1,&$row=array()) {
 	  global $db,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
 	  
-	  $query="SELECT * FROM $flightsTable  WHERE ID=".$flightID." ";
+	  if ( count($row) ) $useData=true;
+	  else $useData=false;
 
-	  $res= $db->sql_query($query);	
-	  # Error checking
-	  if($res <= 0){
-		 echo("<H3> Error in getFlightFromDB() query! $query</H3>\n");
-		 exit();
-	  }
-		
-	  if (! $row = $db->sql_fetchrow($res) ) {
-	  echo "###### ERRROR ####$query###";
-		  return 0;	  
+	  if (!$useData) {
+		  $query="SELECT * FROM $flightsTable  WHERE ID=".$flightID." ";
+	
+		  $res= $db->sql_query($query);	
+		  # Error checking
+		  if($res <= 0){
+			 echo("<H3> Error in getFlightFromDB() query! $query</H3>\n");
+			 exit();
+		  }
+			
+		  if (! $row = $db->sql_fetchrow($res) ) {
+		  echo "###### ERRROR ####$query###";
+			  return 0;	  
+		  }
 	  }
 	  
 		$this->flightID=$flightID;
@@ -3210,7 +3215,10 @@ $kml_file_contents=
 		$this->getOriginalKML();
 		$this->getOriginalURL();
 		
-	  	$db->sql_freeresult($res);
+		if (!$useData) {
+	  		$db->sql_freeresult($res);
+		}
+		
 		if ($this->filename && $updateTakeoff) $this->updateTakeoffLanding();
 		return 1;	
 	}

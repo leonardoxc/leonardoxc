@@ -21,7 +21,7 @@ body {margin:0px; background-color:#FFFFFF}
 #map { 
 	 margin:0;
 	 padding:0;
-	 width:610px;
+	 width:600px;
 	 height:480px;
 	 border: 1px solid #999999;
 }
@@ -80,7 +80,7 @@ fieldset.legendBox  {
 	text-align:left;
 	background-color:#FFFFFA;
 
-	width:125px;
+	width:135px;
 }
 
 

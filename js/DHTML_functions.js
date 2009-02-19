@@ -170,7 +170,7 @@ function nop()
 				iframeState='normal';
 			}
 			iframeEl.style.height = new_h-120 + "px";
-			iframeEl.style.width = new_w-75 + "px";
+			iframeEl.style.width = new_w-135 + "px";
 		}
 	
 		zoomToFlight();

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.33 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.34 2009/02/19 16:21:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -433,11 +433,15 @@ class Server {
 		if ($this->lastPullUpdateID<0 ) $this->lastPullUpdateID=0;
 		$this->putToDB();
 	}
-
+	
+	function getProtocolVersion(){
+		return $this->data['sync_protocol_version']+0;
+	}
+	
 	function guessPilots($chunkSize=5) { // we pull data from this server
 		global $CONF_server_id,$CONF_tmp_path,$db,$flightsTable;
-		
-		$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
+
+		$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1&version='.$this->getProtocolVersion();
 		$urlToPull.="&op=get_hash&format=".$this->data['sync_format'];
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
 					"&use_zip=".$this->data['use_zip'];
@@ -554,10 +558,17 @@ class Server {
 		global $DBGlvl;
 		
 		$this->getFromDB();
-		$startID=$this->lastPullUpdateID+1;
-
+		// we need to take care for protocol version 2, 
+		// in v21 the StartID is the last TM in UTC , we need to start again from the last TM 
+		// in case 2 or more actions were preformed on the same second and we only 
+		// proccessed them partially 
+		if ( $this->getProtocolVersion() == 2 ) 
+			$startID=$this->lastPullUpdateID;
+		else // old version
+			$startID=$this->lastPullUpdateID+1;
+			
 		if ( $this->data['isLeo'] )  {
-			$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1';
+			$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1&version='.$this->getProtocolVersion();
 			$urlToPull.="&c=$chunkSize&startID=$startID&format=".$this->data['sync_format'];
 			$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'].
 					"&sync_type=".$this->data['sync_type']."&use_zip=".$this->data['use_zip'];
