@@ -1,109 +1,130 @@
 <?
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://leonardo.thenet.gr                                            */
-/* http://sourceforge.net/projects/leonardoserver                       */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+require_once $LeoCodeBase."/users/cream-iso3166-1.php";
+require_once $LeoCodeBase."/lib/mail/class.phpmailer.php";
 
 
-if ($_POST['registerForm']==1) {
-
-	foreach (array("ufname", "ulname", "uemail",  "uname", "upass", "upass2") as $a )
-	{
-		$$a=$_POST[$a];
+function _envia_email($host,$username,$password,$ssl=false,$port=25,$frommail,$fromname,$assunto,$conteudo,$toemail,$toname){
+   $mail = new PHPMailer(); 
+   $mail->CharSet = "UTF-8";
+   $mail->IsSMTP();
+   $mail->SMTPAuth   = true;
+   $mail->Host       = $host;      // sets GMAIL as the SMTP server
+   if($ssl==true){
+   		$mail->SMTPSecure = "ssl"; 
+   }
+   $mail->Port       = $port;                   // set the SMTP port 
+   $mail->Username   = $username;  // GMAIL username
+   $mail->Password   = $password;            // GMAIL password
+   $mail->SMTPDebug = 0;
+   $mail->IsHTML(false);
+   $mail->From     = $frommail;
+   $mail->FromName = $fromname;
+   $mail->Subject  =  $assunto;
+   $mail->Body     =  $conteudo;
+   $mail->AddAddress($toemail, $toname);
+	if (!$mail->Send())	{
+		return false;
+	}else{
+		return true;
 	}
+  
+}
 
-	// checking for errors
-	if (empty($ufname) OR empty($uemail) OR empty($uname) OR empty($upass) OR empty($upass2)) {
-		echo '<br><br>Please fill in all the fields!<br><a href="javascript:history.back(1)">Back</a><br>';
-		exit;
-	}
+$CONF['userdb']['users_temp_table']="leonardo_temp_users";
 
-	if ($upass != $upass2) {
-		echo '<br>The passwords are not the same. Please give them again!<br><a href="javascript:history.back(1)">Back</a><br>';
-		exit;
-	}
-
-	// [send verification email]
-$email_body = "===================================
-
-Leonardo new user
-
-Hi $ufname,
-
-This is a verification email sent from ".$_SERVER['HTTP_HOST']."
-
-To finally create your account, you will need to click on link below to verify your email address:
-
-http://".$_SERVER['SERVER_NAME'].getRelMainFileName().
-"&op=users&page=index&act=register&ufname=$ufname&ulname=$ulname&uemail=$uemail&uname=$uname&upass=$upass
-
-Regards,
-
---------
- Note: This is auto-response. Do not send any email to this email address
---------";
-
-	mail($uemail, "[Leonardo] - Confirmation email", $email_body, "From:  $CONF_admin_email");
-?>
-<br> 
-<br> 
-<table align="center" width="50%">  
-  <tr> 
-    <td><div align="center">
-      <p><br> 
-          Registration successfully finished !! <br> 
-          <br> 
-        Confirmation email was sent to: <b><? echo $uemail ?></b></p>
-      <p>Please check your email and follow the instructions<br>
-          </p>
-    </div></td> 
-  </tr> 
-  <tr> 
-    <td class=header>&nbsp;</td> 
-  </tr> 
-</table> 
-
-<? 
-
-} else if ( isset($_GET['uname']) && isset($_GET['upass']) && isset($_GET['uemail']) ) { // add the user
-
-	$uname=$_GET['uname'];
-	$upass=md5($_GET['upass']);
-	$uemail=$_GET['uemail'];
-
-	$sql="INSERT into ".$CONF['userdb']['users_table']."(username,user_password,user_email) VALUES( '$uname', '$upass', '$uemail' )";
-	$register_it = $db->sql_query($sql);	
+if(isset($_GET['rkey']) && !($_POST) ){ 
+	$sql="select * from ".$CONF['userdb']['users_temp_table']." where user_actkey ='".$_GET['rkey']."'";
+	$result = $db->sql_query($sql);
+	$user_exist = $db->sql_numrows($result);
 	
-?> 
+	if($user_exist==1){
+		$user=$db->sql_fetchrow($result);
+ 
+ $sql1="insert into ". $CONF['userdb']['users_table'] ." 
+ (
+ user_active,
+ username,
+ user_civlid,
+ user_password,
+ user_session_time,
+ user_regdate,
+ user_email,
+ user_actkey
+ )
+ values
+ (
+ '1',
+ '".$user['user_civlid']."' ,
+ '".$user['user_civlid']."' ,
+ '".md5($user['user_password'])."',
+ '".$user['user_session_time']."',
+ '".time()."',
+ '".$user['user_email']."', 
+ '".$user['user_actkey']."'
+ )"; 
+ $res=$db->sql_query($sql1);
+// print $sql1;
+ if($res){
+ $id=$db->sql_nextid();
+ /*
+ ALTER TABLE `leonardo_users` ADD `user_civlid` VARCHAR( 10 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `username` ;
+ ALTER TABLE `leonardo_users` ADD `user_new_email` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `user_email` ;
+ ALTER TABLE `leonardo_pilots` ADD `CIVL_NAME` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `CIVL_ID`;
+ ALTER TABLE `leonardo_pilots` ADD `NickName` VARCHAR( 25 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `LastName` ;
+ ALTER TABLE `leonardo_users` CHANGE `user_id` `user_id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT  ;
+ ALTER TABLE `leonardo_flights` ADD `deleteTM` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00';
+ CHECK TABLE `leonardo_users`  ;
+ ANALYZE TABLE `leonardo_users`  ;
+ REPAIR TABLE `leonardo_users;
+ OPTIMIZE TABLE `leonardo_users`  ;
+ FLUSH TABLE `leonardo_users`  ;
+ CHECK TABLE `leonardo_pilots`  ;
+ ANALYZE TABLE `leonardo_pilots`  ;
+ REPAIR TABLE `leonardo_pilots;
+ OPTIMIZE TABLE `leonardo_pilots`  ;
+ FLUSH TABLE `leonardo_pilots`  ;
+ */
+ // is needed to alter table leonardo_users and ad auto_increment / repair the table etc etc.. 
+ // for restoring cardinality.
+ $sql2="insert into $pilotsTable (pilotID,
+ countryCode,
+ CIVL_ID,
+ CIVL_NAME,
+ FirstName,
+ LastName,
+ NickName,
+ Birthdate,
+ BirthdateHideMask,
+ Sex) values ('$id','".$user['user_nation']."','".$user['user_civlid']."','".addslashes($user['user_name'])."','".addslashes($user['user_firstname'])."','".addslashes($user['user_lastname'])."','".addslashes($user['user_nickname'])."',
+ '". substr($user['user_birthdate'],6,2)."-".substr($user['user_birthdate'],4,2)."-".substr($user['user_birthdate'],0,4)."','xx.xx.xxxx','".( $user['user_gender']==1?'F':'M') ."') "; 
+  if($id>0){
+  if($res=$db->sql_query($sql2)){
+      $sql3="delete from ".$CONF['userdb']['users_temp_table']." where  user_actkey ='".$user['user_actkey']."'";
+      $in=$db->sql_query($sql3);
+  ?> 
+
 <br> 
 <br> 
 <table align="center" width="50%"> 
   <tr> 
-    <td><br>      <font class=content>      <center> 
-        <b>Email confirmation successfull!</b> 
+    <td><br><font class=content>  <center> 
+        <b><?=_Email_confirm_success;?></b> 
       </center> 
-      <br>      <br>      <table align="center" width="70%"> 
+      <br><table align="center" width="70%"> 
         <tr class=header> 
-          <td> <u>Email</u> </td> 
-          <td><?=$uemail ?></td> 
+          <td> <u><?=_pilot_email;?></u> </td> <td><?=$user['user_email'];?></td> 
         </tr> 
         <tr class=header> 
-          <td> <u>Username</u> </td> 
-          <td><?=$uname ?></td> 
+          <td> <u><?=_USERNAME;?></u> </td> <td><?=$user['user_civlid'];?></td> 
+        </tr>
+        <tr class=header> 
+          <td> <u><?=_PILOT_NAME;?></u> </td> <td><?=$user['user_name'];?></td> 
         </tr> 
       </table> 
       <div align="center"><br> 
         <br> 
         <center> 
-        <a href="?op=login">Login</a><br> 
+        <a href="?op=login"><?=_MENU_LOGIN;?></a><br> 
         <br> 
       </div></td> 
   </tr> 
@@ -112,61 +133,350 @@ Regards,
   </tr> 
 </table> 
 <?
-} else { // show the registration form
-?> 
+  } 
+  }
+  }
+}else{
+print "<p align='center'>."._Server_did_not_found_registration."</p>";
+}
+ }
+if(!isset($_POST['registerForm'])&& !isset($_GET['rkey'])){
+
+?>
 <br> 
-<br> 
-<table align="center" width="500"> 
-  <tr> 
-    <td><br>      
-      <font class=content> Please fill in all the fields <br>      <br>      <form method="post" action="?op=users&page=index&act=register"> 
-        <table align="center" width="70%"> 
-          <tr class=header> 
-            <td> <u>First Name</u> </td> 
-            <td><input type="text" name="ufname"> 
-              <font color="ff0000">*</font></td> 
-          </tr> 
-          <tr class=header> 
-            <td> <u>Last Name</u> </td> 
-            <td><input type="text" name="ulname">
-            <font color="ff0000">*</font> </td> 
-          </tr> 
-          <tr class=header> 
-            <td> <u>Email</u> </td> 
-            <td><input type="text" name="uemail"> 
-              <font color="ff0000">*</font> </td> 
-          </tr> 
-          <tr> 
-            <td colspan="2"><hr color="a9a9a9"></td> 
-          </tr> 
-          <tr class=header> 
-            <td> <u>Username</u> </td> 
-            <td><input type="text" name="uname"> 
-              <font color="ff0000">*</font></td> 
-          </tr> 
-          <tr class=header> 
-            <td> <u>Password</u> </td> 
-            <td><input type="password" name="upass"> 
-              <font color="ff0000">*</font></td> 
-          </tr> 
-          <tr class=header> 
-            <td> <u>Password again</u> </td> 
-            <td><input type="password" name="upass2"> 
-              <font color="ff0000">*</font> </td> 
-          </tr> 
-          <tr> 
-            <td colspan="2"><br> 
-              <p align="right"> 
-                <input type="submit" value="Register !"> 
-                <input name="registerForm" type="hidden" value="1"> 
-                <br> 
-            </td> 
-          </tr> 
-        </table> 
-      </form></td> 
+<br>
+<script language="javascript"> 
+
+var passwordMinLength='<?=$passwordMinLength?>';
+var _PwdTooShort='<?=_PwdTooShort?>';
+var _PwdAndConfDontMatch='<?=_PwdAndConfDontMatch?>';
+var _MANDATORY_NAME='<?=_MANDATORY_NAME?>';
+var _MANDATORY_FAI_NATION='<?=_MANDATORY_FAI_NATION?>';
+var _MANDATORY_GENDER='<?=_MANDATORY_GENDER?>';
+var _MANDATORY_BIRTH_DATE_INVALID='<?=_MANDATORY_BIRTH_DATE_INVALID?>';
+var _EmailEmpty='<?=_EmailEmpty?>';
+var _EmailInvalid='<?=_EmailInvalid?>';
+var _MANDATORY_EMAIL_CONFIRM='<?=_MANDATORY_EMAIL_CONFIRM?>';
+var _MANDATORY_CIVL_ID='<?=_MANDATORY_CIVL_ID?>';
+
+    function setCIVL_ID() {
+            window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&callingfield=civlid', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
+    }
+</script>
+<script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
+
+
+<table width='500' cellspacing='2' cellpadding='2' align='center'>
+<tr><th><?=sprintf(_Registration_Form,$CONF_server_short_name);?></th></tr> 
+<tr><td align='left'> <br>
+<ul> <li><?=_Requirements?>:</li>
+<ul>
+<li> <?=_Mandatory_CIVLID;?></li>
+<li> <?=_Mandatory_valid_EMAIL;?> </li>
+<li> <?=_Email_asking_conf;?> </li>
+<li> <?=_Email_time_conf;?> </li>
+<li> <?=_After_conf_time;?> </li>
+<li> <?=_Only_after_time;?> </li>
+<li> <?=sprintf(_Disable_Anti_Spam,$CONF_admin_email);?></b> </li>
+</ul>
+</li>
+
+</ul>
+
+</td></tr>
+<tr><td><?=sprintf(_Search_civl_by_name,"<a href='#' onclick='setCIVL_ID();return false;'>","</a>")?>
+</td></tr>
+<tr><td>
+<?=sprintf(_Register_civl_as_new_pilot,"<a href='http://civlrankings.fai.org/FL.aspx?a=332' target='_civlrankings'>","</a>");?> 
+</td></tr> 
+<tr><td>&nbsp;</td></tr>
+<tr><td align="center">
+<form name='form2' method="post" action="?op=users&page=index&act=register">
+<input name="registerForm" type="hidden" value="1">
+<table width="600" cellspacing='2' cellpadding='2'  >
+<tr><td colspan='2' bgcolor="#DFDFD0">&nbsp;</td></tr>
+<tr><td bgcolor="#DFDFD0"><a href="#" onclick="setCIVL_ID();return false;"><?=_MENU_SEARCH_PILOTS;?> CIVLID:</a></td> <td bgcolor="#DFDFD0"> <input type='text' name='civlid' id='civlid' value='' readonly="" size='8'></td></tr>
+<tr>
+    <td width="250" bgcolor="#DFDFD0">CIVL <?=_PILOT_NAME;?></td>
+    <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="name" value=""  readonly="readonly"/><font color="#FF2222">***</font></td>
+  </tr>
+    <tr>
+    <td width="250" bgcolor="#DFDFD0"><?=_NICK_NAME;?></td>
+    <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="nickname" value=""/><font color="#FF2222">***</font></td>
+  </tr>
+<tr>
+    <td width="250" bgcolor="#DFDFD0"><?=_First_Name;?>, <?=_Last_Name;?></td>
+    <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="30" maxlength="50" type="text" name="firstname" value=""> <input class="TextoVermelho" size="10" maxlength="50" type="text" name="lastname" value=""><font color="#FF2222">***</font></td>
+  </tr>
+<tr>
+  <tr>
+    <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_LOCAL_PWD;?></td>
+    <td width="350" bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" maxlength="50" type="text" name="password" value=""><font color="#FF2222">***</font></td>
+  </tr>
+  <tr>
+    <td width="250" bgcolor="#DFDFD0"><?=_LOCAL_PWD_2;?></td>
+    <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value=""><font color="#FF2222">***</font></td>
+  </tr>
+    <td width="250" bgcolor="#DFDFD0"><?=_Sex;?></td>
+    <td width="350" bgcolor="#DFDFD0">
+      <select name="gender" class="TextoVermelho">
+        <option value="M"><?=_Male;?></option>
+        <option value="F"><?=_Female;?></option>
+      </select><font color="#FF2222">***</font></td>
+  </tr>
+    <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_Birthdate;?></td>
+    <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="birthday_year" class="TextoVermelho">
+      <option value="" selected></option> 
+      <option value="1930">1930</option>
+      <option value="1931">1931</option>
+      <option value="1932">1932</option>
+      <option value="1933">1933</option>
+      <option value="1934">1934</option>
+      <option value="1935">1935</option>
+      <option value="1936">1936</option>
+      <option value="1937">1937</option>
+      <option value="1938">1938</option>
+      <option value="1939">1939</option>
+      <option value="1940">1940</option>
+      <option value="1941">1941</option>
+      <option value="1942">1942</option>
+      <option value="1943">1943</option>
+      <option value="1944">1944</option>
+      <option value="1945">1945</option>
+      <option value="1946">1946</option>
+      <option value="1947">1947</option>
+      <option value="1948">1948</option>
+      <option value="1949">1949</option>
+      <option value="1950">1950</option>
+      <option value="1951">1951</option>
+      <option value="1952">1952</option>
+      <option value="1953">1953</option>
+      <option value="1954">1954</option>
+      <option value="1955">1955</option>
+      <option value="1956">1956</option>
+      <option value="1957">1957</option>
+      <option value="1958">1958</option>
+      <option value="1959">1959</option>
+      <option value="1960">1960</option>
+      <option value="1961">1961</option>
+      <option value="1962">1962</option>
+      <option value="1963">1963</option>
+      <option value="1964">1964</option>
+      <option value="1965">1965</option>
+      <option value="1966">1966</option>
+      <option value="1967">1967</option>
+      <option value="1968">1968</option>
+      <option value="1969">1969</option>
+      <option value="1970">1970</option>
+      <option value="1971">1971</option>
+      <option value="1972">1972</option>
+      <option value="1973">1973</option>
+      <option value="1974">1974</option>
+      <option value="1975">1975</option>
+      <option value="1976">1976</option>
+      <option value="1977">1977</option>
+      <option value="1978">1978</option>
+      <option value="1979">1979</option>
+      <option value="1980">1980</option>
+      <option value="1981">1981</option>
+      <option value="1982">1982</option>
+      <option value="1983">1983</option>
+      <option value="1984">1984</option>
+      <option value="1985">1985</option>
+      <option value="1986">1986</option>
+      <option value="1987">1987</option>
+      <option value="1988">1988</option>
+      <option value="1989">1989</option>
+      <option value="1990">1990</option>
+      <option value="1991">1991</option>
+      <option value="1992">1992</option>
+      <option value="1993">1993</option>
+      <option value="1994">1994</option>
+      <option value="1995">1995</option>
+      <option value="1996">1996</option>
+      <option value="1997">1997</option>
+      <option value="1998">1998</option>
+      <option value="1999">1999</option>
+    </select>    
+    <select name="birthday_month" class="TextoVermelho">
+      <option value="" selected></option>
+      <option value="01"><?=$monthListShort[0]?></option> 
+      <option value="02"><?=$monthListShort[1]?></option>
+      <option value="03"><?=$monthListShort[2]?></option>
+      <option value="04"><?=$monthListShort[3]?></option>
+      <option value="05"><?=$monthListShort[4]?></option>
+      <option value="06"><?=$monthListShort[5]?></option>
+      <option value="07"><?=$monthListShort[6]?></option>
+      <option value="08"><?=$monthListShort[7]?></option>
+      <option value="09"><?=$monthListShort[8]?></option>
+      <option value="10"><?=$monthListShort[9]?></option>
+      <option value="11"><?=$monthListShort[10]?></option>
+      <option value="12"><?=$monthListShort[11]?></option>
+    </select>
+    <select name="birthday_day" class="TextoVermelho">
+      <option value="" selected></option> 
+      <option value="01">01</option>
+      <option value="02">02</option>
+      <option value="03">03</option>
+      <option value="04">04</option>
+      <option value="05">05</option>
+      <option value="06">06</option>
+      <option value="07">07</option>
+      <option value="08">08</option>
+      <option value="09">09</option>
+      <option value="10">10</option>
+      <option value="11">11</option>
+      <option value="12">12</option>
+      <option value="13">13</option>
+      <option value="14">14</option>
+      <option value="15">15</option>
+      <option value="16">16</option>
+      <option value="17">17</option>
+      <option value="18">18</option>
+      <option value="19">19</option>
+      <option value="20">20</option>
+      <option value="21">21</option>
+      <option value="22">22</option>
+      <option value="23">23</option>
+      <option value="24">24</option>
+      <option value="25">25</option>
+      <option value="26">26</option>
+      <option value="27">27</option>
+      <option value="28">28</option>
+      <option value="29">29</option>
+      <option value="30">30</option>
+      <option value="31">31</option>
+    </select><font color="#FF2222">***</font>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#DFDFD0"><?=_pilot_email;?></td>
+    <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" /><font color="#FF2222">***</font></td>
+  </tr>
+    <tr>
+    <td bgcolor="#DFDFD0"><?=_CONFIRM;?> <?=_pilot_email;?></td>
+    <td bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" /><font color="#FF2222">***</font></td>
+  </tr>
+      <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_SELECT_COUNTRY;?></td>
+    <td width="350" bgcolor="#DFDFD0" class="TextoP">
+    <select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
+    <?php
+ print "<option value='".F322('',1). $sel ."'>".F322('',3)."</option>\n"; 
+while(list($k,$e)=each($countries)){
+    print "<option value='".F322($k,1). $sel ."'>".$e."</option>\n";
+}    
+?>
+</select>
+</td>
   </tr> 
-  <tr> 
-    <td class=header>&nbsp;</td> 
-  </tr> 
-</table> 
-<? } // else  ?> 
+  <tr>
+    <td width="250" bgcolor="#DFDFD0">&nbsp;</td>
+    <td width="350" bgcolor="#DFDFD0">&nbsp;</td>
+  </tr>
+ <td width="600" colspan="2"><div align="center">
+ <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form();"/>
+ </div></td>
+  </tr>
+  <tr>
+    <td width="100%" bgcolor="#DFDFD0"  colspan="2"><font color="#FF2222">***</font> <?=_REQUIRED_FIELD ;?></td>
+  </tr>  
+</table>
+
+</form>
+</td></tr>
+</table>
+<?    
+}
+if($_POST['registerForm']==1){
+ // various queries in order of searching civlid, email through all database to avoid doubles;
+ if(!$r=_search($_POST['email'],$_POST['civlid'],'temp')){
+     if(!$r=_search($_POST['email'],$_POST['civlid'],'pilots')){
+         if(!$r=_search($_POST['email'],$_POST['civlid'],'users')) {
+             $actkey=md5(uniqid(rand(), true));
+             $session_time=time();
+             $sql="INSERT into ".$CONF['userdb']['users_temp_table']."(
+             user_civlid,
+             user_name,
+             user_firstname,
+             user_lastname,
+             user_nickname,
+             user_password,
+             user_nation,
+             user_gender,
+             user_birthdate,
+             user_session_time,
+             user_regdate,
+             user_email,
+             user_actkey)
+             VALUES( 
+             '".$_POST['civlid']."'
+             , '".addslashes($_POST['name'])."'
+             , '".addslashes($_POST['firstname'])."'
+             , '".addslashes($_POST['lastname'])."'
+             , '".addslashes($_POST['nickname'])."'
+             , '".addslashes($_POST['password'])."'
+             , '".addslashes(F322($_POST['nation'],2))."'
+             , '".addslashes($_POST['gender'])."'
+             , '".$_POST['birthday_year'].$_POST['birthday_month'].$_POST['birthday_day']."'
+             , '".$session_time."'
+             , '".time()."'
+             , '".addslashes($_POST['email'])."'
+             , '".$actkey."'
+             )";
+             if( $db->sql_query($sql))
+             {
+                $email_body=sprintf(_Pilot_confirm_subscription,$CONF_server_short_name,$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+                _envia_email('mail.ciclone.com.br','xcbrasil@ciclone.com.br','terravista',$ssl=false,$port=25,$CONF_admin_email,'XcBrasil','[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['name']));
+                //mail($_POST['email'], "[Leonardo] - Confirmation email",utf8_decode($email_body), "From:  $CONF_admin_email");
+                $msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
+                }
+         }else
+         {
+       //    var_dump($r); 
+             $msg="<p align ='center'>". _User_already_registered."</p>"; 
+         }    
+     }else{
+     //  var_dump($r);
+     $msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";
+     } 
+ }else{
+
+    if($r['user_civlid']==$_POST['civlid'] && $r['user_email']==$_POST['email'] ){
+    $actkey=$r[$actkey] ;       
+    $msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
+    print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
+   $email_body=sprintf(_Pilot_confirm_subscription,$CONF_server_short_name,$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+    _envia_email('mail.ciclone.com.br','xcbrasil@ciclone.com.br','terravista',$ssl=false,$port=25,$CONF_admin_email,'XcBrasil','[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']));
+    //   mail($r['user_email'], "[Leonardo] - Confirmation email", utf8_decode($email_body), "From:  $CONF_admin_email");
+   unset($actkey);
+    }
+   else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){
+     $msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
+    }
+    else if($r['user_email']!=$_POST['email'] || $r['user_civlid']==$_POST['civlid']){
+    $msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
+    }
+    
+ }
+ print $msg; 
+}
+function _search($email,$civlid,$tb){
+global $db,$CONF,$pilotsTable;
+if($tb=='temp')
+    $query="select * from ".$CONF['userdb']['users_temp_table']." where user_name ='$civlid' or user_civlid='$civlid' or user_email='$email'"; 
+if($tb=='pilots')
+    $query="select * from $pilotsTable where CIVL_ID ='$civlid'"; 
+if($tb=='users')
+    $query="select * from ".$CONF['userdb']['users_table']." where username ='$civlid' or user_civlid='$civlid' or user_email='$email'"; 
+ if($query!=''){
+ $res=$db->sql_query($query);
+ $nr=$db->sql_numrows($res);
+ if($nr>0){
+ return mysql_fetch_assoc($res) ;
+ }else{
+ return false;
+ }
+ }
+ }
+
+?>

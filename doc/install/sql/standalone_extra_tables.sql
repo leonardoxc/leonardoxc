@@ -74,3 +74,25 @@ KEY `user_session_time` (`user_session_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 
+CREATE TABLE IF NOT EXISTS `leonardo_temp_users` (
+  `user_id` mediumint(8) NOT NULL auto_increment,
+  `user_civlid` int(6) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `user_firstname` varchar(25) NOT NULL,
+  `user_lastname` varchar(25) NOT NULL,
+  `user_nickname` varchar(25) NOT NULL,
+  `user_password` varchar(32) NOT NULL,
+  `user_nation` varchar(5) NOT NULL,
+  `user_gender` varchar(5) NOT NULL,
+  `user_birthdate` int(8) NOT NULL,
+  `user_session_time` int(11) NOT NULL default '0',
+  `user_regdate` int(11) NOT NULL default '0',
+  `user_email` varchar(255) default NULL,
+  `user_actkey` varchar(32) default NULL,
+  `user_newpasswd` varchar(32) default NULL,
+  PRIMARY KEY  (`user_id`),
+  KEY `user_session_time` (`user_session_time`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+
+
