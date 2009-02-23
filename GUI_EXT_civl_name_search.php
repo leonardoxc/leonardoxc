@@ -92,7 +92,9 @@ function setField(CIVL_ID,NAME,HNATION,SEX) {
 }
 </script>
 <?
-if(!isset($_POST['civl_name'])){
+$civl_name= trim(utf8_decode($_POST['civl_name']) ) ;
+
+if(!$civl_name){
 ?>
        <form method="post" action=""> 
         <table width="70%"> 
@@ -103,55 +105,48 @@ if(!isset($_POST['civl_name'])){
           </tr> 
         </table> 
       </form>
-<?}else{?>
-<table width="70%"> 
-<strong>CIVL ID </strong>
-<?
-require_once("lib/soap/nusoap.php");
-$wsdlURL = "http://civlrankings.fai.org/FL.asmx?wsdl";
-$soap = new nusoap_client($wsdlURL, "wsdl");
-$parameters['parameters']['name'] = trim(utf8_decode($_POST['civl_name']));
-$result = $soap->call("FindPilot", $parameters);
-if($result['FindPilotResult']['Person']['Name']){
-    $i=0;
-$person=$result['FindPilotResult']['Person'];
-//print $person['Name'] ." " .$person['CIVLID']. " ".$person['ISO3166_1_a3']." ".$person['Nation']." ".$person['Female']." ".$person['Sponsor']." ".$person['Glider']." ".$person['Glider_main_colors']."<br>";
-?> 
-<form name="s_<?=$i;?>" action="" method="POST" target="">
-<input type="hidden" name="HNATION"  value="<?=$person['ISO3166_1_a3']?>">
-<input type="hidden" name="SEX"  value="<?=$person['Female'];?>">
-<tr class=header>
-<td><input type="text" name="NAME"  value="<?=utf8_encode($person['Name']);?>" readonly="" size="40" ></td>
-<td><input type="text" name="CIVL_ID"  value="<?=$person['CIVLID']?>" readonly="" size="8" ></td> 
-<td><input type="text" name="NATION"  value="<?=$person['Nation']?>" readonly="" size="15" ></td>
-<td><input name="okbutton" type="button" value="Insert CIVL ID" onClick="return setField(this.form.CIVL_ID.value,this.form.NAME.value,this.form.HNATION.value,this.form.SEX.value);"></td> 
-<td><input type="button" name="cancelbutton"  value="Cancel" onClick="window.close();" ></td>
-</tr>
-</form> 
-<?
-}
-else{
-    $i=0;
-foreach($result['FindPilotResult']['Person'] as $person){
-//print $person['Name'] ." " .$person['CIVLID']. " ".$person['ISO3166_1_a3']." ".$person['Nation']." ".$person['Female']." ".$person['Sponsor']." ".$person['Glider']." ".$person['Glider_main_colors']."<br>";
+<? } else{ ?>
+    <table width="70%"> 
+    <strong>CIVL ID </strong>
+    <?
+    require_once("lib/soap/nusoap.php");
+    $wsdlURL = "http://civlrankings.fai.org/FL.asmx?wsdl";
+    $soap = new nusoap_client($wsdlURL, "wsdl");
+    $parameters['parameters']['name'] =$civl_name;
+    $result = $soap->call("FindPilot", $parameters);
+	
+	//print_r($result);
+	
+    if( ! is_array($result['FindPilotResult']['Person'] )  ){
+		echo "No results found,  please <a href=''>try again</a><BR>";
+    } else{ 
+    
+		$i=0;
+		
+		if ( $result['FindPilotResult']['Person']['Name']  ) {
+			$tmp=$result['FindPilotResult']['Person'];
+			unset($result['FindPilotResult']['Person']);
+			$result['FindPilotResult']['Person'][0]=$tmp;
+		}
+		
+		foreach($result['FindPilotResult']['Person'] as $person) {
+			?> 
+			<form name="s_<?=$i;?>" action="" method="POST" target="">
+			<input type="hidden" name="HNATION"  value="<?=$person['ISO3166_1_a3']?>">
+			<input type="hidden" name="SEX"  value="<?=$person['Female'];?>">  
+			<tr class=header>
+			<td><input type="text" name="NAME"  value="<?=utf8_encode($person['Name']);?>" readonly="" size="40" ></td>
+			<td><input type="text" name="CIVL_ID"  value="<?=$person['CIVLID']?>" readonly="" size="8" ></td> 
+			<td><input type="text" name="NATION"  value="<?=$person['Nation']?>" readonly="" size="15" ></td>
+			<td><input name="okbutton" type="button" value="Insert CIVL ID" onClick="return setField(this.form.CIVL_ID.value,this.form.NAME.value,this.form.HNATION.value,this.form.SEX.value);"></td> 
+			<td><input type="button" name="cancelbutton"  value="Cancel" onClick="window.close();" ></td>
+			</tr>
+			</form> 
+			<?
+			$i++;
+		}
 
-       // print $person['Name'] ." " .$person['CIVLID']. " ".$person['ISO3166_1_a3']." ".$person['Nation']." ".$person['Female']." ".$person['Sponsor']." ".$person['Glider']." ".$person['Glider_main_colors']."<br>";
-?> 
-<form name="s_<?=$i;?>" action="" method="POST" target="">
-<input type="hidden" name="HNATION"  value="<?=$person['ISO3166_1_a3']?>">
-<input type="hidden" name="SEX"  value="<?=$person['Female'];?>">  
-<tr class=header>
-<td><input type="text" name="NAME"  value="<?=utf8_encode($person['Name']);?>" readonly="" size="40" ></td>
-<td><input type="text" name="CIVL_ID"  value="<?=$person['CIVLID']?>" readonly="" size="8" ></td> 
-<td><input type="text" name="NATION"  value="<?=$person['Nation']?>" readonly="" size="15" ></td>
-<td><input name="okbutton" type="button" value="Insert CIVL ID" onClick="return setField(this.form.CIVL_ID.value,this.form.NAME.value,this.form.HNATION.value,this.form.SEX.value);"></td> 
-<td><input type="button" name="cancelbutton"  value="Cancel" onClick="window.close();" ></td>
-</tr>
-</form> 
-<?
-$i++;
     }
-}
 }
 ?>
  </table> 
