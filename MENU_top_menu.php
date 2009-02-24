@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.67 2009/01/19 13:21:19 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.68 2009/02/24 16:04:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -107,6 +107,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 				<? if ( L_auth::isAdmin($userID) && $opMode==3 )  {  ?>
 				<li><a href="<?=getLeonardoLink(array('op'=>'users','page'=>'admin')) ?>">User Administration</a></li>
 				<? } ?>
+                <li class='li_space long'></li>
+                <li><a href="<?=getLeonardoLink(array('op'=>'brands','page'=>'admin')) ?>">Brand Administration</a></li>               
 				<li class='li_space long'></li>
 				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
 				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
@@ -264,6 +266,12 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li class='li_space'></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
+        
+  		<? if ($opMode==3){ ?>
+        <li><a href="<?=getLeonardoLink(array('op'=>'change_password')) ?>"><?=_MENU_CHANGE_PASSWORD?></a></li>
+        <li><a href="<?=getLeonardoLink(array('op'=>'change_email')) ?>"><?=_MENU_CHANGE_EMAIL?></a></li>       
+        <? } ?>
+        
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
         <? if ( L_auth::isAdmin($userID) && 0 )  {  ?>
    		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_flights','pilotIDview'=>'0_'.$userID)) ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>

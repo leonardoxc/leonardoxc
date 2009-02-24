@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.96 2009/02/24 13:16:49 manolis Exp $                                                                 
+// $Id: index.php,v 1.97 2009/02/24 16:04:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -373,7 +373,8 @@ if ($op=="users") {
 } else if ($op=="show_flight" ) {  
     require $LeoCodeBase."/GUI_flight_show.php";		
 } else if ($op=="add_flight") {
-	if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php";
+    if($CONF_force_civlid==1 && !$civlID) require $LeoCodeBase."/GUI_civl_search.php";
+    else if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php"; // add by Durval Henke www.xcbrasil.org 19/12/2008 
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";
 } else if ($op=="add_from_zip") {
 	require $LeoCodeBase."/GUI_flight_add_from_zip.php";		
@@ -395,11 +396,24 @@ if ($op=="users") {
 //--------------------------
 // "Pilots" related actions
 //--------------------------
+} else if ($op=="send_password") {
+  if ($userID>0) echo _You_are_not_login;   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  else require $LeoCodeBase."/GUI_send_password_search.php";         
+} else if ($op=="change_password"){
+  if ($userID>0)  require $LeoCodeBase."/GUI_change_password.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  else echo _You_are_not_login;        
+} else if ($op=="change_email") {
+  if ($userID>0) require $LeoCodeBase."/GUI_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  else if(isset($_GET['rkey'])) require $LeoCodeBase."/GUI_change_email.php";
+  else echo _You_are_not_login;       
+} else if ($op=="need_civlid") {
+  if ($userID>0)  require $LeoCodeBase."/GUI_civl_search.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  else echo _You_are_not_login;         
 } else if ($op=="pilot_search") {
 	require $LeoCodeBase."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {
 	if ($userID>0 || $CONF_showProfilesToGuests ) require $LeoCodeBase."/GUI_pilot_profile.php";
-	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";			
+	else echo "<center><br>"._You_are_not_login."<br><br>Please login<BR><BR></center>";			
 } else if ($op=="pilot_profile_edit") {
 	require $LeoCodeBase."/GUI_pilot_profile_edit.php";
 } else if ($op=="pilot_olc_profile_edit") {
