@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.95 2009/01/19 13:21:19 manolis Exp $                                                                 
+// $Id: index.php,v 1.96 2009/02/24 13:16:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -474,6 +474,7 @@ function exitPage($exitNow=1){
    }
    echo "</div>";  
 
+	
    $pageEnd=leo_getmicrotime();
    $pageTime=$pageEnd-$pageStart;
    DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
@@ -488,8 +489,8 @@ function exitPage($exitNow=1){
    } else if ($opMode==3 || $opMode==4 || $opMode==6) {
 
 		require_once dirname(__FILE__)."/GUI_footer.php";
-   }
-   
+   }      
+	
 	if ($DBGlvl) {   
 		// db execution time		
 		

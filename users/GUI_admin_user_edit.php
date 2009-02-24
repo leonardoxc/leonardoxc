@@ -11,8 +11,13 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
+	}
+	
 $userID_to_edit=$_GET['editUserID'];
-$sql = "SELECT * from $users_table WHERE user_id = '$userID_to_edit'";
+$sql = "SELECT * from ".$CONF['userdb']['users_table']." WHERE user_id = '$userID_to_edit'";
 $result = $db->sql_query($sql);
 $user_prefs = $db->sql_fetchrow($result);
 

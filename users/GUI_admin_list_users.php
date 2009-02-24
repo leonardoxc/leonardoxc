@@ -11,7 +11,10 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
+	}
+	
 ?>
  <table align="center" width="600"> 
 <tr> 
@@ -27,7 +30,7 @@
                 <td><b>Actions</b></td> 
               </tr> 
     <?
-		$sql= "SELECT * from $users_table ORDER by user_id ";
+		$sql= "SELECT * from ".$CONF['userdb']['users_table']." ORDER by user_id ";
 
 		$result = $db->sql_query($sql);
 		$i=0;

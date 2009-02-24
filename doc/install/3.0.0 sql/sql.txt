@@ -25,5 +25,48 @@ CREATE TABLE `leonardo_thermals` (
 
 
 ALTER TABLE `leonardo_thermals` ADD INDEX ( `class` ) ;
+ALTER TABLE `leonardo_thermals` ADD INDEX ( `latitude` , `longitude` ) ;
 
-ALTER TABLE `leonardo_thermals` ADD INDEX ( `latitude` , `longitude` ) 
+
+
+ALTER TABLE `leonardo_users` ADD `user_civlid` VARCHAR( 10 )  NOT NULL AFTER `username` ;
+ALTER TABLE `leonardo_users` ADD `user_new_email` VARCHAR( 255 )  NOT NULL AFTER `user_email` ;
+ALTER TABLE `leonardo_users` CHANGE `user_id` `user_id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT  ;
+
+ALTER TABLE `leonardo_users`
+  DROP `user_level`,
+  DROP `user_posts`,
+  DROP `user_timezone`,
+  DROP `user_style`,
+  DROP `user_lang`,
+  DROP `user_dateformat`,
+  DROP `user_new_privmsg`,
+  DROP `user_unread_privmsg`,
+  DROP `user_last_privmsg`,
+  DROP `user_attachsig`,
+  DROP `user_allowhtml`,
+  DROP `user_allowbbcode`,
+  DROP `user_allowsmile`,
+  DROP `user_allowavatar`,
+  DROP `user_allow_pm`,
+  DROP `user_allow_viewonline`,
+  DROP `user_notify`,
+  DROP `user_notify_pm`,
+  DROP `user_popup_pm`,
+  DROP `user_rank`,
+  DROP `user_avatar`,
+  DROP `user_avatar_type`,
+  DROP `user_icq`,
+  DROP `user_website`,
+  DROP `user_from`,
+  DROP `user_sig`,
+  DROP `user_sig_bbcode_uid`,
+  DROP `user_aim`,
+  DROP `user_yim`,
+  DROP `user_msnm`,
+  DROP `user_occ`,
+  DROP `user_interests`;
+
+
+ALTER TABLE `leonardo_pilots` ADD `CIVL_NAME` VARCHAR( 80 )  NOT NULL AFTER `CIVL_ID`;
+ALTER TABLE `leonardo_pilots` ADD `NickName` VARCHAR( 25 ) NOT NULL AFTER `LastName` ;

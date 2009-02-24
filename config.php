@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.109 2009/02/17 16:16:23 manolis Exp $                                                                 
+// $Id: config.php,v 1.110 2009/02/24 13:16:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -439,18 +439,33 @@ Triangle conform to the FAI definition
 						)
 			),
 	);
+	
+	
+	if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
+	else $CONF['os']='windows';
+	
+	$CONF['thermals']['enable']=true;
 
+	// choose how to send mail to users from the system
+	
+	$CONF['mail']['method']='system'; // use mail() function
+	/*
+	$CONF['mail']['method']='smtp';  // use an external mail server
+	$CONF['mail']['smtp']['host']='';
+	$CONF['mail']['smtp']['port']=25;
+	$CONF['mail']['smtp']['ssl']=false;
+	$CONF['mail']['smtp']['username']='';
+	$CONF['mail']['smtp']['password']='';
+	*/
+	
+	$CONF['site']['name']="LeonardoXC";
+	
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
 
   $CONF_abs_path=dirname(__FILE__);
   $CONF_tmp_path=$CONF_abs_path.'/files/tmp';
-  // this loads predefined settings for userDB and  settings 
-  // to bridge to the users table of different forum/portal/cms systems
-  require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
-
-  setLeonardoPaths();
 
 function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	if ($varname=='day' || $varname=='month' || $varname=='year' ) {
@@ -517,6 +532,12 @@ $OLCScoringServerPassword="mypasswd";
 @include_once dirname(__FILE__)."/site/config_custom.php";
 @include_once dirname(__FILE__)."/site/config_ranks.php";
 @include_once dirname(__FILE__)."/site/config_servers.php";
+
+// this loads predefined settings for userDB and  settings 
+// to bridge to the users table of different forum/portal/cms systems
+require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
+setLeonardoPaths();
+
 
 // time to load the user prefs from cookie
 require_once dirname(__FILE__)."/CL_user_prefs.php";
@@ -662,18 +683,16 @@ define('SYNC_INSERT_FLIGHT_LOCAL',2);
 
 define('SYNC_INSERT_FLIGHT_REPROCESS_LOCALLY',64);
 
-
 define('SYNC_INSERT_PILOT_LINK',4);
 define('SYNC_INSERT_PILOT_LOCAL',8); 
 
 define('SYNC_INSERT_WAYPOINT_LINK',16);
 define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
-if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
-else $CONF['os']='windows';
 
- // profile options
- $CONF['profile']['CIVL_ID_enter_url']=getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
+// profile options
+$CONF['profile']['CIVL_ID_enter_url']=getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
+
 
 if (!function_exists('str_ireplace')) {
     function str_ireplace($needle, $str, $haystack) {
@@ -682,6 +701,5 @@ if (!function_exists('str_ireplace')) {
     }
 } 
 
-$CONF['thermals']['enable']=true;
 
 ?>

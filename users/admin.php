@@ -12,7 +12,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	if (! is_leo_admin($userID)  ) {
+	if (! L_auth::isAdmin($userID)  ) {
 		return;
 	}
 
