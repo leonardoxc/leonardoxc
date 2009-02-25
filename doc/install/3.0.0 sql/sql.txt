@@ -34,7 +34,6 @@ ALTER TABLE `leonardo_users` ADD `user_new_email` VARCHAR( 255 )  NOT NULL AFTER
 ALTER TABLE `leonardo_users` CHANGE `user_id` `user_id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT  ;
 
 ALTER TABLE `leonardo_users`
-  DROP `user_level`,
   DROP `user_posts`,
   DROP `user_timezone`,
   DROP `user_style`,

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.11 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.12 2009/02/25 15:31:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,7 +21,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.11 2008/11/29 22:46:07 manolis Exp $
+ *   $Id: GUI_login.php,v 1.12 2009/02/25 15:31:37 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -75,6 +75,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 		$sql = "SELECT user_id, username, user_password, user_active, user_level
 			FROM " . USERS_TABLE . "
 			WHERE username = '" . str_replace("\\'", "''", $username) . "'";
+			
 		if ( !($result = $db->sql_query($sql)) )
 		{
 			message_die(GENERAL_ERROR, 'Error in obtaining userdata', '', __LINE__, __FILE__, $sql);
