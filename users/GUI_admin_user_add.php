@@ -11,7 +11,10 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
+	}
+	
 if ($_POST['formAdd']==1) {
 
 	GLOBAL $ufname, $ulname, $uemail, $uemail2, $uicq, $uwsite, $uname, $upass, $upass2;

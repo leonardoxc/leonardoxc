@@ -12,6 +12,10 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
+	}
+	
 $query_us = "DELETE from cscp_mojt_users WHERE username = '$user'";
 
 $p_body = "<br><br><table align=\"center\" width=\"50%\"><tr><td class=header><font class=\"bigfont\"><center>MoJT Login System [ADMIN]</center></font>

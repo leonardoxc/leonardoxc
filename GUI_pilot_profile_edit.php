@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.22 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.23 2009/02/26 15:41:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -180,7 +180,10 @@
 ?>
 <script language="javascript">
 	function setCIVL_ID() {
-			window.open('<?=$CONF['profile']['CIVL_ID_enter_url']?>', '_blank',	'scrollbars=auto,resizable=yes,WIDTH=700,HEIGHT=550,LEFT=100,TOP=100',false);
+
+		window.open('<?=getRelMainDir();?>/GUI_EXT_civl_name_search.php?CIVL_ID_field=CIVL_ID', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
+
+		//window.open('<?=$CONF['profile']['CIVL_ID_enter_url']?>', '_blank',	'scrollbars=auto,resizable=yes,WIDTH=700,HEIGHT=550,LEFT=100,TOP=100',false);
 	}
 
 	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';

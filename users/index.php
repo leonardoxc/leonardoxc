@@ -12,51 +12,67 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-	if ($userAction == "users") {
-		 require_once dirname(__FILE__)."/GUI_user_list.php";	
-	} else 	if ($userAction == "register") {
-		 require_once dirname(__FILE__)."/GUI_user_register.php";	
-	} else 	if ($userAction == "profile") {
-		 require_once dirname(__FILE__)."/GUI_user_show.php";	
-	} else 	if ($userAction == "login") {
-		if ($_POST['loginForm']==1) {   //do login and set cookies
-
-			$uname=$_POST['uname'];
-			$upass=$_POST['upass'];
-	
-			$sql = "SELECT user_password, user_id FROM ".$user_prefix."_users WHERE username='$uname'";
-			$result = $db->sql_query($sql);
-			$setinfo = $db->sql_fetchrow($result);
-	
-			if ( $db->sql_numrows($result)==1 && $setinfo[user_password] != "" ) {
-				$md5pass = md5($upass) ;
-				if ($setinfo[user_password] != $md5pass  ) $loginMessage="Wrong Username/Password";
-				else {  // succesful login
-					docookie($setinfo[user_id], $uname, $md5pass );
-					// important to set these
-					$userID=$setinfo[user_id];
-					$userName=$uname;					
-					header("Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=pilot_profile");
-					exit;
-				}
-			} else {
-				$loginMessage="Wrong Username/Password";
-			}
-			// In case of error redirect to form
-			$newLocation="Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=users&page=index&act=login&msg=".htmlspecialchars($loginMessage);			
-			header($newLocation);
-		} else {
-			// show the login form instead
-	  	    require_once dirname(__FILE__)."/GUI_user_login.php";	
-		}
-
-	} else 	if ($userAction == "logout") {
-		  setcookie("user","",time()-3600);
-		  $_COOKIE['user']="";
-		  $userID=0;
-		  $userName="";
-		  header("Location: http://".$_SERVER['SERVER_NAME'].getRelMainFileName()."&op=main");
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
 	}
 
+	require_once dirname(__FILE__).'/users.css';
+	
+	$userAction=$_GET['act'];
+	if (!$userAction) $userAction = "users";
+	
 ?>
+ <table align="center" width="740"> 
+  <tr> 
+     <td bgcolor="#E9E7F3" class=header><font class="bigfont"> 
+       <center> 
+        <font color="#005177">User Admin Panel</font> 
+      </center> 
+    </font></td> 
+   </tr> 
+  <tr> 
+     <td bgcolor="#F9F6E1" class=header><center> 
+         <font color="#005177"> :: 
+         [ <a href="?op=users&act=users">User Administration </a> ] ::  
+         [ <a href="?op=users&act=add">Add user</a> ] :: 
+         [ <a href="?op=register">Register (as a plain visitor)</a> ] 
+         </font> 
+        </center></td> 
+   </tr> 
+</table> 
+<br>
+<?
+ 
+ if ($userAction == "users" ) {
+	 require_once dirname(__FILE__)."/GUI_admin_list_users.php";
+ } else if ($userAction == "edit" ) {
+	 require_once dirname(__FILE__)."/GUI_admin_user_edit.php";
+ } else if ($userAction == "add") {
+	 require_once dirname(__FILE__)."/GUI_admin_user_add.php";
+ } else  if ($userAction == "delete" ) {
+	 require_once dirname(__FILE__)."/GUI_admin_user_delete.php";
+ } else {
+?> 
+<br>
+<table align="center" width="600"> 
+  <tr> 
+    <td><table width="100%" align="center" bgcolor="#cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
+        <tr> 
+          <td bgcolor="#EFCCAD"> <p align="center"><br> 
+              Welcome to the User Administration Panel. </p>
+            <p align="center">Please choose your
+            action for the menu above</p>
+            <p align="center"><br> 
+          </p></td> 
+        </tr> 
+      </table></td> 
+  </tr> 
+  <tr> 
+    <td class=header>&nbsp; </td> 
+  </tr> 
+</table> 
+<?
+ }
 
+
+?> 

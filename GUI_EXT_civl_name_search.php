@@ -69,20 +69,31 @@ function setField(CIVL_ID,NAME,HNATION,SEX) {
         window.close();
     } else {
         if (checknumber(CIVL_ID)) {            
-            MWJ_findObj('<?=$_GET['callingfield']?>', null, window.opener.document).value=CIVL_ID;
-            MWJ_findObj('name', null, window.opener.document).value=nametosplit;  
+            MWJ_findObj('<?=$_GET['CIVL_ID_field']?>', null, window.opener.document).value=CIVL_ID;
+           			
+			<? if  ( $_GET['name_field'] ) {?>           
+			MWJ_findObj('<?=$_GET['name_field']?>', null, window.opener.document).value=nametosplit;          
+			<? } ?>
+			
+			<? if ($_GET['lastName_field']) { ?>			
             var Nme = nametosplit.split(" ");
             var Fname,Lname;
             if(Nme.length > 0){
-            Lname=Nme[Nme.length - 1];
-            Fname=nametosplit.replace(Lname,'');           
-            MWJ_findObj('lastname', null, window.opener.document).value=Lname; 
-            MWJ_findObj('firstname', null, window.opener.document).value=Fname;
-             }
-            var strSex='';
-            SEX=='true'?strSex='F':strSex='M';
-            setSelect('gender',strSex);        
-            setSelect('nation',HNATION);
+				Lname=Nme[Nme.length - 1];
+				Fname=nametosplit.replace(Lname,'');           
+				MWJ_findObj('<?=$_GET['lastName_field']?>', null, window.opener.document).value=Lname; 
+				MWJ_findObj('<?=$_GET['firstName_field']?>', null, window.opener.document).value=Fname;
+            }
+			<? } ?>
+			
+            <? if  ( $_GET['gender_field'] ) {?>
+            setSelect('<?=$_GET['gender_field']?>',(SEX=='true')?'F':'M');        
+			<? } ?>
+			
+            <? if  ( $_GET['nation_field'] ) {?>
+            setSelect('<?=$_GET['nation_field']?>',HNATION);
+			<? } ?>
+			
             window.close();
         } else {
             return false;

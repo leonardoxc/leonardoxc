@@ -12,6 +12,9 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+	if (! L_auth::isAdmin($userID)  ) {
+		return;
+	}
 
 if ($_POST['sendmailForm']==1) {
 	

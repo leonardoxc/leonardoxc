@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.44 2008/12/02 23:43:18 manolis Exp $                                                                 
+// $Id: MENU_second_menu.php,v 1.45 2009/02/26 15:41:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -507,29 +507,6 @@ if (! $dontShowCountriesSelection ) {
 }	
 
 ?>
-
-<?  if (0 ) { ?>
-<ul id="dropMenu">
-<? if (! $dontShowCountriesSelection ) { ?>
-	<li><a href="#"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
-		<? if ($countriesNum>1) { ?>
-		<ul>				
-		 <li><?  require dirname(__FILE__)."/MENU_countries_simple.php"; ?></li>
-		</ul>			
-		<? } ?>
-	</li>
-<? } ?>	
-
-	<li><a href="#"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
-		<ul>
-		 <?  // require dirname(__FILE__)."/MENU_dates_simple.php"; ?>
-		</ul>
-	</li>
-    
-</ul>
-<? } ?>
-
-
 
 <? if (! $dontShowCountriesSelection ) { ?>
     <div id='countryMenuID' class="menuButton"><a href="#" onClick="toogleMenu('country');return false;"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>

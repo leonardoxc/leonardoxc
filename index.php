@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.98 2009/02/26 10:07:02 manolis Exp $                                                                 
+// $Id: index.php,v 1.99 2009/02/26 15:41:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -321,17 +321,7 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
 //---------------------------------------------
 $LeoCodeBase=dirname(__FILE__);
 
-if ($op=="users") { 
-	if ($opMode==3 ) require $LeoCodeBase."/USERS_index.php";
-} else if ($op=="login") { 
-	$noFooterMenu=1;
-	// for phpbb2, standalone, discuz, phpbb3
-	if ($opMode==2 || $opMode==3 || $opMode==4 || $opMode==6 ) require $LeoCodeBase."/GUI_login.php";
-} else if ($op=="register") { 
-	echo "<BR><BR>Parameter Not used !!<BR>";
-	// Not used 
-	//	if ($opMode==2 || $opMode==3) require $LeoCodeBase."/GUI_register.php";
-} else if ($op=="index_full") { 
+if ($op=="index_full") { 
 	require $LeoCodeBase."/GUI_index_full.php";
 } else if ($op=="index_help") {
 	require $LeoCodeBase."/GUI_index_help.php";
@@ -374,7 +364,7 @@ if ($op=="users") {
 } else if ($op=="show_flight" ) {  
     require $LeoCodeBase."/GUI_flight_show.php";		
 } else if ($op=="add_flight") {
-    if($CONF_force_civlid==1 && !$civlID) require $LeoCodeBase."/GUI_civl_search.php";
+    if($CONF_force_civlid==1 && !$civlID) require $LeoCodeBase."/GUI_user_civl_search.php";
     else if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php"; // add by Durval Henke www.xcbrasil.org 19/12/2008 
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";
 } else if ($op=="add_from_zip") {
@@ -395,21 +385,32 @@ if ($op=="users") {
 } else if ($op=="edit_waypoint") {
     require $LeoCodeBase."/GUI_waypoint_edit.php";
 //--------------------------
-// "Pilots" related actions
+// "User " related actions ( mostly used in standalone op ($op=3)
 //--------------------------
+} else if ($op=="users") { 
+	if ($opMode==3 ) require $LeoCodeBase."/users/index.php";
+} else if ($op=="login") { // for phpbb2, standalone, discuz, phpbb3
+	$noFooterMenu=1;	
+	if ($opMode==2 || $opMode==3 || $opMode==4 || $opMode==6 ) require $LeoCodeBase."/GUI_login.php";
+} else if ($op=="register") { 
+	if ($opMode==3) require $LeoCodeBase."/GUI_user_register.php";
+	else echo "<BR><BR>Parameter Not used !!<BR>";
 } else if ($op=="send_password") {
   if ($userID>0) echo _You_are_not_login;   // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else require $LeoCodeBase."/GUI_send_password_search.php";         
+  else require $LeoCodeBase."/GUI_user_send_password.php";         
 } else if ($op=="change_password"){
-  if ($userID>0)  require $LeoCodeBase."/GUI_change_password.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;        
 } else if ($op=="change_email") {
-  if ($userID>0) require $LeoCodeBase."/GUI_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  if ($userID>0) require $LeoCodeBase."/GUI_user_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else if(isset($_GET['rkey'])) require $LeoCodeBase."/GUI_change_email.php";
   else echo _You_are_not_login;       
 } else if ($op=="need_civlid") {
-  if ($userID>0)  require $LeoCodeBase."/GUI_civl_search.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;         
+//--------------------------
+// "Pilots" related actions
+//--------------------------
 } else if ($op=="pilot_search") {
 	require $LeoCodeBase."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {

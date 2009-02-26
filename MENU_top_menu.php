@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.68 2009/02/24 16:04:44 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.69 2009/02/26 15:41:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -105,7 +105,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 			<ul>
 				<li><a href="<?=getLeonardoLink(array('op'=>'admin')) ?>">ADMIN MENU</a></li>
 				<? if ( L_auth::isAdmin($userID) && $opMode==3 )  {  ?>
-				<li><a href="<?=getLeonardoLink(array('op'=>'users','page'=>'admin')) ?>">User Administration</a></li>
+				<li><a href="<?=getLeonardoLink(array('op'=>'users')) ?>">User Administration</a></li>
 				<? } ?>
                 <li class='li_space long'></li>
                 <li><a href="<?=getLeonardoLink(array('op'=>'brands','page'=>'admin')) ?>">Brand Administration</a></li>               
