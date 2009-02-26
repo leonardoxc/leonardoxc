@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.99 2009/02/26 15:41:52 manolis Exp $                                                                 
+// $Id: index.php,v 1.100 2009/02/26 16:18:08 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -402,8 +402,7 @@ if ($op=="index_full") {
   if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;        
 } else if ($op=="change_email") {
-  if ($userID>0) require $LeoCodeBase."/GUI_user_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else if(isset($_GET['rkey'])) require $LeoCodeBase."/GUI_change_email.php";
+  if ($userID>0 || isset($_GET['rkey'] ) require $LeoCodeBase."/GUI_user_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;       
 } else if ($op=="need_civlid") {
   if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
