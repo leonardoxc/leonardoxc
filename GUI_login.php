@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.12 2009/02/25 15:31:37 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.13 2009/02/26 10:07:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,7 +21,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.12 2009/02/25 15:31:37 manolis Exp $
+ *   $Id: GUI_login.php,v 1.13 2009/02/26 10:07:02 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -241,6 +241,17 @@ else
 
 		$username = ( $userdata['user_id'] != ANONYMOUS ) ? $userdata['username'] : '';
 
+
+		if (! $CONF['bridge']['forgot_password_url']) {
+	 		$sendPassUrl=append_sid("profile.php?mode=sendpassword");
+		} else {
+			if ( is_array($CONF['bridge']['forgot_password_url']) )
+				$sendPassUrl=getLeonardoLink($CONF['bridge']['forgot_password_url']);
+			else 
+				$sendPassUrl=str_replace("%module_name%",$module_name,$CONF['bridge']['forgot_password_url']);			
+		}	
+
+
 		$s_hidden_fields = '<input type="hidden" name="redirect" value="' . $forward_page . '" />';
 		$s_hidden_fields .= (isset($HTTP_GET_VARS['admin'])) ? '<input type="hidden" name="admin" value="1" />' : '';
 
@@ -252,7 +263,7 @@ else
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
 			'L_SEND_PASSWORD' => _Forgotten_password,
 
-			'U_SEND_PASSWORD' => append_sid("profile.$phpEx?mode=sendpassword"),
+			'U_SEND_PASSWORD' => $sendPassUrl,
 
 			'S_HIDDEN_FIELDS' => $s_hidden_fields)
 		);

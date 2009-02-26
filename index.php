@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.97 2009/02/24 16:04:44 manolis Exp $                                                                 
+// $Id: index.php,v 1.98 2009/02/26 10:07:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -325,6 +325,7 @@ if ($op=="users") {
 	if ($opMode==3 ) require $LeoCodeBase."/USERS_index.php";
 } else if ($op=="login") { 
 	$noFooterMenu=1;
+	// for phpbb2, standalone, discuz, phpbb3
 	if ($opMode==2 || $opMode==3 || $opMode==4 || $opMode==6 ) require $LeoCodeBase."/GUI_login.php";
 } else if ($op=="register") { 
 	echo "<BR><BR>Parameter Not used !!<BR>";
