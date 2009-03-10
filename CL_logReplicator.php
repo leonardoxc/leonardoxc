@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.51 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.52 2009/03/10 16:34:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -364,6 +364,13 @@ class logReplicator {
 				if (!$flightIDlocal) { // we then INSERT IT instead
 					echo " [Not found,will insert] ";
 					$e['action']=1;
+				}
+			} else if ($e['action']==1) {			
+				// if action == insert we make an extra check to see if the fligh is there, if yes we UPDATE instead
+				$flightIDlocal=logReplicator::findFlight($actionData['flight']['serverID'],$actionData['flight']['id']);
+				if ($flightIDlocal) { // we then UPDATE IT instead
+					echo " [Already here,will update] ";
+					$e['action']=2;
 				}
 			}
 			

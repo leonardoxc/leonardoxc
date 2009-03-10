@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_server_action.php,v 1.22 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_server_action.php,v 1.23 2009/03/10 16:34:40 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -65,6 +65,10 @@ if ($action==1) { // server info
 	list($server_version,$server_releaseDate, $server_opMode,
 		 $server_isMasterServer, $server_admin_email,
 		 $php_version, $mysql_server_info ,$mysql_client_info )=$server->getInfo();
+
+	$server->getFromDB();
+	echo "lastPullUpdateID: ".$server->lastPullUpdateID."<BR>\n";
+	
 	echo "Leonardo version: $server_version<br>
 		version releaseDate:	$server_releaseDate<br>
 		opMode: $server_opMode<br>

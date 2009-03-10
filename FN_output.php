@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.50 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.51 2009/03/10 16:34:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -739,7 +739,9 @@ function flush2Browser() {
 	</script>
 	<?
     flush();
- 	while (@ob_end_flush()); 
+	// this breaks in lighttpd
+ 	//while (@ob_end_flush()); 
+	
 	//ob_end_flush();
 	//	ob_start();	
 

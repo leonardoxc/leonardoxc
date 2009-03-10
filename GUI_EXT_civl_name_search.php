@@ -6,11 +6,11 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>FAI/CIVL ID</title>
 </head>
-<link rel="stylesheet" href=".//templates/basic/tpl/style.css" type="text/css">
+<link rel="stylesheet" href="./templates/basic/tpl/style.css" type="text/css">
 <!--[if IE]>
 <style type="text/css">
 /* Import the fancy styles for IE only (NS4.x doesn't use the @import function) */
-@import url(".//templates/basic/tpl/formIE.css");
+@import url("./templates/basic/tpl/formIE.css");
 </style>
 <![endif]-->
 </head>
