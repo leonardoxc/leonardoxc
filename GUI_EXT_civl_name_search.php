@@ -1,4 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<?
+
+ 	require_once dirname(__FILE__)."/EXT_config_pre.php";
+	require_once dirname(__FILE__)."/config.php";
+ 	require_once dirname(__FILE__)."/EXT_config.php";
+	require_once dirname(__FILE__)."/FN_functions.php";	
+	setDEBUGfromGET();
+	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
+	
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Expires" content="Fri, Jan 01 1900 00:00:00 GMT">
@@ -105,13 +114,14 @@ function setField(CIVL_ID,NAME,HNATION,SEX) {
 <?
 $civl_name= trim(utf8_decode($_POST['civl_name']) ) ;
 
+
 if(!$civl_name){
 ?>
        <form method="post" action=""> 
         <table width="70%"> 
           <tr class=header> 
-            <td><u>Nome CIVL</u> </td><td><input type="text" name="civl_name"><font color="ff0000">*</font></td>               
-             <td> <input type="submit" value="Procurar por nome">   
+            <td><u><?=_PILOT_NAME?></u> </td><td><input type="text" name="civl_name"><font color="ff0000">*</font></td>               
+             <td> <input type="submit" value="<?=_MENU_SEARCH_PILOTS?>">   
             </td> 
           </tr> 
         </table> 
@@ -150,7 +160,7 @@ if(!$civl_name){
 			<td><input type="text" name="CIVL_ID"  value="<?=$person['CIVLID']?>" readonly="" size="8" ></td> 
 			<td><input type="text" name="NATION"  value="<?=$person['Nation']?>" readonly="" size="15" ></td>
 			<td><input name="okbutton" type="button" value="Insert CIVL ID" onClick="return setField(this.form.CIVL_ID.value,this.form.NAME.value,this.form.HNATION.value,this.form.SEX.value);"></td> 
-			<td><input type="button" name="cancelbutton"  value="Cancel" onClick="window.close();" ></td>
+			<td><input type="button" name="cancelbutton"  value="<?=_Filter_Button_Cancel?>" onClick="window.close();" ></td>
 			</tr>
 			</form> 
 			<?

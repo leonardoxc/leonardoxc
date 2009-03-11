@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.40 2009/02/12 15:58:51 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.41 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -502,6 +502,7 @@ var lon=0;
         hideThermalClass("4");
     	hideThermalClass("5");
 		*/
+		showThermalClass("1");
 		$("#thermalLoading").hide();
 		$("#thermalLoad").hide();		
 		$("#thermalControls").show();

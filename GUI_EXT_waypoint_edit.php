@@ -8,11 +8,10 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_waypoint_edit.php,v 1.14 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_waypoint_edit.php,v 1.15 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
-
-
+	@session_start();
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
@@ -42,8 +41,8 @@
 </head>
 <?
 	$waypointIDedit=makeSane($_REQUEST['waypointIDedit'],1);
-echo $waypointIDedit."#"
-;
+	// echo $waypointIDedit."#";
+
 	if ( $_POST['editWaypoint']==1 ) { // CHANGE waypoint
 		$waypt=new waypoint($waypointIDedit);
 		

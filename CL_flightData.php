@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.162 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.163 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -965,7 +965,9 @@ $resStr='{
 		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extended";
 
 		// do some basic check for saned igc file
-		$this->checkSanedFiles();
+		if (! $this->checkSanedFiles() ) {
+			return "";
+		}
 
 		if ($extended==1) {
 			//$kml_file_contents.="<Placemark >\n<name>".$this->filename."</name>";
@@ -1314,7 +1316,9 @@ $kml_file_contents=
 		global $CONF;
 		
 		// do some basic check for saned igc file
-		$this->checkSanedFiles();
+		if (! $this->checkSanedFiles() ) {
+			return "";
+		}
 		
 		require_once dirname(__FILE__)."/FN_igc2kmz.php";
 		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->flightID);
@@ -1654,7 +1658,10 @@ $kml_file_contents=
 		$data_vario =array();
 		$data_takeoff_distance=array();
 
-		$this->checkSanedFiles();
+		if (! $this->checkSanedFiles() ) {
+			return;
+		}
+		
 		$filename=$this->getIGCFilename(2);  
 		$lines = @file ($filename); 
 		if (!$lines) return;
@@ -2592,6 +2599,7 @@ $kml_file_contents=
 			}
 		}
 		
+		return 1;
 	}
 	
 	function computeScore() {
@@ -2603,9 +2611,10 @@ $kml_file_contents=
 		set_time_limit (240);	
 		
 		// do some basic check for saned igc file
-		$this->checkSanedFiles();
+		if (! $this->checkSanedFiles() ) {
+			return 0;
+		}
 		
-
 		$flightScore=new flightScore($this->flightID);
 		if ($OLCScoringServerUseInternal ) {
 			$results=$flightScore->getScore( $this->getIGCFilename(1) ,1  );

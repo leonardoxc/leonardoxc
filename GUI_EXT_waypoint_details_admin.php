@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_waypoint_details_admin.php,v 1.6 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_waypoint_details_admin.php,v 1.7 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -78,9 +78,11 @@ $(document).ready(function(){
   $wpName= selectWaypointName($wpInfo->name,$wpInfo->intName,$wpInfo->countryCode);
   $wpLocation = selectWaypointLocation($wpInfo->location,$wpInfo->intLocation,$wpInfo->countryCode);
 
-  if ( L_auth::isAdmin($userID)  ) $opString="<a href='".
-  		getLeonardoLink(array('op'=>'edit_waypoint','waypointIDedit'=>$waypointIDview)
-		."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+  if ( L_auth::isAdmin($userID)  ) 
+  	$opString="<a href='".
+  		getLeonardoLink(array('op'=>'edit_waypoint','waypointIDedit'=>$waypointIDview) ).
+			"'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
+		
   $titleString=_Waypoint_Name." : ".$wpName." (".$countries[$wpInfo->countryCode].") &nbsp;";
 
 //$opString="<a href='#' onclick=\"toggleVisible('takeoffID','takeoffPos',14,-20,0,0);return false;\">

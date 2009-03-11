@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.23 2009/02/26 15:41:52 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.24 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,6 +19,7 @@
  */
   require_once dirname(__FILE__)."/CL_image.php";
   require_once dirname(__FILE__)."/CL_NACclub.php";
+  require_once dirname(__FILE__)."/lib/json/CL_json.php";
 
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
 
@@ -229,7 +230,17 @@
 		$list4="var all_readonly_fields  = '".implode(',', $possible_readonly_fields)."';\n";
 		
 		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-			$list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
+		
+			$NAC_input_url=$NAC['input_url'];		
+			if ( preg_match_all("/#([^#]+)#/",$NAC_input_url,$matches_tmp1) ) {
+				//print_r($matches_tmp1);
+				foreach($matches_tmp1[1] as $paramName) {
+					//echo "!!$NAC_input_url@@$paramName@@".$pilot[$paramName]."^^";
+					$NAC_input_url=str_replace('#'.$paramName.'#',$pilot[$paramName],$NAC_input_url);
+				}
+			}
+			
+			$list1.="NAC_input_url[$NACid]  = '".json::prepStr($NAC_input_url)."';\n";
 			$ext_input=empty($NAC['external_input']) ? 0 : 1;
 			$list2.="NAC_external_input[$NACid]  = $ext_input;\n";
 			$use_clubs=$NAC['use_clubs']+0;			
@@ -252,6 +263,7 @@
 		}
 
 	}
+	
 ?>
 
   <table  class=main_text  width="100%" border="0">
@@ -350,7 +362,8 @@
 			foreach  ($CONF_NAC_list as $NACid=>$NAC) {
 				if ($pilot['NACid']==$NACid) $sel=" selected ";
 				else $sel="";
-				echo "<option $sel value='$NACid'>".$NAC['name']."</option>\n";
+				echo "<option $sel value='$NACid'>".
+					( $NAC['localLanguage']!=$currentlang?$NAC['name']:$NAC['localName'])."</option>\n";
 
 			}
 

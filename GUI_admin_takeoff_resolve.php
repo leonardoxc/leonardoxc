@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_takeoff_resolve.php,v 1.7 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_takeoff_resolve.php,v 1.8 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
 		if (countryCode) cStr='&countryCode='+countryCode;
 		if (intName) cStr+='&intName=1';
 		
-		var linkStr='<?=CONF_MODULE_ARG?>&op=admin_takeoff_resolve&admin_op='+methodID+cStr;
+		var linkStr='<?=getLeonardoLink( array('op'=>'admin_takeoff_resolve' ) ); ?>&admin_op='+methodID+cStr;
 		document.location=linkStr;	  
 	});
 

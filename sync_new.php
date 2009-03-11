@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.2 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.3 2009/03/11 16:12:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -186,12 +186,15 @@ if ($op=="get_hash") {
 		}
 	
 		$query="SELECT * FROM $tableName  
-			WHERE  UNIX_TIMESTAMP($tableName.dateUpdated) >= $fromTm ";
+			WHERE  ".
+			// "UNIX_TIMESTAMP($tableName.dateUpdated) >= $fromTm ";
+			" $tableName.dateUpdated >= '".gmdate("Y-m-d H:i:s",$fromTm)."'";
 		if ($toTm) {
 			$query.=" AND UNIX_TIMESTAMP($tableName.dateUpdated) <=$toTm ";
 		}		
 		$query.="	$where_clause ORDER BY dateUpdated $limit";
-		// echo $query;
+		//echo $query;
+		
 		$res= $db->sql_query($query);
 		if($res <= 0){
 			echo("<H3> Error in query! $query </H3>\n");
