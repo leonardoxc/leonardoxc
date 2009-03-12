@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.13 2008/12/03 20:56:14 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.14 2009/03/12 15:49:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -76,7 +76,7 @@ RewriteRule ^".$virtPath2."pilots/(.*)/(.*)/(.*)$  $baseUrl&op=list_pilots&count
 RewriteRule ^".$virtPath2."league/(.*)/(.*)/(.*)$  $baseUrl&op=competition&country=$1&l_date=$2&leoSeo=$3 [L,NC]
 RewriteRule ^".$virtPath2."takeoffs/(.*)/(.*)/(.*)$  $baseUrl&op=list_takeoffs&country=$1&l_date=$2&leoSeo=$3 [L,NC]
 
-RewriteRule ^".$virtPath2."ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&$4 [L,NC]
+RewriteRule ^".$virtPath2."ranks/(\d*)\.(\d*)/(.*)/(.*)$  $baseUrl&op=comp&rank=$1&subrank=$2&l_date=$3&leoSeo=$4 [L,NC]
 
 
 RewriteRule ^".$virtPath2."page/(.*)$ $baseUrl&op=$1 [L,NC]

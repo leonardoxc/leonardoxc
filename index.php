@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.101 2009/03/10 16:34:40 manolis Exp $                                                                 
+// $Id: index.php,v 1.102 2009/03/12 15:49:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -229,8 +229,8 @@ if ($l_date=='alltimes'){
 echo 'REQUEST_URI:'.$_SERVER['REQUEST_URI'];
 echo 'QUERY_STRING:'.$_SERVER['QUERY_STRING'];
 print_r($_REQUEST);
+exit;
 */
-
 // BRANDS MOD
 setVarFromRequest("brandID",0,1); // numeric
 if (! brands::isValidBrandForFilter($brandID) ) setVar("brandID",0);

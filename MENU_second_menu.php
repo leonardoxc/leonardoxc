@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.45 2009/02/26 15:41:52 manolis Exp $                                                                 
+// $Id: MENU_second_menu.php,v 1.46 2009/03/12 15:49:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -77,6 +77,7 @@
 			}
 		}
 	}
+	
 
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
