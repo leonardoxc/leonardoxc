@@ -41,7 +41,7 @@ ADD `NACmemberID` BIGINT UNSIGNED NOT NULL DEFAULT '0' AFTER `NACid` ;
 
 # 2007/03/07
 
-CREATE TABLE `leonardo_NAC_clubs` (
+CREATE TABLE `leonardo_nac_clubs` (
 `NAC_ID` MEDIUMINT NOT NULL ,
 `clubID` BIGINT NOT NULL ,
 `clubName` VARCHAR( 255 ) NOT NULL ,

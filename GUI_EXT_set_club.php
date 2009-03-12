@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_set_club.php,v 1.8 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_set_club.php,v 1.9 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -37,7 +37,7 @@
 	$clubID=$_GET['clubID']+0;
 	$NAC_ID=$_GET['NAC_ID']+0;
 	
-	// print_r($clubList);
+	
 	// $charset=$langEncodings[$currentlang];
 
 	# $_GET['option'] is to control scenario dependent options
@@ -45,9 +45,12 @@
 	# url parameters in case of option 2
 	$params=empty($_GET['params']) ? '' : urldecode($_GET['params']);
 
-	$withFlightsOnly=$option==2;
+	if ($option==2) $withFlightsOnly=1;
+	else  $withFlightsOnly=0;
+	
 	$clubList=NACclub::getClubs($NAC_ID, $withFlightsOnly);
 
+	// print_r($clubList);
   ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  >
 <html>
 <head>

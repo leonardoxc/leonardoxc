@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.112 2009/03/10 16:34:40 manolis Exp $                                                                 
+// $Id: config.php,v 1.113 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -461,6 +461,8 @@ Triangle conform to the FAI definition
 	$CONF['site']['name']="LeonardoXC";
 	
 	$CONF_force_civlid=0;
+	
+    $CONF['NAC']['display_club_details_on_pilot_list']=0;
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

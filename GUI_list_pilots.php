@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_pilots.php,v 1.40 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_list_pilots.php,v 1.41 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -144,6 +144,8 @@
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
  $query = 'SELECT DISTINCT CONCAT(  '.$flightsTable.'.userServerID ,userID  ) , userID,
 		  '.$flightsTable.'.userServerID, '.$nOrder.' as username,  '.$pilotsTable.'.countryCode , max( LINEAR_DISTANCE ) AS bestDistance,'
+		  
+		. " $pilotsTable.NACid , $pilotsTable.NACmemberID, $pilotsTable.NACclubID, "
 		. ' count( * ) AS totalFlights, sum( LINEAR_DISTANCE ) AS totalDistance, sum( DURATION ) AS totalDuration, '
 		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
@@ -182,11 +184,25 @@
 
 
 <script type="text/javascript">
-var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotID=';
+// var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotID=';
+var BT_base_urls=[];
+BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotID=';
+BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_nac&pilotID=';
+
+var BT_displayOnSide=[];
+BT_displayOnSide[0]='auto';
+BT_displayOnSide[1]='auto';
+
+var BT_widths=[];
+BT_widths[0]=500;
+BT_widths[1]=400;
+
 var BT_default_width=500;
 </script>
 
-<? echo makePilotPopup() ?>
+<? 
+echo makePilotPopup();
+?>
 
 <?
 
@@ -251,7 +267,7 @@ function listPilots($res,$legend,$queryExtraArray=array(),$sortOrder="bestDistan
    global $moduleRelPath;
    global $PREFS;
    global $page_num,$pagesNum,$startNum,$itemsNum;
-   global $op,$opMode;
+   global $op,$opMode,$CONF;
 
    global $currentlang,$nativeLanguage;
 
@@ -297,8 +313,18 @@ function listPilots($res,$legend,$queryExtraArray=array(),$sortOrder="bestDistan
 
 	echo getNationalityDescription($row["countryCode"],1,0);
 	
-	echo "<a class='betterTip' id='pl_".$row["userServerID"]."u".$row["userID"]."' href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
-		 onmouseout=\"pilotTip.hide()\">$name</a></div></TD>";
+	echo "<a class='betterTip' id='tpa0_".$row["userServerID"]."u".$row["userID"]."' href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
+		 onmouseout=\"pilotTip.hide()\">$name</a>";
+
+	// echo "#".$row['NACid'].$row['NACmemberID'].$row['NACclubID']."#";
+	if ($row['NACid'] && $row['NACmemberID'] && $row['NACclubID'] &&
+		 $CONF['NAC']['display_club_details_on_pilot_list']
+		) {
+	
+	echo "&nbsp;<a class='betterTip' id='tpa1_".$row["userServerID"]."u".$row["userID"]."' href=\"javascript:nop();\"><img src='$moduleRelPath/img/icon_nac_member.gif' align='absmiddle' border=0></a>";
+	}
+			 
+	echo "</div></TD>";
 			
 	 echo "<TD>".$row["totalFlights"]."</TD>". 	 
  	      "<TD>".formatDistanceOpen($row["bestDistance"])."</TD>";

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_clubs.php,v 1.4 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_clubs.php,v 1.5 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -57,7 +57,11 @@ if ($showNacClubSelection ) {
 	}
 	$nacnames=array();
 	foreach ($nacids as $nid) {
-		$nacnames[$nid]=!empty($CONF_NAC_list[$nid]['name']) ? $CONF_NAC_list[$nid]['name'] : 'NAC '.$nid;
+		if ($CONF_NAC_list[$nid]['localLanguage']==$currentlang) {
+			$nacnames[$nid]=!empty($CONF_NAC_list[$nid]['localName']) ? $CONF_NAC_list[$nid]['localName'] : 'NAC '.$nid;		
+		} else {
+			$nacnames[$nid]=!empty($CONF_NAC_list[$nid]['name']) ? $CONF_NAC_list[$nid]['name'] : 'NAC '.$nid;
+		}	
 	}
 
 ?>

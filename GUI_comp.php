@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.24 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.25 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -133,12 +133,28 @@ echo "<BR><BR>";
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
 
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 
-<script  type="text/javascript" >
+<script type="text/javascript">
+var BT_base_urls=[];
+BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_short&pilotID=';
+BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_pilot_info.php?op=info_nac&pilotID=';
+BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
 
+var BT_displayOnSide=[];
+BT_displayOnSide[0]='auto';
+BT_displayOnSide[1]='auto';
+BT_displayOnSide[2]='auto';
+
+var BT_widths=[];
+BT_widths[0]=500;
+BT_widths[1]=400;
+BT_widths[2]=400;
+
+var BT_default_width=500;
 </script>
+
 <? echo makePilotPopup();  ?>
 
 <div class="tabber" id="compTabber">
@@ -166,6 +182,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    global $countHowMany;
    global $tabID;
    global $sort_funcs_pilots;
+   global $CONF;
 
    uasort($pilots,$sort_funcs_pilots[$category]);
 
@@ -205,13 +222,19 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
  		 else if ($i==3) $bg=" class='compThirdPlace'";
 		 else $bg=" class='$sortRowClass'";
 		 	 	     
-	     
+	     $pilotIDinfo=str_replace("_","u",$pilotID);
 		 echo "<TR $bg>";
 		 echo "<TD>".($i)."</TD>"; 	
 	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
-				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
-					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>".
-				"</div></TD>";
+				"<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
+					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>";
+					
+		if ($pilot['NACid'] && $pilot['NACmemberID'] && $pilot['NACclubID'] &&
+				 $CONF['NAC']['display_club_details_on_pilot_list']
+		) {	
+			echo "&nbsp;<a class='betterTip' id='tpa1_$pilotIDinfo' href=\"javascript:nop();\"><img src='$moduleRelPath/img/icon_nac_member.gif' align='absmiddle' border=0></a>";
+		}	
+		 echo "</div></TD>";
 		 if ($formatFunction) $outVal=$formatFunction($pilot[$category]["sum"]);
 		 else $outVal=$pilot[$category]["sum"];
    	     echo "<TD>".$outVal."</TD>"; 	 
@@ -234,10 +257,11 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 			if (!$val)  $outVal="-";
 			else if ($formatFunction) $outVal=$formatFunction($val);
 			else $outVal=$val;
-			$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
+			// $descr=_GLIDER.": $glider, "._COUNTRY.": $country";
 			if ($val) {
-				echo "<TD><a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr'  title='$descr'>".$outVal."</a>";
-				echo " <a id='t_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' class='betterTip' title='$descr'>?</a>";
+				echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal."</a>";
+				
+				//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
 				echo "</TD>"; 	 		  
 			} else echo "<TD>".$outVal."</TD>"; 	 		  
 			$k++;
@@ -326,9 +350,11 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 
 
 			$pilotName=prepare_for_js($pilotName);
+			$pilotIDinfo=str_replace("_","u",$pilotID);
+			
 			echo "<TD width='20%'>";
 			echo "<table width='100%' cellpadding='0' cellspacing='0' class='listTable3'><TR><TD colspan=3 id='$arrayName"."_$pilotID'>".
-				"<a  class='clubPilot' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
+				"<a  class='clubPilot betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
 					addslashes($pilotName)."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotName."</a>".
 			"</td></tr><tr>";
 			foreach($pilot['flights_sel'] as $flightID) {
@@ -347,8 +373,12 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 				
 				// $descr=_PILOT.": $pilotName, "._GLIDER.": $glider, "._COUNTRY.": $country";
 				$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
-				if ($val) echo "<TD width='33%'><a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
-				else echo "<TD width='33%'>".$outVal."</TD>"; 	 		  
+				$descr='';
+				if ($val) {
+					echo "<TD width='33%'><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr'  title='$descr'>".$outVal."</a></TD>"; 	 		  
+				} else { 
+					echo "<TD width='33%'>".$outVal."</TD>"; 	 		  
+				}	
 				$k++;
 				if ($k>=$countHowManyFlights) break;
 			}

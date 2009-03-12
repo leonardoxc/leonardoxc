@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_pilot_info.php,v 1.5 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_pilot_info.php,v 1.6 2009/03/12 15:13:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,6 +28,8 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
+	$op=$_GET['op'];	
+	
 	$pilotID1=makeSane($_GET['pilotID'],0);
 	list($serverID,$pilotIDview)=explode('u',$pilotID1);
 
@@ -62,8 +64,25 @@
   
   $pilot = mysql_fetch_assoc($res);
   
-  $pilotName=getPilotRealName($pilotIDview,$serverID,1);
+ 
+  
+  if ($op=='info_nac'){
+  
+		$nacQuery="SELECT * FROM $NACclubsTable WHERE NAC_ID=".$pilot['NACid']." AND clubID=".$pilot['NACclubID'];		
+		$res2= $db->sql_query($nacQuery);	
+		if($res2 <= 0){
+			echo("<H3>Error in nac club query</H3>\n");
+			return;
+		}
+		$row=mysql_fetch_assoc($res2);
+		
+		// echo _MEMBER_OF."<BR>".$row['clubName'];
+		echo $row['clubName'];
+		
+		exit;
+  }
 
+  $pilotName=getPilotRealName($pilotIDview,$serverID,1);
   $legend=_Pilot_Profile.": <b>$pilotName</b>";
   $legendRight="<a href='".
   	getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>'')).

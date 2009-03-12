@@ -76,7 +76,8 @@ function BT_remove()
 
 
 function BT_show(id) {
-
+	var BT_current_width=BT_default_width;
+	
 	if(BT_events[id] == 0)
 		return;
 
@@ -90,9 +91,19 @@ function BT_show(id) {
 		var idParts2 = idParts[0].split("a", 2);
 		var BT_base_url2=BT_base_urls[idParts2[1]];
 		url=BT_base_url2+extID;	
-		
-		if (idParts2[1]>=1)
+				
+		if ( typeof BT_displayOnSide != 'undefined'	) {
+			if ( BT_displayOnSide[idParts2[1]] == 'left' ) {
+				forceDisplayOnLeft=true;
+			}
+		} else if (idParts2[1]>=1  ) {
 			forceDisplayOnLeft=true;
+		}
+		
+		if ( typeof BT_widths != 'undefined'	) {
+			BT_current_width=BT_widths[idParts2[1]];
+		}
+			
 	} else if (BT_base_url!='') {
 		var idParts = id.split("_", 2);
 		var extID= idParts[1];
@@ -122,7 +133,7 @@ function BT_show(id) {
 	urlParts[0] = urlParts[0].substr(urlParts[0].lastIndexOf('/')+1);
 	
 	if(!query["width"] || query["width"].length == 0)
-		query["width"] = BT_default_width;
+		query["width"] = BT_current_width;
 	
 	var tipWidth = parseInt(query["width"]);
 	
