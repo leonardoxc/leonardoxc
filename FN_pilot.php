@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.40 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.41 2009/03/13 16:44:30 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -471,6 +471,9 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	global $CONF_edit_login;
 	global $CONF_edit_email;
 	global $CONF_password_minlength;
+	global $CONF;
+	
+	
 	$goodmsgs=array();
 	$errmsgs=array();
 	if (empty($CONF_edit_login)) {
@@ -487,7 +490,7 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 				if ($email=='') {
 					$errmsgs[]=_EmailInvalid;
 				}else {
-					$sql='UPDATE '.USERS_TABLE." SET user_email='$email' WHERE user_id=$userID";
+					$sql='UPDATE '.$CONF['userdb']['users_table']." SET user_email='$email' WHERE user_id=$userID";
 					$res=$db->sql_query($sql);
 			  		if($res<=0){
 			  			$errmsgs[]=_EmailSaveProblem;
@@ -512,7 +515,7 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 				$errmsgs[]=_PwdAndConfDontMatch;
 			}else {
 				$pwd=md5($newPassword);
-				$sql='UPDATE '.USERS_TABLE." SET user_password='$pwd' WHERE user_id=$userID";
+				$sql='UPDATE '.$CONF['userdb']['users_table']." SET user_password='$pwd' WHERE user_id=$userID";
 				$res=$db->sql_query($sql);
 		  		if($res<=0){
 		  			$errmsgs[]=_PwdChangeProblem;

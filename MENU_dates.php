@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_dates.php,v 1.6 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_dates.php,v 1.7 2009/03/13 16:44:30 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -69,7 +69,7 @@ if ( $op!='comp' ) {
 <tr>
 <?
 if ($CONF['seasons']['use_season_years'] ) {
-	echo '<td class="datesColumn"" valign="top">';
+	echo '<td class="datesColumn" valign="top">';
    	if ($season) $seasonLegend=_SEASON.' '.$season;
 	else $seasonLegend=_SELECT_SEASON;
 
@@ -142,7 +142,7 @@ if ($CONF['seasons']['use_season_years'] ) {
  showCalendar(this, document.formFilter.DAY_SELECT, 'dd.mm.yyyy','<? echo $calLang ?>',0,<? echo ($CONF['seasons']['use_season_years']?81:11)?>,49);
 </script>
 </td>
-<? } else { ?>
+<? } else {   ?>
 <td></td>
 <? } ?>
 
@@ -182,7 +182,7 @@ if ($CONF['seasons']['use_season_years'] ) {
 	</td>
 </tr>
 </TABLE>
-<? } else { 
+<? } else {  // if ( $op!='comp' ) 
 //-----------------------------------------------
 //-----------------------------------------------
 // simple years / seasons dropdown for xc league
@@ -198,23 +198,16 @@ if ($CONF['seasons']['use_season_years'] ) {
 <?
 	if ($CONF['seasons']['use_season_years'] ) {
 		echo '<td class="tableBox" valign="top" style="width:70px"><strong>'._SEASON.'</strong></td>';
-	} else {
-		echo '<td></td>';
-	}
-
-
-	if ($CONF['years']['use_calendar_years'] ) {
+	} else if ($CONF['years']['use_calendar_years'] ) {
 		echo '<td class="tableBox" valign="top" style="width:70px"><strong>'._YEAR.'</strong></td>';
 	} else {
-		echo '<td></td>';
-	}
-
-	
+		echo '<td>&nbsp;</td>';
+	}	
 ?>
-<tr>
+</tr>
 <?
 if ($CONF['seasons']['use_season_years'] ) {
-	echo '<td class="sp " valign="top">';
+	
    	if ($season) $seasonLegend=_SEASON.' '.$season;
 	else $seasonLegend=_SELECT_SEASON;
 
@@ -223,38 +216,41 @@ if ($CONF['seasons']['use_season_years'] ) {
 	if ($CONF['seasons']['use_defined_seasons']) {
 	
 		foreach ($CONF['seasons']['seasons'] as $thisSeason=>$seasonDetails) {
-			$seasonStr.="<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>$thisSeason,'year'=>'0','month'=>'0','day'=>'0'))."'>$thisSeason</a>\n";		
+			$seasonStr.='<td class="datesColumn" valign="top">';
+			$seasonStr.="<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>$thisSeason,'year'=>'0','month'=>'0','day'=>'0'))."'>$thisSeason</a>\n";	
+			$seasonStr.='</td></tr>';	
 		}
 	
 	} else {
 		for ( $thisSeason=$CONF['seasons']['end_season']; $thisSeason>=$CONF['seasons']['start_season'] ; $thisSeason--) {
+			$seasonStr.='<tr><td class="datesColumn" valign="top">';
 			$seasonStr.="<a href='".getLeonardoLink(array('op'=>'useCurrent','season'=>$thisSeason,'year'=>'0','month'=>'0','day'=>'0'))."'>$thisSeason</a>\n";
+			$seasonStr.='</td></tr>';
 		}
 	}	
-	echo $seasonStr."";
-	echo '</td>';
-} else {
-	echo '<td></td>';
-}
+	//echo '<td class="datesColumn" valign="top">';
+	echo $seasonStr;
+	//echo '</td>';
+	
+} else if ($CONF['years']['use_calendar_years'] ) { 
+	for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
+		echo '<tr><td class="datesColumn" valign="top">';
+		echo "<a href='".
+		getLeonardoLink(array('op'=>'useCurrent','season'=>0,'year'=>$i,'month'=>'0','day'=>'0'))
+		."'>$i</a>";
+		echo '</td></tr>';		
+	}
+
+	if (  ! $CONF['years']['dont_show_all_years'] ) { 
+		echo '<tr><td class="datesColumn" valign="top">';
+		?>
+	<a style='text-decoration:underline;' href='<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'0','month'=>'0','day'=>'0'))?>'><?=_ALL_YEARS?></a>    
+<? 
+		echo '</td></tr>';
+	 }
+} 
 
 ?>
-
-    <? 	if ($CONF['years']['use_calendar_years'] ) { ?>
-	<td class="sp " valign="top">
-	<?  
-		
-		for($i=$CONF['years']['end_year'];$i>=$CONF['years']['start_year'];$i--)  {
-			echo "<a href='".
-			getLeonardoLink(array('op'=>'useCurrent','season'=>0,'year'=>$i,'month'=>'0','day'=>'0'))
-			."'>$i</a>";		
-		}
-	?>
-	<a style='text-decoration:underline;' href='<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'0','month'=>'0','day'=>'0'))?>'><?=_ALL_YEARS?></a>
-	</td>
-	<? } else { ?>
-	
-	<? } ?>
-</tr>
 </TABLE>
 
 

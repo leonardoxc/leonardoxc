@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.24 2009/03/11 16:12:22 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.25 2009/03/13 16:44:30 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -178,13 +178,20 @@
   else $legendRight.="";
 */ 
 	$calLang=$lang2iso[$currentlang];
+	
+	if ($CONF['profile']['CIVL_ID']['enter_url'];) {
+		$CIVL_ID_enter_url=$CONF['profile']['CIVL_ID']['enter_url'];
+		$CIVL_ID_window_width=$CONF['profile']['CIVL_ID']['window_width'];
+		$CIVL_ID_window_height=$CONF['profile']['CIVL_ID']['window_height'];
+	} else {
+		$CIVL_ID_enter_url=getRelMainDir().'/GUI_EXT_civl_name_search.php?CIVL_ID_field=CIVL_ID';
+		$CIVL_ID_window_width=650;
+		$CIVL_ID_window_height=150;
+	}
 ?>
 <script language="javascript">
 	function setCIVL_ID() {
-
-		window.open('<?=getRelMainDir();?>/GUI_EXT_civl_name_search.php?CIVL_ID_field=CIVL_ID', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
-
-		//window.open('<?=$CONF['profile']['CIVL_ID_enter_url']?>', '_blank',	'scrollbars=auto,resizable=yes,WIDTH=700,HEIGHT=550,LEFT=100,TOP=100',false);
+		window.open('<?=$CIVL_ID_enter_url?>', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=<?=$CIVL_ID_window_width?>,HEIGHT=<?=$CIVL_ID_window_height?>,LEFT=100,TOP=100',true);	
 	}
 
 	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
@@ -226,7 +233,7 @@
 	if ($CONF_use_NAC) {
 		$readonly_fields=array();
 		$list1=$list2=$list3='';
-		$possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate');
+		$possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate', 'CIVL_ID');
 		$list4="var all_readonly_fields  = '".implode(',', $possible_readonly_fields)."';\n";
 		
 		foreach  ($CONF_NAC_list as $NACid=>$NAC) {
@@ -518,6 +525,44 @@
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Other_Interests ?></div></td>
       <td colspan="4" valign="top"><textarea name="OtherInterests" cols="80" rows="2"><? echo $pilot['OtherInterests'] ?></textarea></td>
     </tr>
+    
+    
+<? if ( $CONF['userdb']['edit']['enabled']) {
+
+	if ($CONF['userdb']['edit']['edit_email']) {
+		$text_email='<input name="user_email" type="text" value="'.$pilot['user_email'].'" size="35" >';
+	}else {
+		$text_email=$pilot['user_email'];
+	}
+	$text_edit_pwd='
+    <tr>
+      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F">'._Login_Stuff.'</font></strong></td>
+    </tr>
+	<tr>
+		<td valign="middle" bgcolor="#E9EDF5"> <div align="right">'._USERNAME.'</div></td>
+		<td valign="middle"><b>'.$pilot['username'].'</b></td>
+		<td>&nbsp;</td>
+		<td valign="middle" bgcolor="#E9EDF5" colspan="2" >'._EnterPasswordOnlyToChange.'</td>
+	</tr>
+	<tr>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._pilot_email.'</div></td>
+		<td>'.$text_email.'</td>
+		<td>&nbsp;</td>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD.'</div></td>
+		<td><input name="pwd1" type="password" value="" size="25" maxlength="32"></td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD_CONFIRMATION.'</div></td>
+		<td><input name="pwd2" type="password" value="" size="25" maxlength="32"></td>
+	</tr>
+';
+	echo $text_edit_pwd;
+} 
+
+?>
     <tr> 
       <td colspan="5" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?> 
           (<? echo _note_place_and_date ?>)</font></strong></div></td>

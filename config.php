@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.113 2009/03/12 15:13:33 manolis Exp $                                                                 
+// $Id: config.php,v 1.114 2009/03/13 16:44:30 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -692,9 +692,17 @@ define('SYNC_INSERT_PILOT_LOCAL',8);
 define('SYNC_INSERT_WAYPOINT_LINK',16);
 define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
+//---------------------------------------------------
+// user profile options
+//---------------------------------------------------
 
-// profile options
-$CONF['profile']['CIVL_ID_enter_url']=getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
+// the way to fill in the CIVL ID of the pilot
+$CONF['profile']['CIVL_ID']['enter_url']='';
+// example  for custom method : 
+// $CONF['profile']['CIVL_ID_enter_url']=
+// 			getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
+$CONF['profile']['CIVL_ID']['window_width']=700;
+$CONF['profile']['CIVL_ID']['window_height']=550;
 
 
 if (!function_exists('str_ireplace')) {
