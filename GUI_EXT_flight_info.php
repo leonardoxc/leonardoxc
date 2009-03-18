@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.10 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.11 2009/03/18 17:10:32 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -36,6 +36,10 @@
 	if ($flightID<=0) exit;
 		
 if ($op=='photos'){
+	$moduleRelPath=moduleRelPath(0); 
+	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
+	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+		
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
 
@@ -44,15 +48,44 @@ if ($op=='photos'){
 	
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
-			
+
+		$imagesHtml='';
 		foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 			
-			if ($photoInfo['name']) {
+			if ($photoInfo['name222']) {
 				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 				$imgStr="<img src='$imgIconRel'  class=\"photos\" border=\"0\">";		
 				echo "<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";		
-			}		
-		}
+			}	
+			
+			
+			if ($photoInfo['name']) {
+				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+		
+				$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
+				$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
+							
+				if (file_exists($imgBig) ) {
+					list($width, $height, $type, $attr) = getimagesize($imgBig);
+					list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+					$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+				} else 	if (file_exists($imgIcon) ) {
+					list($width, $height, $type, $attr) = getimagesize($imgIcon);
+					list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+					$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+				} else {
+					$imgStr="&nbsp;";
+				}
+		
+				$imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
+			}			
+			
+				
+		} 
+		echo $imagesHtml;
+
+
 	}
 
 } else if ($op=='comments'){

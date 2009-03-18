@@ -5,7 +5,7 @@ var DescriptionStr='';
 var TitleStr='';
 
 if (document.getElementById || document.all)
-	document.write('<div id="imgtrailer" style="position:absolute;visibility:hidden;"></div>')
+	document.write('<div id="imgtrailer" style="position:absolute;visibility:hidden;z-index:110;"></div>')
 
 function gettrailobject()
 	{

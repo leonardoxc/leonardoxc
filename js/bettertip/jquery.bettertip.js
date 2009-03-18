@@ -13,19 +13,42 @@ var BT_cache_enabled = true;
 var BT_events = new Array();
 var BT_titles = new Array();
 
+var BT_open_wait = 50; //time in millis to wait before showing dialog
+
 function BT_init(){
 	
     $("a.betterTip").parent("div.betterTip")
     .hover(function(){BT_hoverIn($(this).children("a.betterTip")[0]); return false;},
     	   function(){BT_hoverOut($(this).children("a.betterTip")[0])})
     ;
-    
-    $("a.betterTip").filter(function(index){
+	
+	$("a.betterTip").filter(function(index){
     	return $(this).parent("div.betterTip").length == 0;
+    }).hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
+	
+	
+	$("a.betterTip2").parent("div.betterTip2")
+    .hover(function(){BT_hoverIn($(this).children("a.betterTip2")[0]); return false;},
+    	   function(){BT_hoverOut($(this).children("a.betterTip2")[0])})
+    ;
+	
+    $("a.betterTip2").filter(function(index){
+    	return $(this).parent("div.betterTip2").length == 0;
     })
-    .hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
+	
+	
+	// .hover(function(){return false})
+	
+    //.hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
 	//.attr('href','javascript:nop()')
-	//.click(function(){BT_hoverIn(this)} );
+	
+	.click(function(){
+			if (BT_events[this.id] == 1) {
+				BT_hoverOut(this);
+			} else {
+				BT_hoverIn(this);
+			}
+	} );
 	// .click(function(){return false});	
 }
 
@@ -58,14 +81,17 @@ function BT_hoverIn(a)
 		BT_titles[a.id] = title;
 		a.title = "";
 	}
-		
-	BT_events[a.id] = 1;
+	//reset all other ids
+	BT_events=[];
+	BT_events[a.id] = 1; // means the id has its tip active
 	setTimeout(function(){BT_show(a.id)}, BT_open_wait);
 }
 
 function BT_hoverOut(a)
 {
-	BT_events[a.id] = 0;
+	//reset all other ids
+	BT_events=[];
+	BT_events[a.id] = 0; // means the id has its tip hidden
 	setTimeout(function(){BT_remove();}, BT_close_wait);
 }
 
@@ -78,10 +104,15 @@ function BT_remove()
 function BT_show(id) {
 	var BT_current_width=BT_default_width;
 	
+	var obj = $("#"+id);
+	
+	var isSticky=false;
+	if ( obj.hasClass('betterTip2') ) isSticky=true;
+	
 	if(BT_events[id] == 0)
 		return;
 
-	var obj = $("#"+id);
+	
 	var url='';
 
 	var forceDisplayOnLeft=false;
@@ -115,12 +146,20 @@ function BT_show(id) {
 	var title = BT_titles[id];
 	
 	$("#BT").remove();
-
-	var parents = $("#"+id).parent("div.betterTip");
 	
-	if(parents.length > 0)
-		id = $("#"+id).parent("div.betterTip")[0].id;
-
+	var parents ;
+	if (isSticky) {
+		parents = $("#"+id).parent("div.betterTip2");
+		
+		if(parents.length > 0)
+			id = $("#"+id).parent("div.betterTip2")[0].id;
+	} else {
+		parents = $("#"+id).parent("div.betterTip");
+		
+		if(parents.length > 0)
+			id = $("#"+id).parent("div.betterTip")[0].id;
+		
+	}
 	obj = $("#"+id);
 	
 	var showTitle = true;

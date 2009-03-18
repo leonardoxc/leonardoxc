@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.112 2009/02/03 13:22:41 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.113 2009/03/18 17:10:32 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -355,12 +355,23 @@ TR .newDate {
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+<script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
 <script type="text/javascript">
 
 var BT_base_urls=[];
 BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
 BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=photos&flightID=';
 BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightID=';
+
+var BT_displayOnSide=[];
+BT_displayOnSide[0]='auto';
+BT_displayOnSide[1]='left';
+BT_displayOnSide[2]='left';
+
+var BT_widths=[];
+BT_widths[0]=400;
+BT_widths[1]=400;
+BT_widths[2]=400;
 
 // BT_open_wait = 500; 
 BT_close_wait = 400; 
@@ -676,7 +687,7 @@ function removeClubFlight(clubID,flightID) {
 		}
 
 		$photosNum=$row["hasPhotos"];
-		if ($photosNum) echo "<a class='betterTip' id='tpa1_$flightID' href='javascript:nop();'><img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' border=0 title='$photosNum "._PHOTOS."' /></a>";
+		if ($photosNum) echo "<span><a class='betterTip2' id='tpa1_$flightID' href='javascript:nop();'><img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' border=0 title='$photosNum "._PHOTOS."' /></a></span>";
 		// else echo "<img class='photoIcon2' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
  
 		if ($row["comments"]) $hasComments=1;
