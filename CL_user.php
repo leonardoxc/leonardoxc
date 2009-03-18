@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_user.php,v 1.1 2009/03/13 16:44:30 manolis Exp $                                                                 
+// $Id: CL_user.php,v 1.2 2009/03/18 15:38:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -22,27 +22,23 @@ class LeoUser {
 	function LeoUser($userID="") {
 		if ( $userID) 	$this->userID=$userID+0;
 
-	    $this->valuesArray=array("pilotID", "serverID", "countryCode", "CIVL_ID", "NACid", "NACmemberID", "NACclubID", 
-"olcBirthDate", "olcFirstName", "olcLastName", "olcCallSign", "olcFilenameSuffix", "olcAutoSubmit", 
-"FirstName", "LastName", "clubID", "sponsor", "Sex", "Birthdate", "Occupation", "MartialStatus", "OtherInterests", 
-"PersonalWebPage", "PilotLicence", "BestMemory", "WorstMemory", "Training", "personalDistance", "personalHeight",
- "glider", "FlyingSince", "HoursFlown", "HoursPerYear", "FavoriteLocation", "UsualLocation", "FavoriteBooks", 
-"FavoriteActors", "FavoriteSingers", "FavoriteMovies", "FavoriteSite", "Sign", 
-"Spiral", "Bline", "FullStall", "Sat", "AsymmetricSpiral", "Spin", "OtherAcro",
- "camera", "camcorder", "Vario", "GPS", "Harness", "Reserve", "Helmet", "PilotPhoto"
+	    $this->valuesArray=array("pilotID", "serverID", "countryCode",
+					 "CIVL_ID", "NACid", "NACmemberID", "NACclubID"
 );
 		$this->gotValues=0;
 	}
 
 
-	function changeEmail($newEmail) {
-	
-	
+	function changeEmail($userID,$newEmail) {	
+		if ( function_exists('leoUser_changeEmail') ) {
+			return leoUser_changeEmail($userID,$newEmail);
+		} else return 0;
 	}
 	
-	function changePassword($newPassword) {
-	
-	
+	function changePassword($userID,$newPassword) {
+		if ( function_exists('leoUser_changePassword') ) {
+			return leoUser_changePassword($userID,$newPassword);
+		} else return 0;
 	}
 	
 	function userExists() {

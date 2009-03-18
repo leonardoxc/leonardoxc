@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.25 2009/03/13 16:44:30 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.26 2009/03/18 15:38:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,6 +19,7 @@
  */
   require_once dirname(__FILE__)."/CL_image.php";
   require_once dirname(__FILE__)."/CL_NACclub.php";
+  require_once dirname(__FILE__)."/CL_user.php";
   require_once dirname(__FILE__)."/lib/json/CL_json.php";
 
   if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
@@ -57,6 +58,26 @@
 		if (is_file(getPilotPhotoFilename($pilotIDview)) )	$PilotPhoto=1;
 		else $PilotPhoto=0;
 	}
+	
+	
+	if ( $CONF['userdb']['edit']['enabled']) {
+		# Martin Jursa 26.04.2007
+		# save password and/or email
+	
+		if ( $_POST['user_email'] == $_POST['user_email_old'] ) {
+			$newEmail='#same_as_old#leonardo#';
+		} else {
+			$newEmail= $_POST['user_email'];
+		}
+		$changeMsg=saveLoginData($pilotIDview,$newEmail	,
+			!empty($_POST['pwd1']) ? $_POST['pwd1'] : '',
+			!empty($_POST['pwd2']) ? $_POST['pwd2'] : ''
+		);
+		if ($changeMsg!='') {
+			echo '<div style="font-weight:bold;margin:10px;">'.$changeMsg.'</div>';
+		}
+	} # end save password
+	
 	
 	$NACid=$_POST['NACid']+0;
 	$NACmemberID=$_POST['NACmemberID']+0;
@@ -179,7 +200,7 @@
 */ 
 	$calLang=$lang2iso[$currentlang];
 	
-	if ($CONF['profile']['CIVL_ID']['enter_url'];) {
+	if ($CONF['profile']['CIVL_ID']['enter_url'] ) {
 		$CIVL_ID_enter_url=$CONF['profile']['CIVL_ID']['enter_url'];
 		$CIVL_ID_window_width=$CONF['profile']['CIVL_ID']['window_width'];
 		$CIVL_ID_window_height=$CONF['profile']['CIVL_ID']['window_height'];
@@ -529,36 +550,43 @@
     
 <? if ( $CONF['userdb']['edit']['enabled']) {
 
+;
 	if ($CONF['userdb']['edit']['edit_email']) {
-		$text_email='<input name="user_email" type="text" value="'.$pilot['user_email'].'" size="35" >';
+		$text_email='<input name="user_email" type="text" value="'.$pilot[$CONF['userdb']['email_field']].'" size="35" >';
+		$text_email.='<input name="user_email_old" type="hidden" value="'.$pilot[$CONF['userdb']['email_field']].'" >';
 	}else {
-		$text_email=$pilot['user_email'];
+		$text_email=$pilot[$CONF['userdb']['email_field']];
 	}
+	
 	$text_edit_pwd='
     <tr>
       <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F">'._Login_Stuff.'</font></strong></td>
     </tr>
 	<tr>
 		<td valign="middle" bgcolor="#E9EDF5"> <div align="right">'._USERNAME.'</div></td>
-		<td valign="middle"><b>'.$pilot['username'].'</b></td>
+		<td valign="middle"><b>'.$pilot[$CONF['userdb']['username_field']].'</b></td>
 		<td>&nbsp;</td>
-		<td valign="middle" bgcolor="#E9EDF5" colspan="2" >'._EnterPasswordOnlyToChange.'</td>
-	</tr>
-	<tr>
 		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._pilot_email.'</div></td>
 		<td>'.$text_email.'</td>
-		<td>&nbsp;</td>
-		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD.'</div></td>
-		<td><input name="pwd1" type="password" value="" size="25" maxlength="32"></td>
+		
+	</tr>
+	';
+	
+	if ($CONF['userdb']['edit']['edit_password']) {
+		$text_edit_pwd.='
+	<tr>
+		<td valign="middle" bgcolor="#E9EDF5" colspan="5" aling="center" ><div align="center"><strong>'._EnterPasswordOnlyToChange.'</strong></div></td>
 	</tr>
 	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
+		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD.'</div></td>
+		<td><input name="pwd1" type="password" value="" size="25" maxlength="32"></td>
 		<td>&nbsp;</td>
 		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._PASSWORD_CONFIRMATION.'</div></td>
 		<td><input name="pwd2" type="password" value="" size="25" maxlength="32"></td>
 	</tr>
 ';
+	}
+	
 	echo $text_edit_pwd;
 } 
 

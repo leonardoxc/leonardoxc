@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.41 2009/03/13 16:44:30 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.42 2009/03/18 15:38:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -476,12 +476,12 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	
 	$goodmsgs=array();
 	$errmsgs=array();
-	if (empty($CONF_edit_login)) {
-		$errmsgs[]='saveLoginData requires turning on CONF_edit_login.';
+	if (! $CONF['userdb']['edit']['enabled'] ) {
+		$errmsgs[]='saveLoginData requires turning on CONF["userdb"]["edit"]["enabled"].';
 	}elseif (empty($userID)) {
 		$errmsgs[]='UserID is missing; cannot update login data.';
 	}else  {
-		if (!empty($CONF_edit_email)) {
+		if ($CONF['userdb']['edit']['edit_email'] && $newEmail!='#same_as_old#leonardo#' ) {
 			if (empty($newEmail)) {
 				$errmsgs[]=_EmailEmpty;
 			}else {
@@ -490,6 +490,14 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 				if ($email=='') {
 					$errmsgs[]=_EmailInvalid;
 				}else {
+				
+					if ( LeoUser::changeEmail($userID,$email)  >0 ) {
+						$saved=true;
+						$goodmsgs[]=_EmailSaved;
+					} else {
+						$errmsgs[]=_EmailSaveProblem;
+					}
+					/*
 					$sql='UPDATE '.$CONF['userdb']['users_table']." SET user_email='$email' WHERE user_id=$userID";
 					$res=$db->sql_query($sql);
 			  		if($res<=0){
@@ -498,15 +506,19 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 						//$goodmsgs[]=_EmailSaved;
 						$saved=true;
 			  		}
+					*/
 				}
 	  			if (!$saved) $errmsgs[]=_EmailNotSaved;
 			}
 		}
-		if (!empty($newPassword)) {
+		
+		$newPassword=trim($newPassword);
+		$newPasswordConfirmation=trim($newPasswordConfirmation);
+		
+		if ($CONF['userdb']['edit']['edit_password'] && $newPassword ) {
 			$saved=false;
-			$newPassword=trim($newPassword);
-			$newPasswordConfirmation=trim($newPasswordConfirmation);
-			$passwordMinLength=!empty($CONF_password_minlength) ? $CONF_password_minlength : 4;
+
+			$passwordMinLength=!empty($CONF['userdb']['edit']['password_minlength']) ? $CONF['userdb']['edit']['password_minlength'] : 4;
 			if ($newPasswordConfirmation=='') {
 				$errmsgs[]=_PwdConfEmpty;
 			}elseif (strlen($newPassword)<$passwordMinLength) {
@@ -514,6 +526,14 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 			}elseif ($newPassword!=$newPasswordConfirmation) {
 				$errmsgs[]=_PwdAndConfDontMatch;
 			}else {
+			
+				if ( LeoUser::changePassword($userID,$newPassword) > 0 ) {
+					$saved=true;
+					$goodmsgs[]=_PwdChanged;
+				} else {
+					$errmsgs[]=_PwdChangeProblem;
+				}
+				/*
 				$pwd=md5($newPassword);
 				$sql='UPDATE '.$CONF['userdb']['users_table']." SET user_password='$pwd' WHERE user_id=$userID";
 				$res=$db->sql_query($sql);
@@ -523,10 +543,12 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 		  			$goodmsgs[]=_PwdChanged;
 	  				$saved=true;
 		  		}
+				*/
 			}
 	  		if (!$saved) $errmsgs[]=_PwdNotChanged;
 		}
 	}
+	
 	$message='';
 	if (count($goodmsgs)>0) {
 		$message.=implode('<br>', $goodmsgs);
