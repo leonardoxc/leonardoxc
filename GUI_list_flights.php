@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.113 2009/03/18 17:10:32 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.114 2009/03/19 22:46:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -370,8 +370,8 @@ BT_displayOnSide[2]='left';
 
 var BT_widths=[];
 BT_widths[0]=400;
-BT_widths[1]=400;
-BT_widths[2]=400;
+BT_widths[1]=450;
+BT_widths[2]=450;
 
 // BT_open_wait = 500; 
 BT_close_wait = 400; 

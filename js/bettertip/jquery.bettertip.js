@@ -15,6 +15,7 @@ var BT_titles = new Array();
 
 var BT_open_wait = 50; //time in millis to wait before showing dialog
 
+
 function BT_init(){
 	
     $("a.betterTip").parent("div.betterTip")
@@ -95,6 +96,15 @@ function BT_hoverOut(a)
 	setTimeout(function(){BT_remove();}, BT_close_wait);
 }
 
+function BT_close(idname)
+{
+	//reset all other ids
+	var a = $("#"+idname);
+	BT_events=[];
+	BT_events[a.id] = 0; // means the id has its tip hidden
+	setTimeout(function(){BT_remove();}, BT_close_wait);
+}
+
 function BT_remove()
 {
 	$('#BT').remove();
@@ -165,8 +175,17 @@ function BT_show(id) {
 	var showTitle = true;
 
 	if(title.length == 0)
-		showTitle = false;
+		showTitle = false;		
 	
+	var closeStr='';
+	if (isSticky ) {
+		showTitle=true;
+		title+="<span>&nbsp;</span>";
+	}
+	
+	if(showTitle)
+		arrowDir = "title_" +arrowDir;
+		
 	var urlParts = url.split("\?", 2);
 	var query = BT_parseQuery(urlParts[1]);
 	urlParts[0] = urlParts[0].substr(urlParts[0].lastIndexOf('/')+1);
@@ -205,20 +224,30 @@ function BT_show(id) {
 	else if(showTitle)
 		arrowTop = -2;
 	
-	if(showTitle)
-		arrowDir = "title_" +arrowDir;
 	
+	if (isSticky ) {
+		closeStr="<div id='BT_closeButton' style='top: "+arrowTop+"px; left:"+(arrowLeft-25)+"px;'><a href='javascript:BT_close(\""+id+"\");'>&nbsp;</a></div>";
+	}
+//		closeStr="<div id='#BT_closeButton'  style='margin-left: "+(query["width"]-18)+"px;'>x</div>";
+		
 	$("body").append(
 		"<div id='BT' class='BT_shadow0' style='top:"+(top-shadowTop-8)+"px; left:"+(left-shadowLeft - 8)+"px;'>" +
 		"<div class='BT_shadow1'>"+
 		"<div class='BT_shadow2'>" +
 		"<div id='BT_main' style='width:"+query["width"]+"px; top:"+shadowTop+"px; left:"+shadowLeft+"px;'>" +
 			"<div id='BT_arrow_"+arrowDir+"' style='top: "+arrowTop+"px; left:"+arrowLeft+"px;'></div>" +
+					
+			closeStr+
+			
 			//"<div class='infoBoxHeader'>"+
 			//	"<div class='title'></div>"+
 			//"<div class='closeButton'></div>"+
 			//"</div>"+
 			(showTitle?"<div id='BT_title'>"+title+"</div>":"") +
+			
+			//closeStr+
+			
+			
 			"<div style='padding:5px'>" +
 				"<div id='BT_content'>" +
 					"<div class='BT_loader'></div>" +
@@ -261,9 +290,11 @@ function BT_checkBounds() {
 	var window_height= 	$(window).height();
 
 	var h = $('#BT');
-
+	if (h==null) return;
+	
 	var divHeight=h.height();	
 	var offset= h.offset();
+	if (offset==null) return;
 	
 	var top=offset.top;
 	
