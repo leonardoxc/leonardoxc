@@ -8,9 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.3 2009/01/30 16:28:10 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.4 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
+
+
 
 	// Version Martin Jursa 20.05.2007
 	// Support for filtering by NACclubs via $_REQUEST[nacclub] added
@@ -26,6 +28,11 @@
 	else $where_clause=" AND cat=$cat ";
 	
 	$queryExtraArray=array();
+	
+	
+	if ($filter01) { // we only display flights with photos
+		$where_clause.= " AND hasPhotos>0 ";
+	}
 	
 	// SEASON MOD
 	if (! $clubID) { // if we are viewing a club, the dates will be taken care wit hthe CLUB code
@@ -102,8 +109,13 @@
 		//else $sortOrderFinal=$CONF_phpbb_realname_field;
 		 $sortOrderFinal=$CONF['userdb']['user_real_name_field'];
 	
-		if ($PREFS->nameOrder==1) $sortOrderFinal="CONCAT(FirstName,' ',LastName) ";
-		else $sortOrderFinal="CONCAT(LastName,' ',FirstName) ";
+		if ($PREFS->nameOrder==1) {
+			$sortOrderFinal=" FirstName,LastName ";						
+			// $sortOrderFinal="CONCAT(FirstName,' ',LastName) ";
+		} else {
+			$sortOrderFinal=" LastName,FirstName ";
+			// $sortOrderFinal="CONCAT(LastName,' ',FirstName) ";
+		}	
 	 }
 	
 	 if ( $CONF['userdb']['use_leonardo_real_names'] ) { // use the leonardo_pilots table 
@@ -203,5 +215,6 @@ if (0) {
 		// we put this later on main file
 
 	// echo "<!-- $query -->"; 
+	// echo "$query"; 
 
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_areas.php,v 1.4 2008/12/08 22:09:04 manolis Exp $                                                                 
+// $Id: GUI_list_areas.php,v 1.5 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,13 +17,13 @@ require_once dirname(__FILE__).'/CL_area.php';
 $areaID=makeSane($_GET['areaID'],1);
 
 
-open_inner_table("Flying Areas",730,'icon_takeoff.gif'); echo "<tr><td>";
+openMain(_Flying_Areas,0,'icon_takeoff.gif'); 
   
 ?>
 
   <table class=main_text width="564"  border="0" align="center" cellpadding="3" cellspacing="1">
     <tr> 
-      <td>Name of Area</td>
+      <td><?=_Name_of_Area?></td>
 	  <td>&nbsp;</td>
    </tr>
 <? 
@@ -39,13 +39,13 @@ open_inner_table("Flying Areas",730,'icon_takeoff.gif'); echo "<tr><td>";
 		echo "<tr> 
       <td>".$row['name']."</td>
 	  <td> ";	  
-	  echo "<a href='".	getLeonardoLink(array('op'=>'area_show','areaID'=>$row['ID']))."'>See the details and takeoffs for this area</a>";	
+	  echo "<a href='".	getLeonardoLink(array('op'=>'area_show','areaID'=>$row['ID']))."'>"._See_area_details."</a>";	
 	  echo "</td></tr> \n";
 
 	}
 	
 	echo "</table>";
-	close_inner_table();  
+	closeMain();  
 	return;
 
 ?>

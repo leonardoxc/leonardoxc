@@ -45,7 +45,9 @@ function setCIVL_ID() {
 }
 </script>
 <script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
-
+<?
+  openMain(sprintf(_Attention_mandatory_to_have_civlid,$CONF_server_short_name),0,''); 
+?>
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
 <tr><th><?=sprintf(_Attention_mandatory_to_have_civlid,$CONF_server_short_name);?></th></tr> 
 
@@ -101,6 +103,8 @@ function setCIVL_ID() {
 </td></tr>
 </table>
 <?php
+
+	closeMain();
 }
 if($_POST['registerForm']==1){
     if(!$r=_search($_POST['email'],$_POST['civlid'],'temp'))

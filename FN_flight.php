@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.49 2009/02/09 14:26:10 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.50 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -58,12 +58,15 @@ function checkTrackFileName($filename) {
 }
 
 function addFlightError($errMsg) {
+	/*
 	open_inner_table(_SUBMIT_FLIGHT_ERROR,600);
 	open_tr();
 		echo "<br><br><center>";
 		echo $errMsg;
 		echo "</center><br><br><br>";
 	close_inner_table();
+	*/
+	echo "<BR><BR><span class='alert'><strong>"._SUBMIT_FLIGHT_ERROR."</strong><br><BR>$errMsg</span>";
 	exitPage();
 }
 

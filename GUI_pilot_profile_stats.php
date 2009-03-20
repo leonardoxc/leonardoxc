@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_stats.php,v 1.8 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_stats.php,v 1.9 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -230,22 +230,19 @@ $mean_duration="N/A";
 
 }
 
-  open_inner_table("<table  class=main_text  width=100%><tr><td>$legend</td><td width=340 align=right bgcolor=#eeeeee>$legendRight</td></tr></table>",720,"icon_profile.png");
-  open_tr();  
-  echo "<td>";
+ openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
+
+
 ?>
-<table class=main_text width="100%" border="0">
-  <tr bgcolor="006699">
-    <td colspan="5" valign="top">
-      <div align="left"><strong><font color="#FFFFFF"><? echo _Totals?></font></strong></div></td>
-  </tr>
+ <div class='infoHeader'><?=_Totals?></div>
+ <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
-    <td valign="top" bgcolor="#FFFFFF">
+    <td  width='38%' valign="top" bgcolor="#FFFFFF">
     <div align="right"><? echo _First_flight_logged?></div></td>
-    <td width="100" bgcolor="#F1FAE2"> <? echo $row['firstFlightDate'] ?> </td>
-    <td width="5">&nbsp;</td>
-    <td bgcolor="#FFFFFF"><div align="right"><? echo _Total_Distance ?>(km) </div></td>
-    <td width="100" bgcolor="#F1FAE2"> <? echo formatDistanceOpen($row["totalDistance"],1) ?></td>
+    <td  width='12%' bgcolor="#F1FAE2"> <? echo $row['firstFlightDate'] ?> </td>
+    <td  width='1%'>&nbsp;</td>
+    <td  width='38%'bgcolor="#FFFFFF"><div align="right"><? echo _Total_Distance ?>(km) </div></td>
+    <td  width='11%' bgcolor="#F1FAE2"> <? echo formatDistanceOpen($row["totalDistance"],1) ?></td>
   </tr>
   <tr>
     <td valign="top" bgcolor="#E9EDF5">
@@ -272,17 +269,16 @@ $mean_duration="N/A";
     <td bgcolor="#E9EDF5"><div align="right"><? echo _Total_num_of_flights ?></div></td>
     <td bgcolor="#E0E0E0"> <? echo $row['totalFlights'] ?></td>
   </tr>
- <tr bgcolor="006699">
-    <td colspan="5" valign="top">
-      <div align="left"><strong><font color="#FFFFFF"><? echo _Personal_Bests?></font></strong></div></td>
-  </tr>
- 
+  </table>
+  
+ <div class='infoHeader'><?=_Personal_Bests?></div>
+ <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
-    <td bgcolor="#FFFFFF"><div align="right"><? echo _Best_Open_Distance ?> (km) </div></td>
-    <td bgcolor="#F1FAE2"> <? echo formatDistanceOpen($row["bestDistance"],1) ?></td>
-    <td>&nbsp;</td>
-    <td bgcolor="#FFFFFF"><div align="right"><? echo _Best_OLC_score ?></div></td>
-    <td bgcolor="#F1FAE2"><? echo formatOLCScore($row["bestOlcScore"]) ?></td>
+    <td width='38%' bgcolor="#FFFFFF"><div align="right"><? echo _Best_Open_Distance ?> (km) </div></td>
+    <td width='12%' bgcolor="#F1FAE2"> <? echo formatDistanceOpen($row["bestDistance"],1) ?></td>
+    <td width='1%'>&nbsp;</td>
+    <td width='38%' bgcolor="#FFFFFF"><div align="right"><? echo _Best_OLC_score ?></div></td>
+    <td width='11%' bgcolor="#F1FAE2"><? echo formatOLCScore($row["bestOlcScore"]) ?></td>
   </tr>
   <tr>
     <td bgcolor="#E9EDF5"><div align="right"><? echo _Best_FAI_Triangle ?> (km)</div></td>
@@ -309,16 +305,16 @@ $mean_duration="N/A";
     <td bgcolor="#E9EDF5"><div align="right"></div></td>
     <td bgcolor="#E0E0E0">&nbsp;</td>
   </tr>
-  <tr bgcolor="006699">
-    <td colspan="5" valign="top">
-      <div align="left"><strong><font color="#FFFFFF"><? echo _Mean_values ?></font></strong></div></td>
-  </tr>
+ </table>
+  
+ <div class='infoHeader'><?=_Mean_values?></div>
+ <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
-    <td bgcolor="#FFFFFF"><div align="right"><? echo _Mean_distance_per_flight ?> (km) </div></td>
-    <td bgcolor="#F1FAE2"><? echo formatDistanceOpen($mean_distance,1) ?></td>
-    <td>&nbsp;</td>
-    <td bgcolor="#FFFFFF"><div align="right"><? echo _Mean_duration_per_flight ?> (<? echo _hh_mm?>)</div></td>
-    <td bgcolor="#F1FAE2"> <? echo sec2Time($row["mean_duration"],1) ?></td>
+    <td width='38%' bgcolor="#FFFFFF"><div align="right"><? echo _Mean_distance_per_flight ?> (km) </div></td>
+    <td width='12%' bgcolor="#F1FAE2"><? echo formatDistanceOpen($mean_distance,1) ?></td>
+    <td width='1%'>&nbsp;</td>
+    <td width='38%' bgcolor="#FFFFFF"><div align="right"><? echo _Mean_duration_per_flight ?> (<? echo _hh_mm?>)</div></td>
+    <td width='11%' bgcolor="#F1FAE2"> <? echo sec2Time($row["mean_duration"],1) ?></td>
   </tr>
   <tr>
     <td valign="top" bgcolor="#E9EDF5">
@@ -347,22 +343,22 @@ $mean_duration="N/A";
       <div align="right"><? echo _Mean_duration_per_Year ?> (<? echo _hh_mm?>)</div></td>
     <td bgcolor="#E0E0E0"> <? echo $MeanDurationPerYear ?> </td>
   </tr>
-  <tr>
-    <td colspan="5" valign="top" bgcolor="#FFFFFF">&nbsp;</td>
-  </tr>
-  <tr bgcolor="006699">
-    <td colspan="5" valign="top"><div align="left"><strong><font color="#FFFFFF"><? echo _Total_num_of_flights ?></font></strong></div></td>
-  </tr>
+  </table>
+  
+ <div class='infoHeader'><?=_Total_num_of_flights?></div>
+ <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
     <td colspan="5" valign="top"><img src='<? echo getPilotStatsRelFilename($pilotIDview,1) ?>' border=0></td>
   </tr>
-  <tr bgcolor="006699">
-    <td colspan="5" valign="top"><div align="left"><strong><font color="#FFFFFF"><? echo _Total_Hours_Flown ?></font></strong></div></td>
-  </tr>
+  </table>
+  
+ <div class='infoHeader'><?=_Total_Hours_Flown?></div>
+ <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
     <td colspan="5" valign="top"><img src='<? echo getPilotStatsRelFilename($pilotIDview,2) ?>' border=0></td>
   </tr>
 </table>
-<?  echo "</td></tr>"; 
-  close_inner_table();
+
+<?
+	closeMain();
 ?>

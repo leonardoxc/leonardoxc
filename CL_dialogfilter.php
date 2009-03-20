@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_dialogfilter.php,v 1.8 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_dialogfilter.php,v 1.9 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -265,17 +265,17 @@ class dialogfilter {
 	function filter_html() {
 		$this->init_filter();
 		if ($this->errmsg) {
-			$html='
+			$html='  
     <tr>
-      <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong>'.$this->filter_title().'</span></div></td>
-      <td>ERROR: '.$this->errmsg.'</td>
+      <td class="infoHeader"><div align="right"><strong>'.$this->filter_title().'</strong></div></td>
+      <td class="infoHeader">ERROR: '.$this->errmsg.'</td>
     </tr>
 ';
 		}else {
 			$html='
     <tr>
-      <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong>'.$this->filter_title().'</strong></span></div></td>
-      <td>&nbsp;'.$this->filter_js_functions().'</td>
+      <td class="infoHeader"><div align="right"><strong>'.$this->filter_title().'</strong></div></td>
+      <td class="infoHeader">&nbsp;'.$this->filter_js_functions().'</td>
     </tr>
     <tr>
 		<td style="vertical-align:top"><input type="hidden" name="'.$this->dataelement.'" id="'.$this->dataelement.'" value="'.$this->datavalue.'"><div style="text-align:right">'._Filter_CurrentlySelected.':</div></td>

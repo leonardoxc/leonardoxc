@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_waypoint_show.php,v 1.13 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_waypoint_show.php,v 1.14 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -40,9 +40,13 @@
 </style>
 
 <?
-  open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>".$titleString."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",760,"icon_pin.png");
-  open_tr();
-  echo "<td>";	
+ // open_inner_table("<table class=main_text width=100% cellpadding=0 cellspacing=0><tr><td>".$titleString."</td><td align=right width=50><div align=right>".$opString."</div></td></tr></table>",760,"icon_pin.png");
+
+ $imgStr="<img src='$moduleRelPath/img/icon_pin.png' align='absmiddle'> ";
+
+ openMain("<div style='width:90%;font-size:12px;clear:none;display:block;float:left'>$imgStr$titleString</div><div align='right' style='width:10%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$opString</div>",0,'');
+
+
 ?> 
 <table width="100%" border="0" bgcolor="#EFEFEF" class=main_text>
 
@@ -152,6 +156,6 @@
   </tr>
 </table>
 <?
-  echo "</td></tr>";
-  close_inner_table();
+  
+  closeMain();
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.114 2009/03/13 16:44:30 manolis Exp $                                                                 
+// $Id: config.php,v 1.115 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -273,7 +273,11 @@ setlocale(LC_NUMERIC, 'en_US') ;
 
  $CONF_xc_types=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
  $CONF_xc_types_db=array(1=>"FREE_FLIGHT",2=>"FREE_TRIANGLE",4=>"FAI_TRIANGLE");				
-				
+
+ // defaul values
+ $gliderClassList=$CONF_category_types;
+ $xcTypesList=$CONF_xc_types;
+
  $CONF_default_cat_view=0; // pg
  $CONF_default_cat_add=1; //  the default category for submitting new flights 
  $CONF_default_cat_pilots=1; // the default cat to display pilots for

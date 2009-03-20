@@ -467,12 +467,32 @@ define("_SITE_RECORD_OPEN_DISTANCE","Site Record<br>(open distance)");
 // glider types
 //--------------------------------------------
 define("_GLIDER_TYPE","Glider type");
+
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Paraglider',2=>'Flex wing FAI1',4=>'Rigid wing FAI5',8=>'Glider');
-	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
+	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;		
 }
 setGliderCats();
+
+//--------------------------------------------
+// class types
+//--------------------------------------------
+function setClassList() {
+	global  $CONF_category_types,$gliderClassList;
+	$gliderClassList=array(1=>"Sport",2=>"Open",3=>"Tandem");
+	foreach ($CONF_category_types as $gId=>$gName) if (!$gliderClassList[$gId]) $gliderClassList[$gId]=$gName;
+}
+setClassList(); 
+//--------------------------------------------
+// xc types
+//--------------------------------------------
+function setXCtypesList() {
+	global  $CONF_xc_types,$xcTypesList;
+	$xcTypesList=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
+	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
+}
+setXCtypesList(); 
 
 //--------------------------------------------
 // user prefs  & units
@@ -865,34 +885,28 @@ Regards,
 Note: This is auto-response. Do not send any email to this email address
 --------");
 
+
 // New on 2008/11/26
+define('_MENU_AREA_GUIDE','Area Guide');
+define('_All_XC_types','_All XC types');
+define('_xctype','XC type');
+
+
+define('_Flying_Areas','Flying Areas');
+define('_Name_of_Area','Name of Area');
+define('_See_area_details','See the details and takeoffs for this area');
+
+define('_choose_ge_module','Please choose the module to use<BR>for Google Earth Display');
+define('_ge_module_advanced_1','(Most detailed, bigger size)');
+define('_ge_module_advanced_2','(Many details, big size) ');
+define('_ge_module_Simple','Simple (Only Task, very small)');
+
+define('_Pilot_search_instructions','Enter at least 3 letters of the First or Last Name');
+
+define('_All_classes','All classes');
+define('_Class','Class');
+
 /*
-define('Press Ctrl for multiple selection.  
-
-define('Area Guide
-define('Flying Areas
-define('Name of Area
-define('See the details and takeoffs for this area
-define('Sex
-
-define('Please choose the module to use for Google Earth Display
-define('(Many details, big size) 
-define('Simple (Only Task, very small)
-
-define('SEASON
-
-define('All classes
-define('Class
-
-define('Search
-define('Search for pilot: 
-define('Enter at least 3 letters of the First or Last Name 
-define('Pilot Name:
-
-define('"_xctype"
-define('All XC types
-define('3 Turnpoints XC
-define('Closed Triangle
 
 define('Show Optimization Details
 define('Optimization
@@ -904,4 +918,9 @@ define('XC distance
 define('XC Score
 
 */
+
+// 2009-03-20 filter for photos
+define("_Photos_filter_off","With/without photos");
+define("_Photos_filter_on","With photos only");
+
 ?>

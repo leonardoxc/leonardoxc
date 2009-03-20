@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_user_prefs.php,v 1.7 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_user_prefs.php,v 1.8 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
   
@@ -34,15 +34,11 @@
 
 ?>
 <form name=userPrefs  method="POST" >
-<BR />
 <?
-  open_inner_table(_MENU_MY_SETTINGS,400,"icon_profile.png");
-  
-  open_tr();  
-  echo "<td>";
+  openMain(_MENU_MY_SETTINGS,0,"icon_profile.png"); 
 ?>
 
-  <table  width="100%" border="0" bgcolor="#F4F3F1"  align="left" class="box main_text" style="background-color:#F4F3F1">
+  <table  width="100%" border="0" bgcolor="#F4F3F1" cellpadding="3" align="left" class="box main_text" style="background-color:#F4F3F1">
   	<tr> 
       <td colspan="3" >&nbsp;</td>
     </tr>
@@ -180,6 +176,6 @@
 </form>
 
 <?
-  echo "</td></tr>"; 
-  close_inner_table();
+
+  closeMain();
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.38 2009/02/03 13:22:41 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.39 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -142,12 +142,12 @@
 		 
 		 
 	   } // end else
-		 open_inner_table(_CHANGE_FLIGHT_DATA,650);
+		 openMain(_CHANGE_FLIGHT_DATA,0,'');
 
-		 echo "<center> <br><br>"._THE_CHANGES_HAVE_BEEN_APPLIED."<br><br><br>";
+		 echo "<center><br><span class='OK'>"._THE_CHANGES_HAVE_BEEN_APPLIED."</span><br><br><br>";
 		 echo "<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."'>"._RETURN_TO_FLIGHT."</a><br><br><br>";
 		 echo "</center>";
-		 close_inner_table();
+		 closeMain();
 	} else { // show the form
 // 
 
@@ -251,7 +251,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
   <form action="" enctype="multipart/form-data" method="post">	
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
-  <?  open_inner_table(_CHANGE_FLIGHT_DATA,760,"change_icon.png"); echo "<tr><td>"; ?>
+  <?  openMain(_CHANGE_FLIGHT_DATA,0,"change_icon.png"); ?>
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
 <? if ($enablePrivateFlights || L_auth::isAdmin($userID) ) { ?>
@@ -327,7 +327,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	  <div align="left">	  
            <select name="category">
            <?
-				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
 					if ($flight->category==$gl_id) $is_type_sel ="selected";
 					else $is_type_sel ="";
 					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
@@ -619,8 +619,8 @@ require_once dirname(__FILE__).'/FN_editor.php';
   
 </form>
 <?
-			echo "</td></tr>";
-	 		close_inner_table();
+
+	 		closeMain();
 		} //show FORM
 	} // end user check
 

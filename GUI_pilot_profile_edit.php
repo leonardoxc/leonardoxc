@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.26 2009/03/18 15:38:49 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.27 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -46,7 +46,7 @@
 		if (!is_dir($path)) @mkdir($path,0777);
 
 		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  getPilotPhotoFilename($pilotIDview) ) ) {
-			CLimage::resizeJPG(120,120, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview,1), 15);
+			CLimage::resizeJPG(150,150, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview,1), 15);
 			CLimage::resizeJPG(800,800, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview), 15);
 			$PilotPhoto=1;
 		} else { //upload not successfull
@@ -168,7 +168,9 @@
       return;  
     }
 
-    echo '<div style="font-weight:bold;margin:10px;">'._Your_profile_has_been_updated.'</div>';
+   // echo '<div style="font-weight:bold;margin:10px;">'._Your_profile_has_been_updated.'</div>';
+	echo "<div style='font-weight:bold;margin:10px;'><span class='ok'>"._Your_profile_has_been_updated."
+			</span></div>";
   }
   
   $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
@@ -186,18 +188,16 @@
 
   $pilot = mysql_fetch_assoc($res);
 
-  $legend=_Pilot_Profile.": <b>$pilot[username]</b>";
-  $legendRight="<a href='".
-	  getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
-	  ."'>"._PILOT_FLIGHTS."</a>";
-  $legendRight.=" | <a href='".
-	getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview))	
-  	."'>"._View_Profile."</a>";
-  $legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
-/*  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) || in_array($userID,$mod_users)  ) 
-	  $legendRight.=" | <a href='".CONF_MODULE_ARG."&op=pilot_profile_edit&pilotIDview=$pilotIDview'>edit profile</a>";
-  else $legendRight.="";
-*/ 
+	$legend=_Pilot_Profile.": <b>$pilot[username]</b>";
+	$legendRight="<a href='".
+		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
+		."'>"._PILOT_FLIGHTS."</a>";
+	$legendRight.=" | <a href='".
+		getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview))	
+	  	."'>"._View_Profile."</a>";
+	$legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
+
+
 	$calLang=$lang2iso[$currentlang];
 	
 	if ($CONF['profile']['CIVL_ID']['enter_url'] ) {
@@ -239,12 +239,10 @@
 
 <form name=pilotProfile  enctype="multipart/form-data" method="POST" >
 <?
-  open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=\"370\" align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
 
-//  open_tr();
-  echo "<tr>";
-  echo "<td>";
-  
+ openMain("<div style='width:50%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:50%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
+
+
    	# Changes Martin Jursa 09.03.2007:
 	# in case certain fields are set by an external tool, these fields will be set readonly
 	# otherwise, they can be edited
@@ -294,10 +292,8 @@
 	
 ?>
 
-  <table  class=main_text  width="100%" border="0">
-    <tr>
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _Personal_Stuff ?></font></strong></td>
-    </tr>
+  <div class='infoHeader'><?=_Personal_Stuff?></div>
+  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr>
       <td width=150 valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _First_Name ?></div></td>
       <td width="150" valign="top">
@@ -546,7 +542,7 @@
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Other_Interests ?></div></td>
       <td colspan="4" valign="top"><textarea name="OtherInterests" cols="80" rows="2"><? echo $pilot['OtherInterests'] ?></textarea></td>
     </tr>
-    
+    </table>
     
 <? if ( $CONF['userdb']['edit']['enabled']) {
 
@@ -559,9 +555,8 @@
 	}
 	
 	$text_edit_pwd='
-    <tr>
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F">'._Login_Stuff.'</font></strong></td>
-    </tr>
+	<div class=\'infoHeader\'>'._Login_Stuff.'</div>
+    <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
 	<tr>
 		<td valign="middle" bgcolor="#E9EDF5"> <div align="right">'._USERNAME.'</div></td>
 		<td valign="middle"><b>'.$pilot[$CONF['userdb']['username_field']].'</b></td>
@@ -587,14 +582,17 @@
 ';
 	}
 	
+	$text_edit_pwd.='
+			</table>
+	';
+			
 	echo $text_edit_pwd;
 } 
 
 ?>
-    <tr> 
-      <td colspan="5" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?> 
-          (<? echo _note_place_and_date ?>)</font></strong></div></td>
-    </tr>
+
+  <div class='infoHeader'><?=_Flying_Stuff." ("._note_place_and_date.")" ?></div>
+  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
       <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120">      </td>
@@ -638,23 +636,16 @@
       <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Worst_Flying_Memory ?></div></td>
       <td colspan="4" valign="top"><textarea name="WorstMemory" cols="80" rows="3"><? echo $pilot['WorstMemory'] ?></textarea></td>
     </tr>
-    <tr> 
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _Equipment_Stuff?></font></strong></td>
-    </tr>
+  </table>
 
+  <div class='infoHeader'><?=_Equipment_Stuff?></div>
+  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Glider?></div></td>
-      <td> <input name="glider" type="text" value="<? echo $pilot['glider'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Vario?></div></td>
-      <td> <input name="Vario" type="text" value="<? echo $pilot['Vario'] ?>" size="25" maxlength="120"></td>
+      <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Glider?></div></td>
+      <td width='25%'> <input name="glider" type="text" value="<? echo $pilot['glider'] ?>" size="25" maxlength="120"></td>
+      <td width='1%'>&nbsp;</td>
+      <td width='25%' bgcolor="#E9EDF5"><div align="right"><? echo _Vario?></div></td>
+      <td width='25%'> <input name="Vario" type="text" value="<? echo $pilot['Vario'] ?>" size="25" maxlength="120"></td>
     </tr>
 
     <tr>
@@ -679,16 +670,16 @@
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Camcorder?></div></td>
       <td> <input name="camcorder" type="text" value="<? echo $pilot['camcorder'] ?>" size="25" maxlength="120"></td>
     </tr>
+  </table>
+
+  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?>)?></div>
+  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _Manouveur_Stuff ?> 
-        (<? echo _note_max_descent_rate?>)</font></strong></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>
-      <td> <input name="Spiral" type="text" value="<? echo $pilot['Spiral'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Sat?></div></td>
-      <td> <input name="Sat" type="text" value="<? echo $pilot['Sat'] ?>" size="25" maxlength="80"></td>
+      <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>
+      <td width='25%'> <input name="Spiral" type="text" value="<? echo $pilot['Spiral'] ?>" size="25" maxlength="80"></td>
+      <td width='1%'>&nbsp;</td>
+      <td width='25%' bgcolor="#E9EDF5"><div align="right"><? echo _Sat?></div></td>
+      <td width='25%'> <input name="Sat" type="text" value="<? echo $pilot['Sat'] ?>" size="25" maxlength="80"></td>
     </tr>
     <tr> 
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Bline?></div></td>
@@ -711,15 +702,17 @@
       <td bgcolor="#E9EDF5"><div align="right"></div></td>
       <td>&nbsp;</td>
     </tr>
+  </table>
+  
+  
+  <div class='infoHeader'><?=_General_Stuff?></div>
+  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 
-      <td colspan="5" bgcolor="006699"><strong><font color="#FFA34F"><? echo _General_Stuff?></font></strong></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Singer?></div></td>
-      <td> <input name="FavoriteSingers" type="text" value="<? echo $pilot['FavoriteSingers'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Book?></div></td>
-      <td> <input name="FavoriteBooks" type="text" value="<? echo $pilot['FavoriteBooks'] ?>" size="25" maxlength="80"></td>
+      <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Singer?></div></td>
+      <td width='25%'> <input name="FavoriteSingers" type="text" value="<? echo $pilot['FavoriteSingers'] ?>" size="25" maxlength="80"></td>
+      <td width='1%'>&nbsp;</td>
+      <td width='25%' bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Book?></div></td>
+      <td width='24%'> <input name="FavoriteBooks" type="text" value="<? echo $pilot['FavoriteBooks'] ?>" size="25" maxlength="80"></td>
     </tr>
     <tr> 
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Movie?></div></td>
@@ -747,8 +740,7 @@
 </form>
 
 <?
-  echo "</td></tr>";
-  close_inner_table();
+  closeMain();
 
 if ($CONF_use_NAC) {
 ?>

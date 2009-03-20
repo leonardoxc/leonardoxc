@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.21 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.22 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -151,7 +151,8 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 
 // echo "#".$filter_clause;
 
- open_inner_table(_FILTER_PAGE_TITLE,700); echo "<tr><td>";
+ openMain(_FILTER_PAGE_TITLE,0,''); 
+ 
  if ($_REQUEST["FILTER_dateType"])  {
 	echo "<center><a href='".getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
 	// echo "<a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
@@ -187,14 +188,14 @@ function addFavorite() {
 	if ($is_ie) {
 		echo $js;
 	}
-	echo "<center><img src='".$moduleRelPath."/img/icon_filter.png' border=0>"._THE_FILTER_IS_ACTIVE."";
+	echo "<span class='ok'  style='margin-top:0;'><img src='".$moduleRelPath."/img/icon_filter.png' alinn='absmiddle' border=0> "._THE_FILTER_IS_ACTIVE."";
 	if ($is_ie) {
 		echo ' :: <a href="javascript:addFavorite();" title="'._Msg_AddToBookmarks_IE.'">'._Explanation_AddToBookmarks_IE.'</a><br></center><br><br>';
 	}else {
-		echo " :: <a href=\"$filterUrl\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."<br></center><br><br>";
+		echo " :: <a href=\"$filterUrl\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."<br></span><br><br>";
 	}
 	// end martin jursa 21.06.2007
- } else echo "<center><img src='".$moduleRelPath."/img/icon_p5.gif' border=0>"._THE_FILTER_IS_INACTIVE."</center>";
+ } else echo "<span class='note' style='margin-top:0;'>"._THE_FILTER_IS_INACTIVE."</span>";
  $calLang=$lang2iso[$currentlang];
 ?>
 <? if ($_GET['fl_url']) { ?>
@@ -226,11 +227,11 @@ window.location = "<? echo  $redirectUrl ?>"
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
 <form name="formFilter" method="post" action="">
-  <br>
-  <table class=main_text width="564"  border="0" align="center" cellpadding="1" cellspacing="1">
+
+  <table class=main_text width="564"  border="0" align="center" cellpadding="3" cellspacing="3">
     <tr>
-      <td bgcolor="#FF9966"><div class='whiteLetter' align="right"><strong><? echo _SELECT_DATE ?></strong></div></td>
-      <td>&nbsp;</td>
+      <td class='infoHeader'><div align="right"><strong><? echo _SELECT_DATE ?></strong></div></td>
+      <td class='infoHeader'>&nbsp;</td>
     </tr>
     <tr>
       <td><div align="right"></div></td>
@@ -317,8 +318,8 @@ foreach ($filterkeys as $filterkey) {
 ?>
 
     <tr>
-      <td bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _OTHER_FILTERS ?></strong></span></div></td>
-      <td>&nbsp;</td>
+      <td class='infoHeader'><div align="right"><strong><? echo _OTHER_FILTERS ?></strong></div></td>
+      <td class='infoHeader'>&nbsp;</td>
     </tr>
 
 	<tr>
@@ -392,6 +393,5 @@ foreach ($filterkeys as $filterkey) {
   <p>&nbsp;</p>
 </form>
 <?
-  close_inner_table();
-
+	closeMain();
 ?>

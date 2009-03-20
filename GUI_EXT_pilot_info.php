@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_pilot_info.php,v 1.6 2009/03/12 15:13:33 manolis Exp $                                                                 
+// $Id: GUI_EXT_pilot_info.php,v 1.7 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -96,9 +96,6 @@
   }
   else $legendRight.="";
   
-//  echo $legend;
-//  open_inner_table("<table  class=\"main_text\"  width=\"100%\"><tr><td>$legend</td><td width=350 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",720,"icon_profile.png");
-//  open_tr();
   
   echo "<table><tr>";
   echo "<td>";

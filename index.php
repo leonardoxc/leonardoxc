@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.102 2009/03/12 15:49:14 manolis Exp $                                                                 
+// $Id: index.php,v 1.103 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -252,6 +252,10 @@ setVarFromRequest("clubID",0,1);
 setVarFromRequest("nacclubid", 0, 1);
 setVarFromRequest("nacid", 0, 1);
 
+// The filter for displaying only flights with photos
+setVarFromRequest("filter01", 0, 1); 
+
+
 $serverID=0;
 if ( count($pilotPartsArray=split('_',$pilotIDview)) > 1 ) {
 	$serverID=$pilotPartsArray[0];
@@ -364,7 +368,7 @@ if ($op=="index_full") {
 } else if ($op=="show_flight" ) {  
     require $LeoCodeBase."/GUI_flight_show.php";		
 } else if ($op=="add_flight") {
-    if($CONF_force_civlid==1 && !$civlID) require $LeoCodeBase."/GUI_user_civl_search.php";
+    if($CONF_force_civlid==1 && !$civlID && 0) require $LeoCodeBase."/GUI_user_civl_search.php";
     else if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php"; // add by Durval Henke www.xcbrasil.org 19/12/2008 
 	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";
 } else if ($op=="add_from_zip") {

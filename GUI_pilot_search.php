@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_search.php,v 1.6 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_pilot_search.php,v 1.7 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -118,13 +118,12 @@ $(document).ready(function() {
 
 </script>
 <?
-	open_inner_table(_MENU_SEARCH_PILOTS,700,"icon_pilot.gif");
-
+	openMain(_MENU_SEARCH_PILOTS,0,"icon_pilot.gif");
 ?>
-Search for pilot: <BR />
-Enter at least 3 letters of the First or Last Name
+<?=_MENU_SEARCH_PILOTS?>: <BR />
+<?=_Pilot_search_instructions ?>
 <BR /><BR>
-Pilot Name: <input id="pilotName" name="pilotName" type="text" />
+<?=_PILOT_NAME?>: <input id="pilotName" name="pilotName" type="text" />
 <input id="pilotNameStr" name="pilotNameStr" type="hidden" />
 
 <div style="width:500px">
@@ -135,6 +134,5 @@ Pilot Name: <input id="pilotName" name="pilotName" type="text" />
 </div>
 <BR /><BR />
 <?
-	close_inner_table();
-  
+	closeMain();
 ?>

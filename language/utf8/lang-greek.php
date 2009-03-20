@@ -43,9 +43,9 @@ define("_MEAN_KM","Μέσος # km ανά πτήση");
 define("_TOTAL_KM","Συνολικά km πτήσεων");
 define("_TOTAL_DURATION_OF_FLIGHTS","Συνολική Διάρκεια πτήσεων");
 define("_MEAN_DURATION","Μέση διάρκεια πτήσης");
-define("_TOTAL_OLC_KM","Συνολική OLC απόσταση");
-define("_TOTAL_OLC_SCORE","Συνολικοί OLC βαθμοί");
-define("_BEST_OLC_SCORE","Καλύτερος OLC βαθμός");
+define("_TOTAL_OLC_KM","Συνολική XC απόσταση");
+define("_TOTAL_OLC_SCORE","Συνολικοί XC βαθμοί");
+define("_BEST_OLC_SCORE","Καλύτερος XC βαθμός");
 define("_From","από");
 
 // list_flights()
@@ -55,7 +55,7 @@ define("_SHOW","Εμφάνιση");
 // show flight
 define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Η πτήση θα ενεργοποιηθεί σε 1-2 λεπτά. ");
 define("_TRY_AGAIN","Ξαναδοκιμάστε σε λίγο");
-
+define("_SEASON","Χρονιά");
 define("_TAKEOFF_LOCATION","Απογείωση");
 define("_TAKEOFF_TIME","Ώρα απογείωσης");
 define("_LANDING_LOCATION","Προσγείωση");
@@ -63,9 +63,9 @@ define("_LANDING_TIME","Ώρα προσγείωσης");
 define("_OPEN_DISTANCE","Απόσταση σε ευθεία");
 // define("_DURATION","Διάρκεια");
 define("_MAX_DISTANCE","Μέγιστη Απόσταση");
-define("_OLC_SCORE_TYPE","Τύπος OLC βαθμολογίας");
-define("_OLC_DISTANCE","Απόσταση OLC");
-define("_OLC_SCORING","Βαθμολογία OLC");
+define("_OLC_SCORE_TYPE","Τύπος XC βαθμολογίας");
+define("_OLC_DISTANCE","Απόσταση XC");
+define("_OLC_SCORING","Βαθμολογία XC");
 define("_MAX_SPEED","Μέγιστη ταχύτητα");
 define("_MAX_VARIO","Μέγιστο ανοδικό");
 define("_MEAN_SPEED","Μέση ταχύτητα");
@@ -103,8 +103,8 @@ define("_PILOT_NAME","Ονομα Πιλότου");
 define("_TAKEOFF","Απογείωση");
 define("_DURATION","Διάρκεια");
 define("_LINEAR_DISTANCE","Ανοιχτή απόσταση");
-define("_OLC_KM","OLC χιλ.");
-define("_OLC_SCORE","OLC βαθμοί");
+define("_OLC_KM","XC χιλ.");
+define("_OLC_SCORE","XC βαθμοί");
 define("_DATE_ADDED","Πρόσφατες υποβολές");
 
 define("_SORTED_BY","Ταξινόμηση:");
@@ -160,7 +160,7 @@ define("_MENU_ADMIN","Διαχείρηση");
 
 
 define("_MENU_COMPETITION_LEAGUE","Κατάταξη - όλες οι κατηγορίες");
-define("_MENU_OLC","OLC");
+define("_MENU_OLC","XC");
 define("_MENU_OPEN_DISTANCE","Ανοιχτή απόσταση");
 define("_MENU_DURATION","Διάρκεια");
 define("_MENU_ALL_FLIGHTS","Όλες οι πτήσεις");
@@ -190,9 +190,9 @@ define("_NUMBER_OF_FLIGHTS","Αριθμός πτήσεων");
 define("_TOTAL_DISTANCE","Συνολική απόσταση");
 define("_TOTAL_DURATION","Συνολική διάρκεια");
 define("_BEST_OPEN_DISTANCE","Καλύτερη απόσταση");
-define("_TOTAL_OLC_DISTANCE","Συνολική OLC απόσταση");
-define("_TOTAL_OLC_SCORE","Συνολικοί OLC βαθμοί");
-define("_BEST_OLC_SCORE","Καλύτερος OLC βαθμός");
+define("_TOTAL_OLC_DISTANCE","Συνολική XC απόσταση");
+define("_TOTAL_OLC_SCORE","Συνολικοί XC βαθμοί");
+define("_BEST_OLC_SCORE","Καλύτερος XC βαθμός");
 define("_MEAN_DURATION","Μέση διάρκεια");
 define("_MEAN_DISTANCE","Μέση Απόσταση");
 define("_PILOT_STATISTICS_SORT_BY","Πιλότοι - Ταξινόμηση ανά");
@@ -219,8 +219,8 @@ define("_NO","ΟΧΙ");
 
 define("_LEAGUE_RESULTS","Αποτελέσματα Κατάταξης");
 define("_N_BEST_FLIGHTS"," καλύτερες πτήσεις");
-define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","OLC Συνολική βαθμολογία");
+define("_OLC","XC");
+define("_OLC_TOTAL_SCORE","XC Συνολική βαθμολογία");
 define("_KILOMETERS","Χιλιόμετρα");
 define("_TOTAL_ALTITUDE_GAIN","Συνολική απόκτηση ύψους");
 define("_TOTAL_KM","Συνολικά χιλ.");
@@ -255,8 +255,8 @@ define("_COUNTRY","Χώρα");
 define("_SELECT_COUNTRY","Επιλέξτε χώρα");
 define("_OTHER_FILTERS","Λοιπά στοιχεία");
 define("_LINEAR_DISTANCE_SHOULD_BE","Η απόσταση σε ευθεία να είναι");
-define("_OLC_DISTANCE_SHOULD_BE","Η απόσταση OLC να είναι");
-define("_OLC_SCORE_SHOULD_BE","Η βαθμολογία OLC να είναι");
+define("_OLC_DISTANCE_SHOULD_BE","Η απόσταση XC να είναι");
+define("_OLC_SCORE_SHOULD_BE","Η βαθμολογία XC να είναι");
 define("_DURATION_SHOULD_BE","Η διάρκεια να είναι");
 define("_ACTIVATE_CHANGE_FILTER","Ενεργοποίηση / αλλαγή ΦΙΛΤΡΟΥ");
 define("_DEACTIVATE_FILTER","Απενεργοποίηση ΦΙΛΤΡΟΥ");
@@ -377,6 +377,27 @@ define("_Your_profile_has_been_updated","Το προφίλ σας έχει αλ�
 define("_Submit_Change_Data","Αλλαγή στοιχείων");
 
 //--------------------------------------------
+// Added by Martin Jursa, 26.04.2007 for pilot_profile and pilot_profile_edit
+//--------------------------------------------
+define("_Sex", "Φύλο");
+define("_Login_Stuff", "Change Login-Data");
+define("_PASSWORD_CONFIRMATION", "Confirm password");
+define("_EnterPasswordOnlyToChange", "Only enter the password, if you want to change it:");
+
+define("_PwdAndConfDontMatch", "Password and confirmation are different.");
+define("_PwdTooShort", "The password is too short. It must have a length of at least $passwordMinLength characters.");
+define("_PwdConfEmpty", "The password has not be confirmed.");
+define("_PwdChanged", "The password was changed.");
+define("_PwdNotChanged", "The password has NOT been changed.");
+define("_PwdChangeProblem", "A problem occurred when changing the password.");
+
+define("_EmailEmpty", "The email address must not be empty.");
+define("_EmailInvalid", "The email address is invalid.");
+define("_EmailSaved", "The email address was saved");
+define("_EmailNotSaved", "The email address has not been saved.");
+define("_EmailSaveProblem", "A problem occurred when saving the email address.");
+
+//--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
 define("_hh_mm","ωω:λλ");
@@ -386,7 +407,7 @@ define("_First_flight_logged","Πρώτη πτήση που καταχωρήθη
 define("_Last_flight_logged","Τελευταία πτήση που καταχωρήθηκε");
 define("_Flying_period_covered","Πτήτική περίοδος<br>καταχωρημένων πτησεων");
 define("_Total_Distance","Συνολική απόσταση");
-define("_Total_OLC_Score","Συνολική βαθμολογία OLC");
+define("_Total_OLC_Score","Συνολική βαθμολογία XC");
 define("_Total_Hours_Flown","Συνολικές ώρες πτήσης");
 define("_Total_num_of_flights","Συνολικός αριθμός πτήσεων");
 
@@ -395,7 +416,7 @@ define("_Best_Open_Distance","Καλύτερη ανοιχτή απόσταση")
 define("_Best_FAI_Triangle","Καλύτερο FAI Τρίγωνο");
 define("_Best_Free_Triangle","Καλύτερο Ελέυθερο Τρίγωνο");
 define("_Longest_Flight","Μεγαλύτερη διάρκεια πτήσης");
-define("_Best_OLC_score","Καλύτερη βαθμολογία OLC");
+define("_Best_OLC_score","Καλύτερη βαθμολογία XC");
 define("_Absolute_Height_Record","Μέγιστο υψόμετρο απο θάλασσα");
 define("_Altitute_gain_Record","Μέγιστη απόκτηση ύψους απο την απογείωση");
 
@@ -453,6 +474,25 @@ function setGliderCats() {
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
+
+//--------------------------------------------
+// class types
+//--------------------------------------------
+function setClassList() {
+	global  $CONF_category_types,$gliderClassList;
+	$gliderClassList=array(1=>"Sport (έως και DHV 1/2)",2=>"Open (απο DHV 2)",3=>"Διθέσια");
+	foreach ($CONF_category_types as $gId=>$gName) if (!$gliderClassList[$gId]) $gliderClassList[$gId]=$gName;
+}
+setClassList(); 
+//--------------------------------------------
+// xc types
+//--------------------------------------------
+function setXCtypesList() {
+	global  $CONF_xc_types,$xcTypesList;
+	$xcTypesList=array(1=>"XC με 3 πυλώνες",2=>"Τρίγωνο Ανοιχτό",4=>"Τρίγωνο FAI κλειστό");
+	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
+}
+setXCtypesList(); 
 
 //--------------------------------------------
 // user prefs  & units
@@ -598,7 +638,7 @@ define("_Select_date_as_date.","Επιλογή [date] ως ημερομηνία�
 // New on 2007/05/18 (alternative GUI_filter)
 define("_Filter_NoSelection", "Χωρίς επιλογή");
 define("_Filter_CurrentlySelected", "Τρέχουσα επιλογή");
-define("_Filter_DialogMultiSelectInfo", "Press Ctrl for multiple selection.");
+define("_Filter_DialogMultiSelectInfo", "Κρατήστε πατημένπ το Ctrl<BR>για να επιλέξετε περισσότερα απο ένα.");
 
 define('_Filter_FilterTitleIncluding', 'Επιλογή [items]');
 define('_Filter_FilterTitleExcluding', 'Αποκλεισμός [items]');
@@ -692,29 +732,38 @@ define("_Show_Airspace","Εμφάνιση Airspace");
 // New on 2008/06/04
 define("_Show_Optimization_details","Αναλυτικά η βαθμολόγηση");
 
-define("_MENU_SEARCH_PILOTS","Εύρευση πιλότου");
+define("_MENU_SEARCH_PILOTS","Εύρευση πιλότου");
+
+
+// New on 2008/11/26
+define('_MENU_AREA_GUIDE','Περιοχές πτήσεων');
+define('_All_XC_types','Όλοι οι τύποι XC');
+define('_xctype','Τύπος XC');
+
+define('_Flying_Areas','Περιοχές πτήσεων');
+define('_Name_of_Area','Όνομα περιοχής');
+define('_See_area_details','Δείτε περισσότερες πληροφορίες και τις απογειώσεις της περιοχής');
+
+define('_choose_ge_module','Επιλέξτε τον τρόπο<BR>απεικόνησης στο Google Earth');
+define('_ge_module_advanced_1','(Αναλυτικότατος, μέγιστο μέγεθος)');
+define('_ge_module_advanced_2','(Αναλυτικός, μεγάλο μέγεθος) ');
+define('_ge_module_Simple','Απλός (Μόνο Task, μικρό μέγεθος)');
+
+define('_Pilot_search_instructions','Πληκτρολογήστε τουλάχιστον 3 γράμματα απο το όνομα ή το επίθετο');
+
+define('_All_classes','Όλες οι κλάσεις');
+define('_Class','Κλάση');
+
+// 2009-03-20 filter for photos
+define("_Photos_filter_off","Με/χωρίς φωτογραφίες");
+define("_Photos_filter_on","Μόνο με φωτογραφίες");
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
-define("_SEASON","Season"); 
 define("_SUBMIT_TO_OLC","Submit to OLC"); 
 define("_pilot_email","Email Address"); 
-define("_Sex","Sex"); 
-define("_Login_Stuff","Change Login-Data"); 
-define("_PASSWORD_CONFIRMATION","Confirm password"); 
-define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
-define("_PwdAndConfDontMatch","Password and confirmation are different."); 
-define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
-define("_PwdConfEmpty","The password has not be confirmed."); 
-define("_PwdChanged","The password was changed."); 
-define("_PwdNotChanged","The password has NOT been changed."); 
-define("_PwdChangeProblem","A problem occurred when changing the password."); 
-define("_EmailEmpty","The email address must not be empty."); 
-define("_EmailInvalid","The email address is invalid."); 
-define("_EmailSaved","The email address was saved"); 
-define("_EmailNotSaved","The email address has not been saved."); 
-define("_EmailSaveProblem","A problem occurred when saving the email address."); 
 define("_Thermals","Thermals"); 
 define("_MemberID_Missing","Your member ID is missing"); 
 define("_MemberID_NotNumeric","The member ID must be numeric"); 

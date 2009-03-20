@@ -803,5 +803,20 @@ define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in anoth
 define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
 define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
 define("_Server_send_conf_email","The server have sended to the %s an email asking for confirmation, you have 3 hours from now to confirm your registration by clicking or copying and pasting the link that are in the email body in your browser addres"); 
+define("_MENU_AREA_GUIDE","Area Guide"); 
+define("_All_XC_types","_All XC types"); 
+define("_xctype","XC type"); 
+define("_Flying_Areas","Flying Areas"); 
+define("_Name_of_Area","Name of Area"); 
+define("_See_area_details","See the details and takeoffs for this area"); 
+define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display"); 
+define("_ge_module_advanced_1","(Most detailed, bigger size)"); 
+define("_ge_module_advanced_2","(Many details, big size) "); 
+define("_ge_module_Simple","Simple (Only Task, very small)"); 
+define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name"); 
+define("_All_classes","All classes"); 
+define("_Class","Class"); 
+define("_Photos_filter_off","With/without photos"); 
+define("_Photos_filter_on","With photos only"); 
 
 ?>

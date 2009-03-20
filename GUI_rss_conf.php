@@ -8,14 +8,15 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_rss_conf.php,v 1.5 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_rss_conf.php,v 1.6 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
  list($countriesCodes,$countriesNames)=getCountriesList();
  $rss_url_base="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."rss.php";
-echo "<BR>";
- open_inner_table("Configure RSS Feed",700,"rss.gif"); echo "<tr><td>";
+
+ openMain("Configure RSS Feed",0,"rss.gif"); 
+ 
 ?>
 <script language="javascript">
 
@@ -99,6 +100,6 @@ function updateRssURL() {
   <p>&nbsp;</p>
 </form>
 <? 
-  close_inner_table();  
+  closeMain();  
 
 ?>

@@ -8,17 +8,13 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_program_info.php,v 1.16 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_program_info.php,v 1.17 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
-  echo "<br>";
-  open_inner_table("Leonardo XC Server",760,"icon_help.png");
-  echo "<tr><td>";
-  ?>
-
-
-
+ 
+  openMain("Leonardo XC Server",0,"icon_help.png");
+?>
   
 <div align="center"> 
   <p> 
@@ -159,7 +155,6 @@
   <p> 
   <p>
 </div>
-  <?
-   echo "</td></tr>";
-  close_inner_table();
+<?
+	closeMain();
 ?>

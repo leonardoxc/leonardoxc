@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_waypoint_add.php,v 1.16 2009/03/11 16:12:22 manolis Exp $                                                                 
+// $Id: GUI_EXT_waypoint_add.php,v 1.17 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 	@session_start();
@@ -103,8 +103,6 @@
 </head>
   <?
 
- // open_inner_table(_ADD_WAYPOINT,450,"icon_pin.png"); 
- // echo "<tr><td>";	
 
 
 	// get info from leonardo server around the world !!!

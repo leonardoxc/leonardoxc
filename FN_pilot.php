@@ -8,10 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.42 2009/03/18 15:38:49 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.43 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
+require_once dirname(__FILE__)."/CL_image.php";
 
 //------------------- PILOT RELATED FUNCTIONS ----------------------------
 function getPilotList($clubID=0) {
@@ -370,6 +371,15 @@ function getPilotPhotoFilename($pilotID,$icon=0) {
 	return $flightsAbsPath."/".$pilotID."/PilotPhoto".$suffix;
 }
 
+function checkPilotPhoto($pilotID) {
+	$normalImagePath=getPilotPhotoFilename($pilotID,0);
+	$thumbImagePath=getPilotPhotoFilename($pilotID,1);
+	
+	if (!is_file($thumbImagePath) && is_file($normalImagePath) ) { // create icon
+	 	CLimage::resizeJPG(150,150,$normalImagePath , $thumbImagePath , 15);
+	}
+}
+
 function getPilotStatsRelFilename($pilotID,$num) {
 	global 	$moduleRelPath;	
 	return $moduleRelPath."/flights/".$pilotID."/PilotStats_$num.png";
@@ -551,10 +561,10 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	
 	$message='';
 	if (count($goodmsgs)>0) {
-		$message.=implode('<br>', $goodmsgs);
+		$message.='<span class="ok">'.implode('<br>', $goodmsgs).'</span>';
 	}
 	if (count($errmsgs)>0) {
-		$message.='<div style="color:red; margin:0">'.implode('<br>', $errmsgs).'</div>';
+		$message.='<span class="alert">'.implode('<br>', $errmsgs).'</span>';
 	}
 	return $message;
 }

@@ -821,3 +821,11 @@ span.ok  {
 	background-image: url(img/status-ok.png);
 	
 }
+
+/* the headers in pilot profile screens*/
+.infoHeader {
+	border-bottom:1px solid #006699;
+	padding:5px;
+	margin-bottom:3px;
+	font-weight:bold;
+}

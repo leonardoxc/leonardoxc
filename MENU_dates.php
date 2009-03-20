@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_dates.php,v 1.7 2009/03/13 16:44:30 manolis Exp $                                                                 
+// $Id: MENU_dates.php,v 1.8 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -43,7 +43,7 @@ if ( $op!='comp' ) {
 <tr>
 <?
 	if ($CONF['seasons']['use_season_years'] ) {
-		echo '<td class="datesColumnHeader" style="width:70px">SEASON';
+		echo '<td class="datesColumnHeader" style="width:70px">'._SEASON;
 	} else {
 		echo '<td class="datesColumnHeader">';
 	}

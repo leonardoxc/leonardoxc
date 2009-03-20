@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.69 2009/02/26 15:41:52 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.70 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -302,7 +302,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <li><a href="#"><?=_MENU_TAKEOFFS." ".$arrDownImg ?></a>
 	<ul>
 		<li><a href="<?=getLeonardoLink(array('op'=>'sites') )?>"><?=_MENU_SITES_GUIDE ?></a></li>
-		<li><a href="<?=getLeonardoLink(array('op'=>'list_areas') )?>">Area Guide</a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'list_areas') )?>"><?=_MENU_AREA_GUIDE?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_takeoffs') )?>"><?=_MENU_TAKEOFFS ?></a></li>
 	</ul>
 </li>

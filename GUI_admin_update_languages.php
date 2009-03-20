@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_update_languages.php,v 1.7 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_update_languages.php,v 1.8 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,14 +20,13 @@
 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";	
 	$admin_op=makeSane($_GET['admin_op']);
 		
-	open_inner_table("ADMIN AREA :: Language translations",700);
-	echo "<tr><td align=left>";	
+	openMain("ADMIN AREA :: Language translations",0,'');
 
 	echo "<br>";
 	echo "<ul>";
 	
 	
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_languages&admin_op=update'>1. Proccess all language files and create/update files in 'utf8'/'iso' dirs</a><BR></a>";
+	echo "<li><a href='".getLeonardoLink(array('op'=>'admin_languages','admin_op'=>'update') )."'>1. Proccess all language files and create/update files in 'utf8'/'iso' dirs</a><BR></a>";
 
 	echo "</ul><HR><br>";
 	define('LANG_ABS_PATH',dirname(__FILE__).'/language');
@@ -137,8 +136,8 @@
 		
 	} // end if admin_op
 
-	echo "</td></tr>";
-    close_inner_table();
+	
+    closeMain();
 	
 	
 function getDefinesAsArray($file){

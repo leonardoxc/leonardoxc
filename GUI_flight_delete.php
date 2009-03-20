@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_delete.php,v 1.10 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_flight_delete.php,v 1.11 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,16 +21,16 @@
   if ($confirmed && ( $flight->belongsToUser($userID) || L_auth::isAdmin($userID) )  ) {
 
 	$flight->deleteFlight();
-	echo "<div align=center><br>"._THE_FLIGHT_HAS_BEEN_DELETED."<br><br>";
+	echo "<br><span class='ok'>"._THE_FLIGHT_HAS_BEEN_DELETED."</span><br><br>";
 	echo "<a href='".getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN."</a><br></div>";
   } else {
 	  $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
 	
-	  open_inner_table(_CAUTION_THE_FLIGHT_WILL_BE_DELETED,600,"delete_icon.png");
+	  openMain(_CAUTION_THE_FLIGHT_WILL_BE_DELETED,0,"delete_icon.png");
 	  echo "<div align=center><br><b>"._PILOT.": ".$flight->userName." &nbsp;&nbsp; "._THE_DATE.": ".formatDate($flight->DATE)."  &nbsp;&nbsp; "._TAKEOFF_LOCATION.": ".$location."</b> ";
 	  echo "<br><br><a href='".getLeonardoLink(array('op'=>'delete_flight','flightID'=>$flightID,'confirmed'=>'1'))."'>"._YES."</a> | <a href='javascript:history.go(-1)'>"._NO."</a>";
 	  echo "<br></div>";
-	  close_inner_table();
+	  closeMain();
   }
   
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.46 2009/03/12 15:49:14 manolis Exp $                                                                 
+// $Id: MENU_second_menu.php,v 1.47 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -424,10 +424,10 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0')); 
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0> All classes</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0> "._All_classes."</a></li>\n";
 		
-   if ( count($CONF_category_types) > 1 ) { 
-		foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+   if ( count($gliderClassList) > 1 ) { 
+		foreach ( $gliderClassList as $gl_id=>$gl_type) {
 			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id)); 		  
 			  $catImg="<img src='".$moduleRelPath."/img/icon_class_".$gl_id.".gif' border=0>";
 			  if ($cat==$tmpcat) $current_catImg=$catImg;
@@ -438,10 +438,10 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	}
 	
 	if ($class) { 
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Category.": ".$CONF_category_types[$class]."'>";
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": ".$gliderClassList[$class]."'>";
 		//$gliderCatList[$cat]
   }	else {		
-		$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Category.": "._All_glider_types."'>";
+		$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": "._All_classes."'>";
   }
   
 ?>
@@ -459,10 +459,10 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 $catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0')); 
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0> All XC types</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0> "._All_XC_types."</a></li>\n";
 		
-   if ( count($CONF_xc_types) > 1 ) { 
-		foreach ( $CONF_xc_types as $gl_id=>$gl_type) {
+   if ( count($xcTypesList) > 1 ) { 
+		foreach ( $xcTypesList as $gl_id=>$gl_type) {
 			$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>$gl_id)); 		  
 			  $catImg="<img src='".$moduleRelPath."/img/icon_xctype_".$gl_id.".gif' border=0>";			  		  
 			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
@@ -471,10 +471,10 @@ $catLiStr="";
 	}
 	
 	if ($xctype) { 
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": ".$CONF_category_types[$class]."'>";
+    	$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": ".$xcTypesList[$xctype]."'>";
 		//$gliderCatList[$cat]
   }	else {		
-		$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": "._All_xc_types."'>";
+		$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": "._All_XC_types."'>";
   }
   
 ?>
@@ -492,6 +492,37 @@ $catLiStr="";
 } // end of  $dontShowCatSelection  if 
 
 
+if ($op=='list_flights'  ) { // photos and comments filter 
+
+	$catLiStr="";
+
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'0')); 
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera_grey.gif' border=0> "._Photos_filter_off."</a></li>\n";
+
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'1')); 
+	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera.gif' border=0> "._Photos_filter_on."</a></li>\n";
+			
+	if ($filter01) { 
+	   	$catLegend="<img src='".$moduleRelPath."/img/icon_camera.gif' align='middle' border=0 title='".
+					_Photos_filter_on."'>";
+	}	else {		
+		$catLegend="<img src='".$moduleRelPath."/img/icon_camera_grey.gif' align='middle' border=0 title='".
+					_Photos_filter_off."'>";
+	}
+  
+?>
+<div id="nav2">
+<ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
+<li class="smallItem"><a  class="smallItem" href='#'><? echo $catLegend;  // echo $current_catImg?></a>
+	<ul>
+	<? echo $catLiStr;?>
+	</ul>
+</li>
+</ul>
+</div>
+
+<? 
+} // end of photos and comments filter
 
 if (! $dontShowCountriesSelection ) {
 	list($countriesCodes,$countriesNames,$countriesFlightsNum)=getCountriesList(0,0,$clubID);

@@ -71,7 +71,7 @@ global $imagesPrefix;
 
 
 function open_inner_table($title="",$width=500,$icon=-1) {
-global $imagesPrefix,$cat;
+global $imagesPrefix,$themeRelPath,$cat;
 global $row_count;
 
 if ($icon==-1) $icon=$cat;
@@ -86,7 +86,6 @@ open_box("<b>".$title."</b>",$width,$icon,MAIN_BG);
 }
 
 function close_inner_table() {
-global $imagesPrefix;
 ?>
 </tr>
 </table>
@@ -131,6 +130,42 @@ function close_tr(){
 }
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+function openMain($title="",$width=0,$icon=-1) {
+	global $imagesPrefix,$themeRelPath,$cat;
+	global $row_count;
+	
+	if (!$width) $width="100%";		
+	if ( is_numeric($width)	) $width.='px';
+		
+	if ($icon==-1) $icon=$cat;
+	$icon_name='';
+	if ($icon!=-1) {
+		if (is_numeric($icon)) 
+			$icon_name="<img src='".$imagesPrefix."icon_cat_".$icon.".png' align='absmiddle'>&nbsp;" ;
+		else if ($icon!='')
+			$icon_name="<img src='".$imagesPrefix.$icon."' align='absmiddle'>&nbsp;";
+	}
+	echo "<div align='center'><BR>\n";
+	echo "<div align='left' style='width:".$width."; margin:0px; padding:0;' >\n";
+	echo "<div style='font-size:13px; font-weight:bold; height:50px; background: url($themeRelPath/img/bg-header2.jpg) repeat-x; padding:10px; padding-bottom:0px'>$icon_name$title</div>\n";
+	echo "<div align='left'  style='margin:0px; padding:10px;'>\n";
+	return;
+
+}
+
+function closeMain() {
+	echo "</div>\n";
+	echo "</div>\n";
+	echo "</div>\n";
+	return;
+}
+
 class Theme {
  
   var $bg1;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.33 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.34 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -62,8 +62,8 @@
 </div>
 <?
  $datafile=$_FILES['datafile']['name'];
- open_inner_table( _SUBMIT_FLIGHT,750,"icon_add.png");
- echo "<tr><td>";
+ 
+ openMain( _SUBMIT_FLIGHT,0,"icon_add.png");
 
  if ($datafile=='') {   
 ?>
@@ -116,11 +116,11 @@ function setValue(obj)
       		# in case of javascript validation ignore the default to force the user to select the category
       		if (!empty($CONF_addflight_js_validation)) {
       			echo "<option value=0></option>\n";
-				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
 						echo "<option value=$gl_id>".$gl_type."</option>\n";
 				}
       		}else {
-				foreach ( $CONF_category_types as $gl_id=>$gl_type) {
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
 						if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
 						else $is_type_sel ="";
 						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
@@ -355,6 +355,6 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 
 
 }
-	echo "</td></tr>";
-	close_inner_table(); 
+	
+	closeMain(); 
 ?>

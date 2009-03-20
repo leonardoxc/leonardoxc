@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_waypoint_edit.php,v 1.10 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_waypoint_edit.php,v 1.11 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -46,11 +46,8 @@
 
 	require_once dirname(__FILE__).'/FN_editor.php';
 
-    echo "<br>";
+    openMain("Edit waypoint",760,"icon_pin.png");
 
-    open_inner_table("Edit waypoint",760,"icon_pin.png");
- 
-  echo "<tr><td>";	
 ?> 
 
       <form name="form1" method="post" action="">
@@ -127,6 +124,5 @@
     
 
 <?
-  echo "</td></tr>";
-  close_inner_table();
+	closeMain();
 ?>

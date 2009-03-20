@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.48 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.49 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -54,9 +54,7 @@ function chmodDir($dir){
  closedir($current_dir);
 }
 	
-  open_inner_table("ADMIN AREA",650);
-  open_tr();
-  echo "<td align=left>";	
+  openMain("ADMIN AREA",0,'');
 
 	if (!L_auth::isAdmin($userID)) {
 		echo "<br><br>You dont have access to this page<BR>";
@@ -969,8 +967,8 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		 echo "<BR><br><BR>DONE IMPORTING MAPS!!!<BR>";
 	}
 
-	echo "</td></tr>";
-    close_inner_table();
+
+    closeMain();
 
     function importMaps($dir,$rootLevel,$prefixRemoveCharsArg) {
 		 global $db,$mapsTable ;

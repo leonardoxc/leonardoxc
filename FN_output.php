@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.51 2009/03/10 16:34:40 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.52 2009/03/20 16:24:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -515,7 +515,7 @@ with (geTip)
 {
 	
 	var showTitle=true;
-	var title='Please choose the module to use<BR>for Google Earth Display';
+	var title='<?=_choose_ge_module?>';
 	var arrowDir = "right";
 	var arrowLeft = -10;
 	var arrowTop = -3;
@@ -539,13 +539,13 @@ with (geTip)
 				"<div id='BT_content' style='line-height:140%'>"+
 				
 				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || L_auth::isModerator($userID) )   ) { ?>
-				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'2','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'IGC2KMZ (Most detailed, bigger size)'; ?></a>"+
+				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'2','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'IGC2KMZ '._ge_module_advanced_1; ?></a>"+
 	'<br>'+
 				<? } ?>
-  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'1','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'GPS2GE V2.0 (Many details, big size) '; ?></a>"+
+  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'1','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'GPS2GE V2.0 '._ge_module_advanced_2; ?></a>"+
 	'<br>'+
 
-  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'0','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'Simple (Only Task, very small)'; ?></a>"+
+  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'0','flightID'=>'%4%','lng'=>'%5%'))?>'><?=_ge_module_Simple ?></a>"+
   
 					
 				"</div>" +
