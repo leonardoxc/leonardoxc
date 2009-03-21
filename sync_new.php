@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.4 2009/03/21 00:02:49 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.5 2009/03/21 14:35:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -57,7 +57,14 @@ $where_clause='';
 // if ($type) $where_clause=" AND ItemType=$type ";
 
 $dont_give_servers=$CONF['servers']['list'][$clientID]['dont_give_servers'];
-$dont_give_servers=replaceCurrentServer($dont_give_servers);
+//if ($_GET['dbg']) {
+//	print_r($dont_give_servers);
+//}
+
+replaceCurrentServerInArray($dont_give_servers);
+//if ($_GET['dbg']) {
+//	print_r($dont_give_servers);
+//}
 
 $where_clause.=" AND serverID NOT IN ( ";
 if ( is_array($dont_give_servers) ) {
@@ -202,7 +209,9 @@ if ($op=="get_hash") {
 		// we must ensure that no transactions of the same second are split into 2 log batches
 		// thats why we get 100 more entries and stop manually
 		$query.="	$where_clause ORDER BY dateUpdated $limit";
-		//echo $query;
+		//if ($_GET['dbg']) {
+		//	echo $query;
+		//}
 		
 		$res= $db->sql_query($query);
 		if($res <= 0){
@@ -371,7 +380,8 @@ else if ($format=='JSON') 		header ('Content-Type: text/plain');
 
 echo $RSS_str;
 
-
+// search if the cussrent server id is in the list, and replace it by 0, 
+// (0 is used in the DB for serverID for local flights)
 function replaceCurrentServer($getOnlyServersList) {
 	global $CONF_server_id;
 	$getOnlyServersList=preg_replace("/[^,\d]/","",$getOnlyServersList);	
@@ -379,12 +389,24 @@ function replaceCurrentServer($getOnlyServersList) {
 	$getOnlyServersList='';
 	foreach($tmpList as $tmpServerItem) {
 		$tmpServerItem +=0;
-		if ( ! $tmpServerItem ) continue;
-		if ($tmpServerItem ==$CONF_server_id )$tmpServerItem ="0";
+		if ( ! $tmpServerItem ) 
+			continue;
+		if ($tmpServerItem ==$CONF_server_id )	
+			$tmpServerItem ="0";
 		$getOnlyServersList.=$tmpServerItem.',';				
 	}
 	$getOnlyServersList=substr($getOnlyServersList,0,-1);
 	return 	$getOnlyServersList;
 }	
 	
+function replaceCurrentServerInArray(&$ServersList) {
+	global $CONF_server_id;
+		
+	foreach($ServersList as $i=>$tmpServerItem) {
+		$tmpServerItem +=0;		
+		if ($tmpServerItem ==$CONF_server_id )
+			$ServersList[$i]=0;	
+	}
+	return 	$ServersList;
+}	
 ?>
