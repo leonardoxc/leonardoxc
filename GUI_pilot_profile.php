@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.22 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.23 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -54,7 +54,9 @@
 
  openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
 
+
 ?> 
+<script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
 <div class='infoHeader'><?=_Personal_Stuff ?></div>
 <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr> 
@@ -93,7 +95,13 @@
 		?>
       <div align="center"><strong><? echo _Photo ?> </strong><br>
           <?
-			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";					
+			$imgBigRel=getPilotPhotoRelFilename($pilotIDview);	
+			$imgBig=getPilotPhotoFilename($pilotIDview);	
+			list($width, $height, $type, $attr) = getimagesize($imgBig);
+			list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+			echo "<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."'
+			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
+			 border=0></a>";					
 		?>
                         </div>      <?		
 		}

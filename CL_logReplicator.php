@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.52 2009/03/10 16:34:40 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.53 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -737,7 +737,7 @@ class logReplicator {
 							else 
 								$extFlight->computeScore();									
 						} 
-						return array(1,"Flight with local ID $flightIDlocal UDDATED OK");
+						return array(1,"Flight with local ID $flightIDlocal UPDATED OK");
 					}
 				}
 

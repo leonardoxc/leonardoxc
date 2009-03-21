@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.34 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.35 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -562,10 +562,24 @@ class Server {
 		// in v21 the StartID is the last TM in UTC , we need to start again from the last TM 
 		// in case 2 or more actions were preformed on the same second and we only 
 		// proccessed them partially 
+		
+		// Problem: the last transaction gets pulled again and again !!!
+		// we need to detect if the same transaction ID has been proccessed
+		// at least 2 times, then we can move to the next ID without fear of loosing
+		// transactions made in the same second.
+		
+		// we have enforced RULE #1 on the other server running protocol v2 
+		// RULE #1
+		// we  ensure that no transactions of the same second are split into 2 log batches
+		// thats why we get 100 more entries and stop manually
+		// so the following is not needed nay more , we always start +1 
+		/*
 		if ( $this->getProtocolVersion() == 2 ) 
 			$startID=$this->lastPullUpdateID;
 		else // old version
 			$startID=$this->lastPullUpdateID+1;
+		*/
+		$startID=$this->lastPullUpdateID+1;
 			
 		if ( $this->data['isLeo'] )  {
 			$urlToPull='http://'.$this->data['url_base'].'/sync.php?type=1&version='.$this->getProtocolVersion();
@@ -765,9 +779,12 @@ class Server {
 			echo "<div class='error'>ERROR </div>: $message <BR>";
 			return 0;
 		} else {
-			// update the 
-			$this->lastPullUpdateID=$logItem['transactionID']+0;
-			$this->putToDB(1);
+			// update the pointer 
+			// BUT only if it is > than the last one 
+			if ( $logItem['transactionID'] > $this->lastPullUpdateID ) {
+				$this->lastPullUpdateID=$logItem['transactionID']+0;
+				$this->putToDB(1);
+			}	
 			echo "<div class='ok'>OK</div>: $message<BR>";
 			return 1;
 		}

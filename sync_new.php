@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.3 2009/03/11 16:12:22 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.4 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -32,6 +32,7 @@ $op=makeSane($_REQUEST['op']);
 $type		= $_GET['type']+0;
 $startID 	= $_GET['startID']+0;
 $count 	 	= $_GET['c']+0;	
+
 $format		= makeSane($_GET['format'],0);	
 if ( ! $format	) $format=$CONF['sync']['protocol']['format'];
 $format=strtoupper($format);
@@ -166,6 +167,9 @@ if ($op=="get_hash") {
 	
 	$zip		= makeSane($_GET['use_zip'],1);			 
 	if ($getIGCfiles) $zip=1;
+	
+	// hard limit	
+	if (!$count ) $count=1000;
 		
 	$fromTm=$startID;
 	$toTm=$_GET['toTm']+0;
@@ -182,9 +186,10 @@ if ($op=="get_hash") {
 
 		if ($tableType=='deleted') {
 			$toTm=$lastActionTm;
-			$limit=""; // no limit , we must have all the delete actions within this 'chunk'
+			$limit=""; // no limit , we must have all the delete actions within this 'chunk'			
+		} else {	
+			$limit=" LIMIT ".($count+100);
 		}
-	
 		$query="SELECT * FROM $tableName  
 			WHERE  ".
 			// "UNIX_TIMESTAMP($tableName.dateUpdated) >= $fromTm ";
@@ -192,6 +197,10 @@ if ($op=="get_hash") {
 		if ($toTm) {
 			$query.=" AND UNIX_TIMESTAMP($tableName.dateUpdated) <=$toTm ";
 		}		
+		
+		// RULE #1
+		// we must ensure that no transactions of the same second are split into 2 log batches
+		// thats why we get 100 more entries and stop manually
 		$query.="	$where_clause ORDER BY dateUpdated $limit";
 		//echo $query;
 		
@@ -201,12 +210,19 @@ if ($op=="get_hash") {
 			exit();
 		}
 	
+		$gotEntries=0;
 		while ($row = mysql_fetch_assoc($res)) { 
 			$actionTimeStr=$row['dateUpdated'];
 			$actionTm=fulldate2tmUTC($actionTimeStr);
 						
 			$addedTimeStr=$row['dateAdded'];
-			$addedTm=fulldate2tmUTC($actionTimeStr);
+			$addedTm=fulldate2tmUTC($addedTimeStr);
+			
+			if ($gotEntries>=$count) {  // we are over the limit
+				// if this $actionTm differs from the last one 
+				// we have forfilled RULE #1 , time to break the loop
+				if ($actionTm!=$lastActionTm ) break;
+			}
 			
 			// we must figure this out !
 			// is it an add or update 
@@ -241,7 +257,7 @@ if ($op=="get_hash") {
 "userID":	  '.$row['userID'].',
 "actionData":  '.$flight->toXML('JSON').'
 }} ';								
-			
+			$gotEntries++;
 			$item_num++;
 		} // end while
 		
@@ -267,7 +283,7 @@ if ($op=="get_hash") {
 		require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 		
 		if ($getIGCfiles && count($flightsToServe) ) {
-			$sql="select ID, DATE, userID, filename from $flightsTable WHERE ID IN ( ";		
+			$sql="select ID, DATE, userID, userServerID, filename from $flightsTable WHERE ID IN ( ";		
 			for($i=0;$i<count($flightsToServe);$i++) {
 				if ($i>0) $sql.=' , ';
 				$sql.=$flightsToServe[$i];			
@@ -282,7 +298,11 @@ if ($op=="get_hash") {
 			}		
 			
 			while  ( $row = $db->sql_fetchrow($res) ) {
-				$filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+				
+				if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
+				else $extra_prefix='';
+
+				$filename=$flightsAbsPath.'/'.$extra_prefix.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
 				if (is_file($filename ))
 					array_push($filesToServe,
 									array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",

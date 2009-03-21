@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: BLOCKS_end.php,v 1.12 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: BLOCKS_end.php,v 1.13 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -52,9 +52,19 @@ function renderBlock($thisBlock) {
 
 	ob_start();
 
-	if (!$blockHideBox)	open_box($blockTitle,$blockwidth,"icon_help.png");
+	if (!$blockHideBox)	{
+		echo "<div align=left class='main_text' style='width:".$blockwidth."px;'>
+		<div style='padding:4px; border-bottom:1px solid #444444;'>$blockTitle</div>";	
+	
+		// open_box($blockTitle,$blockwidth,"icon_help.png");
+		
+	}	
 	require_once dirname(__FILE__)."/blocks/$thisBlock/index.php";
-	if (!$blockHideBox)	close_box();
+	
+	if (!$blockHideBox)	{
+		echo"</div>";
+		// close_box();
+	}	
 	echo "<BR>";
 
 	$outRes = ob_get_contents();

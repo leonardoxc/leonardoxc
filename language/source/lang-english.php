@@ -888,7 +888,7 @@ Note: This is auto-response. Do not send any email to this email address
 
 // New on 2008/11/26
 define('_MENU_AREA_GUIDE','Area Guide');
-define('_All_XC_types','_All XC types');
+define('_All_XC_types','All XC types');
 define('_xctype','XC type');
 
 

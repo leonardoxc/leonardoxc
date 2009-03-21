@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.4 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.5 2009/03/21 00:02:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -171,7 +171,7 @@
 	
 	if ($pilotsTableQuery2 && !$pilotsTableQueryIncluded){
 		$where_clause2="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	 
-		$extra_table_str2.=",$pilotsTable";	
+		$extra_table_str2.=",$pilotsTable FORCE INDEX ( FirstName ) ";	
 		$pilotIncludedFields=" $pilotsTable.countryCode, $pilotsTable.Sex, ";	
 	}
 
