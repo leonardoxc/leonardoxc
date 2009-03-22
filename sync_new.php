@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.5 2009/03/21 14:35:14 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.6 2009/03/22 13:50:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -33,12 +33,57 @@ $type		= $_GET['type']+0;
 $startID 	= $_GET['startID']+0;
 $count 	 	= $_GET['c']+0;	
 
+if ($count) $limit="LIMIT $count";
+else $limit="";
+
+
 $format		= makeSane($_GET['format'],0);	
 if ( ! $format	) $format=$CONF['sync']['protocol']['format'];
 $format=strtoupper($format);
 
 $clientID	= makeSane($_GET['clientID'],1);	
 $clientPass	= makeSane($_GET['clientPass'],0);
+
+// authentication stuff
+// the client must be in the leonardo_servers table and the password
+//  he provided must match the serverPass field we have for him.
+if ( !Server::checkServerPass($clientID,$clientPass)) {
+	$op='error';
+	if ($format=='XML') {
+		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
+		$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
+	} else if ($format=='JSON') {
+		$RSS_str='{ "error": "Not authorized '.$clientID.','.$clientPass.'" }';
+	}
+}
+$where_clause='';
+
+// check which servers to give / dont give 
+
+$dont_give_servers=$CONF['servers']['list'][$clientID]['dont_give_servers'];
+if ( is_array($dont_give_servers) ) {
+	if (count($dont_give_servers) >0 ){
+		replaceCurrentServerInArray($dont_give_servers);
+		$where_clause.=" AND serverID NOT IN ( ";	
+		foreach($dont_give_servers as $tmpServerID) {
+			$where_clause.=$tmpServerID.', ';
+		}
+		$where_clause.=$clientID .' )';
+	}	
+}
+
+$give_only_servers=$CONF['servers']['list'][$clientID]['give_only_servers'];
+if ( is_array($give_only_servers) ) {
+	if (count($give_only_servers) >0 ){
+		replaceCurrentServerInArray($give_only_servers);
+		$where_clause.=" AND serverID IN ( ";
+		foreach($give_only_servers as $tmpServerID) {
+			$where_clause.=$tmpServerID.', ';
+		}
+		$where_clause=substr($where_clause,0,-2);
+		$where_clause.=' )';
+	}	
+}
 
 if ( $_GET['getOnlyServersList'] ) {
 	$getOnlyServersList=$_GET['getOnlyServersList'];
@@ -50,31 +95,9 @@ if ( $_GET['getOnlyServersList'] ) {
 	$getOnlyServersListClause = '';
 }
 
-if ($count) $limit="LIMIT $count";
-else $limit="";
-
-$where_clause='';
-// if ($type) $where_clause=" AND ItemType=$type ";
-
-$dont_give_servers=$CONF['servers']['list'][$clientID]['dont_give_servers'];
-//if ($_GET['dbg']) {
-//	print_r($dont_give_servers);
-//}
-
-replaceCurrentServerInArray($dont_give_servers);
-//if ($_GET['dbg']) {
-//	print_r($dont_give_servers);
-//}
-
-$where_clause.=" AND serverID NOT IN ( ";
-if ( is_array($dont_give_servers) ) {
-	foreach($dont_give_servers as $tmpServerID) {
-		$where_clause.=$tmpServerID.', ';
-	}
-}
-$where_clause.=$clientID .' )';
-
 $where_clause.=	$getOnlyServersListClause;
+
+
 
 if (!$op) $op="latest";	
 if (!in_array($op,array("latest","get_hash","get_igc")) ) return;
@@ -82,19 +105,6 @@ if (!in_array($op,array("latest","get_hash","get_igc")) ) return;
 $encoding="utf-8";
 
 
-
-
-// authentication stuff
-// the client must be in the leonardo_servers table and the password he provided must match the serverPass field we have for him.
-if ( !Server::checkServerPass($clientID,$clientPass)) {
-	$op='error';
-	if ($format=='XML') {
-		$RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>\n<log>";
-		$RSS_str.="<error>Not authorized $clientID,$clientPass </error>\n";
-	} else if ($format=='JSON') {
-		$RSS_str='{ "error": "Not authorized '.$clientID.','.$clientPass.'" }';
-	}
-}
 
 set_time_limit( 60 + floor($count/4) );
 
@@ -194,6 +204,7 @@ if ($op=="get_hash") {
 		if ($tableType=='deleted') {
 			$toTm=$lastActionTm;
 			$limit=""; // no limit , we must have all the delete actions within this 'chunk'			
+			$count=99999999; // a big number
 		} else {	
 			$limit=" LIMIT ".($count+100);
 		}
@@ -202,7 +213,7 @@ if ($op=="get_hash") {
 			// "UNIX_TIMESTAMP($tableName.dateUpdated) >= $fromTm ";
 			" $tableName.dateUpdated >= '".gmdate("Y-m-d H:i:s",$fromTm)."'";
 		if ($toTm) {
-			$query.=" AND UNIX_TIMESTAMP($tableName.dateUpdated) <=$toTm ";
+			$query.=" $tableName.dateUpdated <= '".gmdate("Y-m-d H:i:s",$toTm)."'";			
 		}		
 		
 		// RULE #1

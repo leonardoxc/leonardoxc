@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC.php,v 1.4 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: syncWXC.php,v 1.5 2009/03/22 13:50:01 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -253,7 +253,7 @@ function read_leonardo_json_flight($flight){
 
   $CommentInternal=htmlspecialchars(html_entity_decode($flight['info']['comments'],ENT_NOQUOTES,"UTF-8") );
   
-  $FlightUrl=$flight['linkDisplay'];
+  $FlightUrl=htmlspecialchars($flight['linkDisplay']);
 
   return array( 
 	       'CivlId'=>$CivlId,
