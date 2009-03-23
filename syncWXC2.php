@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.1 2009/03/22 13:50:01 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.2 2009/03/23 15:18:39 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -121,7 +121,7 @@ foreach($tableNames as $tableType=>$tableName ) {
 	} else {	
 		$NacStatusStr="o";
 		
-		$limit=" LIMIT ".($count+100);
+		$limit=" LIMIT ".($count+200);
 	}
  
 	//  echo "toTm:$toTm<HR>";
