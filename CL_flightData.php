@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.163 2009/03/11 16:12:22 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.164 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -1123,6 +1123,39 @@ $resStr='{
 //exit;
 
 		return $kml_file_contents;
+	}
+	
+	function getBounds() {
+		$filename=$this->getIGCFilename(1);  
+		$lines = file ($filename); 
+		if (!$lines) return array(0,0,0,0);
+		$i=0;
+	
+		$min_lat=1000;
+		$max_lat=-1000;
+		$min_lon=1000;
+		$max_lon=-1000;
+	
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;				
+			if ($line{0}=='B') {
+					if  ( strlen($line) < 23 ) 	continue;
+					// also check for bad points 
+					// 012345678901234567890123456789
+					// B1522144902558N00848090EV0058400000
+					if ($line{24}=='V') continue;
+
+					$thisPoint=new gpsPoint($line,$this->timezone);
+					if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
+					if ( $thisPoint->lat  < $min_lat )  $min_lat =$thisPoint->lat  ;
+					if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
+					if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
+
+					$i++;
+			}
+		}		
+		return array($min_lat,$min_lon,$max_lat,$max_lon);
 	}
 
 	function gpxGetTrack() {

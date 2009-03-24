@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.92 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.93 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -44,7 +44,19 @@
 	$geUrl=getDownloadLink(array('type'=>'kml_trk','flightID'=>$flightID,'lang'=>$lng));
 	// $moduleRelPath."/download.php?lang=$lng&type=kml_trk";
 
- 
+//experiment with google static maps
+if (0) {
+	list($min_lat,$min_lon,$max_lat,$max_lon)=$flight->getBounds();
+	
+	$cLat=$min_lat+($max_lat-$min_lat)/2;
+	$cLon=$min_lon+($max_lon-$min_lon)/2;
+	
+	$sLat=($max_lat-$min_lat)/2;
+	$sLon=($max_lon-$min_lon)/2;
+	echo "<img src='http://maps.google.com/staticmap?center=$cLat,$cLon&span=$sLat,$sLon&size=512x512&key=$CONF_google_maps_api_key&sensor=false&format=jpg&maptype=hybrid'><HR>";
+	//exit;
+}
+
 ?>
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.35 2009/03/21 00:02:49 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.36 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -430,6 +430,14 @@ class Server {
 		if ( !is_numeric($count) ) return 0;
 
 		$this->lastPullUpdateID+=$count;
+		if ($this->lastPullUpdateID<0 ) $this->lastPullUpdateID=0;
+		$this->putToDB();
+	}
+	
+	function setSyncPointer($newValue) {
+		if ( !is_numeric($newValue) ) return 0;
+
+		$this->lastPullUpdateID=$newValue;
 		if ($this->lastPullUpdateID<0 ) $this->lastPullUpdateID=0;
 		$this->putToDB();
 	}

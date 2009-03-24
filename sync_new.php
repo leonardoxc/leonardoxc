@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.6 2009/03/22 13:50:01 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.7 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -213,7 +213,7 @@ if ($op=="get_hash") {
 			// "UNIX_TIMESTAMP($tableName.dateUpdated) >= $fromTm ";
 			" $tableName.dateUpdated >= '".gmdate("Y-m-d H:i:s",$fromTm)."'";
 		if ($toTm) {
-			$query.=" $tableName.dateUpdated <= '".gmdate("Y-m-d H:i:s",$toTm)."'";			
+			$query.=" AND $tableName.dateUpdated <= '".gmdate("Y-m-d H:i:s",$toTm)."'";			
 		}		
 		
 		// RULE #1

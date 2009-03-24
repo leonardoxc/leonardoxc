@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_server_action.php,v 1.23 2009/03/10 16:34:40 manolis Exp $                                                                 
+// $Id: GUI_EXT_server_action.php,v 1.24 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -120,9 +120,37 @@ if ($action==1) { // server info
 	
 } else if ($action==9) { // move sync pointer back (in effect will reprocess last n log entries next time
 	$server->getFromDB();
-	echo "Sync Pointer was ".$server->lastPullUpdateID."<BR>";
-	$server->moveSyncPointer($_GET['moveCounterBack']+0);
-	echo "Sync Pointer is ".$server->lastPullUpdateID."<BR>";
+	echo "Sync Pointer was ".$server->lastPullUpdateID;
+	if ( $server->getProtocolVersion() == 2 ) {
+		echo' Date: '.gmdate("Y-m-d H:i:s",$server->lastPullUpdateID).' GMT';
+	}
+	echo "<BR>";
+	$server->moveSyncPointer($_GET['moveCounter']+0);
+	echo "Sync Pointer is ".$server->lastPullUpdateID;
+	if ( $server->getProtocolVersion() == 2 ) {
+		echo' Date: '.gmdate("Y-m-d H:i:s",$server->lastPullUpdateID).' GMT';
+	}
+	echo "<BR>";
+} else if ($action==91) { // set sync pointer to 
+	$server->getFromDB();
+	echo "Sync Pointer was ".$server->lastPullUpdateID;
+	if ( $server->getProtocolVersion() == 2 ) {
+		echo' Date: '.gmdate("Y-m-d H:i:s",$server->lastPullUpdateID).' GMT';
+	}
+	echo "<BR>";
+	$server->setSyncPointer($_GET['setCounter']+0);
+	echo "Sync Pointer is ".$server->lastPullUpdateID;
+	if ( $server->getProtocolVersion() == 2 ) {
+		echo' Date: '.gmdate("Y-m-d H:i:s",$server->lastPullUpdateID).' GMT';
+	}
+	echo "<BR>";
+} else if ($action==92) { //quey e sync pointer
+	$server->getFromDB();
+	echo "Sync Pointer is  ".$server->lastPullUpdateID;
+	if ( $server->getProtocolVersion() == 2 ) {
+		echo' Date: '.gmdate("Y-m-d H:i:s",$server->lastPullUpdateID).' GMT';
+	}
+	echo "<BR>";
 } else if ($action==10) { // exclude all flights from this server from apearing in leagues
 	$query="UPDATE $flightsTable SET excludeFrom=(excludeFrom | 2) WHERE serverID=".$server->ID;
 	$res= $db->sql_query($query);

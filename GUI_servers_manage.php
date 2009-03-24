@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_servers_manage.php,v 1.16 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_servers_manage.php,v 1.17 2009/03/24 12:18:43 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,8 +30,11 @@ function serverAction(id,action,DBGlvl) {
 		var chunkSize=MWJ_findObj('chunkSize_'+id).value;
 		var extraStr='&chunkSize='+chunkSize;
 	} else if (action==9) {
-		var chunkSize=MWJ_findObj('moveCounterBack_'+id).value;
-		var extraStr='&moveCounterBack='+chunkSize;
+		var chunkSize=MWJ_findObj('moveCounter_'+id).value;
+		var extraStr='&moveCounter='+chunkSize;
+	} else if (action==91) {
+		var chunkSize=MWJ_findObj('setCounter_'+id).value;
+		var extraStr='&setCounter='+chunkSize;	
 	} else {
 		var extraStr='';
 	}
@@ -159,12 +162,28 @@ foreach ($servers as $server) {
 						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",6,$DBGlvl);'>Delete all Flights</a></td>
 						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",8,$DBGlvl);'>Delete all pilots</a></td>
 
-						<td valign='top'><a href='javascript:serverAction(".$server->ID.",9,$DBGlvl);'>Move counter</a>
-								 <input type=textbox id='moveCounterBack_$id' name='moveCounterBack_$id' value='-10' size=3> </td>
 						<td width=30 valign='top'><a href='javascript:toggleVisibility(\"display_$id\")'>>></a></td>
 					</TR></TD></TABLE>
 				</tr>
-					<tr>
+				<tr>
+					<TD><TABLE WIDTH=100% cellpadding=2 cellspacing=0 border=1 ><TR>
+						<td valign='top'>Sync Counter Actions:
+						</td>					
+						<td valign='top'><a href='javascript:serverAction(".$server->ID.",9,$DBGlvl);'>Move</a>
+								 <input type=textbox id='moveCounter_$id' name='moveCounter_$id' value='-10' size=12> 
+						</td>
+					
+						<td valign='top'><a href='javascript:serverAction(".$server->ID.",91,$DBGlvl);'>Set to</a>
+								 <input type=textbox id='setCounter_$id' name='setCounter_$id' value='".time()."' size=12> 
+						</td>
+												
+						<td valign='top'><a href='javascript:serverAction(".$server->ID.",92,$DBGlvl);'>Query</a>
+								  
+						</td>
+						
+					</TR></TD></TABLE>
+				</tr>
+				<tr>
 					<TD><TABLE WIDTH=100% cellpadding=2 cellspacing=0 border=1 class='actionRow1'><TR>					
 						<td width=100 valign='top'><b>Exclude all flights<b/></td>
 						<td width=100 valign='top'><a href='javascript:serverAction(".$server->ID.",10,$DBGlvl);'> ... from Leagues</a></td>
