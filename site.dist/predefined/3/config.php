@@ -19,10 +19,11 @@ $CONF['path']['direct_call']=1;
 global $module_name;
 $module_name='leonardo';
 
-function moduleRelPath($forUtilityFiles=0){
+function moduleRelPath($intendedUse=0){ 
+// 0 normal , 1 for utlity files that are called directly, 2 the real path even when mod_rewrite
 	global $module_name,$CONF;
 
-	if ( $CONF['links']['type']==3 ) {
+	if ( $CONF['links']['type']==3 && $intendedUse!=2 ) {
 		return $CONF['links']['baseURL'];
 	} else  {
 		return './';	
@@ -34,7 +35,17 @@ $CONF['userdb']['users_table']='leonardo_users';
 $CONF['userdb']['user_id_field']='user_id';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';
+$CONF['userdb']['email_field']='user_email';
 
+$CONF['userdb']['edit']['enabled']=1;
+$CONF['userdb']['edit']['edit_email']=1;
+$CONF['userdb']['edit']['edit_password']=1;
+$CONF['userdb']['edit']['password_minlength']=4;
+$CONF['userdb']['edit']['password_change_expire_time']=3600*3; // 3 hrs
+
+// the functions to change password/eamil
+@include_once dirname(__FILE__)."/user_functions.php";
+ 
 $CONF['userdb']['use_leonardo_real_names']=1;
 
 // if  $CONF['userdb']['use_leonardo_real_names']=0;
@@ -50,9 +61,10 @@ $CONF['userdb']['user_first_name_field']='';
 // bridge to the login system of different forum/portal/cms systems
 $CONF['bridge']['login_url']=array('op'=>'login');
 $CONF['bridge']['logout_url']=array('op'=>'login','logout'=>'true');
-$CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
+$CONF['bridge']['register_url']=array('op'=>'register');
+// $CONF['bridge']['register_url']="?name=%module_name%&op=users&page=index&act=register";
 // $CONF['bridge']['register_url']="profile.php?mode=register";
-$CONF['bridge']['forgot_password_url']='';
+$CONF['bridge']['forgot_password_url']=array('op'=>'send_password');
 $CONF['bridge']['edit_profile_url']='';
 
 

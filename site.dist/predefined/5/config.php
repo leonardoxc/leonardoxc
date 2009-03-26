@@ -12,8 +12,12 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-// Specific settigns for standalone operation ($opMode=3)
+// Specific settigns for Joomla 1.5  operation ($opMode=5)
 
+// override these
+$CONF_use_own_template=0;
+$CONF_use_own_login=0;
+ 
 // Path settings
 $CONF['path']['direct_call']=0;
 
@@ -46,9 +50,9 @@ $CONF['userdb']['user_first_name_field']='';
 
 
 // bridge to the login system of different forum/portal/cms systems
-$CONF['bridge']['login_url']="/index.php?option=com_frontpage";
+$CONF['bridge']['login_url']="/index.php?option=com_user&view=login";
 $CONF['bridge']['logout_url']="/index.php?option=com_frontpage";
-$CONF['bridge']['register_url']="/index.php?option=com_registration&task=register";
+$CONF['bridge']['register_url']="/index.php?option=com_user&task=register";
 // $CONF['bridge']['register_url']="profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';
 $CONF['bridge']['edit_profile_url']='';
@@ -85,6 +89,15 @@ function append_sid($a,$b="") {
 
 // we need to get the db login information 
 // require_once Leonardo_Joomla_main_dir."/configuration.php";
+/// get the db info from them joomla config file
+/*
+	require_once $CONF_abs_path."/../configuration.php";
+	$leoConf=new JConfig();
+	$dbhost = $leoConf->host;
+	$dbname = $leoConf->db;
+	$dbuser = $leoConf->user;
+	$dbpasswd = $leoConf->password;
+*/		
 require_once $CONF_abs_path."/site/config_db.php";
 
 // also load the required functions

@@ -12,7 +12,7 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-// Specific settigns for phpBB module operation ($opMode=2)
+// Specific settigns for phpBB2 module operation ($opMode=2)
 
 // Path settings
 $CONF['path']['direct_call']=0;
@@ -37,8 +37,17 @@ $CONF['userdb']['users_table']='phpbb_users';
 $CONF['userdb']['user_id_field']='user_id';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';
+$CONF['userdb']['email_field']='user_email';
+
+$CONF['userdb']['edit']['enabled']=1;
+$CONF['userdb']['edit']['edit_email']=1;
+$CONF['userdb']['edit']['edit_password']=1;
+$CONF['userdb']['edit']['password_minlength']=4;
+// the functions to change password/email
+@include_once dirname(__FILE__)."/user_functions.php";
 
 $CONF['userdb']['use_leonardo_real_names']=1;
+
 
 // if  $CONF['userdb']['use_leonardo_real_names']=0;
 // then the following will be used to extract real names from the 'aplication' DB

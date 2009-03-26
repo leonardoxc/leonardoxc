@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.4 2008/12/04 22:45:24 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.5 2009/03/26 16:15:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -355,6 +355,28 @@
 	// for windows ...
 	// $CONF['googleEarth']['igc2kmz']['python'] = 'c:\python25\python.exe';
 	$CONF['googleEarth']['igc2kmz']['path']=dirname(__FILE__).'/../lib/igc2kmz';
+
+
+	$CONF['mail']['method']='php'; //  use the php  mail() function
+	/*
+	$CONF['mail']['method']='smtp';  // use an external mail server ,
+	
+	$CONF['mail']['smtp']['port']=25;
+	$CONF['mail']['smtp']['ssl']=false;
+	
+
+	$CONF['mail']['smtp']['host']='hostname_of_mail_server';
+	$CONF['mail']['smtp']['username']='mailserver_username';
+	$CONF['mail']['smtp']['password']='mailserver_password';
+	*/
+	
+	$CONF['site']['name']="LeonardoXC";
+	
+	// this forces the use of CIVL ID
+	$CONF_force_civlid=1;
+	
+	// display also the thermals DB in flight's display page
+	$CONF['thermals']['enable']=true;
 
 
 ?>

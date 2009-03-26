@@ -16,26 +16,42 @@
 
 // replace this with the basolute path of phpbb3 if you have placed the 'leonardo/' dir
 // not in  the root path of phpbb3
-$phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../..' );
 
-// for example :
+// EXAMPLES 
+
+// phpbb3 is installed on /
+// leonardo/ is installed on /other/leonardo
+// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../..' );
+
+// phpbb3 is installed on /
+// leonardo is installed on /leonardo
+// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../..' );
+
 // phpbb3 is installed on /phpbb3 
 // leonardo/ is installed on /other/leonardo
-// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../../phpbb3' );
+$phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../../phpbb3' );
 
+// echo $phpbb3AbsPath."#";
 // Path settings
 $CONF['path']['direct_call']=1;
 
 function moduleRelPath($forUtilityFiles=0){
-	global $module_name;
-	if ($forUtilityFiles) // for EXT_ files
+	global $module_name,$CONF;
+
+	if ( $CONF['links']['type']==3 ) {
+		return $CONF['links']['baseURL'];
+	} else  {
 		return "./";
-	else 
-		return "./";
+	}	
 }
 
 // bridge to the users table of different forum/portal/cms systems
+//$CONF['userdb']['password_users_table']='jos_users';
+//$CONF['userdb']['password_username_field']='username';
+//$CONF['userdb']['password_password_field']='password';
+
 $CONF['userdb']['users_table']='phpbb_users';
+
 $CONF['userdb']['user_id_field']='user_id';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';

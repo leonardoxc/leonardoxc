@@ -172,9 +172,29 @@ function message_die($msg_code, $msg_text = '', $msg_title = '', $err_line = '',
 	exit;
 }
 
+require_once dirname(__FILE__).'/helper.php';
+
+// this is for joomla / when phpbb3 is bridged to joomla!
+function leonardo_check_password($password,$hash) {
+
+	$parts	= explode( ':', $hash );
+	$crypt	= $parts[0];
+	$salt	= @$parts[1];
+	
+
+	$testcrypt = JUserHelper::getCryptedPassword($password, $salt);
+
+
+	if ($crypt == $testcrypt) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.2 2009/01/07 15:25:38 manolis Exp $
+* @version Version 0.1 / $Id: functions.php,v 1.3 2009/03/26 16:11:54 manolis Exp $
 *
 * Portable PHP password hashing framework.
 *

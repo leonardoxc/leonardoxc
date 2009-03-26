@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.115 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: config.php,v 1.116 2009/03/26 16:17:27 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,8 +19,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
 
-  $CONF_version="3.0.0";
-  $CONF_releaseDate="2008/12/01";
+  $CONF_version="3.1.0";
+  $CONF_releaseDate="2009/03/26";
 
 // opMode 
 // 1 = PHPnuke module
