@@ -1,7 +1,15 @@
 <?php
 require_once $LeoCodeBase."/CL_mail.php";
+openMain(_PASSWORD_RECOVERY_TOOL,0,""); 
+
+if ($userID>0) {
+	echo "<span class='note'>"._You_are_already_logged_in."</span>";
+	closeMain();
+	return;
+}
 
 if(isset($_GET['rkey'])){
+
     $rk=trim(addslashes($_GET['rkey']));
 	if(strlen($rk)>10){
 		$sql="update ".$CONF['userdb']['users_table']." set user_active=1, user_emailtime=0, user_actkey='',  user_password=user_newpasswd where user_actkey='$rk'";
@@ -9,16 +17,25 @@ if(isset($_GET['rkey'])){
 		$ar=$db->sql_affectedrows($db);
 		if($ar==1){
 			$msg=_PwdChanged; 	
-		} else{
+			echo "<br><span class='ok'><b>$msg</b></span><br>";
+		} else{		
 			$msg= _PwdNotChanged ." " . _request_key_not_found;
+			echo "<br><span class='alert'><b>$msg</b></span><br>";
 		}
 	} else{
 		$msg= _PwdNotChanged ." ". _request_key_invalid;
+		echo "<br><span class='alert'><b>$msg</b></span><br>";
 	}
-	print "<br><div align='center'><b>$msg</b></div><br>";
-} else {
+	closeMain();
+	return;
+}
 
-function generatePassword ($length = 8) {
+
+
+function generatePassword ($length ) {
+	if (!$length ) $length = 6;
+	$length +=2;
+	
   // start with a blank password
   $password = "";
   // define possible characters
@@ -42,12 +59,12 @@ function generatePassword ($length = 8) {
 function _search_user($str){  
 	global $db,$CONF;
 	$sql="select * from ".$CONF['userdb']['users_table']." where username='$str' or user_civlid='$str' or user_email='$str' ";
-	$query=$db->sql_query($sql);
-	$nr=$db->sql_numrows($query);
+	$res=$db->sql_query($sql);
+	$nr=$db->sql_numrows($res);
 	if($nr>1){
 		return false;
 	}
-	return $query;
+	return $res;
 }
 
 if(isset($_POST['uce'])){
@@ -59,34 +76,42 @@ if(isset($_POST['uce'])){
 		$emailtime=$res['user_emailtime'];
 		 // gen a new password with 6 char long;
 		 //$emailtime=0;
-		if(($emailtime+($CONF_expire_time)) < $ltime){
+		if(($emailtime+($CONF['userdb']['edit']['password_change_expire_time'])) < $ltime){
 			//  print "$emailtime | $ltime";
 			$actkey=md5(uniqid(rand(), true));
-			$newpass=generatePassword($CONF_password_minlength);
-			$sql="update ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".md5($newpass)."',user_actkey='$actkey' where user_id=$res[user_id]";
+			$newpass=generatePassword($CONF['userdb']['edit']['password_minlength']);
+			$sql="UPDATE ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".md5($newpass)."',user_actkey='$actkey' where ".$CONF['userdb']['user_id_field']."=".$res['user_id'];
 			
 			if($db->sql_query($sql)){
-				$msg= _Email_new_password;
+				
+				$msg=  "<span class='ok'><b>"._Email_new_password."</b></span>";
 					  
-				$email_body=sprintf(_Password_recovery_email,$CONF_server_short_name,$res['username'],$_SERVER['HTTP_HOST'],
+				$email_body=sprintf(_Password_recovery_email,
+									$CONF_server_short_name,
+									$res['username'],$_SERVER['HTTP_HOST'],
 									$res['username'],$res['user_civlid'],
-									$newpass,$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey
-									);															
-				LeonardoMail::sendMail("[Leonardo] $CONF_server_short_name - ". _Password_subject_confirm,utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']) );
+									$newpass,
+									$_SERVER['HTTP_HOST'].$PHP_SELF,
+									$actkey
+									);		
+																						
+				LeonardoMail::sendMail("[Leonardo] $CONF_server_short_name - ". _Password_subject_confirm,
+						utf8_decode($email_body),
+						$res['user_email'],
+						addslashes($_POST['name']) );
 			
 			}
 		
 		} else{
-			$expiretime=date("d/M/Y H:i:s",$emailtime+($CONF_expire_time));
-			$msg= sprintf(_impossible_to_gen_new_pass,$expiretime);
+			$expiretime=date("d/M/Y H:i:s",$emailtime+($CONF['userdb']['edit']['password_change_expire_time']));
+			$msg=  "<span class='alert'><b>".sprintf(_impossible_to_gen_new_pass,$expiretime)."</b></span>";
 		}
 	} else {
-		$msg= "<p align='justify'><b>"._informed_user_not_found."</b></p>";
+		$msg= "<span class='alert'><b>"._informed_user_not_found."</b></span>";
 	}
 }
 
 ?>
-<head>
 <style type="text/css">
 <!--
 .alertMsg a {
@@ -158,17 +183,15 @@ if(isset($_POST['uce'])){
 }
 -->
 </style>
-</head>
+
 <form  id="loginform" name="loginform" action="" method="post" >
   <table width="70%" cellpadding="4" cellspacing="1" border="0" class="forumline" align="center">
+    
     <tr>
-      <th height="25" class="thHead" nowrap="nowrap"><?=_PASSWORD_RECOVERY_TOOL?></th>
-    </tr>
-    <tr>
-      <td class="row1" align="justify"><?=count($msg)>0?$msg:_PASSWORD_RECOVERY_TOOL_MESSAGE?></td>
+      <td class="row1" align="justify"><?=$msg?$msg:_PASSWORD_RECOVERY_TOOL_MESSAGE?></td>
     </tr>
   </table>
-  <table width=250 align="center"  cellpadding="0" cellspacing="0" class="tborder">
+  <table width=350 align="center"  cellpadding="4" cellspacing="0" class="tborder">
     <tbody>
       <tr class="tcat">
         <td align="left" width="1"><img src="img/space.gif" height="21" width="1"></td>
@@ -197,9 +220,12 @@ if(isset($_POST['uce'])){
       </tr>
   </table>
   <p>&nbsp;</p>
-  <div align="center"><span class="alertMsg"><a href="mailto:{adminMail}" target="_self">
+  <div align="center"><span class="alertMsg"><a href="mailto:<?=$CONF_admin_email?>" target="_self">
     <?=_PROBLEMS_HELP?>
     </a></span> </div>
 </form>
 
-<? } ?>
+<?
+  closeMain();  
+
+?>

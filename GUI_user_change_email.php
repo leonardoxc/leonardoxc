@@ -1,4 +1,7 @@
 <?php
+
+echo "not used";
+exit;
 //var_dump(get_defined_vars());
 
 function _get_pilot_atributes(){
@@ -73,8 +76,7 @@ if(isset($_POST['changeem'])){
     
 
 
-?>
-<head><style type="text/css">
+?><head><style type="text/css">
 <!--
 .alertMsg a{
     color: #FF0000;
@@ -142,6 +144,7 @@ text-align:center;
 -->
 </style>
  </head>
+
 
 <form  id="loginform" name="loginform" action="" method="post" >
 

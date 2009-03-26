@@ -8,11 +8,9 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.13 2009/02/26 10:07:02 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.14 2009/03/26 15:57:01 manolis Exp $                                                                 
 //
 //************************************************************************
-
-//	  open_inner_table(_LOGIN,700,"delete_icon.png");
 
 /***************************************************************************
  *                                login.php
@@ -21,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.13 2009/02/26 10:07:02 manolis Exp $
+ *   $Id: GUI_login.php,v 1.14 2009/03/26 15:57:01 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -35,6 +33,9 @@
  *
  ***************************************************************************/
 
+ // openMain(_ENTER_PASSWORD,0,""); 
+ openMain(_MENU_LOGIN,0,""); 
+ 
 //
 // Allow people to reach login page if
 // board is shut down
@@ -281,6 +282,6 @@ else
 	}
 
 }
+  closeMain();  
 
-//	  close_inner_table(); 
 ?>

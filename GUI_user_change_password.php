@@ -1,4 +1,8 @@
 <?
+
+echo "not used";
+exit;
+
 if(isset($_POST['changepw'])){
    $pw=trim($_POST['pwtochange']);
    $pw2=trim($_POST['pwtochange2']);    
@@ -22,8 +26,7 @@ if(isset($_POST['changepw'])){
  //user_new_email
 // print $sql;
 }
-?>
-<head><style type="text/css">
+?><head><style type="text/css">
 <!--
 .alertMsg a{
     color: #FF0000;
@@ -91,6 +94,7 @@ text-align:center;
 -->
 </style>
  </head>
+
 
 <form  id="loginform" name="loginform" action="" method="post" >
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.103 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: index.php,v 1.104 2009/03/26 15:57:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -368,9 +368,12 @@ if ($op=="index_full") {
 } else if ($op=="show_flight" ) {  
     require $LeoCodeBase."/GUI_flight_show.php";		
 } else if ($op=="add_flight") {
-    if($CONF_force_civlid==1 && !$civlID && 0) require $LeoCodeBase."/GUI_user_civl_search.php";
-    else if ($userID>0) require $LeoCodeBase."/GUI_flight_add.php"; // add by Durval Henke www.xcbrasil.org 19/12/2008 
-	else echo "<center><br>You are not logged in. <br><br>Please login<BR><BR></center>";
+	// add by Durval Henke www.xcbrasil.org 19/12/2008 
+    if($CONF_force_civlid==1 && !$civlID && 0) 
+		require $LeoCodeBase."/GUI_user_civl_search.php";
+    else  
+		require $LeoCodeBase."/GUI_flight_add.php"; 
+	
 } else if ($op=="add_from_zip") {
 	require $LeoCodeBase."/GUI_flight_add_from_zip.php";		
 } else if ($op=="delete_flight") {
@@ -400,16 +403,22 @@ if ($op=="index_full") {
 	if ($opMode==3) require $LeoCodeBase."/GUI_user_register.php";
 	else echo "<BR><BR>Parameter Not used !!<BR>";
 } else if ($op=="send_password") {
-  if ($userID>0) echo _You_are_not_login;   // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else require $LeoCodeBase."/GUI_user_send_password.php";         
+	// add by Durval Henke www.xcbrasil.org 19/12/2008 
+	require $LeoCodeBase."/GUI_user_send_password.php";         
+	
+/*
 } else if ($op=="change_password"){
-  if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";   
+  // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;        
 } else if ($op=="change_email") {
-  if ($userID>0 || isset($_GET['rkey']) ) require $LeoCodeBase."/GUI_user_change_email.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else echo _You_are_not_login;       
+  if ($userID>0 || isset($_GET['rkey']) ) require $LeoCodeBase."/GUI_user_change_email.php";   
+  // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  else echo _You_are_not_login; 
+  */      
 } else if ($op=="need_civlid") {
-  if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";   // add by Durval Henke www.xcbrasil.org 19/12/2008 
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";   
+  // add by Durval Henke www.xcbrasil.org 19/12/2008 
   else echo _You_are_not_login;         
 //--------------------------
 // "Pilots" related actions
@@ -418,7 +427,7 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {
 	if ($userID>0 || $CONF_showProfilesToGuests ) require $LeoCodeBase."/GUI_pilot_profile.php";
-	else echo "<center><br>"._You_are_not_login."<br><br>Please login<BR><BR></center>";			
+	else echo "<center><br><BR><span class='note'>"._You_are_not_login."<br><br>Please login<BR></span><BR><BR></center>";			
 } else if ($op=="pilot_profile_edit") {
 	require $LeoCodeBase."/GUI_pilot_profile_edit.php";
 } else if ($op=="pilot_olc_profile_edit") {

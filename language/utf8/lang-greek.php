@@ -757,7 +757,8 @@ define('_Class','Κλάση');
 // 2009-03-20 filter for photos
 define("_Photos_filter_off","Με/χωρίς φωτογραφίες");
 define("_Photos_filter_on","Μόνο με φωτογραφίες");
-
+
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
@@ -841,5 +842,66 @@ define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in anoth
 define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
 define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
 define("_Server_send_conf_email","The server have sended to the %s an email asking for confirmation, you have 3 hours from now to confirm your registration by clicking or copying and pasting the link that are in the email body in your browser addres"); 
+
+define("_Pilot_confirm_subscription","===================================
+
+%s Leonardo new user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally create your account, you will need to click on link below to verify your email address:
+
+http://%s?op=users&page=index&act=register&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------");
+define("_Pilot_confirm_change_email","===================================
+
+%s Leonardo user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally change your email address, you will need to click on link below to verify your email address:
+
+http://%s?op=chem&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------");                  
+define("_Password_recovery_email","===================================
+
+%s (Leonardo) user
+                
+Hi %s,
+
+This is a verification email sent from %s
+                
+With Password recovery for you
+                
+Username:%s
+                
+CIVLID:%s
+                
+NewPassword:%s
+ 
+To activate your new password, you will need to click on link below to verify your email address:
+
+http://%s?op=send_password&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------");
+
 
 ?>

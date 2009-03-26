@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_mail.php,v 1.1 2009/02/24 13:16:49 manolis Exp $                                                                 
+// $Id: CL_mail.php,v 1.2 2009/03/26 15:57:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,6 +17,7 @@ require_once $LeoCodeBase."/lib/mail/class.phpmailer.php";
 class LeonardoMail{
 
 function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
+	//echo " $Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='' <BR>";
 	global $CONF;
 	if ($fromMail=='') $fromMail=$CONF_admin_email;
 	if ($fromName=='') $fromName=$CONF['site']['name'];
@@ -39,9 +40,10 @@ function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
 		$mail->IsHTML(false);
 		$mail->From     = $fromMail;
 		$mail->FromName = $fromName;
-		$mail->Subject  =  $Subject." smtp";
+		$mail->Subject  =  $Subject." ";
 		$mail->Body     =  $Content;
 		$mail->AddAddress($toEmail, $toName);
+		
 		if (!$mail->Send())	{
 			return false;
 		} else{

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.70 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.71 2009/03/26 15:57:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -267,7 +267,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
         
-  		<? if ($opMode==3){ ?>
+  		<? if ($opMode==3 && 0 ){ // not used . the changes  can now be done from the profile ?>
         <li><a href="<?=getLeonardoLink(array('op'=>'change_password')) ?>"><?=_MENU_CHANGE_PASSWORD?></a></li>
         <li><a href="<?=getLeonardoLink(array('op'=>'change_email')) ?>"><?=_MENU_CHANGE_EMAIL?></a></li>       
         <? } ?>
