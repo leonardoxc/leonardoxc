@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.5 2009/03/26 16:15:35 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.6 2009/03/26 16:41:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -373,10 +373,10 @@
 	$CONF['site']['name']="LeonardoXC";
 	
 	// this forces the use of CIVL ID
-	$CONF_force_civlid=1;
+	$CONF_force_civlid=false;
 	
 	// display also the thermals DB in flight's display page
-	$CONF['thermals']['enable']=true;
+	$CONF['thermals']['enable']=false;
 
 
 ?>

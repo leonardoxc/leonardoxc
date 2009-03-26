@@ -1,6 +1,7 @@
--- 
+
+--
 -- Table structure for table `leonardo_airspace`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_airspace`;
 CREATE TABLE `leonardo_airspace` (
@@ -31,9 +32,9 @@ CREATE TABLE `leonardo_airspace` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_areas`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_areas`;
 CREATE TABLE `leonardo_areas` (
@@ -53,13 +54,13 @@ CREATE TABLE `leonardo_areas` (
   `isInclusive` smallint(6) NOT NULL default '1',
   PRIMARY KEY  (`ID`),
   KEY `areaType` (`areaType`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_areas_takeoffs`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_areas_takeoffs`;
 CREATE TABLE `leonardo_areas_takeoffs` (
@@ -69,9 +70,9 @@ CREATE TABLE `leonardo_areas_takeoffs` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_clubs`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_clubs`;
 CREATE TABLE `leonardo_clubs` (
@@ -91,13 +92,13 @@ CREATE TABLE `leonardo_clubs` (
   `formula_parameters` text NOT NULL,
   `areaID` mediumint(8) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_clubs_flights`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_clubs_flights`;
 CREATE TABLE `leonardo_clubs_flights` (
@@ -107,9 +108,9 @@ CREATE TABLE `leonardo_clubs_flights` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_clubs_pilots`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_clubs_pilots`;
 CREATE TABLE `leonardo_clubs_pilots` (
@@ -121,9 +122,9 @@ CREATE TABLE `leonardo_clubs_pilots` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_flights`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_flights`;
 CREATE TABLE `leonardo_flights` (
@@ -141,7 +142,7 @@ CREATE TABLE `leonardo_flights` (
   `dateUpdated` datetime NOT NULL,
   `timesViewed` mediumint(9) NOT NULL default '0',
   `userID` mediumint(8) unsigned NOT NULL default '0',
-  `originalUserID` mediumint(8) unsigned NOT NULL default '0',
+  `originalUserID` varchar(30) NOT NULL,
   `userServerID` mediumint(8) unsigned NOT NULL default '0',
   `filename` varchar(200) NOT NULL default '',
   `place` varchar(100) NOT NULL default '',
@@ -150,12 +151,6 @@ CREATE TABLE `leonardo_flights` (
   `comments` text NOT NULL,
   `linkURL` varchar(200) NOT NULL default '',
   `hasPhotos` tinyint(3) unsigned NOT NULL default '0',
-  `photo1Filename` varchar(150) NOT NULL default '',
-  `photo2Filename` varchar(150) NOT NULL default '',
-  `photo3Filename` varchar(150) NOT NULL default '',
-  `photo4Filename` varchar(150) NOT NULL default '',
-  `photo5Filename` varchar(150) NOT NULL default '',
-  `photo6Filename` varchar(150) NOT NULL default '',
   `takeoffID` mediumint(9) NOT NULL default '0',
   `takeoffVinicity` float NOT NULL default '0',
   `landingID` mediumint(9) NOT NULL default '0',
@@ -187,16 +182,6 @@ CREATE TABLE `leonardo_flights` (
   `lastPointTM` int(10) unsigned NOT NULL default '0',
   `lastLat` float NOT NULL,
   `lastLon` float NOT NULL,
-  `FIRST_POINT` varchar(50) NOT NULL default '',
-  `LAST_POINT` varchar(50) NOT NULL default '',
-  `turnpoint1` varchar(100) NOT NULL default '',
-  `turnpoint2` varchar(100) NOT NULL default '',
-  `turnpoint3` varchar(100) NOT NULL default '',
-  `turnpoint4` varchar(100) NOT NULL default '',
-  `turnpoint5` varchar(100) NOT NULL default '',
-  `olcRefNum` varchar(30) NOT NULL default '',
-  `olcFilename` varchar(12) NOT NULL default '',
-  `olcDateSubmited` datetime NOT NULL default '0000-00-00 00:00:00',
   `private` tinyint(3) unsigned NOT NULL default '0',
   `gpsTrack` tinyint(3) unsigned NOT NULL default '1',
   `grecord` smallint(6) NOT NULL default '0',
@@ -211,17 +196,97 @@ CREATE TABLE `leonardo_flights` (
   `hash` varchar(100) NOT NULL default '',
   `batchOpProcessed` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`),
-  KEY `userID` (`userID`),
   KEY `takeoffID` (`takeoffID`),
-  KEY `takeoffID_2` (`takeoffID`),
-  KEY `NACClubIndex` (`NACclubID`,`NACid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `NACClubIndex` (`NACclubID`,`NACid`),
+  KEY `userID` (`userID`,`userServerID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
+-- Table structure for table `leonardo_flights_deleted`
+--
+
+DROP TABLE IF EXISTS `leonardo_flights_deleted`;
+CREATE TABLE `leonardo_flights_deleted` (
+  `ID` bigint(20) unsigned NOT NULL auto_increment,
+  `serverID` smallint(5) unsigned NOT NULL default '0',
+  `originalURL` varchar(255) NOT NULL default '',
+  `originalKML` varchar(255) NOT NULL,
+  `original_ID` mediumint(8) unsigned NOT NULL default '0',
+  `cat` smallint(5) unsigned NOT NULL default '1',
+  `subcat` smallint(5) unsigned NOT NULL default '1',
+  `category` smallint(5) unsigned NOT NULL default '2',
+  `active` smallint(6) NOT NULL default '0',
+  `excludeFrom` tinyint(3) unsigned NOT NULL default '0',
+  `dateAdded` datetime NOT NULL default '0000-00-00 00:00:00',
+  `dateUpdated` datetime NOT NULL,
+  `timesViewed` mediumint(9) NOT NULL default '0',
+  `userID` mediumint(8) unsigned NOT NULL default '0',
+  `originalUserID` varchar(30) NOT NULL,
+  `userServerID` mediumint(8) unsigned NOT NULL default '0',
+  `filename` varchar(200) NOT NULL default '',
+  `place` varchar(100) NOT NULL default '',
+  `glider` varchar(50) NOT NULL default '',
+  `gliderBrandID` smallint(5) unsigned NOT NULL default '0',
+  `comments` text NOT NULL,
+  `linkURL` varchar(200) NOT NULL default '',
+  `hasPhotos` tinyint(3) unsigned NOT NULL default '0',
+  `takeoffID` mediumint(9) NOT NULL default '0',
+  `takeoffVinicity` float NOT NULL default '0',
+  `landingID` mediumint(9) NOT NULL default '0',
+  `landingVinicity` float NOT NULL default '0',
+  `DATE` date NOT NULL default '0000-00-00',
+  `timezone` float NOT NULL default '0',
+  `MAX_SPEED` float NOT NULL default '0',
+  `MEAN_SPEED` float NOT NULL default '0',
+  `MAX_ALT` int(11) NOT NULL default '0',
+  `MIN_ALT` int(11) NOT NULL default '0',
+  `TAKEOFF_ALT` int(11) NOT NULL default '0',
+  `MAX_VARIO` float NOT NULL default '0',
+  `MIN_VARIO` float NOT NULL default '0',
+  `LINEAR_DISTANCE` bigint(20) NOT NULL default '0',
+  `MAX_LINEAR_DISTANCE` bigint(20) NOT NULL default '0',
+  `START_TIME` mediumint(9) NOT NULL default '0',
+  `END_TIME` mediumint(9) NOT NULL default '0',
+  `DURATION` mediumint(9) NOT NULL default '0',
+  `BEST_FLIGHT_TYPE` varchar(30) NOT NULL default '',
+  `FLIGHT_KM` float NOT NULL default '0',
+  `FLIGHT_POINTS` float NOT NULL default '0',
+  `autoScore` float NOT NULL default '0',
+  `isLive` tinyint(3) unsigned NOT NULL default '0',
+  `externalFlightType` tinyint(3) unsigned NOT NULL default '0',
+  `forceBounds` tinyint(3) unsigned NOT NULL default '0',
+  `firstPointTM` int(10) unsigned NOT NULL default '0',
+  `firstLat` float NOT NULL,
+  `firstLon` float NOT NULL,
+  `lastPointTM` int(10) unsigned NOT NULL default '0',
+  `lastLat` float NOT NULL,
+  `lastLon` float NOT NULL,
+  `private` tinyint(3) unsigned NOT NULL default '0',
+  `gpsTrack` tinyint(3) unsigned NOT NULL default '1',
+  `grecord` smallint(6) NOT NULL default '0',
+  `validated` smallint(6) NOT NULL default '0',
+  `validationMessage` text NOT NULL,
+  `airspaceCheck` tinyint(4) NOT NULL default '0',
+  `airspaceCheckFinal` tinyint(4) NOT NULL default '0',
+  `airspaceCheckMsg` text NOT NULL,
+  `checkedBy` varchar(100) NOT NULL default '',
+  `NACid` int(10) unsigned NOT NULL default '0',
+  `NACclubID` bigint(20) NOT NULL default '0',
+  `hash` varchar(100) NOT NULL default '',
+  `batchOpProcessed` tinyint(3) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`ID`),
+  KEY `takeoffID` (`takeoffID`),
+  KEY `NACClubIndex` (`NACclubID`,`NACid`),
+  KEY `userID` (`userID`,`userServerID`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `leonardo_flights_score`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_flights_score`;
 CREATE TABLE `leonardo_flights_score` (
@@ -241,13 +306,13 @@ CREATE TABLE `leonardo_flights_score` (
   `turnpoint7` varchar(50) NOT NULL,
   PRIMARY KEY  (`ID`),
   KEY `flightID` (`flightID`,`method`,`type`,`isBest`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_log`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_log`;
 CREATE TABLE `leonardo_log` (
@@ -267,13 +332,13 @@ CREATE TABLE `leonardo_log` (
   `ResultDescription` text NOT NULL,
   PRIMARY KEY  (`transactionID`),
   KEY `ItemType` (`ItemType`,`ServerItemID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_maps`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_maps`;
 CREATE TABLE `leonardo_maps` (
@@ -291,44 +356,44 @@ CREATE TABLE `leonardo_maps` (
   UNIQUE KEY `filename` (`filename`),
   KEY `UTMzone` (`UTMzone`),
   KEY `metersPerPixel` (`metersPerPixel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 PACK_KEYS=0;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=0;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_nac_clubs`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_nac_clubs`;
 CREATE TABLE `leonardo_nac_clubs` (
   `NAC_ID` mediumint(9) NOT NULL default '0',
   `clubID` bigint(20) NOT NULL default '0',
-  `clubName` varchar(255) NOT NULL default '',
+  `clubName` varchar(255) NOT NULL,
   PRIMARY KEY  (`NAC_ID`,`clubID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_photos`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_photos`;
 CREATE TABLE `leonardo_photos` (
   `ID` bigint(20) unsigned NOT NULL auto_increment,
   `flightID` mediumint(8) unsigned NOT NULL default '0',
-  `path` varchar(255) NOT NULL default '',
-  `name` varchar(255) NOT NULL default '',
+  `path` varchar(255)  NOT NULL default '',
+  `name` varchar(255)  NOT NULL default '',
   `description` text NOT NULL,
   PRIMARY KEY  (`ID`),
   KEY `flightID` (`flightID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_pilots`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_pilots`;
 CREATE TABLE `leonardo_pilots` (
@@ -336,6 +401,7 @@ CREATE TABLE `leonardo_pilots` (
   `serverID` smallint(5) unsigned NOT NULL default '0',
   `countryCode` char(2) NOT NULL default '',
   `CIVL_ID` mediumint(8) unsigned NOT NULL default '0',
+  `CIVL_NAME` varchar(80) NOT NULL,
   `NACid` int(10) unsigned NOT NULL default '0',
   `NACmemberID` bigint(20) unsigned NOT NULL default '0',
   `NACclubID` bigint(20) NOT NULL default '0',
@@ -347,6 +413,7 @@ CREATE TABLE `leonardo_pilots` (
   `olcAutoSubmit` tinyint(4) NOT NULL default '0',
   `FirstName` varchar(40) NOT NULL default '',
   `LastName` varchar(50) NOT NULL default '',
+  `NickName` varchar(25) NOT NULL,
   `clubID` mediumint(8) unsigned NOT NULL default '0',
   `sponsor` varchar(255) default NULL,
   `Sex` varchar(6) NOT NULL default '',
@@ -354,11 +421,11 @@ CREATE TABLE `leonardo_pilots` (
   `BirthdateHideMask` varchar(10) NOT NULL default 'xx.xx.xxxx',
   `Occupation` varchar(100) NOT NULL default '',
   `MartialStatus` varchar(20) NOT NULL default '',
-  `OtherInterests` longtext NOT NULL default '',
+  `OtherInterests` longtext NOT NULL,
   `PersonalWebPage` varchar(150) NOT NULL default '',
   `PilotLicence` varchar(100) NOT NULL default '',
-  `BestMemory` longtext NOT NULL default '',
-  `WorstMemory` longtext NOT NULL default '',
+  `BestMemory` longtext NOT NULL,
+  `WorstMemory` longtext NOT NULL,
   `Training` varchar(200) NOT NULL default '',
   `personalDistance` varchar(150) NOT NULL default '',
   `personalHeight` varchar(150) NOT NULL default '',
@@ -390,14 +457,16 @@ CREATE TABLE `leonardo_pilots` (
   `Helmet` varchar(60) NOT NULL default '',
   `PilotPhoto` varchar(30) NOT NULL default '',
   `FirstOlcYear` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`pilotID`,`serverID`)
+  PRIMARY KEY  (`pilotID`,`serverID`),
+  KEY `FirstName` (`FirstName`),
+  KEY `LastName` (`LastName`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_remote_pilots`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_remote_pilots`;
 CREATE TABLE `leonardo_remote_pilots` (
@@ -410,22 +479,22 @@ CREATE TABLE `leonardo_remote_pilots` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_servers`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_servers`;
 CREATE TABLE `leonardo_servers` (
   `ID` mediumint(8) unsigned NOT NULL auto_increment,
   `lastPullUpdateID` bigint(20) unsigned NOT NULL default '0',
   PRIMARY KEY  (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Table structure for table `leonardo_stats`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_stats`;
 CREATE TABLE `leonardo_stats` (
@@ -447,9 +516,36 @@ CREATE TABLE `leonardo_stats` (
 
 -- --------------------------------------------------------
 
--- 
+--
+-- Table structure for table `leonardo_thermals`
+--
+
+DROP TABLE IF EXISTS `leonardo_thermals`;
+CREATE TABLE `leonardo_thermals` (
+  `id` bigint(20) unsigned NOT NULL,
+  `type` tinyint(4) NOT NULL,
+  `latitude` float NOT NULL,
+  `longitude` float NOT NULL,
+  `name` char(6) NOT NULL,
+  `climbrate` smallint(6) NOT NULL,
+  `climbseconds` smallint(6) NOT NULL,
+  `climbmeters` smallint(6) NOT NULL,
+  `windsourcedeg` smallint(6) NOT NULL,
+  `windspeed` tinyint(4) NOT NULL,
+  `class` char(1) NOT NULL,
+  `icon` tinyint(4) NOT NULL,
+  `createddatetime` datetime NOT NULL,
+  `altitude` smallint(6) NOT NULL,
+  `notes` text NOT NULL,
+  KEY `class` (`class`),
+  KEY `latitude` (`latitude`,`longitude`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `leonardo_waypoints`
--- 
+--
 
 DROP TABLE IF EXISTS `leonardo_waypoints`;
 CREATE TABLE `leonardo_waypoints` (
@@ -466,5 +562,7 @@ CREATE TABLE `leonardo_waypoints` (
   `description` text NOT NULL,
   `modifyDate` date NOT NULL default '2005-09-01',
   PRIMARY KEY  (`ID`),
-  KEY `lat` (`lat`,`lon`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  KEY `lat` (`lat`,`lon`),
+  KEY `countryCode` (`countryCode`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
