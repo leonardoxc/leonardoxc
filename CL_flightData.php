@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.164 2009/03/24 12:18:43 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.165 2009/03/27 14:50:00 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -3116,7 +3116,7 @@ $kml_file_contents=
 	
 	}
 
-	function getFlightFromDB($flightID,$updateTakeoff=1,&$row=array()) {
+	function getFlightFromDB($flightID,$updateTakeoff=1,$row=array()) {
 	  global $db,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
