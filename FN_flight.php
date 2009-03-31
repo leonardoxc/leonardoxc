@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.50 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.51 2009/03/31 14:49:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -94,7 +94,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight,$CONF;
 	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ,$CONF_server_id;
-	global $userID;
+	global $userID,$CONF_new_flights_submit_window;
 	global $flightsTable;
 
 	set_time_limit (120);
@@ -230,7 +230,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	// Two week time limit check - P.Wild
 	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
 	if ($CONF_new_flights_submit_window>0) {
-		if (! isModerator($userID) ) {
+		if (! L_auth::isAdmin($userID) ) {
 			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
 				@unlink($flight->getIGCFilename(1));
 				@unlink($tmpIGCPath.".olc");
