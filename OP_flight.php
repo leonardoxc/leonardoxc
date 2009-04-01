@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.15 2009/02/09 14:26:10 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.16 2009/04/01 20:18:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -197,7 +197,7 @@ function flights_submit($args) {
 			$passwordHashed=$row[$CONF['userdb']['password_field']];
 		}
 			
-		if ($opMode==6) { // phpbb3 has custom way of hashing passwords
+		if ( function_exists('leonardo_check_password') ) { // phpbb3 has custom way of hashing passwords
 			if( ! leonardo_check_password($passwd,$passwordHashed)  ) $passwdProblems=1;			
 		} else {
 			if( md5($passwd) != $passwordHashed ) $passwdProblems=1;
