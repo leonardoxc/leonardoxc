@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_pilot_map.php,v 1.8 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_pilot_map.php,v 1.9 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -106,9 +106,9 @@
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
 <script language="javascript">
 
-function getPilotInfo(pilotID) {
+function getPilotInfo(serverID,pilotID) {
 	url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
-	pars='op=getExternalPilotInfo&pilotID='+pilotID;
+	pars='op=getExternalPilotInfo&serverID='+serverID+'&pilotID='+pilotID;
 	var myAjax = new Ajax.Updater('stickyEl', url, {method:'get',parameters:pars});
 	//div=MWJ_findObj(divID);
 	// MWJ_changePosition('stickyEl',5,document.html.scrollTop+200);
@@ -165,7 +165,7 @@ function showResults(textStr) {
 		echo "<tr><td>$i</td>
 			<td>".$row['remoteServerID']."</td>		
 			<td>".$row['remoteUserID']."</td>
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']." <a href='javascript:getPilotInfo(\"$pilotID2\")'>[INFO]</a></td>
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']." <a href='javascript:getPilotInfo(\"".$row['remoteServerID'].','.$row['remoteUserID']."\")'>[INFO]</a></td>
 			<td> -> </td>
 			<td>".$row['serverID']."</td>
 			<td>".$row['userID']."</td>

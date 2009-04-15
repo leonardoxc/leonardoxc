@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.27 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.28 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -22,10 +22,15 @@
   require_once dirname(__FILE__)."/CL_user.php";
   require_once dirname(__FILE__)."/lib/json/CL_json.php";
 
-  if (!$pilotIDview && $userID>0) $pilotIDview=$userID;
-
+  if (!$pilotIDview && $userID>0) {
+  	$pilotIDview=$userID;
+	$serverID=0;
+  }
+  
+  $serverIDview=$serverID;
+  
   // edit function
-  if ( $pilotIDview != $userID && !L_auth::isAdmin($userID) && !L_auth::isModerator($userID ) ) { 
+  if ( ( $pilotIDview != $userID || $serverIDview!=0 ) && !L_auth::isAdmin($userID) && !L_auth::isModerator($userID ) ) { 
  	echo "<div>You dont have permission to edit this profile<br></div>";
     return;
   }
@@ -34,28 +39,31 @@
 	   		
 
 	if ($_REQUEST["PilotPhotoDelete"]=="1") {		// DELETE photo
-		@unlink(getPilotPhotoFilename($pilotIDview,1) );
-		@unlink(getPilotPhotoFilename($pilotIDview,0) );
+		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,1) );
+		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,0) );
 		$PilotPhoto=0;
 
 	} else if ($_FILES['PilotPhoto']['name'] ) {  // upload new
-		@unlink(getPilotPhotoFilename($pilotIDview,1) );
-		@unlink(getPilotPhotoFilename($pilotIDview,0) );
+		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,1) );
+		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,0) );
 
-		$path=dirname(getPilotPhotoFilename($pilotIDview));
+		$path=dirname(getPilotPhotoFilename($serverIDview,$pilotIDview));
 		if (!is_dir($path)) @mkdir($path,0777);
 
-		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  getPilotPhotoFilename($pilotIDview) ) ) {
-			CLimage::resizeJPG(150,150, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview,1), 15);
-			CLimage::resizeJPG(800,800, getPilotPhotoFilename($pilotIDview), getPilotPhotoFilename($pilotIDview), 15);
+		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  
+				getPilotPhotoFilename($serverIDview,$pilotIDview) ) ) {
+			CLimage::resizeJPG(150,150, getPilotPhotoFilename($pilotIDview),
+				 						getPilotPhotoFilename($serverIDview,$pilotIDview,1), 15);
+			CLimage::resizeJPG(800,800, getPilotPhotoFilename($serverIDview,$pilotIDview), 
+										getPilotPhotoFilename($serverIDview,$pilotIDview), 15);
 			$PilotPhoto=1;
 		} else { //upload not successfull
-			@unlink(getPilotPhotoFilename($pilotIDview,1) );
-		    @unlink(getPilotPhotoFilename($pilotIDview,0) );
+			@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,1) );
+		    @unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,0) );
 			$PilotPhoto=0;
 		}
 	} else { // no change
-		if (is_file(getPilotPhotoFilename($pilotIDview)) )	$PilotPhoto=1;
+		if (is_file(getPilotPhotoFilename($serverIDview,$pilotIDview)) )	$PilotPhoto=1;
 		else $PilotPhoto=0;
 	}
 	
@@ -160,7 +168,7 @@
 		`PersonalWebPage` = '".prep_for_DB($_POST['PersonalWebPage'])."',
 		`FirstOlcYear` = $FirstOlcYear
 
-		 WHERE `pilotID` = '$pilotIDview' ";
+		 WHERE `pilotID` = '$pilotIDview'  AND serverID='$serverIDview' ";
 
     $res= $db->sql_query( $query );
     if($res <= 0){
@@ -190,10 +198,10 @@
 
 	$legend=_Pilot_Profile.": <b>$pilot[username]</b>";
 	$legendRight="<a href='".
-		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
+		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverIDview.'_'.$pilotIDview,'year'=>'0','country'=>''))
 		."'>"._PILOT_FLIGHTS."</a>";
 	$legendRight.=" | <a href='".
-		getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview))	
+		getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverIDview.'_'.$pilotIDview))	
 	  	."'>"._View_Profile."</a>";
 	$legendRight.=" | <a href='javascript: document.pilotProfile.submit();'>"._Submit_Change_Data."</a>";
 
@@ -474,7 +482,7 @@
     <td>&nbsp;</td>
     <td width="90" colspan="2" rowspan="4" valign="top"><p align="right">
 	<? 	if ($pilot['PilotPhoto']>0) 
-			echo "<a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a>";
+			echo "<a href='".getPilotPhotoRelFilename($serverIDview,$pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."' border=0></a>";
 	?>
 	<strong><? echo _Photo ?></strong>
     <? if ($pilot['PilotPhoto']>0) 

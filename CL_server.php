@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.36 2009/03/24 12:18:43 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.37 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -117,6 +117,56 @@ class Server {
 	
 
 	function getPilots($pilotIDarray) {
+	
+		global $CONF_server_id,$CONF_tmp_path,$db,$flightsTable;
+		
+		if (is_array($pilotIDarray) ) {
+			print_r($pilotIDarray);
+			$pilotList="";
+			foreach($pilotIDarray as $pID) {
+			
+			}
+		} else {
+			$pilotList=$pilotIDarray;
+		}
+		
+		$urlToPull='http://'.$this->data['url_base'].'/sync.php?version='.$this->getProtocolVersion();
+		$urlToPull.="&op=pilot_info&pilots=".$pilotList;
+		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'];
+
+		echo "Getting pilot info from $urlToPull ... ";
+		
+		
+		$rssStr=fetchURL($urlToPull,120 );
+		if (!$rssStr) {
+			echo "<div class='error'>Cannot get data from server</div><BR>";
+			return 0;
+		}
+		//echo " <div class='ok'>DONE</div><br>";
+		//flush2Browser();
+
+echo "^^$rssStr^^";
+		echo "<BR>Decoding log from JSON format ...";
+		//flush2Browser();
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		$arr=json::decode($rssStr);
+		//echo " <div class='ok'>DONE</div><br>";
+		//flush2Browser();
+		print_r($arr);
+		//exit;
+		$entriesNum=0;
+		$entriesNumOK=0;
+		if ( count($arr['log']) ) {
+			$item_num=$arr['log_item_num'];
+			echo "<div class='ok'>GOT $item_num entries</div><br>";
+
+			foreach ($arr['log'] as $i=>$logItem) {
+				if (!is_numeric($i) ) {echo "$i not numeric "; continue;		}
+				
+			}	
+		}		
+		/*
+	
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
 	
 			$serverURL="http://".$this->data['url_op'];
@@ -131,6 +181,7 @@ class Server {
 				$pilotsList = $client->getResponse();
 				return $pilotsList;
 			}
+			*/
 	}
 	
 	function getTakeoffs($tm) {

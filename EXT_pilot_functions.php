@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.9 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.10 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -92,8 +92,11 @@
 			 echo("<H3> Error in mapping pilots: $query</H3>\n");
 		  } else echo "Pilot Mapping successfull";
 	}  if ($op=='getExternalPilotInfo'){	
-		$pilotID1=makeSane($_GET['pilotID'],0);
-		list($serverID1,$userID1)=explode('_',$pilotID1);
+		//$pilotID1=makeSane($_GET['pilotID'],0);
+		//list($serverID1,$userID1)=explode('_',$pilotID1);
+		
+		$serverID1=makeSane($_GET['serverID'],0);
+		$userID1=makeSane($_GET['pilotID'],0);
 		
 		require_once dirname(__FILE__)."/CL_server.php";				
 		$server=new Server($serverID1);
@@ -101,7 +104,7 @@
 		// set to 1 for debug
 		if ($DBGlvl) $server->DEBUG=1;
 		$pilotInfo=$server->getPilots( $userID1 );
-		echo "$serverID1,$userID1 <BR>";
+		echo "#$serverID1,$userID1#<BR>";
 		print_r($pilotInfo);		
 	}
 	

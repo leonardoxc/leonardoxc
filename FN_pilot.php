@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.43 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.44 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -355,25 +355,29 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	return $str; 
 }
 
-function getPilotPhotoRelFilename($pilotID,$icon=0) {
+function getPilotPhotoRelFilename($serverID,$pilotID,$icon=0) {
 	global 	$moduleRelPath;
 	
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
+	
+	if ($serverID) $pilotID=$serverID.'_'.$pilotID;
 	return moduleRelPath()."/flights/".$pilotID."/PilotPhoto".$suffix;
 }
 
 
-function getPilotPhotoFilename($pilotID,$icon=0) {
+function getPilotPhotoFilename($serverID,$pilotID,$icon=0) {
 	global $flightsAbsPath;
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
+	
+	if ($serverID) $pilotID=$serverID.'_'.$pilotID;
 	return $flightsAbsPath."/".$pilotID."/PilotPhoto".$suffix;
 }
 
-function checkPilotPhoto($pilotID) {
-	$normalImagePath=getPilotPhotoFilename($pilotID,0);
-	$thumbImagePath=getPilotPhotoFilename($pilotID,1);
+function checkPilotPhoto($serverID,$pilotID) {
+	$normalImagePath=getPilotPhotoFilename($serverID,$pilotID,0);
+	$thumbImagePath=getPilotPhotoFilename($serverID,$pilotID,1);
 	
 	if (!is_file($thumbImagePath) && is_file($normalImagePath) ) { // create icon
 	 	CLimage::resizeJPG(150,150,$normalImagePath , $thumbImagePath , 15);

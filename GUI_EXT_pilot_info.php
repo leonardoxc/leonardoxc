@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_pilot_info.php,v 1.7 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_EXT_pilot_info.php,v 1.8 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -122,7 +122,7 @@
     <td colspan="2" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?></font></strong></div></td>
     <td width="150" rowspan="9" valign="top"><? 
 	  	if ($pilot['PilotPhoto']>0) {
-			echo "<div align='center'><a href='".getPilotPhotoRelFilename($pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."' border=0></a></div>";
+			echo "<div align='center'><a href='".getPilotPhotoRelFilename($serverID,$pilotIDview)."' target='_blank'><img src='".getPilotPhotoRelFilename($serverID,$pilotIDview,1)."' border=0></a></div>";
 		}
 	  ?></td>
   </tr>

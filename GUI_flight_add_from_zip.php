@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.17 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.18 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
  if (!$userID) return;
@@ -186,8 +186,12 @@ function setValue(obj)
 	
 	checkPath($flightsAbsPath."/".$flights_user_id);
 
-	$tmpZIPfolder=$flightsAbsPath."/".$flights_user_id."/flights/zipTmp".sprintf("%05d",rand(1, 10000) ) ;
-	$tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/".$filename;
+	$randName=sprintf("%05d",rand(1, 10000) );
+	$tmpZIPfolder=$flightsAbsPath."/".$flights_user_id."/flights/zipTmp".$randName ;
+	// $tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/".$filename;
+	// new way : 
+	$tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/zipFile".$randName.".zip";
+	
 	move_uploaded_file($_FILES['zip_datafile']['tmp_name'], $tmpZIPPath );
 
 	//delDir($tmpZIPfolder);

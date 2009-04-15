@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.23 2009/03/21 00:02:49 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.24 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,45 +17,79 @@
 		$serverID=0;
 	}
 	
+	$serverIDview=$serverID;
+	
 	//$selQuery="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
 	//					" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'];
 						
-	$selQuery="SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview." AND serverID=$serverID ";
-	
+	$selQuery="SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview." AND serverID=$serverIDview ";
+	// echo " # $selQuery # ";
     $res= $db->sql_query($selQuery);
 
 	if($res <= 0){
 		echo("<H3>Error in pilot query</H3>\n");
 		return;
 	} else if ( mysql_num_rows($res)==0){
-		$res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverID)" );
+		$res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
 		$res= $db->sql_query($selQuery);			
 	}
   
   $pilot = mysql_fetch_assoc($res);
   
-  $pilotName=getPilotRealName($pilotIDview,$serverID,1);
+  $pilotName=getPilotRealName($pilotIDview,$serverIDview,1);
 
   $legend=_Pilot_Profile.": <b>$pilotName</b>";
   $legendRight="<a href='". 
-  		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
+  		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverIDview.'_'.$pilotIDview,'year'=>'0','country'=>''))
 		."'>"._PILOT_FLIGHTS."</a>";
   $legendRight.=" | <a href='".
- 		getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>$serverID.'_'.$pilotIDview))		
+ 		getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>$serverIDview.'_'.$pilotIDview))		
 		."'>"._pilot_stats."</a>";
-  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) && $serverID==0  ) {
+  if ( $pilotIDview == $userID || L_auth::isAdmin($userID) && $serverIDview==0  ) {
 	  $legendRight.=" | <a href='".
 	  getLeonardoLink(array('op'=>'pilot_profile_edit','pilotIDview'=>$pilotIDview))	
 	  ."'>"._edit_profile."</a>";
   }
   else $legendRight.="";
   
+  if (  L_auth::isAdmin($userID) && $serverIDview!=0  ) {
+	  $legendRight.=" | <a href='javascript:getPilotInfo($serverIDview,$pilotIDview)'>Get Original Info</a>";
+  }
+ 
  // openMain("<table class=\"main_text\"  width=\"90%\"><tr><td>$legend</td><td width=350 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",0,"icon_profile.png");
 
  openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
 
 
 ?> 
+
+<div id="pilotInfoDiv" style="display:none;background-color:#FFFFFF;width:250px;height:80px;">Results HERE</div>
+
+<?  if (  L_auth::isAdmin($userID) && $serverIDview!=0  ) { ?>
+<script language="javascript">
+
+function getPilotInfo(serverID,pilotID) {
+	$.get('/<?=$moduleRelPath?>/EXT_pilot_functions.php',
+		{ op:"getExternalPilotInfo","serverID":serverID,"pilotID":pilotID}, 
+		function(result){ 
+			// var jsonData = eval('(' + result + ')');			
+			$("#pilotInfoDiv").html(result).show();				
+		}
+	);	
+	
+	/*url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
+	pars='op=getExternalPilotInfo&pilotID='+pilotID;
+	$("#pilotInfoDiv").get(
+	var myAjax = new Ajax.Updater('stickyEl', url, {method:'get',parameters:pars});
+	*/
+	//div=MWJ_findObj(divID);
+	// MWJ_changePosition('stickyEl',5,document.html.scrollTop+200);
+	// div.style.top= document.documentElement.scrollTop+300+'px';
+	
+}
+</script>
+<? } ?>
+
 <script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
 <div class='infoHeader'><?=_Personal_Stuff ?></div>
 <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
@@ -91,15 +125,15 @@
     <td colspan="2" rowspan="8" valign="top"><? 
 	  	if ($pilot['PilotPhoto']>0) {
 		
-			checkPilotPhoto($pilotIDview);
+			checkPilotPhoto($serverIDview,$pilotIDview);
 		?>
       <div align="center"><strong><? echo _Photo ?> </strong><br>
           <?
-			$imgBigRel=getPilotPhotoRelFilename($pilotIDview);	
-			$imgBig=getPilotPhotoFilename($pilotIDview);	
+			$imgBigRel=getPilotPhotoRelFilename($serverIDview,$pilotIDview);	
+			$imgBig=getPilotPhotoFilename($serverIDview,$pilotIDview);	
 			list($width, $height, $type, $attr) = getimagesize($imgBig);
 			list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
-			echo "<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($pilotIDview,1)."'
+			echo "<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
 			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
 			 border=0></a>";					
 		?>
@@ -252,7 +286,7 @@
   </table>
   
   
-  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?>)?></div>
+  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?></div>
   <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr> 
     <td width='24%' valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>

@@ -8,10 +8,10 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.25 2009/02/19 16:21:04 manolis Exp $                                                                 
+// $Id: sync.php,v 1.26 2009/04/15 14:47:31 manolis Exp $                                                                 
 //
 //************************************************************************
-	if ($_GET['version']==2) {
+	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
 		require_once dirname(__FILE__)."/sync_new.php";
 		exit;
 	}
@@ -67,7 +67,7 @@
 	$where_clause.=	$getOnlyServersListClause;
 
 	if (!$op) $op="latest";	
-	if (!in_array($op,array("latest","get_hash","get_igc")) ) return;
+	if (!in_array($op,array("latest","get_hash","get_igc","pilot_info")) ) return;
 
 	$encoding="utf-8";
 
@@ -91,7 +91,92 @@
 	
 	set_time_limit( 60 + floor($count/4) );
 	
-	if ($op=="get_hash") {	
+	if ($op=="pilot_info") {	
+
+		if (!$CONF_use_utf) {
+		 	require_once dirname(__FILE__).'/lib/ConvertCharset/ConvertCharset.class.php';
+		}
+			
+		$pilotListStr=preg_replace("/[^_,\d]/","",$_GET['pilots']);	
+		
+		$pilotList=split(",",$pilotListStr);
+		if (!count($pilotList)) {
+			echo '{ "error": "No pilot id" }';
+			exit;
+		}
+echo "*".$pilotList."**";
+print_r($pilotList);
+
+		$where_clause='';
+		foreach($pilotList as $pIDstr) {
+				
+	
+			list($sID,$pID)=explode('_',$pIDstr);		
+
+			echo "@ $sID,$pID @";
+
+			if (!$pID && !$sID ) {
+				continue;
+			}
+			
+			if (!$pID) {
+				$pID=$sID;
+				$sID=0;
+			}
+			$where_clause.=" OR ( pilotID=$pID AND serverID=$sID)  ";
+		}
+
+		 $format='JSON';
+		 $query="SELECT * FROM $pilotsTable WHERE (1=0) $where_clause ";
+		  //$query.=" LIMIT 1000 "; 
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 $RSS_str='{ "error": "Error in query!" }';
+		 } else {
+			$RSS_str='';
+			 $item_num=0;
+			 while ($row = mysql_fetch_assoc($res)) { 
+			 
+					$pilotID=$row['pilotID'].'_'.$row['serverID'];
+					
+					
+					if ( ! $pilotNames[$pilotID]){
+						$pilotInfo=getPilotInfo($row['pilotID'],$row['serverID'] );
+						if (!$CONF_use_utf ) {
+							$NewEncoding = new ConvertCharset;
+							$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+							$fName=$NewEncoding->Convert($pilotInfo[1],$langEncodings[$nativeLanguage], "utf-8", $Entities);
+						} else {
+							$lName=$pilotInfo[0];
+							$fName=$pilotInfo[1];
+						}
+						$pilotNames[$pilotID]['lname']=$lName;
+						$pilotNames[$pilotID]['fname']=$fName;
+						$pilotNames[$pilotID]['country']=$pilotInfo[2];
+						$pilotNames[$pilotID]['sex']=$pilotInfo[3];
+						$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
+						$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
+					} 
+
+					if ($item_num>0) $RSS_str.=' , ';
+					$RSS_str.=' { "item": {
+"userID":'.$row['userID'].',
+"userServerID":'.$row['serverID'].',
+"lName":"'.$pilotNames[$pilotID]['lname'].'",
+"fName":"'.$pilotNames[$pilotID]['fname'].'",
+"country": "'.$pilotNames[$pilotID]['country'].'",
+"sex": "'.$pilotNames[$pilotID]['sex'].'",
+"birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",
+"CIVL_ID": "'.$pilotNames[$pilotID]['CIVL_ID'].'"
+}} ';
+				$item_num++;
+			}
+		 }
+
+		$RSS_str='{ "log_item_num": '.$item_num.', "query": "'.$query.'", "log": [ '.$RSS_str.' ] } ';
+
+	
+	} else if ($op=="get_hash") {	
 
 		if (!$CONF_use_utf) {
 		 	require_once dirname(__FILE__).'/lib/ConvertCharset/ConvertCharset.class.php';
