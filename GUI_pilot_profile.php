@@ -8,16 +8,16 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.24 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.25 2009/04/15 22:17:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
 	if (!$pilotIDview && $userID>0) {
 		$pilotIDview=$userID;
-		$serverID=0;
+		$serverIDview=0;
 	}
 	
-	$serverIDview=$serverID;
+	//	$serverIDview=$serverID;
 	
 	//$selQuery="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
 	//					" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'];
@@ -52,7 +52,7 @@
   }
   else $legendRight.="";
   
-  if (  L_auth::isAdmin($userID) && $serverIDview!=0  ) {
+  if (  L_auth::isAdmin($userID) && $serverIDview!=-1  ) {
 	  $legendRight.=" | <a href='javascript:getPilotInfo($serverIDview,$pilotIDview)'>Get Original Info</a>";
   }
  
@@ -63,28 +63,33 @@
 
 ?> 
 
-<div id="pilotInfoDiv" style="display:none;background-color:#FFFFFF;width:250px;height:80px;">Results HERE</div>
+<div id="pilotInfoDivExt" style="display:none;background-color:#CCD2D9;width:100%;height:auto; padding:2px"><a href='javascript:			hidePilotDiv()'>Close</a>
+<div id="pilotInfoDiv" style="display:none;background-color:#EEECBF;width:100%;height:auto;">Results HERE</div>
+</div>
 
-<?  if (  L_auth::isAdmin($userID) && $serverIDview!=0  ) { ?>
+<?  if (  L_auth::isAdmin($userID) && $serverIDview!=-1  ) { ?>
 <script language="javascript">
 
+function hidePilotDiv() {
+	$("#pilotInfoDivExt").hide();
+}
+
 function getPilotInfo(serverID,pilotID) {
-	$.get('/<?=$moduleRelPath?>/EXT_pilot_functions.php',
+    $("#pilotInfoDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
+	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
 		{ op:"getExternalPilotInfo","serverID":serverID,"pilotID":pilotID}, 
 		function(result){ 
-			// var jsonData = eval('(' + result + ')');			
-			$("#pilotInfoDiv").html(result).show();				
+			/*var jsonData = eval('(' + result + ')');
+			
+			var resStr='';
+			for ( varName in jsonData['log'][0]['item'] ) {  
+    			resStr+=varName+' : '+jsonData['log'][0]['item'][varName]+'<br>';  
+			} */ 
+			$("#pilotInfoDiv").html(result).show();	
+			$("#pilotInfoDivExt").show();	
+			
 		}
-	);	
-	
-	/*url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
-	pars='op=getExternalPilotInfo&pilotID='+pilotID;
-	$("#pilotInfoDiv").get(
-	var myAjax = new Ajax.Updater('stickyEl', url, {method:'get',parameters:pars});
-	*/
-	//div=MWJ_findObj(divID);
-	// MWJ_changePosition('stickyEl',5,document.html.scrollTop+200);
-	// div.style.top= document.documentElement.scrollTop+300+'px';
+	);		
 	
 }
 </script>

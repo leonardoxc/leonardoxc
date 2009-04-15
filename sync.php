@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.26 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: sync.php,v 1.27 2009/04/15 22:17:49 manolis Exp $                                                                 
 //
 //************************************************************************
 	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
@@ -104,16 +104,15 @@
 			echo '{ "error": "No pilot id" }';
 			exit;
 		}
-echo "*".$pilotList."**";
-print_r($pilotList);
+		
+		//echo "*".$pilotList."**";
+		// print_r($pilotList);
 
 		$where_clause='';
-		foreach($pilotList as $pIDstr) {
-				
-	
+		foreach($pilotList as $pIDstr) {				
 			list($sID,$pID)=explode('_',$pIDstr);		
 
-			echo "@ $sID,$pID @";
+			// echo "@ $sID,$pID @";
 
 			if (!$pID && !$sID ) {
 				continue;
@@ -133,7 +132,7 @@ print_r($pilotList);
 		 if($res <= 0){
 			 $RSS_str='{ "error": "Error in query!" }';
 		 } else {
-			$RSS_str='';
+			 $res_str='';
 			 $item_num=0;
 			 while ($row = mysql_fetch_assoc($res)) { 
 			 
@@ -159,9 +158,9 @@ print_r($pilotList);
 					} 
 
 					if ($item_num>0) $RSS_str.=' , ';
-					$RSS_str.=' { "item": {
-"userID":'.$row['userID'].',
-"userServerID":'.$row['serverID'].',
+					$res_str.=' { "item": {
+"userID":'.$row['pilotID'].',
+"userServerID":'.($row['serverID']?$row['serverID']:$CONF_server_id).',
 "lName":"'.$pilotNames[$pilotID]['lname'].'",
 "fName":"'.$pilotNames[$pilotID]['fname'].'",
 "country": "'.$pilotNames[$pilotID]['country'].'",
@@ -173,7 +172,9 @@ print_r($pilotList);
 			}
 		 }
 
-		$RSS_str='{ "log_item_num": '.$item_num.', "query": "'.$query.'", "log": [ '.$RSS_str.' ] } ';
+		$RSS_str='{ "log_item_num": '.$item_num.', ';
+		// $RSS_str.=' "query": "'.$query.'", ';
+		$RSS_str.=' "log": [ '.$res_str.' ] } ';
 
 	
 	} else if ($op=="get_hash") {	

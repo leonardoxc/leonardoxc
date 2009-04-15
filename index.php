@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.104 2009/03/26 15:57:01 manolis Exp $                                                                 
+// $Id: index.php,v 1.105 2009/04/15 22:17:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -257,14 +257,19 @@ setVarFromRequest("filter01", 0, 1);
 
 
 $serverID=0;
+$serverIDview=0;
 if ( count($pilotPartsArray=split('_',$pilotIDview)) > 1 ) {
-	$serverID=$pilotPartsArray[0];
+	$serverIDview=$pilotPartsArray[0];
+	$serverID=$serverIDview;
 	$pilotIDview=$pilotPartsArray[1];
+	// echo "@@ $serverID $pilotIDview@@";
 }
 
+// echo "# $pilotID # ";
 if (  count($pilotPartsArray=split('_',$pilotID)) >1 ) {
 	$serverID=$pilotPartsArray[0];
 	$pilotID=$pilotPartsArray[1];
+	// echo "@@ $serverID $pilotID@@";
 }
 
 

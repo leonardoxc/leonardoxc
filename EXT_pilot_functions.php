@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.10 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.11 2009/04/15 22:17:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -98,14 +98,24 @@
 		$serverID1=makeSane($_GET['serverID'],0);
 		$userID1=makeSane($_GET['pilotID'],0);
 		
+		if ( $serverID1==0) { 
+			$serverID1=$CONF_server_id;
+		}
 		require_once dirname(__FILE__)."/CL_server.php";				
 		$server=new Server($serverID1);
 		
 		// set to 1 for debug
 		if ($DBGlvl) $server->DEBUG=1;
 		$pilotInfo=$server->getPilots( $userID1 );
-		echo "#$serverID1,$userID1#<BR>";
-		print_r($pilotInfo);		
+		
+		//echo $pilotInfo;
+		// echo "#$serverID1,$userID1#<BR>";
+		echo "<pre>";
+			echo $CONF['servers']['list'][ $pilotInfo[0]['userServerID'] ]['name'] ."\n----------------------------\n";
+			;
+			print_r($pilotInfo);		
+		echo "</pre>";
+		
 	}
 	
 

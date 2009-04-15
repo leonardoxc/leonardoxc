@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.37 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.38 2009/04/15 22:17:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -121,7 +121,7 @@ class Server {
 		global $CONF_server_id,$CONF_tmp_path,$db,$flightsTable;
 		
 		if (is_array($pilotIDarray) ) {
-			print_r($pilotIDarray);
+			// print_r($pilotIDarray);
 			$pilotList="";
 			foreach($pilotIDarray as $pID) {
 			
@@ -134,37 +134,43 @@ class Server {
 		$urlToPull.="&op=pilot_info&pilots=".$pilotList;
 		$urlToPull.="&clientID=$CONF_server_id&clientPass=".$this->data['clientPass'];
 
-		echo "Getting pilot info from $urlToPull ... ";
+		 // echo "Getting pilot info from $urlToPull ... ";
 		
 		
 		$rssStr=fetchURL($urlToPull,120 );
 		if (!$rssStr) {
-			echo "<div class='error'>Cannot get data from server</div><BR>";
-			return 0;
+			echo "Cannot get data from server<BR>";
+			return array();
 		}
+		
+		//return $rssStr;
 		//echo " <div class='ok'>DONE</div><br>";
 		//flush2Browser();
 
-echo "^^$rssStr^^";
-		echo "<BR>Decoding log from JSON format ...";
+		//echo "^^$rssStr^^";
+		// echo "<BR>Decoding log from JSON format ...";
 		//flush2Browser();
 		require_once dirname(__FILE__).'/lib/json/CL_json.php';
 		$arr=json::decode($rssStr);
 		//echo " <div class='ok'>DONE</div><br>";
 		//flush2Browser();
-		print_r($arr);
+		// print_r($arr);
 		//exit;
 		$entriesNum=0;
 		$entriesNumOK=0;
+		$pilotsList=array();
 		if ( count($arr['log']) ) {
 			$item_num=$arr['log_item_num'];
-			echo "<div class='ok'>GOT $item_num entries</div><br>";
+			//echo "<div class='ok'>GOT $item_num entries</div><br>";
 
 			foreach ($arr['log'] as $i=>$logItem) {
 				if (!is_numeric($i) ) {echo "$i not numeric "; continue;		}
-				
+				// print_r($logItem['item']) ;
+				$pilotsList[]=$logItem['item'];
 			}	
 		}		
+		
+		return $pilotsList;
 		/*
 	
 			require_once dirname(__FILE__)."/lib/xml_rpc/IXR_Library.inc.php";
