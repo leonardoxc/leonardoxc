@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_duplicates.php,v 1.8 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_duplicates.php,v 1.9 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
  
@@ -16,21 +16,22 @@
   
   ?>
   
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
 <script language="javascript">
 
 function mapPilot(divID,pilotID1,pilotID2) {
-	url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
+	/*url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
 	pars='op=mapPilot&pilotID1='+pilotID1+'&pilotID2='+pilotID2;
-	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
-
-	// newHTML="<a href=\"#\" onclick=\"removeClubFlight("+clubID+","+flightID+");return false;\"><?=$removeFromClubIcon?></a>";
-	
-	div=MWJ_findObj(divID);
-	div.innerHTML='';
-
-	//toggleVisible(divID,divPos);
+*/
+	var divName='updateDiv';
+    $("#"+divName).html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
+	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
+		{ op:"mapPilot","pilotID1":pilotID1,"pilotID2":pilotID2}, 
+		function(result){ 
+			$("#"+divName).html(result).show();				
+		}
+	);			
+	$("#"+divID).html('');
 }
 
 </script>

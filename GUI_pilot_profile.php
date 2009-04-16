@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.25 2009/04/15 22:17:49 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.26 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -53,7 +53,7 @@
   else $legendRight.="";
   
   if (  L_auth::isAdmin($userID) && $serverIDview!=-1  ) {
-	  $legendRight.=" | <a href='javascript:getPilotInfo($serverIDview,$pilotIDview)'>Get Original Info</a>";
+	  $legendRight.=" | <a href='javascript:getPilotInfo($serverIDview,$pilotIDview,0)'>Get Original Info</a>";
   }
  
  // openMain("<table class=\"main_text\"  width=\"90%\"><tr><td>$legend</td><td width=350 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",0,"icon_profile.png");
@@ -63,7 +63,12 @@
 
 ?> 
 
-<div id="pilotInfoDivExt" style="display:none;background-color:#CCD2D9;width:100%;height:auto; padding:2px"><a href='javascript:			hidePilotDiv()'>Close</a>
+<div id="pilotInfoDivExt" style="display:none;background-color:#CCD2D9;width:100%;height:auto; padding:2px">
+<a href='javascript: hidePilotDiv()'>Close</a> :: 
+<a href='javascript: getPilotInfo(<?=$serverIDview.','.$pilotIDview?>,1)'>Update Local DB</a> 
+<? if ( $serverIDview!=0) { ?>
+:: <a href='javascript: getPilotInfo(<?=$serverIDview.','.$pilotIDview?>,2)'>Update Local DB (delete all current data)</a>
+<? } ?>
 <div id="pilotInfoDiv" style="display:none;background-color:#EEECBF;width:100%;height:auto;">Results HERE</div>
 </div>
 
@@ -74,10 +79,10 @@ function hidePilotDiv() {
 	$("#pilotInfoDivExt").hide();
 }
 
-function getPilotInfo(serverID,pilotID) {
+function getPilotInfo(serverID,pilotID,update) {
     $("#pilotInfoDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
 	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
-		{ op:"getExternalPilotInfo","serverID":serverID,"pilotID":pilotID}, 
+		{ op:"getExternalPilotInfo","serverID":serverID,"pilotID":pilotID,"updateData":update}, 
 		function(result){ 
 			/*var jsonData = eval('(' + result + ')');
 			

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.44 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.45 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -129,6 +129,8 @@ function getPilotInfo($pilotIDview,$serverID) {
 	// 
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
+		if (!$pilot) return array('','','','','',-1);
+		
 		$firstName=$pilot['FirstName'];
 		$lastName=$pilot['LastName'];
 		$pilotCountry=strtolower($pilot['countryCode']);
@@ -155,14 +157,14 @@ function getPilotInfo($pilotIDview,$serverID) {
 				$firstName=transliterate($firstName,$enc);
 				$lastName=transliterate($lastName,$enc);
 			}
-			//echo $realName."@";
+			//echo $realName."!";
 			// else return as is.
 
 
 			return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
 			
 		}
-					
+			//echo "@@";		
 		/*
 		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
 			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.27 2009/04/15 22:17:49 manolis Exp $                                                                 
+// $Id: sync.php,v 1.28 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
@@ -159,13 +159,13 @@
 
 					if ($item_num>0) $RSS_str.=' , ';
 					$res_str.=' { "item": {
-"userID":'.$row['pilotID'].',
-"userServerID":'.($row['serverID']?$row['serverID']:$CONF_server_id).',
-"lName":"'.$pilotNames[$pilotID]['lname'].'",
-"fName":"'.$pilotNames[$pilotID]['fname'].'",
-"country": "'.$pilotNames[$pilotID]['country'].'",
-"sex": "'.$pilotNames[$pilotID]['sex'].'",
-"birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",
+"pilotID":'.$row['pilotID'].',
+"serverID":'.($row['serverID']?$row['serverID']:$CONF_server_id).',
+"LastName":"'.$pilotNames[$pilotID]['lname'].'",
+"FirstName":"'.$pilotNames[$pilotID]['fname'].'",
+"countryCode": "'.$pilotNames[$pilotID]['country'].'",
+"Sex": "'.$pilotNames[$pilotID]['sex'].'",
+"Birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",
 "CIVL_ID": "'.$pilotNames[$pilotID]['CIVL_ID'].'"
 }} ';
 				$item_num++;

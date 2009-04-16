@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.11 2009/04/15 22:17:49 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.12 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -95,27 +95,60 @@
 		//$pilotID1=makeSane($_GET['pilotID'],0);
 		//list($serverID1,$userID1)=explode('_',$pilotID1);
 		
-		$serverID1=makeSane($_GET['serverID'],0);
-		$userID1=makeSane($_GET['pilotID'],0);
+		$serverIDview=makeSane($_GET['serverID'],0);
+		$pilotIDview=makeSane($_GET['pilotID'],0);
 		
-		if ( $serverID1==0) { 
-			$serverID1=$CONF_server_id;
+		if ( $serverIDview==0) { 
+			$serverIDview=$CONF_server_id;
 		}
 		require_once dirname(__FILE__)."/CL_server.php";				
-		$server=new Server($serverID1);
+		$server=new Server($serverIDview);
 		
 		// set to 1 for debug
 		if ($DBGlvl) $server->DEBUG=1;
-		$pilotInfo=$server->getPilots( $userID1 );
+		$pilotList=$server->getPilots( $pilotIDview );
 		
 		//echo $pilotInfo;
-		// echo "#$serverID1,$userID1#<BR>";
+		//echo "#$serverIDview,$pilotIDview#<BR>";
+		$pilotInfo=$pilotList[0];
 		echo "<pre>";
-			echo $CONF['servers']['list'][ $pilotInfo[0]['userServerID'] ]['name'] ."\n----------------------------\n";
+			echo $CONF['servers']['list'][ $serverIDview ]['name'] ."\n";
+		
+			echo $CONF['servers']['list'][ $pilotInfo['serverID'] ]['name'] .
+					"\n----------------------------\n";
 			;
 			print_r($pilotInfo);		
 		echo "</pre>";
 		
+		if ($_GET['updateData']>0) {
+		
+			$pilot=new pilot($serverIDview,$pilotIDview);
+			
+			if ($_GET['updateData']!=2) {
+				$pilot->getFromDB();
+			}	
+			
+			if ($DBGlvl) {
+				echo "<pre>";
+				echo "-----------------------\n";
+				print_r($pilot);
+			}
+			foreach($pilotInfo as $varName=>$varValue) {
+				if ( in_array($varName,$pilot->valuesArray) ) {
+					$pilot->$varName=$varValue;
+				}
+			}
+			if ($DBGlvl) {
+				echo "-----------------------\n";
+				print_r($pilot);
+				echo "</pre>";
+			}	
+			if ( $pilot->putToDB(1) ) {
+				echo "<span class='ok'>Pilot data updated OK</span>";
+			} else {
+				echo "<span class='note'>Problem in updating pilot data</span>";
+			}	
+		}
 	}
 	
 

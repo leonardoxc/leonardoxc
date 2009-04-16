@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.28 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.29 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,9 +25,10 @@
   if (!$pilotIDview && $userID>0) {
   	$pilotIDview=$userID;
 	$serverID=0;
+	$serverIDview=0;
   }
   
-  $serverIDview=$serverID;
+  // $serverIDview=$serverID;
   
   // edit function
   if ( ( $pilotIDview != $userID || $serverIDview!=0 ) && !L_auth::isAdmin($userID) && !L_auth::isModerator($userID ) ) { 
@@ -181,7 +182,9 @@
 			</span></div>";
   }
   
-  $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
+  // $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
+  
+  $query_sel="SELECT * FROM $pilotsTable  WHERE pilotID=$pilotIDview AND serverID=$serverIDview";
   $res= $db->sql_query($query_sel);
 
   if($res <= 0){
@@ -189,14 +192,16 @@
      return;
   } else if ( mysql_num_rows($res)==0){
 	 // echo "query: $query_sel failed, will insert values into table<BR>";
-  	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID) VALUES($pilotIDview)" );
+  	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
 	 echo("<H3>No info for this pilot</H3>\n");
 	 return;
   }
 
   $pilot = mysql_fetch_assoc($res);
 
-	$legend=_Pilot_Profile.": <b>$pilot[username]</b>";
+	$pilotName=getPilotRealName($pilotIDview,$serverIDview,1);
+ 
+	$legend=_Pilot_Profile.": <b>$pilotName</b>";
 	$legendRight="<a href='".
 		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverIDview.'_'.$pilotIDview,'year'=>'0','country'=>''))
 		."'>"._PILOT_FLIGHTS."</a>";

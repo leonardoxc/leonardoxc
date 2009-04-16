@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.8 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.9 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,18 +20,28 @@ class pilot{
 	var $gotValues;
 
 	function pilot($serverID="",$pilotID="") {
+		global $CONF_server_id;
 		if ($pilotID!="") 	$this->pilotID=$pilotID;
 		if ($serverID!="") 	$this->serverID=$serverID;
 
-	    $this->valuesArray=array("pilotID", "serverID", "countryCode", "CIVL_ID", "NACid", "NACmemberID", "NACclubID", 
-"olcBirthDate", "olcFirstName", "olcLastName", "olcCallSign", "olcFilenameSuffix", "olcAutoSubmit", 
-"FirstName", "LastName", "clubID", "sponsor", "Sex", "Birthdate", "Occupation", "MartialStatus", "OtherInterests", 
-"PersonalWebPage", "PilotLicence", "BestMemory", "WorstMemory", "Training", "personalDistance", "personalHeight",
- "glider", "FlyingSince", "HoursFlown", "HoursPerYear", "FavoriteLocation", "UsualLocation", "FavoriteBooks", 
-"FavoriteActors", "FavoriteSingers", "FavoriteMovies", "FavoriteSite", "Sign", 
+		if ($this->serverID==$CONF_server_id) {
+			$this->serverID=0;
+		}
+
+	    $this->valuesArray=array( "pilotID", "serverID", 
+"FirstName", "LastName","countryCode", 
+"NACid", "NACmemberID", "NACclubID", "CIVL_ID",
+"sponsor",  "Birthdate", "BirthdateHideMask",
+"Occupation", "MartialStatus", "OtherInterests", 
+"PilotLicence","BestMemory", "WorstMemory", "Training", "personalDistance", "personalHeight",
+"glider", "FlyingSince", "HoursFlown", "HoursPerYear", "FavoriteLocation", "UsualLocation", 
+"FavoriteBooks", "FavoriteActors", "FavoriteSingers", "FavoriteMovies", "FavoriteSite", "Sign", 
 "Spiral", "Bline", "FullStall", "Sat", "AsymmetricSpiral", "Spin", "OtherAcro",
- "camera", "camcorder", "Vario", "GPS", "Harness", "Reserve", "Helmet", "PilotPhoto"
+"camera", "camcorder", "Vario", "GPS", "Harness",  "Helmet", "Reserve", 
+"Sex","PilotPhoto", "PersonalWebPage", "FirstOlcYear",
+"clubID", 
 );
+		
 		$this->gotValues=0;
 	}
 
@@ -138,7 +148,7 @@ class pilot{
 		global $db,$pilotsTable;
 		$res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID );
   		if($res <= 0){   
-			 echo "Error getting club from DB<BR>";
+			 echo "Error getting pilot from DB<BR>";
 		     return;
 	    }
 

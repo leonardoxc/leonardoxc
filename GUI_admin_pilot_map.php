@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_pilot_map.php,v 1.9 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: GUI_admin_pilot_map.php,v 1.10 2009/04/16 13:26:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -18,10 +18,14 @@
 	 logReplicator::checkPilot(12,array(userID=>101678));
 	exit; 
  */
- 
+
+	
   if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
-
+  $legend="Pilot Mapping Tables";
+  openMain($legend,0,'');
+  
+  
 	if ($_GET['moveFlights']) {
 		$confirmMove=$_GET['confirmMoveFlights']+0;
 		echo "MOVING ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID<BR><BR>";
@@ -84,76 +88,103 @@
 		}		
 		echo "</table><BR><BR>";
 		echo "</pre>";
+		closeMain();
 		return;
 	}
-  
-	$compareField='hash';
-
-	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID,remoteUserID,serverID ASC";
-	 // echo "#count query#$query<BR>";
-	$res= $db->sql_query($query);
-	if($res <= 0){   
-	 echo("<H3> Error in query: $query</H3>\n");
-	 exit();
-	}	
-	
+  	
 //-----------------------------------------------------------------------------------------------------------
 	
-	$legend="Pilot Mapping Tables";
+	
 ?>
-<div id="stickyEl" style="position:fixed;bottom:0px;left:0px;z-index:3; background-color:#FFFFFF;width:250px;height:80px;">Results HERE</div>
 
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/prototype.js"></script>
+<style type="text/css">
+<!--
+.mapTable td {padding:2px; }
+.mapTable tr.alt  td { 	background-color:#FDFAEA; }
+.mapTable tr.alt2 td { 	background-color:#FFFFFF; }
+
+.mapTable td { border-bottom: 1px solid #CCCCCC; padding-bottom:4px; }
+
+-->
+</style>
+
+
+<div id="stickyEl" style="position:fixed;bottom:0px;left:0px;z-index:3; background-color:#FFFFFF;width:250px;height:80px; display:none;">Results HERE</div>
+
+<div id="pilotInfoDivExt" style=" position:absolute; display:none;background-color:#CCD2D9;width:750px;height:auto; padding:2px;">
+<div align='right'><a href='javascript: hidePilotDiv()'>Close</a> </div>
+<div id='updateDataDiv'></div>
+
+<table><tr><td width="49%">
+<div id="pilotInfoDiv1" style="position:relative; display:block;background-color:#EEECBF;width:100%;height:auto;">Results HERE</div>
+</td><td width="49%">
+<div id="pilotInfoDiv2" style=" position:relative;display:block;background-color:#EEECBF;width:100%;height:auto;">Results HERE</div>
+</td></tr></table>
+</div>
+
 <script language="javascript">
 
-function getPilotInfo(serverID,pilotID) {
-	url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
-	pars='op=getExternalPilotInfo&serverID='+serverID+'&pilotID='+pilotID;
-	var myAjax = new Ajax.Updater('stickyEl', url, {method:'get',parameters:pars});
-	//div=MWJ_findObj(divID);
-	// MWJ_changePosition('stickyEl',5,document.html.scrollTop+200);
-	// div.style.top= document.documentElement.scrollTop+300+'px';
+function hidePilotDiv() {
+	$("#pilotInfoDivExt").hide();
+}
+
+function getPilotsInfo(row_id,serverID1,pilotID1,serverID2,pilotID2) {
+
+	$("#pilotInfoDivExt").css({
+		left:$("#row_"+row_id).offset().left,
+		top:$("#row_"+row_id).offset().top+16 					
+	}).show();	
 	
+	$("#updateDataDiv").html("<a href='javascript: getPilotInfo("+serverID1+","+pilotID1+",\"pilotInfoDiv1\",1)'>Update Local DB</a>  \
+:: <a href='javascript: getPilotInfo("+serverID1+","+pilotID1+",\"pilotInfoDiv1\",2)'>Update Local DB (delete all current data)</a>");
+
+	getPilotInfo(serverID1,pilotID1,"pilotInfoDiv1",0) ;
+	getPilotInfo(serverID2,pilotID2,"pilotInfoDiv2",0) ;
+
+}
+
+function getPilotInfo(serverID,pilotID,divName,update) {
+    $("#"+divName).html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
+	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
+		{ op:"getExternalPilotInfo","serverID":serverID,"pilotID":pilotID,"updateData":update}, 
+		function(result){ 
+			/*var jsonData = eval('(' + result + ')');
+			
+			var resStr='';
+			for ( varName in jsonData['log'][0]['item'] ) {  
+    			resStr+=varName+' : '+jsonData['log'][0]['item'][varName]+'<br>';  
+			} */ 
+			$("#"+divName).html(result).show();	
+			$("#pilotInfoDivExt").show();	
+			
+		}
+	);		
+	
+}
+
+function showResults(textStr) {
+  $("stickyEl").html(textStr); 
 }
 
 </script>
 
-<script language="javascript" type="text/javascript" >
 
-var ltop2=300;
-var scrollSpeed2=20; //Screen refresh rate in msec.
 
-function checkScrolled2() { //backTo Top link stays in lower right
-  window.status=document.documentElement.scrollTop // show results
-  document.getElementById('stickyEl').style.top =
-      document.documentElement.scrollTop+ltop2+'px';
-  setTimeout(checkScrolled2,scrollSpeed2) ;
-}
-  
-function stickyInit(){
-	showResults('Results Area');
-	ltop2=parseInt(document.getElementById('stickyEl').style.top,10);
-	checkScrolled2();
-}
-
-function showResults(textStr) {
-  document.getElementById('stickyEl').innerHTML=textStr; 
-}
-
- if (window.attachEvent) window.attachEvent("onload", stickyInit);
- stickyInit();
-</script>  
 <?
-	echo  "<div class='tableTitle shadowBox'>
-	<div class='titleDiv'>$legend</div>
-	<div class='pagesDivSimple' style='white-space:nowrap'>$legendRight</div>
-	</div>" ;
-
-	echo "<BR><a href='".CONF_MODULE_ARG."&op=admin_pilot_map&moveFlights=1'>PRESS HERE TO MOVE ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID</a>";
+	$query="SELECT *  FROM $remotePilotsTable ORDER BY remoteServerID,remoteUserID,serverID ASC";
+	 // echo "#count query#$query<BR>";
+	$res= $db->sql_query($query);
+	if($res <= 0){   
+	  echo("<H3> Error in query: $query</H3>\n");
+	  exit();
+	}	
+	
+	echo "<a href='".CONF_MODULE_ARG."&op=admin_pilot_map&moveFlights=1'>>> PRESS HERE TO MOVE ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID</a><BR> By pressing the link above you will have the chance to review the flights before moving them to the local pilot ID";
 	
 	echo "<pre>";
-	echo "<table>";
-	echo "<tr><td>#</td><td>Srv</td><td>UserID</td><td>Name</td><td></td><td>Srv</td><td>UserID</td><td>Name</td></tr>\n";
+	echo "<table class='mapTable'>";
+	echo "<tr><td>#</td><td>Srv</td><td>UserID</td><td>Name</td><td>Cntry</td><td>CIVL</td>
+			  <td></td><td>Srv</td><td>UserID</td><td>Name</td><td>Cntry</td><td>CIVL</td><td></td></tr>\n";
 	$i=1;
 	while (	$row = $db->sql_fetchrow($res) ) {
 		$pilotID1=$row['serverID'].'_'.$row['userID'];
@@ -162,15 +193,22 @@ function showResults(textStr) {
 		$pilotID2=$row['remoteServerID'].'_'.$row['remoteUserID'];
 		fillPilotInfo($pilotID2,$row['remoteServerID'],$row['remoteUserID']);
 		
-		echo "<tr><td>$i</td>
-			<td>".$row['remoteServerID']."</td>		
+		if ($i%2) $rowclass='alt';
+		else $rowclass='alt2';
+		
+		echo "<tr class='$rowclass'><td id='row_$i'>$i</td>
+			<td id='$pilotID1'>".$row['remoteServerID']."</td>		
 			<td>".$row['remoteUserID']."</td>
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']." [ ".$pilotNames[$pilotID2]['country']." ] CIVLID: ".$pilotNames[$pilotID2]['CIVL_ID']." <a href='javascript:getPilotInfo(\"".$row['remoteServerID'].','.$row['remoteUserID']."\")'>[INFO]</a></td>
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']."</td><td>".$pilotNames[$pilotID2]['country']."</td><td>".$pilotNames[$pilotID2]['CIVL_ID']."</td>
 			<td> -> </td>
-			<td>".$row['serverID']."</td>
+			<td id='$pilotID2'>".$row['serverID']."</td>
 			<td>".$row['userID']."</td>
 			
-			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']." [ ".$pilotNames[$pilotID1]['country']." ] CIVLID: ".$pilotNames[$pilotID1]['CIVL_ID']." <a href='javascript:getPilotInfo(\"$pilotID1\")'>[INFO]</a></td>
+			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID1'>".$pilotNames[$pilotID1]['lname']." ".$pilotNames[$pilotID1]['fname']."</td><td> ".$pilotNames[$pilotID1]['country']."</td><td>".$pilotNames[$pilotID1]['CIVL_ID']."</td>";
+			
+			 echo "<td><a href='javascript:getPilotsInfo($i,".
+			 $row['remoteServerID'].','.$row['remoteUserID'].','.
+			 $row['serverID'].','.$row['userID'].")'>[INFO]</a></td>
 
 </tr>
 		\n";
@@ -178,13 +216,17 @@ function showResults(textStr) {
 	}
 	echo "</table><BR><BR>";
 	echo "</pre>";
-return;
+	
+	closeMain();
+	return;
 
 function fillPilotInfo($pilotID,$userServerID,$userID) {
 	global $pilotNames,$CONF_use_utf;
 	
 	if ( ! $pilotNames[$pilotID]){
 		$pilotInfo=getPilotInfo($userID,$userServerID );
+		
+		
 		if (!$CONF_use_utf ) {
 			$NewEncoding = new ConvertCharset;
 			$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
@@ -199,88 +241,11 @@ function fillPilotInfo($pilotID,$userServerID,$userID) {
 		$pilotNames[$pilotID]['sex']=$pilotInfo[3];
 		$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
 		$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
+		
+		if ($pilotInfo[5]==-1) $pilotNames[$pilotID]['lname']="ERROR:NOT IN THE DB !!!";
 	} 
 	
 }
-function printHeaderTakeoffs($width,$sortOrder,$fieldName,$fieldDesc,$query_str) {
-  global $moduleRelPath;
-  global $Theme;
 
-  if ($width==0) $widthStr="";
-  else  $widthStr="width='".$width."'";
-
-  if ($fieldName=="intName") $alignClass="alLeft";
-  else $alignClass="";
-
-  if ($sortOrder==$fieldName) { 
-   echo "<td $widthStr  class='SortHeader activeSortHeader $alignClass'>
-			<a href='".CONF_MODULE_ARG."&op=admin_logs&sortOrder=$fieldName$query_str'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border=0  width=10 height=10></div>
-		</td>";
-  } else {  
-	   echo "<td $widthStr  class='SortHeader $alignClass'><a href='".CONF_MODULE_ARG."&op=admin_logs&sortOrder=$fieldName$query_str'>$fieldDesc</td>";
-   } 
-}
-
-  
-   $headerSelectedBgColor="#F2BC66";
-
-  ?>
-  <table class='simpleTable' width="100%" border=0 cellpadding="2" cellspacing="0">
-  <tr>
-  	<td width="25" class='SortHeader'>#</td>
- 	<?
-		printHeaderTakeoffs(100,$sortOrder,"actionTime","DATE",$query_str) ;
-		printHeaderTakeoffs(0,$sortOrder,"ServerItemID","Server",$query_str) ;
-		printHeaderTakeoffs(80,$sortOrder,"userID","userID",$query_str) ;
-
-		printHeaderTakeoffs(100,$sortOrder,"ItemType","Type",$query_str) ;
-		printHeaderTakeoffs(100,$sortOrder,"ItemID","ID",$query_str) ;
-		printHeaderTakeoffs(100,$sortOrder,"ActionID","Action",$query_str) ;
-		echo '<td width="100" class="SortHeader">Details</td>';
-		printHeaderTakeoffs(100,$sortOrder,"Result","Result",$query_str) ;
-		echo '<td width="100" class="SortHeader">ACTIONS</td>';
-		
-	?>
-	
-	</tr>
-<?
-   	$currCountry="";
-   	$i=1;
-	while ($row = $db->sql_fetchrow($res)) {  
-		if ( L_auth::isAdmin($row['userID'])  ) $admStr="*ADMIN*";
-		else $admStr="";
-
-		if ($row['ServerItemID']==0) $serverStr="Local";
-		else $serverStr=$row['ServerItemID'];
-		
-		$i++;
-		echo "<TR class='$sortRowClass'>";	
-	   	echo "<TD>".($i-1+$startNum)."</TD>";
-		
-		echo "<td>".date("d/m/y H:i:s",$row['actionTime'])."</td>\n";
-		echo "<td>".$serverStr."</td>\n";
-		echo "<td>".$row['userID']."$admStr<br>(".$row['effectiveUserID'].")</td>\n";
-		echo "<td>".Logger::getItemDescription($row['ItemType'])."</td>\n";
-		echo "<td>".$row['ItemID']."</td>\n";
-		echo "<td>".Logger::getActionDescription($row['ActionID'])."</td>\n";
-		echo "<td>";
-
-		echo "<div id='sh_details$i'><STRONG><a href='javascript:toggleVisibility(\"details$i\");'>Show details</a></STRONG></div>";
-			echo "<div id='details$i' style='display:none'><pre>".$row['ActionXML']."</pre></div>";
-		echo "</td>\n";
-		echo "<td>".$row['Result']."</td>\n";
-		
-		echo "<td>";
-		if ($row['ItemType']==4) { // waypoint
-				echo "<a href='".CONF_MODULE_ARG."&op=show_waypoint&waypointIDview=".$row['ItemID']."'>Display</a>";
-		}
-		
-		echo "</td>\n";
-
-		
-		echo "</TR>";
-   }     
-   echo "</table>";
-   $db->sql_freeresult($res);
 
 ?>
