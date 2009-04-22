@@ -480,7 +480,7 @@ setGliderCats();
 //--------------------------------------------
 function setClassList() {
 	global  $CONF_category_types,$gliderClassList;
-	$gliderClassList=array(1=>"Sport (έως και DHV 1/2)",2=>"Open (απο DHV 2)",3=>"Διθέσια");
+	$gliderClassList=array(1=>"Sport (έως και DHV 2)",2=>"Open (απο DHV 2/3)",3=>"Διθέσια");
 	foreach ($CONF_category_types as $gId=>$gName) if (!$gliderClassList[$gId]) $gliderClassList[$gId]=$gName;
 }
 setClassList(); 

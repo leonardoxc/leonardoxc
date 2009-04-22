@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.41 2009/03/11 16:12:22 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.42 2009/04/22 12:04:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -176,9 +176,10 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 
+<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+
 <? if ( $CONF['thermals']['enable']  ) { ?>
 <script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
 <? } ?>
 
