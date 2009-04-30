@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: op.php,v 1.12 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: op.php,v 1.13 2009/04/30 15:17:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,10 +21,12 @@ require_once dirname(__FILE__)."/config.php";
 require_once dirname(__FILE__)."/EXT_config.php";
 
 require_once dirname(__FILE__)."/CL_flightData.php";
+//require_once dirname(__FILE__)."/CL_server.php";
 require_once dirname(__FILE__)."/FN_functions.php";	
 require_once dirname(__FILE__)."/FN_UTM.php";
 require_once dirname(__FILE__)."/FN_waypoint.php";	
 require_once dirname(__FILE__)."/FN_output.php";
+
 
 $moduleRelPath=moduleRelPath(0);
 $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
@@ -34,6 +36,12 @@ function securityCheck($sitePass) {
 	if ( $sitePass!=$CONF_SitePassword || !$sitePass) return 0;
 	return 1;	
 }
+
+function clientCheck($clientID,$clientPass) {
+	if ( Server::checkServerPass($clientID,$clientPass) ) return 1;
+	else return 0;
+}
+
 
 foreach (glob("OP_*.php") as $filename) {
 	@include dirname(__FILE__)."/$filename";

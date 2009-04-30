@@ -146,7 +146,7 @@ class IXR_Message {
 		// $this->message = mb_convert_encoding($this->message ,'iso-8859-7', "UTF-8");
 
 
-        $this->_parser = xml_parser_create();
+        $this->_parser = xml_parser_create("UTF-8");
         // Set XML parser to take the case of tags in to account
         xml_parser_set_option($this->_parser, XML_OPTION_CASE_FOLDING, false);
         // Set XML parser callback functions
@@ -154,8 +154,8 @@ class IXR_Message {
         xml_set_element_handler($this->_parser, 'tag_open', 'tag_close');
         xml_set_character_data_handler($this->_parser, 'cdata');
         if (!xml_parse($this->_parser, $this->message)) {
-            if (1) {
-				 die(sprintf('XML error: %s at line %d',
+            if (0) {
+				die(sprintf('XML error: %s at line %d',
                 xml_error_string(xml_get_error_code($this->_parser)),
                 xml_get_current_line_number($this->_parser))); 
 			}
@@ -556,7 +556,7 @@ class IXR_Client {
         $this->message = new IXR_Message($contents);
         if (!$this->message->parse()) {
             // XML error
-            $this->error = new IXR_Error(-32700, 'parse error. not well formed');
+            $this->error = new IXR_Error(-32700, 'parse error. not well formed...');
             return false;
         }
         // Is the message a fault?

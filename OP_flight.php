@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.16 2009/04/01 20:18:31 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.17 2009/04/30 15:17:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -156,8 +156,25 @@ function flights_submit($args) {
 	$comments=$args[7];
 	$glider=$args[8];
 
+	$clientID=$args[9];
+	$clientPass=$args[10];
+
 	global $db,$CONF;
 	
+	$allowUploadWithoutPassword=0;
+	if ( $clientID ) {	
+		if ( clientCheck($clientID,$clientPass) ) {
+			
+			if ($CONF['servers']['list'][$clientID]['allowUploadWithoutPassword'])  {
+				 $allowUploadWithoutPassword=1;
+			}
+		} else {
+			return  new IXR_Error(200, "Client $clientID authentication failed");
+		}
+		
+	}
+	
+		 
 	if ($CONF['userdb']['password_users_table']) {
 		$dbTable=$CONF['userdb']['password_users_table'];
 	} else {
@@ -196,19 +213,23 @@ function flights_submit($args) {
 		if (!$passwordHashed) {
 			$passwordHashed=$row[$CONF['userdb']['password_field']];
 		}
-			
+		
 		if ( function_exists('leonardo_check_password') ) { // phpbb3 has custom way of hashing passwords
 			if( ! leonardo_check_password($passwd,$passwordHashed)  ) $passwdProblems=1;			
 		} else {
 			if( md5($passwd) != $passwordHashed ) $passwdProblems=1;
 		}	
+		
 	} else 	{		
 		return  new IXR_Error(200, "Error in obtaining userdata for $username");
 	}
 	
-	if ($passwdProblems) {
+	
+	//  check if the client is authrorized to by pass passord so that it can mass upload flights
+	if ($passwdProblems && ! $allowUploadWithoutPassword ) { 
 		return  new IXR_Error(201, "Error in password for $username");
 	}
+
 
 
 	$userID=$row['user_id'];

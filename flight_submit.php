@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.16 2009/02/06 11:51:11 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.17 2009/04/30 15:17:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -57,7 +57,15 @@
 
 	$passwdProblems=0;
 	if( $row = $db->sql_fetchrow($result) ) {
-		if( md5($pass) != $row['user_password'] ) $passwdProblems=1;
+	
+		$passwordHashed=$row['user_password'];
+		if ( function_exists('leonardo_check_password') ) { // phpbb3 has custom way of hashing passwords
+			if( ! leonardo_check_password($pass,$passwordHashed)  ) $passwdProblems=1;			
+		} else {
+			if( md5($pass) != $passwordHashed ) $passwdProblems=1;
+		}	
+		
+		//if( md5($pass) != $row['user_password'] ) $passwdProblems=1;
 	} else 	$passwdProblems=1;
 
 	if ($passwdProblems) {
