@@ -123,7 +123,7 @@ var _MANDATORY_EMAIL_CONFIRM='<?=_MANDATORY_EMAIL_CONFIRM?>';
 var _MANDATORY_CIVL_ID='<?=_MANDATORY_CIVL_ID?>';
 
 function setCIVL_ID() {
-	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&callingfield=civlid', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
+	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&CIVL_ID_field=civlid&name_field=name', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
 }
 </script>
 <script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
@@ -173,7 +173,7 @@ function setCIVL_ID() {
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td align="center"><form name='form2' method="post" action="?op=users&page=index&act=register">
+    <td align="center"><form name='form2' method="post" action="">
         <input name="registerForm" type="hidden" value="1">
         <table width="600" cellspacing='2' cellpadding='2'  >
           <tr>
