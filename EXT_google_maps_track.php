@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.43 2009/05/12 10:38:54 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.44 2009/05/18 14:34:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -116,7 +116,7 @@
 	  <div style="position: absolute; float:right; right:4px; top: 0px; z-index: 150; padding-right:4px; text-align:right; height:12px; width:110px; border:0px solid #777777;  background-color:none; color:FF3333;" 
 	  id="timeBar"><?=$title1?></div>
 
-	  <div id="chart" class="chart" style="width: 745px; height: 120px;"  onMouseMove="SetTimer(event)"></div>
+	  <div id="chart" class="chart" style="width: 745px; height: 120px;" ></div>
 	</div></td>
 	</tr>
 	<tr>
@@ -276,6 +276,9 @@ var lon=0;
 					flight.speed[j]=flightArray.speed[i];
 					flight.vario[j]=flightArray.vario[i];
 					flight.distance[j]=flightArray.distance[i];
+
+					// for testing
+					// flight.elevGnd[j]=800;
 					if (j==0) {
 							lat=flight.lat[j]=flightArray.lat[i];
 							lon=flight.lon[j]=flightArray.lon[i];

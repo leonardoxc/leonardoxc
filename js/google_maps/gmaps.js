@@ -72,15 +72,16 @@
 
 
 	function SetTimer(evt) {
+	// function SetTimer(evt) {
 		i=1; //getCheckedValue(document.forms[0].timeSel);
-		if (typeof evt == "object") {
+		/*if (typeof evt == "object") {
 			if (evt.layerX > -1) {
 				CurrTime[i] = (evt.layerX -marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
 			} else if (evt.offsetX) {
 				CurrTime[i] = (evt.offsetX-marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
 			}
 		}
-		
+		*/
 		if ( CurrTime[1] <0 )  { CurrTime[1] =0; }
 		if ( CurrTime[1] >= CurrTime[2]-4 )  { CurrTime[1] =CurrTime[2]-5; }
 
