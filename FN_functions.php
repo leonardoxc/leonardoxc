@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.66 2008/12/03 20:56:14 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.67 2009/05/27 14:02:32 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -553,6 +553,10 @@ function InterpolateArray(&$array, $startVal, $endVal, $startIdx, $endIdx)
 
 
 $dec2fracArray=array(
+	'0.04'=>array(1,25),
+	'0.05'=>array(1,20),
+	'0.0666'=>array(1,15),
+	'0.083'=>array(1,12),
 	'0.111111111'=>array(1,9),
 	'0.125'=>array(1,8),
 	'0.142857143'=>array(1,7),
