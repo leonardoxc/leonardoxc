@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.44 2009/05/18 14:34:02 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.45 2009/06/08 19:59:15 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -193,6 +193,18 @@
 
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+	  $("#chart").bind('mousemove',
+		function(e){ 
+			// var x=e.clientX ;
+			var x=e.pageX ;				
+			CurrTime[1] = (x -marginLeft) * EndTime / (ImgW-marginLeft-marginRight);			
+			SetTimer();
+		});
+
+});
+
 var wpID=<?=$flight->takeoffID?>;
 var relpath="<?=$moduleRelPath?>";
 var polylineURL="<?=$flight->getPolylineRelPath() ?>";

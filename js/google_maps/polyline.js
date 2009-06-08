@@ -154,25 +154,8 @@
       }                   
 	  
 	  
-$(document).ready(function(){
-	  $("#chart").bind('mouseover',
-		function(e){ 
-				/*
-			if (typeof e == "object") {
-				if (evt.layerX > -1) {
-					CurrTime[1] = (e.layerX -marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
-				} else if (evt.offsetX) {
-					CurrTime[1] = (e.offsetX-marginLeft) * EndTime / (ImgW-marginLeft-marginRight)
-				}
-			}
-			*/
-				CurrTime[1]=120;
-				SetTimer();
 
-		});
 
-)}
-	  
     }
 
     else {
