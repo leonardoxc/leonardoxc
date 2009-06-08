@@ -8,33 +8,103 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.18 2009/04/15 14:47:31 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.19 2009/06/08 18:53:17 manolis Exp $                                                                 
 //
 //************************************************************************
- if (!$userID) return;
+ if ($userID<=0) return;
  
  openMain( _SUBMIT_FLIGHT,0,"icon_add.png");
 
  if (!isset($_FILES['zip_datafile']['name'])) {
 ?>  
+<style type="text/css">
+<!--
+.categorySpan {
+	padding:3px;
+	border:1px solid #CC9900;
+	background-color:#FFFFCC;
+}
+-->
+</style>
+
 <script language="JavaScript">
-function setValue(obj)
-{		
+
+function submitForm() {
+	var filename=$("#zip_datafile").val();
+	
+	if ( filename=='' ) {
+		alert('<?=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE?>');
+		return false;
+	}
+
+	var suffix=filename.substr(filename.length -3, 3).toLowerCase();
+	// $("#glider").val(suffix);
+	if ( suffix!='zip'  ) {
+		alert('<?=_FILE_DOESNT_END_IN_ZIP?>');
+		return false;
+	}	
+
+	if ( $("#gliderCertCategory").val()==0 ) {
+		alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
+		return false;
+	}
+	
+	return true;
+}
+
+var gliderClassList=[];
+
+gliderClassList[0]='-';
+
+<? 		
+	foreach ( $gliderClassList as $gl_id=>$gl_type) {
+		echo "gliderClassList[$gl_id]='$gl_type';\n";
+	}
+?>				
+
+function changeTandem() {
+	if  ( $("#tandem").attr('checked') ) {
+		$("#category").val(3);
+		$("#categoryDesc").html(gliderClassList[3]);
+	} else {
+		selectGliderCertCategory();
+	}
+}
+
+function selectGliderCertCategory() {		
+	var gCert=$("#gliderCertCategorySelect").val();
+	
+	$("#gliderCertCategory").val(gCert);
+	
+	if  ( $("#tandem").attr('checked') ) {
+	
+	} else {
+		if ( gCert ==0) {
+			category=0;	
+		} else if ( gCert & 0x0067 ) {
+			category=1;	
+		} else {
+			category=2;
+		}
+		
+		$("#category").val(category);
+		$("#categoryDesc").html(gliderClassList[category]);
+	}
+	
+}
+
+function setValue(obj) {		
 	var n = obj.selectedIndex;    // Which menu item is selected
 	var val = obj[n].value;        // Return string value of menu item
-
 	var valParts= val.split("_");
 
-	gl=MWJ_findObj("glider");
-	gl.value=valParts[1];
-
-	gl=MWJ_findObj("gliderBrandID");
-	gl.value=valParts[0];
-
-	// document.inputForm.glider.value = value;
+	$("#glider").val(valParts[1]);
+	$("#gliderBrandID").val(valParts[0]);
 }
+
+
 </script>
-<form name="inputForm" action="" enctype="multipart/form-data" method="post" >	
+<form name="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();">	
 
   <table class=main_text width="630" border="0" align="center" cellpadding="5" cellspacing="3">
     <tr>
@@ -44,12 +114,12 @@ function setValue(obj)
     <tr>
       <td width="120" valign="top"><div align="right" class="styleItalic"><? echo _SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS ?></div></td>
       <td  colspan="3" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
-        <input name="zip_datafile" type="file" size="50">
+        <input name="zip_datafile" id="zip_datafile" type="file" size="50">
       </font></td>
     </tr>
     <tr>
 	<td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
-      <td width="193"  valign="top"><select name="gliderCat">        
+      <td width="193"  valign="top"><select name="gliderCat" id="gliderCat">        
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -60,7 +130,36 @@ function setValue(obj)
 		?>
 	  		</select>
 	  	</td>
+		 <td width="133"  valign="top"><? if ($enablePrivateFlights) { ?>
+		<span class="styleItalic">
+        <label for='is_private'><?=_MAKE_THIS_FLIGHT_PRIVATE ?></label>
+      </span>
+        <input type="checkbox" name="is_private" id="is_private" value="1">
+		<? } ?></td>
     </tr>
+	<tr>
+      <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
+      <td valign="top">
+	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
+	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory()">
+      	<?
+			echo "<option value=0></option>\n";
+			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
+				echo "<option  value=$gl_id>".$CONF_glider_certification_categories[$gl_id]."</option>\n";
+			}
+		?>
+	  </select>&nbsp;
+	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>
+	  
+	  </td>
+	  <td  valign="top"><div align="left" class="styleItalic">
+	   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
+	  <input type="checkbox" id='tandem' name='tandem'  value='1' onchange='changeTandem();' />
+	  <input name="category" id="category" type='hidden' value='0'>
+	  </div></td>
+	  
+    </tr>
+	<? if (0) { ?>
     <tr>
 		<td  valign="top"><div align="right" class="styleItalic"><? echo _Category; ?></div></td>
      	<td  valign="top" colspan="2"> <select name="category">
@@ -80,14 +179,9 @@ function setValue(obj)
 				}
       		}
 		?></select>		</td>
-      <td width=155 align="center"  valign="top"><? if ($enablePrivateFlights) { ?>
-		<span class="styleItalic">
-        <?=_MAKE_THIS_FLIGHT_PRIVATE ?>
-      </span>
-        <input type="checkbox" name="is_private" value="1">
-	  <? } ?></td>
+     
     </tr>
-	
+	<? }  ?>
 	
     <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
@@ -134,14 +228,14 @@ function setValue(obj)
     <tr>
       <td width="120" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
-        <input name="insert_as_user_id" type="text" size="10">
+        <input name="insert_as_user_id" id="insert_as_user_id" type="text" size="10">
 	  </td>
     </tr>
  	<? }?>
     <tr>
       <td>&nbsp;</td>
       <td colspan=3><p><font face="Verdana, Arial, Helvetica, sans-serif">
-          <input name="submit" type="submit" value="<? echo _PRESS_HERE_TO_SUBMIT_THE_FLIGHTS ?>">
+          <input name="submit" id="submit" type="submit" value="<? echo _PRESS_HERE_TO_SUBMIT_THE_FLIGHTS ?>">
 </font></p>
       </td>
     </tr>
@@ -177,6 +271,7 @@ function setValue(obj)
 		$category=$CONF_default_category;
 	}
 
+	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
 	if (strtolower(substr($filename,-4))!=".zip") addFlightError(_FILE_DOESNT_END_IN_ZIP);
 
@@ -234,7 +329,9 @@ function setValue(obj)
 			$alreadyValidatedInPage=0;
 			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
 								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,
-										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ) 
+										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ,
+										'gliderCertCategory'=>$gliderCertCategory
+										) 
 			) ;
 			 
 			 if ($res==1) { 

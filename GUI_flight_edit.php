@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.39 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.40 2009/06/08 18:53:17 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -45,6 +45,10 @@
 
 		 $flight->cat=$_REQUEST["gliderCat"]+0;
  		 $flight->category=$_REQUEST["category"]+0;
+		 
+		 $flight->gliderCertCategory=$_REQUEST["gliderCertCategory"]+0;
+		 
+		 
 		 $flight->gliderBrandID=$_REQUEST["gliderBrandID"];
 		 $flight->glider=$_REQUEST["glider"];
 		 $flight->grecord=$_REQUEST["grecord"]+0;
@@ -157,21 +161,68 @@
 	?>
 
 <script language="JavaScript">
-function setValue(obj)
-{		
+
+function submitForm() {	
+
+	if ( $("#gliderCertCategory").val()==0 ) {
+		alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
+		return false;
+	}
+	
+	return true;
+}
+
+var gliderClassList=[];
+
+gliderClassList[0]='-';
+
+<? 		
+	foreach ( $gliderClassList as $gl_id=>$gl_type) {
+		echo "gliderClassList[$gl_id]='$gl_type';\n";
+	}
+?>				
+
+function changeTandem() {
+	if  ( $("#tandem").attr('checked') ) {
+		$("#category").val(3);
+		$("#categoryDesc").html(gliderClassList[3]);
+	} else {
+		selectGliderCertCategory();
+	}
+}
+
+function selectGliderCertCategory() {		
+	var gCert=$("#gliderCertCategorySelect").val();
+	
+	$("#gliderCertCategory").val(gCert);
+	
+	if  ( $("#tandem").attr('checked') ) {
+	
+	} else {
+		if ( gCert ==0) {
+			category=0;	
+		} else if ( gCert & 0x0067 ) {
+			category=1;	
+		} else {
+			category=2;
+		}
+		
+		$("#category").val(category);
+		$("#categoryDesc").html(gliderClassList[category]);
+	}
+	
+}
+
+function setValue(obj) {		
 	var n = obj.selectedIndex;    // Which menu item is selected
 	var val = obj[n].value;        // Return string value of menu item
-
 	var valParts= val.split("_");
 
-	gl=MWJ_findObj("glider");
-	gl.value=valParts[1];
-
-	gl=MWJ_findObj("gliderBrandID");
-	gl.value=valParts[0];
-
-	// document.inputForm.glider.value = value;
+	$("#glider").val(valParts[1]);
+	$("#gliderBrandID").val(valParts[0]);
 }
+
+
 </script>
 
 <? if ( L_auth::isAdmin($userID) && $CONF_airspaceChecks ) { ?>
@@ -205,6 +256,13 @@ function update_comment(area_id) {
 	margin-bottom:0px;
 
 }
+
+.categorySpan {
+	padding:3px;
+	border:1px solid #CC9900;
+	background-color:#FFFFCC;
+}
+
 </style>
 <div id="takeoffAddID" class="dropBox takeoffOptionsDropDown" style="visibility:hidden;">
 	<table width="100%" cellpadding="0" cellspacing="0">
@@ -248,7 +306,7 @@ fieldset.legendBox {
 <? 
 require_once dirname(__FILE__).'/FN_editor.php';
 ?>
-  <form action="" enctype="multipart/form-data" method="post">	
+  <form name="inputForm" id="inputForm"  action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();">	
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
   <?  openMain(_CHANGE_FLIGHT_DATA,0,"change_icon.png"); ?>
@@ -323,8 +381,39 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset>			</td>
 		    <td>
 			   <fieldset class="legendBox legend2">
-	    <legend><? echo _Category ?></legend>
-	  <div align="left">	  
+	    <legend><? echo _GLIDER_CERT  ?></legend>
+	  <div align="left">	
+	  
+	  <? 
+  		if ($flight->category==3 )  {
+			$tandemSelected=" checked='checked' ";
+		} else {	
+			$tandemSelected='';
+		}
+		$catDesc=$gliderClassList[$flight->category]	;
+		
+	  ?>
+	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="<?=$flight->gliderCertCategory ?>">
+	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory()">
+      	<?
+			echo "<option value=0></option>\n";
+			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
+				if ($flight->gliderCertCategory == $gl_id) $sel=' selected ';
+				else $sel='';
+				echo "<option $sel value=$gl_id>".$CONF_glider_certification_categories[$gl_id]."</option>\n";
+			}
+		?>
+	  </select>&nbsp;
+	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'><?=$catDesc?></span>
+	  
+	
+	  <span align="left" class="styleItalic" style='padding-left:20px;'>
+		   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
+		  <input type="checkbox" id='tandem' name='tandem' <?=$tandemSelected?> value='1' onchange='changeTandem();' />
+		  <input name="category" id="category" type='hidden' value='0'>
+	  </span>
+	  
+	  <? if (0) { ?>  
            <select name="category">
            <?
 				foreach ( $gliderClassList as $gl_id=>$gl_type) {
@@ -334,6 +423,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				}
 			?>
 		</select>
+		<? } ?>
 			  </div>
 	    </fieldset>	
 			

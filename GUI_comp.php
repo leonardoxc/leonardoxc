@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.25 2009/03/12 15:13:33 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.26 2009/06/08 18:53:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -163,13 +163,25 @@ var BT_default_width=500;
 		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['localName'];
 	else
 		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['name'];
-		
-	if ($listClubs) 		
-	  listClubs($subrankTitle, _OLC_TOTAL_SCORE,"score","score","formatOLCScore");
-	else
-	  listCategory($subrankTitle, _OLC_TOTAL_SCORE,"score","score","formatOLCScore");
-
-?>
+	
+	
+	if ($customFormatFunction) 
+		$formatFunction=$customFormatFunction;
+	else 
+		$formatFunction="formatOLCScore";	
+	
+	if ($customRankHeader) 
+		$rankHeader=$customRankHeader;
+	else 
+		$rankHeader=_OLC_TOTAL_SCORE;
+			
+	if ($listClubs) {			
+		listClubs($subrankTitle, $rankHeader,"score","score",$formatFunction);
+	} else {
+	 	listCategory($subrankTitle, $rankHeader,"score","score",$formatFunction);
+	}
+	
+	?>
 </div>
 <?	
 function listCategory($legend,$header, $category, $key, $formatFunction="") {

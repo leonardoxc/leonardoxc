@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.165 2009/03/27 14:50:00 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.166 2009/06/08 18:53:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -3163,6 +3163,8 @@ $kml_file_contents=
 		$this->category=$row["category"];		
 		$this->active=$row["active"];		
 		$this->private=$row["private"];		
+		
+		$this->gliderCertCategory=$row["gliderCertCategory"];		
 
 		$this->validated=$row["validated"];		
 		$this->grecord=$row["grecord"];		
@@ -3550,9 +3552,13 @@ $kml_file_contents=
 			}
 		}
 		
+		// make sure it evaluates to something
+		$this->gliderCertCategory+=0;
+		
 		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
 		cat,subcat,category,active, private ,
+		gliderCertCategory,
 		validated,grecord,validationMessage, 
 		hash, serverID, originalURL, originalKML, original_ID,
 		originalUserID ,userServerID,
@@ -3591,6 +3597,7 @@ $kml_file_contents=
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
+		$this->gliderCertCategory,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID, 
 		'$this->originalUserID' , $this->userServerID,

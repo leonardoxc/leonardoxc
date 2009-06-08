@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.116 2009/03/26 16:17:27 manolis Exp $                                                                 
+// $Id: config.php,v 1.117 2009/06/08 18:53:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -271,6 +271,11 @@ setlocale(LC_NUMERIC, 'en_US') ;
 				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
 // $CONF_glider_types=array(1=>"Paraglider");
 
+ $CONF_glider_certification_categories =array(
+ 		1=>"LTF 1",2=>"LTF 1/2",4=>"LFT 2", 8=>"LFT 2/3" , 16=>"LFT 3" , 
+ 		32=>"EN A",64=>"EN B",128=>"EN C", 256=>"EN D" , 
+ 		1024=>"Proto");
+ 
  $CONF_xc_types=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
  $CONF_xc_types_db=array(1=>"FREE_FLIGHT",2=>"FREE_TRIANGLE",4=>"FAI_TRIANGLE");				
 
