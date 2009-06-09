@@ -8,20 +8,24 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.35 2009/06/08 18:53:17 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.36 2009/06/09 23:05:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
+	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
+	if (!$userID || $userID==-1) {
+		echo _You_are_not_login;
+		return;
+	}
 /*
 	new defines
-_GLIDER_CERT 
-_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION
+define("_GLIDER_CERT","Glider Certification");
+define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Please select the certification of your glider");
 
 AirTime
 */
 
- if ($userID<=0) return;
- 
+
 ?>
 <style type="text/css">
 <!--

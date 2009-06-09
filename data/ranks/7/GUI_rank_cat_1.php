@@ -22,6 +22,8 @@
 	$customFormatFunction="sec2Time24h";
 	$customRankHeader=_TOTAL_DURATION;
 	
+	$countHowMany= 0; // special case , count all flights
+	
 	require_once dirname(__FILE__)."/common_pre.php";
 
 	$query = "SELECT $flightsTable.ID, userID, takeoffID , userServerID,

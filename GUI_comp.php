@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.26 2009/06/08 18:53:17 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.27 2009/06/09 23:05:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -47,6 +47,7 @@
 
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
+  $dontShowManufacturers=$ranksList[$rank]['dontShowManufacturers']; //P.Wild 16.7.08
   
   
   	# Martin Jursa 22.05.2007 option NACclub Selection
@@ -119,6 +120,13 @@ foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
 }
 echo "<BR><BR>";
 
+
+# Martin Jursa, 02.03.2009: Hook for custom menu generated somewhere in the ranks code
+if (!empty($custom_ranks_menu)) {
+	echo $custom_ranks_menu;
+}
+
+
 	// was _KILOMETERS -> bug
 	// and _TOTAL_KM
 	if ($PREFS->metricSystem==1) {
@@ -159,11 +167,15 @@ var BT_default_width=500;
 
 <div class="tabber" id="compTabber">
 <?
+	# Martin Jursa 02.03.2009: Enable custom Title of display via specific ranks code (setting $customSubrankTitle)
+	if (!empty($customSubrankTitle)) {
+		$subrankTitle=$customSubrankTitle;
+	}else {
 	if ($lng==$ranksList[$rank]['localLanguage'])
 		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['localName'];
 	else
 		$subrankTitle=$ranksList[$rank]['subranks'][$subrank]['name'];
-	
+	}
 	
 	if ($customFormatFunction) 
 		$formatFunction=$customFormatFunction;
@@ -195,6 +207,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    global $tabID;
    global $sort_funcs_pilots;
    global $CONF;
+   global $dateLegend;
 
    uasort($pilots,$sort_funcs_pilots[$category]);
 
@@ -205,7 +218,11 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    $tabID++;
    echo "<div class='tabbertab $defaultTabStr' title='$legend'>";
    
-   $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
+   if ($countHowMany>0)  {
+	   $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
+   } else {   
+       $legend.=" (".$dateLegend.")";
+   }
    echo "<table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($countHowMany+4)."'>$legend</td></tr>";
    
@@ -257,35 +274,37 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 
 		unset($pilotBrands);
 		$pilotBrands=array();
-		foreach ($pilot[$category]['flights'] as $flightID) {
-			$val=$pilot['flights'][$flightID][$key];
-
-			$glider=$pilot['flights'][$flightID]['glider'];
-			$country=$countries[$pilot['flights'][$flightID]['country']];
-
-			$thisFlightBrandID=$pilot['flights'][$flightID]['brandID'];
-			if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
-
-			if (!$val)  $outVal="-";
-			else if ($formatFunction) $outVal=$formatFunction($val);
-			else $outVal=$val;
-			// $descr=_GLIDER.": $glider, "._COUNTRY.": $country";
-			if ($val) {
-				echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal."</a>";
-				
-				//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
-				echo "</TD>"; 	 		  
-			} else echo "<TD>".$outVal."</TD>"; 	 		  
-			$k++;
-			if ($k>=$countHowMany) break;
-		}
-
-		if ($k!=$countHowMany) {
-			for($j=$k;$j<$countHowMany;$j++) {
-				echo "<TD>-</TD>"; 	 		  
+		if ($countHowMany>0) {
+			foreach ($pilot[$category]['flights'] as $flightID) {
+				$val=$pilot['flights'][$flightID][$key];
+	
+				$glider=$pilot['flights'][$flightID]['glider'];
+				$country=$countries[$pilot['flights'][$flightID]['country']];
+	
+				$thisFlightBrandID=$pilot['flights'][$flightID]['brandID'];
+				if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
+	
+				if (!$val)  $outVal="-";
+				else if ($formatFunction) $outVal=$formatFunction($val);
+				else $outVal=$val;
+				// $descr=_GLIDER.": $glider, "._COUNTRY.": $country";
+				if ($val) {
+					echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal."</a>";
+					
+					//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
+					echo "</TD>"; 	 		  
+				} else echo "<TD>".$outVal."</TD>"; 	 		  
+				$k++;
+				if ($k>=$countHowMany) break;
+			}
+	
+			if ($k!=$countHowMany) {
+				for($j=$k;$j<$countHowMany;$j++) {
+					echo "<TD>-</TD>"; 	 		  
+				}
 			}
 		}
-
+		
 		arsort($pilotBrands);
 		$flightBrandID=array_shift(array_keys($pilotBrands));
 

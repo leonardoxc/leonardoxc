@@ -29,13 +29,14 @@
 	
 	// pilots must be NACid=1 (DHV) and NACmemberID>0
 //	$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 AND countryCode='DE' ";
+	$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 ";
 
 	// The flight mus be validated
-//	$where_clause.=" AND validated=1 ";
+	$where_clause.=" AND validated=1 ";
 
 	// support for NACclub filtering
 	if ($nacclubid) {
-//		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid ";
+		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid ";
 	}
 
 
