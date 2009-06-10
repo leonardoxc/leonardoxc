@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.40 2009/06/08 18:53:17 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.41 2009/06/10 10:12:29 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -160,14 +160,42 @@
 	}
 	?>
 
+<script src="<?=$moduleRelPath?>/js/flight_info.js" type="text/javascript"></script>
 <script language="JavaScript">
 
 function submitForm() {	
-
-	if ( $("#gliderCertCategory").val()==0 ) {
-		alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
-		return false;
-	}
+	
+	<? if ( $CONF_addflight_js_validation ) { ?>
+		if ( $("#gliderCertCategory").val()==0 && 
+			 $("#gliderCat").val() == 1
+			) {
+			$("#gliderCertCategorySelect").focus();
+			alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
+			return false;
+		}		
+		
+		if ( $("#categoryOther").val()==0 && 
+			 $("#gliderCat").val() != 1
+			) {
+			$("#categoryOther").focus();
+			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
+			return false;
+		}
+	<? } ?>
+	
+	<? if ( $CONF_require_glider ) { ?>	
+		if ( $("#gliderBrandID").val()==0 ) {
+			$("#gliderSelect").focus();
+			alert('<?=_FLIGHTADD_BRAND_MISSING?>');
+			return false;
+		}
+	
+		if ( $("#glider").val()==0 ) {
+			$("#glider").focus();
+			alert('<?=_FLIGHTADD_GLIDER_MISSING?>');
+			return false;
+		}
+	<? } ?>
 	
 	return true;
 }
@@ -182,46 +210,13 @@ gliderClassList[0]='-';
 	}
 ?>				
 
-function changeTandem() {
-	if  ( $("#tandem").attr('checked') ) {
-		$("#category").val(3);
-		$("#categoryDesc").html(gliderClassList[3]);
-	} else {
-		selectGliderCertCategory();
-	}
-}
-
-function selectGliderCertCategory() {		
-	var gCert=$("#gliderCertCategorySelect").val();
-	
-	$("#gliderCertCategory").val(gCert);
-	
-	if  ( $("#tandem").attr('checked') ) {
-	
-	} else {
-		if ( gCert ==0) {
-			category=0;	
-		} else if ( gCert & 0x0067 ) {
-			category=1;	
-		} else {
-			category=2;
+$(document).ready(
+		function(){
+			selectGliderCat() ;
+			selectGliderCertCategory();			
 		}
-		
-		$("#category").val(category);
-		$("#categoryDesc").html(gliderClassList[category]);
-	}
+	);
 	
-}
-
-function setValue(obj) {		
-	var n = obj.selectedIndex;    // Which menu item is selected
-	var val = obj[n].value;        // Return string value of menu item
-	var valParts= val.split("_");
-
-	$("#glider").val(valParts[1]);
-	$("#gliderBrandID").val(valParts[0]);
-}
-
 
 </script>
 
@@ -368,7 +363,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 		    <legend><? echo _GLIDER_TYPE ?></legend>
 			<div align="left">
 		    <b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
-            <select name="gliderCat">
+            <select name="gliderCat" id="gliderCat" onchange="selectGliderCat();">
            <?
 				foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 					if ($flight->cat==$gl_id) $is_type_sel ="selected";
@@ -382,7 +377,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 		    <td>
 			   <fieldset class="legendBox legend2">
 	    <legend><? echo _GLIDER_CERT  ?></legend>
-	  <div align="left">	
+	  <div align="left" id='categoryPg'>	
 	  
 	  <? 
   		if ($flight->category==3 )  {
@@ -413,8 +408,11 @@ require_once dirname(__FILE__).'/FN_editor.php';
 		  <input name="category" id="category" type='hidden' value='0'>
 	  </span>
 	  
-	  <? if (0) { ?>  
-           <select name="category">
+       </div>
+      
+	  <? if (1) { ?>  
+      <div align='left' id='categoryOtherDiv'>
+           <select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();" >
            <?
 				foreach ( $gliderClassList as $gl_id=>$gl_type) {
 					if ($flight->category==$gl_id) $is_type_sel ="selected";
@@ -423,8 +421,9 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				}
 			?>
 		</select>
+        </div>
 		<? } ?>
-			  </div>
+			 
 	    </fieldset>	
 			
 			</td>
@@ -459,7 +458,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				</select>
 			</td>
 			<td>
-     <input name="glider" type="text" size="20" value="<? echo  $flight->glider ?>">
+     <input name="glider" id="glider" type="text" size="20" value="<? echo  $flight->glider ?>">
          </td>
 		 <td>
 		<? 

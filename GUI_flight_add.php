@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.36 2009/06/09 23:05:48 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.37 2009/06/10 10:12:29 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -83,6 +83,7 @@ AirTime
 
  if ($datafile=='') {   
 ?>
+<script src="<?=$moduleRelPath?>/js/flight_info.js" type="text/javascript"></script>
 <script language="JavaScript">
 
 function submitForm() {
@@ -99,11 +100,39 @@ function submitForm() {
 		alert('<?=_FILE_DOESNT_END_IN_IGC?>');
 		return false;
 	}	
+	
+	<? if ( $CONF_addflight_js_validation ) { ?>
+		if ( $("#gliderCertCategory").val()==0 && 
+			 $("#gliderCat").val() == 1
+			) {
+			$("#gliderCertCategorySelect").focus();
+			alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
+			return false;
+		}		
+		
+		if ( $("#categoryOther").val()==0 && 
+			 $("#gliderCat").val() != 1
+			) {
+			$("#categoryOther").focus();
+			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
+			return false;
+		}
+	<? } ?>
+	
+	<? if ( $CONF_require_glider ) { ?>	
+		if ( $("#gliderBrandID").val()==0 ) {
+			$("#gliderSelect").focus();
+			alert('<?=_FLIGHTADD_BRAND_MISSING?>');
+			return false;
+		}
+	
+		if ( $("#glider").val()==0 ) {
+			$("#glider").focus();
+			alert('<?=_FLIGHTADD_GLIDER_MISSING?>');
+			return false;
+		}
+	<? } ?>
 
-	if ( $("#gliderCertCategory").val()==0 ) {
-		alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
-		return false;
-	}
 	
 	return true;
 }
@@ -118,45 +147,12 @@ gliderClassList[0]='-';
 	}
 ?>				
 
-function changeTandem() {
-	if  ( $("#tandem").attr('checked') ) {
-		$("#category").val(3);
-		$("#categoryDesc").html(gliderClassList[3]);
-	} else {
-		selectGliderCertCategory();
-	}
-}
-
-function selectGliderCertCategory() {		
-	var gCert=$("#gliderCertCategorySelect").val();
-	
-	$("#gliderCertCategory").val(gCert);
-	
-	if  ( $("#tandem").attr('checked') ) {
-	
-	} else {
-		if ( gCert ==0) {
-			category=0;	
-		} else if ( gCert & 0x0067 ) {
-			category=1;	
-		} else {
-			category=2;
+$(document).ready(
+		function(){
+			selectGliderCat() ;					
 		}
-		
-		$("#category").val(category);
-		$("#categoryDesc").html(gliderClassList[category]);
-	}
-	
-}
+	);
 
-function setValue(obj) {		
-	var n = obj.selectedIndex;    // Which menu item is selected
-	var val = obj[n].value;        // Return string value of menu item
-	var valParts= val.split("_");
-
-	$("#glider").val(valParts[1]);
-	$("#gliderBrandID").val(valParts[0]);
-}
 </script>
 
   <form name="inputForm" id="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();" >	
@@ -171,7 +167,7 @@ function setValue(obj) {
     </tr>
     <tr>
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
-      <td width="160"  valign="top"><select name="gliderCat" id="gliderCat">        
+      <td width="160"  valign="top"><select name="gliderCat" id="gliderCat" onchange="selectGliderCat();">        
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -189,7 +185,7 @@ function setValue(obj) {
 		<? } ?></td>
     </tr>
 	
-	<tr>
+	<tr id='categoryPg'>
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
       <td valign="top">
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
@@ -212,10 +208,10 @@ function setValue(obj) {
 	  
     </tr>
 	
-	<? if (0) { ?>
-    <tr>
+	<? if (1) { ?>
+    <tr id='categoryOtherDiv'>
       <td  valign="top"><div align="right" class="styleItalic"><? echo _Category; ?> </div></td>
-      <td colspan="2"><select name="category" id="category">
+      <td colspan="2"><select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();">
 		<?
       		# martin jursa 18.05.2008
       		# in case of javascript validation ignore the default to force the user to select the category
