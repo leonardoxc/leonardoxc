@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.20 2009/06/10 10:12:29 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.21 2009/06/10 15:18:57 manolis Exp $                                                                 
 //
 //************************************************************************
  if ($userID<=0) return;
@@ -26,12 +26,15 @@
 }
 -->
 </style>
+<script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/flight_info.js" type="text/javascript"></script>
+
 <script language="JavaScript">
 
 function submitForm() {
 	var filename=$("#zip_datafile").val();
 	
+	//filename='aa.zip';
 	if ( filename=='' ) {
 		alert('<?=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE?>');
 		return false;
@@ -53,10 +56,8 @@ function submitForm() {
 			return false;
 		}		
 		
-		if ( $("#categoryOther").val()==0 && 
-			 $("#gliderCat").val() != 1
-			) {
-			$("#categoryOther").focus();
+		if ( $("#category").val()==0 ) {
+			$("#category").focus();
 			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
 			return false;
 		}
@@ -90,9 +91,13 @@ gliderClassList[0]='-';
 	}
 ?>				
 
+var moduleRelPath='<?=$moduleRelPath?>';
+
+
 $(document).ready(
 		function(){
-			selectGliderCat() ;					
+			selectGliderCat() ;	
+			// updateCategoryDropDown(0,1); // show all 
 		}
 	);
 	
@@ -131,11 +136,12 @@ $(document).ready(
         <input type="checkbox" name="is_private" id="is_private" value="1">
 		<? } ?></td>
     </tr>
-	<tr id='categoryPg'>
+	<tr >
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
-      <td valign="top">
+      <td valign="top" colspan=2>
+      <span id='categoryPg'>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
-	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory()">
+	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
       	<?
 			echo "<option value=0></option>\n";
 			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
@@ -143,17 +149,44 @@ $(document).ready(
 			}
 		?>
 	  </select>&nbsp;
+      </span>
+      <? echo _Category; ?> 
+      <select name="category" id="category" onchange="selectGliderCategory();">
+	  <?
+		  if (0) {
+      		# martin jursa 18.05.2008
+      		# in case of javascript validation ignore the default to force the user to select the category
+      		if (!empty($CONF_addflight_js_validation)) {
+      			echo "<option value=0></option>\n";
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
+						echo "<option value=$gl_id>".$gl_type."</option>\n";
+				}
+      		}else {
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
+						if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
+						else $is_type_sel ="";
+						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+				}
+      		}
+		  }
+		?></select>	
+        
 	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>
 	  
 	  </td>
-	  <td  valign="top"><div align="left" class="styleItalic">
+      <? if (0) { ?>
+	  <td  valign="top">
+
+      <div align="left" class="styleItalic">
 	   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
 	  <input type="checkbox" id='tandem' name='tandem'  value='1' onchange='changeTandem();' />
-	  <input name="category" id="category" type='hidden' value='0'>
-	  </div></td>
+	  <input name="category111" id="category111" type='hidden' value='0'>
+	  </div>      
+      </td>
+      <?  } ?>
 	  
     </tr>
-	<? if (1) { ?>
+	<? if (0) { ?>
     <tr id='categoryOtherDiv'>
 		<td  valign="top"><div align="right" class="styleItalic"><? echo _Category; ?></div></td>
      	<td  valign="top" colspan="2"> <select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();">

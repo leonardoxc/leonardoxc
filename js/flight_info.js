@@ -1,4 +1,5 @@
 	
+	/*
 function changeTandem() {
 	if  ( $("#tandem").attr('checked') ) {
 		$("#category").val(3);
@@ -7,12 +8,34 @@ function changeTandem() {
 		selectGliderCertCategory();
 	}
 }
+*/
+function updateCategoryDropDown(gliderCertID,showAll) {
 
-function selectGliderCertCategory() {		
+	$("#category").removeOption(/./);
+	$("#category").ajaxAddOption(moduleRelPath+"/EXT_ajax_functions.php", 
+			{op:"getCategoriesForCertID",showAll:showAll,gliderCertID:gliderCertID} , false ); 
+	
+}
+
+function makeCategoryDropDown(allowedList) {
+
+	$("#category").removeOption(/./);
+	for ( catID in allowedList ) { 	
+		$("#category").addOption(catID,gliderClassList[catID]); 
+	}
+	
+}
+
+function selectGliderCertCategory(catID) {		
 	var gCert=$("#gliderCertCategorySelect").val();
 	
 	$("#gliderCertCategory").val(gCert);
 	
+	updateCategoryDropDown(gCert,0);
+	
+	$("#category").val(catID);
+	$("#categoryDesc").html(gliderClassList[catID]);
+	/*
 	if  ( $("#tandem").attr('checked') ) {
 	
 	} else {
@@ -27,14 +50,15 @@ function selectGliderCertCategory() {
 		$("#category").val(category);
 		$("#categoryDesc").html(gliderClassList[category]);
 	}
+	*/
 	
 }
 
 
-function selectGliderCategoryOther() {	
-	var category=$("#categoryOther").val();
+function selectGliderCategory() {	
+	var category=$("#category").val();
 
-	$("#category").val(category);	
+	// $("#category").val(category);	
 	$("#categoryDesc").html(gliderClassList[category]);
 	
 }
@@ -44,10 +68,12 @@ function selectGliderCat() {
 	
 	if (gCat==1) {
 		$("#categoryPg").show();
-		$("#categoryOtherDiv").hide();	
+		//$("#categoryOtherDiv").hide();	
 	} else {
 		$("#categoryPg").hide();
-		$("#categoryOtherDiv").show();
+		// updateCategoryDropDown(0,1);
+		$("#gliderCertCategorySelect").val(0);
+		//$("#categoryOtherDiv").show();
 	}	
 }
 

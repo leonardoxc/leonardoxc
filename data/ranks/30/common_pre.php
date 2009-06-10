@@ -25,8 +25,11 @@
    
 	$where_clause.=" AND (cat=$cat) ";
 
-	$where_clause.=" AND gliderCertCategory & 33 ";
-	
+
+	//$where_clause.=" AND gliderCertCategory & 33 ";
+	// we use the category instead
+	$where_clause.=" AND category=4 "; // 4 = fun cup
+		
 	// pilots must be NACid=1 (DHV) and NACmemberID>0
 //	$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 AND countryCode='DE' ";
 	$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 ";

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.41 2009/06/10 10:12:29 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.42 2009/06/10 15:18:57 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -160,7 +160,9 @@
 	}
 	?>
 
+<script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/flight_info.js" type="text/javascript"></script>
+
 <script language="JavaScript">
 
 function submitForm() {	
@@ -174,10 +176,8 @@ function submitForm() {
 			return false;
 		}		
 		
-		if ( $("#categoryOther").val()==0 && 
-			 $("#gliderCat").val() != 1
-			) {
-			$("#categoryOther").focus();
+		if ( $("#category").val()==0 ) {
+			$("#category").focus();
 			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
 			return false;
 		}
@@ -210,10 +210,14 @@ gliderClassList[0]='-';
 	}
 ?>				
 
+var moduleRelPath='<?=$moduleRelPath?>';
+
 $(document).ready(
 		function(){
 			selectGliderCat() ;
-			selectGliderCertCategory();			
+			// selectGliderCertCategory(<?=$flight->category?>);	
+			
+			// updateCategoryDropDown(0,1); // show all 		
 		}
 	);
 	
@@ -376,8 +380,8 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset>			</td>
 		    <td>
 			   <fieldset class="legendBox legend2">
-	    <legend><? echo _GLIDER_CERT  ?></legend>
-	  <div align="left" id='categoryPg'>	
+	    <legend><? echo _GLIDER_CERT  ?> / <? echo _Category  ?></legend>
+	  <span align="left" id='categoryPg'>	
 	  
 	  <? 
   		if ($flight->category==3 )  {
@@ -386,31 +390,46 @@ require_once dirname(__FILE__).'/FN_editor.php';
 			$tandemSelected='';
 		}
 		$catDesc=$gliderClassList[$flight->category]	;
-		
+		$gliderCertID=$flight->gliderCertCategory;
 	  ?>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="<?=$flight->gliderCertCategory ?>">
-	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory()">
+	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
       	<?
 			echo "<option value=0></option>\n";
 			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
 				if ($flight->gliderCertCategory == $gl_id) $sel=' selected ';
 				else $sel='';
 				echo "<option $sel value=$gl_id>".$CONF_glider_certification_categories[$gl_id]."</option>\n";
+				
 			}
 		?>
 	  </select>&nbsp;
+      </span>
+      
+      <select name="category" id="category" onchange="selectGliderCategory();" >
+           <?
+				foreach ( $gliderClassList as $gl_id=>$gl_type) {
+					if ($flight->category==$gl_id) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					if ( in_array($gl_id ,$CONF_cert_avalable_categories[$gliderCertID] ) )  {
+						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
+					}	
+				}
+			?>
+		</select>
+        
 	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'><?=$catDesc?></span>
 	  
-	
+	<? if (0) { ?>
 	  <span align="left" class="styleItalic" style='padding-left:20px;'>
 		   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
 		  <input type="checkbox" id='tandem' name='tandem' <?=$tandemSelected?> value='1' onchange='changeTandem();' />
 		  <input name="category" id="category" type='hidden' value='0'>
 	  </span>
-	  
-       </div>
+	  <? } ?>
       
-	  <? if (1) { ?>  
+      
+	  <? if (0) { ?>  
       <div align='left' id='categoryOtherDiv'>
            <select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();" >
            <?
