@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.17 2009/04/30 15:17:35 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.18 2009/06/12 11:14:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -109,12 +109,16 @@
 	else if ($klasse==3) { $cat=1 ;  $category=2; } // pg  open
 	else if ($klasse==4) { $cat=1 ;  $category=1; } // pg sport
 	else if ($klasse==5) { $cat=1 ;  $category=3; } // pg tandem
+	else if ($klasse==6) { $cat=1 ;  $category=4; } // pg fun cup
+
+	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,
 				'cat'=>$cat,
 				// 'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) 
 				'allowDuplicates'=>1 ,
+				'gliderCertCategory'=>$gliderCertCategory,
 				 ) ) ;
 
 	if ($errCode!=1) {
