@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.27 2009/06/09 23:05:48 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.28 2009/06/18 13:34:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,9 +30,16 @@
   // since both have the same structure
   if ( $ranksList[$rank]['useCustomSeasons'] ) { 
 	  $CONF['seasons']=$ranksList[$rank]['seasons'];
+	  
+	  if (is_array( $ranksList[$rank]['subranks'][$subrank]['seasons'] ) ) {
+		  $CONF['seasons']=$ranksList[$rank]['subranks'][$subrank]['seasons'];
+	  }
   }
   if ( $ranksList[$rank]['useCustomYears'] ) { 
 	  $CONF['years']=$ranksList[$rank]['years'];
+	  if (is_array( $ranksList[$rank]['subranks'][$subrank]['years'] ) ) {
+		  $CONF['years']=$ranksList[$rank]['subranks'][$subrank]['years'];
+	  }
   }
   $where_clause='';
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
@@ -303,6 +310,13 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 					echo "<TD>-</TD>"; 	 		  
 				}
 			}
+		} else {
+			//only detect most used glider brand
+			foreach ($pilot[$category]['flights'] as $flightID) {				
+				$thisFlightBrandID=$pilot['flights'][$flightID]['brandID'];
+				if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
+			}	
+		
 		}
 		
 		arsort($pilotBrands);

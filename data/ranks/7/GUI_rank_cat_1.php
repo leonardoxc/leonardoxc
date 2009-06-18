@@ -24,6 +24,8 @@
 	
 	$countHowMany= 0; // special case , count all flights
 	
+	$ranksList[7]['seasons']['seasons']['2009']=array('start'=>'2009-07-01','end'=>'2009-09-15');
+	
 	require_once dirname(__FILE__)."/common_pre.php";
 
 	$query = "SELECT $flightsTable.ID, userID, takeoffID , userServerID,
@@ -35,7 +37,7 @@
   		AND $flightsTable.userServerID=$pilotsTable.serverID
   		$where_clause ";
 
-
+	//echo $query;
 require_once dirname(__FILE__)."/common.php";
 
 ?>
