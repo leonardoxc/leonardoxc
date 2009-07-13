@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.18 2009/06/12 11:14:42 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.19 2009/07/13 14:01:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -42,6 +42,19 @@
 		}
 		 exit;
 	}	
+
+log_msg("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n");
+log_msg("Client: $client \r\n");
+log_msg("Script name: ".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."\r\n");
+log_msg("User agent: ".$_SERVER['HTTP_USER_AGENT']."\r\n");
+log_msg("Date/time - IP: ".date("d/m/Y H:i:s")." -  ".$ip." \r\n");
+
+if (count($_POST) >0 ) {
+	log_msg("POST VARIABLES------------\r\n");
+	foreach($_POST as $pname=>$pval) {
+		log_msg($pname."=".$pval."\r\n");
+	}
+}
 
 	$user=str_replace("\\'", "''", $_POST['user'] );
 	$pass=str_replace("\\'", "''", $_POST['pass'] );
@@ -113,6 +126,8 @@
 
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
+	log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");
+				
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,
 				'cat'=>$cat,
@@ -133,4 +148,20 @@
 	}
     // DEBUG_END();
 	echo "</body></html>";
+	
+function log_msg($text ) {
+	global $client;
+
+	$filename=dirname(__FILE__).'/flight_submit_log.txt';
+	if (!$handle = fopen($filename, 'a')) {
+		 echo "Cannot open file ($filename)";
+		return 0;	
+	}
+	if (fwrite($handle, $text) === FALSE) {
+		echo "Cannot write to file ($filename)";
+		return 0;
+	}
+	fclose($handle);
+	return 1;
+}
 ?>
