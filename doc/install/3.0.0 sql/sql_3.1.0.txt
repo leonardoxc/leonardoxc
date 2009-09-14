@@ -2,3 +2,9 @@
 ALTER TABLE `leonardo_flights` ADD `gliderCertCategory` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `category` ;
 
 ALTER TABLE `leonardo_flights_deleted` ADD `gliderCertCategory` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `category` ;
+
+
+#2009/09/10
+# to speed up queries
+
+ ALTER TABLE `leonardo_flights` ADD INDEX `userIDonly` ( `userID` )  ;

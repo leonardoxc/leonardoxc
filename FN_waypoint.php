@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_waypoint.php,v 1.26 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: FN_waypoint.php,v 1.27 2009/09/14 13:57:23 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__).'/FN_output.php';
@@ -111,8 +111,9 @@ function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
   	$query="SELECT DISTINCT countryCode, count(*) as FlightsNum 
 			FROM $flightsTable,$waypointsTable $extra_table_str  
 			WHERE 
-				$flightsTable.takeoffID=$waypointsTable.ID  
-				AND $flightsTable.userID<>0 $where_clause
+				$flightsTable.takeoffID=$waypointsTable.ID  ".
+			//	"AND $flightsTable.userID<>0 ".
+				" $where_clause
 				GROUP BY countryCode ORDER BY countryCode ASC";	
 	// echo $query;
 	$res= $db->sql_query($query);		

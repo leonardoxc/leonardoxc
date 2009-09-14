@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_logs.php,v 1.11 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_logs.php,v 1.12 2009/09/14 13:57:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,7 +41,7 @@
 	
 	$legend="Log entries";
 	$legendRight=generate_flights_pagination(
-			getLeonardoLink(array('op'=>='admin_logs','sortOrder'=>$sortOrder)),		
+			getLeonardoLink(array('op'=>'admin_logs','sortOrder'=>$sortOrder)),		
 			$itemsNum,$PREFS->itemsPerPage,$page_num*$PREFS->itemsPerPage-1, TRUE , 3, 3); 
 
 	$endNum=$startNum+$PREFS->itemsPerPage;
