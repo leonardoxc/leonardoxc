@@ -17,7 +17,7 @@
 /************************************************************************/
 
 function setMonths() {
-	global  $monthList;
+	global  $monthList,	$monthListShort, $weekdaysList;
 	$monthList=array('Leden','Unor','Brezen','Duben','Kveten','Cerven',               
 					   'Cervenec','Srpen','Zari','Rijen','Listopad','Prosinec');
 

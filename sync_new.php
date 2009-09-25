@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.7 2009/03/24 12:18:43 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.8 2009/09/25 13:51:15 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -206,7 +206,7 @@ if ($op=="get_hash") {
 			$limit=""; // no limit , we must have all the delete actions within this 'chunk'			
 			$count=99999999; // a big number
 		} else {	
-			$limit=" LIMIT ".($count+100);
+			$limit=" LIMIT ".($count+200);
 		}
 		$query="SELECT * FROM $tableName  
 			WHERE  ".

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.5 2009/03/21 00:02:49 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.6 2009/09/25 13:51:15 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -208,7 +208,7 @@ if (0) {
 				$flightsTable.takeoffID as flight_takeoffID, 
 				$flightsTable.ID as ID,
 				$scoreSpeedSql AS SCORE_SPEED
-		FROM $flightsTable FORCE INDEX ( userID )  $extra_table_str $extra_table_str2
+		FROM $flightsTable $extra_table_str $extra_table_str2
 		WHERE (1=1) $where_clause $where_clause2
 		ORDER BY $sortOrderFinal $ord "; 
 		// no -> LIMIT $startNum,".$PREFS->itemsPerPage ;
