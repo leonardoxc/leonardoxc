@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.46 2009/06/16 21:21:51 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.47 2009/11/24 13:15:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -589,6 +589,17 @@ function toggleAirspace(radioObj) {
 	echo "polys = [];\n";	
 	echo "labels = [];\n";	
 
+
+	//Mod. P. Wild 5.10.2009 - show a few more airspaces around track (increase proximity level)
+	// Uncomment this to show a bit more airspaces around the flight
+	/* 
+	$zoom=102; //Percentage
+	$min_lon=$min_lon+($min_lon*(100-$zoom))/100;
+	$max_lon=$max_lon+($max_lon*($zoom-100))/100;
+	$min_lat=$min_lat+($min_lat*(100-$zoom))/100;
+	$max_lat=$max_lat+($max_lat*($zoom-100))/100;
+	 */
+ 
 	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
 	$NumberOfAirspaceAreas=count($AirspaceArea);
 	// echo " // found( $NumberOfAirspaceAreas) areas  $min_lon , $max_lon , $min_lat ,$max_lat <BR>";	
