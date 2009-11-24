@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: INC_club_where_clause.php,v 1.7 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: INC_club_where_clause.php,v 1.8 2009/11/24 14:30:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -58,7 +58,7 @@
 		$clubArea=new area($areaID);
 		$clubArea->getFromDB();
 
-		if ($clubArea->areaType==0 && 0) {
+		if ($clubArea->areaType==0 ) {
 			 $where_clause.= " 	AND $areasTakeoffsTable.areaID=$areaID 
 								AND $areasTakeoffsTable.takeoffID=$flightsTable.takeoffID  ";
 			 $extra_table_str.=",$areasTakeoffsTable ";

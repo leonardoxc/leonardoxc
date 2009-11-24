@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.9 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.10 2009/11/24 14:30:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -311,17 +311,21 @@ div#floatDiv h3, div#takeoffInfoDiv h3
       <td width="352"><select name="addList" id="addList">
         <option></option>
         <? 
-			$countryCode="GR"; 
+			$countryCode="AU"; 
 		$query="SELECT * from $waypointsTable WHERE type=1000 AND countryCode='$countryCode' ORDER BY name ASC";
 		$res= $db->sql_query($query);	
 		if($res <= 0){
 			  echo("<H3>Error in geting takeoffs</H3>\n");
 		}
 	    while ($row = mysql_fetch_assoc($res)) { 
-			echo "<option value='".$row['ID']."' >".$row['name']."</option>\n";
-		  
+			// echo "<option value='".$row['ID']."' >".$row['ID'].' - '.$row['name']."</option>\n";
+			$row2[$row['ID']]=$row['name'];	
 		}	  
-
+		asort($row2);
+		foreach($row2 as $id2=>$name2) { 
+			echo "<option value='".$id2."' >".$id2.' - '.$name2."</option>\n";
+		  
+		}	
 		?>
       </select></td>
     </tr>
