@@ -1,6 +1,10 @@
 <?php
+/**
+ * Modified to work by martin jursa, 25.05.2009
+ */
+
 require_once $LeoCodeBase."/CL_mail.php";
-openMain(_PASSWORD_RECOVERY_TOOL,0,""); 
+openMain(_PASSWORD_RECOVERY_TOOL,0,"");
 
 if ($userID>0) {
 	echo "<span class='note'>"._You_are_already_logged_in."</span>";
@@ -14,11 +18,11 @@ if(isset($_GET['rkey'])){
 	if(strlen($rk)>10){
 		$sql="update ".$CONF['userdb']['users_table']." set user_active=1, user_emailtime=0, user_actkey='',  user_password=user_newpasswd where user_actkey='$rk'";
 		$db->sql_query($sql);
-		$ar=$db->sql_affectedrows($db);
+		$ar=$db->sql_affectedrows();
 		if($ar==1){
-			$msg=_PwdChanged; 	
+			$msg=_PwdChanged;
 			echo "<br><span class='ok'><b>$msg</b></span><br>";
-		} else{		
+		} else{
 			$msg= _PwdNotChanged ." " . _request_key_not_found;
 			echo "<br><span class='alert'><b>$msg</b></span><br>";
 		}
@@ -35,19 +39,19 @@ if(isset($_GET['rkey'])){
 function generatePassword ($length ) {
 	if (!$length ) $length = 6;
 	$length +=2;
-	
+
   // start with a blank password
   $password = "";
   // define possible characters
-  $possible = "23456789abcdefghjkmnpqrstvwxyzABCDEFGHIJKLMNPQRSTUVXWYZ"; 
+  $possible = "23456789abcdefghjkmnpqrstvwxyzABCDEFGHIJKLMNPQRSTUVXWYZ";
   // set up a counter
-  $i = 0; 
+  $i = 0;
   // add random characters to $password until $length is reached
-  while ($i < $length) { 
+  while ($i < $length) {
     // pick a random character from the possible ones
     $char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
     // we don't want this character if it's already in the password
-    if (!strstr($password, $char)) { 
+    if (!strstr($password, $char)) {
       $password .= $char;
       $i++;
     }
@@ -186,9 +190,9 @@ if(isset($_POST['uce'])){
 
 <form  id="loginform" name="loginform" action="" method="post" >
   <table width="70%" cellpadding="4" cellspacing="1" border="0" class="forumline" align="center">
-    
+
     <tr>
-      <td class="row1" align="justify"><?=$msg?$msg:_PASSWORD_RECOVERY_TOOL_MESSAGE?></td>
+      <td class="row1" align="justify"><?=$msg ? $msg : _PASSWORD_RECOVERY_TOOL_MESSAGE?></td>
     </tr>
   </table>
   <table width=350 align="center"  cellpadding="4" cellspacing="0" class="tborder">
@@ -226,6 +230,6 @@ if(isset($_POST['uce'])){
 </form>
 
 <?
-  closeMain();  
+  closeMain();
 
 ?>

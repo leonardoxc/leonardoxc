@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_duplicates.php,v 1.9 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: GUI_admin_duplicates.php,v 1.10 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
  
@@ -21,6 +21,7 @@
 function mapPilot(divID,pilotID1,pilotID2) {
 	/*url='<?=$moduleRelPath?>/EXT_pilot_functions.php';
 	pars='op=mapPilot&pilotID1='+pilotID1+'&pilotID2='+pilotID2;
+	
 	var myAjax = new Ajax.Updater('updateDiv', url, {method:'get',parameters:pars});
 */
 	var divName='updateDiv';

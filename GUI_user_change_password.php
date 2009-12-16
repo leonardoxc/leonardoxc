@@ -5,12 +5,13 @@ exit;
 
 if(isset($_POST['changepw'])){
    $pw=trim($_POST['pwtochange']);
-   $pw2=trim($_POST['pwtochange2']);    
+   $pw2=trim($_POST['pwtochange2']);
     if($pw!=$pw2){
     $msg=_PwdAndConfDontMatch;//"Password do not Match";
     }else{
       if(strlen($pw)<$CONF_password_minlength){
-      $msg=_PwdTooShort; //"Password to not have minimum length of $CONF_password_minlength";
+
+      	$msg=sprintf(_PwdTooShort, $CONF_password_minlength); //"Password to not have minimum length of $CONF_password_minlength";
       }else{
       $pw=md5($pw);
         $sql="update ".$CONF['userdb']['users_table']." set user_password='$pw' where user_id=$userID";
@@ -19,7 +20,7 @@ if(isset($_POST['changepw'])){
         $msg=_PwdChanged;//"Password successfully updated";
         }else{
         $msg=_PwdNotChanged;//"Password was not changed";
-        }  
+        }
       }
     }
    print "<br><br><div align='center'><b>".$msg."</b></div><br>";
@@ -36,10 +37,10 @@ if(isset($_POST['changepw'])){
 
 .smalltext {
     font-size: 90%; FONT-SIZE: 11px;
-    COLOR: #333333; 
+    COLOR: #333333;
     FONT-FAMILY: Verdana, Arial, Helvetica;
 }
-.tcat { background: #80A9EA url('img/bg_login_table.gif') repeat-x top left;  COLOR: #FFFFFF;     
+.tcat { background: #80A9EA url('img/bg_login_table.gif') repeat-x top left;  COLOR: #FFFFFF;
 font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font-family:Verdana, Tahoma
 }
 .logintext {
@@ -85,7 +86,7 @@ font-style:normal; font-variant:normal; font-weight:normal; font-size:12px; font
     VERTICAL-ALIGN: middle;
 }
 .submitButton {
-BORDER: 0px solid #FFFFFF; BACKGROUND: url('img/bg_submitButton.gif') no-repeat; 
+BORDER: 0px solid #FFFFFF; BACKGROUND: url('img/bg_submitButton.gif') no-repeat;
 HEIGHT: 21px; WIDTH: 150px; COLOR: #000000; FONT-FAMILY: Verdana, Tahoma; FONT-SIZE: 11px;
 MARGIN: 0px; padding-top: 3px; padding-bottom: 3px; ALIGN: center; vertical-align:middle;
 text-align:center;
@@ -101,10 +102,10 @@ text-align:center;
 
 
 <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline" align="center">
-  <tr> 
+  <tr>
     <th height="25" class="thHead" nowrap="nowrap"><?=_ChangePasswordForm?></th>
   </tr>
-  <tr> 
+  <tr>
     <td class="row1">&nbsp;</td>
   </tr>
 </table>
@@ -140,9 +141,9 @@ text-align:center;
           <input name="changepw" value="<?=_Login_Stuff?>" class="submitButton" type="submit"></td>
       </tr>
     </tbody>
-    </table>        
+    </table>
   </tr>
-</table> 
+</table>
 
  <p>&nbsp;</p>
  <div align="center"><span class="alertMsg"><a href="mailto:<?=$adminMail?>" target="_self"><?=_PROBLEMS_HELP?></a></span>

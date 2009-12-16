@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_dialogfilter.php,v 1.9 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: CL_dialogfilter.php,v 1.10 2009/12/16 14:15:37 manolis Exp $
 //
 //************************************************************************
 
@@ -74,12 +74,12 @@ class dialogfilter {
 					$this->numeric=false;
 					$this->dialog_width=340;
 					break;
-					
+
 				case 'nationality':
 					$this->numeric=false;
 					$this->dialog_width=340;
 					break;
-					
+
 				case 'takeoff':
 					$this->dialog_width=430;
 					break;
@@ -88,7 +88,7 @@ class dialogfilter {
 					$this->dialog_width=250;
 					$this->dialog_height=420;
 					break;
-					
+
 				case 'nacclub':
 					$this->dialog_width=480;
 					if (empty($nacid)) {
@@ -166,7 +166,7 @@ class dialogfilter {
 			case 'nationality':
 				$this->data=$this->getNationalitiesList($in_string);
 				break;
-				
+
 			case 'takeoff':
 				$this->data=$this->getTakeoffList($in_string);
 				break;
@@ -174,7 +174,7 @@ class dialogfilter {
 			case 'server':
 				$this->data=$this->getServerList($in_string);
 				break;
-				
+
 			case 'nacclub':
 				$this->data=$this->getClubs($in_string);
 				break;
@@ -215,7 +215,7 @@ class dialogfilter {
 		$this->init_filter();
 		if (!$this->errmsg && $this->datavalue) {
 			$in_string=$this->to_in_string($this->datavalue);
-			
+
 			// echo $this->datavalue."#".			$in_string;
 			if ($in_string) {
 				global $flightsTable;
@@ -232,7 +232,7 @@ class dialogfilter {
 						global $pilotsTable;
 						$clause=$pilotsTable.'.countryCode';
 						break;
-						
+
 					case 'takeoff':
 						$clause='takeoffID';
 						break;
@@ -265,7 +265,7 @@ class dialogfilter {
 	function filter_html() {
 		$this->init_filter();
 		if ($this->errmsg) {
-			$html='  
+			$html='
     <tr>
       <td class="infoHeader"><div align="right"><strong>'.$this->filter_title().'</strong></div></td>
       <td class="infoHeader">ERROR: '.$this->errmsg.'</td>
@@ -384,7 +384,7 @@ function popupwindow(url, winwidth,winheight){
  */
 	function filter_title() {
 		$items=$this->items_title();
-		
+
 		if ($this->inclusive) {
 			//eval('$title="'.str_replace('[items]',$items,_Filter_FilterTitleIncluding).'";');
 			$title=str_replace('[items]',$items,_Filter_FilterTitleIncluding);
@@ -455,10 +455,10 @@ function popupwindow(url, winwidth,winheight){
 		$items=$this->items_title();
 		if ($this->inclusive) {
 			// eval('$title="'._Filter_DialogTitleIncluding.'";');
-			$title=str_replace('[items]',$items,_Filter_DialogTitleIncluding);	
+			$title=str_replace('[items]',$items,_Filter_DialogTitleIncluding);
 		}else {
 			// eval('$title="'._Filter_DialogTitleExcluding.'";');
-			$title=str_replace('[items]',$items,_Filter_DialogTitleExcluding);	
+			$title=str_replace('[items]',$items,_Filter_DialogTitleExcluding);
 		}
 		return $title;
 	}
@@ -510,7 +510,7 @@ function setValToMaster(){
 	function getPilotList($in_string='') {
 		global $db;
 		global $flightsTable, $pilotsTable;
-		global $prefix, $PREFS;
+		global $CONF, $PREFS;
 
 		if ($PREFS->nameOrder==1) {
 			#$nOrder='FirstName,LastName';
@@ -520,9 +520,12 @@ function setValToMaster(){
 			$nameSql="IF(LastName='' AND FirstName='', username, IF(LastName='', FirstName, CONCAT(LastName, ' ', FirstName)))";
 		}
 
+		# Martin Jursa 06.04.2009: using this instead of {$prefix}_users; because of bug with opMode=3
+		$users_table=$CONF['userdb']['users_table'];
+
 	  	$sql="SELECT DISTINCT userID, $nameSql AS Name
 FROM
-	{$prefix}_users u
+	$users_table u
 		INNER JOIN $flightsTable f ON f.userID=u.user_id
 		INNER JOIN $pilotsTable p ON p.pilotID=u.user_id
 WHERE userID>0";
@@ -535,6 +538,7 @@ ORDER BY $nameSql";
 		$pnames=array();
 
 		$res=$db->sql_query($sql);
+		//echo $sql;
 	    if($res){
 			while (false!==$row=$db->sql_fetchrow($res)) {
 				$pnames[$row['userID']]=$row['Name'];
@@ -630,7 +634,7 @@ WHERE
 
 		return $countriesList;
 	}
-	
+
 	function getServerList($in_string='') {
 		global $CONF;
 		// echo "$in_string";
@@ -639,7 +643,7 @@ WHERE
 			// print_r($parts);
 			foreach ($CONF['servers']['list'] as $serverID=>$serverInfo) {
 				if (!$serverInfo['is_active'])  continue;
-				if ($serverInfo['id_filter'])  
+				if ($serverInfo['id_filter'])
 					$serverID=$serverInfo['id_filter'];
 
 				if ($serverID==0) $serverID=-1;
@@ -652,7 +656,7 @@ WHERE
 			foreach ($CONF['servers']['list'] as $serverID=>$serverInfo) {
 					if (!$serverInfo['is_active'])  continue;
 
-					if ($serverInfo['id_filter'])  
+					if ($serverInfo['id_filter'])
 						$serverID=$serverInfo['id_filter'];
 
 					if ($serverID==0) $serverID=-1;
@@ -662,7 +666,7 @@ WHERE
 		}
 
 	}
-	
+
 	function getTakeoffList($in_string='') {
 		global $db;
 		global $flightsTable;
@@ -693,7 +697,9 @@ WHERE
 
 		$NACclubList=array();
 
-		$sql="SELECT DISTINCT clubID, CONCAT(clubName, ' (', clubID, ')') AS NACclubName
+		// Martin Jursa 06.04.2009: the CONCAT statement leads to funny characters with utf 8
+		//$sql="SELECT DISTINCT clubID, CONCAT(clubName, ' (', clubID, ')') AS NACclubName
+		$sql="SELECT DISTINCT clubID, clubName, clubID
 FROM
 	$flightsTable f
 		INNER JOIN $NACclubsTable c ON c.NAC_ID=f.NACid AND c.clubID=f.NACclubID
@@ -705,7 +711,7 @@ WHERE f.NACid=$this->nacid";
 		$res=$db->sql_query($sql);
   		if($res){
 			while (false!==$row=$db->sql_fetchrow($res)) {
-				$NACclubList[$row['clubID']]=$row['NACclubName'];
+				$NACclubList[$row['clubID']]=$row['clubName'].' ('.$row['clubID'].')';
 			}
   		}
 		return $NACclubList;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.22 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.23 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -93,6 +93,21 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 
 		if ($FILTER_sex) 
 			$filter_clause.=" AND $pilotsTable.Sex='$FILTER_sex' ";
+		
+		$FILTER_cat=0;	
+		$FILTER_cat=$FILTER_cat1+$FILTER_cat2+$FILTER_cat4;
+		if ($FILTER_cat){
+			if ($FILTER_cat==7)	$filter_clause.="";
+			if ($FILTER_cat==6)	$filter_clause.=" AND ($flightsTable.cat=2 OR $flightsTable.cat=4) ";
+			if ($FILTER_cat==5)	$filter_clause.=" AND ($flightsTable.cat=1 OR $flightsTable.cat=4) ";
+			if ($FILTER_cat==3)	$filter_clause.=" AND ($flightsTable.cat=1 OR $flightsTable.cat=2) ";
+			if ($FILTER_cat==4)	$filter_clause.=" AND ($flightsTable.cat=4) ";
+			if ($FILTER_cat==2)	$filter_clause.=" AND ($flightsTable.cat=2) ";
+			if ($FILTER_cat==1)	$filter_clause.=" AND ($flightsTable.cat=1) ";
+			//else $filter_clause.=" AND $flightsTable.cat=0 ";
+		};
+			
+		
 
 		if ($FILTER_linear_distance_select)
 			$filter_clause.=" AND LINEAR_DISTANCE ".$FILTER_linear_distance_op." ".($FILTER_linear_distance_select*1000)." ";
@@ -113,7 +128,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		}
 
 		$_SESSION["filter_clause"]=$filter_clause;
-	      //	 echo "#".$filter_clause."#<br>";
+	      	 //echo "#".$filter_clause."#<br>";
 	}
 
 } else { // form not submitted
@@ -331,7 +346,14 @@ foreach ($filterkeys as $filterkey) {
         </select>
 		</td>
 	</tr>
-
+	<tr>
+ 		<td><div align="right"><? echo _Category ?> </div></td>		
+		<td>
+          <input type="checkbox" name="FILTER_cat1" value="1" checked> <?=_PG?>
+   		  <input type="checkbox" name="FILTER_cat2" value="2" checked> <?=_HG?>
+    	  <input type="checkbox" name="FILTER_cat4" value="4" checked> <?=_RG?>
+        </td>
+	</tr>
     <tr>
       <td><div align="right"><? echo _LINEAR_DISTANCE_SHOULD_BE ?> </div></td>
       <td><select name="FILTER_linear_distance_op">

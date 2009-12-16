@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.93 2009/03/24 12:18:43 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.94 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -227,6 +227,7 @@ $(document).ready(function(){
 
 	$inWindow=true;
 	# martin jursa 24.06.2008/ peter wild: taking into account the setting for $CONF_new_flights_submit_window and editing only if flight date is inside the window
+	//echo $CONF_new_flights_submit_window;
 	if (isset($CONF_new_flights_submit_window) && $CONF_new_flights_submit_window>0) {
 		$tsFlight=strtotime($flight->DATE);
 		if ($tsFlight>0) {
@@ -249,8 +250,12 @@ $(document).ready(function(){
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
 	}
 	
-	$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_olc_manual.gif' title='"._Show_Optimization_details."' border=0 align='absmiddle'>"._Show_Optimization_details."&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' title='"._Show_Optimization_details."' border=0 align=bottom></a> ";
-	
+	# martin jursa 24.06.2008: display scores info only if flight has not been optimized manually
+	if (!$flight->autoScore) {
+		$showScoreInfo="<a href='javascript:flight_scores_info($flightID)'><img src='".$moduleRelPath."/img/icon_olc_manual.gif' title='"._Show_Optimization_details."' border=0 align='absmiddle'>"._Show_Optimization_details."&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' title='"._Show_Optimization_details."' border=0 align=bottom></a> ";
+	}else {
+		$showScoreInfo='';
+	}
 
 	if ( $flight->private  & 0x01 ) { 
 		$legendRight.="&nbsp;<img src='".$moduleRelPath."/img/icon_private.gif' align='bottom' width='13' height='13'>";

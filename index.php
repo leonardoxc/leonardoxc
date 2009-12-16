@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.105 2009/04/15 22:17:49 manolis Exp $                                                                 
+// $Id: index.php,v 1.106 2009/12/16 14:15:37 manolis Exp $
 //
 //************************************************************************
 
@@ -26,7 +26,7 @@ $pageStart=leo_getmicrotime();
 
 @session_start();
 
-$module_name = basename(dirname(__FILE__));				
+$module_name = basename(dirname(__FILE__));
 
 //$moduleAbsPath=dirname(__FILE__);
 // $moduleRelPath="modules/$module_name";
@@ -40,8 +40,8 @@ require_once dirname(__FILE__)."/config.php";
 @include dirname(__FILE__)."/site/predefined/5/globals_include.php";
 
 
-setVarFromRequest("lng",$PREFS->language); 
-if ( strlen($lng)==2) { 
+setVarFromRequest("lng",$PREFS->language);
+if ( strlen($lng)==2) {
 	$lng=array_search($lng,$lang2iso);
 	if (!$lng) $lng=$PREFS->language;
 }
@@ -58,12 +58,12 @@ else  define('CONF_LANG_ENCODING_TYPE','iso');
 require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 require_once dirname(__FILE__)."/FN_UTM.php";
-require_once dirname(__FILE__)."/FN_functions.php";	
-require_once dirname(__FILE__)."/FN_waypoint.php";	
+require_once dirname(__FILE__)."/FN_functions.php";
+require_once dirname(__FILE__)."/FN_waypoint.php";
 require_once dirname(__FILE__)."/FN_brands.php";
 
-require_once dirname(__FILE__)."/FN_pilot.php";	
-require_once dirname(__FILE__)."/FN_flight.php";	
+require_once dirname(__FILE__)."/FN_pilot.php";
+require_once dirname(__FILE__)."/FN_flight.php";
 require_once dirname(__FILE__)."/FN_output.php";
 require_once dirname(__FILE__)."/CL_flightData.php";
 require_once dirname(__FILE__)."/CL_dates.php";
@@ -78,14 +78,14 @@ if ($CONF_use_utf) {
 
 $pagetitle = _PAGE_TITLE;
 
-if ($opMode==1 ) { // phpnuke 
+if ($opMode==1 ) { // phpnuke
 	$user = $_REQUEST['user'];
 	if ( is_user($user)) {
 		cookiedecode($user);
 		$userID=$cookie[0];
 		$userName=$cookie[1];
 	}
-} else if ($opMode==2 ) { // phpBB 
+} else if ($opMode==2 ) { // phpBB
 	$userID=$userdata['user_id'];
 	$userName=$userdata['username'];
 } else if ($opMode==3 ) { // standalone
@@ -101,11 +101,11 @@ if ($opMode==1 ) { // phpnuke
 
 	if ($user->data['user_type'] == 2) {
 		$userID=0;
-		$userName='guest';	
+		$userName='guest';
 	} else {
 		$userID=$user->data['user_id'];
 		$userName=$user->data['username'];
-	}	
+	}
 }
 
 $_SESSION['userID']=$userID;
@@ -117,8 +117,8 @@ if ($_GET['leoSeo']) {
 		$t1=split(':',$seoParam);
 		$seoParams[$t1[0]]=$t1[1];
 	}
-	
-	if (isset($seoParams['cat'])) {	
+
+	if (isset($seoParams['cat'])) {
 		$_REQUEST['cat']=$seoParams['cat'];
 	}
 
@@ -126,47 +126,47 @@ if ($_GET['leoSeo']) {
 		$_REQUEST['brandID']=$seoParams['brand'];
 		if ($_REQUEST['brandID']=='all') $_REQUEST['brandID']=0;
 	}
-	
+
 	if (isset($seoParams['takeoff'])) {
 		$_REQUEST['takeoffID']=$seoParams['takeoff'];
 		if ($_REQUEST['takeoffID']=='all') $_REQUEST['takeoffID']=0;
 	}
-	
+
 	if (isset($seoParams['class'])) {
 		$_REQUEST['class']=$seoParams['class'];
 		if ($_REQUEST['class']=='all') $_REQUEST['class']=0;
 	}
-	
+
 	if (isset($seoParams['xctype'])) {
 		$_REQUEST['xctype']=$seoParams['xctype'];
 		if ($_REQUEST['xctype']=='all') $_REQUEST['xctype']=0;
 	}
-	
+
 	if (isset($seoParams['pilot'])) {
 		$_REQUEST['pilotID']=$seoParams['pilot'];
 		if ($_REQUEST['pilotID']=='all') $_REQUEST['pilotID']=0;
 	}
-	
+
 	if (isset($seoParams['club'])) {
 		if (strpos($seoParams['club'],'.')) {
-			$tmpNac=split('\.',$seoParams['club']);			
+			$tmpNac=split('\.',$seoParams['club']);
 			$_REQUEST['nacid']=$tmpNac[0]+0;
 			if ($_REQUEST['nacid']) {
 				$_REQUEST['nacclubid']=$tmpNac[1]+0;
 				$_REQUEST['clubID']=0;
-			} else {		
+			} else {
 				$_REQUEST['nacclubid']=0;
 				$_REQUEST['clubID']=$tmpNac[1]+0;
-			}	
+			}
 		} else {
 			$_REQUEST['clubID']=$seoParams['club'];
-			
+
 			if ($_REQUEST['clubID']=='all') {
 				$_REQUEST['clubID']=0;
 				$_REQUEST['nacid']=0;
 				$_REQUEST['nacclubid']=0;
-			}	
-		}	
+			}
+		}
 	}
 }
 
@@ -179,7 +179,7 @@ setVarFromRequest("includeMask",0);
 setVarFromRequest("waypointIDview",0,1);
 setVarFromRequest("flightID",0,1);
 setVarFromRequest("pilotIDview",0,0);
-setVarFromRequest("year",date("Y"),1); 
+setVarFromRequest("year",date("Y"),1);
 setVarFromRequest("month",0,1); // date("m") for current month
 setVarFromRequest("day",0,1); // only used for flights_list
 
@@ -202,22 +202,22 @@ if ($l_date=='alltimes'){
 	if ( preg_match('/^(\d{4})\.(\d{2})\.(\d{2})$/',$l_date,$matches) ) {
 		setVar("year",$matches[1]);
 		setVar("month",$matches[2]);
-		setVar("day",$matches[3]);				
+		setVar("day",$matches[3]);
 		setVar("season",0);
 	} else if ( preg_match('/^(\d{4})\.(\d{2})$/',$l_date,$matches) ) {
 		setVar("year",$matches[1]);
 		setVar("month",$matches[2]);
-		setVar("day",0);				
+		setVar("day",0);
 		setVar("season",0);
 	}else if ( preg_match('/^(\d{4})$/',$l_date,$matches) ) {
-		setVar("year",$matches[1]);		
+		setVar("year",$matches[1]);
 		setVar("month",0);
-		setVar("day",0);				
-		setVar("season",0);		
+		setVar("day",0);
+		setVar("season",0);
 	} else if ( preg_match('/^season(\d{4})$/',$l_date,$matches) ) {
 		setVar("year",0);
 		setVar("month",0);
-		setVar("day",0);				
+		setVar("day",0);
 		setVar("season",$matches[1]);
 	}
 
@@ -253,7 +253,7 @@ setVarFromRequest("nacclubid", 0, 1);
 setVarFromRequest("nacid", 0, 1);
 
 // The filter for displaying only flights with photos
-setVarFromRequest("filter01", 0, 1); 
+setVarFromRequest("filter01", 0, 1);
 
 
 $serverID=0;
@@ -280,7 +280,7 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
-if ($opMode==3 || $opMode==4 || $opMode==6  || 
+if ($opMode==3 || $opMode==4 || $opMode==6  ||
 	  ($opMode==5 &&  $CONF_use_own_template )
 	 )  // stand alone , we use phpbb3 as standalone too
 	require_once dirname(__FILE__)."/GUI_header.php";
@@ -301,13 +301,13 @@ require_once dirname(__FILE__)."/BLOCKS_start.php";
 
 
 $noClubDisplay=1;
-if ($clubID) { 
+if ($clubID) {
    require_once  dirname(__FILE__)."/CL_club.php";
    //$currentClub=new club($clubID);
-   //$clubName=$currentClub->getAttribute("name");			
+   //$clubName=$currentClub->getAttribute("name");
    $clubName=$clubsList[$clubID]['desc'];
    $noClubDisplay=0;
-} else {			
+} else {
 	$clubName=_No_Club;
 }
 
@@ -324,13 +324,13 @@ if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition
  // require_once dirname(__FILE__)."/MENU_second_menu.php";
 }
 
-		 
+
 //---------------------------------------------
 // MAIN SWITCH
 //---------------------------------------------
 $LeoCodeBase=dirname(__FILE__);
 
-if ($op=="index_full") { 
+if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_index_full.php";
 } else if ($op=="index_help") {
 	require $LeoCodeBase."/GUI_index_help.php";
@@ -338,60 +338,60 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_index_news.php";
 // Clubs - areas admin
 //--------------------------
-} else if ($op=="club_admin") { 
+} else if ($op=="club_admin") {
 	require $LeoCodeBase."/GUI_club_admin.php";
-} else if ($op=="area_admin") { 
+} else if ($op=="area_admin") {
 	require $LeoCodeBase."/GUI_area_admin.php";
-} else if ($op=="admin_sites") { 
+} else if ($op=="admin_sites") {
 	require $LeoCodeBase."/GUI_admin_sites.php";
 // Listing output
 //--------------------------
-} else if ($op=="list_clubs") { 
+} else if ($op=="list_clubs") {
 	require $LeoCodeBase."/GUI_list_clubs.php";
-} else if ($op=="list_flights") { 
+} else if ($op=="list_flights") {
 	require $LeoCodeBase."/GUI_list_flights.php";
 } else if ($op=="export_flights") {  // only for admin
 	require $LeoCodeBase."/GUI_flights_export.php";
-} else if ($op=="list_pilots" ) {  
+} else if ($op=="list_pilots" ) {
 	require $LeoCodeBase."/GUI_list_pilots.php";
 } else if ($op=="competition") {
     require $LeoCodeBase."/GUI_list_comp.php";
 } else if ($op=="comp") {
     require $LeoCodeBase."/GUI_comp.php";
 } else if ($op=="list_takeoffs") {
-	require $LeoCodeBase."/GUI_list_takeoffs.php";	
+	require $LeoCodeBase."/GUI_list_takeoffs.php";
 } else if ($op=="sites") {
-	require $LeoCodeBase."/GUI_sites.php";	
+	require $LeoCodeBase."/GUI_sites.php";
 } else if ($op=="list_areas") {
-	require $LeoCodeBase."/GUI_list_areas.php";	
+	require $LeoCodeBase."/GUI_list_areas.php";
 } else if ($op=="area_show") {
-	require $LeoCodeBase."/GUI_area_show.php";	
+	require $LeoCodeBase."/GUI_area_show.php";
 
 //--------------------------
 // "Flight" related actions
 //--------------------------
-} else if ($op=="show_flight" ) {  
-    require $LeoCodeBase."/GUI_flight_show.php";		
+} else if ($op=="show_flight" ) {
+    require $LeoCodeBase."/GUI_flight_show.php";
 } else if ($op=="add_flight") {
-	// add by Durval Henke www.xcbrasil.org 19/12/2008 
-    if($CONF_force_civlid==1 && !$civlID && 0) 
+	// add by Durval Henke www.xcbrasil.org 19/12/2008
+    if($CONF_force_civlid==1 && !$civlID && 0)
 		require $LeoCodeBase."/GUI_user_civl_search.php";
-    else  
-		require $LeoCodeBase."/GUI_flight_add.php"; 
-	
+    else
+		require $LeoCodeBase."/GUI_flight_add.php";
+
 } else if ($op=="add_from_zip") {
-	require $LeoCodeBase."/GUI_flight_add_from_zip.php";		
+	require $LeoCodeBase."/GUI_flight_add_from_zip.php";
 } else if ($op=="delete_flight") {
 	require $LeoCodeBase."/GUI_flight_delete.php";
 } else if ($op=="edit_flight") {
-	require $LeoCodeBase."/GUI_flight_edit.php";	
+	require $LeoCodeBase."/GUI_flight_edit.php";
 }  else if ($op=="addTestFlightFromURL") {
 	addTestFlightFromURL(urldecode ($_REQUEST[flightURL]) );
 //--------------------------
 // "Waypoints" related actions
 //--------------------------
 } else if ($op=="show_waypoint") {
-	require $LeoCodeBase."/GUI_waypoint_show.php";	
+	require $LeoCodeBase."/GUI_waypoint_show.php";
 } else if ($op=="add_waypoint") {
     require $LeoCodeBase."/GUI_waypoint_add.php";
 } else if ($op=="edit_waypoint") {
@@ -399,32 +399,32 @@ if ($op=="index_full") {
 //--------------------------
 // "User " related actions ( mostly used in standalone op ($op=3)
 //--------------------------
-} else if ($op=="users") { 
+} else if ($op=="users") {
 	if ($opMode==3 ) require $LeoCodeBase."/users/index.php";
 } else if ($op=="login") { // for phpbb2, standalone, discuz, phpbb3
-	$noFooterMenu=1;	
+	$noFooterMenu=1;
 	if ($opMode==2 || $opMode==3 || $opMode==4 || $opMode==6 ) require $LeoCodeBase."/GUI_login.php";
-} else if ($op=="register") { 
+} else if ($op=="register") {
 	if ($opMode==3) require $LeoCodeBase."/GUI_user_register.php";
 	else echo "<BR><BR>Parameter Not used !!<BR>";
 } else if ($op=="send_password") {
-	// add by Durval Henke www.xcbrasil.org 19/12/2008 
-	require $LeoCodeBase."/GUI_user_send_password.php";         
-	
+	// add by Durval Henke www.xcbrasil.org 19/12/2008
+	require $LeoCodeBase."/GUI_user_send_password.php";
+
 /*
 } else if ($op=="change_password"){
-  if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";   
-  // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else echo _You_are_not_login;        
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_change_password.php";
+  // add by Durval Henke www.xcbrasil.org 19/12/2008
+  else echo _You_are_not_login;
 } else if ($op=="change_email") {
-  if ($userID>0 || isset($_GET['rkey']) ) require $LeoCodeBase."/GUI_user_change_email.php";   
-  // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else echo _You_are_not_login; 
-  */      
+  if ($userID>0 || isset($_GET['rkey']) ) require $LeoCodeBase."/GUI_user_change_email.php";
+  // add by Durval Henke www.xcbrasil.org 19/12/2008
+  else echo _You_are_not_login;
+  */
 } else if ($op=="need_civlid") {
-  if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";   
-  // add by Durval Henke www.xcbrasil.org 19/12/2008 
-  else echo _You_are_not_login;         
+  if ($userID>0)  require $LeoCodeBase."/GUI_user_civl_search.php";
+  // add by Durval Henke www.xcbrasil.org 19/12/2008
+  else echo _You_are_not_login;
 //--------------------------
 // "Pilots" related actions
 //--------------------------
@@ -432,7 +432,7 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_pilot_search.php";
 } else if ($op=="pilot_profile") {
 	if ($userID>0 || $CONF_showProfilesToGuests ) require $LeoCodeBase."/GUI_pilot_profile.php";
-	else echo "<center><br><BR><span class='note'>"._You_are_not_login."<br><br>Please login<BR></span><BR><BR></center>";			
+	else echo "<center><br><BR><span class='note'>"._You_are_not_login."<br><br>Please login<BR></span><BR><BR></center>";
 } else if ($op=="pilot_profile_edit") {
 	require $LeoCodeBase."/GUI_pilot_profile_edit.php";
 } else if ($op=="pilot_olc_profile_edit") {
@@ -441,7 +441,7 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_pilot_profile_stats.php";
 } else if ($op=="pilot_flights") {
 	require $LeoCodeBase."/GUI_pilot_flights.php";
-} else if ($op=="user_prefs") { 
+} else if ($op=="user_prefs") {
 	require $LeoCodeBase."/GUI_user_prefs.php";
 //--------------------------
 // Admin related actions
@@ -489,8 +489,8 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_stats.php";
 } else if ($op=="program_info") {
 	require $LeoCodeBase."/GUI_program_info.php";
-} 
-	
+}
+
 exitPage(0);
 
 // END OF OUTPUT to the browser
@@ -499,46 +499,46 @@ function exitPage($exitNow=1){
    global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
    global $sqlQueriesTime ,$sqlQueriesNum,$sqlFetchTime,$sqlFetchNum;
    global $pageStart,$DBGlvl;
- 
+
 
    echo "<br>";
    if (!$noFooterMenu ) {
 	 echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
    }
-   echo "</div>";  
+   echo "</div>";
 
-	
+
    $pageEnd=leo_getmicrotime();
    $pageTime=$pageEnd-$pageStart;
    DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
    DEBUG_END();
 
-   
+
    require_once dirname(__FILE__)."/BLOCKS_end.php";
 
-   if ($opMode==1) {   
+   if ($opMode==1) {
 		CloseTable();
 		include("footer.php");
    } else if ($opMode==3 || $opMode==4 || $opMode==6) {
 
 		require_once dirname(__FILE__)."/GUI_footer.php";
-   }      
-	
-	if ($DBGlvl) {   
-		// db execution time		
-		
+   }
+
+	if ($DBGlvl) {
+		// db execution time
+
 		echo "<div class='debugBoxTop'>";
-		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$sqlQueriesNum); 
-		
+		printf("DB query: <b>%.4f</b> secs in %d queries <hr>",$sqlQueriesTime ,$sqlQueriesNum);
+
 		printf("DB fetch: <b>%.4f</b> secs in %d fetches <hr>",$sqlFetchTime,$sqlFetchNum);
 		printf("DB Total: <b>%.5f</b> secs<hr>",($sqlQueriesTime + $sqlFetchTime )) ;
 		printf("Page Total: <b>%.5f</b> secs<hr>",$pageTime) ;
 		echo "</div>";
 		// end db
 	}
-	
+
    statsLogger::Log($pageTime);
-		
+
    if ($exitNow) exit;
 }
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.47 2009/11/24 13:15:42 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.48 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -101,7 +101,7 @@
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
 <script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
-
+<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
 
 </head>
 <body  onUnload="GUnload()">
@@ -148,7 +148,7 @@
 		<hr>
 		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)"><?=_Follow_Glider?><br>
 		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)"><?=_Show_Task?><br>
-		<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>
+		<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
 			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
 		<?  } ?>
 		</fieldset>
@@ -538,7 +538,7 @@ var lon=0;
 	
 </script>
 
-<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID)  ) { ?>
+<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
 <script language="javascript">
 
 function toggleAirspace(radioObj) {
@@ -591,14 +591,17 @@ function toggleAirspace(radioObj) {
 
 
 	//Mod. P. Wild 5.10.2009 - show a few more airspaces around track (increase proximity level)
-	// Uncomment this to show a bit more airspaces around the flight
-	/* 
-	$zoom=102; //Percentage
-	$min_lon=$min_lon+($min_lon*(100-$zoom))/100;
-	$max_lon=$max_lon+($max_lon*($zoom-100))/100;
-	$min_lat=$min_lat+($min_lat*(100-$zoom))/100;
-	$max_lat=$max_lat+($max_lat*($zoom-100))/100;
-	 */
+	// show a bit more airspaces around the flight
+	// Manolis 09.12.2009
+	// put in the config variable $CONF['airspace']['zoom']
+	if ( $CONF['airspace']['zoom'] && $CONF['airspace']['zoom']!=100  ) {
+		// $zoom=102; //Percentage
+		$zoom=$CONF['airspace']['zoom'];
+		$min_lon=$min_lon+($min_lon*(100-$zoom))/100;
+		$max_lon=$max_lon+($max_lon*($zoom-100))/100;
+		$min_lat=$min_lat+($min_lat*(100-$zoom))/100;
+		$max_lat=$max_lat+($max_lat*($zoom-100))/100;
+	}
  
 	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
 	$NumberOfAirspaceAreas=count($AirspaceArea);

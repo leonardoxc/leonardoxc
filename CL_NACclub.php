@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_NACclub.php,v 1.7 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_NACclub.php,v 1.8 2009/12/16 14:15:37 manolis Exp $
 //
 //************************************************************************
 
@@ -28,17 +28,17 @@ class NACclub {
 
 	var $valuesArray;
 	var $gotValues;
-	
+
 	function NACclub() {
 	}
-	
-	
+
+
 	function getPilotClub($userID) {
 		global $db,$NACclubsTable,$pilotsTable;
 		$query="SELECT NACclubID,NACid FROM $pilotsTable WHERE pilotID=$userID ";
 		$res= $db->sql_query($query);
 		//echo $query;
-  		if($res <= 0){   
+  		if($res <= 0){
 			 echo "Error getting club for pilot<BR>";
 		     return 0;
 	    }
@@ -70,7 +70,7 @@ class NACclub {
 		}
 		$res= $db->sql_query($query);
 		// echo $query;
-  		if($res <= 0){   
+  		if($res <= 0){
 			 echo "Error getting NAC clubs from DB<BR>";
 		     return;
 	    }
@@ -86,7 +86,7 @@ class NACclub {
 		$query="SELECT clubName FROM $NACclubsTable WHERE NAC_ID=$NAC_ID AND clubID=$clubID ";
 		$res= $db->sql_query($query);
 		//echo $query;
-  		if($res <= 0){   
+  		if($res <= 0){
 			 echo "Error getting NAC club from DB<BR>";
 		     return;
 	    }

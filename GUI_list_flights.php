@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.114 2009/03/19 22:46:11 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.115 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -325,6 +325,13 @@ if (0) {
 			</div>";
 
 	listFlights($res,$legend, $queryExtraArray,$sortOrder);
+	//P.Wild 15.12.2008	
+	echo "<div class='list_header list_header_bottom'>
+				<div class='list_header_r list_header_r_bottom'></div>
+				<div class='list_header_l list_header_l_bottom'></div>
+				<h1>$legend</h1>
+				<div class='pagesDiv'>$legendRight</div>
+			</div>";
 
 ?>
 <style type="text/css">
@@ -643,11 +650,24 @@ function removeClubFlight(clubID,flightID) {
 				{
 					$airspaceProblem=' bgcolor=#009cff ';
 					if (strrchr($tmpairspaceName,"HorDist")) {
+						$airspaceProblem=' bgcolor=#FFFF00 ';
+					}
+					//mod.31.12.08 different colours for bad infringements. P. Wild
+					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					}
+					if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
 						$airspaceProblem=' bgcolor=#FF0008 ';
 					}
 				}
 				else{
+					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
 					$airspaceProblem=' bgcolor=#FF0008 ';
+				}
+					elseif (strpos($tmpairspaceName, 'CLASSD')!==false) { 
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					}
+					else $airspaceProblem=' bgcolor=#FFFF00 ';
 				}
 				# end hack
 			} else
@@ -727,8 +747,8 @@ function removeClubFlight(clubID,flightID) {
 		// else echo "<img class='photoIcon' src='$moduleRelPath/img/photo_icon_blank.gif' border=0>";			
 
 		# P.Wild, martin jursa: considering $CONF_new_flights_days_threshold
-		global $CONF_new_flights_days_threshold;
-		$inWindow=empty($CONF_new_flights_days_threshold) ? true : $days_from_submission<=$CONF_new_flights_days_threshold;
+		global $CONF_new_flights_submit_window; //P. Wild - edited to submit window (old version false)
+		$inWindow=empty($CONF_new_flights_submit_window) ? true : $days_from_submission<=$CONF_new_flights_submit_window;
 		if (($row["userID"]==$userID && $inWindow) || L_auth::isAdmin($userID) ) {
 			echo "<div id='ac_$i' class='actionLink'>";
 			echo "<a href=\"javascript:flightActionTip.newTip('inline', -100, 13, 'ac_$i', 120, ".$row["ID"]." )\"  onmouseout=\"flightActionTip.hide()\">".

@@ -8,14 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.47 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: MENU_second_menu.php,v 1.48 2009/12/16 14:15:37 manolis Exp $
 //
 //************************************************************************
 
 
   //require_once dirname(__FILE__)."/MENU_dates.php";
   //require_once dirname(__FILE__)."/MENU_countries.php";
-  
+
   $dateLegend="";
   $allTimesDisplay=0;
 
@@ -34,7 +34,7 @@
 		$dateLegend.=_SELECT_DATE;
 		$allTimesDisplay=1;
 	  }
-	}  
+	}
 
   $countryLegend="";
   $allCountriesDisplay=0;
@@ -44,7 +44,7 @@
   	$allCountriesDisplay=1;
   }
 
-  
+
   $pilotLegend="";
   $allPilotsDisplay=0;
   if ($pilotID) $pilotLegend=getPilotRealName($pilotID,$serverID);
@@ -54,7 +54,7 @@
   }
 
   $takeoffLegend="";
-  $allTakeoffDisplay=0;  
+  $allTakeoffDisplay=0;
   if ($takeoffID) $takeoffLegend=getWaypointName($takeoffID);
   else {
 		$takeoffLegend=_ALL_TAKEOFFS;
@@ -77,20 +77,20 @@
 			}
 		}
 	}
-	
+
 
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>"; 
+$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
 $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 
 ?>
 <style type="text/css">
 
-.secondMenuDropLayer { 
-	display:none;	
-	width:750px; 
+.secondMenuDropLayer {
+	display:none;
+	width:750px;
 	background-color:#D8CEAE;
 	position:relative;
 	margin:0;
@@ -98,7 +98,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 	margin-bottom:10px;
 	padding:3px;
 	border:1px solid #d3cfe4;;
-	
+
 background-color: #ffb400;
 background-image: url(<?=$moduleRelPath?>/img/toppanel_bg.png);
 
@@ -112,7 +112,7 @@ background-position:top left;
 
 
 .secondMenuDropLayer a,.secondMenuDropLayer a:link,.secondMenuDropLayer a:visited {
-text-decoration:none; 
+text-decoration:none;
 color:#031238;
 line-height:130%;
 padding:2px;
@@ -132,16 +132,16 @@ margin-top:8px;
 
 .menuButton {
     display:block;
-   	clear:none; 
+   	clear:none;
 	float:left;
-	
+
 	background-color: #f6f5fa;
 	border: 1px solid #d3cfe4;
 	padding: 3px 3px 3px 3px;
 	margin-left:2px;
 	margin-right:2px;
 	margin-bottom:0px;
-	margin-top:0px;	
+	margin-top:0px;
 }
 
 .buttonLink {
@@ -205,7 +205,7 @@ background:#ffffff no-repeat url(<?=$moduleRelPath ?>/img/icon_c1.gif);
 .countryContinent5 {  background-color:#FAFAE4; }
 .countryContinent6 {  background-color:#E8ECDE; }
 
-	
+
 .menuButton a,.menuButton a:link,.menuButton a:visited {text-decoration:none; color:#333333;}
 
 .menuButtonNormal {
@@ -251,6 +251,16 @@ border-bottom-style:none;
 	height: 38px;
 }
 
+.list_header_bottom{
+	background:left top  repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_c_bottom.gif);
+}
+.list_header_r_bottom {
+	background:left top  repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_r_bottom.gif);
+}
+.list_header_l_bottom {
+	background:left top  repeat-x scroll url(<?=$moduleRelPath ?>/img/list_header_l_bottom.gif);
+}
+
 .list_header h1 {
 	float: none;
 	display:block;
@@ -276,13 +286,13 @@ border-bottom-style:none;
 <script language="javascript">
 function changeBrand(sl) {
 	// var sl=MWJ_findObj("brandSelect");
-	var brandID= sl.options[sl.selectedIndex].value ;			
+	var brandID= sl.options[sl.selectedIndex].value ;
 	var Url='<?=getLeonardoLink(array('op'=>'useCurrent','brandID'=>'%brandID%'))?>';
 	Url=Url.replace('%brandID%',brandID);
 	window.location=Url;
 }
 function changeCountry(sl) {
-	var countryCode= sl.options[sl.selectedIndex].value ;			
+	var countryCode= sl.options[sl.selectedIndex].value ;
 	var Url='<?=getLeonardoLink(array('op'=>'useCurrent','country'=>'%country%'))?>';
 	Url=Url.replace('%country%',countryCode);
 	window.location=Url;
@@ -299,14 +309,14 @@ function toogleMenu(name) {
 	$(".menuButton").removeClass("menuButtonActive");
 	$(".menuButton").addClass("menuButtonNormal");
 	$(".secondMenuDropLayer").not("#"+name+"DropDownID").hide(200);
-	
-   if ( $("#"+name+"DropDownID").is(':visible') ) {	 	   
+
+   if ( $("#"+name+"DropDownID").is(':visible') ) {
   		$("#"+name+"MenuID").removeClass("menuButtonActive");
 		$("#"+name+"MenuID").addClass("menuButtonNormal");
    } else {
    		$("#"+name+"MenuID").removeClass("menuButtonNormal");
    		$("#"+name+"MenuID").addClass("menuButtonActive");
-   }   
+   }
    $("#"+name+"DropDownID").slideToggle(200);
 
 }
@@ -317,7 +327,7 @@ $(document).ready(function(){
 		// $(this).parent().parent().hide();
 	});
 
-	$(".closeLayerButton").livequery('click', function(e) {		
+	$(".closeLayerButton").livequery('click', function(e) {
 		$(this).parent().slideToggle(200);
 		$(".menuButton").removeClass("menuButtonActive");
 		$(".menuButton").addClass("menuButtonNormal");
@@ -329,83 +339,83 @@ $(document).ready(function(){
 </script>
 
 
-<div class="mainBox secondMenu" align="left">  	
-  	
+<div class="mainBox secondMenu" align="left">
+
 
 <? if ($op!='comp'  ) { // custom ranks ?>
-<? if ($_SESSION["filter_clause"]) {  
+<? if ($_SESSION["filter_clause"]) {
 		$filterIcon='icon_filter_active.png';
 	} else {
 		$filterIcon='icon_filter_down.png';
 	}
 ?>
 	<div id='filterMenuID' class="menuButton"><a href="#" onClick="toogleMenu('filter');return false;"><img src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' title='' align="absmiddle" border=0><? echo $arrDownImg; ?></a>
-    </div>	
+    </div>
 <? } ?>
-	
-<? 
+
+<?
 
   $catLegend="";
-  $allCatDisplay=0;  
+  $allCatDisplay=0;
 
 
-if ( ! $dontShowCatSelection ) { 
+if ( ! $dontShowCatSelection ) {
 
-if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {	
-	if (($isCompDisplay || $op=="competition") && !$cat) { 
+if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
+	if (($isCompDisplay || $op=="competition") && !$cat) {
 		$cat=$clubsList[$clubID]['gliderCat'][0];
 	}
-	
+
 	if (!$cat) {
-		// $cat=$clubsList[$clubID]['gliderCat'][0];		
+		// $cat=$clubsList[$clubID]['gliderCat'][0];
 	}
-	
+
 	$catLiStr="";
 
 	if (count($clubsList[$clubID]['gliderCat']) >1 ) {
-		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0')); 
-		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
-		if ($cat==0) $current_catImg=$catImg;
-		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";	
-	} else {
-		$cat=$clubsList[$clubID]['gliderCat'][0];
-	}
-	
-	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
-		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$c_gliderCat)); 
-		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
-		  if ($cat==$tmpcat) $current_catImg=$catImg;
-		  
-		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$c_gliderCat]."</a></li>\n";
-		
-	}		
-} else {
-
-	if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
-	  
-	if ( count($CONF_glider_types) > 1 ) { 
-		$catLiStr="";
-	
-		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0')); 
+		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0'));
 		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
-	
+	} else {
+		$cat=$clubsList[$clubID]['gliderCat'][0];
+	}
+
+	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
+		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$c_gliderCat));
+		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
+		  if ($cat==$tmpcat) $current_catImg=$catImg;
+
+		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$c_gliderCat]."</a></li>\n";
+
+	}
+} else {
+
+	if (($isCompDisplay || $op=="competition") && !$cat) $cat=1;
+
+	if ( count($CONF_glider_types) > 1 ) {
+		$catLiStr="";
+
+		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0'));
+		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
+		if ($cat==0) $current_catImg=$catImg;
+		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
+
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
-		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat)); 		  
+		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat));
 		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
-		  
+
 		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$tmpcat]."</a></li>\n";
-		} 	
+		}
 	}
 }
 
- if ($cat) { 
+ if ($cat) {
     	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
 		//$gliderCatList[$cat]
   }	else {
-		$allCatDisplay=1;  
+		$allCatDisplay=1;
 		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
   }
 ?>
@@ -423,27 +433,27 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 <?
 	$catLiStr="";
 
-	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0')); 
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0'));
 	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0> "._All_classes."</a></li>\n";
-		
-   if ( count($gliderClassList) > 1 ) { 
+
+   if ( count($gliderClassList) > 1 ) {
 		foreach ( $gliderClassList as $gl_id=>$gl_type) {
-			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id)); 		  
+			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id));
 			  $catImg="<img src='".$moduleRelPath."/img/icon_class_".$gl_id.".gif' border=0>";
 			  if ($cat==$tmpcat) $current_catImg=$catImg;
-		  
+
 			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
-		  
+
 		}
 	}
-	
-	if ($class) { 
+
+	if ($class) {
     	$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": ".$gliderClassList[$class]."'>";
 		//$gliderCatList[$cat]
-  }	else {		
+  }	else {
 		$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": "._All_classes."'>";
   }
-  
+
 ?>
 <div id="nav2">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
@@ -458,25 +468,25 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 <?
 $catLiStr="";
 
-	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0')); 
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0'));
 	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0> "._All_XC_types."</a></li>\n";
-		
-   if ( count($xcTypesList) > 1 ) { 
+
+   if ( count($xcTypesList) > 1 ) {
 		foreach ( $xcTypesList as $gl_id=>$gl_type) {
-			$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>$gl_id)); 		  
-			  $catImg="<img src='".$moduleRelPath."/img/icon_xctype_".$gl_id.".gif' border=0>";			  		  
+			$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>$gl_id));
+			  $catImg="<img src='".$moduleRelPath."/img/icon_xctype_".$gl_id.".gif' border=0>";
 			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
-		  
+
 		}
 	}
-	
-	if ($xctype) { 
+
+	if ($xctype) {
     	$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": ".$xcTypesList[$xctype]."'>";
 		//$gliderCatList[$cat]
-  }	else {		
+  }	else {
 		$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": "._All_XC_types."'>";
   }
-  
+
 ?>
 <div id="nav2">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
@@ -488,28 +498,28 @@ $catLiStr="";
 </ul>
 </div>
 
-<? 
-} // end of  $dontShowCatSelection  if 
+<?
+} // end of  $dontShowCatSelection  if
 
 
-if ($op=='list_flights'  ) { // photos and comments filter 
+if ($op=='list_flights'  ) { // photos and comments filter
 
 	$catLiStr="";
 
-	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'0')); 
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'0'));
 	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera_grey.gif' border=0> "._Photos_filter_off."</a></li>\n";
 
-	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'1')); 
+	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'1'));
 	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera.gif' border=0> "._Photos_filter_on."</a></li>\n";
-			
-	if ($filter01) { 
+
+	if ($filter01) {
 	   	$catLegend="<img src='".$moduleRelPath."/img/icon_camera.gif' align='middle' border=0 title='".
 					_Photos_filter_on."'>";
-	}	else {		
+	}	else {
 		$catLegend="<img src='".$moduleRelPath."/img/icon_camera_grey.gif' align='middle' border=0 title='".
 					_Photos_filter_off."'>";
 	}
-  
+
 ?>
 <div id="nav2">
 <ul id="nav" style="clear: none; width:auto; height:22px; border: 1px solid #d3cfe4; border-left:0; padding:0; margin:0; " >
@@ -521,7 +531,7 @@ if ($op=='list_flights'  ) { // photos and comments filter
 </ul>
 </div>
 
-<? 
+<?
 } // end of photos and comments filter
 
 if (! $dontShowCountriesSelection ) {
@@ -536,17 +546,17 @@ if (! $dontShowCountriesSelection ) {
 	} else {
 		$countryFlagImg="<img src='$moduleRelPath/img/icon_globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
 	}
-}	
+}
 
 ?>
 
 <? if (! $dontShowCountriesSelection ) { ?>
     <div id='countryMenuID' class="menuButton"><a href="#" onClick="toogleMenu('country');return false;"><?=$countryFlagImg?> <? echo "$countryLegend" ?> <? if ($countriesNum>1 ) echo $arrDownImg; ?></a>
     </div>
-<? } ?>	
+<? } ?>
 
     <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
-    </div>	
+    </div>
 
 <?	if ($showNacClubSelection || (count($clubsList) && $op!='comp')  ) { ?>
     <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
@@ -555,24 +565,24 @@ if (! $dontShowCountriesSelection ) {
 <? } ?>
 
 
-<? if ($CONF['brands']['filter_brands'] ) {  
+<? if ($CONF['brands']['filter_brands']  && !$dontShowManufacturers) {  // Martin Jursa, 02.03.2009: added $dontShowManufacturers-condition to make the setting work
 
 	if (!$brandID) {
-		
+
 		$brandImg="<img  src='$moduleRelPath/img/space.gif' height='16' width='2' align='absmiddle' border=0 title=''>";
 		$brandLegend= $brandImg._Select_Brand ;
-	} else { 
-		$brandImg=brands::getBrandImg($brandID,'',$cat);	
-		$brandLegend= $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];		
+	} else {
+		$brandImg=brands::getBrandImg($brandID,'',$cat);
+		$brandLegend= $brandImg.'&nbsp;'.$CONF['brands']['list'][$brandID];
 	}
-	
+
 ?>
 
     <div id='brandMenuID' class="menuButton">
 		<div class='brandImageDiv'>
 			<a href="#" onClick="toogleMenu('brand');return false;"><?=$brandLegend?> <? echo $arrDownImg; ?></a>
-		</div>	
-    </div>		
+		</div>
+    </div>
 
 <? }?>
 
@@ -580,7 +590,7 @@ if (! $dontShowCountriesSelection ) {
 			<a href="#" onClick="toogleMenu('bookmark');return false;">
 			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0>
 			 <? echo $arrDownImg; ?></a>
-    </div>	
+    </div>
 
 
 </div>
@@ -588,11 +598,11 @@ if (! $dontShowCountriesSelection ) {
 
 
 <div id="bookmarkDropDownID" class="secondMenuDropLayer"  >
-<div class='closeButton closeLayerButton'></div>        
+<div class='closeButton closeLayerButton'></div>
 <div class='content' style='padding:5px;'>
         <? // display this url 	, New way , all is taken care from getLeonardoLink()
             $thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
-                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );				
+                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
         ?>
         <a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0> <?=_This_is_the_URL_of_this_page?></a>
 
@@ -600,20 +610,20 @@ if (! $dontShowCountriesSelection ) {
 </div>
 
 <div id="filterDropDownID" class="secondMenuDropLayer"  >
-<div class='closeButton closeLayerButton'></div>        
+<div class='closeButton closeLayerButton'></div>
 <div class='content' style='padding:5px;'>
 
 	<? if ($_SESSION["filter_clause"]) {   ?>
     <img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
-    <div class='buttonLink'>		
+    <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
     </div>		&nbsp;
-    <div class='buttonLink'>		
+    <div class='buttonLink'>
     <a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
-    </div>	
+    </div>
     <?	} else { ?>
     <img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?>&nbsp;
-    <div class='buttonLink'>		
+    <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
     </div>
     <?  } ?>
@@ -624,7 +634,7 @@ if (! $dontShowCountriesSelection ) {
 
 
 <div id="brandDropDownID" class="secondMenuDropLayer"  >
-<div class='closeButton closeLayerButton'></div>        
+<div class='closeButton closeLayerButton'></div>
 <div class='content'>
 <?
 	$brandsListFilter=brands::getBrandsList(1);
@@ -634,9 +644,9 @@ if (! $dontShowCountriesSelection ) {
 <table  cellpadding="0" cellspacing="0">
 <tr>
 	<td height=25 colspan=<?=$num_of_cols ?> class="main_text">
-      
+
       <strong><?=_Select_Brand?>
-      
+
       <?
       echo "<select name='selectBrand' id='selectBrand'  onchange='changeBrand(this)'>
 						<option value=0>"._All_Brands."</option>";
@@ -646,14 +656,14 @@ if (! $dontShowCountriesSelection ) {
 					echo "<option $sel value=$brandIDfilter>$brandNameFilter</option>";
 				}
 				echo "</select>\n";
-                
+
                 ?>
        <?=_OR?></strong>&nbsp;
     	<div class="buttonLink">
 			<a style='text-align:center; text-decoration:underline;' href='<?=
 					getLeonardoLink(array('op'=>'useCurrent','brandID'=>'0' ))	?>'><?=_Display_ALL?></a>
 		</div>
-	  
+
 	</td>
 </tr>
 </table>
@@ -671,15 +681,15 @@ if (! $dontShowCountriesSelection ) {
 </div>
 </div>
 
-<? 
-require_once  dirname(__FILE__).'/MENU_clubs.php'; 
+<?
+require_once  dirname(__FILE__).'/MENU_clubs.php';
 
-if ($countriesNum>1) 
-	require_once  dirname(__FILE__).'/MENU_countries.php'; 
+if ($countriesNum>1)
+	require_once  dirname(__FILE__).'/MENU_countries.php';
 
 require dirname(__FILE__)."/MENU_dates.php";
 
-require_once dirname(__FILE__).'/MENU_filter_menu.php'; 
+require_once dirname(__FILE__).'/MENU_filter_menu.php';
 ?>
 
 <div style='height:5px;clear:both; '></div>

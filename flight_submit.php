@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.19 2009/07/13 14:01:39 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.20 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -43,7 +43,7 @@
 		 exit;
 	}	
 
-log_msg("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n");
+/*log_msg("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n");
 log_msg("Client: $client \r\n");
 log_msg("Script name: ".$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."\r\n");
 log_msg("User agent: ".$_SERVER['HTTP_USER_AGENT']."\r\n");
@@ -54,7 +54,7 @@ if (count($_POST) >0 ) {
 	foreach($_POST as $pname=>$pval) {
 		log_msg($pname."=".$pval."\r\n");
 	}
-}
+}*/
 
 	$user=str_replace("\\'", "''", $_POST['user'] );
 	$pass=str_replace("\\'", "''", $_POST['pass'] );
@@ -126,7 +126,7 @@ if (count($_POST) >0 ) {
 
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
-	log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");
+//	log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");
 				
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.166 2009/06/08 18:53:17 manolis Exp $                                                                 
+// $Id: CL_flightData.php,v 1.167 2009/12/16 14:15:37 manolis Exp $
 //
 //************************************************************************
 
@@ -30,11 +30,11 @@ class flight {
 	var $flightID;
 	var $private=0;
     var $filename;
-    var $userID;  
+    var $userID;
 	var $userName="";
-	
-    var $comments="";  
-    var $glider="";  
+
+    var $comments="";
+    var $glider="";
 	var $gliderBrandID=0;
 
 	var $linkURL="";
@@ -42,9 +42,9 @@ class flight {
 	var $takeoffVinicity=0;
 	var $landingID=0;
 	var $landingVinicity=0;
-	
+
 	var $forceBounds=0;
-	
+
 	var $validated=0;
 	var $grecord=0;
 	var $validationMessage="";
@@ -64,7 +64,7 @@ class flight {
 
 	var $originalURL='';
 	var $originalKML='';
-	
+
 	var $original_ID=0;
 
 	var $originalUserID =0;
@@ -84,10 +84,10 @@ var $MIN_VARIO=0 ;
 var $LINEAR_DISTANCE=0 ;
 
 var $START_TIME=0;
-var $END_TIME=0; 
-var $DURATION=0; 
+var $END_TIME=0;
+var $DURATION=0;
 
-//var $MAX_LINEAR_DISTANCE=0 ; 
+//var $MAX_LINEAR_DISTANCE=0 ;
 //var $BEST_FLIGHT_TYPE="";
 //var $FLIGHT_KM=0;
 //var $FLIGHT_POINTS=0;
@@ -114,7 +114,7 @@ var $flightScore;
 #	0 -> local flight
 #	1- > SYNC_INSERT_FLIGHT_LINK (extllink  linked to external disply , only scroing info into DB)
 #	2 -> SYNC_INSERT_FLIGHT_LOCAL (extflight IGC imported locally)
-#isLive  
+#isLive
 #	0 -> not a live flight
 #	1 -> in progress liveflight in progress, only basic info into db and link to actual display/server
 #	2 -> finalized , liveflight finilized IGC imported locally
@@ -152,26 +152,26 @@ var $maxPointNum=1000;
 			$this->max_allowed_time_gap=$CONF_max_allowed_time_gap;
 		}
     }
-	
+
 	function belongsToUser($userID) {
 		global $CONF_server_id ;
-		if ( 	$this->userID == $userID && 
+		if ( 	$this->userID == $userID &&
 				($this->userServerID==$CONF_server_id || $this->userServerID==0 )
 			) return 1;
 		else return 0;
-	
+
 	}
-	
+
 	function checkGliderBrand($gliderBrand='') {
 
 		if (! $this->gliderBrandID ) {
-		
+
 			if ($gliderBrand) {
 				$gliderBrandID=brands::guessBrandID($gliderBrand );
 			}	else {
 				$gliderBrandID=brands::guessBrandID($this->glider );
 			}
-			
+
 			if ($gliderBrandID){
 				global $CONF;
 				if (!$gliderBrand) {
@@ -197,24 +197,24 @@ var $maxPointNum=1000;
 	function checkDirs() {
 		$pilotPath=$this->getPilotAbsDir();
 		$flightYear=$this->getYear();
-		
-		$yearPath	="$pilotPath/flights/$flightYear"; 
+
+		$yearPath	="$pilotPath/flights/$flightYear";
 		$maps_dir	="$pilotPath/maps/$flightYear";
 		$charts_dir	="$pilotPath/charts/$flightYear";
 		$photos_dir	="$pilotPath/photos/$flightYear";
-	
+
 		if (!is_dir($yearPath))  	mkdir($yearPath,0755);
 		if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
 		if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
 		if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
 	}
-	
+
 	function toXML($forceProtocol=''){
-		/*	maybe also include these	
+		/*	maybe also include these
 		"forceBounds"		"autoScore"
 		*/
 		global $CONF_server_id,$CONF_photosPerFlight, $CONF;
-		
+
 		if ($CONF['sync']['protocol']['format']=='JSON' && $forceProtocol!='XML' || $forceProtocol=='JSON') {
 			$useJSON=1;
 			require_once dirname(__FILE__).'/lib/json/CL_json.php';
@@ -224,7 +224,7 @@ var $maxPointNum=1000;
 			$flightScore=&$this->flightScore;
 			if (!$flightScore->gotValues) {
 				$flightScore->getFromDB();
-			}			
+			}
 		}  else {
 			$flightScore=new flightScore($this->flightID);
 			$flightScore->getFromDB();
@@ -232,35 +232,35 @@ var $maxPointNum=1000;
 
 		$defaultMethodID= $CONF['scoring']['default_set'];
 		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
-				
+
 		$tpNum=0;
 		$tpStr='';
 		for($i=1;$i<=7;$i++) {
 			if ($scoreDetails['tp'][$i]) {
-				$newPoint=new gpsPoint($scoreDetails['tp'][$i]);	
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i]);
 				if ($tpNum>0) $tpStr.=" ,\n		";
 				$tpStr.=' {"id": '.$i.' , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "UTCsecs": '.($newPoint->gpsTime+0).' } ';
 				$tpNum++;
-			}	
+			}
 		}
-		
-		
+
+
 		$takeoff=new waypoint($this->takeoffID);
 		$takeoff->getFromDB();
 
 //		$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
-//		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);			
+//		$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
 
 		$firstPoint=new gpsPoint('',$this->timezone);
 		$firstPoint->setLat($this->firstLat);
 		$firstPoint->setLon($this->firstLon);
-		$firstPoint->gpsTime=$this->firstPointTM;				
+		$firstPoint->gpsTime=$this->firstPointTM;
 
 		$lastPoint=new gpsPoint('',$this->timezone);
 		$lastPoint->setLat($this->lastLat);
 		$lastPoint->setLon($this->lastLon);
 		$lastPoint->gpsTime=$this->lastPointTM;
-		
+
 		list($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID)=getPilotInfo($this->userID,$this->userServerID);
 
 		$userServerID=$this->userServerID;
@@ -271,12 +271,12 @@ var $maxPointNum=1000;
 
 		// We changed this, dateAdded is in UTC from now on !!!!
 		// So the conversion is not needed
-		//$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC 
+		//$dateAdded=tm2fulldate(fulldate2tm($dateAdded)-date('Z')); // convert to UTC
 
 
 		if (  $this->serverID==0 || $this->serverID==$CONF_server_id ) $isLocal=1;
 		else $isLocal=0;
-		
+
 		if (!$useJSON) {
 		$resStr=
 "<flight>
@@ -359,7 +359,7 @@ var $maxPointNum=1000;
 
 </flight>\n";
 		} else {
-$resStr='{ 
+$resStr='{
 "flight": {
 	"serverID": '. ( $this->serverID?$this->serverID:$CONF_server_id).',
 	"id": '.($isLocal ? $this->flightID : $this->original_ID  ).',
@@ -367,12 +367,12 @@ $resStr='{
 	"filename": "'.json::prepStr($this->filename).'",
 	"linkIGC": "'.json::prepStr($this->getIGC_URL()).'",
 	"linkIGCzip": "'.json::prepStr($this->getZippedIGC_URL()).'",
-	"linkDisplay": "'.($isLocal ? 	json::prepStr($this->getFlightLinkURL()): 
+	"linkDisplay": "'.($isLocal ? 	json::prepStr($this->getFlightLinkURL()):
 									json::prepStr($this->getOriginalURL()) ).'",
 	"linkGE": "'.($isLocal ? json::prepStr($this->getFlightKML(0)) :
-							 json::prepStr($this->getOriginalKML()) ).'",	
+							 json::prepStr($this->getOriginalKML()) ).'",
 	"isLive": '.$this->isLive.',
-	
+
 	"info": {
 		"glider": "'.json::prepStr($this->glider).'",
 		"gliderBrandID": '.$this->gliderBrandID.',
@@ -383,14 +383,14 @@ $resStr='{
 		"private": '.$this->private.',
 		"comments": "'.json::prepStr($this->comments).'"
 	},
-	
+
 	"time": {
 		"date": "'.json::prepStr($this->DATE).'",
 		"Timezone": "'.$this->timezone.'",
 		"StartTime": "'.$this->START_TIME.'",
-		"Duration": "'.$this->DURATION.'"	
+		"Duration": "'.$this->DURATION.'"
 	},
-	
+
 	"bounds": {
 		"forceBounds": '.$this->forceBounds.',
 		"firstLat": '.$firstPoint->lat().',
@@ -400,7 +400,7 @@ $resStr='{
 		"lastLon": '.$lastPoint->lon().',
 		"lastTM": '.($lastPoint->gpsTime+0).'
 	},
-		
+
 	"pilot": {
 		"userID": "'.$this->userID.'",
 		"serverID": "'.$userServerID.'",
@@ -412,7 +412,7 @@ $resStr='{
 		"pilotBirthdate": "'.json::prepStr($Birthdate).'",
 		"pilotSex": "'.$Sex.'"
 	},
-	
+
 	"location": {
 		"takeoffID": "'.($this->takeoffID+0).'",
 		"serverID": "'.$CONF_server_id.'",
@@ -425,16 +425,16 @@ $resStr='{
 		"takeoffLat": "'.$takeoff->lat().'",
 		"takeoffLon": "'.$takeoff->lon().'"
 	},
-	
+
 	"stats":  {
 		"FlightType": "'.$this->BEST_FLIGHT_TYPE.'",
 		"MaxStraightDistance": '.($this->MAX_LINEAR_DISTANCE+0).',
 		"StraightDistance": '.$this->LINEAR_DISTANCE.',
 		"XCdistance": "'.($this->FLIGHT_KM+0).'",
 		"XCscore": "'.($this->FLIGHT_POINTS+0).'",
-		
+
 		"MaxSpeed": "'.$this->MAX_SPEED.'",
-		"MeanGliderSpeed": "'.$this->MEAN_SPEED.'",		
+		"MeanGliderSpeed": "'.$this->MEAN_SPEED.'",
 		"MaxVario": "'.$this->MAX_VARIO.'",
 		"MinVario": "'.$this->MIN_VARIO.'",
 		"MaxAltASL": "'.$this->MAX_ALT.'",
@@ -446,9 +446,9 @@ $resStr='{
 
 
 	"turnpoints": [
-		'.$tpStr.'		
+		'.$tpStr.'
 	] ,
-	
+
 	"validation": {
 		"validated": "'.$this->validated.'",
 		"grecord": "'.$this->grecord.'",
@@ -491,7 +491,7 @@ $resStr='{
 			$this->maxAllowedSpeed=150;
 			$this->maxAllowedVario=13;
 			$this->maxAllowedHeight=9000;
-		} else if ($this->cat==64 ) { // other powered flight 
+		} else if ($this->cat==64 ) { // other powered flight
 			$this->maxAllowedSpeed=500;
 			$this->maxAllowedVario=20;
 			$this->maxAllowedHeight=15000;
@@ -512,15 +512,15 @@ $resStr='{
 		$this->LINEAR_DISTANCE=0 ;
 		//$this->MAX_LINEAR_DISTANCE=0 ;
 		$this->START_TIME=0;
-		$this->END_TIME=0; 
-		$this->DURATION=0;  
+		$this->END_TIME=0;
+		$this->DURATION=0;
 		//$this->BEST_FLIGHT_TYPE="";
 		//$this->FLIGHT_KM=0;
 		//$this->FLIGHT_POINTS=0;
-		
+
 		//$this->FIRST_POINT="";
 		//$this->LAST_POINT="";
-	
+
 		$this->firstPointTM=0;
 		$this->firstLat=0;
 		$this->firstLat=0;
@@ -535,7 +535,7 @@ $resStr='{
 		if ($time >= $this->START_TIME &&  $time <= $this->END_TIME ) return 1;
 		return 0;
 	}
-	
+
 	function is3D() {
 		if ( $this->MAX_ALT ==0 && $this->MIN_ALT == 0 ) return false;
 		else return true;
@@ -544,11 +544,11 @@ $resStr='{
     function getTakeoffName() {
   	    return	getWaypointName($this->takeoffID);
     }
-	
+
     function getLandingName() {
   	    return	getWaypointName($this->landingID);
     }
-	
+
 	function getYear() {
 		return substr($this->DATE,0,4);
 	}
@@ -573,7 +573,7 @@ $resStr='{
 		$dist=max($this->LINEAR_DISTANCE ,$this->MAX_LINEAR_DISTANCE );
 		if ($dist > 50 ) $mult=1.5;
 		else $mult=1.7;
-	    $window_size=($dist * $mult)/1000;  
+	    $window_size=($dist * $mult)/1000;
 	    if ( $window_size < 20 ) $window_size=20;
 	    return $window_size;
 	}
@@ -584,7 +584,7 @@ $resStr='{
 		else $extra_prefix='';
 		return $extra_prefix.$this->userID;
 	}
-	
+
 	//---------------------------------
 	// external flights
 
@@ -592,11 +592,11 @@ $resStr='{
 		if ( $this->serverID  != 0 && ! $this->originalURL) {
 			global $CONF;
 			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] ==1  ) {
-			 	if (! $this->originalKML )  {				
+			 	if (! $this->originalKML )  {
 					$this->originalKML='http://'.$CONF['servers']['list'][$this->serverID]['url_base'].
 										'/download.php?type=kml_trk&flightID='.$this->original_ID;
 				}
-			
+
 			}
 		}
 		return $this->originalKML;
@@ -614,7 +614,7 @@ $resStr='{
 		}
 		return $this->originalURL;
 	}
-	
+
 	// ---------------------------------
 	// Relative (web) paths
 	// ---------------------------------
@@ -631,37 +631,37 @@ $resStr='{
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
 
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;
 	}
 
 	function getKMLRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";
 	}
 
 	function getGPXRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";
 	}
 	function getPolylineRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";  
+		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";
 	}
 
 	function getMapRelPath($num=0) {
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";  
-	}    
+		return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";
+	}
 
 	function getChartRelPath($chartType,$unitSystem=1,$rawChart=0) {
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
-		return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";  
-	} 
+		return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";
+	}
 	function getPhotoRelPath($photoNum) {
 		$t="photo".$photoNum."Filename";
-		return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;  
-	} 
+		return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;
+	}
 	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
@@ -672,7 +672,7 @@ $resStr='{
 		else $suffix="";
 		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
-	
+
 	function getJsonRelPath() { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		return str_replace('.//','',$this->getPilotRelDir())."/flights/".$this->getYear()."/".rawurlencode($this->filename).".json.js";
 	}
@@ -691,35 +691,35 @@ $resStr='{
 		if ($saned==2) $suffix=".saned.full.igc";
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;
 	}
 	function getKMLFilename() {
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";
 	}
 	function getGPXFilename() {
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";  
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";
 	}
-	function getPolylineFilename() {	
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";  
+	function getPolylineFilename() {
+		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";
 	}
 	function getMapFilename($num=0) {
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";  
-	}    
-	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {		
+		return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";
+	}
+	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 
-		return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";  
-	} 
+		return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
+	}
 	function getPhotoFilename($photoNum) {
 		$t="photo".$photoNum."Filename";
-		return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;  
-	} 
+		return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;
+	}
 	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
@@ -731,7 +731,7 @@ $resStr='{
 		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
-	function getJsonFilename() { 
+	function getJsonFilename() {
 			return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".json.js";
 	}
 	//---------------------------------------
@@ -757,7 +757,7 @@ $resStr='{
 		global $currentlang;
 		if ($includeLang) $langArray=array("lng">=$currentlang);
 		else  $langArray=array();
-		
+
 		return "http://".$_SERVER['SERVER_NAME'].
 			getDownloadLink(array('type'=>'kml_trk','flightID'=>$this->flightID)+$langArray) ;
 		// getRelMainDir()."download.php?type=kml_trk&flightID=".$this->flightID.$langStr;
@@ -775,12 +775,12 @@ $resStr='{
 
 
 	function kmlGetDescription($ext,$getFlightKML) {
-		if ($this->takeoffVinicity > $takeoffRadious ) 
-			$location=getWaypointName($this->takeoffID,0)." [~".sprintf("%.1f",$this->takeoffVinicity/1000)." km]"; 
+		if ($this->takeoffVinicity > $takeoffRadious )
+			$location=getWaypointName($this->takeoffID,0)." [~".sprintf("%.1f",$this->takeoffVinicity/1000)." km]";
 		else $location=getWaypointName($this->takeoffID,0);
 
-		if ($this->landingVinicity > $landingRadious ) 
-			$location_land=getWaypointName($this->landingID,0)." [~".sprintf("%.1f",$this->landingVinicity/1000)." km]"; 
+		if ($this->landingVinicity > $landingRadious )
+			$location_land=getWaypointName($this->landingID,0)." [~".sprintf("%.1f",$this->landingVinicity/1000)." km]";
 		else $location_land=getWaypointName($this->landingID,0);
 
 		$fl_url=$this->getFlightLinkURL();
@@ -807,7 +807,7 @@ $resStr='{
 			"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
 			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>";
 			if($ext) $str.=	"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>Extra analysis module by  Man\'s <a href='http://www.parawing.net'>GPS2GE V2.0</a></div></td></tr>";
-			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML&show_url=1'>URL of this KML file</div></td></tr>";	
+			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML&show_url=1'>URL of this KML file</div></td></tr>";
 
 			$str.="</table>]]></description>";
 		return $str;
@@ -818,21 +818,21 @@ $resStr='{
 		global  $CONF;
 
 		$tpStr=' { "turnpoints":  [ ';
-		
+
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->getFromDB();
 
 		$defaultMethodID= $CONF['scoring']['default_set'];
 		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
-				
-		$tpNum=0;		
+
+		$tpNum=0;
 		for($i=1;$i<=7;$i++) {
 			if ($scoreDetails['tp'][$i]) {
-				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);	
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);
 				if ($tpNum>0) $tpStr.=" ,\n		";
 				$tpStr.=' {"id": "'.$i.'" , "name": "TP'.$i.'" , "lat": '.$newPoint->lat().', "lon": '.$newPoint->lon().', "secs": '.$newPoint->getTime().' } ';
 				$tpNum++;
-			}	
+			}
 		}
 
 		/*
@@ -841,28 +841,28 @@ $resStr='{
 			$varname="turnpoint$i";
 			if ($this->{$varname} ) {
 				$pointString=explode(" ",$this->{$varname});
-				// make this string 
+				// make this string
 				// B1256514029151N02310255EA0000000486
 				// from N40:29.151 E23:10.255
 				preg_match("/([NS])(\d+):(\d+)\.(\d+) ([EW])(\d+):(\d+)\.(\d+)/",$this->{$varname},$matches);
-		
+
 				$lat=preg_replace("/[NS](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[0]);
 				$lon=preg_replace("/[EW](\d+):(\d+)\.(\d+)/","\\1\\2\\3",$pointString[1]);
-		
+
 				$pointStringFaked=sprintf("B125959%02d%02d%03d%1s%03d%02d%03d%1sA0000000500",
 							$matches[2],$matches[3],$matches[4],$matches[1],
 							$matches[6],$matches[7],$matches[8],$matches[5] );
-		
-				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );	
+
+				$newPoint=new gpsPoint( $pointStringFaked ,$this->timezone );
 
 				$name=$i;
-								
+
 				if ($i> 1 ) $jsonStr.=' , ';
 				$jsonStr.=' { "lat": '.$newPoint->lat().' , "lon": '.$newPoint->lon().
 							', "name": "TP'.$name.'", "id": "'.$name.'"  } '."\n";
 
 				$j++;
-		
+
 			}
 
 		}
@@ -876,7 +876,7 @@ $resStr='{
 	function kmlGetTask($completeKMLfile=0){
 		if ($completeKMLfile) {
 			$kml_file_contents="<?xml version='1.0' encoding='UTF-8'?>\n".
-								"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
+								"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";
 		} else {
 			$kml_file_contents="";
 		}
@@ -885,40 +885,40 @@ $resStr='{
 		<name>OLC Task</name>
 
 		";
-		
-		
+
+
 		$kml_file_contents.="<Placemark>
 		<name>OLC Task</name>
-		<Style id='taskLine'>		
+		<Style id='taskLine'>
 			<LineStyle><color>ffffffff</color></LineStyle>
 		</Style>
-		<LineString>		
+		<LineString>
 			<altitudeMode>extrude</altitudeMode>
 			<coordinates>
 		";
-		
+
 		$icons=array(
 		1=>array("root://icons/palette-3.png",0,192),
 		2=>array("root://icons/palette-3.png",32,192),
 		3=>array("root://icons/palette-3.png",64,192),
 		4=>array("root://icons/palette-3.png",96,192),
 		5=>array("root://icons/palette-3.png",128,192) );
-		
+
 
 		global  $CONF;
 		$tpStr=' { "turnpoints":  [ ';
-		
+
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->getFromDB();
 
 		$defaultMethodID= $CONF['scoring']['default_set'];
 		$scoreDetails=$flightScore->scores[$defaultMethodID][ $flightScore->bestScoreType ];
-				
-		$j=0;	
+
+		$j=0;
 		for($i=1;$i<=7;$i++) {
 			if ($scoreDetails['tp'][$i]) {
-				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);				
-				$kml_file_contents.=$newPoint->lon().",".$newPoint->lat().",0 ";		
+				$newPoint=new gpsPoint($scoreDetails['tp'][$i],$this->timezone);
+				$kml_file_contents.=$newPoint->lon().",".$newPoint->lat().",0 ";
 				$turnpointPlacemark[$j]="
 		<Placemark>
 				 <Style>
@@ -939,18 +939,18 @@ $resStr='{
 		</Placemark>";
 				$j++;
 
-			}	
+			}
 		}
 
 		$kml_file_contents.="
 		</coordinates>
 		</LineString>
 		</Placemark>";
-		
-		for ($i=0;$i<$j;$i++) 
+
+		for ($i=0;$i<$j;$i++)
 			$kml_file_contents.=$turnpointPlacemark[$i];
 		$kml_file_contents.="</Folder>";
-	
+
 		if ($completeKMLfile) {
 			$kml_file_contents="</kml>\n";
 		}
@@ -990,7 +990,7 @@ $resStr='{
 
 			return $kml_file_contents;
 		}
-		
+
 
 		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
 		$kmzFile=$this->getIGCFilename(0).".kmz";
@@ -998,15 +998,15 @@ $resStr='{
 
 		if ( !file_exists($kmzFile)   ) { // create the kmz file containg the points only
 
-			$filename=$this->getIGCFilename(2);  
-			$lines = file ($filename); 
+			$filename=$this->getIGCFilename(2);
+			$lines = file ($filename);
 			if ( $lines) {
 				$i=0;
-		
-	$str="<?xml version='1.0' encoding='iso-8859-1'?>\n".
-	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";	
 
-				$str.="<Document>									
+	$str="<?xml version='1.0' encoding='iso-8859-1'?>\n".
+	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";
+
+				$str.="<Document>
 				<name>Tracklog File</name>
 				<Placemark id='Tracklog'>
 					<name>Tracklog</name>
@@ -1015,30 +1015,30 @@ $resStr='{
 						  <color>ff0000ff</color>
 						  <width>2</width>
 						</LineStyle>
-				  	</Style>					
-					<LineString>				
+				  	</Style>
+					<LineString>
 						<altitudeMode>absolute</altitudeMode>
 						<coordinates>\n";
-		
+
 				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
 				// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
 				$str=str_replace("&nbsp;"," ",$str);
 				$timeStampStr='';
 				foreach($lines as $line) {
 					$line=trim($line);
-					if  (strlen($line)==0) continue;				
+					if  (strlen($line)==0) continue;
 					if ($line{0}=='B') {
 							if  ( strlen($line) < 23 ) 	continue;
-							// also check for bad points 
+							// also check for bad points
 							// 012345678901234567890123456789
 							// B1522144902558N00848090EV0058400000
 							if ($line{24}=='V') continue;
-							
+
 							$thisPoint=new gpsPoint($line,$this->timezone);
 							$alt=$thisPoint->getAlt();
 							$lon=-$thisPoint->lon;
 							$lat=$thisPoint->lat;
-							// $data_alt[$i]=$thisPoint->getAlt();				
+							// $data_alt[$i]=$thisPoint->getAlt();
 							if ( $alt > $this->maxAllowedHeight ) continue;
 							$str.=$lon.",".$lat.",".($alt*$exaggeration)." ";
 							$i++;
@@ -1058,16 +1058,16 @@ $resStr='{
 						 }
 					}
 				}
-		
+
 				$str.="</coordinates>\n</LineString>\n";
 				$str.="</Placemark>";
 
 
-		$str.= "		
+		$str.= "
 				<Folder>
 				<name>Timestamps</name>
 				";
-				
+
 	    $str.= "
 	<Style id='trackMark'>
 		<IconStyle>
@@ -1084,25 +1084,25 @@ $resStr='{
 				$str.= $timeStampStr;
 				$str.= "\n</Folder>\n";
 				$str.="\n</Document>\n</kml>";
-	
+
 				writeFile($kmlTempFile,$str);
-				// zip the file 
+				// zip the file
 				require_once dirname(__FILE__)."/lib/pclzip/pclzip.lib.php";
 				$archive = new PclZip($kmzFile);
 				$v_list = $archive->create($kmlTempFile, PCLZIP_OPT_REMOVE_ALL_PATH);
 				$this->deleteFile($kmlTempFile);
 			}
 		}
-		
+
 		$getFlightKMLcolorUpdater=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extended&updateColor=1";
-		
-		
+
+
 		$kml_file_contents='';
 		$kml_file_contents.="
 <NetworkLink>
   <name>Tracklog</name>
   <visibility>1</visibility>
-  <open>1</open> 
+  <open>1</open>
   <refreshVisibility>0</refreshVisibility>
   <flyToView>0</flyToView>
   <Link>
@@ -1124,24 +1124,24 @@ $resStr='{
 
 		return $kml_file_contents;
 	}
-	
+
 	function getBounds() {
-		$filename=$this->getIGCFilename(1);  
-		$lines = file ($filename); 
+		$filename=$this->getIGCFilename(1);
+		$lines = file ($filename);
 		if (!$lines) return array(0,0,0,0);
 		$i=0;
-	
+
 		$min_lat=1000;
 		$max_lat=-1000;
 		$min_lon=1000;
 		$max_lon=-1000;
-	
+
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
-					// also check for bad points 
+					// also check for bad points
 					// 012345678901234567890123456789
 					// B1522144902558N00848090EV0058400000
 					if ($line{24}=='V') continue;
@@ -1154,7 +1154,7 @@ $resStr='{
 
 					$i++;
 			}
-		}		
+		}
 		return array($min_lat,$min_lon,$max_lat,$max_lon);
 	}
 
@@ -1165,27 +1165,27 @@ $resStr='{
 
 		// $getFlightKML=$this->getFlightKML()."c=$lineColor&ex=$exaggeration&w=$lineWidth&an=$extended";
 
-		$filename=$this->getIGCFilename(0);  
-		$lines = file ($filename); 
+		$filename=$this->getIGCFilename(0);
+		$lines = file ($filename);
 		if (!$lines) return;
 		$i=0;
 		$kml_file_contents="<trk>\n
 <name>".htmlspecialchars($this->userName)."</name>
 <desc>Leonardo track</desc>
 	<trkseg>\n";
-	
+
 		$min_lat=1000;
 		$max_lat=-1000;
 		$min_lon=1000;
 		$max_lon=-1000;
-	
-		
+
+
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
-					// also check for bad points 
+					// also check for bad points
 					// 012345678901234567890123456789
 					// B1522144902558N00848090EV0058400000
 					if ($line{24}=='V') continue;
@@ -1196,14 +1196,14 @@ $resStr='{
 					if ( -$thisPoint->lon  > $max_lon )  $max_lon =-$thisPoint->lon  ;
 					if ( -$thisPoint->lon  < $min_lon )  $min_lon =-$thisPoint->lon  ;
 
-					$data_alt[$i]=$thisPoint->getAlt();				
+					$data_alt[$i]=$thisPoint->getAlt();
 					if ( $thisPoint->getAlt() > $this->maxAllowedHeight ) continue;
 					$kml_file_contents.='<trkpt lat="'.$thisPoint->lat.'" lon="'.-$thisPoint->lon.'">'."\n";
 					$kml_file_contents.="  <ele>".$thisPoint->getAlt()."</ele>\n</trkpt>\n";
 					$i++;
 					//	if($i % 50==0) $kml_file_contents.="\n";
 			}
-		}		
+		}
 
 		$kml_file_contents.="</trkseg>\n</trk>\n<bounds minlat=\"$min_lat\" minlon=\"".$min_lon."\" maxlat=\"$max_lat\" maxlon=\"".$max_lon."\" />\n";
 		//echo "</trkseg>\n</trk>\n<bounds minLat=\"$min_lat\" minlon=\"$min_lon\" maxLat=\"$max_lat\" maxlon=\"$max_lon\" />\n";
@@ -1214,20 +1214,20 @@ $resStr='{
 		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
-		
+
 		if ( is_file($this->getPolylineFilename())  && !$forceRefresh ) return ;
 
-		$filename=$this->getIGCFilename(1);  
-		$lines = file ($filename); 
+		$filename=$this->getIGCFilename(1);
+		$lines = file ($filename);
 		if (!$lines) return;
 		$i=0;
 		$kml_file_contents="";
-	
+
 		$min_lat=1000;
 		$max_lat=-1000;
 		$min_lon=1000;
 		$max_lon=-1000;
-	
+
 		$prevLat=0;
 		$prevLon=0;
 
@@ -1238,7 +1238,7 @@ $resStr='{
 		}
 
 		if ($numLines<200 ) {
-			$mod=1; 
+			$mod=1;
 			$lvlArray="3"; // always 3
 		} else 	if ($numLines>=200 && $numLines<400) {
 			$mod=8; // max visible every 8 points
@@ -1255,10 +1255,10 @@ $resStr='{
 
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
-					// also check for bad points 
+					// also check for bad points
 					// 012345678901234567890123456789
 					// B1522144902558N00848090EV0058400000
 					if ($line{24}=='V') continue;
@@ -1286,7 +1286,7 @@ $resStr='{
 
 					$i++;
 			}
-		}		
+		}
 		$ln.="$lat|$lon|Landing|Landing\n";
 		$ln.="$min_lat,$max_lat,$min_lon,$max_lon\n";
 		// write to file
@@ -1305,7 +1305,7 @@ $resStr='{
 		//if (file_exists($this->getKMLFilename())) return;
 
 		$getFlightKML=$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo";
-		//UTF-8 or 
+		//UTF-8 or
 		//".$langEncodings[$currentlang]."
 $kml_file_contents=
 //"<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >".
@@ -1314,7 +1314,7 @@ $kml_file_contents=
 <Document>
 <name>".$this->filename."</name>".$this->kmlGetDescription($extendedInfo,$getFlightKML)."
 <open>1</open>";
-			
+
 		/*<LookAt>
 			<longitude>-3.10135108046447</longitude>
 			<latitude>52.9733850011146</latitude>
@@ -1324,13 +1324,13 @@ $kml_file_contents=
 		</LookAt>*/
 
 	    $kml_file_contents.=$this->kmlGetTrack($lineColor,$exaggeration,$lineWidth,$extendedInfo);
-		
+
 
 		// create the start and finish points
 		$kml_file_contents.=makeWaypointPlacemark($this->takeoffID);
 		if ( $this->takeoffID!=$this->landingID)
 			$kml_file_contents.=makeWaypointPlacemark($this->landingID);
-	
+
 		// create the OLC task
 		$kml_file_contents.=$this->kmlGetTask();
 
@@ -1347,12 +1347,12 @@ $kml_file_contents=
 
 	function createKMZfile($c, $ex, $w, $an) {
 		global $CONF;
-		
+
 		// do some basic check for saned igc file
 		if (! $this->checkSanedFiles() ) {
 			return "";
 		}
-		
+
 		require_once dirname(__FILE__)."/FN_igc2kmz.php";
 		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->flightID);
 		$version=$CONF['googleEarth']['igc2kmz']['version'];
@@ -1374,19 +1374,19 @@ $kml_file_contents=
 
 		$xml_file_contents=
 '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="byHand" version="1.1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<gpx xmlns="http://www.topografix.com/GPX/1/1" creator="byHand" version="1.1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
 ';
-			
+
 	    $xml_file_contents.=$this->gpxGetTrack();
-		
+
 
 		// create the start and finish points
 //		$xml_file_contents.=makeWaypointPlacemark($this->takeoffID);
 //		if ( $this->takeoffID!=$this->landingID)
 //			$xml_file_contents.=makeWaypointPlacemark($this->landingID);
-	
+
 		// create the OLC task
 		// $xml_file_contents.=$this->kmlGetTask();
 
@@ -1417,36 +1417,36 @@ $kml_file_contents=
 		$data_vario =array();
 		$data_takeoff_distance=array();
 
-		$filename=$this->getIGCFilename(1);  
-		$lines = @file ($filename); 
+		$filename=$this->getIGCFilename(1);
+		$lines = @file ($filename);
 		if (!$lines) return;
 		$i=0;
-		$day_offset =0; 
-		
+		$day_offset =0;
+
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
-					// also check for bad points 
+					// also check for bad points
 					// 012345678901234567890123456789
 					// B1522144902558N00848090EV0058400000
 					if ($line{24}=='V') continue;
 
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$thisPoint->gpsTime+=$day_offset;
-										
-					// check for start of flight 
+
+					// check for start of flight
 					if ($thisPoint->getTime()<$this->START_TIME) continue;
-					// check for end of flight 
+					// check for end of flight
 					if ($thisPoint->getTime()>$this->END_TIME) continue;
-					
+
 					$data_time[$i]=sec2Time($thisPoint->getTime(),1);
-					$data_alt[$i]=$thisPoint->getAlt();				
+					$data_alt[$i]=$thisPoint->getAlt();
 					if ( $data_alt[$i] > $this->maxAllowedHeight ) continue;
 
-					if ($i>0) {						
-						$tmp = $lastPoint->calcDistance($thisPoint);			
+					if ($i>0) {
+						$tmp = $lastPoint->calcDistance($thisPoint);
 						if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 3600 )  { // more than 1 hour
                     		$day_offset = 86400; // if time seems to have gone backwards, add a day
 		                    $thisPoint->gpsTime += 86400;
@@ -1454,8 +1454,8 @@ $kml_file_contents=
 							$lastPoint=new gpsPoint($line,$this->timezone);
 							$lastPoint->gpsTime+=$day_offset;
 							 continue;
-						}	
-						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;	
+						}
+						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;
 						if ($deltaseconds) {
 							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 							$data_vario[$i] =($thisPoint->getAlt() - $lastPoint->getAlt() ) / $deltaseconds;
@@ -1463,7 +1463,7 @@ $kml_file_contents=
 							$speed =0;
 							$data_vario[$i]=0;
 						}
-						// sanity checks	
+						// sanity checks
 						if ( $speed > $this->maxAllowedSpeed ) continue;
 						if ( $data_vario[$i]  > $this->maxAllowedVario ) continue;
 
@@ -1478,7 +1478,7 @@ $kml_file_contents=
 					$lastPoint=new gpsPoint($line,$this->timezone);
 					$lastPoint->gpsTime+=$day_offset;
 					$i++;
-			} 
+			}
 		}
 
 		return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance);
@@ -1496,7 +1496,7 @@ $kml_file_contents=
 		}
 
 		// if no file exists do the proccess now
-		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues(); 
+		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues();
 
 		$lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
 		if (!$lines) return;
@@ -1509,16 +1509,16 @@ $kml_file_contents=
 		for($k=3;$k< count($lines);$k++){
 			$line = trim($lines[$k]);
 			if (strlen($line) == 0) continue;
-			  
+
 			eval($line);
-			  
+
 			//	if ($alt > $this->maxAllowedHeight)  continue;
 			//    if ($speed > $this->maxAllowedSpeed) continue;
 			//    if (abs($vario) > $this->maxAllowedVario) continue;
-	
-			if  ( $time<$lastPointTime ) continue;		
+
+			if  ( $time<$lastPointTime ) continue;
 			$lastPointTime=$time;
-	
+
 			//if (! $time_in_secs ) {
 			//	$time = sec2Time($time, 1);
 			//}
@@ -1549,7 +1549,7 @@ $kml_file_contents=
 				$firstLon=$lon;
 			}
 			$jsTrack['distance'][$i] =sprintf('%.3f',$dis);
-			
+
 			$i ++;
 		}  //end for loop
 
@@ -1570,7 +1570,7 @@ $kml_file_contents=
 			$jsTrack['labels'][$i] = $jsTrack['time'][$idx];
 		}
 		// 			$jsTrack['labels']=array("11h40","12h6","12h29","12h52","13h15");
-	
+
 		$jsTrack['points_num'] = $nbPts;
 		$jsTrack['nbChartPt'] = $nbPts;
 		$jsTrack['label_num'] = $label_num;
@@ -1583,7 +1583,7 @@ $kml_file_contents=
 		writeFile( $filename, 'var flightArray='.$JSONstr );
 	}
 
-	
+
   function getRawValues($forceRefresh=0, $getAlsoXY=0) {
     $this->setAllowedParams();
 
@@ -1606,19 +1606,19 @@ $kml_file_contents=
 	for($k=3;$k< count($lines);$k++){
 		$line = trim($lines[$k]);
 		if (strlen($line) == 0) continue;
-		  
+
 		eval($line);
-		  
+
 	//	if ($alt > $this->maxAllowedHeight)  continue;
     //    if ($speed > $this->maxAllowedSpeed) continue;
     //    if (abs($vario) > $this->maxAllowedVario) continue;
 
-		if  ( $time<$lastPointTime ) continue;		
+		if  ( $time<$lastPointTime ) continue;
 		$lastPointTime=$time;
 
         if ($time_in_secs) $data_time[$i] = $time;
         else $data_time[$i] = sec2Time($time, 1);
-				
+
         $data_alt[$i] = $alt;
         $data_speed[$i] = $speed;
         $data_vario[$i] = $vario;
@@ -1629,17 +1629,17 @@ $kml_file_contents=
 
         if ($i > 0) {
 			// $t_dis=gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) ;
-			// $data_takeoff_distance[$i] = $t_dis/1000; //gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) /1000;		
+			// $data_takeoff_distance[$i] = $t_dis/1000; //gpsPoint::calc_distance($lat,$lon,$firstLat,$firstLon) /1000;
 			$data_takeoff_distance[$i]=$dis;
         } else {
 			$data_takeoff_distance[$i] = 0;
 			$firstLat=$lat;
 			$firstLon=$lon;
 		}
-		
+
         $i ++;
     } //end for loop
-    
+
     if ($getAlsoXY)
       return array($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance,$data_X,$data_Y);
     else
@@ -1653,35 +1653,35 @@ $kml_file_contents=
 		$data_X =array();
 		$data_Y =array();
 
-		$filename=$this->getIGCFilename(1);  
-		$lines = file ($filename); 
+		$filename=$this->getIGCFilename(1);
+		$lines = file ($filename);
 		$i=0;
 
 
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B' && $line{24}!='V') {
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$data_X[$i]=$thisPoint->lat;
 					$data_Y[$i]=$thisPoint->lon;
 					$i++;
-			} 
+			}
 		}
 		return array($data_X,$data_Y);
 	}
-	
+
 	function getRawHeader(){
-		$handle = fopen($this->getPointsFilename(1), "r"); 
+		$handle = fopen($this->getPointsFilename(1), "r");
 		$l=array();
-		$l[0]= fgets($handle, 4096); 
-		$l[1]= fgets($handle, 4096); 
-		$l[2]= fgets($handle, 4096); 
-		fclose ($handle); 
+		$l[0]= fgets($handle, 4096);
+		$l[1]= fgets($handle, 4096);
+		$l[2]= fgets($handle, 4096);
+		fclose ($handle);
 		return $l;
 	}
-	
-	
+
+
 	function storeIGCvalues() {
 		global $flightsAbsPath;
 
@@ -1694,40 +1694,40 @@ $kml_file_contents=
 		if (! $this->checkSanedFiles() ) {
 			return;
 		}
-		
-		$filename=$this->getIGCFilename(2);  
-		$lines = @file ($filename); 
+
+		$filename=$this->getIGCFilename(2);
+		$lines = @file ($filename);
 		if (!$lines) return;
 
 		$i=0;
-		$day_offset =0; 
+		$day_offset =0;
 
 		$currentDate=0;
 		$prevDate=0;
-		
+
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;		
+			if  (strlen($line)==0) continue;
 
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
 					$dt=substr($line,5,6);
 					$yr_last=substr($dt,4,2);
-					// case of YY=0 (1 digit) HFDTE08070 
+					// case of YY=0 (1 digit) HFDTE08070
 					if ($yr_last=="0") $yr_last="00";
 					if ($yr_last > 80 ) $yr="19".$yr_last;
 					else $yr="20".$yr_last;
-					
-					$prevDate=$currentDate;					
+
+					$prevDate=$currentDate;
 					$currentDate=mktime(0,0,0,substr($dt,2,2),substr($dt,0,2),$yr);
 					//echo "DATE cahnge : $currentDate  $prevDate <BR>";
-					if ($prevDate>0 && ($currentDate-$prevDate)>86400) { // more than one day 
+					if ($prevDate>0 && ($currentDate-$prevDate)>86400) { // more than one day
 						break;
 					}
 			}
-			
+
 			if ($line{0}=='B') {
 					if  ( strlen($line) < 23 ) 	continue;
-					// also check for bad points 
+					// also check for bad points
 					// 012345678901234567890123456789
 					// B1522144902558N00848090EV0058400000
 					if ($line{24}=='V') continue;
@@ -1738,14 +1738,14 @@ $kml_file_contents=
 					$goodPoints[$i]['time']=$thisPoint->getTime();
 					$goodPoints[$i]['lon']=$thisPoint->lon;
 					$goodPoints[$i]['lat']=$thisPoint->lat;
-					
-					$goodPoints[$i]['alt']=$thisPoint->getAlt();				
 
-					if ($i>0) {						
-						$tmp = $lastPoint->calcDistance($thisPoint);		
-						
+					$goodPoints[$i]['alt']=$thisPoint->getAlt();
+
+					if ($i>0) {
+						$tmp = $lastPoint->calcDistance($thisPoint);
+
 					$time_diff=  $thisPoint->getTime() - $lastPoint->getTime()  ;
-					
+
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
 						continue;
         		    } else 	if ( $time_diff < 0  )  {  // CHANGING DAY , means the flight is at night
@@ -1753,9 +1753,9 @@ $kml_file_contents=
 						break;
         		    } else 	if (  $time_diff > $this->max_allowed_time_gap *4 )  {  // found time gap
 						array_pop($goodPoints);
-						break;		
+						break;
 					}
-						
+
 					/*	if ( ($lastPoint->getTime() - $thisPoint->getTime()  ) > 3600 )  { // more than 1 hour
                     		$day_offset = 86400; // if time seems to have gone backwards, add a day
 		                    $thisPoint->gpsTime += 86400;
@@ -1763,10 +1763,10 @@ $kml_file_contents=
 							$lastPoint=new gpsPoint($line,$this->timezone);
 							$lastPoint->gpsTime+=$day_offset;
 							continue;
-						}	
+						}
 						*/
-						
-						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;	
+
+						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;
 						if ($deltaseconds) {
 							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 							$goodPoints[$i]['vario'] =($thisPoint->getAlt() - $lastPoint->getAlt() ) / $deltaseconds;
@@ -1787,40 +1787,40 @@ $kml_file_contents=
 					$lastPoint->gpsTime+=$day_offset;
 
 					$i++;
-			} 
+			}
 		}
-							
+
 		$pointsNum=count($goodPoints);
-	
+
 		//echo "pointsNum : $pointsNum<br>";
 		$min_time=floor($goodPoints[0]['time']/60)*60;
 		$max_time=ceil($goodPoints[$pointsNum-1]['time']/60)*60;
-		// echo "max / min time: $max_time $min_time<BR>"; 
+		// echo "max / min time: $max_time $min_time<BR>";
 
 		$interval=20;
 		$k=0;
 		for($i=$min_time;$i<=$max_time;$i=$i+$interval) {
 			$normPoints[$k]=array();
 			$normPoints[$k]['timeText']=sec2time($i);
-			$normPoints[$k]['time']=$i;		
+			$normPoints[$k]['time']=$i;
 			$k++;
 		}
-	
+
 		$org_array_pos=0;
 		foreach($normPoints as $norm_array_pos=>$normPoint) { // for each point  in the timeline
 			$timeval=$normPoint['time'];
-			if ( $goodPoints[$org_array_pos]['time'] >= $timeval && $org_array_pos< count($goodPoints)  && 
-				!($org_array_pos==0 && $goodPoints[0]['time'] < $timeval)   ) {  
-	
+			if ( $goodPoints[$org_array_pos]['time'] >= $timeval && $org_array_pos< count($goodPoints)  &&
+				!($org_array_pos==0 && $goodPoints[0]['time'] < $timeval)   ) {
+
 				$normPoints[$norm_array_pos]['lon']=$goodPoints[$org_array_pos]['lon'];
 				$normPoints[$norm_array_pos]['lat']=$goodPoints[$org_array_pos]['lat'];
-	
+
 				$normPoints[$norm_array_pos]['speed']=$goodPoints[$org_array_pos]['speed'];
 				$normPoints[$norm_array_pos]['vario']=$goodPoints[$org_array_pos]['vario'];
 				$normPoints[$norm_array_pos]['alt']=$goodPoints[$org_array_pos]['alt'];
 				$normPoints[$norm_array_pos]['dis']=$goodPoints[$org_array_pos]['dis'];
 				// if ($normPoints[$norm_array_pos]['alt']==0) $normPoints[$norm_array_pos]['alt']="-";
-				
+
 				while ($goodPoints[$org_array_pos]['time'] <  $timeval + $interval  && ($org_array_pos)< count($goodPoints) ) {
 					$org_array_pos++;
 				}
@@ -1845,16 +1845,16 @@ $kml_file_contents=
 					$normPoints[$norm_array_pos]['speed']="-";
 					$normPoints[$norm_array_pos]['vario']="-";
 					$normPoints[$norm_array_pos]['alt']="-";
-				} 
+				}
 	*/
 			}
-	
-	
-		} // end foreach 
+
+
+		} // end foreach
 
 		// now write it to file
 		$outputBuffer='$min_time='.$min_time.';$max_time='.$max_time.";\n\n\n";
-		
+
 		// $jsOutput="";
 		foreach ($normPoints as $point) {
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
@@ -1867,9 +1867,9 @@ $kml_file_contents=
 		$path_igc = dirname($this->getPointsFilename(1));
 		if (!is_dir($path_igc)) @mkdir($path_igc, 0755);
 
-		// write saned js file		
+		// write saned js file
 		// writeFile($this->getJsFilename(1),$jsOutput);
-		
+
 		// write saned IGC file
 		writeFile($this->getPointsFilename(1),$outputBuffer);
 
@@ -1903,35 +1903,35 @@ $kml_file_contents=
 		// echo "mindist: $mindist		<BR>";
 
 		DEBUG("OLC",255,"First line starts with OLC, will search further");
-		// if the first line begins with OLC we have an olc file		
+		// if the first line begins with OLC we have an olc file
 		// we got an olc optimized file , get the 5 turnpoints
 		if (preg_match(
-	   "/&w0bh=([NnSs])&w0bg=(\d+)&w0bm=(\d+)&w0bmd=(\d+)&w0lh=([EeWw])&w0lg=(\d+)&w0lm=(\d+)&w0lmd=(\d+)".				
+	   "/&w0bh=([NnSs])&w0bg=(\d+)&w0bm=(\d+)&w0bmd=(\d+)&w0lh=([EeWw])&w0lg=(\d+)&w0lm=(\d+)&w0lmd=(\d+)".
 		"&w1bh=([NnSs])&w1bg=(\d+)&w1bm=(\d+)&w1bmd=(\d+)&w1lh=([EeWw])&w1lg=(\d+)&w1lm=(\d+)&w1lmd=(\d+)".
 		"&w2bh=([NnSs])&w2bg=(\d+)&w2bm=(\d+)&w2bmd=(\d+)&w2lh=([EeWw])&w2lg=(\d+)&w2lm=(\d+)&w2lmd=(\d+)".
 		"&w3bh=([NnSs])&w3bg=(\d+)&w3bm=(\d+)&w3bmd=(\d+)&w3lh=([EeWw])&w3lg=(\d+)&w3lm=(\d+)&w3lmd=(\d+)".
-		"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$lines[0],$matches)  || 
-		
+		"&w4bh=([NnSs])&w4bg=(\d+)&w4bm=(\d+)&w4bmd=(\d+)&w4lh=([EeWw])&w4lg=(\d+)&w4lm=(\d+)&w4lmd=(\d+)/",$lines[0],$matches)  ||
+
 		preg_match(
-	   "/&fai0bh=([NnSs])&fai0bg=(\d+)&fai0bm=(\d+)&fai0bmd=(\d+)&fai0lh=([EeWw])&fai0lg=(\d+)&fai0lm=(\d+)&fai0lmd=(\d+)".				
+	   "/&fai0bh=([NnSs])&fai0bg=(\d+)&fai0bm=(\d+)&fai0bmd=(\d+)&fai0lh=([EeWw])&fai0lg=(\d+)&fai0lm=(\d+)&fai0lmd=(\d+)".
 		"&fai1bh=([NnSs])&fai1bg=(\d+)&fai1bm=(\d+)&fai1bmd=(\d+)&fai1lh=([EeWw])&fai1lg=(\d+)&fai1lm=(\d+)&fai1lmd=(\d+)".
 		"&fai2bh=([NnSs])&fai2bg=(\d+)&fai2bm=(\d+)&fai2bmd=(\d+)&fai2lh=([EeWw])&fai2lg=(\d+)&fai2lm=(\d+)&fai2lmd=(\d+)".
 		"&fai3bh=([NnSs])&fai3bg=(\d+)&fai3bm=(\d+)&fai3bmd=(\d+)&fai3lh=([EeWw])&fai3lg=(\d+)&fai3lm=(\d+)&fai3lmd=(\d+)".
 		"&fai4bh=([NnSs])&fai4bg=(\d+)&fai4bm=(\d+)&fai4bmd=(\d+)&fai4lh=([EeWw])&fai4lg=(\d+)&fai4lm=(\d+)&fai4lmd=(\d+)/",$lines[0],$matches)
-		
+
 		) {
 			for($i1=0;$i1<=4;$i1++)  {
 				$opt_point[$i1]=sprintf("%02d%02d%03d%s%03d%02d%03d%s",$matches[1+$i1*8+1],$matches[1+$i1*8+2],$matches[1+$i1*8+3],$matches[1+$i1*8+0],
 								$matches[1+$i1*8+5],$matches[1+$i1*8+6],$matches[1+$i1*8+7],$matches[1+$i1*8+4]);
 			}
 			$manual_optimize=1;
-			// echo "manual_optimize";			
+			// echo "manual_optimize";
 			// print_r($matches);
 			// print_r($p);
-			
+
 			//now confirm that the supplied points are indeed in the track.
 			$opt_point_num=0;
-			foreach($lines as $line) {		
+			foreach($lines as $line) {
 				if (strtoupper($line[0])!='B') continue;
 				$done=0;
 				while(! $done){
@@ -1944,20 +1944,20 @@ $kml_file_contents=
 				}
 				if ($opt_point_num==5) break;
 			}
-			
+
 			//for($i=0;$i<=4;$i++)  {
-			//	echo "#".$opt_point[$i]."<br>";		
+			//	echo "#".$opt_point[$i]."<br>";
 			//}
-			if ($opt_point_num==5) {			
+			if ($opt_point_num==5) {
 				//echo "OPTIMIZATION POINTS confirmed";
 				DEBUG("OLC",255,"OPTIMIZATION POINTS confirmed");
 				// now compute best score
 				for($i=0;$i<=4;$i++)  {
-					$points[$i]=new gpsPoint("B120000".$opt_point[$i]."A0000000000");					
+					$points[$i]=new gpsPoint("B120000".$opt_point[$i]."A0000000000");
 				}
 				/*
 					Explained by Thomas Kuhlmann
-					
+
 					You have 5 Points:
 					Startpoint, First Waypoint, Second Waypoint, Third Waypoint, Endpoint
 					given following distances
@@ -1966,18 +1966,18 @@ $kml_file_contents=
 					c : distance from Third to First Waypoint
 					d : distance from End- To Startpoint
 					Rule to have a triangle (it may be 20% open):
-					
+
 					  d <= 20% ( a+b+c )
 					this is equivalent to:
 					  d*5 <= a+b+c
-					
+
 					Now you have to check if this triangle fullfills the 28% FAI rule:
 					  ( a >= 28% (a+b+c) )  AND  (b >= 28% (a+b+c))  AND (c>= 28% (a+b+c))
 					this is quivalent to (28% = 7/25):
 					  (25*a >= 7*(a+b+c))  AND (25*b >= 7*(a+b+c)) AND (25*c >= 7*(a+b+c))
 					if using integers for calculation of distances in decimeters,
-					 this formular generates no integer to float concerning problems. 
-				*/	
+					 this formular generates no integer to float concerning problems.
+				*/
 				$a=$points[1]->calcDistance($points[2]);
 				$b=$points[2]->calcDistance($points[3]);
 				$c=$points[3]->calcDistance($points[1]);
@@ -1988,17 +1988,17 @@ $kml_file_contents=
 				if ($d*5 <= ($u) ) { // we have a triangle
 					if ( ( 25*$a >= 7*$u )  && ( 25*$b >= 7*$u ) && ( 25*$c >= 7*$u ) ) {
 						$factor1=2; // fai triangle
-					} else { 		
+					} else {
 						$factor1=1.75; // open triangle
 					}
 					$km_triangle=($u-$d)/1000;
 					$score_triangle=$km_triangle*$factor1;
 				} else { // no triangle
 					$km_triangle=0;
-					$score_triangle=0;				
+					$score_triangle=0;
 				}
-					
-				//now for straight distance				
+
+				//now for straight distance
 				$a=$points[0]->calcDistance($points[1]);
 				$b=$points[1]->calcDistance($points[2]);
 				$c=$points[2]->calcDistance($points[3]);
@@ -2008,31 +2008,31 @@ $kml_file_contents=
 				$km_straight=($a+$b+$c+$d)/1000;
 				$score_straight=$km_straight*$factor;
 				//echo "$a $b $c $d<BR>";
-				//echo "km_straight:$km_straight  score_straight:$score_straight <BR>";				
+				//echo "km_straight:$km_straight  score_straight:$score_straight <BR>";
 				//echo "km_triangle:$km_triangle  score_triangle:$score_triangle <BR>";
-				
+
 				$str="";
-				for($i=0;$i<=4;$i++)  
+				for($i=0;$i<=4;$i++)
 					$str.=$opt_point[$i]."\n";
-				
+
 				// check if $mindist>0 and  the triangle km are < $mindist, then we check
-				// if the straight distance km are > $mindist and use that instead	
+				// if the straight distance km are > $mindist and use that instead
 				if ($km_triangle<$mindist) {
 					if ($km_straight>=$mindist || $km_triangle==0) $str.="$km_straight\n$score_straight\n$factor\n";
 					else $str.="$km_triangle\n$score_triangle\n$factor1\n";
-				} else {				
-					if ($score_triangle>=$score_straight) 
+				} else {
+					if ($score_triangle>=$score_straight)
 						$str.="$km_triangle\n$score_triangle\n$factor1\n";
-					else 
+					else
 						$str.="$km_straight\n$score_straight\n$factor\n";
 				}
-					
+
 				$str.="\n$mindist";
 				writeFile($filename.".olc",$str);
 			} // end if confirmed the 5 turnpoints
-						
+
 		} // end if the preg match
-			
+
 		// now write the IGC file stripping the first line
 		// there might be a &IGCigcIGC= (maxpunkte) or not (compeGPS)
 		// $lines[0]
@@ -2045,16 +2045,16 @@ $kml_file_contents=
 		// done write the stripped file to disk
 		$str=implode("",$lines);
 		writeFile($filename,$str);
-		
+
 		return 1;
 	}
-	
-	
+
+
 	/****************************************************************************************
 	****************************************************************************************
-	
+
 		Core function of analizing an igc
-		
+
 	****************************************************************************************
 	****************************************************************************************/
 	function getFlightFromIGC($filename) {
@@ -2075,37 +2075,37 @@ $kml_file_contents=
 		}
 		$this->setAllowedParams();
 		$this->filename=basename($filename);
-	
+
 		$this->checkForOLCfile($filename);
-	
+
 		$done=0;
-		$try_no_takeoff_detection=0;	
-		while(!$done) {	
-		
-			$lines = file ($filename);			 
+		$try_no_takeoff_detection=0;
+		while(!$done) {
+
+			$lines = file ($filename);
 			$linesNum =count($lines);
 			DEBUG("IGC",1,"File has total $linesNum lines<br>");
 			$points=0;
 			$outputBuffer="";
-	
+
 			// process points
 			// filter bad ones
 			$p=0;
 			$Brecords=0;
-			$getPointsNum=5 ; // + 4 points + this one 
-			for($i=0;$i< count($lines)-10 ;$i++) {		
+			$getPointsNum=5 ; // + 4 points + this one
+			for($i=0;$i< count($lines)-10 ;$i++) {
 				$pointOK=1;
 				$line=trim($lines[$i]);
-							
+
 				if  (strlen($line)==0) continue;
 				if  ( $line{0}!='B' ) continue;
 				$Brecords++;
 
-				// also check for bad points 
+				// also check for bad points
 				// 012345678901234567890123456789
 				// B1522144902558N00848090EV0058400000
 
-				if  ( strlen($line)  < 23  || $line{24}=='V') { 
+				if  ( strlen($line)  < 23  || $line{24}=='V') {
 					$lines[$i]{1}='X';
 					continue;
 				}
@@ -2114,36 +2114,36 @@ $kml_file_contents=
 				for ($t1= 0 ;$t1 <  $getPointsNum ;$t1++ ) {
 					$thisPoint=new gpsPoint( trim($lines[$nextPointPos]) ,$this->timezone );
 					$neighboors[$t1] = $thisPoint;
-	
-					$nextPointPos=$this->getNextPointPos($lines,$nextPointPos);				
+
+					$nextPointPos=$this->getNextPointPos($lines,$nextPointPos);
 				} // got all next points
-	
+
 				// find mean values
 				$mean_speed=0;
 				$mean_vario=0;
-				for ($t1= 1 ;$t1 < $getPointsNum ;$t1++ ) {  // for 4 (5-1) points in a row 
-						// create arrays 
+				for ($t1= 1 ;$t1 < $getPointsNum ;$t1++ ) {  // for 4 (5-1) points in a row
+						// create arrays
 						$T_distance[$t1] = $neighboors[$t1]->calcDistance($neighboors[$t1-1]);
 						$T_alt[$t1] = $neighboors[$t1]->getAlt();
-						$T_deltaseconds[$t1] = $neighboors[$t1]->getTime() -  $neighboors[$t1-1]->getTime() ;						
+						$T_deltaseconds[$t1] = $neighboors[$t1]->getTime() -  $neighboors[$t1-1]->getTime() ;
 						$T_speed[$t1] = ($T_deltaseconds[$t1])?$T_distance[$t1]*3.6/($T_deltaseconds[$t1]):0.0; /* in km/h */
 						if ($T_deltaseconds[$t1]) $T_vario[$t1]=($T_alt[$t1]-$neighboors[$t1-1]->getAlt() ) / $T_deltaseconds[$t1];
-	
+
 						$mean_speed+=$T_speed[$t1];
 						$mean_vario+=$T_vario[$t1];
 				}
 				$mean_speed = $mean_speed/($getPointsNum-1);
 				$mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
-	
+
 				if ( ($neighboors[0]->getTime() - $neighboors[1]->getTime()  ) > 0   )  {  // the next point is more than one hour in the past
 						// echo "#"; $pointOK=0;
 				}
-	
+
 				if ($T_distance[1] < 0.5 && $T_deltaseconds[1] >2 ) {  // less than 0.5 m distance
 					$pointOK=0;
 					DEBUG("IGC",8,"[$Brecords-$p] Distance <0.5 m <br>");
 					$REJ_T_distance++;
-	
+
 					// we dont go through the other tests
 					//echo "{$lines[$i]} =>";
 					$lines[$i]{1}='X';
@@ -2158,37 +2158,37 @@ $kml_file_contents=
 					//echo "@";
 				}
 				//if ( abs ($mean_vario - $T_vario[1] ) > 6 ) {  // diff more than 6 m/sec
-				//	$pointOK=0; 
+				//	$pointOK=0;
 					//echo "#";
 				//}
-				if ( $T_deltaseconds[1] == 0 ) {  
-					$pointOK=0; 
+				if ( $T_deltaseconds[1] == 0 ) {
+					$pointOK=0;
 					$REJ_T_zero_time_diff++;
 					DEBUG("IGC",8,"[$Brecords-$p] No time Diff<br>");
 				}
 				if ( $T_alt[1]   > $this->maxAllowedHeight ) {  $pointOK=0;	$REJ_max_alt++; }
-				if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) { 
-					 $pointOK=0; 
+				if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) {
+					 $pointOK=0;
 					 $REJ_max_speed++;
 					 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_speed[1])."km/h max allowed speed<br>");
-					// echo "S"; 
+					// echo "S";
 				}
 				if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; $REJ_max_vario++;
 					// echo "V";
 					 DEBUG("IGC",8,"[$Brecords-$p] > ".abs($T_vario[1]) ."m/sec  > max allowed vario<br>");
 				}
-				if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care 
+				if ( $p<5 && ! $try_no_takeoff_detection && ! $this->forceBounds ) { // first 5 points need special care
 					$takeoffMaxSpeed=$this->maxAllowedSpeed *0.5;
 					DEBUG("IGC",8,"[$Brecords-$p] TAKEOFF sequence SPEED: ".abs($T_speed[1])." max:$takeoffMaxSpeed<br>");
-					if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {  
-						$pointOK=0;	
+					if ( abs($T_speed[1])  > $takeoffMaxSpeed ) {
+						$pointOK=0;
 						$REJ_max_speed_start++;
-						// echo "s"; 
+						// echo "s";
 					}
-					if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.4) ) {  
-						$pointOK=0; 
+					if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.4) ) {
+						$pointOK=0;
 						$REJ_max_vario_start++;
-						//echo "v"; 
+						//echo "v";
 					}
 				}
 				if (!$pointOK)  {
@@ -2197,10 +2197,10 @@ $kml_file_contents=
 					$p++;
 					if ($p==5) DEBUG("IGC",1,"Passed the strict testing (p=5)<br>");
 				}
-	
+
 			}
-	
-	
+
+
 			DEBUG("IGC",1,"REJ: [$REJ_T_distance] <0.5 distance<br>");
 			DEBUG("IGC",1,"REJ: [$REJ_T_zero_time_diff] zero_time_diff<br>");
 			DEBUG("IGC",1,"REJ: [$REJ_T_mean_speed] mean_speed diff >40km/h<br>");
@@ -2209,32 +2209,32 @@ $kml_file_contents=
 			DEBUG("IGC",1,"REJ: [$REJ_max_vario] >max_vario<br>");
 			DEBUG("IGC",1,"REJ: [$REJ_max_speed_start] >max_speed_start<br>");
 			DEBUG("IGC",1,"REJ: [$REJ_max_vario_start] >max_vario_start<br>");
-	
+
 			DEBUG("IGC",1,"Found $p valid B records out of $Brecords total<br>");
-			
+
 			if ($p>0) {
 				$done=1;
 			} else if ($Brecords>0 && ( $REJ_T_zero_time_diff/$Brecords > 0.9 ) ) { // more than 90% stopped points
-				$lines = file ($filename); 
+				$lines = file ($filename);
 				$done=1;
 				$garminSpecialCase=1;
 				$p=$Brecords;
 				DEBUG("IGC",1,"Many Stopped points, it is a Garmin Special Case<br>");
 			} else if (	!$try_no_takeoff_detection ) {
-				$try_no_takeoff_detection=1; 
+				$try_no_takeoff_detection=1;
 				DEBUG("IGC",1,"Will try no_takeoff_detection<br>");
-			} else { 
+			} else {
 				$done=1;
 			}
-			
+
 		} // while not done
 
-		//	 
+		//
 		if ($p==0)  {
 			DEBUG("IGC",1,"NO VALID POINTS FOUND");
 			return 0; // no valid points found
 		}
-		
+
 		$mod=0;
 		if ($p > $this->maxPointNum ){
 			$reduceArray=getReduceArray($p ,$this->maxPointNum);
@@ -2253,7 +2253,7 @@ $kml_file_contents=
 		$slow_points=0;
 		$slow_points_dt=0;
 		$stillOnGround=1;
-		
+
 		$tmpDate=0;
 
 		foreach($lines as $line) {
@@ -2263,13 +2263,13 @@ $kml_file_contents=
 			if  (strlen($line)==0) continue;
 
 			// if (strtoupper(substr($line,0,1)) !="B" ) echo "@$line<BR>";
-			
+
 			if (strtoupper(substr($line,0,3)) =="OLC"  ) continue; // it is an olc file , dont put the OLC... line in to the saned file
-			
+
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
 				if ( $alreadyInPoints && $points>0 ) {
 					if ( $prevPoint->gpsTime < 86200 ) {
-						// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track					
+						// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track
 						$stopReadingPoints=1;
 						DEBUG("IGC",1,"[$points] $line<br>");
 						DEBUG("IGC",1,"[$points] Found a new track (NEW HFDTE)<br>");
@@ -2278,38 +2278,38 @@ $kml_file_contents=
 
 					$this->DATE=substr($line,5,6);
 					$yr_last=substr($this->DATE,4,2);
-					// case of YY=0 (1 digit) HFDTE08070 
+					// case of YY=0 (1 digit) HFDTE08070
 					if ($yr_last=="0") $yr_last="00";
 					if ($yr_last > 80 ) $yr="19".$yr_last;
 					else $yr="20".$yr_last;
-					$this->DATE=$yr."-".substr($this->DATE,2,2)."-".substr($this->DATE,0,2);				
-										
+					$this->DATE=$yr."-".substr($this->DATE,2,2)."-".substr($this->DATE,0,2);
+
 					$alreadyInPoints=1;
 				}
-			} else if (strtoupper(substr($line,0,13)) =="HFTZOTIMEZONE" ) {  // HFTZOTimezone:3 OR HFTZOTimezone:-8  
+			} else if (strtoupper(substr($line,0,13)) =="HFTZOTIMEZONE" ) {  // HFTZOTimezone:3 OR HFTZOTimezone:-8
 				$this->timezone=substr($line,14)+0;
 				// echo $this->timezone."#^^";
-			} else if (strtoupper(substr($line,2,13)) =="GTYGLIDERTYPE" ) {  
-				// HOGTYGLIDERTYPE: Gradient Bliss 26  OR  HPGTYGliderType:Gradient Nevada 
+			} else if (strtoupper(substr($line,2,13)) =="GTYGLIDERTYPE" ) {
+				// HOGTYGLIDERTYPE: Gradient Bliss 26  OR  HPGTYGliderType:Gradient Nevada
 				if (!$this->glider ) $this->glider=trim(substr($line,16));
 				// HFGTYGLIDERTYPE
 				// HOGTYGLIDERTYPE
 			} else 	if ($line{0}=='B' ) {
 				if ($stopReadingPoints ) continue;
-				if ($line{1}=='X') { 
+				if ($line{1}=='X') {
 					DEBUG("IGC",1,"[$points] BAD : $line<br>");
-					continue ; // MARKED BAD from BEFORE 
+					continue ; // MARKED BAD from BEFORE
 				}
 				if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
-				
 
-				if  ($points==0)  { // first point 
+
+				if  ($points==0)  { // first point
 					//				echo "######## first point <br>";
 					$firstPoint=new gpsPoint($line,$this->timezone);
 					if ($this->timezone==1000) { // no timezone in the file
 						// echo "calc timezone<br>";
 						$this->timezone= getUTMtimeOffset( $firstPoint->lat,$firstPoint->lon, $this->DATE );
-						$this->timezone= getTZ( $firstPoint->lat,$firstPoint->lon, $this->DATE );						
+						$this->timezone= getTZ( $firstPoint->lat,$firstPoint->lon, $this->DATE );
 						// echo 	$this->timezone;
 						$firstPoint->timezone=$this->timezone;
 
@@ -2322,12 +2322,12 @@ $kml_file_contents=
 						$tmpDate=1;
 					}
 					// take care of day change for timezones in australia/nz etc
-					if (  $tmpTime > 86400  && $tmpDate==0 )  { // UTC date in the igc file  needs to be +1 
+					if (  $tmpTime > 86400  && $tmpDate==0 )  { // UTC date in the igc file  needs to be +1
 						$this->DATE=dates::moveDaysFromDate($this->DATE,1);
 						$tmpDate=1;
 					}
 
-					// sanity checks	
+					// sanity checks
 					if ( $firstPoint->getAlt()  > $this->maxAllowedHeight ) continue;
 					// echo "times: ".$firstPoint->gpsTime.", ".$firstPoint->getTime()." start_time: ".$this->START_TIME ."<BR> ";
 					if ( $this->forceBounds && ! $this->checkBound($firstPoint->getTime() ) ) continue; // not inside time window
@@ -2336,20 +2336,20 @@ $kml_file_contents=
 					$this->firstPointTM= $firstPoint->gpsTime;
 					$this->firstLat=$firstPoint->lat();
 					$this->firstLon=$firstPoint->lon();
-					
+
 					$this->TAKEOFF_ALT= $firstPoint->getAlt();
 					$this->MIN_ALT= $firstPoint->getAlt();
 					if ( ! $this->forceBounds) $this->START_TIME = $firstPoint->getTime();
 					$prevPoint=new gpsPoint($line,$this->timezone);
-				} else  {					
+				} else  {
 					$lastPoint=new gpsPoint($line,$this->timezone);
 					$lastPoint->gpsTime+=$day_offset;
 
 					if ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() ) ) {
-						 $lastPoint=$prevPoint; 
+						 $lastPoint=$prevPoint;
 						 continue; // not inside time window
 					}
-					
+
 					$time_diff= $lastPoint->getTime() - $prevPoint->getTime() ;
 					// echo "time diff: $time_diff # $line<br>";
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
@@ -2362,30 +2362,30 @@ $kml_file_contents=
 						$foundNewTrack=1;
 						DEBUG("IGC",1,"[$points] $line<br>");
 						DEBUG("IGC",1,"[$points] Flight at night ????<br>");
-						continue;	
+						continue;
         		    } else 	if (  $time_diff > $this->max_allowed_time_gap  )  {  // found time gap
 						// if we are forceBounds check to see if inside window
-						if ( ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() )  ) || !$this->forceBounds ) { 
-							// if we are still on the ground  we dont care about time gap 
+						if ( ( $this->forceBounds && ! $this->checkBound($lastPoint->getTime() )  ) || !$this->forceBounds ) {
+							// if we are still on the ground  we dont care about time gap
 							if ( !$stillOnGround ) {
-								// not inside time window  OR not checking go ahead				
+								// not inside time window  OR not checking go ahead
 								$lastPoint=$prevPoint;
 								$foundNewTrack=1;
 								DEBUG("IGC",1,"[$points] $line<br>");
 								DEBUG("IGC",1,"[$points] Found a new track (Time diff of $time_diff secs)<br>");
-								continue;	
+								continue;
 							}
-						} else { // inside the window, forced to continue 
-						
+						} else { // inside the window, forced to continue
+
 						}
 					}
-				
+
 					$this->LAST_POINT=$line;
-					
+
 					// compute some things
 					$tmp = $lastPoint->calcDistance($prevPoint);
 					$alt = $lastPoint->getAlt();
-					$deltaseconds = $lastPoint->getTime() - $prevPoint->getTime() ;						
+					$deltaseconds = $lastPoint->getTime() - $prevPoint->getTime() ;
 					$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
@@ -2395,45 +2395,45 @@ $kml_file_contents=
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found Takeoff <br>");
 						}
-										
+
 						if ($stillOnGround) { //takeoff scan
 							// either speed >= 15 or if we already have 2 fast points settle with speed>=10
-							if ($speed >= 15 ||  ( $speed >= 10 && $fast_points>=2 ) ) { 
-								$fast_points++;		
-								$fast_points_dt+=$deltaseconds;	
+							if ($speed >= 15 ||  ( $speed >= 10 && $fast_points>=2 ) ) {
+								$fast_points++;
+								$fast_points_dt+=$deltaseconds;
 								DEBUG("IGC",1,"[$points] $line<br>");
-								DEBUG("IGC",1,"[$points] Found a fast speed point <br>");																
+								DEBUG("IGC",1,"[$points] Found a fast speed point <br>");
 							} else { // reset takeoff scan
 								DEBUG("IGC",1,"[$points] $line<br>");
-								DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");																
-	
+								DEBUG("IGC",1,"[$points] takeoff scan: speed: $speed  time_diff: $time_diff<br>");
+
 								$fast_points=0;
 								$fast_points_dt=0;
-							}		
-							$points=0;						
-							continue;			
+							}
+							$points=0;
+							continue;
 						} else { //landing  scan
-							if ($speed < 5 ) {					
-								$slow_points++;		
-								$slow_points_dt+=$deltaseconds;	
+							if ($speed < 5 ) {
+								$slow_points++;
+								$slow_points_dt+=$deltaseconds;
 								DEBUG("IGC",1,"[$points] $line<br>");
-								DEBUG("IGC",1,"[$points] Found a slow speed point (speed, dt)=($speed,$deltaseconds)<br>");																
+								DEBUG("IGC",1,"[$points] Found a slow speed point (speed, dt)=($speed,$deltaseconds)<br>");
 							} else {
 								$slow_points=0;
 								$slow_points_dt=0;
 							}
-						}					
-	
+						}
+
 						// found landing (5 stopped points and >2mins) or 5 mins (300 secs)
-						if ( ($slow_points>5 && $slow_points_dt>180)  || $slow_points_dt>300) { 
+						if ( ($slow_points>5 && $slow_points_dt>180)  || $slow_points_dt>300) {
 							$foundNewTrack=1;
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
 						}
 
-					}					
+					}
 
-					// sanity checks	
+					// sanity checks
 					if ( $deltaseconds == 0 && !$garminSpecialCase) {  continue; }
 					if ( $alt    > $this->maxAllowedHeight ) {  continue; }
 					if ( abs($speed)  > $this->maxAllowedSpeed ) {  continue; }
@@ -2441,86 +2441,86 @@ $kml_file_contents=
 
 					$takeoffDistance=$lastPoint->calcDistance($firstPoint);
 					if ($takeoffDistance > $this->LINEAR_DISTANCE )  $this->LINEAR_DISTANCE=$takeoffDistance;
-					
+
 					// update maximum speed
 					if ($speed > $this->MAX_SPEED)  $this->MAX_SPEED=$speed;
 					$this->MEAN_SPEED +=$speed;
-					
-					// UPDATE MIN-MAX ALT											
+
+					// UPDATE MIN-MAX ALT
 					if ($alt> $this->MAX_ALT) $this->MAX_ALT=$alt;
 					if ($alt< $this->MIN_ALT) $this->MIN_ALT=$alt;
-					
-					// UPDATE MIN-MAX VARIO											
+
+					// UPDATE MIN-MAX VARIO
 					if ($vario > $this->MAX_VARIO) $this->MAX_VARIO=$vario;
 					if ($vario < $this->MIN_VARIO) $this->MIN_VARIO=$vario;
 
-					// end computing					
+					// end computing
 					$prevPoint=new gpsPoint($line,$this->timezone);
 					$prevPoint->gpsTime+=$day_offset;
 					if ($mod>=1)  {
 						if ( $reduceArray[ $points % $mod]  == 0  ) $outputLine="";
 					}
 				}
-				$points++;		   
-			}  // end else 
+				$points++;
+			}  // end else
 			$outputBuffer.=$outputLine;
 
 		} // end main loop
-		
-				//	 
+
+				//
 		if ($stillOnGround && $this->LINEAR_DISTANCE < 50 )  {
-			DEBUG("IGC",1,"NO TAKEOFF FOUND: ");			
+			DEBUG("IGC",1,"NO TAKEOFF FOUND: ");
 			return 0; // no valid points found
 		}
-		
+
 		$path_igc=dirname($this->getIGCFilename(1));
 		if ( !is_dir($path_igc) ) {
 			@mkdir($path_igc,0755);
-		} 
-		
+		}
+
 		/*write the full saned file */
 		$fullSanedFile='';
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;
-			if ($line{0}=='B' && $line{1}=='X') continue ; // MARKED BAD from BEFORE 
+			if ($line{0}=='B' && $line{1}=='X') continue ; // MARKED BAD from BEFORE
 			// if  ( strlen($line) < 23 || strlen($line) > 100  ) continue;
 			$fullSanedFile.=$line."\n";
 		}
-		
-	
+
+
 		if (! writeFile($this->getIGCFilename(2),$fullSanedFile) ) {
-		   echo "Problem writing to file (".$this->getIGCFilename(2).")"; 
-		} 
+		   echo "Problem writing to file (".$this->getIGCFilename(2).")";
+		}
 		// echo "<HR><HR>". $this->getIGCFilename(2) .strlen($fullSanedFile)."<HR><HR>";
 		/* done wrting the full saned file */
-		
+
 		// write saned IGC file
 		if (! writeFile($this->getIGCFilename(1),$outputBuffer) ) {
-		   echo "Problem writing to file (".$this->getIGCFilename(1).")"; 
-		} 
+		   echo "Problem writing to file (".$this->getIGCFilename(1).")";
+		}
 		// done write saned IGC file
-		
+
 		if ($lastPoint) {
 			$this->lastPointTM=$lastPoint->gpsTime;
 			$this->lastLon=$lastPoint->lon();
 			$this->lastLat=$lastPoint->lat();
-	
+
 			$this->LANDING_ALT= $lastPoint->getAlt();
 			$this->END_TIME =   $lastPoint->getTime();
 		} else {
 			$this->lastPointTM=0;
 			$this->lastLon=0;
 			$this->lastLat=0;
-	
+
 			$this->LANDING_ALT= 0;
-			$this->END_TIME =   0;		
+			$this->END_TIME =   0;
 		}
-		
+
 		$this->DURATION =   $this->END_TIME - $this->START_TIME ;
 		$this->MEAN_SPEED = $this->MEAN_SPEED / $points;
-				
-		return 1;	
+
+		return 1;
 	} // end function getFlightFromIGC()
 
 	function checkAirspace($updateFlightInDB=0) {
@@ -2528,8 +2528,8 @@ $kml_file_contents=
 		if (!$CONF_airspaceChecks) return 1;
 
 		require_once dirname(__FILE__).'/FN_airspace.php';
-		set_time_limit (140);	
-		
+		set_time_limit (140);
+
 		$resStr=checkAirspace($this->getIGCFilename());
 		DEBUG("checkAirspace",1,"Airspace check:");
 		if (!$resStr) {
@@ -2555,21 +2555,21 @@ $kml_file_contents=
 		if ($alreadyValidatedInPage) return;
 		$alreadyValidatedInPage=1;
 
-		set_time_limit (240);	
+		set_time_limit (240);
 		$customValidationCodeFile=dirname(__FILE__)."/site/CODE_validate_custom.php";
 		if (  $CONF_use_custom_validation && file_exists($customValidationCodeFile) ) { // we expect the result on $ok
 			include $customValidationCodeFile;
-		} else { //standard leoanrdo validation -> the server not yet working 
+		} else { //standard leoanrdo validation -> the server not yet working
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(0); // validate original file
 			$fl=  $CONF['validation']['server_url']."?file=".$IGCwebPath;
 			if ($DBGlvl) $fl.="&dbg=1";
 			DEBUG("VALIDATE_IGC",1,"Will use URL: $fl<BR>");
 			$contents =	split("\n",fetchURL($fl,30));
 			if (!$contents) return 0;
-	
+
 			foreach ( $contents as $line) DEBUG("VALIDATE",64,"$line");
 			$ok=-1;
-			if (trim($contents[0])=="OK") { 
+			if (trim($contents[0])=="OK") {
 				$ok=1;
 				$valStr=trim($contents[1]);
 			}
@@ -2586,18 +2586,18 @@ $kml_file_contents=
 
 		return $ok;
 	}
-	
+
 	function checkSanedFiles() {
 		// do some basic check for saned igc file
 		if (!is_file($this->getIGCFilename(1)) || !is_file($this->getIGCFilename(2))   ) {
-			// we have to create it 
+			// we have to create it
 			DEBUG('checkSanedFiles',1,"Saned files are missing for flight: ".$this->flightID.", we will create it<BR>");
 			if (!is_file($this->getIGCFilename(0) ) ) {
 				DEBUG('checkSanedFiles',1,"Original file is missing for flight: ".$this->flightID." <BR>".$this->getIGCFilename(0)."<BR>");
 				require_once dirname(__FILE__).'/CL_actionLogger.php';
 				$log=new Logger();
 				$log->userID  	=$this->userID;
-				$log->ItemType	=1 ; // flight; 
+				$log->ItemType	=1 ; // flight;
 				$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
@@ -2617,7 +2617,7 @@ $kml_file_contents=
 				require_once dirname(__FILE__).'/CL_actionLogger.php';
 				$log=new Logger();
 				$log->userID  	=$this->userID;
-				$log->ItemType	=1 ; // flight; 
+				$log->ItemType	=1 ; // flight;
 				$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 				$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 				$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
@@ -2631,45 +2631,45 @@ $kml_file_contents=
 				return 0;
 			}
 		}
-		
+
 		return 1;
 	}
-	
+
 	function computeScore() {
 		global $OLCScoringServerUseInternal,$OLCScoringServerPath, $scoringServerActive , $OLCScoringServerPassword;
 		global $baseInstallationPath,$CONF_allow_olc_files,$CONF,$CONF_server_id;
 
 		if (! $scoringServerActive) return 0;
-				
-		set_time_limit (240);	
-		
+
+		set_time_limit (240);
+
 		// do some basic check for saned igc file
 		if (! $this->checkSanedFiles() ) {
 			return 0;
 		}
-		
+
 		$flightScore=new flightScore($this->flightID);
 		if ($OLCScoringServerUseInternal ) {
 			$results=$flightScore->getScore( $this->getIGCFilename(1) ,1  );
-		} else {		
+		} else {
 			$results=$flightScore->getScore( $this->getIGCRelPath(1) , 0  );
 		}
 		$flightScore->parseScore($results);
 
-		// make a second pass 
+		// make a second pass
 		$flightScore->computeSecondPass($this->getIGCFilename(2));
 
 		// now is the time to search for the OLC files, manually optimization
-		// and 'inject' these values into the $flightScore object 
+		// and 'inject' these values into the $flightScore object
 		$manualScore=0;
-		
+
 		if ($CONF_allow_olc_files) {
 			// see if there is an OLC file present
 			$OLCfilename=$this->getIGCFilename().".olc";
-	
-			if (file_exists($OLCfilename) ) { 
-				DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");		
-			
+
+			if (file_exists($OLCfilename) ) {
+				DEBUG("OLC_SCORE",1,"OLC pre-optimized is used instead");
+
 				$lines=file($OLCfilename);
 	/*
 	4624328N00805128E
@@ -2686,35 +2686,35 @@ $kml_file_contents=
 
 				//$manualScoreInfo['FLIGHT_KM']=$lines[5]*1000;
 				//$manualScoreInfo['FLIGHT_POINTS']=$lines[6]+0;
-				
+
 				$factor=$lines[7]+0;
 				if ($factor==1.5) 	$this->BEST_FLIGHT_TYPE="FREE_FLIGHT";
 				if ($factor==1.75) 	$this->BEST_FLIGHT_TYPE="FREE_TRIANGLE";
 				if ($factor==2) 	$this->BEST_FLIGHT_TYPE="FAI_TRIANGLE";
-				
+
 				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_KM: ".$this->FLIGHT_KM."<BR>");
 				DEBUG('OLC_SCORE',1,"MANUAL FLIGHT_POINTS: ".$this->FLIGHT_POINTS."<BR>");
 				DEBUG('OLC_SCORE',1,"MANUAL BEST_FLIGHT_TYPE: ".$this->BEST_FLIGHT_TYPE."<BR>");
-				
+
 				$manualScoreTP=array();
-				for($i=0;$i<5;$i++) {				
+				for($i=0;$i<5;$i++) {
 				    //              01234567890123456
-					// must convert 4624328N00805128E to N54:54.097 W02:40.375 
+					// must convert 4624328N00805128E to N54:54.097 W02:40.375
 					$str=substr($lines[$i],7,1) .substr($lines[$i],0,2).':'.substr($lines[$i],2,2).'.'.substr($lines[$i],4,3).' '.
 						 substr($lines[$i],16,1).substr($lines[$i],8,3).':'.substr($lines[$i],11,2).'.'.substr($lines[$i],13,3);
 					DEBUG('OLC_SCORE',1,"MANUAL TurnPoint ".($i+1).": $str<BR>");
-					// $manualScoreTP[$i+1]=$str;	
+					// $manualScoreTP[$i+1]=$str;
 					$manualScoreTP[$i+1]=sprintf("B%02d%02d%02d%sA0000000000",00,00,00,$lines[$i]);
-						
+
 				}
-				
+
 				$defaultMethodID= $CONF['scoring']['default_set'];
 				$defaultScore=$flightScore->scores[$defaultMethodID];
 				$this->autoScore=$defaultScore['bestScore'];
-				//echo "<pre>";			
+				//echo "<pre>";
 				//print_r($flightScore->scores);
 				//echo "</pre>";
-				
+
 				foreach ( $flightScore->scores as $methodID=>$scoreForMethod) {
 					$distance=$this->FLIGHT_KM/1000;
 					$flightScore->scores[$methodID][$this->BEST_FLIGHT_TYPE]['distance']=$distance;
@@ -2723,7 +2723,7 @@ $kml_file_contents=
 					for($j=1;$j<=5;$j++) {
 						$flightScore->scores[$methodID][$this->BEST_FLIGHT_TYPE]['tp'][$j]=$manualScoreTP[$j];
 					}
-					
+
 					// update the best score, in case we have a new bestScoreType
 					foreach($flightScore->scores[$methodID] as $scoreType=>$scoreDetails ) {
 						//echo "<h1>$scoreType</h1>";
@@ -2732,18 +2732,18 @@ $kml_file_contents=
 						if ($scoreDetails['score'] > $scoreForMethod['bestScore'] ) {
 							//echo "FOUND BETTER SCORE !!!!!!!!!<BR><BR>";
 							$flightScore->scores[$methodID]['bestScore']=$scoreDetails['score'];
-							$flightScore->scores[$methodID]['bestScoreType']=$this->BEST_FLIGHT_TYPE;	
-							$flightScore->scores[$methodID]['bestDistance']=$scoreDetails['distance'];	
-							
+							$flightScore->scores[$methodID]['bestScoreType']=$this->BEST_FLIGHT_TYPE;
+							$flightScore->scores[$methodID]['bestDistance']=$scoreDetails['distance'];
+
 						}
-					}			
-				}					
+					}
+				}
 				//echo "<pre>";
 				//print_r($flightScore->scores);
-				//echo "</pre>";	
-							 
-				$manualScore=1;								
-				
+				//echo "</pre>";
+
+				$manualScore=1;
+
 			}
 		}
 
@@ -2752,7 +2752,7 @@ $kml_file_contents=
 
 		$defaultMethodID= $CONF['scoring']['default_set'];
 		$defaultScore=$flightScore->scores[$defaultMethodID];
-		
+
 		$this->MAX_LINEAR_DISTANCE=$flightScore->MAX_LINEAR_DISTANCE;
 		if ($manualScore) {
 			// $this->autoScore=$defaultScore['bestScore'];
@@ -2765,7 +2765,7 @@ $kml_file_contents=
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
@@ -2781,62 +2781,62 @@ $kml_file_contents=
 		if ($OLCScoringServerUseInternal ) {
 			$file=$this->getIGCFilename(1);
 
-			$path=dirname( __FILE__ ).'/server';		
+			$path=dirname( __FILE__ ).'/server';
 			$igcFilename=tempnam($path."/tmpFiles","IGC.");  //urlencode($basename)
 			@unlink($igcFilename);
-			
+
 			$lines=file($file);
-	
+
 			$cont="";
 			foreach($lines as $line) {
 				$cont.=$line;
-			}	
-	
+			}
 
-			if (!$handle = fopen($igcFilename, 'w')) exit; 
-			if (!fwrite($handle, $cont))    exit; 
-			fclose ($handle); 
-	
-			@chmod ($path."/olc", 0755);  
+
+			if (!$handle = fopen($igcFilename, 'w')) exit;
+			if (!fwrite($handle, $cont))    exit;
+			fclose ($handle);
+
+			@chmod ($path."/olc", 0755);
 			if ($CONF['os']=='windows') $olcEXE='olc.exe';
 			else $olcEXE='olc';
-			
+
 			$cmd=$path."/$olcEXE $igcFilename";
 			DEBUG('OLC_SCORE',1,"cmd=$cmd");
 			exec($cmd,$res);
-			
+
 			DEBUG('OLC_SCORE',1,"result has ".count($res)." lines<BR>");
 			$contents=array();
 			foreach($res as $line) {
 					DEBUG('OLC_SCORE',1,$line.'<BR>');
-					if (substr($line,0,4)=="OUT ") { 
+					if (substr($line,0,4)=="OUT ") {
 						// echo substr($line,4)."\n";
 						$contents[]=substr($line,4);
 					}
 			}
-	
-			@unlink($igcFilename);	
+
+			@unlink($igcFilename);
 
 		} else {
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$this->getIGCRelPath(1); // score saned file
-	
+
 			$fl= $OLCScoringServerPath."?pass=".$OLCScoringServerPassword."&file=".$IGCwebPath;
 			DEBUG("OLC_SCORE",1,"Will use URL: $fl<BR>");
-			//$contents = file($fl); 
+			//$contents = file($fl);
 			$contents =	split("\n",fetchURL($fl,40));
 			if (!$contents) return;
-		}				
+		}
 
 		$turnpointNum=1;
-		foreach(  $contents  as $line) {	
-			if (!$line) continue;		
+		foreach(  $contents  as $line) {
+			if (!$line) continue;
 			DEBUG("OLC_SCORE",1,"LINE: $line<BR>\n");
-			$var_name  = strtok($line,' '); 
-			$var_value = strtok(' '); 
+			$var_name  = strtok($line,' ');
+			$var_value = strtok(' ');
 			if ($var_name{0}=='p' ) {
-				// sample line 
-				// p0181 12:45:43 N53:20.898 W 1:48.558 
-				// p0181 12:45:43 N53:20.898 W12:48.558 
+				// sample line
+				// p0181 12:45:43 N53:20.898 W 1:48.558
+				// p0181 12:45:43 N53:20.898 W12:48.558
 				preg_match("/.+ .+ ([NS][ \d][^ ]+) ([WE][ \d][^ ]+)/i",$line,$line_parts);
 				$var_name="turnpoint".$turnpointNum;
 				$lat= str_replace(" ","0",trim($line_parts[1]));
@@ -2844,16 +2844,16 @@ $kml_file_contents=
 				$var_value =$lat." ".$lon;
 				$turnpointNum++;
 			}
-			
+
 			if (! $manualScore) {
-				$this->$var_name=trim($var_value);				
-			} else {				
+				$this->$var_name=trim($var_value);
+			} else {
 				if ($var_name=='MAX_LINEAR_DISTANCE') $this->$var_name=trim($var_value);
 				if ($var_name=='FLIGHT_POINTS') $this->autoScore=trim($var_value);
 			}
-			
+
 			DEBUG("OLC_SCORE",1,"#".$var_name."=".$var_value."#<br>\n");
-		}		
+		}
 		*/
 
 
@@ -2863,14 +2863,14 @@ $kml_file_contents=
 
 	function makeScoreLogEntry(){
 		global $CONF_server_id;
-		
+
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->getFromDB();
-	
+
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 8 ;  //1  => add  2  => edit , 8=score flight;
@@ -2894,7 +2894,7 @@ $kml_file_contents=
 		}
 
 		// if no file exists do the proccess now
-		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues(); 
+		if ( ! is_file($this->getPointsFilename(1) ) || $forceRefresh ) $this->storeIGCvalues();
 
 		$lines = file($this->getPointsFilename(1)); // get the normalized with constant time step points array
 		if (!$lines) return;
@@ -2910,7 +2910,7 @@ $kml_file_contents=
 
 		for($k=3;$k< count($lines);$k++){
 			$line = trim($lines[$k]);
-			if (strlen($line) == 0) continue;			  
+			if (strlen($line) == 0) continue;
 			eval($line);
 			$lon=-$lon;
 			if ( $lat  > $max_lat )  $max_lat =$lat  ;
@@ -2934,16 +2934,16 @@ $kml_file_contents=
 		$totalHeight1=calc_distance($min_lat, $min_lon,$max_lat, $min_lon);
 		$totalHeight2=calc_distance($min_lat, $max_lon,$max_lat, $max_lon);
 		$totalHeight=max($totalHeight1,$totalHeight2);
-	
-		if ($totalWidth> $totalHeight ) {  
+
+		if ($totalWidth> $totalHeight ) {
 			// Landscape  style
-			DEBUG("MAP",1,"Landscape style <BR>");		
+			DEBUG("MAP",1,"Landscape style <BR>");
 			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalHeight/totalWidth: ".( $totalHeight / $totalWidth)."<br>");
-			// if ( $totalHeight / $totalWidth < 3/4 ) $totalHeight = (3/4) *  $totalWidth ;			
+			// if ( $totalHeight / $totalWidth < 3/4 ) $totalHeight = (3/4) *  $totalWidth ;
 			$mapWidthPixels=600;
 			$mapHeightPixels=$mapWidthPixels * ( $totalHeight / $totalWidth);
-	
-		} else { 
+
+		} else {
 			// portait style
 			DEBUG("MAP",1,"Portait style <BR>");
 			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalWidth/totalHeight: ".( $totalWidth / $totalHeight)."<br>");
@@ -2952,27 +2952,27 @@ $kml_file_contents=
 			$mapHeightPixels=$mapWidthPixels * ( $totalHeight / $totalWidth);
 		}
 
-		DEBUG("MAP",1,"MAP  min_lat: $min_lat, min_lon: $min_lon, max_lat: $max_lat, max_lon: $max_lon <BR>");	
+		DEBUG("MAP",1,"MAP  min_lat: $min_lat, min_lon: $min_lon, max_lat: $max_lat, max_lon: $max_lon <BR>");
 
 		require_once dirname(__FILE__).'/CL_hgt.php';
 
 
-		$latStep= ($max_lat-$min_lat) /  $mapHeightPixels; 
+		$latStep= ($max_lat-$min_lat) /  $mapHeightPixels;
 		$lonStep= ($max_lon-$min_lon) /  $mapWidthPixels ;
-		
-		
+
+
 		$max_ground_elev  =0;
 
 		$lon=$min_lon ;
 		for ($x=0;$x<$mapWidthPixels;$x++) {
-			
-			$lat=$min_lat ;		
-			for ($y=0;$y<$mapHeightPixels;$y++) {		
-					
+
+			$lat=$min_lat ;
+			for ($y=0;$y<$mapHeightPixels;$y++) {
+
 				// echo "lat:$lat lon:$lon<BR>";
 
-				// $lon=$min_lon+ $x * ($max_lon-$min_lon) /  $mapWidthPixels; 
-				// $lat=$min_lat+ $y * ($max_lat-$min_lat) / $mapHeightPixels; 
+				// $lon=$min_lon+ $x * ($max_lon-$min_lon) /  $mapWidthPixels;
+				// $lat=$min_lat+ $y * ($max_lat-$min_lat) / $mapHeightPixels;
 				$alt=hgt::getHeight($lat,$lon);
 				//echo "$alt#";
 				if ($alt >$max_ground_elev  ) $max_ground_elev  =$alt;
@@ -2988,11 +2988,11 @@ $kml_file_contents=
 		// print_r($mapLatLon);
 
   		$img=imagecreatetruecolor($mapWidthPixels,$mapHeightPixels);
-		   
+
 		$backColor =imagecolorallocate ($img,214,223,209);
 		// $backColor =imagecolorallocate ($this->img,73,76,50);
 		if ($backColor==-1) echo "FAILED TO allocate new color<br>";
-		// imagefill($this->img,0,0, 1 );	
+		// imagefill($this->img,0,0, 1 );
 
 		imagefilledrectangle($img, 0, 0, $mapWidthPixels-1, $mapHeightPixels-1, $backColor);
 
@@ -3009,7 +3009,7 @@ $kml_file_contents=
 
 		$factor= 256/$max_ground_elev;
 		for ($x=0;$x<$mapWidthPixels;$x++) {
-			for ($y=0;$y<$mapHeightPixels;$y++) {		
+			for ($y=0;$y<$mapHeightPixels;$y++) {
 				$color =$cMap[$mapEvelGnd[$x][$mapHeightPixels-$y] * $factor  - 1];
 				imagesetpixel ( $img, $x, $y, $color );
 			}
@@ -3021,8 +3021,8 @@ $kml_file_contents=
 			$lat=$lat_arr[$i];
 			$lon=$lon_arr[$i];
 
-			$x= ( $lon - $min_lon) * $mapWidthPixels/ ($max_lon-$min_lon) ; 
-			$y= ( $lat - $min_lat) * $mapHeightPixels/ ($max_lat-$min_lat) ; 
+			$x= ( $lon - $min_lon) * $mapWidthPixels/ ($max_lon-$min_lon) ;
+			$y= ( $lat - $min_lat) * $mapHeightPixels/ ($max_lat-$min_lat) ;
 			imagesetpixel ( $img, $x, $mapHeightPixels-$y, $track_color  );
 		}
 
@@ -3031,29 +3031,29 @@ $kml_file_contents=
 		imagejpeg($img, $filename , 85);
 		imagedestroy($img);
 		return;
-	
+
 	}
 
 	function getMapFromServer($num=0) {
 		global $moduleRelPath,$mapServerActive;
 		if (!$mapServerActive) return;
-	
+
 		require_once dirname(__FILE__)."/CL_map.php";
-	
-		$filename=$this->getIGCFilename(1);  
-		$lines = @file ($filename); 
-		if (!$lines ) return; 
-	
+
+		$filename=$this->getIGCFilename(1);
+		$lines = @file ($filename);
+		if (!$lines ) return;
+
 		$i=0;
-	
+
 		$min_lat=1000;
 		$max_lat=-1000;
 		$min_lon=1000;
 		$max_lon=-1000;
-	
+
 		foreach($lines as $line) {
 			$line=trim($line);
-			if  (strlen($line)==0) continue;				
+			if  (strlen($line)==0) continue;
 			if ($line{0}=='B') {
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					if ( $thisPoint->lat  > $max_lat )  $max_lat =$thisPoint->lat  ;
@@ -3061,89 +3061,89 @@ $kml_file_contents=
 					if ( $thisPoint->lon  > $max_lon )  $max_lon =$thisPoint->lon  ;
 					if ( $thisPoint->lon  < $min_lon )  $min_lon =$thisPoint->lon  ;
 					$i++;
-			} 
+			}
 		}
 		if ($i==0) return; // no B records found
-	
+
 		$lat_diff=$max_lat-$min_lat;
 		$lon_diff=$max_lon-$min_lon;
-	
-		DEBUG("MAP",1,"MAP  min_lat: $min_lat, min_lon: $min_lon, max_lat: $max_lat, max_lon: $max_lon <BR>");	
-	
-		if ($lat_diff > 20 || $lon_diff > 20 ) return; // too much 
-		
+
+		DEBUG("MAP",1,"MAP  min_lat: $min_lat, min_lon: $min_lon, max_lat: $max_lat, max_lon: $max_lon <BR>");
+
+		if ($lat_diff > 20 || $lon_diff > 20 ) return; // too much
+
 		list($MAP_LEFT,$MAP_TOP,$UTMzone,$UTMlatZone)=utm(-$max_lon,$max_lat);
 		list($MAP_RIGHT,$MAP_BOTTOM,$UTMzone2,$UTMlatZone2)=utm(-$min_lon,$min_lat);
-		
+
 		$totalWidth1=calc_distance($min_lat, $min_lon,$min_lat, $max_lon);
 		$totalWidth2=calc_distance($max_lat, $min_lon,$max_lat, $max_lon);
 		$totalWidth=max($totalWidth1,$totalWidth2);
 		$totalWidth_initial=$totalWidth;
 		$totalHeight=$MAP_TOP-$MAP_BOTTOM;
-	
+
 		DEBUG("MAP",1,"MAP (right, left) :".$MAP_RIGHT." [".$UTMzone2."] ,".$MAP_LEFT."[".$UTMzone."]<BR>");
 		DEBUG("MAP",1,"MAP (top, bottom) :".$MAP_TOP." ,".$MAP_BOTTOM."<BR>");
 		DEBUG("MAP",1,"MAP (witdh,height) :".$totalWidth.",".$totalHeight."<BR>");
-		
-		if ($totalWidth> $totalHeight ) {  
+
+		if ($totalWidth> $totalHeight ) {
 			// Landscape  style
-			DEBUG("MAP",1,"Landscape style <BR>");		
+			DEBUG("MAP",1,"Landscape style <BR>");
 			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalHeight/totalWidth: ".( $totalHeight / $totalWidth)."<br>");
-			if ( $totalHeight / $totalWidth < 3/4 ) $totalHeight = (3/4) *  $totalWidth ;			
-		} else { 
+			if ( $totalHeight / $totalWidth < 3/4 ) $totalHeight = (3/4) *  $totalWidth ;
+		} else {
 			// portait style
 			DEBUG("MAP",1,"Portait style <BR>");
 			DEBUG("MAP",1,"totalWidth: $totalWidth, totalHeight: $totalHeight, totalWidth/totalHeight: ".( $totalWidth / $totalHeight)."<br>");
 			if ( $totalWidth  / $totalHeight < 3/4 )  $totalWidth  = (3/4) * $totalHeight ;
 		}
-	
+
 		$marginHor=2000  + floor ( $totalWidth / 20000 ) * 1000 +  ($totalWidth - ($totalWidth_initial))/2 ;   //in meters
 		$marginVert=2000 + floor ( $totalHeight / 20000 ) * 1000 + ($totalHeight - ($MAP_TOP-$MAP_BOTTOM))/2;   //in meters
-	
-		if ($marginHor > $marginVert ) {  
+
+		if ($marginHor > $marginVert ) {
 			// landscape style ...
 			if ( $marginVert / $marginHor < 3/4 ) $marginVert = (3/4) *  $marginHor  ;
-		} else { 
+		} else {
 			// portait style
 			if ( $marginHor / $marginVert < 3/4 )  $marginHor = (3/4) * $marginVert ;
 		}
-		
+
 		DEBUG("MAP",1,"marginHor: $marginHor, marginVert:$marginVert <br>");
 
 		$flMap=new flightMap($UTMzone,$UTMlatZone, $MAP_TOP + $marginVert, $MAP_LEFT - $marginHor,$UTMzone2, $UTMlatZone2, $MAP_BOTTOM - $marginVert ,$MAP_RIGHT +$marginHor  , 600,800,$this->getIGCFilename(1),$this->getMapFilename(0),$this->is3D() );
 		DEBUG("MAP",1,"MAP Required m/pixel = ".$flMap->metersPerPixel."<br>");
 		$flMap->drawFlightMap();
-	
+
 	}
 
 	function getFlightFromDB($flightID,$updateTakeoff=1,$row=array()) {
 	  global $db,$CONF_photosPerFlight;
   	  global $flightsTable;
 	  global $nativeLanguage,$currentlang;
-	  
+
 	  if ( count($row) ) $useData=true;
 	  else $useData=false;
 
 	  if (!$useData) {
 		  $query="SELECT * FROM $flightsTable  WHERE ID=".$flightID." ";
-	
-		  $res= $db->sql_query($query);	
+
+		  $res= $db->sql_query($query);
 		  # Error checking
 		  if($res <= 0){
 			 echo("<H3> Error in getFlightFromDB() query! $query</H3>\n");
 			 exit();
 		  }
-			
+
 		  if (! $row = $db->sql_fetchrow($res) ) {
 		  echo "###### ERRROR ####$query###";
-			  return 0;	  
+			  return 0;
 		  }
 	  }
-	  
+
 		$this->flightID=$flightID;
 		$name=getPilotRealName($row["userID"],$row["userServerID"]);
-		$this->userName=$name;		
-		 
+		$this->userName=$name;
+
 		$this->serverID=$row["serverID"];
 		$this->excludeFrom=$row["excludeFrom"];
 
@@ -3158,34 +3158,34 @@ $kml_file_contents=
 		$this->NACclubID=$row["NACclubID"];
 		/// Martin Jursa, 17.05.2007
 		$this->NACid=$row["NACid"];
-		$this->cat=$row["cat"];		
-		$this->subcat=$row["subcat"];	
-		$this->category=$row["category"];		
-		$this->active=$row["active"];		
-		$this->private=$row["private"];		
-		
-		$this->gliderCertCategory=$row["gliderCertCategory"];		
+		$this->cat=$row["cat"];
+		$this->subcat=$row["subcat"];
+		$this->category=$row["category"];
+		$this->active=$row["active"];
+		$this->private=$row["private"];
 
-		$this->validated=$row["validated"];		
-		$this->grecord=$row["grecord"];		
-		$this->validationMessage=$row["validationMessage"];	
+		$this->gliderCertCategory=$row["gliderCertCategory"];
+
+		$this->validated=$row["validated"];
+		$this->grecord=$row["grecord"];
+		$this->validationMessage=$row["validationMessage"];
 
 		$this->airspaceCheck=$row["airspaceCheck"]+0;
 		$this->airspaceCheckFinal=$row["airspaceCheckFinal"]+0;
 		$this->airspaceCheckMsg=$row["airspaceCheckMsg"];
 		$this->checkedBy=$row["checkedBy"];
 
-		$this->timesViewed=$row["timesViewed"];		
-		$this->dateAdded=$row["dateAdded"];		
-		$this->dateUpdated=$row["dateUpdated"];		
-		$this->timezone=$row["timezone"];		
+		$this->timesViewed=$row["timesViewed"];
+		$this->dateAdded=$row["dateAdded"];
+		$this->dateUpdated=$row["dateUpdated"];
+		$this->timezone=$row["timezone"];
 
 		$this->filename=$row["filename"];
 		$this->userID=$row["userID"];
 		$this->comments=$row["comments"];
-		
-		$this->glider=$row["glider"];  
-		$this->gliderBrandID =$row["gliderBrandID"];  
+
+		$this->glider=$row["glider"];
+		$this->gliderBrandID =$row["gliderBrandID"];
 		$this->linkURL=$row["linkURL"];
 
 		$this->hasPhotos=$row["hasPhotos"];
@@ -3200,13 +3200,13 @@ $kml_file_contents=
 		$this->takeoffVinicity=$row["takeoffVinicity"];
 		$this->landingID=$row["landingID"];
 		$this->landingVinicity=$row["landingVinicity"];
-		
+
 		$this->DATE=$row["DATE"];
 		$this->MAX_SPEED =$row["MAX_SPEED"];
 		$this->MEAN_SPEED =$row["MEAN_SPEED"];
 		$this->MAX_ALT =$row["MAX_ALT"];
 		$this->MIN_ALT =$row["MIN_ALT"];
-		$this->TAKEOFF_ALT=$row["TAKEOFF_ALT"]; 
+		$this->TAKEOFF_ALT=$row["TAKEOFF_ALT"];
 		$this->MAX_VARIO =$row["MAX_VARIO"];
 		$this->MIN_VARIO =$row["MIN_VARIO"];
 		$this->LINEAR_DISTANCE =$row["LINEAR_DISTANCE"];
@@ -3215,12 +3215,12 @@ $kml_file_contents=
 		$this->END_TIME=$row["END_TIME"];
 		$this->DURATION=$row["DURATION"];
 
-		$this->MAX_LINEAR_DISTANCE =$row["MAX_LINEAR_DISTANCE"];		
+		$this->MAX_LINEAR_DISTANCE =$row["MAX_LINEAR_DISTANCE"];
 		$this->BEST_FLIGHT_TYPE=$row["BEST_FLIGHT_TYPE"];
 		$this->FLIGHT_KM=$row["FLIGHT_KM"];
-		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];	  	  
-		
-		$this->autoScore=$row["autoScore"];	
+		$this->FLIGHT_POINTS=$row["FLIGHT_POINTS"];
+
+		$this->autoScore=$row["autoScore"];
 
 		$this->externalFlightType=$row["externalFlightType"];
 		$this->isLive=$row["isLive"];
@@ -3232,18 +3232,18 @@ $kml_file_contents=
 		$this->lastLon=$row["lastLon"];
 		$this->forceBounds=$row["forceBounds"];
 
-		$this->hash=$row["hash"];	
+		$this->hash=$row["hash"];
 
-//to be deleted START 
+//to be deleted START
 //		$this->FIRST_POINT=$row["FIRST_POINT"];
 //		$this->LAST_POINT=$row["LAST_POINT"];
 
 /*
-		$this->turnpoint1=$row["turnpoint1"];		
-		$this->turnpoint2=$row["turnpoint2"];		
-		$this->turnpoint3=$row["turnpoint3"];		
-		$this->turnpoint4=$row["turnpoint4"];		
-		$this->turnpoint5=$row["turnpoint5"];		
+		$this->turnpoint1=$row["turnpoint1"];
+		$this->turnpoint2=$row["turnpoint2"];
+		$this->turnpoint3=$row["turnpoint3"];
+		$this->turnpoint4=$row["turnpoint4"];
+		$this->turnpoint5=$row["turnpoint5"];
 */
 
 
@@ -3253,18 +3253,18 @@ $kml_file_contents=
 //to be deleted END
 
 
-		// now recompute the 
+		// now recompute the
 		// $this->originalURL
-		// $this->originalKML		
+		// $this->originalKML
 		$this->getOriginalKML();
 		$this->getOriginalURL();
-		
+
 		if (!$useData) {
 	  		$db->sql_freeresult($res);
 		}
-		
+
 		if ($this->filename && $updateTakeoff) $this->updateTakeoffLanding();
-		return 1;	
+		return 1;
 	}
 
 	function updateTakeoffLanding() {
@@ -3274,25 +3274,25 @@ $kml_file_contents=
 		$firstPoint=new gpsPoint('',$this->timezone);
 		$firstPoint->setLat($this->firstLat);
 		$firstPoint->setLon($this->firstLon);
-		$firstPoint->gpsTime=$this->firstPointTM;				
+		$firstPoint->gpsTime=$this->firstPointTM;
 
 		$lastPoint=new gpsPoint('',$this->timezone);
 		$lastPoint->setLat($this->lastLat);
 		$lastPoint->setLon($this->lastLon);
 		$lastPoint->gpsTime=$this->lastPointTM;
-		
+
 		//$firstPoint=new gpsPoint($this->FIRST_POINT,$this->timezone);
 		//$lastPoint=new gpsPoint($this->LAST_POINT,$this->timezone);
 
-		// calc TAKEOFF - LANDING PLACES	
-		if (count($waypoints)==0) 
+		// calc TAKEOFF - LANDING PLACES
+		if (count($waypoints)==0)
 			$waypoints=getWaypoints();
-	
+
 		$takeoffIDTmp=0;
 		$minTakeoffDistance=1000000;
 		$landingIDTmp=0;
 		$minLandingDistance=1000000;
-	
+
 		foreach($waypoints as $waypoint) {
 		   $takeoff_distance = $firstPoint->calcDistance($waypoint);
 		   $landing_distance = $lastPoint->calcDistance($waypoint);
@@ -3307,13 +3307,13 @@ $kml_file_contents=
 		}
 
 		if ( $this->takeoffID!=$takeoffIDTmp || $this->takeoffVinicity!=$minTakeoffDistance ||
-	   		 $this->landingID!=$landingIDTmp || $this->landingVinicity!=$minLandingDistance ) 
+	   		 $this->landingID!=$landingIDTmp || $this->landingVinicity!=$minLandingDistance )
 		{
-			  $query="UPDATE $flightsTable SET takeoffID='".$takeoffIDTmp."',  takeoffVinicity=".$minTakeoffDistance.", 
+			  $query="UPDATE $flightsTable SET takeoffID='".$takeoffIDTmp."',  takeoffVinicity=".$minTakeoffDistance.",
 					  landingID='".$landingIDTmp."', landingVinicity=".$minLandingDistance."  WHERE ID=".$this->flightID." ";
 		   	  // echo $query;
 
-			  $res= $db->sql_query($query);	
+			  $res= $db->sql_query($query);
 			  # Error checking
 			  if($res <= 0){
 				 echo("<H3> Error in Update Takeoff - landing  query! </H3>\n");
@@ -3321,7 +3321,7 @@ $kml_file_contents=
 			  }
 
 		}
-		
+
 		$this->takeoffID=$takeoffIDTmp;
 		$this->takeoffVinicity=$minTakeoffDistance;
 		$this->landingID=$landingIDTmp;
@@ -3369,14 +3369,14 @@ $kml_file_contents=
 		}
 
 		$oldFilename=$this->getIGCFilename() ;
-		$oldFilenameSaned=$this->getIGCFilename(1) ; 
-		$oldFilenameSanedFull=$this->getIGCFilename(2) ; 
-		$oldOLCfile=$this->getIGCFilename(0).".olc"; 
-		
+		$oldFilenameSaned=$this->getIGCFilename(1) ;
+		$oldFilenameSanedFull=$this->getIGCFilename(2) ;
+		$oldOLCfile=$this->getIGCFilename(0).".olc";
+
 		$this->filename=$newName;
 
 		@rename($oldFilename,$this->getIGCFilename() );
-		@rename($oldFilenameSaned,$this->getIGCFilename(1) );		
+		@rename($oldFilenameSaned,$this->getIGCFilename(1) );
 		@rename($oldFilenameSanedFull,$this->getIGCFilename(2) );
 		@rename($oldOLCfile,$this->getIGCFilename(0).".olc");
 
@@ -3384,7 +3384,7 @@ $kml_file_contents=
 		$query="UPDATE $flightsTable SET filename='".$this->filename."' WHERE ID=".$this->flightID;
 		// echo $query."<HR>";
 		$res= $db->sql_query($query );
-		if($res <= 0){   
+		if($res <= 0){
 			 echo "Error renaming IGC file for flight ".$this->flightID." : $query<BR>";
 		}
 
@@ -3392,12 +3392,12 @@ $kml_file_contents=
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
 		$log->ActionID  = 16 ;  //1  => add  2  => edit; 4  => delete ; 16 -> rename trackog
-		$log->ActionXML	= 
-'{ 
+		$log->ActionXML	=
+'{
 	"serverID": '. ( $this->serverID?$this->serverID:$CONF_server_id).',
 	"id": '.($isLocal ? $this->flightID : $this->original_ID  ).',
 	"linkIGC": "'.$this->getIGC_URL().'",
@@ -3445,21 +3445,21 @@ $kml_file_contents=
 		$res= $db->sql_query($query);
 
         $query="UPDATE $deletedFlightsTable Set dateUpdated='".gmdate("Y-m-d H:i:s")."' where ID=".$this->flightID." ";
-	    $res= $db->sql_query($query); 
+	    $res= $db->sql_query($query);
 
 		$query="DELETE from $flightsTable  WHERE ID=".$this->flightID." ";
 		// echo $query;
-		$res= $db->sql_query($query);	
+		$res= $db->sql_query($query);
 	    # Error checking
 	    if($res <= 0){
 		  echo("<H3> Error in delete Flight query! </H3>\n");
 		  exit();
  	    }
-		
-		// save a copy 
+
+		// save a copy
 		$this->flightScore=new flightScore($this->flightID);
 		$this->flightScore->getFromDB();
-		
+
 		$flightScore=new flightScore($this->flightID);
 		$flightScore->deleteFromDB();
 		// Now delete the files
@@ -3482,19 +3482,19 @@ $kml_file_contents=
 				$this->deleteFile($this->getChartFilename("takeoff_distance",$metric_system,$raw) );
 			}
 		}
-		
+
 		if ($this->hasPhotos) {
 			$flightPhotos=new flightPhotos($this->flightID);
 			$flightPhotos->deleteAllPhotos(0);
 		}
-		
-		// Now also hide/unhide same flights 
+
+		// Now also hide/unhide same flights
 		$this->hideSameFlights();
-		
+
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id) ;
 		$log->ActionID  = 4 ;  //1  => add  2  => edit; 4  => delete
@@ -3512,54 +3512,54 @@ $kml_file_contents=
 		global $flightsTable,$CONF_photosPerFlight,$CONF_server_id;
 
 		if ($update) {
-			$query="REPLACE INTO ";		
+			$query="REPLACE INTO ";
 			$fl_id_1="ID,dateAdded,";
 			$fl_id_2=$this->flightID.",'".$this->dateAdded."',";
 			$this->active=1;
 		}else {
-			$query="INSERT INTO ";		
+			$query="INSERT INTO ";
 			$fl_id_1="dateAdded,";
 
 			$this->active=0;
 			if (!$this->dateAdded )
-				$this->dateAdded= gmdate("Y-m-d H:i:s"); 
+				$this->dateAdded= gmdate("Y-m-d H:i:s");
 
 			// $fl_id_2="now(),";
 			$fl_id_2=" '".$this->dateAdded."',";
 
 			$this->timesViewed=0;
 		}
-		
-		$this->dateUpdated = gmdate("Y-m-d H:i:s"); 
+
+		$this->dateUpdated = gmdate("Y-m-d H:i:s");
 
 	/*
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
-			$var_name="photo".$i."Filename";			
+			$var_name="photo".$i."Filename";
 			$p1.="$var_name, ";
 			$p2.="'".$this->$var_name."',";
 		}
 	*/
-		
+
 		// we dont store $originalURL $originalKML. for leonardo originated flights...
-		
+
 		$originalURL = $this->originalURL ;
-		$originalKML = $this->originalKML ;	
+		$originalKML = $this->originalKML ;
 		if ( $this->serverID != 0 ) {
 			global $CONF;
 			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] == 1  ) {
 				$originalURL='';
-				$originalKML='';				
+				$originalKML='';
 			}
 		}
-		
+
 		// make sure it evaluates to something
 		$this->gliderCertCategory+=0;
-		
+
 		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
 		cat,subcat,category,active, private ,
 		gliderCertCategory,
-		validated,grecord,validationMessage, 
+		validated,grecord,validationMessage,
 		hash, serverID, originalURL, originalKML, original_ID,
 		originalUserID ,userServerID,
 		excludeFrom,
@@ -3567,7 +3567,7 @@ $kml_file_contents=
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,NACid,
 		comments, glider, gliderBrandID, linkURL, timesViewed,
-		
+
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
 		timezone,
@@ -3576,7 +3576,7 @@ $kml_file_contents=
 		MEAN_SPEED ,
 		MAX_ALT ,
 		MIN_ALT ,
-		TAKEOFF_ALT, 
+		TAKEOFF_ALT,
 		MAX_VARIO ,
 		MIN_VARIO ,
 		LINEAR_DISTANCE , ".
@@ -3592,21 +3592,21 @@ $kml_file_contents=
 		forceBounds,
 		externalFlightType,	isLive,
 		firstPointTM, firstLat, firstLon,
-		lastPointTM, lastLat, lastLon 
-		
+		lastPointTM, lastLat, lastLon
+
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
 		$this->gliderCertCategory,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
-		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID, 
+		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID,
 		'$this->originalUserID' , $this->userServerID,
 		$this->excludeFrom,
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,
 		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
-		
+
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',
 		$this->timezone,
@@ -3615,7 +3615,7 @@ $kml_file_contents=
 		$this->MEAN_SPEED ,
 		$this->MAX_ALT ,
 		$this->MIN_ALT ,
-		$this->TAKEOFF_ALT, 
+		$this->TAKEOFF_ALT,
 		$this->MAX_VARIO ,
 		$this->MIN_VARIO ,
 		$this->LINEAR_DISTANCE , ".
@@ -3630,10 +3630,10 @@ $kml_file_contents=
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,
 		".($this->firstPointTM+0).", $this->firstLat, $this->firstLon,
-		".($this->lastPointTM+0).", $this->lastLat, $this->lastLon 
+		".($this->lastPointTM+0).", $this->lastLat, $this->lastLon
 
 		)";
-	
+
 		//echo $query;
 		$result = $db->sql_query($query);
 		if (!$result) {
@@ -3646,7 +3646,7 @@ $kml_file_contents=
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	=  ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = $update+1 ;  //1  => add  2  => edit;
@@ -3666,7 +3666,7 @@ $kml_file_contents=
 		require_once dirname(__FILE__).'/CL_actionLogger.php';
 		$log=new Logger();
 		$log->userID  	=$this->userID;
-		$log->ItemType	=1 ; // flight; 
+		$log->ItemType	=1 ; // flight;
 		$log->ItemID	= ( ( $this->serverID && $this->serverID!=$CONF_server_id ) ?$this->original_ID:$this->flightID ); // 0 at start will fill in later if successfull
 		$log->ServerItemID	= ( $this->serverID?$this->serverID:$CONF_server_id);
 		$log->ActionID  = 1 ;  //1  => add  2  => edit;
@@ -3675,10 +3675,10 @@ $kml_file_contents=
 		$log->ModifierID= 0;
 		$log->ServerModifierID =0;
 		$log->Result = 1;
-		
+
 		if (!$log->put()) echo "Problem in logger<BR>";
 	}
-	
+
 	function activateFlight() {
 		global $db;
 		global $flightsTable;
@@ -3702,16 +3702,16 @@ $kml_file_contents=
 
 	function updateAll($forceRefresh=0) {
 		// chack for saned igc in case it wasnt created in the first place or if the flight was synced
-	 	if (  !is_file( $this->getIGCFilename(1) ) || $forceRefresh ) { 
+	 	if (  !is_file( $this->getIGCFilename(1) ) || $forceRefresh ) {
 			if (! $this->getFlightFromIGC($this->getIGCFilename(0) ) ) {
 				$this->getFlightFromDB($this->flightID,0);
 				return;
 			}
 		}
-		
+
  	    if (  !is_file( $this->getMapFilename() ) || $forceRefresh ) {
-			 $this->getMapFromServer();		
-	    } 	
+			 $this->getMapFromServer();
+	    }
 
 	    $this->updateCharts($forceRefresh);
  	    $this->updateCharts($forceRefresh,1);
@@ -3722,28 +3722,28 @@ $kml_file_contents=
 		global $moduleRelPath,$chartsActive;
 		if (!$chartsActive ) return 0;
 
-	 	$alt_img_filename=$this->getChartFilename("alt",1,$rawCharts); 
-		$speed_img_filename=$this->getChartFilename("speed",1,$rawCharts); 
-		$vario_img_filename=$this->getChartFilename("vario",1,$rawCharts); 
-		$takeoff_distance_img_filename=$this->getChartFilename("takeoff_distance",1,$rawCharts);  
-	
- 		$alt_img_filename2=$this->getChartFilename("alt",2,$rawCharts); 
-		$speed_img_filename2=$this->getChartFilename("speed",2,$rawCharts); 
-		$vario_img_filename2=$this->getChartFilename("vario",2,$rawCharts); 
-		$takeoff_distance_img_filename2=$this->getChartFilename("takeoff_distance",2,$rawCharts);  
+	 	$alt_img_filename=$this->getChartFilename("alt",1,$rawCharts);
+		$speed_img_filename=$this->getChartFilename("speed",1,$rawCharts);
+		$vario_img_filename=$this->getChartFilename("vario",1,$rawCharts);
+		$takeoff_distance_img_filename=$this->getChartFilename("takeoff_distance",1,$rawCharts);
 
-		if ( !is_file($alt_img_filename) ||  !is_file($speed_img_filename) ||  
-			 !is_file($vario_img_filename) ||  !is_file($takeoff_distance_img_filename) || 
-			 !is_file($alt_img_filename2) ||  !is_file($speed_img_filename2) ||  
+ 		$alt_img_filename2=$this->getChartFilename("alt",2,$rawCharts);
+		$speed_img_filename2=$this->getChartFilename("speed",2,$rawCharts);
+		$vario_img_filename2=$this->getChartFilename("vario",2,$rawCharts);
+		$takeoff_distance_img_filename2=$this->getChartFilename("takeoff_distance",2,$rawCharts);
+
+		if ( !is_file($alt_img_filename) ||  !is_file($speed_img_filename) ||
+			 !is_file($vario_img_filename) ||  !is_file($takeoff_distance_img_filename) ||
+			 !is_file($alt_img_filename2) ||  !is_file($speed_img_filename2) ||
 			 !is_file($vario_img_filename2) ||  !is_file($takeoff_distance_img_filename2) ||
 			 $forceRefresh) {
-	
+
 			// list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
-			
+
 			if ($rawCharts)  {
 				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getRawValues($forceRefresh);
 				//list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance,$data_X,$data_Y)=$this->getRawValues($forceRefresh,1);
-			} else	
+			} else
 				list ($data_time,$data_alt,$data_speed,$data_vario,$data_takeoff_distance)=$this->getAltValues();
 
 			if (!count($data_time) ) return; // empty timeseries
@@ -3767,7 +3767,7 @@ foreach ($data_time as $i=>$tm) {
 			//$this->plotGraph("Height (m)",$data_time,$ground,$alt_img_filename,$rawCharts);
 			$this->plotGraph("Speed (km/h)",$data_time,$data_speed,$speed_img_filename,$rawCharts);
 			$this->plotGraph("Vario (m/sec)",$data_time,$data_vario,$vario_img_filename,$rawCharts);
-			$this->plotGraph("Takeoff distance (km)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename,$rawCharts);	
+			$this->plotGraph("Takeoff distance (km)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename,$rawCharts);
 
 			// now make the miles/ feet versions!!!
 			// convert the arrays
@@ -3783,14 +3783,14 @@ foreach ($data_time as $i=>$tm) {
 			$this->plotGraph("Height (feet)",$data_time,$data_alt,$alt_img_filename2,$rawCharts);
 			$this->plotGraph("Speed (mph)",$data_time,$data_speed,$speed_img_filename2,$rawCharts);
 			$this->plotGraph("Vario (fpm)",$data_time,$data_vario,$vario_img_filename2,$rawCharts);
-			$this->plotGraph("Takeoff distance (miles)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename2,$rawCharts);	
+			$this->plotGraph("Takeoff distance (miles)",$data_time,$data_takeoff_distance,$takeoff_distance_img_filename2,$rawCharts);
 
 		}
 
 	}
 
 	function plotGraph($title,$data_time,$yvalues,$img_filename,$raw=0) {
-		
+
 		if (count($data_time)==0) {
 			$data_time[0]=0;
 			$yvalues[0]=0;
@@ -3817,20 +3817,20 @@ foreach ($data_time as $i=>$tm) {
 			$labelSize=8;
 		}
 
-		$graph = new Graph($graphWidth,$graphHeight,"auto");    
+		$graph = new Graph($graphWidth,$graphHeight,"auto");
 		//$graph->SetScale("textlin",min($yvalues),max($yvalues));
 		$graph->SetScale("textlin");
 
 		if ($raw) {
-			$graph->title->SetFont(FF_FONT1,FS_NORMAL,$titleSize); 
-			$graph->legend->SetFont(FF_FONT1,FS_NORMAL,$titleSize); 
-			$graph->xaxis->SetFont(FF_FONT1,FS_NORMAL,$labelSize); 
+			$graph->title->SetFont(FF_FONT1,FS_NORMAL,$titleSize);
+			$graph->legend->SetFont(FF_FONT1,FS_NORMAL,$titleSize);
+			$graph->xaxis->SetFont(FF_FONT1,FS_NORMAL,$labelSize);
 		}
 
-		$graph->SetMarginColor("#C8C8D4");	
+		$graph->SetMarginColor("#C8C8D4");
 		// #DAE4E6
 
-		// if only one point  add it twice ! 
+		// if only one point  add it twice !
 		// we should nt be here at the first place !
 		if (count($data_time)==1) {
 			$yvalues[1]=$yvalues[0];
@@ -3842,10 +3842,10 @@ foreach ($data_time as $i=>$tm) {
 
 		$graph->img->SetMargin($mLeft,$mRight,$mTop,$mBottom);
 		if (!$raw) $graph->title->Set($title);
-		
+
 		$textTickInterval=floor((count($data_time)/($graphWidth-$mLeft-$mRight))*60-1);
 		if ($textTickInterval<=0 ) $textTickInterval=1;
-		
+
 		$graph->xaxis->SetTextTickInterval($textTickInterval);
 		$graph->xaxis->SetTextLabelInterval(1);
 		$graph->xaxis->SetTickLabels($data_time);
@@ -3853,11 +3853,11 @@ foreach ($data_time as $i=>$tm) {
 
 		$graph->xgrid->Show();
 		$graph->xgrid->SetLineStyle('dashed');
-		
+
 
 		$graph->Stroke($img_filename);
 	}
-	
+
 	function findSameFilename($filename) {
 		global $db;
 		global $flightsTable;
@@ -3868,22 +3868,22 @@ foreach ($data_time as $i=>$tm) {
 		if ($res<=0) return 0; // no duplicate found
 
 		$row = $db->sql_fetchrow($res);
-		return $row["ID"]; // found duplicate retrun the ID; 
+		return $row["ID"]; // found duplicate retrun the ID;
 	}
-	
+
 	function findSameTime() {
 		global $db;
 		global $flightsTable;
 		$query="SELECT serverID,ID FROM $flightsTable WHERE userID=".$this->userID." AND userServerID=".$this->userServerID.
-					" AND DATE='".$this->DATE."'  AND  
-						( 
-							( ".$this->START_TIME." >= START_TIME AND ".$this->START_TIME." <= END_TIME )  
-							OR 
-							( ".$this->END_TIME." >= START_TIME AND ".$this->END_TIME." <= END_TIME )  							
+					" AND DATE='".$this->DATE."'  AND
+						(
+							( ".$this->START_TIME." >= START_TIME AND ".$this->START_TIME." <= END_TIME )
+							OR
+							( ".$this->END_TIME." >= START_TIME AND ".$this->END_TIME." <= END_TIME )
 						)
 							";
 		$res= $db->sql_query($query);
-		if ($res<=0) return array(); // no duplicate found		
+		if ($res<=0) return array(); // no duplicate found
 
 		$i=0;
 		$dup=array();
@@ -3892,17 +3892,17 @@ foreach ($data_time as $i=>$tm) {
 			$dup[$i]['serverID']=$row["serverID"];
 			$i++;
 		}
-		return $dup; // found duplicate return the array of IDs; 
+		return $dup; // found duplicate return the array of IDs;
 
 	}
 
 	function findSameHash($hash,$serverIDtoCheck=0 ) {
 		global $db;
 		global $flightsTable;
-		
+
 		$where_clause='';
 		if ($serverIDtoCheck) $where_clause=" AND serverID=$serverIDtoCheck ";
-		
+
 		$query="SELECT serverID,ID,userID,userServerID FROM $flightsTable WHERE hash='$hash' $where_clause ";
 		// echo $query;
 		$res= $db->sql_query($query);
@@ -3914,25 +3914,25 @@ foreach ($data_time as $i=>$tm) {
 			$dup[$i]['ID']=$row["ID"];
 			$dup[$i]['serverID']=$row["serverID"];
 			$dup[$i]['userServerID']=$row["userServerID"];
-			$dup[$i]['userID']=$row["userID"];			 
+			$dup[$i]['userID']=$row["userID"];
 			$i++;
 		}
-		return $dup; // found duplicate return the array of IDs; 
+		return $dup; // found duplicate return the array of IDs;
 
 	}
 
 	function hideSameFlights() {
 		// now is a good time to disable duplicate flights we have found from other servers
 		// AND are from the same user (using pilot's mapping table to find that out)
-		
+
 		// addition: 2008/07/21 we search for all flight no only from same user/server
 		global $db,$flightsTable;
-				
-		$query="SELECT serverID,ID,externalFlightType, FROM $flightsTable 
+
+		$query="SELECT serverID,ID,externalFlightType, FROM $flightsTable
 					WHERE hash='".$this->hash."' AND userID=".$this->userID." AND userServerID=".$this->userServerID.
 					" ORDER BY serverID ASC, ID ASC";
-					
-		$query="SELECT serverID,ID,externalFlightType,userID,userServerID FROM $flightsTable 
+
+		$query="SELECT serverID,ID,externalFlightType,userID,userServerID FROM $flightsTable
 			WHERE hash='".$this->hash."' ORDER BY serverID ASC, ID ASC";
 
 		// echo $query;
@@ -3943,25 +3943,25 @@ foreach ($data_time as $i=>$tm) {
 		}
 
 		// we must disable all flights BUT one
-		// rules: 
+		// rules:
 		// 1. locally submitted flights have priority
 		// 2. between external flights , the full synced have priority over simple links
 		// 3. between equal cases the first submitted has priority.
-		
+
 		$i=0;
 		while  ( $row = $db->sql_fetchrow($res) ) {
 			$fList[$i]=$row;
 			$i++;
 		}
-		
-		if ($i==0) {			
+
+		if ($i==0) {
 			return array(); // no duplicate found
 		}
-		
-		usort($fList, "sameFlightsCmp"); 
 
-		$i=0;	
-		$msg='';	
+		usort($fList, "sameFlightsCmp");
+
+		$i=0;
+		$msg='';
 		foreach($fList as $i=>$fEntry) {
 			if (0) {
 				echo "<pre>";
@@ -3970,14 +3970,14 @@ foreach ($data_time as $i=>$tm) {
 				echo "-------------------------<BR>";
 				echo "</pre>";
 			}
-				
+
 			if ($i==0)  {// enable
 				$msg.= " Enabling ";
 				$query="UPDATE $flightsTable SET private = private & (~0x02 & 0xff ) WHERE  ID=".$fEntry['ID'];
 			} else  {// disable
 				$msg.= " Disabling ";
 				$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=".$fEntry['ID'];
-			}	
+			}
 			$msg.= " <a href='http://".$_SERVER['SERVER_NAME'].
 				getLeonardoLink(array('op'=>'show_flight','flightID'=>$fEntry['ID'])).
 				"'>Flight ".$fEntry['ID'].
@@ -3986,31 +3986,31 @@ foreach ($data_time as $i=>$tm) {
 				"'>PILOT ".
 			$fEntry['userServerID'].'_'.$fEntry['userID']."</a><BR>\n";
 
-			$res= $db->sql_query($query);	
+			$res= $db->sql_query($query);
 			# Error checking
 			if($res <= 0){
 				echo("<H3> Error in query: $query</H3>\n");
 			}
-			
+
 			$i++;
-		}	
-		
+		}
+
 		// now also make a test to see if all flights are from same user (alien mapped  to local)
 		// if not , send a mail to admin to warn him and suggest a new mapping
 		$pList=array();
 		foreach($fList as $i=>$fEntry) {
 			$pList[$fEntry['userServerID'].'_'.$fEntry['userID']]++;
 		}
-		
-		if ( count($pList) > 1  ) { // more than one pilot involved in this 
-			sendMailToAdmin("Duplicate flights",$msg);				
+
+		if ( count($pList) > 1  ) { // more than one pilot involved in this
+			sendMailToAdmin("Duplicate flights",$msg);
 			//echo "Duplicate flights".$msg;
-		}		
-		
+		}
+
 		/*
 		foreach ($disableFlightsList as $dFlightID=>$num) {
 			$query="UPDATE $flightsTable SET private = private | 0x02 WHERE  ID=$dFlightID ";
-			$res= $db->sql_query($query);	
+			$res= $db->sql_query($query);
 			# Error checking
 			if($res <= 0){
 				echo("<H3> Error in query: $query</H3>\n");
@@ -4018,30 +4018,30 @@ foreach ($data_time as $i=>$tm) {
 		}
 		foreach ($enableFlightsList as $dFlightID=>$num) {
 			$query="UPDATE $flightsTable SET private = private & (~0x02 & 0xff ) WHERE  ID=$dFlightID ";
-			$res= $db->sql_query($query);	
+			$res= $db->sql_query($query);
 			# Error checking
 			if($res <= 0){
 				echo("<H3> Error in query: $query</H3>\n");
 			}
 		}*/
-		
+
 	}
-	
+
 	function getOLCpilotData() {
 		global $db;
 		global $pilotsTable;
 		$query="SELECT * FROM $pilotsTable WHERE pilotID=".$this->userID ;
-		
+
 		$res= $db->sql_query($query);
 		if ($res<=0) return array("","","","",""); // no pilot olc data
 
 		$row = $db->sql_fetchrow($res);
 		return array($row["olcBirthDate"],$row["olcFirstName"],$row["olcLastName"],
 					 $row["olcCallSign"],$row["olcFilenameSuffix"] );
-		
+
 	}
-	
-	function numOfFlightsSubmitedThisDay() {		
+
+	function numOfFlightsSubmitedThisDay() {
 		global $db;
 		global $flightsTable;
 
@@ -4052,24 +4052,24 @@ foreach ($data_time as $i=>$tm) {
 		if ($res<=0) return 0; // no duplicate found
 
 		$row = $db->sql_fetchrow($res);
-		return $row["num"]; // found duplicate retrun the ID; 
+		return $row["num"]; // found duplicate retrun the ID;
 	}
-	
+
 	function insideOLCsubmitWindow() {
-		// submit deadline 
+		// submit deadline
 		//	24:00 UTC on the Tuesday following a week after the flight
 		$submitDeadline=mktime(11,59,0,$this->getMonth(),$this->getDay(),$this->getYear() );
-		$submitDeadline+= 7*24*60*60 ; // one week after 
+		$submitDeadline+= 7*24*60*60 ; // one week after
 		$dayOfWeek=date("w",$tm); // 0=sunday ; 1=mon 2=tuesday 3=wensday
-		
+
 		if ( $dayOfWeek <= 2 )  $submitDeadline+= (2-$dayOfWeek)* 24*60*60;
 		else $submitDeadline+= (6-$dayOfWeek +3 )* 24*60*60;
 
 		// TO BE FIXED !!!!
-		// should cater for UTC time 				
+		// should cater for UTC time
 		$now=mktime();
 		if ($submitDeadline > $now ) return 1;
-		else return 0;		
+		else return 0;
 	}
 
 	// assigns the flight to a new user
@@ -4077,7 +4077,7 @@ foreach ($data_time as $i=>$tm) {
 		global $flightsAbsPath,$CONF_photosPerFlight;
 
 		$pilotDir=$this->getPilotAbsDir();
-		
+
 		if ($newUserServerID) $extra_prefix=$newUserServerID.'_';
 		else $extra_prefix='';
 		$newPilotDir=$flightsAbsPath."/".$extra_prefix.$newUserID;
@@ -4087,7 +4087,7 @@ foreach ($data_time as $i=>$tm) {
 		foreach ($subdirs as $subdir){
 			$sourceDir="$pilotDir/$subdir/$flightYear";
 			$targetDir="$newPilotDir/$subdir/$flightYear";
-			
+
 			if ($handle = opendir($sourceDir)) {
 				while (false !== ($file = readdir($handle))) {
 					if (  substr( $file,0,strlen($this->filename) )==$this->filename  ) {
@@ -4101,7 +4101,7 @@ foreach ($data_time as $i=>$tm) {
 
 		//	this is old code, does not work nay more!
 		for($i=1;$i<=$CONF_photosPerFlight;$i++) {
-			$var_name="photo".$i."Filename";			
+			$var_name="photo".$i."Filename";
 			$file=$this->$var_name;
 			if ($file) {
 				$sourceDir="$pilotDir/photos/$flightYear";
@@ -4120,16 +4120,16 @@ foreach ($data_time as $i=>$tm) {
 			@rename($src,$target);
 		}
 
-		// store away the original userID 
+		// store away the original userID
 		$this->originalUserID=($this->userServerID+0).'_'.$this->userID;
-		
+
 		$this->userID=$newUserID;
 		$this->userServerID=$newUserServerID;
-		
+
 		$this->putFlightToDB(1);
 
 		// take care of same flights (hide /unhide)
-		$this->hideSameFlights();	
+		$this->hideSameFlights();
 
 		// now also log this action
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.119 2009/06/18 14:41:49 manolis Exp $                                                                 
+// $Id: config.php,v 1.120 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -277,13 +277,13 @@ setlocale(LC_NUMERIC, 'en_US') ;
  		1024=>"Proto");
  
  $CONF_cert_avalable_categories=array(
-	0=>array(1,2,3), // ALL
- 	1=>array(1,2,3), // ltf 1
+	0=>array(1,2,3,4), // ALL
+ 	1=>array(1,2,3,4), // ltf 1
  	2=>array(1,2,3),
  	4=>array(1,2,3),
  	8=>array(2,3),   // ltf 2/3
  	16=>array(2,3),  // ltf 3
- 	32=>array(1,2,3), //en a
+ 	32=>array(1,2,3,4), //en a
  	64=>array(1,2,3),  
  	128=>array(2,3),
  	256=>array(2,3),

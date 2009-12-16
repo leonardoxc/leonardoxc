@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_header.php,v 1.14 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_header.php,v 1.15 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,8 +30,11 @@
 		define('CONF_LANG_ENCODING_TYPE','iso');
 		$CONF_ENCODING=$langEncodings[$currentlang];
 	}
-	if (is_array($lang) )
-		$lang['ENCODING']=$CONF_ENCODING;
+
+	if (!is_array($lang) ){
+		$lang=array();
+	} 
+	$lang['ENCODING']=$CONF_ENCODING;
 
 
 	$Ltemplate->assign_vars(array(	

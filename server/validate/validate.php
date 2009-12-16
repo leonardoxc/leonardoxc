@@ -14,10 +14,10 @@
 
 		$file=$url[scheme]."://".$url[host]."/". $dirname."/".rawurlencode($basename);
 		$path=dirname( __FILE__ );
-	
+
 		while(1) {
-//			$igcFilename=tempnam($path,"IGC.");  
-			$igcFilename=sprintf("%s/%08d.igc",$path,mt_rand (0,99999999) ); 
+//			$igcFilename=tempnam($path,"IGC.");
+			$igcFilename=sprintf("%s/%08d.igc",$path,mt_rand (0,99999999) );
 			$i++;
 			if (!is_file($igcFilename) || $i>200 )  break;
 		}
@@ -28,18 +28,18 @@
 		$cont="";
 		foreach($lines as $line) {
 			$cont.=$line;
-		}	
-		
-		if (!$handle = fopen($igcFilename, 'w')) exit; 
-	    if (!fwrite($handle, $cont))    exit; 
-		fclose ($handle); 
+		}
+
+		if (!$handle = fopen($igcFilename, 'w')) exit;
+	    if (!fwrite($handle, $cont))    exit;
+		fclose ($handle);
 		$ok=0;
 		DEBUG("<pre>");
 
 		$validatePrograms =array(
-			"vali-xpg"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Valid IGC file"),	// ok ( fail -> 1  	IGC file is INVALID) 
-	
-			"vali-xmp"			=>array("name"=>"","ok_result"=>1,"ok_string"=>"Validation check passed"),	// ok ( fail -> 0  ) 
+			"vali-xpg"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Valid IGC file"),	// ok ( fail -> 1  	IGC file is INVALID)
+
+			"vali-xmp"			=>array("name"=>"","ok_result"=>1,"ok_string"=>"Validation check passed"),	// ok ( fail -> 0  )
 			"vali-xgd"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),					// ok ( fail -> -1 )
 			"vali-bra"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Data valid"), 			// ok ( fail -> 1 )
 			"ValiGpsDump.exe"	=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),				// ok ( fail -> -1 )
@@ -47,16 +47,16 @@
 
 			// "valig7to.exe"		=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // 1->not valid 3->not present
 			"vali-mun"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // fail -> 0
-			"vali-xmr"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),	// fail -> 1		
+			"vali-xmr"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),	// fail -> 1
 			// "vali-cu"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 67
-			
+
 			//"vali-ewa"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 2
 			//"vali-fil"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
 			//"vali-gcs"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 68
 			//"vali-lxn"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
 			//"vali-sch"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 0
 		);
-			
+
 		if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
 		else $CONF['os']='windows';
 
@@ -65,11 +65,11 @@
 //echo "#";
 
 		foreach($validatePrograms as $valProgram=>$valArray) {
-			@chmod ($path."/$valProgram", 0755);  
+			@chmod ($path."/$valProgram", 0755);
 			if ( $CONF['os']=='linux') {
 				$cmd="wine v:$valProgram v:".basename($igcFilename)." ";
 				// $cmd="wine v:$valProgram v:output.txt ";
-			} else 
+			} else
 				$cmd="$valProgram ".basename($igcFilename);
 
 			DEBUG("<hr>cmd=$cmd");
@@ -77,7 +77,7 @@
 			unset($output);
 			$res=-9999;
 			exec($cmd,$output,$res);
-			
+
 			DEBUG("RESULT: $res");
 			DEBUG("result has ".count($output)." lines");
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.45 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.46 2009/12/16 14:15:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,18 +20,18 @@ function getPilotList($clubID=0) {
 	global $flightsTable;
 	global	$clubsPilotsTable, $pilotsTable ;
 	global $nativeLanguage,$currentlang,$opMode;
-	
+
 	if ($clubID) {
-		$query="SELECT *, $clubsPilotsTable.pilotID as userID , $clubsPilotsTable.pilotServerID as userServerID 
-			FROM  $clubsPilotsTable, $pilotsTable  
-  			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID  
+		$query="SELECT *, $clubsPilotsTable.pilotID as userID , $clubsPilotsTable.pilotServerID as userServerID
+			FROM  $clubsPilotsTable, $pilotsTable
+  			WHERE $clubsPilotsTable.pilotID=$pilotsTable.pilotID
 					AND $clubsPilotsTable.pilotServerID=$pilotsTable.serverID AND $clubsPilotsTable.clubID=$clubID";
 	} else {
 	  	$query="SELECT DISTINCT userID, userServerID FROM $flightsTable ";
 	}
-	
+
 	// echo $query;
-	$res= $db->sql_query($query);		
+	$res= $db->sql_query($query);
     if($res <= 0){
 		echo "ERROR in selecting pilots";
 //		echo $query;
@@ -62,13 +62,13 @@ function getUsedGliders($userID,$serverID=0) {
 
 	$query="SELECT glider,gliderBrandID from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider ORDER BY DATE DESC ";
 	// echo $query;
-	$res= $db->sql_query($query);		
+	$res= $db->sql_query($query);
     if($res <= 0){
 		return array ();
     }
 
 	$gliders=array();
-	while ($row = $db->sql_fetchrow($res)) { 
+	while ($row = $db->sql_fetchrow($res)) {
 			array_push($gliders,array($row['gliderBrandID'],$row['glider'])  );
 	}
 	return $gliders;
@@ -80,17 +80,17 @@ function transliterate($str,$enc) {
 	global $CONF_use_utf;
 
 	if ($enc=='gb2312') {
-		// echo "#### $str $enc ##";		
+		// echo "#### $str $enc ##";
 
 		if (! $CONF_use_utf )  {
-			require_once dirname(__FILE__)."/lib/ConvertCharset/convert_gb2312.php";	
-			return gb2312_to_latin($str);		
+			require_once dirname(__FILE__)."/lib/ConvertCharset/convert_gb2312.php";
+			return gb2312_to_latin($str);
 		} else {
 			if (  substr( phpversion(),0,1 ) >=5 ) {
-				require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";	
+				require_once dirname(__FILE__)."/lib/ConvertCharset/chinese/charset.class.php";
 				$gb2312_str= Charset::convert($str,'utf-8','gb2312');
 				$str2=Charset::PinYin($gb2312_str,'gb2312');
-				// echo "^gb2312_str : $gb2312_str ^ ";			
+				// echo "^gb2312_str : $gb2312_str ^ ";
 				// echo "^str2: $str2 ^ ";
 				return $str2;
 			} else {
@@ -107,7 +107,7 @@ function transliterate($str,$enc) {
 
 	$NewEncoding = new ConvertCharset;
 	$str_utf8 = $NewEncoding->Convert($str, $enc, "utf-8", $Entities);
-	
+
 	return utf8_to_ascii($str_utf8);
 }
 
@@ -117,16 +117,16 @@ function getPilotInfo($pilotIDview,$serverID) {
 	global $countries,$langEncodings;
 	global $CONF_use_leonardo_names,$PREFS,$CONF,$CONF_server_id;
 
-	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID 
+	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID
 			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
 	$res= $db->sql_query($query);
 	// echo $query;
 
 
 	// Get real name from leonardo_pilots
-	// 
+	//
 	// we must make sure the name can be displayed in the $currentlang encoding
-	// 
+	//
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		if (!$pilot) return array('','','','','',-1);
@@ -136,79 +136,79 @@ function getPilotInfo($pilotIDview,$serverID) {
 		$pilotCountry=strtolower($pilot['countryCode']);
 		$Sex=$pilot['Sex'];
 		$Birthdate=$pilot['Birthdate'];
-		$CIVL_ID=$pilot['CIVL_ID'];		
+		$CIVL_ID=$pilot['CIVL_ID'];
 
-		if ( strlen($lastName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name				
+		if ( strlen($lastName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name
 			// we have some info on how to tranlitarate
-			// and the currentlang is not the native lang of the pilot.			
-			$pilotLang=""; 			
-			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
-					$pilotLang=$nativeLanguage; 				
-				//echo $pilotLang."#".$pilotCountry."$";			
-			} 
+			// and the currentlang is not the native lang of the pilot.
+			$pilotLang="";
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) {
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL )
+					$pilotLang=$nativeLanguage;
+				//echo $pilotLang."#".$pilotCountry."$";
+			}
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">$realName ".$pilotLang."#".$pilotCountry."$<br>";	
+			// echo ">$realName ".$pilotLang."#".$pilotCountry."$<br>";
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) {
 				$firstName=transliterate($firstName,$enc);
 				$lastName=transliterate($lastName,$enc);
 			}
-			//echo $realName."!";
+			//echo $realName."@";
 			// else return as is.
 
 
 			return array($lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
-			
+
 		}
-			//echo "@@";		
+
 		/*
 		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
-			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
-			else return $realName; 
+			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName";
+			else return $realName;
 		}*/
-		
+
 	}
-	
-	// we dont have a local user , return ! 
+
+	// we dont have a local user , return !
 	if ($serverID!=0 && $serverID!=$CONF_server_id ) {
 		return array('','','','','',0);
 	}
-	
-    if ($opMode==1) { // phpNuke 
-		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
+
+    if ($opMode==1) { // phpNuke
+		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview );
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
-			if ($currentlang!=$nativeLanguage) { 
-				 $realName=$row["username"]; 
+			if ($currentlang!=$nativeLanguage) {
+				 $realName=$row["username"];
 			} else {
 				 if ($row["name"]!='') $realName=$row["name"];
 				 else $realName=$row["username"];
 			}
-			$str=$realName;		
-		}		
+			$str=$realName;
+		}
 	} else { // phpBB
-		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview );
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
 			$realName=$row[$CONF['userdb']['user_real_name_field']];
 
-			$str=$realName;			
+			$str=$realName;
 			// we have some info on how to tranlitarate
-			// and the currentlang is not the native lang of the pilot.			
-			$pilotLang=""; 			
-			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
-					$pilotLang=$nativeLanguage; 				
-				//echo $pilotLang."#".$pilotCountry."$";			
-			} 
+			// and the currentlang is not the native lang of the pilot.
+			$pilotLang="";
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) {
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL )
+					$pilotLang=$nativeLanguage;
+				//echo $pilotLang."#".$pilotCountry."$";
+			}
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">".$pilotLang."#".$pilotCountry."$";	
+			// echo ">".$pilotLang."#".$pilotCountry."$";
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);
@@ -221,7 +221,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 
 }
 
-function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) { 
+function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	// $typeOfLink=1 img, 0->none, 2->text (*)
 	global $CONF,$CONF_server_id,$moduleRelPath;
 	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ||
@@ -252,44 +252,44 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
 	else $nOrder="CONCAT(LastName,' ',FirstName)";
-	
+
 	$query="SELECT $nOrder as realName ,countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
 	$res= $db->sql_query($query);
 	// echo $query;
 
 
 	// Get real name from leonardo_pilots
-	// 
+	//
 	// we must make sure the name can be displayed in the $currentlang encoding
-	// 
+	//
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
 		$pilotCountry=strtolower($pilot['countryCode']);
 
-		if ( strlen($realName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name		
+		if ( strlen($realName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name
 			$str=$realName;
-			
+
 			// we have some info on how to tranlitarate
-			// and the currentlang is not the native lang of the pilot.			
-			$pilotLang=""; 			
-			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
-					$pilotLang=$nativeLanguage; 				
-				//echo $pilotLang."#".$pilotCountry."$";			
-			} 
+			// and the currentlang is not the native lang of the pilot.
+			$pilotLang="";
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) {
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL )
+					$pilotLang=$nativeLanguage;
+				//echo $pilotLang."#".$pilotCountry."$";
+			}
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">$realName#$pilotLang#$pilotCountry#<br>";	
+			// echo ">$realName#$pilotLang#$pilotCountry#<br>";
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);
 			//echo $realName."@";
 			// else return as is.
 
-			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
-			
+			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str;
+
 			if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
 				$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
 			}
@@ -298,47 +298,47 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			return $str;
 		}
-					
+
 		/*
 		if (strlen ($realName)>1) && $currentlang==$nativeLanguage) { // else realname is no good
-			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName"; 
-			else return $realName; 
+			if ($getAlsoCountry ) return getNationalityDescription($pilot['countryCode'],1,0)."$realName";
+			else return $realName;
 		}*/
 		
 	} 
 
-    if ($opMode==1) { // phpNuke 
-		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
+    if ($opMode==1) { // phpNuke
+		$res= $db->sql_query("SELECT username,name FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview );
 		if ($res) {
 			$row= $db->sql_fetchrow($res);
-			if ($currentlang!=$nativeLanguage) { 
-				 $realName=$row["username"]; 
+			if ($currentlang!=$nativeLanguage) {
+				 $realName=$row["username"];
 			} else {
 				 if ($row["name"]!='') $realName=$row["name"];
 				 else $realName=$row["username"];
 			}
-			$str=$realName;		
-		}		
+			$str=$realName;
+		}
 	} else { // phpBB
-		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview ); 
+		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview );
 		if ($res) {
-							
+
 			$row= $db->sql_fetchrow($res);
 			$realName=$row[$CONF['userdb']['user_real_name_field']];
 
-			$str=$realName;			
+			$str=$realName;
 			// we have some info on how to tranlitarate
-			// and the currentlang is not the native lang of the pilot.			
-			$pilotLang=""; 			
-			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) { 
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL ) 
-					$pilotLang=$nativeLanguage; 				
-				//echo $pilotLang."#".$pilotCountry."$";			
-			} 
+			// and the currentlang is not the native lang of the pilot.
+			$pilotLang="";
+			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) {
+				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL )
+					$pilotLang=$nativeLanguage;
+				//echo $pilotLang."#".$pilotCountry."$";
+			}
 
 			//	if all else fails translitarate using the nativeLangauge
 			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			 // echo "($str)>".$pilotLang."#".$pilotCountry."$";	
+			 // echo "($str)>".$pilotLang."#".$pilotCountry."$";
 
 			$enc=$langEncodings[$pilotLang];
 			if ($enc) $str=transliterate($str,$enc);
@@ -348,18 +348,18 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	}
 
 	$str.=getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
-	if ($getAlsoCountry ) $str=getNationalityDescription($pilot['countryCode'],1,0).$str; 
-	
+	if ($getAlsoCountry ) $str=getNationalityDescription($pilot['countryCode'],1,0).$str;
+
 	if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
 		$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
 	}
 
-	return $str; 
+	return $str;
 }
 
 function getPilotPhotoRelFilename($serverID,$pilotID,$icon=0) {
 	global 	$moduleRelPath;
-	
+
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
 	
@@ -387,7 +387,7 @@ function checkPilotPhoto($serverID,$pilotID) {
 }
 
 function getPilotStatsRelFilename($pilotID,$num) {
-	global 	$moduleRelPath;	
+	global 	$moduleRelPath;
 	return $moduleRelPath."/flights/".$pilotID."/PilotStats_$num.png";
 }
 function getPilotStatsFilename($pilotID,$num) {
@@ -396,9 +396,9 @@ function getPilotStatsFilename($pilotID,$num) {
 }
 
 function getNationalityDescription($cCode,$img=1,$text=1) {
-	global 	$moduleRelPath,$countries;	
+	global 	$moduleRelPath,$countries;
 	$cCode=strtolower($cCode);
-	if (strlen($cCode) !=2) { 
+	if (strlen($cCode) !=2) {
 		$cCode='unknown';
 		$str='unknown';
 	} else {
@@ -428,7 +428,7 @@ function getNationalityDropDown($cCode, $disabled=false) {
 	$str="<select name='countriesList' $disabled_attr>";
 	$str.="<option value=''></option>\n";
 	foreach ($countries as $countrycode=>$countryName) {
-		if ( strtolower($countrycode)==strtolower($cCode) ) $sel=" selected"; 
+		if ( strtolower($countrycode)==strtolower($cCode) ) $sel=" selected";
 		else $sel="";
 		$str.="<option value='$countrycode' $sel>$countryName</option>\n";
 	}
@@ -488,8 +488,8 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	global $CONF_edit_email;
 	global $CONF_password_minlength;
 	global $CONF;
-	
-	
+
+
 	$goodmsgs=array();
 	$errmsgs=array();
 	if (! $CONF['userdb']['edit']['enabled'] ) {
@@ -506,7 +506,7 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 				if ($email=='') {
 					$errmsgs[]=_EmailInvalid;
 				}else {
-				
+
 					if ( LeoUser::changeEmail($userID,$email)  >0 ) {
 						$saved=true;
 						$goodmsgs[]=_EmailSaved;
@@ -527,10 +527,10 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	  			if (!$saved) $errmsgs[]=_EmailNotSaved;
 			}
 		}
-		
+
 		$newPassword=trim($newPassword);
 		$newPasswordConfirmation=trim($newPasswordConfirmation);
-		
+
 		if ($CONF['userdb']['edit']['edit_password'] && $newPassword ) {
 			$saved=false;
 
@@ -538,11 +538,12 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 			if ($newPasswordConfirmation=='') {
 				$errmsgs[]=_PwdConfEmpty;
 			}elseif (strlen($newPassword)<$passwordMinLength) {
-				eval('$errmsgs[]="'._PwdTooShort.'";');
+				$pwdMsg=sprintf(_PwdTooShort, $passwordMinLength);
+				$errmsgs[]=$pwdMsg;
 			}elseif ($newPassword!=$newPasswordConfirmation) {
 				$errmsgs[]=_PwdAndConfDontMatch;
 			}else {
-			
+
 				if ( LeoUser::changePassword($userID,$newPassword) > 0 ) {
 					$saved=true;
 					$goodmsgs[]=_PwdChanged;
@@ -564,7 +565,7 @@ function saveLoginData($userID, $newEmail, $newPassword, $newPasswordConfirmatio
 	  		if (!$saved) $errmsgs[]=_PwdNotChanged;
 		}
 	}
-	
+
 	$message='';
 	if (count($goodmsgs)>0) {
 		$message.='<span class="ok">'.implode('<br>', $goodmsgs).'</span>';
