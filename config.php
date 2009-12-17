@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.120 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: config.php,v 1.121 2009/12/17 13:43:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -554,6 +554,28 @@ $OLCScoringServerUseInternal=1;
 // These are not needed if $OLCScoringServerUseInternal=1;
 $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
+
+$CONF['paths']['config']['useNewPaths']=1;
+// the main IGC file
+$CONF['paths']['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
+// photo filenames
+$CONF['paths']['photos']='data/flights/photos/%YEAR%/%PILOTID%';
+// The rest can be ommited from Backup!!!
+// *.jpg
+$CONF['paths']['map']	='data/flights/maps/%YEAR%/%PILOTID%';
+// *.png 16 files / flight
+$CONF['paths']['charts']='data/flights/charts/%YEAR%/%PILOTID%';
+// *.kmz
+// *.man.kmz
+// *.igc2kmz.[version].kmz
+$CONF['paths']['kml']	='data/flights/kml/%YEAR%/%PILOTID%';
+// *.json.js
+$CONF['paths']['js']	='data/flights/js/%YEAR%/%PILOTID%';
+// *.1.txt
+// *.poly.txt
+// *.saned.full.igc
+// *.saned.igc
+$CONF['paths']['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
 
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
