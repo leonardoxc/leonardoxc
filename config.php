@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.121 2009/12/17 13:43:19 manolis Exp $                                                                 
+// $Id: config.php,v 1.122 2009/12/21 14:48:05 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -555,7 +555,7 @@ $OLCScoringServerUseInternal=1;
 $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
 
-$CONF['paths']['config']['useNewPaths']=1;
+$CONF['paths']['config']['pathsVersion']=2;
 // the main IGC file
 $CONF['paths']['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
 // photo filenames

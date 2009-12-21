@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.7 2009/02/03 13:22:41 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.8 2009/12/21 14:48:05 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -33,16 +33,32 @@ class flightPhotos {
 		$this->photos=array();
 	}
 
+// pathVersion =1 -> 76/photos/2005
+// pathVersion =2 -> photos/2005/76
+	function getPath($path){
+		global $CONF;
+		list($pilotID,$fname,$year)=split("/",$path);
+		// $CONF['paths']['photos']='data/flights/photos/%YEAR%/%PILOTID%';
+		$newPath=$CONF['paths']['photos'];
+		$newPath=str_replace("%YEAR%",$year,$newPath);
+		$newPath=str_replace("%PILOTID%",$PILOTID,$newPath);
+		return $newPath;
+	}
+	
 	function getPhotoRelPath($id) {
-		global $flightsWebPath;	
+		// global $flightsWebPath;	
+		global $moduleRelPath;
 		if ($id>=$this->photosNum) return '';		
-		return $flightsWebPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];		
+		// return $flightsWebPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];	
+		return $moduleRelPath.'/'.$this->getPath($this->photos[$id]['path']).'/'.$this->photos[$id]['name'];	
 	}
 
 	function getPhotoAbsPath($id) {
-		global $flightsAbsPath;	
+		//global $flightsAbsPath;	
+		global $moduleAbsPath;
 		if ($id >=$this->photosNum) return '';		
-		return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];		
+		// return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];	
+		return $moduleAbsPath.'/'.$this->getPath($this->photos[$id]['path']).'/'.$this->photos[$id]['name'];
 	}
 
 	function getSafeName($path,$photoName){

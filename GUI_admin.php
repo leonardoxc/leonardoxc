@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.49 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.50 2009/12/21 14:48:05 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -78,6 +78,11 @@ function chmodDir($dir){
 	}
 
 //echo "<br>";
+
+echo "<h3>New Path for flights/ </h3>";
+	echo "<ul>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles'>Prepare a script for copying flights/ files to new location</a></li>";
+	echo "</ul>";
 
 echo "<h3>Update operations</h3>";
 
@@ -162,9 +167,11 @@ echo "<ul>";
 echo "</ul><br><hr>";
 
 
+	if ($admin_op=="copyFlightsFiles")  {
+	
+		require_once "GUI_admin_paths.php";
 
-
-	if ($admin_op=="computeMaxTakeoffDistance")  {
+	} else if ($admin_op=="computeMaxTakeoffDistance")  {
 		
 		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 AND serverID=8  AND LINEAR_DISTANCE=0 ";
 		$res= $db->sql_query($query);
