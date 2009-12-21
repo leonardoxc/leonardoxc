@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.1 2009/12/21 14:48:05 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.2 2009/12/21 15:04:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,7 +20,7 @@
 	}
 		
 	
-	$query="SELECT * FROM $flightsTable ";
+	$query="SELECT * FROM $flightsTable order by userServerID,userID ";
 	
 	$res= $db->sql_query($query);
 	if($res <= 0){
@@ -33,6 +33,8 @@
 	global $CONF;	
 	$output1='';
 	$output2='';
+	$dirlist=array();
+	
 	while ($row = $db->sql_fetchrow($res)) { 
 		if (!$row['filename']) continue;	
 		
@@ -44,19 +46,28 @@
 			
 		$year=substr($row['DATE'],0,4);
 		$filename=$row['filename'];
+		
+		$d=0;
+		$f=0;
+		$files=array();
+		$dirs=array();
 			
 		$files[$f][0]="$userDir/flights/$year/$filename";
 		$files[$f][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['igc']) )."/$filename";
-		$dirs[$d++]=dirname($files[$f][1]);
-		$f++;
-			
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['photos']) );
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['map']) );
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['charts']) );
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['kml']) );
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['js']) );
-		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) );
+						
+		if (!$dirlist[$userDir][$year]) {
+			$dirs[$d++]=dirname($files[$f][1]);
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['photos']) );
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['map']) );
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['charts']) );
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['kml']) );
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['js']) );
+			$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) );
+
+			$dirlist[$userDir][$year]++;
+		}
 		
+		$f++;
 		
 		foreach ($dirs as $dir ){
 			$output2.="mkdir -p $dir\r\n";
