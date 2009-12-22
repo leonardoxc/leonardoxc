@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.122 2009/12/21 14:48:05 manolis Exp $                                                                 
+// $Id: config.php,v 1.123 2009/12/22 15:01:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -556,6 +556,8 @@ $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server
 $OLCScoringServerPassword="mypasswd";
 
 $CONF['paths']['config']['pathsVersion']=2;
+// the pilot dir
+$CONF['paths']['pilot']	='data/pilots/%PILOTID%';
 // the main IGC file
 $CONF['paths']['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
 // photo filenames
@@ -576,6 +578,34 @@ $CONF['paths']['js']	='data/flights/js/%YEAR%/%PILOTID%';
 // *.saned.full.igc
 // *.saned.igc
 $CONF['paths']['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
+
+/*
+// the paths for pathsVersion=1
+$CONF['paths']['config']['pathsVersion']=1;
+// the main IGC file
+$CONF['paths']['igc']	='flights/%PILOTID%/tracks/%YEAR%';
+// photo filenames
+$CONF['paths']['photos']='flights/%PILOTID%/photos/%YEAR% flights/photos/%YEAR%/%PILOTID%';
+// The rest can be ommited from Backup!!!
+// *.jpg
+$CONF['paths']['map']	='flights/%PILOTID%/maps/%YEAR%';
+// *.png 16 files / flight
+$CONF['paths']['charts']='flights/%PILOTID%/charts/%YEAR%';
+// *.kmz
+// *.man.kmz
+// *.igc2kmz.[version].kmz
+$CONF['paths']['kml']	='flights/%PILOTID%/tracks/%YEAR%';
+// *.json.js
+$CONF['paths']['js']	='flights/%PILOTID%/tracks/%YEAR%';
+// *.1.txt
+// *.poly.txt
+// *.saned.full.igc
+// *.saned.igc
+$CONF['paths']['intermediate']	='flights/%PILOTID%/tracks/%YEAR%';
+
+*/
+
+define("LEONARDO_ABS_PATH",dirname(__FILE__));
 
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
@@ -714,7 +744,6 @@ if (0) {
 	}
 
 	$moduleAbsPath=dirname(__FILE__);	
-
 	
 	$flightsRelPath="flights";
 	$waypointsRelPath="waypoints";

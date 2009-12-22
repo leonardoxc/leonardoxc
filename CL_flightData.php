@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.167 2009/12/16 14:15:37 manolis Exp $
+// $Id: CL_flightData.php,v 1.168 2009/12/22 15:01:26 manolis Exp $
 //
 //************************************************************************
 
@@ -195,18 +195,25 @@ var $maxPointNum=1000;
 	}
 
 	function checkDirs() {
-		$pilotPath=$this->getPilotAbsDir();
-		$flightYear=$this->getYear();
+		global $CONF;
 
-		$yearPath	="$pilotPath/flights/$flightYear";
-		$maps_dir	="$pilotPath/maps/$flightYear";
-		$charts_dir	="$pilotPath/charts/$flightYear";
-		$photos_dir	="$pilotPath/photos/$flightYear";
+		$userDir=$this->getPilotID();
+		$year=$this->getYear();
 
-		if (!is_dir($yearPath))  	mkdir($yearPath,0755);
-		if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
-		if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
-		if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
+		$d=0;
+		$dirs=array();
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['igc']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['photos']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['map']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['charts']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['kml']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['js']) );
+		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) );
+		
+		foreach($dirs as $dir) {
+			$dirPath=LEONARDO_ABS_PATH.'/'.$dir;
+			if (!is_dir($dirPath))  	mkdir($dirPath,0755);
+		}
 	}
 
 	function toXML($forceProtocol=''){
@@ -630,51 +637,83 @@ $resStr='{
 		if ($saned==2) $suffix=".saned.full.igc";
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;
+		global $moduleRelPath;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).
+				rawurlencode($this->filename).$suffix;
+				
+		// return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;
 	}
 
 	function getKMLRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";
+		global $moduleRelPath;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).
+				rawurlencode($this->filename).".kml";				
+		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";
 	}
 
 	function getGPXRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";
+		global $moduleRelPath;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).
+				rawurlencode($this->filename).".xml";
+		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";
 	}
 	function getPolylineRelPath() {
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";
+		global $moduleRelPath;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).
+				rawurlencode($this->filename).".poly.txt";
+		// return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";
 	}
 
 	function getMapRelPath($num=0) {
+		global $moduleRelPath;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).
+				rawurlencode($this->filename).$suffix.".jpg";
+		//return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";
 	}
 
 	function getChartRelPath($chartType,$unitSystem=1,$rawChart=0) {
+		global $moduleRelPath;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
-		return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";
+				
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).
+				rawurlencode($this->filename).".".$chartType.$suffix.".png";				
+		// return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";
 	}
 	function getPhotoRelPath($photoNum) {
+		global $moduleRelPath;
 		$t="photo".$photoNum."Filename";
-		return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).
+				rawurlencode($this->filename).".".$chartType.$suffix.".png";				
+		// return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;
 	}
 	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $moduleRelPath;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return  $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).
+				rawurlencode($this->filename)."$suffix.txt";
+		// return  $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
 	function getJsRelPath($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $moduleRelPath;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).
+				rawurlencode($this->filename)."$suffix.js";
+		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
 	function getJsonRelPath() { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		return str_replace('.//','',$this->getPilotRelDir())."/flights/".$this->getYear()."/".rawurlencode($this->filename).".json.js";
+		global $moduleRelPath;	
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).
+				rawurlencode($this->filename).".json.js";
+				
+		// return str_replace('.//','',$this->getPilotRelDir())."/flights/".$this->getYear()."/".rawurlencode($this->filename).".json.js";
 	}
 	// ---------------------------------
 	// now absolute filenames
@@ -686,26 +725,32 @@ $resStr='{
 
 		return $flightsAbsPath."/".$extra_prefix.$this->userID;
 	}
-
+	
 	function getIGCFilename($saned=0) {
 		if ($saned==2) $suffix=".saned.full.igc";
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).
+				$this->filename.$suffix;
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;
 	}
 	function getKMLFilename() {
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).$this->filename.".kml";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";
 	}
 	function getGPXFilename() {
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).$this->filename.".xml";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";
 	}
 	function getPolylineFilename() {
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).$this->filename.".poly.txt";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";
 	}
 	function getMapFilename($num=0) {
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).$this->filename.$suffix.".jpg";
+		//return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";
 	}
 	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
 		if ($unitSystem==2) $suffix="_2";
@@ -714,25 +759,30 @@ $resStr='{
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 
-		return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).$this->filename.$suffix.".".$chartType.$suffix.".png";
+		// return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
 	}
 	function getPhotoFilename($photoNum) {
 		$t="photo".$photoNum."Filename";
-		return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).$this->$t;
+		// return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;
 	}
 	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).$this->filename.$suffix."$suffix.txt";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
 	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).$this->filename.$suffix."$suffix.js";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
 	function getJsonFilename() {
-			return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".json.js";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).$this->filename.$suffix.".json.js";
+		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".json.js";
 	}
 	//---------------------------------------
 	// Full url functions

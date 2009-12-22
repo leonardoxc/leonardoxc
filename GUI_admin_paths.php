@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.2 2009/12/21 15:04:40 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.3 2009/12/22 15:01:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -69,6 +69,25 @@
 		
 		$f++;
 		
+		$files[$f][0]="$userDir/flights/$year/$filename.jpg";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['map']) )."/$filename.jpg";
+	
+		$files[$f][0]="$userDir/flights/$year/$filename.saned.igc";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) )."/$filename.saned.igc";
+	
+		$files[$f][0]="$userDir/flights/$year/$filename.saned.full.igc";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) )."/$filename.saned.full.igc";
+	
+		$files[$f][0]="$userDir/flights/$year/$filename.poly.txt";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) )."/$filename.poly.txt";
+	
+		$files[$f][0]="$userDir/flights/$year/$filename.1.txt";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['intermediate']) )."/$filename.1.txt";
+		
+		$files[$f][0]="$userDir/flights/$year/$filename.json.js";
+		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['js']) )."/$filename.json.js";
+		
+			
 		foreach ($dirs as $dir ){
 			$output2.="mkdir -p $dir\r\n";
 		}
@@ -81,26 +100,18 @@
 		$igcNum++;		
 
 /*	
-// the main IGC file
-$CONF['paths']['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
+
 // photo filenames
 $CONF['paths']['photos']='data/flights/photos/%YEAR%/%PILOTID%';
-// The rest can be ommited from Backup!!!
-// *.jpg
-$CONF['paths']['map']	='data/flights/maps/%YEAR%/%PILOTID%';
+
 // *.png 16 files / flight
 $CONF['paths']['charts']='data/flights/charts/%YEAR%/%PILOTID%';
+
 // *.kmz
 // *.man.kmz
 // *.igc2kmz.[version].kmz
 $CONF['paths']['kml']	='data/flights/kml/%YEAR%/%PILOTID%';
-// *.json.js
-$CONF['paths']['js']	='data/flights/js/%YEAR%/%PILOTID%';
-// *.1.txt
-// *.poly.txt
-// *.saned.full.igc
-// *.saned.igc
-$CONF['paths']['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
+
 */
 		
 		
@@ -122,13 +133,12 @@ $CONF['paths']['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
 	// echo "\r\n</pre><HR>";
 	echo "Flights found : $igcNum<HR><BR>";
 	
-	echo "A file named $filename (and <a href='data/flights/$filename2' target='_blank'>$filename2</a> with the shell commands) has been created in leonardo/data/flights directory.
+	echo "A file named $filename2 with the shell commands( and a txt file  $filaneme with the igc paths for reference only) has been created in leonardo/ directory.
 		 Check that the file is deleted on the server afterwards<BR>
-	 Execute this command on a shell:<BR>";
+	 Execute this command on a shell: <BR>";
 	
 	
-	//echo "<hr>cd ".dirname(__FILE__)."/flights; rm -f tracks.tgz; sed 's/.$//' $filename  > ".$filename.
-	//		".2 ; tar cfz tracks.tgz -T ".$filename.".2; rm -f export_* ; ls -la tracks.tgz <HR>";
+	echo "<hr>cd ".dirname(__FILE__)."; ./$filename2;<HR>";
 	return;
 
 
