@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_header.php,v 1.15 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: GUI_header.php,v 1.16 2009/12/23 14:02:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -81,6 +81,8 @@ if ($ap) { // a league
 
 if ($clubID) { // a league
 	$topCustomLogo=$clubsList[$clubID]['desc'];
+	$topCustomLogo.=" <a href='#' onclick='showClubDetails(".$clubID.")'>
+			<img src='$moduleRelPath/img/icon_info.png' align='absmiddle' border='0' title='"._Club." ".$clubsList[$clubID]['desc']."'></a>";
 } else {
 	$topCustomLogo='';
 }

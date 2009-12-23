@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.71 2009/03/26 15:57:01 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.72 2009/12/23 14:02:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -76,6 +76,29 @@ sfHover = function() {
 
 //--><!]]></script>
 <? } ?>
+
+<ul id="ticker01"></ul> 
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+$('#dialogWindow').jqm({modal:true});
+
+function showClubDetails(clubID) {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_club_info.php?clubid='+clubID });
+	$('#dialogWindow').jqmShow();
+}
+
+function showNewsItem(itemID) {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/data/news/'+itemID+'/index.html' });
+	$('#dialogWindow').jqmShow();
+}
+
+
+
+$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
+	
+//--><!]]></script>
 
 
 

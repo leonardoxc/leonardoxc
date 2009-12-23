@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_filter_menu.php,v 1.8 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_filter_menu.php,v 1.9 2009/12/23 14:02:17 manolis Exp $                                                                 
 //
 //************************************************************************
   
@@ -73,6 +73,9 @@
 <? if ($clubID) {  ?>
   	    <div class="menu1" ><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_club.gif'  align="absmiddle" border=0>
   	    <?
+			echo "<a href='#' onclick='showClubDetails(".$clubID.")'>
+			<img src='$moduleRelPath/img/icon_info.png' align='absmiddle' border='0' title='"._Club." ".$clubsList[$clubID]['desc']."'></a> ";
+			
   	    	echo "<b>$clubName</b>";
   	    	if (!$noClubDisplay) 
   	    		echo " <a href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>'0'))."'><img src='$moduleRelPath/templates/".$PREFS->themeName."/img/icon_x_white.gif' title='"._Display_ALL."' align='absmiddle' border=0></a>";

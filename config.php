@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.123 2009/12/22 15:01:26 manolis Exp $                                                                 
+// $Id: config.php,v 1.124 2009/12/23 14:02:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -604,6 +604,10 @@ $CONF['paths']['js']	='flights/%PILOTID%/tracks/%YEAR%';
 $CONF['paths']['intermediate']	='flights/%PILOTID%/tracks/%YEAR%';
 
 */
+
+// news
+$CONF['news']['items']=array();
+@include_once dirname(__FILE__)."/site/config_news.php";
 
 define("LEONARDO_ABS_PATH",dirname(__FILE__));
 

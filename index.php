@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.106 2009/12/16 14:15:37 manolis Exp $
+// $Id: index.php,v 1.107 2009/12/23 14:02:17 manolis Exp $
 //
 //************************************************************************
 
@@ -311,15 +311,16 @@ if ($clubID) {
 	$clubName=_No_Club;
 }
 
+?>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
+<?
 if ( ! $CONF['custom_top_menu'] ) {
 	require_once dirname(__FILE__)."/MENU_menu.php";
 } else {
 	require_once dirname(__FILE__).'/MENU_'.$CONF['custom_top_menu'].'_top_menu.php';
 }
-?>
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
-<?
+
 if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {
  // require_once dirname(__FILE__)."/MENU_second_menu.php";
 }

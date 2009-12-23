@@ -8,9 +8,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_header.php,v 1.4 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: MENU_header.php,v 1.5 2009/12/23 14:02:17 manolis Exp $                                                                 
 //
 //************************************************************************
+
+// NOT USED!!!
+exit;
 
 open_inner_table('',750);
 echo '<tr><td>';
