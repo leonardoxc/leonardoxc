@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.51 2009/03/31 14:49:12 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.52 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -360,16 +360,20 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	//******************************************************
 	
 	// move the flight to corresponding year
-	$yearPath=$flightsAbsPath."/".$userIDstr."/flights/".$flight->getYear(); 
-	$maps_dir=$flightsAbsPath."/".$userIDstr."/maps/".$flight->getYear();
-	$charts_dir=$flightsAbsPath."/".$userIDstr."/charts/".$flight->getYear();
-	$photos_dir=$flightsAbsPath."/".$userIDstr."/photos/".$flight->getYear();
+	
+	$flight->checkDirs();
+	
+	//$yearPath=$flightsAbsPath."/".$userIDstr."/flights/".$flight->getYear(); 
+	//$maps_dir=$flightsAbsPath."/".$userIDstr."/maps/".$flight->getYear();
+	//$charts_dir=$flightsAbsPath."/".$userIDstr."/charts/".$flight->getYear();
+	//$photos_dir=$flightsAbsPath."/".$userIDstr."/photos/".$flight->getYear();
 
-    if (!is_dir($yearPath))  	mkdir($yearPath,0755);
-    if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
-    if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
-    if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
-
+    //if (!is_dir($yearPath))  	mkdir($yearPath,0755);
+    //if (!is_dir($maps_dir))  	mkdir($maps_dir,0755);
+    //if (!is_dir($charts_dir))	mkdir($charts_dir,0755);
+    //if (!is_dir($photos_dir))	mkdir($photos_dir,0755);
+	
+	
 /**
  * Martin Jursa; to avoid error log flooding
  */

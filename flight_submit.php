@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.20 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.21 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -88,7 +88,7 @@ if (count($_POST) >0 ) {
 
    $userID=$row['user_id'];
 
-   $filename = dirname(__FILE__)."/flights/".$_POST['igcfn'].".igc";	   
+   $filename = LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.$_POST['igcfn'].".igc";	   
    if (!$handle = fopen($filename, 'w')) { 
 		echo "Cannot open file ($filename) on server for writing<BR></BODY></HTML>";
 		exit;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flights_export.php,v 1.2 2009/02/09 16:14:53 manolis Exp $                                                                 
+// $Id: GUI_flights_export.php,v 1.3 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -75,11 +75,14 @@
 			if ($row['firstLon'] < $boundBox['minLon'] || $row['firstLon'] > $boundBox['maxLon'] ) continue;
 		}		
 		
-		$igcPath='';
-		if ($row['userServerID']) 
-			$igcPath.=$row['userServerID'].'_';
-		$igcPath.=$row['userID']."/flights/".substr($row['DATE'],0,4)."/".$row['filename'];
-		if ( is_file(  dirname(__FILE__).'/flights/'.$igcPath ) ) {
+		//$igcPath='';
+		//if ($row['userServerID']) 
+		//	$igcPath.=$row['userServerID'].'_';
+			
+		$igcPath=str_replace("%PILOTID%",getPilotID($row['userServerID'],$row['userID']),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.$row['filename'];
+			
+		//$igcPath.=$row['userID']."/flights/".substr($row['DATE'],0,4)."/".$row['filename'];
+		if ( is_file(  LEONARDO_ABS_PATH.'/'.$igcPath ) || 1) {
 			$output.=$igcPath."\r\n";	
 			$glider=$CONF['brands']['list'][$row['gliderBrandID']].' '.$row['glider'];
 			$outputInfo.=$igcPath.';'.$row['cat'].';'.$glider.';'.$row['userServerID'].
@@ -91,25 +94,25 @@
 	//echo $output;
 	
 	$filename='export_'.rand(1,999999);
-	$fp=fopen(dirname(__FILE__)."/flights/$filename","w" );
+	$fp=fopen(LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc']."/$filename","w" );
 	fwrite($fp,$output);
 	fclose($fp);
 	
 	$filename2='export_info_'.rand(1,999999).'.csv';
-	$fp2=fopen(dirname(__FILE__)."/flights/$filename2","w" );
+	$fp2=fopen(LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc']."/$filename2","w" );
 	fwrite($fp2,$outputInfo);
 	fclose($fp2);
 	
 	// echo "\r\n</pre><HR>";
 	echo "Flights found : $igcNum<HR><BR>";
 	
-	echo "A file named $filename (and <a href='flights/$filename2' target='_blank'>$filename2</a> for the cvs info) has been created in leonardo/flights directory.
+	echo "A file named $filename (and <a href='".getRelMainDir().$CONF['paths']['tmpigc']."/$filename2' target='_blank'>$filename2</a> for the cvs info) has been created in leonardo/".$CONF['paths']['tmpigc']." directory.
 		 Check that the file is deleted on the server afterwards<BR>
 	 Execute this command on a shell:<BR>";
 	
 	
-	echo "<hr>cd ".dirname(__FILE__)."/flights; rm -f tracks.tgz; sed 's/.$//' $filename  > ".$filename.
-			".2 ; tar cfz tracks.tgz -T ".$filename.".2; rm -f export_* ; ls -la tracks.tgz <HR>";
+	echo "<hr>cd ".LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc']."; rm -f tracks.tgz; sed 's/.$//' $filename  > ".$filename.
+			".2 ; tar cfz tracks.tgz -C ".LEONARDO_ABS_PATH." -T ".$filename.".2; rm -f export_* ; ls -la tracks.tgz <HR>";
 	return;
 
 

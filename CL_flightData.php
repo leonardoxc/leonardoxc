@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.168 2009/12/22 15:01:26 manolis Exp $
+// $Id: CL_flightData.php,v 1.169 2009/12/28 13:41:14 manolis Exp $
 //
 //************************************************************************
 
@@ -637,80 +637,80 @@ $resStr='{
 		if ($saned==2) $suffix=".saned.full.igc";
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		global $moduleRelPath;
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
 				rawurlencode($this->filename).$suffix;
 				
 		// return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;
 	}
 
 	function getKMLRelPath() {
-		global $moduleRelPath;
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.
 				rawurlencode($this->filename).".kml";				
 		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";
 	}
 
 	function getGPXRelPath() {
-		global $moduleRelPath;
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.
 				rawurlencode($this->filename).".xml";
 		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".xml";
 	}
 	function getPolylineRelPath() {
-		global $moduleRelPath;
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.
 				rawurlencode($this->filename).".poly.txt";
 		// return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".poly.txt";
 	}
 
 	function getMapRelPath($num=0) {
-		global $moduleRelPath;
+		global $moduleRelPath,$CONF;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).'/'.
 				rawurlencode($this->filename).$suffix.".jpg";
 		//return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";
 	}
 
 	function getChartRelPath($chartType,$unitSystem=1,$rawChart=0) {
-		global $moduleRelPath;
+		global $moduleRelPath,$CONF;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 				
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).'/'.
 				rawurlencode($this->filename).".".$chartType.$suffix.".png";				
 		// return $this->getPilotRelDir()."/charts/".$this->getYear()."/".rawurlencode($this->filename).".".$chartType.$suffix.".png";
 	}
 	function getPhotoRelPath($photoNum) {
-		global $moduleRelPath;
+		global $moduleRelPath,$CONF;
 		$t="photo".$photoNum."Filename";
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).'/'.
 				rawurlencode($this->filename).".".$chartType.$suffix.".png";				
 		// return $this->getPilotRelDir()."/photos/".$this->getYear()."/".$this->$t;
 	}
 	function getRelPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $moduleRelPath;
+		global $moduleRelPath,$CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.
 				rawurlencode($this->filename)."$suffix.txt";
 		// return  $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
 	function getJsRelPath($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $moduleRelPath;
+		global $moduleRelPath,$CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.
 				rawurlencode($this->filename)."$suffix.js";
 		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
 	function getJsonRelPath() { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
-		global $moduleRelPath;	
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.
 				rawurlencode($this->filename).".json.js";
 				
 		// return str_replace('.//','',$this->getPilotRelDir())."/flights/".$this->getYear()."/".rawurlencode($this->filename).".json.js";
@@ -727,61 +727,71 @@ $resStr='{
 	}
 	
 	function getIGCFilename($saned=0) {
+		global $CONF;
 		if ($saned==2) $suffix=".saned.full.igc";
 		else if ($saned) $suffix=".saned.igc";
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
 				$this->filename.$suffix;
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;
 	}
 	function getKMLFilename() {
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).$this->filename.".kml";
+		global $CONF;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.$this->filename.".kml";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";
 	}
 	function getGPXFilename() {
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).$this->filename.".xml";
+		global $CONF;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.$this->filename.".xml";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";
 	}
 	function getPolylineFilename() {
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).$this->filename.".poly.txt";
+		global $CONF;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename.".poly.txt";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";
 	}
 	function getMapFilename($num=0) {
+		global $CONF;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).$this->filename.$suffix.".jpg";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).'/'.$this->filename.$suffix.".jpg";
 		//return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";
 	}
 	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
+		global $CONF;
 		if ($unitSystem==2) $suffix="_2";
 		else $suffix="";
 
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).$this->filename.$suffix.".".$chartType.$suffix.".png";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).'/'.$this->filename.$suffix.".".$chartType.$suffix.".png";
 		// return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
 	}
 	function getPhotoFilename($photoNum) {
+		global $CONF;
 		$t="photo".$photoNum."Filename";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).$this->$t;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['photos']) ).'/'.$this->$t;
 		// return $this->getPilotAbsDir()."/photos/".$this->getYear()."/".$this->$t;
 	}
 	function getPointsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).$this->filename.$suffix."$suffix.txt";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename.$suffix."$suffix.txt";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
 	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
+		global $CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).$this->filename.$suffix."$suffix.js";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.$this->filename.$suffix."$suffix.js";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
 	function getJsonFilename() {
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).$this->filename.$suffix.".json.js";
+		global $CONF;
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.$this->filename.$suffix.".json.js";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".json.js";
 	}
 	//---------------------------------------

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.14 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.15 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -95,7 +95,10 @@
 									getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])) 
 									);
 			$this_year=substr($row[DATE],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+						str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+						$row['filename']);
+			//	$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
@@ -159,7 +162,10 @@
 									);
 										
 			$this_year=substr($row[DATE],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+					str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+					$row['filename'] );  
+					//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
@@ -225,7 +231,10 @@
 										getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])) 		
 									);
 			$this_year=substr($row[DATE],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+						str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+						$row['filename']);
+					//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 

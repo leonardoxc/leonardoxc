@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.21 2009/06/10 15:18:57 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.22 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
  if ($userID<=0) return;
@@ -309,10 +309,11 @@ $(document).ready(
 	checkPath($flightsAbsPath."/".$flights_user_id);
 
 	$randName=sprintf("%05d",rand(1, 10000) );
-	$tmpZIPfolder=$flightsAbsPath."/".$flights_user_id."/flights/zipTmp".$randName ;
-	// $tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/".$filename;
-	// new way : 
-	$tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/zipFile".$randName.".zip";
+	
+	$tmpZIPfolder=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/zipTmp_'.$flights_user_id.'_'.$randName ;
+	// $tmpZIPfolder=$flightsAbsPath."/".$flights_user_id."/flights/zipTmp".$randName ;
+	$tmpZIPPath=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/zipFile'.$flights_user_id.'_'.$randName.'.zip';
+	//$tmpZIPPath=$flightsAbsPath."/".$flights_user_id."/flights/zipFile".$randName.".zip";
 	
 	move_uploaded_file($_FILES['zip_datafile']['tmp_name'], $tmpZIPPath );
 

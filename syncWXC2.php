@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.2 2009/03/23 15:18:39 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.3 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -179,10 +179,12 @@ DATE_FORMAT($tableName.DATE,'%Y') as Year
 
 	$gotEntries=0;
 	while($row = mysql_fetch_assoc($res)) {
-		if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
-		else $extra_prefix='';
-		$filename=$flightsAbsPath.'/'.$extra_prefix.$row['userID'].'/flights/'.$row['Year'].'/'.$row['filename'];
+		//if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
+		//else $extra_prefix='';
+		//$filename=$flightsAbsPath.'/'.$extra_prefix.$row['userID'].'/flights/'.$row['Year'].'/'.$row['filename'];
 		
+		$filename=LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.$row['filename'];
+							
 		if ($tableType=='active' && !file_exists($filename) ){
 			// echo" igc not found :$actionTm <BR>";	
 			 continue;	
@@ -246,11 +248,14 @@ foreach ($xRow as $row) {
 													
 		$row['FlightUrl']=htmlspecialchars($row['FlightUrl']);
 		
-		if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
-		else $extra_prefix='';
-		$trackPath=$flightsWebPath.'/'.$extra_prefix.$row['userID'].'/flights/'.$row['Year'].'/'.rawurlencode($row['filename']);
+		//if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
+		//else $extra_prefix='';
+		//$trackPath=$flightsWebPath.'/'.$extra_prefix.$row['userID'].'/flights/'.$row['Year'].'/'.rawurlencode($row['filename']);
 
-		$row['IgcUrl']="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath.$trackPath;				
+		$trackPath=getRelMainDir().str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.rawurlencode($row['filename']);
+					
+
+		$row['IgcUrl']="http://".$_SERVER['SERVER_NAME'].$trackPath;				
 		
 		
 		$WxcFields=Array('CivlId','PilotFirstName','PilotLastName','PilotNation','PilotGender',

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.8 2009/09/25 13:51:15 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.9 2009/12/28 13:41:15 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -319,10 +319,11 @@ if ($op=="get_hash") {
 			
 			while  ( $row = $db->sql_fetchrow($res) ) {
 				
-				if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
-				else $extra_prefix='';
-
-				$filename=$flightsAbsPath.'/'.$extra_prefix.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+				//if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
+				//else $extra_prefix='';
+				//$filename=$flightsAbsPath.'/'.$extra_prefix.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+				$filename=LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.$row['filename'];
+									
 				if (is_file($filename ))
 					array_push($filesToServe,
 									array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",

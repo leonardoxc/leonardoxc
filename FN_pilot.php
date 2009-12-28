@@ -8,13 +8,19 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.46 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.47 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__)."/CL_image.php";
 
 //------------------- PILOT RELATED FUNCTIONS ----------------------------
+function getPilotID($userServerID,$userID) {
+	if ($userServerID) $extra_prefix=$userServerID.'_';
+	else $extra_prefix='';
+	return $extra_prefix.$userID;
+}
+	
 function getPilotList($clubID=0) {
 	global $db;
 	global $flightsTable;
@@ -358,23 +364,26 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 }
 
 function getPilotPhotoRelFilename($serverID,$pilotID,$icon=0) {
-	global 	$moduleRelPath;
+	global 	$moduleRelPath,$CONF;
 
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
 	
 	if ($serverID) $pilotID=$serverID.'_'.$pilotID;
-	return moduleRelPath()."/flights/".$pilotID."/PilotPhoto".$suffix;
+	
+	return moduleRelPath().'/'.str_replace("%PILOTID%",$pilotID,$CONF['paths']['pilot'] ).'/PilotPhoto'.$suffix;
+	//return moduleRelPath()."/flights/".$pilotID."/PilotPhoto".$suffix;
 }
 
 
 function getPilotPhotoFilename($serverID,$pilotID,$icon=0) {
-	global $flightsAbsPath;
+	global $flightsAbsPath,$CONF;
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
 	
 	if ($serverID) $pilotID=$serverID.'_'.$pilotID;
-	return $flightsAbsPath."/".$pilotID."/PilotPhoto".$suffix;
+	return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$pilotID,$CONF['paths']['pilot'] ).'/PilotPhoto'.$suffix;	
+	//return $flightsAbsPath."/".$pilotID."/PilotPhoto".$suffix;
 }
 
 function checkPilotPhoto($serverID,$pilotID) {
@@ -387,12 +396,14 @@ function checkPilotPhoto($serverID,$pilotID) {
 }
 
 function getPilotStatsRelFilename($pilotID,$num) {
-	global 	$moduleRelPath;
-	return $moduleRelPath."/flights/".$pilotID."/PilotStats_$num.png";
+	global $moduleRelPath,$CONF;
+	return moduleRelPath().'/'.str_replace("%PILOTID%",$pilotID,$CONF['paths']['pilot'] )."/PilotStats_$num.png";
+	//return $moduleRelPath."/flights/".$pilotID."/PilotStats_$num.png";
 }
 function getPilotStatsFilename($pilotID,$num) {
-	global $flightsAbsPath;
-	return $flightsAbsPath."/".$pilotID."/PilotStats_$num.png";
+	global $flightsAbsPath,$CONF;
+	return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$pilotID,$CONF['paths']['pilot'] )."/PilotStats_$num.png";
+	// return $flightsAbsPath."/".$pilotID."/PilotStats_$num.png";
 }
 
 function getNationalityDescription($cCode,$img=1,$text=1) {

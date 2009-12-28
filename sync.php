@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.28 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: sync.php,v 1.29 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
@@ -343,7 +343,9 @@
 				
 				
 				while  ( $row = $db->sql_fetchrow($res) ) {
-					$filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+					// $filename=dirname(__FILE__).'/flights/'.$row['userID'].'/flights/'.substr($row['DATE'],0,4).'/'.$row['filename'];
+					$filename=LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.$row['filename'];
+					
 					if (is_file($filename ))
 						array_push($filesToServe,
 										array(	PCLZIP_ATT_FILE_NAME => $row['ID'].".igc",

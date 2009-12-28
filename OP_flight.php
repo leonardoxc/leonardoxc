@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.17 2009/04/30 15:17:35 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.18 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,7 +41,7 @@ function flights_count($arg) {
 $serverFunctions['flights.find']='flights_find';
 function flights_find($arg) {
 		global $db,$flightsTable;
-		global $takeoffRadious;
+		global $takeoffRadious,$CONF;
 		require_once "FN_pilot.php";
 
 		$sitePass=$arg[0];
@@ -97,7 +97,10 @@ function flights_find($arg) {
 										getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID']))
 									);
 			$this_year=substr($row['DATE'],0,4);		
-			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+						str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+						$row['filename']);
+				//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
 			
 			if ($row['takeoffVinicity'] > $takeoffRadious ) 
 				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
@@ -142,7 +145,7 @@ function flights_getIGCurl($args) {
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 $serverFunctions['flights.submit']='flights_submit';
 function flights_submit($args) {
-	global $opMode;
+	global $opMode,$CONF;
 	
 	require_once dirname(__FILE__)."/FN_flight.php";
 
@@ -234,7 +237,9 @@ function flights_submit($args) {
 
 	$userID=$row['user_id'];
  
-	$filename = dirname(__FILE__)."/flights/".$igcFilename;
+	//$filename = dirname(__FILE__)."/flights/".$igcFilename;
+	$filename = LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.$igcFilename;
+	
 	if (!$handle = fopen($filename, 'w')) { 
 		return  new IXR_Error(202, "Cannot open file ($filename)");
 	} 

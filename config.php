@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.124 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: config.php,v 1.125 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -554,6 +554,8 @@ $OLCScoringServerUseInternal=1;
 // These are not needed if $OLCScoringServerUseInternal=1;
 $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
+
+$CONF['paths']['tmpigc']='data/tmp';
 
 $CONF['paths']['config']['pathsVersion']=2;
 // the pilot dir

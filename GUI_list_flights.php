@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.115 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.116 2009/12/28 13:41:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -274,10 +274,13 @@ if (0) {
 			
 			// if ($row['DATE'] < '2008-06-01' || $row['DATE']  > '2008-08-31' ) continue;
 			
-			$igcPath=''; // $flightsAbsPath;
-			if ($row['userServerID']) 
-				$igcPath.=$row['userServerID'].'_';
-			$igcPath.=$row['userID']."/flights/".substr($row['DATE'],0,4)."/".$row['filename']."\n";
+			//$igcPath=''; // $flightsAbsPath;
+			//if ($row['userServerID']) 
+			//	$igcPath.=$row['userServerID'].'_';
+			//$igcPath.=$row['userID']."/flights/".substr($row['DATE'],0,4)."/".$row['filename']."\n";
+			
+			$igcPath=str_replace("%PILOTID%",getPilotID($row['userServerID'],$row['userID']),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.$row['filename'];
+			
 			echo $igcPath;	
 			$igcNum++;		
 		}		
