@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.72 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.73 2009/12/29 13:37:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -78,11 +78,11 @@ sfHover = function() {
 <? } ?>
 
 <ul id="ticker01"></ul> 
-
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 
-$('#dialogWindow').jqm({modal:true});
+$('#dialogWindow').jqm({modal:true,toTop: true});
 
 function showClubDetails(clubID) {
 	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_club_info.php?clubid='+clubID });
@@ -95,9 +95,13 @@ function showNewsItem(itemID) {
 }
 
 
-
 $("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
-	
+
+$(".ticksettings").livequery('click', function(e) {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php' });
+	$('#dialogWindow').jqmShow();
+});
+
 //--><!]]></script>
 
 

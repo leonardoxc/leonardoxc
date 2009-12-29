@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.48 2009/12/16 14:15:37 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.49 2009/12/29 13:37:54 manolis Exp $
 //
 //************************************************************************
 
@@ -282,7 +282,7 @@ border-bottom-style:none;
 }
 
 </style>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
+
 <script language="javascript">
 function changeBrand(sl) {
 	// var sl=MWJ_findObj("brandSelect");

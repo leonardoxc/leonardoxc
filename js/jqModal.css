@@ -44,14 +44,30 @@ border: 1px solid #000;
 border:none;
 background: #fff;
 background:none;
-width: 100%; 
-height: 16px; 
+width: 735px; 
+height: 18px; 
 margin: 0; 
 padding: 0;
 margin-top:-6px;
-padding-bottom:4px;
+padding-bottom:0px;
 overflow: hidden; 
+float:left; clear:none;
 }
+
+.ticksettings {
+background:url(../img/icon_settings.gif) no-repeat;
+margin-top:-6px;
+position: relative;
+float:right;clear:none;
+right: -3px;
+cursor: hand;
+cursor: pointer;
+top: 0px;
+width: 22px;
+height:18px;
+overflow: hidden;
+}
+
 .tickercontainer .mask { /* that serves as a mask. so you get a sort of padding both left and right */
 position: relative;
 left: 10px;
