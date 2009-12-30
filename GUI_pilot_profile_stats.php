@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_stats.php,v 1.9 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_stats.php,v 1.10 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -166,7 +166,7 @@ $mean_duration="N/A";
    }
 
 	$path=dirname( getPilotStatsFilename($pilotIDview,2) );
-	if (!is_dir($path)) @mkdir($path,0777);
+	if (!is_dir($path)) makeDir($path);
 
 
 	require_once dirname(__FILE__)."/lib/graph/jpgraph_gradient.php";

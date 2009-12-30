@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.73 2009/12/29 13:37:54 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.74 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -102,6 +102,7 @@ $(".ticksettings").livequery('click', function(e) {
 	$('#dialogWindow').jqmShow();
 });
 
+	  
 //--><!]]></script>
 
 

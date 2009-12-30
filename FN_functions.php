@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.67 2009/05/27 14:02:32 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.68 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -192,6 +192,11 @@ if( !function_exists('delDir') ){
 function makeDir($path, $rights = 0777) {
   	$folder_path = array( strstr($path, '.') ? dirname($path) : $path);
 
+	if (version_compare(PHP_VERSION, '5.0.0', '>=')) {
+		return @mkdir($path,$rights,true);
+	}
+	
+	// else for php 4
 	while(!@is_dir(dirname(end($folder_path)))
           && dirname(end($folder_path)) != '/'
           && dirname(end($folder_path)) != '.'
@@ -207,11 +212,11 @@ function makeDir($path, $rights = 0777) {
 }
 
 function  checkPath($path){
-  if (!is_dir($path))  mkdir($path,0755);
-  if (!is_dir($path."/flights"))	mkdir($path."/flights",0755);
-  if (!is_dir($path."/maps") )		mkdir($path."/maps",0755);
-  if (!is_dir($path."/charts")) 	mkdir($path."/charts",0755);
-  if (!is_dir($path."/photos")) 	mkdir($path."/photos",0755);
+  if (!is_dir($path))  makeDir($path,0755);
+  if (!is_dir($path."/flights"))	makeDir($path."/flights",0755);
+  if (!is_dir($path."/maps") )		makeDir($path."/maps",0755);
+  if (!is_dir($path."/charts")) 	makeDir($path."/charts",0755);
+  if (!is_dir($path."/photos")) 	makeDir($path."/photos",0755);
  
 }
 

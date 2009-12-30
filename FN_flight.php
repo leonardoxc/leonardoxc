@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.52 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.53 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -33,7 +33,7 @@ define("ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW",-9);
 function addTestFlightFromURL($filename_url) {
     global $flightsAbsPath ;
 	$tmpPath=$flightsAbsPath."/-1/tmp"; 
-	if (!is_dir($tmpPath)) mkdir($tmpPath,0755);
+	if (!is_dir($tmpPath)) makeDir($tmpPath,0755);
 
 	$filename_parts=explode("/",$filename_url);
 	$filename=$filename_parts[count($filename_parts)-1];

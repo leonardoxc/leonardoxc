@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.125 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: config.php,v 1.126 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -642,7 +642,7 @@ if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) 
 	
 }
 
-if (isset($_REQUEST['updatePrefs'])) {// submit form 	   		
+if (isset($_REQUEST['updatePrefs1'])) {// submit form 	   		
 	$PREFS->themeName= $_POST['PREFS_themeName'];
 	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage']+0;
 	$PREFS->metricSystem=$_POST['PREFS_metricSystem']+0;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.9 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.10 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -117,12 +117,12 @@ class pilot{
 
 	function createDirs() {
 		$pilotPath=$this->getAbsPath();
-		if (! is_dir($pilotPath) ) @mkdir($pilotPath);
+		if (! is_dir($pilotPath) ) makeDir($pilotPath);
 		
-		@mkdir($pilotPath."/flights");
-		@mkdir($pilotPath."/charts");
-		@mkdir($pilotPath."/maps");
-		@mkdir($pilotPath."/photos");
+		//@mkdir($pilotPath."/flights");
+		//@mkdir($pilotPath."/charts");
+		//@mkdir($pilotPath."/maps");
+		//@mkdir($pilotPath."/photos");
 	}
 
 	function deletePilot($deleteFlights=0,$deleteFiles=0) {

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.38 2009/04/15 22:17:49 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.39 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -677,7 +677,7 @@ class Server {
 		if ($this->data['use_zip']) { // we have a zip file in $rssStr, unzip it
 			if ($verbose) echo "Unziping sync-log ... ";
 			$tmpZIPfolder=$CONF_tmp_path.'/'.$this->ID."_".time();
-			mkdir($tmpZIPfolder);
+			makeDir($tmpZIPfolder);
 			
 			$zipFile="$tmpZIPfolder/sync_log.zip";
 			writeFile($zipFile,$rssStr);

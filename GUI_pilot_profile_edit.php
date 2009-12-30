@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.29 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.30 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -49,7 +49,7 @@
 		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,0) );
 
 		$path=dirname(getPilotPhotoFilename($serverIDview,$pilotIDview));
-		if (!is_dir($path)) @mkdir($path,0777);
+		if (!is_dir($path)) makeDir($path);
 
 		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  
 				getPilotPhotoFilename($serverIDview,$pilotIDview) ) ) {

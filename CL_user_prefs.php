@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_user_prefs.php,v 1.9 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_user_prefs.php,v 1.10 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -22,6 +22,12 @@ class UserPrefs {
  var $googleMaps=1;
  var $nameOrder=1; // western -> firstName - LastName
  var $useEditor=1; // USE FCKeditor
+ 
+ var $showNews=1;
+ var $lastNewsId=0;
+ var $showTopScores=1;
+ var $newsDays=10;
+ 
  
  var $visitorID=0;
  var $sessionID=0;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.14 2009/03/12 15:49:14 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.15 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -119,7 +119,7 @@ if ($_POST['writeFile']==1) {
 
 	if (!is_dir($htaccessFiledir) ) {	
 		echo "<span class='note'>Creating folder $htaccessFiledir</span>";
-		mkdir($htaccessFiledir);
+		makeDir($htaccessFiledir);
 	}
 	
 	if (writeFile($htaccessFile,$str) )

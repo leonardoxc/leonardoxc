@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_perform_sync.php,v 1.6 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: EXT_perform_sync.php,v 1.7 2009/12/30 14:45:34 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -112,7 +112,7 @@ if ($action==1) { // server info
 	$logFilename=$logDir.'/'.date("Y_m_d").".html";
 
 	if ( ! is_dir($logDir) ) {
-		mkdir($logDir);
+		makeDir($logDir);
 	}
 
 	$logStr='';

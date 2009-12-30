@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.169 2009/12/28 13:41:14 manolis Exp $
+// $Id: CL_flightData.php,v 1.170 2009/12/30 14:45:34 manolis Exp $
 //
 //************************************************************************
 
@@ -212,7 +212,7 @@ var $maxPointNum=1000;
 		
 		foreach($dirs as $dir) {
 			$dirPath=LEONARDO_ABS_PATH.'/'.$dir;
-			if (!is_dir($dirPath))  	mkdir($dirPath,0755);
+			if (!is_dir($dirPath))  	makeDir($dirPath,0755);
 		}
 	}
 
@@ -1925,7 +1925,7 @@ $kml_file_contents=
 	//							,$point['lat'],-$point['lon'],$point['dis'],$point['alt'],$point['speed'],$point['vario']);
 		}
 		$path_igc = dirname($this->getPointsFilename(1));
-		if (!is_dir($path_igc)) @mkdir($path_igc, 0755);
+		if (!is_dir($path_igc)) makeDir($path_igc, 0755);
 
 		// write saned js file
 		// writeFile($this->getJsFilename(1),$jsOutput);
@@ -2535,7 +2535,7 @@ $kml_file_contents=
 
 		$path_igc=dirname($this->getIGCFilename(1));
 		if ( !is_dir($path_igc) ) {
-			@mkdir($path_igc,0755);
+			makeDir($path_igc,0755);
 		}
 
 		/*write the full saned file */
