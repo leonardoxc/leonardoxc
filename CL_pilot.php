@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.10 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.11 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -99,30 +99,26 @@ class pilot{
 		else return 0;	
 	}
 
+	function getPilotID() {
+		if ($this->isPilotLocal()) $extra_prefix='';
+		else  $extra_prefix=$this->serverID.'_';
+
+		return $extra_prefix.$this->pilotID;
+	}
+	
 	function getAbsPath() {
-		global $flightsAbsPath,$CONF_server_id;
-		if ( $this->isPilotLocal() ) $sPrefix='';
-		else $sPrefix=$this->serverID.'_';
-		return $flightsAbsPath.'/'.$sPrefix.$this->pilotID;
-		
+		global $CONF;				
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),$CONF['paths']['pilot'] );
 	}
 
 	function getRelPath() {
-		global $flightsWebPath,$CONF_server_id;
-		if ( $this->isPilotLocal() ) $sPrefix='';
-		else $sPrefix=$this->serverID.'_';
-		return $flightsWebPath.'/'.$sPrefix.$this->pilotID;
-		
+		global $moduleRelPath,$CONF;
+		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),$CONF['paths']['pilot'] );
 	}
 
 	function createDirs() {
 		$pilotPath=$this->getAbsPath();
 		if (! is_dir($pilotPath) ) makeDir($pilotPath);
-		
-		//@mkdir($pilotPath."/flights");
-		//@mkdir($pilotPath."/charts");
-		//@mkdir($pilotPath."/maps");
-		//@mkdir($pilotPath."/photos");
 	}
 
 	function deletePilot($deleteFlights=0,$deleteFiles=0) {

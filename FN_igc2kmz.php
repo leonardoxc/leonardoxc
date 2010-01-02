@@ -8,18 +8,18 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.11 2009/02/06 11:51:11 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.12 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
-function igc2kmz($file,$timezone,$flightID) {
+function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	global $CONF,$CONF_tables_prefix,$baseInstallationPath,$db;
 	$str="";
 
 	$version=$CONF['googleEarth']['igc2kmz']['version'];
 	
-	$kmzFile=$file.".igc2kmz.$version.kmz";
-	deleteOldKmzFiles($file,$version);
+	$kmzFile=$outputFile.".$version.kmz";
+	deleteOldKmzFiles($outputFile,$version);
 	
 	// exit;
 	if ( is_file($kmzFile) ) return $version;
@@ -56,7 +56,7 @@ function igc2kmz($file,$timezone,$flightID) {
 function deleteOldKmzFiles($file,$version) {
 	// echo "$file,$version #";
 	$dir=dirname($file);
-	$name=basename($file).'.igc2kmz.';
+	$name=basename($file).'.';
 	$namelen=strlen($name);
 
 	if ( !is_dir($dir) ) return;

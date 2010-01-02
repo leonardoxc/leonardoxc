@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_set_bounds.php,v 1.17 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_set_bounds.php,v 1.18 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -48,8 +48,7 @@
 		$flight->START_TIME=$startTime;
 		$flight->END_TIME=$endTime;
 		
-		$waypointsWebPath=moduleRelPath(0)."/".$waypointsRelPath;
-		$flightsWebPath=moduleRelPath(0)."/".$flightsRelPath;
+		$waypointsWebPath=moduleRelPath(0)."/".$waypointsRelPath;		
 
 		$flight->getFlightFromIGC( $flight->getIGCFilename(), 0 );
 

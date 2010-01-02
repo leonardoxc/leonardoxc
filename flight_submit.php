@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.21 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.22 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,7 +34,6 @@
 	
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	if (0) {
 		foreach($_POST as $varName=>$varValue) {

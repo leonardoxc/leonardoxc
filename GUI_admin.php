@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.50 2009/12/21 14:48:05 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.51 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -651,7 +651,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		$res= $db->sql_query('SET NAMES latin1');	
 		$query="SELECT * from $waypointsTable order By countryCode ";
 
-		//$query=" UPDATE leonardo_waypoints SET  name='Schwand', intName='Schwand', lat='47.0142', lon='-8.58312', type='1000', countryCode='CH', location='Brunnen', intLocation='Brunnen', link='http://paragliding.ch/index.php?id=129', description='Startplatz Schwand:   47° 00' 50'' N,8° 35' 05'' O 1250m Bisenstartplatz. In 15 minutigem Fussmarsch zu erreichen ab Bergstation. Gute Soaring Moglichkeiten bei Bise und Nordwind. Flug nach Seewen oder zuruck zur Talstation. Um zur Talstation zu fliegen nach dem Start rechts dem Hang entlang fliegen und vor der Hochspannungsleitung rechts ins Lee fliegen. Das zuruckfliegen im Lee ist bei nicht allzu starkem Wind kein Problem. ', modifyDate='2007-01-24' WHERE ID=9265";
+		//$query=" UPDATE leonardo_waypoints SET  name='Schwand', intName='Schwand', lat='47.0142', lon='-8.58312', type='1000', countryCode='CH', location='Brunnen', intLocation='Brunnen', link='http://paragliding.ch/index.php?id=129', description='Startplatz Schwand:   47ï¿½ 00' 50'' N,8ï¿½ 35' 05'' O 1250m Bisenstartplatz. In 15 minutigem Fussmarsch zu erreichen ab Bergstation. Gute Soaring Moglichkeiten bei Bise und Nordwind. Flug nach Seewen oder zuruck zur Talstation. Um zur Talstation zu fliegen nach dem Start rechts dem Hang entlang fliegen und vor der Hochspannungsleitung rechts ins Lee fliegen. Das zuruckfliegen im Lee ist bei nicht allzu starkem Wind kein Problem. ', modifyDate='2007-01-24' WHERE ID=9265";
 		$res= $db->sql_query($query);
 		echo "<pre>";
 		while ($row = mysql_fetch_assoc($res)) { 	
@@ -723,7 +723,6 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
 	} else if ($admin_op=="updateStartPoints") {
-		global $flightsAbsPath;
 		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
 		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 AND  
 			 (firstLat=0 or firstLon=0 or lastLon=0 or lastLat=0 )";
@@ -759,7 +758,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 		echo "<BR><br><br>DONE !!!<BR>";
 		echo "<BR><br>Flights total: $files_total, not proccessed: $not_set<BR>";
 	} else if ($admin_op=="makehash") {
-		global $flightsAbsPath;
+
 		// $query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE hash='' ";
 		$query="SELECT ID, filename , userID , DATE  from $flightsTable WHERE filename<>'' AND  batchOpProcessed=0 ";
 		$res= $db->sql_query($query);
@@ -768,7 +767,10 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			 while ($row = mysql_fetch_assoc($res)) { 
 					$files_total++;
 					$year=substr($row['DATE'],0,4);
-					$filename=$flightsAbsPath."/".$row['userID']."/flights/".$year."/".$row['filename'];  
+					$filename=LEONARDO_ABS_PATH."/".
+							str_replace("%PILOTID%",$row['userID'],str_replace("%YEAR%",$year,$CONF['paths']['igc']) ).'/'.
+							$row['filename'];  
+							//.$row['userID']."/flights/".$year."/".$row['filename'];  
 					if (!is_file($filename) ) { 
 						$file_not_found++ ; 
 						continue;
@@ -1084,7 +1086,7 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
   }
 
   function findUnusedIGCfiles($dir,$rootLevel,$prefixRemoveCharsArg) {
-		 global $flightsWebPath,$moduleRelPath;
+		 global $CONF,$moduleRelPath;
 
 		 set_time_limit (160);
 		 $i=0;

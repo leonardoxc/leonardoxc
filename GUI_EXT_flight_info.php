@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.11 2009/03/18 17:10:32 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.12 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,7 +38,6 @@
 if ($op=='photos'){
 	$moduleRelPath=moduleRelPath(0); 
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 		
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);

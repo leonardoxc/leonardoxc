@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.68 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.69 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -209,15 +209,6 @@ function makeDir($path, $rights = 0777) {
 	}
 
 	return 1;
-}
-
-function  checkPath($path){
-  if (!is_dir($path))  makeDir($path,0755);
-  if (!is_dir($path."/flights"))	makeDir($path."/flights",0755);
-  if (!is_dir($path."/maps") )		makeDir($path."/maps",0755);
-  if (!is_dir($path."/charts")) 	makeDir($path."/charts",0755);
-  if (!is_dir($path."/photos")) 	makeDir($path."/photos",0755);
- 
 }
 
 

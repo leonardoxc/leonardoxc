@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.53 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.54 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -31,9 +31,12 @@ define("ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW",-9);
 //------------------- FLIGHT RELATED FUNCTIONS ----------------------------
 
 function addTestFlightFromURL($filename_url) {
-    global $flightsAbsPath ;
-	$tmpPath=$flightsAbsPath."/-1/tmp"; 
-	if (!is_dir($tmpPath)) makeDir($tmpPath,0755);
+    //global $flightsAbsPath ;
+	//$tmpPath=$flightsAbsPath."/-1/tmp"; 
+	global $CONF ;
+	$tmpPath=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'];
+	
+	// if (!is_dir($tmpPath)) makeDir($tmpPath,0755);
 
 	$filename_parts=explode("/",$filename_url);
 	$filename=$filename_parts[count($filename_parts)-1];
@@ -92,7 +95,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		// $is_private=0,$gliderCat=-1,$linkURL="",$comments="",$glider="", $category=1,
 		$argArray=array()	 )  {
 
-	global $flightsAbsPath,$CONF_default_cat_add, $CONF_photosPerFlight,$CONF;
+	global $CONF_default_cat_add, $CONF_photosPerFlight,$CONF;
 	global $CONF_NAC_list,  $CONF_use_NAC, $CONF_use_validation,$CONF_airspaceChecks ,$CONF_server_id;
 	global $userID,$CONF_new_flights_submit_window;
 	global $flightsTable;
@@ -144,7 +147,6 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		return array(ADD_FLIGHT_ERR_FILE_DOESNT_END_IN_IGC,0);
 	}
 
-	checkPath($flightsAbsPath."/".$userIDstr);
 	$tmpIGCPath=$filename;
 		
 	$flight=new flight();
@@ -447,10 +449,13 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 				
 					// $newPhotoName=toLatin1($photoName);
 					// Fix for same photo filenames 2009.02.03
-					global $flightsAbsPath;	
+					//global $flightsAbsPath;	
+					global $CONF;
 					$newPhotoName=flightPhotos::getSafeName(
-						$flightsAbsPath.'/'.$flight->getPilotID()."/photos/".$flight->getYear() , 
-						$photoName	) ;
+						LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$flight->getPilotID(),str_replace("%YEAR%",$flight->getYear(),$CONF['paths']['photos']) ),
+						$photoName);				
+						//$flightsAbsPath.'/'.$flight->getPilotID()."/photos/".$flight->getYear() , 
+						//$photoName	) ;
 					
 					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);

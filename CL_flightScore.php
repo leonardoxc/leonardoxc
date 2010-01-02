@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightScore.php,v 1.18 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_flightScore.php,v 1.19 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -85,7 +85,7 @@ class flightScore {
 					}
 			}
 	
-			@unlink($igcFilename);	
+			@unlink($igcFilename);				
 		}  else {
 			$IGCwebPath=urlencode("http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/").$file; // score saned file
 	
@@ -329,8 +329,9 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		foreach ($outLines as $j=>$line) {
 				if (strlen($line) >1 ) $out.=$line;
 		}
-
-		$tmpFilename=dirname(__FILE__).'/files/tmp/'.sprintf('%d.igc',rand(1,999999) );
+		
+		global $CONF;
+		$tmpFilename=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.sprintf('%d.igc',rand(1,999999) );
 		DEBUG("SCORE",1,"Will write to $tmpFilename");
 		writeFile($tmpFilename,$out);
 		return $tmpFilename;
@@ -340,7 +341,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 		DEBUG("SCORE",1,"Making igc file with points around the Turnpoints");
 		$tmpFile=$this->makeSecondPassFile($file);
 
-		DEBUG("SCORE",1,"Scoring file");
+		DEBUG("SCORE",1,"Scoring file : $tmpFile");
 		$results=$this->getScore( $tmpFile,1  );		
 		$this->parseScore($results);
 		@unlink($tmpFile);

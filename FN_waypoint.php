@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_waypoint.php,v 1.27 2009/09/14 13:57:23 manolis Exp $                                                                 
+// $Id: FN_waypoint.php,v 1.28 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__).'/FN_output.php';
@@ -269,7 +269,7 @@ function  getKMLFilename($waypointID) {
 		return $waypointsAbsPath."/".$waypointID.".kml";  
 }
 
-function  getKMLrelPath($waypointID) {	
+function  getKMLrelPathWaypoint($waypointID) {	
 		global $waypointsWebPath;
 		return $waypointsWebPath."/".$waypointID.".kml";  
 }

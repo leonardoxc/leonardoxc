@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.53 2009/03/21 00:02:49 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.54 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -229,7 +229,7 @@ class logReplicator {
 	}
 	
 	function processEntry($serverID,$e,$sync_mode=SYNC_INSERT_FLIGHT_LINK) {
-		global $flightsAbsPath,$CONF;
+		global $CONF;
 		global $DBGcat,$DBGlvl;
 		
 		if ($DBGlvl>0) {
@@ -379,7 +379,7 @@ class logReplicator {
 				$igcFilename=$actionData['flight']['filename'];
 				$igcFileURL	=$actionData['flight']['linkIGC'];
 				$igcZipFileURL	=$actionData['flight']['linkIGCzip'];
-				$tempFilename=$flightsAbsPath.'/'.$igcFilename;
+				$tempFilename=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.$igcFilename;
 
 				$hash=$actionData['flight']['validation']['hash'];
 				$sameHashIDarray=flight::findSameHash( $hash );

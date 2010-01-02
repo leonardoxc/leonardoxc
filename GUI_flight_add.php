@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.38 2009/06/10 15:18:57 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.39 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -413,12 +413,11 @@ $(document).ready(
 		}
 
 		$gliderCertCategory=$_POST['gliderCertCategory']+0;
-
-
-		checkPath($flightsAbsPath."/".$flights_user_id);
-		move_uploaded_file($tmpFilename, $flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename );
-		$filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
-	
+		
+		$filename=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.$tmpFormFilename ;
+		// $filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
+		move_uploaded_file($tmpFilename, $filename );
+		
 		//	echo $filename; 
 		$category=$_POST['category']+0;
 		$comments=$_POST["comments"];

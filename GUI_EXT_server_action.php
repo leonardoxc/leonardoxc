@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_server_action.php,v 1.24 2009/03/24 12:18:43 manolis Exp $                                                                 
+// $Id: GUI_EXT_server_action.php,v 1.25 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -96,7 +96,6 @@ if ($action==1) { // server info
 } else if ($action==5) { // sync (pull data from server )
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$chunkSize=$_GET['chunkSize']+0;
 	if (! $chunkSize ) $chunkSize=5;
@@ -105,14 +104,12 @@ if ($action==1) { // server info
 } else if ($action==6) { // delete all external flights from this server
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$server->deleteAllSyncedFlights();
 
 } else if ($action==7) { // guess identical pilots 
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$server->guessPilots();
 } else if ($action==8) { // delete pilots -> only use if you know what you are doing , must be sed only after delete flights

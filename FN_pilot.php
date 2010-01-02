@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.47 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.48 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -377,7 +377,8 @@ function getPilotPhotoRelFilename($serverID,$pilotID,$icon=0) {
 
 
 function getPilotPhotoFilename($serverID,$pilotID,$icon=0) {
-	global $flightsAbsPath,$CONF;
+	//global $flightsAbsPath;
+	global $CONF;
 	if ($icon) $suffix="icon.jpg";
 	else $suffix=".jpg";
 	
@@ -401,7 +402,8 @@ function getPilotStatsRelFilename($pilotID,$num) {
 	//return $moduleRelPath."/flights/".$pilotID."/PilotStats_$num.png";
 }
 function getPilotStatsFilename($pilotID,$num) {
-	global $flightsAbsPath,$CONF;
+	//global $flightsAbsPath;
+	global $CONF;
 	return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$pilotID,$CONF['paths']['pilot'] )."/PilotStats_$num.png";
 	// return $flightsAbsPath."/".$pilotID."/PilotStats_$num.png";
 }

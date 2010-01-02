@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_brands.php,v 1.10 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_admin_brands.php,v 1.11 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -234,7 +234,6 @@
 
 		}
 	} else if ($admin_op=="glidersDetect") {
-		global $flightsAbsPath;
 		$forceRedetection=1;
 
 		$query="SELECT glider, gliderBrandID FROM  $workTable WHERE 1=1 ";

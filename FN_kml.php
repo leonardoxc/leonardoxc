@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_kml.php,v 1.6 2008/12/01 13:07:43 manolis Exp $                                                                 
+// $Id: FN_kml.php,v 1.7 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -173,8 +173,9 @@ function kmlGetTrackAnalysis($file,$realFile,$exaggeration=1) {
 
 $exaggeration=1;
 $str="";
-$kmlTempFile=$file.".man.kml";
-$kmzFile=$file.".man.kmz";
+$kmzFile=$file;
+$kmlTempFile=$file.".kml";
+
 if ( is_file($kmzFile) ) return;
 
 

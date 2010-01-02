@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.9 2008/11/21 15:17:23 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.10 2010/01/02 22:54:56 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -109,6 +109,8 @@ if ($_GET['leoSeo']) {
 
 if ($clubID) { // a league
 	$topCustomLogo=$clubsList[$clubID]['desc'];
+	$topCustomLogo.=" <a href='#' onclick='showClubDetails(".$clubID.")'>
+			<img src='$moduleRelPath/img/icon_info.png' align='absmiddle' border='0' title='"._Club." ".$clubsList[$clubID]['desc']."'></a>";
 } else {
 	$topCustomLogo='';
 }

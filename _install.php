@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: _install.php,v 1.3 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: _install.php,v 1.4 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -160,7 +160,7 @@
 	//		0        1         2
 	$partsNum=count($parts);	
 	$baseInstallationPath="/";
-	if (
+	if (1) {
 		for($i=0;$i<$partsNum-3;$i++)  {					  
 			   $baseInstallationPath.=$parts[$i]."/";	
 		}

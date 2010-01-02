@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.170 2009/12/30 14:45:34 manolis Exp $
+// $Id: CL_flightData.php,v 1.171 2010/01/02 22:54:55 manolis Exp $
 //
 //************************************************************************
 
@@ -194,12 +194,14 @@ var $maxPointNum=1000;
 		}
 	}
 
-	function checkDirs() {
+	function checkDirs($userDir='',$year=0) {
 		global $CONF;
-
-		$userDir=$this->getPilotID();
-		$year=$this->getYear();
-
+		
+		if ($userDir=='' || $year==0){
+			$userDir=$this->getPilotID();
+			$year=$this->getYear();
+		}
+		
 		$d=0;
 		$dirs=array();
 		$dirs[$d++]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['igc']) );
@@ -212,7 +214,7 @@ var $maxPointNum=1000;
 		
 		foreach($dirs as $dir) {
 			$dirPath=LEONARDO_ABS_PATH.'/'.$dir;
-			if (!is_dir($dirPath))  	makeDir($dirPath,0755);
+			if (!is_dir($dirPath))  	makeDir($dirPath);
 		}
 	}
 
@@ -625,29 +627,43 @@ $resStr='{
 	// ---------------------------------
 	// Relative (web) paths
 	// ---------------------------------
-	function getPilotRelDir() {
+	/* 
+	 // not used
+	 function getPilotRelDir() {		
 		global $flightsWebPath;
 		if ($this->userServerID) $extra_prefix=$this->userServerID.'_';
 		else $extra_prefix='';
 
 		return $flightsWebPath."/".$extra_prefix.$this->userID;
 	}
-
+	*/
+	
 	function getIGCRelPath($saned=0) {
-		if ($saned==2) $suffix=".saned.full.igc";
-		else if ($saned) $suffix=".saned.igc";
-		else $suffix="";
 		global $moduleRelPath,$CONF;
-		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
+		if ($saned) {
+			if ($saned==2) $suffix=".saned.full.igc";
+			else $suffix=".saned.igc";
+			
+			return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.
 				rawurlencode($this->filename).$suffix;
+		} else { 
+			$suffix="";
+			return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
+				rawurlencode($this->filename).$suffix;
+		}
 				
 		// return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).$suffix;
 	}
 
-	function getKMLRelPath() {
+	function getKMLRelPath($method=0) {
 		global $moduleRelPath,$CONF;
+						
+		if ($method==0) $suffix=".kmz";
+		else if ($method==1) $suffix=".man.kmz";
+		else if ($method==2) $suffix=".igc2kmz";
+		
 		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.
-				rawurlencode($this->filename).".kml";				
+				rawurlencode($this->filename).$suffix;		
 		//return $this->getPilotRelDir()."/flights/".$this->getYear()."/".rawurlencode($this->filename).".kml";
 	}
 
@@ -719,25 +735,33 @@ $resStr='{
 	// now absolute filenames
 	// ---------------------------------
 	function getPilotAbsDir() {
-		global $flightsAbsPath;
-		if ($this->userServerID) $extra_prefix=$this->userServerID.'_';
-		else $extra_prefix='';
-
-		return $flightsAbsPath."/".$extra_prefix.$this->userID;
+		global $CONF;		
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),$CONF['paths']['pilot']);			
 	}
 	
 	function getIGCFilename($saned=0) {
 		global $CONF;
-		if ($saned==2) $suffix=".saned.full.igc";
-		else if ($saned) $suffix=".saned.igc";
-		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
+		if ($saned) {
+			if ($saned==2) $suffix=".saned.full.igc";
+			else $suffix=".saned.igc"; // $saned==1
+			
+			return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.
+			$this->filename.$suffix;
+		} else { 
+			$suffix="";
+			return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['igc']) ).'/'.
 				$this->filename.$suffix;
+		}
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.$suffix;
 	}
-	function getKMLFilename() {
+	
+	function getKMLFilename($method=0) {
 		global $CONF;
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.$this->filename.".kml";
+		if ($method==0) $suffix=".kmz";
+		else if ($method==1) $suffix=".man.kmz";
+		else if ($method==2) $suffix=".igc2kmz";
+		
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.$this->filename.$suffix;
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".kml";
 	}
 	function getGPXFilename() {
@@ -778,14 +802,14 @@ $resStr='{
 		global $CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename.$suffix."$suffix.txt";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename."$suffix.txt";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.txt";
 	}
 	function getJsFilename($timeStep=0) { // values > 0 mean 1-> first level of timestep, usually 20 secs, 2-> less details usually 30-40 secs
 		global $CONF;
 		if ($timeStep) $suffix=".".$timeStep;
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.$this->filename.$suffix."$suffix.js";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['js']) ).'/'.$this->filename."$suffix.js";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename."$suffix.js";
 	}
 
@@ -1018,7 +1042,7 @@ $resStr='{
 	}
 
 	function kmlGetTrack($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extended=1) {
-		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -1034,7 +1058,7 @@ $resStr='{
 			// $kml_file_contents.=$this->kmlGetDescription($extended,$getFlightKML);
 			//$kml_file_contents.="</Placemark>";
 			require_once dirname(__FILE__)."/FN_kml.php";
-			kmlGetTrackAnalysis($this->getIGCFilename(0),$this->getIGCFilename(2),1);
+			kmlGetTrackAnalysis($this->getKMLFilename(1),$this->getIGCFilename(2),1);
 			$kml_file_contents="
 <NetworkLink>
   <name>Extended analysis</name>
@@ -1044,7 +1068,7 @@ $resStr='{
   <refreshVisibility>0</refreshVisibility>
   <flyToView>0</flyToView>
   <Link>
-	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0).".man.kmz</href>
+	<href>http://".$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getKMLRelPath(1)."</href>
   </Link>
 </NetworkLink>";
 
@@ -1053,8 +1077,8 @@ $resStr='{
 
 
 		$KMLlineColor="ff".substr($lineColor,4,2).substr($lineColor,2,2).substr($lineColor,0,2);
-		$kmzFile=$this->getIGCFilename(0).".kmz";
-		$kmlTempFile=$this->getIGCFilename(0).".kml";
+		$kmzFile=$this->getKMLFilename(0);
+		$kmlTempFile=$kmzFile.".tmp.kml";
 
 		if ( !file_exists($kmzFile)   ) { // create the kmz file containg the points only
 
@@ -1166,7 +1190,7 @@ $resStr='{
   <refreshVisibility>0</refreshVisibility>
   <flyToView>0</flyToView>
   <Link>
-	<href>http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getIGCRelPath(0) ).".kmz</href>
+	<href>http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getKMLRelPath(0) )."</href>
   </Link>
 </NetworkLink>
 
@@ -1219,7 +1243,7 @@ $resStr='{
 	}
 
 	function gpxGetTrack() {
-		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -1271,7 +1295,7 @@ $resStr='{
 	}
 
 	function createEncodedPolyline($forceRefresh=0) {
-		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -1357,7 +1381,7 @@ $resStr='{
 	}
 
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
-		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang,	$CONF_use_utf;
 
@@ -1414,15 +1438,15 @@ $kml_file_contents=
 		}
 
 		require_once dirname(__FILE__)."/FN_igc2kmz.php";
-		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->timezone,$this->flightID);
+		$igc2kmzVersion=igc2kmz($this->getIGCFilename(0),$this->getKMLFilename(3),$this->timezone,$this->flightID);
 		$version=$CONF['googleEarth']['igc2kmz']['version'];
-		$file_name=$this->getIGCFilename(0).".igc2kmz.$version.kmz";
+		$file_name=$this->getKMLFilename(3).'.'.$version.'.kmz';
 		return file_get_contents($file_name);
 	}
 
 	function createGPXfile($returnAlsoXML=0) {
 
-		global $flightsAbsPath,$flightsWebPath, $takeoffRadious,$landingRadious;
+		global $takeoffRadious,$landingRadious;
 		global $moduleRelPath,$baseInstallationPath;
 		global $langEncodings,$currentlang;
 
@@ -1463,7 +1487,6 @@ $kml_file_contents=
 	}
 
 	function getAltValues() {
-		global $flightsAbsPath;
 		$this->setAllowedParams();
 
 		$max_allowed_alt_diff=400;
@@ -1707,9 +1730,7 @@ $kml_file_contents=
 
   }
 
-	function getXYValues() {
-		global $flightsAbsPath;
-
+	function getXYValues() {		
 		$data_X =array();
 		$data_Y =array();
 
@@ -1743,8 +1764,6 @@ $kml_file_contents=
 
 
 	function storeIGCvalues() {
-		global $flightsAbsPath;
-
 		$data_time =array();
 		$data_alt =array();
 		$data_speed =array();
@@ -3409,13 +3428,7 @@ $kml_file_contents=
 			$this->filename=$oldName;
 		}
 
-		# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
-		$this->deleteFile($this->getJsonFilename() ) ;
-		$this->deleteFile($this->getPointsFilename(1) ) ;
-		$this->deleteFile($this->getJsFilename(1) );
-		$this->deleteFile($this->getIGCFilename(0).".kmz" );
-		$this->deleteFile($this->getIGCFilename(0).".man.kmz" );
-		$this->deleteFile($this->getIGCFilename(0).".poly.txt" );
+		$this->deleteSecondaryFiles();
 
 		$this->deleteFile($this->getMapFilename() );
 
@@ -3474,13 +3487,14 @@ $kml_file_contents=
 	}
 
 	function deleteSecondaryFiles(){
-		# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
-		$this->deleteFile($this->getJsonFilename() ) ;
-		$this->deleteFile($this->getPointsFilename(1) ) ;
-		$this->deleteFile($this->getJsFilename(1) );
-		$this->deleteFile($this->getIGCFilename(0).".kmz" );
-		$this->deleteFile($this->getIGCFilename(0).".man.kmz" );
-		$this->deleteFile($this->getIGCFilename(0).".poly.txt" );
+		# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding		
+		$this->deleteFile($this->getJsonFilename() ) ; // json.js
+		$this->deleteFile($this->getPolylineFilename() ) ;// *.poly.txt
+		$this->deleteFile($this->getPointsFilename(1) ) ;// *.1.txt
+		$this->deleteFile($this->getKMLFilename(0) ); // kmz
+		$this->deleteFile($this->getKMLFilename(1) ); // man.kmz
+		require_once dirname(__FILE__).'/FN_igc2kmz.php';			
+		deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions igc2kmz
 	}
 
 
@@ -3524,10 +3538,12 @@ $kml_file_contents=
 		$flightScore->deleteFromDB();
 		// Now delete the files
 
-		$this->deleteFile($this->getIGCFilename() );
+		$this->deleteFile($this->getIGCFilename(0) );
+		$this->deleteFile($this->getIGCFilename(0).".olc" );
+		
 		$this->deleteFile($this->getIGCFilename(1) );
 		$this->deleteFile($this->getIGCFilename(2) );
-		$this->deleteFile($this->getIGCFilename(0).".olc" );
+
 
 		$this->deleteSecondaryFiles();
 
@@ -4134,16 +4150,38 @@ foreach ($data_time as $i=>$tm) {
 
 	// assigns the flight to a new user
 	function changeUser($newUserID,$newUserServerID) {
-		global $flightsAbsPath,$CONF_photosPerFlight;
+		global $CONF_photosPerFlight;
 
 		$pilotDir=$this->getPilotAbsDir();
 
 		if ($newUserServerID) $extra_prefix=$newUserServerID.'_';
 		else $extra_prefix='';
-		$newPilotDir=$flightsAbsPath."/".$extra_prefix.$newUserID;
+		$newPilotDir=LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$extra_prefix.$newUserID,$CONF['paths']['pilot']);			
+		
 
+		// delete non critical files
+		$this->deleteFile($this->getIGCFilename(1) );
+		$this->deleteFile($this->getIGCFilename(2) );
+		$this->deleteSecondaryFiles();
+		$this->deleteFile($this->getMapFilename());
+		for ($metric_system=1;$metric_system<=2;$metric_system++) {
+			for ($raw=0;$raw<=1;$raw++) {
+				# martin jursa 28.05.2008: delete using the deleteFile() method to avoid log flooding
+				$this->deleteFile($this->getChartFilename("alt",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("speed",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("vario",$metric_system,$raw) );
+				$this->deleteFile($this->getChartFilename("takeoff_distance",$metric_system,$raw) );
+			}
+		}
+		
+		
 		$flightYear=$this->getYear();
 		$subdirs=array('flights','charts','maps');
+		
+		// create all dirs on the target user as well in case they are missing
+		$this->checkDirs($extra_prefix.$newUserID,$flightYear); 
+		
+		/*
 		foreach ($subdirs as $subdir){
 			$sourceDir="$pilotDir/$subdir/$flightYear";
 			$targetDir="$newPilotDir/$subdir/$flightYear";
@@ -4171,6 +4209,7 @@ foreach ($data_time as $i=>$tm) {
 		}
 
 		array_push($subdirs,'photos');
+		
 		foreach ($subdirs as $subdir){
 			makeDir("$newPilotDir/$subdir");
 		}
@@ -4179,13 +4218,33 @@ foreach ($data_time as $i=>$tm) {
 			makeDir($target);
 			@rename($src,$target);
 		}
-
+		*/
+		
+		// Take care of photos!
+		if ($this->hasPhotos) {
+			$flightPhotos=new flightPhotos($this->flightID);
+			$flightPhotos->getFromDB();
+			
+			foreach ( $this->photos as $photoNum=>$photoInfo) {			 
+				$flightPhotos->changeUser($photoNum,getPilotID($newUserID,$newUserServerID) );
+			}
+			$flightPhotos->putToDB(0);
+		}
+		
+		
+		// store the original paths of the files
+		$igcOrg=$this->getIGCFilename(0);		
+				
 		// store away the original userID
 		$this->originalUserID=($this->userServerID+0).'_'.$this->userID;
 
 		$this->userID=$newUserID;
 		$this->userServerID=$newUserServerID;
-
+		
+		// now move the igc file (and optionally the olc if it exists
+		@rename($igcOrg,$this->getIGCFilename(0));
+		@rename($igcOrg.".olc",$this->getIGCFilename(0).".olc");
+		
 		$this->putFlightToDB(1);
 
 		// take care of same flights (hide /unhide)

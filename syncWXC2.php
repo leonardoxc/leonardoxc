@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.3 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.4 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -248,15 +248,9 @@ foreach ($xRow as $row) {
 													
 		$row['FlightUrl']=htmlspecialchars($row['FlightUrl']);
 		
-		//if ($row['userServerID']) $extra_prefix=$row['userServerID'].'_';
-		//else $extra_prefix='';
-		//$trackPath=$flightsWebPath.'/'.$extra_prefix.$row['userID'].'/flights/'.$row['Year'].'/'.rawurlencode($row['filename']);
-
 		$trackPath=getRelMainDir().str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.rawurlencode($row['filename']);
 					
-
-		$row['IgcUrl']="http://".$_SERVER['SERVER_NAME'].$trackPath;				
-		
+		$row['IgcUrl']="http://".$_SERVER['SERVER_NAME'].$trackPath;						
 		
 		$WxcFields=Array('CivlId','PilotFirstName','PilotLastName','PilotNation','PilotGender',
 		  'CivlIdApprovedBy','IgcUrl','IgcMd5','LastTimestamp','FirstTimestamp','NacStatus','NacPilotId','NacFlightId',

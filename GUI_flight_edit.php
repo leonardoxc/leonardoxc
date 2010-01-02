@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.42 2009/06/10 15:18:57 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.43 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -97,10 +97,13 @@
 					
 					// $newPhotoName=toLatin1($photoName);
 					// Fix for same photo filenames 2009.02.03
-					global $flightsAbsPath;	
+					// global $flightsAbsPath;	
+					global $CONF;
 					$newPhotoName=flightPhotos::getSafeName(
-						$flightsAbsPath.'/'.$flight->getPilotID()."/photos/".$flight->getYear() , 
-						$photoName	) ;
+						LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$flight->getPilotID(),str_replace("%YEAR%",$flight->getYear(),$CONF['paths']['photos']) ),
+						$photoName);				
+						//$flightsAbsPath.'/'.$flight->getPilotID()."/photos/".$flight->getYear() , 
+						//$photoName	) ;
 						
 					$phNum=$flightPhotos->addPhoto($j,$flight->getPilotID()."/photos/".$flight->getYear(), $newPhotoName,$description);								
 					$photoAbsPath=$flightPhotos->getPhotoAbsPath($j);
@@ -137,7 +140,7 @@
 		if ( $photosChanged ){
 			//delete igc2kmz.kmz file
 			require_once dirname(__FILE__).'/FN_igc2kmz.php';			
-			deleteOldKmzFiles($flight->getIGCFilename(0),'xxx'); // delete all versions
+			deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions
 		}
 		
 		$flight->putFlightToDB(1);

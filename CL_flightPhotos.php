@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.8 2009/12/21 14:48:05 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.9 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,24 +41,30 @@ class flightPhotos {
 		// $CONF['paths']['photos']='data/flights/photos/%YEAR%/%PILOTID%';
 		$newPath=$CONF['paths']['photos'];
 		$newPath=str_replace("%YEAR%",$year,$newPath);
-		$newPath=str_replace("%PILOTID%",$PILOTID,$newPath);
+		$newPath=str_replace("%PILOTID%",$pilotID,$newPath);
 		return $newPath;
 	}
 	
-	function getPhotoRelPath($id) {
-		// global $flightsWebPath;	
+	function changeUser($id,$newUser){
+		$oldPath=$this->getPhotoAbsPath($id);
+		list($pilotID,$fname,$year)=split("/",$this->photos[$id]['path']);
+		$this->photos[$id]['path']="$newUser/$fname/$year";
+		$newPath=$this->getPhotoAbsPath($id);
+		@rename($oldPath,$newPath);
+		@rename($oldPath.'.icon.jpg',$newPath.'.icon.jpg');
+	}
+	
+	function getPhotoRelPath($id) {	
 		global $moduleRelPath;
-		if ($id>=$this->photosNum) return '';		
-		// return $flightsWebPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];	
+		if ($id>=$this->photosNum) return '';			
 		return $moduleRelPath.'/'.$this->getPath($this->photos[$id]['path']).'/'.$this->photos[$id]['name'];	
 	}
 
 	function getPhotoAbsPath($id) {
-		//global $flightsAbsPath;	
-		global $moduleAbsPath;
+		//global $flightsAbsPath;			
 		if ($id >=$this->photosNum) return '';		
 		// return $flightsAbsPath."/".$this->photos[$id]['path'].'/'.$this->photos[$id]['name'];	
-		return $moduleAbsPath.'/'.$this->getPath($this->photos[$id]['path']).'/'.$this->photos[$id]['name'];
+		return LEONARDO_ABS_PATH.'/'.$this->getPath($this->photos[$id]['path']).'/'.$this->photos[$id]['name'];
 	}
 
 	function getSafeName($path,$photoName){
@@ -146,7 +152,7 @@ class flightPhotos {
 			$imgNormal=$this->getPhotoAbsPath($photoNum);
 			$imgIcon=$imgNormal.'.icon.jpg';
 			@unlink($imgNormal); 
-			@unlink($imgNormal); 			
+			@unlink($imgIcon); 			
 		}
 				
 		

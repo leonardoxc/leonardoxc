@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.22 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.23 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
  if ($userID<=0) return;
@@ -305,8 +305,6 @@ $(document).ready(
 
 	if ($_POST['insert_as_user_id'] >0 && L_auth::isAdmin($userID) ) $flights_user_id=$_POST['insert_as_user_id']+0;
 	else $flights_user_id=$userID;
-	
-	checkPath($flightsAbsPath."/".$flights_user_id);
 
 	$randName=sprintf("%05d",rand(1, 10000) );
 	

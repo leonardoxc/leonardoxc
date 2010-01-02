@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.27 2008/12/03 15:57:56 manolis Exp $                                                                 
+// $Id: download.php,v 1.28 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -90,7 +90,6 @@
 
 		$moduleRelPath=moduleRelPath(0); 
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
@@ -112,7 +111,6 @@
 	
 		$moduleRelPath=moduleRelPath(0); 
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 		
 		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];
@@ -159,7 +157,6 @@
 	} else if ($type=="kml_trk") {
 		$moduleRelPath=moduleRelPath(0); 
 		$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-		$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 		$flightID=makeSane($_REQUEST['flightID'],1);
 		//echo $_SERVER['QUERY_STRING'];

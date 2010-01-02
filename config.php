@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.126 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: config.php,v 1.127 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -555,57 +555,59 @@ $OLCScoringServerUseInternal=1;
 $OLCScoringServerPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."/server/scoreOLC.php";
 $OLCScoringServerPassword="mypasswd";
 
-$CONF['paths']['tmpigc']='data/tmp';
 
-$CONF['paths']['config']['pathsVersion']=2;
+$CONF['paths_versions'][2]['tmpigc']='data/tmp';
+$CONF['paths_versions'][2]['config']['pathsVersion']=2;
+
 // the pilot dir
-$CONF['paths']['pilot']	='data/pilots/%PILOTID%';
+$CONF['paths_versions'][2]['pilot']	='data/pilots/%PILOTID%';
 // the main IGC file
-$CONF['paths']['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['igc']	='data/flights/tracks/%YEAR%/%PILOTID%';
 // photo filenames
-$CONF['paths']['photos']='data/flights/photos/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['photos']='data/flights/photos/%YEAR%/%PILOTID%';
 // The rest can be ommited from Backup!!!
 // *.jpg
-$CONF['paths']['map']	='data/flights/maps/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['map']	='data/flights/maps/%YEAR%/%PILOTID%';
 // *.png 16 files / flight
-$CONF['paths']['charts']='data/flights/charts/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['charts']='data/flights/charts/%YEAR%/%PILOTID%';
 // *.kmz
 // *.man.kmz
 // *.igc2kmz.[version].kmz
-$CONF['paths']['kml']	='data/flights/kml/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['kml']	='data/flights/kml/%YEAR%/%PILOTID%';
 // *.json.js
-$CONF['paths']['js']	='data/flights/js/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['js']	='data/flights/js/%YEAR%/%PILOTID%';
 // *.1.txt
 // *.poly.txt
 // *.saned.full.igc
 // *.saned.igc
-$CONF['paths']['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
+$CONF['paths_versions'][2]['intermediate']	='data/flights/intermediate/%YEAR%/%PILOTID%';
 
-/*
+
 // the paths for pathsVersion=1
-$CONF['paths']['config']['pathsVersion']=1;
+$CONF['paths_versions'][1]['tmpigc']='files/tmp';
+$CONF['paths_versions'][1]['config']['pathsVersion']=1;
 // the main IGC file
-$CONF['paths']['igc']	='flights/%PILOTID%/tracks/%YEAR%';
+$CONF['paths_versions'][1]['igc']	='flights/%PILOTID%/flights/%YEAR%';
 // photo filenames
-$CONF['paths']['photos']='flights/%PILOTID%/photos/%YEAR% flights/photos/%YEAR%/%PILOTID%';
-// The rest can be ommited from Backup!!!
+$CONF['paths_versions'][1]['photos']='flights/%PILOTID%/photos/%YEAR%';
 // *.jpg
-$CONF['paths']['map']	='flights/%PILOTID%/maps/%YEAR%';
+$CONF['paths_versions'][1]['map']	='flights/%PILOTID%/maps/%YEAR%';
 // *.png 16 files / flight
-$CONF['paths']['charts']='flights/%PILOTID%/charts/%YEAR%';
+$CONF['paths_versions'][1]['charts']='flights/%PILOTID%/charts/%YEAR%';
 // *.kmz
 // *.man.kmz
 // *.igc2kmz.[version].kmz
-$CONF['paths']['kml']	='flights/%PILOTID%/tracks/%YEAR%';
+$CONF['paths_versions'][1]['kml']	='flights/%PILOTID%/flights/%YEAR%';
 // *.json.js
-$CONF['paths']['js']	='flights/%PILOTID%/tracks/%YEAR%';
+$CONF['paths_versions'][1]['js']	='flights/%PILOTID%/flights/%YEAR%';
 // *.1.txt
 // *.poly.txt
 // *.saned.full.igc
 // *.saned.igc
-$CONF['paths']['intermediate']	='flights/%PILOTID%/tracks/%YEAR%';
+$CONF['paths_versions'][1]['intermediate']	='flights/%PILOTID%/flights/%YEAR%';
 
-*/
+
+$CONF['paths']=$CONF['paths_versions'][2];
 
 // news
 $CONF['news']['items']=array();
@@ -697,7 +699,7 @@ function setLeonardoPaths () {
 	global	$baseInstallationPath,$baseInstallationPathSet;
 	global 	$module_name,$moduleAbsPath,$moduleRelPath;
 	global 	$waypointsRelPath,	$waypointsAbsPath,	$waypointsWebPath;
-	global 	$flightsRelPath,	$flightsAbsPath,	$flightsWebPath;
+	global 	$flightsRelPath; 
 	global  $CONF_arg_name,$CONF_mainfile,$CONF;
 	global 	$isExternalFile;
 
@@ -758,7 +760,7 @@ if (0) {
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
 
 	$flightsAbsPath=dirname(__FILE__)."/".$flightsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
+	// $flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 }
 

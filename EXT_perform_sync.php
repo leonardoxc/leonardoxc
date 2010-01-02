@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_perform_sync.php,v 1.7 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: EXT_perform_sync.php,v 1.8 2010/01/02 22:54:55 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -98,7 +98,6 @@ if ($action==1) { // server info
 } else if ($action==5) { // sync (pull data from server )
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$chunkSize=$_GET['chunkSize']+0;
 	if (! $chunkSize ) $chunkSize=5;
@@ -159,14 +158,12 @@ if ($action==1) { // server info
 } else if ($action==6) { // delete all external flights from this server
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$server->deleteAllSyncedFlights();
 
 } else if ($action==7) { // guess identical pilots 
 	$moduleRelPath=moduleRelPath(0);
 	$waypointsWebPath=$moduleRelPath."/".$waypointsRelPath;
-	$flightsWebPath=$moduleRelPath."/".$flightsRelPath;
 
 	$server->guessPilots();
 } else if ($action==8) { // delete pilots -> only use if you know what you are doing , must be sed only after delete flights

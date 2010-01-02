@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.3 2009/12/22 15:01:26 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.4 2010/01/02 22:54:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,12 +30,16 @@
 	
 	//echo "List of filenames<HR><pre>\r\n";
 
-	global $CONF;	
+	global $CONF;
+	// temporary change to new way even if we are still in version 1
+	// in order to create the migration script	
+	$CONF['paths']=$CONF['paths_versions'][2];
+	
 	$output1='';
 	$output2='';
 	$dirlist=array();
 	
-	while ($row = $db->sql_fetchrow($res)) { 
+	while ($row = $db->sql_fetchrow($res) ) { 
 		if (!$row['filename']) continue;	
 		
 		$userDir='';
@@ -93,7 +97,7 @@
 		}
 		foreach ($files as $f=>$farray ){
 			$output1.=$farray[0].";";	
-			$output2.="cp -a flights/".$farray[0]." ".$farray[1]."\r\n";	
+			$output2.="cp -a \"flights/".$farray[0]."\" \"".$farray[1]."\"\r\n";	
 		}
 		$output1.="\r\n";	
 		$output2.="\r\n";					
@@ -120,6 +124,41 @@ $CONF['paths']['kml']	='data/flights/kml/%YEAR%/%PILOTID%';
 	
 	//echo $output;
 	
+	$query="SELECT * FROM $flightsTable,$photosTable 
+		WHERE $photosTable.flightID=$flightsTable.ID
+		order by userServerID,userID ";
+	
+	$res= $db->sql_query($query);
+	if($res <= 0){
+	 echo("<H3> Error in query! </H3>\n");
+	 exit();
+	}
+	
+	//echo "List of filenames<HR><pre>\r\n";
+
+	global $CONF;	
+	$output1='';
+	$output2='';
+	$dirlist=array();
+	
+	while ($row = $db->sql_fetchrow($res)) { 
+		// if (!$row['filename']) continue;
+		$userDir='';
+		if ($row['userServerID']) {
+			$userDir=$row['userServerID'].'_';
+		}	
+		$userDir.=$row['userID'];
+			
+		$year=substr($row['DATE'],0,4);
+		$filename=$row['name'];
+		
+		$output1.=$row['path']."/$filename\r\n";	
+		$output2.="cp -a \"flights/".$row['path']."/$filename\" \"".
+				str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$CONF['paths']['photos']) )."/$filename".
+				"\"\r\n";
+						
+	}
+		
 	$filename='files_list.csv';
 	$fp=fopen(dirname(__FILE__)."/$filename","w" );
 	fwrite($fp,$output1);
