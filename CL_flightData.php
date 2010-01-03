@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.171 2010/01/02 22:54:55 manolis Exp $
+// $Id: CL_flightData.php,v 1.172 2010/01/03 20:27:46 manolis Exp $
 //
 //************************************************************************
 
@@ -3494,7 +3494,7 @@ $kml_file_contents=
 		$this->deleteFile($this->getKMLFilename(0) ); // kmz
 		$this->deleteFile($this->getKMLFilename(1) ); // man.kmz
 		require_once dirname(__FILE__).'/FN_igc2kmz.php';			
-		deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions igc2kmz
+		deleteOldKmzFiles($this->getKMLFilename(3),'xxx'); // delete all versions igc2kmz
 	}
 
 
@@ -4221,12 +4221,14 @@ foreach ($data_time as $i=>$tm) {
 		*/
 		
 		// Take care of photos!
-		if ($this->hasPhotos) {
+		if ($this->hasPhotos) {		
 			$flightPhotos=new flightPhotos($this->flightID);
 			$flightPhotos->getFromDB();
 			
-			foreach ( $this->photos as $photoNum=>$photoInfo) {			 
-				$flightPhotos->changeUser($photoNum,getPilotID($newUserID,$newUserServerID) );
+			// print_r($flightPhotos->photos );
+			
+			foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {			 
+				$flightPhotos->changeUser($photoNum,getPilotID($newUserServerID,$newUserID) );
 			}
 			$flightPhotos->putToDB(0);
 		}

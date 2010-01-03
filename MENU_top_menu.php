@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.74 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.75 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -77,7 +77,9 @@ sfHover = function() {
 //--><!]]></script>
 <? } ?>
 
+<?  if ($PREFS->showNews) {?>
 <ul id="ticker01"></ul> 
+<? } ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
@@ -85,23 +87,37 @@ sfHover = function() {
 $('#dialogWindow').jqm({modal:true,toTop: true});
 
 function showClubDetails(clubID) {
-	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_club_info.php?clubid='+clubID });
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_club_info.php?clubid='+clubID,
+		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>'  });
 	$('#dialogWindow').jqmShow();
 }
 
 function showNewsItem(itemID) {
-	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/data/news/'+itemID+'/index.html' });
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/data/news/'+itemID+'/index.html',
+		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>'  });
 	$('#dialogWindow').jqmShow();
 }
 
+function showNewsSettings() {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php',
+		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
+	$('#dialogWindow').jqmShow();	
+	$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
+	
+}
 
-$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
+<?  if ($PREFS->showNews) {?>
+$(function() { 
+	$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
+})
 
+/*
 $(".ticksettings").livequery('click', function(e) {
 	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php' });
 	$('#dialogWindow').jqmShow();
 });
-
+*/
+<? } ?>
 	  
 //--><!]]></script>
 

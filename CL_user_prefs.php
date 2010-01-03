@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_user_prefs.php,v 1.10 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: CL_user_prefs.php,v 1.11 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -23,10 +23,10 @@ class UserPrefs {
  var $nameOrder=1; // western -> firstName - LastName
  var $useEditor=1; // USE FCKeditor
  
- var $showNews=1;
- var $lastNewsId=0;
- var $showTopScores=1;
- var $newsDays=10;
+ var $showNews=-1;
+ var $lastNewsId=-1;
+ var $showTopScores=-1;
+ var $newsDays=-1;
  
  
  var $visitorID=0;
@@ -53,6 +53,7 @@ class UserPrefs {
 		$this->metricSystem =$metricSystem ;
 		$this->viewCountry=$viewCountry;
 		$this->viewCat=$viewCat;
+		$this->showNews=$showNews;
 		
 		if (isset($nameOrder))	$this->nameOrder=$nameOrder;
 		else $this->nameOrder=$CONF_defaultNameOrder;
@@ -89,6 +90,7 @@ class UserPrefs {
 		"&nameOrder=".$this->nameOrder.
 		"&visitorID=".$this->visitorID.
 		"&useEditor=".$this->useEditor.
+	 	"&showNews=".$this->showNews.
 		
 		"&" ;
 

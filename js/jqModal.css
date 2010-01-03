@@ -44,12 +44,12 @@ border: 1px solid #000;
 border:none;
 background: #fff;
 background:none;
-width: 735px; 
+width: 760px; 
 height: 18px; 
 margin: 0; 
 padding: 0;
 margin-top:-6px;
-padding-bottom:0px;
+padding-bottom:4px;
 overflow: hidden; 
 float:left; clear:none;
 }
@@ -72,7 +72,7 @@ overflow: hidden;
 position: relative;
 left: 10px;
 top: 4px;
-width: 718px;
+width: 738px;
 overflow: hidden;
 }
 ul.newsticker { /* that's your list */

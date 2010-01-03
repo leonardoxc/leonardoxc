@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.12 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.13 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -19,7 +19,7 @@
 
 <? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>
 
-<div class="main_text" align="left" style="clear:both;">
+<div class="main_text" align="left" style="clear:both;padding:0;margin:0;height:0">
 <a name="top_of_page"></a>
 <div id="staticMenuPos" align="left"></div>
 <div id="dialogWindow" class="jqmWindow"></div>

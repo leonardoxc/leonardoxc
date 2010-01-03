@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.9 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.10 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -49,7 +49,7 @@ class flightPhotos {
 		$oldPath=$this->getPhotoAbsPath($id);
 		list($pilotID,$fname,$year)=split("/",$this->photos[$id]['path']);
 		$this->photos[$id]['path']="$newUser/$fname/$year";
-		$newPath=$this->getPhotoAbsPath($id);
+		$newPath=$this->getPhotoAbsPath($id);		
 		@rename($oldPath,$newPath);
 		@rename($oldPath.'.icon.jpg',$newPath.'.icon.jpg');
 	}
@@ -198,13 +198,13 @@ class flightPhotos {
 
 		// if (!$this->gotValues) $this->getFromDB();
 		
-
-		
-		$res= $db->sql_query("DELETE FROM  $photosTable WHERE ID=".$this->flightID );
+		$query="DELETE FROM  $photosTable WHERE flightID=".$this->flightID;
+		//echo $query;
+		$res= $db->sql_query( $query);
   		if($res <= 0){   
 			 echo "Error deleting photos for flight ".$this->flightID."<BR>";
 	    }
-		
+		//print_r($this->photos);
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
 			$query="INSERT INTO $photosTable  (flightID,path,name,description) VALUES (".
 				$this->flightID.",'".prep_for_DB($photoInfo['path'])."','".

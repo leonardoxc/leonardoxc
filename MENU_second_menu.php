@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.49 2009/12/29 13:37:54 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.50 2010/01/03 20:27:46 manolis Exp $
 //
 //************************************************************************
 
@@ -592,6 +592,13 @@ if (! $dontShowCountriesSelection ) {
 			 <? echo $arrDownImg; ?></a>
     </div>
 
+    <div id='newsMenuID' class="menuButton">
+			<!-- <a href="#" onClick="toogleMenu('news');return false;"> -->
+			<a href="#" onClick="showNewsSettings();return false;">
+			
+			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_settings.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0>
+			 <? echo $arrDownImg; ?></a>
+    </div>
 
 </div>
 
@@ -680,6 +687,14 @@ if (! $dontShowCountriesSelection ) {
 ?>
 </div>
 </div>
+
+<div id="newsDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>
+<div class='content' style='padding:5px;'>
+      <a href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0> Configure the display of News </a>
+</div>
+</div>
+
 
 <?
 require_once  dirname(__FILE__).'/MENU_clubs.php';

@@ -98,9 +98,9 @@ jQuery.fn.liScroll = function(settings) {
 			$strip.addClass("newsticker")
 			var stripWidth = 0;
 			var $mask = $strip.wrap("<div class='mask'></div>");
-			$strip.parent().after("<div class='ticksettings'></div>");
+			// $strip.parent().after("<div class='ticksettings'></div>");
 			var $tickercontainer = $strip.parent().wrap("<div class='tickercontainer'></div>");
-			$strip.parent().wrap("<div></div>");
+			// $strip.parent().wrap("<div></div>");
 			var containerWidth = $strip.parent().parent().width();	//a.k.a. 'mask' width 	
 
 			$strip.load(settings.url,function(){

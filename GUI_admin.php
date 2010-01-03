@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.51 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.52 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -293,17 +293,18 @@ echo "</ul><br><hr>";
 			 echo "<br><br>";
 			 // $flight=new flight();
 			 $i=0;
-			 	require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+			 require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 // $flight=new flight();
 				 //$flight->getFlightFromDB($row["ID"],0);		
 
 				$year=substr($row['DATE'],0,4);
-				$userServerID=$row['userServerID'];
-				if ($userServerID) $srvStr=$userServerID.'_';
-				else $srvStr='';
-				$fdir=$flightsAbsPath."/".$srvStr.$row['userID']."/flights/".$year."/";
-				$rdir=$flightsRelPath."/".$srvStr.$row['userID']."/flights/".$year."/";
+					
+				$fdir=LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",getPilotID($row['userServerID'],$row['userID']),str_replace("%YEAR%",$year,$CONF['paths']['igc']) ).'/';				
+				$rdir=str_replace("%PILOTID%",getPilotID($row['userServerID'],$row['userID']),str_replace("%YEAR%",$year,$CONF['paths']['igc']) ).'/';				
+				
+				//$fdir=$flightsAbsPath."/".getPilotID($row['userServerID'],$row['userID'])."/flights/".$year."/";
+				//$rdir=$flightsRelPath."/".getPilotID($row['userServerID'],$row['userID'])."/flights/".$year."/";
 				$orgFilename=$fdir.$row['filename'];
 						
 				 if ( is_file( $orgFilename ) ){

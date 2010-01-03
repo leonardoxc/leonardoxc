@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.127 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: config.php,v 1.128 2010/01/03 20:27:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -609,6 +609,10 @@ $CONF['paths_versions'][1]['intermediate']	='flights/%PILOTID%/flights/%YEAR%';
 
 $CONF['paths']=$CONF['paths_versions'][2];
 
+$CONF['userPrefs']['defaults']=array(
+	'showNews'=>1,
+);
+
 // news
 $CONF['news']['items']=array();
 @include_once dirname(__FILE__)."/site/config_news.php";
@@ -642,6 +646,11 @@ if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) 
 	$PREFS->googleMaps=$CONF_googleMapsShow;
 	$PREFS->useEditor=$CONF['default_user_prefs']['useEditor'];
 	
+	
+}
+
+if ($PREFS->showNews==-1) {
+	$PREFS->showNews=$CONF['userPrefs']['defaults']['showNews'];
 }
 
 if (isset($_REQUEST['updatePrefs1'])) {// submit form 	   		
