@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.50 2010/01/03 20:27:46 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.51 2010/01/06 21:27:17 manolis Exp $
 //
 //************************************************************************
 
@@ -339,8 +339,7 @@ $(document).ready(function(){
 </script>
 
 
-<div class="mainBox secondMenu" align="left">
-
+<div class="mainBox secondMenu" align="left" style="margin-top:-1px;">
 
 <? if ($op!='comp'  ) { // custom ranks ?>
 <? if ($_SESSION["filter_clause"]) {
@@ -596,11 +595,11 @@ if (! $dontShowCountriesSelection ) {
 			<!-- <a href="#" onClick="toogleMenu('news');return false;"> -->
 			<a href="#" onClick="showNewsSettings();return false;">
 			
-			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_settings.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0>
+			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_settings.gif' title='<?=_MENU_MY_SETTINGS ?>' align="absmiddle" border=0>
 			 <? echo $arrDownImg; ?></a>
     </div>
 
-</div>
+</div> <?php  // end of second menu div ?>
 
 
 

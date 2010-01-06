@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.107 2009/12/23 14:02:17 manolis Exp $
+// $Id: index.php,v 1.108 2010/01/06 21:27:17 manolis Exp $
 //
 //************************************************************************
 
@@ -311,19 +311,7 @@ if ($clubID) {
 	$clubName=_No_Club;
 }
 
-?>
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
-<?
-if ( ! $CONF['custom_top_menu'] ) {
-	require_once dirname(__FILE__)."/MENU_menu.php";
-} else {
-	require_once dirname(__FILE__).'/MENU_'.$CONF['custom_top_menu'].'_top_menu.php';
-}
-
-if (in_array($op,array("list_flights","list_pilots","list_takeoffs","competition")) ) {
- // require_once dirname(__FILE__)."/MENU_second_menu.php";
-}
+require_once dirname(__FILE__)."/MENU_menu.php";
 
 
 //---------------------------------------------
@@ -508,7 +496,6 @@ function exitPage($exitNow=1){
    }
    echo "</div>";
 
-
    $pageEnd=leo_getmicrotime();
    $pageTime=$pageEnd-$pageStart;
    DEBUG("MAIN",1,"PAGE CREATION: $pageTime secs<BR>");
@@ -516,12 +503,11 @@ function exitPage($exitNow=1){
 
 
    require_once dirname(__FILE__)."/BLOCKS_end.php";
-
+	
    if ($opMode==1) {
 		CloseTable();
 		include("footer.php");
-   } else if ($opMode==3 || $opMode==4 || $opMode==6) {
-
+   } else if ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ) ) {
 		require_once dirname(__FILE__)."/GUI_footer.php";
    }
 

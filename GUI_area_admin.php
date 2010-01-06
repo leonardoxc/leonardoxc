@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.10 2009/11/24 14:30:41 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.11 2010/01/06 21:27:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -23,8 +23,8 @@ $areaAction=makeSane($_GET['areaAction']);
 if (!$areaID && $areaAction!='Add') { 
 	open_inner_table("Administer Area (group of takeoffs)",800); echo "<tr><td>";
 	
-	echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Add&areaID=0'>Add new Area</a><BR><BR>";
-	  
+	
+	echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Add','areaID'=>0))."'>Add new Area</a><BR><BR>"; 	  
 ?>
 
 
@@ -50,8 +50,11 @@ if (!$areaID && $areaAction!='Add') {
       <td>".area::areaTypeText($row['areaType'])."</td>
 	  <td> ";
 	  
-	  echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Edit&areaID=".$row['ID']."'>Edit</a> :: ";
-	  echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Delete&areaID=".$row['ID']."'>Delete</a> ";
+	  
+	  // echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Edit&areaID=".$row['ID']."'>Edit</a> :: ";
+	  echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Edit','areaID'=>$row['ID']))."'>Edit</a> :: ";
+	  echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Delete','areaID'=>$row['ID']))."'>Delete</a>";
+	  // echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Delete&areaID=".$row['ID']."'>Delete</a> ";
 
 	  if ($row['areaType']==0) echo " :: <a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=administerTakeoffs&areaID=".$row['ID']."'>Add/Remove takeoffs</a> ";
 	  

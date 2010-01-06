@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_news.php,v 1.1 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: EXT_news.php,v 1.2 2010/01/06 21:27:16 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -26,6 +26,9 @@
 	*/
 	// setDEBUGfromGET();
 	
+	if ( ! $CONF['news']['config']['newsActive'] ) {
+		return;		
+	}	
 	
 	if ( $CONF['news']['config']['showNews'] ) {	
 		if ( count($CONF['news']['items']) ) {

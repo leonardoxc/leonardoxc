@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.128 2010/01/03 20:27:46 manolis Exp $                                                                 
+// $Id: config.php,v 1.129 2010/01/06 21:27:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,8 +19,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
 
-  $CONF_version="3.1.0";
-  $CONF_releaseDate="2009/03/26";
+  $CONF_version="3.2.0";
+  $CONF_releaseDate="2010/01/06";
 
 // opMode 
 // 1 = PHPnuke module
@@ -586,6 +586,8 @@ $CONF['paths_versions'][2]['intermediate']	='data/flights/intermediate/%YEAR%/%P
 // the paths for pathsVersion=1
 $CONF['paths_versions'][1]['tmpigc']='files/tmp';
 $CONF['paths_versions'][1]['config']['pathsVersion']=1;
+// the pilot dir
+$CONF['paths_versions'][1]['pilot']	='flights/%PILOTID%';
 // the main IGC file
 $CONF['paths_versions'][1]['igc']	='flights/%PILOTID%/flights/%YEAR%';
 // photo filenames
@@ -607,7 +609,7 @@ $CONF['paths_versions'][1]['js']	='flights/%PILOTID%/flights/%YEAR%';
 $CONF['paths_versions'][1]['intermediate']	='flights/%PILOTID%/flights/%YEAR%';
 
 
-$CONF['paths']=$CONF['paths_versions'][2];
+$CONF['paths']=$CONF['paths_versions'][1];
 
 $CONF['userPrefs']['defaults']=array(
 	'showNews'=>1,

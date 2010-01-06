@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.75 2010/01/03 20:27:46 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.76 2010/01/06 21:27:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -77,7 +77,7 @@ sfHover = function() {
 //--><!]]></script>
 <? } ?>
 
-<?  if ($PREFS->showNews) {?>
+<?  if ($PREFS->showNews && $CONF['news']['config']['newsActive'] ) {?>
 <ul id="ticker01"></ul> 
 <? } ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
@@ -101,12 +101,16 @@ function showNewsItem(itemID) {
 function showNewsSettings() {
 	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php',
 		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
-	$('#dialogWindow').jqmShow();	
-	$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
-	
+	$('#dialogWindow').jqmShow(); 	
 }
 
-<?  if ($PREFS->showNews) {?>
+function showUserSettings() {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php',
+		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
+	$('#dialogWindow').jqmShow(); 	
+}
+
+<?  if ($PREFS->showNews && $CONF['news']['config']['newsActive']) {?>
 $(function() { 
 	$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
 })
@@ -322,7 +326,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
         <? } ?>
 		<li class='li_space'></li>
 		<? } ?>
-		<li><a href="<?=getLeonardoLink(array('op'=>'user_prefs')) ?>"><?=_MENU_MY_SETTINGS ?></a></li>
+		
+		<li><a href="#" onclick="showUserSettings()"><?=_MENU_MY_SETTINGS ?></a></li>
+		<?php  if (0) {?><li><a href="<?=getLeonardoLink(array('op'=>'user_prefs')) ?>"><?=_MENU_MY_SETTINGS ?></a></li><?php }?>
 		<li class='li_space'></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'stats')) ?>"><?=_FLIGHTS_STATS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'program_info')) ?>"><?=_PROJECT_INFO ?></a></li>

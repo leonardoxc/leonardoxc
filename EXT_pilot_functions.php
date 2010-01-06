@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.12 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.13 2010/01/06 21:27:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,8 +34,10 @@
 	if ($op=='findPilot'){
 		$hash=$_SESSION['sessionHashCode'];
 		if ( makeHash('EXT_pilot_functions') != $hash   ) {
-			echo "Access Denied";
-			return;
+			if ( ! $CONF['bugs']['badSessions']) {
+				echo "Access Denied";
+				return;
+			}
 		}
 
 		if ($CONF_use_utf) {		
@@ -75,6 +77,8 @@
 			echo $row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
 			
 		}
+
+return;
 	}
 	
 	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
