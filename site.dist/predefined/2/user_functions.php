@@ -49,7 +49,11 @@ function leoUser_changePassword($userID, $newPassword) {
 		return -2;
 	}
 
-	$newPassword=md5($newPassword);
+	if ( function_exists('leonardo_hash') ) { 
+		$newPassword=leonardo_hash($newPassword);
+	} else {
+		$newPassword=md5($newPassword);
+	}
 					
 	$sql='UPDATE '.$CONF['userdb']['users_table'].' SET '.$CONF['userdb']['password_field'].'="'.$newPassword.'" WHERE '.$CONF['userdb']['user_id_field']."=$userID";
 	// echo $sql;

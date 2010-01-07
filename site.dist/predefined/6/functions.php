@@ -177,6 +177,10 @@ require_once dirname(__FILE__).'/helper.php';
 // this is for joomla / when phpbb3 is bridged to joomla!
 function leonardo_check_password($password,$hash) {
 
+	return leonardo_check_hash($password, $hash);
+	
+	// this is the joomla way 
+	/*
 	$parts	= explode( ':', $hash );
 	$crypt	= $parts[0];
 	$salt	= @$parts[1];
@@ -190,11 +194,12 @@ function leonardo_check_password($password,$hash) {
 	} else {
 		return false;
 	}
+	*/
 }
 
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.3 2009/03/26 16:11:54 manolis Exp $
+* @version Version 0.1 / $Id: functions.php,v 1.4 2010/01/07 11:47:24 manolis Exp $
 *
 * Portable PHP password hashing framework.
 *

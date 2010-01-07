@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.130 2010/01/07 10:51:33 manolis Exp $                                                                 
+// $Id: config.php,v 1.131 2010/01/07 11:47:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -606,7 +606,7 @@ $CONF['paths_versions'][1]['js']	='flights/%PILOTID%/flights/%YEAR%';
 $CONF['paths_versions'][1]['intermediate']	='flights/%PILOTID%/flights/%YEAR%';
 
 
-$CONF['paths']=$CONF['paths_versions'][2];
+$CONF['paths']=$CONF['paths_versions'][1];
 
 $CONF['userPrefs']['defaults']=array(
 	'showNews'=>1,

@@ -71,6 +71,8 @@ $CONF['bridge']['register_url']="$regPrefix/profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';
 $CONF['bridge']['edit_profile_url']='';
 
+// password checking /hashing functions
+require_once dirname(__FILE__).'/functions.php';
 
 // various settings that depend on $opMode !
 $CONF_mainfile="modules.php";

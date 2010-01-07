@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.7 2010/01/07 11:47:24 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.8 2010/01/07 11:48:35 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -414,7 +414,9 @@ $CONF['airspace']['zoom']=100; // show a bit % more of the airspace  - good valu
 
 // Define the version of flights data scheme
 // the default old one of flights/ dir is version 1
-$CONF['paths']=$CONF['paths_versions'][2];
+
+// !!!! UNCOMENT THIS ONLY AFTER YOU HAVE MIGRETED ALL FILES TO NEW POSSTIONS !!!!
+// $CONF['paths']=$CONF['paths_versions'][2];
 
 // Set this to 1 if on search pilot you always get "Access denied"
 $CONF['bugs']['badSessions']=0;

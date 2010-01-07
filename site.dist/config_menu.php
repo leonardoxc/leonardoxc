@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_menu.php,v 1.2 2008/11/29 22:46:20 manolis Exp $                                                                 
+// $Id: config_menu.php,v 1.3 2010/01/07 11:47:24 manolis Exp $                                                                 
 //
 //************************************************************************
  
@@ -35,7 +35,7 @@ $CONF_MENU['main_menu']['bottom']=array(
 		
 		array('name'=>_PROJECT_HELP,
 			'linkType'=>'external', // leonardo or external
-			'link'=>'/modules/leonardo/XC_league_how-to.v2.pdf',
+			'link'=>'/modules/leonardo/doc/XC_league_how-to.v2.pdf',
 			'target'=>'_blank',
 		),
 		/*

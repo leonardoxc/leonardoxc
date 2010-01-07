@@ -219,4 +219,31 @@ function redirect($url)
 	exit;
 }
 
+
+// no need is is included by joomla
+// require_once dirname(__FILE__).'/helper.php';
+
+// this is for joomla 
+function leonardo_check_password($password,$hash) {
+	
+	// this is the joomla way 
+
+	$parts	= explode( ':', $hash );
+	$crypt	= $parts[0];
+	$salt	= @$parts[1];
+	
+	$testcrypt = JUserHelper::getCryptedPassword($password, $salt);
+
+	if ($crypt == $testcrypt) {
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+function leonardo_hash($password) {
+	return  JUserHelper::getCryptedPassword($password);
+}
+
 ?>

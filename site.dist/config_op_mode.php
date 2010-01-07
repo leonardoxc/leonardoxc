@@ -13,9 +13,16 @@ $opMode= 2;
 // 2 -> same as 1 but all sessions vars are in the url, this means that the url 
 // 3 -> SEO urls
 
-//  NOTE !!!!!! SEO URLS are only compatible with opmodes 2 + 6 (phpbb)
+//  NOTE , THESE ARE THE DEFAULT VALUES , DONT CHANGE THEM ,
+//  INSTEAD EDIT THE FILE config_mod_rewrite.php either manually
+//  or from "admin"->"SEO Urls"
 $CONF['links']['type']=1;
 $CONF['links']['baseURL']='/leonardo';
+if ( in_array($opMode,array(2,6,3,5)) ) { 
+        //  NOTE !!!!!! SEO URLS are only compatible with opmodes 2 6  (phpbb) 3 (standalone) and 5 (joomla , but not inside the joomla template)
+        @include_once dirname(__FILE__).'/config_mod_rewrite.php';
+}
+
 
 // override 
 if ( defined('Leonardo_op_mode') ) $opMode= Leonardo_op_mode; 
