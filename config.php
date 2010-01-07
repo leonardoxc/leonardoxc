@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.129 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: config.php,v 1.130 2010/01/07 10:51:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -491,9 +491,6 @@ Triangle conform to the FAI definition
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
 
-  $CONF_abs_path=dirname(__FILE__);
-  $CONF_tmp_path=$CONF_abs_path.'/files/tmp';
-
 function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 	if ($varname=='day' || $varname=='month' || $varname=='year' ) {
 			if ( isset($_SESSION[$varname.'leo']))  $_SESSION[$varname]=$_SESSION[$varname.'leo'];
@@ -609,22 +606,28 @@ $CONF['paths_versions'][1]['js']	='flights/%PILOTID%/flights/%YEAR%';
 $CONF['paths_versions'][1]['intermediate']	='flights/%PILOTID%/flights/%YEAR%';
 
 
-$CONF['paths']=$CONF['paths_versions'][1];
+$CONF['paths']=$CONF['paths_versions'][2];
 
 $CONF['userPrefs']['defaults']=array(
 	'showNews'=>1,
 );
 
+
+define("LEONARDO_ABS_PATH",dirname(__FILE__));
+$CONF_abs_path=LEONARDO_ABS_PATH;
+
 // news
 $CONF['news']['items']=array();
 @include_once dirname(__FILE__)."/site/config_news.php";
 
-define("LEONARDO_ABS_PATH",dirname(__FILE__));
+
 
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
 @include_once dirname(__FILE__)."/site/config_ranks.php";
 @include_once dirname(__FILE__)."/site/config_servers.php";
+
+$CONF_tmp_path=$CONF_abs_path.'/'.$CONF['paths']['tmpigc']; // was  '/files/tmp';
 
 // this loads predefined settings for userDB and  settings 
 // to bridge to the users table of different forum/portal/cms systems
