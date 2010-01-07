@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.6 2009/03/26 16:41:33 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.7 2010/01/07 11:47:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,7 +17,7 @@
  $CONF_master_server_id=1;
 
  // Our server ID -> usually 0 for non network operation
- // Contact me at andread@thenet.gr to assign you an offcial leonardo ID
+ // Contact me at manolis@andreadakis.gr to assign you an offcial leonardo ID
  $CONF_server_id=999;
  
  // various display parameters
@@ -264,7 +264,7 @@
 
   // use htc files for ie mouse over TR elements
   // May not work on servers behind firewalls
-  $CONF_use_htc_ie_hack=0;
+  $CONF_use_htc_ie_hack=1;
 
   //  $CONF['list_flights']['fields']['scoring'][0]='SCORE_SPEED'; // LINEAR_DISTANCE or SCORE_SPEED
   
@@ -378,5 +378,44 @@
 	// display also the thermals DB in flight's display page
 	$CONF['thermals']['enable']=false;
 
+	//
+	$CONF_require_glider=1;
+	$CONF_addflight_js_validation=1;
+	
+	// you can override the categories here!
+	//$CONF_category_types =array(1=>"Sport",2=>"Open",3=>"Tandem",4=>"Fun Cup");
+	//$gliderClassList=$CONF_category_types;
+	
+	$CONF_glider_certification_categories =array(
+ 		1=>"LTF 1",2=>"LTF 1/2",
+		4=>"LFT 2", 8=>"LFT 2/3" , 16=>"LFT 3" , 
+		32=>"EN A", 64=>"EN B" , 128=>"EN C" , 256=>"EN D" ,
+ 		1024=>"Proto");
+	
+   $CONF_cert_avalable_categories=array(
+	0=>array(1,2,3,4), // ALL
+ 	1=>array(1,2,3,4), // ltf 1
+ 	2=>array(1,2,3),   // LTF 1/2
+ 	4=>array(1,2,3),   // LTF 2
+ 	8=>array(2,3),     // LTF 2/3
+ 	16=>array(2,3),    // LTF 3
 
+ 	32=>array(1,2,3,4), //en A
+ 	64=>array(1,2,3),   //en B
+ 	128=>array(2,3),    //en C
+ 	256=>array(2,3),    //EN D
+ 	1024=>array(2,3),   // PROTO
+  );
+ 
+ 
+// Manolis 09.12.2009
+// NEW config variables 
+$CONF['airspace']['zoom']=100; // show a bit % more of the airspace  - good value is 102 (means 102%)
+
+// Define the version of flights data scheme
+// the default old one of flights/ dir is version 1
+$CONF['paths']=$CONF['paths_versions'][2];
+
+// Set this to 1 if on search pilot you always get "Access denied"
+$CONF['bugs']['badSessions']=0;
 ?>
