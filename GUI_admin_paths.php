@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.5 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.6 2010/01/07 14:30:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,7 +38,7 @@
 	 exit();
 	}
 	$dirlist=array();	
-	while ($row = $db->sql_fetchrow($res) && 0 ) { 
+	while ($row = $db->sql_fetchrow($res)  ) { 
 		if (!$row['filename']) continue;	
 		if (!$row['userID']) continue;
 		
@@ -153,8 +153,7 @@
 	 echo("<H3> Error in query $query </H3>\n");
 	 exit();
 	}
-	while ($row = $db->sql_fetchrow($res)) { 
-		// if (!$row['filename']) continue;
+	while ($row = $db->sql_fetchrow($res)) { 		
 		$userDir='';
 		if ($row['serverID']) {
 			$userDir=$row['serverID'].'_';
