@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.7 2010/01/08 14:57:31 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.8 2010/01/08 21:27:41 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -27,11 +27,17 @@
 	$pathsOld=$CONF['paths_versions'][$oldPathsVersion];
 	$pathsNew=$CONF['paths_versions'][$newPathsVersion];
 	
+	$copyMode=$_GET['copyMode']+0;
 	
 	$output1='';
 	$output2='';
+
+	// $where_clause=" WHERE filename LIKE \"%`%\"";
+	$where_clause=" WHERE filename <>'' ";
+
 	
-	$query="SELECT * FROM $flightsTable WHERE filename LIKE \"%`%\" order by userServerID,userID ";	
+	// $query="SELECT * FROM $flightsTable WHERE filename LIKE \"%`%\" order by userServerID,userID ";	
+	$query="SELECT * FROM $flightsTable $where_clause order by userServerID,userID ";	
 	$res= $db->sql_query($query);
 	if($res <= 0){
 	 echo("<H3> Error in query! </H3>\n");
@@ -50,12 +56,27 @@
 			
 		$year=substr($row['DATE'],0,4);
 		$filename=$row['filename'];
+			
+		if ($copyMode==2) { // find mising igc files on new folders
+			$oldIgcPath=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['igc']) )."/$filename";
+			$newIgcPath=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['igc']) )."/$filename";
+			
+			$oldIgcPath=str_replace("`","\`",$oldIgcPath);
+			$newIgcPath=str_replace("`","\`",$newIgcPath);
+			
+			if ( !is_file(LEONARDO_ABS_PATH.'/'.$newIgcPath)  ) {
+					if ( is_file(LEONARDO_ABS_PATH.'/'.$oldIgcPath) ) $output1.="* ";
+					$output1.=$oldIgcPath."\n";	
+			}
+			continue;
+		}
 		
+				
 		$d=0;
 		$f=0;
 		$files=array();
 		$dirs=array();
-			
+		
 		// $files[$f][0]="$userDir/flights/$year/$filename";
 		$files[$f][0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['igc']) )."/$filename";
 		$files[$f][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['igc']) )."/$filename";
@@ -74,27 +95,21 @@
 		
 		$f++;
 		
-		// $files[$f][0]="$userDir/flights/$year/$filename.jpg";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['map']) )."/$filename.jpg";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['map']) )."/$filename.jpg";
 	
-		//$files[$f][0]="$userDir/flights/$year/$filename.saned.igc";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['intermediate']) )."/$filename.saned.igc";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['intermediate']) )."/$filename.saned.igc";
 	
-		//$files[$f][0]="$userDir/flights/$year/$filename.saned.full.igc";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['intermediate']) )."/$filename.saned.full.igc";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['intermediate']) )."/$filename.saned.full.igc";
 	
-		//$files[$f][0]="$userDir/flights/$year/$filename.poly.txt";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['intermediate']) )."/$filename.poly.txt";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['intermediate']) )."/$filename.poly.txt";
 	
-		//$files[$f][0]="$userDir/flights/$year/$filename.1.txt";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['intermediate']) )."/$filename.1.txt";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['intermediate']) )."/$filename.1.txt";
 		
-		//$files[$f][0]="$userDir/flights/$year/$filename.json.js";
 		$files[$f]  [0]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['js']) )."/$filename.json.js";
 		$files[$f++][1]=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['js']) )."/$filename.json.js";
 		
@@ -116,10 +131,12 @@
 	
 	//echo $output;
 
+	// $extra_clause="AND ( name LIKE \"%`%\"  OR name LIKE \"%#039;%\") ";
+	$extra_clause="";
 	// NOW THE PHOTOS
 	$query="SELECT * FROM $flightsTable,$photosTable 
 		WHERE $photosTable.flightID=$flightsTable.ID
-		AND ( name LIKE \"%`%\"  OR name LIKE \"%#039;%\")
+		$extra_clause
 		order by userServerID,userID ";
 	
 	$res= $db->sql_query($query);
@@ -127,7 +144,7 @@
 	 echo("<H3> Error in query $query</H3>\n");
 	 exit();
 	}
-	while ($row = $db->sql_fetchrow($res)) { 
+	while ($row = $db->sql_fetchrow($res) ) { 
 		// if (!$row['filename']) continue;
 		$userDir='';
 		if ($row['userServerID']) {
@@ -138,44 +155,55 @@
 		$year=substr($row['DATE'],0,4);
 		$filename=$row['name'];
 		
-		$output1.=$row['path']."/$filename\n";	
-		
 		$f1=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['photos']) )."/$filename";
-		$f2=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['photos']) )."/";
+		$f2path=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['photos']) )."/";
+		$f2=$f2path.$filename;
 
 		$f1=str_replace("`","\`",$f1);	
-		$f1=str_replace("&#039;","\'",$f1);
+		$f1=str_replace("&#039;","'",$f1);
+		
+		$f2=str_replace("`","\`",$f2);	
+		$f2=str_replace("&#039;","'",$f2);
 			
+		if ($copyMode==2)  {		
+			if ( ! is_file(LEONARDO_ABS_PATH.'/'."$f2") ) {
+				if ( is_file(LEONARDO_ABS_PATH.'/'."$f1") ) $output1.="* ";
+				$output1.="$f2\n";
+			}
+			continue;
+		}
+			
+		$output1.=$row['path']."/$filename\n";		
 		$output2.='cp -a "'.$f1.'" "'.$f2.'"'."\n";
-		$output2.='cp -a "'.$f1.'.icon.jpg" "'.$f2.'"'."\n";
+		$output2.='cp -a "'.$f1.'.icon.jpg" "'.$f2path.'"'."\n";
 
 	}
 		
-	
-	// NOW the pilot photos	
-	$query="SELECT * FROM $pilotsTable ";
-	
-	$res= $db->sql_query($query);
-	if($res <= 0){
-	 echo("<H3> Error in query $query </H3>\n");
-	 exit();
+	if ( $copyMode!=2) {
+		// NOW the pilot photos	
+		$query="SELECT * FROM $pilotsTable ";
+		
+		$res= $db->sql_query($query);
+		if($res <= 0){
+		 echo("<H3> Error in query $query </H3>\n");
+		 exit();
+		}
+		while ($row = $db->sql_fetchrow($res) ) { 		
+			$userDir='';
+			if ($row['serverID']) {
+				$userDir=$row['serverID'].'_';
+			}	
+			$userDir.=$row['pilotID'];
+					
+			$pilotDirOld=str_replace("%PILOTID%",$userDir,$pathsOld['pilot']);
+			$pilotDirNew=str_replace("%PILOTID%",$userDir,$pathsNew['pilot']);
+			if ( is_file(LEONARDO_ABS_PATH.'/'."$pilotDirOld/PilotPhoto.jpg") ) {
+				$output2.="mkdir $pilotDirNew\n";
+				$output2.="cp -a $pilotDirOld/PilotPhoto.jpg $pilotDirNew/\n";
+				$output2.="cp -a $pilotDirOld/PilotPhotoicon.jpg $pilotDirNew/\n";		
+			}		
+		}
 	}
-	while ($row = $db->sql_fetchrow($res)) { 		
-		$userDir='';
-		if ($row['serverID']) {
-			$userDir=$row['serverID'].'_';
-		}	
-		$userDir.=$row['pilotID'];
-				
-		$pilotDirOld=str_replace("%PILOTID%",$userDir,$pathsOld['pilot']);
-		$pilotDirNew=str_replace("%PILOTID%",$userDir,$pathsNew['pilot']);
-		if ( is_file(LEONARDO_ABS_PATH.'/'."$pilotDirOld/PilotPhoto.jpg") ) {
-			$output2.="mkdir $pilotDirNew\n";
-			$output2.="cp -a $pilotDirOld/PilotPhoto.jpg $pilotDirNew/\n";
-			$output2.="cp -a $pilotDirOld/PilotPhotoicon.jpg $pilotDirNew/\n";		
-		}		
-	}
-	
 	/// NOW WRITE THE OUTPUT
 	$filename='files_list.csv';
 	$fp=fopen(dirname(__FILE__)."/$filename","w" );
