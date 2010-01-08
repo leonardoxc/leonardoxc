@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.6 2010/01/07 14:30:26 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.7 2010/01/08 14:57:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -31,7 +31,7 @@
 	$output1='';
 	$output2='';
 	
-	$query="SELECT * FROM $flightsTable order by userServerID,userID ";	
+	$query="SELECT * FROM $flightsTable WHERE filename LIKE \"%`%\" order by userServerID,userID ";	
 	$res= $db->sql_query($query);
 	if($res <= 0){
 	 echo("<H3> Error in query! </H3>\n");
@@ -104,8 +104,10 @@
 		}
 		foreach ($files as $f=>$farray ){
 			$output1.=$farray[0].";";	
+			$fname1=str_replace("`","\`",$farray[0]);
+			$fname2=str_replace("`","\`",$farray[1]);
 			// $output2.="cp -a \"flights/".$farray[0]."\" \"".$farray[1]."\"\n";	
-			$output2.="cp -a \"".$farray[0]."\" \"".$farray[1]."\"\n";
+			$output2.="cp -a \"".$fname1."\" \"".$fname2."\"\n";
 		}
 		$output1.="\n";	
 		$output2.="\n";					
@@ -117,6 +119,7 @@
 	// NOW THE PHOTOS
 	$query="SELECT * FROM $flightsTable,$photosTable 
 		WHERE $photosTable.flightID=$flightsTable.ID
+		AND ( name LIKE \"%`%\"  OR name LIKE \"%#039;%\")
 		order by userServerID,userID ";
 	
 	$res= $db->sql_query($query);
@@ -139,6 +142,10 @@
 		
 		$f1=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsOld['photos']) )."/$filename";
 		$f2=str_replace("%PILOTID%","$userDir",str_replace("%YEAR%","$year",$pathsNew['photos']) )."/";
+
+		$f1=str_replace("`","\`",$f1);	
+		$f1=str_replace("&#039;","\'",$f1);
+			
 		$output2.='cp -a "'.$f1.'" "'.$f2.'"'."\n";
 		$output2.='cp -a "'.$f1.'.icon.jpg" "'.$f2.'"'."\n";
 
