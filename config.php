@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.131 2010/01/07 11:47:24 manolis Exp $                                                                 
+// $Id: config.php,v 1.132 2010/01/08 11:05:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -556,6 +556,9 @@ $OLCScoringServerPassword="mypasswd";
 $CONF['paths_versions'][2]['tmpigc']='data/tmp';
 $CONF['paths_versions'][2]['config']['pathsVersion']=2;
 
+// the rss map thumbs
+$CONF['paths_versions'][2]['map_thumbs']='data/cache/map_thumbs';
+
 // the pilot dir
 $CONF['paths_versions'][2]['pilot']	='data/pilots/%PILOTID%';
 // the main IGC file
@@ -582,6 +585,9 @@ $CONF['paths_versions'][2]['intermediate']	='data/flights/intermediate/%YEAR%/%P
 
 // the paths for pathsVersion=1
 $CONF['paths_versions'][1]['tmpigc']='files/tmp';
+// the rss map thumbs
+$CONF['paths_versions'][1]['map_thumbs']='tmp_map_thumbs';
+
 $CONF['paths_versions'][1]['config']['pathsVersion']=1;
 // the pilot dir
 $CONF['paths_versions'][1]['pilot']	='flights/%PILOTID%';

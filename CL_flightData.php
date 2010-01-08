@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.172 2010/01/03 20:27:46 manolis Exp $
+// $Id: CL_flightData.php,v 1.173 2010/01/08 11:05:59 manolis Exp $
 //
 //************************************************************************
 
@@ -789,7 +789,7 @@ $resStr='{
 		if ($rawChart) $suffix.=".raw";
 		else $suffix.="";
 
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).'/'.$this->filename.$suffix.".".$chartType.$suffix.".png";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).'/'.$this->filename.".".$chartType.$suffix.".png";
 		// return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
 	}
 	function getPhotoFilename($photoNum) {
