@@ -14,6 +14,15 @@
 
 // Specific settigns for Joomla 1.5  operation ($opMode=5)
 
+/*
+ http://forum.joomla.org/viewtopic.php?f=304&t=278915
+ http://pribadidewa.wordpress.com/2008/04/07/session-management-in-joomla/
+  http://forum.joomla.org/viewtopic.php?f=432&t=260330
+
+http://www.thinkbigshot.com/blog/technical/147-using-sessions-in-joomla-15.html
+
+*/
+
 // override these
 $CONF_use_own_template=0;
 $CONF_use_own_login=0;
