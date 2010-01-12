@@ -8,13 +8,27 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_perform_sync.php,v 1.8 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: EXT_perform_sync.php,v 1.9 2010/01/12 14:50:29 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__)."/EXT_config_pre.php";
 require_once dirname(__FILE__)."/config.php";
 require_once dirname(__FILE__)."/EXT_config.php";
+
+// modification to call thie file also from the command line,
+
+if (count($argv) > 1 ) {
+	foreach($argv as $i=>$arg) {
+		if ($i==0) continue;
+			list($name,$val)=split("=",$arg);
+			if ($name && $val) {
+				// echo "$name=$val";
+				$_GET[$name]=$val;
+			}
+	}
+}
+// var_dump($argv);
 
 $pass=makeSane($_GET['pass'],0);
 
