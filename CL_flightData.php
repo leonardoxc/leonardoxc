@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.173 2010/01/08 11:05:59 manolis Exp $
+// $Id: CL_flightData.php,v 1.174 2010/01/13 15:02:42 manolis Exp $
 //
 //************************************************************************
 
@@ -2646,11 +2646,14 @@ $kml_file_contents=
 			$contents =	split("\n",fetchURL($fl,30));
 			if (!$contents) return 0;
 
-			foreach ( $contents as $line) DEBUG("VALIDATE",64,"$line");
 			$ok=-1;
-			if (trim($contents[0])=="OK") {
-				$ok=1;
-				$valStr=trim($contents[1]);
+			foreach ( $contents as $lnum=>$line) {
+				DEBUG("VALIDATE",64,"$line");
+			
+				if (trim($contents[$lnum])=="VALI:OK") {
+					$ok=1;
+					$valStr=trim($contents[$lnum+1]);
+				}
 			}
 		}
 

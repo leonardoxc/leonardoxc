@@ -101,8 +101,8 @@
 		}
 		DEBUG("</pre>");
 		@unlink($igcFilename);
-		if ($ok) echo "OK\n$valProgram";
-		else echo "NOK";
+		if ($ok) echo "VALI:OK\n$valProgram";
+		else echo "VALI:NOK";
 		echo $dbgStr;
 }
 
