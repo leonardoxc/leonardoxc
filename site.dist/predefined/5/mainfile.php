@@ -84,8 +84,8 @@ $LEO_lang['ENCODING']= $langEncodings[$currentlang];
 $page_title = 'LEONARDO';
 
 
-$userdata['user_id']=$my->id;
-$userdata['username']=$my->username;
+$userdata['user_id']=$user->id;
+$userdata['username']=$user->username;
 
 if (isset($_SESSION['user_id'])) {
   $userdata['user_id']  = $_SESSION['user_id'];

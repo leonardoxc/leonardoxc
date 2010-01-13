@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.108 2010/01/06 21:27:17 manolis Exp $
+// $Id: index.php,v 1.109 2010/01/13 10:55:45 manolis Exp $
 //
 //************************************************************************
 
@@ -16,6 +16,29 @@ if ( file_exists(dirname(__FILE__)."/install.php") ) {
 	echo "Please remove install.php from dir modules/leonardo in order to run Leonardo<br>";
 	exit;
 }
+
+
+//------------------------------------------------------------
+// we need to init joomla first thing!
+require_once dirname(__FILE__)."/site/config_op_mode.php";
+if ($opMode==5 && $CONF_use_own_template==1) { // Joomla
+	define( '_JEXEC', 1 );
+	define( 'DS', DIRECTORY_SEPARATOR );
+		
+	require_once JPATH_BASE.DS.'includes'.DS.'defines.php';
+	require_once JPATH_BASE.DS.'includes'.DS.'framework.php';
+	$mainframe =& JFactory::getApplication('site');
+	$user   =& JFactory::getUser();
+//echo "<hr>user<hr>";
+//print_r($user);
+//$session =& JFactory::getSession();
+
+//  echo "<hr>2<hr>";
+//  print_r($_SESSION);
+// echo "<hr>3<hr>";
+//print_r($session); 
+}
+//------------------------------------------------------------
 
 function leo_getmicrotime() {
    list($usec, $sec) = explode(" ", microtime());

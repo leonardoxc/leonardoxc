@@ -24,18 +24,22 @@ http://www.thinkbigshot.com/blog/technical/147-using-sessions-in-joomla-15.html
 */
 
 // override these
-$CONF_use_own_template=0;
+$CONF_use_own_template=1;
 $CONF_use_own_login=0;
  
 // Path settings
-$CONF['path']['direct_call']=0;
+$CONF['path']['direct_call']=1;;
 
 function moduleRelPath($forUtilityFiles=0){
-	global $module_name;
+	global $module_name,$CONF_use_own_template;
 	if ($forUtilityFiles) // for EXT_ files
 		return "./";
-	else 
-		return "components/$module_name";
+	else {
+		if ($CONF_use_own_template)
+			return "./";
+		else 
+			return "components/$module_name";
+	}	
 }
 
 $moduleRelPath=moduleRelPath($isExternalFile);
@@ -99,15 +103,16 @@ function append_sid($a,$b="") {
 // we need to get the db login information 
 // require_once Leonardo_Joomla_main_dir."/configuration.php";
 /// get the db info from them joomla config file
-/*
-	require_once $CONF_abs_path."/../configuration.php";
+
+	require_once JPATH_BASE."/configuration.php";
 	$leoConf=new JConfig();
+	// echo "#leoConf="; print_r($leoConf);
 	$dbhost = $leoConf->host;
 	$dbname = $leoConf->db;
 	$dbuser = $leoConf->user;
 	$dbpasswd = $leoConf->password;
-*/		
-require_once $CONF_abs_path."/site/config_db.php";
+
+//require_once $CONF_abs_path."/site/config_db.php";
 
 // also load the required functions
 require_once dirname(__FILE__)."/mainfile.php";

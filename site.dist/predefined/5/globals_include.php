@@ -33,4 +33,6 @@ global $CONF_password_minlength, $CONF_googleMapsShow, $CONF_defaultNameOrder, $
 
 global $k_nAreaType, $k_strAreaStart, $nLineType, $langEncodings, $lng;
 
+global  $CONF_category_types,$gliderClassList;
+global  $CONF_xc_types,$xcTypesList;
 ?>

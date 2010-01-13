@@ -8,6 +8,12 @@
 // 6 = phpbb3
 $opMode= 2; 
 
+// these are needed for joomla  
+if ($opMode==5) {
+	$CONF_use_own_template=1;
+	define( 'JPATH_BASE', realpath(dirname(__FILE__).'/../..') );
+}
+
 // the method to use for links in the menu and other parts of leonardo
 // 1 -> current old way, using &name=value args + session variables
 // 2 -> same as 1 but all sessions vars are in the url, this means that the url 
