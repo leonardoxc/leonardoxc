@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.8 2010/01/08 21:27:41 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.9 2010/01/14 13:07:00 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -218,12 +218,14 @@
 	// echo "\n</pre><HR>";
 	echo "Flights found : $igcNum<HR><BR>";
 	
-	echo "A file named $filename2 with the shell commands( and a txt file  $filaneme with the igc paths for reference only) has been created in leonardo/ directory.
-		 Check that the file is deleted on the server afterwards<BR>
-	 Execute this command on a shell: <BR>";
+	echo "<pre>A file named $filename2 with the shell commands 
+	(and a txt file  $filaneme with the igc paths for reference only) 
+	have been created in leonardo/ directory.
+	Check that theese files are deleted on the server afterwards<BR>
+	Execute this command on a shell: \n\n";
 	
 	
-	echo "<hr>cd ".dirname(__FILE__)."; ./$filename2;<HR>";
+	echo "cd ".dirname(__FILE__)."; chmod +x $filename2; nohup ./$filename2;\n\n</pre>";
 	return;
 
 
