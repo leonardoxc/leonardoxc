@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.52 2010/01/03 20:27:46 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.53 2010/01/14 09:43:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -90,7 +90,7 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=fixTakeoffNames'>Fix Takeoff names</a><BR>It will update the takeoff names where the local or english name is missing and put the existing name into the missing one i.e if the local name is missing the english/international name will be used as the local too. ";
 	if ($CONF_use_validation)	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateValidation'>Update G-Record Validation</a> <BR>
-This is a *heavy* operation and will take long to complete. It will check all unchecked flights for airspace violations";
+This is a *heavy* operation and will take long to complete. It will check all unchecked flights for G-Record validity";
 
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateLocations'>Update takeoff/landing locations</a><br>
 	This is a *heavy* operation and will take long to complete. It will re-compute  the takeoff/landing  for ALL flights ";
@@ -611,15 +611,17 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			
 		echo "<BR><br><BR>DONE !!!<BR>";		
 	} else if ($admin_op=="updateValidation") {
-		$query="SELECT ID from $flightsTable WHERE validated=0";
+		$query="SELECT * from $flightsTable WHERE validated=0";
 		$res= $db->sql_query($query);
 			
 		if($res > 0){
 			 $waypoints=getWaypoints();
 			 while ($row = mysql_fetch_assoc($res)) { 
+				// echo "$i<HR>"; $i++;
 				 $flight=new flight();
-				 $flight->getFlightFromDB($row["ID"],0);
+				 $flight->getFlightFromDB($row["ID"],0,$row);
 				 $flight->validate();
+				 $alreadyValidatedInPage=0;
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
