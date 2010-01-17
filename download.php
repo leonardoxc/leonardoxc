@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.28 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: download.php,v 1.29 2010/01/17 21:42:52 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -255,6 +255,9 @@
 
 		DEBUG("DL",1,"browser_agent=$browser_agent, browser version=$browser_version<BR>");
 
+		// to debug
+		//	DEBUG_END();exit;
+		
 	if (!headers_sent()) { /// martin jursa 19.6.2008
 		header("Pragma: public"); // required
 		header("Expires: 0");

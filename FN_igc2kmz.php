@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.12 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.13 2010/01/17 21:42:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -32,7 +32,9 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	$cmd="$python $path/bin/leonardo2kmz.py";
 	$cmd.=" --engine '$engine'";
 	$cmd.=" --table-prefix=$CONF_tables_prefix";
-	$cmd.=" --directory '".realpath(dirname(__FILE__).'/../..')."'";
+	$cmd.=" --directory '".realpath(dirname(__FILE__))."'";
+	// $cmd.=" --igcpath '".dirname(__FILE__).'/'.$CONF['paths']['intermediate']."'";
+	// $cmd.=" --directory '".realpath(dirname(__FILE__).'/../..')."'";
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
