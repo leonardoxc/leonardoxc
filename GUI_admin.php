@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.53 2010/01/14 09:43:37 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.54 2010/01/17 15:28:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -123,7 +123,7 @@ echo "</ul>";
 echo "<h3>Clean up files</h3>";
 echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanGEFiles'>Clean files related to Google Earth (kmz and kml files)</a>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanGMAPSfiles'>Clean files related to Google maps (use it after installing new 3d maps) </a>";
+	echo "<li><a href='".getLeonardoLink(array('op'=>'admin','admin_op'=>'cleanGMAPSfiles'))."'>Clean files related to Google maps (use it after installing new 3d maps) </a>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=cleanOldJSfiles'>Clean old js file (not used after v.2.9.0)</a>";
 echo "</ul>";
 

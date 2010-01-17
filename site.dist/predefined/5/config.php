@@ -31,7 +31,12 @@ $CONF_use_own_login=0;
 $CONF['path']['direct_call']=1;;
 
 function moduleRelPath($forUtilityFiles=0){
-	global $module_name,$CONF_use_own_template;
+        global $module_name,$CONF_use_own_template,$CONF;
+        
+        if ( $CONF['links']['type']==3 ) {
+                return $CONF['links']['baseURL'];
+        }
+
 	if ($forUtilityFiles) // for EXT_ files
 		return "./";
 	else {

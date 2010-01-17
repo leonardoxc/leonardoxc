@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_hgt.php,v 1.5 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_hgt.php,v 1.6 2010/01/17 15:28:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,6 +34,10 @@ Each cell has two bytes, and the elevation at that cell is 256*(1st byte) + (2nd
 It follows that a 3" HGT file  has a file length of 2 x 1201 x 1201. 
 
 */
+
+
+//  This is the file used for 3d elevation
+
 $openDEMfiles=array();
 global $openDEMfiles,$CONF_DEMpath;
 

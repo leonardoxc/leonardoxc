@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.69 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.70 2010/01/17 15:28:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -742,18 +742,24 @@ function getLeonardoLink($argArray) {
 	
 	if ($linkType==1) {
 		global $baseInstallationPath,$CONF_mainfile;
-		
+
 		foreach($argArray as $argName=>$argValue){
 			if ($argValue!='useCurrent')
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
-		$lnk='';
-		//echo "^^ $baseInstallationPath ^^ $CONF_mainfile ^^";
-		if (!$baseInstallationPath ) $lnk='/';
-		$lnk.=$baseInstallationPath.'/'.$CONF_mainfile.CONF_MODULE_ARG.$args;
-		// echo $lnk;
-		//return $lnk;
-		return CONF_MODULE_ARG.$args;
+		
+		if ($CONF['links']['type']==3) {
+			$preDir=$CONF['links']['baseURL'];
+			$lnk='';
+			//echo "^^ $baseInstallationPath ^^ $CONF_mainfile ^^";
+			if (!$preDir ) $lnk='/';
+			$lnk.=$preDir.'/'.$CONF_mainfile.CONF_MODULE_ARG.$args;
+			// echo $lnk;
+			return $lnk;
+		} else {
+			return CONF_MODULE_ARG.$args;
+		}
+
 	} else 	if ($linkType==2) {
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;

@@ -26,7 +26,7 @@ $CONF['links']['type']=1;
 $CONF['links']['baseURL']='/leonardo';
 if ( in_array($opMode,array(2,6,3,5)) ) { 
         //  NOTE !!!!!! SEO URLS are only compatible with opmodes 2 6  (phpbb) 3 (standalone) and 5 (joomla , but not inside the joomla template)
-        @include_once dirname(__FILE__).'/config_mod_rewrite.php';
+        @include dirname(__FILE__).'/config_mod_rewrite.php';
 }
 
 
