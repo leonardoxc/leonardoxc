@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.54 2010/01/17 15:28:20 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.55 2010/01/20 15:03:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -169,7 +169,7 @@ echo "</ul><br><hr>";
 
 	if ($admin_op=="copyFlightsFiles")  {
 	
-		require_once "GUI_admin_paths.php";
+		require_once  dirname(__FILE__)."/GUI_admin_paths.php";
 
 	} else if ($admin_op=="computeMaxTakeoffDistance")  {
 		
