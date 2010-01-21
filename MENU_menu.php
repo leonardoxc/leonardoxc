@@ -8,17 +8,19 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.14 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.15 2010/01/21 11:47:21 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
+
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
+
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_second_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/jqModal.css">
-
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
-
 
 <? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>
 

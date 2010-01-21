@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.76 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.77 2010/01/21 11:47:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -80,8 +80,6 @@ sfHover = function() {
 <?  if ($PREFS->showNews && $CONF['news']['config']['newsActive'] ) {?>
 <ul id="ticker01"></ul> 
 <? } ?>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 
 $('#dialogWindow').jqm({modal:true,toTop: true});
