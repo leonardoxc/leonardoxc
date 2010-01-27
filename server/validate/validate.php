@@ -37,6 +37,12 @@
 		DEBUG("<pre>");
 
 		$validatePrograms =array(
+		
+			"vali-XTC.exe"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"Validate OK"),	// ok ( fail -> 1  	IGC file is INVALID) 
+			// output:
+			// ->TN Complete IGC-File
+			// ->Validate OK
+
 			"vali-xpg"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Valid IGC file"),	// ok ( fail -> 1  	IGC file is INVALID)
 
 			"vali-xmp"			=>array("name"=>"","ok_result"=>1,"ok_string"=>"Validation check passed"),	// ok ( fail -> 0  )
