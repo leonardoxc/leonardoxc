@@ -1,0 +1,94 @@
+img.sprite_lng {
+   background: url(/modules/leonardo/img/sprite_lng.png) no-repeat top left;
+	float:none;
+	display:inline-block;
+	*display:inline;
+    clear:none;
+}
+
+img.sprite_lng.flag-brazilian { background-position: 0 0; width: 18px; height: 12px; } 
+img.sprite_lng.flag-bulgarian { background-position: 0 -62px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-chinese { background-position: 0 -124px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-croatian { background-position: 0 -186px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-czech { background-position: 0 -248px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-danish { background-position: 0 -310px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-dutch { background-position: 0 -372px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-english { background-position: 0 -434px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-finnish { background-position: 0 -496px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-french { background-position: 0 -558px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-german { background-position: 0 -620px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-greek { background-position: 0 -682px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-hebrew { background-position: 0 -744px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-hungarian { background-position: 0 -806px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-italian { background-position: 0 -868px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-mexican { background-position: 0 -930px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-polish { background-position: 0 -992px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-portuguese { background-position: 0 -1054px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-romanian { background-position: 0 -1116px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-russian { background-position: 0 -1178px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-serbian { background-position: 0 -1240px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-slovenian { background-position: 0 -1302px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-spanish { background-position: 0 -1364px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-swedish { background-position: 0 -1426px; width: 18px; height: 12px; } 
+img.sprite_lng.flag-turkish { background-position: 0 -1488px; width: 18px; height: 12px; } 
+
+
+img.sprite_brands {
+   background: url(/modules/leonardo/img/sprite_brands.png) no-repeat top left;
+	float:none;
+	display:inline-block;
+	*display:inline;
+    clear:none;
+}
+
+img.sprite_brands.sprite-000 { background-position: 0 0; width: 30px; height: 17px; } 
+img.sprite_brands.sprite-001 { background-position: 0 -67px; width: 40px; height: 15px; } 
+img.sprite_brands.sprite-002 { background-position: 0 -132px; width: 50px; height: 9px; } 
+img.sprite_brands.sprite-003 { background-position: 0 -191px; width: 20px; height: 19px; } 
+img.sprite_brands.sprite-004 { background-position: 0 -260px; width: 50px; height: 19px; } 
+img.sprite_brands.sprite-005 { background-position: 0 -329px; width: 55px; height: 15px; } 
+img.sprite_brands.sprite-006 { background-position: 0 -394px; width: 45px; height: 6px; } 
+img.sprite_brands.sprite-007 { background-position: 0 -450px; width: 45px; height: 14px; } 
+img.sprite_brands.sprite-008 { background-position: 0 -514px; width: 40px; height: 8px; } 
+img.sprite_brands.sprite-009 { background-position: 0 -572px; width: 30px; height: 18px; } 
+img.sprite_brands.sprite-010 { background-position: 0 -640px; width: 50px; height: 27px; } 
+img.sprite_brands.sprite-011 { background-position: 0 -717px; width: 45px; height: 13px; } 
+img.sprite_brands.sprite-012 { background-position: 0 -780px; width: 45px; height: 14px; } 
+img.sprite_brands.sprite-013 { background-position: 0 -844px; width: 35px; height: 17px; } 
+img.sprite_brands.sprite-014 { background-position: 0 -911px; width: 45px; height: 12px; } 
+img.sprite_brands.sprite-015 { background-position: 0 -973px; width: 45px; height: 10px; } 
+img.sprite_brands.sprite-016 { background-position: 0 -1033px; width: 50px; height: 12px; } 
+img.sprite_brands.sprite-017 { background-position: 0 -1095px; width: 45px; height: 13px; } 
+img.sprite_brands.sprite-018 { background-position: 0 -1158px; width: 40px; height: 11px; } 
+img.sprite_brands.sprite-019 { background-position: 0 -1219px; width: 50px; height: 6px; } 
+img.sprite_brands.sprite-020 { background-position: 0 -1275px; width: 50px; height: 11px; } 
+img.sprite_brands.sprite-021 { background-position: 0 -1336px; width: 50px; height: 8px; } 
+img.sprite_brands.sprite-022 { background-position: 0 -1394px; width: 48px; height: 7px; } 
+img.sprite_brands.sprite-023 { background-position: 0 -1451px; width: 45px; height: 9px; } 
+img.sprite_brands.sprite-024 { background-position: 0 -1510px; width: 45px; height: 6px; } 
+img.sprite_brands.sprite-025 { background-position: 0 -1566px; width: 35px; height: 18px; } 
+img.sprite_brands.sprite-026 { background-position: 0 -1634px; width: 38px; height: 21px; } 
+img.sprite_brands.sprite-027 { background-position: 0 -1705px; width: 48px; height: 14px; } 
+img.sprite_brands.sprite-028 { background-position: 0 -1769px; width: 40px; height: 15px; } 
+img.sprite_brands.sprite-029 { background-position: 0 -1834px; width: 25px; height: 22px; } 
+img.sprite_brands.sprite-030 { background-position: 0 -1906px; width: 25px; height: 16px; } 
+img.sprite_brands.sprite-031 { background-position: -105px 0; width: 30px; height: 16px; } 
+img.sprite_brands.sprite-032 { background-position: -105px -66px; width: 45px; height: 12px; } 
+img.sprite_brands.sprite-033 { background-position: -105px -128px; width: 45px; height: 16px; } 
+img.sprite_brands.sprite-034 { background-position: -105px -194px; width: 45px; height: 11px; } 
+img.sprite_brands.sprite-035 { background-position: -105px -255px; width: 45px; height: 10px; } 
+img.sprite_brands.sprite-036 { background-position: -105px -315px; width: 16px; height: 20px; } 
+img.sprite_brands.sprite-037 { background-position: -105px -385px; width: 45px; height: 15px; } 
+img.sprite_brands.sprite-038 { background-position: -105px -450px; width: 45px; height: 12px; } 
+img.sprite_brands.sprite-039 { background-position: -105px -512px; width: 44px; height: 14px; } 
+img.sprite_brands.sprite-040 { background-position: -105px -576px; width: 45px; height: 12px; } 
+img.sprite_brands.sprite-041 { background-position: -105px -638px; width: 55px; height: 19px; } 
+img.sprite_brands.sprite-042 { background-position: -105px -707px; width: 60px; height: 12px; } 
+img.sprite_brands.sprite-043 { background-position: -105px -769px; width: 60px; height: 13px; } 
+img.sprite_brands.sprite-055 { background-position: -105px -832px; width: 40px; height: 17px; } 
+img.sprite_brands.sprite-unknown_001 { background-position: -105px -899px; width: 30px; height: 17px; } 
+img.sprite_brands.sprite-unknown_002 { background-position: -105px -966px; width: 30px; height: 17px; } 
+img.sprite_brands.sprite-unknown_004 { background-position: -105px -1033px; width: 50px; height: 15px; } 
+img.sprite_brands.sprite-unknown_008 { background-position: -105px -1098px; width: 50px; height: 15px; } 
+img.sprite_brands.sprite-unknown_016 { background-position: -105px -1163px; width: 50px; height: 15px; } 
+img.sprite_brands.sprite-unknown_032 { background-position: -105px -1228px; width: 50px; height: 15px; } 

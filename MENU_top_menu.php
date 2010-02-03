@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.77 2010/01/21 11:47:21 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.78 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -255,6 +255,10 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	  
  	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
 	  $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
+	  
+	  $flagImg="<span><div class='sprite_lng flag-$tmpLang' width='18' height='12'>&nbsp;</div>&nbsp;$tmpLangStr</span>";
+  	  $flagImg="<img class='sprite_lng flag-$tmpLang' src='".$moduleRelPath."/img/space.gif' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr</span>";
+	  
 	  if ($currentlang==$tmpLang) {
 		$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
 	  }

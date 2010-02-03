@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.15 2010/01/21 11:47:21 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.16 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -21,6 +21,10 @@
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_second_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/jqModal.css">
+
+<!-- test for sprites-->
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprite_lng.css">
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/flags.css">
 
 <? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>
 

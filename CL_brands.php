@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_brands.php,v 1.10 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_brands.php,v 1.11 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -59,10 +59,13 @@ class brands {
 		
 		if ($brandID) {
 			if (!isset($brandName) ) $brandName=$CONF['brands']['list'][$brandID];
-			if (is_file("$CONF_abs_path/img/brands/".sprintf("%03d",$brandID).".gif") )
+			if (is_file("$CONF_abs_path/img/brands/".sprintf("%03d",$brandID).".gif") ) {
 		 		$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
-			else
+		 		$gliderBrandImg="<img align='absmiddle' class='sprite_brands sprite-".sprintf("%03d",$brandID)."' src='$moduleRelPath/img/space.gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
+
+			} else {
 	 			$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/space.gif' width=6 height=16 title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
+			}
 		} else 
 	 		$gliderBrandImg="<img align='absmiddle'  src='$moduleRelPath/img/brands/unknown_".sprintf("%03d",$glidetCat).".gif' title='$gliderName'  alt='$gliderName' border='0' />";
 		return $gliderBrandImg;

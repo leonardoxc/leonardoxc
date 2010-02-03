@@ -8,9 +8,29 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.52 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.53 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
+
+function img($imgName,$type=0,$class='',$title='',$width=0,$height=0) {
+
+	$str=" border='0' ";
+	if ($title) $str.=" title='$title' ";
+	if ($width && $height) $str.=" width='$width' height='$height' ";
+
+	
+	if ($type==0) {
+		if ($class) $strClass.=" class='$class' ";
+		else $strClass.="";
+		$imgStr="<img $strClass src='".moduleRelPath()."/img/$imgName' $str>";
+	} else {
+		$imgName=str_replace("\/","-",$imgName);
+		$imgName=substr($imgStr,0,-4);
+		$imgStr="<img class='$class $imgName' src='".moduleRelPath()."/img/space.gif' $str>";
+	}		
+	return $imgStr;
+}
+
 
 function sec2Time($secs,$no_seconds=false) {
   if ($no_seconds)

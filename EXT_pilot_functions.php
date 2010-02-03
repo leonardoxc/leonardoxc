@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.13 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.14 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -64,6 +64,7 @@
 			else $flag='unknown';
 			
 			$flagIcon="<img src='".moduleRelPath()."/img/flags/$flag.gif' border=0> ";
+			//$flagIcon="<img class='fl fl.sprite-$tmpLang' src='".moduleRelPath()."/img/space.gif' border=0> ";
 			
 			if ($row['Sex']=='F') $sexIcon="<img src='".moduleRelPath()."/img/icon_female.gif' border=0> ";
 			else $sexIcon='';
@@ -79,6 +80,7 @@
 		}
 
 return;
+
 	}
 	
 	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }

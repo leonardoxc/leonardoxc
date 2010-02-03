@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.48 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.49 2010/02/03 14:20:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -420,6 +420,7 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 
 	if ($img) {
 		$imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='$str'>";
+		$imgStr="<img class='fl sprite-$cCode' src='".moduleRelPath()."/img/space.gif' border='0' title='$str' width='18' height='12'> ";
 		// $imgStr="<span class='fl sprite-$cCode'></span>";
 	}
 	if ($text) $textStr=$str;
