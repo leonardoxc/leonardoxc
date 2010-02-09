@@ -639,7 +639,7 @@ define("_Filter_Button_Accept","Aceitar seleção");
 define("_Filter_Button_Cancel","Cancelar"); 
 define("_MENU_FILTER_NEW","Filtrar **VERSÃO NOVA**"); 
 define("_ALL_NACCLUBS","Todos os Clubes"); 
-define("_SELECT_NACCLUB","Selecione [nomenac]-Clube"); 
+define("_SELECT_NACCLUB","Selecione [nacname]-Clube"); 
 define("_FirstOlcYear","Primeiro ano de participação em uma Competição de XC online"); 
 define("_FirstOlcYearComment","Por favor, selecione o ano de sua primeira participação de uma competição de XC Online, que não esta.<br/>Este campo é relevante para &quot;newcomer&quot;-Classificação."); 
 define("_Select_Brand","Selecione o cadastro"); 
