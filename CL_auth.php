@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_auth.php,v 1.4 2008/11/29 22:46:06 manolis Exp $                                                                 
+// $Id: CL_auth.php,v 1.5 2010/02/16 11:20:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -32,7 +32,14 @@ class L_auth {
 
 	function isClubAdmin($userID,$clubID) {
 		global $clubsList;
-		if ($clubsList[$clubID]['adminID']==$userID && $userID <>0 ) return 1;
+		if ($userID == 0 ) return 0;
+		
+		if (is_array($clubsList[$clubID]['adminID'])) {
+			if ( in_array($userID ,$clubsList[$clubID]['adminID']) ) return 1;
+			else return 0;			
+		} 
+		
+		if ($clubsList[$clubID]['adminID']==$userID ) return 1;
 		else return 0;
 	}
 	
