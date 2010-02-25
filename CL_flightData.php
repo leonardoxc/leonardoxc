@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.174 2010/01/13 15:02:42 manolis Exp $
+// $Id: CL_flightData.php,v 1.175 2010/02/25 21:49:50 manolis Exp $
 //
 //************************************************************************
 
@@ -4103,20 +4103,6 @@ foreach ($data_time as $i=>$tm) {
 				echo("<H3> Error in query: $query</H3>\n");
 			}
 		}*/
-
-	}
-
-	function getOLCpilotData() {
-		global $db;
-		global $pilotsTable;
-		$query="SELECT * FROM $pilotsTable WHERE pilotID=".$this->userID ;
-
-		$res= $db->sql_query($query);
-		if ($res<=0) return array("","","","",""); // no pilot olc data
-
-		$row = $db->sql_fetchrow($res);
-		return array($row["olcBirthDate"],$row["olcFirstName"],$row["olcLastName"],
-					 $row["olcCallSign"],$row["olcFilenameSuffix"] );
 
 	}
 

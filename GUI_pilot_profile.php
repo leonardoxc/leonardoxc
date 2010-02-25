@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.26 2009/04/16 13:26:10 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.27 2010/02/25 21:49:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -22,7 +22,10 @@
 	//$selQuery="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table'].
 	//					" WHERE pilotID=".$pilotIDview ." AND serverID=$serverID AND pilotID=".$CONF['userdb']['user_id_field'];
 						
-	$selQuery="SELECT * FROM $pilotsTable WHERE pilotID=".$pilotIDview." AND serverID=$serverIDview ";
+	$selQuery="SELECT * FROM $pilotsTable LEFT JOIN $pilotsInfoTable ON
+				($pilotsTable.pilotID=$pilotsInfoTable.pilotID AND $pilotsTable.serverID=$pilotsInfoTable.serverID )
+			WHERE 
+				$pilotsTable.pilotID=".$pilotIDview." AND $pilotsTable.serverID=$serverIDview ";
 	// echo " # $selQuery # ";
     $res= $db->sql_query($selQuery);
 

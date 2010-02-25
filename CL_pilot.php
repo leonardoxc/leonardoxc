@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.11 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.12 2010/02/25 21:49:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -42,12 +42,27 @@ class pilot{
 "clubID", 
 );
 		
+		
+	    $this->valuesArray1=array( "pilotID", "serverID", 
+			"FirstName", "LastName","countryCode", "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
+			 "Birthdate", "BirthdateHideMask","Sex","PilotPhoto", "FirstOlcYear","clubID", 
+		);
+		
+	    $this->valuesArray2=array( "pilotID", "serverID", 
+"sponsor","Occupation", "MartialStatus", "OtherInterests", 
+"PilotLicence","BestMemory", "WorstMemory", "Training", "personalDistance", "personalHeight",
+"glider", "FlyingSince", "HoursFlown", "HoursPerYear", "FavoriteLocation", "UsualLocation", 
+"FavoriteBooks", "FavoriteActors", "FavoriteSingers", "FavoriteMovies", "FavoriteSite", "Sign", 
+"Spiral", "Bline", "FullStall", "Sat", "AsymmetricSpiral", "Spin", "OtherAcro",
+"camera", "camcorder", "Vario", "GPS", "Harness",  "Helmet", "Reserve", 
+"PersonalWebPage" );
+
 		$this->gotValues=0;
 	}
 
 	function pilotExists() {
 		global $db,$pilotsTable;
-		$query="SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".($this->serverID+0) ;
+		$query="SELECT pilotID FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".($this->serverID+0) ;
 		$res= $db->sql_query($query);
   		if($res <= 0){   
 			 echo "Error in pilotExists() $query<BR>";
@@ -122,13 +137,20 @@ class pilot{
 	}
 
 	function deletePilot($deleteFlights=0,$deleteFiles=0) {
-		global $db,$pilotsTable;
+		global $db,$pilotsTable,$pilotsInfoTable;
 		
 		$err=0;
 		$sql="DELETE FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
 		$res= $db->sql_query($sql);
   		if($res <= 0){   
 			 echo "Error deleting pilot from DB $sql<BR>";
+		     $err=1;
+	    }
+		
+		$sql="DELETE FROM $pilotsInfoTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
+		$res= $db->sql_query($sql);
+  		if($res <= 0){   
+			 echo "Error deleting pilot info from DB $sql<BR>";
 		     $err=1;
 	    }
 		
@@ -141,8 +163,14 @@ class pilot{
 	}
 	
 	function getFromDB() {
-		global $db,$pilotsTable;
-		$res= $db->sql_query("SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID );
+		global $db,$pilotsTable,$pilotsInfoTable;
+		$query="SELECT * FROM $pilotsTable LEFT JOIN $pilotsInfoTable ON
+				($pilotsTable.pilotID=$pilotsInfoTable.pilotID AND $pilotsTable.serverID=$pilotsInfoTable.serverID )
+			WHERE 
+				$pilotsTable.pilotID=".$this->pilotID." AND $pilotsTable.serverID=".$this->serverID ;
+		// "SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID 	
+			
+		$res= $db->sql_query($query);
   		if($res <= 0){   
 			 echo "Error getting pilot from DB<BR>";
 		     return;
@@ -156,6 +184,11 @@ class pilot{
     }
 
 	function putToDB($update=0) {
+		$this->putToDB1($update);
+		$this->putToDB2($update);
+	}
+	
+	function putToDB1($update=0) {
 		global $db,$pilotsTable;
 
 		if ($update) {
@@ -170,13 +203,15 @@ class pilot{
 
 
 		$query.=" $pilotsTable  ( ";
-		foreach ($this->valuesArray as $valStr) {
+		foreach ($this->valuesArray1 as $valStr) {
 				$query.= $valStr.",";		
 		}
 		$query=substr($query,0,-1);
 
 		$query.= " ) VALUES ( ";
-		foreach ($this->valuesArray as $valStr) {
+		
+		
+		foreach ($this->valuesArray1 as $valStr) {
 			$query.= "'".prep_for_DB($this->$valStr)."',";
 		}
 		$query=substr($query,0,-1);
@@ -191,6 +226,43 @@ class pilot{
 		return 1;
     }
 
+	function putToDB2($update=0) {
+		global $db,$pilotsTable;
+
+		if ($update) {
+			$query="REPLACE INTO ";		
+			$fl_id_1="pilotID,serverID, ";
+			$fl_id_2=$this->pilotID.", ".$this->serverID.",";
+		}else {
+			$query="INSERT INTO ";		
+			$fl_id_1="";
+			$fl_id_2="";
+		}
+
+
+		$query.=" $pilotsTable  ( ";
+		foreach ($this->valuesArray2 as $valStr) {
+				$query.= $valStr.",";		
+		}
+		$query=substr($query,0,-1);
+
+		$query.= " ) VALUES ( ";
+		
+		
+		foreach ($this->valuesArray2 as $valStr) {
+			$query.= "'".prep_for_DB($this->$valStr)."',";
+		}
+		$query=substr($query,0,-1);
+		$query.= " ) ";
+		// echo $query;
+	    $res= $db->sql_query($query);
+	    if($res <= 0){
+		  echo "Error putting pilot to DB : $query<BR>";
+		  return 0;
+	    }		
+		$this->gotValues=1;			
+		return 1;
+    }
 }
 
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.30 2009/12/30 14:45:34 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.31 2010/02/25 21:49:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -126,9 +126,25 @@
 		`NACmemberID` = $NACmemberID,
 		`NACclubID` = $NACclubID,		
 		`CIVL_ID` = '".prep_for_DB($_POST['CIVL_ID'])."',
-		`sponsor` = '".prep_for_DB($_POST['sponsor'])."',
 		`Birthdate` = '".prep_for_DB($_POST['Birthdate'])."',
 		`BirthdateHideMask` = '$BirthdateHideMask',
+		`Sex` = '".prep_for_DB($_POST['Sex'])."',
+		`PilotPhoto` = '".$PilotPhoto."',
+		`FirstOlcYear` = $FirstOlcYear
+
+		 WHERE `pilotID` = '$pilotIDview'  AND serverID='$serverIDview' ";
+
+    $res= $db->sql_query( $query );
+    if($res <= 0){
+      echo("<H3>Error in update query:  $query</H3>\n");
+      return;  
+    }
+
+	$res= $db->sql_query("INSERT INTO $pilotsInfoTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
+	$res= $db->sql_query($selQuery);	
+
+	$query="UPDATE $pilotsInfoTable SET
+		`sponsor` = '".prep_for_DB($_POST['sponsor'])."',
 		`Occupation` = '".prep_for_DB($_POST['Occupation'])."',
 		`MartialStatus` = '".prep_for_DB($_POST['MartialStatus'])."',
 		`OtherInterests` = '".prep_for_DB($_POST['OtherInterests'])."',
@@ -164,19 +180,16 @@
 		`GPS` = '".prep_for_DB($_POST['GPS'])."',
 		`Helmet` = '".prep_for_DB($_POST['Helmet'])."',
 		`Reserve` = '".prep_for_DB($_POST['Reserve'])."',
-		`Sex` = '".prep_for_DB($_POST['Sex'])."',
-		`PilotPhoto` = '".$PilotPhoto."',
-		`PersonalWebPage` = '".prep_for_DB($_POST['PersonalWebPage'])."',
-		`FirstOlcYear` = $FirstOlcYear
+		`PersonalWebPage` = '".prep_for_DB($_POST['PersonalWebPage'])."'
 
 		 WHERE `pilotID` = '$pilotIDview'  AND serverID='$serverIDview' ";
-
-    $res= $db->sql_query( $query );
+		 
+	$res= $db->sql_query( $query );
     if($res <= 0){
       echo("<H3>Error in update query:  $query</H3>\n");
       return;  
     }
-
+	
    // echo '<div style="font-weight:bold;margin:10px;">'._Your_profile_has_been_updated.'</div>';
 	echo "<div style='font-weight:bold;margin:10px;'><span class='ok'>"._Your_profile_has_been_updated."
 			</span></div>";
@@ -184,7 +197,11 @@
   
   // $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
   
-  $query_sel="SELECT * FROM $pilotsTable  WHERE pilotID=$pilotIDview AND serverID=$serverIDview";
+ // $query_sel="SELECT * FROM $pilotsTable  WHERE pilotID=$pilotIDview AND serverID=$serverIDview";
+  $query_sel=" SELECT * FROM $pilotsTable LEFT JOIN $pilotsInfoTable ON
+				($pilotsTable.pilotID=$pilotsInfoTable.pilotID AND $pilotsTable.serverID=$pilotsInfoTable.serverID )
+			WHERE 
+				$pilotsTable.pilotID=$pilotIDview AND $pilotsTable.serverID=$serverIDview";
   $res= $db->sql_query($query_sel);
 
   if($res <= 0){
@@ -685,7 +702,7 @@
     </tr>
   </table>
 
-  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?>)?></div>
+  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?>)</div>
   <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 
       <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>

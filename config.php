@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.132 2010/01/08 11:05:59 manolis Exp $                                                                 
+// $Id: config.php,v 1.133 2010/02/25 21:49:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -218,6 +218,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $flightsTable	=  $CONF_tables_prefix."_flights";
  $deletedFlightsTable=	$CONF_tables_prefix."_flights_deleted";
  $pilotsTable	=  $CONF_tables_prefix."_pilots";
+ $pilotsInfoTable	=  $CONF_tables_prefix."_pilots_info";
  $mapsTable		=  $CONF_tables_prefix."_maps";
  $waypointsTable=  $CONF_tables_prefix."_waypoints";
  $clubsTable	=  $CONF_tables_prefix."_clubs";

@@ -8,3 +8,65 @@ ALTER TABLE `leonardo_flights_deleted` ADD `gliderCertCategory` SMALLINT UNSIGNE
 # to speed up queries
 
  ALTER TABLE `leonardo_flights` ADD INDEX `userIDonly` ( `userID` )  ;
+
+
+# drop very very old OLC fields
+ALTER TABLE `leonardo_pilots`   DROP `olcBirthDate`,   DROP `olcFirstName`,   DROP `olcLastName`, 
+  DROP `olcCallSign`,   DROP `olcFilenameSuffix`,   DROP `olcAutoSubmit`;
+
+
+ALTER TABLE `leonardo_pilots_core` 
+DROP `sponsor` ,
+DROP `Occupation` ,
+DROP `MartialStatus` ,
+DROP `OtherInterests` ,
+DROP `PersonalWebPage` ,
+DROP `PilotLicence` ,
+DROP `BestMemory` ,
+DROP `WorstMemory` ,
+DROP `Training` ,
+DROP `personalDistance` ,
+DROP `personalHeight` ,
+DROP `glider` ,
+DROP `FlyingSince` ,
+DROP `HoursFlown` ,
+DROP `HoursPerYear` ,
+DROP `FavoriteLocation` ,
+DROP `UsualLocation` ,
+DROP `FavoriteBooks` ,
+DROP `FavoriteActors` ,
+DROP `FavoriteSingers` ,
+DROP `FavoriteMovies` ,
+DROP `FavoriteSite` ,
+DROP `Sign` ,
+DROP `Spiral` ,
+DROP `Bline` ,
+DROP `FullStall` ,
+DROP `Sat` ,
+DROP `AsymmetricSpiral` ,
+DROP `Spin` ,
+DROP `OtherAcro` ,
+DROP `camera` ,
+DROP `camcorder` ,
+DROP `Vario` ,
+DROP `GPS` ,
+DROP `Harness` ,
+DROP `Reserve` ,
+DROP `Helmet` ;
+
+ALTER TABLE `leonardo_pilots_info`
+  DROP `countryCode`,
+  DROP `CIVL_ID`,
+  DROP `CIVL_NAME`,
+  DROP `NACid`,
+  DROP `NACmemberID`,
+  DROP `NACclubID`,
+  DROP `FirstName`,
+  DROP `LastName`,
+  DROP `NickName`,
+  DROP `clubID`,
+  DROP `Sex`,
+  DROP `Birthdate`,
+  DROP `BirthdateHideMask`,
+  DROP `PilotPhoto`,
+  DROP `FirstOlcYear`;
