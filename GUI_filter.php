@@ -8,11 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.23 2009/12/16 14:15:37 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.24 2010/02/26 14:30:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
-
+require_once dirname(__FILE__).'/CL_filter.php';
 
 $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'filter','fl_url'=>'1'));
 $redirectUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'));

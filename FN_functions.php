@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.70 2010/01/17 15:28:20 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.71 2010/02/26 14:30:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -204,7 +204,8 @@ function makeDir($path, $rights = 0777) {
     	array_push($folder_path, dirname(end($folder_path)));
 	}
 	while($parent_folder_path = array_pop($folder_path)) {
-    	if(!@mkdir($parent_folder_path, $rights)) return 0;
+    	// if(!@mkdir($parent_folder_path, $rights)) return 0;
+		@mkdir($parent_folder_path, $rights);
 		//user_error("Can't create folder \"$parent_folder_path\".");
 	}
 

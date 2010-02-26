@@ -84,7 +84,7 @@ define("_ALTITUDE_GAIN","Guadagno quota");
 define("_FLIGHT_FILE","File del volo");
 define("_COMMENTS","Commenti");
 define("_RELEVANT_PAGE","Pagina web relativa");
-define("_GLIDER","Vela");
+define("_GLIDER","Ala");
 define("_PHOTOS","Foto");
 define("_MORE_INFO","Altre informazioni");
 define("_UPDATE_DATA","Aggiorna dati");
@@ -100,7 +100,7 @@ define("_FLYING_AREA_INFO","Info sull&#39;area di volo");
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC");
+define("_PAGE_TITLE","VLXC");
 define("_RETURN_TO_TOP","Torna su");
 // list flight
 define("_PILOT_FLIGHTS","Voli del pilota");
@@ -449,7 +449,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record del Sito<br>(distanza libera)");
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Tipo Vela");
+define("_GLIDER_TYPE","Tipo Ala");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Parapendio',2=>'Ala Flessibile FAI1',4=>'Ala Rigida FAI5',8=>'Aliante');
@@ -596,12 +596,10 @@ define("_Wk","Set");
 define("_Click_to_scroll_to_previous_month","Clicca per passare al mese precedente. Tieni premuto per scorrere i vari mesi.");
 define("_Click_to_scroll_to_next_month","Clicca per passare al mese successivo. Tieni premuto per scorrere i vari mesi.");
 define("_Click_to_select_a_month","Clicca per scegliere il mese.");
-define("_Click_to_select_a_year","Clicca per scegliere l&#39;anno.");
+define("_Click_to_select_a_year","Clicca per scegliere l&acute;anno.");
 define("_Select_date_as_date.","Scegli [date] come data."); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
-
-//--------------------------------------------------------
+// end 2007/03/13//--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
@@ -609,49 +607,49 @@ define("_SEASON","Stagione");
 define("_SUBMIT_TO_OLC","Invia a OLC"); 
 define("_pilot_email","Indirizzo Email"); 
 define("_Sex","Sesso"); 
-define("_Login_Stuff","Change Login-Data"); 
-define("_PASSWORD_CONFIRMATION","Confirm password"); 
-define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
-define("_PwdAndConfDontMatch","Password and confirmation are different."); 
-define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
-define("_PwdConfEmpty","The password has not be confirmed."); 
-define("_PwdChanged","The password was changed."); 
-define("_PwdNotChanged","The password has NOT been changed."); 
-define("_PwdChangeProblem","A problem occurred when changing the password."); 
-define("_EmailEmpty","The email address must not be empty."); 
-define("_EmailInvalid","The email address is invalid."); 
-define("_EmailSaved","The email address was saved"); 
-define("_EmailNotSaved","The email address has not been saved."); 
-define("_EmailSaveProblem","A problem occurred when saving the email address."); 
+define("_Login_Stuff","Cambia Dati Login"); 
+define("_PASSWORD_CONFIRMATION","Conferma password"); 
+define("_EnterPasswordOnlyToChange","Inserisci solo la password, se vuoi cambiarla:"); 
+define("_PwdAndConfDontMatch","Password e conferma sono diverse."); 
+define("_PwdTooShort","La password &egrave; troppo corta. Deve avere una lunghezza di almeno $passwordMinLength caratteri."); 
+define("_PwdConfEmpty","La password non &egrave; stata confermata."); 
+define("_PwdChanged","La password &egrave; stata cambiata."); 
+define("_PwdNotChanged","La password non &egrave; stata cambiata."); 
+define("_PwdChangeProblem","C'&egrave; stato un problema durante il cambio della password."); 
+define("_EmailEmpty","L'indirizzo email non deve essere vuoto."); 
+define("_EmailInvalid","L'indirizzo email non &egrave; valido."); 
+define("_EmailSaved","L'indirizzo email &egrave; stato salvato."); 
+define("_EmailNotSaved","L'indirizzo email non &egrave; stato salvato."); 
+define("_EmailSaveProblem","C'&egrave; stato un problema durante il salvataggio dell'indirizzo email."); 
 define("_PROJECT_HELP","Aiuto"); 
 define("_PROJECT_NEWS","Novit&agrave;"); 
 define("_PROJECT_RULES","Regolamento 2007"); 
-define("_Filter_NoSelection","Nessuna selezione"); 
-define("_Filter_CurrentlySelected","Selezione corrente"); 
+define("_Filter_NoSelection","Nessuna scelta"); 
+define("_Filter_CurrentlySelected","Scelta corrente"); 
 define("_Filter_DialogMultiSelectInfo","Premi Ctrl per selezioni multiple."); 
-define("_Filter_FilterTitleIncluding","Solo [items] selezionati"); 
+define("_Filter_FilterTitleIncluding","Solo [items] scelte"); 
 define("_Filter_FilterTitleExcluding","Escludi [items]"); 
-define("_Filter_DialogTitleIncluding","Seleziona [items]"); 
-define("_Filter_DialogTitleExcluding","Seleziona [items]"); 
+define("_Filter_DialogTitleIncluding","Scegli [items]"); 
+define("_Filter_DialogTitleExcluding","Scegli [items]"); 
 define("_Filter_Items_pilot","piloti"); 
 define("_Filter_Items_nacclub","clubs"); 
-define("_Filter_Items_country","paesi"); 
+define("_Filter_Items_country","Nazioni"); 
 define("_Filter_Items_takeoff","decolli"); 
-define("_Filter_Button_Select","Seleziona"); 
+define("_Filter_Button_Select","Scegli"); 
 define("_Filter_Button_Delete","Elimina"); 
-define("_Filter_Button_Accept","Accetta selezione"); 
-define("_Filter_Button_Cancel","Cancella"); 
-define("_MENU_FILTER_NEW","Filtra **NUOVE VERSIONI**"); 
-define("_ALL_NACCLUBS","Tutti Clubs"); 
+define("_Filter_Button_Accept","Accetta scelta"); 
+define("_Filter_Button_Cancel","Annulla"); 
+define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
+define("_ALL_NACCLUBS","All Clubs"); 
 define("_SELECT_NACCLUB","Seleziona [nacname]-Club"); 
-define("_FirstOlcYear","Primo anno di partecipazione in un XC contest online"); 
-define("_FirstOlcYearComment","Seleziona l'anno della tua prima partecipazione in un XC contest online, non solo questo.<br/>Questo campo &egrave; rilevante per i &quot;newcomer&quot;-rankings."); 
-define("_Select_Brand","Seleziona Marca"); 
-define("_All_Brands","Tutti i Marchi"); 
+define("_FirstOlcYear","Primo anno di partecipazione in un online XC contest"); 
+define("_FirstOlcYearComment","Scegli l'anno della tua prima partecipazione in qualche online XC contest, non solo questo.<br/>Questo campo &egrave; rilevante per i &quot;newcomer&quot;-rankings."); 
+define("_Select_Brand","Scegli Marca"); 
+define("_All_Brands","Tutte le Marche");
 define("_DAY","GIORNO"); 
-define("_Glider_Brand","Marca Vela"); 
-define("_Or_Select_from_previous","O scegli una precedente"); 
-define("_Explanation_AddToBookmarks_IE","Aggiungi questi filtri ai tuoi preferiti"); 
+define("_Glider_Brand","Marca Ala"); 
+define("_Or_Select_from_previous","O Scegline uno precedente"); 
+define("_Explanation_AddToBookmarks_IE","Aggiungi questi filtri ai tuoi favoriti"); 
 define("_Msg_AddToBookmarks_IE","Clicca qui per aggiungere questi filtri ai tuoi preferiti."); 
 define("_Explanation_AddToBookmarks_nonIE","(Salva questo link nei tuoi preferiti.)"); 
 define("_Msg_AddToBookmarks_nonIE","Per salvare questi filtri nei tuoi preferiti, usa la funzione Aggiungi a Preferiti del tuo browser."); 
@@ -664,9 +662,9 @@ define("_Distance_from_takeoff","Distanza dal decollo");
 define("_LAST_DIGIT","ultima cifra"); 
 define("_Filter_Items_nationality","nazionalit&agrave;"); 
 define("_Filter_Items_server","server"); 
-define("_Ext_text1","Il volo originale &egrave; stato inserito su "); 
-define("_Ext_text2","Link al volo completo di mappe"); 
-define("_Ext_text3","Link al volo originale"); 
+define("_Ext_text1","Questo volo &egrave; stato inserito su "); 
+define("_Ext_text2","Collegamento al volo completo di mappe"); 
+define("_Ext_text3","Collegamento al volo originale"); 
 define("_Male_short","M"); 
 define("_Female_short","F"); 
 define("_Male","Maschio"); 
@@ -675,10 +673,111 @@ define("_Altitude_Short","Alt");
 define("_Vario_Short","Vario"); 
 define("_Time_Short","Tempo"); 
 define("_Info","Info"); 
-define("_Control","Controlli"); 
-define("_Zoom_to_flight","Zoom al volo"); 
-define("_Follow_Glider","Segui Vela"); 
-define("_Show_Task","Mostra Task"); 
-define("_Show_Airspace","Mostra Airspace"); 
+define("_Control","Controllo"); 
+define("_Zoom_to_flight","Zooma al<br>volo intero"); 
+define("_Follow_Glider","Segui<br>Glider"); 
+define("_Show_Task","Mostra<br>Task"); 
+define("_Show_Airspace","Mostra<br>Spazio Aereo"); 
+
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english'
+//--------------------------------------------------------
+define("_Thermals","Termiche");
+define("_Show_Optimization_details","Mostra Dettagli Ottimizzazione");
+define("_MENU_SEARCH_PILOTS","Cerca");
+define("_MemberID_Missing","Manca il tuo member ID");
+define("_MemberID_NotNumeric","Il member ID deve essere un numero");
+define("_FLIGHTADD_CONFIRMATIONTEXT","Inviando questo modulo confermo di aver rispettato tutte le obbligazioni legali concernenti questo volo.");
+define("_FLIGHTADD_IGC_MISSING","Scegli il tuo file .igc");
+define("_FLIGHTADD_IGCZIP_MISSING","Scegli l'archivio ZIP contenente il tuo file .igc");
+define("_FLIGHTADD_CATEGORY_MISSING","Scegli la categoria");
+define("_FLIGHTADD_BRAND_MISSING","Scegli la marca della tua ala");
+define("_FLIGHTADD_GLIDER_MISSING","Scegli il tuo tipo di ala");
+define("_YOU_HAVENT_ENTERED_GLIDER","Non hai inserito la marca o l'ala");
+define("_BRAND_NOT_IN_LIST","Marca non presente");
+define("_Email_new_password","<p align='justify'>Il server ha inviato un email al pilota con la nuova password e chiave di attivazione</p> <p align='justify'>Controlla la tua casella email e segui la procedura descritta nella email</p>");
+define("_informed_user_not_found","L'utente informato non &grave; stato trovato nel nostro database");
+define("_impossible_to_gen_new_pass","<p align='justify'>Ci dispiace informarti che non &grave; possibile generare una nuova password in questo momento, esiste una richiesta che scadr&agrave; il <b>%s</b>. Solo dopo la scadenza potrai fare una nuova richiesta.</p><p align='justify'>Se non riesci ad accedere alla email contatta l'amministratore del server</p>");
+define("_Password_subject_confirm","Email di conferma (nuova password)");
+define("_request_key_not_found","la chiave di richiesta non &egrave; stata trovata!");
+define("_request_key_invalid","la chiave di richiesta non &egrave; valida!");
+define("_Email_allready_yours","The informed email is allready yours, nothing to do");
+define("_Email_allready_have_request","C'&egrave; gi&agrave; una richiesta di cambiamento a questa email, niente da fare");
+define("_Email_used_by_other","Questa email viene utilizzata in un altro pilota, niente da fare");
+define("_Email_used_by_other_request","Questa email &egrave; utilizzata in un'altro pilota in una richiesta di cambio email");
+define("_Email_canot_change_quickly","Non puoi cambiare la tua email così rapidamente, attendi la scadenza: %s");
+define("_Email_sent_with_confirm","Noi ti inviamo un'email, dove ci confermerai il cambio di email");
+define("_Email_subject_confirm","Email di conferma (nuova email)");
+define("_Email_AndConfDontMatch","Email e conferma sono diverse.");
+define("_ChangingEmailForm"," Modulo di Cambio Email");
+define("_Email_current","Email Attuale");
+define("_New_email","Nuovo Indirizzo Email");
+define("_New_email_confirm","Conferma Nuova Email");
+define("_MENU_CHANGE_PASSWORD","Cambia la mia password");
+define("_MENU_CHANGE_EMAIL","Cambia la mia email");
+define("_New_Password","Nuova Password");
+define("_ChangePasswordForm","Modulo Cambio Password");
+define("_lost_password","Modulo Password Persa");
+define("_PASSWORD_RECOVERY_TOOL","Modulo Recupero Password");
+define("_PASSWORD_RECOVERY_TOOL_MESSAGE","Il server cercherà nel suo database per intero il testo inserito nella casella di testo, se e quando il server trova l'utente, e-mail, o civlid, Una mail saranno inviati per l'indirizzo di posta elettronica, con una nuova password e il link di attivazione. <Br > <br> Nota: solo dopo l'attivazione della nuova password tramite link di attivazione all'interno del corpo di posta elettronica, la nuova password sarà valida.<br><br>");
+define("_username_civlid_email","Inserisci: CIVLID o Nome Utente o Indirizzo Email");
+define("_Recover_my_pass","Recupera la mia Password");
+define("_You_are_not_login","<BR><BR><center><br>Non sei loggato. <br><br>Fai il Login<BR><BR></center>");
+define("_Requirements","Requisiti");
+define("_Mandatory_CIVLID","E' obbligatorio avere un valido <b>CIVLID</b>");
+define("_Mandatory_valid_EMAIL","E' obbligatorio inserire una <b>Email Valida</b> per ulteriori comunicazioni con l'amministratore del server");
+define("_Email_periodic","Periodicamente invieremo una conferma via e-mail al vostro indirizzo e-mail, se non si risponde, l'account di registrazione verrà bloccato");
+define("_Email_asking_conf","Invieremo una email di conferma all'indirizzo e-mail comunicato");
+define("_Email_time_conf","Avrai solo <b>3 ore</b> dopo aver finito la pre-registrazione per rispondere alla email");
+define("_After_conf_time"," Dopo questo tempo, la tua pre-registrazione sar&agrave; <b>rimossa</b> dal nostro database");
+define("_Only_after_time","<b>E solo dopo che abbiamo rimosso la tua pre-registrazione, potrai pre-registrarti di nuovo</b>");
+define("_Disable_Anti_Spam","<b>ATTENZIONE!! Disabilita</b> l'anti-spam per le email originate da <b>%s</b>");
+define("_If_you_agree","Se siete d'accordo con questi requisiti, si prega di proseguire.");
+define("_Search_civl_by_name","%sCerca il tuo nome nel database CIVL %s . Quando si fa clic su questo link a sinistra si aprirà una nuova finestra, ti preghiamo di compilare solo 3 lettere dal tuo Nome o Cognome, il CIVL ti dar&agrave; il tuo CIVLID, Nome e nazionalit&agrave; FAI.");
+define("_Register_civl_as_new_pilot","Se non compari nel database CIVL, %sREGISTER-ME AS A NEW PILOT%s");
+define("_NICK_NAME","Nick Name");
+define("_LOCAL_PWD","Local Password");
+define("_LOCAL_PWD_2","Ripeti Local Password");
+define("_CONFIRM","Conferma");
+define("_REQUIRED_FIELD","Campi obbligatori");
+define("_Registration_Form","Modulo di Registrazione su %s (Leonardo)");
+define("_MANDATORY_NAME","E' Obbligatorio comunicare il tuo nome");
+define("_MANDATORY_FAI_NATION","E' Obbligatorio comunicare la tua NAZIONE FAI");
+define("_MANDATORY_GENDER","Comunica il tuo Sesso");
+define("_MANDATORY_BIRTH_DATE_INVALID","Data di nascita Non Valida");
+define("_MANDATORY_CIVL_ID","Comunica il tuo CIVLID");
+define("_Attention_mandatory_to_have_civlid","ATTENZIONE!! Per ora &egrave; Obbligatorio avere il CIVLID nel %s database");
+define("_Email_confirm_success","La registrazione è stata confermata con successo!");
+define("_Success_login_civl_or_user","Successo, ora si pu&ograve; fare il login con il tuo CIVLID come nome utente, o continuare con il vecchio nome utente");
+define("_Server_did_not_found_registration","Registrazione non trovata, si prega di copiare e incollare nel vostro campo degli indirizzi del browser il link comunicato nell'e-mail che vi &egrave; stata inviata, forse il tempo di registrazione &egrave; scaduto");
+define("_Pilot_already_registered","Pilota gi&agrave; registrato con CIVLID %s e con nome %s");
+define("_User_already_registered","Utente già registrato con questa e-mail o nome");
+define("_Pilot_civlid_email_pre_registration","Salve %s Questo Civl ID e l'e-mail &egrave; gi&agrave; utilizzato in una pre-registrazione");
+define("_Pilot_have_pre_registration"," Avete gi&agrave; una registrazione preliminare, ma non avete risposto alla nostra mail, abbiamo nuovamente inviato l'email di conferma per voi, avete 3 ore da adesso per rispondere alla email, altrimenti verrete rimosso dalla registrazione preliminare. Si prega di leggere la posta elettronica e seguire le procedure descritte all'interno, grazie");
+define("_Pre_registration_founded","Abbiamo gi&agrave; una pre-registrazione, con questo civlID ed e-mail, attendere 3 ore dopodich&egrave; tale registrazione verr&agrave; rimossa, per nessun motivo bisogna confermare l'email inviata, in quanto verrebe generata una doppia registrazione, ed i vecchi voli non saranno trasferiti al nuovo utente");
+define("_Civlid_already_in_use","Questo CIVLID &egrave; usato un'altro pilota, non si possono avere CIVLID doppi!");
+define("_Pilot_email_used_in_reg_dif_civlid","Salve %s Questa email &egrave; utilizzata in un altra registrazione con diverso CIVLID");
+define("_Pilot_civlid_used_in_reg_dif_email","Salve %s Questa CIVLID &egrave; utilizzata in un altra registrazione con diverso EMAIL");
+define("_Pilot_email_used_in_pre_reg_dif_civlid","Salve %s Questa email &egrave; utilizzata in un altra pre-registrazione con diverso CIVLID");
+define("_Pilot_civlid_used_in_pre_reg_dif_email","Salve %s Questa CIVLID &egrave; utilizzata in un altra pre-registrazione con diverso EMAIL");
+define("_Server_send_conf_email","Il server ha inviato al %s una e-mail per chiedere conferma, hai 3 ore da ora per confermare la registrazione cliccando o copiando e incollando il link che si trova nel corpo del email nel campo indirizzo del browser");
+define("_MENU_AREA_GUIDE","Guida Aree");
+define("_All_XC_types","Tutti i tipi di XC");
+define("_xctype"," Tipo di XC");
+define("_Flying_Areas","Aree di Volo");
+define("_Name_of_Area","Nome dell'Area");
+define("_See_area_details","Vedi i dettagli ed i decolli di quest'area");
+define("_choose_ge_module","Scegli il modulo da usare<BR>per Google Earth");
+define("_ge_module_advanced_1","(Pi&ugrave; dettagliato, molto grande)");
+define("_ge_module_advanced_2","(Molti dettagli, grande) ");
+define("_ge_module_Simple","Simple (Solo Task, molto piccolo)");
+define("_Pilot_search_instructions","Inserisci almeno 3 lettere del Nome o Cognome");
+define("_All_classes","Tutte le  classi");
+define("_Class","Classe");
+define("_Photos_filter_off","Con/senza foto");
+define("_Photos_filter_on","Solo con foto");
+
 
 ?>
