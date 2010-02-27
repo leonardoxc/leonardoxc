@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_dialogfilter.php,v 1.10 2009/12/16 14:15:37 manolis Exp $
+// $Id: CL_dialogfilter.php,v 1.11 2010/02/27 22:40:51 manolis Exp $
 //
 //************************************************************************
 
@@ -274,21 +274,17 @@ class dialogfilter {
 		}else {
 			$html='
     <tr>
-      <td class="infoHeader"><div align="right"><strong>'.$this->filter_title().'</strong></div></td>
-      <td class="infoHeader">&nbsp;'.$this->filter_js_functions().'</td>
+      <td class="infoHeader" colspan="2" valign="bottom" height="44">'.$this->filter_js_functions().'<div align="right"><strong>'.$this->filter_title().'
+	  <input type="button" value="'._Filter_Button_Select.'" onclick="'.$this->filter_select_js().'">
+	  <input type="button" value="'._Filter_Button_Delete.'" onclick="'.$this->filter_delete_js().'">
+	  </strong></div>
+	  </td>
+
     </tr>
     <tr>
 		<td style="vertical-align:top"><input type="hidden" name="'.$this->dataelement.'" id="'.$this->dataelement.'" value="'.$this->datavalue.'"><div style="text-align:right">'._Filter_CurrentlySelected.':</div></td>
 		<td style="vertical-align:top">
-			<table cellspacing="0" cellpadding="0" border="0">
-			<tr>
-				<td style="vertical-align:top">
-					<div style="width:200px;vertical-align:top" id="'.$this->textelement.'">'.$this->textvalue.'</div>
-				</td>
-				<td style="vertical-align:top"><input type="button" value="'._Filter_Button_Select.'" onclick="'.$this->filter_select_js().'"></td>
-				<td style="vertical-align:top"><input type="button" value="'._Filter_Button_Delete.'" onclick="'.$this->filter_delete_js().'"></td>
-			</tr>
-			</table>
+			<div style="width:200px;vertical-align:top" id="'.$this->textelement.'">'.$this->textvalue.'</div>
 		</td>
     </tr>
 ';

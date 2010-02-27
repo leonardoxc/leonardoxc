@@ -10,12 +10,16 @@ ALTER TABLE `leonardo_flights_deleted` ADD `gliderCertCategory` SMALLINT UNSIGNE
  ALTER TABLE `leonardo_flights` ADD INDEX `userIDonly` ( `userID` )  ;
 
 
-# drop very very old OLC fields
+#2010/02/25
+#  drop very very old OLC fields
 ALTER TABLE `leonardo_pilots`   DROP `olcBirthDate`,   DROP `olcFirstName`,   DROP `olcLastName`, 
   DROP `olcCallSign`,   DROP `olcFilenameSuffix`,   DROP `olcAutoSubmit`;
 
+#2010/02/25
+# Split pilots table to 2
 
 CREATE TABLE leonardo_pilots_info  SELECT * FROM leonardo_pilots;
+ALTER TABLE `leonardo_pilots_info` ENGINE = MYISAM ;
 ALTER TABLE `leonardo_pilots_info` ADD PRIMARY KEY ( `pilotID` , `serverID` ) ;
 
 ALTER TABLE `leonardo_pilots` 

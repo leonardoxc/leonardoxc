@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.78 2010/02/03 14:20:52 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.79 2010/02/27 22:40:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -101,6 +101,13 @@ function showNewsSettings() {
 		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
 	$('#dialogWindow').jqmShow(); 	
 }
+
+function showFilter() {
+	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_filter.php',
+		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
+	$('#dialogWindow').jqmShow(); 	
+}
+
 
 function showUserSettings() {
 	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php',

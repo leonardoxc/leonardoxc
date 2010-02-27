@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.51 2010/01/06 21:27:17 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.52 2010/02/27 22:40:51 manolis Exp $
 //
 //************************************************************************
 
@@ -347,8 +347,11 @@ $(document).ready(function(){
 	} else {
 		$filterIcon='icon_filter_down.png';
 	}
+	// toogleMenu('filter')
+	// showFilter()
 ?>
-	<div id='filterMenuID' class="menuButton"><a href="#" onClick="toogleMenu('filter');return false;"><img src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' title='' align="absmiddle" border=0><? echo $arrDownImg; ?></a>
+	<div id='filterMenuID' class="menuButton"><a href="#" onClick="toogleMenu('filter');return false;">
+	<img src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' title='' align="absmiddle" border=0><? echo $arrDownImg; ?></a>
     </div>
 <? } ?>
 

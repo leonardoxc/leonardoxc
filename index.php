@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.109 2010/01/13 10:55:45 manolis Exp $
+// $Id: index.php,v 1.110 2010/02/27 22:40:51 manolis Exp $
 //
 //************************************************************************
 
@@ -92,6 +92,7 @@ require_once dirname(__FILE__)."/CL_flightData.php";
 require_once dirname(__FILE__)."/CL_dates.php";
 require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/CL_statsLogger.php";
+require_once dirname(__FILE__)."/CL_filter.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
  // if we use utf
@@ -196,6 +197,16 @@ if ($_GET['leoSeo']) {
 // DEBUG
 setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0,1);
+
+setVarFromRequest("fl",-1);
+if ($fl) {
+	$filter=new LeonardoFilter();
+	$filter->parseFilterString($fl);
+	echo "<PRE>";
+	print_r($filter->filterArray);
+	echo "</PRE>";	
+	$_SESSION['filter_clause']=$filter->makeClause();
+}
 
 setVarFromRequest("includeMask",0);
 
