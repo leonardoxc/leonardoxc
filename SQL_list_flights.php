@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.6 2009/09/25 13:51:15 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.7 2010/03/01 14:27:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -139,13 +139,13 @@
 	} 
 	
 	$filter_clause=$_SESSION["filter_clause"];
-	//echo $filter_clause;
+	echo $filter_clause;
 	if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
 	else {
 			if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $countryCodeQuery=1;
 			else {
 				$pilotsTableQuery=1;
-				if ( strpos($filter_clause," countryCode") )  $countryCodeQuery=1;
+				if ( strpos($filter_clause,$waypointsTable.".countryCode") )  $countryCodeQuery=1;
 				else $countryCodeQuery=0;
 			}
 	}

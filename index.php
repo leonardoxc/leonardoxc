@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.111 2010/03/01 06:44:45 manolis Exp $
+// $Id: index.php,v 1.112 2010/03/01 14:27:23 manolis Exp $
 //
 //************************************************************************
 
@@ -199,13 +199,11 @@ setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0,1);
 
 setVarFromRequest("fltr",0);
-//print_r($_REQUEST);
-//print_r($_SESSION);
-//echo "$fltr&&&";
+//print_r($_REQUEST); print_r($_SESSION); echo "$fltr&&&";
 if ($fltr) {
 	$filter=new LeonardoFilter();
 	$filter->parseFilterString($fltr);
-	 echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
+	// echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
 	$_SESSION['filter_clause']=$filter->makeClause();
 	$_SESSION['filter_string']=$fltr;
 	$filter->filterExportToSession();

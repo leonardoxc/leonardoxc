@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.133 2010/02/25 21:49:50 manolis Exp $                                                                 
+// $Id: config.php,v 1.134 2010/03/01 14:27:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -107,10 +107,10 @@ setlocale(LC_NUMERIC, 'en_US') ;
  
  // Available translations
  $availableLanguages=array("english","french","german","dutch","italian","spanish","mexican","portuguese","brazilian",
-				    "greek","turkish","danish","swedish","finnish","russian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");
+				    "greek","turkish","danish","swedish","finnish","russian","bulgarian","croatian","slovenian","polish","czech","hungarian","romanian","chinese","hebrew");
 
  $langEncodings=array(
-	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"iso-8859-5","brazilian"=>"iso-8859-1",
+	"albanian"=>"iso-8859-2","arabic"=>"iso-8859-6","bulgarian"=>"windows-1251","brazilian"=>"iso-8859-1",
 	"catalan"=>"iso-8859-1", "chinese"=>"gb2312",
 	"croatian"=>"windows-1250","czech"=>"iso-8859-2","danish"=>"iso-8859-1","dutch"=>"iso-8859-1",
 	"english"=>"iso-8859-1","estonian"=>"iso-8859-15","finnish"=>"iso-8859-1","french"=>"iso-8859-1",

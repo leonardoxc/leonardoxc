@@ -8,14 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.26 2010/03/01 06:44:44 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.27 2010/03/01 14:27:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__).'/CL_filter.php';
 
-echo "<pre>"; print_r($_REQUEST); echo "</pre>";
-echo "<pre>"; print_r($_SESSION); echo "</pre>";
+//echo "<pre>"; print_r($_REQUEST); echo "</pre>";
+//echo "<pre>"; print_r($_SESSION); echo "</pre>";
 
 $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'filter','fl_url'=>'1'));
 $redirectUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'));
@@ -47,6 +47,10 @@ if ( count($CONF['servers']['list']) ) {
 }
 
 $filterkeys=array_keys($dlgfilters);
+
+if (!$filter) {
+	$filter=new LeonardoFilter();
+}	
 
 if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 
@@ -245,10 +249,41 @@ window.location = "<? echo  $redirectUrl ?>"
 	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
 	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
+var FILTER_cat=0;
+var FILTER_duration=0;
+
+function filterUpdateCat() {
+	FILTER_cat=0;
+	if ($('#xFILTER_cat1').attr('checked')) {
+		FILTER_cat=FILTER_cat+1;
+	}
+	if ($('#xFILTER_cat2').attr('checked')) {
+		FILTER_cat=FILTER_cat+2;
+	}
+	if ($('#xFILTER_cat4').attr('checked')) {
+		FILTER_cat=FILTER_cat+4;
+	}
+	
+	$('#debug1').html(FILTER_cat);
+	
+}
+
+function filterUpdateDuration() {
+	FILTER_duration=$('#xFILTER_duration_hours_select').val()*60 + $('#xFILTER_duration_minutes_select').val()*1;
+
+	$('#debug1').html(FILTER_duration);
+}
+
+function activateFilter() {
+	filterUpdateCat();
+	filterUpdateDuration();
+}
+
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
-<form name="formFilter" method="post" action="">
+<div id='debug1'>333</div>
+<form name="formFilter"  id="formFilter" method="post" action="" onsubmit="activateFilter();">
 
   <table class=main_text width="750"  border="0" align="center" cellpadding="3" cellspacing="3">
  
@@ -279,11 +314,11 @@ window.location = "<? echo  $redirectUrl ?>"
         </div></td>
       <td><? echo _ALL2 ?></td>
       <td class="main_text"><div align="right"><? echo _Category ?> </div></td>
-      <td class="main_text"><input type="checkbox" name="FILTER_cat1" value="1" checked="checked" />
+      <td class="main_text"><input type="checkbox" id="xFILTER_cat1"  value="1" <?=($FILTER_cat&1)?"checked='checked'":""?> onchange="filterUpdateCat()" />
           <?=_PG?>
-          <input type="checkbox" name="FILTER_cat2" value="2" checked="checked" />
+          <input type="checkbox" id="xFILTER_cat2"   value="2" checked="checked" <?=($FILTER_cat&2)?"checked='checked'":""?> onchange="filterUpdateCat()" />
           <?=_HG?>
-          <input type="checkbox" name="FILTER_cat4" value="4" checked="checked" />
+          <input type="checkbox" id="xFILTER_cat4"  value="4" checked="checked" <?=($FILTER_cat&4)?"checked='checked'":""?> onchange="filterUpdateCat()" />
           <?=_RG?>      </td>
     </tr>
     <tr>
@@ -392,9 +427,9 @@ window.location = "<? echo  $redirectUrl ?>"
           <option value="&gt;=" <? if ($FILTER_duration_op==">=") echo "selected" ?>>&gt;=</option>
           <option value="&lt;=" <? if ($FILTER_duration_op=="<=") echo "selected" ?>>&lt;=</option>
         </select>
-          <input name="FILTER_duration_hours_select" type="text" size="2" value="<? echo $FILTER_duration_hours_select ?>" />
+          <input id="xFILTER_duration_hours_select" type="text" size="2" value="<? echo floor($FILTER_duration_select/60) ?>"  onchange="filterUpdateDuration()"/>
           <? echo _HOURS ?> :
-        <input name="FILTER_duration_minutes_select" type="text" size="2" value="<? echo $FILTER_duration_minutes_select ?>" />
+        <input id="xFILTER_duration_minutes_select" type="text" size="2" value="<? echo ($FILTER_duration_select%60) ?>" onchange="filterUpdateDuration()" />
           <? echo _MINUTES ?></td>
     </tr>
       </table>
