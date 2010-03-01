@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.3 2010/03/01 06:44:44 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.4 2010/03/01 21:56:07 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -446,7 +446,7 @@ function filterImportFromSession() {
 		
 	} // foreach
 
-	echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>";	
+	// echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>";	
 }
 
 function filterExportToSession() {
@@ -653,8 +653,10 @@ function makeFilterString() {
 				continue;
 			}
 	
-			if ($opName=='FILTER_sex') {
-				$filter_clause.=" AND $pilotsTable.Sex='".$item[2]."' ";
+			if ($opName=='FILTER_sex' && $item[2]) {
+				if ($item[2]==2)  $val="F";
+				else $val="F";
+				$filter_clause.=" AND $pilotsTable.Sex='".$val."' ";
 				continue;
 			}
 			if ($opName=='FILTER_olc_type') {
