@@ -8,11 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.25 2010/02/27 22:40:51 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.26 2010/03/01 06:44:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__).'/CL_filter.php';
+
+echo "<pre>"; print_r($_REQUEST); echo "</pre>";
+echo "<pre>"; print_r($_SESSION); echo "</pre>";
 
 $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'filter','fl_url'=>'1'));
 $redirectUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'));
@@ -51,10 +54,19 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 	foreach ($_REQUEST as $key => $value ) {
 		if (substr($key,0,7)=="FILTER_") {
 			$_SESSION[$key]=$value;
-			if ($value) $filterUrl.="&$key=".urlencode($value);
+			// if ($value) $filterUrl.="&$key=".urlencode($value);
 			$$key=$value;
 		}
 	}
+	
+	$filter->filterImportFromSession();
+	
+	foreach ($_SESSION as $key => $value ) {
+		if (substr($key,0,7)=="FILTER_") {			
+			$$key=$value;
+		}
+	}
+	
 
 	$filter_clause="";
 	if ($_REQUEST['clearFilter']==1) {
@@ -129,7 +141,7 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		if (is_array($value) ) continue;
 		if (substr($key,0,7)=="FILTER_")
 			$$key=$value;
-			if ($value && $key!="filter_clause") $filterUrl.="&$key=".urlencode($value);
+			//if ($value && $key!="filter_clause") $filterUrl.="&$key=".urlencode($value);
 	}
 
 	// put default values
@@ -170,6 +182,9 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
  } else echo "<center><img src='".$moduleRelPath."/img/icon_p5.gif' border=0>"._THE_FILTER_IS_INACTIVE."</center>";
 */
  if ($_SESSION["filter_clause"]) {
+ 
+ $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights','fltr'=>$filter->makeFilterString()));
+ 
 	/// Martin Jursa 21.06.2007 add bookmark-javascript
  	$browser=getBrowser();
  	$agent=!empty($browser[0]) ? $browser[0] : '';
@@ -199,7 +214,7 @@ function addFavorite() {
 	if ($is_ie) {
 		echo ' :: <a href="javascript:addFavorite();" title="'._Msg_AddToBookmarks_IE.'">'._Explanation_AddToBookmarks_IE.'</a><br></center><br><br>';
 	}else {
-		echo " :: <a href=\"$filterUrl\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."<br></span><br><br>";
+		echo " :: <a href=\"".$filterUrl."\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."<br></span><br><br>";
 	}
 	// end martin jursa 21.06.2007
  } else echo "<span class='note' style='margin-top:0;'>"._THE_FILTER_IS_INACTIVE."</span>";
@@ -250,10 +265,10 @@ window.location = "<? echo  $redirectUrl ?>"
       <td width="25%" class="main_text"><div align="right"><? echo _Sex ?> </div></td>
       <td class="main_text"><select name="FILTER_sex">
           <option value=""></option>
-          <option value="M" <? if ($FILTER_sex=="M") echo "selected" ?>>
+          <option value="M" <? if ($FILTER_sex=="1") echo "selected" ?>>
           <?=_Male?>
           </option>
-          <option value="F" <? if ($FILTER_sex=="F") echo "selected" ?>>
+          <option value="F" <? if ($FILTER_sex=="2") echo "selected" ?>>
           <?=_Female?>
           </option>
         </select>      </td>

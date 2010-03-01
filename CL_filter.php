@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.2 2010/02/27 22:40:51 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.3 2010/03/01 06:44:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -364,8 +364,163 @@ class leonardoFilter {
 	
 	}
 	
+function filterImportFromSession() {
+	global $filterOps;
+	global $pilotsTable,$flightsTable;
 	
+	$this->filterArray=array();
+	
+	foreach ($_SESSION as $key=>$value) {
+	
+		if (substr($key,0,7)!="FILTER_") continue;
+		
+		
+		if (substr($key,-3)=="_op") continue; // we take care of these in the _select counterparts of them
 
+
+		if ( preg_match("/YEAR/",$key ) ||  preg_match("/day_text/",$key ) || preg_match("/day_text/",$key ) ) continue;
+
+		if ($key=="FILTER_dateType")  {	
+			$opID=0x20;
+			$op='FILTER_DATE';
+			
+			if ($value=="DATE_RANGE") {
+			
+				$year1=substr($_SESSION['FILTER_from_day_text'],6,4);;// 23.02.2008
+				$month1=substr($_SESSION['FILTER_from_day_text'],3,2);
+				$day1=substr($_SESSION['FILTER_from_day_text'],0,2);
+				$year2=substr($_SESSION['FILTER_to_day_text'],6,4);
+				$month2=substr($_SESSION['FILTER_to_day_text'],3,2);
+				$day2=substr($_SESSION['FILTER_to_day_text'],0,2);
+				
+				$this->filterArray[]=array($opID,$op,'between',$year1,$month1,$day1,$year2,$month2,$day2);
+			
+			} else if ($value=="MONTH_YEAR") {
+				$year1=$_SESSION['FILTER_MONTH_YEAR_select_YEAR'];
+				$month1=$_SESSION['FILTER_MONTH_YEAR_select_MONTH'];
+				$operand=$_SESSION['FILTER_MONTH_YEAR_select_op'];
+				$this->filterArray[]=array($opID,$op,$operand,$year1,$month1,0);
+			} else if ($value=="YEAR") {
+				$year1=$_SESSION['FILTER_YEAR_select'];
+				$operand=$_SESSION['FILTER_YEAR_select_op'];
+				$this->filterArray[]=array($opID,$op,$operand,$year1,0,0);
+			}
+
+			continue;
+		}
+		
+		if (substr($key,-7)=="_select")  {	
+			if (!$value) continue;	
+			$op=substr($key,0,-7);
+			$opID=array_search_value($op, $filterOps);
+			$operand=$_SESSION[$op.'_op'];
+			$this->filterArray[]=array($opID,$op,$operand,$value);
+			continue;
+		}
+
+		if (substr($key,-5)=="_incl" )  {	
+			if (!$value) continue;	
+			
+			if ( preg_match("/FILTER_nacclubs(\d+)_incl/",$key,$matches) ) {				
+				$key="FILTER_nacclubs_incl";
+				$opID=array_search_value($key, $filterOps);
+				$valueArray=explode(",",$value);
+				$this->filterArray[]=array($opID,$key,$valueArray,$matches[1]);								
+			}  else {
+				$opID=array_search_value($key, $filterOps);
+				$valueArray=explode(",",$value);
+				$this->filterArray[]=array($opID,$key,$valueArray);
+			}
+			continue;
+		}
+		
+		
+	
+		// if nothing else matches , is a simple var
+		if (!$value) continue;
+		
+		$op=$key;
+		$opID=array_search_value($op, $filterOps);
+		$this->filterArray[]=array($opID,$op,$value);
+		continue;
+		
+	} // foreach
+
+	echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>";	
+}
+
+function filterExportToSession() {
+	global $filterOps;
+	global $pilotsTable,$flightsTable;
+	
+	foreach ($this->filterArray as $i=>$item) {
+		$op=$item[0];
+		$opName=$item[1];		
+		
+		if ( ($op & 0xf0) ==  0x40  ) {// multi values
+			$varName=$filterOps[$op][0];
+			$value=implode(",",$item[2]);
+			if ($op==0x45) {
+			  //	FILTER_nacclubs_incl ->FILTER_nacclubs24_incl
+			  $varName=substr($varName,0,-5).$item[3].substr($varName,-5);
+			} 
+			$_SESSION[$varName]=$value;
+			continue;
+		}
+
+		if ( ($op & 0xf0) ==  0x60) {			
+			$varName=$filterOps[$op][0];
+			$value=$item[2];
+			$_SESSION[$varName]=$value;
+			continue;
+		}
+	
+		if ( ($op & 0xf0) ==  0x80) {
+			$varName=$filterOps[$op][0];
+			$value=$item[3];
+			$operand=$item[2];
+			
+			$_SESSION[$varName.'_select']=$value;
+			$_SESSION[$varName.'_op']=$operand;
+			continue;
+		}
+	
+		if ( ($op & 0xf0) ==  0x20) {	
+		/*  [0] => 32
+            [1] => FILTER_DATE
+            [2] => between
+            [3] => 2028
+            [4] => 5
+            [5] => 6
+            [6] => 2028
+            [7] => 5
+            [8] => 7		*/
+			$operand=$item[2];
+			
+			if ($operand=='between') {
+				$_SESSION['FILTER_dateType']='DATE_RANGE';
+
+				$_SESSION['FILTER_from_day_text']= sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]); // 23.02.2010
+				$_SESSION['FILTER_to_day_text']=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]); 
+
+			} else if ( $item[3] && $item[4]) {
+				$_SESSION['FILTER_dateType']='MONTH_YEAR';
+				$_SESSION['FILTER_MONTH_YEAR_select_op']=	$operand;
+				$_SESSION['FILTER_MONTH_YEAR_select_YEAR']= $item[3];
+				$_SESSION['FILTER_MONTH_YEAR_select_MONTH']= $item[4];
+			} else if ( $item[3] ) {
+				$_SESSION['FILTER_dateType']='YEAR';
+				$_SESSION['FILTER_YEAR_select_op']=	$operand;
+				$_SESSION['FILTER_YEAR_select']= $item[3];
+			}	
+			continue;
+		}
+		
+		} // foreach
+
+		// echo "<PRE>";	print_r($_SESSION);	echo "</PRE>";	
+}
+	
 function makeFilterString() {	
 	global $filterOps;
 	global $pilotsTable,$flightsTable;
@@ -558,6 +713,28 @@ function makeFilterString() {
 	
 	
 
+}
+
+function array_search_value($needle,$haystack,$arraykey=FALSE) {
+	if (!is_array($haystack) ) return false;
+	
+    foreach($haystack as $key=>$value) {
+        $current_key=$key;
+        if($arraykey){          
+            if($needle == $value[$arraykey]){
+	            return $value['id'];
+            }       
+            if(array_search_value($needle,$value[$arraykey]) == true) {
+	            return $current_key;
+            }       
+        }else{           
+            if($needle == $value) return $value;           
+            if(array_search_value($needle,$value) == true) {
+                return $current_key;
+            }
+        }
+    }
+    return false;
 }
 
 ?>

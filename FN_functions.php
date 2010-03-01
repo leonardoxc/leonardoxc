@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.71 2010/02/26 14:30:40 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.72 2010/03/01 06:44:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -748,6 +748,10 @@ function getLeonardoLink($argArray) {
 			if ($argValue!='useCurrent')
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
+		
+		if ($_SESSION['fltr'] && $op!='filter') {		
+			$args.="&fltr=".$_SESSION['fltr'];
+		}
 		
 		if ($CONF['links']['type']==3) {
 			$preDir=$CONF['links']['baseURL'];
