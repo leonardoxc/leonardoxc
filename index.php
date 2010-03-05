@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.112 2010/03/01 14:27:23 manolis Exp $
+// $Id: index.php,v 1.113 2010/03/05 15:03:47 manolis Exp $
 //
 //************************************************************************
 
@@ -520,7 +520,7 @@ exitPage(0);
 // END OF OUTPUT to the browser
 
 function exitPage($exitNow=1){
-   global $opMode,$noFooterMenu,$moduleRelPath,$PREFS;
+   global $opMode,$noFooterMenu,$moduleRelPath,$PREFS,$CONF_use_own_template,$CONF;
    global $sqlQueriesTime ,$sqlQueriesNum,$sqlFetchTime,$sqlFetchNum;
    global $pageStart,$DBGlvl;
 
@@ -542,10 +542,21 @@ function exitPage($exitNow=1){
    if ($opMode==1) {
 		CloseTable();
 		include("footer.php");
-   } else if ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ) ) {
+   } else if (0 && ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ))  ) {
 		require_once dirname(__FILE__)."/GUI_footer.php";
-   }
+   }  else if ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ) ) {
+	    global $Ltemplate;
+		$Ltemplate->set_filenames(array('overall_footer' => 'tpl/overall_footer.html'));
+		$Ltemplate->assign_vars(array(
+			'SIDE_BLOCKS_HTML' => $side_blocks_html,
+			'CUSTOM_FOOTER_CODE'=> 	$CONF['footer']['custom_code'],
+		) );
+		$Ltemplate->pparse('overall_footer');
+		
+		// Close our DB connection.
+		//$db->sql_close();
 
+   } 
 	if ($DBGlvl) {
 		// db execution time
 
