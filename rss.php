@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.17 2010/01/08 11:05:59 manolis Exp $                                                                 
+// $Id: rss.php,v 1.18 2010/03/06 22:23:13 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -22,6 +22,7 @@
 	require_once "FN_waypoint.php";	
 	require_once "FN_output.php";
 	require_once "FN_pilot.php";
+	require_once dirname(__FILE__).'/CL_filter.php';
 	setDEBUGfromGET();
 
 	setVarFromRequest("lng",$PREFS->language); 
@@ -115,7 +116,32 @@ if (! is_dir($thumbsDirAbs) ) {
 		}
 		 // GUS end
 
-		 $query="SELECT * , $flightsTable.Id as flightID 
+		// now the filter!!!
+		$fltr=$_SESSION['fltr'];
+		if ($fltr) {
+			$filter=new LeonardoFilter();
+			$filter->parseFilterString($fltr);
+			// echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
+			$filter_clause=$filter->makeClause();
+			// echo $filter_clause;
+					
+			if ( ! strpos($filter_clause,$waypointsTable)=== false )  {
+				$extra_tbl= " LEFT JOIN $waypointsTable ON $flightsTable.takeoffID=$waypointsTable.ID "; 
+			}
+			
+			if ( ! strpos($filter_clause,$pilotsTable)=== false ) {
+				$extra_tbl.= " LEFT JOIN $pilotsTable ON 
+						($flightsTable.userID=$pilotsTable.pilotID AND 
+						$flightsTable.userServerID=$pilotsTable.serverID) "; 
+			}
+	
+			$where_clause=$filter_clause;
+			
+		}
+		
+			
+		
+		$query="SELECT * , $flightsTable.Id as flightID 
 		 		FROM $flightsTable $extra_tbl 
 				WHERE private=0 $where_clause 
 				ORDER BY dateAdded DESC LIMIT $count";

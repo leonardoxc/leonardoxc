@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_rss_conf.php,v 1.6 2009/03/20 16:24:34 manolis Exp $                                                                 
+// $Id: GUI_rss_conf.php,v 1.7 2010/03/06 22:23:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,20 +21,15 @@
 <script language="javascript">
 
 function updateRssURL() {
-	var	cCode=MWJ_findObj("country_select").value;
-	var olcScore=MWJ_findObj("olc_score_select").value;
-	var	itemNumC=MWJ_findObj("item_num_select").value;
-
-	var	a1="country="+cCode;
-	var	a2="&olcScore="+olcScore;
-	var	a3="&c=";
-	a3=a3.concat(itemNumC);
+	var	a1="country="+$("#country_select").val();
+	var	a2="&olcScore="+$("#olc_score_select").val();
+	var	a3="&c=".concat($("#item_num_select").val());
 
 	var base='<?=$rss_url_base?>?';
 	var rss_url= base.concat(a1,a2,a3);
 	var rss_link="<a href='"+rss_url+"' target='_blank'>"+rss_url+"</a>";
 
-    MWJ_changeContents('rss_url',rss_link);
+   $("#rss_url").html(rss_link);
 }
 
 </script>

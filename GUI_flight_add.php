@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.39 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.40 2010/03/06 22:23:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -190,6 +190,20 @@ $(document).ready(
         <input type="checkbox" name="is_private" id="is_private" value="1">
 		<? } ?></td>
     </tr>
+    <tr>
+      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
+      <td  valign="top"><select name="startType" id="startType">
+        <?
+			foreach ( $CONF['startTypes'] as $s_id=>$s_type) {
+
+				if ($s_id==$CONF['defaultStartType']) $is_type_sel ="selected";
+				else $is_type_sel ="";
+				echo "<option $is_type_sel value=$s_id>".$s_type."</option>\n";
+			}
+		?>
+      </select></td>
+      <td  valign="top">&nbsp;</td>
+    </tr>
 	
 	<tr >
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
@@ -203,8 +217,7 @@ $(document).ready(
 				echo "<option  value=$gl_id>".$CONF_glider_certification_categories[$gl_id]."</option>\n";
 			}
 		?>
-	  </select>&nbsp;
-      </span>
+	  </select>&nbsp;      </span>
       
        <? echo _Category; ?> 
       <select name="category" id="category" onchange="selectGliderCategory();">
@@ -227,11 +240,7 @@ $(document).ready(
 		  }
 		?></select>	
         
-	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>
-      
-	 
-	  
-	  </td>
+	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>	  </td>
        <? if (0) { ?>
 	  <td  valign="top"><div align="left" class="styleItalic">
 	   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
@@ -260,9 +269,7 @@ $(document).ready(
 						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
 				}
       		}
-		?></select>
-	  </td>
-
+		?></select>	  </td>
     </tr>
 	<? } ?>
 	
@@ -353,8 +360,7 @@ $(document).ready(
     <tr>
       <td>&nbsp;</td>
       <td colspan="3" style="font-weight:bold"">
-      	<?=_FLIGHTADD_CONFIRMATIONTEXT?>
-      </td>
+      	<?=_FLIGHTADD_CONFIRMATIONTEXT?>      </td>
      </tr>
  <? } ?>
      <tr>
@@ -431,6 +437,7 @@ $(document).ready(
 					//	'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) ,
 						'allowDuplicates'=>1, // we always allow duplicates when locally submitted. (will take over eternal flights) 
 						'gliderCertCategory'=>$gliderCertCategory,
+						'startType'=>$_POST["startType"]+0,
 					  ) 
 				) ;
 		

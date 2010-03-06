@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.23 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.24 2010/03/06 22:23:12 manolis Exp $                                                                 
 //
 //************************************************************************
  if ($userID<=0) return;
@@ -135,6 +135,20 @@ $(document).ready(
       </span>
         <input type="checkbox" name="is_private" id="is_private" value="1">
 		<? } ?></td>
+    </tr>
+	<tr>
+      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
+      <td  valign="top"><select name="startType" id="startType">
+        <?
+			foreach ( $CONF['startTypes'] as $s_id=>$s_type) {
+
+				if ($s_id==$CONF['defaultStartType']) $is_type_sel ="selected";
+				else $is_type_sel ="";
+				echo "<option $is_type_sel value=$s_id>".$s_type."</option>\n";
+			}
+		?>
+      </select></td>
+      <td  valign="top">&nbsp;</td>
     </tr>
 	<tr >
       <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
@@ -356,7 +370,8 @@ $(document).ready(
 			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
 								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,
 										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ,
-										'gliderCertCategory'=>$gliderCertCategory
+										'gliderCertCategory'=>$gliderCertCategory,
+										'startType'=>$_POST["startType"]+0,
 										) 
 			) ;
 			 

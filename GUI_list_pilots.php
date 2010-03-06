@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_pilots.php,v 1.41 2009/03/12 15:13:33 manolis Exp $                                                                 
+// $Id: GUI_list_pilots.php,v 1.42 2010/03/06 22:23:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -83,8 +83,10 @@
  if (!$is_comp) {
 	
 	 $filter_clause=$_SESSION["filter_clause"];
-	  if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
+	  if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;
 	  else $countryCodeQuery=1;
+	  
+	  
 	  $where_clause.=$filter_clause;	
 		 
 	 $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_NUMBER_OF_FLIGHTS, "totalDistance"=>_TOTAL_DISTANCE, 

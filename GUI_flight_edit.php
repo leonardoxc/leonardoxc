@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.43 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.44 2010/03/06 22:23:12 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -47,7 +47,7 @@
  		 $flight->category=$_REQUEST["category"]+0;
 		 
 		 $flight->gliderCertCategory=$_REQUEST["gliderCertCategory"]+0;
-		 
+		 $flight->startType=$_REQUEST["startType"]+0;
 		 
 		 $flight->gliderBrandID=$_REQUEST["gliderBrandID"];
 		 $flight->glider=$_REQUEST["glider"];
@@ -380,8 +380,30 @@ require_once dirname(__FILE__).'/FN_editor.php';
 			?>
 		</select>
 		</b>	  </div>
-	    </fieldset>			</td>
-		    <td>
+	    </fieldset>			
+		</td>
+		
+		<td>
+		 <fieldset class="legendBox legend2">
+		    <legend><? echo _Start_type ?></legend>
+			<div align="left">
+		    
+			<select name="startType" id="startType">
+			<?
+				foreach ( $CONF['startTypes'] as $s_id=>$s_type) {
+	
+					if ($s_id==$flight->startType) $is_type_sel ="selected";
+					else $is_type_sel ="";
+					echo "<option $is_type_sel value=$s_id>".$s_type."</option>\n";
+				}
+			?>
+		  </select>
+			  </div>
+	    </fieldset>	
+		
+		</td>
+		<tr>
+		   <td colspan=2>
 			   <fieldset class="legendBox legend2">
 	    <legend><? echo _GLIDER_CERT  ?> / <? echo _Category  ?></legend>
 	  <span align="left" id='categoryPg'>	

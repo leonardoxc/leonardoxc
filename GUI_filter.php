@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.27 2010/03/01 14:27:23 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.28 2010/03/06 22:23:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -51,103 +51,26 @@ $filterkeys=array_keys($dlgfilters);
 if (!$filter) {
 	$filter=new LeonardoFilter();
 }	
-
-if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
-
-	// copy form variables to session
-	foreach ($_REQUEST as $key => $value ) {
-		if (substr($key,0,7)=="FILTER_") {
-			$_SESSION[$key]=$value;
-			// if ($value) $filterUrl.="&$key=".urlencode($value);
-			$$key=$value;
-		}
-	}
 	
-	$filter->filterImportFromSession();
-	
-	foreach ($_SESSION as $key => $value ) {
-		if (substr($key,0,7)=="FILTER_") {			
-			$$key=$value;
-		}
-	}
-	
+// echo "<pre>".print_r($filter->filterArray)."</pre>";
 
-	$filter_clause="";
-	if ($_REQUEST['clearFilter']==1) {
-		$_SESSION["filter_clause"]=$filter_clause;
-		
-	} else {
+if (( $_REQUEST['setFilter']==1 || $_GET['fl_url']==1 ) && 0) { // form submitted
 
-		if ($FILTER_dateType=="YEAR") {
-			$filter_clause.=" AND DATE_FORMAT(DATE,'%Y') $FILTER_YEAR_select_op $FILTER_YEAR_select ";
-		} else 	if ($FILTER_dateType=="MONTH_YEAR") {
-			$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m') $FILTER_MONTH_YEAR_select_op $FILTER_MONTH_YEAR_select_YEAR$FILTER_MONTH_YEAR_select_MONTH ) ";
-		} else if ($FILTER_dateType=="DATE_RANGE"){ // RANGE
-			$from=substr($FILTER_from_day_text,6,4).substr($FILTER_from_day_text,3,2).substr($FILTER_from_day_text,0,2);
-			$to=substr($FILTER_to_day_text,6,4).substr($FILTER_to_day_text,3,2).substr($FILTER_to_day_text,0,2);
-			$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m%d') >=  $from AND DATE_FORMAT(DATE,'%Y%m%d') <= $to ) ";
-		}
-
-		$AND_clauses=array();
-		$nacclub_clauses=array(); # nacclub filters will be OR-combined; this only works with including-filters; in case of excluding filters this code must be modified
-		foreach ($filterkeys as $filterkey) {
-			$clause=$dlgfilters[$filterkey]->filter_clause();
-			// echo $clause;
-			if ($clause!='') {
-				if ($dlgfilters[$filterkey]->datakey=='nacclub') {
-					$nacclub_clauses[]='('.$clause.')';
-				}else {
-					$AND_clauses[]='('.$clause.')';
-				}
-			}
-		}
-		if (count($nacclub_clauses)>0) {
-			$AND_clauses[]='('.implode(' OR ', $nacclub_clauses).')';
-		}
-		if (count($AND_clauses)>0) {
-			$filter_clause.=' AND '.implode(' AND ', $AND_clauses);
-		}
-
-		if ($FILTER_sex) 
-			$filter_clause.=" AND $pilotsTable.Sex='$FILTER_sex' ";
-		
-		$FILTER_cat=0;	
-		$FILTER_cat=$FILTER_cat1+$FILTER_cat2+$FILTER_cat4;
-		if ($FILTER_cat &&  $FILTER_cat !=7 ){
-			$filter_clause.=" AND ($flightsTable.cat & $FILTER_cat)";
-		};
-					
-		if ($FILTER_linear_distance_select)
-			$filter_clause.=" AND LINEAR_DISTANCE ".$FILTER_linear_distance_op." ".($FILTER_linear_distance_select*1000)." ";
-
-		if ($FILTER_olc_distance_select)
-			$filter_clause.=" AND FLIGHT_KM ".$FILTER_olc_distance_op." ".($FILTER_olc_distance_select*1000)." ";
-
-		if ($FILTER_olc_score_select)
-			$filter_clause.=" AND FLIGHT_POINTS ".$FILTER_olc_score_op." ".$FILTER_olc_score_select." ";
-
-		if ($FILTER_olc_type) 
-			$filter_clause.=" AND BEST_FLIGHT_TYPE='$FILTER_olc_type' ";
-
-
-		if ($FILTER_duration_hours_select || $FILTER_duration_minutes_select ) {
-			$dur=$FILTER_duration_hours_select*60*60 + $FILTER_duration_minutes_select*60;
-			$filter_clause.=" AND DURATION ".$FILTER_duration_op." ".$dur." ";
-		}
-
-		$_SESSION["filter_clause"]=$filter_clause;
-	      	 //echo "#".$filter_clause."#<br>";
-	}
+	// we have taken care of this at index.php
 
 } else { // form not submitted
-	// copy session variables (if any) to local variables
-	foreach ($_SESSION as $key => $value ) {
-		if (is_array($value) ) continue;
-		if (substr($key,0,7)=="FILTER_")
-			$$key=$value;
-			//if ($value && $key!="filter_clause") $filterUrl.="&$key=".urlencode($value);
+	global $filterVariables ;	
+	$filter->filterExport('filterVariables');
+	
+	if (is_array($filterVariables)) {
+		foreach ($filterVariables as $key => $value ) {
+			if (is_array($value) ) continue;
+			if (substr($key,0,7)=="FILTER_") {		
+				$$key=$value;
+			}
+		}
 	}
-
+	
 	// put default values
 	if (!isset($FILTER_dateType) ) {
 		$FILTER_dateType="ALL";
@@ -168,26 +91,22 @@ if ($_REQUEST["FILTER_dateType"] || $_GET['fl_url']==1) { // form submitted
 		$FILTER_duration_op=">=";
 		$FILTER_duration_hours_select="";
 		$FILTER_duration_minutes_select="";
+		
+		$FILTER_PilotBirthdate_op=">=";
+		$FILTER_PilotBirthdate_text="";
 	}
 
 }
 
-// echo "#".$filter_clause;
-
  openMain(_FILTER_PAGE_TITLE,0,''); 
  
- if ($_REQUEST["FILTER_dateType"])  {
-	echo "<center><a href='".getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN_TO_FLIGHTS."</a> :: </center><br><br>";
-	// echo "<a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
+ if ($_REQUEST["setFilter"])  {
+	echo "<div align='center'><a href='".getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN_TO_FLIGHTS."</a></div><br><br>";	
  }
-/* old: if ($_SESSION["filter_clause"]) {
-	echo "<center><img src='".$moduleRelPath."/img/icon_filter.png' border=0>"._THE_FILTER_IS_ACTIVE."";
-	echo " :: <a href='$filterUrl'>Bookmark Filter</a><br></center><br><br>";
- } else echo "<center><img src='".$moduleRelPath."/img/icon_p5.gif' border=0>"._THE_FILTER_IS_INACTIVE."</center>";
-*/
- if ($_SESSION["filter_clause"]) {
  
- $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights','fltr'=>$filter->makeFilterString()));
+if ($_SESSION["fltr"]) {
+ 
+ $filterUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'));
  
 	/// Martin Jursa 21.06.2007 add bookmark-javascript
  	$browser=getBrowser();
@@ -216,18 +135,42 @@ function addFavorite() {
 	}
 	echo "<span class='ok'  style='margin-top:0;'><img src='".$moduleRelPath."/img/icon_filter.png' alinn='absmiddle' border=0> "._THE_FILTER_IS_ACTIVE."";
 	if ($is_ie) {
-		echo ' :: <a href="javascript:addFavorite();" title="'._Msg_AddToBookmarks_IE.'">'._Explanation_AddToBookmarks_IE.'</a><br></center><br><br>';
+		echo ' :: <a href="javascript:addFavorite();" title="'._Msg_AddToBookmarks_IE.'">'._Explanation_AddToBookmarks_IE.'</a>';
 	}else {
-		echo " :: <a href=\"".$filterUrl."\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."<br></span><br><br>";
+		echo " :: <a href=\"".$filterUrl."\" title=\""._Msg_AddToBookmarks_nonIE."\" onclick=\"alert('".addslashes(_Msg_AddToBookmarks_nonIE)."'); return false;\">$filterbasename Filter</a> "._Explanation_AddToBookmarks_nonIE."";
 	}
+	
+    $rss_url_base="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."rss.php";
+	$rss_url=$rss_url_base."?c=20&fltr=".$_SESSION['fltr'];
+	echo "
+	  <BR><BR><div align='left'>
+	      <img src='".moduleRelPath()."/img/rss.gif' width='31' height='15'> 
+          (<a id='rss_url' href='$rss_url' target='_blank'>copy paste this url to your RSS reader</a>) 
+
+		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		 <strong># of items </strong>
+        <select name='rss_item_num' id='rss_item_num' onChange='updateRssURL()'>          
+          <option value='10'>10</option>
+          <option value='20' selected>20</option>
+          <option value='30'>30</option>
+          <option value='40'>40</option>
+          <option value='50'>50</option>
+      </select>
+	  
+      </div>	
+	";
+	
+	echo "</span>";
 	// end martin jursa 21.06.2007
  } else echo "<span class='note' style='margin-top:0;'>"._THE_FILTER_IS_INACTIVE."</span>";
  $calLang=$lang2iso[$currentlang];
 ?>
 <? if ($_GET['fl_url']) { ?>
+
 <script language='javascript'>
 window.location = "<? echo  $redirectUrl ?>"
 </script>
+
 <? } ?>
 <script language='javascript'>
 	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
@@ -250,114 +193,118 @@ window.location = "<? echo  $redirectUrl ?>"
 	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
 var FILTER_cat=0;
+var FILTER_glider_cert=0;
+var FILTER_start_type=0;
 var FILTER_duration=0;
+
+var fltr='<?=$filter->makeFilterString()?>';
+function filterUpdateDuration() {
+	FILTER_duration=$('#xFILTER_duration_hours_select').val()*60 + $('#xFILTER_duration_minutes_select').val()*1;	
+	$("#FILTER_duration_select").val(FILTER_duration);
+
+}
 
 function filterUpdateCat() {
 	FILTER_cat=0;
-	if ($('#xFILTER_cat1').attr('checked')) {
-		FILTER_cat=FILTER_cat+1;
-	}
-	if ($('#xFILTER_cat2').attr('checked')) {
-		FILTER_cat=FILTER_cat+2;
-	}
-	if ($('#xFILTER_cat4').attr('checked')) {
-		FILTER_cat=FILTER_cat+4;
-	}
-	
-	$('#debug1').html(FILTER_cat);
-	
+	$.each($("input[@name='xFILTER_cat[]']:checked"), function() {
+		FILTER_cat+=($(this).val()*1);
+	});
+	$("#FILTER_cat").val(FILTER_cat);
 }
 
-function filterUpdateDuration() {
-	FILTER_duration=$('#xFILTER_duration_hours_select').val()*60 + $('#xFILTER_duration_minutes_select').val()*1;
-
-	$('#debug1').html(FILTER_duration);
+function filterUpdateGliderCert() {
+	FILTER_glider_cert=0;
+	$.each($("input[@name='xFILTER_glider_cert[]']:checked"), function() {
+		FILTER_glider_cert+=($(this).val()*1);
+	});
+	$("#FILTER_glider_cert").val(FILTER_glider_cert);
 }
 
+function filterUpdateStartType() {
+	FILTER_start_type=0;
+	$.each($("input[@name='xFILTER_start_type[]']:checked"), function() {
+		FILTER_start_type+=($(this).val()*1);
+	});
+	$("#FILTER_start_type").val(FILTER_start_type);
+}
+
+function resetBirthday() {
+	$("#FILTER_PilotBirthdate_text").val('');
+}
+
+
+function updateRssURL() {
+	var	a1="?c=".concat($("#rss_item_num").val());
+	var base='<?=$rss_url_base?>';
+	var rss_url= base.concat(a1,'&fltr='+fltr);
+	
+	$("#rss_url").attr("href", rss_url);
+}
+ 
 function activateFilter() {
-	filterUpdateCat();
+
 	filterUpdateDuration();
+	
+	filterUpdateCat();
+	filterUpdateGliderCert();
+	filterUpdateStartType();
+	$("#formFilter").submit();
+	
 }
 
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
-<div id='debug1'>333</div>
-<form name="formFilter"  id="formFilter" method="post" action="" onsubmit="activateFilter();">
-
+<form name="formFilter"  id="formFilter" method="post" action="" onsubmit="activateFilter(); return false;">
   <table class=main_text width="750"  border="0" align="center" cellpadding="3" cellspacing="3">
- 
     <tr>
-      <td colspan="2" class='infoHeader'>
-	  
-	  <table width="100%" border="0" cellspacing="0" cellpadding="6">
-	  <tr>
-      <td colspan="2" class='infoHeader'><div align="left"><strong><? echo _SELECT_DATE ?></strong></div></td>
-      <td colspan="2" class='infoHeader'><div align="left"><strong><? echo _OTHER_FILTERS ?></strong></div></td>
-	  </tr>
-	 	<tr><td width="8%"><div align="right"></div></td>
-      <td width="42%"><? echo _SHOW_FLIGHTS ?> </td>
-      <td width="25%" class="main_text"><div align="right"><? echo _Sex ?> </div></td>
-      <td class="main_text"><select name="FILTER_sex">
-          <option value=""></option>
-          <option value="M" <? if ($FILTER_sex=="1") echo "selected" ?>>
-          <?=_Male?>
-          </option>
-          <option value="F" <? if ($FILTER_sex=="2") echo "selected" ?>>
-          <?=_Female?>
-          </option>
-        </select>      </td>
-	 	</tr>
-    <tr>
-      <td><div align="right">
-          <input name="FILTER_dateType" type="radio" value="ALL" <? if ($FILTER_dateType=="ALL") echo "checked" ?> >
-        </div></td>
-      <td><? echo _ALL2 ?></td>
-      <td class="main_text"><div align="right"><? echo _Category ?> </div></td>
-      <td class="main_text"><input type="checkbox" id="xFILTER_cat1"  value="1" <?=($FILTER_cat&1)?"checked='checked'":""?> onchange="filterUpdateCat()" />
-          <?=_PG?>
-          <input type="checkbox" id="xFILTER_cat2"   value="2" checked="checked" <?=($FILTER_cat&2)?"checked='checked'":""?> onchange="filterUpdateCat()" />
-          <?=_HG?>
-          <input type="checkbox" id="xFILTER_cat4"  value="4" checked="checked" <?=($FILTER_cat&4)?"checked='checked'":""?> onchange="filterUpdateCat()" />
-          <?=_RG?>      </td>
-    </tr>
-    <tr>
-      <td><div align="right">
-          <input name="FILTER_dateType" type="radio" value="YEAR" <? if ($FILTER_dateType=="YEAR") echo "checked" ?>>
-        </div></td>
-      <td> <? echo _WITH_YEAR ?>
-        <select name="FILTER_YEAR_select_op">
-          <option value="=" <? if ($FILTER_YEAR_select_op=="=") echo "selected" ?>>=</option>
-          <option value=">=" <? if ($FILTER_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="<=" <? if ($FILTER_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select> <select name="FILTER_YEAR_select">
-          <?
+      <td colspan="2" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="60%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="6">
+                <tr>
+                  <td colspan="2" class='infoHeader'><div align="left"><strong><? echo _SELECT_DATE ?></strong></div></td>
+                </tr>
+                <tr>
+                  <td width="8%"><div align="right"></div></td>
+                  <td width="42%"><? echo _SHOW_FLIGHTS ?> </td>
+                </tr>
+                <tr>
+                  <td><div align="right">
+                      <input name="FILTER_dateType" type="radio" value="ALL" <? if ($FILTER_dateType=="ALL") echo "checked" ?> />
+                  </div></td>
+                  <td><? echo _ALL2 ?></td>
+                </tr>
+                <tr>
+                  <td><div align="right">
+                      <input name="FILTER_dateType" type="radio" value="YEAR" <? if ($FILTER_dateType=="YEAR") echo "checked" ?> />
+                  </div></td>
+                  <td><? echo _WITH_YEAR ?>
+                      <select name="FILTER_YEAR_select_op">
+                        <option value="=" <? if ($FILTER_YEAR_select_op=="=") echo "selected" ?>>=</option>
+                        <option value="&gt;=" <? if ($FILTER_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
+                        <option value="&lt;=" <? if ($FILTER_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
+                      </select>
+                      <select name="FILTER_YEAR_select">
+                        <?
 			 for($i=$CONF_StartYear;$i<=date("Y");$i++)  {
 			 	$sel=($i==$FILTER_YEAR_select)?"selected":"";
 				echo  "<option value='$i' $sel>$i</option>";
 			 }
 		   ?>
-        </select></td>
-      <td class="main_text"><div align="right"><? echo _LINEAR_DISTANCE_SHOULD_BE ?> </div></td>
-      <td class="main_text"><select name="FILTER_linear_distance_op">
-          <option value="&gt;=" <? if ($FILTER_linear_distance_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="&lt;=" <? if ($FILTER_linear_distance_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select>
-          <input name="FILTER_linear_distance_select" type="text" size="5" value="<? echo $FILTER_linear_distance_select ?>" />
-        Km</td>
-    </tr>
-    <tr>
-      <td><div align="right"> <? echo _OR ?>
-          <input name="FILTER_dateType" type="radio" value="MONTH_YEAR" <? if ($FILTER_dateType=="MONTH_YEAR") echo "checked" ?> >
-        </div></td>
-      <td><select name="FILTER_MONTH_YEAR_select_op">
-          <option value="="   <? if ($FILTER_MONTH_YEAR_select_op=="=") echo "selected" ?>>=</option>
-          <option value=">="  <? if ($FILTER_MONTH_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="<="  <? if ($FILTER_MONTH_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select>
-        <? echo _MONTH ?>
-        <select name="FILTER_MONTH_YEAR_select_MONTH">
-          <? $i=1;
+                    </select></td>
+                </tr>
+                <tr>
+                  <td><div align="right"> <? echo _OR ?>
+                          <input name="FILTER_dateType" type="radio" value="MONTH_YEAR" <? if ($FILTER_dateType=="MONTH_YEAR") echo "checked" ?> />
+                  </div></td>
+                  <td><select name="FILTER_MONTH_YEAR_select_op">
+                      <option value="="   <? if ($FILTER_MONTH_YEAR_select_op=="=") echo "selected" ?>>=</option>
+                      <option value="&gt;="  <? if ($FILTER_MONTH_YEAR_select_op==">=") echo "selected" ?>>&gt;=</option>
+                      <option value="&lt;="  <? if ($FILTER_MONTH_YEAR_select_op=="<=") echo "selected" ?>>&lt;=</option>
+                    </select>
+                      <? echo _MONTH ?>
+                      <select name="FILTER_MONTH_YEAR_select_MONTH">
+                        <? $i=1;
 
 			 foreach ($monthList as $monthName)  {
 			 $sel=($i==$FILTER_MONTH_YEAR_select_MONTH+0)?"selected":"";
@@ -366,102 +313,183 @@ function activateFilter() {
 				$i++;
 			 }
 		   ?>
-        </select>
-        <? echo _YEAR ?>
-        <select name="FILTER_MONTH_YEAR_select_YEAR">
-          <?
+                      </select>
+                      <? echo _YEAR ?>
+                      <select name="FILTER_MONTH_YEAR_select_YEAR">
+                        <?
 			 for($i=$CONF_StartYear;$i<=date("Y");$i++)  {
 			 	$sel=($i==$FILTER_MONTH_YEAR_select_YEAR)?"selected":"";
 				echo  "<option value='$i' $sel>$i</option>";
 			 }
 		   ?>
-        </select></td>
-      <td class="main_text"><div align="right"><? echo _OLC_DISTANCE_SHOULD_BE ?> </div></td>
-      <td class="main_text"><select name="FILTER_olc_distance_op">
-          <option value="&gt;=" <? if ($FILTER_olc_distance_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="&lt;=" <? if ($FILTER_olc_distance_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select>
-          <input name="FILTER_olc_distance_select" type="text" size="5" value="<? echo $FILTER_olc_distance_select ?>" />
-        Km</td>
+                    </select></td>
+                </tr>
+                <tr>
+                  <td><div align="right"> <? echo _OR ?>
+                          <input name="FILTER_dateType" type="radio" value="DATE_RANGE" <? if ($FILTER_dateType=="DATE_RANGE") echo "checked" ?> />
+                  </div></td>
+                  <td><? echo _From ; ?>
+                          <input name="FILTER_from_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_from_day_text ?>" />
+                      <a href="javascript:showCalendar(document.formFilter.cal_from_button, document.formFilter.FILTER_from_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_from_button' width="16" height="16" border="0" id="cal_from_button" /></a> <a href="javascript:showCalendar(document.formFilter.cal_to_button, document.formFilter.FILTER_to_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> </a>
+					  
+					  <? echo _TO ?>
+                      <input name="FILTER_to_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_to_day_text ?>" />
+                    <a href="javascript:showCalendar(document.formFilter.cal_to_button, document.formFilter.FILTER_to_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_to_button' width="16" height="16" border="0" id="cal_to_button" /></a>					  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="infoHeader"><? echo _PilotBirthdate ?></td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                  <td><select name="FILTER_PilotBirthdate_op">
+                    <option value="="   <? if ($FILTER_PilotBirthdate_op=="=") echo "selected" ?>>=</option>
+                    <option value="&gt;="  <? if ($FILTER_PilotBirthdate_op==">=") echo "selected" ?>>&gt;=</option>
+                    <option value="&lt;="  <? if ($FILTER_PilotBirthdate_op=="<=") echo "selected" ?>>&lt;=</option>
+                  </select>
+                    <input name="FILTER_PilotBirthdate_text" id="FILTER_PilotBirthdate_text" type="text" size="10" maxlength="10" value="<?=$FILTER_PilotBirthdate_text ?>" />
+                    <a href="javascript:showCalendar(document.formFilter.cal_b_button, document.formFilter.FILTER_PilotBirthdate_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_b_button' width="16" height="16" border="0" id="cal_b_button" /></a> 
+					
+					&nbsp;&nbsp;&nbsp;&nbsp;<- <a href='javascript:resetBirthday();'><?=_ALL2?></a>
+					
+					
+					</td>
+                </tr>
+            </table></td>
+            <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="6">                       
+                <tr>
+                  <td width="130" class="main_text"><table width="100%" border="0" cellspacing="0" cellpadding="2">
+                    <tr>
+                      <td valign="top"><div class="infoHeader"><? echo _Start_Type?> </div>
+				  <input name="FILTER_start_type" id="FILTER_start_type" type="hidden" value="0" />
+                      <?			
+					foreach (  $CONF['startTypes'] as $fl_tmp_id=>$fl_tmp_value) {
+						$checked='';
+						if ($fl_tmp_id & $FILTER_start_type) $checked="checked='checked'";
+						echo "<label><input type='checkbox' name='xFILTER_start_type[]' value='$fl_tmp_id' $checked />".
+							$fl_tmp_value."</label><BR />\n";			
+					}
+				  ?>
+                      <div class="infoHeader"><? echo _GLIDER_TYPE ?> </div>
+				   <input type="hidden" id="FILTER_cat"  name="FILTER_cat"   value="0" />
+                   <?			
+					foreach (  $CONF_glider_types as $fl_tmp_id=>$fl_tmp_value) {
+						$checked='';
+						if ($fl_tmp_id & $FILTER_cat) $checked="checked='checked'";
+						echo "<label><input type='checkbox' name='xFILTER_cat[]' value='$fl_tmp_id' $checked />".
+							$fl_tmp_value."</label><BR />\n";			
+					}
+				  ?>				  </td>
+                      <td valign="top">
+					  	  <div class="infoHeader"><? echo _GLIDER_CERT ?> </div>				 
+				  <input name="FILTER_glider_cert" id="FILTER_glider_cert" type="hidden" value="0" />
+                      <?			
+					foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
+						$checked='';
+						if ($gl_id & $FILTER_glider_cert) $checked="checked='checked'";
+						echo "<label><input type='checkbox' name='xFILTER_glider_cert[]' value='$gl_id' $checked />".
+							$CONF_glider_certification_categories[$gl_id]."</label><BR />\n";			
+					}
+				  ?>					  </td>
+                    </tr>
+                  </table></td>
+                </tr>
+
+            </table></td>
+          </tr>
+      </table></td>
     </tr>
-    <tr>
-      <td><div align="right">
-        <? echo _OR ?>
-        <input name="FILTER_dateType" type="radio" value="DATE_RANGE" <? if ($FILTER_dateType=="DATE_RANGE") echo "checked" ?>>
-        </div></td>
-      <td><p><? echo _From ; ?>
-          <input name="FILTER_from_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_from_day_text ?>" >
-          <a href="javascript:showCalendar(document.formFilter.cal_from_button, document.formFilter.FILTER_from_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)">
-          <img name='cal_from_button' src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0"></a>
-          
-          <a href="javascript:showCalendar(document.formFilter.cal_to_button, document.formFilter.FILTER_to_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)">          </a></p></td>
-      <td class="main_text"><div align="right"><? echo _OLC_SCORE_SHOULD_BE ?> </div></td>
-      <td class="main_text"><select name="FILTER_olc_score_op">
-          <option value="&gt;=" <? if ($FILTER_olc_score_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="&lt;=" <? if ($FILTER_olc_score_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select>
-          <input name="FILTER_olc_score_select" type="text" size="5" value="<? echo $FILTER_olc_score_select ?>" /></td>
-    <tr>
-      <td>&nbsp;</td>
-      <td><? echo _TO ?>
-        <input name="FILTER_to_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_to_day_text ?>">
-        <a href="javascript:showCalendar(document.formFilter.cal_to_button, document.formFilter.FILTER_to_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_to_button' width="16" height="16" border="0" id="cal_to_button" /></a></td>
-      <td class="main_text"><div align="right"><? echo _OLC_SCORE_TYPE ?> </div></td>
-      <td class="main_text"><select name="FILTER_olc_type">
-          <option value=""></option>
-          <option value="FREE_FLIGHT"   <? if ($FILTER_olc_type=="FREE_FLIGHT") echo "selected" ?>>
-          <?=_FREE_FLIGHT?>
-          </option>
-          <option value="FREE_TRIANGLE" <? if ($FILTER_olc_type=="FREE_TRIANGLE") echo "selected" ?>>
-          <?=_FREE_TRIANGLE?>
-          </option>
-          <option value="FAI_TRIANGLE"  <? if ($FILTER_olc_type=="FAI_TRIANGLE") echo "selected" ?>>
-          <?=_FAI_TRIANGLE?>
-          </option>
-        </select>      </td>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td class="main_text"><div align="right"><? echo _DURATION_SHOULD_BE ?> </div></td>
-      <td class="main_text"><select name="FILTER_duration_op">
-          <option value="&gt;=" <? if ($FILTER_duration_op==">=") echo "selected" ?>>&gt;=</option>
-          <option value="&lt;=" <? if ($FILTER_duration_op=="<=") echo "selected" ?>>&lt;=</option>
-        </select>
-          <input id="xFILTER_duration_hours_select" type="text" size="2" value="<? echo floor($FILTER_duration_select/60) ?>"  onchange="filterUpdateDuration()"/>
-          <? echo _HOURS ?> :
-        <input id="xFILTER_duration_minutes_select" type="text" size="2" value="<? echo ($FILTER_duration_select%60) ?>" onchange="filterUpdateDuration()" />
-          <? echo _MINUTES ?></td>
+	 <tr>
+	   <td colspan="2" valign="top" class="infoHeader"><?=_OTHER_FILTERS?></td>
     </tr>
-      </table>
-	  </td>
+	 <tr>
+      <td colspan="2" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr>
+          <td class="main_text"><div align="right"><? echo _Sex ?> </div></td>
+          <td class="main_text"><select name="FILTER_sex">
+              <option value=""></option>
+              <option value="1" <? if ($FILTER_sex=="1") echo "selected" ?>>
+              <?=_Male?>
+              </option>
+              <option value="2" <? if ($FILTER_sex=="2") echo "selected" ?>>
+              <?=_Female?>
+              </option>
+            </select>          </td>
+          <td class="main_text"><div align="right"><? echo _LINEAR_DISTANCE_SHOULD_BE ?> </div></td>
+          <td class="main_text"><select name="FILTER_linear_distance_op">
+              <option value="&gt;=" <? if ($FILTER_linear_distance_op==">=") echo "selected" ?>>&gt;=</option>
+              <option value="&lt;=" <? if ($FILTER_linear_distance_op=="<=") echo "selected" ?>>&lt;=</option>
+            </select>
+              <input name="FILTER_linear_distance_select" type="text" size="5" value="<? echo $FILTER_linear_distance_select ?>" />
+            Km</td>
+        </tr>
+        <tr>
+          <td class="main_text"><div align="right"><? echo _OLC_SCORE_TYPE ?> </div></td>
+          <td class="main_text"><select name="FILTER_olc_type">
+              <option value="0"></option>
+              <option value="1"   <? if ($FILTER_olc_type=="1") echo "selected" ?>>
+              <?=_FREE_FLIGHT?>
+              </option>
+              <option value="2" <? if ($FILTER_olc_type=="2") echo "selected" ?>>
+              <?=_FREE_TRIANGLE?>
+              </option>
+              <option value="4"  <? if ($FILTER_olc_type=="4") echo "selected" ?>>
+              <?=_FAI_TRIANGLE?>
+              </option>
+            </select>          </td>
+          <td class="main_text"><div align="right"><? echo _OLC_DISTANCE_SHOULD_BE ?> </div></td>
+          <td class="main_text"><select name="FILTER_olc_distance_op">
+              <option value="&gt;=" <? if ($FILTER_olc_distance_op==">=") echo "selected" ?>>&gt;=</option>
+              <option value="&lt;=" <? if ($FILTER_olc_distance_op=="<=") echo "selected" ?>>&lt;=</option>
+            </select>
+              <input name="FILTER_olc_distance_select" type="text" size="5" value="<? echo $FILTER_olc_distance_select ?>" />
+            Km</td>
+        </tr>
+        <tr>
+          <td class="main_text"><div align="right"><? echo _DURATION_SHOULD_BE ?> </div></td>
+          <td class="main_text"><input type="hidden" name="FILTER_duration_select" id="FILTER_duration_select"  value="0" />
+              <select name="FILTER_duration_op" id="FILTER_duration_op">
+                <option value="&gt;=" <? if ($FILTER_duration_op==">=") echo "selected" ?>>&gt;=</option>
+                <option value="&lt;=" <? if ($FILTER_duration_op=="<=") echo "selected" ?>>&lt;=</option>
+              </select>
+              <input name="text2" type="text" id="xFILTER_duration_hours_select" value="<? echo floor($FILTER_duration_select/60) ?>" size="2"/>
+              <? echo _HOURS ?> :
+            <input name="text2" type="text" id="xFILTER_duration_minutes_select" value="<? echo ($FILTER_duration_select%60) ?>" size="2" />
+              <? echo _MINUTES ?></td>
+          <td class="main_text"><div align="right"><? echo _OLC_SCORE_SHOULD_BE ?> </div></td>
+          <td class="main_text"><select name="FILTER_olc_score_op">
+              <option value="&gt;=" <? if ($FILTER_olc_score_op==">=") echo "selected" ?>>&gt;=</option>
+              <option value="&lt;=" <? if ($FILTER_olc_score_op=="<=") echo "selected" ?>>&lt;=</option>
+            </select>
+              <input name="FILTER_olc_score_select" type="text" size="5" value="<? echo $FILTER_olc_score_select ?>" /></td>
+        </tr>
+
+
+      </table></td>
     </tr>
 	
-	<tr>
-	<?
-$dlgfiltersCount=count($dlgfilters);
-foreach ($dlgfilters as $filterkey=>$dlgfilter) {
-	$html[$i%2].=$dlgfilters[$filterkey]->filter_html();
-	$i++;
-}
-?>
-		<td width='50%' valign="top">
-			<table >
-			<?=$html[0] ?>
-			</table>
-		</td>
-		<td width='50%' valign="top">
-			<table >
-			<?=$html[1] ?>
-			</table>
-		</td>
-		</tr>
+    <tr>
+      <?
+		$dlgfiltersCount=count($dlgfilters);
+		foreach ($dlgfilters as $filterkey=>$dlgfilter) {
+			$html[$i%2].=$dlgfilters[$filterkey]->filter_html();
+			$i++;
+		}
+	?>
+      <td width='50%' valign="top"><table >
+          <?=$html[0] ?>
+      </table></td>
+      <td width='50%' valign="top"><table >
+          <?=$html[1] ?>
+      </table></td>
+    </tr>
     <tr>
       <td colspan="2"><div align="center">
-          <input type="submit" name="SubmitButton" id="SubmitButton" value="<? echo _ACTIVATE_CHANGE_FILTER ?>">
-          &nbsp;
-          <input type="hidden" name="clearFilter" id="clearFilter" value="0">
-          <input type="submit" name="clearFilterButton" id="clearFilterButton" value="<? echo _DEACTIVATE_FILTER ?>" onClick="document.formFilter.clearFilter.value=1">
-        </div></td>
+          <input type="submit" name="SubmitButton" id="SubmitButton" value="<? echo _ACTIVATE_CHANGE_FILTER ?>" />
+        &nbsp;
+        <input type="hidden" name="clearFilter" id="clearFilter" value="0" />
+        <input type="hidden" name="setFilter" id="setFilter" value="1" />
+        <input type="submit" name="clearFilterButton" id="clearFilterButton" value="<? echo _DEACTIVATE_FILTER ?>" onclick="document.formFilter.clearFilter.value=1" />
+      </div></td>
     </tr>
   </table>
   <p>&nbsp;</p>

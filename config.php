@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.134 2010/03/01 14:27:23 manolis Exp $                                                                 
+// $Id: config.php,v 1.135 2010/03/06 22:23:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -272,6 +272,11 @@ setlocale(LC_NUMERIC, 'en_US') ;
 				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
 // $CONF_glider_types=array(1=>"Paraglider");
 
+
+ $CONF['startTypes']=array(1=>"Foot",2=>"Winch",4=>"Microlight tow",8=>"E-motor" );
+ $CONF['defaultStartType']=1;
+
+
  $CONF_glider_certification_categories =array(
  		1=>"LTF 1",2=>"LTF 1/2",4=>"LFT 2", 8=>"LFT 2/3" , 16=>"LFT 3" , 
  		32=>"EN A",64=>"EN B",128=>"EN C", 256=>"EN D" , 
@@ -499,11 +504,14 @@ function setVarFromRequest($varname,$def_value,$isNumeric=0) {
 
 	global $$varname;
 	 // echo "SES:".$_SESSION[$varname].", REQ:".$_REQUEST[$varname].", varname:".$varname.", def_value: $def_value<BR>";
+	 // first we see if this was passed as an arguemnt
 	if (isset($_REQUEST[$varname])) {
 	  $$varname=$_REQUEST[$varname];
 	  $_SESSION[$varname]=$$varname;
+	// then if it already existed in the SESSION 
 	} else if ( isset($_SESSION[$varname])  ) {
 	  $$varname=$_SESSION[$varname];
+	// if nothing of the above, put the default value  
 	} else { // default value
 	  $$varname=$def_value;
 	  $_SESSION[$varname]=$$varname;

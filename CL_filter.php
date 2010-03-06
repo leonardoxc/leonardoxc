@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.4 2010/03/01 21:56:07 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.5 2010/03/06 22:23:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -364,13 +364,20 @@ class leonardoFilter {
 	
 	}
 	
-function filterImportFromSession() {
+function filterImport($arrayName) {
+	if ($arrayName=='_REQUEST') {
+		$variablesArray=$_REQUEST;
+	} else {
+		$variablesArray=${$arrayName};
+		global $variablesArray;
+	}
+	
 	global $filterOps;
 	global $pilotsTable,$flightsTable;
 	
 	$this->filterArray=array();
 	
-	foreach ($_SESSION as $key=>$value) {
+	foreach ($variablesArray as $key=>$value) {
 	
 		if (substr($key,0,7)!="FILTER_") continue;
 		
@@ -380,29 +387,46 @@ function filterImportFromSession() {
 
 		if ( preg_match("/YEAR/",$key ) ||  preg_match("/day_text/",$key ) || preg_match("/day_text/",$key ) ) continue;
 
+
+		if ($key=="FILTER_PilotBirthdate_text")  {	
+			if (!$value) continue;
+	
+			$op='FILTER_PilotBirthdate';
+			$opID=0x22;
+			
+			$year1=substr($variablesArray['FILTER_PilotBirthdate_text'],6,4);;// 23.02.2008
+			$month1=substr($variablesArray['FILTER_PilotBirthdate_text'],3,2);
+			$day1=substr($variablesArray['FILTER_PilotBirthdate_text'],0,2);			
+			$operand=$variablesArray['FILTER_PilotBirthdate_op'];
+				
+			$this->filterArray[]=array($opID,$op,$operand,$year1,$month1,$day1,0,0,0);
+			continue;			
+		}
+		
+		
 		if ($key=="FILTER_dateType")  {	
 			$opID=0x20;
 			$op='FILTER_DATE';
 			
 			if ($value=="DATE_RANGE") {
 			
-				$year1=substr($_SESSION['FILTER_from_day_text'],6,4);;// 23.02.2008
-				$month1=substr($_SESSION['FILTER_from_day_text'],3,2);
-				$day1=substr($_SESSION['FILTER_from_day_text'],0,2);
-				$year2=substr($_SESSION['FILTER_to_day_text'],6,4);
-				$month2=substr($_SESSION['FILTER_to_day_text'],3,2);
-				$day2=substr($_SESSION['FILTER_to_day_text'],0,2);
+				$year1=substr($variablesArray['FILTER_from_day_text'],6,4);;// 23.02.2008
+				$month1=substr($variablesArray['FILTER_from_day_text'],3,2);
+				$day1=substr($variablesArray['FILTER_from_day_text'],0,2);
+				$year2=substr($variablesArray['FILTER_to_day_text'],6,4);
+				$month2=substr($variablesArray['FILTER_to_day_text'],3,2);
+				$day2=substr($variablesArray['FILTER_to_day_text'],0,2);
 				
 				$this->filterArray[]=array($opID,$op,'between',$year1,$month1,$day1,$year2,$month2,$day2);
 			
 			} else if ($value=="MONTH_YEAR") {
-				$year1=$_SESSION['FILTER_MONTH_YEAR_select_YEAR'];
-				$month1=$_SESSION['FILTER_MONTH_YEAR_select_MONTH'];
-				$operand=$_SESSION['FILTER_MONTH_YEAR_select_op'];
+				$year1=$variablesArray['FILTER_MONTH_YEAR_select_YEAR'];
+				$month1=$variablesArray['FILTER_MONTH_YEAR_select_MONTH'];
+				$operand=$variablesArray['FILTER_MONTH_YEAR_select_op'];
 				$this->filterArray[]=array($opID,$op,$operand,$year1,$month1,0);
 			} else if ($value=="YEAR") {
-				$year1=$_SESSION['FILTER_YEAR_select'];
-				$operand=$_SESSION['FILTER_YEAR_select_op'];
+				$year1=$variablesArray['FILTER_YEAR_select'];
+				$operand=$variablesArray['FILTER_YEAR_select_op'];
 				$this->filterArray[]=array($opID,$op,$operand,$year1,0,0);
 			}
 
@@ -413,7 +437,7 @@ function filterImportFromSession() {
 			if (!$value) continue;	
 			$op=substr($key,0,-7);
 			$opID=array_search_value($op, $filterOps);
-			$operand=$_SESSION[$op.'_op'];
+			$operand=$variablesArray[$op.'_op'];
 			$this->filterArray[]=array($opID,$op,$operand,$value);
 			continue;
 		}
@@ -441,6 +465,7 @@ function filterImportFromSession() {
 		
 		$op=$key;
 		$opID=array_search_value($op, $filterOps);
+		// echo "Importing $opID,$op,$value <BR>";
 		$this->filterArray[]=array($opID,$op,$value);
 		continue;
 		
@@ -449,7 +474,16 @@ function filterImportFromSession() {
 	// echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>";	
 }
 
-function filterExportToSession() {
+
+// constructs the correct $_SESSION variables that the old GUI_filter  code needs!
+function filterExport($arrayName) {
+	if ($arrayName=='_REQUEST') {
+		$variablesArray=$_REQUEST;
+	} else {		
+		global ${$arrayName};
+		$variablesArray=&${$arrayName};
+	}
+	
 	global $filterOps;
 	global $pilotsTable,$flightsTable;
 	
@@ -464,14 +498,14 @@ function filterExportToSession() {
 			  //	FILTER_nacclubs_incl ->FILTER_nacclubs24_incl
 			  $varName=substr($varName,0,-5).$item[3].substr($varName,-5);
 			} 
-			$_SESSION[$varName]=$value;
+			$variablesArray[$varName]=$value;
 			continue;
 		}
 
 		if ( ($op & 0xf0) ==  0x60) {			
 			$varName=$filterOps[$op][0];
 			$value=$item[2];
-			$_SESSION[$varName]=$value;
+			$variablesArray[$varName]=$value;
 			continue;
 		}
 	
@@ -480,12 +514,12 @@ function filterExportToSession() {
 			$value=$item[3];
 			$operand=$item[2];
 			
-			$_SESSION[$varName.'_select']=$value;
-			$_SESSION[$varName.'_op']=$operand;
+			$variablesArray[$varName.'_select']=$value;
+			$variablesArray[$varName.'_op']=$operand;
 			continue;
 		}
 	
-		if ( ($op & 0xf0) ==  0x20) {	
+		if ( $op  ==  0x20) {	
 		/*  [0] => 32
             [1] => FILTER_DATE
             [2] => between
@@ -498,27 +532,45 @@ function filterExportToSession() {
 			$operand=$item[2];
 			
 			if ($operand=='between') {
-				$_SESSION['FILTER_dateType']='DATE_RANGE';
+				$variablesArray['FILTER_dateType']='DATE_RANGE';
 
-				$_SESSION['FILTER_from_day_text']= sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]); // 23.02.2010
-				$_SESSION['FILTER_to_day_text']=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]); 
+				$variablesArray['FILTER_from_day_text']= sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]); // 23.02.2010
+				$variablesArray['FILTER_to_day_text']=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]); 
 
 			} else if ( $item[3] && $item[4]) {
-				$_SESSION['FILTER_dateType']='MONTH_YEAR';
-				$_SESSION['FILTER_MONTH_YEAR_select_op']=	$operand;
-				$_SESSION['FILTER_MONTH_YEAR_select_YEAR']= $item[3];
-				$_SESSION['FILTER_MONTH_YEAR_select_MONTH']= $item[4];
+				$variablesArray['FILTER_dateType']='MONTH_YEAR';
+				$variablesArray['FILTER_MONTH_YEAR_select_op']=	$operand;
+				$variablesArray['FILTER_MONTH_YEAR_select_YEAR']= $item[3];
+				$variablesArray['FILTER_MONTH_YEAR_select_MONTH']= $item[4];
 			} else if ( $item[3] ) {
-				$_SESSION['FILTER_dateType']='YEAR';
-				$_SESSION['FILTER_YEAR_select_op']=	$operand;
-				$_SESSION['FILTER_YEAR_select']= $item[3];
+				$variablesArray['FILTER_dateType']='YEAR';
+				$variablesArray['FILTER_YEAR_select_op']=	$operand;
+				$variablesArray['FILTER_YEAR_select']= $item[3];
 			}	
 			continue;
 		}
 		
+		if ( $op == 0x22) {	
+		/*  [0] => 32
+            [1] => FILTER_PilotBirthdate
+            [2] => >=
+            [3] => 2028
+            [4] => 5
+            [5] => 6
+            [6] => 0
+            [7] => 0
+            [8] => 0		*/			
+			$operand=$item[2];			
+			$variablesArray['FILTER_PilotBirthdate_op']=	$operand;
+			$variablesArray['FILTER_PilotBirthdate_text']=  sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]); // 23.02.2010		
+			continue;
+		}
+		
+		
+		
 		} // foreach
 
-		// echo "<PRE>";	print_r($_SESSION);	echo "</PRE>";	
+		// echo "<PRE>";	print_r($variablesArray);	echo "</PRE>";	
 }
 	
 function makeFilterString() {	
@@ -623,12 +675,27 @@ function makeFilterString() {
 				if ($opType=="between"){ // RANGE
 					$date1=sprintf("%04d%02d%02d",$item[3],$item[4],$item[5]);
 					$date2=sprintf("%04d%02d%02d",$item[6],$item[7],$item[8]);
-					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m%d') >=  $date1 AND DATE_FORMAT(DATE,'%Y%m%d') <= $date2 ) ";
+					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m%d') >=  '$date1' AND DATE_FORMAT(DATE,'%Y%m%d') <= '$date2' ) ";
 				} else if ( $item[3] && !$item[4] && !$item[5] ) {
-					$filter_clause.=" AND DATE_FORMAT(DATE,'%Y') $opType ".$item[3]." ";
+					$filter_clause.=" AND DATE_FORMAT(DATE,'%Y') $opType '".$item[3]."' ";
 				} else 	if ( $item[3] && $item[4] ) {
-					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m') $opType ".sprintf("%04d%02d",$item[3].$item[4])." ) ";
+					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m') $opType '".sprintf("%04d%02d",$item[3],$item[4])."' ) ";
 				} 
+				continue;
+			}
+			
+			
+			if ($opName=='FILTER_PilotBirthdate') {
+				$opType=$item[2];
+				$date1=sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]);
+				$date2=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]);
+				
+				if ($opType=="between"){ // RANGE					
+					$filter_clause.=" AND (  $pilotsTable.Birthdate >= '$date1' AND $pilotsTable.Birthdate <= '$date2' ) ";
+				} else {
+					$filter_clause.=" AND $pilotsTable.Birthdate $opType '$date1' ";
+				} 
+				$filter_clause.=" AND  $pilotsTable.Birthdate <> '' ";
 				continue;
 			}
 			
@@ -655,12 +722,18 @@ function makeFilterString() {
 	
 			if ($opName=='FILTER_sex' && $item[2]) {
 				if ($item[2]==2)  $val="F";
-				else $val="F";
+				else $val="M";
 				$filter_clause.=" AND $pilotsTable.Sex='".$val."' ";
 				continue;
 			}
 			if ($opName=='FILTER_olc_type') {
-				$filter_clause.=" AND BEST_FLIGHT_TYPE='".$item[2]."' ";
+				$olc_type=$item[2];
+			 
+			   	if ($olc_type==1) $olc_type="FREE_FLIGHT";
+				if ($olc_type==2) $olc_type="FREE_TRIANGLE";
+				if ($olc_type==4) $olc_type="FAI_TRIANGLE";
+       
+				$filter_clause.=" AND BEST_FLIGHT_TYPE='".$olc_type."' ";
 				continue;
 			}	
 			if ($opName=='FILTER_cat') {
@@ -689,12 +762,10 @@ function makeFilterString() {
 	
 			if ($opName=='FILTER_olc_score') 			
 				$filter_clause.=" AND FLIGHT_POINTS ".$item[2]." ".$item[3]." ";
-		
-			if ($opName=='FILTER_olc_score') 			
-				$filter_clause.=" AND FLIGHT_POINTS ".$item[2]." ".$item[3]." ";
+				
 			
 			if ($opName=='FILTER_duration') 			
-				$filter_clause.=" AND DURATION ".$item[2]." ".$item[3]." ";
+				$filter_clause.=" AND DURATION ".$item[2]." ".($item[3]*60)." ";
 			
 		} // foreach
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.175 2010/02/25 21:49:50 manolis Exp $
+// $Id: CL_flightData.php,v 1.176 2010/03/06 22:23:12 manolis Exp $
 //
 //************************************************************************
 
@@ -37,6 +37,8 @@ class flight {
     var $glider="";
 	var $gliderBrandID=0;
 
+	var $startType;
+	
 	var $linkURL="";
 	var $takeoffID=0;
 	var $takeoffVinicity=0;
@@ -146,6 +148,8 @@ var $maxPointNum=1000;
 //---------------
 // CONSTRUCTOR
     function flight() {
+		$this->startType=$CONF['defaultStartType'];
+		
     	# Martin Jursa, 30.05.2007: make time gap configurable
 		global $CONF_max_allowed_time_gap;
 		if (!empty($CONF_max_allowed_time_gap)) {
@@ -3247,6 +3251,7 @@ $kml_file_contents=
 		$this->private=$row["private"];
 
 		$this->gliderCertCategory=$row["gliderCertCategory"];
+		$this->startType=$row["startType"];
 
 		$this->validated=$row["validated"];
 		$this->grecord=$row["grecord"];
@@ -3637,7 +3642,7 @@ $kml_file_contents=
 		/// Martin Jursa 17.05.2007: adding NACid
 		$query.=" $flightsTable (".$fl_id_1."filename,userID, dateUpdated,
 		cat,subcat,category,active, private ,
-		gliderCertCategory,
+		gliderCertCategory, startType,
 		validated,grecord,validationMessage,
 		hash, serverID, originalURL, originalKML, original_ID,
 		originalUserID ,userServerID,
@@ -3676,7 +3681,7 @@ $kml_file_contents=
 		)
 		VALUES (".$fl_id_2."'$this->filename',$this->userID, '$this->dateUpdated',
 		$this->cat,$this->subcat,$this->category,$this->active, $this->private,
-		$this->gliderCertCategory,
+		$this->gliderCertCategory, $this->startType,
 		$this->validated, $this->grecord, '".prep_for_DB($this->validationMessage)."',
 		'$this->hash',  $this->serverID, '$originalURL', '$originalKML',  $this->original_ID,
 		'$this->originalUserID' , $this->userServerID,

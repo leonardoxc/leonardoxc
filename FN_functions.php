@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.74 2010/03/01 21:56:07 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.75 2010/03/06 22:23:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -741,6 +741,14 @@ function getLeonardoLink($argArray) {
 		$linkType=1;
 	}
 	
+	// echo "#".$_SESSION['fltr'];
+	$filterArg='';
+	if ($_SESSION['fltr'] && !in_array("fltr",$argArray,true )) {
+		if ( in_array($argArray['op'],array('competition','list_takeoffs','list_flights','list_pilots'))  ) {
+			$filterArg.="&fltr=".$_SESSION['fltr'];				
+		}
+	}
+	
 	if ($linkType==1) {
 		global $baseInstallationPath,$CONF_mainfile;
 
@@ -748,10 +756,7 @@ function getLeonardoLink($argArray) {
 			if ($argValue!='useCurrent')
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
-		
-		if ($_SESSION['fltr'] && $op!='filter_x') {		
-			// $args.="&fltr=".$_SESSION['fltr'];
-		}
+		$args.=$filterArg;
 		
 		if ($CONF['links']['type']==3) {
 			$preDir=$CONF['links']['baseURL'];
@@ -778,6 +783,7 @@ function getLeonardoLink($argArray) {
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 			}	
 		}	
+		$args.=$filterArg;
 		
 		$thisURL=CONF_MODULE_ARG.$args;
 		if ($op=="comp") 
@@ -971,7 +977,7 @@ function getLeonardoLink($argArray) {
 
 			}	
 		}
-	
+		$args.=$filterArg;
 		return $CONF['links']['baseURL'].'/'.$args;
 	}
 }

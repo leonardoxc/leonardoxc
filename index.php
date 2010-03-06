@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.113 2010/03/05 15:03:47 manolis Exp $
+// $Id: index.php,v 1.114 2010/03/06 22:23:13 manolis Exp $
 //
 //************************************************************************
 
@@ -198,16 +198,29 @@ if ($_GET['leoSeo']) {
 setVarFromRequest("DBGcat","");
 setVarFromRequest("DBGlvl",0,1);
 
+// new filter code
 setVarFromRequest("fltr",0);
-//print_r($_REQUEST); print_r($_SESSION); echo "$fltr&&&";
 if ($fltr) {
 	$filter=new LeonardoFilter();
 	$filter->parseFilterString($fltr);
 	// echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
 	$_SESSION['filter_clause']=$filter->makeClause();
-	$_SESSION['filter_string']=$fltr;
-	$filter->filterExportToSession();
 }
+
+if ($_REQUEST['setFilter']==1) { // form submitted
+	if (!$filter) $filter=new LeonardoFilter();
+	//echo "<pre>"; print_r($_REQUEST); echo "</pre>";
+	
+	$filter->filterImport('_REQUEST');
+	//echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
+	if ($_REQUEST['clearFilter']==1) {
+		$_SESSION["filter_clause"]='';
+		$_SESSION["fltr"]='';
+	} else {
+		$_SESSION["filter_clause"]=$filter->makeClause();	
+		$_SESSION["fltr"]=$filter->makeFilterString();
+	}
+}		
 
 setVarFromRequest("includeMask",0);
 
