@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.135 2010/03/06 22:23:13 manolis Exp $                                                                 
+// $Id: config.php,v 1.136 2010/03/11 15:02:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -123,9 +123,17 @@ setlocale(LC_NUMERIC, 'en_US') ;
 
  $lang2iso=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
  			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"br","greek"=>"gr","turkish"=>"tr",
-			"swedish"=>"se","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
+			"swedish"=>"se","finnish"=>"fi","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
 			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
 			"danish"=>"dk","chinese"=>"cn","hebrew"=>"il");
+
+ $CONF['lang']['lang2countryFlag']=array(
+			"english"=>"us","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
+ 			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"br","greek"=>"gr","turkish"=>"tr",
+			"swedish"=>"se","finnish"=>"fi","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"cs",
+			"croatian"=>"hr","mexican"=>"mx","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
+			"danish"=>"dk","chinese"=>"cn","hebrew"=>"il");
+
 
  $lang2isoEditor=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
  			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"pt-br","greek"=>"el","turkish"=>"tr",
