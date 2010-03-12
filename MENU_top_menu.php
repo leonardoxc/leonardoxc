@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.81 2010/03/12 15:13:19 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.82 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -136,8 +136,9 @@ $(".ticksettings").livequery('click', function(e) {
 
 <? 
 
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' height='7' alt='select' border='0' \>";
+//$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' height='7' alt='select' border='0' \>";
+$arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
+
 // http://www.htmldog.com/articles/suckerfish/dropdowns/
 // http://www.htmldog.com/articles/suckerfish/dropdowns/example/
 
@@ -146,7 +147,9 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 // http://www.cssplay.co.uk/menus/final_drop.html
 
 	 $iconLink=getLeonardoLink(array('op'=>'index_full'));
-	 $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
+	 // $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
+	 $iconImg=leoHtml::img("icon_home.gif",16,14,'','home','icons1');
+	 
     // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
 
@@ -220,7 +223,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 <? } ?>
 
 		<li><a href="<?=getLeonardoLink(array('op'=>'index_full')) ?>"><?=_MENU_SUMMARY_PAGE ?></a></li>
-		<li><a href="<?=getLeonardoLink(array('op'=>'rss_conf')) ?>"><img src='<?=$moduleRelPath?>/img/rss.gif'  align="absmiddle" border=0> RSS Feed</a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'rss_conf')) ?>"><?= $iconImg=leoHtml::img("rss.gif",16,14,'absmiddle','RSS','icons1');?> RSS Feed</a></li>
 <?	
 	insertMenuItems('home','bottom'); 
 	
@@ -262,22 +265,14 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 	  
  	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
 	  
-	  // $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";
-	  
-	 // $flagImg="<span><div class='sprite_lng flag-$tmpLang' width='18' height='12'>&nbsp;</div>&nbsp;$tmpLangStr</span>";
-  	 // $flagImg="<img class='sprite_lng flag-$tmpLang' src='".$moduleRelPath."/img/space.gif' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr</span>";
+	  // $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";	  	  
 	  
 	  $cCode=$CONF['lang']['lang2countryFlag'][$tmpLang];
-	  $flagImg="<img class='fl sprite-$cCode' src='".moduleRelPath()."/img/space.gif' valign='middle' border='0' title='$str' width='18' height='12'>&nbsp;$tmpLangStr";
-	  
+  	  $flagImg=leoHtml::img("$cCode.png",18,12,'absmiddle',$str,'fl')."&nbsp;$tmpLangStr";
 	  
 	  if ($currentlang==$tmpLang) {
- 	    $current_flagImg=img($cCode.".png",18,12,_LANGUAGE,'fl',1);
-		
+ 	    $current_flagImg=leoHtml::img($cCode.".png",18,12,'',_LANGUAGE,'fl');		
 		//$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
-		
-		//$current_flagImg="<img class='fl sprite-$cCode' src='".moduleRelPath()."/img/space.gif' valign='middle' border='0' title='$str' width='18' height='12'>";
-	  
 	  }
 	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
 	} 
@@ -308,8 +303,8 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 						$register_url=str_replace("%module_name%",$module_name,$CONF['bridge']['register_url']);
 
 			?>
-			<li><a href="<?=$login_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGIN ?></a></li>			
-			<li><a href="<?=$register_url?>"><img src='<?=$moduleRelPath?>/img/icon_register.gif' valign='middle' border=0> <?=_MENU_REGISTER ?></a></li>
+			<li><a href="<?=$login_url?>"><?=leoHtml::img("icon_login.gif",0,0,'absmiddle','','icons1')?> <?=_MENU_LOGIN ?></a></li>			
+			<li><a href="<?=$register_url?>"><?=leoHtml::img("icon_register.gif",0,0,'absmiddle','','icons1')?> <?=_MENU_REGISTER?></a></li>
             
 			<? } else { // user alredy logged in  
 					if ($CONF_use_own_login) {
@@ -322,7 +317,7 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
 						}	
 					} else $logout_url="login.php?logout=true";
 			?>
-					<li><a href="<?=$logout_url?>"><img src='<?=$moduleRelPath?>/img/icon_login.gif' valign='middle' border=0> <?=_MENU_LOGOUT ?></a></li>			
+					<li><a href="<?=$logout_url?>"><?=leoHtml::img("icon_login.gif",0,0,'middle','','icons1')?> <?=_MENU_LOGOUT ?></a></li>			
 			
 			<? } ?>
 			<li class='li_space'></li>
@@ -340,9 +335,6 @@ $arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' hei
         <? } ?>
         
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
-        <? if ( L_auth::isAdmin($userID) && 0 )  {  ?>
-   		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_flights','pilotIDview'=>'0_'.$userID)) ?>"><img src='<?=$moduleRelPath?>/img/icon_new.png'  title=''  alt='' width='25' height='12' valign='middle' border='0' style='display:inline' />&nbsp;<?=_MENU_MY_FLIGHTS ?></a></li>
-        <? } ?>
 		<li class='li_space'></li>
 		<? } ?>
 		

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_clubs.php,v 1.6 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: MENU_clubs.php,v 1.7 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -174,7 +174,7 @@ if (!$useNacClubPopUp) {
 			if ( $clubsItem['id'] == $clubID ) $a_class="class='boldFont'";
 			else $a_class="";
 			echo "<li $a_class><a href='#' onclick='showClubDetails(".$clubsItem['id'].")'>
-			<img src='$moduleRelPath/img/icon_info.png' align='absmiddle' border='0' title='"._Club." ".$clubsItem['desc']."'></a>
+			".leoHtml::img("icon_info.png",0,0,'absmiddle',_Club." ".$clubsItem['desc'],'icons1')."</a>
 			<a $a_class href='".getLeonardoLink(array('op'=>'useCurrent','clubID'=>$clubsItem['id'],'nacclubid'=>'0','nacid'=>'0'))."'>".$clubsItem['desc']."</a></li>\n";
 		
 	}

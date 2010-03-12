@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.53 2010/03/12 15:13:19 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.54 2010/03/12 22:43:57 manolis Exp $
 //
 //************************************************************************
 
@@ -82,8 +82,9 @@
   if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
   else $isCompDisplay=0;
 
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_down.png' border=0>";
-$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
+
+//$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
+$arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 ?>
 <style type="text/css">
@@ -351,7 +352,8 @@ $(document).ready(function(){
 	// showFilter()
 ?>
 	<div id='filterMenuID' class="menuButton"><a href="#" onClick="toogleMenu('filter');return false;">
-	<img src='<?=$moduleRelPath?>/img/<?=$filterIcon?>' title='' align="absmiddle" border=0><? echo $arrDownImg; ?></a>
+	<?=leoHtml::img($filterIcon,0,0,'absmiddle','','icons1');?>
+	<? echo $arrDownImg; ?></a>
     </div>
 <? } ?>
 
@@ -376,7 +378,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 
 	if (count($clubsList[$clubID]['gliderCat']) >1 ) {
 		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0'));
-		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
+		$catImg=leoHtml::img("icon_cat_0.png",0,0,'','','icons1');
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
 	} else {
@@ -385,7 +387,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 
 	foreach ($clubsList[$clubID]['gliderCat'] as $c_gliderCat ) {
 		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$c_gliderCat));
-		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$c_gliderCat.".png' border=0>";
+		  $catImg=leoHtml::img("icon_cat_".$c_gliderCat.".png",0,0,'','','icons1');
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 
 		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$c_gliderCat]."</a></li>\n";
@@ -399,7 +401,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		$catLiStr="";
 
 		$catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>'0'));
-		$catImg="<img src='".$moduleRelPath."/img/icon_cat_0.png' border=0>";
+		$catImg=leoHtml::img("icon_cat_0.png",0,0,'absmiddle','','icons1');
 		if ($cat==0) $current_catImg=$catImg;
 		$catLiStr.="<li><a href='$catLink'>$catImg "._All_glider_types."</a></li>\n";
 
@@ -407,7 +409,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat));
 		  
 		  // $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
-		  $catImg=img("icon_cat_".$tmpcat.".png",0,0,'','icons1',1);
+		  $catImg=leoHtml::img("icon_cat_".$tmpcat.".png",0,0,'absmiddle','','icons1');
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 
 		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$tmpcat]."</a></li>\n";
@@ -416,13 +418,13 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 }
 
  if ($cat) {
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
-		$catLegend=img("icon_cat_".$cat.".png",0,0,_GLIDER_TYPE.": ".$gliderCatList[$cat],'icons1',1);
+    	//$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
+		$catLegend=leoHtml::img("icon_cat_".$cat.".png",0,0,'absmiddle',_GLIDER_TYPE.": ".$gliderCatList[$cat],'icons1');
 		//$gliderCatList[$cat]
   }	else {
 		$allCatDisplay=1;
-		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
-		$catLegend=img("icon_cat_".$cat.".png",0,0,_GLIDER_TYPE.": "._All_glider_types,'icons1',1);
+		//$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
+		$catLegend=leoHtml::img("icon_cat_".$cat.".png",0,0,'absmiddle',_GLIDER_TYPE.": "._All_glider_types,'icons1');
   }
 ?>
 <div id="nav2">
@@ -440,12 +442,12 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0'));
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_class_0.gif' border=0> "._All_classes."</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'>".leoHtml::img("icon_class_0.gif",0,0,'absmiddle','','icons1')." "._All_classes."</a></li>\n";
 
    if ( count($gliderClassList) > 1 ) {
 		foreach ( $gliderClassList as $gl_id=>$gl_type) {
 			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id));
-			  $catImg="<img src='".$moduleRelPath."/img/icon_class_".$gl_id.".gif' border=0>";
+			  $catImg=leoHtml::img("icon_class_".$gl_id.".gif",0,0,'absmiddle','','icons1');
 			  if ($cat==$tmpcat) $current_catImg=$catImg;
 
 			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
@@ -454,10 +456,10 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	}
 
 	if ($class) {
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": ".$gliderClassList[$class]."'>";
+    	$catLegend=leoHtml::img("icon_class_".$class.".gif",0,0,'absmiddle',_Class.": ".$gliderClassList[$class],'icons1');
 		//$gliderCatList[$cat]
   }	else {
-		$catLegend="<img src='".$moduleRelPath."/img/icon_class_".$class.".gif' align='middle' border=0 title='"._Class.": "._All_classes."'>";
+  		$catLegend=leoHtml::img("icon_class_".$class.".gif",0,0,'absmiddle',_Class.": "._All_classes,'icons1');		
   }
 
 ?>
@@ -475,22 +477,22 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 $catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>'0'));
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_xctype_0.gif' border=0> "._All_XC_types."</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'>".leoHtml::img("icon_xctype_0.gif",0,0,'absmiddle','','icons1')._All_XC_types."</a></li>\n";
 
    if ( count($xcTypesList) > 1 ) {
 		foreach ( $xcTypesList as $gl_id=>$gl_type) {
 			$catLink=getLeonardoLink(array('op'=>'useCurrent','xctype'=>$gl_id));
-			  $catImg="<img src='".$moduleRelPath."/img/icon_xctype_".$gl_id.".gif' border=0>";
+			  $catImg=leoHtml::img("icon_xctype_".$gl_id.".gif",0,0,'absmiddle','','icons1');
 			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
 
 		}
 	}
 
 	if ($xctype) {
-    	$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": ".$xcTypesList[$xctype]."'>";
+    	$catLegend=leoHtml::img("icon_xctype_".$xctype.".gif",0,0,'absmiddle',_xctype.": ".$xcTypesList[$xctype],'icons1');
 		//$gliderCatList[$cat]
   }	else {
-		$catLegend="<img src='".$moduleRelPath."/img/icon_xctype_".$xctype.".gif' align='middle' border=0 title='"._xctype.": "._All_XC_types."'>";
+  		$catLegend=leoHtml::img("icon_xctype_".$xctype.".gif",0,0,'absmiddle',_xctype.": "._All_XC_types,'icons1');	
   }
 
 ?>
@@ -513,17 +515,15 @@ if ($op=='list_flights'  ) { // photos and comments filter
 	$catLiStr="";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'0'));
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera_grey.gif' border=0> "._Photos_filter_off."</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'>".leoHtml::img("icon_camera_grey.gif",0,0,'absmiddle','','icons1').' '._Photos_filter_off."</a></li>\n";
 
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','filter01'=>'1'));
-	$catLiStr.="<li><a href='$catLink'><img src='".$moduleRelPath."/img/icon_camera.gif' border=0> "._Photos_filter_on."</a></li>\n";
+	$catLiStr.="<li><a href='$catLink'>".leoHtml::img("icon_camera.gif",0,0,'absmiddle','','icons1').' '._Photos_filter_on."</a></li>\n";
 
 	if ($filter01) {
-	   	$catLegend="<img src='".$moduleRelPath."/img/icon_camera.gif' align='middle' border=0 title='".
-					_Photos_filter_on."'>";
+	   	$catLegend=leoHtml::img("icon_camera.gif",0,0,'',_Photos_filter_on,'icons1');
 	}	else {
-		$catLegend="<img src='".$moduleRelPath."/img/icon_camera_grey.gif' align='middle' border=0 title='".
-					_Photos_filter_off."'>";
+		$catLegend=leoHtml::img("icon_camera_grey.gif",0,0,'',_Photos_filter_off,'icons1');
 	}
 
 ?>
@@ -548,9 +548,10 @@ if (! $dontShowCountriesSelection ) {
 		$countryLegend=$countries[$country];
 	}
 	if ($country) {
-		$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
+		$countryFlagImg=leoHtml::img(strtolower($country).".gif",0,0,'absmiddle',_MENU_COUNTRY,'fl mb4');
+		//$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
 	} else {
-		$countryFlagImg="<img src='$moduleRelPath/img/icon_globe.gif'  title='"._MENU_COUNTRY."' align='absmiddle' border='0'>";
+	    $countryFlagImg=leoHtml::img("icon_globe.gif",0,0,'absmiddle',_MENU_COUNTRY,'icons1');
 	}
 }
 
@@ -561,12 +562,12 @@ if (! $dontShowCountriesSelection ) {
     </div>
 <? } ?>
 
-    <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_date.gif' title='<?=_MENU_DATE?>' align="absmiddle" border=0> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
+    <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><?=leoHtml::img("icon_date.gif",0,0,'absmiddle',_MENU_DATE,'icons1')?> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
     </div>
 
 <?	if ($showNacClubSelection || (count($clubsList) && $op!='comp')  ) { ?>
     <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
-    <img  src='<?=$moduleRelPath?>/img/icon_club.gif' align="absmiddle" border=0 title="<?=$nacClubLegend?>"><?=' '._Club.' '.$arrDownImg; ?></a>
+   <?=leoHtml::img("icon_club.gif",0,0,'absmiddle',$nacClubLegend,'icons1')?><?=' '._Club.' '.$arrDownImg; ?></a>
     </div>
 <? } ?>
 
@@ -594,15 +595,14 @@ if (! $dontShowCountriesSelection ) {
 
     <div id='bookmarkMenuID' class="menuButton">
 			<a href="#" onClick="toogleMenu('bookmark');return false;">
-			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0>
+			 <?=leoHtml::img("icon_bookmark.gif",0,0,'absmiddle',_This_is_the_URL_of_this_page,'icons1')?>
 			 <? echo $arrDownImg; ?></a>
     </div>
 
     <div id='newsMenuID' class="menuButton">
 			<!-- <a href="#" onClick="toogleMenu('news');return false;"> -->
 			<a href="#" onClick="showNewsSettings();return false;">
-			
-			<img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_settings.gif' title='<?=_MENU_MY_SETTINGS ?>' align="absmiddle" border=0>
+			<?=leoHtml::img("icon_settings.gif",0,0,'absmiddle',_MENU_MY_SETTINGS,'icons1')?>			
 			 <? echo $arrDownImg; ?></a>
     </div>
 
@@ -617,7 +617,7 @@ if (! $dontShowCountriesSelection ) {
             $thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
                                     'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
         ?>
-        <a  href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0> <?=_This_is_the_URL_of_this_page?></a>
+        <a  href='<?=$thisURL?>'><?=leoHtml::img("icon_bookmark.gif",0,0,'absmiddle',_This_is_the_URL_of_this_page,'icons1')?> <?=_This_is_the_URL_of_this_page?></a>
 
 </div>
 </div>
@@ -627,7 +627,9 @@ if (! $dontShowCountriesSelection ) {
 <div class='content' style='padding:5px;'>
 
 	<? if ($_SESSION["filter_clause"]) {   ?>
-    <img src='<?=$moduleRelPath?>/img/icon_filter.png' border=0 align="absmiddle"> <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
+	
+	<?=leoHtml::img("icon_filter.png",0,0,'absmiddle','','icons1')?>
+    <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
     <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
     </div>		&nbsp;
@@ -635,7 +637,8 @@ if (! $dontShowCountriesSelection ) {
     <a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
     </div>
     <?	} else { ?>
-    <img src='<?=$moduleRelPath?>/img/icon_info.png' border=0> <?=_THE_FILTER_IS_INACTIVE?>&nbsp;
+	<?=leoHtml::img("icon_info.png",0,0,'absmiddle','','icons1')?>
+    <?=_THE_FILTER_IS_INACTIVE?>&nbsp;
     <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
     </div>
@@ -697,7 +700,7 @@ if (! $dontShowCountriesSelection ) {
 <div id="newsDropDownID" class="secondMenuDropLayer"  >
 <div class='closeButton closeLayerButton'></div>
 <div class='content' style='padding:5px;'>
-      <a href='<?=$thisURL?>'><img src='<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/img/icon_bookmark.gif' title='<?=_This_is_the_URL_of_this_page?>' align="absmiddle" border=0> Configure the display of News </a>
+      <a href='<?=$thisURL?>'><?=leoHtml::img("icon_bookmark.gif",0,0,'absmiddle',_This_is_the_URL_of_this_page,'icons1')?> Configure the display of News </a>
 </div>
 </div>
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.116 2009/12/28 13:41:14 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.117 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -408,8 +408,9 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$s
   if ($sort) {
 	  if ($sortOrder==$fieldName) { 
 	   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
-			<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$fieldName) )."'>$fieldDesc<img src='$moduleRelPath/img/icon_arrow_down.png' border='0' alt='Sort order' width='10' height='10' />
-			</td>\n";
+			<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$fieldName) )."'>$fieldDesc".
+			leoHtml::img("icon_arrow_down.png",0,0,'','Sort order','icons1').			
+			"</td>\n";
 	  } else {  
 	   echo "<td class='SortHeader $alignClass' $widthStr>
 			<a href='".getLeonardoLink(array('op'=>'list_flights','sortOrder'=>$fieldName) )."'>$fieldDesc</a>
@@ -554,7 +555,7 @@ function removeClubFlight(clubID,flightID) {
 	   $date2row="";	   
   	   if ( $days_from_submission <= $CONF_new_flights_days_threshold  )  {
 			$newSubmissionStr=_SUBMIT_FLIGHT.': '.$row["dateAdded"].' GMT';
-			$date2row.="<img src='".$moduleRelPath."/img/icon_new.png' align='absmiddle' width='25' height='12' title='$newSubmissionStr' alt='$newSubmissionStr' />";			
+			$date2row.=leoHtml::img("icon_new.png",25,12,'absmiddle',$newSubmissionStr,'icons1');			
   	   } 
 
 		if ($row['excludeFrom'] & 0x01 ) $date2row.="*";
@@ -629,7 +630,7 @@ function removeClubFlight(clubID,flightID) {
   		    echo "<TD class='speed'>$scoreSpeed</TD>";
 	   }	
 	   echo "<TD class='distance'>$olcDistance</TD>".
-	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;<img src='".$moduleRelPath."/img/$olcScoreTypeImg' alt='".formatOLCScoreType($olcScoreType,0)."' border='0' width='16' height='16' align='top' />";
+	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;".leoHtml::img($olcScoreTypeImg,16,16,'top',formatOLCScoreType($olcScoreType,0),'icons1');
 
 		if ($CONF_use_validation) {
 			$isValidated=$row['validated'];
@@ -637,11 +638,11 @@ function removeClubFlight(clubID,flightID) {
 			else if ($isValidated==0) $vImg="icon_valid_unknown.gif";
 			else if ($isValidated==1) $vImg="icon_valid_ok.gif";
 			
-			$valStr="<img class='listIcons' src='".$moduleRelPath."/img/$vImg' width='12' height='12' border='0' />";
+			$valStr=leoHtml::img($vImg,12,12,'',formatOLCScoreType($olcScoreType,0),'icons1 listIcons');		
 			echo $valStr;
 		}
 	   echo "</TD>";
-	   echo "<TD><img src='".$moduleRelPath."/img/icon_cat_".$row["cat"].".png' alt='".$gliderCatList[$row["cat"]]."' width='16' height='16' border='0' /></td>".
+	   echo "<TD>".leoHtml::img("icon_cat_".$row["cat"].".png",0,0,'',$gliderCatList[$row["cat"]],'icons1')."</td>".
    	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
 		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
@@ -685,12 +686,18 @@ function removeClubFlight(clubID,flightID) {
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			// add class='betterTip' for tooltip
-			echo "<a  id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' border='0' /></a>";
+			echo "<a  id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
+			leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon')."</a>";
 			
-		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"]."' , '$currentlang')\"  onmouseout=\"geTip.hide()\"><img id='ge_$i' class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
+		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
+					"' , '$currentlang')\"  onmouseout=\"geTip.hide()\">".
+					leoHtml::img("geicon.gif",0,0,'top',_Navigate_with_Google_Earth,'icons1 geIcon','ge_'.$i)."</a>";
+			//<img id='ge_$i' class='geIcon' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 
 		} else {
-			echo "<a  href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'><img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
+			echo "<a  href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
+					leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon')."</a>";
+			//<img class='flightIcon' src='".$moduleRelPath."/img/icon_look.gif' border=0 valign=top title='"._SHOW."'  width='16' height='16' /></a>";
 
 			$originalKML=$row["originalKML"];
 			global $CONF;
@@ -702,21 +709,29 @@ function removeClubFlight(clubID,flightID) {
 			}
 			
 			if ($originalKML) 
-			    echo "<a  href='".$originalKML."'><img class='geIcon  ' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
+			    echo "<a  href='".$originalKML."'>".
+						leoHtml::img("geicon.gif",0,0,'',_Navigate_with_Google_Earth,'icons1 geIcon')."</a>";
+				//<img class='geIcon  ' src='".$moduleRelPath."/img/geicon.gif' border=0 valign=top title='"._Navigate_with_Google_Earth."' width='16' height='16' /></a>";
 			else
-			    echo "<img class='geIcon' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
+				"<img class='geIcon' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 
 			// echo "<img class='listIcons' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
 		}
 
 		$photosNum=$row["hasPhotos"];
-		if ($photosNum) echo "<span><a class='betterTip2' id='tpa1_$flightID' href='javascript:nop();'><img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' border=0 title='$photosNum "._PHOTOS."' /></a></span>";
+		if ($photosNum)
+			echo "<span><a class='betterTip2' id='tpa1_$flightID' href='javascript:nop();'>".
+				leoHtml::img("icon_camera.gif",0,0,'',$photosNum.' '._PHOTOS,'icons1 photoIcon2')."</a></span>";
+		  //<img class='photoIcon2' src='".$moduleRelPath."/img/icon_camera.gif' width='16' height='16' border=0 title='$photosNum "._PHOTOS."' /></a></span>";
 		// else echo "<img class='photoIcon2' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='16' height='16' />";
  
 		if ($row["comments"]) $hasComments=1;
 		else $hasComments=0;
 	
-		if ($hasComments ) echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'><img  class='commentDiv' src='".$moduleRelPath."/img/icon_comments.gif' width='12' height='8' border='0' /></a>";
+		if ($hasComments ) 
+				echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'>".
+						leoHtml::img("icon_comments.gif",0,0,'',$photosNum.' '._PHOTOS,'icons1 commentDiv')."</a>";
+			//<img  class='commentDiv' src='".$moduleRelPath."/img/icon_comments.gif' width='12' height='8' border='0' /></a>";
 		// else echo "<img class='commentDiv' src='".$moduleRelPath."/img/photo_icon_blank.gif' width='12' height='8' />";
 
 		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
@@ -724,7 +739,8 @@ function removeClubFlight(clubID,flightID) {
  			 $extServerStrShort=$CONF['servers']['list'][$row['serverID']]['short_name'];
 			 
 			 if ($isExternalFlight ==2 ) {
-				 echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry.": $extServerStr'>";
+			 	 echo leoHtml::img("icon_link_dark.gif",0,0,'',_External_Entry.": $extServerStr",'icons1 extLink');
+				// echo "<img class='extLink' src='$moduleRelPath/img/icon_link_dark.gif' border=0 title='"._External_Entry.": $extServerStr'>";
 				 echo "<div class='extLinkName'>$extServerStrShort</div>";
 			 } else { 
 				 
@@ -740,7 +756,8 @@ function removeClubFlight(clubID,flightID) {
 				 echo "<a href='$extFlightLink' target='_blank' class='extLinkDiv' title='$extServerStr: "._Ext_text2."' >";
 					 // also put the direct link in the place of the photo
 					 echo "<img class='extServerLogo' src='".$moduleRelPath."/img/servers/".sprintf("%03d",$row['serverID']).".gif' width='16' height='16'  border='0'/>";
-					 echo "<img class='extLinkIcon' src='$moduleRelPath/img/icon_link_dark.gif' border=0 >";
+					 echo leoHtml::img("icon_link_dark.gif",0,0,'','','icons1 extLinkIcon');			
+					 //echo "<img class='extLinkIcon' src='$moduleRelPath/img/icon_link_dark.gif' border=0 >";
 					 echo "<div class='extLinkDescr'>$extServerStrShort</div>";
 					 //echo "<span class='extLinkDescr'>$extServerStrShort</span>";
 				 echo "</a>";
@@ -755,7 +772,8 @@ function removeClubFlight(clubID,flightID) {
 		if (($row["userID"]==$userID && $inWindow) || L_auth::isAdmin($userID) ) {
 			echo "<div id='ac_$i' class='actionLink'>";
 			echo "<a href=\"javascript:flightActionTip.newTip('inline', -100, 13, 'ac_$i', 120, ".$row["ID"]." )\"  onmouseout=\"flightActionTip.hide()\">".
-					"<img src='".$moduleRelPath."/img/icon_action_select.gif' width='16' height='10' border='0' align='bottom' /></a>";
+					leoHtml::img("icon_action_select.gif",0,0,'bottom','','icons1')."</a>";
+					// "<img src='".$moduleRelPath."/img/icon_action_select.gif' width='16' height='10' border='0' align='bottom' /></a>";
 			echo "</div>";
 	   }
 

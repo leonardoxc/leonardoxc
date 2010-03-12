@@ -8,30 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.54 2010/03/12 15:13:19 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.55 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
-function img($imgName,$width=0,$height=0,$title='',$class='',$type=1) {
-
-	$str=" border='0' ";	
-	if ($title) $str.=" title='$title'  alt='$title' ";
-	if ($width) $str.=" width='$width' ";
-	if ($height) $str.="  height='$height' ";
-
-	
-	if ($type==0) {
-		if ($class) $strClass.=" class='$class' ";
-		else $strClass.="";
-		$imgStr="<img $strClass src='".moduleRelPath()."/img/$imgName' $str>";
-	} else {
-		$imgName=str_replace("\/","-",$imgName);
-		$imgName=substr($imgName,0,-4);
-		$imgStr="<img class='$class sprite-$imgName' src='".moduleRelPath()."/img/space.gif' $str>";
-	}		
-	return $imgStr;
-}
-
+require_once dirname(__FILE__)."/CL_html.php";
 
 function sec2Time($secs,$no_seconds=false) {
   if ($no_seconds)
@@ -479,8 +460,8 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	if ( $add_prevnext_text )
 	{
 		global $themeRelPath;
-		$imgNext="<img src='$themeRelPath/img/icon_page_next.gif' border=0 align=absmiddle >";
-		$imgPrev="<img src='$themeRelPath/img/icon_page_previous.gif' border=0 align=absmiddle >";
+		$imgNext=leoHtml::img("icon_page_next.gif",0,0,'border','','icons1');	
+		$imgPrev=leoHtml::img("icon_page_next.gif",0,0,'border','','icons1');
 		if ( $on_page > 1 )
 			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '">'.$imgPrev.'</a>&nbsp;&nbsp;'.$page_string;
 
@@ -558,15 +539,18 @@ with (geTip)
 			(showTitle?"<div id='BT_title'>"+title+"</div>":"") +
 			"<div style='padding:5px'>" +
 				"<div id='BT_content' style='line-height:140%'>"+
-				
+
+<? 
+$icon_bullet_greenStr=leoHtml::img("icon_bullet_green.gif",0,0,'absmiddle','','icons1');
+?>				
 				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || L_auth::isModerator($userID) )   ) { ?>
-				"<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'><img src='<?=$moduleRelPath?>/img/icon_new.png' width='25' height='12' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'2','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'IGC2KMZ '._ge_module_advanced_1; ?></a>"+
+				"<?=$icon_bullet_greenStr?><?=leoHtml::img("icon_new.png",0,0,'absmiddle','','icons1')?> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'2','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'IGC2KMZ '._ge_module_advanced_1; ?></a>"+
 	'<br>'+
 				<? } ?>
-  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'1','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'GPS2GE V2.0 '._ge_module_advanced_2; ?></a>"+
+  "<?=$icon_bullet_greenStr?> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'1','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'GPS2GE V2.0 '._ge_module_advanced_2; ?></a>"+
 	'<br>'+
 
-  "<img src='<?=$moduleRelPath?>/img/icon_bullet_green.gif' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'0','flightID'=>'%4%','lng'=>'%5%'))?>'><?=_ge_module_Simple ?></a>"+
+  "<?=$icon_bullet_greenStr?> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'0','flightID'=>'%4%','lng'=>'%5%'))?>'><?=_ge_module_Simple ?></a>"+
   
 					
 				"</div>" +

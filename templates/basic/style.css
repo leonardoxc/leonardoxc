@@ -342,8 +342,15 @@ border:0;
 .numeration  a, .numeration  a:visited { color:#FFFFFF; }
 /*.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }*/
 .takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#70719A; font-size:10px; text-align:right; }
+.takeoffLink a, .takeoffLink  a:link , .takeoffLink  a:visited { 
+	 text-align:left; text-decoration:none; border-bottom:1px dashed #BEC0E2;
+}
 
-.pilotLink,   .pilotLink   a, .pilotLink   a:visited { color:#000066; text-align:left; }
+.pilotLink, .pilotLink  a, .pilotLink   a:link , .pilotLink   a:visited { color:#000066; text-align:left;  }
+
+.pilotLink a, .pilotLink  a:link , .pilotLink  a:visited { 
+	color:#000066; text-align:left; text-decoration:none; border-bottom:1px dashed #BEC0E2;
+}
 
 .actionLink,   .actionLink a, .actionLink a:visited { color:#000066; text-align:left; text-decoration:none;}
 
@@ -828,4 +835,8 @@ span.ok  {
 	padding:5px;
 	margin-bottom:3px;
 	font-weight:bold;
+}
+
+.mb4 {
+	margin-bottom:2px;
 }

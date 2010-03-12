@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.49 2010/02/03 14:20:52 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.50 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -232,13 +232,15 @@ function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	global $CONF,$CONF_server_id,$moduleRelPath;
 	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ||
 		 $CONF['servers']['list'][$serverID]['treat_flights_as_local'] ) return '';
-	else if ($typeOfLink==1) return "<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." $linkURL'>";
+	else if ($typeOfLink==1) return leoHtml::img("icon_link.gif",0,0,'',_External_Entry." $linkURL",'icons1 flagIcon');	
+	//	"<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." $linkURL'>";
 	else if ($typeOfLink==2) return " (*)";
 	else if ($typeOfLink==3) {
 		//$file="$moduleRelPath/img/servers/".sprintf("%03d",$serverID).".gif";
 		//if (!is_file($file)) $file="$moduleRelPath/img/icon_link.gif";
 		$file="$moduleRelPath/img/icon_link.gif";
-		return "<img class='flagIcon' src='$file' border=0 title='"._External_Entry." $linkURL'>";
+		return leoHtml::img("icon_link.gif",0,0,'',_External_Entry." $linkURL",'icons1 flagIcon');
+		//"<img class='flagIcon' src='$file' border=0 title='"._External_Entry." $linkURL'>";
 	}
 }
 
@@ -296,8 +298,8 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str;
 
-			if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
-				$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+			if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log				
+				$str.=leoHtml::img("icon_female_small.gif",0,0,'absmiddle','','icons1');
 			}
 
 			$str=$str.getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);

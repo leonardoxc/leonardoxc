@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_filter_menu.php,v 1.9 2009/12/23 14:02:17 manolis Exp $                                                                 
+// $Id: MENU_filter_menu.php,v 1.10 2010/03/12 22:43:57 manolis Exp $                                                                 
 //
 //************************************************************************
   
@@ -59,7 +59,7 @@
 <div class="mainBox" align="left" style="margin-top:5px; margin-bottom:0px;">  	
 
 <? if ($showNacClubSelection && $nacid && $nacclubid ) {  ?>
-  	    <div class="menu1" ><img src='<?=$moduleRelPath?>/img/icon_club.gif'  align="absmiddle" border=0>
+  	    <div class="menu1" ><?=leoHtml::img("icon_club.gif",0,0,'absmiddle','','icons1')?>
   	    <?
   	    	echo "<b>$nacClubLegend</b>";
   	    	if (1) 
