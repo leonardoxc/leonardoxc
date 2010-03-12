@@ -8,15 +8,16 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.53 2010/02/03 14:20:52 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.54 2010/03/12 15:13:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
-function img($imgName,$type=0,$class='',$title='',$width=0,$height=0) {
+function img($imgName,$width=0,$height=0,$title='',$class='',$type=1) {
 
-	$str=" border='0' ";
-	if ($title) $str.=" title='$title' ";
-	if ($width && $height) $str.=" width='$width' height='$height' ";
+	$str=" border='0' ";	
+	if ($title) $str.=" title='$title'  alt='$title' ";
+	if ($width) $str.=" width='$width' ";
+	if ($height) $str.="  height='$height' ";
 
 	
 	if ($type==0) {
@@ -25,8 +26,8 @@ function img($imgName,$type=0,$class='',$title='',$width=0,$height=0) {
 		$imgStr="<img $strClass src='".moduleRelPath()."/img/$imgName' $str>";
 	} else {
 		$imgName=str_replace("\/","-",$imgName);
-		$imgName=substr($imgStr,0,-4);
-		$imgStr="<img class='$class $imgName' src='".moduleRelPath()."/img/space.gif' $str>";
+		$imgName=substr($imgName,0,-4);
+		$imgStr="<img class='$class sprite-$imgName' src='".moduleRelPath()."/img/space.gif' $str>";
 	}		
 	return $imgStr;
 }

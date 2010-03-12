@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.52 2010/02/27 22:40:51 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.53 2010/03/12 15:13:19 manolis Exp $
 //
 //************************************************************************
 
@@ -405,7 +405,9 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
 		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat));
-		  $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
+		  
+		  // $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
+		  $catImg=img("icon_cat_".$tmpcat.".png",0,0,'','icons1',1);
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 
 		  $catLiStr.="<li><a href='$catLink'>$catImg ".$gliderCatList[$tmpcat]."</a></li>\n";
@@ -415,10 +417,12 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 
  if ($cat) {
     	$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
+		$catLegend=img("icon_cat_".$cat.".png",0,0,_GLIDER_TYPE.": ".$gliderCatList[$cat],'icons1',1);
 		//$gliderCatList[$cat]
   }	else {
 		$allCatDisplay=1;
 		$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
+		$catLegend=img("icon_cat_".$cat.".png",0,0,_GLIDER_TYPE.": "._All_glider_types,'icons1',1);
   }
 ?>
 <div id="nav2">
