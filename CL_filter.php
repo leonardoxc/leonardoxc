@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.5 2010/03/06 22:23:11 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.6 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -157,7 +157,8 @@ if (0) {
 class leonardoFilter {
 
 	var $filterArray=array();
-
+	var $filterTextual="";
+	
 	function leonardoFilter() {
 
 	}
@@ -546,6 +547,8 @@ function filterExport($arrayName) {
 				$variablesArray['FILTER_dateType']='YEAR';
 				$variablesArray['FILTER_YEAR_select_op']=	$operand;
 				$variablesArray['FILTER_YEAR_select']= $item[3];
+			}else {
+				
 			}	
 			continue;
 		}
@@ -568,8 +571,11 @@ function filterExport($arrayName) {
 		
 		
 		
-		} // foreach
+	} // foreach
 
+	// done if $variablesArray['FILTER_dateType']='ALL'; is not set then set it hereL
+	if (!$variablesArray['FILTER_dateType']) $variablesArray['FILTER_dateType']='ALL';
+	
 		// echo "<PRE>";	print_r($variablesArray);	echo "</PRE>";	
 }
 	
@@ -662,6 +668,8 @@ function makeFilterString() {
 		
 		$filter_clause="";
 		
+		$filterTextual="";
+		
 		$nacclub_clauses=array();
 		$AND_clauses=array();
 					
@@ -676,10 +684,17 @@ function makeFilterString() {
 					$date1=sprintf("%04d%02d%02d",$item[3],$item[4],$item[5]);
 					$date2=sprintf("%04d%02d%02d",$item[6],$item[7],$item[8]);
 					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m%d') >=  '$date1' AND DATE_FORMAT(DATE,'%Y%m%d') <= '$date2' ) ";
+					
+					$date1=sprintf("%04d.%02d%.02d",$item[3],$item[4],$item[5]);
+					$date2=sprintf("%04d.%02d.%02d",$item[6],$item[7],$item[8]);
+					$filterTextual.=" AND  The date is >=  $date1 and  <= $date2 \n";
+					
 				} else if ( $item[3] && !$item[4] && !$item[5] ) {
 					$filter_clause.=" AND DATE_FORMAT(DATE,'%Y') $opType '".$item[3]."' ";
+					$filterTextual.=" AND The Year is  $opType ".$item[3]." \n";
 				} else 	if ( $item[3] && $item[4] ) {
 					$filter_clause.=" AND ( DATE_FORMAT(DATE,'%Y%m') $opType '".sprintf("%04d%02d",$item[3],$item[4])."' ) ";
+					$filterTextual.=" AND The date $opType ".sprintf("%04d.%02d",$item[3],$item[4])." \n";
 				} 
 				continue;
 			}
@@ -705,10 +720,13 @@ function makeFilterString() {
 				$clause='';
 				$in_string='';
 
+				$filterTextual.="<li>".$filterOps[$op][1].": ";
 				foreach($item[2] as $item1) {
 					$in_string.="'$item1',";
+					$filterTextual.="$item1 ";
 				}
 				$in_string=substr($in_string,0,-1);
+				$filterTextual.="\n";
 				
 				$clause= $filterOps[$op][2].' IN ('.$in_string.') ';
 				if ($filterOps[$op][1]=='nacclub') {
@@ -724,6 +742,7 @@ function makeFilterString() {
 				if ($item[2]==2)  $val="F";
 				else $val="M";
 				$filter_clause.=" AND $pilotsTable.Sex='".$val."' ";
+				$filterTextual.="<li>Pilot Gender is ".(($item[2]!=2) ? "Male":"Female")."\n";	
 				continue;
 			}
 			if ($opName=='FILTER_olc_type') {
@@ -733,7 +752,9 @@ function makeFilterString() {
 				if ($olc_type==2) $olc_type="FREE_TRIANGLE";
 				if ($olc_type==4) $olc_type="FAI_TRIANGLE";
        
-				$filter_clause.=" AND BEST_FLIGHT_TYPE='".$olc_type."' ";
+				$filter_clause.=" AND BEST_FLIGHT_TYPE='".$olc_type."' ";				
+				$filterTextual.="<li>Type of XC flight is ".str_replace("_"," ",$olc_type)."\n";			
+				
 				continue;
 			}	
 			if ($opName=='FILTER_cat') {
@@ -754,19 +775,25 @@ function makeFilterString() {
 			}	
 
 				
-			if ($opName=='FILTER_linear_distance') 
+			if ($opName=='FILTER_linear_distance') {
 				$filter_clause.=" AND LINEAR_DISTANCE ".$item[2]." ".($item[3]*1000)." ";
-	
-			if ($opName=='FILTER_olc_distance') 
+				$filterTextual.="<li>Straight Distance ".$item[2]." ".$item[3]." \n";
+			}
+			
+			if ($opName=='FILTER_olc_distance') {
 				$filter_clause.=" AND FLIGHT_KM ".$item[2]." ".($item[3]*1000)." ";
-	
-			if ($opName=='FILTER_olc_score') 			
+				$filterTextual.="<li>XC km ".$item[2]." ".$item[3]." \n";
+			}
+			
+			if ($opName=='FILTER_olc_score') 	{		
 				$filter_clause.=" AND FLIGHT_POINTS ".$item[2]." ".$item[3]." ";
-				
+				$filterTextual.="<li>XC SCORE ".$item[2]." ".$item[3]." \n";				
+			}	
 			
-			if ($opName=='FILTER_duration') 			
+			if ($opName=='FILTER_duration') 	{		
 				$filter_clause.=" AND DURATION ".$item[2]." ".($item[3]*60)." ";
-			
+				$filterTextual.="<li>Flight Duration ".$item[2]." ".sprintf("%2d:%02d",$item[3]/60,$item[3]%60)." \n";
+			}
 		} // foreach
 
 		//print_r($AND_clauses);		
@@ -778,6 +805,8 @@ function makeFilterString() {
 		if (count($AND_clauses)>0) {
 			$filter_clause.=' AND '.implode(' AND ', $AND_clauses);
 		}
+		
+		$this->filterTextual=$filterTextual;
 		
 		return $filter_clause;		
 		

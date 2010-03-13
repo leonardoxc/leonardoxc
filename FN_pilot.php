@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.50 2010/03/12 22:43:57 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.51 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -298,7 +298,8 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 			if ($getAlsoCountry )  $str=getNationalityDescription($pilot['countryCode'],1,0).$str;
 
-			if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log				
+			if ($gender==1 && strtoupper($pilot['Sex'])=='F' && $getAlsoCountry)  { 
+				// the $getAlsoCountry will prevent putting the F symbol in sync-log				
 				$str.=leoHtml::img("icon_female_small.gif",0,0,'absmiddle','','icons1');
 			}
 
@@ -358,8 +359,9 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	$str.=getExternalLinkIconStr($serverID,'',$getAlsoExternalIndicator);
 	if ($getAlsoCountry ) $str=getNationalityDescription($pilot['countryCode'],1,0).$str;
 
-	if ($gender==1 && $pilot['Sex']=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
-		$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
+	if ($gender==1 && strtoupper($pilot['Sex'])=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
+		$str.=leoHtml::img("icon_female_small.gif",0,0,'absmiddle','','icons1');
+		//$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
 	}
 
 	return $str;

@@ -25,15 +25,17 @@
     
 	$where_clause.=" AND cat=$cat ";
 
-	// pilots must be NACid=2 (OeAeC) and NACmemberID>0
-	$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 AND countryCode='AT' ";
-
-	// The flgiht mus be validated
-	$where_clause.=" AND validated=1 ";
-
- 	// support for NACclub filtering
-	if ($nacclubid) {
-		$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid ";
+	if (1) {
+		// pilots must be NACid=2 (OeAeC) and NACmemberID>0
+		$where_clause.=" AND $pilotsTable.NACid=$nacid AND NACmemberID>0 AND  $pilotsTable.countryCode='AT' ";
+	
+		// The flgiht mus be validated
+		$where_clause.=" AND validated=1 ";
+	
+		// support for NACclub filtering
+		if ($nacclubid) {
+			$where_clause.=" AND $flightsTable.NACid=$nacid AND $flightsTable.NACclubID=$nacclubid ";
+		}
 	}
-
+	
 ?>

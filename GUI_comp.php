@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.28 2009/06/18 13:34:26 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.29 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -67,6 +67,27 @@
 		$forceNacId=$ranksList[$rank]['forceNacId'];
 		if ($forceNacId) $nacid=$forceNacId;
 	}
+  
+  
+  	//----------------------------------------------------------
+	// Now the filter
+	//----------------------------------------------------------		
+	$filter_clause=$_SESSION["filter_clause"];
+	// echo $filter_clause;
+	if ( strpos($filter_clause,$pilotsTable) )  $pilotsTableQuery=1;
+	if ( strpos($filter_clause,$waypointsTable) )  $countryCodeQuery=1;		
+	$where_clause.=$filter_clause;
+	//----------------------------------------------------------
+
+	if ($countryCodeQuery)   {
+		 $countryCodeQuery_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+		 $extra_table_str1.=",$waypointsTable";
+	} 
+	if ($pilotsTableQuery ){
+		$pilotsTableQuery_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID  ";	 
+		$extra_table_str2.=",$pilotsTable  ";			
+	}
+
   
   // show the current subranking
   require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
@@ -261,7 +282,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 	     $pilotIDinfo=str_replace("_","u",$pilotID);
 		 echo "<TR $bg>";
 		 echo "<TD>".($i)."</TD>"; 	
-	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
+	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>".		 
 				"<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>";
 					
@@ -398,8 +419,8 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 			$pilotIDinfo=str_replace("_","u",$pilotID);
 			
 			echo "<TD width='20%'>";
-			echo "<table width='100%' cellpadding='0' cellspacing='0' class='listTable3'><TR><TD colspan=3 id='$arrayName"."_$pilotID'>".
-				"<a  class='clubPilot betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
+			echo "<table width='100%' cellpadding='0' cellspacing='0' class='listTable3'><TR><TD colspan=3 id='$arrayName"."_$pilotID' class='pilotLink'>".
+				"<a class='clubPilot betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$pilotID', 200, '".$pilotID."','".
 					addslashes($pilotName)."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotName."</a>".
 			"</td></tr><tr>";
 			foreach($pilot['flights_sel'] as $flightID) {

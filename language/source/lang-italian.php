@@ -84,7 +84,7 @@ define("_ALTITUDE_GAIN","Guadagno quota");
 define("_FLIGHT_FILE","File del volo");
 define("_COMMENTS","Commenti");
 define("_RELEVANT_PAGE","Pagina web relativa");
-define("_GLIDER","Ala");
+define("_GLIDER","Modello");
 define("_PHOTOS","Foto");
 define("_MORE_INFO","Altre informazioni");
 define("_UPDATE_DATA","Aggiorna dati");
@@ -250,7 +250,7 @@ define("_MONTH","Mese");
 define("_YEAR","Anno");
 define("_FROM","da");
 define("_from","da");
-define("_TO","A");
+define("_TO","a");
 define("_SELECT_PILOT","Scegli Pilota");
 define("_THE_PILOT","Il pilota");
 define("_THE_TAKEOFF","Il decollo");
@@ -273,7 +273,7 @@ define("_MINUTES","min");
 //--------------------------------------------
 
 define("_SUBMIT_FLIGHT","Inserisci volo");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(solo il file IGC &egrave; obbligatorio)");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(solo il file IGC &egrave; obbligatorio) ");
 define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Inserisci il<br>file IGC del volo");
 define("_NOTE_TAKEOFF_NAME","IMPORTANTE! Scrivi anche il luogo del decollo e la provincia");  //  CHANGE
 define("_COMMENTS_FOR_THE_FLIGHT","Commenti per il volo");
@@ -449,7 +449,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Record del Sito<br>(distanza libera)");
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Tipo Ala");
+define("_GLIDER_TYPE","Mezzo");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
 	$gliderCatList=array(1=>'Parapendio',2=>'Ala Flessibile FAI1',4=>'Ala Rigida FAI5',8=>'Aliante');
@@ -627,7 +627,7 @@ define("_PROJECT_RULES","Regolamento 2007");
 define("_Filter_NoSelection","Nessuna scelta"); 
 define("_Filter_CurrentlySelected","Scelta corrente"); 
 define("_Filter_DialogMultiSelectInfo","Premi Ctrl per selezioni multiple."); 
-define("_Filter_FilterTitleIncluding","Solo [items] scelte"); 
+define("_Filter_FilterTitleIncluding","Scegli solo [items]");
 define("_Filter_FilterTitleExcluding","Escludi [items]"); 
 define("_Filter_DialogTitleIncluding","Scegli [items]"); 
 define("_Filter_DialogTitleExcluding","Scegli [items]"); 
@@ -637,7 +637,7 @@ define("_Filter_Items_country","Nazioni");
 define("_Filter_Items_takeoff","decolli"); 
 define("_Filter_Button_Select","Scegli"); 
 define("_Filter_Button_Delete","Elimina"); 
-define("_Filter_Button_Accept","Accetta scelta"); 
+define("_Filter_Button_Accept","Accetta");
 define("_Filter_Button_Cancel","Annulla"); 
 define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
 define("_ALL_NACCLUBS","All Clubs"); 
@@ -647,8 +647,8 @@ define("_FirstOlcYearComment","Scegli l'anno della tua prima partecipazione in q
 define("_Select_Brand","Scegli Marca"); 
 define("_All_Brands","Tutte le Marche");
 define("_DAY","GIORNO"); 
-define("_Glider_Brand","Marca Ala"); 
-define("_Or_Select_from_previous","O Scegline uno precedente"); 
+define("_Glider_Brand","Marca");
+define("_Or_Select_from_previous","o scegline uno precedente");
 define("_Explanation_AddToBookmarks_IE","Aggiungi questi filtri ai tuoi favoriti"); 
 define("_Msg_AddToBookmarks_IE","Clicca qui per aggiungere questi filtri ai tuoi preferiti."); 
 define("_Explanation_AddToBookmarks_nonIE","(Salva questo link nei tuoi preferiti.)"); 
@@ -693,9 +693,9 @@ define("_FLIGHTADD_CONFIRMATIONTEXT","Inviando questo modulo confermo di aver ri
 define("_FLIGHTADD_IGC_MISSING","Scegli il tuo file .igc");
 define("_FLIGHTADD_IGCZIP_MISSING","Scegli l'archivio ZIP contenente il tuo file .igc");
 define("_FLIGHTADD_CATEGORY_MISSING","Scegli la categoria");
-define("_FLIGHTADD_BRAND_MISSING","Scegli la marca della tua ala");
-define("_FLIGHTADD_GLIDER_MISSING","Scegli il tuo tipo di ala");
-define("_YOU_HAVENT_ENTERED_GLIDER","Non hai inserito la marca o l'ala");
+define("_FLIGHTADD_BRAND_MISSING","Scegli la marca del tuo mezzo");
+define("_FLIGHTADD_GLIDER_MISSING","Scegli il modello del tuo mezzo");
+define("_YOU_HAVENT_ENTERED_GLIDER","Non hai inserito la marca o il modello");
 define("_BRAND_NOT_IN_LIST","Marca non presente");
 define("_Email_new_password","<p align='justify'>Il server ha inviato un email al pilota con la nuova password e chiave di attivazione</p> <p align='justify'>Controlla la tua casella email e segui la procedura descritta nella email</p>");
 define("_informed_user_not_found","L'utente informato non &grave; stato trovato nel nostro database");
@@ -778,6 +778,10 @@ define("_All_classes","Tutte le  classi");
 define("_Class","Classe");
 define("_Photos_filter_off","Con/senza foto");
 define("_Photos_filter_on","Solo con foto");
+define("_GLIDER_CERT","Certificazione");
+define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Scegli la certificazione del tuo mezzo");
+define("_SHOW_NEWS","Mostra News");
+
 
 
 ?>

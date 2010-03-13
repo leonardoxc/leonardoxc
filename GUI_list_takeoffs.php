@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_takeoffs.php,v 1.32 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_list_takeoffs.php,v 1.33 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -81,14 +81,15 @@
 
   $sortOrderFinal=$sortOrder;
   
-  $filter_clause=$_SESSION["filter_clause"];
-  $where_clause.=$filter_clause;
-
-	if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $pilotsTableQuery=0;
-	else   $pilotsTableQuery=1;
-	
-	if ( ! strpos($filter_clause,$pilotsTable.".Sex")=== false )  $pilotsTableQuery=1;
-	
+  	//----------------------------------------------------------
+	// Now the filter
+	//----------------------------------------------------------		
+	$filter_clause=$_SESSION["filter_clause"];
+	// echo $filter_clause;
+	if ( strpos($filter_clause,$pilotsTable) )  $pilotsTableQuery=1;
+	if ( strpos($filter_clause,$waypointsTable) )  $countryCodeQuery=1;		
+	$where_clause.=$filter_clause;
+	//----------------------------------------------------------	
 
 	if ($pilotsTableQuery  && !$pilotsTableQueryIncluded  ){
 		$where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.serverID=$pilotsTable.serverID  ";	

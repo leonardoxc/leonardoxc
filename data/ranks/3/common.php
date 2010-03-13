@@ -12,7 +12,7 @@
 /************************************************************************/
 
    $res= $db->sql_query($query);
-	// echo "<BR><BR><BR>$query";
+	//  echo "<BR><BR><BR>$query";
 
    if($res <= 0){
       echo("<H3> "._THERE_ARE_NO_PILOTS_TO_DISPLAY."</H3>\n");

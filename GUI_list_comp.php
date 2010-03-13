@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_comp.php,v 1.47 2008/11/29 22:46:07 manolis Exp $                                                                 
+// $Id: GUI_list_comp.php,v 1.48 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -82,6 +82,16 @@
 	$bitMask=2 & ~( $includeMask & 0x03 );
 	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
 
+	//----------------------------------------------------------
+	// Now the filter
+	//----------------------------------------------------------		
+	$filter_clause=$_SESSION["filter_clause"];
+	//echo $filter_clause;
+	if ( strpos($filter_clause,$pilotsTable) )  $pilotsTableQuery=1;
+	if ( strpos($filter_clause,$waypointsTable) )  $countryCodeQuery=1;		
+	$where_clause.=$filter_clause;
+	//----------------------------------------------------------
+
    $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_CATEGORY_FLIGHT_NUMBER, "totalDistance"=>_TOTAL_DISTANCE, 
 			     "totalDuration"=>_CATEGORY_TOTAL_DURATION, "bestDistance"=>_CATEGORY_OPEN_DISTANCE, 
 			     "totalOlcKm"=>_TOTAL_OLC_DISTANCE, "totalOlcPoints"=>_TOTAL_OLC_SCORE, "bestOlcScore"=>_BEST_OLC_SCORE, 
@@ -109,6 +119,13 @@
 	 $extra_table_str.=",".$waypointsTable;
   } else $extra_table_str.="";
 
+  if ($pilotsTableQuery )   {
+	 $where_clause.=" AND $flightsTable.userID=$pilotsTable.pilotID AND $flightsTable.userServerID=$pilotsTable.serverID ";  
+	 // $where_clause.="  AND $flightsTable.userID=$pilotsTable.pilotID ";
+	 $extra_table_str.=",".$pilotsTable;
+  } else $extra_table_str.="";
+  
+  
   $where_clause.=$where_clause_country;
   
 	// was _KILOMETERS -> bug
@@ -442,7 +459,7 @@ function listCategory($legend,$header, $arrayName, $formatFunction="") {
 	     
 		 echo "<TR $bg>";
 		 echo "<TD>".($i)."</TD>"; 	
-	     echo "<TD nowrap><div align=left id='$arrayName"."_$i'>".		 
+	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>".		 
 				"<a href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilotNames[$pilotID])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilotNames[$pilotID]."</a>".
 				"</div></TD>";

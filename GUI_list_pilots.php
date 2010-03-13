@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_pilots.php,v 1.42 2010/03/06 22:23:13 manolis Exp $                                                                 
+// $Id: GUI_list_pilots.php,v 1.43 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -79,15 +79,25 @@
 	 $extra_table_str.=",".$waypointsTable;
   } else $extra_table_str.="";
 
-  
- if (!$is_comp) {
-	
-	 $filter_clause=$_SESSION["filter_clause"];
+
+
+	//----------------------------------------------------------
+	// Now the filter
+	//----------------------------------------------------------
+
+	  $filter_clause=$_SESSION["filter_clause"];
+	  //  echo $filter_clause;
 	  if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;
 	  else $countryCodeQuery=1;
-	  
-	  
-	  $where_clause.=$filter_clause;	
+	  	  
+	  $where_clause.=$filter_clause;
+  	//----------------------------------------------------------
+
+
+
+ if (!$is_comp) {
+	
+	
 		 
 	 $sortDescArray=array("pilotName"=>_PILOT_NAME, "totalFlights"=>_NUMBER_OF_FLIGHTS, "totalDistance"=>_TOTAL_DISTANCE, 
 					 "totalDuration"=>_TOTAL_DURATION, "bestDistance"=>_BEST_OPEN_DISTANCE, 
@@ -127,6 +137,13 @@
   }
   $where_clause.=$where_clause_country;
    
+   
+  if ($countryCodeQuery)   {
+	 $where_clause.=" AND $flightsTable.takeoffID=$waypointsTable.ID ";
+	 $extra_table_str.=",".$waypointsTable;
+	} else $extra_table_str.="";
+	
+	
  $query="SELECT count(DISTINCT userID) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (userID!=0 AND  private=0) ".$where_clause." ";
  $res= $db->sql_query($query);
   if($res <= 0){   
@@ -300,7 +317,7 @@ function listPilots($res,$legend,$queryExtraArray=array(),$sortOrder="bestDistan
    $i=1;
    while ($row = $db->sql_fetchrow($res)) { 
 
-    $name=getPilotRealName($row["userID"],$row["userServerID"]);
+    $name=getPilotRealName($row["userID"],$row["userServerID"],1,1,1);
     $name=prepare_for_js($name);
 
 	$mean_duration=$row["totalDuration"]/$row["totalFlights"];
@@ -311,9 +328,9 @@ function listPilots($res,$legend,$queryExtraArray=array(),$sortOrder="bestDistan
 
 	echo "\n\n<tr class='$sortRowClass'>";
 	echo "<TD>".($i-1+$startNum)."</TD>";
-	echo "<TD><div align=left id='p_$i'>";
+	echo "<TD><div align=left id='p_$i' class='pilotLink'>";
 
-	echo getNationalityDescription($row["countryCode"],1,0);
+	// echo getNationalityDescription($row["countryCode"],1,0);
 	
 	echo "<a class='betterTip' id='tpa0_".$row["userServerID"]."u".$row["userID"]."' href=\"javascript:pilotTip.newTip('inline',0,13, 'p_$i', 200,'".$row["userServerID"]."_".$row["userID"]."','".addslashes($name)."' )\"  
 		 onmouseout=\"pilotTip.hide()\">$name</a>";

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.176 2010/03/06 22:23:12 manolis Exp $
+// $Id: CL_flightData.php,v 1.177 2010/03/13 21:45:56 manolis Exp $
 //
 //************************************************************************
 
@@ -3780,7 +3780,8 @@ $kml_file_contents=
 
 		$query="UPDATE $flightsTable SET  timesViewed=timesViewed+1 WHERE ID=$this->flightID";
 		// echo $query;
-		$result = $db->sql_query($query);
+		// Disable this count!
+		// $result = $db->sql_query($query);
 		$this->timesViewed++;
 	}
 

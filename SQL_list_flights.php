@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.8 2010/03/06 22:23:13 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.9 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -138,23 +138,16 @@
 		$where_clause.=" AND private=0 ";
 	} 
 	
+	//----------------------------------------------------------
+	// Now the filter
+	//----------------------------------------------------------		
 	$filter_clause=$_SESSION["filter_clause"];
 	// echo $filter_clause;
-	if ( strpos($filter_clause,"countryCode")=== false )  $countryCodeQuery=0;	
-	else {
-			if ( strpos($filter_clause,$pilotsTable.".countryCode")=== false )  $countryCodeQuery=1;
-			else {
-				$pilotsTableQuery=1;
-				if ( strpos($filter_clause,$waypointsTable.".countryCode") )  $countryCodeQuery=1;
-				else $countryCodeQuery=0;
-			}
-	}
-
-	if ( ! strpos($filter_clause,$pilotsTable)=== false )  $pilotsTableQuery=1;
-
-	
+	if ( strpos($filter_clause,$pilotsTable) )  $pilotsTableQuery=1;
+	if ( strpos($filter_clause,$waypointsTable) )  $countryCodeQuery=1;		
 	$where_clause.=$filter_clause;
-	
+	//----------------------------------------------------------
+
 	if ($clubID)   {
 	 $add_remove_mode=makeSane($_REQUEST['admClub'],1);
 	 $queryExtraArray+=array("admClub"=>$add_remove_mode);

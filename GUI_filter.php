@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.28 2010/03/06 22:23:12 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.29 2010/03/13 21:45:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -61,7 +61,7 @@ if (( $_REQUEST['setFilter']==1 || $_GET['fl_url']==1 ) && 0) { // form submitte
 } else { // form not submitted
 	global $filterVariables ;	
 	$filter->filterExport('filterVariables');
-	
+	// print_r($filterVariables);
 	if (is_array($filterVariables)) {
 		foreach ($filterVariables as $key => $value ) {
 			if (is_array($value) ) continue;
@@ -103,6 +103,8 @@ if (( $_REQUEST['setFilter']==1 || $_GET['fl_url']==1 ) && 0) { // form submitte
  if ($_REQUEST["setFilter"])  {
 	echo "<div align='center'><a href='".getLeonardoLink(array('op'=>'list_flights'))."'>"._RETURN_TO_FLIGHTS."</a></div><br><br>";	
  }
+ 
+ echo 	"<ul>".$filter->filterTextual ."</ul>";
  
 if ($_SESSION["fltr"]) {
  

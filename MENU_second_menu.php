@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.54 2010/03/12 22:43:57 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.55 2010/03/13 21:45:56 manolis Exp $
 //
 //************************************************************************
 
@@ -342,7 +342,7 @@ $(document).ready(function(){
 
 <div class="mainBox secondMenu" align="left" style="margin-top:-1px;">
 
-<? if ($op!='comp'  ) { // custom ranks ?>
+<? if ($op!='comp'  || 1 ) { // custom ranks , we now allow also on custom ranks?>
 <? if ($_SESSION["filter_clause"]) {
 		$filterIcon='icon_filter_active.png';
 	} else {
@@ -628,7 +628,7 @@ if (! $dontShowCountriesSelection ) {
 
 	<? if ($_SESSION["filter_clause"]) {   ?>
 	
-	<?=leoHtml::img("icon_filter.png",0,0,'absmiddle','','icons1')?>
+	<?=leoHtml::img("icon_filter_active.png",0,0,'absmiddle','','icons1')?>
     <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
     <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
@@ -636,6 +636,8 @@ if (! $dontShowCountriesSelection ) {
     <div class='buttonLink'>
     <a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
     </div>
+	<BR />
+	<ul><? echo  $filter->filterTextual ?></ul>
     <?	} else { ?>
 	<?=leoHtml::img("icon_info.png",0,0,'absmiddle','','icons1')?>
     <?=_THE_FILTER_IS_INACTIVE?>&nbsp;
