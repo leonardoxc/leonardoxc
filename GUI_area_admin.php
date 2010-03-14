@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.11 2010/01/06 21:27:17 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.12 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -24,7 +24,9 @@ if (!$areaID && $areaAction!='Add') {
 	open_inner_table("Administer Area (group of takeoffs)",800); echo "<tr><td>";
 	
 	
-	echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Add','areaID'=>0))."'>Add new Area</a><BR><BR>"; 	  
+	echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Add','areaID'=>0))."'>Add new Area</a><BR><BR>";
+ 
+	  
 ?>
 
 

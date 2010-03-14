@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.9 2009/12/28 13:41:15 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.10 2010/03/14 20:56:12 manolis Exp $                                                                 
 //
 //************************************************************************
 

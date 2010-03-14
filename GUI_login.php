@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.15 2009/04/01 20:18:31 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.16 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.15 2009/04/01 20:18:31 manolis Exp $
+ *   $Id: GUI_login.php,v 1.16 2010/03/14 20:56:11 manolis Exp $
  *
  *
  ***************************************************************************/

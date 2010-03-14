@@ -926,4 +926,17 @@ define('XC Score
 define("_Photos_filter_off","With/without photos");
 define("_Photos_filter_on","With photos only");
 
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_SEASON","Season"); 
+define("_SUBMIT_TO_OLC","Submit to OLC"); 
+define("_pilot_email","Email Address"); 
+define("_You_are_already_logged_in","You are already logged in"); 
+define("_See_The_filter","See the filter"); 
+define("_PilotBirthdate"," Pilot Birthdate"); 
+define("_Start_Type","Start Type"); 
+define("_GLIDER_CERT","Glider Certification"); 
+
 ?>

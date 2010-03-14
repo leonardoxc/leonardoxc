@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.55 2010/03/13 21:45:56 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.56 2010/03/14 20:56:11 manolis Exp $
 //
 //************************************************************************
 
@@ -632,12 +632,19 @@ if (! $dontShowCountriesSelection ) {
     <strong><?=_THE_FILTER_IS_ACTIVE?></strong>&nbsp;
     <div class='buttonLink'>
     <a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a>
-    </div>		&nbsp;
+    </div>		
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<div class='buttonLink'>	 
+	<a href="#" onClick="showFilter();return false;"><strong><?=_See_The_filter?></strong></a>
+	</div>
+
+	&nbsp;&nbsp;&nbsp;&nbsp;
     <div class='buttonLink'>
     <a href='javascript:resetFilter()'><?=_DEACTIVATE_FILTER?> </a>
     </div>
-	<BR />
-	<ul><? echo  $filter->filterTextual ?></ul>
+	 		 
+	<? // echo  "<ul>".$filter->filterTextual."</ul>"; ?>
+	
     <?	} else { ?>
 	<?=leoHtml::img("icon_info.png",0,0,'absmiddle','','icons1')?>
     <?=_THE_FILTER_IS_INACTIVE?>&nbsp;

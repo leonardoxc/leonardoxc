@@ -682,17 +682,17 @@ define("_FLIGHTADD_GLIDER_MISSING","Please enter the type of your glider");
 define("_YOU_HAVENT_ENTERED_GLIDER","You have not entered brand or glider"); 
 define("_BRAND_NOT_IN_LIST","Brand not in list"); 
 define("_Email_new_password","<p align='justify'>The server have sent a email to the pilot with the new password and activation key</p> <p align='justify'>Please, check your email box and follow the procedures in the email body</p>"); 
-define("_informed_user_not_found","The informed user was not found in our database"); 
-define("_impossible_to_gen_new_pass","<p align='justify'>We are sorry to inform you that is not possible gen a new password for you at this time, there is already a request that will expire in <b>%s</b>. Only after the expiration time you can do a new request.</p><p align='justify'>If you do not have access to the email contact the server admin</p>"); 
+define("_informed_user_not_found","This user was not found in the database"); 
+define("_impossible_to_gen_new_pass","<p align='justify'>We are sorry to inform you that is not possible to generate a new password for you at this time, there is already a request that will expire in <b>%s</b>. Only after the expiration time you can do a new request.</p><p align='justify'>If you do not have access to the email contact the server admin</p>"); 
 define("_Password_subject_confirm","Confirmation email (new password)"); 
-define("_request_key_not_found","the request key that you have informed was not found!"); 
-define("_request_key_invalid","request key that you have informed is invalid!"); 
-define("_Email_allready_yours","The informed email is allready yours, nothing to do"); 
+define("_request_key_not_found","the request key that you have provided was not found!"); 
+define("_request_key_invalid","request key that you have provided is invalid!"); 
+define("_Email_allready_yours","The provided email is allready yours, nothing to do"); 
 define("_Email_allready_have_request","There is already an request for changing to this email, nothing to do"); 
-define("_Email_used_by_other","This email is used in another pilot, nothing to do"); 
-define("_Email_used_by_other_request","This email are used in another pilot in a changing request mail"); 
-define("_Email_canot_change_quickly","You can not change your email so quickly as you want, wait for the expiring time: %s"); 
-define("_Email_sent_with_confirm","We send a email for you, where you must confirm the email changing"); 
+define("_Email_used_by_other","This email is used by another pilot, nothing to do"); 
+define("_Email_used_by_other_request","This email is used by another pilot in a pending request"); 
+define("_Email_canot_change_quickly","You can not change your email right now, wait for the expiring time: %s"); 
+define("_Email_sent_with_confirm","A confirmation email is send, please check you mailbox so that you can confirm the changing of email"); 
 define("_Email_subject_confirm","Confirmation email (new email)"); 
 define("_Email_AndConfDontMatch","Email and confirmation are different."); 
 define("_ChangingEmailForm"," Changing Email Form"); 
@@ -711,44 +711,103 @@ define("_Recover_my_pass","Recover my Password");
 define("_You_are_not_login","<BR><BR><center><br>You are not logged in. <br><br>Please Login<BR><BR></center>"); 
 define("_Requirements","Requeriments"); 
 define("_Mandatory_CIVLID","Is mandatory tho have an valid <b>CIVLID</b>"); 
-define("_Mandatory_valid_EMAIL","Is mandatory inform a <b>Valid Email</b> for further comunications with admin server"); 
-define("_Email_periodic","Periodically we will send you a confirmation e-mail to the informed e-mail address, if not answered, your registration account will be blocked"); 
-define("_Email_asking_conf","We will send a confirmation e-mail to the informed email address"); 
+define("_Mandatory_valid_EMAIL","Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
+define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
+define("_Email_asking_conf","We will send a confirmation e-mail to the provided email address"); 
 define("_Email_time_conf","You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
 define("_After_conf_time"," After that time, your pre-registration will be <b>removed</b> from our database"); 
 define("_Only_after_time","<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
 define("_Disable_Anti_Spam","<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
 define("_If_you_agree","If you agree with this requirements please go further."); 
-define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name ou or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","If you are not founded in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
+define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
+define("_Register_civl_as_new_pilot","If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
 define("_NICK_NAME","Nick Name"); 
 define("_LOCAL_PWD","Local Password"); 
 define("_LOCAL_PWD_2","Repeat Local Password"); 
 define("_CONFIRM","Confirm"); 
 define("_REQUIRED_FIELD","Mandatory Fields"); 
 define("_Registration_Form","Registration Form at %s (Leonardo)"); 
-define("_MANDATORY_NAME","Is Mandatory to inform your name"); 
-define("_MANDATORY_FAI_NATION","Is Mandatory to inform your FAI NATION"); 
-define("_MANDATORY_GENDER","Please inform your Sex"); 
+define("_MANDATORY_NAME","Is Mandatory to provide your name"); 
+define("_MANDATORY_FAI_NATION","Is Mandatory to provide your FAI NATION"); 
+define("_MANDATORY_GENDER","Please provide your Sex"); 
 define("_MANDATORY_BIRTH_DATE_INVALID","Birth Date Invalid"); 
-define("_MANDATORY_CIVL_ID","Please Inform your CIVLID"); 
+define("_MANDATORY_CIVL_ID","Please provide your CIVLID"); 
 define("_Attention_mandatory_to_have_civlid","ATENTION!! For now one is Mandatory to have CIVLID in the %s database"); 
 define("_Email_confirm_success","Your registration was successfully confirmed!"); 
-define("_Success_login_civl_or_user","Success, now you can do your login using your CIVLID as username, or continue with your old username"); 
-define("_Server_did_not_found_registration","Registration not founded, please copy and paste in your browser address field the link informed in the email that was sended to you, of maybee your registration time are expired"); 
-define("_Pilot_already_registered","Pilot already registered with CIVLID %s and with name %s"); 
+define("_Success_login_civl_or_user","Success, now you can login using your CIVLID as username, or continue with your old username"); 
+define("_Server_did_not_found_registration","Registration not found, please copy and paste in your browser address field the link provided in the email that was send to you, or maybe your registration time has expired"); 
+define("_Pilot_already_registered","Pilot already registered with CIVLID %s and name %s"); 
 define("_User_already_registered","User already registered with this email or name"); 
 define("_Pilot_civlid_email_pre_registration","Hi %s This Civl ID and email is already used in a pre-registration"); 
 define("_Pilot_have_pre_registration"," You already have a pre registration, but have not answered our mail, we resend the confirmation email for you, you have 3 hours after now to answer the email, if not you will be removed from pre registration. please read the email and follow the procedures described inside, thank you"); 
-define("_Pre_registration_founded","We already have a pre-registration with this civlID and Email,wait for finishing the period of 3 hours until then this registration will be removed, in no hipotisis confirm the email that was sended for you, because will be generated an double registration, and your old flights will not be transfered for the new user"); 
+define("_Pre_registration_founded","We already have a pre-registration with this civlID and Email,wait for finishing the period of 3 hours until then this registration will be removed, in no hipotisis confirm the email that was send  because will be generated an double registration, and your old flights will not be transfered for the new user"); 
 define("_Civlid_already_in_use","This CIVLID is used for another pilot, we can not have double CIVLID!"); 
 define("_Pilot_email_used_in_reg_dif_civlid","Hi %s This Email is used in another register with different CIVLID"); 
 define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in another register with different EMAIL"); 
 define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
 define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
 define("_Server_send_conf_email","The server have sended to the %s an email asking for confirmation, you have 3 hours from now to confirm your registration by clicking or copying and pasting the link that are in the email body in your browser addres"); 
+define("_Pilot_confirm_subscription","===================================
+
+%s Leonardo new user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally create your account, you will need to click on link below to verify your email address:
+
+http://%s?op=users&page=index&act=register&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
+define("_Pilot_confirm_change_email","===================================
+
+%s Leonardo user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally change your email address, you will need to click on link below to verify your email address:
+
+http://%s?op=chem&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
+define("_Password_recovery_email","===================================
+
+%s (Leonardo) user
+                
+Hi %s,
+
+This is a verification email sent from %s
+                
+With Password recovery for you
+                
+Username:%s
+                
+CIVLID:%s
+                
+NewPassword:%s
+ 
+To activate your new password, you will need to click on link below to verify your email address:
+
+http://%s?op=sdpw&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
 define("_MENU_AREA_GUIDE","Area Guide"); 
-define("_All_XC_types","_All XC types"); 
+define("_All_XC_types","All XC types"); 
 define("_xctype","XC type"); 
 define("_Flying_Areas","Flying Areas"); 
 define("_Name_of_Area","Name of Area"); 
@@ -762,5 +821,10 @@ define("_All_classes","All classes");
 define("_Class","Class"); 
 define("_Photos_filter_off","With/without photos"); 
 define("_Photos_filter_on","With photos only"); 
+define("_You_are_already_logged_in","You are already logged in"); 
+define("_See_The_filter","See the filter"); 
+define("_PilotBirthdate"," Pilot Birthdate"); 
+define("_Start_Type","Start Type"); 
+define("_GLIDER_CERT","Glider Certification"); 
 
 ?>

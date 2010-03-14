@@ -925,4 +925,12 @@ define("_Photos_filter_on","With photos only");
 
 define("_You_are_already_logged_in","You are already logged in");
 
+
+// 2010-03-14
+define("_See_The_filter","See the filter");
+define("_PilotBirthdate"," Pilot Birthdate");
+define("_Start_Type","Start Type");
+define("_GLIDER_CERT","Glider Certification");
+
+
 ?>

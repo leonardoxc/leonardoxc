@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.82 2010/03/12 22:43:57 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.83 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -105,6 +105,9 @@ function showNewsSettings() {
 function showFilter() {
 	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_filter.php',
 		ajaxText: '<img src=\'<?=$moduleRelPath ?>/img/ajax-loader.gif\'>' });
+
+	$(".jqmWindow").css({top:'20px', 'margin-left':'-400px',width:'800px'});
+	
 	$('#dialogWindow').jqmShow(); 	
 }
 

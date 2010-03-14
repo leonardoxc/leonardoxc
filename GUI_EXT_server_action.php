@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_server_action.php,v 1.25 2010/01/02 22:54:55 manolis Exp $                                                                 
+// $Id: GUI_EXT_server_action.php,v 1.26 2010/03/14 20:56:10 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/EXT_config_pre.php";

@@ -784,4 +784,72 @@ define("_SHOW_NEWS","Mostra News");
 
 
 
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_Pilot_confirm_subscription","===================================
+
+%s Leonardo new user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally create your account, you will need to click on link below to verify your email address:
+
+http://%s?op=users&page=index&act=register&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
+define("_Pilot_confirm_change_email","===================================
+
+%s Leonardo user
+                
+Hi %s,
+
+This is a verification email sent from %s
+ 
+To finally change your email address, you will need to click on link below to verify your email address:
+
+http://%s?op=chem&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
+define("_Password_recovery_email","===================================
+
+%s (Leonardo) user
+                
+Hi %s,
+
+This is a verification email sent from %s
+                
+With Password recovery for you
+                
+Username:%s
+                
+CIVLID:%s
+                
+NewPassword:%s
+ 
+To activate your new password, you will need to click on link below to verify your email address:
+
+http://%s?op=sdpw&rkey=%s
+
+Regards,
+
+--------
+Note: This is auto-response. Do not send any email to this email address
+--------"); 
+define("_You_are_already_logged_in","You are already logged in"); 
+define("_See_The_filter","See the filter"); 
+define("_PilotBirthdate"," Pilot Birthdate"); 
+define("_Start_Type","Start Type"); 
+
 ?>

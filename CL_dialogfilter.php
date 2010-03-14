@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://leonardo.thenet.gr
+// Leonardo XC Server, http://www.leonardoxc.net
 //
-// Copyright (c) 2004-8 by Andreadakis Manolis
+// Copyright (c) 2004-2010 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_dialogfilter.php,v 1.11 2010/02/27 22:40:51 manolis Exp $
+// $Id: CL_dialogfilter.php,v 1.12 2010/03/14 20:56:09 manolis Exp $
 //
 //************************************************************************
 
@@ -290,6 +290,32 @@ class dialogfilter {
 ';
 		}
     	return $html;
+	}
+	
+	function filter_html_view_only() {
+		$this->init_filter();
+		if ($this->errmsg) {
+			$html='
+    <tr>
+      <td class="infoHeader"><div align="left"><strong>'.$this->filter_title().'</strong></div></td>
+      <td class="infoHeader">ERROR: '.$this->errmsg.'</td>
+    </tr>
+';
+		}else {
+			$html='
+    <tr>
+      <td class="infoHeader" valign="bottom" height="24"><div align="left"><strong>'.$this->filter_title().'	
+	  </strong></div>
+	  </td>
+    </tr>
+    <tr>
+		<td style="vertical-align:top">
+			<div  align="left">'.$this->textvalue.'</div>
+		</td>
+    </tr>
+';
+		}
+    	return array($this->datakey,$html);
 	}
 
 	function filter_delete_js() {
