@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.16 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.17 2010/03/15 14:50:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,7 +28,7 @@
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
-	if (!in_array($op,array("find_flights","list_flights","submit_flight","list_flights_json")) ) return;
+	if (!in_array($op,array("find_flights","list_flights","submit_flight","list_flights_json","get_info","polylineURL")) ) return;
 
 	$encoding="iso-8859-1";
 	if ($op=="find_flights") {
@@ -124,25 +124,129 @@
 		$XML_str.="</flights>\n";	
 	    $XML_str.="</result>";
 		send_XML($XML_str);
+		
+	} else if ($op=="polylineURL") {
+		$flightID=$_REQUEST['flightID']+0;
+		if ($flightID<=0) exit;	
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID,0);
+	
+		$polylineURL=$flight->getPolylineRelPath();
+		echo $polylineURL;		
+	} else if ($op=="get_info") {
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+				
+		$flightID=$_REQUEST['flightID']+0;
+		if (!$flightID) return;
+		
+		 $query="SELECT * FROM $flightsTable WHERE ID=$flightID";
+		 //echo $query;
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 echo("<H3> Error in query! $query </H3>\n");
+			 exit();
+		 }
 
+		$JSON_str="";
+		if ($row = mysql_fetch_assoc($res)) { 
+			 $nearestWaypoint=new waypoint($takeoffIDTmp);
+			 $nearestWaypoint->getFromDB();
+	
+			$name=getPilotRealName($row["userID"],$row["userServerID"]);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+										getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])) 
+									);
+										
+			$this_year=substr($row['DATE'],0,4);		
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+					str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+					$row['filename'] );  
+					//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			
+			if ($row['takeoffVinicity'] > $takeoffRadious ) 
+				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
+			else $location=getWaypointName($row['takeoffID']);
+	
+			if ($i>0) $JSON_str.=", ";
+			
+			$JSON_str.=' {"flightID": "'.$row["ID"].'", "date": "'.json::prepStr($row["DATE"]).'", '.
+					'"firstLat": "'.json::prepStr($row["firstLat"]).'", '.
+					'"firstLon": "'.json::prepStr($row["firstLon"]).'", '.
+					
+					'"lastLat": "'.json::prepStr($row["lastLat"]).'", '.
+					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+					
+					'"duration": "'.json::prepStr($row["lastLon"]).'", '.
+					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+					
+					
+					'"pilotName": "'.json::prepStr($name).'", '.
+					'"takeoff": "'.json::prepStr($location).'"  } ';
+			
+		}
+
+		//$JSON_str='{"totalCount":"'.$i.'","flights":[ '. $JSON_str."  ] } ";	
+		$JSON_str='{ "flights":[ '. $JSON_str."  ] } ";	
+		
+		if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
+		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
+		else header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
+		header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+		header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header ('Content-Type: text/html');				
+
+
+		echo $JSON_str;
+		
 	} else if ($op=="list_flights_json") {
 		require_once dirname(__FILE__).'/lib/json/CL_json.php';
 		
+		$lat=$_REQUEST['lat']+0;
+		$lon=$_REQUEST['lon']+0;
+		$distance=$_REQUEST['distance']+0; // radious in km
+		
+		if ( $distance <= 0 ) $distance=100; 
+		if ( $distance > 500 ) $distance=500;
+		
+		
 		$where_clause=" 1 ";
-		$pilotIDview=makeSane($_GET['pilotIDview'],1);
-		$serverID=makeSane($_GET['serverID'],1);
+		$pilotIDview=makeSane($_REQUEST['pilotIDview'],1);
+		$serverID=makeSane($_REQUEST['serverID'],1);
 		if ($pilotIDview!=0) {
 			$where_clause.=" AND userID='".$pilotIDview."'  AND userServerID=$serverID "; 
-		} else {
-				 $tm=makeSane($_GET['from_tm'],1); // timestamp
-				 if (!$tm) $tm=time()-60*60*24*70; // 1 week back
-				 $where_clause.=" AND dateAdded >= FROM_UNIXTIME(".$tm.") "; 
+		} 
 		
-				 $count=makeSane($_GET['count'],1); // timestamp
-				 if ($count) $lim=" LIMIT 1,$count ";
-				 else  $lim="";
+		
+
+		 $tm=makeSane($_REQUEST['from_tm'],1); // timestamp
+		 if (!$tm) $tm=time()-60*60*24*70; // 1 week back
+		 $where_clause.=" AND dateAdded >= FROM_UNIXTIME(".$tm.") "; 
+
+		 $count=makeSane($_REQUEST['count'],1); // timestamp
+		 if (!$count)  $count=100;
+		 if ($count) $lim=" LIMIT $count ";
+		 else  $lim="";
+		
+		
+		
+		if ($lat && $lon && $distance ) {
+			$select_clause.=",\n".
+				"ROUND((ACOS((SIN(" . $lat . "/57.2958) * ".
+				"SIN(firstLat/57.2958)) + (COS(" . $lat . "/57.2958) * ".
+				"COS(firstLat/57.2958) * ".
+				"COS(firstLon/57.2958 - " . $lon . "/57.2958)))) ".
+				"* 6392 , 3) AS distance\n";
+			
+			$where_clause.=" AND ROUND((ACOS((SIN(" . $lat . "/57.2958) * ".
+				"SIN(firstLat/57.2958)) + (COS(" . $lat . "/57.2958) * ".
+				"COS(firstLat/57.2958) * ".
+				"COS(firstLon/57.2958 - " . $lon . "/57.2958)))) ".
+				"* 6392 , 3) <= " . $distance. " " ;
 		}
-		 $query="SELECT * FROM $flightsTable WHERE $where_clause ORDER BY dateAdded DESC $lim ";
+		
+		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY dateAdded DESC $lim ";
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
@@ -173,11 +277,20 @@
 	
 			if ($i>0) $JSON_str.=", ";
 			
-			$JSON_str.=' {"flightID": "'.$row["ID"].'", "date": "'.json::prepStr($row["DATE"]).'", "takeoff": "'.json::prepStr($location).'"  } ';
+			$JSON_str.=' {"flightID": "'.$row["ID"].'", "date": "'.json::prepStr($row["DATE"]).'", '.
+					'"firstLat": "'.json::prepStr($row["firstLat"]).'", '.
+					'"firstLon": "'.json::prepStr($row["firstLon"]).'", '.
+					
+					'"lastLat": "'.json::prepStr($row["lastLat"]).'", '.
+					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+					
+					'"pilotName": "'.json::prepStr($name).'", '.
+					'"takeoff": "'.json::prepStr($location).'"  } ';
 			$i++;
 		}
 
-		$JSON_str='{"totalCount":"'.$i.'","flights":[ '. $JSON_str."  ] } ";	
+		//$JSON_str='{"totalCount":"'.$i.'","flights":[ '. $JSON_str."  ] } ";	
+		$JSON_str='{ "flights":[ '. $JSON_str."  ] } ";	
 		
 		if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
 		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
@@ -186,9 +299,9 @@
 		header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 		header ('Content-Type: text/html');				
 
-		$callbackFunction=$_GET['callback'];
-		echo $callbackFunction."(".$JSON_str.")";
-	
+		//$callbackFunction=$_GET['callback'];
+		//echo $callbackFunction."(".$JSON_str.")";
+		echo $JSON_str;
 
 	} else if ($op=="list_flights") {
 		$where_clause="";

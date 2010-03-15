@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps.php,v 1.14 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_google_maps.php,v 1.15 2010/03/15 14:50:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,6 +41,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 	<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+    <script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
+    <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
+
 	<style type="text/css">
 	<!--
 		body{margin:0}
@@ -87,6 +90,75 @@
 	  return marker;
 	}
 
+	function createFlightMarker(point, id , description, iconUrl, shadowUrl ) {
+		if (iconUrl){
+			var baseIcon = new GIcon();
+			
+			var sizeFactor;
+			if (id==wpID) sizeFactor=1.1;
+			else sizeFactor=1;
+			
+			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
+			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
+			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
+			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
+			  
+			var newIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
+				
+			var marker = new GMarker(point,newIcon);
+		} else {
+			var marker = new GMarker(point);		
+		}	
+	  // Show this marker's index in the info window when it is clicked
+
+	  
+	  GEvent.addListener(marker, "click", function() {
+	  
+		  loadFlightTrack(id);
+	    /*
+		  $.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html', context: document.body, 		  
+				  success: function(data) {
+					flightMarkers[id].openInfoWindowHtml(data);	  
+				  }
+		  
+		  });
+		*/
+		
+	  });
+	  	
+	  return marker;
+	}
+	
+	function loadFlightTrack(id) {
+		$.ajax({ url: 'EXT_flight.php?op=polylineURL&flightID='+id, dataType: 'text', 		  
+				  success: function(polylineURL) {
+				    drawFlightTrack(polylineURL);
+					// GDownloadUrl(polylineURL, process_polyline);
+				}
+		  
+		 });
+		
+	}
+	
+	function drawFlightTrack(polylineURL) {
+		$.ajax({ url: polylineURL, dataType: 'text', 		  
+				  success: function(polylineStr) {
+				  	do_process_waypoints=false;
+				    process_polyline(polylineStr);
+				}
+		  
+		 });
+		
+	}
+	
+	function openFlightInfoWindow(htmlResult) {
+		//var results= eval("(" + jsonString + ")");			
+		//var i=results.flightID;
+		//var html=results.html;
+		//flightMarkers[i].openInfoWindowHtml(html);
+		flightMarkers[i].openInfoWindowHtml(htmlResult);
+	}
+	
 	function openMarkerInfoWindow(jsonString) {
 		var results= eval("(" + jsonString + ")");			
 		var i=results.takeoffID;
@@ -137,8 +209,26 @@
 		}	
 	}
 
-	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+
+	var flightMarkers=[];
+	function drawFlights(jsonString){
+	 	var results= eval("(" + jsonString + ")");		
+		// document.writeln(results.flights.length);
+		for(i=0;i<results.flights.length;i++) {	
+			var takeoffPoint= new GLatLng(results.flights[i].firstLat, results.flights[i].firstLon) ;						
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal4/icon19.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal4/icon19s.png";
+			
+			var flightMarker= createFlightMarker(takeoffPoint,results.flights[i].flightID, results.flights[i].pilotName,iconUrl,shadowUrl);
+			flightMarkers[results.flights[i].flightID] = flightMarker;
+			map.addOverlay(flightMarker);
+		}	
+	}
+
+
+	//getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
+	getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=500&from_tm=10&pilotIDview=76',null,drawFlights);
 
 }
     //]]>

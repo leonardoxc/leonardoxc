@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.49 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.50 2010/03/15 14:50:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -102,6 +102,20 @@
 <script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
+
+<? if ( $CONF['thermals']['enable']  ) { ?>
+<script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
+<? } ?>
+
+<script src="js/chartFX/wz_jsgraphics.js"></script>
+<script src='js/chartFX/excanvas.js'></script>
+<script src='js/chartFX/chart.js'></script>
+<script src="js/chartFX/jgchartpainter.js"></script>
+<script src='js/chartFX/canvaschartpainter.js'></script>
+<link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
 
 </head>
 <body  onUnload="GUnload()">
@@ -174,23 +188,6 @@
 </table>
 <div id="pdmarkerwork"></div>
 
-<script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
-
-<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
-
-<? if ( $CONF['thermals']['enable']  ) { ?>
-<script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
-<? } ?>
-
-<script src="js/chartFX/wz_jsgraphics.js"></script>
-<script src='js/chartFX/excanvas.js'></script>
-<script src='js/chartFX/chart.js'></script>
-<script src="js/chartFX/jgchartpainter.js"></script>
-<script src='js/chartFX/canvaschartpainter.js'></script>
-<link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
-
 
 <script type="text/javascript">
 
@@ -262,8 +259,9 @@ var lon=0;
 	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
 
 	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=14142&t=a.kml");
+	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_trk&flightID=14722&lang=english&w=2&c=FF0000&an=1&t=a.kml");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
-	//map.addOverlay(kmlOverlay);
+	// map.addOverlay(kmlOverlay);
 
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	

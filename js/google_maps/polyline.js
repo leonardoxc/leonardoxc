@@ -82,6 +82,9 @@
       }
 
 
+	  var polyline_color='';
+	  var do_process_waypoints=true;
+	
       // This function picks up the click and opens the corresponding info window
       function myclick(i) {
         gmarkers[i].openInfoWindowHtml(htmls[i]);
@@ -103,9 +106,15 @@
 		zoom=map.getBoundsZoomLevel(bounds);	
 		map.setCenter(new GLatLng( center_lat,center_lon), zoom);
 
-		process_waypoints();
+		var color="#FF0000";
+		if (polyline_color!='' ) {
+			color=polyline_color;
+		}
+		
+		if (do_process_waypoints) process_waypoints();
+		
 		var encodedPolyline = new GPolyline.fromEncoded({
-			color: "#FF0000",
+			color: color,
 			weight: 2,
 			opacity:1,
 			points: lines[3],
