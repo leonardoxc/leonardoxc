@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_brands.php,v 1.15 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_brands.php,v 1.16 2010/03/15 09:18:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -16,49 +16,49 @@
 
 //------------------- GLIDER BRANDS DEFINITIONS  ----------------------------
  $CONF['brands']['list']=array(
-	1=>"Advance",
-	"Airwave",
-	"Gin",
-	"Icaro",
-	"Nova", // 005
-	"Skywalk",
-	"Swing",
-	"UP",
-	"SOL",
-	"Gradient",	//10 
-	"FreeX",
-	"ProDesign",
-	"MacPara",
-	"UTurn",
-	"Apco",		//15
-	"Woc",
-	"Windtech",
-	"Sky",
-	"Ozone",
-	"Aerodyne", //20
-	"Aircross",
-	"Paratech",
-	"Dudek",
-	"Firebird",
-	"FlightDesign", // 25 
-	"Niviuk",
-	"Independence",
-	"Axis", 
-	"Aeros", //29
-	"Edel",  //30
-	"ITV",
-	"Nervunes",
-	"Pegas",
-	"Perche",
-	"Trekking", // 35 
-	"XiX",
-	"Paradelta",
-	"WillsWing",
-	"Moyes", //39
-	"AIR", // 40
-	"Airborne",
-	"Bautek",
-	"Seedwings",
+	1=>'Advance',
+	2=>'Airwave',
+	3=>'Gin',
+	4=>'Icaro Paragliders',
+	5=>'Nova',
+	6=>'Skywalk',
+	7=>'Swing',
+	8=>'UP',
+	9=>'SOL',
+	10=>'Gradient',
+	11=>'FreeX',
+	12=>'ProDesign',
+	13=>'MacPara',
+	14=>'UTurn',
+	15=>'Apco',
+	16=>'Woc',
+	17=>'Windtech',
+	18=>'Sky',
+	19=>'Ozone',
+	20=>'Aerodyne',
+	21=>'Aircross',
+	22=>'Paratech',
+	23=>'Dudek',
+	24=>'Firebird',
+	25=>'FlightDesign',
+	26=>'Niviuk',
+	27=>'Independence',
+	28=>'Axis',
+	29=>'Aeros',
+	30=>'Edel',
+	31=>'ITV',
+	32=>'Nervunes',
+	33=>'Pegas',
+	34=>'Perche',
+	35=>'Trekking',
+	36=>'XiX',
+	37=>'Paradelta',
+	38=>'WillsWing',
+	39=>'Moyes',
+	40=>'AIR',
+	41=>'Airborne',
+	42=>'Bautek',
+	43=>'Seedwings',
 	44=>'Finsterwalder',
 	45=>'Team5',
 	46=>'Thalhofer',
@@ -70,7 +70,10 @@
 	52=>'Flying Planet',
 	53=>'Enterprise Wings',
 	54=>'CaliptAir',
-	55=>'Element',
+	55=>'Tecma',
+	56=>'Icaro 2000',
+    57=>'Skyline',
+    58=>'Skyward',
  );
 
 ?>
