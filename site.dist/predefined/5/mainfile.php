@@ -84,6 +84,9 @@ $LEO_lang['ENCODING']= $langEncodings[$currentlang];
 $page_title = 'LEONARDO';
 
 
+
+//------------------------------------------------------------
+
 $userdata['user_id']=$user->id;
 $userdata['username']=$user->username;
 
@@ -96,13 +99,13 @@ if (isset($_SESSION['user_id'])) {
 function is_user($user) {
     global $db, $user_prefix,$CONF;
     if(!is_array($user)) {
-        $user = base64_decode($user);
+        $user = @base64_decode($user);
         $user = explode(":", $user);
-        $uid = "$user[0]";
-        $pwd = "$user[2]";
+        $uid = $user[0];
+        $pwd = $user[2];
     } else {
-        $uid = "$user[0]";
-        $pwd = "$user[2]";
+        $uid = $user[0];
+        $pwd = $user[2];
     }
     if ($uid != "" AND $pwd != "") {
         $sql = "SELECT ".$CONF['userdb']['password_field']." FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."='$uid'";

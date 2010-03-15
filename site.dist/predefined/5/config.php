@@ -17,10 +17,8 @@
 /*
  http://forum.joomla.org/viewtopic.php?f=304&t=278915
  http://pribadidewa.wordpress.com/2008/04/07/session-management-in-joomla/
-  http://forum.joomla.org/viewtopic.php?f=432&t=260330
-
-http://www.thinkbigshot.com/blog/technical/147-using-sessions-in-joomla-15.html
-
+ http://forum.joomla.org/viewtopic.php?f=432&t=260330
+ http://www.thinkbigshot.com/blog/technical/147-using-sessions-in-joomla-15.html
 */
 
 // override these
@@ -28,11 +26,11 @@ $CONF_use_own_template=1;
 $CONF_use_own_login=0;
  
 // Path settings
-$CONF['path']['direct_call']=1;;
+$CONF['path']['direct_call']=1;
 
 function moduleRelPath($forUtilityFiles=0){
         global $module_name,$CONF_use_own_template,$CONF;
-        
+
         if ( $CONF['links']['type']==3 ) {
                 return $CONF['links']['baseURL'];
         }
@@ -69,7 +67,7 @@ $CONF['userdb']['user_first_name_field']='';
 
 // bridge to the login system of different forum/portal/cms systems
 $CONF['bridge']['login_url']="/index.php?option=com_user&view=login";
-$CONF['bridge']['logout_url']="/index.php?option=com_frontpage";
+$CONF['bridge']['logout_url']="/index.php?option=com_user&view=login&Itemid=24";
 $CONF['bridge']['register_url']="/index.php?option=com_user&task=register";
 // $CONF['bridge']['register_url']="profile.php?mode=register";
 $CONF['bridge']['forgot_password_url']='';
@@ -82,8 +80,9 @@ $CONF_mainfile="index.php";
 $CONF_arg_name="option";
 
 function setModuleArg() {
-	global $CONF_arg_name,$module_name;
+	global $CONF_arg_name,$module_name,$CONF,$CONF_mainfile;
 	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
+//	define('CONF_MODULE_ARG',$CONF['links']['baseURL']."/".$CONF_mainfile."?$CONF_arg_name=$module_name");
 }
 
 
@@ -116,7 +115,7 @@ function append_sid($a,$b="") {
 	$dbname = $leoConf->db;
 	$dbuser = $leoConf->user;
 	$dbpasswd = $leoConf->password;
-
+		
 //require_once $CONF_abs_path."/site/config_db.php";
 
 // also load the required functions
