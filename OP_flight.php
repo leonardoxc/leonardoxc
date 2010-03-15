@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: OP_flight.php,v 1.19 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: OP_flight.php,v 1.20 2010/03/15 20:57:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -147,6 +147,8 @@ $serverFunctions['flights.submit']='flights_submit';
 function flights_submit($args) {
 	global $opMode,$CONF;
 	
+	//global $DBGlvl,$DEBUG_OUTPUT; $DBGlvl=255;
+	
 	require_once dirname(__FILE__)."/FN_flight.php";
 
 	$username=$args[0];
@@ -277,7 +279,7 @@ function flights_submit($args) {
 	} else {
 	
 		if ( $errCode==1 && $flightID==0) {
-			$errStr="The IGC file did not contain a valid flight";
+			$errStr="The IGC file did not contain a valid flight"; //.urlencode($DEBUG_OUTPUT);
 		} else {
 			$errStr=htmlspecialchars(getAddFlightErrMsg($errCode,$flightID) ) ;		
 		}	

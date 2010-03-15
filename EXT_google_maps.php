@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps.php,v 1.15 2010/03/15 14:50:10 manolis Exp $                                                                 
+// $Id: EXT_google_maps.php,v 1.16 2010/03/15 20:57:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -226,7 +226,7 @@
 	}
 
 
-	//getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
 	getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=500&from_tm=10&pilotIDview=76',null,drawFlights);
 
