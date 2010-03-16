@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.116 2010/03/16 13:00:12 manolis Exp $
+// $Id: index.php,v 1.117 2010/03/16 21:26:25 manolis Exp $
 //
 //************************************************************************
 
@@ -408,6 +408,8 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_list_areas.php";
 } else if ($op=="area_show") {
 	require $LeoCodeBase."/GUI_area_show.php";
+} else if ($op=="browser") {
+	require $LeoCodeBase."/GUI_browser.php";
 
 //--------------------------
 // "Flight" related actions

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.2 2010/03/16 13:44:09 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.3 2010/03/16 21:26:25 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -66,59 +66,70 @@
 <script src='js/chartFX/canvaschartpainter.js'></script>
 <link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
 
+<script type="text/javascript">
+	function toogleGmapsFullScreen () {
+		window.parent.toogleGmapsFullScreen() ;
+	}
+	
+</script>
+
+<style type="text/css">
+<!--
+.gmap {
+	left: 0px;
+	top: 25px;
+	width: 100%;
+	height: 96%;
+}
+
+.gmap_controls {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 25px;
+}
+
+-->
+</style>
+
 </head>
 <body  onUnload="GUnload()">
+<div class="gmap" id="gmap"></div>
 
-<table border="0" cellpadding="0" cellspacing="0" class="mapTable">
-	<tr>
-		<td valign="top"><div id="map"></div></td>
-		<td valign="top">
-		<form name="form1" method="post" action="">
-		<div style="display:block">
+<div class="gmap_controls" id="gmap_controls" >
+	<div style="position:relative;">
 		
-
-		<div style="position:relative; float:right; clear:both; margin-top:8px">
-			<a href='javascript:toogleFullScreen();'><img src='img/icon_maximize.gif' border=0></a>
-		</div>
-		<br>
-		<fieldset class="legendBox"><legend><?=_Control?></legend><BR />
-	
-		<a href='javascript:zoomToFlight()'><?=_Zoom_to_flight?></a><hr />
-		<div id="side_bar">
-		</div> 
-		<hr>
-		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)"><?=_Follow_Glider?><br>
-		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)"><?=_Show_Task?><br>
-		<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
+		<div style="position:relative; float:left; clear:none; margin-top:2px">
+		<? if ($CONF_airspaceChecks) { ?>
 			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
+			
 		<?  } ?>
-		</fieldset>
-        
 		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
          <div id='thermalLoad'><a href='javascript:loadThermals()'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
          <div id='thermalControls' style="display:none">
-	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class <BR>
-          <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class<BR>
-          <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class<BR>
-          <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class<BR>
-          <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class<BR>
+	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class 
+          <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class 
+          <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class
+          <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class
+          <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class
          </div>
 		</fieldset>
         <? } ?>
+
 		</div>
-    </form>
-	</td>
+	
+		
+		<div style="position:relative; float:right; clear:none; margin-top:2px">
+			<a href='javascript:toogleGmapsFullScreen();'><img src='img/icon_maximize.gif' border=0></a>
+		</div>
 
-  </tr>
-</table>
-<div id="pdmarkerwork"></div>
 
-
+	</div>	
+</div>
 <script type="text/javascript">
-
-
 
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 
@@ -132,7 +143,7 @@ var lat=<?=$lat?>;
 var lon=<?=$lon?>;
 
 	
-	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
+	var map = new GMap2(document.getElementById("gmap"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
 
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
 	map.addControl(new GLargeMapControl());
@@ -140,7 +151,77 @@ var lon=<?=$lon?>;
 	map.setCenter (new GLatLng(lat,lon), 8, <?=$GMapType?>);
 
 
-	// GDownloadUrl(polylineURL, process_polyline);
+	
+	function createFlightMarker(point, id , description, iconUrl, shadowUrl ) {
+		if (iconUrl){
+			var baseIcon = new GIcon();
+			
+			var sizeFactor;
+			sizeFactor=0.8;
+			
+			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
+			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
+			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
+			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
+			  
+			var newIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
+				
+			var marker = new GMarker(point,newIcon);
+		} else {
+			var marker = new GMarker(point);		
+		}	
+	  // Show this marker's index in the info window when it is clicked
+
+
+/*	  
+	  GEvent.addListener(marker, "click", function() {
+		  loadFlightTrack(id);
+	  });
+*/
+	  	
+	 GEvent.addListener(marker, "click", function() {
+		 flightMarkers[id].openInfoWindowHtml("<img src='img/ajax-loader.gif'>");	 
+		 $.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html',  		
+				  success: function(data) {
+					flightMarkers[id].openInfoWindowHtml(data);	  
+				  }
+		  });
+	  });
+	  	
+		
+	  return marker;
+	}
+	
+	function loadFlightTrack(id) {
+		$.ajax({ url: 'EXT_flight.php?op=polylineURL&flightID='+id, dataType: 'text', 		  
+				  success: function(polylineURL) {
+				    drawFlightTrack(polylineURL);
+					// GDownloadUrl(polylineURL, process_polyline);
+				}
+		  
+		 });
+		
+	}
+	
+	function drawFlightTrack(polylineURL) {
+		$.ajax({ url: polylineURL, dataType: 'text', 		  
+				  success: function(polylineStr) {
+				  	do_process_waypoints=false;
+				    process_polyline(polylineStr);
+				}
+		  
+		 });
+		
+	}
+	
+	function openFlightInfoWindow(htmlResult) {
+		//var results= eval("(" + jsonString + ")");			
+		//var i=results.flightID;
+		//var html=results.html;
+		//flightMarkers[i].openInfoWindowHtml(html);
+		flightMarkers[i].openInfoWindowHtml(htmlResult);
+	}
+	
 			
 	// Creates a marker whose info window displays the given description 
 	function createWaypoint(point, id , description, iconUrl, shadowUrl ) {
@@ -163,9 +244,12 @@ var lon=<?=$lon?>;
 			var marker = new GMarker(point);		
 		}	
 
-	 GEvent.addListener(marker, "click", function() {
+	  GEvent.addListener(marker, "click", function() {
 	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
-		
+	  });
+	  
+	  GEvent.addListener(marker, "mouseover", function() {
+	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
 	  });
 	  
 	  return marker;
@@ -203,7 +287,26 @@ var lon=<?=$lon?>;
 		}	
 	}
 
+	var flightMarkers=[];
+	function drawFlights(jsonString){
+	 	var results= eval("(" + jsonString + ")");		
+		// document.writeln(results.flights.length);
+		for(i=0;i<results.flights.length;i++) {	
+			if ( flightMarkers[results.flights[i].flightID] ) continue;
+			
+			var takeoffPoint= new GLatLng(results.flights[i].firstLat, results.flights[i].firstLon) ;						
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal4/icon19.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal4/icon19s.png";
+			
+			var flightMarker= createFlightMarker(takeoffPoint,results.flights[i].flightID, results.flights[i].pilotName,iconUrl,shadowUrl);
+			flightMarkers[results.flights[i].flightID] = flightMarker;
+			map.addOverlay(flightMarker);
+		}	
+	}
+
+
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=200&from_tm=10',null,drawFlights);
 	
 	GEvent.addListener(map, "moveend", function() {
 		// Add 5 markers to the map at random locations
@@ -218,6 +321,7 @@ var lon=<?=$lon?>;
 		lon= map.getCenter().lng(); 
 
 		getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+		getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=200&from_tm=10',null,drawFlights);
 	});
 	  	
 
@@ -338,7 +442,7 @@ var lon=<?=$lon?>;
 	
 </script>
 
-<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
+<? if ($CONF_airspaceChecks) { ?>
 <script language="javascript">
 
 function toggleAirspace(radioObj) {
