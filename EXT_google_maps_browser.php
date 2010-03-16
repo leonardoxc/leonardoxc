@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.1 2010/03/15 20:57:40 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.2 2010/03/16 13:44:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -184,6 +184,8 @@ var lon=<?=$lon?>;
 	 	var results= eval("(" + jsonString + ")");		
 		// document.writeln(results.waypoints.length);
 		for(i=0;i<results.waypoints.length;i++) {	
+			if ( takeoffMarkers[results.waypoints[i].id] ) continue;
+		
 			var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
 			
 		
@@ -203,18 +205,21 @@ var lon=<?=$lon?>;
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
-	 // Add 5 markers to the map at random locations
-    // Note that we don't add the secret message to the marker's instance data
-    var bounds = map.getBounds();
-    var southWest = bounds.getSouthWest();
-    var northEast = bounds.getNorthEast();
-    var lngSpan = northEast.lng() - southWest.lng();
-    var latSpan = northEast.lat() - southWest.lat();
-    for (var i = 0; i < 5; i++) {
-      var latlng = new GLatLng(southWest.lat() + latSpan * Math.random(),
-	    southWest.lng() + lngSpan * Math.random());
-	map.addOverlay(createMarker(latlng, i + 1));
+	GEvent.addListener(map, "moveend", function() {
+		// Add 5 markers to the map at random locations
+		// Note that we don't add the secret message to the marker's instance data
+		var bounds = map.getBounds();
+		var southWest = bounds.getSouthWest();
+		var northEast = bounds.getNorthEast();
+		var lngSpan = northEast.lng() - southWest.lng();
+		var latSpan = northEast.lat() - southWest.lat();
+		
+		lat = map.getCenter().lat();
+		lon= map.getCenter().lng(); 
 
+		getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	});
+	  	
 
 	/*
 	$.ajax({ url: 'EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon, dataType: 'json', 		  
