@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.178 2010/03/14 20:56:09 manolis Exp $
+// $Id: CL_flightData.php,v 1.179 2010/03/16 15:03:52 manolis Exp $
 //
 //************************************************************************
 
@@ -37,7 +37,7 @@ class flight {
     var $glider="";
 	var $gliderBrandID=0;
 
-	var $startType;
+	var $startType=0;
 	
 	var $linkURL="";
 	var $takeoffID=0;
@@ -148,6 +148,7 @@ var $maxPointNum=1000;
 //---------------
 // CONSTRUCTOR
     function flight() {
+		global $CONF;
 		$this->startType=$CONF['defaultStartType'];
 		
     	# Martin Jursa, 30.05.2007: make time gap configurable
