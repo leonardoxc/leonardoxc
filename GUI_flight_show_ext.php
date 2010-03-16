@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show_ext.php,v 1.16 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_flight_show_ext.php,v 1.17 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -145,12 +145,8 @@ makePopupBoxDiv('takeoffAdd');
 
 
 	$legendRight="";
-
 	$legendRight.="<div id='setBoundsPos'></div>";
 
-	if (L_auth::isAdmin($userID) ) {
-	//	$legendRight.="<div id='setBoundsPos'></div><a href='javascript:set_flight_bounds($flightID)'><img src='".$moduleRelPath."/img/icon_clock.png' title='Set Start-Stop Time for flight' border=0 align=bottom></a> ";
-	}
 
 	if ( $flight->belongsToUser($userID) || L_auth::isAdmin($userID) ) {
 		$legendRight.="<a href='".getLeonardoLink(array('op'=>'delete_flight','flightID'=>$flightID))."'><img src='".$moduleRelPath."/img/x_icon.gif' border=0 align=bottom></a>
@@ -172,7 +168,7 @@ makePopupBoxDiv('takeoffAdd');
 	}
 	
 	
-	$legend="<img src='$moduleRelPath/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".
+	$legend=leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1')." ".
 			_PILOT.": <a href=\"javascript:pilotTip.newTip('inline', 60, 19, 'pilot_pos', 200, '".
 			$flight->userServerID."_".$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
 			$flight->userName."</a>&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
@@ -202,7 +198,7 @@ makePopupBoxDiv('takeoffAdd');
 		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 		
-		$valiStr="&nbsp;<img class='listIcons' src='".$moduleRelPath."/img/$vImg' align='absmiddle' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
+		$valiStr="&nbsp;".leoHtml::img($vImg,12,12,'absmiddle',$vStr,'icons1 listIcons');
   }
 
   if ($CONF_airspaceChecks) {
@@ -271,7 +267,7 @@ if ( $scoringServerActive ) {
 		}
 	$Ltemplate->assign_vars(array(
 		'MAX_DISTANCE'=>formatDistanceOpen($flight->MAX_LINEAR_DISTANCE)." ($maxDistanceSpeed)",		
-		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." <img src='$moduleRelPath/img/$olcScoreTypeImg' align='absmiddle'>",
+		'OLC_TYPE'=>formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." ".leoHtml::img($olcScoreTypeImg,0,0,'absmiddle','','icons1'),
 		'OLC_KM'=>formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)",
 		'OLC_SCORE'=>formatOLCScore($flight->FLIGHT_POINTS),
 		'SCORE_INFO_LINK'=>$showScoreInfo,
@@ -333,8 +329,7 @@ if ($flight->linkURL) {
 	$glider=$gliderBrandImg.' '.$flight->glider;
 
 
-$gliderCat=" [ <img src='".$moduleRelPath."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".	
-$gliderCatList[$flight->cat]." ]";
+$gliderCat=" [ ".leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1')." ".$gliderCatList[$flight->cat]." ]";
  
 //-------------------------------------------------------------------
 // get from paraglidingearth.com

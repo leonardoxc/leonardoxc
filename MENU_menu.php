@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.18 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.19 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -22,17 +22,21 @@
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/style_top_menu.css">
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/js/jqModal.css">
 
-<!-- test for sprites-->
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
+<!-- sprites-->
 <style type="text/css">
 <!--
-img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.png) no-repeat top left;}
-img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.png) no-repeat top left;}
-img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-repeat top left;}
+<? if ($CLIENT['browser'][0]=='MSIE' && 0 ) { ?>
+img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.gif) no-repeat left top; }
+img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.gif) no-repeat left top ; }
+img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.gif) no-repeat left  top ; }
+<? } else { ?>
+img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.png) no-repeat left top; }
+img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.png) no-repeat left top ; }
+img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-repeat left  top ; }
+<? } ?>
 -->
 </style>
-
-
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
 
 	
 <? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.83 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.84 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -139,7 +139,6 @@ $(".ticksettings").livequery('click', function(e) {
 
 <? 
 
-//$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' width='9' height='7' alt='select' border='0' \>";
 $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 // http://www.htmldog.com/articles/suckerfish/dropdowns/
@@ -150,10 +149,8 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 // http://www.cssplay.co.uk/menus/final_drop.html
 
 	 $iconLink=getLeonardoLink(array('op'=>'index_full'));
-	 // $iconImg="<img src='".$moduleRelPath."/img/icon_home.gif' width='16' height='14' alt='home' border='0' \>";
-	 $iconImg=leoHtml::img("icon_home.gif",16,14,'','home','icons1');
+	 $iconImg=leoHtml::img("icon_home.gif",0,0,'','home','icons1');
 	 
-    // addMenuBarItem(new menuBarItem("<?=$iconImg? >", staticMenu8 ,"", true,"<?=$iconLink? >","jsdomenubaritemICONS","jsdomenubaritemoverICON","jsdomenubaritemoverICON"));
 ?>
 
 <li class="smallItem long"><a class="smallItem" href='#'><?=$iconImg?></a>
@@ -226,7 +223,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 <? } ?>
 
 		<li><a href="<?=getLeonardoLink(array('op'=>'index_full')) ?>"><?=_MENU_SUMMARY_PAGE ?></a></li>
-		<li><a href="<?=getLeonardoLink(array('op'=>'rss_conf')) ?>"><?= $iconImg=leoHtml::img("rss.gif",16,14,'absmiddle','RSS','icons1');?> RSS Feed</a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'rss_conf')) ?>"><?=leoHtml::img("rss.gif",0,0,'absmiddle','RSS','icons1');?> RSS Feed</a></li>
 <?	
 	insertMenuItems('home','bottom'); 
 	
@@ -266,16 +263,13 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);
 	  $flagLink=getLeonardoLink(array('op'=>'useCurrent','lng'=>$tmpLang ));
 	  
- 	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;
-	  
-	  // $flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png' width='18' height='12' valign='middle' border='0' />&nbsp;$tmpLangStr";	  	  
+ 	  if ($opMode==1) $flagLink.="&newlang=".$tmpLang;	   
 	  
 	  $cCode=$CONF['lang']['lang2countryFlag'][$tmpLang];
-  	  $flagImg=leoHtml::img("$cCode.png",18,12,'absmiddle',$str,'fl')."&nbsp;$tmpLangStr";
+  	  $flagImg=leoHtml::img("$cCode.gif",18,12,'absmiddle',$str,'fl')."&nbsp;$tmpLangStr";
 	  
 	  if ($currentlang==$tmpLang) {
- 	    $current_flagImg=leoHtml::img($cCode.".png",18,12,'',_LANGUAGE,'fl');		
-		//$current_flagImg="<img src='".$moduleRelPath."/language/flag-".$tmpLang.".png'  title='"._LANGUAGE."'  alt='"._LANGUAGE."' width='18' height='12' valign='middle' border='0' \>";
+ 	    $current_flagImg=leoHtml::img($cCode.".gif",18,12,'',_LANGUAGE,'fl');
 	  }
 	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
 	} 

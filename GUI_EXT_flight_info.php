@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.13 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.14 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -112,7 +112,7 @@ if ($op=='photos'){
 	echo "<TR><TD width=160>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
 
 	$gliderBrandImg=brands::getBrandText($flight->gliderBrandID,$flight->glider,$flight->cat);
-	echo "<TR><TD>"._GLIDER."</td><td>"."<img src='".moduleRelPath()."/img/icon_cat_".$flight->cat.".png' align='absmiddle'> ".				$gliderBrandImg."<td></tr>\n";
+	echo "<TR><TD>"._GLIDER."</td><td>".leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1')." ".$gliderBrandImg."<td></tr>\n";
 
  
 	$flightHours=$flight->DURATION/3600;
@@ -138,7 +138,8 @@ if ( $scoringServerActive ) {
 			$olcScoreTypeImg="photo_icon_blank.gif";
 		}
 
-	echo "<TR class='hr'><TD>"._OLC_SCORE_TYPE."</td><td>".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." <img src='".moduleRelPath()."/img/$olcScoreTypeImg' align='absmiddle'>\n";
+	echo "<TR class='hr'><TD>"._OLC_SCORE_TYPE."</td><td>".formatOLCScoreType($flight->BEST_FLIGHT_TYPE)." ".
+			leoHtml::img($olcScoreTypeImg,0,0,'absmiddle','','icons1')."\n";
 	echo "<TR><TD>"._OLC_DISTANCE."</td><td>".formatDistanceOpen($flight->FLIGHT_KM)." ($olcDistanceSpeed)\n";
 	echo "<TR><TD>"._OLC_SCORING."</td><td>".formatOLCScore($flight->FLIGHT_POINTS)."<td></tr>\n";
 	echo "<TR class='hr'><TD>"._OPEN_DISTANCE."</td><td>".formatDistanceOpen($flight->LINEAR_DISTANCE)." ($openDistanceSpeed)"."<td></tr>\n";		

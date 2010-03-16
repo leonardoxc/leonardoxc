@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.30 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.31 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -146,7 +146,7 @@ function addFavorite() {
 	$rss_url=$rss_url_base."?c=20&fltr=".$_SESSION['fltr'];
 	echo "
 	  <BR><BR><div align='left'>
-	      <img src='".moduleRelPath()."/img/rss.gif' width='31' height='15'> 
+	      <img src='".moduleRelPath()."/img/icons1/rss.gif' width='31' height='15'> 
           (<a id='rss_url' href='$rss_url' target='_blank'>copy paste this url to your RSS reader</a>) 
 
 		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

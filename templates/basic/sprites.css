@@ -1,6 +1,5 @@
 
 img.fl {
-    background: url(/modules/leonardo/img/sprite_flags.png) no-repeat top left;
    	float:none;
 	display:inline-block;
     clear:none;
@@ -11,8 +10,7 @@ img.fl {
 	*display:inline;
 }
 
-img.icons1 {
-    background: url(/modules/leonardo/img/sprite_icons1.png) no-repeat top left;
+img.icons1 {  
    	float:none;
 	display:inline-block;
     clear:none;
@@ -266,8 +264,8 @@ img.fl.sprite-zw { background-position: -108px -1519px; }
 
 img.icons1.sprite-geicon { background-position: 0 0; width: 16px; height: 16px; } 
 img.icons1.sprite-icon_action_select { background-position: 0 -41px; width: 16px; height: 10px; } 
-img.icons1.sprite-icon_arrow_down { background-position: 0 -76px; width: 10px; height: 10px; } 
-img.icons1.sprite-icon_arrow_left { background-position: 0 -111px; width: 9px; height: 7px; } 
+img.icons1.sprite-icon_arrow_down { background-position: 0px -76px; width: 10px; height: 10px; } 
+img.icons1.sprite-icon_arrow_left { background-position: 0px -111px; width: 9px; height: 7px; } 
 img.icons1.sprite-icon_bookmark { background-position: 0 -143px; width: 16px; height: 16px; } 
 img.icons1.sprite-icon_bullet_blue { background-position: 0 -184px; width: 16px; height: 16px; } 
 img.icons1.sprite-icon_bullet_green { background-position: 0 -225px; width: 16px; height: 16px; } 
@@ -322,7 +320,6 @@ img.icons1.sprite-rss { background-position: -57px -82px; width: 31px; height: 1
 
 
 img.brands {
-	background: url(/modules/leonardo/img/sprite_brands.png) no-repeat top left;
 	float:none;
 	display:inline-block;
 	*display:inline;
@@ -396,3 +393,4 @@ img.brands.sprite-unknown_004 { background-position: -140px -801px; width: 50px;
 img.brands.sprite-unknown_008 { background-position: -140px -846px; width: 50px; height: 15px; } 
 img.brands.sprite-unknown_016 { background-position: -140px -891px; width: 50px; height: 15px; } 
 img.brands.sprite-unknown_032 { background-position: -140px -936px; width: 50px; height: 15px; } 
+

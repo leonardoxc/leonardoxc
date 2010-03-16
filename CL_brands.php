@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_brands.php,v 1.13 2010/03/14 20:56:09 manolis Exp $                                                                 
+// $Id: CL_brands.php,v 1.14 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -61,7 +61,9 @@ class brands {
 			if (!isset($brandName) ) $brandName=$CONF['brands']['list'][$brandID];
 			if (is_file("$CONF_abs_path/img/brands/".sprintf("%03d",$brandID).".gif") ) {
 		 		$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/brands/".sprintf("%03d",$brandID).".gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
-		 		$gliderBrandImg="<img align='absmiddle' class='brands sprite-".sprintf("%03d",$brandID)."' src='$moduleRelPath/img/space.gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
+				
+				$gliderBrandImg=leoHtml::img(sprintf("%03d",$brandID).".gif",0,0,'absmiddle',"$brandName $gliderName",'brands');
+		 		// $gliderBrandImg="<img align='absmiddle' class='brands sprite-".sprintf("%03d",$brandID)."' src='$moduleRelPath/img/space.gif' title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";
 
 			} else {
 	 			$gliderBrandImg="<img align='absmiddle' src='$moduleRelPath/img/space.gif' width=6 height=16 title='$brandName $gliderName' alt='$brandName $gliderName'  border='0' />";

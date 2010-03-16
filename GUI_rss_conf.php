@@ -8,14 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_rss_conf.php,v 1.8 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_rss_conf.php,v 1.9 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
  list($countriesCodes,$countriesNames)=getCountriesList();
  $rss_url_base="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."rss.php";
 
- openMain("Configure RSS Feed",0,"rss.gif"); 
+ openMain("Configure RSS Feed",0,"icons1/rss.gif"); 
  
 ?>
 <script language="javascript">
@@ -82,7 +82,7 @@ function updateRssURL() {
     <tr> 
       <td colspan=2><div align="right">
         <p align="center"><br>
-          <img src="<?=$moduleRelPath?>/img/rss.gif" width="31" height="15"> 
+          <?=leoHtml::img("rss.gif",0,0,'','','icons1')?>
           (copy paste this url to your RSS reader) 
       </div>
 	<div align="center" id='rss_url'><a href='<?= $rss_url_base ?>' target='_blank'><?= $rss_url_base ?></a></div></p></td>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.45 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.46 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -369,7 +369,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
             <td>	    <fieldset class="legendBox legend2">
 		    <legend><? echo _GLIDER_TYPE ?></legend>
 			<div align="left">
-		    <b><img src="<? echo $moduleRelPath?>/img/icon_cat_<? echo $flight->cat ?>.png" border=0 />
+		    <b><?=leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1')?>      
             <select name="gliderCat" id="gliderCat" onchange="selectGliderCat();">
            <?
 				foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
@@ -551,8 +551,8 @@ require_once dirname(__FILE__).'/FN_editor.php';
 					else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 					else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 					
-					$valStr="$vStr <img class='listIcons' src='".$moduleRelPath."/img/$vImg' title='$vStr' alt='$vStr' width='12' height='12' border='0' />";
-					echo $valStr;
+					$valiStr="$vStr ".leoHtml::img($vImg,12,12,'absmiddle',$vStr,'icons1 listIcons');
+					echo $valiStr;
 				
 /*
 					if ($flight->grecord==1) $grecord_sel_1="selected";

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.115 2010/03/14 20:56:12 manolis Exp $
+// $Id: index.php,v 1.116 2010/03/16 13:00:12 manolis Exp $
 //
 //************************************************************************
 
@@ -95,6 +95,11 @@ require_once dirname(__FILE__)."/CL_statsLogger.php";
 require_once dirname(__FILE__)."/CL_filter.php";
 require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 
+
+$CLIENT['browser']=findBrowserOS();
+// $agent,$version,$os,$aol
+
+	
  // if we use utf
 if ($CONF_use_utf) {
 		$db->sql_query("SET NAMES utf8");

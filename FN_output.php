@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.56 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.57 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -540,9 +540,7 @@ with (geTip)
 			"<div style='padding:5px'>" +
 				"<div id='BT_content' style='line-height:140%'>"+
 
-<? 
-$icon_bullet_greenStr=leoHtml::img("icon_bullet_green.gif",0,0,'absmiddle','','icons1');
-?>				
+				<? $icon_bullet_greenStr=leoHtml::img("icon_bullet_green.gif",0,0,'absmiddle','','icons1');?>				
 				<? if ($CONF['googleEarth']['igc2kmz']['active'] && ( $CONF['googleEarth']['igc2kmz']['visible'] || L_auth::isModerator($userID) )   ) { ?>
 				"<?=$icon_bullet_greenStr?><?=leoHtml::img("icon_new.png",0,0,'absmiddle','','icons1')?> <a href='<?=getDownloadLink(array('type'=>'kml_trk','an'=>'2','flightID'=>'%4%','lng'=>'%5%'))?>'><? echo 'IGC2KMZ '._ge_module_advanced_1; ?></a>"+
 	'<br>'+

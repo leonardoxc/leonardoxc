@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.138 2010/03/14 21:08:34 manolis Exp $                                                                 
+// $Id: config.php,v 1.139 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -481,7 +481,7 @@ Triangle conform to the FAI definition
 	
 	if ( strpos(strtolower(PHP_OS), 'win')  === false ) $CONF['os']='linux';
 	else $CONF['os']='windows';
-	
+		
 	$CONF['thermals']['enable']=false;
 
 	// choose how to send mail to users from the system
@@ -832,5 +832,6 @@ if (!function_exists('str_ireplace')) {
     }
 } 
 
+//$CONF['sprites']
 
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.56 2010/03/14 20:56:11 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.57 2010/03/16 13:00:12 manolis Exp $
 //
 //************************************************************************
 
@@ -83,7 +83,6 @@
   else $isCompDisplay=0;
 
 
-//$arrDownImg="<img src='".$moduleRelPath."/img/icon_arrow_left.gif' border=0>";
 $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 ?>
@@ -407,8 +406,7 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 
 		foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {
 		  $catLink=getLeonardoLink(array('op'=>'useCurrent','cat'=>$tmpcat));
-		  
-		  // $catImg="<img src='".$moduleRelPath."/img/icon_cat_".$tmpcat.".png' border=0>";
+		  		 
 		  $catImg=leoHtml::img("icon_cat_".$tmpcat.".png",0,0,'absmiddle','','icons1');
 		  if ($cat==$tmpcat) $current_catImg=$catImg;
 
@@ -418,12 +416,9 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 }
 
  if ($cat) {
-    	//$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": ".$gliderCatList[$cat]."'>";
 		$catLegend=leoHtml::img("icon_cat_".$cat.".png",0,0,'absmiddle',_GLIDER_TYPE.": ".$gliderCatList[$cat],'icons1');
-		//$gliderCatList[$cat]
   }	else {
 		$allCatDisplay=1;
-		//$catLegend="<img src='".$moduleRelPath."/img/icon_cat_".$cat.".png' align='middle' border=0 title='"._GLIDER_TYPE.": "._All_glider_types."'>";
 		$catLegend=leoHtml::img("icon_cat_".$cat.".png",0,0,'absmiddle',_GLIDER_TYPE.": "._All_glider_types,'icons1');
   }
 ?>
@@ -548,8 +543,7 @@ if (! $dontShowCountriesSelection ) {
 		$countryLegend=$countries[$country];
 	}
 	if ($country) {
-		$countryFlagImg=leoHtml::img(strtolower($country).".gif",0,0,'absmiddle',_MENU_COUNTRY,'fl mb4');
-		//$countryFlagImg="<img src='$moduleRelPath/img/flags/".strtolower($country).".gif'  title='"._MENU_COUNTRY."' align='absmiddle' style='margin-bottom:4px' border='0'>";
+		$countryFlagImg=leoHtml::img(strtolower($country).".gif",0,0,'absmiddle',_MENU_COUNTRY,'fl mb4');		
 	} else {
 	    $countryFlagImg=leoHtml::img("icon_globe.gif",0,0,'absmiddle',_MENU_COUNTRY,'icons1');
 	}

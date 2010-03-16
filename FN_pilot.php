@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.52 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.53 2010/03/16 13:00:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -233,14 +233,9 @@ function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	if ( !$serverID || $serverID==$CONF_server_id || $typeOfLink==0 ||
 		 $CONF['servers']['list'][$serverID]['treat_flights_as_local'] ) return '';
 	else if ($typeOfLink==1) return leoHtml::img("icon_link.gif",0,0,'',_External_Entry." $linkURL",'icons1 flagIcon');	
-	//	"<img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." $linkURL'>";
 	else if ($typeOfLink==2) return " (*)";
 	else if ($typeOfLink==3) {
-		//$file="$moduleRelPath/img/servers/".sprintf("%03d",$serverID).".gif";
-		//if (!is_file($file)) $file="$moduleRelPath/img/icon_link.gif";
-		$file="$moduleRelPath/img/icon_link.gif";
 		return leoHtml::img("icon_link.gif",0,0,'',_External_Entry." $linkURL",'icons1 flagIcon');
-		//"<img class='flagIcon' src='$file' border=0 title='"._External_Entry." $linkURL'>";
 	}
 }
 
@@ -361,7 +356,6 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 
 	if ($gender==1 && strtoupper($pilot['Sex'])=='F' && $getAlsoCountry)  { // the $getAlsoCountry will prevent putting the F symbol in sync-log
 		$str.=leoHtml::img("icon_female_small.gif",0,0,'absmiddle','','icons1');
-		//$str.="<img src='$moduleRelPath/img/icon_female_small.gif' border=0 align='absmiddle'>";
 	}
 
 	return $str;
@@ -423,9 +417,7 @@ function getNationalityDescription($cCode,$img=1,$text=1) {
 	}
 
 	if ($img) {
-		$imgStr="<img class='flagIcon' src='$moduleRelPath/img/flags/$cCode.gif' border=0 title='$str'>";
-		$imgStr="<img class='fl sprite-$cCode' src='".moduleRelPath()."/img/space.gif' border='0' title='$str' width='18' height='12'> ";
-		// $imgStr="<span class='fl sprite-$cCode'></span>";
+		$imgStr=leoHtml::img("$cCode.gif",0,0,'absmiddle',$str,'fl');
 	}
 	if ($text) $textStr=$str;
 	return "$imgStr$textStr";
@@ -483,7 +475,7 @@ function getPilotSexString($sex,$icon=true){
 
 	if ($icon) {
 		if ($sex=='M') $str="<img src='$moduleRelPath/img/icon_male.gif' border=0 align='absmiddle'> ".$str;
-		else if ($sex=='F') $str="<img src='$moduleRelPath/img/icon_female.gif' border=0 align='absmiddle'> ".$str;
+		else if ($sex=='F') $str=leoHtml::img("icon_female_small.gif",0,0,'absmiddle','','icons1').$str;
 	}
 
 	return $str;
