@@ -33,7 +33,7 @@ function drawAirspace(rec) {
 
 
 function clearAirspaces() {
-	for (var i=0; i<polys.length; i++) {
+	for (var i=0; i<airspace_polys.length; i++) {
 		map.removeOverlay(airspace_polys[i]);
 	}
 	airspace_polys=[];
