@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.32 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.33 2010/03/17 15:06:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -53,7 +53,7 @@
 
 		if ( move_uploaded_file($_FILES['PilotPhoto']['tmp_name'],  
 				getPilotPhotoFilename($serverIDview,$pilotIDview) ) ) {
-			CLimage::resizeJPG(150,150, getPilotPhotoFilename($pilotIDview),
+			CLimage::resizeJPG(150,150, getPilotPhotoFilename($serverIDview,$pilotIDview),
 				 						getPilotPhotoFilename($serverIDview,$pilotIDview,1), 15);
 			CLimage::resizeJPG(800,800, getPilotPhotoFilename($serverIDview,$pilotIDview), 
 										getPilotPhotoFilename($serverIDview,$pilotIDview), 15);

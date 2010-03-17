@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.139 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: config.php,v 1.140 2010/03/17 15:06:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -417,7 +417,9 @@ setlocale(LC_NUMERIC, 'en_US') ;
  
  // USE airspace checking
  $CONF_airspaceChecks=0; 
-
+ // display airspace in google maps
+ $CONF['airspace']['enable']=1;
+ 
  // Will use the date('0') together with the timezone name for TZ detection
  // This is buggy in php 4.4.1 and before .
  $CONF_use_date_for_TZ_detection=1;

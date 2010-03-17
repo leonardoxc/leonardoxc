@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.17 2010/03/15 14:50:10 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.18 2010/03/17 15:06:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,7 +28,7 @@
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
-	if (!in_array($op,array("find_flights","list_flights","submit_flight","list_flights_json","get_info","polylineURL")) ) return;
+	if (!in_array($op,array("find_flights","list_flights","submit_flight","list_flights_json","get_info","polylineURL","get_task_json")) ) return;
 
 	$encoding="iso-8859-1";
 	if ($op=="find_flights") {
@@ -133,6 +133,13 @@
 	
 		$polylineURL=$flight->getPolylineRelPath();
 		echo $polylineURL;		
+	} else if ($op=="get_task_json") {
+		$flightID=$_REQUEST['flightID']+0;
+		if ($flightID<=0) exit;	
+		$flight=new flight();
+		$flight->flightID=$flightID;
+		//$flight->getFlightFromDB($flightID,0);	
+		echo $flight->gMapsGetTaskJS();
 	} else if ($op=="get_info") {
 		require_once dirname(__FILE__).'/lib/json/CL_json.php';
 				
@@ -220,9 +227,18 @@
 		
 		
 
+		
 		 $tm=makeSane($_REQUEST['from_tm'],1); // timestamp
-		 if (!$tm) $tm=time()-60*60*24*70; // 1 week back
-		 $where_clause.=" AND dateAdded >= FROM_UNIXTIME(".$tm.") "; 
+		 //  $tm=time()-60*60*24*70; // 1 week back
+		 if ($tm) {		 
+			 $where_clause.=" AND dateAdded >= FROM_UNIXTIME($tm) "; 
+		 }
+
+		 $tm1=makeSane($_REQUEST['tm1'],1); // timestamp
+		 $tm2=makeSane($_REQUEST['tm2'],1); // timestamp
+		 if ($tm1 && $tm2) {
+			 $where_clause.=" AND DATE >= FROM_UNIXTIME($tm1) AND DATE >= FROM_UNIXTIME($tm2) "; 
+		 }
 
 		 $count=makeSane($_REQUEST['count'],1); // timestamp
 		 if (!$count)  $count=100;
@@ -230,7 +246,7 @@
 		 else  $lim="";
 		
 		
-		
+		// $distance*=1000;
 		if ($lat && $lon && $distance ) {
 			$select_clause.=",\n".
 				"ROUND((ACOS((SIN(" . $lat . "/57.2958) * ".
@@ -246,7 +262,7 @@
 				"* 6392 , 3) <= " . $distance. " " ;
 		}
 		
-		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY dateAdded DESC $lim ";
+		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY  distance ASC , dateAdded DESC $lim ";
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){

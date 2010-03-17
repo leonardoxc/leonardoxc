@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.28 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.29 2010/03/17 15:06:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -136,6 +136,7 @@ function getPilotInfo(serverID,pilotID,update) {
     <td valign="top" bgcolor="#F9F9F9"> <? echo getNationalityDescription($pilot['countryCode']); ?>    </td>
     <td>&nbsp;</td>
     <td colspan="2" rowspan="8" valign="top"><? 
+	
 	  	if ($pilot['PilotPhoto']>0) {
 		
 			checkPilotPhoto($serverIDview,$pilotIDview);

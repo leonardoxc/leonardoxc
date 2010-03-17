@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.3 2010/03/16 21:26:25 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.4 2010/03/17 15:06:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -57,6 +57,9 @@
 
 <? if ( $CONF['thermals']['enable']  ) { ?>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
+<? } ?>
+<? if ($CONF['airspace']['enable']) { ?>
+<script src="<?=$moduleRelPath?>/js/google_maps/airspace.js" type="text/javascript"></script>
 <? } ?>
 
 <script src="js/chartFX/wz_jsgraphics.js"></script>
@@ -180,6 +183,8 @@ var lon=<?=$lon?>;
 */
 	  	
 	 GEvent.addListener(marker, "click", function() {
+		 loadFlightTrack(id,point);
+	 
 		 flightMarkers[id].openInfoWindowHtml("<img src='img/ajax-loader.gif'>");	 
 		 $.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html',  		
 				  success: function(data) {
@@ -192,21 +197,108 @@ var lon=<?=$lon?>;
 	  return marker;
 	}
 	
-	function loadFlightTrack(id) {
+	var thisTrackColor;
+	var taskPolylines=[];
+	function loadFlightTrack(id,point) {
+	    if ( taskPolylines[id] ) return;
+		
+		thisTrackColor='#'+getNextTrackColor();			
+				
+		$.ajax({ url: 'EXT_flight.php?op=get_task_json&flightID='+id, dataType: 'json', 		  
+				  success: function(task_json) {
+				    drawFlightTask(id,task_json,point);					
+				}		  
+		 });
+	
+
 		$.ajax({ url: 'EXT_flight.php?op=polylineURL&flightID='+id, dataType: 'text', 		  
 				  success: function(polylineURL) {
-				    drawFlightTrack(polylineURL);
-					// GDownloadUrl(polylineURL, process_polyline);
-				}
-		  
+				    drawFlightTrack(polylineURL);				
+				}		  
 		 });
 		
 	}
+	
+	  var polyline_color='';
+	  var do_process_waypoints=true;
+	
+      // This function picks up the click and opens the corresponding info window
+      function myclick(i) {
+        gmarkers[i].openInfoWindowHtml(htmls[i]);
+      }
+
+   var trackColors = 
+	[
+	 'FF0000','00FF00','0000FF','FFFF00','FF00FF','00FFFF','EF8435','34A7F0','33F1A3','9EF133','808080',
+	 'FFFFFF','000000','FFCC99', 'FFFF99' , 'CCFFFF', '99CCFF',
+	 '993300','333300', '000080', '333399', '333333', '800000',
+	 
+	 '808000', '008000', '008080', '0000FF', '666699', '808080', 'FF0000', 'FF9900', '99CC00', '339966', 
+	 '33CCCC', '3366FF', '800080', '999999', 'FF00FF', 'FFCC00', 'FFFF00', '00FF00', '00FFFF', '00CCFF', 
+	 '993366', 'C0C0C0', 'FF99CC', 'FF6600'
+	 ] ;
+	 
+	var trackColorID=-1;
+	function getNextTrackColor() {
+		trackColorID++;
+		if (trackColorID>=trackColors.length) trackColorID=0;		
+		return trackColors[trackColorID];	
+	} 
+ 	
+	 function drawFlightTask(id,task_json,point) {
+		// var task= eval("(" + task_json + ")");		
+		var task= eval( task_json );		
+		// document.writeln(results.waypoints.length);
+		
+		var lines=[];
+		var min_lat = 1000;
+        var max_lat = -1000;
+        var min_lon = 1000;
+        var max_lon = -1000;
+		
+	 	lines[0]=point;
+		for(i=0;i<task.turnpoints.length;i++) {	
+			// if ( takeoffMarkers[task.turnpoints[i].id] ) continue;
+		
+			if (task.turnpoints[i].lat < min_lat ) min_lat = task.turnpoints[i].lat;
+			if (task.turnpoints[i].lat > max_lat ) max_lat = task.turnpoints[i].lat;
+
+			if (task.turnpoints[i].lon < min_lon ) min_lon = task.turnpoints[i].lon;
+			if (task.turnpoints[i].lon > max_lon ) max_lon = task.turnpoints[i].lon;
+
+			var takeoffPoint= new GLatLng(task.turnpoints[i].lat, task.turnpoints[i].lon) ;					
+			lines[i+1]=takeoffPoint;
+			/*
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+	
+			var takeoffMarker= createWaypoint(takeoffPoint,task.turnpoints[i].id, task.turnpoints[i].name,iconUrl,shadowUrl);
+			takeoffMarkers[task.turnpoints[i].id] = takeoffMarker;
+			map.addOverlay(takeoffMarker);
+			*/
+
+		}
+		
+		color=thisTrackColor;			
+		
+		var polyline = new GPolyline(lines,color,1,0.5);
+		map.addOverlay(polyline);
+		taskPolylines[id]=polyline;
+		
+		center_lat=(max_lat+min_lat)/2;
+		center_lon=(max_lon+min_lon)/2;
+			
+		bounds = new GLatLngBounds(new GLatLng(max_lat,min_lon ),new GLatLng(min_lat,max_lon));
+		zoom=map.getBoundsZoomLevel(bounds);	
+		map.setCenter(new GLatLng( center_lat,center_lon), zoom);
+	}
+	   
 	
 	function drawFlightTrack(polylineURL) {
 		$.ajax({ url: polylineURL, dataType: 'text', 		  
 				  success: function(polylineStr) {
 				  	do_process_waypoints=false;
+					polyline_color=thisTrackColor;
 				    process_polyline(polylineStr);
 				}
 		  
@@ -248,10 +340,11 @@ var lon=<?=$lon?>;
 	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
 	  });
 	  
+	  /*
 	  GEvent.addListener(marker, "mouseover", function() {
 	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
 	  });
-	  
+	  */
 	  return marker;
 	}
 
@@ -445,132 +538,18 @@ var lon=<?=$lon?>;
 <? if ($CONF_airspaceChecks) { ?>
 <script language="javascript">
 
-function toggleAirspace(radioObj) {
-	if(!radioObj) return "";	
-	if(radioObj.checked) {
-		showAirspace=1;
-        for (var i=0; i<polys.length; i++) {
-			map.addOverlay(polys[i]);
-        }
-	} else {
-		showAirspace=0;
-        for (var i=0; i<polys.length; i++) {
-			map.removeOverlay(polys[i]);
-        }
-	}
-	refreshMap();
-}
 
- var poly ;
- var pts;
-<?
-	require_once dirname(__FILE__).'/FN_airspace.php';	
-	//  we have compted min/max in the start
-	
-	// echo "$min_lat,	$max_lat,$min_lon,	$max_lon<BR>";
-
-	// now find the bounding boxes that have common points
-	// !( A1<X0 || A0>X1 ) &&  !( B1<Y0 || B0>Y1 )
-	// X,A -> lon
-	// Y,B -> lat 
-	// X0 -> $min_lon A0-> $area->minx
-	// X1 -> $max_lon A1-> $area->maxx
-	// Y0 -> $min_lat B0-> $area->miny
-	// Y1 -> $max_lat B1-> $area->maxy
-	
-	// !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&  !( $area->maxx<$min_lat || $area->miny>$max_lat )
-
-	//in germany, pilots are allowed to fly in class E and class G airspace, and in gliding sectors when they are activated (class W). 
-	// All others are forbidden - start by colouring particularly the CTRs, TMAs and Danger Areas (EDs) .
-	// $airspace_arr= array("R",  "Q", "P", "A", "B", "C", "CTR","D", "GP", "W", "E", "F");
-	$airspace_color= array( "RESTRICT"=>"#ff0000", "DANGER"=>"#ff0000", "PROHIBITED"=>"#ff0000", 
-							"CLASSA"=>"#0000ff", "CLASSB"=>"#0000ff", "CLASSC"=>"#0000ff", 
-							"CTR"=>"#ff0000","CLASSD"=>"#0000ff", "NOGLIDER"=>"#0000ff", "WAVE"=>"#00ff00", "CLASSE"=>"#00ff00", "CLASSF"=>"#0000ff");
-
-
-	global $AirspaceArea,$NumberOfAirspaceAreas;
-
-	echo "polys = [];\n";	
-	echo "labels = [];\n";	
-
-
-	//Mod. P. Wild 5.10.2009 - show a few more airspaces around track (increase proximity level)
-	// show a bit more airspaces around the flight
-	// Manolis 09.12.2009
-	// put in the config variable $CONF['airspace']['zoom']
-	if ( $CONF['airspace']['zoom'] && $CONF['airspace']['zoom']!=100  ) {
-		// $zoom=102; //Percentage
-		$zoom=$CONF['airspace']['zoom'];
-		$min_lon=$min_lon+($min_lon*(100-$zoom))/100;
-		$max_lon=$max_lon+($max_lon*($zoom-100))/100;
-		$min_lat=$min_lat+($min_lat*(100-$zoom))/100;
-		$max_lat=$max_lat+($max_lat*($zoom-100))/100;
-	}
  
-	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
-	$NumberOfAirspaceAreas=count($AirspaceArea);
-	// echo " // found( $NumberOfAirspaceAreas) areas  $min_lon , $max_lon , $min_lat ,$max_lat <BR>";	
-	foreach ($AirspaceArea as $i=>$area) {
-		echo "pts = [];\n";	
-		if ($area->Shape==1) { // area 					
-			for($j=0;$j<$area->NumPoints;$j++) {
-				 echo " pts[$j] = new GLatLng(".$area->Points[$j]->Latitude.",".$area->Points[$j]->Longitude.");\n";
-			}
-		} else if ($area->Shape==2) { // cirle
-			$points=CalculateCircle($area->Latitude,$area->Longitude,$area->Radius);
-			for($j=0;$j<count($points);$j++) {
-				 echo " pts[$j] = new GLatLng(".$points[$j]->lat.",".$points[$j]->lng.");\n";
-			}
-		}	
-		echo " poly = new GPolygon(pts,'#000000',1,1,'".$airspace_color[$area->Type]."',0.25); \n";
-		echo " polys.push(poly); \n";
-		echo " labels.push('".$area->Name.' ['.$area->Type.'] ('.floor($area->Base->Altitude).'m-'.floor($area->Top->Altitude).'m)'."'); \n";
-		echo " map.addOverlay(poly);\n";	
-		
-		echo " GEvent.addListener(poly,'click', function(point) { checkPoint(point); }  ); ";
 
-	}
+<?
+	
+
+
 	
 
 
 ?>
 
-      // === A method for testing if a point is inside a polygon
-      // === Returns true if poly contains point
-      // === Algorithm shamelessly stolen from http://alienryderflex.com/polygon/ 
-      GPolygon.prototype.Contains = function(point) {
-        var j=0;
-        var oddNodes = false;
-        var x = point.lng();
-        var y = point.lat();
-        for (var i=0; i < this.getVertexCount(); i++) {
-          j++;
-          if (j == this.getVertexCount()) {j = 0;}
-          if (((this.getVertex(i).lat() < y) && (this.getVertex(j).lat() >= y))
-          || ((this.getVertex(j).lat() < y) && (this.getVertex(i).lat() >= y))) {
-            if ( this.getVertex(i).lng() + (y - this.getVertex(i).lat())
-            /  (this.getVertex(j).lat()-this.getVertex(i).lat())
-            *  (this.getVertex(j).lng() - this.getVertex(i).lng())<x ) {
-              oddNodes = !oddNodes
-            }
-          }
-        }
-        return oddNodes;
-      }
-
-	function checkPoint(point) {
-        if (point) {		
-		  var infoStr='';
-          for (var i=0; i<polys.length; i++) {
-            if (polys[i].Contains(point)) {
-				infoStr=infoStr+labels[i]+"<BR>";
-            }
-          }
-		  if (infoStr!='') {
-            map.openInfoWindowHtml(point,infoStr);
-		  }
-        }
-	}
 </script>
 <? } ?>
 </body>
