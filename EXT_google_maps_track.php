@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.50 2010/03/15 14:50:10 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.51 2010/03/18 22:46:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -108,6 +108,10 @@
 
 <? if ( $CONF['thermals']['enable']  ) { ?>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/thermals.js" type="text/javascript"></script>
+<? } ?>
+<? if ($CONF['airspace']['enable']) { ?>
+<script src="<?=$moduleRelPath?>/js/google_maps/airspace.js" type="text/javascript"></script>
 <? } ?>
 
 <script src="js/chartFX/wz_jsgraphics.js"></script>
@@ -115,6 +119,13 @@
 <script src='js/chartFX/chart.js'></script>
 <script src="js/chartFX/jgchartpainter.js"></script>
 <script src='js/chartFX/canvaschartpainter.js'></script>
+
+<script type="text/javascript">
+	function toogleGmapsFullScreen () {
+		window.parent.toogleGmapsFullScreen() ;
+	}
+</script>
+
 <link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
 
 </head>
@@ -163,13 +174,13 @@
 		<input type="checkbox" value="1" id='followGlider' onClick="toggleFollow(this)"><?=_Follow_Glider?><br>
 		<input type="checkbox" value="1" checked id='showTask' onClick="toggleTask(this)"><?=_Show_Task?><br>
 		<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
-			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
+			<input type="checkbox" value="1"  checked="checked" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace?>
 		<?  } ?>
 		</fieldset>
         
 		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
-         <div id='thermalLoad'><a href='javascript:loadThermals()'><?=_Load_Thermals?></a></div>
+         <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
          <div id='thermalControls' style="display:none">
 	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class <BR>
@@ -427,244 +438,17 @@ var lon=0;
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 	
-	<? if ( $CONF['thermals']['enable']  ) { ?>
-	
-	var icon = new GIcon();
-	icon.image = "img/thermals/class_1.png";
-	icon.shadow = "img/thermals/class_shadow.png";
-	icon.iconSize = new GSize(12, 20);
-	icon.shadowSize = new GSize(22, 20);
-	icon.iconAnchor = new GPoint(6, 20);
-	icon.infoWindowAnchor = new GPoint(5, 1);           
-	  
-	var classIcons=[];
-	var thermalNum=new Array ();	
-	var thermalMarkers=new Array ();
-	var cluster=[];
+	<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
+	 // $("#airspaceShow").attr('checked', true);
+	  // $("#airspaceShow").trigger('click');
+	 // $("#airspaceShow").click();
+		min_lat=<?=$min_lat?>;
+		max_lat=<?=$max_lat?>;
+		min_lon=<?=$min_lon?>;
+		max_lon=<?=$max_lon?>;
 
-	for(var i=1;i<=5;i++) { 
-		thermalMarkers[i]=new Array();
-		thermalNum[i]=0;
-		cluster[i]=new ClusterMarker(map, { clusterClass: i,  minClusterSize:4 , clusterMarkerTitle:" Click to zoom to %count thermals" } );
-		cluster[i].intersectPadding=10;
-		
-		classIcons[i]=new GIcon(icon,"img/thermals/class_"+i+".png"); 
-	}	
-	
-
-
-	  function createThermalMarker(point,html,thermalClass) {
-        var marker = new GMarker(point, {icon:classIcons[thermalClass]});
-        GEvent.addListener(marker, "click", function() {
-          marker.openInfoWindowHtml(html);
-        });		
-        return marker;
-      }
-	  	  
-      function showThermalClass(thermalClass) {
-	  	cluster[thermalClass].addMarkers( thermalMarkers[thermalClass] );
-		cluster[thermalClass].refresh(true);
-        document.getElementById(thermalClass+"_box").checked = true;
-      }
-
-      function hideThermalClass(thermalClass) {		
-		cluster[thermalClass].removeMarkers();
-		cluster[thermalClass].refresh(true);
-        document.getElementById(thermalClass+"_box").checked = false;
-        // == close the info window, in case its open on a marker that we just hid
-        map.closeInfoWindow();
-      }
-	   
-	   function boxclick(box,thermalClass){
-			if (box.checked) {
-				showThermalClass(thermalClass);
-			} else {
-				hideThermalClass(thermalClass);
-			}       
-		}	
-		
-	function importThermals(jsonString){
-	 	var results= eval("(" + jsonString + ")");		
-		// document.writeln(results.waypoints.length);
-		for(var i=0;i<results.waypoints.length;i++) {	
-			var thermalPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
-			var icon2=icon;
-			
-			var thermalClass=results.waypoints[i].c;
-			var climbmeters=results.waypoints[i].m;
-			var climbseconds=results.waypoints[i].d;
-			var climbrate=climbmeters/climbseconds;
-			climbrate=climbrate.toFixed(1);
-						
-			if (thermalClass=='A') thermalClass=1;
-			else if (thermalClass=='B') thermalClass=2;
-			else if (thermalClass=='C') thermalClass=3;
-			else if (thermalClass=='D') thermalClass=4;
-			else thermalClass=5;				
-			
-			var html="Class: " + results.waypoints[i].c+"<BR>"+
-			"Climbrate: " +climbrate +" m/sec<BR>"+
-			"Height Gain: " + climbmeters+" m<BR>"+
-			"Duration: " + climbseconds+" secs";
-			
-			var thermalMarker = createThermalMarker(thermalPoint,html,thermalClass);
-			thermalMarkers[thermalClass][ thermalNum[thermalClass]++ ] = thermalMarker ;
-			
-		}	
-
-		//showThermalClass("1");
-		//hideThermalClass("2");
-        //hideThermalClass("3");
-        //hideThermalClass("4");
-    	//hideThermalClass("5");
-		
-		
-		showThermalClass("1");
-		$("#thermalLoading").hide();
-		$("#thermalLoad").hide();		
-		$("#thermalControls").show();
-	}
-
-
-	function loadThermals() {		
-		$("#thermalLoading").html("<?=_Loading_thermals?><BR><img src='img/ajax-loader.gif'>").show();
-		// getAjax('EXT_thermals.php?op=get_nearest&lat='+lat+'&lon='+lon,null,importThermals);
-		getAjax('EXT_thermals.php?op=get_nearest&<?="max_lat=$max_lat&max_lon=$max_lon&min_lat=$min_lat&min_lon=$min_lon"?>',null,importThermals);
-	}
-	
-	<? } // thermals code ?>
-	
+		toggleAirspace("airspaceShow",false);
+	<? } ?>	
 </script>
 
-<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
-<script language="javascript">
-
-function toggleAirspace(radioObj) {
-	if(!radioObj) return "";	
-	if(radioObj.checked) {
-		showAirspace=1;
-        for (var i=0; i<polys.length; i++) {
-			map.addOverlay(polys[i]);
-        }
-	} else {
-		showAirspace=0;
-        for (var i=0; i<polys.length; i++) {
-			map.removeOverlay(polys[i]);
-        }
-	}
-	refreshMap();
-}
-
- var poly ;
- var pts;
-<?
-	require_once dirname(__FILE__).'/FN_airspace.php';	
-	//  we have compted min/max in the start
-	
-	// echo "$min_lat,	$max_lat,$min_lon,	$max_lon<BR>";
-
-	// now find the bounding boxes that have common points
-	// !( A1<X0 || A0>X1 ) &&  !( B1<Y0 || B0>Y1 )
-	// X,A -> lon
-	// Y,B -> lat 
-	// X0 -> $min_lon A0-> $area->minx
-	// X1 -> $max_lon A1-> $area->maxx
-	// Y0 -> $min_lat B0-> $area->miny
-	// Y1 -> $max_lat B1-> $area->maxy
-	
-	// !( $area->maxx<$min_lon || $area->minx>$max_lon ) &&  !( $area->maxx<$min_lat || $area->miny>$max_lat )
-
-	//in germany, pilots are allowed to fly in class E and class G airspace, and in gliding sectors when they are activated (class W). 
-	// All others are forbidden - start by colouring particularly the CTRs, TMAs and Danger Areas (EDs) .
-	// $airspace_arr= array("R",  "Q", "P", "A", "B", "C", "CTR","D", "GP", "W", "E", "F");
-	$airspace_color= array( "RESTRICT"=>"#ff0000", "DANGER"=>"#ff0000", "PROHIBITED"=>"#ff0000", 
-							"CLASSA"=>"#0000ff", "CLASSB"=>"#0000ff", "CLASSC"=>"#0000ff", 
-							"CTR"=>"#ff0000","CLASSD"=>"#0000ff", "NOGLIDER"=>"#0000ff", "WAVE"=>"#00ff00", "CLASSE"=>"#00ff00", "CLASSF"=>"#0000ff");
-
-
-	global $AirspaceArea,$NumberOfAirspaceAreas;
-
-	echo "polys = [];\n";	
-	echo "labels = [];\n";	
-
-
-	//Mod. P. Wild 5.10.2009 - show a few more airspaces around track (increase proximity level)
-	// show a bit more airspaces around the flight
-	// Manolis 09.12.2009
-	// put in the config variable $CONF['airspace']['zoom']
-	if ( $CONF['airspace']['zoom'] && $CONF['airspace']['zoom']!=100  ) {
-		// $zoom=102; //Percentage
-		$zoom=$CONF['airspace']['zoom'];
-		$min_lon=$min_lon+($min_lon*(100-$zoom))/100;
-		$max_lon=$max_lon+($max_lon*($zoom-100))/100;
-		$min_lat=$min_lat+($min_lat*(100-$zoom))/100;
-		$max_lat=$max_lat+($max_lat*($zoom-100))/100;
-	}
- 
-	getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat);
-	$NumberOfAirspaceAreas=count($AirspaceArea);
-	// echo " // found( $NumberOfAirspaceAreas) areas  $min_lon , $max_lon , $min_lat ,$max_lat <BR>";	
-	foreach ($AirspaceArea as $i=>$area) {
-		echo "pts = [];\n";	
-		if ($area->Shape==1) { // area 					
-			for($j=0;$j<$area->NumPoints;$j++) {
-				 echo " pts[$j] = new GLatLng(".$area->Points[$j]->Latitude.",".$area->Points[$j]->Longitude.");\n";
-			}
-		} else if ($area->Shape==2) { // cirle
-			$points=CalculateCircle($area->Latitude,$area->Longitude,$area->Radius);
-			for($j=0;$j<count($points);$j++) {
-				 echo " pts[$j] = new GLatLng(".$points[$j]->lat.",".$points[$j]->lng.");\n";
-			}
-		}	
-		echo " poly = new GPolygon(pts,'#000000',1,1,'".$airspace_color[$area->Type]."',0.25); \n";
-		echo " polys.push(poly); \n";
-		echo " labels.push('".$area->Name.' ['.$area->Type.'] ('.floor($area->Base->Altitude).'m-'.floor($area->Top->Altitude).'m)'."'); \n";
-		echo " map.addOverlay(poly);\n";	
-		
-		echo " GEvent.addListener(poly,'click', function(point) { checkPoint(point); }  ); ";
-
-	}
-	
-
-
-?>
-
-      // === A method for testing if a point is inside a polygon
-      // === Returns true if poly contains point
-      // === Algorithm shamelessly stolen from http://alienryderflex.com/polygon/ 
-      GPolygon.prototype.Contains = function(point) {
-        var j=0;
-        var oddNodes = false;
-        var x = point.lng();
-        var y = point.lat();
-        for (var i=0; i < this.getVertexCount(); i++) {
-          j++;
-          if (j == this.getVertexCount()) {j = 0;}
-          if (((this.getVertex(i).lat() < y) && (this.getVertex(j).lat() >= y))
-          || ((this.getVertex(j).lat() < y) && (this.getVertex(i).lat() >= y))) {
-            if ( this.getVertex(i).lng() + (y - this.getVertex(i).lat())
-            /  (this.getVertex(j).lat()-this.getVertex(i).lat())
-            *  (this.getVertex(j).lng() - this.getVertex(i).lng())<x ) {
-              oddNodes = !oddNodes
-            }
-          }
-        }
-        return oddNodes;
-      }
-
-	function checkPoint(point) {
-        if (point) {		
-		  var infoStr='';
-          for (var i=0; i<polys.length; i++) {
-            if (polys[i].Contains(point)) {
-				infoStr=infoStr+labels[i]+"<BR>";
-            }
-          }
-		  if (infoStr!='') {
-            map.openInfoWindowHtml(point,infoStr);
-		  }
-        }
-	}
-</script>
-<? } ?>
 </body>

@@ -1,12 +1,14 @@
 
-
+	function toogleGmapsFullScreen () {
+		window.parent.toogleGmapsFullScreen() ;
+	}
+	
 	function moveMarker(){
 		var pt =  posMarker.getPoint();
 		var newpos= new GLatLng(pt.lat() + .001, pt.lng() + .001)
 		posMarker.setPoint(newpos);
 		// if (followGlider) map.setCenter(newpos, null);
 	}
-
 
 	
 	function sec2Time(secs){

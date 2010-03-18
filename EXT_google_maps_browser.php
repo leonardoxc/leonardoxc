@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.5 2010/03/18 14:59:18 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.6 2010/03/18 22:46:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -63,6 +63,8 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/airspace.js" type="text/javascript"></script>
 <? } ?>
 
+<script src="<?=$moduleRelPath?>/js/google_maps/radiusTool.js" type="text/javascript"></script>
+
 <script src="js/chartFX/wz_jsgraphics.js"></script>
 <script src='js/chartFX/excanvas.js'></script>
 <script src='js/chartFX/chart.js'></script>
@@ -70,15 +72,30 @@
 <script src='js/chartFX/canvaschartpainter.js'></script>
 <link rel="stylesheet" type="text/css" href="js/chartFX/canvaschart.css">
 
-<script type="text/javascript">
-	function toogleGmapsFullScreen () {
-		window.parent.toogleGmapsFullScreen() ;
-	}
-	
+<script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&key=ABQIAAAAxe4iZkOij75xEW-P40HsMRTNwwIDB3X2PJ0_br5ee44ut2pm8RRiA2ku6cwsTFtWlCY7kcRdnEPIDA" type="text/javascript"></script>
+
+<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js?adsense=pub-1227201690587661" type="text/javascript"></script>
+
+<script type="text/javascript" language="JavaScript">
+
+var localSearch = null;
+var myQueryControl = null;
+
+function toogleGmapsFullScreen () {
+	window.parent.toogleGmapsFullScreen() ;
+}
 </script>
+
+
+
 
 <style type="text/css">
 <!--
+  div#GQueryControl {
+    background-color: white;
+    width: 200;
+  }
+  
 .gmap {
 	left: 0px;
 	top: 25px;
@@ -94,6 +111,56 @@
 	height: 25px;
 }
 
+
+#more_inner {
+	text-align:center;
+	font-size:12px;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid #fff;
+	border-right-color: #b0b0b0;
+	border-bottom-color: #c0c0c0;
+	width:7em;
+	cursor: pointer;
+}
+
+#more_inner.highlight {
+	font-weight: bold;
+	border: 1px solid #483D8B;
+	border-right-color: #6495ed;
+	border-bottom-color: #6495ed;
+}
+
+#box {  position:absolute;
+	top:20px; left:0px;
+	margin-top:-1px;
+	font-size:12px;
+	padding: 6px 4px;
+	width:120px;
+	background-color: #fff;
+	color: #000;
+	border: 1px solid gray;
+	border-top:1px solid #e2e2e2;
+	display: none;
+	cursor:default;
+}
+
+#box.highlight {
+	width:119px;
+	border-width:2px;
+}
+
+#boxlink { color: #a5a5a5;
+	text-decoration: none;
+	cursor: default;
+	margin-left: 33px;
+}
+
+#boxlink.highlight { color: #0000cd;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 -->
 </style>
 
@@ -101,15 +168,33 @@
 <body  onUnload="GUnload()">
 <div class="gmap" id="gmap"></div>
 
+
+<div id="outer_more">
+
+<form action="">
+	<div id="box">
+	
+	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[0].obj)" /> Photos <br />
+	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[1].obj)" /> Videos <br />
+	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[2].obj)" /> Wikipedia <br />
+	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[3].obj)" /> Webcams
+	
+	<hr style="width:92%;height:1px;border:1px;color:#e2e2e2;background-color:#e2e2e2;" />
+	<a id="boxlink" href="javascript:void(0)" onclick="hideAll()">Hide all</a>
+	
+	</div></form>
+</div>
+
+
 <div class="gmap_controls" id="gmap_controls" >
 	<div style="position:relative;">
 		
 		<div style="position:relative; float:left; clear:none; margin-top:2px">
 		<? if ($CONF_airspaceChecks) { ?>
-			<input type="checkbox" value="1" checked id='airspaceShow' onClick="toggleAirspace(this)"><?=_Show_Airspace?>
+			<input type="checkbox" value="1" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace?>
 			
 		<?  } ?>
-		<? if ( $CONF['thermals']['enable']  ) { ?>
+		<? if ( $CONF['thermals']['enable'] ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
          <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
@@ -150,53 +235,33 @@ var lon=<?=$lon?>;
 	var map = new GMap2(document.getElementById("gmap"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
 
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
-	map.addControl(new GLargeMapControl());
+	// map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
+	map.addControl(new GLargeMapControl3D());
+	map.enableScrollWheelZoom();
+
+
 	map.setCenter (new GLatLng(lat,lon), 8, <?=$GMapType?>);
 
 
+
+//----------------------------------------------------------------------
+// Dynamic load of flight tracks
+//----------------------------------------------------------------------
 	
-	function createFlightMarker(point, id , description, iconUrl, shadowUrl ) {
-		if (iconUrl){
-			var baseIcon = new GIcon();
-			
-			var sizeFactor;
-			sizeFactor=0.8;
-			
-			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
-			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
-			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
-			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
-			  
-			var newIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
-				
-			var marker = new GMarker(point,newIcon);
-		} else {
-			var marker = new GMarker(point);		
-		}	
-	  // Show this marker's index in the info window when it is clicked
-
-
-/*	  
-	  GEvent.addListener(marker, "click", function() {
-		  loadFlightTrack(id);
-	  });
-*/
-	  	
-	 GEvent.addListener(marker, "click", function() {
-		 loadFlightTrack(id,point);
-	 
-		 flightMarkers[id].openInfoWindowHtml("<img src='img/ajax-loader.gif'>");	 
-		 $.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html',  		
-				  success: function(data) {
-					flightMarkers[id].openInfoWindowHtml(data);	  
-				  }
-		  });
-	  });
-	  	
-		
-	  return marker;
-	}
+function createFlightMarker(point, id , description) {
+	var marker = new GMarker(point,flightTakeoffIcon);
+	
+	GEvent.addListener(marker, "click", function() {
+	 	loadFlightTrack(id,point);
+	 	flightMarkers[id].openInfoWindowHtml("<img src='img/ajax-loader.gif'>");	 
+	 	$.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html',  		
+			  success: function(data) { flightMarkers[id].openInfoWindowHtml(data);	}
+		});
+	});	
+	return marker;
+}
+	
 	
 	var thisTrackColor;
 	var taskPolylines=[];
@@ -205,30 +270,20 @@ var lon=<?=$lon?>;
 		
 		thisTrackColor='#'+getNextTrackColor();			
 				
-		$.ajax({ url: 'EXT_flight.php?op=get_task_json&flightID='+id, dataType: 'json', 		  
-				  success: function(task_json) {
-				    drawFlightTask(id,task_json,point);					
-				}		  
-		 });
-	
-
+		$.getJSON('EXT_flight.php?op=get_task_json&flightID='+id, null , 
+				function(task_json) { drawFlightTask(id,task_json,point);}		  
+		);
 		$.ajax({ url: 'EXT_flight.php?op=polylineURL&flightID='+id, dataType: 'text', 		  
 				  success: function(polylineURL) {
 				    drawFlightTrack(polylineURL);				
 				}		  
-		 });
-		
+		 });		
 	}
 	
-	  var polyline_color='';
-	  var do_process_waypoints=true;
+	var polyline_color='';
+	var do_process_waypoints=true;
 	
-      // This function picks up the click and opens the corresponding info window
-      function myclick(i) {
-        gmarkers[i].openInfoWindowHtml(htmls[i]);
-      }
-
-   var trackColors = 
+	var trackColors = 
 	[
 	 'FF0000','00FF00','0000FF','FFFF00','FF00FF','00FFFF','EF8435','34A7F0','33F1A3','9EF133','808080',
 	 'FFFFFF','000000','FFCC99', 'FFFF99' , 'CCFFFF', '99CCFF',
@@ -307,125 +362,134 @@ var lon=<?=$lon?>;
 		
 	}
 	
-	function openFlightInfoWindow(htmlResult) {
-		//var results= eval("(" + jsonString + ")");			
-		//var i=results.flightID;
-		//var html=results.html;
-		//flightMarkers[i].openInfoWindowHtml(html);
-		flightMarkers[i].openInfoWindowHtml(htmlResult);
-	}
-	
-			
-	// Creates a marker whose info window displays the given description 
-	function createWaypoint(point, id , description, iconUrl, shadowUrl ) {
-		if (iconUrl){
+	var flightTakeoffIcon;
+	var flightMarkers=[];
+	function drawFlights(results){
+	 	
+		if (!flightTakeoffIcon) {
+			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal4/icon19.png";
+			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal4/icon19s.png";
 			var baseIcon = new GIcon();
-			
-			var sizeFactor;
-			
-			sizeFactor=0.8;
-			
+
+			var sizeFactor=0.8;
 			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
 			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
 			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
 			baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
 			  
-			var newIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
-				
-			var marker = new GMarker(point,newIcon);
-		} else {
-			var marker = new GMarker(point);		
+			flightTakeoffIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
 		}	
-
-	  GEvent.addListener(marker, "click", function() {
-	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
-	  });
-	  
-	  /*
-	  GEvent.addListener(marker, "mouseover", function() {
-	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
-	  });
-	  */
-	  return marker;
-	}
-
-	function openMarkerInfoWindow(jsonString) {
-		var results= eval("(" + jsonString + ")");			
-		var i=results.takeoffID;
-		var html=results.html;
-		takeoffMarkers[i].openInfoWindowHtml(html);
-	}
-	
-	var takeoffMarkers=[];
-		
-	function drawTakeoffs(jsonString){
-	 	var results= eval("(" + jsonString + ")");		
-		// document.writeln(results.waypoints.length);
-		for(i=0;i<results.waypoints.length;i++) {	
-			if ( takeoffMarkers[results.waypoints[i].id] ) continue;
-		
-			var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
 			
-		
-			if (results.waypoints[i].type<1000) {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
-			} else {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
-			}
-			
-			var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
-			takeoffMarkers[results.waypoints[i].id] = takeoffMarker;
-			map.addOverlay(takeoffMarker);
-		}	
-	}
-
-	var flightMarkers=[];
-	function drawFlights(jsonString){
-	 	var results= eval("(" + jsonString + ")");		
-		// document.writeln(results.flights.length);
 		for(i=0;i<results.flights.length;i++) {	
 			if ( flightMarkers[results.flights[i].flightID] ) continue;
 			
 			var takeoffPoint= new GLatLng(results.flights[i].firstLat, results.flights[i].firstLon) ;						
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal4/icon19.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal4/icon19s.png";
-			
-			var flightMarker= createFlightMarker(takeoffPoint,results.flights[i].flightID, results.flights[i].pilotName,iconUrl,shadowUrl);
+			var flightMarker= createFlightMarker(takeoffPoint,results.flights[i].flightID, results.flights[i].pilotName);
 			flightMarkers[results.flights[i].flightID] = flightMarker;
 			map.addOverlay(flightMarker);
 		}	
 	}
+	
+	
+//----------------------------------------------------------------------
+// Dynamic load of takeoffs
+//----------------------------------------------------------------------
+		
+function createWaypoint(point, id , description, type) {
+	var marker;
+	if (type<1000) {
+	  marker= new GMarker(point,waypointIcon1);	
+	} else {
+	  marker= new GMarker(point,waypointIcon2);
+	}
+				
+	GEvent.addListener(marker, "click", function() {
+		$.ajax({ url: 'EXT_takeoff.php?op=get_info&wpID='+id, dataType: 'html',  		
+			  success: function(jsonString) { 			  
+			 	var results= eval("(" + jsonString + ")");			
+				var i=results.takeoffID;
+				var html=results.html;
+				takeoffMarkers[i].openInfoWindowHtml(html);
+			  }
+		});		
+	});
+	return marker;
+}
 
 
-	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
-	getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=200&from_tm=10',null,drawFlights);
+var takeoffMarkers=[];
+var waypointIcon1;
+var waypointIcon2;
+function drawTakeoffs(results){
+	
+	if (!waypointIcon1) {
+		var baseIcon = new GIcon();			
+		var sizeFactor;			
+		sizeFactor=0.8;			
+		baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
+		baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
+		baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
+		baseIcon.infoWindowAnchor=new GPoint(12*sizeFactor,0);
+		
+		var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
+		var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";			
+		waypointIcon1 = new GIcon(baseIcon, iconUrl, null,shadowUrl);
+					
+		iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
+		shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";	
+		waypointIcon2 = new GIcon(baseIcon, iconUrl, null,shadowUrl);	
+	}
+		
+	for(i=0;i<results.waypoints.length;i++) {	
+		if ( takeoffMarkers[results.waypoints[i].id] ) continue;
+	
+		var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;			
+		var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,results.waypoints[i].type);
+		takeoffMarkers[results.waypoints[i].id] = takeoffMarker;
+		map.addOverlay(takeoffMarker);
+	}	
+}
+
+//----------------------------------------------------------------------
+//----------------------------------------------------------------------
+	var radiusKm=100;
+	<? if ($PREFS->metricSystem==2) echo "metric = false; \n";
+	?>
+
+	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+'&from_tm=10',null,drawFlights);
 	
 	GEvent.addListener(map, "moveend", function() {
-		// Add 5 markers to the map at random locations
-		// Note that we don't add the secret message to the marker's instance data
 		var bounds = map.getBounds();
 		var southWest = bounds.getSouthWest();
 		var northEast = bounds.getNorthEast();
 		var lngSpan = northEast.lng() - southWest.lng();
 		var latSpan = northEast.lat() - southWest.lat();
 		
-		lat = map.getCenter().lat();
-		lon= map.getCenter().lng(); 
+		//lat = map.getCenter().lat();
+		//lon= map.getCenter().lng(); 
 
-		getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
-		getAjax('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=200&from_tm=10',null,drawFlights);
+		//$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+		//$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance=200&from_tm=10',null,drawFlights);
+	
 	});
 	  	
+ // localSearch = new google.maps.LocalSearch();//{externalAds : document.getElementById("ads")});
+ // map.addControl(localSearch);
+  myQueryControl = new QueryControl();
+  map.addControl(myQueryControl);
+  
+  createCircle(new GLatLng(lat, lon), radiusKm*1000);
+  /*
+	GEvent.addListener(map, "click", function(overlay, point) {
+		if (point) {
+		  singleClick = !singleClick;
+		  setTimeout("if (singleClick) createCircle(new GLatLng("+ point.y + ", " + point.x +"), 250);", 300);
+		}
+	});
+*/
 
-	/*
-	$.ajax({ url: 'EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon, dataType: 'json', 		  
-			  success: function(json) {
-				drawTakeoffs(json);				
-			}	  
-	 });
-	*/	 
+
 	
 </script>
 

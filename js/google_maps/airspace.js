@@ -40,29 +40,20 @@ function clearAirspaces() {
 	airspace_labels=[];	
 }
 
-function toggleAirspace(radioObj) {
-	if(!radioObj) return "";	
+function toggleAirspace(radioObjName,computeBounds) {
+	if(!radioObjName) return "";	
 	if(!map) return "";	
 	
-	computeMinMaxLatLon();
-	
-	clearAirspaces();		
-	loadAirspace(min_lat,max_lat,min_lon,max_lon);
-	
-	return;	
-		
-	if(radioObj.checked) {
+	if( $("#"+radioObjName).is(":checked") ) {
 		showAirspace=1;
-        for (var i=0; i<polys.length; i++) {
-			map.addOverlay(polys[i]);
-        }
+		if (computeBounds) computeMinMaxLatLon();
+		clearAirspaces();		
+		loadAirspace(min_lat,max_lat,min_lon,max_lon);
 	} else {
 		showAirspace=0;
-        for (var i=0; i<polys.length; i++) {
-			map.removeOverlay(polys[i]);
-        }
+		clearAirspaces();
 	}
-	refreshMap();
+	// refreshMap();
 }
 	
 
