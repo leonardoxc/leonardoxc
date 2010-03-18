@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.7 2010/03/14 20:56:09 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.8 2010/03/18 14:59:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -209,23 +209,25 @@ class leonardoFilter {
 			$tmpStr='';			
 			
 			while (!$end) {
-				$chr=$filterStr[$start+$i];
-				$i++;
+				$chr=$filterStr[$start+$i];		
 				
+				if ($chr=='&' || ($start+$i) >= strlen($filterStr) ) $end=true;
 				
-				if ($chr=='_' || $chr=='.') {
+				if ($chr=='_' || $chr=='.' || $chr=='&' || ($start+$i) >= strlen($filterStr)  ) {
 				
 					if( preg_match("/[^0-9A-Z]+/i", $tmpStr) ) {
 						return -1;
 					}
 
-					if ($chr=='.') $end=true;
+					if ($chr=='.' || $chr=='&' || ($start+$i) >= strlen($filterStr) ) $end=true;
 
 					$values[]=$tmpStr;
 					$tmpStr='';
+					$i++;
 					continue;
 				}
 			
+				$i++;
 				$tmpStr.=$chr;				
 			}
 			
@@ -446,6 +448,7 @@ function filterImport($arrayName) {
 		if (substr($key,-5)=="_incl" )  {	
 			if (!$value) continue;	
 			
+			$value=trim($value,",");
 			if ( preg_match("/FILTER_nacclubs(\d+)_incl/",$key,$matches) ) {				
 				$key="FILTER_nacclubs_incl";
 				$opID=array_search_value($key, $filterOps);

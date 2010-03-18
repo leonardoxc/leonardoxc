@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.4 2010/03/17 15:06:24 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.5 2010/03/18 14:59:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -57,6 +57,7 @@
 
 <? if ( $CONF['thermals']['enable']  ) { ?>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/thermals.js" type="text/javascript"></script>
 <? } ?>
 <? if ($CONF['airspace']['enable']) { ?>
 <script src="<?=$moduleRelPath?>/js/google_maps/airspace.js" type="text/javascript"></script>
@@ -110,7 +111,7 @@
 		<?  } ?>
 		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
-         <div id='thermalLoad'><a href='javascript:loadThermals()'><?=_Load_Thermals?></a></div>
+         <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
          <div id='thermalControls' style="display:none">
 	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class 
@@ -422,134 +423,10 @@ var lon=<?=$lon?>;
 	$.ajax({ url: 'EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon, dataType: 'json', 		  
 			  success: function(json) {
 				drawTakeoffs(json);				
-			}
-	  
+			}	  
 	 });
 	*/	 
-	<? if ( $CONF['thermals']['enable']  ) { ?>
-	
-	var icon = new GIcon();
-	icon.image = "img/thermals/class_1.png";
-	icon.shadow = "img/thermals/class_shadow.png";
-	icon.iconSize = new GSize(12, 20);
-	icon.shadowSize = new GSize(22, 20);
-	icon.iconAnchor = new GPoint(6, 20);
-	icon.infoWindowAnchor = new GPoint(5, 1);           
-	  
-	var classIcons=[];
-	var thermalNum=new Array ();	
-	var thermalMarkers=new Array ();
-	var cluster=[];
-
-	for(var i=1;i<=5;i++) { 
-		thermalMarkers[i]=new Array();
-		thermalNum[i]=0;
-		cluster[i]=new ClusterMarker(map, { clusterClass: i,  minClusterSize:4 , clusterMarkerTitle:" Click to zoom to %count thermals" } );
-		cluster[i].intersectPadding=10;
-		
-		classIcons[i]=new GIcon(icon,"img/thermals/class_"+i+".png"); 
-	}	
-	
-
-
-	  function createThermalMarker(point,html,thermalClass) {
-        var marker = new GMarker(point, {icon:classIcons[thermalClass]});
-        GEvent.addListener(marker, "click", function() {
-          marker.openInfoWindowHtml(html);
-        });		
-        return marker;
-      }
-	  	  
-      function showThermalClass(thermalClass) {
-	  	cluster[thermalClass].addMarkers( thermalMarkers[thermalClass] );
-		cluster[thermalClass].refresh(true);
-        document.getElementById(thermalClass+"_box").checked = true;
-      }
-
-      function hideThermalClass(thermalClass) {		
-		cluster[thermalClass].removeMarkers();
-		cluster[thermalClass].refresh(true);
-        document.getElementById(thermalClass+"_box").checked = false;
-        // == close the info window, in case its open on a marker that we just hid
-        map.closeInfoWindow();
-      }
-	   
-	   function boxclick(box,thermalClass){
-			if (box.checked) {
-				showThermalClass(thermalClass);
-			} else {
-				hideThermalClass(thermalClass);
-			}       
-		}	
-		
-	function importThermals(jsonString){
-	 	var results= eval("(" + jsonString + ")");		
-		// document.writeln(results.waypoints.length);
-		for(var i=0;i<results.waypoints.length;i++) {	
-			var thermalPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
-			var icon2=icon;
-			
-			var thermalClass=results.waypoints[i].c;
-			var climbmeters=results.waypoints[i].m;
-			var climbseconds=results.waypoints[i].d;
-			var climbrate=climbmeters/climbseconds;
-			climbrate=climbrate.toFixed(1);
-						
-			if (thermalClass=='A') thermalClass=1;
-			else if (thermalClass=='B') thermalClass=2;
-			else if (thermalClass=='C') thermalClass=3;
-			else if (thermalClass=='D') thermalClass=4;
-			else thermalClass=5;				
-			
-			var html="Class: " + results.waypoints[i].c+"<BR>"+
-			"Climbrate: " +climbrate +" m/sec<BR>"+
-			"Height Gain: " + climbmeters+" m<BR>"+
-			"Duration: " + climbseconds+" secs";
-			
-			var thermalMarker = createThermalMarker(thermalPoint,html,thermalClass);
-			thermalMarkers[thermalClass][ thermalNum[thermalClass]++ ] = thermalMarker ;
-			
-		}	
-
-		//showThermalClass("1");
-		//hideThermalClass("2");
-        //hideThermalClass("3");
-        //hideThermalClass("4");
-    	//hideThermalClass("5");
-		
-		
-		showThermalClass("1");
-		$("#thermalLoading").hide();
-		$("#thermalLoad").hide();		
-		$("#thermalControls").show();
-	}
-
-
-	function loadThermals() {		
-		$("#thermalLoading").html("<?=_Loading_thermals?><BR><img src='img/ajax-loader.gif'>").show();
-		// getAjax('EXT_thermals.php?op=get_nearest&lat='+lat+'&lon='+lon,null,importThermals);
-		getAjax('EXT_thermals.php?op=get_nearest&<?="max_lat=$max_lat&max_lon=$max_lon&min_lat=$min_lat&min_lon=$min_lon"?>',null,importThermals);
-	}
-	
-	<? } // thermals code ?>
 	
 </script>
 
-<? if ($CONF_airspaceChecks) { ?>
-<script language="javascript">
-
-
- 
-
-<?
-	
-
-
-	
-
-
-?>
-
-</script>
-<? } ?>
 </body>

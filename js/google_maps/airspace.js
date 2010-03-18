@@ -44,27 +44,7 @@ function toggleAirspace(radioObj) {
 	if(!radioObj) return "";	
 	if(!map) return "";	
 	
-	var min_lat;
-	var max_lat;
-	var min_lon;
-	var max_lon;	
-	var bounds = map.getBounds();		
-	var southWest = bounds.getSouthWest();
-	var northEast = bounds.getNorthEast();	
-	if (northEast.lat() >  southWest.lat() ){
-		min_lat=southWest.lat();
-		max_lat=northEast.lat();
-	} else {
-		min_lat=northEast.lat();
-		max_lat=southWest.lat();
-	}
-	if (northEast.lng() >  southWest.lng() ){
-		min_lon=southWest.lng();
-		max_lon=northEast.lng();
-	} else {
-		min_lon=northEast.lng();
-		max_lon=southWest.lng();
-	}	
+	computeMinMaxLatLon();
 	
 	clearAirspaces();		
 	loadAirspace(min_lat,max_lat,min_lon,max_lon);
