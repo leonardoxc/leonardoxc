@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_filter.php,v 1.8 2010/03/18 14:59:18 manolis Exp $                                                                 
+// $Id: CL_filter.php,v 1.9 2010/03/21 22:51:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -765,7 +765,7 @@ function makeFilterString() {
 					continue;
 			}			
 			if ($opName=='FILTER_class') {
-				$filter_clause.=" AND $flightsTable.category & ".$item[2]." ";
+				$filter_clause.=" AND $flightsTable.category = ".$item[2]." ";
 				continue;
 			}			
 			if ($opName=='FILTER_glider_cert') {

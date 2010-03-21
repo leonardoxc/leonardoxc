@@ -458,6 +458,31 @@ function setGliderCats() {
 setGliderCats();
 
 //--------------------------------------------
+// class types
+//--------------------------------------------
+function setClassList() {
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
+	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
+	global $CONF;
+	foreach($CONF['gliderClasses'] as $i=>$gClass) {
+		foreach($gClass['classes'] as $j=>$n) {
+			if ( $CONF_TEMP['gliderClasses'][$i]['classes'][$j] ) {
+				$CONF['gliderClasses'][$i]['classes'][$j] =$CONF_TEMP['gliderClasses'][$i]['classes'][$j] ;
+			}
+		}
+	}
+}
+setClassList(); 
+//--------------------------------------------
+// xc types
+//--------------------------------------------
+function setXCtypesList() {
+	global  $CONF_xc_types,$xcTypesList;
+	$xcTypesList=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
+	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
+}
+setXCtypesList(); 
+//--------------------------------------------
 // user prefs  & units
 //--------------------------------------------
 

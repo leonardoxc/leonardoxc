@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.25 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.26 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
  if ($userID<=0) return;
@@ -30,10 +30,11 @@
 <script src="<?=$moduleRelPath?>/js/flight_info.js" type="text/javascript"></script>
 
 <script language="JavaScript">
-
 function submitForm() {
+
 	var filename=$("#zip_datafile").val();
 	
+	// for testing the other tests
 	//filename='aa.zip';
 	if ( filename=='' ) {
 		alert('<?=_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE?>');
@@ -46,25 +47,26 @@ function submitForm() {
 		alert('<?=_FILE_DOESNT_END_IN_ZIP?>');
 		return false;
 	}	
-	
+		
 	<? if ( $CONF_addflight_js_validation ) { ?>
-		if ( $("#gliderCertCategory").val()==0 && 
-			 $("#gliderCat").val() == 1
-			) {
+		if ( $("#gliderCertCategory").val()==0 && $("#gliderCat").val() == 1 ) {
 			$("#gliderCertCategorySelect").focus();
 			alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
 			return false;
 		}		
 		
-		if ( $("#category").val()==0 ) {
+		if ( $("#category").val()==0 && ( $("#gliderCat").val() == 1 || $("#gliderCat").val() == 2)  ) {
 			$("#category").focus();
 			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
 			return false;
 		}
+		
 	<? } ?>
 	
 	<? if ( $CONF_require_glider ) { ?>	
-		if ( $("#gliderBrandID").val()==0 ) {
+		if ( $("#gliderBrandID").val()==0 && 
+			 ( $("#gliderCat").val() == 1 || $("#gliderCat").val() == 2 || $("#gliderCat").val() == 4 || $("#gliderCat").val() == 16)
+			 ) {
 			$("#gliderSelect").focus();
 			alert('<?=_FLIGHTADD_BRAND_MISSING?>');
 			return false;
@@ -77,32 +79,22 @@ function submitForm() {
 		}
 	<? } ?>
 
-
+	// for testing
+	//alert('all tests passed'); 	return false;
+	
 	return true;
 }
 
-var gliderClassList=[];
-
-gliderClassList[0]='-';
-
-<? 		
-	foreach ( $gliderClassList as $gl_id=>$gl_type) {
-		echo "gliderClassList[$gl_id]='$gl_type';\n";
-	}
-?>				
-
 var moduleRelPath='<?=$moduleRelPath?>';
-
 
 $(document).ready(
 		function(){
-			selectGliderCat() ;	
-			// updateCategoryDropDown(0,1); // show all 
+			selectGliderCat() ;
 		}
 	);
-	
 
 </script>
+
 <form name="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();">	
 
   <table class=main_text width="630" border="0" align="center" cellpadding="5" cellspacing="3">
@@ -112,13 +104,14 @@ $(document).ready(
     </tr>
     <tr>
       <td width="120" valign="top"><div align="right" class="styleItalic"><? echo _SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS ?></div></td>
-      <td  colspan="3" valign="top"><font face="Verdana, Arial, Helvetica, sans-serif">
+      <td  colspan="3" valign="top">
         <input name="zip_datafile" id="zip_datafile" type="file" size="50">
-      </font></td>
+      </td>
     </tr>
+	<? // common part with GUI_flight_add_from_zip.php ?>
     <tr>
-	<td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
-      <td width="193"  valign="top"><select name="gliderCat" id="gliderCat" onchange="selectGliderCat();">        
+      <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_TYPE ?></div></td>
+      <td width="160"  valign="top"><select name="gliderCat" id="gliderCat" onchange="selectGliderCat();">        
       	<?
 			foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 
@@ -127,16 +120,15 @@ $(document).ready(
 				echo "<option $is_type_sel value=$gl_id>".$gliderCatList[$gl_id]."</option>\n";
 			}
 		?>
-	  		</select>
-	  	</td>
-		 <td width="133"  valign="top"><? if ($enablePrivateFlights) { ?>
+	  </select></td>
+	  <td width="133"  valign="top"><? if ($enablePrivateFlights) { ?>
 		<span class="styleItalic">
         <label for='is_private'><?=_MAKE_THIS_FLIGHT_PRIVATE ?></label>
       </span>
         <input type="checkbox" name="is_private" id="is_private" value="1">
 		<? } ?></td>
     </tr>
-	<tr>
+    <tr>
       <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
       <td  valign="top"><select name="startType" id="startType">
         <?
@@ -150,8 +142,9 @@ $(document).ready(
       </select></td>
       <td  valign="top">&nbsp;</td>
     </tr>
+	
 	<tr >
-      <td  valign="top"><div align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
+      <td  valign="top"><div id='gCertDescription' align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
       <td valign="top" colspan=2>
       <span id='categoryPg'>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
@@ -162,68 +155,17 @@ $(document).ready(
 				echo "<option  value=$gl_id>".$CONF_glider_certification_categories[$gl_id]."</option>\n";
 			}
 		?>
-	  </select>&nbsp;
-      </span>
-      <? echo _Category; ?> 
-      <select name="category" id="category" onchange="selectGliderCategory();">
-	  <?
-		  if (0) {
-      		# martin jursa 18.05.2008
-      		# in case of javascript validation ignore the default to force the user to select the category
-      		if (!empty($CONF_addflight_js_validation)) {
-      			echo "<option value=0></option>\n";
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-						echo "<option value=$gl_id>".$gl_type."</option>\n";
-				}
-      		}else {
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-						if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
-						else $is_type_sel ="";
-						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-				}
-      		}
-		  }
-		?></select>	
-        
-	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>
-	  
+	  </select>&nbsp;      </span>
+      
+       <? echo _Category; ?> 
+        <select name="category" id="category">
+		</select>	        
+		<? if (0) { ?>
+	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>	  
+	  <? } ?>
 	  </td>
-      <? if (0) { ?>
-	  <td  valign="top">
-
-      <div align="left" class="styleItalic">
-	   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
-	  <input type="checkbox" id='tandem' name='tandem'  value='1' onchange='changeTandem();' />
-	  <input name="category111" id="category111" type='hidden' value='0'>
-	  </div>      
-      </td>
-      <?  } ?>
 	  
     </tr>
-	<? if (0) { ?>
-    <tr id='categoryOtherDiv'>
-		<td  valign="top"><div align="right" class="styleItalic"><? echo _Category; ?></div></td>
-     	<td  valign="top" colspan="2"> <select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();">
-	  <?
-      		# martin jursa 18.05.2008
-      		# in case of javascript validation ignore the default to force the user to select the category
-      		if (!empty($CONF_addflight_js_validation)) {
-      			echo "<option value=0></option>\n";
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-						echo "<option value=$gl_id>".$gl_type."</option>\n";
-				}
-      		}else {
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-						if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
-						else $is_type_sel ="";
-						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-				}
-      		}
-		?></select>		</td>
-     
-    </tr>
-	<? }  ?>
-	
     <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
       <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
@@ -236,43 +178,52 @@ $(document).ready(
 				?>
 				</select>
 				<?=_GLIDER ?>
-				 <input name="glider" id="glider" type="text" size="20" > 
-		</td>
-	</tr>	 
+				 <input name="glider"  id="glider" type="text" size="20" >			</td>
+			</tr>	 
 				 		<? 
 			$gliders=  getUsedGliders($userID) ;
 			if (count($gliders) ||1) {
 				
 				 ?>
-	  <tr>
+			 <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Or_Select_from_previous ?></div></td>
       <td colspan="3" valign="top"> 
 				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
 					<option value="0_"></option>
 					<? 
-							
+						// gliderBrandID,glider,gliderCertCategory,cat,category	
 						foreach($gliders as $selGlider) {
 							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
 							else $flightBrandName='';
 							
-							echo "<option value='".$selGlider[0]."_".$selGlider[1]."'>".$flightBrandName.' '.$selGlider[1]."</option>\n";
+							$selCat=$selGlider[3];
+							$selCatStr=$gliderCatList[$selCat];
+							$selClassStr=$CONF['gliderClasses'][$selCat]['classes'][$selGlider[4]];
+							if ($selClassStr)  $selClassStr=" - ".$selClassStr;
+							
+							$selCertStr="";
+							if ($selCat==1) {
+								$selCertStr=$CONF_glider_certification_categories[$selGlider[2] ];
+								if ($selCertStr) $selCertStr=" - ".$selCertStr;
+							}
+							echo "<option value='".$selGlider[0]."_".$selGlider[1]."_".$selGlider[2]."_".$selGlider[3]."_".$selGlider[4]."'>".$flightBrandName.' '.$selGlider[1]." [$selCatStr$selCertStr$selClassStr]</option>\n";
 
 //							echo "<option $glSel>".$selGlider."</option>\n";
 						}
 					?>
 				</select>
-			</td>	
-		</tr>
-			<? } ?>	
-
+			<? } ?>				</td>
+    </tr>
 	<? if ( L_auth::isAdmin($userID)) { ?>
     <tr>
-      <td width="120" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
+      <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
       <td colspan="3" valign="top">
-        <input name="insert_as_user_id" id="insert_as_user_id" type="text" size="10">
-	  </td>
+        <input name="insert_as_user_id"  id="insert_as_user_id"  type="text" size="10">		</td>
     </tr>
  	<? }?>
+
+	<? // End of common part ?>	
+	
     <tr>
       <td>&nbsp;</td>
       <td colspan=3><p><font face="Verdana, Arial, Helvetica, sans-serif">
@@ -308,10 +259,6 @@ $(document).ready(
 		addFlightError(_YOU_HAVENT_ENTERED_GLIDER);
 	}
 	$category=$_POST['category']+0;
-	if (empty($category)) {
-		$category=$CONF_default_category;
-	}
-
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
 	if (strtolower(substr($filename,-4))!=".zip") addFlightError(_FILE_DOESNT_END_IN_ZIP);

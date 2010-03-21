@@ -479,9 +479,16 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	global  $CONF_category_types,$gliderClassList;
-	$gliderClassList=array(1=>"Sport (έως και DHV 2)",2=>"Open (απο DHV 2/3)",3=>"Διθέσια");
-	foreach ($CONF_category_types as $gId=>$gName) if (!$gliderClassList[$gId]) $gliderClassList[$gId]=$gName;
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport (έως και DHV 2)",2=>"Open (απο DHV 2/3)",3=>"Διθέσια");
+	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
+	global $CONF;
+	foreach($CONF['gliderClasses'] as $i=>$gClass) {
+		foreach($gClass['classes'] as $j=>$n) {
+			if ( $CONF_TEMP['gliderClasses'][$i]['classes'][$j] ) {
+				$CONF['gliderClasses'][$i]['classes'][$j] =$CONF_TEMP['gliderClasses'][$i]['classes'][$j] ;
+			}
+		}
+	}
 }
 setClassList(); 
 //--------------------------------------------
@@ -755,8 +762,19 @@ define('_All_classes','Όλες οι κλάσεις');
 define('_Class','Κλάση');
 
 // 2009-03-20 filter for photos
-define("_Photos_filter_off","Με/χωρίς φωτογραφίες");
-define("_Photos_filter_on","Μόνο με φωτογραφίες");
+define('_Photos_filter_off','Με/χωρίς φωτογραφίες');
+define('_Photos_filter_on','Μόνο με φωτογραφίες');
+
+// 2010-03-14
+define('_See_The_filter','Περιγραφή του φίλτρου');
+define('_PilotBirthdate','Ημ. Γέννησης Πιλότου');
+define('_Start_Type','Τύπος απογείωσης');
+define('_GLIDER_CERT','Πιστοποίηση πτέρυγας');
+
+define('_MENU_BROWSER','Πτήσεις σε Google Maps');
+define('_FLIGHT_BROSWER','Αναζήτηση της βάσης των πτήσεων και απογειώσεων μέσω Google Maps');
+define('_Load_Thermals','Εμφάνιση Θερμικών');
+define('_Loading_thermals','Προετοιμασία εμφάνισης Θερμικών');
 
 //--------------------------------------------------------
 //--------------------------------------------------------
@@ -901,9 +919,5 @@ Regards,
 Note: This is auto-response. Do not send any email to this email address
 --------"); 
 define("_You_are_already_logged_in","You are already logged in"); 
-define("_See_The_filter","See the filter"); 
-define("_PilotBirthdate"," Pilot Birthdate"); 
-define("_Start_Type","Start Type"); 
-define("_GLIDER_CERT","Glider Certification"); 
 
 ?>

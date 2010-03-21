@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.6 2010/03/18 22:46:50 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.7 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -174,13 +174,13 @@ function toogleGmapsFullScreen () {
 <form action="">
 	<div id="box">
 	
-	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[0].obj)" /> Photos <br />
-	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[1].obj)" /> Videos <br />
-	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[2].obj)" /> Wikipedia <br />
-	<input name="mark" type="checkbox" onclick="switchLayer(this.checked, layers[3].obj)" /> Webcams
+	<input name="mark" type="checkbox" onClick="switchLayer(this.checked, layers[0].obj)" /> Photos <br />
+	<input name="mark" type="checkbox" onClick="switchLayer(this.checked, layers[1].obj)" /> Videos <br />
+	<input name="mark" type="checkbox" onClick="switchLayer(this.checked, layers[2].obj)" /> Wikipedia <br />
+	<input name="mark" type="checkbox" onClick="switchLayer(this.checked, layers[3].obj)" /> Webcams
 	
 	<hr style="width:92%;height:1px;border:1px;color:#e2e2e2;background-color:#e2e2e2;" />
-	<a id="boxlink" href="javascript:void(0)" onclick="hideAll()">Hide all</a>
+	<a id="boxlink" href="javascript:void(0)" onClick="hideAll()">Hide all</a>
 	
 	</div></form>
 </div>
@@ -452,12 +452,11 @@ function drawTakeoffs(results){
 
 //----------------------------------------------------------------------
 //----------------------------------------------------------------------
-	var radiusKm=100;
-	<? if ($PREFS->metricSystem==2) echo "metric = false; \n";
-	?>
+	var radiusKm=25;
+	<? if ($PREFS->metricSystem==2) echo "metric = false; \n"; ?>
 
-	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
-	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+'&from_tm=10',null,drawFlights);
+	//$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);
+	//$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+'&from_tm=10',null,drawFlights);
 	
 	GEvent.addListener(map, "moveend", function() {
 		var bounds = map.getBounds();

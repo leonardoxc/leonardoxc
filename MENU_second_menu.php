@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.57 2010/03/16 13:00:12 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.58 2010/03/21 22:51:58 manolis Exp $
 //
 //************************************************************************
 
@@ -439,19 +439,25 @@ if ( $clubID && is_array($clubsList[$clubID]['gliderCat']) ) {
 	$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>'0'));
 	$catLiStr.="<li><a href='$catLink'>".leoHtml::img("icon_class_0.gif",0,0,'absmiddle','','icons1')." "._All_classes."</a></li>\n";
 
-   if ( count($gliderClassList) > 1 ) {
-		foreach ( $gliderClassList as $gl_id=>$gl_type) {
-			$catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gl_id));
-			  $catImg=leoHtml::img("icon_class_".$gl_id.".gif",0,0,'absmiddle','','icons1');
-			  if ($cat==$tmpcat) $current_catImg=$catImg;
-
-			  $catLiStr.="<li><a href='$catLink'>$catImg ".$gl_type."</a></li>\n";
-
+   if ( count($CONF['gliderClasses'])  ) {
+   
+		 foreach ( $CONF['gliderClasses'] as $gCat1 =>$catClasses ) {
+			$catLiStr.="<li  class='li_h1'>"._Category." [ ".$gliderCatList[$gCat1]." ]</li>\n";
+			
+			foreach ( $catClasses['classes'] as $gClassID =>$gClassName ) {			
+				  $catLink=getLeonardoLink(array('op'=>'useCurrent','class'=>$gClassID));
+				  $catImg=leoHtml::img("icon_class_".$gClassID.".gif",0,0,'absmiddle','','icons1');
+				  if ($cat==$tmpcat) $current_catImg=$catImg;
+	
+				  $catLiStr.="<li><a href='$catLink'>$catImg ".$gClassName."</a></li>\n";		
+			}		
 		}
+		
+
 	}
 
 	if ($class) {
-    	$catLegend=leoHtml::img("icon_class_".$class.".gif",0,0,'absmiddle',_Class.": ".$gliderClassList[$class],'icons1');
+    	$catLegend=leoHtml::img("icon_class_".$class.".gif",0,0,'absmiddle',_Class,'icons1');
 		//$gliderCatList[$cat]
   }	else {
   		$catLegend=leoHtml::img("icon_class_".$class.".gif",0,0,'absmiddle',_Class.": "._All_classes,'icons1');		

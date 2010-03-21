@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.140 2010/03/17 15:06:24 manolis Exp $                                                                 
+// $Id: config.php,v 1.141 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -272,9 +272,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // Max is 6 
  $CONF_photosPerFlight=6;
  $CONF_max_photo_size=3000; // 3000 Kb
- 
- $CONF_default_category=2;
- $CONF_category_types =array(1=>"Sport",2=>"Open",3=>"Tandem");
+
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
 				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
@@ -308,8 +306,24 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $CONF_xc_types=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
  $CONF_xc_types_db=array(1=>"FREE_FLIGHT",2=>"FREE_TRIANGLE",4=>"FAI_TRIANGLE");				
 
- // defaul values
- $gliderClassList=$CONF_category_types;
+ $CONF['gliderClasses']=array(
+    // pg
+ 	1=>array( 
+		'default_class'=>2,
+		'classes'=>array(1=>"Sport",2=>"Open",3=>"Tandem"),		
+	),
+	2=>array( 
+		'default_class'=>2,
+		'classes'=>array(1=>"Kingpost",2=>"Topless"),
+	),
+ );	
+
+
+ // these are no longer used! 
+ //$CONF_category_types =array(1=>"Sport",2=>"Open",3=>"Tandem");
+ //$gliderClassList=$CONF_category_types;
+
+ // defaul values 
  $xcTypesList=$CONF_xc_types;
 
  $CONF_default_cat_view=0; // pg

@@ -479,9 +479,16 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	global  $CONF_category_types,$gliderClassList;
-	$gliderClassList=array(1=>"Sport",2=>"Open",3=>"Tandem");
-	foreach ($CONF_category_types as $gId=>$gName) if (!$gliderClassList[$gId]) $gliderClassList[$gId]=$gName;
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
+	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
+	global $CONF;
+	foreach($CONF['gliderClasses'] as $i=>$gClass) {
+		foreach($gClass['classes'] as $j=>$n) {
+			if ( $CONF_TEMP['gliderClasses'][$i]['classes'][$j] ) {
+				$CONF['gliderClasses'][$i]['classes'][$j] =$CONF_TEMP['gliderClasses'][$i]['classes'][$j] ;
+			}
+		}
+	}
 }
 setClassList(); 
 //--------------------------------------------
@@ -920,17 +927,22 @@ define('XC Score
 */
 
 // 2009-03-20 filter for photos
-define("_Photos_filter_off","With/without photos");
-define("_Photos_filter_on","With photos only");
+define('_Photos_filter_off','With/without photos');
+define('_Photos_filter_on','With photos only');
 
-define("_You_are_already_logged_in","You are already logged in");
+define('_You_are_already_logged_in','You are already logged in');
 
 
 // 2010-03-14
-define("_See_The_filter","See the filter");
-define("_PilotBirthdate"," Pilot Birthdate");
-define("_Start_Type","Start Type");
-define("_GLIDER_CERT","Glider Certification");
+define('_See_The_filter','See the filter');
+define('_PilotBirthdate','Pilot Birthdate');
+define('_Start_Type','Start Type');
+define('_GLIDER_CERT','Glider Certification');
 
+// 2010-03-21
+define('_MENU_BROWSER','Browse in Google Maps');
+define('_FLIGHT_BROSWER','Search the flights and takeoff database with Google Maps');
+define('_Load_Thermals','Load Thermals');
+define('_Loading_thermals','Loading Thermals');
 
 ?>

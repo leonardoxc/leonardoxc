@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_ajax_functions.php,v 1.2 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_ajax_functions.php,v 1.3 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,26 +30,33 @@
 	if ($op=='getCategoriesForCertID'){	
 		$gliderCertID=makeSane($_REQUEST['gliderCertID']);	
 		$showAll=makeSane($_REQUEST['showAll']);
+		$gliderCat=makeSane($_REQUEST['gliderCat']);	
 		
-		$str=" { ";
+		if ($gliderCat!=1) $showAll=1;
+		
+		$str=" { [";
 		if (!empty($CONF_addflight_js_validation)) {
-      			$str.=" \"0\": \"-\",";
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
+   			$str.=" [\"0\", \"-\"],";
+			if ($CONF['gliderClasses'][$gliderCat]['classes']) {
+				foreach ( $CONF['gliderClasses'][$gliderCat]['classes'] as $gl_id=>$gl_type) {
 						if ($showAll || in_array($gl_id ,$CONF_cert_avalable_categories[$gliderCertID] )  )  {
-							$str.=" \"$gl_id\": \"$gl_type\",";
+							$str.=" [\"$gl_id\", \"$gl_type\"],";
 						}
 				}
+			}	
 		}else {
-			foreach ( $gliderClassList as $gl_id=>$gl_type) {
-					if ($CONF_default_category==$gl_id) $is_type_sel ="selected";
+			if ($CONF['gliderClasses'][$gliderCat]['classes']) {
+				foreach ( $CONF['gliderClasses'][$gliderCat]['classes'] as $gl_id=>$gl_type) {
+					if ($CONF['gliderClasses'][$gliderCat]['default_class'] == $gl_id) $is_type_sel ="selected";
 					else $is_type_sel ="";
 					if ($showAll || in_array($gl_id ,$CONF_cert_avalable_categories[$gliderCertID] ) )  {
-							$str.=" \"$gl_id\": \"$gl_type\",";
+							$str.=" [\"$gl_id\", \"$gl_type\"],";
 					}
-			}
+				}
+			}	
 		}
 		$str=substr($str,0,-1);
-		$str.=" } ";
+		$str.=" ] } ";
 		echo $str;
 	} 
 

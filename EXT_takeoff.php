@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_takeoff.php,v 1.13 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_takeoff.php,v 1.14 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -112,10 +112,10 @@
 
 	 
 	} else if ($op=="get_nearest") {
-		$lat=$_GET['lat']+0;
-		$lon=-$_GET['lon']+0;
+		$lat=$_REQUEST['lat']+0;
+		$lon=-$_REQUEST['lon']+0;
 		
-		$distance=$_GET['distance']+0;
+		$distance=$_REQUEST['distance']+0;
 		if ( $distance <= 0 ) $distance=100; 
 		if ( $distance > 200 ) $distance=200;
 		

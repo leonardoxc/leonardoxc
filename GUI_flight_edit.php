@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.46 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.47 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -169,25 +169,26 @@
 <script language="JavaScript">
 
 function submitForm() {	
-	
+		
 	<? if ( $CONF_addflight_js_validation ) { ?>
-		if ( $("#gliderCertCategory").val()==0 && 
-			 $("#gliderCat").val() == 1
-			) {
+		if ( $("#gliderCertCategory").val()==0 && $("#gliderCat").val() == 1 ) {
 			$("#gliderCertCategorySelect").focus();
 			alert('<?=_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION?>');
 			return false;
 		}		
 		
-		if ( $("#category").val()==0 ) {
+		if ( $("#category").val()==0 && ( $("#gliderCat").val() == 1 || $("#gliderCat").val() == 2)  ) {
 			$("#category").focus();
 			alert('<?=_FLIGHTADD_CATEGORY_MISSING?>');
 			return false;
 		}
+		
 	<? } ?>
 	
 	<? if ( $CONF_require_glider ) { ?>	
-		if ( $("#gliderBrandID").val()==0 ) {
+		if ( $("#gliderBrandID").val()==0 && 
+			 ( $("#gliderCat").val() == 1 || $("#gliderCat").val() == 2 || $("#gliderCat").val() == 4 || $("#gliderCat").val() == 16)
+			 ) {
 			$("#gliderSelect").focus();
 			alert('<?=_FLIGHTADD_BRAND_MISSING?>');
 			return false;
@@ -200,30 +201,22 @@ function submitForm() {
 		}
 	<? } ?>
 	
+	// for testing
+	// alert('all tests passed'); 	return false;
+
+
 	return true;
 }
-
-var gliderClassList=[];
-
-gliderClassList[0]='-';
-
-<? 		
-	foreach ( $gliderClassList as $gl_id=>$gl_type) {
-		echo "gliderClassList[$gl_id]='$gl_type';\n";
-	}
-?>				
 
 var moduleRelPath='<?=$moduleRelPath?>';
 
 $(document).ready(
-		function(){
-			selectGliderCat() ;
-			// selectGliderCertCategory(<?=$flight->category?>);	
-			
-			// updateCategoryDropDown(0,1); // show all 		
-		}
-	);
-	
+	function(){
+		selectGliderCat() ;
+		selectGliderCertCategory(<?=$flight->category?>);
+		// $("#category").val();
+	}
+);	
 
 </script>
 
@@ -409,12 +402,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	  <span align="left" id='categoryPg'>	
 	  
 	  <? 
-  		if ($flight->category==3 )  {
-			$tandemSelected=" checked='checked' ";
-		} else {	
-			$tandemSelected='';
-		}
-		$catDesc=$gliderClassList[$flight->category]	;
+		$catDesc=$CONF['gliderClasses'][$flight->cat]['classes'][$flight->category];
 		$gliderCertID=$flight->gliderCertCategory;
 	  ?>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="<?=$flight->gliderCertCategory ?>">
@@ -431,44 +419,10 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	  </select>&nbsp;
       </span>
       
-      <select name="category" id="category" onchange="selectGliderCategory();" >
-           <?
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-					if ($flight->category==$gl_id) $is_type_sel ="selected";
-					else $is_type_sel ="";
-					if ( in_array($gl_id ,$CONF_cert_avalable_categories[$gliderCertID] ) )  {
-						echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-					}	
-				}
-			?>
-		</select>
-        
-	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'><?=$catDesc?></span>
-	  
-	<? if (0) { ?>
-	  <span align="left" class="styleItalic" style='padding-left:20px;'>
-		   <label for='tandem'><? echo $gliderClassList[3]; ?></label>
-		  <input type="checkbox" id='tandem' name='tandem' <?=$tandemSelected?> value='1' onchange='changeTandem();' />
-		  <input name="category" id="category" type='hidden' value='0'>
-	  </span>
-	  <? } ?>
-      
-      
-	  <? if (0) { ?>  
-      <div align='left' id='categoryOtherDiv'>
-           <select name="categoryOther" id="categoryOther" onchange="selectGliderCategoryOther();" >
-           <?
-				foreach ( $gliderClassList as $gl_id=>$gl_type) {
-					if ($flight->category==$gl_id) $is_type_sel ="selected";
-					else $is_type_sel ="";
-					echo "<option $is_type_sel value=$gl_id>".$gl_type."</option>\n";
-				}
-			?>
-		</select>
-        </div>
-		<? } ?>
-			 
-	    </fieldset>	
+      <select name="category" id="category">
+	  </select>
+        			 
+	</fieldset>	
 			
 			</td>
 			</tr></table>
@@ -490,7 +444,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 			<tr>
 			<td>
 				<select name="gliderBrandID" id="gliderBrandID" >			
-					<option value=0></option>
+					<option value="0"></option>
 					<? 
 					$brandsListFilter=brands::getBrandsList();
 					foreach($brandsListFilter as $brandNameFilter=>$brandIDfilter) {
@@ -510,8 +464,37 @@ require_once dirname(__FILE__).'/FN_editor.php';
 			if (count($gliders)) { ?>
 				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
 					<option value="0_"></option>
-					<? 
+					<?
+						// gliderBrandID,glider,gliderCertCategory,cat,category	
+						foreach($gliders as $selGlider) {
+							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
+							else $flightBrandName='';
 							
+							$selCat=$selGlider[3];
+							$selCatStr=$gliderCatList[$selCat];
+							$selClassStr=$CONF['gliderClasses'][$selCat]['classes'][$selGlider[4]];
+							if ($selClassStr)  $selClassStr=" - ".$selClassStr;
+							
+							$selCertStr="";
+							if ($selCat==1) {
+								$selCertStr=$CONF_glider_certification_categories[$selGlider[2] ];
+								if ($selCertStr) $selCertStr=" - ".$selCertStr;
+							}
+							
+							if ( $flight->glider == $selGlider[1] && 
+								 $flight->gliderBrandID==$selGlider[0] && 
+								 $flight->cat==$selGlider[3] && 
+								 $flight->category==$selGlider[4] && 
+								 $flight->gliderCertCategory==$selGlider[2] 
+								 ) $glSel="selected";
+							else $glSel="";
+							echo "<option $glSel value='".$selGlider[0]."_".$selGlider[1]."_".$selGlider[2]."_".$selGlider[3]."_".$selGlider[4]."'>".$flightBrandName.' '.$selGlider[1]." [$selCatStr$selCertStr$selClassStr]</option>\n";
+
+//							echo "<option $glSel>".$selGlider."</option>\n";
+						}
+					?>	
+					<? 
+						if (0) 	
 						foreach($gliders as $selGlider) {
 							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
 							else $flightBrandName='';

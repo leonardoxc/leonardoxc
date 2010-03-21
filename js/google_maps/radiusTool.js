@@ -143,6 +143,8 @@ GeoQuery.prototype.getHTML = function() {
 
 GeoQuery.prototype.getDistHtml = function() {
   result = "<img src='http://jfno.net/images/close.gif' onClick='myQueryControl.remove(" + this._control.getIndex(this) + ");'/>Radius ";
+   result = "Radius ";
+   
   if (metric) {
     if (this._radius < 1000) {
       result += "in meters : " + this._radius.toFixed(1);
@@ -235,8 +237,10 @@ QueryControl.prototype.render = function() {
 QueryControl.prototype.query = function() {
 	lat=geoQuery._centerHandlePosition.lat();
 	lon=geoQuery._centerHandlePosition.lng();
+	if (geoQuery._radius!= null)
+		radiusKm=Math.floor(geoQuery._radius/1000);
 	
-	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);
 	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+'&from_tm=10',null,drawFlights);
 	
 }

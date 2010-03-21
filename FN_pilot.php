@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.53 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.54 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -66,7 +66,7 @@ function getUsedGliders($userID,$serverID=0) {
 	global $db;
 	global $flightsTable;
 
-	$query="SELECT glider,gliderBrandID from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider ORDER BY DATE DESC ";
+	$query="SELECT glider,gliderBrandID,gliderCertCategory,cat,category from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider,gliderCertCategory,cat,category ORDER BY DATE DESC ";
 	// echo $query;
 	$res= $db->sql_query($query);
     if($res <= 0){
@@ -75,7 +75,8 @@ function getUsedGliders($userID,$serverID=0) {
 
 	$gliders=array();
 	while ($row = $db->sql_fetchrow($res)) {
-			array_push($gliders,array($row['gliderBrandID'],$row['glider'])  );
+			array_push($gliders,
+			array($row['gliderBrandID'],$row['glider'],$row['gliderCertCategory'],$row['cat'],$row['category'])  );
 	}
 	return $gliders;
 }

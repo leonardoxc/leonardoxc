@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.31 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.32 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -195,6 +195,7 @@ window.location = "<? echo  $redirectUrl ?>"
 	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
 var FILTER_cat=0;
+var FILTER_class=0;
 var FILTER_glider_cert=0;
 var FILTER_start_type=0;
 var FILTER_duration=0;
@@ -214,10 +215,22 @@ function filterUpdateCat() {
 	$("#FILTER_cat").val(FILTER_cat);
 }
 
+function filterUpdateClass() {
+	FILTER_class=$("input[@name='xFILTER_class_1']:checked").val();
+	$("#FILTER_class").val(FILTER_class);
+}
+
 function filterUpdateGliderCert() {
 	FILTER_glider_cert=0;
+
+	var addValues=[];
+	
 	$.each($("input[@name='xFILTER_glider_cert[]']:checked"), function() {
-		FILTER_glider_cert+=($(this).val()*1);
+		var v1=$(this).val()*1;
+		if ( addValues[v1] == null ) {
+			addValues[v1]=1;
+			FILTER_glider_cert+=v1;
+		}	
 	});
 	$("#FILTER_glider_cert").val(FILTER_glider_cert);
 }
@@ -244,16 +257,30 @@ function updateRssURL() {
 }
  
 function activateFilter() {
-
-	filterUpdateDuration();
-	
+	filterUpdateDuration();	
 	filterUpdateCat();
+	filterUpdateClass();
 	filterUpdateGliderCert();
 	filterUpdateStartType();
-	$("#formFilter").submit();
 	
+	$("#formFilter").submit();	
 }
 
+function changeClass(gCat) {
+	var val=$("input[@name='xFILTER_class_"+gCat+"']:checked").val();		
+	setClass(1,val);
+	setClass(2,val);	
+}
+
+function setClass(classID,val) {
+	$("input[@name='xFILTER_class_"+classID+"']").attr('checked', false);
+	$.each($("input[@name='xFILTER_class_"+classID+"']"), function() {
+		if ( ($(this).val()*1) == val ) {
+			 $(this).attr('checked', true);
+		}
+	});	
+}	
+	
 </script>
 <script language='javascript' src='<? echo $moduleRelPath ?>/js/cal/popcalendar.js'></script>
 
@@ -262,7 +289,7 @@ function activateFilter() {
     <tr>
       <td colspan="2" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td width="60%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="6">
+            <td width="50%" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td colspan="2" class='infoHeader'><div align="left"><strong><? echo _SELECT_DATE ?></strong></div></td>
                 </tr>
@@ -378,9 +405,9 @@ function activateFilter() {
 						$checked='';
 						if ($fl_tmp_id & $FILTER_cat) $checked="checked='checked'";
 						echo "<label><input type='checkbox' name='xFILTER_cat[]' value='$fl_tmp_id' $checked />".
-							$fl_tmp_value."</label><BR />\n";			
+							$gliderCatList[$fl_tmp_id]."</label><BR />\n";			
 					}
-				  ?>				  </td>
+				  ?>				    </td>
                       <td valign="top">
 					  	  <div class="infoHeader"><? echo _GLIDER_CERT ?> </div>				 
 				  <input name="FILTER_glider_cert" id="FILTER_glider_cert" type="hidden" value="0" />
@@ -392,6 +419,25 @@ function activateFilter() {
 							$CONF_glider_certification_categories[$gl_id]."</label><BR />\n";			
 					}
 				  ?>					  </td>
+                      <td valign="top">
+  					   <input name="FILTER_class" id="FILTER_class" type="hidden" value="0" />
+						<?			
+						foreach ( $CONF['gliderClasses'] as $gCat1 =>$catClasses ) {
+							echo '<div class="infoHeader">'._Category.'<BR>[ '.$gliderCatList[$gCat1].' ]</div>';
+							
+							echo "<label><input onchange='changeClass(\"$gCat1\")' type='radio' name='xFILTER_class_$gCat1' value='0' checked='checked' />".
+									_ALL."</label><BR />\n";		
+									
+							foreach ( $catClasses['classes'] as $gClassID =>$gClassName ) {
+								$checked='';
+								if ($gClassID == $FILTER_class) $checked="checked='checked'";
+								echo "<label><input onchange='changeClass(\"$gCat1\")' type='radio' name='xFILTER_class_$gCat1' value='$gClassID' $checked />".
+									$gClassName."</label><BR />\n";			
+							}		
+						}
+					  ?>					
+				  
+					  </td>
                     </tr>
                   </table></td>
                 </tr>

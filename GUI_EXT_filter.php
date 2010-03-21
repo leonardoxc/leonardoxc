@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_filter.php,v 1.2 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: GUI_EXT_filter.php,v 1.3 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
   	require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -196,7 +196,7 @@ if (! $_SESSION["fltr"]) {
                 <td class="main_text"><div align="right"><? echo _GLIDER_TYPE ?> </div></td>
                 <td style='line-height:20px;'><?			
 					foreach (  $CONF_glider_types as $fl_tmp_id=>$fl_tmp_value) {						
-						if ($fl_tmp_id & $FILTER_cat) echo "<span class='filterValuesText'>$fl_tmp_value</span>&nbsp;\n";		
+						if ($fl_tmp_id & $FILTER_cat) echo "<span class='filterValuesText'>".$gliderCatList[$fl_tmp_id]."</span>&nbsp;\n";		
 					}
 				  ?>
                 </td>
@@ -207,6 +207,24 @@ if (! $_SESSION["fltr"]) {
 					foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
 						if ($gl_id & $FILTER_glider_cert) echo "<span class='filterValuesText'>$gl_type</span>&nbsp;\n";			
 					}
+				  ?>
+                </td>
+              </tr>
+			   <tr>
+                <td class="main_text"><div align="right"><? echo _Category ?> </div></td>
+                <td style='line-height:20px;'><?			
+					$gClass_i=0;
+					foreach ( $CONF['gliderClasses'] as $gCat1 =>$catClasses ) {
+						foreach ( $catClasses['classes'] as $gClassID =>$gClassName ) {						
+							if ($gClassID == $FILTER_class) {							
+								$catDescr = $gliderCatList[$gCat1];
+								if ($gClass_i >0 ) echo  _OR.'<BR>';
+								$gClass_i++;
+
+								echo "<span class='filterValuesText'>$gClassName [ $catDescr ]</span>&nbsp;\n";			
+							}	
+						}
+					}	
 				  ?>
                 </td>
               </tr>
