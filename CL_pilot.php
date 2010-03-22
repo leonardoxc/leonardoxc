@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.13 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.14 2010/03/22 14:27:44 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -227,7 +227,7 @@ class pilot{
     }
 
 	function putToDB2($update=0) {
-		global $db,$pilotsTable;
+		global $db,$pilotsInfoTable;
 
 		if ($update) {
 			$query="REPLACE INTO ";		
@@ -240,7 +240,7 @@ class pilot{
 		}
 
 
-		$query.=" $pilotsTable  ( ";
+		$query.=" $pilotsInfoTable  ( ";
 		foreach ($this->valuesArray2 as $valStr) {
 				$query.= $valStr.",";		
 		}

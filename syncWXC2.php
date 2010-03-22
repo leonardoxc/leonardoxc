@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.5 2010/03/14 20:56:12 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.6 2010/03/22 14:27:45 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -161,6 +161,7 @@ $tableName.dateUpdated,
 $tableName.serverID,
 $tableName.originalURL,
 $tableName.original_ID,
+$tableName.DATE,
 DATE_FORMAT($tableName.DATE,'%Y') as Year
  FROM $tableName,$pilotsTable,leonardo_waypoints      
  WHERE 

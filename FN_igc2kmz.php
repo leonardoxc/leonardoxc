@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.14 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.15 2010/03/22 14:27:45 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -26,6 +26,11 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 
 	$python=$CONF['googleEarth']['igc2kmz']['python'];
 	putenv('PYTHON_EGG_CACHE=/tmp');
+	// put some env for python2.5?
+	// putenv("PATH=".$CONF['googleEarth']['igc2kmz']['python'] );
+	putenv("PATH=/usr/local/bin/" );
+	
+	
 	$path=realpath($CONF['googleEarth']['igc2kmz']['path']);
 	$engine=constant('SQL_LAYER')."://".$db->user.':'.$db->password.'@'.$db->server.'/'.$db->dbname;
 	
@@ -38,6 +43,7 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
+	$cmd.=" --igc-path=data/flights/intermediate/%YEAR%/%PILOTID% ";
 	$cmd.=" $flightID";
 	
 	DEBUG('igc2kmz',1,"igc2kmz: $cmd <BR>");
