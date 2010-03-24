@@ -121,7 +121,7 @@ GeoQuery.prototype.render = function() {
     }
     this._points.push(destination(this._centerHandlePosition, 0, distance) );
     //this._polyline = new GPolyline(this._points, this._color, 6);
-    this._polyline = new GPolygon(this._points, this._color, 1, 1, this._color, 0.2);
+    this._polyline = new GPolygon(this._points, this._color, 1, 1, this._color, 0.1);
     this._map.addOverlay(this._polyline)
     this._control.render();
   }
@@ -147,9 +147,9 @@ GeoQuery.prototype.getDistHtml = function() {
    
   if (metric) {
     if (this._radius < 1000) {
-      result += "in meters : " + this._radius.toFixed(1);
+      result += "in m: " + this._radius.toFixed(1);
     } else {
-      result += "in kilometers : " + (this._radius / 1000).toFixed(1);
+      result += "in km: " + (this._radius / 1000).toFixed(1);
     }
   } else {
     var radius = this._radius * 3.2808399;
@@ -197,7 +197,7 @@ QueryControl.prototype.initialize = function(map) {
   this._mainDiv.id = "GQueryControl";
   titleDiv = document.createElement("div");
   titleDiv.id = "GQueryControlTitle";
-  titleDiv.appendChild(document.createTextNode("Filter"));
+  // titleDiv.appendChild(document.createTextNode("Filter"));
   this._mainDiv.appendChild(titleDiv);
   this._queriesDiv = document.createElement("div");
   this._queriesDiv.id = "queriesDiv";
@@ -209,7 +209,7 @@ QueryControl.prototype.initialize = function(map) {
 }
 
 QueryControl.prototype.getDefaultPosition = function() {
-  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(50, 10));
+  return new GControlPosition(G_ANCHOR_TOP_LEFT, new GSize(60, 10));
 }
 
 QueryControl.prototype.addGeoQuery = function(geoQuery) {
@@ -241,7 +241,7 @@ QueryControl.prototype.query = function() {
 		radiusKm=Math.floor(geoQuery._radius/1000);
 	
 	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);
-	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+'&from_tm=10',null,drawFlights);
+	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+queryString,null,drawFlights);
 	
 }
 /*

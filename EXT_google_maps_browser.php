@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.7 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.8 2010/03/24 15:04:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -93,7 +93,8 @@ function toogleGmapsFullScreen () {
 <!--
   div#GQueryControl {
     background-color: white;
-    width: 200;
+    width: 120px;
+	padding:3px;
   }
   
 .gmap {
@@ -161,6 +162,29 @@ function toogleGmapsFullScreen () {
 	cursor: pointer;
 }
 
+
+fieldset.legendBox {
+	float:none;
+	clear:none;
+	display:inline;
+	vertical-align:top;
+}
+
+fieldset.legendBox legend {
+	padding-right:30px;
+	margin:0;
+	/* img/icons1/icon_action_select.png */
+	background: #EDEAD3 url(<?=$moduleRelPath?>/img/icons1/icon_action_select.gif) top right no-repeat ;
+	cursor: pointer;
+}
+
+fieldset.legendBoxHidden {
+	border:none;
+	width:auto;	
+}
+.inner_legendBox {
+	display:none;
+}	
 -->
 </style>
 
@@ -189,25 +213,103 @@ function toogleGmapsFullScreen () {
 <div class="gmap_controls" id="gmap_controls" >
 	<div style="position:relative;">
 		
-		<div style="position:relative; float:left; clear:none; margin-top:2px">
+		<div style="position:relative;  float:left; overflow:visible; height:20px; vertical-align:top; clear:none; margin-top:2px">
+        <form name="formFilter" id="formFilter">
 		<? if ($CONF_airspaceChecks) { ?>
+        <fieldset id='airspaceBox' class="legendBox legendBoxHidden"><legend><?=_Airspace?></legend>
+         <span class='inner_legendBox'>
 			<input type="checkbox" value="1" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace?>
+         </span>
+		</fieldset>
 			
 		<?  } ?>
 		<? if ( $CONF['thermals']['enable'] ) { ?>
-		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
+		&nbsp; <fieldset id='themalBox' class="legendBox legendBoxHidden"><legend><?=_Thermals?></legend>
+         <span class='inner_legendBox'>
          <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
          <div id='thermalControls' style="display:none">
-	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class 
-          <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class 
-          <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class
-          <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class
-          <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class
+	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class<BR>
+          <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class<BR>
+          <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class<BR>
+          <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class<BR>
+          <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class<BR>
          </div>
+         </span>
 		</fieldset>
         <? } ?>
+ 
+ <?
+		$calLang=$lang2iso[$currentlang]; 
+		$calDay=$day;
+		$calMonth=$month;
+		$calYear=$year;		
+		if (!$calDay) $calDay=date("d");
+		if (!$calMonth) $calMonth=date("m");
+		if (!$calYear)  $calYear=date("Y");
+		$dateSelect=sprintf("%02d.%02d.%04d",$calDay,$calMonth,$calYear);
+		
+		// echo "$year $month, $day ####";exit;
+ ?>
+ 
+			&nbsp; &nbsp; <input id="dateSelect" name="dateSelect" type="text" size="10" maxlength="10" value="<?=$dateSelect ?>" />
+                <a href="javascript:showCalendar(document.formFilter.cal_button, document.formFilter.dateSelect, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0" id="cal_button" name='cal_button'  /></a> 
+              <span id='dateSelectShow'><a href='javascript:nop()'><< Show</a></span>
+                     
+       
+	       &nbsp;&nbsp;
+           <? 
+$CONF['db_browser']['areas']=array(
+	1=>array(
+		'name'=>"Europe",
+		'queryString'=>"",
+		'min_lat'=>35,
+		'max_lat'=>64,
+		'min_lon'=>-11,
+		'max_lon'=>30.5,
+		'radius'=>1800,
+	),
 
+	2=>array(
+		'name'=>"Alps",
+		'queryString'=>"",
+		'min_lat'=>44,
+		'max_lat'=>47,
+		'min_lon'=>6,
+		'max_lon'=>14,
+		'radius'=>350,
+	),
+	
+	3=>array(
+		'name'=>"Germany",
+		'queryString'=>"",
+		'min_lat'=>47,
+		'max_lat'=>55,
+		'min_lon'=>4.5,
+		'max_lon'=>15,
+		'radius'=>400,
+	),
+);
+		   
+		   ?>
+		<fieldset id='areaSelect' class="legendBox legendBoxHidden"><legend><?=_Select_Area?></legend>
+         <span class='inner_legendBox'>
+         <? 
+			foreach ($CONF['db_browser']['areas'] as $areaID=>$areaArray )  {
+				echo "<input type='radio' name='selectArea' onClick='area_select(".$areaID.",\"".
+				$areaArray['queryString']."\",".				
+				$areaArray['min_lat'].','.
+				$areaArray['max_lat'].','.
+				$areaArray['min_lon'].','.
+				$areaArray['max_lon'].','.
+				$areaArray['radius'].
+				");' /> ".$areaArray['name']."<BR>\n";			
+			}
+		?>	     
+         </div>
+         </span>
+		</fieldset>
+		 </form>
 		</div>
 	
 		
@@ -218,7 +320,77 @@ function toogleGmapsFullScreen () {
 
 	</div>	
 </div>
+
 <script type="text/javascript">
+	var thisUrl= '<?=getLeonardoLink(array('op'=>'useCurrent','season'=>'0','year'=>'%year%','month'=>'%month%','day'=>'%day%'))?>';
+	var imgDir = '<?=$moduleRelPath ?>/js/cal/';
+
+	var language = '<?=$calLang?>';	
+	var startAt = 1;		// 0 - sunday ; 1 - monday
+	var visibleOnLoad=0;
+	var showWeekNumber = 0;	// 0 - don't show; 1 - show
+	var hideCloseButton=0;
+	var gotoString 		= {'<?=$calLang?>' : '<?=_Go_To_Current_Month?>'};
+	var todayString 	= {'<?=$calLang?>' : '<?=_Today_is?>'};
+	var weekString 		= {'<?=$calLang?>' : '<?=_Wk?>'};
+	var scrollLeftMessage 	= {'<?=$calLang?>' : '<?=_Click_to_scroll_to_previous_month?>'};
+	var scrollRightMessage 	= {'<?=$calLang?>': '<?=_Click_to_scroll_to_next_month?>'};
+	var selectMonthMessage 	= {'<?=$calLang?>' : '<?=_Click_to_select_a_month?>'};
+	var selectYearMessage 	= {'<?=$calLang?>' : '<?=_Click_to_select_a_year?>'};
+//	var selectYearMessage 	= '<?=_Click_to_select_a_year?>';
+	var selectDateMessage 	= {'<?=$calLang?>' : '<?=_Select_date_as_date?>' };
+	var	monthName 		= {'<?=$calLang?>' : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
+	var	monthName2 		= {'<?=$calLang?>' : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
+	var dayName = {'<?=$calLang?>' : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
+
+</script>
+<script language='javascript' src='<?=$moduleRelPath ?>/js/cal/popcalendar.js'></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	$("fieldset.legendBox legend").click(function(f) {
+		if ( $(this).parent().hasClass("legendBoxHidden")) {
+			$(this).parent().removeClass("legendBoxHidden");
+		} else {
+			$(this).parent().addClass("legendBoxHidden");
+		}
+		$(this).parent().children(".inner_legendBox").toggle();
+	});
+	
+	
+	$("#dateSelectShow").click(function(f) {
+		 queryString='&date='+$("#dateSelect").val();
+		 geoQuery.updateCircle();
+	}); 
+	
+	
+});
+
+function area_select(areaID,qStr,min_lat,max_lat,min_lon,max_lon,radius) {
+	queryString='&date='+$("#dateSelect").val()+qStr;
+	
+	var	center_lat=(max_lat+min_lat)/2;
+	var center_lon=(max_lon+min_lon)/2;
+		
+	bounds = new GLatLngBounds(new GLatLng(max_lat,min_lon ),new GLatLng(min_lat,max_lon));
+	zoom=map.getBoundsZoomLevel(bounds);	
+	map.setCenter(new GLatLng( center_lat,center_lon), zoom);
+
+	geoQuery._centerHandlePosition=new GLatLng(center_lat, center_lon);	
+	geoQuery._radius=radius*1000;
+	map.removeOverlay(geoQuery._polyline);
+	
+    geoQuery._centerHandle.setPoint(geoQuery._centerHandlePosition);
+    geoQuery._dragHandle.setPoint(geoQuery.getEast());
+	  
+	geoQuery.render();
+	
+}
+
+//--------------------------------------------------------------------
+
 
 var markerBg="img/icon_cat_<?=$flight->cat?>.png";
 
@@ -231,8 +403,9 @@ var marginRight=5;
 var lat=<?=$lat?>;
 var lon=<?=$lon?>;
 
+var queryString='&date=<?=gmdate("d.m.Y");?>';
 	
-	var map = new GMap2(document.getElementById("gmap"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
+	var map = new GMap2(document.getElementById("gmap"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
 
 	//	    map.addMapType(G_PHYSICAL_MAP) ;
 	// map.addControl(new GLargeMapControl());

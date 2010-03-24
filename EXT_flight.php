@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.18 2010/03/17 15:06:24 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.19 2010/03/24 15:04:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -236,9 +236,20 @@
 
 		 $tm1=makeSane($_REQUEST['tm1'],1); // timestamp
 		 $tm2=makeSane($_REQUEST['tm2'],1); // timestamp
+		 
+		 
+		 $date1=makeSane($_REQUEST['date']); // date dd.mm.yyy format
+		 if ($date1) {
+			 $dateParts=split("\.",$date1);
+			 $tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);
+ 			 $tm2=gmmktime(0,0,0,$dateParts[1],$dateParts[0]+1,$dateParts[2]);
+		 }
+		 
 		 if ($tm1 && $tm2) {
 			 $where_clause.=" AND DATE >= FROM_UNIXTIME($tm1) AND DATE >= FROM_UNIXTIME($tm2) "; 
 		 }
+		 
+
 
 		 $count=makeSane($_REQUEST['count'],1); // timestamp
 		 if (!$count)  $count=100;
@@ -263,7 +274,7 @@
 		}
 		
 		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY  distance ASC , dateAdded DESC $lim ";
-		 //echo $query;
+		 // echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
 			 echo("<H3> Error in query! $query </H3>\n");

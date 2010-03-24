@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.96 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.97 2010/03/24 15:04:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -769,7 +769,7 @@ $Ltemplate->assign_vars(array(
 
 ));
 
-if ($flight->externalFlightType) {
+if ($flight->externalFlightType &&  ! $CONF['servers']['list'][$flight->serverID]['treat_flights_as_local']) {
    	$Ltemplate->assign_block_vars('EXT_FLIGHT', array() );
 }
  
