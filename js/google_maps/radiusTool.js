@@ -240,7 +240,9 @@ QueryControl.prototype.query = function() {
 	if (geoQuery._radius!= null)
 		radiusKm=Math.floor(geoQuery._radius/1000);
 	
-	$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);
+	if (showTakeoffs) {
+		$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);
+	}
 	$.getJSON('EXT_flight.php?op=list_flights_json&lat='+lat+'&lon='+lon+'&distance='+radiusKm+queryString,null,drawFlights);
 	
 }

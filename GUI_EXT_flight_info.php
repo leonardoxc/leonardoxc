@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.15 2010/03/16 21:26:25 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.16 2010/03/25 18:43:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -96,6 +96,9 @@ if ($op=='photos'){
 		echo "<span class='short_info'>".$flight->comments.'</span>';
 		
 } else if ($op=='info_short'){
+
+	$extendedInfo=makeSane($_GET['ext'],1);
+	
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 

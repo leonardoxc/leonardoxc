@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.87 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.88 2010/03/25 18:43:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -346,10 +346,8 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 <li><a href="#"><?=_MENU_FLIGHTS." ".$arrDownImg?></a>
 	<ul>
-		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights') )?>"><?=_MENU_FLIGHTS ?></a></li>
-        <? if ( L_auth::isAdmin($userID) )  {  ?>
-		<li><a href="<?=getLeonardoLink(array('op'=>'browser') )?>"><?=leoHtml::img("icon_new.png",0,0,'absmiddle','','icons1')?> <?=_MENU_BROWSER?></a></li>
-        <? } ?>
+		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights') )?>"><?=_MENU_FLIGHTS ?></a></li> 
+		<li><a href="<?=getLeonardoLink(array('op'=>'browser') )?>"><?=leoHtml::img("icon_new.png",0,0,'absmiddle','','icons1')?> <?=_MENU_BROWSER?></a></li>       
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','sortOrder'=>'dateAdded','takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0','pilotID'=>'0')) ?>"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a></li>
 		<li class='li_space'></li>

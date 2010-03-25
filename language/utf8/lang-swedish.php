@@ -863,5 +863,7 @@ define("_MENU_BROWSER","Browse in Google Maps");
 define("_FLIGHT_BROSWER","Search the flights and takeoff database with Google Maps"); 
 define("_Load_Thermals","Load Thermals"); 
 define("_Loading_thermals","Loading Thermals"); 
+define("_Layers","Layers"); 
+define("_Select_Area","Select Area"); 
 
 ?>

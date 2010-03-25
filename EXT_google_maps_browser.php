@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.8 2010/03/24 15:04:12 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.9 2010/03/25 18:43:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -93,7 +93,7 @@ function toogleGmapsFullScreen () {
 <!--
   div#GQueryControl {
     background-color: white;
-    width: 120px;
+    width: 160px;
 	padding:3px;
   }
   
@@ -168,6 +168,7 @@ fieldset.legendBox {
 	clear:none;
 	display:inline;
 	vertical-align:top;
+	width:200px;
 }
 
 fieldset.legendBox legend {
@@ -213,32 +214,31 @@ fieldset.legendBoxHidden {
 <div class="gmap_controls" id="gmap_controls" >
 	<div style="position:relative;">
 		
-		<div style="position:relative;  float:left; overflow:visible; height:20px; vertical-align:top; clear:none; margin-top:2px">
+		<div style="position:relative;  float:left; overflow:visible; height:20px; vertical-align:top; clear:none; margin-top:2px;">
         <form name="formFilter" id="formFilter">
+		<fieldset id='layersBox' class="legendBox legendBoxHidden"><legend><?=_Layers?></legend>
+		<span class='inner_legendBox'>
+		<label><input type="checkbox" value="1" id='takeoffsShow' onClick="toggleTakeoffs()"><?=_MENU_TAKEOFFS?></label><hr>
+		
 		<? if ($CONF_airspaceChecks) { ?>
-        <fieldset id='airspaceBox' class="legendBox legendBoxHidden"><legend><?=_Airspace?></legend>
-         <span class='inner_legendBox'>
-			<input type="checkbox" value="1" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace?>
-         </span>
-		</fieldset>
-			
-		<?  } ?>
-		<? if ( $CONF['thermals']['enable'] ) { ?>
-		&nbsp; <fieldset id='themalBox' class="legendBox legendBoxHidden"><legend><?=_Thermals?></legend>
-         <span class='inner_legendBox'>
+        	<label><input type="checkbox" value="1" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace			?></label><hr>
+		<?  } ?>		
+		<? if ( $CONF['thermals']['enable'] ) { ?>	
          <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
          <div id='thermalLoading' style="display:none"></div>
-         <div id='thermalControls' style="display:none">
+         <div id='thermalControls' style="display:none"><?=_Thermals?><BR>
 	      <input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /> A Class<BR>
           <input type="checkbox" id="2_box" onClick="boxclick(this,'2')" /> B Class<BR>
           <input type="checkbox" id="3_box" onClick="boxclick(this,'3')" /> C Class<BR>
           <input type="checkbox" id="4_box" onClick="boxclick(this,'4')" /> D Class<BR>
           <input type="checkbox" id="5_box" onClick="boxclick(this,'5')" /> E Class<BR>
          </div>
-         </span>
-		</fieldset>
+			<hr>
         <? } ?>
  
+          </span>
+		</fieldset>&nbsp;&nbsp;
+
  <?
 		$calLang=$lang2iso[$currentlang]; 
 		$calDay=$day;
@@ -254,56 +254,22 @@ fieldset.legendBoxHidden {
  
 			&nbsp; &nbsp; <input id="dateSelect" name="dateSelect" type="text" size="10" maxlength="10" value="<?=$dateSelect ?>" />
                 <a href="javascript:showCalendar(document.formFilter.cal_button, document.formFilter.dateSelect, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" width="16" height="16" border="0" id="cal_button" name='cal_button'  /></a> 
-              <span id='dateSelectShow'><a href='javascript:nop()'><< Show</a></span>
+              <span id='dateSelectShow'><a href='javascript:nop()'><< <?=_SHOW?></a></span>
                      
        
 	       &nbsp;&nbsp;
-           <? 
-$CONF['db_browser']['areas']=array(
-	1=>array(
-		'name'=>"Europe",
-		'queryString'=>"",
-		'min_lat'=>35,
-		'max_lat'=>64,
-		'min_lon'=>-11,
-		'max_lon'=>30.5,
-		'radius'=>1800,
-	),
-
-	2=>array(
-		'name'=>"Alps",
-		'queryString'=>"",
-		'min_lat'=>44,
-		'max_lat'=>47,
-		'min_lon'=>6,
-		'max_lon'=>14,
-		'radius'=>350,
-	),
-	
-	3=>array(
-		'name'=>"Germany",
-		'queryString'=>"",
-		'min_lat'=>47,
-		'max_lat'=>55,
-		'min_lon'=>4.5,
-		'max_lon'=>15,
-		'radius'=>400,
-	),
-);
-		   
-		   ?>
 		<fieldset id='areaSelect' class="legendBox legendBoxHidden"><legend><?=_Select_Area?></legend>
          <span class='inner_legendBox'>
          <? 
 			foreach ($CONF['db_browser']['areas'] as $areaID=>$areaArray )  {
-				echo "<input type='radio' name='selectArea' onClick='area_select(".$areaID.",\"".
+				echo "<label><input type='radio' id='selectArea_$areaID' name='selectArea' onClick='area_select(".$areaID.",\"".
 				$areaArray['queryString']."\",".				
 				$areaArray['min_lat'].','.
 				$areaArray['max_lat'].','.
 				$areaArray['min_lon'].','.
 				$areaArray['max_lon'].','.
 				$areaArray['radius'].
-				");' /> ".$areaArray['name']."<BR>\n";			
+				");' /> ".$areaArray['name']."</label><BR>\n";			
 			}
 		?>	     
          </div>
@@ -348,6 +314,10 @@ $CONF['db_browser']['areas']=array(
 
 <script type="text/javascript">
 
+var showAirspace=0;
+var showTakeoffs=0;
+
+
 $(document).ready(function(){
 
 	$("fieldset.legendBox legend").click(function(f) {
@@ -360,6 +330,8 @@ $(document).ready(function(){
 	});
 	
 	
+	$("#selectArea_<?=$CONF['db_browser']['default_area']?>").click();
+	
 	$("#dateSelectShow").click(function(f) {
 		 queryString='&date='+$("#dateSelect").val();
 		 geoQuery.updateCircle();
@@ -368,6 +340,28 @@ $(document).ready(function(){
 	
 });
 
+
+function toggleTakeoffs() {
+	if(!map) return "";	
+	
+	if( $("#takeoffsShow").is(":checked") ) {
+		showTakeoffs=1;		
+		clearTakeoffs();	
+		$.getJSON('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon+'&distance='+radiusKm,null,drawTakeoffs);	
+	} else {
+		showTakeoffs=0;
+		clearTakeoffs();
+	}
+}
+
+function clearTakeoffs() {
+
+	for (var i in takeoffMarkers) {
+		map.removeOverlay(takeoffMarkers[i]);
+	}
+	takeoffMarkers=[];
+}	
+	
 function area_select(areaID,qStr,min_lat,max_lat,min_lon,max_lon,radius) {
 	queryString='&date='+$("#dateSelect").val()+qStr;
 	
@@ -382,10 +376,9 @@ function area_select(areaID,qStr,min_lat,max_lat,min_lon,max_lon,radius) {
 	geoQuery._radius=radius*1000;
 	map.removeOverlay(geoQuery._polyline);
 	
-    geoQuery._centerHandle.setPoint(geoQuery._centerHandlePosition);
-    geoQuery._dragHandle.setPoint(geoQuery.getEast());
-	  
+    geoQuery._centerHandle.setPoint(geoQuery._centerHandlePosition);  
 	geoQuery.render();
+    geoQuery._dragHandle.setPoint(geoQuery.getEast());
 	
 }
 
@@ -422,14 +415,21 @@ var queryString='&date=<?=gmdate("d.m.Y");?>';
 // Dynamic load of flight tracks
 //----------------------------------------------------------------------
 	
-function createFlightMarker(point, id , description) {
+var flightLinkTemplate="<a href='<?=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+		getLeonardoLink(array('op'=>'show_flight','flightID'=>'xxx')) );?>' target='_top'><?=_See_more_details?></a>";
+function createFlightMarker(point, id , pilotName) {
 	var marker = new GMarker(point,flightTakeoffIcon);
+	
+	var flightLink=flightLinkTemplate.replace("xxx",id);
 	
 	GEvent.addListener(marker, "click", function() {
 	 	loadFlightTrack(id,point);
 	 	flightMarkers[id].openInfoWindowHtml("<img src='img/ajax-loader.gif'>");	 
 	 	$.ajax({ url: 'GUI_EXT_flight_info.php?op=info_short&flightID='+id, dataType: 'html',  		
-			  success: function(data) { flightMarkers[id].openInfoWindowHtml(data);	}
+			  success: function(data) { 
+			    data="<strong>"+pilotName+"</strong><BR>"+data+"<br>"+flightLink;
+			  	flightMarkers[id].openInfoWindowHtml(data);	
+			  }
 		});
 	});	
 	return marker;

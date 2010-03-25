@@ -177,7 +177,9 @@
 
 	function hideCalendar() {
 		if (visibleOnLoad && hideCloseButton) return;
-		crossobj.visibility = 'hidden';
+		if (crossobj!=null) {
+			crossobj.visibility = 'hidden';
+		}
 		if (crossMonthObj != null) crossMonthObj.visibility = 'hidden';
 		if (crossYearObj  != null) crossYearObj.visibility = 'hidden';
 		showElement('SELECT');

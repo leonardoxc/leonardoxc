@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.141 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: config.php,v 1.142 2010/03/25 18:43:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -652,6 +652,54 @@ $CONF['userPrefs']['defaults']=array(
 );
 
 
+//---------------------------------------------------
+// user profile options
+//---------------------------------------------------
+
+// the way to fill in the CIVL ID of the pilot
+$CONF['profile']['CIVL_ID']['enter_url']='';
+// example  for custom method : 
+// $CONF['profile']['CIVL_ID_enter_url']=
+// 			getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
+$CONF['profile']['CIVL_ID']['window_width']=700;
+$CONF['profile']['CIVL_ID']['window_height']=550;
+
+
+$CONF['db_browser']['default_area']=1;
+$CONF['db_browser']['areas']=array(
+	1=>array(
+		'name'=>"Europe",
+		'queryString'=>"",
+		'min_lat'=>35,
+		'max_lat'=>64,
+		'min_lon'=>-11,
+		'max_lon'=>30.5,
+		'radius'=>1800,
+	),
+
+	2=>array(
+		'name'=>"Alps",
+		'queryString'=>"",
+		'min_lat'=>44,
+		'max_lat'=>47,
+		'min_lon'=>6,
+		'max_lon'=>14,
+		'radius'=>350,
+	),
+	
+	3=>array(
+		'name'=>"Germany",
+		'queryString'=>"",
+		'min_lat'=>47,
+		'max_lat'=>55,
+		'min_lon'=>4.5,
+		'max_lon'=>15,
+		'radius'=>400,
+	),
+);
+
+
+
 define("LEONARDO_ABS_PATH",dirname(__FILE__));
 $CONF_abs_path=LEONARDO_ABS_PATH;
 
@@ -828,18 +876,6 @@ define('SYNC_INSERT_PILOT_LOCAL',8);
 define('SYNC_INSERT_WAYPOINT_LINK',16);
 define('SYNC_INSERT_WAYPOINT_LOCAL',32);
 
-//---------------------------------------------------
-// user profile options
-//---------------------------------------------------
-
-// the way to fill in the CIVL ID of the pilot
-$CONF['profile']['CIVL_ID']['enter_url']='';
-// example  for custom method : 
-// $CONF['profile']['CIVL_ID_enter_url']=
-// 			getRelMainDir()."/site/CIVL_ID_enter.php?id=check_membership&callingfield=CIVL_ID";
-$CONF['profile']['CIVL_ID']['window_width']=700;
-$CONF['profile']['CIVL_ID']['window_height']=550;
-
 
 if (!function_exists('str_ireplace')) {
     function str_ireplace($needle, $str, $haystack) {
@@ -849,5 +885,7 @@ if (!function_exists('str_ireplace')) {
 } 
 
 //$CONF['sprites']
+
+
 
 ?>

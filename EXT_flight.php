@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.19 2010/03/24 15:04:12 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.20 2010/03/25 18:43:02 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -215,7 +215,7 @@
 		$distance=$_REQUEST['distance']+0; // radious in km
 		
 		if ( $distance <= 0 ) $distance=100; 
-		if ( $distance > 500 ) $distance=500;
+		if ( $distance > 2500 ) $distance=200;
 		
 		
 		$where_clause=" 1 ";
@@ -246,7 +246,7 @@
 		 }
 		 
 		 if ($tm1 && $tm2) {
-			 $where_clause.=" AND DATE >= FROM_UNIXTIME($tm1) AND DATE >= FROM_UNIXTIME($tm2) "; 
+			 $where_clause.=" AND DATE >= FROM_UNIXTIME($tm1) AND DATE <= FROM_UNIXTIME($tm2) "; 
 		 }
 		 
 
@@ -274,7 +274,7 @@
 		}
 		
 		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY  distance ASC , dateAdded DESC $lim ";
-		 // echo $query;
+		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
 			 echo("<H3> Error in query! $query </H3>\n");
