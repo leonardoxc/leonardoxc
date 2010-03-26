@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.8 2010/01/07 11:48:35 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.9 2010/03/26 12:37:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -382,9 +382,24 @@
 	$CONF_require_glider=1;
 	$CONF_addflight_js_validation=1;
 	
-	// you can override the categories here!
+
+	// not used any more, see just below
 	//$CONF_category_types =array(1=>"Sport",2=>"Open",3=>"Tandem",4=>"Fun Cup");
 	//$gliderClassList=$CONF_category_types;
+
+	// you can override the categories here!
+	$CONF['gliderClasses']=array(
+		// pg
+		1=>array( 
+			'default_class'=>2,
+			'classes'=>array(1=>"Sport",2=>"Open",3=>"Tandem",4=>"Fun Cup"),		
+		),
+		2=>array( 
+			'default_class'=>2,
+			'classes'=>array(1=>"Kingpost",2=>"Topless"),
+		),
+ 	);	
+ 
 	
 	$CONF_glider_certification_categories =array(
  		1=>"LTF 1",2=>"LTF 1/2",
@@ -415,9 +430,45 @@ $CONF['airspace']['zoom']=100; // show a bit % more of the airspace  - good valu
 // Define the version of flights data scheme
 // the default old one of flights/ dir is version 1
 
-// !!!! UNCOMENT THIS ONLY AFTER YOU HAVE MIGRETED ALL FILES TO NEW POSSTIONS !!!!
+// USE this if you still have the flights on flights/ folder
+$CONF['paths']=$CONF['paths_versions'][1];
+// !!!! USE THIS ONLY AFTER YOU HAVE MIGRATED ALL FILES TO NEW POSITIONS !!!!
 // $CONF['paths']=$CONF['paths_versions'][2];
 
 // Set this to 1 if on search pilot you always get "Access denied"
 $CONF['bugs']['badSessions']=0;
+
+// define areas for google maps db browser
+$CONF['db_browser']['default_area']=1;
+$CONF['db_browser']['areas']=array(
+	1=>array(
+		'name'=>"Europe",
+		'queryString'=>"",
+		'min_lat'=>35,
+		'max_lat'=>64,
+		'min_lon'=>-11,
+		'max_lon'=>30.5,
+		'radius'=>1800,
+	),
+
+	2=>array(
+		'name'=>"Alps",
+		'queryString'=>"",
+		'min_lat'=>44,
+		'max_lat'=>47,
+		'min_lon'=>6,
+		'max_lon'=>14,
+		'radius'=>350,
+	),
+	
+	3=>array(
+		'name'=>"Germany",
+		'queryString'=>"",
+		'min_lat'=>47,
+		'max_lat'=>55,
+		'min_lon'=>4.5,
+		'max_lon'=>15,
+		'radius'=>400,
+	),
+);
 ?>
