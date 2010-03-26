@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_program_info.php,v 1.18 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_program_info.php,v 1.19 2010/03/26 13:16:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -20,9 +20,39 @@
   <p> 
   <table class=main_text width="700" border="0" align="center" cellpadding="2" cellspacing="2">
     <tr> 
-      <td width="135">
+      <td width="164">
 <div align="right"><? echo _DEVELOPMENT ?>: </div></td>
-      <td width="437"><? echo _ANDREADAKIS_MANOLIS ?> </td>
+      <td width="259"><? echo _ANDREADAKIS_MANOLIS ?> </td>
+      <td width="257" rowspan="10" valign="top"><div align="left">
+      
+        <p align="left"><strong>Leonardo Installations </strong></p>
+        <ul>
+          <li> <a href="http://www.paraglidingforum.com/modules.php?name=leonardo&amp;op=list_flights&amp;sortOrder=DATE&amp;year=0&amp;month=0&amp;pilotID=0" target="_blank">International
+            Leonardo</a></li>
+          <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></li>
+          <li><a href="http://www.xcbrasil.org" target="_blank">Brazilian Leonardo</a></li>
+          <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL Leonardo</a></li>
+          <li> <a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
+          <li> <a href="http://www.sky.gr/leonardo" target="_blank">Greek Leonardo</a></li>
+          <li><a href="http://forum.skynomad.net/leonardo" target="_blank">Bulgarian - skynomad Leonardo</a></li>
+          <li><a href="http://www.xcaustralia.org/">Australian Leonardo</a></li>
+          <li> <a href="http://www.ypforum.com/leonardo" target="_blank">Turkish   Leonardo</a></li>
+          <li><a href="http://www.pg-leonardo.cz/leonardo" target="_blank">Czech Leonardo</a></li>
+          <li><a href="http://www.holywind.net/index.php?option=leonardo" target="_blank">Isreali Leonardo</a></li>
+          <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>
+          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL
+            Canadian League</a></li>
+          <li><a href="http://cnd.favl.info/modules.php?name=leonardo&amp;op=list_flights" target="_blank">FAVL - Argentine League</a> </li>
+          <li> <a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
+          <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
+          <li> <a href="http://www.foroparapente.com/leonardo" target="_blank">Chilian Leonardo</a></li>
+          <li><a href="http://xc.aerospara.com/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></li>
+        </ul>
+      </div></td>
+    </tr>
+    <tr> 
+      <td><div align="right"><? echo _VERSION ?>: </div></td>
+      <td><? echo "$CONF_version (released $CONF_releaseDate)"; ?> </td>
     </tr>
     <tr> 
       <td><div align="right">Licence: </div></td>
@@ -30,11 +60,7 @@
     </tr>
     <tr> 
       <td><div align="right"><? echo _PROJECT_URL ?>: </div></td>
-      <td><a href="http://leonardo.thenet.gr" target="_blank">http://leonardo.thenet.gr/</a></td>
-    </tr>
-    <tr> 
-      <td><div align="right">SourceForge: </div></td>
-      <td><a href="https://sourceforge.net/projects/leonardoserver/" target="_blank">https://sourceforge.net/projects/leonardoserver/</a></td>
+      <td><a href="http://www.leonardoxc.net" target="_blank">http://www.leonardoxc.net</a></td>
     </tr>
     <tr>
       <td><div align="right">Scoring Optimization</div></td>
@@ -45,54 +71,25 @@
       <td><a href="http://www.parawing.net" target="_blank">Emmanuel Chabani aka Man's</a></td>
     </tr>
     <tr>
+      <td><div align="right">igc2kmz</div></td>
+      <td><a href="http://wiki.github.com/twpayne/igc2kmz/" target="_blank">Tom Payne's igc2kmz</a></td>
+    </tr>
+    <tr>
       <td><div align="right">Airspace Checking </div></td>
       <td>Some code adapted from <a href="http://xcsoar.sourceforge.net/" target="_blank">xcsoar</a> project </td>
     </tr>
-    <tr> 
-      <td><div align="right">Graph Plotting: </div></td>
-      <td><a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph Copyright (C) 2001,2002,2003 Johan Persson</a></td>
+    <tr>
+      <td><div align="right">Js Libraries</div></td>
+      <td><a href="http://www.twinhelix.com" target="_blank">Tipster</a>, <a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph</a>, <a href="http://www.jquery.com" target="_blank">JQuery</a></td>
     </tr>
-    <tr> 
-      <td><div align="right">Tipster: </div></td>
-      <td><a href="http://www.twinhelix.com" target="_blank">TIPSTER (c) 2001-2006 Angus Turnbull</a></td>
-    </tr>
-    <tr> 
-      <td><div align="right"><? echo _VERSION ?>: </div></td>
-      <td><? echo "$CONF_version (released $CONF_releaseDate)"; ?> </td>
-    </tr>
+
     <tr>
       <td><div align="right">Design:</div></td>
-      <td>Alexander Caravitis</td>
+      <td>Alexander Caravitis,<br />
+      <? echo _ANDREADAKIS_MANOLIS ?></td>
     </tr>
     <tr> 
-      <td colspan="2"><div align="left">
-        <hr>
-        <p align="left"><strong>Leonardo Installations </strong></p>
-        <ul>
-          <li>
-            <a href="http://www.paraglidingforum.com/modules.php?name=leonardo&op=list_flights&sortOrder=DATE&year=0&month=0&pilotID=0" target="_blank">International
-              Leonardo</a></li>
-          <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></li>
-          <li><a href="http://www.xcbrasil.org/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Brazilian Leonardo</a></li>
-          <li> <a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
-          <li>
-            <a href="http://www.sky.gr/modules.php?name=leonardo&op=list_flights" target="_blank">Greek Leonardo</a></li>
-          <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>
-          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL
-              Canadian League</a></li>
-          <li>
-            <a href="http://www.ypforum.com/modules.php?name=leonardo&op=list_flights" target="_blank">Turkish   Leonardo</a></li>
-          <li><a href="http://cnd.favl.info/modules.php?name=leonardo&op=list_flights" target="_blank">FAVL - Argentine League</a> </li>
-          <li>
-            <a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
-          <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
-          <li>
-            <a href="http://www.foroparapente.com/modules.php?name=leonardo&op=list_flights" target="_blank">Chilian Leonardo</a></li>
-          <li><a href="http://paragliding.in.ua/XC/modules.php?name=leonardo" target="_blank">Ukrainian
-            Leonardo</a></li>
-          </ul>
-        </div>
-        <hr>        <p>Many <em>many</em> thanks to: </p>                
+      <td colspan="3"><hr>        <p>Many <em>many</em> thanks to: </p>                
         <ul>
           <li>        <strong>Hannes Krueger</strong>, for his GPLIGC and openGLIGCexplorer
             that gave me the initial idea            <a href="http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php" target="_blank">http://pc12-c714.uibk.ac.at/GPLIGC/GPLIGC.php</a></li>
@@ -109,6 +106,8 @@
             b) Airspace infrigments checking <br />
           </li>
           <li><strong>Peter Wild (DHV) , Martin Jursa (DHV)</strong> for believing in the power of open source and their valuable contributions and assistance.</li>
+          <li><strong>Tom Payne</strong> for his <a href="http://wiki.github.com/twpayne/igc2kmz/" target="_blank">igc2kmz</a> a great visualisation tool for google earth</li>
+          <li><strong>Durval Henke</strong> <strong>(<a href="http://www.xcbrasil.org/" target="_blank">xcbrasil.org</a>)</strong> for many bug fixes and the developing the code for standalone operation</li>
         </ul>
         <p>Also many thanks to the following for providing translations, valuable 
           feedback and beta testing:</p>
