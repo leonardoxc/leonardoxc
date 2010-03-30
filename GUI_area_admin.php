@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.13 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.14 2010/03/30 14:06:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -250,7 +250,7 @@ $(document).ready(function(){
 
 function getTakeoffsForCountry(cCode) {
 	$("#addList").removeOption(/./);
-	$("#addList").ajaxAddOption('EXT_takeoff.php?op=get_country_takeoffs&countryCode='+cCode);
+	$("#addList").ajaxAddOption('<?=$moduleRelPath?>/EXT_takeoff.php?op=get_country_takeoffs&countryCode='+cCode);
 }
 </script>
 

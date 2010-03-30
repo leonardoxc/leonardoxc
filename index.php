@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.117 2010/03/16 21:26:25 manolis Exp $
+// $Id: index.php,v 1.118 2010/03/30 14:06:59 manolis Exp $
 //
 //************************************************************************
 
@@ -21,7 +21,7 @@ if ( file_exists(dirname(__FILE__)."/install.php") ) {
 //------------------------------------------------------------
 // we need to init joomla first thing!
 require_once dirname(__FILE__)."/site/config_op_mode.php";
-if ($opMode==5 && $CONF_use_own_template==1) { // Joomla
+if ($opMode==5 && $CONF_use_own_template==1 ) { // Joomla
 	define( '_JEXEC', 1 );
 	define( 'DS', DIRECTORY_SEPARATOR );
 		
@@ -47,6 +47,7 @@ function leo_getmicrotime() {
 
 $pageStart=leo_getmicrotime();
 
+
 @session_start();
 
 $module_name = basename(dirname(__FILE__));
@@ -70,7 +71,7 @@ if ( strlen($lng)==2) {
 }
 $currentlang=$lng;
 
-if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF'])  ) {
+if ( !eregi($CONF_mainfile, $_SERVER['PHP_SELF']) ) {
     die ("You can't access this file directly...");
 }
 

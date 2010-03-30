@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.144 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: config.php,v 1.145 2010/03/30 14:06:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -802,7 +802,7 @@ function setLeonardoPaths () {
 	global 	$module_name,$moduleAbsPath,$moduleRelPath;
 	global 	$waypointsRelPath,	$waypointsAbsPath,	$waypointsWebPath;
 	global 	$flightsRelPath; 
-	global  $CONF_arg_name,$CONF_mainfile,$CONF;
+	global  $CONF_arg_name,$CONF_mainfile,$CONF,$opMode;
 	global 	$isExternalFile;
 
 
@@ -824,28 +824,17 @@ function setLeonardoPaths () {
 	// detect if the installation in not on the root
 	$baseInstallationPath="";
 	$moduleRelPathTemp=moduleRelPath(!$isExternalFile);		
-	if ( $CONF['links']['type']==3 ) {
-		$baseInstallationPath="";
-	} else {			
-		$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['SCRIPT_NAME']) )   );	
-		// print_r($parts);	
-		if ( count($parts)>1 )  {
-			for($i=0;$i<count($parts);$i++) 
-			   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
-		}
+
+	// compute baseInstallationPath
+	$parts=explode("/", str_replace($moduleRelPathTemp,'',dirname($_SERVER['SCRIPT_NAME']) )   );	
+	// print_r($parts);	
+	if ( count($parts)>1 )  {
+		for($i=0;$i<count($parts);$i++) 
+		   if ($parts[$i]!='') $baseInstallationPath.="/".$parts[$i];	
 	}
-	
-if (0) {
-	echo "@".substr($_SERVER['SCRIPT_NAME'],0,-$queryLen)."@";
-	echo "queryLen : $queryLen#";
-	echo "&& _SERVER['SCRIPT_NAME'] : ".$_SERVER['SCRIPT_NAME']."&&";
-	echo dirname($_SERVER['SCRIPT_NAME']);
-	echo "#moduleRelPath=$moduleRelPath#moduleRelPathTemp=$moduleRelPathTemp#";
-	echo "baseInstallationPath=$baseInstallationPath#<BR>";
-}
 
 	if (!defined('CONF_MODULE_ARG') ){
-		if ($CONF['links']['type']==3){		
+		if ($CONF['links']['type']==3 && $opMode!=2){		
 			$preDir=$CONF['links']['baseURL'];
 		} else {
 			$preDir=$baseInstallationPath;
@@ -853,8 +842,21 @@ if (0) {
 		$lnk=$preDir.'/'.$CONF_mainfile."?$CONF_arg_name=$module_name";				
 		define('CONF_MODULE_ARG',$lnk);
 		//	setModuleArg();
-
 	}
+
+	if ( $CONF['links']['type']==3 ) {
+		$baseInstallationPath="";
+	}
+		
+if (0) {
+	echo "@".substr($_SERVER['SCRIPT_NAME'],0,-$queryLen)."@";
+	echo "queryLen : $queryLen#";
+	echo "&& _SERVER['SCRIPT_NAME'] : ".$_SERVER['SCRIPT_NAME']."&&";
+	echo dirname($_SERVER['SCRIPT_NAME']);
+	echo "#moduleRelPath=$moduleRelPath#moduleRelPathTemp=$moduleRelPathTemp#";
+	echo "baseInstallationPath=$baseInstallationPath#<BR>";
+	echo "CONF_MODULE_ARG=".CONF_MODULE_ARG."<BR>";
+}
 
 	$moduleAbsPath=dirname(__FILE__);	
 	

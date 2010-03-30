@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.88 2010/03/25 18:43:02 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.89 2010/03/30 14:06:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -164,7 +164,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 				<li><a href="<?=getLeonardoLink(array('op'=>'users')) ?>">User Administration</a></li>
 				<? } ?>
                 <li class='li_space long'></li>
-                <li><a href="<?=getLeonardoLink(array('op'=>'brands','page'=>'admin')) ?>">Brand Administration</a></li>               
+                <li><a href="<?=getLeonardoLink(array('op'=>'admin_brands')) ?>">Brand Administration</a></li>               
 				<li class='li_space long'></li>
 				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
 				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
