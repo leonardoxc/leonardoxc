@@ -228,7 +228,7 @@ function leonardo_check_password($password,$hash) {
 
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.2 2010/01/07 11:47:24 manolis Exp $
+* @version Version 0.1 / $Id: functions.php,v 1.3 2010/03/30 11:33:57 manolis Exp $
 *
 * Portable PHP password hashing framework.
 *
@@ -260,7 +260,7 @@ function leonardo_hash($password)
 {
    $itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-   $random_state = unique_id();
+   $random_state = uniqueid();
    $random = '';
    $count = 6;
 

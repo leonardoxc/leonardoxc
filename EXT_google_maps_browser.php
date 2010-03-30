@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.9 2010/03/25 18:43:02 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.10 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -74,7 +74,7 @@
 
 <script src="http://www.google.com/uds/api?file=uds.js&amp;v=1.0&key=ABQIAAAAxe4iZkOij75xEW-P40HsMRTNwwIDB3X2PJ0_br5ee44ut2pm8RRiA2ku6cwsTFtWlCY7kcRdnEPIDA" type="text/javascript"></script>
 
-<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js?adsense=pub-1227201690587661" type="text/javascript"></script>
+<script src="http://www.google.com/uds/solutions/localsearch/gmlocalsearch.js" type="text/javascript"></script>
 
 <script type="text/javascript" language="JavaScript">
 

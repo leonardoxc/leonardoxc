@@ -65,10 +65,10 @@ if(isset($_POST['changeem'])){
      if(strlen($msg)==0 && $userdata['user_emailtime'] +($CONF_expire_time)>time()){$msg=sprintf(_Email_canot_change_quickly,$expiretime);} 
      if(strlen($msg)==0 && _update_user_new_mail($email,$actkey)){ 
        strlen($pilotdata['NickName'])>0?$pn=($pilotdata['NickName']):$pn=($pilotdata['FirstName']." " .$pilotdata['LastName']);  
-       $email_body=sprintf(_Pilot_confirm_change_email,$CONF_server_short_name, $pn ." " . $userdata['user_new_email'],
+       $email_body=sprintf(_Pilot_confirm_change_email,$CONF['site']['name'], $pn ." " . $userdata['user_new_email'],
        $_SERVER["HTTP_HOST"], $_SERVER['HTTP_HOST'].$PHP_SELF, $actkey);
        print $userdata['user_actkey']."<br>";
-       mail($userdata['user_new_email'], "[Leonardo] $CONF_server_short_name -  "._Email_subject_confirm."",utf8_decode($email_body), "From:  $CONF_admin_email");
+       mail($userdata['user_new_email'], "[Leonardo] ".$CONF['site']['name']." -  "._Email_subject_confirm."",utf8_decode($email_body), "From:  $CONF_admin_email");
        $msg.=_Email_sent_with_confirm; //"We send a email for you, where you must confirm the email changing";  
      }
      print "<br><div align='center'><b>$msg</b></div><br>";    

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.143 2010/03/26 12:37:54 manolis Exp $                                                                 
+// $Id: config.php,v 1.144 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -664,6 +664,7 @@ $CONF['profile']['CIVL_ID']['enter_url']='';
 $CONF['profile']['CIVL_ID']['window_width']=700;
 $CONF['profile']['CIVL_ID']['window_height']=550;
 
+$CONF['takeoffAreas']['defaultCountry']='';
 
 $CONF['db_browser']['default_area']=1;
 $CONF['db_browser']['areas']=array(
@@ -844,12 +845,15 @@ if (0) {
 }
 
 	if (!defined('CONF_MODULE_ARG') ){
-		if (!$baseInstallationPath  ) 
-			$lnk='/'.$CONF_mainfile."?$CONF_arg_name=$module_name";
-		else 
-			$lnk=$baseInstallationPath.'/'.$CONF_mainfile."?$CONF_arg_name=$module_name";
-			
+		if ($CONF['links']['type']==3){		
+			$preDir=$CONF['links']['baseURL'];
+		} else {
+			$preDir=$baseInstallationPath;
+		}
+		$lnk=$preDir.'/'.$CONF_mainfile."?$CONF_arg_name=$module_name";				
 		define('CONF_MODULE_ARG',$lnk);
+		//	setModuleArg();
+
 	}
 
 	$moduleAbsPath=dirname(__FILE__);	

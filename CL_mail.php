@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_mail.php,v 1.3 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_mail.php,v 1.4 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -18,7 +18,8 @@ class LeonardoMail{
 
 function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
 	//echo " $Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='' <BR>";
-	global $CONF;
+	global $CONF,$CONF_admin_email;
+	
 	if ($fromMail=='') $fromMail=$CONF_admin_email;
 	if ($fromName=='') $fromName=$CONF['site']['name'];
 	

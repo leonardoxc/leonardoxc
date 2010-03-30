@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_takeoff.php,v 1.14 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: EXT_takeoff.php,v 1.15 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -29,7 +29,7 @@
 
 	$op=makeSane($_GET['op']);
 
-	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info","getTakeoffsForArea")) ) return;
+	if (!in_array($op,array("find_wpt","get_nearest","get_latest","get_info","getTakeoffsForArea","get_country_takeoffs")) ) return;
 
 	if ($op=="get_info") {
 		$wpID=$_GET['wpID']+0;
@@ -233,6 +233,35 @@ $sql .= "ORDER BY distance LIMIT $limit \n";
 	    mysql_freeResult($res);
 	    echo "</search>";
 
+	} else if ($op=='get_country_takeoffs'){	
+	
+		$countryCode=makeSane(substr($_REQUEST['countryCode'],0,2));
+		if (!$countryCode) {
+			echo "{ }"; exit;
+		}
+		
+		$query="SELECT * from $waypointsTable WHERE type=1000 AND countryCode='$countryCode' ORDER BY name ASC";
+		$res= $db->sql_query($query);	
+		if($res <= 0){
+			  echo("<H3>Error in geting takeoffs</H3>\n");
+		}
+	    while ($row = mysql_fetch_assoc($res)) { 
+			// echo "<option value='".$row['ID']."' >".$row['ID'].' - '.$row['name']."</option>\n";
+			$row2[$row['ID']]=$row['countryCode'].' - '.$row['name'].' ['.$row['ID'].']';	
+		}
+		$str=' { ';
+		if ($row2) {	  
+			asort($row2);
+			$i=0;
+			foreach($row2 as $id2=>$name2) { 
+				if ($i>0)$str.=" ,\n";
+				$str.="  \"$id2\":\"$name2\" ";
+				$i++;
+			}
+		}	
+		$str.=' } ';
+		echo $str;
 	}
+
 
 ?>

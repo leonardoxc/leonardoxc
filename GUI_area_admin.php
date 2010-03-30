@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.12 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.13 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,7 +21,8 @@ $areaAction=makeSane($_GET['areaAction']);
 
 
 if (!$areaID && $areaAction!='Add') { 
-	open_inner_table("Administer Area (group of takeoffs)",800); echo "<tr><td>";
+
+	openMain("Administer Area (group of takeoffs)",0,''); 
 	
 	
 	echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Add','areaID'=>0))."'>Add new Area</a><BR><BR>";
@@ -65,11 +66,11 @@ if (!$areaID && $areaAction!='Add') {
 	}
 	
 	echo "</table>";
-	close_inner_table();  
+	closeMain();
 	return;
 
 } else if (in_array($areaAction,array('Add','Edit','Delete') )  ) {
-	open_inner_table("$areaAction Area # $areaID",800); echo "<tr><td>";
+	openMain("$areaAction Area # $areaID",0,'');
 
 	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 	
@@ -195,20 +196,21 @@ if (!$areaID && $areaAction!='Add') {
 <?
 	}
 	
-	close_inner_table();  
+	closeMain();
 
 } else if ($areaAction=='administerTakeoffs') {
-	open_inner_table("Administer Takeoffs for Area # $areaID",800); echo "<tr><td>";
+	openMain("Administer Takeoffs for Area # $areaID",0,'');
 
 	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 
 ?>
-
+<script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
 <script language="javascript">
 
-	function removeTakeoffFromArea() {
+function removeTakeoffFromArea() {
 		
-	}
+}
+	
 function  addTakeoffToArea ()  {		
 	$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");				
 	
@@ -226,17 +228,30 @@ $(document).ready(function(){
 	$('.stripeMe tr:even:gt(0)').addClass('alt');
 	$('.stripeMe tr:odd').addClass('alt2');
 
-
   
-	$(".removeTakeoff").click(function() {		
+	$(".removeTakeoff").livequery('click',function() {		
 		$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");				
 	  	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=removeFromArea&aID=<?=$areaID?>&tID="+$(this).attr("id") ); 
 		
 		$(this).parent().parent().addClass("deleted");
 	});
 	
+	$("#countryList").change(function(f) {
+		cCode=$("#countryList").val();
+		getTakeoffsForCountry(cCode);
+	});
 
+	<? if ($CONF['takeoffAreas']['defaultCountry'] ) { ?>
+		$("#countryList").val('<?=$CONF['takeoffAreas']['defaultCountry']?>');
+		getTakeoffsForCountry('<?=$CONF['takeoffAreas']['defaultCountry']?>');
+	<? } ?>
 });
+
+
+function getTakeoffsForCountry(cCode) {
+	$("#addList").removeOption(/./);
+	$("#addList").ajaxAddOption('EXT_takeoff.php?op=get_country_takeoffs&countryCode='+cCode);
+}
 </script>
 
 <style type="text/css">
@@ -304,47 +319,34 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 -->
 </style>
 
-<div id ='floatDiv'>
-	<h3>Results</h3>
-	<div id ='resDiv'><BR /><BR /></div>
-</div>
+        
 <form name="formFilter" method="post" action="">
   <br>
-  <table class=main_text width="564"  border="0" align="center" cellpadding="1" cellspacing="1">
-    <tr> 
-      <td width="205" bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_TAKEOFF ?></strong></span></div></td>
-      <td width="352"><select name="addList" id="addList">
-        <option></option>
-        <? 
-			$countryCode="AU"; 
-		$query="SELECT * from $waypointsTable WHERE type=1000 AND countryCode='$countryCode' ORDER BY name ASC";
-		$res= $db->sql_query($query);	
-		if($res <= 0){
-			  echo("<H3>Error in geting takeoffs</H3>\n");
-		}
-	    while ($row = mysql_fetch_assoc($res)) { 
-			// echo "<option value='".$row['ID']."' >".$row['ID'].' - '.$row['name']."</option>\n";
-			$row2[$row['ID']]=$row['name'];	
-		}	  
-		asort($row2);
-		foreach($row2 as $id2=>$name2) { 
-			echo "<option value='".$id2."' >".$id2.' - '.$name2."</option>\n";
-		  
+  <table class="main_text"   border="0" align="left" cellpadding="2" cellspacing="0">
+    <tr>
+      <td><div align="right"><strong><? echo _SELECT_COUNTRY ?></strong></div></td>
+      <td>
+      <select id="countryList">
+      <?	  
+		asort($countries);
+     	foreach($countries as $cCode=>$cName) { 
+			echo "<option value='$cCode' >$cName</option>\n";		  
 		}	
-		?>
-      </select></td>
+      ?>
+      </select>
+      </td>
     </tr>
     <tr> 
-      <td><div align="right"></div></td>
-      <td>&nbsp;</td>
+      <td><div align="right"><strong><? echo _SELECT_TAKEOFF ?></strong></div></td>
+      <td><select name="addList" id="addList">
+      </select>
+      <input type="button" name="SubmitButton" id="SubmitButton" onclick='addTakeoffToArea()' value="Add takeoff to Area" />
+      <input type="hidden" name="addTakeoffForm" value="1" /></td>
     </tr>
-    <tr> 
-      <td colspan="2"><div align="center"> 
-          <input type="button" name="SubmitButton" id="SubmitButton" onclick='addTakeoffToArea()' value="Add takeoff to Area">
-		  <input type="hidden" name="addTakeoffForm" value="1" />
-          &nbsp; 
 
-      </div></td>
+
+    <tr>
+      <td colspan="2" bgcolor="#E3F2F1"><div id ='resDiv'><BR /><BR /></div></td>
     </tr>
   </table>
  
@@ -368,6 +370,6 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 <?
 	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 
-  close_inner_table();  
+    closeMain();  
 }
 ?>

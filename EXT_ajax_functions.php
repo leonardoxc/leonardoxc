@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_ajax_functions.php,v 1.3 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: EXT_ajax_functions.php,v 1.4 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -59,5 +59,4 @@
 		$str.=" ] } ";
 		echo $str;
 	} 
-
 ?>

@@ -4,6 +4,9 @@ require_once $LeoCodeBase."/CL_mail.php";
 
 $CONF['userdb']['users_temp_table']="leonardo_temp_users";
 
+$sql="delete from ".$CONF['userdb']['users_temp_table']." where user_regdate <= '".(time()-(3*60*60))."'";
+$db->sql_query($sql); 
+
 if( isset($_GET['rkey']) && !($_POST) ){ 
 
 	$sql="select * from ".$CONF['userdb']['users_temp_table']." where user_actkey ='".$_GET['rkey']."'";
@@ -129,7 +132,7 @@ function setCIVL_ID() {
 <script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
   <tr>
-    <th><?=sprintf(_Registration_Form,$CONF_server_short_name);?></th>
+    <th><?=sprintf(_Registration_Form,$CONF['site']['name'] );?></th>
   </tr>
   <tr>
     <td align='left'><br>
@@ -463,7 +466,7 @@ if($_POST['registerForm']==1){
              )";
              if( $db->sql_query($sql))
              {
-				$email_body=sprintf(_Pilot_confirm_subscription,$CONF_server_short_name,$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+				$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
 				LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['name']));
 				
 				$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
@@ -484,7 +487,7 @@ if($_POST['registerForm']==1){
 		$actkey=$r[$actkey] ;       
 		$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
 		print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
-		$email_body=sprintf(_Pilot_confirm_subscription,$CONF_server_short_name,$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+		$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
 		LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']));
 		unset($actkey);
     } else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){

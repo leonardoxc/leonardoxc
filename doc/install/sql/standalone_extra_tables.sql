@@ -31,7 +31,7 @@ CREATE TABLE `leonardo_users` (
   `user_active` tinyint(1) default '1',
   `username` varchar(25) NOT NULL,
   `user_civlid` varchar(10) NOT NULL,
-  `user_password` varchar(32) NOT NULL,
+  `user_password` varchar(34) NOT NULL,
   `user_session_time` int(11) NOT NULL default '0',
   `user_session_page` smallint(5) NOT NULL default '0',
   `user_lastvisit` int(11) NOT NULL default '0',

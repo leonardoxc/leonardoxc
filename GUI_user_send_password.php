@@ -91,7 +91,7 @@ if(isset($_POST['uce'])){
 				$msg=  "<span class='ok'><b>"._Email_new_password."</b></span>";
 					  
 				$email_body=sprintf(_Password_recovery_email,
-									$CONF_server_short_name,
+									$CONF['site']['name'],
 									$res['username'],$_SERVER['HTTP_HOST'],
 									$res['username'],$res['user_civlid'],
 									$newpass,
@@ -99,7 +99,7 @@ if(isset($_POST['uce'])){
 									$actkey
 									);		
 																						
-				LeonardoMail::sendMail("[Leonardo] $CONF_server_short_name - ". _Password_subject_confirm,
+				LeonardoMail::sendMail("[Leonardo] ".$CONF['site']['name']." - ". _Password_subject_confirm,
 						utf8_decode($email_body),
 						$res['user_email'],
 						addslashes($_POST['name']) );

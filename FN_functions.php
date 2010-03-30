@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.78 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.79 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -996,26 +996,14 @@ function getLeonardoLink($argArray) {
 		}
 	}
 	
-	if ($linkType==1) {
-		global $baseInstallationPath,$CONF_mainfile;
-
+	if ($linkType==1) {		
 		foreach($argArray as $argName=>$argValue){
 			if ($argValue!='useCurrent')
 				$args.='&'.$argName.'='.($argValue!='skipValue'?$argValue:'');
 		}	
 		$args.=$filterArg;
 		
-		if ($CONF['links']['type']==3) {
-			$preDir=$CONF['links']['baseURL'];
-			$lnk='';
-			//echo "^^ $baseInstallationPath ^^ $CONF_mainfile ^^";
-			if (!$preDir ) $lnk='/';
-			$lnk.=$preDir.'/'.$CONF_mainfile.CONF_MODULE_ARG.$args;
-			// echo $lnk;
-			return $lnk;
-		} else {
-			return CONF_MODULE_ARG.$args;
-		}
+		return CONF_MODULE_ARG.$args;
 
 	} else 	if ($linkType==2) {
 		global $op,$rank,$subrank;

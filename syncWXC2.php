@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.6 2010/03/22 14:27:45 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.7 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
@@ -132,42 +132,43 @@ foreach($tableNames as $tableType=>$tableName ) {
 	}			
 		
 	$query="SELECT 
-$tableName.ID as NacFlightId, 
-'$NacStatusStr' as NacStatus,
-$pilotsTable.pilotID as NacPilotId, 
 $pilotsTable.CIVL_ID as CivlId,
 $pilotsTable.FirstName as PilotFirstName,
 $pilotsTable.LastName as PilotLastName ,
 $pilotsTable.countryCode as PilotNation , 
 $pilotsTable.Sex as PilotGender,
+
+$tableName.originalURL,
+$tableName.hash AS IgcMd5,
+UNIX_TIMESTAMP($tableName.dateUpdated) as LastTimestamp, 
+UNIX_TIMESTAMP($tableName.dateAdded) as FirstTimestamp,
+'$NacStatusStr' as NacStatus,
+$pilotsTable.pilotID as NacPilotId, 
+$tableName.ID as NacFlightId,
+$tableName.glider AS Glider,
+(UNIX_TIMESTAMP($tableName.DATE) + $tableName.START_TIME) AS TakeoffTime,     
+(UNIX_TIMESTAMP($tableName.DATE) + $tableName.END_TIME) AS LandingTime,
+$waypointsTable.intName as TakeoffName,
+$waypointsTable.countryCode as TakeoffCountry,
+$tableName.comments,
 $tableName.filename,
 $tableName.userID,
 $tableName.userServerID,
-$tableName.glider AS Glider,     
 $tableName.gliderBrandID,
 $tableName.cat,
 $tableName.subcat,
 $tableName.category,
-$tableName.comments,  
-(UNIX_TIMESTAMP($tableName.DATE) + $tableName.START_TIME) AS TakeoffTime,     
-(UNIX_TIMESTAMP($tableName.DATE) + $tableName.END_TIME) AS LandingTime,
-$tableName.hash AS IgcMd5,
-leonardo_waypoints.intName as TakeoffName,
-leonardo_waypoints.countryCode as TakeoffCountry,
-UNIX_TIMESTAMP($tableName.dateAdded) as FirstTimestamp,
-UNIX_TIMESTAMP($tableName.dateUpdated) as LastTimestamp, 
+$tableName.DATE,
 $tableName.dateAdded,
 $tableName.dateUpdated, 
 $tableName.serverID,
-$tableName.originalURL,
 $tableName.original_ID,
-$tableName.DATE,
 DATE_FORMAT($tableName.DATE,'%Y') as Year
- FROM $tableName,$pilotsTable,leonardo_waypoints      
+ FROM $tableName,$pilotsTable,$waypointsTable     
  WHERE 
  	$tableName.userID =$pilotsTable.pilotID AND 
-	$tableName.userServerID =$pilotsTable.serverID
-	 AND leonardo_waypoints.ID = $tableName.takeoffID
+	$tableName.userServerID =$pilotsTable.serverID AND 
+	$waypointsTable.ID = $tableName.takeoffID
 	 $where_clause  
   ORDER BY $tableName.dateAdded $limit
  ";
@@ -228,7 +229,11 @@ foreach ($xRow as $row) {
         	$max_time=$row['LastTimestamp'];
         }
 		  
-		$row['CommentInternal']=htmlspecialchars(html_entity_decode($row['comments'],ENT_NOQUOTES,"UTF-8") );    
+		// $row['CommentInternal']=htmlspecialchars(html_entity_decode($row['comments'],ENT_NOQUOTES,"UTF-8") );    
+		$row['CommentInternal']='';
+		// this should be filled from a $CONF[''] variable... defined in site/config_custom.php
+		$row['CivlIdApprovedBy']=$CONF['WXC']['CivlIdApprovedBy']+0;
+
 		$row['GliderCat']=convertCat($row['cat'],$row['category']);
 		
 		if (  $row['serverID']==0 || $row['serverID']==$CONF_server_id ) $isLocal=1;
@@ -252,6 +257,13 @@ foreach ($xRow as $row) {
 		$trackPath=getRelMainDir().str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",substr($row['DATE'],0,4),$CONF['paths']['igc']) ).'/'.rawurlencode($row['filename']);
 					
 		$row['IgcUrl']="http://".$_SERVER['SERVER_NAME'].$trackPath;						
+		
+		// the pilot id is serverid_pilotid to be able to distinguish ids across servers
+		//0_12345
+		//5_12345
+		//27_12345
+		$row['NacPilotId']= $row["userServerID"].'_'.$row["userID"];
+		
 		
 		$WxcFields=Array('CivlId','PilotFirstName','PilotLastName','PilotNation','PilotGender',
 		  'CivlIdApprovedBy','IgcUrl','IgcMd5','LastTimestamp','FirstTimestamp','NacStatus','NacPilotId','NacFlightId',
@@ -281,7 +293,7 @@ echo '<FlightSync version="0.7">'."\n";
 echo '<SyncInfo>'."\n";
 echo '    <ServerId>'.$ServerId.'</ServerId>'."\n";
 echo '    <NumberOfItems>'.$item_ok.'</NumberOfItems>'."\n";
-echo '    <LastTimestamp>'.$lastActionTm.'</LastTimestamp>'."\n";
+// echo '    <LastTimestamp>'.$lastActionTm.'</LastTimestamp>'."\n";
 echo '</SyncInfo>'."\n";
 
 if($item_ok>0){

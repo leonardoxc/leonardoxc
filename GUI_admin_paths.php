@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_paths.php,v 1.10 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_admin_paths.php,v 1.11 2010/03/30 11:33:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -198,7 +198,7 @@
 			$pilotDirOld=str_replace("%PILOTID%",$userDir,$pathsOld['pilot']);
 			$pilotDirNew=str_replace("%PILOTID%",$userDir,$pathsNew['pilot']);
 			if ( is_file(LEONARDO_ABS_PATH.'/'."$pilotDirOld/PilotPhoto.jpg") ) {
-				$output2.="mkdir $pilotDirNew\n";
+				$output2.="mkdir -p $pilotDirNew\n";
 				$output2.="cp -a $pilotDirOld/PilotPhoto.jpg $pilotDirNew/\n";
 				$output2.="cp -a $pilotDirOld/PilotPhotoicon.jpg $pilotDirNew/\n";		
 			}		

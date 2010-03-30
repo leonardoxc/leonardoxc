@@ -42,3 +42,7 @@ ALTER TABLE `leonardo_pilots_info`
 #2010/03/06
 ALTER TABLE `leonardo_flights` ADD `startType` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `gliderCertCategory` ;
 ALTER TABLE `leonardo_flights_deleted` ADD `startType` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `gliderCertCategory` ;
+
+# fix by Durval Henke
+# for standalone operation only 
+# ALTER TABLE `leonardo_users` CHANGE `user_password` `user_password` VARCHAR( 34 )  NOT NULL;
