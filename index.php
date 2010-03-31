@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.118 2010/03/30 14:06:59 manolis Exp $
+// $Id: index.php,v 1.119 2010/03/31 13:40:40 manolis Exp $
 //
 //************************************************************************
 
@@ -21,7 +21,8 @@ if ( file_exists(dirname(__FILE__)."/install.php") ) {
 //------------------------------------------------------------
 // we need to init joomla first thing!
 require_once dirname(__FILE__)."/site/config_op_mode.php";
-if ($opMode==5 && $CONF_use_own_template==1 ) { // Joomla
+// if ($opMode==5 && $CONF_use_own_template==1 ) { // Joomla
+if ($opMode==5 ) { // Joomla
 	define( '_JEXEC', 1 );
 	define( 'DS', DIRECTORY_SEPARATOR );
 		
@@ -29,8 +30,7 @@ if ($opMode==5 && $CONF_use_own_template==1 ) { // Joomla
 	require_once JPATH_BASE.DS.'includes'.DS.'framework.php';
 	$mainframe =& JFactory::getApplication('site');
 	$user   =& JFactory::getUser();
-//echo "<hr>user<hr>";
-//print_r($user);
+//echo "<hr>user<hr>"; print_r($user);
 //$session =& JFactory::getSession();
 
 //  echo "<hr>2<hr>";
@@ -251,7 +251,7 @@ if ($l_date=='alltimes'){
 	setVar("year",0);
 	setVar("month",0);
 	setVar("day",0);
-	setVar("season",0);
+	setVar("season",0);	
 }else if ($l_date>=0) {
 	if ( preg_match('/^(\d{4})\.(\d{2})\.(\d{2})$/',$l_date,$matches) ) {
 		setVar("year",$matches[1]);
@@ -334,11 +334,9 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
-if ($opMode==3 || $opMode==4 || $opMode==6  ||
-	  ($opMode==5 &&  $CONF_use_own_template )
-	 )  // stand alone , we use phpbb3 as standalone too
+if ($opMode==3 || $opMode==4 || $opMode==6  || ($opMode==5 &&  $CONF_use_own_template ) )  { // stand alone , we use phpbb3 as standalone too	
 	require_once dirname(__FILE__)."/GUI_header.php";
-
+}
 // phpnuke
 if ($opMode==1) include("header.php");
 

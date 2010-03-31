@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.3 2010/01/07 11:47:24 manolis Exp $
+ *   $Id: mysql.php,v 1.4 2010/03/31 13:40:40 manolis Exp $
  *
  ***************************************************************************/
 
@@ -41,6 +41,9 @@ class sql_db
 	var $rowset = array();
 	var $num_queries = 0;
 
+	var $readServer=null;
+	var $readTables=array();
+	
 	//
 	// Constructor
 	//
@@ -107,8 +110,15 @@ class sql_db
 	//
 	function sql_query($query = "", $transaction = FALSE)
 	{		
-		global $DBGlvl;				
-		if ($DBGlvl) { $start=getmicrotime(); }
+		global $DBGlvl,$DEBUG_OUTPUT;				
+		if ($DBGlvl) { $start=getmicrotime(); 
+		// example of debug
+		/*
+			if (substr($query,0,6) == 'UPDATE' ) {
+				$DEBUG_OUTPUT.="$query<BR>";
+			}
+		*/
+		}
 		
 		// Remove any pre-existing queries
 		unset($this->query_result);

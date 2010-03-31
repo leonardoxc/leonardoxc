@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_waypoint.php,v 1.29 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_waypoint.php,v 1.30 2010/03/31 13:40:40 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__).'/FN_output.php';
@@ -125,7 +125,7 @@ function getCountriesList($year=0,$month=0,$clubID=0,$pilotID=0) {
 	$countriesNames=array();
 	$countriesFlightsNum=array();
 //	while ($row = $db->sql_fetchrow($res)) { 
-	while ($row = mysql_fetch_array($res)) { 
+	while ($row = @mysql_fetch_array($res)) { 
 		$countriesN[$row["countryCode"]]= $countries[$row["countryCode"]];
 		$countriesFNum[$row["countryCode"]]= $row["FlightsNum"];
 	}

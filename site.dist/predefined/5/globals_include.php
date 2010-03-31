@@ -25,7 +25,7 @@ global  $imgHeight, $dictionary, $HTTP_RAW_POST_DATA, $app_name, $app_dir, $main
 
 global $SID, $oFCKeditor, $lang2isoEditor, $CONF_master_server_id, $serversTable, $CONF_tmp_path, $remotePilotsTable,  $CONF_mainfile, $CONF_arg_name, $moduleAbsPath, $waypointsRelPath, $waypointsAbsPath, $waypointsWebPath, $flightsRelPath, $isExternalFile, $CONF_default_cat_add, $CONF_use_NAC, $clubsFlightsTable, $foundPoints, $countries;
 
-global  $pilotNames, $pilotGlidersMax, $CONF_compItemsPerPage, $countHowMany, $tabID, $flights, $CONF_new_flights_days_threshold, $near, $areaTypeTextArray, $areasTakeoffsTable, $areasTable, $missingDEMfiles, $sitename, $user, $XML_RPC_String, $XML_RPC_Boolean, $XML_RPC_Array, $XML_RPC_Struct, $XML_RPC_Int, $olcServerURL, $CONFIG_forceIntl, $lang2iso;
+global  $pilotNames, $pilotGlidersMax, $CONF_compItemsPerPage, $countHowMany, $tabID, $flights, $CONF_new_flights_days_threshold, $near, $areaTypeTextArray, $areasTakeoffsTable, $areasTable, $missingDEMfiles, $sitename, $XML_RPC_String, $XML_RPC_Boolean, $XML_RPC_Array, $XML_RPC_Struct, $XML_RPC_Int, $olcServerURL, $CONFIG_forceIntl, $lang2iso;
 
 global $CONFIG_langsSpoken, $CONF_max_allowed_time_gap, $landingRadious, $CONF_validation_server_url, $CONF_use_custom_validation, $alreadyValidatedInPage, $mapServerActive, $chartsActive, $CONF_use_leonardo_names, $CONF_edit_login, $CONF_edit_email;
 
@@ -35,4 +35,8 @@ global $k_nAreaType, $k_strAreaStart, $nLineType, $langEncodings, $lng;
 
 global  $CONF_category_types,$gliderClassList;
 global  $CONF_xc_types,$xcTypesList;
+global $l_date,$brandID,$comp,$nacclubid,$nacid,$filter01;
+
+// global $user;
+
 ?>

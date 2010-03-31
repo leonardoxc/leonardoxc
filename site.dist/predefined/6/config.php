@@ -14,27 +14,6 @@
 
 // Specific settigns for phpBB3 module operation ($opMode=6)
 
-// replace this with the basolute path of phpbb3 if you have placed the 'leonardo/' dir
-// not in  the root path of phpbb3
-
-// EXAMPLES 
-
-// phpbb3 is installed on /
-// leonardo/ is installed on /other/leonardo
-// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../..' );
-
-// phpbb3 is installed on /
-// leonardo is installed on /leonardo
-// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../..' );
-
-// phpbb3 is installed on /phpbb3 
-// leonardo/ is installed on /other/leonardo
-$phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../../../phpbb3' );
-
-// echo $phpbb3AbsPath."#";
-// Path settings
-$CONF['path']['direct_call']=1;
-
 function moduleRelPath($forUtilityFiles=0){
 	global $module_name,$CONF;
 
@@ -88,11 +67,6 @@ $board_config['session_length']=3600;
 // various settings that depend on $opMode !
 $CONF_mainfile="index.php";
 $CONF_arg_name="name";
-
-function setModuleArg() {
-	global $CONF_arg_name,$module_name;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-}
 
 define('IN_PHPBB', true);
 define('IN_CRON', true);

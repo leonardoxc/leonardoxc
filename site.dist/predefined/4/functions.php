@@ -7,7 +7,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: functions.php,v 1.2 2010/01/07 11:47:24 manolis Exp $
+ *   $Id: functions.php,v 1.3 2010/03/31 13:40:40 manolis Exp $
  *
  *
  ***************************************************************************/

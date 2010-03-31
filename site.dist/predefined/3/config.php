@@ -14,8 +14,7 @@
 
 // Specific settigns for standalone operation ($opMode=3)
 
-// Path settings
-$CONF['path']['direct_call']=1;
+
 global $module_name;
 $module_name='leonardo';
 
@@ -72,11 +71,6 @@ $CONF['bridge']['edit_profile_url']='';
 // various settings that depend on $opMode !
 $CONF_mainfile="index.php";
 $CONF_arg_name="name";
-
-function setModuleArg() {
-	global $CONF_arg_name,$module_name;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-}
 
 // other settings that are needed
 

@@ -199,7 +199,7 @@ function leonardo_check_password($password,$hash) {
 
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.4 2010/01/07 11:47:24 manolis Exp $
+* @version Version 0.1 / $Id: functions.php,v 1.5 2010/03/31 13:40:40 manolis Exp $
 *
 * Portable PHP password hashing framework.
 *

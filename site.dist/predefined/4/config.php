@@ -14,9 +14,6 @@
 
 // Specific settigns for discuz operation ($opMode=4)
 
-// Path settings
-$CONF['path']['direct_call']=1;
-
 function moduleRelPath($forUtilityFiles=0){
 	global $module_name;
 	if ($forUtilityFiles) // for EXT_ files
@@ -64,10 +61,7 @@ $CONF['bridge']['edit_profile_url']='';
 $CONF_mainfile="index.php";
 $CONF_arg_name="name";
 
-function setModuleArg() {
-	global $CONF_arg_name,$module_name;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-}
+
 
 // other settings that are needed
 /*

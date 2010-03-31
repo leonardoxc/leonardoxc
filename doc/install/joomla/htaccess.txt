@@ -1,4 +1,4 @@
 #
 RewriteEngine On
 # RewriteBase /
-RewriteRule ^(.*)$ /leonardo/$1
+RewriteRule ^(.*)$ /leo/$1

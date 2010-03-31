@@ -14,9 +14,6 @@
 
 // Specific settigns for phpBB2 module operation ($opMode=2)
 
-// Path settings
-$CONF['path']['direct_call']=0;
-
 function moduleRelPath($forUtilityFiles=0){
 	global $module_name,$CONF;
 
@@ -78,9 +75,6 @@ require_once dirname(__FILE__).'/functions.php';
 $CONF_mainfile="modules.php";
 $CONF_arg_name="name";
 
-function setModuleArg() {
-	global $CONF_arg_name,$module_name;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-}
+
 
 ?>

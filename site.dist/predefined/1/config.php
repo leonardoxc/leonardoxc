@@ -14,8 +14,6 @@
 
 // Specific settigns for phpNuke module ($opMode=1)
 
-// Path settings
-$CONF['path']['direct_call']=0;
 
 function moduleRelPath($forUtilityFiles=0){
 	global $module_name;
@@ -54,11 +52,6 @@ $CONF['bridge']['edit_profile_url']='';
 // various settings that depend on $opMode !
 $CONF_mainfile="modules.php";
 $CONF_arg_name="name";
-
-function setModuleArg() {
-	global $CONF_arg_name,$module_name;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-}
 
 // this is missing from phpNuke so define it here
 function append_sid($a,$b="") {

@@ -21,23 +21,16 @@
  http://www.thinkbigshot.com/blog/technical/147-using-sessions-in-joomla-15.html
 */
 
-// override these
-$CONF_use_own_template=1;
-$CONF_use_own_login=0;
- 
-// Path settings
-$CONF['path']['direct_call']=1;
-
 function moduleRelPath($forUtilityFiles=0){
-        global $module_name,$CONF_use_own_template,$CONF;
+	global $module_name,$CONF_use_own_template,$CONF;
 
-        if ( $CONF['links']['type']==3 ) {
-                return $CONF['links']['baseURL'];
-        }
+	if ( $CONF['links']['type']==3 ) {
+			return $CONF['links']['baseURL'];
+	}
 
-	if ($forUtilityFiles) // for EXT_ files
+	if ($forUtilityFiles) { // for EXT_ files
 		return "./";
-	else {
+	} else {
 		if ($CONF_use_own_template)
 			return "./";
 		else 
@@ -78,13 +71,6 @@ $CONF['bridge']['edit_profile_url']='';
 // various settings that depend on $opMode !
 $CONF_mainfile="index.php";
 $CONF_arg_name="option";
-
-function setModuleArg() {
-	global $CONF_arg_name,$module_name,$CONF,$CONF_mainfile;
-	define('CONF_MODULE_ARG',"?$CONF_arg_name=$module_name");
-//	define('CONF_MODULE_ARG',$CONF['links']['baseURL']."/".$CONF_mainfile."?$CONF_arg_name=$module_name");
-}
-
 
 // other settings that are needed
 
