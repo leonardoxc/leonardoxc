@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.145 2010/03/30 14:06:59 manolis Exp $                                                                 
+// $Id: config.php,v 1.146 2010/03/31 13:40:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -39,11 +39,11 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $CONF['display']['blocks']['right_side']=1;
 
  // if it is a phpbb module we can use our own template 
- // and not the one of the forum 
- $CONF_use_own_template=0;
+ // and not the onw of the forum 
+ if ( !isset($CONF_use_own_template) ) $CONF_use_own_template=0;
  
  // for phpbb when  $CONF_use_own_template=1;
- $CONF_use_own_login=0;
+ if ( !isset($CONF_use_own_login) )  $CONF_use_own_login=0;
  
  // rely on  leonardo_pilits name flields  entirely
  $CONF_use_leonardo_names=0;
@@ -721,7 +721,6 @@ $CONF_tmp_path=$CONF_abs_path.'/'.$CONF['paths']['tmpigc']; // was  '/files/tmp'
 // to bridge to the users table of different forum/portal/cms systems
 require_once dirname(__FILE__)."/site/predefined/$opMode/config.php";
 setLeonardoPaths();
-
 
 // time to load the user prefs from cookie
 require_once dirname(__FILE__)."/CL_user_prefs.php";
