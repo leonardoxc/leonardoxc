@@ -795,7 +795,7 @@ This is a verification email sent from %s
  
 To finally create your account, you will need to click on link below to verify your email address:
 
-http://%s?op=users&page=index&act=register&rkey=%s
+http://%s?op=register&rkey=%s 
 
 Regards,
 
@@ -837,7 +837,7 @@ NewPassword:%s
  
 To activate your new password, you will need to click on link below to verify your email address:
 
-http://%s?op=sdpw&rkey=%s
+http://%s?op=send_password&rkey=%s 
 
 Regards,
 

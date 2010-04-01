@@ -46,7 +46,7 @@ define("_MEAN_DURATION","Средна продължителност на пол
 define("_TOTAL_OLC_KM","Сумарно OLC разстояние");
 define("_TOTAL_OLC_SCORE","Сумарни OLC точки");
 define("_BEST_OLC_SCORE","Най-добър OLC резултат");
-define("_From","с");
+define("_From","от");
 
 // list_flights()
 define("_DURATION_HOURS_MIN","Време (ч:м)");
@@ -109,7 +109,7 @@ define("_DATE_ADDED","Последно добавяне");
 define("_SORTED_BY","Сортировка по:");
 define("_ALL_YEARS","Всички години");
 define("_SELECT_YEAR_MONTH","Избери година (и месец)");
-define("_ALL","Все");
+define("_ALL","Всички");
 define("_ALL_PILOTS","Покажи всички пилоти");
 define("_ALL_TAKEOFFS","Покажи всички стартове");
 define("_ALL_THE_YEAR","Всички години");
@@ -165,8 +165,8 @@ define("_MENU_ALL_FLIGHTS","Покажи всички полети");
 define("_MENU_FLIGHTS","Полети");
 define("_MENU_TAKEOFFS","Места");
 define("_MENU_FILTER","Филтър");
-define("_MENU_MY_FLIGHTS","Мои полеты");
-define("_MENU_MY_PROFILE","Мой профиль");
+define("_MENU_MY_FLIGHTS","Мои полети");
+define("_MENU_MY_PROFILE","Мой профил");
 define("_MENU_MY_STATS","Моя статистика"); 
 define("_MENU_MY_SETTINGS","Мои настройки"); 
 define("_MENU_SUBMIT_FLIGHT","Добави полет");
@@ -277,7 +277,7 @@ define("_PRESS_HERE","Натиснете тук");
 
 define("_IS_PRIVATE","Не показвай на друг");
 define("_MAKE_THIS_FLIGHT_PRIVATE","Не показвай на друг");
-define("_INSERT_FLIGHT_AS_USER_ID","Добавить полет как пользователь");
+define("_INSERT_FLIGHT_AS_USER_ID","Добавяне на полет като потребител ID");
 define("_FLIGHT_IS_PRIVATE","Този полет не е за публично показване");
 
 //--------------------------------------------
@@ -479,31 +479,6 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
-	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
-	global $CONF;
-	foreach($CONF['gliderClasses'] as $i=>$gClass) {
-		foreach($gClass['classes'] as $j=>$n) {
-			if ( $CONF_TEMP['gliderClasses'][$i]['classes'][$j] ) {
-				$CONF['gliderClasses'][$i]['classes'][$j] =$CONF_TEMP['gliderClasses'][$i]['classes'][$j] ;
-			}
-		}
-	}
-}
-setClassList(); 
-//--------------------------------------------
-// xc types
-//--------------------------------------------
-function setXCtypesList() {
-	global  $CONF_xc_types,$xcTypesList;
-	$xcTypesList=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
-	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
-}
-setXCtypesList(); 
-//--------------------------------------------
-// class types
-//--------------------------------------------
-function setClassList() {
 	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Спорт",2=>"Прототип",3=>"Тандем");
 	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
 	global $CONF;
@@ -570,10 +545,10 @@ define("_Display_NONE","Не показвай НИКОЙ");
 define("_Reset_to_default_view","Възстанови стандартен изглед");
 define("_No_Club","Без Клуб");
 define("_This_is_the_URL_of_this_page","Това е URL адреса на тази страница");
-define("_All_glider_types","Всечки видове крила");
+define("_All_glider_types","Всички видове крила");
 
-define("_MENU_SITES_GUIDE","СПравочник за местата за летене");
-define("_Site_Guide","Site Guide");
+define("_MENU_SITES_GUIDE","Справочник за местата");
+define("_Site_Guide","Справочник за местата");
 
 define("_Search_Options","Опции за търсене");
 define("_Below_is_the_list_of_selected_sites","Отдолу е списъка с избрани места");
@@ -923,24 +898,24 @@ Note: This is auto-response. Do not send any email to this email address
 
 
 // New on 2008/11/26
-define('_MENU_AREA_GUIDE','Area Guide');
-define('_All_XC_types','_All XC types');
-define('_xctype','XC type');
+define('_MENU_AREA_GUIDE','Справочник за областите');
+define('_All_XC_types','_Всички XC типове');
+define('_xctype','XC типове');
 
 
-define('_Flying_Areas','Flying Areas');
-define('_Name_of_Area','Name of Area');
-define('_See_area_details','See the details and takeoffs for this area');
+define('_Flying_Areas','Летателни области');
+define('_Name_of_Area','Име на областа');
+define('_See_area_details','Виж подробности и стартове за тази област');
 
-define('_choose_ge_module','Please choose the module to use<BR>for Google Earth Display');
-define('_ge_module_advanced_1','(Most detailed, bigger size)');
-define('_ge_module_advanced_2','(Many details, big size) ');
-define('_ge_module_Simple','Simple (Only Task, very small)');
+define('_choose_ge_module','Моля, избери модул за ползване <BR>за Google Earth Display');
+define('_ge_module_advanced_1','(най-много подробности, по-голям размер)');
+define('_ge_module_advanced_2','(много подробности, голям размер) ');
+define('_ge_module_Simple','Simple (само полет, малък размер)');
 
-define('_Pilot_search_instructions','Enter at least 3 letters of the First or Last Name');
+define('_Pilot_search_instructions','Въведи поне 3 букви от Първото или Последното име');
 
-define('_All_classes','All classes');
-define('_Class','Class');
+define('_All_classes','Всички класове');
+define('_Class','Клас');
 
 /*
 
@@ -956,13 +931,10 @@ define('XC Score
 */
 
 // 2009-03-20 filter for photos
-define("_Photos_filter_off","With/without photos");
-define("_Photos_filter_on","With photos only");
+define("_Photos_filter_off","Със/без снимки");
+define("_Photos_filter_on","Само със снимки");
 
-//--------------------------------------------------------
-//--------------------------------------------------------
-// Missing defines , autoreplaced values from 'english' 
-//--------------------------------------------------------
+
 define("_SEASON","Season"); 
 define("_SUBMIT_TO_OLC","Submit to OLC"); 
 define("_pilot_email","Email Address"); 
