@@ -8,10 +8,10 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: _install.php,v 1.4 2010/01/02 22:54:56 manolis Exp $                                                                 
+// $Id: _install.php,v 1.5 2010/04/01 09:44:42 manolis Exp $                                                                 
 //
 //************************************************************************
-
+  exit; 
   error_reporting(E_ALL ^ E_NOTICE);
   ini_set('display_errors', 'on');
 
