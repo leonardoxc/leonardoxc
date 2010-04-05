@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.14 2010/03/22 14:27:44 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.15 2010/04/05 20:14:31 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,6 +28,8 @@ class pilot{
 			$this->serverID=0;
 		}
 
+		$this->serverID=$this->serverID+0;
+		
 	    $this->valuesArray=array( "pilotID", "serverID", 
 "FirstName", "LastName","countryCode", 
 "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
@@ -140,14 +142,14 @@ class pilot{
 		global $db,$pilotsTable,$pilotsInfoTable;
 		
 		$err=0;
-		$sql="DELETE FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
+		$sql="DELETE FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".($this->serverID+0);
 		$res= $db->sql_query($sql);
   		if($res <= 0){   
 			 echo "Error deleting pilot from DB $sql<BR>";
 		     $err=1;
 	    }
 		
-		$sql="DELETE FROM $pilotsInfoTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID ;
+		$sql="DELETE FROM $pilotsInfoTable WHERE pilotID=".$this->pilotID." AND serverID=".($this->serverID+0) ;
 		$res= $db->sql_query($sql);
   		if($res <= 0){   
 			 echo "Error deleting pilot info from DB $sql<BR>";
@@ -167,7 +169,7 @@ class pilot{
 		$query="SELECT * FROM $pilotsTable LEFT JOIN $pilotsInfoTable ON
 				($pilotsTable.pilotID=$pilotsInfoTable.pilotID AND $pilotsTable.serverID=$pilotsInfoTable.serverID )
 			WHERE 
-				$pilotsTable.pilotID=".$this->pilotID." AND $pilotsTable.serverID=".$this->serverID ;
+				$pilotsTable.pilotID=".$this->pilotID." AND $pilotsTable.serverID=".($this->serverID+0) ;
 		// "SELECT * FROM $pilotsTable WHERE pilotID=".$this->pilotID." AND serverID=".$this->serverID 	
 			
 		$res= $db->sql_query($query);

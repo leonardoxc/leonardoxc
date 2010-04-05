@@ -16,26 +16,21 @@
 		return;
 	}
 
-	require_once dirname(__FILE__).'/users.css';
+// 	require_once dirname(__FILE__).'/users.css';
 	
 	$userAction=$_GET['act'];
 	if (!$userAction) $userAction = "users";
 	
+	openMain("User Admin Panel",0,'');
 ?>
+
  <table align="center" width="740"> 
-  <tr> 
-     <td bgcolor="#E9E7F3" class=header><font class="bigfont"> 
-       <center> 
-        <font color="#005177">User Admin Panel</font> 
-      </center> 
-    </font></td> 
-   </tr> 
-  <tr> 
+   <tr> 
      <td bgcolor="#F9F6E1" class=header><center> 
          <font color="#005177"> :: 
-         [ <a href="?op=users&act=users">User Administration </a> ] ::  
-         [ <a href="?op=users&act=add">Add user</a> ] :: 
-         [ <a href="?op=register">Register (as a plain visitor)</a> ] 
+         [ <a href="<?=getLeonardoLink(array('op'=>'users','act'=>'users'))?>">User List</a> ] ::  
+         [ <a href="<?=getLeonardoLink(array('op'=>'users','act'=>'add'))?>">Add user</a> ] :: 
+         [ <a href="<?=getLeonardoLink(array('op'=>'register'))?>">Register (as a plain visitor)</a> ] 
          </font> 
         </center></td> 
    </tr> 
@@ -51,28 +46,8 @@
 	 require_once dirname(__FILE__)."/GUI_admin_user_add.php";
  } else  if ($userAction == "delete" ) {
 	 require_once dirname(__FILE__)."/GUI_admin_user_delete.php";
- } else {
-?> 
-<br>
-<table align="center" width="600"> 
-  <tr> 
-    <td><table width="100%" align="center" bgcolor="#cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
-        <tr> 
-          <td bgcolor="#EFCCAD"> <p align="center"><br> 
-              Welcome to the User Administration Panel. </p>
-            <p align="center">Please choose your
-            action for the menu above</p>
-            <p align="center"><br> 
-          </p></td> 
-        </tr> 
-      </table></td> 
-  </tr> 
-  <tr> 
-    <td class=header>&nbsp; </td> 
-  </tr> 
-</table> 
-<?
  }
 
+ closeMain();
 
 ?> 

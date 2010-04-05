@@ -16,38 +16,86 @@
 	}
 	
 ?>
- <table align="center" width="600"> 
-<tr> 
-  <td><table width="100%" align="center" bgcolor="#cccccc" cellpadding="2" cellspacing="1" class="header_logo"> 
-      <tr> 
-        <td bgcolor="#dcdcdc"><div align="center"><br> 
-            <strong>User Administration</strong><br> 
-            <hr color="#cccccc"> 
-            <table align="center" width="100%" cellpadding="2" cellspacing="1" bgcolor="#808080"> 
-              <tr align="center" bgcolor="#cccccc"> 
-                <td width=50>User ID</td> 
-                <td width=140><b>User</b></td> 
-                <td><b>Actions</b></td> 
-              </tr> 
-    <?
-		$sql= "SELECT * from ".$CONF['userdb']['users_table']." ORDER by user_id ";
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/users/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/users/css/jquery-ui.css"/>
 
-		$result = $db->sql_query($sql);
-		$i=0;
-		while($disp_users = $db->sql_fetchrow($result) ) { 
-	?> 
-              <tr bgcolor="<? echo (($i%2)?"#E9E7F3":"#ffffff"); ?>" align="left"> 
-                <td><? echo $disp_users['user_id'] ?></td> 
-                <td> <font class=table_u><b><? echo $disp_users['username'] ?></b></td> 
-                <td><font class=table_u>[ <a href="?op=users&page=admin&act=edit&editUserID=<? echo $disp_users['user_id'] ?>" title="Edit user: <? echo $disp_users['username'] ?>">Edit user</a> ]
-                  - [ <a href="?op=users&page=admin&act=delete&user=<? echo $disp_users['username'] ?>" title="Delete user: <? echo $disp_users['username'] ?>">Delete
-                  user</a> ] </td> 
-              </tr> 
-    <?
-		$i++;
-	}
-	?> 
-            </table> 
-          </div></td> 
-      </tr> 
-    </table> 
+
+<script src="<?=$moduleRelPath?>/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/users/js/jquery.jqGrid.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/users/js/jquery-ui.js" type="text/javascript"></script>
+
+
+<script language='javascript'>
+
+var imgpath='<?=$moduleRelPath?>/users/css/themes/start/images';
+
+jQuery(document).ready(function(){ 
+
+	makeUsersGrid();
+
+});
+
+function makeUsersGrid() {
+
+
+  jQuery("#listUsers").jqGrid({
+    url:'<?=$moduleRelPath?>/EXT_users_db_helper.php',
+    datatype: 'xml',
+    mtype: 'GET',
+    colNames:['#','username','user_email', 'Country','CIVL_ID','CIVL_NAME','FirstName','LastName','Sex','Birthdate'],
+    colModel :[ 
+      {name:'user_id', index:'user_id', width:50, search:true, editable:false}, 
+      {name:'username', index:'username', width:120, editable:true,search:true }, 
+	  {name:'user_email', index:'user_email', width:190, editable:true, search:true },
+	  {name:'countryCode', index:'countryCode', width:50, editable:true, search:true },
+	  {name:'CIVL_ID', index:'CIVL_ID', width:50, editable:true, search:true }, 
+	  {name:'CIVL_NAME', index:'CIVL_NAME', width:120, editable:true, hidden:true,search:true }, 
+	  {name:'FirstName', index:'FirstName', width:80, editable:true, search:true }, 
+  	  {name:'LastName', index:'LastName', width:100, editable:true, search:true }, 
+	  {name:'Sex', index:'Sex', width:30, editable:true, search:true }, 
+	  {name:'Birthdate', index:'Birthdate', width:90, editable:true, search:true ,
+			editoptions:{size:12,
+				dataInit:function(el){
+					$(el).datepicker({dateFormat:'yy-mm-dd'});
+				}
+			}
+	  }, 	 
+	],
+    pager: jQuery('#pagerUsers'),
+    rowNum:10,
+    rowList:[10,20,30,50,100],
+    sortname: 'user_id',
+    sortorder: "asc",
+    viewrecords: true,
+
+    imgpath: imgpath,
+	caption: 'Users',
+
+	editurl: "<?=$moduleRelPath?>/EXT_users_db_helper.php",
+	height: 'auto'
+
+  });
+  
+var sgrid = $("#listUsers")[0];
+
+
+	jQuery("#listUsers").jqGrid('navGrid','#pagerUsers',{edit:true,add:true,del:true,search:true,refresh:false}); 
+	
+	jQuery("#listUsers").jqGrid('navButtonAdd',"#pagerUsers",
+			{caption:"Toggle",title:"Toggle Search Toolbar", buttonicon :'ui-icon-pin-s', 
+			onClickButton:function(){ sgrid.toggleToolbar() } }); 
+	
+	jQuery("#listUsers").jqGrid('navButtonAdd',"#pagerUsers",
+		{	caption:"Clear",title:"Clear Search",buttonicon :'ui-icon-refresh', 
+			onClickButton:function(){sgrid.clearToolbar() } }); 
+
+	jQuery("#listUsers").jqGrid('filterToolbar'); 
+
+}
+
+</script>
+
+<table id="listUsers"  width="500" class="scroll" style="width:500px;"></table>
+<div id="pagerUsers" class="scroll" style="text-align:center;"></div>
+
+<BR><BR>
