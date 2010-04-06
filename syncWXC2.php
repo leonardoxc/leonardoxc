@@ -8,8 +8,8 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.7 2010/03/30 11:33:57 manolis Exp $                                                                 
-//
+// $Id: syncWXC2.php,v 1.8 2010/04/06 13:55:53 manolis Exp $                                                                 
+// patched by AR Version 2010/04/06 12:00:00, implemented commentInternal, extend invalid/disabled/non-public flight handling
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
 /************** Mon Jan 14 18:54:15 CET 2008, by mk *********************/
@@ -163,6 +163,9 @@ $tableName.dateAdded,
 $tableName.dateUpdated, 
 $tableName.serverID,
 $tableName.original_ID,
+$tableName.checkedBy,
+$tableName.private,
+$tableName.airspaceCheckFinal,
 DATE_FORMAT($tableName.DATE,'%Y') as Year
  FROM $tableName,$pilotsTable,$waypointsTable     
  WHERE 
@@ -229,11 +232,17 @@ foreach ($xRow as $row) {
         	$max_time=$row['LastTimestamp'];
         }
 		  
-		// $row['CommentInternal']=htmlspecialchars(html_entity_decode($row['comments'],ENT_NOQUOTES,"UTF-8") );    
-		$row['CommentInternal']='';
+		$row['CommentInternal']=htmlspecialchars(html_entity_decode($row['checkedBy'],ENT_NOQUOTES,"UTF-8") );    
 		// this should be filled from a $CONF[''] variable... defined in site/config_custom.php
 		$row['CivlIdApprovedBy']=$CONF['WXC']['CivlIdApprovedBy']+0;
-
+		// disable any private/disabled and airspace invalid flight from WXC score
+		if($row['private'] > 0) {
+			$row['NacStatus'] = "d";
+		}
+		if($row['airspaceCheckFinal'] == "-1") {
+			$row['NacStatus'] = "d";
+		}
+		
 		$row['GliderCat']=convertCat($row['cat'],$row['category']);
 		
 		if (  $row['serverID']==0 || $row['serverID']==$CONF_server_id ) $isLocal=1;
