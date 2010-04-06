@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.16 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.17 2010/04/06 13:48:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.16 2010/03/14 20:56:11 manolis Exp $
+ *   $Id: GUI_login.php,v 1.17 2010/04/06 13:48:59 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -137,7 +137,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 					);
 
 					$message = "<div align='center'><BR><BR><BR><strong>"._ERROR_LOGIN . '</strong><br /><br />' . sprintf(_LOGIN_TRY_AGAIN, "<a href=\"".getLeonardoLink(array('op'=>'login'))."\">", '</a>') .
-					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.getLeonardoLink(array('op'=>'$CONF_main_page')).'">', '</a>')."</div>";
+					 '<br /><br />' .  sprintf(_LOGIN_RETURN, '<a href="'.getLeonardoLink(array('op'=>$CONF_main_page)).'">', '</a>')."</div>";
 					echo "$message";
 				}
 			}

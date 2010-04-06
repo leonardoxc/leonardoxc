@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_users_db_helper.php,v 1.1 2010/04/05 20:14:31 manolis Exp $                                                                 
+// $Id: EXT_users_db_helper.php,v 1.2 2010/04/06 13:48:59 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -35,7 +35,7 @@
 	if ($op=='add') {
 
 		$sql="INSERT INTO ".$CONF['userdb']['users_table']." (username,user_email)
-			VALUES ( '".makeSane($_POST['username'])."','".makeSane($_POST['user_email'])."' ) ";					
+			VALUES ( '".makeSane($_POST['username'],2)."','".makeSane($_POST['user_email'],2)."' ) ";					
 		if (! $db->sql_query($sql) ) {		
 			echo "Error in query : $sql<BR>";
 		} 
@@ -45,9 +45,9 @@
 			VALUES(
 			'".makeSane($_POST['countryCode'])."',
 			'".makeSane($_POST['CIVL_ID'])."',
-			'".makeSane($_POST['CIVL_NAME'])."',
-			'".makeSane($_POST['FirstName'])."',
-			'".makeSane($_POST['LastName'])."',
+			'".makeSane($_POST['CIVL_NAME'],2)."',
+			'".makeSane($_POST['FirstName'],2)."',
+			'".makeSane($_POST['LastName'],2)."',
 			'".makeSane($_POST['Sex'])."',
 			'".makeSane($_POST['Birthdate'])."', 
 			, $user_id,0) ";
@@ -73,9 +73,9 @@
 		$sql="UPDATE $pilotsTable SET 
 			countryCode='".makeSane($_POST['countryCode'])."',
 			CIVL_ID='".makeSane($_POST['CIVL_ID'])."',
-			CIVL_NAME='".makeSane($_POST['CIVL_NAME'])."',
-			FirstName='".makeSane($_POST['FirstName'])."',
-			LastName='".makeSane($_POST['LastName'])."',
+			CIVL_NAME='".makeSane($_POST['CIVL_NAME'],2)."',
+			FirstName='".makeSane($_POST['FirstName'],2)."',
+			LastName='".makeSane($_POST['LastName'],2)."',
 			Sex='".makeSane($_POST['Sex'])."',
 			Birthdate='".makeSane($_POST['Birthdate'])."' 
 			WHERE pilotID=$user_id AND serverID=0";
@@ -84,8 +84,8 @@
 		} 
 
 		$sql="UPDATE ".$CONF['userdb']['users_table']." SET 
-			username='".makeSane($_POST['username'])."',
-			user_email='".makeSane($_POST['user_email'])."'		
+			username='".makeSane($_POST['username'],2)."',
+			user_email='".makeSane($_POST['user_email'],2)."'		
 			WHERE user_id=$user_id ";					
 		if (! $db->sql_query($sql) ) {		
 			echo "Error in query : $sql<BR>";

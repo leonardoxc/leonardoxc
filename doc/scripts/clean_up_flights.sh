@@ -8,9 +8,9 @@
   # foreach directory in data/flights/
   # except photos/  pilots/  tracks/  these are the PRIMARY SOURCE FILES
   for dr in charts intermediate  js  kml  maps
-  do
-     find $dr -atime +$daysLimit
-     #find $dr -atime +$daysLimit -exec rm -f \{\} \;
+  do     
+     find $dr -atime +$daysLimit -exec rm -f \{\} \;
+     #find $dr -atime +$daysLimit
   done
   
 

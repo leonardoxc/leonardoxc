@@ -8,26 +8,31 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_list_users.php,v 1.5 2010/04/06 13:45:39 manolis Exp $                                                                 
+// $Id: GUI_admin_users_list.php,v 1.1 2010/04/06 13:48:59 manolis Exp $                                                                 
 //
 //************************************************************************
 	if (! L_auth::isAdmin($userID)  ) {
 		return;
 	}
 	
+	$userAction=$_GET['act'];
+	if (!$userAction) $userAction = "list";
+	
+	openMain("User Admin Panel",0,'');
+	
 ?>
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/users/css/ui.jqgrid.css" />
-<link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/users/css/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="<?=$themeRelPath?>/css/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="<?=$themeRelPath?>/css/jquery-ui.css"/>
 
 
-<script src="<?=$moduleRelPath?>/users/js/i18n/grid.locale-en.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/users/js/jquery.jqGrid.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/users/js/jquery-ui.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/jquery.jqGrid.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/jquery-ui.js" type="text/javascript"></script>
 
 
 <script language='javascript'>
 
-var imgpath='<?=$moduleRelPath?>/users/css/themes/start/images';
+// var imgpath='<?=$moduleRelPath?>/users/css/themes/start/images';
 
 jQuery(document).ready(function(){ 
 
@@ -68,7 +73,7 @@ function makeUsersGrid() {
     sortorder: "asc",
     viewrecords: true,
 
-    imgpath: imgpath,
+   // imgpath: imgpath,
 	caption: 'Users',
 
 	editurl: "<?=$moduleRelPath?>/EXT_users_db_helper.php",
@@ -99,3 +104,5 @@ var sgrid = $("#listUsers")[0];
 <div id="pagerUsers" class="scroll" style="text-align:center;"></div>
 
 <BR><BR>
+
+<?  closeMain(); ?>
