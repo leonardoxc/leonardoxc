@@ -1,16 +1,16 @@
 <? 
-/************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
-/* ============================================                         */
-/*                                                                      */
-/* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://leonardo.thenet.gr                                            */
-/* http://sourceforge.net/projects/leonardoserver                       */
-/*                                                                      */
-/* This program is free software. You can redistribute it and/or modify */
-/* it under the terms of the GNU General Public License as published by */
-/* the Free Software Foundation; either version 2 of the License.       */
-/************************************************************************/
+//************************************************************************
+// Leonardo XC Server, http://www.leonardoxc.net
+//
+// Copyright (c) 2004-2010 by Andreadakis Manolis
+//
+// This program is free software. You can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License.
+//
+// $Id: GUI_admin_list_users.php,v 1.5 2010/04/06 13:45:39 manolis Exp $                                                                 
+//
+//************************************************************************
 	if (! L_auth::isAdmin($userID)  ) {
 		return;
 	}
@@ -20,7 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/users/css/jquery-ui.css"/>
 
 
-<script src="<?=$moduleRelPath?>/js/i18n/grid.locale-en.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/users/js/i18n/grid.locale-en.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/users/js/jquery.jqGrid.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/users/js/jquery-ui.js" type="text/javascript"></script>
 
