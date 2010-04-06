@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_users_list.php,v 1.1 2010/04/06 13:48:59 manolis Exp $                                                                 
+// $Id: GUI_admin_users_list.php,v 1.2 2010/04/06 21:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 	if (! L_auth::isAdmin($userID)  ) {
@@ -61,7 +61,7 @@ function makeUsersGrid() {
 	  {name:'Birthdate', index:'Birthdate', width:90, editable:true, search:true ,
 			editoptions:{size:12,
 				dataInit:function(el){
-					$(el).datepicker({dateFormat:'yy-mm-dd'});
+					$(el).datepicker({dateFormat:'dd.mm.yy'});
 				}
 			}
 	  }, 	 

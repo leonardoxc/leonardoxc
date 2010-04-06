@@ -1,12 +1,15 @@
 <?
 require_once $LeoCodeBase."/CL_mail.php";
 
+openMain(sprintf(_Registration_Form,$CONF['site']['name'] ),0,'');
 
-$CONF['userdb']['users_temp_table']="leonardo_temp_users";
+// now defined in site/predefined/3/config.php
+//$CONF['userdb']['users_temp_table']="leonardo_temp_users";
 
 $sql="delete from ".$CONF['userdb']['users_temp_table']." where user_regdate <= '".(time()-(3*60*60))."'";
 $db->sql_query($sql); 
 
+// Activate the user account
 if( isset($_GET['rkey']) && !($_POST) ){ 
 
 	$sql="select * from ".$CONF['userdb']['users_temp_table']." where user_actkey ='".$_GET['rkey']."'";
@@ -15,36 +18,42 @@ if( isset($_GET['rkey']) && !($_POST) ){
 
 	if($user_exist!=1){
 		echo "<p align='center'>."._Server_did_not_found_registration."</p>";
-		return;	
+		closeMain();return;	
 	}
 		
 	$user=$db->sql_fetchrow($result);
 
 	$sql1="insert into ". $CONF['userdb']['users_table'] .
-			" ( user_active, username, user_civlid, user_password, user_session_time, user_regdate, user_email, user_actkey )
-			values  ( '1', '".$user['user_civlid']."' , '".$user['user_civlid']."' , '".md5($user['user_password'])."',
+			" ( user_active, username,  user_password, user_session_time, user_regdate, user_email, user_actkey )
+			values  ( '1', '".$user['user_name']."' , '".leonardo_hash($user['user_password'])."',
 			'".$user['user_session_time']."', '".time()."', '".$user['user_email']."',  '".$user['user_actkey']."' )"; 
 	// echo $sql1;
 	$res=$db->sql_query($sql1);
 	
 	if (!$res) {
 		echo "Problem in inserting user into DB: $sql1<BR>";
-		return;	
+		closeMain();return;	
 	}
 	
 	$id=$db->sql_nextid();
 
 	if (!$id) {
 		echo "Could not get next ID from DB<BR>";
-		return;	
+		closeMain();return;	
 	}
 	
-	$sql2="insert into $pilotsTable (pilotID, countryCode, CIVL_ID, CIVL_NAME, FirstName, LastName, NickName, Birthdate, BirthdateHideMask, Sex) values ('$id','".$user['user_nation']."','".$user['user_civlid']."','".addslashes($user['user_name'])."','".addslashes($user['user_firstname'])."','".addslashes($user['user_lastname'])."','".addslashes($user['user_nickname'])."',
- '". substr($user['user_birthdate'],6,2)."-".substr($user['user_birthdate'],4,2)."-".substr($user['user_birthdate'],0,4)."','xx.xx.xxxx','".( $user['user_gender']==1?'F':'M') ."') "; 
+	$sql2="INSERT INTO $pilotsTable (pilotID, countryCode, CIVL_ID, CIVL_NAME, FirstName, LastName, NickName, Birthdate, BirthdateHideMask, Sex) values ('$id','".$user['user_nation']."','".$user['user_civlid']."','".addslashes($user['civlname'])."','".addslashes($user['user_firstname'])."','".addslashes($user['user_lastname'])."','".addslashes($user['user_nickname'])."',
+ '". addslashes($user['user_birthdate'])."','xx.xx.xxxx','".( $user['user_gender']==1?'F':'M') ."') "; 
  
 	if(! $res=$db->sql_query($sql2)){
 		echo "Problem in inserting pilot into DB: $sql2<BR>";
-		return;	
+		closeMain();return;	
+	}
+	
+	$sql2="INSERT INTO $pilotsInfoTable (pilotID) values ('$id') "; 
+	if(! $res=$db->sql_query($sql2)){
+		echo "Problem in inserting pilot into DB: $sql2<BR>";
+		closeMain();return;	
 	}
 	
 	// all ok , delete from temp table!
@@ -53,18 +62,14 @@ if( isset($_GET['rkey']) && !($_POST) ){
 ?>
 
 <br>
-<br>
-<table align="center" width="50%">
+<table align="center" width="500">
   <tr>
     <td><br>
-      <font class=content>
       <center>
-        <b>
-        <?=_Email_confirm_success;?>
-        </b>
+        <strong><?=_Email_confirm_success;?></strong>
       </center>
       <br>
-      <table align="center" width="70%">
+      <table align="center" width="80%">
         <tr class=header>
           <td><u>
             <?=_pilot_email;?>
@@ -75,7 +80,7 @@ if( isset($_GET['rkey']) && !($_POST) ){
           <td><u>
             <?=_USERNAME;?>
             </u> </td>
-          <td><?=$user['user_civlid'];?></td>
+          <td><?=$user['user_nickname'];?></td>
         </tr>
         <tr class=header>
           <td><u>
@@ -84,33 +89,93 @@ if( isset($_GET['rkey']) && !($_POST) ){
           <td><?=$user['user_name'];?></td>
         </tr>
       </table>
-      <div align="center"><br>
+	  
+      <div align="center">
+	  <br>
         <br>
         <center>
-        <a href="?op=login">
-        <?=_MENU_LOGIN;?>
-        </a><br>
+        <a href="<?=getLeonardoLink(array('op'=>'login') )?>"><?=_MENU_LOGIN;?></a>
+		<br>
         <br>
       </div></td>
   </tr>
-  <tr>
-    <td class=header>&nbsp;</td>
-  </tr>
+
 </table>
 <?		
 
-	return;
+	closeMain();return;	
 }  // $_GET['rkey'];
 
+if($_POST['registerForm']==1){
+	// various queries in order of searching civlid, email through all database to avoid doubles;
+	if($r=_search($_POST['email'],$_POST['civlid'],'temp')) { 
+ 
+		if ($r['user_civlid']==$_POST['civlid'] && $r['user_email']==$_POST['email'] ){
+			$actkey=$r[$actkey] ;       
+			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
+			print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
+			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']));
+			unset($actkey);
+		} else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){
+			$msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
+		} else if($r['user_email']!=$_POST['email'] || $r['user_civlid']==$_POST['civlid']){
+			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
+		}		
+		echo $msg; closeMain(); return;	
+	}
+		
+	if($r=_search($_POST['email'],$_POST['civlid'],'pilots')){
+	 	//  var_dump($r);
+		$msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";	 
+		echo $msg; closeMain(); return;
+	}
+	
+    if(!$r=_search($_POST['email'],$_POST['civlid'],'users')) {
+		 
+		 $actkey=md5(uniqid(rand(), true));
+		 $session_time=time();
+		 $sql="INSERT into ".$CONF['userdb']['users_temp_table']."(
+		 user_civlid,user_civlname,user_name,user_firstname,user_lastname,user_nickname,
+		 user_password,user_nation,user_gender,user_birthdate,user_session_time,
+		 user_regdate,user_email,user_actkey )
+		 VALUES( 
+		 '".$_POST['civlid']."'
+		 , '".addslashes($_POST['civlname'])."'
+		 , '".addslashes($_POST['username'])."'
+		 , '".addslashes($_POST['firstname'])."'
+		 , '".addslashes($_POST['lastname'])."'
+		 , '".addslashes($_POST['nickname'])."'
+		 , '".addslashes($_POST['password'])."'
+		 , '".addslashes($_POST['nation'])."'			 
+		 , '".addslashes($_POST['gender'])."'
+		 , '".addslashes($_POST['birthdate'])."'
+		 , '".$session_time."'
+		 , '".time()."'
+		 , '".addslashes($_POST['email'])."'
+		 , '".$actkey."'
+		 )";
+		 if( $db->sql_query($sql)) {
+			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['name']));
+			
+			$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
+		 }
+    } else {
+		 // var_dump($r); 
+         $msg="<p align ='center'>". _User_already_registered."</p>"; 
+    }  
+	      
+	echo $msg; closeMain();return;	
+	
+}
 
 
 
+if( !isset($_POST['registerForm'])&& !isset($_GET['rkey'])){
 
-if(!isset($_POST['registerForm'])&& !isset($_GET['rkey'])){
-
+$calLang=$lang2iso[$currentlang];
 ?>
-<br>
-<br>
 <script language="javascript"> 
 
 var passwordMinLength='<?=$passwordMinLength?>';
@@ -126,16 +191,35 @@ var _MANDATORY_EMAIL_CONFIRM='<?=_MANDATORY_EMAIL_CONFIRM?>';
 var _MANDATORY_CIVL_ID='<?=_MANDATORY_CIVL_ID?>';
 
 function setCIVL_ID() {
-	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&CIVL_ID_field=civlid&name_field=name', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
+	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&CIVL_ID_field=civlid&name_field=civlname', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
 }
+
+
+	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
+	var language = '<?=$calLang?>';
+	var startAt = 1;		// 0 - sunday ; 1 - monday
+	var visibleOnLoad=0;
+	var showWeekNumber = 1;	// 0 - don't show; 1 - show
+	var hideCloseButton=0;
+	var gotoString 		= {<?=$calLang?> : '<?=_Go_To_Current_Month?>'};
+	var todayString 	= {<?=$calLang?> : '<?=_Today_is?>'};
+	var weekString 		= {<?=$calLang?> : '<?=_Wk?>'};
+	var scrollLeftMessage 	= {<?=$calLang?> : '<?=_Click_to_scroll_to_previous_month?>'};
+	var scrollRightMessage 	= {<?=$calLang?>: '<?=_Click_to_scroll_to_next_month?>'};
+	var selectMonthMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_month?>'};
+	var selectYearMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_year?>'};
+	var selectDateMessage 	= {<?=$calLang?> : '<?=_Select_date_as_date?>' };
+	var	monthName 		= {<?=$calLang?> : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
+	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
+	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
+
 </script>
 <script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
+<script language='javascript' src='<?=$moduleRelPath ?>/js/cal/popcalendar.js'></script>
+
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
   <tr>
-    <th><?=sprintf(_Registration_Form,$CONF['site']['name'] );?></th>
-  </tr>
-  <tr>
-    <td align='left'><br>
+    <td align='left'>
       <ul>
         <li>
           <?=_Requirements?>
@@ -176,7 +260,7 @@ function setCIVL_ID() {
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td align="center"><form name='form2' method="post" action="">
+    <td align="center"><form name='registrationForm' method="post" action="">
         <input name="registerForm" type="hidden" value="1">
         <table width="600" cellspacing='2' cellpadding='2'  >
           <tr>
@@ -191,20 +275,17 @@ function setCIVL_ID() {
           <tr>
             <td width="250" bgcolor="#DFDFD0">CIVL
               <?=_PILOT_NAME;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="name" value=""  readonly="readonly"/>
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="civlname" value=""  readonly="readonly"/>
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
             <td width="250" bgcolor="#DFDFD0"><?=_NICK_NAME;?></td>
             <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="nickname" value=""/>
-              <font color="#FF2222">***</font></td>
+            </td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_First_Name;?>
-              ,
-              <?=_Last_Name;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="30" maxlength="50" type="text" name="firstname" value="">
-              <input class="TextoVermelho" size="10" maxlength="50" type="text" name="lastname" value="">
+            <td width="250" bgcolor="#DFDFD0"><?=_USERNAME;?></td>
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="username" value=""/>
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
@@ -218,7 +299,16 @@ function setCIVL_ID() {
             <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value="">
               <font color="#FF2222">***</font></td>
           </tr>
-          <td width="250" bgcolor="#DFDFD0"><?=_Sex;?></td>
+		  <tr>
+            <td width="250" bgcolor="#DFDFD0"><?=_First_Name;?>
+              ,
+              <?=_Last_Name;?></td>
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="20" maxlength="50" type="text" name="firstname" value="">
+              <input class="TextoVermelho" size="20" maxlength="50" type="text" name="lastname" value="">
+              <font color="#FF2222">***</font></td>
+          </tr>
+		  <tr>
+            <td width="250" bgcolor="#DFDFD0"><?=_Sex;?></td>
             <td width="350" bgcolor="#DFDFD0"><select name="gender" class="TextoVermelho">
                 <option value="M">
                 <?=_Male;?>
@@ -229,156 +319,13 @@ function setCIVL_ID() {
               </select>
               <font color="#FF2222">***</font></td>
           </tr>
-          <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_Birthdate;?></td>
-            <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="birthday_year" class="TextoVermelho">
-                <option value="" selected></option>
-                <option value="1930">1930</option>
-                <option value="1931">1931</option>
-                <option value="1932">1932</option>
-                <option value="1933">1933</option>
-                <option value="1934">1934</option>
-                <option value="1935">1935</option>
-                <option value="1936">1936</option>
-                <option value="1937">1937</option>
-                <option value="1938">1938</option>
-                <option value="1939">1939</option>
-                <option value="1940">1940</option>
-                <option value="1941">1941</option>
-                <option value="1942">1942</option>
-                <option value="1943">1943</option>
-                <option value="1944">1944</option>
-                <option value="1945">1945</option>
-                <option value="1946">1946</option>
-                <option value="1947">1947</option>
-                <option value="1948">1948</option>
-                <option value="1949">1949</option>
-                <option value="1950">1950</option>
-                <option value="1951">1951</option>
-                <option value="1952">1952</option>
-                <option value="1953">1953</option>
-                <option value="1954">1954</option>
-                <option value="1955">1955</option>
-                <option value="1956">1956</option>
-                <option value="1957">1957</option>
-                <option value="1958">1958</option>
-                <option value="1959">1959</option>
-                <option value="1960">1960</option>
-                <option value="1961">1961</option>
-                <option value="1962">1962</option>
-                <option value="1963">1963</option>
-                <option value="1964">1964</option>
-                <option value="1965">1965</option>
-                <option value="1966">1966</option>
-                <option value="1967">1967</option>
-                <option value="1968">1968</option>
-                <option value="1969">1969</option>
-                <option value="1970">1970</option>
-                <option value="1971">1971</option>
-                <option value="1972">1972</option>
-                <option value="1973">1973</option>
-                <option value="1974">1974</option>
-                <option value="1975">1975</option>
-                <option value="1976">1976</option>
-                <option value="1977">1977</option>
-                <option value="1978">1978</option>
-                <option value="1979">1979</option>
-                <option value="1980">1980</option>
-                <option value="1981">1981</option>
-                <option value="1982">1982</option>
-                <option value="1983">1983</option>
-                <option value="1984">1984</option>
-                <option value="1985">1985</option>
-                <option value="1986">1986</option>
-                <option value="1987">1987</option>
-                <option value="1988">1988</option>
-                <option value="1989">1989</option>
-                <option value="1990">1990</option>
-                <option value="1991">1991</option>
-                <option value="1992">1992</option>
-                <option value="1993">1993</option>
-                <option value="1994">1994</option>
-                <option value="1995">1995</option>
-                <option value="1996">1996</option>
-                <option value="1997">1997</option>
-                <option value="1998">1998</option>
-                <option value="1999">1999</option>
-              </select>
-              <select name="birthday_month" class="TextoVermelho">
-                <option value="" selected></option>
-                <option value="01">
-                <?=$monthListShort[0]?>
-                </option>
-                <option value="02">
-                <?=$monthListShort[1]?>
-                </option>
-                <option value="03">
-                <?=$monthListShort[2]?>
-                </option>
-                <option value="04">
-                <?=$monthListShort[3]?>
-                </option>
-                <option value="05">
-                <?=$monthListShort[4]?>
-                </option>
-                <option value="06">
-                <?=$monthListShort[5]?>
-                </option>
-                <option value="07">
-                <?=$monthListShort[6]?>
-                </option>
-                <option value="08">
-                <?=$monthListShort[7]?>
-                </option>
-                <option value="09">
-                <?=$monthListShort[8]?>
-                </option>
-                <option value="10">
-                <?=$monthListShort[9]?>
-                </option>
-                <option value="11">
-                <?=$monthListShort[10]?>
-                </option>
-                <option value="12">
-                <?=$monthListShort[11]?>
-                </option>
-              </select>
-              <select name="birthday_day" class="TextoVermelho">
-                <option value="" selected></option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-              </select>
-              <font color="#FF2222">***</font> </td>
-          </tr>
           <tr>
+            <td bgcolor="#DFDFD0"><?=_Birthdate?></td>
+            <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="12" maxlength="12" type="text" name="birthdate" id="birthdate" value="" />
+			<a href="javascript:showCalendar(document.registrationForm.cal_button, document.registrationForm.birthdate, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_button' width="16" height="16" border="0" id="cal_button" /></a> 
+              <font color="#FF2222">***</font></td>
+          </tr>
+		  <tr>
             <td bgcolor="#DFDFD0"><?=_pilot_email;?></td>
             <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" />
               <font color="#FF2222">***</font></td>
@@ -389,21 +336,16 @@ function setCIVL_ID() {
             <td bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" />
               <font color="#FF2222">***</font></td>
           </tr>
+		  <tr>
           <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_SELECT_COUNTRY;?></td>
             <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
-              
+              <option value=""></option>
               <?php
-					foreach ($countries as $key => $value) {						
+	 			asort($countries);
+				foreach ($countries as $key => $value) {						
 						echo '<option value="'.$key.'">'.$value.'</option>';
-					}
-								
-/*
- print "<option value='".F322('',1). $sel ."'>".F322('',3)."</option>\n"; 
-while(list($k,$e)=each($countries)){
-    print "<option value='".F322($k,1). $sel ."'>".$e."</option>\n";
-} 
-*/   
-?>
+				}
+				?>
               </select>
             </td>
           </tr>
@@ -420,85 +362,14 @@ while(list($k,$e)=each($countries)){
               <?=_REQUIRED_FIELD ;?></td>
           </tr>
         </table>
-      </form></td>
+      </form>
+	  </td>
   </tr>
 </table>
-<?    
+<?  
+ 
 }
-if($_POST['registerForm']==1){
- // various queries in order of searching civlid, email through all database to avoid doubles;
- if(!$r=_search($_POST['email'],$_POST['civlid'],'temp')){
- 
-     if(!$r=_search($_POST['email'],$_POST['civlid'],'pilots')){
- 
-         if(!$r=_search($_POST['email'],$_POST['civlid'],'users')) {
-		 
-             $actkey=md5(uniqid(rand(), true));
-             $session_time=time();
-             $sql="INSERT into ".$CONF['userdb']['users_temp_table']."(
-             user_civlid,
-             user_name,
-             user_firstname,
-             user_lastname,
-             user_nickname,
-             user_password,
-             user_nation,
-             user_gender,
-             user_birthdate,
-             user_session_time,
-             user_regdate,
-             user_email,
-             user_actkey)
-             VALUES( 
-             '".$_POST['civlid']."'
-             , '".addslashes($_POST['name'])."'
-             , '".addslashes($_POST['firstname'])."'
-             , '".addslashes($_POST['lastname'])."'
-             , '".addslashes($_POST['nickname'])."'
-             , '".addslashes($_POST['password'])."'
-             , '".addslashes($_POST['nation'])."'			 
-             , '".addslashes($_POST['gender'])."'
-             , '".$_POST['birthday_year'].$_POST['birthday_month'].$_POST['birthday_day']."'
-             , '".$session_time."'
-             , '".time()."'
-             , '".addslashes($_POST['email'])."'
-             , '".$actkey."'
-             )";
-             if( $db->sql_query($sql))
-             {
-				$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
-				LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['name']));
-				
-				$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
-             }
-         } else {
-		     // var_dump($r); 
-             $msg="<p align ='center'>". _User_already_registered."</p>"; 
-         }    
-     } else{
-		 //  var_dump($r);
-		 $msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";
-     }  
-	 
-	 
-} else {
 
-    if ($r['user_civlid']==$_POST['civlid'] && $r['user_email']==$_POST['email'] ){
-		$actkey=$r[$actkey] ;       
-		$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
-		print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
-		$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
-		LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']));
-		unset($actkey);
-    } else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){
-		$msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
-    } else if($r['user_email']!=$_POST['email'] || $r['user_civlid']==$_POST['civlid']){
-	    $msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
-    }
-  
-}
- print $msg; 
-}
 
 function _search($email,$civlid,$tb){
 	global $db,$CONF,$pilotsTable;

@@ -46,3 +46,7 @@ ALTER TABLE `leonardo_flights_deleted` ADD `startType` TINYINT UNSIGNED NOT NULL
 # fix by Durval Henke
 # for standalone operation only 
 # ALTER TABLE `leonardo_users` CHANGE `user_password` `user_password` VARCHAR( 34 )  NOT NULL;
+
+# add civlname 
+# ALTER TABLE `leonardo_temp_users` ADD `user_civlname` VARCHAR( 150 ) NOT NULL AFTER `user_civlid` ;
+# ALTER TABLE `leonardo_temp_users` CHANGE `user_birthdate` `user_birthdate` VARCHAR( 10 )  NOT NULL;

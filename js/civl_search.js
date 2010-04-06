@@ -2,17 +2,18 @@
 
 
 function checkdate(input){
-var validformat=/^\d{2}\/\d{2}\/\d{4}$/ ;//Basic check for format validity
-    var monthfield=input.value.split("/")[0];
-    var dayfield=input.value.split("/")[1];
-    var yearfield=input.value.split("/")[2];
+	var validformat=/^\d{2}\.\d{2}\.\d{4}$/ ;//Basic check for format validity
+    var dayfield=input.split(".")[0];
+    var monthfield=input.split(".")[1];
+    var yearfield=input.split(".")[2];
     var dayobj = new Date(yearfield, monthfield-1, dayfield);
     if ((dayobj.getMonth()+1!=monthfield)||(dayobj.getDate()!=dayfield)||(dayobj.getFullYear()!=yearfield)){
-    return false;
-}else{
+	    return false;
+	}else{
         return true;
     }
 }
+
 function trim(str){
     if(undefined == str){
     var ax='';
@@ -25,65 +26,64 @@ function trim(str){
 function Submit_Form(){
     var msg='';
     if(MWJ_findObj('password',null,window.document)){
-		if(msg.length==0 && trim(document.form2.password.value).length==0){
+		if(msg.length==0 && trim(document.registrationForm.password.value).length==0){
 			msg=_PwdTooShort;
-			document.form2.password.focus();
+			document.registrationForm.password.focus();
 		}
-		if(msg.length==0 && trim(document.form2.password.value).length< passwordMinLength){
+		if(msg.length==0 && trim(document.registrationForm.password.value).length< passwordMinLength){
 			msg=_PwdTooShort;
-			document.form2.password.focus();
+			document.registrationForm.password.focus();
 		}
 		if(MWJ_findObj('password2',null,window.document)){
-			if(msg.length==0 && trim(document.form2.password.value)!=trim(document.form2.password2.value)){
+			if(msg.length==0 && trim(document.registrationForm.password.value)!=trim(document.registrationForm.password2.value)){
 				msg=_PwdAndConfDontMatch;
-				document.form2.password2.focus();
+				document.registrationForm.password2.focus();
 			}
 		}
     }
-    if(msg.length==0 && trim(document.form2.name.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.username.value).length==0){
     	msg=_MANDATORY_USERNAME;
-    	document.form2.name.focus();
+    	document.registrationForm.name.focus();
     }
-    if(msg.length==0 && trim(document.form2.firstname.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.firstname.value).length==0){
     	msg=_MANDATORY_FIRSTNAME;
-    	document.form2.firstname.focus();
+    	document.registrationForm.firstname.focus();
     }
-    if(msg.length==0 && trim(document.form2.lastname.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.lastname.value).length==0){
     	msg=_MANDATORY_LASTNAME;
-    	document.form2.lastname.focus();
+    	document.registrationForm.lastname.focus();
     }
-    if(msg.length==0 && trim(document.form2.nation.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.nation.value).length==0){
     	msg=_MANDATORY_FAI_NATION;
-    	document.form2.nation.focus();
+    	document.registrationForm.nation.focus();
     }
-    if(msg.length==0 && trim(document.form2.gender.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.gender.value).length==0){
     	msg=_MANDATORY_GENDER;
-    	document.form2.gender.focus();
+    	document.registrationForm.gender.focus();
     }
-    dta=new Object();
-    dta.value =document.form2.birthday_month.value +"/"+ document.form2.birthday_day.value +"/"+ document.form2.birthday_year.value;
-    if(msg.length==0 && !checkdate(dta)){
+	
+    if(msg.length==0 && !checkdate(document.registrationForm.birthdate.value )){
     	msg=_MANDATORY_BIRTH_DATE_INVALID;
     }
-    if(msg.length==0 && trim(document.form2.email.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.email.value).length==0){
     	msg=_EmailEmpty;
     }
-    if (msg.length==0 && echeck(document.form2.email.value)==false){
+    if (msg.length==0 && echeck(document.registrationForm.email.value)==false){
         msg=_EmailInvalid;
-        document.form2.email.value=""
-        document.form2.email.focus();
+        document.registrationForm.email.value=""
+        document.registrationForm.email.focus();
     }
-    if(msg.length==0 && trim(document.form2.email.value)!=trim(document.form2.email2.value)){
+    if(msg.length==0 && trim(document.registrationForm.email.value)!=trim(document.registrationForm.email2.value)){
     	msg=_MANDATORY_EMAIL_CONFIRM;
-    	document.form2.email2.focus();
+    	document.registrationForm.email2.focus();
     }
-    if(msg.length==0 && trim(document.form2.civlid.value).length==0){
+    if(msg.length==0 && trim(document.registrationForm.civlid.value).length==0){
     	msg=_MANDATORY_CIVL_ID;
     }
     if(msg.length>0){
     	alert(msg);
     } else {
-    	document.form2.submit();
+    	document.registrationForm.submit();
     }
 }
 
