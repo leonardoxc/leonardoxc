@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_ajax_functions.php,v 1.4 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: EXT_ajax_functions.php,v 1.5 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -58,5 +58,13 @@
 		$str=substr($str,0,-1);
 		$str.=" ] } ";
 		echo $str;
-	} 
+	} else if ($op=='getCountriesSelect') {
+		require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
+		asort($countries);
+		echo "<select>\n";
+		foreach($countries as $cc=>$cname) {
+			echo "<option value='$cc'>$cname</option>\n";
+		}
+		echo "</select>\n";
+	}
 ?>

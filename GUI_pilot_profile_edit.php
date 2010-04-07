@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.33 2010/03/17 15:06:24 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.34 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -197,7 +197,7 @@
   
   // $query_sel="SELECT * FROM $pilotsTable, ".$CONF['userdb']['users_table']." WHERE pilotID=".$pilotIDview ." AND pilotID=".$CONF['userdb']['user_id_field'] ;
   
- // $query_sel="SELECT * FROM $pilotsTable  WHERE pilotID=$pilotIDview AND serverID=$serverIDview";
+
   $query_sel=" SELECT * FROM $pilotsTable LEFT JOIN $pilotsInfoTable ON
 				($pilotsTable.pilotID=$pilotsInfoTable.pilotID AND $pilotsTable.serverID=$pilotsInfoTable.serverID )
 			WHERE 
@@ -210,12 +210,27 @@
   } else if ( mysql_num_rows($res)==0){
 	 // echo "query: $query_sel failed, will insert values into table<BR>";
   	 $res= $db->sql_query("INSERT INTO $pilotsTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
+	 $res= $db->sql_query("INSERT INTO $pilotsInfoTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
 	 echo("<H3>No info for this pilot</H3>\n");
 	 return;
   }
 
   $pilot = mysql_fetch_assoc($res);
 
+	if ($CONF['userdb']['edit']['enabled']) {
+		$sql="SELECT * FROM ".$CONF['userdb']['users_table']."  WHERE ".$CONF['userdb']['user_id_field']."=$pilotIDview";
+		$res2= $db->sql_query($sql);
+	
+		if($res2 <= 0){
+			echo("<H3>Error in pilot [userTable] query</H3>\n");
+			return;
+		} else if ( mysql_num_rows($res)==0){
+			echo("<H3>No info for this pilot in userTable</H3>\n");
+			return;
+		}
+		$pilotUser= mysql_fetch_assoc($res2);
+	}	
+	
 	$pilotName=getPilotRealName($pilotIDview,$serverIDview,1);
  
 	$legend=_Pilot_Profile.": <b>$pilotName</b>";
@@ -277,7 +292,7 @@
 	# in case certain fields are set by an external tool, these fields will be set readonly
 	# otherwise, they can be edited
 	# $possible_readonly_fields contains all the fields for which this readonly mechanism is available
-	$readonly_fields=array();
+	$readonly_fields=$CONF['profile']['edit']['readonlyFields'];
 	//$readonly_fields=array('LastName', 'FirstName');
 	if ($CONF_use_NAC) {
 		$readonly_fields=array();
@@ -332,7 +347,8 @@
 				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
 					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID)					 
 				) $firstNameReadOnly='"readonly"';
-				if ( in_array('FirstName', $readonly_fields) ) $firstNameReadOnly='"readonly"';
+				if ( in_array('FirstName', $readonly_fields) && 
+					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID)	) $firstNameReadOnly='"readonly"';
 			?> 
 			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly ?> >
 	  </td>
@@ -473,7 +489,8 @@
 				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
 					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID) 
 				) $lastNameReadOnly='"readonly"';
-				if ( in_array('LastName', $readonly_fields) ) $lastNameReadOnly='"readonly"';
+				if ( in_array('LastName', $readonly_fields) && 
+					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID) ) $lastNameReadOnly='"readonly"';
 			?>
 			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> >
 		</td>
@@ -576,12 +593,11 @@
     
 <? if ( $CONF['userdb']['edit']['enabled']) {
 
-;
 	if ($CONF['userdb']['edit']['edit_email']) {
-		$text_email='<input name="user_email" type="text" value="'.$pilot[$CONF['userdb']['email_field']].'" size="35" >';
-		$text_email.='<input name="user_email_old" type="hidden" value="'.$pilot[$CONF['userdb']['email_field']].'" >';
+		$text_email='<input name="user_email" type="text" value="'.$pilotUser[$CONF['userdb']['email_field']].'" size="35" >';
+		$text_email.='<input name="user_email_old" type="hidden" value="'.$pilotUser[$CONF['userdb']['email_field']].'" >';
 	}else {
-		$text_email=$pilot[$CONF['userdb']['email_field']];
+		$text_email=$pilotUser[$CONF['userdb']['email_field']];
 	}
 	
 	$text_edit_pwd='
@@ -589,7 +605,7 @@
     <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
 	<tr>
 		<td valign="middle" bgcolor="#E9EDF5"> <div align="right">'._USERNAME.'</div></td>
-		<td valign="middle"><b>'.$pilot[$CONF['userdb']['username_field']].'</b></td>
+		<td valign="middle"><b>'.$pilotUser[$CONF['userdb']['username_field']].'</b></td>
 		<td>&nbsp;</td>
 		<td valign="top" bgcolor="#E9EDF5"> <div align="right">'._pilot_email.'</div></td>
 		<td>'.$text_email.'</td>

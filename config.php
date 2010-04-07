@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.147 2010/03/31 13:43:23 manolis Exp $                                                                 
+// $Id: config.php,v 1.148 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -708,8 +708,12 @@ $CONF_abs_path=LEONARDO_ABS_PATH;
 $CONF['news']['items']=array();
 @include_once dirname(__FILE__)."/site/config_news.php";
 
-
-
+// The readonly fields on profile edit page - override in site/config_custom.php
+$CONF['profile']['edit']['readonlyFields']=array();
+	
+// dont force the users to enter a civl id
+$CONF['profile']['edit']['force_civl_id']=false;
+	
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
 @include_once dirname(__FILE__)."/site/config_ranks.php";

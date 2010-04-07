@@ -82,9 +82,16 @@ if(isset($_POST['uce'])){
 		 //$emailtime=0;
 		if(($emailtime+($CONF['userdb']['edit']['password_change_expire_time'])) < $ltime){
 			//  print "$emailtime | $ltime";
+			
 			$actkey=md5(uniqid(rand(), true));
 			$newpass=generatePassword($CONF['userdb']['edit']['password_minlength']);
-			$sql="UPDATE ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".md5($newpass)."',user_actkey='$actkey' where ".$CONF['userdb']['user_id_field']."=".$res['user_id'];
+			if ( function_exists('leonardo_hash') ) { 
+				$newPassword=leonardo_hash($newpass);
+			} else {
+				$newPassword=md5($newpass);
+			}
+			
+			$sql="UPDATE ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".$newPassword."',user_actkey='$actkey' where ".$CONF['userdb']['user_id_field']."=".$res['user_id'];
 			
 			if($db->sql_query($sql)){
 				

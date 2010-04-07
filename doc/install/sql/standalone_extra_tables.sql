@@ -44,7 +44,7 @@ CREATE TABLE `leonardo_users` (
   `user_email` varchar(255) default NULL,
   `user_new_email` varchar(255) NOT NULL,
   `user_actkey` varchar(32) default NULL,
-  `user_newpasswd` varchar(32) default NULL,
+  `user_newpasswd` varchar(34) default NULL,
   PRIMARY KEY  (`user_id`),
   KEY `user_session_time` (`user_session_time`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 PACK_KEYS=0;

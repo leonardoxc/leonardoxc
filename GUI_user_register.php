@@ -182,6 +182,8 @@ var passwordMinLength='<?=$passwordMinLength?>';
 var _PwdTooShort='<?=_PwdTooShort?>';
 var _PwdAndConfDontMatch='<?=_PwdAndConfDontMatch?>';
 var _MANDATORY_NAME='<?=_MANDATORY_NAME?>';
+var _MANDATORY_FIRSTNAME='<?=_MANDATORY_NAME?>';
+var _MANDATORY_LASTNAME='<?=_MANDATORY_NAME?>';
 var _MANDATORY_FAI_NATION='<?=_MANDATORY_FAI_NATION?>';
 var _MANDATORY_GENDER='<?=_MANDATORY_GENDER?>';
 var _MANDATORY_BIRTH_DATE_INVALID='<?=_MANDATORY_BIRTH_DATE_INVALID?>';
@@ -225,9 +227,11 @@ function setCIVL_ID() {
           <?=_Requirements?>
           :</li>
         <ul>
+        <? if ($CONF['profile']['edit']['force_civl_id']) {?>
           <li>
             <?=_Mandatory_CIVLID;?>
           </li>
+        <? } ?>  
           <li>
             <?=_Mandatory_valid_EMAIL;?>
           </li>
@@ -270,13 +274,20 @@ function setCIVL_ID() {
             <td bgcolor="#DFDFD0"><a href="#" onclick="setCIVL_ID();return false;">
               <?=_MENU_SEARCH_PILOTS;?>
               CIVLID:</a></td>
-            <td bgcolor="#DFDFD0"><input type='text' name='civlid' id='civlid' value='' readonly="" size='8'></td>
+            <td bgcolor="#DFDFD0"><input type='text' name='civlid' id='civlid' value='' readonly="" size='8'>
+            <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
+            <font color="#FF2222">***</font>
+            <? } ?>
+            </td>
           </tr>
           <tr>
             <td width="250" bgcolor="#DFDFD0">CIVL
               <?=_PILOT_NAME;?></td>
             <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="civlname" value=""  readonly="readonly"/>
-              <font color="#FF2222">***</font></td>
+            <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
+            <font color="#FF2222">***</font>
+            <? } ?>
+            </td>
           </tr>
           <tr>
             <td width="250" bgcolor="#DFDFD0"><?=_NICK_NAME;?></td>
@@ -354,7 +365,7 @@ function setCIVL_ID() {
             <td width="350" bgcolor="#DFDFD0">&nbsp;</td>
           </tr>
           <td width="600" colspan="2"><div align="center">
-                <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form();"/>
+                <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form(<?=$CONF['profile']['edit']['force_civl_id']+0?>);"/>
               </div></td>
           </tr>
           <tr>

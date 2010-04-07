@@ -36,7 +36,7 @@ $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';
 $CONF['userdb']['email_field']='user_email';
 
-$CONF['userdb']['edit']['enabled']=1;
+$CONF['userdb']['edit']['enabled']=0;
 $CONF['userdb']['edit']['edit_email']=1;
 $CONF['userdb']['edit']['edit_password']=1;
 $CONF['userdb']['edit']['password_minlength']=4;

@@ -23,7 +23,7 @@ function trim(str){
     return ax;
     }
 }
-function Submit_Form(){
+function Submit_Form(force_civl_id){
     var msg='';
     if(MWJ_findObj('password',null,window.document)){
 		if(msg.length==0 && trim(document.registrationForm.password.value).length==0){
@@ -77,9 +77,11 @@ function Submit_Form(){
     	msg=_MANDATORY_EMAIL_CONFIRM;
     	document.registrationForm.email2.focus();
     }
-    if(msg.length==0 && trim(document.registrationForm.civlid.value).length==0){
-    	msg=_MANDATORY_CIVL_ID;
-    }
+	if (force_civl_id) {
+		if(msg.length==0 && trim(document.registrationForm.civlid.value).length==0){
+			msg=_MANDATORY_CIVL_ID;
+		}
+	}
     if(msg.length>0){
     	alert(msg);
     } else {

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_users_db_helper.php,v 1.2 2010/04/06 13:48:59 manolis Exp $                                                                 
+// $Id: EXT_users_db_helper.php,v 1.3 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,6 +41,20 @@
 		} 
 		$user_id=mysql_insert_id();
 		
+		// set password ?
+		$user_password=makeSane($_POST['user_password'],2);		
+		if ($user_password) {
+			require_once dirname(__FILE__)."/CL_user.php";
+			$res=LeoUser::changePassword($user_id,$user_password);
+			if ( $res > 0 ) {
+				// echo _PwdChanged;
+			} else {
+				echo _PwdChangeProblem;
+				if ($res==-2) printf(': '._PwdTooShort, $CONF_password_minlength);				
+			}
+		
+		}
+		
 		$sql="INSERT INTO $pilotsTable (countryCode,CIVL_ID,CIVL_NAME,FirstName,LastName,Sex,Birthdate,pilotID,serverID)
 			VALUES(
 			'".makeSane($_POST['countryCode'])."',
@@ -50,10 +64,11 @@
 			'".makeSane($_POST['LastName'],2)."',
 			'".makeSane($_POST['Sex'])."',
 			'".makeSane($_POST['Birthdate'])."', 
-			, $user_id,0) ";
+			$user_id,0) ";
 		if (! $db->sql_query($sql) ) {		
 			echo "Error in query : $sql<BR>";
-		} 		
+		} 	
+		echo "User Added";	
 		exit;
 	} else if ($op=='del') {
 		$user_id=makeSane($_POST['id']);
@@ -91,6 +106,19 @@
 			echo "Error in query : $sql<BR>";
 		} 
 		
+		// change password ?
+		$user_password=makeSane($_POST['user_password'],2);		
+		if ($user_password) {
+			require_once dirname(__FILE__)."/CL_user.php";
+			$res=LeoUser::changePassword($user_id,$user_password);
+			if ( $res > 0 ) {
+				echo _PwdChanged;
+			} else {
+				echo _PwdChangeProblem;
+				if ($res==-2) printf(': '._PwdTooShort, $CONF_password_minlength);				
+			}
+		
+		}
 		exit;
 	}
 	
@@ -197,6 +225,7 @@ while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
 	echo "<row id='". $row['user_id']."'>";            
             echo "<cell>". $row['user_id']."</cell>";		
 			echo "<cell><![CDATA[". $row['username']."]]></cell>";
+			echo "<cell></cell>";
         	echo "<cell><![CDATA[". $row['user_email']."]]></cell>";
 			echo "<cell><![CDATA[". $row['countryCode']."]]></cell>";
 			echo "<cell><![CDATA[". $row['CIVL_ID']."]]></cell>";

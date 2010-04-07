@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.18 2010/04/06 21:21:23 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.19 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.18 2010/04/06 21:21:23 manolis Exp $
+ *   $Id: GUI_login.php,v 1.19 2010/04/07 13:08:54 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -93,7 +93,7 @@ if( isset($HTTP_POST_VARS['login']) || isset($HTTP_GET_VARS['login']) || isset($
 			
 				if ( function_exists('leonardo_check_password') ) { // phpbb3 has custom way of hashing passwords				
 					if( leonardo_check_password($password,$row['user_password'])  ) $passwdIsOK=1;		
-					else $passwdIsOK=0;						
+					else $passwdIsOK=0;			
 				} else {
 					if( md5($password) == $row['user_password'] )$passwdIsOK=1;	
 					else $passwdIsOK=0;					

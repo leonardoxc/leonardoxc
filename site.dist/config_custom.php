@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config_custom.php,v 1.9 2010/03/26 12:37:03 manolis Exp $                                                                 
+// $Id: config_custom.php,v 1.10 2010/04/07 13:08:54 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -471,4 +471,11 @@ $CONF['db_browser']['areas']=array(
 		'radius'=>400,
 	),
 );
+
+// The readonly fields on profile edit page
+$CONF['profile']['edit']['readonlyFields']=array(); 
+// $CONF['profile']['edit']['readonlyFields']=array('LastName', 'FirstName');
+
+$CONF['profile']['edit']['force_civl_id']=false; 
+
 ?>
