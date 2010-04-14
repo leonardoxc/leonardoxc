@@ -8,11 +8,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.47 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.48 2010/04/14 13:41:13 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
-
+  require_once dirname(__FILE__)."/CL_NACclub.php";
+  require_once dirname(__FILE__)."/CL_user.php";
   $flight=new flight();
   $flight->getFlightFromDB($flightID);
 
@@ -355,6 +356,71 @@ require_once dirname(__FILE__).'/FN_editor.php';
         </table>    
 </td>
     </tr>
+	<? if ($CONF['NAC']['clubPerFlight'] ) { ?>
+ <script type="text/javascript" language="javascript">
+	   	var NAC_input_url= [];
+		var NAC_external_input= [];
+		var NAC_external_fields= [];
+		var NAC_use_clubs=[];
+		var NAC_select_clubs=[];
+		var NACid=0;
+	   	<?=$list1.$list2.$list3.$list4 ?>
+		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
+
+		function changeNAC() {
+			var mid=MWJ_findObj("NACmemberID");
+			mid.value="";
+
+			var sl=MWJ_findObj("NACid");
+			NACid= sl.options[sl.selectedIndex].value ;    // Which menu item is selected
+			if (NACid==0) {
+				MWJ_changeDisplay("mID","none");
+			} else {
+				MWJ_changeDisplay("mID","inline");
+				if (NAC_external_input[NACid]) {
+					MWJ_changeDisplay("mIDselect","block");
+				}else {
+					MWJ_changeDisplay("mIDselect","none");
+				}
+			}
+
+			if (NAC_use_clubs[NACid]) {
+				MWJ_changeDisplay("mClubSelect","block");
+				if (NAC_select_clubs[NACid]) {
+				  MWJ_changeDisplay("mClubLink","inline");
+				}
+			} else  {
+				MWJ_changeDisplay("mClubSelect","none");
+				MWJ_changeDisplay("mClubLink","none");
+			}
+	
+			var flds=all_readonly_fields.split(',');
+			for (var i=0; i<flds.length; i++) {
+				document.forms[0].elements[flds[i]].readOnly=false;
+			}
+			if (NACid!=0 && NAC_external_fields[NACid]) {
+				flds=NAC_external_fields[NACid].split(',');
+				for (var i=0; i<flds.length; i++) {
+					document.forms[0].elements[flds[i]].readOnly=true;
+				}
+			}
+		}
+
+		function setID() {
+			if 	(NACid>0) {
+				window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
+			}
+		}
+
+		function setClub(NACid) {
+			if 	(NACid>0) {
+				var NACclubID_fld	=MWJ_findObj("NACclubID");
+				var NACclubID		=NACclubID_fld.value;
+				window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=600,LEFT=150,TOP=100',false);
+			}
+		}
+	      </script>	
+	<? } ?>
     <tr>
       <td colspan="2"  valign="top">
 	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -395,6 +461,35 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset>	
 		
 		</td>
+	<? if ($CONF['NAC']['clubPerFlight'] ) { ?>
+		<tr>
+            <td>
+			<fieldset class="legendBox ">
+			<legend><? echo _MEMBER_OF ?></legend>
+			<div align="left">
+			<? $NACName= $CONF_NAC_list[$flight->NACid]['name']; ?>
+			<b><? echo $NACName ?></b>
+			</b>	  </div>
+			</fieldset>	
+			</td>
+            
+            <td>
+				<fieldset class="legendBox legend2">
+				<legend><? echo _THE_CLUB ?></legend>
+				<div align="left">
+				<input name="NACclubID" id="NACclubID" type="text" size="60" value="<?=NACclub::getClubName($flight->NACid,$flight->NACclubID) ?>">
+			<?	
+			$NACclub=NACclub::getClubName($flight->NACid,$flight->NACclubID);
+
+			 $showChangeClubLink="inline";
+			
+			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub($flight->NACid);return false;\">"._Select_Club."</a> ]</div>";
+			?>
+				</div>
+				</fieldset>	
+			</td>
+          </tr>
+		<? } ?>
 		<tr>
 		   <td colspan=2>
 			   <fieldset class="legendBox legend2">
