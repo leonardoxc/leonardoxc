@@ -40,18 +40,13 @@
 /* liScroll style declarations */
 
 .tickercontainer { /* the outer div with the black border */
-border: 1px solid #000;
-border:none;
-background: #fff;
-background:none;
-width: 760px; 
-height: 18px; 
-margin: 0; 
-padding: 0;
-margin-top:-6px;
-padding-bottom:4px;
-overflow: hidden; 
-float:left; clear:none;
+	border:none;
+	background:none;
+	width: 760px; 
+	height: 16px; 
+	margin: 0; 
+	padding: 0;
+	padding-bottom:2px;
 }
 
 .ticksettings {
@@ -68,16 +63,10 @@ height:18px;
 overflow: hidden;
 }
 
-.tickercontainer .mask { /* that serves as a mask. so you get a sort of padding both left and right */
-position: relative;
-left: 10px;
-top: 4px;
-width: 738px;
-overflow: hidden;
-}
+
 ul.newsticker { /* that's your list */
-position: relative;
-left: 750px;
+/*position: relative;
+left: 750px;*/
 font: 10px Verdana;
 list-style-type: none;
 margin: 0;

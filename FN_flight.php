@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.55 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.56 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -165,6 +165,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 */
 
 	foreach ($argArray as $varName=>$varValue) {
+		if ($varName=='NACclubID' || $varName=='NACid') continue;
 		$flight->$varName=$varValue;
 	}
 
@@ -404,21 +405,29 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		require_once dirname(__FILE__)."/CL_NACclub.php";
 		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userIDforFlight);
 		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
-			// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
-			$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];
-			
-			if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
-				$seasonStart=($currSeasonYear-1)."-12-31";
-				$seasonEnd=$currSeasonYear."-12-31";
+		
+			if ( $argArray['NACclubID'] >0  && $argArray['NACid']>0 ) {
+				$flight->NACclubID=$argArray['NACclubID'];
+				$flight->NACid=$argArray['NACid'];
 			} else {
-				$seasonStart=($currSeasonYear-1).$CONF_NAC_list[$pilotNACID]['periodStart'];
-				$seasonEnd=$currSeasonYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
+			
+				// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
+				$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];
+				
+				if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
+					$seasonStart=($currSeasonYear-1)."-12-31";
+					$seasonEnd=$currSeasonYear."-12-31";
+				} else {
+					$seasonStart=($currSeasonYear-1).$CONF_NAC_list[$pilotNACID]['periodStart'];
+					$seasonEnd=$currSeasonYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
+				}
+	
+				if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
+					$flight->NACclubID=$pilotNACclubID;
+					$flight->NACid=$pilotNACID;
+				}
 			}
-
-			if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
-				$flight->NACclubID=$pilotNACclubID;
-				$flight->NACid=$pilotNACID;
-			}
+				
 		}
 	}
 	

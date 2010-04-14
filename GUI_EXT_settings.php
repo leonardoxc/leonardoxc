@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_settings.php,v 1.4 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: GUI_EXT_settings.php,v 1.5 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
   	require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -46,50 +46,16 @@
 			$PREFS->themeName=$CONF_defaultThemeName;
 	
 		$PREFS->setToCookie();
-		echo "<span class='ok'>"._Your_settings_have_been_updated."</span>";
+		echo "<span class='ok'>"._Your_settings_have_been_updated." <a href='javascript:location.reload(true)'>OK</a></span>";
 		return;	
 	}
    
 
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  >
-<html>
-<head>
-  <title><?=_Select_Club?></title>
-  <meta http-equiv="content-type" content="text/html; charset=<?=$CONF_ENCODING?>">
-</head>
-<body>
-<script language="javascript">
-
- $(function() { // onload...do
-        $('#userPrefs').submit(function() {
-          var inputs = [];
-          $(':input', this).each(function() {
-            inputs.push(this.name + '=' + escape(this.value));
-          })
-          jQuery.ajax({
-            data: inputs.join('&'),
-            url: '<?=moduleRelPath() ?>/GUI_EXT_settings.php',
-            timeout: 2000,
-            error: function() {
-             $("#userPrefsMsg").html("<span class='alert'>Error in updating user settings</span>");
-            },
-            success: function(r) { 
-             $("#userPrefsMsg").html(r);
-            }
-          }) 
-          return false;
-        })
-      })
-</script>
 
 <div id="userPrefsMsg"></div>
 <form name="userPrefs" id="userPrefs" method="POST" >
-<?
- //  openMain(_MENU_MY_SETTINGS,0,"icon_profile.png"); 
-?>
-
-  <table  width="100%" border="0" bgcolor="#F4F3F1" cellpadding="3" align="left" class="box main_text" style="background-color:#F4F3F1">
+<table  width="100%" border="0" bgcolor="#F4F3F1" cellpadding="3" align="left" class="box main_text" style="background-color:#F4F3F1">
   	<tr> 
       <td colspan="5" >&nbsp;</td>
     </tr>
@@ -237,7 +203,7 @@
 	 </tr>
     <tr> 
       <td colspan="5"><div align="center"> <br />
-      <input type="submit" name="Submit" value="<? echo _Submit_Change_Data ?>">
+      <input type="button" name="Submit" value="<? echo _Submit_Change_Data ?>" onClick="submitUserPrefs();">
       </div></td>
     </tr>
     <tr> 
@@ -251,5 +217,3 @@
 
  // closeMain();
 ?>
-</body>
-</html>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_NACclub.php,v 1.9 2010/03/14 20:56:09 manolis Exp $
+// $Id: CL_NACclub.php,v 1.10 2010/04/14 18:58:51 manolis Exp $
 //
 //************************************************************************
 
@@ -35,7 +35,7 @@ class NACclub {
 
 	function getPilotClub($userID) {
 		global $db,$NACclubsTable,$pilotsTable;
-		$query="SELECT NACclubID,NACid FROM $pilotsTable WHERE pilotID=$userID ";
+		$query="SELECT NACclubID,NACid FROM $pilotsTable WHERE pilotID=$userID AND serverID=0";
 		$res= $db->sql_query($query);
 		//echo $query;
   		if($res <= 0){
@@ -177,7 +177,7 @@ class NACclub {
 		}
 		$flightsClause=implode(' OR ', $flightsClauses);
 
-		$generalClause="userID=$pilotID AND (NACclubID<>$newNACclubID OR NACid<>$newNACid)";
+		$generalClause="userID=$pilotID AND  userServerID=0 AND (NACclubID<>$newNACclubID OR NACid<>$newNACid)";
 
 		$where_clause="($generalClause) AND ($flightsClause)";
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.49 2010/04/14 14:06:02 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.50 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -81,6 +81,12 @@
 		}
 
 
+		// to change nac club
+		if ($CONF['NAC']['clubPerFlight'] ) {
+			$flight->NACclubID=$_REQUEST["NACclubID"]+0;
+			$flight->NACid=$_REQUEST["NACid"]+0;
+		}
+				
 		require_once dirname(__FILE__)."/CL_flightPhotos.php";
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
@@ -357,69 +363,15 @@ require_once dirname(__FILE__).'/FN_editor.php';
 </td>
     </tr>
 	<? if ($CONF['NAC']['clubPerFlight'] ) { ?>
- <script type="text/javascript" language="javascript">
-	   	var NAC_input_url= [];
-		var NAC_external_input= [];
-		var NAC_external_fields= [];
-		var NAC_use_clubs=[];
-		var NAC_select_clubs=[];
-		var NACid=0;
-	   	<?=$list1.$list2.$list3.$list4 ?>
-		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
-
-		function changeNAC() {
-			var mid=MWJ_findObj("NACmemberID");
-			mid.value="";
-
-			var sl=MWJ_findObj("NACid");
-			NACid= sl.options[sl.selectedIndex].value ;    // Which menu item is selected
-			if (NACid==0) {
-				MWJ_changeDisplay("mID","none");
-			} else {
-				MWJ_changeDisplay("mID","inline");
-				if (NAC_external_input[NACid]) {
-					MWJ_changeDisplay("mIDselect","block");
-				}else {
-					MWJ_changeDisplay("mIDselect","none");
-				}
-			}
-
-			if (NAC_use_clubs[NACid]) {
-				MWJ_changeDisplay("mClubSelect","block");
-				if (NAC_select_clubs[NACid]) {
-				  MWJ_changeDisplay("mClubLink","inline");
-				}
-			} else  {
-				MWJ_changeDisplay("mClubSelect","none");
-				MWJ_changeDisplay("mClubLink","none");
-			}
-	
-			var flds=all_readonly_fields.split(',');
-			for (var i=0; i<flds.length; i++) {
-				document.forms[0].elements[flds[i]].readOnly=false;
-			}
-			if (NACid!=0 && NAC_external_fields[NACid]) {
-				flds=NAC_external_fields[NACid].split(',');
-				for (var i=0; i<flds.length; i++) {
-					document.forms[0].elements[flds[i]].readOnly=true;
-				}
-			}
-		}
-
-		function setID() {
+	 <script type="text/javascript" language="javascript">
+		var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";	
+		function setClub(NACid) {			
 			if 	(NACid>0) {
-				window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
-			}
-		}
-
-		function setClub(NACid) {
-			NACid=24;
-			if 	(NACid>0) {
-				var NACclubID		=$("#NACclubID").val();
+				var NACclubID=$("#NACclubID").val();
 				window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=600,LEFT=150,TOP=100',false);
 			}
 		}
-	      </script>	
+	</script>	
 	<? } ?>
     <tr>
       <td colspan="2"  valign="top">
@@ -461,12 +413,15 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset>	
 		
 		</td>
+	</tr>
 	<? if ($CONF['NAC']['clubPerFlight'] ) {
 	
 		if ($flight->NACid) {
 			$flightNacID=$flight->NACid;
 		} else {
-			$flightNacID=24;
+			list($flightNacID,$defaultPilotNacClubID)=NACclub::getPilotClub($flight->userID) ;
+			// echo "#$flightNacID,$defaultPilotNacClubID#";
+			// $flightNacID=24;
 		}
 		?>
 		<tr>
@@ -483,10 +438,11 @@ require_once dirname(__FILE__).'/FN_editor.php';
             <td>
   			<?	$NACclub=NACclub::getClubName($flightNacID,$flight->NACclubID);	?>
 				<fieldset class="legendBox legend2">
-				<legend><? echo _THE_CLUB ?></legend>
+				<legend><? echo _Club ?></legend>
 				<div align="left">
 				<input name="NACclub" id="NACclub" type="text" size="60" value="<?=$NACclub?>">
                 <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$flight->NACclubID?>">
+				<input name="NACid" id="NACid" type="hidden" value="<?=$flightNacID?>">
 				<?	
 				$showChangeClubLink="inline";		
 				echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub($flightNacID);return false;\">"._Select_Club."</a> ]</div>";

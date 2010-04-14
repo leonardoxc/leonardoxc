@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.42 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.43 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,6 +17,8 @@
 		echo _You_are_not_login;
 		return;
 	}
+	
+	require_once dirname(__FILE__)."/CL_NACclub.php";
 /*
 	new defines
 define("_GLIDER_CERT","Glider Certification");
@@ -150,6 +152,16 @@ $(document).ready(
 			selectGliderCat() ;
 		}
 	);
+	
+<? if ($CONF['NAC']['clubPerFlight'] ) { ?>	
+var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";	
+function setClub(NACid) {			
+	if 	(NACid>0) {
+		var NACclubID=$("#NACclubID").val();
+		window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=600,LEFT=150,TOP=100',false);
+	}
+}	
+<? } ?>
 
 </script>
 
@@ -197,7 +209,31 @@ $(document).ready(
       </select></td>
       <td  valign="top">&nbsp;</td>
     </tr>
-	
+	<? if ($CONF['NAC']['clubPerFlight'] ) {
+
+			list($flightNacID,$defaultPilotNacClubID)=NACclub::getPilotClub($userID) ;
+			$NACName= $CONF_NAC_list[$flightNacID]['name'];
+			$NACclub=NACclub::getClubName($flightNacID,$defaultPilotNacClubID);
+		?>
+		<tr>
+            <td>
+			<div align="right" class="styleItalic">
+				<? echo _MEMBER_OF ?> <strong><? echo $NACName ?></strong>
+            </div>
+			</td>
+            
+            <td colspan=2>
+				<div align="left">
+				<? echo _Club ?>
+
+				<input name="NACclub" id="NACclub" type="text" size="40" value="<?=$NACclub?>">
+                <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$defaultPilotNacClubID?>">
+				<input name="NACid" id="NACid" type="hidden" value="<?=$flightNacID?>">
+				[ <a href='#' onclick="setClub(<?=$flightNacID?>);return false;"><?=_Select_Club?></a> ]
+				</div>
+			</td>
+          </tr>
+		<? } ?>
 	<tr >
       <td  valign="top"><div id='gCertDescription' align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
       <td valign="top" colspan=2>
@@ -389,6 +425,14 @@ $(document).ready(
 		//$gliderBrandID=$_POST["gliderBrandID"]+0;
 		$linkURL=$_POST["linkURL"];
 
+		if ($CONF['NAC']['clubPerFlight'] ) {
+			$NACclubID=$_POST['NACclubID']+0;
+			$NACid=$_POST['NACid']+0;
+		} else {
+			$NACclubID=-1;
+			$NACid=-1;
+		}
+		
 		list($result,$flightID)=addFlightFromFile($filename,true,$flights_user_id,
 				array('gliderBrandID'=>$gliderBrandID,'private'=>$is_private,
 					  '$linkURL'=>$linkURL,'comments'=>$comments,'glider'=>$glider,'category'=>$category,'cat'=>$gliderCat ,
@@ -396,6 +440,7 @@ $(document).ready(
 						'allowDuplicates'=>1, // we always allow duplicates when locally submitted. (will take over eternal flights) 
 						'gliderCertCategory'=>$gliderCertCategory,
 						'startType'=>$_POST["startType"]+0,
+						'NACclubID'=>$NACclubID,'NACid'=>$NACid,
 					  ) 
 				) ;
 		

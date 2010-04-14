@@ -8,11 +8,17 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.26 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.27 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
- if ($userID<=0) return;
- 
+	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
+	if (!$userID || $userID==-1) {
+		echo _You_are_not_login;
+		return;
+	}
+
+ require_once dirname(__FILE__)."/CL_NACclub.php";
+   
  openMain( _SUBMIT_FLIGHT,0,"icon_add.png");
 
  if (!isset($_FILES['zip_datafile']['name'])) {
@@ -93,6 +99,16 @@ $(document).ready(
 		}
 	);
 
+<? if ($CONF['NAC']['clubPerFlight'] ) { ?>	
+var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";	
+function setClub(NACid) {			
+	if 	(NACid>0) {
+		var NACclubID=$("#NACclubID").val();
+		window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=600,LEFT=150,TOP=100',false);
+	}
+}	
+<? } ?>
+
 </script>
 
 <form name="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();">	
@@ -142,7 +158,31 @@ $(document).ready(
       </select></td>
       <td  valign="top">&nbsp;</td>
     </tr>
-	
+	<? if ($CONF['NAC']['clubPerFlight'] ) {
+
+			list($flightNacID,$defaultPilotNacClubID)=NACclub::getPilotClub($userID) ;
+			$NACName= $CONF_NAC_list[$flightNacID]['name'];
+			$NACclub=NACclub::getClubName($flightNacID,$defaultPilotNacClubID);
+		?>
+		<tr>
+            <td>
+			<div align="right" class="styleItalic">
+				<? echo _MEMBER_OF ?> <strong><? echo $NACName ?></strong>
+            </div>
+			</td>
+            
+            <td colspan=2>
+				<div align="left">
+				<? echo _Club ?>
+
+				<input name="NACclub" id="NACclub" type="text" size="40" value="<?=$NACclub?>">
+                <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$defaultPilotNacClubID?>">
+				<input name="NACid" id="NACid" type="hidden" value="<?=$flightNacID?>">
+				[ <a href='#' onclick="setClub(<?=$flightNacID?>);return false;"><?=_Select_Club?></a> ]
+				</div>
+			</td>
+          </tr>
+		<? } ?>
 	<tr >
       <td  valign="top"><div id='gCertDescription' align="right" class="styleItalic"> <?=_GLIDER_CERT ?></div></td>
       <td valign="top" colspan=2>
@@ -261,6 +301,14 @@ $(document).ready(
 	$category=$_POST['category']+0;
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 
+	if ($CONF['NAC']['clubPerFlight'] ) {
+		$NACclubID=$_POST['NACclubID']+0;
+		$NACid=$_POST['NACid']+0;
+	} else {
+		$NACclubID=-1;
+		$NACid=-1;
+	}
+		
 	if (strtolower(substr($filename,-4))!=".zip") addFlightError(_FILE_DOESNT_END_IN_ZIP);
 
 
@@ -319,6 +367,7 @@ $(document).ready(
 										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ,
 										'gliderCertCategory'=>$gliderCertCategory,
 										'startType'=>$_POST["startType"]+0,
+										'NACclubID'=>$NACclubID,'NACid'=>$NACid,
 										) 
 			) ;
 			 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.149 2010/04/14 14:06:02 manolis Exp $                                                                 
+// $Id: config.php,v 1.150 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -212,7 +212,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $CONF_NAC_list=array();
  $CONF_use_NAC=0;
  // Allow pilots to assgin a different NAC club to each of their flights
- $CONF['NAC']['clubPerFlight'] =1;
+ $CONF['NAC']['clubPerFlight'] =0;
  
  // set this to 0 if you dont want to give the functionality of OLC submits
  // OLC scoring will be done even if you set this to 0. 

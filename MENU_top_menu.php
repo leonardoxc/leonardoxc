@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.90 2010/04/05 20:14:31 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.91 2010/04/14 18:58:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -78,7 +78,9 @@ sfHover = function() {
 <? } ?>
 
 <?  if ($PREFS->showNews && $CONF['news']['config']['newsActive'] ) {?>
-<ul id="ticker01"></ul> 
+<div id="ticker01" class="tickercontainer">
+<marquee id="tickerMarquee" behavior="scroll" scrollamount="2" direction="left" width="750"></marquee>
+</div> 
 <? } ?>
 <script type="text/javascript"><!--//--><![CDATA[//><!--
 
@@ -120,17 +122,53 @@ function showUserSettings() {
 
 <?  if ($PREFS->showNews && $CONF['news']['config']['newsActive']) {?>
 $(function() { 
-	$("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
+
+ jQuery.ajax({	
+	url: '<?=$moduleRelPath?>/EXT_news.php',
+	timeout: 4000,
+	success: function(newsHtml) { 		
+	   $("#tickerMarquee").html("<ul class='newsticker'>"+newsHtml+"</ul>");
+ 
+	   $('#tickerMarquee').marquee('pointer').mouseover(function () {
+			$(this).trigger('stop');
+		}).mouseout(function () {
+			$(this).trigger('start');
+		}).mousemove(function (event) {
+			if ($(this).data('drag') == true) {
+				this.scrollLeft = $(this).data('scrollX') + ($(this).data('x') - event.clientX);
+			}
+		}).mousedown(function (event) {
+			$(this).data('drag', true).data('x', event.clientX).data('scrollX', this.scrollLeft);
+		}).mouseup(function () {
+			$(this).data('drag', false);
+		});
+		}
+  }) 
+
+	// $("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 
 })
 
-/*
-$(".ticksettings").livequery('click', function(e) {
-	$('#dialogWindow').jqm({ajax: '<?=$moduleRelPath ?>/GUI_EXT_settings.php' });
-	$('#dialogWindow').jqmShow();
-});
-*/
+
 <? } ?>
-	  
+
+function submitUserPrefs() {
+  var inputs = [];
+  $("#userPrefs :input").each(function() {
+	inputs.push(this.name + '=' + escape(this.value));
+  })
+  jQuery.ajax({
+	data: inputs.join('&'),
+	url: '<?=$moduleRelPath?>/GUI_EXT_settings.php',
+	timeout: 4000,
+	error: function() {
+	 $("#userPrefsMsg").html("<span class='alert'>Error in updating user settings</span>");
+	},
+	success: function(r) { 
+	 $("#userPrefsMsg").html(r);
+	}
+  }) 
+  return false;
+}
 //--><!]]></script>
 
 
