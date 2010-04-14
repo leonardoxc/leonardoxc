@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.48 2010/04/14 13:41:13 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.49 2010/04/14 14:06:02 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -413,9 +413,9 @@ require_once dirname(__FILE__).'/FN_editor.php';
 		}
 
 		function setClub(NACid) {
+			NACid=24;
 			if 	(NACid>0) {
-				var NACclubID_fld	=MWJ_findObj("NACclubID");
-				var NACclubID		=NACclubID_fld.value;
+				var NACclubID		=$("#NACclubID").val();
 				window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=600,LEFT=150,TOP=100',false);
 			}
 		}
@@ -461,35 +461,42 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	    </fieldset>	
 		
 		</td>
-	<? if ($CONF['NAC']['clubPerFlight'] ) { ?>
+	<? if ($CONF['NAC']['clubPerFlight'] ) {
+	
+		if ($flight->NACid) {
+			$flightNacID=$flight->NACid;
+		} else {
+			$flightNacID=24;
+		}
+		?>
 		<tr>
             <td>
 			<fieldset class="legendBox ">
 			<legend><? echo _MEMBER_OF ?></legend>
 			<div align="left">
-			<? $NACName= $CONF_NAC_list[$flight->NACid]['name']; ?>
-			<b><? echo $NACName ?></b>
-			</b>	  </div>
+				<? $NACName= $CONF_NAC_list[$flightNacID]['name']; ?>
+                <strong><? echo $NACName ?></strong>
+            </div>
 			</fieldset>	
 			</td>
             
             <td>
+  			<?	$NACclub=NACclub::getClubName($flightNacID,$flight->NACclubID);	?>
 				<fieldset class="legendBox legend2">
 				<legend><? echo _THE_CLUB ?></legend>
 				<div align="left">
-				<input name="NACclubID" id="NACclubID" type="text" size="60" value="<?=NACclub::getClubName($flight->NACid,$flight->NACclubID) ?>">
-			<?	
-			$NACclub=NACclub::getClubName($flight->NACid,$flight->NACclubID);
-
-			 $showChangeClubLink="inline";
-			
-			echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub($flight->NACid);return false;\">"._Select_Club."</a> ]</div>";
-			?>
+				<input name="NACclub" id="NACclub" type="text" size="60" value="<?=$NACclub?>">
+                <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$flight->NACclubID?>">
+				<?	
+				$showChangeClubLink="inline";		
+				echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub($flightNacID);return false;\">"._Select_Club."</a> ]</div>";
+				?>
 				</div>
 				</fieldset>	
 			</td>
           </tr>
 		<? } ?>
+        
 		<tr>
 		   <td colspan=2>
 			   <fieldset class="legendBox legend2">
