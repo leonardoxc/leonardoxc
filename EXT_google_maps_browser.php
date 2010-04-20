@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.10 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.11 2010/04/20 08:00:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -220,7 +220,7 @@ fieldset.legendBoxHidden {
 		<span class='inner_legendBox'>
 		<label><input type="checkbox" value="1" id='takeoffsShow' onClick="toggleTakeoffs()"><?=_MENU_TAKEOFFS?></label><hr>
 		
-		<? if ($CONF_airspaceChecks) { ?>
+		<? if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) { ?>
         	<label><input type="checkbox" value="1" id='airspaceShow' onClick="toggleAirspace('airspaceShow',true)"><?=_Show_Airspace			?></label><hr>
 		<?  } ?>		
 		<? if ( $CONF['thermals']['enable'] ) { ?>	
@@ -316,7 +316,7 @@ fieldset.legendBoxHidden {
 
 var showAirspace=0;
 var showTakeoffs=0;
-
+var zoomToTask=0;
 
 $(document).ready(function(){
 
@@ -439,8 +439,8 @@ function createFlightMarker(point, id , pilotName) {
 	var thisTrackColor;
 	var taskPolylines=[];
 	function loadFlightTrack(id,point) {
-	    if ( taskPolylines[id] ) return;
-		
+	    // if ( taskPolylines[id] ) return;
+		zoomToTask=1;
 		thisTrackColor='#'+getNextTrackColor();			
 				
 		$.getJSON('EXT_flight.php?op=get_task_json&flightID='+id, null , 
@@ -512,14 +512,16 @@ function createFlightMarker(point, id , pilotName) {
 		
 		var polyline = new GPolyline(lines,color,1,0.5);
 		map.addOverlay(polyline);
-		taskPolylines[id]=polyline;
+		taskPolylines[id]=polyline;		
 		
-		center_lat=(max_lat+min_lat)/2;
-		center_lon=(max_lon+min_lon)/2;
-			
-		bounds = new GLatLngBounds(new GLatLng(max_lat,min_lon ),new GLatLng(min_lat,max_lon));
-		zoom=map.getBoundsZoomLevel(bounds);	
-		map.setCenter(new GLatLng( center_lat,center_lon), zoom);
+		if (zoomToTask!=0 ) {
+			center_lat=(max_lat+min_lat)/2;
+			center_lon=(max_lon+min_lon)/2;
+				
+			bounds = new GLatLngBounds(new GLatLng(max_lat,min_lon ),new GLatLng(min_lat,max_lon));
+			zoom=map.getBoundsZoomLevel(bounds);	
+			map.setCenter(new GLatLng( center_lat,center_lon), zoom);
+		}	
 	}
 	   
 	
@@ -544,7 +546,7 @@ function createFlightMarker(point, id , pilotName) {
 			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal4/icon19s.png";
 			var baseIcon = new GIcon();
 
-			var sizeFactor=0.8;
+			var sizeFactor=0.6;
 			baseIcon.iconSize=new GSize(24*sizeFactor,24*sizeFactor);
 			baseIcon.shadowSize=new GSize(42*sizeFactor,24*sizeFactor);
 			baseIcon.iconAnchor=new GPoint(12*sizeFactor,24*sizeFactor);
@@ -552,15 +554,24 @@ function createFlightMarker(point, id , pilotName) {
 			  
 			flightTakeoffIcon = new GIcon(baseIcon, iconUrl, null,shadowUrl);
 		}	
-			
+		
 		for(i=0;i<results.flights.length;i++) {	
 			if ( flightMarkers[results.flights[i].flightID] ) continue;
 			
+			var id=results.flights[i].flightID;
 			var takeoffPoint= new GLatLng(results.flights[i].firstLat, results.flights[i].firstLon) ;						
 			var flightMarker= createFlightMarker(takeoffPoint,results.flights[i].flightID, results.flights[i].pilotName);
 			flightMarkers[results.flights[i].flightID] = flightMarker;
 			map.addOverlay(flightMarker);
-		}	
+			
+			thisTrackColor='#'+getNextTrackColor();			
+				
+			$.getJSON('EXT_flight.php?op=get_task_json&flightID='+id, null , 
+					function(task_json) { drawFlightTask(id,task_json,takeoffPoint);}		  
+			);
+		}
+		trackColorID=-1;	
+		
 	}
 	
 	

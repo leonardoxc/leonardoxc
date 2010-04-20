@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.20 2010/03/25 18:43:02 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.21 2010/04/20 08:00:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -241,7 +241,8 @@
 		 $date1=makeSane($_REQUEST['date']); // date dd.mm.yyy format
 		 if ($date1) {
 			 $dateParts=split("\.",$date1);
-			 $tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);
+			 $tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);			 
+			 //$tm1=gmmktime(0,0,0,1,1,2007);
  			 $tm2=gmmktime(0,0,0,$dateParts[1],$dateParts[0]+1,$dateParts[2]);
 		 }
 		 
