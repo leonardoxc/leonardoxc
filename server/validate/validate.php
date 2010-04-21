@@ -47,15 +47,9 @@
 	DEBUG("<pre>");
 
 	$validatePrograms =array(
-
+		
 		// MaxPunkte http://www.maxpunkte.de/cms for versions 3.2+
-		"vali-xmp"			=>array("name"=>"","ok_result"=>1,"ok_string"=>"Validation check passed"),	// ok ( fail -> 0  )
-	
-		// http://www.aircotec.com -> XC trainer, Top navigator ...			
-		"vali-XTC"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"Validate OK"),	// ok ( fail -> 1  	IGC file is INVALID) 
-		// output:
-		// ->TN Complete IGC-File
-		// ->Validate OK
+		"vali-xmp"		=>array("name"=>"","ok_result"=>1,"ok_string"=>"Validation check passed"),	// ok ( fail -> 0  )
 		
 		// GpsDump http://www.multinett.no/~stein.sorensen/		
 		// Version to be used with GpsDump version 3.52 and up
@@ -67,6 +61,12 @@
 		// Braeuniger  --- for use with IQ-COMPEO only ---
 		"vali-bra"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Data valid"), 			// ok ( fail -> 1 )
 
+		// http://www.aircotec.com -> XC trainer, Top navigator ...			
+		"vali-XTC"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"Validate OK"),	// ok ( fail -> 1  	IGC file is INVALID) 
+		// output:
+		// ->TN Complete IGC-File
+		// ->Validate OK
+		
 		// Gipsy http://www.xcontest.org/gipsy
 		"vali-xpg"			=>array("name"=>"","ok_result"=>0,"ok_string"=>"Valid IGC file"),	// ok ( fail -> 1  	IGC file is INVALID)
 		
@@ -74,9 +74,18 @@
 		// Old GpsDump < 3.52
 		"ValiGpsDump"	=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),				// ok ( fail -> -1 )
 		
-		"valiCompe"			=>array("name"=>"","ok_result"=>9999,"ok_string"=>"OK"),				// ok ( fail -> -1 )
+		"valiCompe"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"OK"),				// ok ( fail -> -1 )
 
 		// "valig7to.exe"		=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // 1->not valid 3->not present
+
+		// www.livetrack24.com -> LeonardoLive  - PASSED (result 0) / FAILED (result 1)
+		"vali-l24"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
+		
+		// livexc.dhv1.de - DHV  - PASSED (result 0) / FAILED (result 1)
+		"vali-dhv"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
+	
+		// IGClogger v0.7 for Symbian OS  - thomastheussing@gmx.de IGCLogger
+		"vali-xpy"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"OK"),	// ok ( fail -> 0  )
 
 		// MaxPunkte http://www.maxpunkte.de/cms for older versions <= 3.2
 		"vali-mun"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // fail -> 0

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.14 2010/03/30 14:06:59 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.15 2010/04/21 07:55:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -59,7 +59,9 @@ if (!$areaID && $areaAction!='Add') {
 	  echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Delete','areaID'=>$row['ID']))."'>Delete</a>";
 	  // echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Delete&areaID=".$row['ID']."'>Delete</a> ";
 
-	  if ($row['areaType']==0) echo " :: <a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=administerTakeoffs&areaID=".$row['ID']."'>Add/Remove takeoffs</a> ";
+	  if ($row['areaType']==0) 
+	  		echo " :: <a href='".
+					getLeonardoLink(array('op'=>'area_admin','areaAction'=>'administerTakeoffs','areaID'=>$row['ID']))."'>Add/Remove takeoffs</a> ";
 	  
 	  echo "</td></tr> \n";
 
@@ -72,7 +74,8 @@ if (!$areaID && $areaAction!='Add') {
 } else if (in_array($areaAction,array('Add','Edit','Delete') )  ) {
 	openMain("$areaAction Area # $areaID",0,'');
 
-	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".
+		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
 	
 	if ($_POST['formSubmitted'] ) { // do the action
 		if ($areaAction=='Delete') {	
@@ -98,7 +101,8 @@ if (!$areaID && $areaAction!='Add') {
 				echo "<BR>Problem in updating Area ! ";
 			}	
 			if ($areaAction=='Edit') 
-				echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Edit&areaID=$areaID'>RETURN TO AREA</a> </div><BR>";
+				echo "<div align=center><a href='".
+					getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Edit','areaID'=>$areaID))."'>RETURN TO AREA</a> </div><BR>";
 		}
 	
 
@@ -201,7 +205,8 @@ if (!$areaID && $areaAction!='Add') {
 } else if ($areaAction=='administerTakeoffs') {
 	openMain("Administer Takeoffs for Area # $areaID",0,'');
 
-	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".
+		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
 
 ?>
 <script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
@@ -277,7 +282,7 @@ tr.deleted td {
 tr.marked td {
 	background:#CDECBB;
 }
-
+ 
 div#floatDiv , div#takeoffInfoDiv
 {
   width: 20%;
@@ -318,7 +323,7 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 } 
 -->
 </style>
-
+ 
         
 <form name="formFilter" method="post" action="">
   <br>
@@ -368,7 +373,8 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 ?>
 </table>
 <?
-	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".
+		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
 
     closeMain();  
 }
