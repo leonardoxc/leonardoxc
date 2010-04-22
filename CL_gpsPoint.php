@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_gpsPoint.php,v 1.30 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_gpsPoint.php,v 1.31 2010/04/22 09:57:17 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/CL_actionLogger.php";
@@ -137,7 +137,7 @@ class gpsPoint {
 		 else $i=ceil($coord_tmp); 		
 
 		 $f=abs(($coord_tmp-$i)*60);
-		 return sprintf("%s%d:%06.5f", (($i>=0)?"N":"S"),abs($i), $f);
+		 return sprintf("%s%d:%06.5f", (($coord_tmp>=0)?"N":"S"),abs($i), $f);
 	}
 
 	function getLonMin() {
@@ -146,7 +146,7 @@ class gpsPoint {
 		 else $i=ceil($coord_tmp); 		
 
 		 $f=abs(($coord_tmp-$i)*60); 
-		 return sprintf("%s%d:%06.5f", (($i>=0)?"E":"W"),abs($i), $f);
+		 return sprintf("%s%d:%06.5f", (($coord_tmp>=0)?"E":"W"),abs($i), $f);
 	}
 
 	function getLatMinDec($compact=0) {
@@ -156,9 +156,9 @@ class gpsPoint {
 
 		 $f=abs(($coord_tmp-$i)*60);
 		 if ($compact) 
-			 return sprintf("%02d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($i>=0)?"N":"S");
+			 return sprintf("%02d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($coord_tmp>=0)?"N":"S");
 		 else
-			 return sprintf("%s %d&deg; %06.5f'\n", (($i>=0)?"N":"S"),abs($i), $f);
+			 return sprintf("%s %d&deg; %06.5f'\n", (($coord_tmp>=0)?"N":"S"),abs($i), $f);
 	}
 
 	function getLonMinDec($compact=0) {
@@ -168,9 +168,9 @@ class gpsPoint {
 
 		 $f=abs(($coord_tmp-$i)*60); 
 		 if ($compact) 
-			 return sprintf("%03d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($i>=0)?"E":"W");
+			 return sprintf("%03d%02d%03d%s", abs($i), floor($f), floor( ($f-floor($f)) *1000 ), ($coord_tmp>=0)?"E":"W");
 		 else
-		 	return sprintf("%s %d&deg; %06.5f'\n", (($i>=0)?"E":"W"),abs($i), $f);
+		 	return sprintf("%s %d&deg; %06.5f'\n", (($coord_tmp>=0)?"E":"W"),abs($i), $f);
 	}
 
 	function getLatDMS() {
@@ -181,7 +181,7 @@ class gpsPoint {
 
 		 $minutes=abs(($coord_tmp-$i)*60); 
 		 $seconds=($minutes-floor($minutes)) *60;
-		 return sprintf("%s %d&deg; %02d' %02.1f\"", (($i>=0)?"N":"S"),abs($i), floor($minutes),$seconds);
+		 return sprintf("%s %d&deg; %02d' %02.1f\"", (($coord_tmp>=0)?"N":"S"),abs($i), floor($minutes),$seconds);
 
 	}
 	function getLonDMS() {
@@ -191,7 +191,7 @@ class gpsPoint {
 
 		 $minutes=abs(($coord_tmp-$i)*60); 
 		 $seconds=abs($minutes-floor($minutes)) *60;
-		 return sprintf("%s %d&deg; %02d' %02.1f\"", (($i>=0)?"E":"W"),abs($i), floor($minutes),$seconds);
+		 return sprintf("%s %d&deg; %02d' %02.1f\"", (($coord_tmp>=0)?"E":"W"),abs($i), floor($minutes),$seconds);
 
 	}
 

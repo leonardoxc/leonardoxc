@@ -35,6 +35,7 @@ $CONF['userdb']['user_id_field']='user_id';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='user_password';
 $CONF['userdb']['email_field']='user_email';
+$CONF['userdb']['users_temp_table']="leonardo_temp_users";
 
 $CONF['userdb']['edit']['enabled']=1;
 $CONF['userdb']['edit']['edit_email']=1;

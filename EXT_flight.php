@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.21 2010/04/20 08:00:37 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.22 2010/04/22 09:57:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -215,7 +215,7 @@
 		$distance=$_REQUEST['distance']+0; // radious in km
 		
 		if ( $distance <= 0 ) $distance=100; 
-		if ( $distance > 2500 ) $distance=200;
+		if ( $distance > 2500 ) $distance=2500;
 		
 		
 		$where_clause=" 1 ";
@@ -247,7 +247,7 @@
 		 }
 		 
 		 if ($tm1 && $tm2) {
-			 $where_clause.=" AND DATE >= FROM_UNIXTIME($tm1) AND DATE <= FROM_UNIXTIME($tm2) "; 
+			 $where_clause.=" AND `DATE` >= FROM_UNIXTIME($tm1,'%Y-%m-%d') AND `DATE` <= FROM_UNIXTIME($tm2,'%Y-%m-%d') "; 
 		 }
 		 
 
