@@ -125,7 +125,7 @@ if($_POST['registerForm']==1){
 		echo $msg; closeMain(); return;	
 	}
 		
-	if($r=_search($_POST['email'],$_POST['civlid'],'pilots')){
+	if($r=_search($_POST['email'],$_POST['civlid'],'pilots') && $_POST['civlid']!=0 ){
 	 	//  var_dump($r);
 		$msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";	 
 		echo $msg; closeMain(); return;

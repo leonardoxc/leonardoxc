@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.32 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.33 2010/04/27 09:02:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -209,14 +209,14 @@ function filterUpdateDuration() {
 
 function filterUpdateCat() {
 	FILTER_cat=0;
-	$.each($("input[@name='xFILTER_cat[]']:checked"), function() {
+	$.each($("input[name='xFILTER_cat[]']:checked"), function() {
 		FILTER_cat+=($(this).val()*1);
 	});
 	$("#FILTER_cat").val(FILTER_cat);
 }
 
 function filterUpdateClass() {
-	FILTER_class=$("input[@name='xFILTER_class_1']:checked").val();
+	FILTER_class=$("input[name='xFILTER_class_1']:checked").val();
 	$("#FILTER_class").val(FILTER_class);
 }
 
@@ -225,7 +225,7 @@ function filterUpdateGliderCert() {
 
 	var addValues=[];
 	
-	$.each($("input[@name='xFILTER_glider_cert[]']:checked"), function() {
+	$.each($("input[name='xFILTER_glider_cert[]']:checked"), function() {
 		var v1=$(this).val()*1;
 		if ( addValues[v1] == null ) {
 			addValues[v1]=1;
@@ -237,7 +237,7 @@ function filterUpdateGliderCert() {
 
 function filterUpdateStartType() {
 	FILTER_start_type=0;
-	$.each($("input[@name='xFILTER_start_type[]']:checked"), function() {
+	$.each($("input[name='xFILTER_start_type[]']:checked"), function() {
 		FILTER_start_type+=($(this).val()*1);
 	});
 	$("#FILTER_start_type").val(FILTER_start_type);
@@ -267,14 +267,14 @@ function activateFilter() {
 }
 
 function changeClass(gCat) {
-	var val=$("input[@name='xFILTER_class_"+gCat+"']:checked").val();		
+	var val=$("input[name='xFILTER_class_"+gCat+"']:checked").val();		
 	setClass(1,val);
 	setClass(2,val);	
 }
 
 function setClass(classID,val) {
-	$("input[@name='xFILTER_class_"+classID+"']").attr('checked', false);
-	$.each($("input[@name='xFILTER_class_"+classID+"']"), function() {
+	$("input[name='xFILTER_class_"+classID+"']").attr('checked', false);
+	$.each($("input[name='xFILTER_class_"+classID+"']"), function() {
 		if ( ($(this).val()*1) == val ) {
 			 $(this).attr('checked', true);
 		}

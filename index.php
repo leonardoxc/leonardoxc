@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.122 2010/04/15 11:49:15 manolis Exp $
+// $Id: index.php,v 1.123 2010/04/27 09:02:42 manolis Exp $
 //
 //************************************************************************
 
@@ -226,7 +226,9 @@ if ($_REQUEST['setFilter']==1) { // form submitted
 		$_SESSION["filter_clause"]=$filter->makeClause();	
 		$_SESSION["fltr"]=$filter->makeFilterString();
 	}
-}		
+}
+
+// echo "<PRE>";	print_r($_SESSION['filter_clause']);	echo "</PRE>";			
 
 setVarFromRequest("includeMask",0);
 

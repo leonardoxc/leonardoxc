@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.19 2010/03/14 20:56:12 manolis Exp $                                                                 
+// $Id: rss.php,v 1.20 2010/04/27 09:02:42 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -158,7 +158,14 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <channel>
 	<docs>http://leonardo.thenet.gr</docs>
 	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</title>
-	<link>http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights'))."</link>
+	<link>http://".$_SERVER['SERVER_NAME'].
+	str_replace("&","&amp;",
+		getLeonardoLink(array('op'=>'list_flights',
+						'year'=>'0','month'=>'0','pilotID'=>'0','takeoffID'=>'0',
+						'xctype'=>'all','class'=>'all',
+						'country'=>'0','cat'=>'0','clubID'=>'0','brandID'=>'0','nacclubid'=>'0','nacid'=>'0') )
+	)						
+	."</link>
 	<language>el</language>
 	<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</description>
 	<managingEditor>".$CONF_admin_email."</managingEditor>

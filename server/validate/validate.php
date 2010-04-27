@@ -84,6 +84,10 @@
 		// livexc.dhv1.de - DHV  - PASSED (result 0) / FAILED (result 1)
 		"vali-dhv"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
 	
+		// C-pilot-PRO vincenzo@compass-italy.com http://www.compass-italy.com
+		"vali-xxx"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 8  ) 
+		// Validation check passed, data indicated as correct
+	
 		// IGClogger v0.7 for Symbian OS  - thomastheussing@gmx.de IGCLogger
 		"vali-xpy"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"OK"),	// ok ( fail -> 0  )
 
