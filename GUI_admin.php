@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.56 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.57 2010/04/28 10:52:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -80,8 +80,13 @@ function chmodDir($dir){
 //echo "<br>";
 
 echo "<h3>New Path for flights/ </h3>";
-	echo "<ul>";
-	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles'>Prepare a script for copying flights/ files to new location</a></li>";
+
+	echo "Prepare a script for copying flights/ files to new location<ul>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles&copyAllFiles=0&fileSet=1'>Create script for only IGC files</a></li>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles&copyAllFiles=1&fileSet=1'>Create script for IGC + intermediate files</a></li>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles&fileSet=2'>Create script for flights Photos + pilot profile photos</a></li>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=copyFlightsFiles&copyMode=2&fileSet=3'>Find missing files at new locations</a></li>";
+
 	echo "</ul>";
 
 echo "<h3>Update operations</h3>";

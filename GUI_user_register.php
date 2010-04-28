@@ -80,24 +80,22 @@ if( isset($_GET['rkey']) && !($_POST) ){
           <td><u>
             <?=_USERNAME;?>
             </u> </td>
-          <td><?=$user['user_nickname'];?></td>
+          <td><?=$user['user_name'];?></td>
         </tr>
         <tr class=header>
           <td><u>
             <?=_PILOT_NAME;?>
             </u> </td>
-          <td><?=$user['user_name'];?></td>
+          <td><?=$user['user_lastname'].' '.$user['user_firstname'];?></td>
         </tr>
       </table>
 	  
       <div align="center">
-	  <br>
-        <br>
-        <center>
+	    <br><br>        
         <a href="<?=getLeonardoLink(array('op'=>'login') )?>"><?=_MENU_LOGIN;?></a>
-		<br>
-        <br>
-      </div></td>
+		<br><br>
+      </div>
+     </td>
   </tr>
 
 </table>
@@ -107,31 +105,36 @@ if( isset($_GET['rkey']) && !($_POST) ){
 }  // $_GET['rkey'];
 
 if($_POST['registerForm']==1){
+	$civlid=$_POST['civlid']+0;
+	$username=makeSane($_POST['username']);
+	
 	// various queries in order of searching civlid, email through all database to avoid doubles;
-	if($r=_search($_POST['email'],$_POST['civlid'],'temp')) { 
+	if($r=_search($_POST['email'],$civlid,$username,'temp')) { 
  
-		if ($r['user_civlid']==$_POST['civlid'] && $r['user_email']==$_POST['email'] ){
-			$actkey=$r[$actkey] ;       
+		if ( ($r['user_civlid']==$civlid || $civlid==0) && $r['user_email']==$_POST['email'] ){
+			$actkey=$r['user_actkey'] ;       
 			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
 			print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
 			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
-			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']));
+			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['firstname']));
 			unset($actkey);
-		} else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){
+		} else if($r['user_email']==$_POST['email']  ){
 			$msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
-		} else if($r['user_email']!=$_POST['email'] || $r['user_civlid']==$_POST['civlid']){
+		} else if($r['user_civlid']==$civlid && $civlid ){
 			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
-		}		
+		} else {
+			$msg="<p align ='center'>"._Pilot_have_pre_registration."</p>";
+		}	
 		echo $msg; closeMain(); return;	
 	}
 		
-	if($r=_search($_POST['email'],$_POST['civlid'],'pilots') && $_POST['civlid']!=0 ){
+	if($r=_search($_POST['email'],$civlid,$username,'pilots') && $civlid!=0 ){
 	 	//  var_dump($r);
 		$msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";	 
 		echo $msg; closeMain(); return;
 	}
 	
-    if(!$r=_search($_POST['email'],$_POST['civlid'],'users')) {
+    if(!$r=_search($_POST['email'],$civlid,$username,'users')) {
 		 
 		 $actkey=md5(uniqid(rand(), true));
 		 $session_time=time();
@@ -140,7 +143,7 @@ if($_POST['registerForm']==1){
 		 user_password,user_nation,user_gender,user_birthdate,user_session_time,
 		 user_regdate,user_email,user_actkey )
 		 VALUES( 
-		 '".$_POST['civlid']."'
+		 '".$civlid."'
 		 , '".addslashes($_POST['civlname'])."'
 		 , '".addslashes($_POST['username'])."'
 		 , '".addslashes($_POST['firstname'])."'
@@ -157,7 +160,7 @@ if($_POST['registerForm']==1){
 		 )";
 		 if( $db->sql_query($sql)) {
 			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
-			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['name']));
+			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['firstname']));
 			
 			$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
 		 }
@@ -266,61 +269,58 @@ function setCIVL_ID() {
   <tr>
     <td align="center"><form name='registrationForm' method="post" action="">
         <input name="registerForm" type="hidden" value="1">
-        <table width="600" cellspacing='2' cellpadding='2'  >
+        <table width="600" cellspacing='2' cellpadding='4'  >
           <tr>
-            <td colspan='2' bgcolor="#DFDFD0">&nbsp;</td>
-          </tr>
-          <tr>
-            <td bgcolor="#DFDFD0"><a href="#" onclick="setCIVL_ID();return false;">
+            <td align="right" bgcolor="#FCFCF2"><a href="#" onclick="setCIVL_ID();return false;">
               <?=_MENU_SEARCH_PILOTS;?>
               CIVLID:</a></td>
-            <td bgcolor="#DFDFD0"><input type='text' name='civlid' id='civlid' value='' readonly="" size='8'>
+            <td bgcolor="#FCFCF2"><input type='text' name='civlid' id='civlid' value='' readonly="" size='8'>
             <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
             <font color="#FF2222">***</font>
             <? } ?>
             </td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0">CIVL
+            <td width="250" align="right">CIVL
               <?=_PILOT_NAME;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="civlname" value=""  readonly="readonly"/>
+            <td width="350"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="civlname" value=""  readonly="readonly"/>
             <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
             <font color="#FF2222">***</font>
             <? } ?>
             </td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_NICK_NAME;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="nickname" value=""/>
+            <td width="250" align="right" bgcolor="#FCFCF2"><?=_NICK_NAME;?></td>
+            <td width="350" bgcolor="#FCFCF2"><input class="TextoVermelho" maxlength="50" type="text" name="nickname" value=""/>
             </td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_USERNAME;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="username" value=""/>
+            <td width="250" align="right"><?=_USERNAME;?></td>
+            <td width="350"><input class="TextoVermelho" maxlength="50" type="text" name="username" value=""/>
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_LOCAL_PWD;?></td>
-            <td width="350" bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" maxlength="50" type="text" name="password" value="">
+            <td width="250" align="right" bgcolor="#FCFCF2" class="TextoP"><?=_LOCAL_PWD;?></td>
+            <td width="350" bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" maxlength="50" type="text" name="password" value="">
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_LOCAL_PWD_2;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value="">
+            <td width="250" align="right"><?=_LOCAL_PWD_2;?></td>
+            <td width="350"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value="">
               <font color="#FF2222">***</font></td>
           </tr>
 		  <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_First_Name;?>
+            <td width="250" align="right" bgcolor="#FCFCF2"><?=_First_Name;?>
               ,
               <?=_Last_Name;?></td>
-            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="20" maxlength="50" type="text" name="firstname" value="">
+            <td width="350" bgcolor="#FCFCF2"><input class="TextoVermelho" size="20" maxlength="50" type="text" name="firstname" value="">
               <input class="TextoVermelho" size="20" maxlength="50" type="text" name="lastname" value="">
               <font color="#FF2222">***</font></td>
           </tr>
 		  <tr>
-            <td width="250" bgcolor="#DFDFD0"><?=_Sex;?></td>
-            <td width="350" bgcolor="#DFDFD0"><select name="gender" class="TextoVermelho">
+            <td width="250" align="right"><?=_Sex;?></td>
+            <td width="350"><select name="gender" class="TextoVermelho">
                 <option value="M">
                 <?=_Male;?>
                 </option>
@@ -331,25 +331,25 @@ function setCIVL_ID() {
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
-            <td bgcolor="#DFDFD0"><?=_Birthdate?></td>
-            <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="12" maxlength="12" type="text" name="birthdate" id="birthdate" value="" />
+            <td align="right" bgcolor="#FCFCF2"><?=_Birthdate?></td>
+            <td bgcolor="#FCFCF2"><input class="TextoVermelho" size="12" maxlength="12" type="text" name="birthdate" id="birthdate" value="" />
 			<a href="javascript:showCalendar(document.registrationForm.cal_button, document.registrationForm.birthdate, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_button' width="16" height="16" border="0" id="cal_button" /></a> 
               <font color="#FF2222">***</font></td>
           </tr>
 		  <tr>
-            <td bgcolor="#DFDFD0"><?=_pilot_email;?></td>
-            <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" />
+            <td align="right"><?=_pilot_email;?></td>
+            <td><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" />
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
-            <td bgcolor="#DFDFD0"><?=_CONFIRM;?>
+            <td align="right" bgcolor="#FCFCF2"><?=_CONFIRM;?>
               <?=_pilot_email;?></td>
-            <td bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" />
+            <td bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" />
               <font color="#FF2222">***</font></td>
           </tr>
 		  <tr>
-          <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_SELECT_COUNTRY;?></td>
-            <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
+          <td width="250" align="right" class="TextoP"><?=_SELECT_COUNTRY;?></td>
+            <td width="350" class="TextoP"><select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
               <option value=""></option>
               <?php
 	 			asort($countries);
@@ -361,15 +361,15 @@ function setCIVL_ID() {
             </td>
           </tr>
           <tr>
-            <td width="250" bgcolor="#DFDFD0">&nbsp;</td>
-            <td width="350" bgcolor="#DFDFD0">&nbsp;</td>
+            <td width="250">&nbsp;</td>
+            <td width="350">&nbsp;</td>
           </tr>
           <td width="600" colspan="2"><div align="center">
                 <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form(<?=$CONF['profile']['edit']['force_civl_id']+0?>);"/>
               </div></td>
           </tr>
           <tr>
-            <td width="100%" bgcolor="#DFDFD0"  colspan="2"><font color="#FF2222">***</font>
+            <td width="100%"  colspan="2" align="right"><font color="#FF2222">***</font>
               <?=_REQUIRED_FIELD ;?></td>
           </tr>
         </table>
@@ -382,18 +382,36 @@ function setCIVL_ID() {
 }
 
 
-function _search($email,$civlid,$tb){
+function _search($email,$civlid,$username,$tb){
 	global $db,$CONF,$pilotsTable;
 
 	// return false;
 	
-	if($tb=='temp')
-		$query="select * from ".$CONF['userdb']['users_temp_table']." where user_name ='$civlid' or user_civlid='$civlid' or user_email='$email'"; 
-	if($tb=='pilots')
-		$query="select * from $pilotsTable where CIVL_ID ='$civlid'"; 
+	if($tb=='temp') {
+		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
+			$query="select * from ".$CONF['userdb']['users_temp_table']." where 
+					user_name ='$civlid' or user_civlid='$civlid' or user_email='$email' OR user_name='$username' "; 	
+		} else {
+			$query="select * from ".$CONF['userdb']['users_temp_table']." where user_email='$email' OR user_name='$username' "; 			
+		}
+	}
+			
+	if($tb=='pilots') {
+		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
+			$query="select * from $pilotsTable where CIVL_ID ='$civlid'"; 
+		} else {
+			$query="select * from $pilotsTable where user_name='$username' "; 
+		}
+	}
 		
-	if($tb=='users')
-		$query="select * from ".$CONF['userdb']['users_table']." where username ='$civlid' or user_civlid='$civlid' or user_email='$email'"; 
+	if($tb=='users') {
+		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
+			$query="select * from ".$CONF['userdb']['users_table']." where 
+				username ='$civlid' or user_civlid='$civlid' or user_email='$email' OR user_name='$username'"; 
+		} else {
+			$query="select * from ".$CONF['userdb']['users_table']." where user_email='$email' OR user_name='$username'"; 
+		}
+	}
 		
 	if($query!=''){
 		$res=$db->sql_query($query);
