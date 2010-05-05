@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.153 2010/04/28 10:52:40 manolis Exp $                                                                 
+// $Id: config.php,v 1.154 2010/05/05 14:00:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -519,6 +519,8 @@ Triangle conform to the FAI definition
 	$CONF_force_civlid=0;
 	
     $CONF['NAC']['display_club_details_on_pilot_list']=0;
+	
+	$CONF['db_browser']['maxTrackNum']=50;
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------

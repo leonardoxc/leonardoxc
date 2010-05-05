@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_news.php,v 1.3 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_news.php,v 1.4 2010/05/05 14:00:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -49,7 +49,7 @@
 				} else {
 					$dateStr='';
 				}
-				echo "<li>$dateStr<a $linkStr>".$newsItem['text']."</a></li>";
+				echo "<span>$dateStr<a $linkStr>".$newsItem['text']."</a></span>\n";
 			}
 		}	
 	} 
@@ -60,7 +60,7 @@
 
 		$count = 1;
 	
-		$content .="<li><b>Best scores for ".date("Y")."</b> </li>";
+		$content .="<span><b>Best scores for ".date("Y")."</b> </span>";
 	
 		foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 	
@@ -80,11 +80,11 @@
 				 $takeoffNameFrm=	formatLocation($takeoffName,$takeoffVinicity,$takeoffRadious );
 				 $flightDurationFrm=sec2Time($row['DURATION'],1);		
 		
-				$content .= "<li>:: <span>".$gliderCatList[$gl_id]."</span>";
+				$content .= "<span>:: <span>".$gliderCatList[$gl_id]."</span>";
 				$content .= "<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."'>";
 				$content .= "$name</a> [ $takeoffName ] ".formatDate($row["DATE"]).
 							//" "._DURATION.": $flightDurationFrm".
-							" <a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."'>"._OLC_SCORING.":".formatOLCScore($row['FLIGHT_POINTS'])."</a> </li>";
+							" <a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."'>"._OLC_SCORING.":".formatOLCScore($row['FLIGHT_POINTS'])."</a> </span>";
 				$count = $count + 1;
 			}	
 		}		

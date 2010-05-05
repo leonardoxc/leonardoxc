@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.92 2010/04/15 11:49:15 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.93 2010/05/05 14:00:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -142,7 +142,9 @@ $(function() {
 		}).mouseup(function () {
 			$(this).data('drag', false);
 		});
+		
 		}
+		
   }) 
 
 	// $("#ticker01").liScroll({travelocity: 0.05,url: '<?=$moduleRelPath ?>/EXT_news.php' }); 

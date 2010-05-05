@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.22 2010/04/22 09:57:17 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.23 2010/05/05 14:00:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -250,13 +250,19 @@
 			 $where_clause.=" AND `DATE` >= FROM_UNIXTIME($tm1,'%Y-%m-%d') AND `DATE` <= FROM_UNIXTIME($tm2,'%Y-%m-%d') "; 
 		 }
 		 
-
-
 		 $count=makeSane($_REQUEST['count'],1); // timestamp
-		 if (!$count)  $count=100;
+		 if (!$count)  {
+			if ($CONF['db_browser']['maxTrackNum']) {
+				$count=$CONF['db_browser']['maxTrackNum']; 
+			} else {
+				$count=50;
+			}
+		 }
+		 
 		 if ($count) $lim=" LIMIT $count ";
 		 else  $lim="";
 		
+
 		
 		// $distance*=1000;
 		if ($lat && $lon && $distance ) {
@@ -274,7 +280,7 @@
 				"* 6392 , 3) <= " . $distance. " " ;
 		}
 		
-		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY  distance ASC , dateAdded DESC $lim ";
+		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY FLIGHT_POINTS DESC $lim ";  // , distance ASC , dateAdded DESC
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
