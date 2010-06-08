@@ -1,4 +1,4 @@
-<?
+&nbsp;<?
 //************************************************************************
 // Leonardo XC Server, http://www.leonardoxc.net
 //
@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.34 2010/04/07 13:08:54 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.35 2010/06/08 12:33:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -140,7 +140,7 @@
       return;  
     }
 
-	$res= $db->sql_query("INSERT INTO $pilotsInfoTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
+	$res= $db->sql_query("REPLACE INTO $pilotsInfoTable (pilotID,serverID) VALUES($pilotIDview,$serverIDview)" );
 	$res= $db->sql_query($selQuery);	
 
 	$query="UPDATE $pilotsInfoTable SET
