@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.33 2010/04/27 09:02:42 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.34 2010/06/08 08:13:06 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -257,13 +257,15 @@ function updateRssURL() {
 }
  
 function activateFilter() {
-	filterUpdateDuration();	
-	filterUpdateCat();
+	filterUpdateDuration();
+   	filterUpdateCat();
 	filterUpdateClass();
 	filterUpdateGliderCert();
 	filterUpdateStartType();
-	
-	$("#formFilter").submit();	
+
+    // this was causing ie stack overflow!!
+    // $("#formFilter").submit();
+    document.formFilter.submit();
 }
 
 function changeClass(gCat) {
@@ -376,7 +378,7 @@ function setClass(classID,val) {
                     <option value="&lt;="  <? if ($FILTER_PilotBirthdate_op=="<=") echo "selected" ?>>&lt;=</option>
                   </select>
                     <input name="FILTER_PilotBirthdate_text" id="FILTER_PilotBirthdate_text" type="text" size="10" maxlength="10" value="<?=$FILTER_PilotBirthdate_text ?>" />
-                    <a href="javascript:showCalendar(document.formFilter.cal_b_button, document.formFilter.FILTER_PilotBirthdate_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_b_button' width="16" height="16" border="0" id="cal_b_button" /></a> 
+                    <a href="javascript:showCalendar(document.formFilter.cal_b_button, document.formFilter.FILTER_PilotBirthdate_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_b_button' width="16" height="16" border="0" id="cal_b_button" /></a>
 					
 					&nbsp;&nbsp;&nbsp;&nbsp;<- <a href='javascript:resetBirthday();'><?=_ALL2?></a>
 					
