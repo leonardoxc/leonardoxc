@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_takeoff_functions.php,v 1.9 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_takeoff_functions.php,v 1.10 2010/07/13 11:06:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -54,7 +54,7 @@
 		if($res <= 0){
 			echo "Problem in removing takeoff from  area QUERY";				
 		} else {
-			if (mysql_affected_rows() ) 
+			if ($db->sql_affectedrows() ) 
 				echo "Takeoff removed from area<br>";
 			else 
 				echo "Problem in removing takeoff from  area";			

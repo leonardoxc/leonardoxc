@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.179 2010/03/16 15:03:52 manolis Exp $
+// $Id: CL_flightData.php,v 1.180 2010/07/13 11:06:46 manolis Exp $
 //
 //************************************************************************
 
@@ -3725,7 +3725,7 @@ $kml_file_contents=
 			echo "Problem in puting flight to DB $query<BR>";
 		}
 		//echo "UPDATE / INSERT RESULT ".$result ;
-		if (!$update) $this->flightID=mysql_insert_id();
+		if (!$update) $this->flightID=$db->sql_nextid();
 
 
 		require_once dirname(__FILE__).'/CL_actionLogger.php';

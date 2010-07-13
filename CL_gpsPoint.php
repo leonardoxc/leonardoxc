@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_gpsPoint.php,v 1.31 2010/04/22 09:57:17 manolis Exp $                                                                 
+// $Id: CL_gpsPoint.php,v 1.32 2010/07/13 11:06:46 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__)."/CL_actionLogger.php";
@@ -487,7 +487,7 @@ return '{
 		// echo $query;
 	    $res= $db->sql_query($query);
 		
-		if (!$update) $this->waypointID=mysql_insert_id();
+		if (!$update) $this->waypointID=$db->sql_nextid();
 
 		$log=new Logger();
 		$log->userID  	=$userID;

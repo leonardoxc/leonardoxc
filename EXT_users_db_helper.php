@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_users_db_helper.php,v 1.3 2010/04/07 13:08:54 manolis Exp $                                                                 
+// $Id: EXT_users_db_helper.php,v 1.4 2010/07/13 11:06:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -39,7 +39,7 @@
 		if (! $db->sql_query($sql) ) {		
 			echo "Error in query : $sql<BR>";
 		} 
-		$user_id=mysql_insert_id();
+		$user_id=$db->sql_nextid();
 		
 		// set password ?
 		$user_password=makeSane($_POST['user_password'],2);		

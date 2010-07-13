@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_takeoff.php,v 1.15 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: EXT_takeoff.php,v 1.16 2010/07/13 11:06:46 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -67,7 +67,7 @@
 		$flightNum=0;
 		$res= $db->sql_query($query);
 		if($res > 0){
-			$flightNum=mysql_num_rows($res);
+			$flightNum=$db->sql_numrows($res);
 			
 			if ($flightNum>0) {
 				echo "<img src=\'img/icon_magnify_small.gif\' align=\'absmiddle\' border=0> <a href=\'".
