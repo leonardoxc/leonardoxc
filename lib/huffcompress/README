@@ -1,0 +1,160 @@
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++
++	HUFFMAN STATIC COMPRESSION
++	A PHP Implementation
++
++	by Exaton (exaton@free.fr)
++
++	Released as Freeware.
++	Use & modify as you see fit, no guarantee provided.
++
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+VERSION INFO :
+
++	version 0.1 (22/nov/2003)
++	version 0.2 (18/dec/2003)
+		Proper Huffman tree transmission
+
+
+ABSTRACT :
+
+This class is intented to perform Huffman static compression on files with a
+PHP script.
+
+Such compression is essentially useful for reducing the size of texts by about
+43% ; it is at its best when working with data containing strong redundancies
+at the character level -- that is, the opposite of a binary file in which the
+characters would be spread over the whole ASCII alphabet.
+
+It is questionable whether anyone would want to do such an operation with PHP,
+when C implementations of much stronger and more versatile algorithms are
+readily avaible as PHP functions. The main drawback of this script class is
+slowness despite processing intensiveness (7 to 8 seconds to compress a 300Kb
+text, about 25 seconds to expand it back).
+
+This class will therefore probably find more of a pedagogical purpose more
+than anything else. That's the context it was written in, anyway.
+
+
+TERMS OF USE :
+
+This class is provided as is, WITH NO GUARANTEE WHATSOEVER. It'll be slow, 
+even if the code is optimised, very processor-intensive, probably memory-guzzling
+(all output is entirely stored in memory before being written out to file),
+and who knows what else Murphy might make it do to a computer.
+
+And even if it's a canonical lossless algorithm, there even isn't any
+guarantee that it'll really restore your texts properly, even though the small
+battery of tests it was subjected to turned out positive.
+
+The single redeeming quality of this class is that it is distributed as
+freeware. Use it, modify it, redistribute it as you see fit, just don't say
+you weren't warned that it might just not work at all, or worse. I would
+appreciate your leaving my author notice in place, albeit possibly completed
+by your own, but I'm not even holding you to that.
+
+
+USE AND FUNCTION REFERENCE :
+
+The 4 PHP files having been placed in the same directory, the only ones you
+have to include are compress.inc.php and/or expand.inc.php according to your
+needs.
+
+-----------------
+-- Compression --
+-----------------
+
+Once a CPRS_Compress object has been constructed, the following functions
+are available :
+
++ SetFiles("path/to/source/file", "path/to/destination/file") :
+
+This step is mandatory, as you give the paths to the file you want to
+compress, and the file you want the compressed output written to. These
+paths will be passed to the PHP fopen() function, see its reference for
+details. Note that the paths, if local, should be relative to the location
+of _your_ script, i.e. the one that has included this compression class.
+
++ SetDebug(string options) :
+
+This step is optional. It enables you to ask for certain debug info to be
+written to the standard output at the end of the operation. The options
+string should be made up of any combination of "time", "scodes" and/or
+"ratio", seperated by spaces, noting however that the selected info will
+always appear in that order.
+"time" will output the time taken to compress, in milliseconds.
+"scodes" will output the data codes used for the characters in the
+constituted alphabet.
+"ratio" will show compression ratio information.
+
++ SetTimeLimit(int seconds) :
+
+This step is optional. It allows you to force a certain timeout limit
+for the PHP script, presumably longer than the default configuration on
+your server, should the job take too long. It simply calls the PHP
+set_time_limit() function.
+
++ Compress() :
+
+This is the function that actually executes the job. It receives no
+parameters, and is of course obligatory.
+
+---------------
+-- Expansion --
+---------------
+
+Once a CPRS_Expand object has been constructed, the following functions
+are available :
+
++ SetFiles("path/to/source/file", "path/to/destination/file") :
+
+This step is mandatory, as you give the paths to the file containing the
+compressed data, and the file you want the expanded output written to. These
+paths will be passed to the PHP fopen() function, see its reference for
+details. Note that the paths, if local, should be relative to the location
+of _your_ script, i.e. the one that has included this compression class.
+
++ SetDebug(string options) :
+
+This step is optional. It enables you to ask for certain debug info to be
+written to the standard output at the end of the operation. The only option
+available is "time", to output the time the expansion operation took, in
+milliseconds.
+
++ SetTimeLimit(int seconds) :
+
+This step is optional. It allows you to force a certain timeout limit
+for the PHP script, presumably longer than the default configuration on
+your server, should the job take too long. It simply calls the PHP
+set_time_limit() function.
+
++ Expand() :
+
+This is the function that actually executes the job. It receives no
+parameters, and is of course obligatory.
+
+
+NOTE : typical use for each type of operation can be found at the
+beginning of the compress.inc.php and expand.inc.php files.
+
+
+EXTRA NOTICE :
+
+This class has been tested essentially functional on PHP 4.3.3 . No
+certainty is to be had for any version of PHP lower than that.
+
+Please also note that some technical considerations apart from the core
+Huffman static algorithm have probably not been implemented after
+any standard in this class. That means that any other compressed file,
+even if you have reason to be certain that it was produced using the
+Huffman static algorithm, would in all probability not be usable as
+source file for data expansion with this class.
+In short, this class can very probably only restore what it itself
+compressed.
+
+Anyway, thanks for using ! No feedback would be ignored. Feel free
+to tell me how you came in contact with this class, why you're using
+it (if at liberty to do so), and to suggest any enhancements, or of
+course to point out any serious bugs.

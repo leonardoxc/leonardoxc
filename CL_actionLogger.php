@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_actionLogger.php,v 1.18 2010/03/14 20:56:09 manolis Exp $                                                                 
+// $Id: CL_actionLogger.php,v 1.19 2010/07/29 14:00:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -186,6 +186,12 @@ class Logger {
 	function put(){
 		global $db, $logTable, $userID, $CONF;
 
+		// 
+		if ( ! $CONF['log']['logActions'][$this->ItemType] || !$CONF['log']['logActionsType'][$this->ActionID]) {
+			// logging is disabled for hthis actions type	
+			return 1;
+		}
+		
 		$userID+=0;
 		# martin jursa 21.6.2008 to avoid error log flooding
 		if (!empty($CONF['servers']['syncLog']['dontLog']) && is_array($CONF['servers']['syncLog']['dontLog'])) {

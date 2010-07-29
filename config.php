@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.154 2010/05/05 14:00:04 manolis Exp $                                                                 
+// $Id: config.php,v 1.155 2010/07/29 14:00:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -717,6 +717,25 @@ $CONF['profile']['edit']['readonlyFields']=array();
 	
 // dont force the users to enter a civl id
 $CONF['profile']['edit']['force_civl_id']=false;
+
+
+$CONF['log']['logActions']=array(
+// 1 => "Flight",
+2 => "Pilot",
+4 => "Waypoint",
+8 => "NAC / Club  / Group",
+16=> "League / Event ",
+32=> "Area  ",
+);
+
+$CONF['log']['logActionsType']=array(
+1  => "Add",
+2  => "Edit",
+4  => "Delete",
+8  => "Score",
+16 => "Rename TrackLog",
+32 => "Create Map",
+);
 	
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";
