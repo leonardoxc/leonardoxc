@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.180 2010/07/13 11:06:46 manolis Exp $
+// $Id: CL_flightData.php,v 1.181 2010/08/03 14:11:56 manolis Exp $
 //
 //************************************************************************
 
@@ -621,8 +621,13 @@ $resStr='{
 			global $CONF;
 			if ( $CONF['servers']['list'][$this->serverID]['isLeo'] ==1  ) {
 			 	if (! $this->originalURL )  {
-					$this->originalURL='http://'.$CONF['servers']['list'][$this->serverID]['url'].
+					$url_flight=$CONF['servers']['list'][$this->serverID]['url_flight'];
+					if ($url_flight) {
+						$this->originalURL='http://'.str_replace("%FLIGHT_ID%",$this->original_ID,$url_flight);
+					} else {
+						$this->originalURL='http://'.$CONF['servers']['list'][$this->serverID]['url'].
 										'&op=show_flight&flightID='.$this->original_ID;
+					}					
 				}
 			}
 		}

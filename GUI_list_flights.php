@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.119 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.120 2010/08/03 14:11:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -738,8 +738,13 @@ function removeClubFlight(clubID,flightID) {
 				 
 				 
 				 if ( $CONF['servers']['list'][$row['serverID']]['isLeo'] ) {
-					$extFlightLink='http://'.$CONF['servers']['list'][$row['serverID']]['url'].
+				 	$url_flight=$CONF['servers']['list'][ $row['serverID'] ]['url_flight'];
+					if ($url_flight) {					
+						$extFlightLink='http://'.str_replace("%FLIGHT_ID%",$row['original_ID'],$url_flight)."&lng=$currentlang";
+					} else {
+						$extFlightLink='http://'.$CONF['servers']['list'][$row['serverID']]['url'].
 									'&op=show_flight&flightID='.$row['original_ID']."&lng=$currentlang";
+					}				
 				 } else {
 					 $extFlightLink=$row['originalURL'];
 				 }	
