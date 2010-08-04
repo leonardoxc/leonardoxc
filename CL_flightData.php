@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.181 2010/08/03 14:11:56 manolis Exp $
+// $Id: CL_flightData.php,v 1.182 2010/08/04 21:51:00 manolis Exp $
 //
 //************************************************************************
 
@@ -1090,29 +1090,154 @@ $resStr='{
 		$kmzFile=$this->getKMLFilename(0);
 		$kmlTempFile=$kmzFile.".tmp.kml";
 
-		if ( !file_exists($kmzFile)   ) { // create the kmz file containg the points only
+// DEBUG MANOLIS force creation
+		if ( !file_exists($kmzFile)  || 1 ) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(2);
 			$lines = file ($filename);
 			if ( $lines) {
 				$i=0;
 
-	$str="<?xml version='1.0' encoding='iso-8859-1'?>\n".
-	"<kml xmlns=\"http://earth.google.com/kml/2.1\">\n";
+/*
+new ge features
 
-				$str.="<Document>
-				<name>Tracklog File</name>
-				<Placemark id='Tracklog'>
+http://googlegeodevelopers.blogspot.com/2010/07/making-tracks-new-kml-extensions-in.html
+http://google-latlong.blogspot.com/2010/06/relive-your-hiking-biking-and-other.html
+
+****** !!!! ****
+http://code.google.com/intl/el-GR/apis/kml/documentation/kmlreference.html#trackexample
+
+http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca64772&ct=mdcc&prevstart=0
+*/
+
+	$str='<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+ xmlns:gx="http://www.google.com/kml/ext/2.2">
+ ';
+
+		$str.="<Document>
+		<name>Tracklog File</name>
+		<Schema id=\"schema\">
+		  <gx:SimpleArrayField name=\"Climb\" type=\"float\">
+			  <displayName>CLimb (m/s)</displayName>
+		  </gx:SimpleArrayField>
+		</Schema>".
+'<!-- Normal track style -->
+    <Style id="track_n">
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <IconStyle>
+        <scale>.5</scale>
+        <Icon>
+          <href>http://earth.google.com/images/kml-icons/track-directional/track-none.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+<!-- Highlighted track style -->
+    <Style id="track_h">
+      <IconStyle>
+        <scale>1.2</scale>
+        <Icon>
+          <href>http://earth.google.com/images/kml-icons/track-directional/track-none.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <StyleMap id="track">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#track_n</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#track_h</styleUrl>
+      </Pair>
+    </StyleMap>
+<!-- Normal multiTrack style -->
+    <Style id="multiTrack_n">
+      <LineStyle>
+        <color>99ffac59</color>
+        <width>6</width>
+      </LineStyle>
+      <IconStyle>
+        <Icon>
+          <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+<!-- Highlighted multiTrack style -->
+    <Style id="multiTrack_h">
+      <LineStyle>
+        <color>99ffac59</color>
+        <width>8</width>
+      </LineStyle>
+      <IconStyle>
+        <scale>1.2</scale>
+        <Icon>
+          <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <StyleMap id="multiTrack">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#multiTrack_n</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#multiTrack_h</styleUrl>
+      </Pair>
+    </StyleMap>
+<!-- Normal waypoint style -->
+    <Style id="waypoint_n">
+      <IconStyle>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+<!-- Highlighted waypoint style -->
+    <Style id="waypoint_h">
+      <IconStyle>
+        <scale>1.2</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <StyleMap id="waypoint">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#waypoint_n</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#waypoint_h</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="lineStyle">
+      <LineStyle>
+        <color>99ffac59</color>
+        <width>6</width>
+      </LineStyle>
+    </Style>'.
+
+				"<Placemark id='Tracklog'>
 					<name>Tracklog</name>
-					<Style >
-						<LineStyle>
-						  <color>ff0000ff</color>
-						  <width>2</width>
-						</LineStyle>
-				  	</Style>
-					<LineString>
+
+					<styleUrl>#multiTrack</styleUrl>
+
+					".
+/*					"<LineString>
 						<altitudeMode>absolute</altitudeMode>
 						<coordinates>\n";
+
+					".
+					*/
+					"<gx:Track>					
+					<altitudeMode>absolute</altitudeMode>		
+					\n";
+
 
 				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
 				// $kml_file_contents=utf8_encode(str_replace("&nbsp;"," ",$kml_file_contents));
@@ -1134,11 +1259,27 @@ $resStr='{
 							$lat=$thisPoint->lat;
 							// $data_alt[$i]=$thisPoint->getAlt();
 							if ( $alt > $this->maxAllowedHeight ) continue;
-							$str.=$lon.",".$lat.",".($alt*$exaggeration)." ";
-							$i++;
-							if($i % 50==0) $str.="\n";
+							// $str.=$lon.",".$lat.",".($alt*$exaggeration)." ";
+							
+							if ($tm0) {
+								$dalt=$alt-$alt0;
+								$dt=$thisPoint->getTime()-$tm0;
+								$climb=sprintf("%.1f",$dalt/$dt);
+							} else {
+								$climb=0;
+							} 							
+							$tm0=$thisPoint->getTime();
+							$alt0=$alt;
+							
+							$strWhen.="<when>".$this->DATE."T".sec2Time24h( ( $thisPoint->getTime() )%(3600*24) )."Z</when>\n";
+					        $strCord.="<gx:coord>$lon $lat $alt</gx:coord>\n";
+							$strClimb.="<gx:value>$climb</gx:value>\n";
 
-							if($i % 5 ==0) {
+
+							$i++;
+							//if($i % 50==0) $str.="\n";
+
+							if($i % 5 ==0 && 0) {
 							  $timeStampStr.="<Placemark>
 								<TimeStamp>
 									<when>".$this->DATE."T".sec2Time24h( ( $thisPoint->getTime() )%(3600*24) )."Z</when>
@@ -1153,16 +1294,35 @@ $resStr='{
 					}
 				}
 
-				$str.="</coordinates>\n</LineString>\n";
+				//$str.="</coordinates>\n</LineString>\n";
+				$str.=$strWhen."\n\n".$strCord.
+				"<ExtendedData>
+		            <SchemaData schemaUrl=\"#schema\">
+		              <gx:SimpleArrayData name=\"Climb\">
+						".$strClimb."
+						 </gx:SimpleArrayData>
+					</SchemaData>
+				  </ExtendedData>
+				  
+				  <Model  id=\"model_2\">
+ <Link>
+   <href>http://pgforum.home/modules/leonardo/img/models/pg1.dae</href>
+ </Link>
+</Model>
+
+
+				</gx:Track>
+						";
+							
 				$str.="</Placemark>";
 
 
-		$str.= "
+		$str111.= "
 				<Folder>
 				<name>Timestamps</name>
 				";
 
-	    $str.= "
+	    $str111.= "
 	<Style id='trackMark'>
 		<IconStyle>
 		  <color>".$KMLlineColor."</color>
@@ -1175,8 +1335,8 @@ $resStr='{
 		  <color>ffff862a</color>
 		</LabelStyle>
 	</Style>";
-				$str.= $timeStampStr;
-				$str.= "\n</Folder>\n";
+				// $str.= $timeStampStr;
+				$strxxx.= "\n</Folder>\n";
 				$str.="\n</Document>\n</kml>";
 
 				writeFile($kmlTempFile,$str);

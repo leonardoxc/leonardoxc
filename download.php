@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.30 2010/03/14 20:56:12 manolis Exp $                                                                 
+// $Id: download.php,v 1.31 2010/08/04 21:51:00 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -135,7 +135,9 @@
 			$KMLlineColor="ff".substr($c,4,2).substr($c,2,2).substr($c,0,2);
 			
 		$xml='<?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://earth.google.com/kml/2.1">'.
+<kml xmlns="http://www.opengis.net/kml/2.2"
+ xmlns:gx="http://www.google.com/kml/ext/2.2">
+ '.
 "<NetworkLinkControl>
   <Update>
     <targetHref>".str_replace("&","&amp;",$getFlightKML)."</targetHref>
