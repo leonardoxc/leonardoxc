@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.182 2010/08/04 21:51:00 manolis Exp $
+// $Id: CL_flightData.php,v 1.183 2010/08/05 08:58:40 manolis Exp $
 //
 //************************************************************************
 
@@ -1305,8 +1305,21 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
 				  </ExtendedData>
 				  
 				  <Model  id=\"model_2\">
+				  <altitudeMode>absolute</altitudeMode>
+			<Orientation>
+				<heading>0</heading>
+				<tilt>0</tilt>
+				<roll>0</roll>
+			</Orientation>
+			<Scale>
+				<x>1</x>
+				<y>1</y>
+				<z>1</z>
+			</Scale>
+			<ResourceMap>
+			</ResourceMap>
  <Link>
-   <href>http://pgforum.home/modules/leonardo/img/models/pg1.dae</href>
+   <href>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath.$moduleRelPath."/img/models/pg1.dae</href>
  </Link>
 </Model>
 
