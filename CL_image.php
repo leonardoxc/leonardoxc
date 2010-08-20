@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_image.php,v 1.6 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_image.php,v 1.7 2010/08/20 13:58:28 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -502,6 +502,62 @@ class CLimage {
 	}
 	
 	
+	 
+/**
+* Returns GPS latitude & longitude as decimal values
+**/	
+  function getGPS($image)  {
+    $exif = exif_read_data($image, 0, true);
+    if ($exif){
+		$lat = $exif['GPS']['GPSLatitude']; 
+		$log = $exif['GPS']['GPSLongitude'];
+		if ($lat && $log) {
+		  // latitude values //
+		  $lat_degrees = CLimage::divide($lat[0]);
+		  $lat_minutes = CLimage::divide($lat[1]);
+		  $lat_seconds = CLimage::divide($lat[2]);
+		  $lat_hemi = $exif['GPS']['GPSLatitudeRef'];
+	 
+		  // longitude values //
+		  $log_degrees = CLimage::divide($log[0]);
+		  $log_minutes = CLimage::divide($log[1]);
+		  $log_seconds = CLimage::divide($log[2]);
+		  $log_hemi = $exif['GPS']['GPSLongitudeRef'];
+	 
+		  $lat_decimal = CLimage::toDecimal($lat_degrees, $lat_minutes, $lat_seconds, $lat_hemi);
+		  $log_decimal = CLimage::toDecimal($log_degrees, $log_minutes, $log_seconds, $log_hemi);
+ 		}
+		 // now the time:
+		 // warning the time is usually in local time....
+		$tm=$exif['EXIF']['DateTimeOriginal'];
+		if ($tm) 
+			$tm=strtotime($tm);
+		else 
+			$tm=$exif['FILE']['FileDateTime'];
+		
+		return array($lat_decimal, $log_decimal,$tm);
+     } else{
+		return array(0,0,0);
+	 }
+  }
+ 
+  function toDecimal($deg, $min, $sec, $hemi)
+  {
+    $d = $deg + $min/60 + $sec/3600;
+    return ($hemi=='S' || $hemi=='W') ? $d*=-1 : $d;
+  }
+ 
+  function divide($a)
+  {
+  // evaluate the string fraction and return a float //	
+    $e = explode('/', $a);
+  // prevent division by zero //
+    if (!$e[0] || !$e[1]) {
+      return 0;
+    }	else{
+    return $e[0] / $e[1];
+    }
+  }
 	/******************************************************************************
 	* End of Function:     get_jpeg_image_data
 	******************************************************************************/

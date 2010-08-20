@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.51 2010/03/18 22:46:50 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.52 2010/08/20 13:58:28 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -437,6 +437,12 @@ var lon=0;
 	}
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+	
+	<?
+		// draw the photo positions if any
+	
+	
+	?>
 	
 	<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
 	 // $("#airspaceShow").attr('checked', true);

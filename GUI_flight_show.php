@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.97 2010/03/24 15:04:12 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.98 2010/08/20 13:58:28 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -594,6 +594,9 @@ if ($flight->hasPhotos) {
 	$flightPhotos=new flightPhotos($flight->flightID);
 	$flightPhotos->getFromDB();
 
+	// get geoinfo
+	$flightPhotos->computeGeoInfo();
+
 	$imagesHtml="";
 	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 		
@@ -603,7 +606,7 @@ if ($flight->hasPhotos) {
 	
 			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
-						
+			
 			if (file_exists($imgBig) ) {
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
 				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);

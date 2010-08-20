@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.11 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.12 2010/08/20 13:58:28 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -80,6 +80,72 @@ class flightPhotos {
 		return $newNameTmp;
 	}
 	
+	function computeGeoInfo() {
+	
+		$changed=0;
+		$gotTrack=0;
+		foreach ( $this->photos as $photoNum=>$photoInfo) {
+			if ($photoInfo['tm']==1) { // 1 -> we have alredy tried to get geotag info but failed
+				continue;
+			}
+			
+			if (!$photoInfo['tm']) { // no attemp was made to get GeoInfo
+				$imgPath=$this->getPhotoAbsPath($photoNum);
+				$gpsData = CLimage::getGPS($imgPath);
+				$this->photos[$photoNum]['lat']=$gpsData[0];
+				$this->photos[$photoNum]['lon']=$gpsData[1];
+				$this->photos[$photoNum]['tm']=$gpsData[2]; // warning tm in local time ...
+				$changed=1; // we got at least the tm				
+			}
+			
+			if (!$this->photos[$photoNum]['tm']) { 
+				$this->photos[$photoNum]['tm']=1;
+				$changed=1;
+				continue;
+			}
+			
+			if (!$this->photos[$photoNum]['lat'] && !$this->photos[$photoNum]['lon']) {
+				// try to get lat/lon depending on the position in track	
+				if (!$gotTrack) {
+					//echo "getting track!";	
+					$flight=new flight();
+					$flight->getFlightFromDB($this->flightID,0); //dont update takeoffs
+					list($trackLat,$trackLon,$trackTms)=$flight->getXYValues(1); // get also TM					
+					$gotTrack=1;
+				}
+				
+				//correct the tm of the photo that we got from EXIF by subtracking up the timezone offset
+				$this->photos[$photoNum]['tm']-=$flight->timezone*3600;
+				
+				//we will use this to add to every time entry we gto from getXYValues()
+				$startTm=strtotime($flight->DATE);
+				//echo "Flight start time is ".$flight->DATE." -> ".$startTm;
+
+				$lastTm=$startTm;
+				$photoTm=$this->photos[$photoNum]['tm'];
+				
+				//echo " starttime:$lastTm  photo : $photoTm<BR>".count($trackTms);
+				foreach($trackTms as $i=>$tm) {
+					$thisTm=$startTm+$tm;
+					if ( $photoTm<$thisTm && $photoTm>$lastTm ) {
+					
+						//echo "found position!!! tm=$thisTm<BR>";
+						$this->photos[$photoNum]['lat']=$trackLat[$i];
+						$this->photos[$photoNum]['lon']=-$trackLon[$i];
+						$changed=1;
+						break;
+					}				
+				}				
+				
+			}
+			
+			
+		}		
+		
+		if ($changed) {
+			$this->putToDB(0); // dont update the flights table
+		}
+	}
 	
 	function addPhoto($num,$path,$name,$description,$updateFlightsTable=1) {
 		global $db,$photosTable,$flightsTable;
@@ -185,6 +251,9 @@ class flightPhotos {
 			$this->photos[$this->photosNum]['path']=$row['path'];
 			$this->photos[$this->photosNum]['name']=$row['name'];
 			$this->photos[$this->photosNum]['description']=$row['description'];
+			$this->photos[$this->photosNum]['lat']=$row['lat'];
+			$this->photos[$this->photosNum]['lon']=$row['lon'];
+			$this->photos[$this->photosNum]['tm']=$row['tm'];
 			//print_r($this->photos[$this->photosNum]);
 			$this->photosNum++;			
 		}
@@ -206,9 +275,12 @@ class flightPhotos {
 	    }
 		//print_r($this->photos);
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
-			$query="INSERT INTO $photosTable  (flightID,path,name,description) VALUES (".
+			$query="INSERT INTO $photosTable  (flightID,path,name,lat,lon,tm,description) VALUES (".
 				$this->flightID.",'".prep_for_DB($photoInfo['path'])."','".
-									 prep_for_DB($photoInfo['name'])."','".
+									 prep_for_DB($photoInfo['name'])."',".
+									 ($photoInfo['lat']+0).",".
+									 ($photoInfo['lon']+0).",".
+									 ($photoInfo['tm']+0).",'".
 									 prep_for_DB($photoInfo['description'])."' ) ";
 		
 			// echo $query;

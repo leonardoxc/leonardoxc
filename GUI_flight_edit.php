@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.50 2010/04/14 18:58:51 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.51 2010/08/20 13:58:28 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -145,6 +145,9 @@
 		}
 		
 		if ( $photosChanged ){
+			// recompute geoTag info
+			$flightPhotos->computeGeoInfo();
+			
 			//delete igc2kmz.kmz file
 			require_once dirname(__FILE__).'/FN_igc2kmz.php';			
 			deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions

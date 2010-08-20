@@ -45,3 +45,9 @@ ALTER TABLE `leonardo_flights_deleted` ADD `startType` TINYINT UNSIGNED NOT NULL
 
 # for standalone operation only 
 # ALTER TABLE `leonardo_users` CHANGE `user_password` `user_password` VARCHAR( 34 )  NOT NULL;
+
+
+#2010/08/20
+# add geotagging to photos
+ALTER TABLE `leonardo_photos` ADD `tm` INT UNSIGNED DEFAULT '0' NOT NULL ,
+ADD `lat` FLOAT DEFAULT '0' NOT NULL , ADD `lon` FLOAT DEFAULT '0' NOT NULL ;

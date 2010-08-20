@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.183 2010/08/05 08:58:40 manolis Exp $
+// $Id: CL_flightData.php,v 1.184 2010/08/20 13:58:27 manolis Exp $
 //
 //************************************************************************
 
@@ -1913,7 +1913,7 @@ $kml_file_contents=
 
   }
 
-	function getXYValues() {		
+	function getXYValues($tmAlso=0) {		
 		$data_X =array();
 		$data_Y =array();
 
@@ -1929,10 +1929,14 @@ $kml_file_contents=
 					$thisPoint=new gpsPoint($line,$this->timezone);
 					$data_X[$i]=$thisPoint->lat;
 					$data_Y[$i]=$thisPoint->lon;
+					if ($tmAlso) $data_tm[$i]=$thisPoint->gpsTime;
 					$i++;
 			}
 		}
-		return array($data_X,$data_Y);
+		if ($tmAlso) 
+			return array($data_X,$data_Y,$data_tm);
+		else 
+			return array($data_X,$data_Y);
 	}
 
 	function getRawHeader(){
