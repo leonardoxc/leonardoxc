@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.52 2010/08/20 13:58:28 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.53 2010/08/23 09:21:51 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -105,6 +105,7 @@
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/polyline.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/jquery.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/xns.js" type="text/javascript"></script>
 
 <? if ( $CONF['thermals']['enable']  ) { ?>
 <script src="<?=$moduleRelPath?>/js/ClusterMarkerCustomIcon.js" type="text/javascript"></script>
@@ -199,6 +200,7 @@
 </table>
 <div id="pdmarkerwork"></div>
 
+<div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
 <script type="text/javascript">
 
@@ -268,6 +270,9 @@ var lon=0;
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl());
 	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
+/*
+TODO move to API v3 !!!!
+*/
 
 	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=14142&t=a.kml");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_trk&flightID=14722&lang=english&w=2&c=FF0000&an=1&t=a.kml");
@@ -396,10 +401,9 @@ var lon=0;
 			var marker = new GMarker(point);		
 		}	
 
-	 GEvent.addListener(marker, "click", function() {
-	  	getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);
-		
-	  });
+		GEvent.addListener(marker, "click", function() {
+	  		getAjax('EXT_takeoff.php?op=get_info&wpID='+id,null,openMarkerInfoWindow);		
+		});
 	  
 	  return marker;
 	}
@@ -437,12 +441,81 @@ var lon=0;
 	}
 
 	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
+
+	function hidePhoto() {
+		$('#photoDiv').hide();
+	}	
+	function showPhoto(img,img2num,thw,thh){					
+		var divWidth='';
+		if ( parseInt(thw)+2 >2 ) divWidth='width:'+(parseInt(thw)+2)+'px;';
+		var iconX=10;
+		var iconY=10;			
+		$('#photoDiv').html('<table><tr><td><div align="right"><a href="javascript:hidePhoto();"><img src="img/icon_x_white.gif" border="0"></a></div></td></tr><tr><td><div style="background-color: #000000; layer-background-color: #000000; border: 0pt none #000000; padding: 0pt; '+divWidth+'"><div style="background-color: #FFFFFF; layer-background-color: #FFFFFF; border: 1px solid #000000; background-image: url(images/img_load.gif); background-repeat: no-repeat;"><center><a border="0" href="'+img+'" target=_blank><img src="'+img+'" border="0" width="'+thw+'" height="'+thh+'"></a></center></div></div></td></tr></table>').css({left: iconX+"px", top: iconY+"px"}).show();
+
+	}
 	
-	<?
-		// draw the photo positions if any
+	var photoMarkers=[];
+	function createPhotoMarker(photoPoint,num,imgIcon,imgBig,width,height){
+			var imgStr="<img id='photo$num' src='"+imgIcon+"' class=\"photos\" border=\"0\">";
+			var html="<a class='shadowBox imgBox' href='javascript:showPhoto(\""+imgBig+"\","+num+","+width+","+height+");' >"+imgStr+"</a>";			
+			
+			var Icon = new GIcon(G_DEFAULT_ICON, 'img/icon_photo_pinned.png');
+			Icon.iconSize=new GSize(32,32);
+			Icon.shadowSize=new GSize(32,32);
+			Icon.iconAnchor=new GPoint(16,32);
+			Icon.infoWindowAnchor=new GPoint(16,0);
+		
+			var marker = new GMarker(photoPoint,Icon);
+			GEvent.addListener(marker, "click", function() {
+			   marker.openInfoWindowHtml(html);
+			});	
+			return marker;
+			
+	}
+	function drawPhoto(lat,lon,num,imgIcon,imgBig,width,height){ 	
+			var photoPoint= new GLatLng(lat, lon) ;			
+			var photoMarker = createPhotoMarker(photoPoint,num,imgIcon,imgBig,width,height);
+			photoMarkers[num] = photoMarker ;	
+			map.addOverlay(photoMarker );
+
+	}
+<?
+	// draw the photo positions if any
+if ($flight->hasPhotos) {
+	require_once dirname(__FILE__)."/CL_flightPhotos.php";
+
+	$flightPhotos=new flightPhotos($flight->flightID);
+	$flightPhotos->getFromDB();
+
+	// get geoinfo
+	$flightPhotos->computeGeoInfo();
+
+	$imagesHtml="";
+	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
+		
+		if ($photoInfo['lat'] && $photoInfo['lon'] ) {
+			$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+			$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
 	
+			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
+			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
+
+			if (file_exists($imgBig) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgBig);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgTarget=$imgBigRel;
+			} else 	if (file_exists($imgIcon) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgIcon);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgTarget=$imgIconRel;
+			} 
+
+			echo " 	drawPhoto(".$photoInfo['lat'].",".$photoInfo['lon'].",$photoNum,'$imgIconRel','$imgTarget',$width,$height); \n";
+		}		
+	}
+}
 	
-	?>
+?>
 	
 	<? if ($CONF_airspaceChecks && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID))  ) { ?>
 	 // $("#airspaceShow").attr('checked', true);
