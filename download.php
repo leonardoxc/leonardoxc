@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.31 2010/08/04 21:51:00 manolis Exp $                                                                 
+// $Id: download.php,v 1.32 2010/08/24 13:13:17 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -36,7 +36,7 @@
 	
 
 	$type=makeSane($_REQUEST['type']);
-	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc")) ) return;
+	if (!in_array($type,array("kml_task","kml_trk","kml_trk_color","kml_wpt","sites","igc","explore_ge","explore")) ) return;
 
 	$updateColor=makeSane($_REQUEST['updateColor']);
 	if ($updateColor) $type='kml_trk_color';
@@ -246,8 +246,117 @@
 		
 		$file_name="Leonardo site guide.kml";
 	
-	}
+	} else if ($type=="explore_ge") {
+		$baseUrl="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/$moduleRelPath");
+	
+		$exploreKML="$baseUrl/download.php?type=explore";
+		
+		$logoUrl="$baseUrl/templates/basic/tpl/leonardo_logo.gif";
+		
+		$xml='<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Folder>
+    <name>Leonardo Flight Database</name>
+    <visibility>1</visibility>
+    <open>1</open>
+    <description>Browse the entire Leonardo Database on Google Earth. This includes tracks,takeoff locations and photos</description>
+    <NetworkLink>
+      <name>Flights</name>
+      <visibility>1</visibility>
+      <open>1</open>
+      <description>Flights view</description>
+      <refreshVisibility>0</refreshVisibility>
+      <flyToView>0</flyToView>
+      <Link>
+        <href><![CDATA['.$exploreKML.']]></href>
+        <refreshInterval>0</refreshInterval>
+        <viewRefreshMode>onStop</viewRefreshMode>
+        <viewRefreshTime>1</viewRefreshTime>
+      </Link>
+    </NetworkLink>
+  </Folder>
+</kml>';
 
+		$file_name="Leonardo Explorer.kml";
+	} else if ($type=="explore") {
+		// BBOX=[longitude_west, latitude_south, longitude_east, latitude_north]
+		$box=$_GET['BBOX'];
+		$parts=split(",",$box);
+
+		$west	= $parts[0];
+		$south	= $parts[1];
+		$east	= $parts[2];
+		$north	= $parts[3];
+
+		$center_lon = (($east - $west) / 2) + $west;
+		$center_lat = (($north - $south) / 2) + $south;
+
+
+		
+		 $query="SELECT * FROM $flightsTable WHERE 
+				 firstLat>=$south &&  firstLat<=$north &&  
+				 firstLon>=$west && firstLon<=$east ORDER BY  FLIGHT_POINTS DESC LIMIT 100 ";  
+		 //echo $query;
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 echo("<H3> Error in query! $query </H3>\n");
+			 exit();
+		 }
+
+		$i=0;
+		$str='';
+		while ($row = mysql_fetch_assoc($res)) { 
+
+			$name=getPilotRealName($row["userID"],$row["userServerID"],0,0,0);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+										getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])) 		
+									);
+			$this_year=substr($row[DATE],0,4);		
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+						str_replace("%PILOTID%",getPilotID($row["userServerID"],$row["userID"]),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+						$row['filename']);
+					//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			
+			if ($row['takeoffVinicity'] > $takeoffRadious ) 
+				$location=getWaypointName($row['takeoffID'])." [~".sprintf("%.1f",$row['takeoffVinicity']/1000)." km]"; 
+			else $location=getWaypointName($row['takeoffID']);
+			
+			$flight=new flight();
+			$flight->getFlightFromDB($row['ID'],0,$row);
+			$extendedInfo=0;
+			$lineColor="ff0000";
+			$exaggeration=1;
+			$lineWidth=2;
+			
+			$getFlightKML=$flight->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo";
+			$desc=$flight->kmlGetDescription($extendedInfo,$getFlightKML,1);
+			
+			$str.="<Placemark>
+				<name><![CDATA[$location]]></name>
+				".$desc."
+				<Point>
+				<coordinates>".$row['firstLon'].','.$row['firstLat']."</coordinates>
+				</Point>
+				</Placemark>			
+			";
+			$i++;
+		}
+		
+		$xml='<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Folder>
+    <name>found '.$i.' tracks'.'</name>
+    <visibility>1</visibility>
+    <open>1</open>
+    <description>Leonardo Tracks ('.$i.')</description>
+	'.$str.'
+
+  </Folder>
+</kml>';
+
+
+		$file_name="Leonardo Tracks Explorer.kml";
+	}
 		list($browser_agent,$browser_version)=getBrowser();
 
 		if ($browser_agent == 'opera')

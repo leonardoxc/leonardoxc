@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.184 2010/08/20 13:58:27 manolis Exp $
+// $Id: CL_flightData.php,v 1.185 2010/08/24 13:13:17 manolis Exp $
 //
 //************************************************************************
 
@@ -868,7 +868,7 @@ $resStr='{
 	//------------------------------
 
 
-	function kmlGetDescription($ext,$getFlightKML) {
+	function kmlGetDescription($ext,$getFlightKML,$loadTrackLink=0) {
 		if ($this->takeoffVinicity > $takeoffRadious )
 			$location=getWaypointName($this->takeoffID,0)." [~".sprintf("%.1f",$this->takeoffVinicity/1000)." km]";
 		else $location=getWaypointName($this->takeoffID,0);
@@ -881,9 +881,14 @@ $resStr='{
 		//$fl_url=str_replace("&","&#38;",$this->getFlightLinkURL());
 		//$fl_url=str_replace("&nbsp;"," ",$fl_url);
 
-		$str="<description><![CDATA[<table cellpadding=0 cellspacing=0>".
-			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$fl_url'><b>"._See_more_details."</b></a></div></td></tr>".
-			"<tr bgcolor='#CCCCCC'><td>"._PILOT."</td><td>  ".htmlspecialchars($this->userName)."</td></tr>".
+		$str="<description><![CDATA[<table cellpadding=0 cellspacing=0>";
+		
+		if ($loadTrackLink) 
+			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML'><b>Load Track</b></a></div></td></tr>";					
+		else 
+			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$fl_url'><b>"._See_more_details."</b></a></div></td></tr>";
+		
+		$str.="<tr bgcolor='#CCCCCC'><td>"._PILOT."</td><td>  ".htmlspecialchars($this->userName)."</td></tr>".
 			"<tr><td>"._TAKEOFF_LOCATION."</td><td> ".$location."</td></tr>".
 			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_TIME."</td><td>    ".formatDate($this->DATE,false)." - ".sec2Time($this->START_TIME,1)."</td></tr>".
 			"<tr><td>"._LANDING_LOCATION."</td><td> ".$location_land."</td></tr>".
@@ -899,7 +904,7 @@ $resStr='{
 			"<tr><td>"._MIN_ALTITUDE."</td><td> ".formatAltitude($this->MIN_ALT)."</td></tr>".
 			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_ALTITUDE."</td><td> ".formatAltitude($this->TAKEOFF_ALT)."</td></tr>".
 			"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
-			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://leonardo.thenet.gr'>Leonardo</a></div></td></tr>";
+			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://www.leonardoxc.net'>Leonardo</a></div></td></tr>";
 			if($ext) $str.=	"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>Extra analysis module by  Man\'s <a href='http://www.parawing.net'>GPS2GE V2.0</a></div></td></tr>";
 			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML&show_url=1'>URL of this KML file</div></td></tr>";
 
