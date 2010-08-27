@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.57 2010/08/20 13:58:28 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.58 2010/08/27 13:13:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -491,10 +491,11 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 				}
 			}
 		}  
+		// also try to get geotag info	
+		$flightPhotos->computeGeoInfo();
+
     } // took care of photos
 	
-	// also try to get geotag info	
-	$flightPhotos->computeGeoInfo();
 	
 
 	// now is a good time to disable duplicate flights we have found from other servers
