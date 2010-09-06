@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_login.php,v 1.19 2010/04/07 13:08:54 manolis Exp $                                                                 
+// $Id: GUI_login.php,v 1.20 2010/09/06 13:02:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: GUI_login.php,v 1.19 2010/04/07 13:08:54 manolis Exp $
+ *   $Id: GUI_login.php,v 1.20 2010/09/06 13:02:33 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -269,7 +269,7 @@ else
 // 		make_jumpbox('viewforum.'.$phpEx, $forum_id);
 		$Ltemplate->assign_vars(array(
 			'USERNAME' => $username,
-			'adminMail'=> $CONF_admin_email,
+			'adminMail'=> ($CONF_admin_email_support?$CONF_admin_email_support:$CONF_admin_email),
 			'IMG_PATH'=>$moduleRelPath."/img/",
 			'L_ENTER_PASSWORD' => (isset($HTTP_GET_VARS['admin'])) ? $lang['Admin_reauthenticate'] : $lang['Enter_password'],
 			'L_SEND_PASSWORD' => _Forgotten_password,
