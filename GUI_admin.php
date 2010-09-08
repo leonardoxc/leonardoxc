@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.57 2010/04/28 10:52:39 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.58 2010/09/08 13:22:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -216,8 +216,8 @@ echo "</ul><br><hr>";
 		findUnusedIGCfiles(dirname(__FILE__)."/flights",0,0) ;
 		echo "</ol>";    
 	} else if ($admin_op=="cleanGEFiles") {
-		deleteFiles(dirname(__FILE__)."/flights",0,".kmz");
-		deleteFiles(dirname(__FILE__)."/flights",0,".kml");
+		deleteFiles(dirname(__FILE__)."/data/flights/kml",0,".kmz");
+		deleteFiles(dirname(__FILE__)."/data/flights/kml/",0,".kml");
     } else if ($admin_op=="cleanGMAPSfiles") {
 		deleteFiles(dirname(__FILE__)."/flights",0,".json.js");
     } else if ($admin_op=="cleanOldJSfiles") {

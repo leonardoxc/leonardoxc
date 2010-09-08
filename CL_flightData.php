@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.185 2010/08/24 13:13:17 manolis Exp $
+// $Id: CL_flightData.php,v 1.186 2010/09/08 13:22:17 manolis Exp $
 //
 //************************************************************************
 
@@ -981,13 +981,13 @@ $resStr='{
 		}
 
 		$kml_file_contents.="<Folder>
-		<name>OLC Task</name>
+		<name>XC Task</name>
 
 		";
 
 
 		$kml_file_contents.="<Placemark>
-		<name>OLC Task</name>
+		<name>XC Task</name>
 		<Style id='taskLine'>
 			<LineStyle><color>ffffffff</color></LineStyle>
 		</Style>
@@ -997,11 +997,11 @@ $resStr='{
 		";
 
 		$icons=array(
-		1=>array("root://icons/palette-3.png",0,192),
-		2=>array("root://icons/palette-3.png",32,192),
-		3=>array("root://icons/palette-3.png",64,192),
-		4=>array("root://icons/palette-3.png",96,192),
-		5=>array("root://icons/palette-3.png",128,192) );
+		1=>array("http://maps.google.com/mapfiles/kml/paddle/grn-circle.png",32,1),
+		2=>array("http://maps.google.com/mapfiles/kml/paddle/1.png",32,1),
+		3=>array("http://maps.google.com/mapfiles/kml/paddle/2.png",32,1),
+		4=>array("http://maps.google.com/mapfiles/kml/paddle/3.png",32,1),
+		5=>array("http://maps.google.com/mapfiles/kml/paddle/purple-square.png",32,1) );
 
 
 		global  $CONF;
@@ -1022,19 +1022,16 @@ $resStr='{
 		<Placemark>
 				 <Style>
 				  <IconStyle>
-					<scale>0.4</scale>
+					<scale>1.0</scale>
 					<Icon>
-					  <href>".$icons[$j+1][0]."</href>
-					  <x>".$icons[$j+1][1]."</x>
-					  <y>".$icons[$j+1][2]."</y>
-					  <w>32</w>
-					  <h>32</h>
+					  <href>".$icons[$j+1][0]."</href>					 
 					</Icon>
+					<hotSpot x=\"32\" y=\"1\" xunits=\"pixels\" yunits=\"pixels\"/>
 				  </IconStyle>
 				</Style>
 		 <Point>
 			<coordinates>".$newPoint->lon().",".$newPoint->lat().",0</coordinates>
-		  </Point>
+		 </Point>
 		</Placemark>";
 				$j++;
 
@@ -1096,7 +1093,7 @@ $resStr='{
 		$kmlTempFile=$kmzFile.".tmp.kml";
 
 // DEBUG MANOLIS force creation
-		if ( !file_exists($kmzFile)  || 1 ) { // create the kmz file containg the points only
+		if ( !file_exists($kmzFile)  ) { // create the kmz file containg the points only
 
 			$filename=$this->getIGCFilename(2);
 			$lines = file ($filename);
@@ -1126,43 +1123,13 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
 		  <gx:SimpleArrayField name=\"Climb\" type=\"float\">
 			  <displayName>CLimb (m/s)</displayName>
 		  </gx:SimpleArrayField>
-		</Schema>".
-'<!-- Normal track style -->
-    <Style id="track_n">
-      <LabelStyle>
-        <scale>0</scale>
-      </LabelStyle>
-      <IconStyle>
-        <scale>.5</scale>
-        <Icon>
-          <href>http://earth.google.com/images/kml-icons/track-directional/track-none.png</href>
-        </Icon>
-      </IconStyle>
-    </Style>
-<!-- Highlighted track style -->
-    <Style id="track_h">
-      <IconStyle>
-        <scale>1.2</scale>
-        <Icon>
-          <href>http://earth.google.com/images/kml-icons/track-directional/track-none.png</href>
-        </Icon>
-      </IconStyle>
-    </Style>
-    <StyleMap id="track">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#track_n</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#track_h</styleUrl>
-      </Pair>
-    </StyleMap>
-<!-- Normal multiTrack style -->
-    <Style id="multiTrack_n">
+		</Schema>";
+		
+$strXXX.='<!-- Normal multiTrack style -->
+    <Style id="Track_n">
       <LineStyle>
-        <color>99ffac59</color>
-        <width>6</width>
+			<color>ff0000ff</color>
+			<width>2</width>
       </LineStyle>
       <IconStyle>
         <Icon>
@@ -1171,10 +1138,10 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
       </IconStyle>
     </Style>
 <!-- Highlighted multiTrack style -->
-    <Style id="multiTrack_h">
+    <Style id="Track_h">
       <LineStyle>
-        <color>99ffac59</color>
-        <width>8</width>
+			<color>ff0000ff</color>
+			<width>1</width>
       </LineStyle>
       <IconStyle>
         <scale>1.2</scale>
@@ -1183,65 +1150,38 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
         </Icon>
       </IconStyle>
     </Style>
-    <StyleMap id="multiTrack">
+	
+    <StyleMap id="TrackStyle">
       <Pair>
         <key>normal</key>
-        <styleUrl>#multiTrack_n</styleUrl>
+        <styleUrl>#Track_n</styleUrl>
       </Pair>
       <Pair>
         <key>highlight</key>
-        <styleUrl>#multiTrack_h</styleUrl>
+        <styleUrl>#Track_h</styleUrl>
       </Pair>
     </StyleMap>
-<!-- Normal waypoint style -->
-    <Style id="waypoint_n">
-      <IconStyle>
-        <Icon>
-          <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
-        </Icon>
-      </IconStyle>
-    </Style>
-<!-- Highlighted waypoint style -->
-    <Style id="waypoint_h">
-      <IconStyle>
-        <scale>1.2</scale>
-        <Icon>
-          <href>http://maps.google.com/mapfiles/kml/pal4/icon61.png</href>
-        </Icon>
-      </IconStyle>
-    </Style>
-    <StyleMap id="waypoint">
-      <Pair>
-        <key>normal</key>
-        <styleUrl>#waypoint_n</styleUrl>
-      </Pair>
-      <Pair>
-        <key>highlight</key>
-        <styleUrl>#waypoint_h</styleUrl>
-      </Pair>
-    </StyleMap>
-    <Style id="lineStyle">
-      <LineStyle>
-        <color>99ffac59</color>
-        <width>6</width>
-      </LineStyle>
-    </Style>'.
+	
+	';
 
-				"<Placemark id='Tracklog'>
+		$str.="<Placemark id='timeTrack'>
 					<name>Tracklog</name>
+					    <Style id='Track1'>
+      <LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+      </LineStyle>
+      <IconStyle>
+        <Icon>
+          <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>";
+	
 
-					<styleUrl>#multiTrack</styleUrl>
-
-					".
-/*					"<LineString>
-						<altitudeMode>absolute</altitudeMode>
-						<coordinates>\n";
-
-					".
-					*/
-					"<gx:Track>					
-					<altitudeMode>absolute</altitudeMode>		
-					\n";
+				$str.="<gx:MultiTrack id=\"MultiTrack\">
+				<gx:Track>					
+				<altitudeMode>absolute</altitudeMode>\n\n";
 
 
 				//$kml_file_contents=str_replace("&","&#38;",$kml_file_contents);
@@ -1270,6 +1210,7 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
 								$dalt=$alt-$alt0;
 								$dt=$thisPoint->getTime()-$tm0;
 								$climb=sprintf("%.1f",$dalt/$dt);
+								if (abs($climb) > 20 ) $climb=0;
 							} else {
 								$climb=0;
 							} 							
@@ -1277,25 +1218,13 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
 							$alt0=$alt;
 							
 							$strWhen.="<when>".$this->DATE."T".sec2Time24h( ( $thisPoint->getTime() )%(3600*24) )."Z</when>\n";
-					        $strCord.="<gx:coord>$lon $lat $alt</gx:coord>\n";
+					        $strCord.="<gx:coord>".sprintf("%.5f",$lon)." ".sprintf("%.5f",$lat)." ".round($alt)."</gx:coord>\n";
 							$strClimb.="<gx:value>$climb</gx:value>\n";
 
-
+							$simpleTrackStr.=sprintf("%.5f",$lon).",".sprintf("%.5f",$lat).",".round($alt)." ";
+							if($i % 50==0) $simpleTrackStr.="\n";
+							
 							$i++;
-							//if($i % 50==0) $str.="\n";
-
-							if($i % 5 ==0 && 0) {
-							  $timeStampStr.="<Placemark>
-								<TimeStamp>
-									<when>".$this->DATE."T".sec2Time24h( ( $thisPoint->getTime() )%(3600*24) )."Z</when>
-								</TimeStamp>
-								<styleUrl>#trackMark</styleUrl>
-								  <Point>
-									<altitudeMode>absolute</altitudeMode>
-									<coordinates>".$lon.",".$lat.",".($alt*$exaggeration)."</coordinates>
-								  </Point>
-							</Placemark>";
-						 }
 					}
 				}
 
@@ -1308,53 +1237,96 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
 						 </gx:SimpleArrayData>
 					</SchemaData>
 				  </ExtendedData>
-				  
-				  <Model  id=\"model_2\">
-				  <altitudeMode>absolute</altitudeMode>
-			<Orientation>
-				<heading>0</heading>
-				<tilt>0</tilt>
-				<roll>0</roll>
-			</Orientation>
-			<Scale>
-				<x>1</x>
-				<y>1</y>
-				<z>1</z>
-			</Scale>
-			<ResourceMap>
-			</ResourceMap>
- <Link>
-   <href>http://".$_SERVER['SERVER_NAME'].$baseInstallationPath.$moduleRelPath."/img/models/pg1.dae</href>
- </Link>
-</Model>
+				  ";
 
-
-				</gx:Track>
+				$str.="	
+					</gx:Track>
+				</gx:MultiTrack>
 						";
 							
 				$str.="</Placemark>";
+				
+				$str.=' <Placemark id="simpleTrack">
+    <name>Simple Track</name>
+	 <Style id="Track2">
+      <LineStyle>
+			<color>ff0000ff</color>
+			<width>2</width>
+      </LineStyle>
+    </Style>
+	
+	<LineString >
+  <extrude>0</extrude>
+  <altitudeMode>absolute</altitudeMode> 
+  <coordinates>'.$simpleTrackStr.'</coordinates>
+</LineString>
+</Placemark>';
 
-
-		$str111.= "
-				<Folder>
-				<name>Timestamps</name>
-				";
-
-	    $str111.= "
-	<Style id='trackMark'>
+$str.="
+		<Style id='s_camera'>
 		<IconStyle>
-		  <color>".$KMLlineColor."</color>
-		  <scale>0.3</scale>
-		  <Icon>
-			<href>http://maps.google.com/mapfiles/kml/pal4/icon17.png</href>
-		  </Icon>
+			<color>ff00ff00</color>
+			<scale>0.8</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/camera.png</href>
+			</Icon>
+			<hotSpot x='0.5' y='0' xunits='fraction' yunits='fraction'/>
 		</IconStyle>
-		<LabelStyle>
-		  <color>ffff862a</color>
-		</LabelStyle>
-	</Style>";
-				// $str.= $timeStampStr;
-				$strxxx.= "\n</Folder>\n";
+		<ListStyle>
+		</ListStyle>
+		</Style>";
+		
+// now the photos
+if ($this->hasPhotos) {
+	require_once dirname(__FILE__)."/CL_flightPhotos.php";
+	global $CONF;
+
+	$flightPhotos=new flightPhotos($this->flightID);
+	$flightPhotos->getFromDB();
+
+	// get geoinfo
+	$flightPhotos->computeGeoInfo();
+
+	$imagesHtml="";
+	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
+		
+		if ($photoInfo['lat'] && $photoInfo['lon'] ) {
+			$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+			$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+	
+			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
+			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
+
+			if (file_exists($imgBig) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgBig);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgTarget=$imgBigRel;
+			} else 	if (file_exists($imgIcon) ) {
+				list($width, $height, $type, $attr) = getimagesize($imgIcon);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$imgTarget=$imgIconRel;
+			} 
+			$imgIconRel="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgIconRel;
+			$imgTarget="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgTarget;
+
+			$str.="
+			<Placemark>
+		    <name>Photo</name>
+			<styleUrl>#s_camera</styleUrl>
+			<Snippet maxLines='0' ></Snippet>
+			<description><![CDATA[<a href='$imgTarget'><img src='$imgTarget' width='".$CONF['photos']['mid']['max_width']."' border='0'></a>
+]]></description>
+			<Point>
+				<altitudeMode>clampToGround</altitudeMode>  	    
+				<coordinates>".$photoInfo['lon'].",".$photoInfo['lat'].",0</coordinates>
+			</Point>
+			</Placemark>";
+			 	
+		}		
+	}
+}
+	
+
 				$str.="\n</Document>\n</kml>";
 
 				writeFile($kmlTempFile,$str);
@@ -1375,20 +1347,22 @@ http://sketchup.google.com/3dwarehouse/cldetails?mid=c166a0a48065f4403a426bad1ca
   <name>Tracklog</name>
   <visibility>1</visibility>
   <open>1</open>
-  <refreshVisibility>0</refreshVisibility>
-  <flyToView>0</flyToView>
+  <refreshVisibility>1</refreshVisibility>
+  <flyToView>1</flyToView>
   <Link>
 	<href>http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$this->getKMLRelPath(0) )."</href>
   </Link>
-</NetworkLink>
+</NetworkLink>";
 
+$kml_file_contents.="
 <NetworkLink>
   <name>UpdateColor</name>
   <Link>
     <href>".
 	//str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) ).
 	str_replace("&","&#38;",$getFlightKMLcolorUpdater ).
-	"</href></Link>
+	"</href>
+	</Link>
 </NetworkLink>
 ";
 //echo "## $getFlightKMLcolorUpdater ## ";
@@ -1605,6 +1579,19 @@ $kml_file_contents=
 
 		// create the OLC task
 		$kml_file_contents.=$this->kmlGetTask();
+
+
+$getFlightKMLcolorUpdater =$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo&updateColor=1";
+$kml_file_contentsXXX.="
+<NetworkLink>
+  <name>UpdateColor</name>
+  <Link>
+    <href>".
+	//str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) ).
+	str_replace("&","&#38;",$getFlightKMLcolorUpdater ).
+	"</href>
+	</Link>
+</NetworkLink>";
 
 		$kml_file_contents.="</Document>\n</kml>";
 

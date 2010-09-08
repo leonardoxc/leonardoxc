@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.32 2010/08/24 13:13:17 manolis Exp $                                                                 
+// $Id: download.php,v 1.33 2010/09/08 13:22:17 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -130,8 +130,8 @@
 		
 		// $getFlightKML=$flight->getFlightKML()."&c=$c&ex=$ex&w=$w&an=$an";
 		
-		$getFlightKML="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getIGCRelPath(0)).".kmz";
-		
+		$getFlightKML="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getKMLRelPath(0));
+				
 			$KMLlineColor="ff".substr($c,4,2).substr($c,2,2).substr($c,0,2);
 			
 		$xml='<?xml version="1.0" encoding="UTF-8"?>
@@ -142,14 +142,18 @@
   <Update>
     <targetHref>".str_replace("&","&amp;",$getFlightKML)."</targetHref>
     <Change>
-      <Placemark targetId='Tracklog'>	  					
-					<Style >
-						<LineStyle>
-						  <color>$KMLlineColor</color>
-						  <width>$w</width>
-						</LineStyle>
-				  	</Style>
-      </Placemark>
+      <Style targetId='#Track1'>	  					
+		<LineStyle>
+		  <color>$KMLlineColor</color>
+		  <width>$w</width>
+		</LineStyle>
+	 </Style>
+	 <Style targetId='#Track2'>	  					
+		<LineStyle>
+		  <color>$KMLlineColor</color>
+		  <width>$w</width>
+		</LineStyle>
+	 </Style>
     </Change>
   </Update>
 </NetworkLinkControl>
