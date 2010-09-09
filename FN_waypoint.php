@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_waypoint.php,v 1.30 2010/03/31 13:40:40 manolis Exp $                                                                 
+// $Id: FN_waypoint.php,v 1.31 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 require_once dirname(__FILE__).'/FN_output.php';
@@ -280,8 +280,9 @@ function  makeKMLwaypoint($waypointID) {
 	$placemarkString=makeWaypointPlacemark($waypointID) ;
 
 //	$xml_text='<?xml version="1.0" encoding="'.$langEncodings[$currentlang].'"? >'.
-	$xml_text='<?xml version="1.0" encoding="UTF-8"?>'.
-'<kml xmlns="http://earth.google.com/kml/2.1">
+	$xml_text='<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+ xmlns:gx="http://www.google.com/kml/ext/2.2">
 '.$placemarkString.'
 </kml>
 ';
@@ -294,7 +295,7 @@ function  makeKMLwaypoint($waypointID) {
 	return $xml_text;
 }
 
-function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {	
+function  makeWaypointPlacemark($waypointID,$returnCountryCode=0,$includeStyle=1,$includeLookat=1,$styleUrl='') {	
 	global $db, $waypointsTable;
 	global $flightsTable,$countries,$CONF_mainfile,$moduleRelPath;
 
@@ -329,7 +330,7 @@ function  makeWaypointPlacemark($waypointID,$returnCountryCode=0) {
 // "<?xml version='1.0' encoding='".$langEncodings[$currentlang]."'? >
 // <?xml version="1.0" encoding="UTF-8"? >
 $xml_text='<Placemark>
-  <name>'.$wpName.'</name>
+  <name><![CDATA['.$wpName.' ]]></name>
   <description><![CDATA[<table cellpadding=0 cellspacing=0 width=300>'.
 	'<tr bgcolor="#D7E1EE"><td>'._SITE_REGION .': '.$wpLocation.' - '.$countryFlightsLink.'</td></tr>'.
 	'<tr bgcolor="#CCCCCC"><td>'.$pointFlightsLink.'</td></tr>'.
@@ -339,7 +340,10 @@ $xml_text='<Placemark>
 	'<tr ><td></td></tr>'.
 	'</table>	
     ]]>
- </description>
+ </description>';
+ 
+ if ($includeLookat) {
+ 	$xml_text.='
   <LookAt>
     <longitude>'.(-$wpInfo->lon).'</longitude>
     <latitude>'.$wpInfo->lat.'</latitude>
@@ -347,6 +351,11 @@ $xml_text='<Placemark>
     <tilt>0</tilt>
     <heading>0</heading>
   </LookAt>
+  ';
+  }
+  
+ if ($includeStyle) {
+ 	$xml_text.='  
   <styleUrl>root://styleMaps#default+nicon=0x307+hicon=0x317</styleUrl>
   <Style>
     <IconStyle>
@@ -363,6 +372,14 @@ $xml_text='<Placemark>
       <scale>0.8</scale>
     </LabelStyle>
   </Style>
+  ';
+  }
+  
+  if ($styleUrl) {
+    $xml_text.="<styleUrl>$styleUrl</styleUrl>\n";
+  }
+  
+  $xml_text.='
   <Point>
     <coordinates>'.(-$wpInfo->lon).','.$wpInfo->lat.',0</coordinates>
   </Point>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.33 2010/09/08 13:22:17 manolis Exp $                                                                 
+// $Id: download.php,v 1.34 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -253,7 +253,9 @@
 	} else if ($type=="explore_ge") {
 		$baseUrl="http://".str_replace('//','/',$_SERVER['SERVER_NAME']."/$baseInstallationPath/$moduleRelPath");
 	
-		$exploreKML="$baseUrl/download.php?type=explore";
+		$fltr=$_GET['fltr'];
+		if ($fltr) $fltr="&fltr=$fltr";
+		$exploreKML="$baseUrl/download.php?type=explore$fltr";
 		
 		$logoUrl="$baseUrl/templates/basic/tpl/leonardo_logo.gif";
 		
@@ -265,10 +267,11 @@
     <open>1</open>
     <description>Browse the entire Leonardo Database on Google Earth. This includes tracks,takeoff locations and photos</description>
     <NetworkLink>
-      <name>Flights</name>
+      <name>Interactive Explorer</name>
+	  <Snippet maxLines="0"></Snippet>
       <visibility>1</visibility>
       <open>1</open>
-      <description>Flights view</description>
+      <description>When you move to a new location all tracks,takeoffs and photos will be displayed on the map</description>
       <refreshVisibility>0</refreshVisibility>
       <flyToView>0</flyToView>
       <Link>
@@ -295,11 +298,86 @@
 		$center_lon = (($east - $west) / 2) + $west;
 		$center_lat = (($north - $south) / 2) + $south;
 
+$styleTakeoff='
+	<Style id="marker_takeoff">
+		<IconStyle>
+			<color>ff00aa00</color>
+			<scale>1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>';
+	
+$stylePhoto='	
+	<Style id="marker_photo">
+		<IconStyle>
+			<color>ff00ff00</color>
+			<scale>0.8</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/camera.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00ffffff</color>
+		</LabelStyle>
+		<ListStyle>
+		</ListStyle>
+		</Style>
+	';
+	
+	$styleTrack='';
+	foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {	  
+		$styleTrack.='	
+		<Style id="marker_cat_'.$tmpcat.'">
+		<IconStyle>			
+			<scale>0.8</scale>
+			<Icon>
+				<href>http://'.$_SERVER['SERVER_NAME'].getRelMainDir().'/img/icons1/icon_cat_'.$tmpcat.'.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>00ffffff</color>
+		</LabelStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+		';
+	
+	}
 
-		
-		 $query="SELECT * FROM $flightsTable WHERE 
+	
+		// add filter clauses
+
+		$fltr=$_GET['fltr'];
+		$filter_clause='';
+		if ($fltr) {
+			require_once dirname(__FILE__).'/CL_filter.php';
+			$filter=new LeonardoFilter();
+			$filter->parseFilterString($fltr);
+			// echo "<PRE>";	print_r($filter->filterArray);	echo "</PRE>";	
+			$filter_clause=$filter->makeClause();
+			
+			if ( ! strpos($filter_clause,$waypointsTable)=== false )  {
+				$extra_tbl= " LEFT JOIN $waypointsTable ON $flightsTable.takeoffID=$waypointsTable.ID "; 
+			}
+			
+			if ( ! strpos($filter_clause,$pilotsTable)=== false ) {
+				$extra_tbl.= " LEFT JOIN $pilotsTable ON 
+						($flightsTable.userID=$pilotsTable.pilotID AND 
+						$flightsTable.userServerID=$pilotsTable.serverID) "; 
+			}			
+		}
+
+		 $query="SELECT * FROM $flightsTable $extra_tbl WHERE 
 				 firstLat>=$south &&  firstLat<=$north &&  
-				 firstLon>=$west && firstLon<=$east ORDER BY  FLIGHT_POINTS DESC LIMIT 100 ";  
+				 firstLon>=$west && firstLon<=$east $filter_clause
+				 ORDER BY  FLIGHT_POINTS DESC LIMIT 100 ";  
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
@@ -335,8 +413,12 @@
 			$getFlightKML=$flight->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo";
 			$desc=$flight->kmlGetDescription($extendedInfo,$getFlightKML,1);
 			
+			$snippet="<![CDATA[".formatDistance($flight->FLIGHT_KM,1).", "._DURATION.": ".sec2Time($flight->DURATION,1)."]]>";
+			
 			$str.="<Placemark>
 				<name><![CDATA[$location]]></name>
+				<styleUrl>#marker_cat_".$row['cat']."</styleUrl>
+				<Snippet  maxLines='1'>$snippet</Snippet>
 				".$desc."
 				<Point>
 				<coordinates>".$row['firstLon'].','.$row['firstLat']."</coordinates>
@@ -344,18 +426,109 @@
 				</Placemark>			
 			";
 			$i++;
+		}		
+		$trackNum=$i;
+		
+		 $query="SELECT * FROM $waypointsTable WHERE 
+			 type=1000 AND
+			 lat>=$south AND lat<=$north AND 
+			 lon<=".(-$west)." AND lon>=".(-$east)." ORDER BY ID";  
+		 //echo $query;
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 echo("<H3> Error in query! $query </H3>\n");
+			 exit();
+		 }
+
+		require_once dirname(__FILE__).'/FN_waypoint.php';
+		
+		$i=0;
+		$wpStr='';
+		while ($row = mysql_fetch_assoc($res)) { 
+			$wpStr.=makeWaypointPlacemark($row['ID'],0,0,0,"#marker_takeoff");		
+			$i++;
 		}
+		$wpNum=$i;
+		
+		$i=0;
+		$photoStr='';
+		$query="SELECT * FROM $photosTable WHERE 
+			 lat>=$south AND lat<=$north AND 
+			 lon>=".($west)." AND lon<=".($east)." ORDER BY ID";  
+		 //echo $query;
+		 $res= $db->sql_query($query);
+		 if($res <= 0){
+			 echo("<H3> Error in query! $query </H3>\n");
+			 exit();
+		 }
+		
+		require_once dirname(__FILE__).'/CL_flightPhotos.php';
+		require_once dirname(__FILE__).'/FN_output.php';
+		
+		$i=0;
+		$photoStr='';
+		while ($row = mysql_fetch_assoc($res)) { 
+		
+			$imgTarget=$moduleRelPath.'/'.flightPhotos::getPath($row['path']).'/'.$row['name'];
+			$imgTarget="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgTarget;
+
+			
+		
+			$lineColor="ff0000";		
+			$lineWidth=2;			
+			$getFlightKML="http://".$_SERVER['SERVER_NAME'].
+					getDownloadLink( array('type'=>'kml_trk','flightID'=>$row['flightID']) ).
+					"&c=$lineColor&w=$lineWidth&an=0";
+
+			$photoStr.="<Placemark>
+		    <name>Photo</name>
+			<styleUrl>#marker_photo</styleUrl>
+			<Snippet maxLines='0' ></Snippet>
+			<description><![CDATA[<a href='$imgTarget'><img src='$imgTarget' width='".$CONF['photos']['mid']['max_width']."' border='0'>			
+			</a><BR><BR>
+			<strong><a href='$getFlightKML'>Load Track of this Photo</a></strong>
+]]></description>
+			<Point>
+				<altitudeMode>$altitudeMode</altitudeMode>  	    
+				<coordinates>".$row['lon'].",".$row['lat'].",".$row['alt']."</coordinates>
+			</Point>
+			</Placemark>";	
+			$i++;
+		}
+		
+		$photoNum=$i;
 		
 		$xml='<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-  <Folder>
-    <name>found '.$i.' tracks'.'</name>
+<Folder>  
+  <Folder>  
+  	'.$styleTrack.'  
+    <name>Leonardo Tracks ('.$trackNum.')</name>
+	<Snippet maxLines="0"></Snippet>
     <visibility>1</visibility>
     <open>1</open>
-    <description>Leonardo Tracks ('.$i.')</description>
+    <description><![CDATA[Leonardo Tracks ('.$trackNum.')]]></description>
 	'.$str.'
-
   </Folder>
+  <Folder>
+     '.$styleTakeoff.'  
+    <name>Leonardo Takeoffs ('.$wpNum.')</name>
+	<Snippet maxLines="0"></Snippet>
+    <visibility>1</visibility>
+    <open>1</open>
+    <description>Leonardo Takeoffs ('.($wpNum).')</description>
+	'.$wpStr.'
+  </Folder>
+  <Folder>
+    '.$stylePhoto.'  
+    <name>Leonardo Photos ('.$photoNum.')</name>
+	<Snippet maxLines="0"></Snippet>
+    <visibility>1</visibility>
+    <open>1</open>
+    <description>Leonardo Photos ('.$photoNum.')</description>
+	'.$photoStr.'
+  </Folder>
+</Folder>
 </kml>';
 
 

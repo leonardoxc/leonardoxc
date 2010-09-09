@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.79 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.80 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -991,7 +991,7 @@ function getLeonardoLink($argArray) {
 	// echo "#".$_SESSION['fltr'];
 	$filterArg='';
 	if ($_SESSION['fltr'] && !in_array("fltr",$argArray,true )) {
-		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots'))  ) {
+		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots','explore_ge'))  ) {
 			$filterArg.="&fltr=".$_SESSION['fltr'];				
 		}
 	}
@@ -1033,7 +1033,7 @@ function getLeonardoLink($argArray) {
 		}
 		return $thisURL;
 		
-	} else 	if ($linkType==3) {
+	} else 	if ($linkType==3) { // SEO URLS 
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$serverID,$pilotID,$pilotIDview;
 		global $takeoffID,$country,$cat,$class,$xctype,$clubID;
@@ -1063,6 +1063,8 @@ function getLeonardoLink($argArray) {
 		$opTmp=$argArray['op'];
 		if ($opTmp=='list_flights') {
 			$args.='tracks/';
+		} else if ($opTmp=='explore_ge') {
+			$args.='ge/';
 		} else if ($opTmp=='list_pilots') {
 			$args.='pilots/';
 		} else if ($opTmp=='competition') {

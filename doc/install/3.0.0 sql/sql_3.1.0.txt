@@ -51,3 +51,5 @@ ALTER TABLE `leonardo_flights_deleted` ADD `startType` TINYINT UNSIGNED NOT NULL
 # add geotagging to photos
 ALTER TABLE `leonardo_photos` ADD `tm` INT UNSIGNED DEFAULT '0' NOT NULL ,
 ADD `lat` FLOAT DEFAULT '0' NOT NULL , ADD `lon` FLOAT DEFAULT '0' NOT NULL ;
+
+ALTER TABLE `leonardo_photos` ADD `alt` SMALLINT DEFAULT '0' NOT NULL ;

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.20 2010/04/27 09:02:42 manolis Exp $                                                                 
+// $Id: rss.php,v 1.21 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -156,7 +156,7 @@ if (! is_dir($thumbsDirAbs) ) {
 $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <rss version=\"0.92\">
 <channel>
-	<docs>http://leonardo.thenet.gr</docs>
+	<docs>http://www.leonardoxc.net</docs>
 	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</title>
 	<link>http://".$_SERVER['SERVER_NAME'].
 	str_replace("&","&amp;",

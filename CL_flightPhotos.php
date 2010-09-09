@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightPhotos.php,v 1.12 2010/08/20 13:58:28 manolis Exp $                                                                 
+// $Id: CL_flightPhotos.php,v 1.13 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -110,7 +110,7 @@ class flightPhotos {
 					//echo "getting track!";	
 					$flight=new flight();
 					$flight->getFlightFromDB($this->flightID,0); //dont update takeoffs
-					list($trackLat,$trackLon,$trackTms)=$flight->getXYValues(1); // get also TM					
+					list($trackLat,$trackLon,$trackTms,$trackAlt)=$flight->getXYValues(1,1); // get also TM and ALT
 					$gotTrack=1;
 				}
 				
@@ -132,6 +132,7 @@ class flightPhotos {
 						//echo "found position!!! tm=$thisTm<BR>";
 						$this->photos[$photoNum]['lat']=$trackLat[$i];
 						$this->photos[$photoNum]['lon']=-$trackLon[$i];
+						$this->photos[$photoNum]['alt']=$trackAlt[$i];
 						$changed=1;
 						break;
 					}				
@@ -253,6 +254,7 @@ class flightPhotos {
 			$this->photos[$this->photosNum]['description']=$row['description'];
 			$this->photos[$this->photosNum]['lat']=$row['lat'];
 			$this->photos[$this->photosNum]['lon']=$row['lon'];
+			$this->photos[$this->photosNum]['alt']=$row['alt'];
 			$this->photos[$this->photosNum]['tm']=$row['tm'];
 			//print_r($this->photos[$this->photosNum]);
 			$this->photosNum++;			
@@ -275,11 +277,12 @@ class flightPhotos {
 	    }
 		//print_r($this->photos);
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
-			$query="INSERT INTO $photosTable  (flightID,path,name,lat,lon,tm,description) VALUES (".
+			$query="INSERT INTO $photosTable  (flightID,path,name,lat,lon,alt,tm,description) VALUES (".
 				$this->flightID.",'".prep_for_DB($photoInfo['path'])."','".
 									 prep_for_DB($photoInfo['name'])."',".
 									 ($photoInfo['lat']+0).",".
 									 ($photoInfo['lon']+0).",".
+									 ($photoInfo['alt']+0).",".
 									 ($photoInfo['tm']+0).",'".
 									 prep_for_DB($photoInfo['description'])."' ) ";
 		

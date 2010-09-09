@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.186 2010/09/08 13:22:17 manolis Exp $
+// $Id: CL_flightData.php,v 1.187 2010/09/09 12:46:40 manolis Exp $
 //
 //************************************************************************
 
@@ -1309,6 +1309,9 @@ if ($this->hasPhotos) {
 			$imgIconRel="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgIconRel;
 			$imgTarget="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgTarget;
 
+			$altitudeMode="absolute";
+			if ($photoInfo['alt']==0) $altitudeMode="clampToGround";
+			
 			$str.="
 			<Placemark>
 		    <name>Photo</name>
@@ -1317,8 +1320,8 @@ if ($this->hasPhotos) {
 			<description><![CDATA[<a href='$imgTarget'><img src='$imgTarget' width='".$CONF['photos']['mid']['max_width']."' border='0'></a>
 ]]></description>
 			<Point>
-				<altitudeMode>clampToGround</altitudeMode>  	    
-				<coordinates>".$photoInfo['lon'].",".$photoInfo['lat'].",0</coordinates>
+				<altitudeMode>$altitudeMode</altitudeMode>  	    
+				<coordinates>".$photoInfo['lon'].",".$photoInfo['lat'].",".$photoInfo['alt']."</coordinates>
 			</Point>
 			</Placemark>";
 			 	
@@ -1577,21 +1580,8 @@ $kml_file_contents=
 		if ( $this->takeoffID!=$this->landingID)
 			$kml_file_contents.=makeWaypointPlacemark($this->landingID);
 
-		// create the OLC task
+		// create the XC task
 		$kml_file_contents.=$this->kmlGetTask();
-
-
-$getFlightKMLcolorUpdater =$this->getFlightKML()."&c=$lineColor&w=$lineWidth&an=$extendedInfo&updateColor=1";
-$kml_file_contentsXXX.="
-<NetworkLink>
-  <name>UpdateColor</name>
-  <Link>
-    <href>".
-	//str_replace("&","&#38;",str_replace('kml_trk','kml_trk_color',$getFlightKML) ).
-	str_replace("&","&#38;",$getFlightKMLcolorUpdater ).
-	"</href>
-	</Link>
-</NetworkLink>";
 
 		$kml_file_contents.="</Document>\n</kml>";
 
@@ -1905,10 +1895,13 @@ $kml_file_contentsXXX.="
 
   }
 
-	function getXYValues($tmAlso=0) {		
+	function getXYValues($tmAlso=0,$altAlso=0) {		
 		$data_X =array();
 		$data_Y =array();
 
+		$data_alt=array();
+		$data_tm=array();
+		 
 		$filename=$this->getIGCFilename(1);
 		$lines = file ($filename);
 		$i=0;
@@ -1922,10 +1915,14 @@ $kml_file_contentsXXX.="
 					$data_X[$i]=$thisPoint->lat;
 					$data_Y[$i]=$thisPoint->lon;
 					if ($tmAlso) $data_tm[$i]=$thisPoint->gpsTime;
+					if ($altAlso) $data_alt[$i]=$thisPoint->getAlt();
+					
 					$i++;
 			}
 		}
-		if ($tmAlso) 
+		if ($tmAlso && $altAlso ) 
+			return array($data_X,$data_Y,$data_tm, $data_alt);
+		else if ($tmAlso) 
 			return array($data_X,$data_Y,$data_tm);
 		else 
 			return array($data_X,$data_Y);

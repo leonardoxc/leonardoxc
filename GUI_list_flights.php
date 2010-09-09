@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.120 2010/08/03 14:11:57 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.121 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -225,7 +225,7 @@ if (0) {
 	// echo "<!-- $query -->"; 
 	
 	
-	}
+	} // end if (0) -> now use the SQL_list_flights
 	
 	
 	

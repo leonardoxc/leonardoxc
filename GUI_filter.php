@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_filter.php,v 1.34 2010/06/08 08:13:06 manolis Exp $                                                                 
+// $Id: GUI_filter.php,v 1.35 2010/09/09 12:46:40 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -161,6 +161,13 @@ function addFavorite() {
 	  
       </div>	
 	";
+	
+	echo "
+	  <BR><BR><div align='left'>
+	      <img src='".moduleRelPath()."/img/icons1/geicon.gif' width='16' height='16' align='absmiddle'> 
+          <a href='".getLeonardoLink(array('op'=>'explore_ge'))."' >"._Navigate_with_Google_Earth."</a>  
+      </div>	
+	"; 
 	
 	echo "</span>";
 	// end martin jursa 21.06.2007
