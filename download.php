@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.34 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: download.php,v 1.35 2010/09/10 13:31:47 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -299,7 +299,7 @@
 		$center_lat = (($north - $south) / 2) + $south;
 
 $styleTakeoff='
-	<Style id="marker_takeoff">
+	<Style id="marker_takeoff_n">
 		<IconStyle>
 			<color>ff00aa00</color>
 			<scale>1</scale>
@@ -308,9 +308,38 @@ $styleTakeoff='
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
 		</IconStyle>
+		<LabelStyle>
+			<color>00ffffff</color>
+		</LabelStyle>
 		<ListStyle>
 		</ListStyle>
-	</Style>';
+	</Style>
+	<Style id="marker_takeoff_h">
+		<IconStyle>
+			<color>ff00aa00</color>
+			<scale>1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>ffffffff</color>
+		</LabelStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	 <StyleMap id="marker_takeoff">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>#marker_takeoff_n</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>#marker_takeoff_h</styleUrl>
+    </Pair>
+  </StyleMap>
+	';
 	
 $stylePhoto='	
 	<Style id="marker_photo">
@@ -333,7 +362,7 @@ $stylePhoto='
 	$styleTrack='';
 	foreach( $CONF_glider_types as $tmpcat=>$tmpcatname) {	  
 		$styleTrack.='	
-		<Style id="marker_cat_'.$tmpcat.'">
+		<Style id="marker_cat_'.$tmpcat.'_n">
 		<IconStyle>			
 			<scale>0.8</scale>
 			<Icon>
@@ -347,6 +376,30 @@ $stylePhoto='
 		<ListStyle>
 		</ListStyle>
 	</Style>
+	<Style id="marker_cat_'.$tmpcat.'_h">
+		<IconStyle>			
+			<scale>0.8</scale>
+			<Icon>
+				<href>http://'.$_SERVER['SERVER_NAME'].getRelMainDir().'/img/icons1/icon_cat_'.$tmpcat.'.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<LabelStyle>
+			<color>ffffffff</color>
+		</LabelStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<StyleMap id="marker_cat_'.$tmpcat.'">
+    <Pair>
+      <key>normal</key>
+      <styleUrl>#marker_cat_'.$tmpcat.'_n</styleUrl>
+    </Pair>
+    <Pair>
+      <key>highlight</key>
+      <styleUrl>#marker_cat_'.$tmpcat.'_h</styleUrl>
+    </Pair>
+  </StyleMap>
 		';
 	
 	}

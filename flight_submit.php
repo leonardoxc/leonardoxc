@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: flight_submit.php,v 1.23 2010/03/14 20:56:12 manolis Exp $                                                                 
+// $Id: flight_submit.php,v 1.24 2010/09/10 13:31:47 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -116,24 +116,32 @@ if (count($_POST) >0 ) {
 	$cat=0;
 	$category=1;
 
-	if ($klasse==1) $cat=2 ; //flex
+	if ( !$klasse ) { 
+		$cat=$_POST['gliderCat']+0;
+		$category=$_POST['Category']+0;
+		if (!$category) $category=1;		
+	} else if ($klasse==1) $cat=2 ; //flex
 	else if ($klasse==2) $cat=4 ; //rigid
 	else if ($klasse==3) { $cat=1 ;  $category=2; } // pg  open
 	else if ($klasse==4) { $cat=1 ;  $category=1; } // pg sport
 	else if ($klasse==5) { $cat=1 ;  $category=3; } // pg tandem
 	else if ($klasse==6) { $cat=1 ;  $category=4; } // pg fun cup
-
+	
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
-
-//	log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");
+	$glider=$_POST['glider'];
+	$gliderBrandID=$_POST['gliderBrandID'];
 				
+		
+	// log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");				
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,
 				'cat'=>$cat,
+				'glider'=>$glider,
+				'gliderBrandID'=>$gliderBrandID,					
 				// 'allowDuplicates'=>($CONF['servers']['list'][$CONF_server_id]['allow_duplicate_flights']+0) 
 				'allowDuplicates'=>1 ,
 				'gliderCertCategory'=>$gliderCertCategory,
-				 ) ) ;
+		) ) ;
 
 	if ($errCode!=1) {
 		echo "problem<br>";
