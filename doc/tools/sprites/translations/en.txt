@@ -1,0 +1,91 @@
+site.title = Project Fondue
+site.copyright = Copyright &copy; 2007-{0} {1}
+site.other-tools = Other Tools:
+
+page.title.home = CSS Sprite Generator
+page.title.what-are-css-sprites = What are CSS sprites?
+page.title.tool-help = Help
+page.title.your-language = Your Language
+page.title.advertising = Advertising
+
+menu.home = Home
+menu.what-are-css-sprites = What are CSS sprites?
+menu.tool-help = Help
+menu.report-bug = Report Bug
+
+menu.language.label = Language
+menu.language.button = Change
+menu.language.your-language = Provide Translation
+
+warning.missing-translations = We're missing translations for this language. Can you help provide?
+
+form.legend.source-files = Source Files
+form.legend.resize-source-images = Resize Source Images
+form.legend.image-duplicates = Image Duplicates
+form.legend.image-output-options = Sprite Output Options
+form.legend.css-output-options = CSS Output Options
+
+form.label.upload-images = Upload Images (ZIP)
+form.label.width = Width
+form.label.height = Height
+form.label.maintain-aspect-ratio = Maintain aspect ratio
+form.label.ignore-duplicates = Ignore duplicate images
+form.label.merge-duplicates = Remove duplicate images but merge CSS rules
+form.label.horizontal-offset = Horizontal Offset
+form.label.vertical-offset = Vertical Offset
+form.label.wrap-columns = Wrap columns to fix Opera bug
+form.label.background-colour = Background / Transparency Colour \# (optional)
+form.label.use-transparency = Use Background Colour for Transparency
+form.label.build-direction = Build Direction
+form.label.image-output-format = Output Format
+form.label.image-output-num-colours = Number of Colours
+form.label.image-output-quality = Image Quality
+form.label.use-optipng = Compress Image with OptiPNG
+form.label.css-prefix = CSS Prefix (optional)
+form.label.filename-pattern-match = Filename Pattern Match (optional)
+form.label.class-prefix = Class Prefix (optional)
+form.label.css-suffix = CSS Suffix (optional)
+
+form.value.build-direction.horizontal = Horizontal
+form.value.build-direction.vertical = Vertical
+form.value.true-colour = True Colour
+
+form.hint.max-upload-size = Max Upload Size: {0}MB
+form.hint.transparency = If left blank white will be used for non-transparent images, black for transparent
+form.hint.css-prefix = CSS to insert before the class name
+form.hint.filename-pattern-match = e.g. icon-([0-9]+).png - matches the numeric part of each filename and uses this for the class names in the generated CSS
+form.hint.class-prefix = cannot start with a number
+form.hint.css-suffix = CSS to insert after the class name
+form.hint.file-selected = File currently selected, leave upload box blank to reuse.
+
+form.button.show-picker = Show Picker
+form.button.hide-picker = Hide Picker
+form.button.create-sprite = Create Sprite Image &amp; CSS
+
+form.errors.title = Submission Errors
+form.errors.invalid-file = You didn't select a file or the file you uploaded was invalid. Perhaps it wasn't a ZIP or it was larger than the maximum upload size.
+form.errors.zip = The ZIP you uploaded didn't contain at least 2 images. Please check the ZIP (and/or &quot;Filename Pattern Match&quot; if used) and re-upload.
+form.errors.missing.width-resize = No resize width specified.
+form.errors.missing.height-resize = No resize height specified.
+form.errors.missing.horizontal-offset = No horizontal offset specified.
+form.errors.missing.vertical-offset = No vertical offset specified.
+form.errors.invalid.horizontal-offset.isnumber = Invalid horizontal offset specified. It should be a number between 1 and 100.
+form.errors.invalid.vertical-offset.isnumber = Invalid vertical offset specified. It should be a number between 1 and 100.
+form.errors.invalid.background.ishex = Invalid background colour specified. It should be a 3 or 6 digit hexadecimal value.
+form.errors.invalid.image-output-quality.isnumber = Invalid JPEG output quality specified. It should be a number between 1 and 100.
+form.errors.invalid.css-prefix.iscss = Invalid CSS prefix specified. It can only contain the characters a-z, 0-9, _, -, \# and .
+form.errors.invalid.class-prefix.isclassprefix = Invalid class prefix specified. It can only contain the characters a-z, 0-9, _ and -
+form.errors.invalid.css-suffix.iscss = Invalid CSS suffix specified. It can only contain the characters: a-z, 0-9, _, -, \# and .
+
+form.result.reset = Close &amp; Reset Form
+form.result.title.css-rules = CSS Rules
+form.result.title.sprite-image = Sprite Image
+form.result.dont-forget = Don't forget to add a background rule to reference the sprite image. Something like this, for example:
+form.result.download = &raquo;Download Sprite Image
+
+sidebar.ad-placeholder = Advertise Here
+sidebar.sponsors-header = Sponsors
+sidebar.advertise-header = Advertising
+sidebar.advertise-text = Advertise on this site with a graphical advert or text link.
+sidebar.open-source-header = Open Source
+sidebar.open-source-text = The source code for CSS Sprite Generator is available for download and is covered by a BSD license. Want to run a local copy? Well now you can.
