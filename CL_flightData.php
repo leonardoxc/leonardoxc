@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.187 2010/09/09 12:46:40 manolis Exp $
+// $Id: CL_flightData.php,v 1.188 2010/09/13 14:23:44 manolis Exp $
 //
 //************************************************************************
 
@@ -1307,7 +1307,7 @@ if ($this->hasPhotos) {
 				$imgTarget=$imgIconRel;
 			} 
 			$imgIconRel="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgIconRel;
-			$imgTarget="http://".$_SERVER['SERVER_NAME'].$baseInstallationPath."/".$imgTarget;
+			$imgTarget="http://".$_SERVER['SERVER_NAME'].str_replace('//','/',$baseInstallationPath."/".$imgTarget) ;
 
 			$altitudeMode="absolute";
 			if ($photoInfo['alt']==0) $altitudeMode="clampToGround";
