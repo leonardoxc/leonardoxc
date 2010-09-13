@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_brands.php,v 1.16 2010/03/15 09:18:10 manolis Exp $                                                                 
+// $Id: FN_brands.php,v 1.17 2010/09/13 14:00:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -74,6 +74,8 @@
 	56=>'Icaro 2000',
     57=>'Skyline',
     58=>'Skyward',
+	
+	80=>'Little Cloud',
  );
 
 ?>

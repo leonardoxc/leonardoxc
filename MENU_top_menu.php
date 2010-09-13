@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.94 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.95 2010/09/13 14:00:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -259,7 +259,12 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 			</ul>
 		</li>
 		<? } ?>
-
+		<li><a href='#'><STRONG>Tools <?=$arrDownImg ?></STRONG></a>
+			<ul>
+				<li><a href="<?=$moduleRelPath?>/doc/tools/sprites/htdocs/"  target="_blank">Sprite Generator</a></li>
+			</ul>
+		</li>
+        
 <? } ?>
 
 		<li><a href="<?=getLeonardoLink(array('op'=>'index_full')) ?>"><?=_MENU_SUMMARY_PAGE ?></a></li>
