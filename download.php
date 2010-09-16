@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.35 2010/09/10 13:31:47 manolis Exp $                                                                 
+// $Id: download.php,v 1.36 2010/09/16 09:44:26 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -275,6 +275,7 @@
       <refreshVisibility>0</refreshVisibility>
       <flyToView>0</flyToView>
       <Link>
+	   <viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth]&amp;ALT=[cameraAlt]</viewFormat>
         <href><![CDATA['.$exploreKML.']]></href>
         <refreshInterval>0</refreshInterval>
         <viewRefreshMode>onStop</viewRefreshMode>
@@ -287,8 +288,10 @@
 		$file_name="Leonardo Explorer.kml";
 	} else if ($type=="explore") {
 		// BBOX=[longitude_west, latitude_south, longitude_east, latitude_north]
+		$cameraAlt=$_GET['ALT'];
 		$box=$_GET['BBOX'];
 		$parts=split(",",$box);
+
 
 		$west	= $parts[0];
 		$south	= $parts[1];
@@ -482,26 +485,31 @@ $stylePhoto='
 		}		
 		$trackNum=$i;
 		
-		 $query="SELECT * FROM $waypointsTable WHERE 
-			 type=1000 AND
-			 lat>=$south AND lat<=$north AND 
-			 lon<=".(-$west)." AND lon>=".(-$east)." ORDER BY ID";  
-		 //echo $query;
-		 $res= $db->sql_query($query);
-		 if($res <= 0){
-			 echo("<H3> Error in query! $query </H3>\n");
-			 exit();
-		 }
-
-		require_once dirname(__FILE__).'/FN_waypoint.php';
+		$incWaypoints=1;
+		if ($cameraAlt>100000 ) $incWaypoints=0;
 		
-		$i=0;
-		$wpStr='';
-		while ($row = mysql_fetch_assoc($res)) { 
-			$wpStr.=makeWaypointPlacemark($row['ID'],0,0,0,"#marker_takeoff");		
-			$i++;
+		if ($incWaypoints) {
+			 $query="SELECT * FROM $waypointsTable WHERE 
+				 type=1000 AND
+				 lat>=$south AND lat<=$north AND 
+				 lon<=".(-$west)." AND lon>=".(-$east)." ORDER BY ID";  
+			 //echo $query;
+			 $res= $db->sql_query($query);
+			 if($res <= 0){
+				 echo("<H3> Error in query! $query </H3>\n");
+				 exit();
+			 }
+	
+			require_once dirname(__FILE__).'/FN_waypoint.php';
+			
+			$i=0;
+			$wpStr='';
+			while ($row = mysql_fetch_assoc($res)) { 
+				$wpStr.=makeWaypointPlacemark($row['ID'],0,0,0,"#marker_takeoff");		
+				$i++;
+			}
+			$wpNum=$i;
 		}
-		$wpNum=$i;
 		
 		$i=0;
 		$photoStr='';
@@ -562,8 +570,10 @@ $stylePhoto='
     <open>1</open>
     <description><![CDATA[Leonardo Tracks ('.$trackNum.')]]></description>
 	'.$str.'
-  </Folder>
-  <Folder>
+  </Folder>';
+  
+  if ($incWaypoints) {
+	$xml.='<Folder>
      '.$styleTakeoff.'  
     <name>Leonardo Takeoffs ('.$wpNum.')</name>
 	<Snippet maxLines="0"></Snippet>
@@ -571,8 +581,10 @@ $stylePhoto='
     <open>1</open>
     <description>Leonardo Takeoffs ('.($wpNum).')</description>
 	'.$wpStr.'
-  </Folder>
-  <Folder>
+  </Folder>';
+  }
+  
+$xml.='<Folder>
     '.$stylePhoto.'  
     <name>Leonardo Photos ('.$photoNum.')</name>
 	<Snippet maxLines="0"></Snippet>
