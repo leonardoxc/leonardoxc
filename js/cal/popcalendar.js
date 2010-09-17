@@ -660,7 +660,9 @@ function zeroPad(n, digits) {
 	}
 
 	document.onkeypress = function hidecal1 (e) {
-		if (e.keyCode == 27) hideCalendar();
+		if (e !=null) {
+			if (e.keyCode == 27) hideCalendar();
+		}
 	}
 	document.onclick = function hidecal2 () {
 		if (!bShow) hideCalendar();

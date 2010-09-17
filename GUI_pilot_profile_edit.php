@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.35 2010/06/08 12:33:04 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.36 2010/09/17 08:06:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -346,9 +346,9 @@
 				$firstNameReadOnly='';
 				if (  strlen( str_replace(".","",trim($pilot['FirstName']) ) ) >= 2 &&
 					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID)					 
-				) $firstNameReadOnly='"readonly"';
+				) $firstNameReadOnly='readonly="readonly"';
 				if ( in_array('FirstName', $readonly_fields) && 
-					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID)	) $firstNameReadOnly='"readonly"';
+					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID)	) $firstNameReadOnly='readonly="readonly"';
 			?> 
 			<input name="FirstName" type="text" value="<? echo $pilot['FirstName'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly ?> >
 	  </td>
@@ -486,11 +486,11 @@
       <td valign="top"> 
 			<?
 				$lastNameReadOnly='';
-				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2 &&
+				if (  strlen( str_replace(".","",trim($pilot['LastName']) ) ) >= 2  &&
 					  !L_auth::isAdmin($userID) && !L_auth::isModerator($userID) 
-				) $lastNameReadOnly='"readonly"';
+				) $lastNameReadOnly='readonly="readonly"';
 				if ( in_array('LastName', $readonly_fields) && 
-					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID) ) $lastNameReadOnly='"readonly"';
+					!L_auth::isAdmin($userID) && !L_auth::isModerator($userID) ) $lastNameReadOnly='readonly="readonly"';
 			?>
 			<input name="LastName" type="text" value="<? echo $pilot['LastName'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> >
 		</td>
