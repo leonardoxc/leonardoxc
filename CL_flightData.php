@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.188 2010/09/13 14:23:44 manolis Exp $
+// $Id: CL_flightData.php,v 1.189 2010/10/18 14:05:21 manolis Exp $
 //
 //************************************************************************
 
@@ -34,6 +34,7 @@ class flight {
 	var $userName="";
 
     var $comments="";
+    var $commentsNum=0;
     var $glider="";
 	var $gliderBrandID=0;
 
@@ -3442,6 +3443,7 @@ $kml_file_contents=
 		$this->filename=$row["filename"];
 		$this->userID=$row["userID"];
 		$this->comments=$row["comments"];
+		$this->commentsNum=$row["commentsNum"];
 
 		$this->glider=$row["glider"];
 		$this->gliderBrandID =$row["gliderBrandID"];
@@ -3822,7 +3824,7 @@ $kml_file_contents=
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,NACid,
-		comments, glider, gliderBrandID, linkURL, timesViewed,
+		comments, commentsNum, glider, gliderBrandID, linkURL, timesViewed,
 
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
@@ -3861,7 +3863,7 @@ $kml_file_contents=
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,
-		'".prep_for_DB($this->comments)."', '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
+		'".prep_for_DB($this->comments)."', ".($this->commentsNum+0).", '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',

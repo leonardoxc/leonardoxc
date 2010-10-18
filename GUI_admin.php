@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.58 2010/09/08 13:22:17 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.59 2010/10/18 14:05:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -134,6 +134,7 @@ echo "</ul>";
 
 echo "<h3>Migration to newer DB schemes operations</h3>";
 echo "<ul>";
+	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=migrateComments'>Migrate Comments to new scheme</a> <BR>";
 	if ($CONF_use_NAC)			
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
@@ -176,6 +177,55 @@ echo "</ul><br><hr>";
 	
 		require_once  dirname(__FILE__)."/GUI_admin_paths.php";
 
+
+	} else if ($admin_op=="migrateComments")  {
+		//first empty the comments!
+		$query2="DELETE FROM $commentsTable";
+		$res2= $db->sql_query($query2);					
+		if(!$res2){
+			echo "Problem in query:$query2<BR>";
+			return;
+		}
+		
+		$query="SELECT * from $flightsTable WHERE comments <>''";
+		$res= $db->sql_query($query);
+
+		$num=0;
+		
+		if($res == 0){
+			echo "Probem in query $query<BR>";
+			return;
+		}
+		
+		$fids='';
+		while ($row = mysql_fetch_assoc($res)) { 
+			if ($num>0) $fids.=",";
+			$fids.=$row['ID'];
+
+			$now=$row['dateUpdated'];
+			
+			$query1="INSERT INTO $commentsTable 
+				(parentID,flightID,userID,userServerID,dateAdded,dateUpdated,active,title,text,languageCode ) 
+				VALUES( 0, '".$row['ID']."', '".$row['userID']."', '".$row['userServerID']."', '$now', '$now', 1, '', '".$row['comments']."', 'en') " ;
+			$res1= $db->sql_query($query1);
+			if(!$res1){
+				echo "Problem in query:$query1<BR>";
+				return;
+			}
+
+			
+			$num++;			 
+		}
+
+		$query2="UPDATE $flightsTable SET commentsNum=1 WHERE ID IN ($fids) ";
+		$res2= $db->sql_query($query2);					
+		if(!$res2){
+			echo "Problem in query:$query2<BR>";
+			exit;
+		}
+		
+		echo "<HR><BR>Comments migrated for $num flights <BR><BR>";
+		
 	} else if ($admin_op=="computeMaxTakeoffDistance")  {
 		
 		$query="SELECT * from $flightsTable WHERE batchOpProcessed=0 AND serverID=8  AND LINEAR_DISTANCE=0 ";

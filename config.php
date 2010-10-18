@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.155 2010/07/29 14:00:58 manolis Exp $                                                                 
+// $Id: config.php,v 1.156 2010/10/18 14:05:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -247,7 +247,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $scoresTable		=  $CONF_tables_prefix."_flights_score";
 
  $thermalsTable		=  $CONF_tables_prefix."_thermals";
- 
+ $commentsTable		=  $CONF_tables_prefix."_comments";
 
  
  // Mrsid tiles config

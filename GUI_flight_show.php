@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.98 2010/08/20 13:58:28 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.99 2010/10/18 14:05:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -440,7 +440,7 @@ if ($flight->is3D()) {
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 */
 
-if ($flight->comments) {
+if ($flight->commentsNum) {
 	 $comments=$flight->comments;
 }
 
@@ -687,24 +687,20 @@ if ( $divsToShow>1) { // use tabber
 	}
 
 
-	if ($comments && $imagesHtml) {
-			$mapImg.="<div class='tabbertab' title='"._COMMENTS." & "._PHOTOS."' style='width:745px; height:400px; text-align:left;'>
-				  <div style='float:left; width:445px; clear:left;'>$comments</div>
-				  <div style='float:right; width:295px; clear:right;'>$imagesHtml</div>
-				  </div>";
-	} else {
-		if ($comments) {
-			$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
-				  $comments
-				  </div>";
-		}	
+
 		
-		if ($imagesHtml) {
+	if ($imagesHtml) {
 			$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>
 				  $imagesHtml
 				  </div>";
-		}		  
-	}
+	}		  
+
+	if ($comments) {
+			$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
+				  $comments
+				  </div>";
+	}	
+
 
 	$mapImg.="</div>";
 

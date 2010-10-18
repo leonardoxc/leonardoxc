@@ -1,0 +1,21 @@
+
+ALTER TABLE `leonardo_flights` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+
+CREATE TABLE `leonardo_comments` (
+`commentID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`parentID` BIGINT UNSIGNED NOT NULL ,
+`flightID` BIGINT NOT NULL ,
+`userID` MEDIUMINT NOT NULL ,
+`userServerID` MEDIUMINT( 0 ) DEFAULT '0' NOT NULL ,
+`guestName` VARCHAR( 50 ) NOT NULL ,
+`guestEmail` VARCHAR( 255 ) NOT NULL ,
+`guestPass` VARCHAR( 40 ) NOT NULL ,
+`dateAdded` DATETIME NOT NULL ,
+`dateUpdated` DATETIME NOT NULL ,
+`active` TINYINT UNSIGNED DEFAULT '1' NOT NULL ,
+`title` TINYINT( 255 ) NOT NULL ,
+`text` TEXT NOT NULL ,
+`languageCode` VARCHAR( 15 ) NOT NULL ,
+PRIMARY KEY ( `commentID` ) ,
+INDEX ( `flightID` )
+) TYPE = MYISAM ;
