@@ -78,11 +78,18 @@
 
 		// "valig7to.exe"		=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),  // 1->not valid 3->not present
 
-		// www.livetrack24.com -> LeonardoLive  - PASSED (result 0) / FAILED (result 1)
+		// NEW www.livetrack24.com -> LeonardoLive  - PASSED (result 0) / FAILED (result 1)
+		"vali-xll"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )		
+		// NEW livexc.dhv1.de - DHV  - PASSED (result 0) / FAILED (result 1)
+		"vali-xld"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
+
+
+		// OLD www.livetrack24.com -> LeonardoLive  - PASSED (result 0) / FAILED (result 1)
 		"vali-l24"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
-		
-		// livexc.dhv1.de - DHV  - PASSED (result 0) / FAILED (result 1)
+		// OLD livexc.dhv1.de - DHV  - PASSED (result 0) / FAILED (result 1)
 		"vali-dhv"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 1  )
+
+
 	
 		// C-pilot-PRO vincenzo@compass-italy.com http://www.compass-italy.com
 		"vali-xxx"		=>array("name"=>"","ok_result"=>0,"ok_string"=>"PASSED"),	// ok ( fail -> 8  ) 
