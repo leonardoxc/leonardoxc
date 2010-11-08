@@ -39,3 +39,5 @@ ALTER TABLE `leonardo_users`
   DROP `user_interests`;
 
 
+
+ALTER TABLE `leonardo_temp_users` CHANGE `user_birthdate` `user_birthdate` VARCHAR( 15 ) NOT NULL ;

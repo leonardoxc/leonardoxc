@@ -99,10 +99,10 @@ if(isset($_POST['uce'])){
 					  
 				$email_body=sprintf(_Password_recovery_email,
 									$CONF['site']['name'],
-									$res['username'],$_SERVER['HTTP_HOST'],
+									$res['username'],$_SERVER['SERVER_NAME'],
 									$res['username'],$res['user_civlid'],
 									$newpass,
-									$_SERVER['HTTP_HOST'].$PHP_SELF,
+									str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),
 									$actkey
 									);		
 																						

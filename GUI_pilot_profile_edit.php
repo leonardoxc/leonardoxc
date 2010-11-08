@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.36 2010/09/17 08:06:57 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.37 2010/11/08 13:13:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -250,7 +250,7 @@
 		$CIVL_ID_window_width=$CONF['profile']['CIVL_ID']['window_width'];
 		$CIVL_ID_window_height=$CONF['profile']['CIVL_ID']['window_height'];
 	} else {
-		$CIVL_ID_enter_url=getRelMainDir().'/GUI_EXT_civl_name_search.php?CIVL_ID_field=CIVL_ID';
+		$CIVL_ID_enter_url=getRelMainDir().'GUI_EXT_civl_name_search.php?CIVL_ID_field=CIVL_ID';
 		$CIVL_ID_window_width=650;
 		$CIVL_ID_window_height=150;
 	}

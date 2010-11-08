@@ -66,7 +66,7 @@ CREATE TABLE `leonardo_temp_users` (
   `user_password` varchar(34) NOT NULL,
   `user_nation` varchar(5) NOT NULL,
   `user_gender` varchar(5) NOT NULL,
-  `user_birthdate` int(8) NOT NULL,
+  `user_birthdate` varchar(15) NOT NULL,
   `user_session_time` int(11) NOT NULL default '0',
   `user_regdate` int(11) NOT NULL default '0',
   `user_email` varchar(255) default NULL,

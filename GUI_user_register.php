@@ -1,6 +1,8 @@
 <?
 require_once $LeoCodeBase."/CL_mail.php";
 
+// echo "http://".str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile).'?op=ref';
+
 openMain(sprintf(_Registration_Form,$CONF['site']['name'] ),0,'');
 
 // now defined in site/predefined/3/config.php
@@ -115,7 +117,10 @@ if($_POST['registerForm']==1){
 			$actkey=$r['user_actkey'] ;       
 			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
 			print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
-			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],
+			$_SERVER['SERVER_NAME'],
+			str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),
+			$actkey );
 			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['firstname']));
 			unset($actkey);
 		} else if($r['user_email']==$_POST['email']  ){
@@ -159,7 +164,9 @@ if($_POST['registerForm']==1){
 		 , '".$actkey."'
 		 )";
 		 if( $db->sql_query($sql)) {
-			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],$_SERVER['HTTP_HOST'],$_SERVER['HTTP_HOST'].$PHP_SELF,$actkey );
+			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],
+				$_SERVER['SERVER_NAME'],
+				str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),$actkey );
 			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['firstname']));
 			
 			$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
@@ -219,8 +226,8 @@ function setCIVL_ID() {
 	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
 
 </script>
-<script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
-<script language='javascript' src='<?=$moduleRelPath ?>/js/cal/popcalendar.js'></script>
+<script language="javascript" src='<?=getRelMainDir()?>js/civl_search.js'></script>
+<script language='javascript' src='<?=getRelMainDir()?>js/cal/popcalendar.js'></script>
 
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
   <tr>
