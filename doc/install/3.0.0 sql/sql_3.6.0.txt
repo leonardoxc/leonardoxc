@@ -1,6 +1,8 @@
 
 ALTER TABLE `leonardo_flights` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
 
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+
 CREATE TABLE `leonardo_comments` (
 `commentID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
 `parentID` BIGINT UNSIGNED NOT NULL ,

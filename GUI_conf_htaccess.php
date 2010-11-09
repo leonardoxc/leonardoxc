@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.17 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.18 2010/11/09 14:52:17 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -55,6 +55,9 @@ $str="
 #
 RewriteEngine On
 RewriteBase ".$virtPath."
+
+# exclude the real path
+rewriteRule ^$basePath/ - [L]
 
 # various operations on a flight
 RewriteRule ^".$virtPath2."flight/(\d*)/kml/(.*)$ $basePath/download.php?type=kml_trk&flightID=$1&$2 [L,NC]
