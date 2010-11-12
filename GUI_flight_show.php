@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.99 2010/10/18 14:05:21 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.100 2010/11/12 12:28:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -441,7 +441,11 @@ if ($flight->is3D()) {
 */
 
 if ($flight->commentsNum) {
-	 $comments=$flight->comments;
+	//	$comments=$flight->comments;
+	$flightComments=new flightComments($flight->flightID);
+	$flightComments->getFromDB();
+	$comments=$flightComments->getThreadsOutput();
+		 
 }
 
 $linkURL=_N_A;

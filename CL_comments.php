@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.1 2010/10/18 14:05:21 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.2 2010/11/12 12:28:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,6 +17,8 @@ class flightComments {
 	var $flightID;
 	var $commentsNum;
 	var $comments;
+	var $threads;
+	
 
 	var $valuesArray;
 	var $gotValues;
@@ -113,30 +115,45 @@ class flightComments {
 	
 	function getFromDB() {
 		global $db,$commentsTable;
-		$res= $db->sql_query("SELECT * FROM $commentsTable WHERE flightID=".$this->flightID ." ORDER BY ID ASC");
+		$sql="SELECT * FROM $commentsTable WHERE flightID=".$this->flightID ." ORDER BY commentID ASC";
+		$res= $db->sql_query($sql);
   		if($res <= 0){   
-			 echo "Error getting comments from DB for flight".$this->flightID."<BR>";
+			 echo "Error getting comments from DB for flight".$this->flightID." <BR>";
 		     return 0;
 	    }
 
-		$this->commentsNum=0;
+
+		$comments = array();
+		$commentsParents= array();
+		$commentsNum=0;   	  
 	    while ($row = $db->sql_fetchrow($res) ) {
-			$this->comments[$this->commentsNum]['ID']=$row['ID'];
-			$this->comments[$this->commentsNum]['path']=$row['path'];
-			$this->comments[$this->commentsNum]['name']=$row['name'];
-			$this->comments[$this->commentsNum]['description']=$row['description'];
-			$this->comments[$this->commentsNum]['lat']=$row['lat'];
-			$this->comments[$this->commentsNum]['lon']=$row['lon'];
-			$this->comments[$this->commentsNum]['alt']=$row['alt'];
-			$this->comments[$this->commentsNum]['tm']=$row['tm'];
+			// echo "got ".$row['text']."<br>";	
+			$commentsParents[]=array('id'=>$row['commentID'], 'parent_id'=>$row['parentID'] );
+			$comments[$row['commentID']]=$row;
 			//print_r($this->comments[$this->commentsNum]);
 			$this->commentsNum++;			
 		}
+		
+		$threadedComments = new threadedComments($commentsParents);					
 
+		$this->threads=$threadedComments->threads;
+		$this->comments=$comments;		
+		$this->commentsNum=$commentsNum;		
 		$this->gotValues=1;
 		return 1;
     }
 
+	function getThreadsOutput() {
+		$str='';
+		foreach($this->threads as $thread) {		
+			$commentData=$this->comments[$thread['id']];			
+			$str.="<div class='comments depth".$thread['depth']."'>";
+			$str.=$commentData['text'];
+			$str.="</div>";
+		}
+		return $str;
+	}
+	
 	function putToDB($updateFlightsTable=1) {
 		global $db,$commentsTable,$flightsTable;
 
@@ -181,83 +198,48 @@ class flightComments {
 
 }
 
-/*
-$comments = array(  array('id'=>1, 'parent_id'=>NULL,   'text'=>'Parent'),
-                    array('id'=>2, 'parent_id'=>1,      'text'=>'Child'),
-                    array('id'=>3, 'parent_id'=>2,      'text'=>'Child Third level'),
-                    array('id'=>4, 'parent_id'=>NULL,   'text'=>'Second Parent'),
-                    array('id'=>5, 'parent_id'=>4,   'text'=>'Second Child')
-                );
-
-$threaded_comments = new Threaded_comments($comments);
-
-$threaded_comments->print_comments();
-
-*/
-class Threaded_comments
-{
-
+class threadedComments {
     public $parents  = array();
     public $children = array();
+	public $threads=array();
 
-    /**
-     * @param array $comments
-     */
-    function __construct($comments)
-    {
-        foreach ($comments as $comment)
-        {
-            if ($comment['parent_id'] === NULL)
-            {
+    function __construct($comments) {
+        foreach ($comments as $comment) {
+            if (!$comment['parent_id'] ) {
                 $this->parents[$comment['id']][] = $comment;
-            }
-            else
-            {
+            } else {
                 $this->children[$comment['parent_id']][] = $comment;
             }
-        }
+        }		
+		$this->makeThreads();
+		
+		//echo "Init Threaded_comments:<br>";
+		//print_r($this->parents);
+		//print_r($this->children);
+		//echo "Threads are ready : <BR>";
+		//print_r($this->threads); 		
     }
 
-    /**
-     * @param array $comment
-     * @param int $depth
-     */
-    private function format_comment($comment, $depth)
-    {
-        for ($depth; $depth > 0; $depth--)
-        {
-            echo "\t";
+	public function makeThreads() {
+		$this->threads=array();
+	    foreach ($this->parents as $c) {
+            $this->process_parent($c);
         }
-
-        echo $comment['text'];
-        echo "\n";
+	}
+	
+	private function process_comment($comment, $depth) {
+		$this->threads[]=array('depth'=>$depth,'id'=>$comment['id']);
     }
-
-    /**
-     * @param array $comment
-     * @param int $depth
-     */
-    private function print_parent($comment, $depth = 0)
-    {
-        foreach ($comment as $c)
-        {
-            $this->format_comment($c, $depth);
-
-            if (isset($this->children[$c['id']]))
-            {
-                $this->print_parent($this->children[$c['id']], $depth + 1);
+	
+    private function process_parent($comment, $depth = 0) {
+        foreach ($comment as $c) {
+            $this->process_comment($c, $depth);
+            if (isset($this->children[$c['id']])) {
+                $this->process_parent($this->children[$c['id']], $depth + 1);
             }
         }
     }
-
-    public function print_comments()
-    {
-        foreach ($this->parents as $c)
-        {
-            $this->print_parent($c);
-        }
-    }
-
+	
 }
 
 ?>

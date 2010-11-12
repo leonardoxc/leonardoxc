@@ -8,13 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.189 2010/10/18 14:05:21 manolis Exp $
+// $Id: CL_flightData.php,v 1.190 2010/11/12 12:28:20 manolis Exp $
 //
 //************************************************************************
 
 require_once dirname(__FILE__)."/CL_gpsPoint.php";
 require_once dirname(__FILE__)."/CL_flightPhotos.php";
 require_once dirname(__FILE__).'/CL_flightScore.php';
+require_once dirname(__FILE__).'/CL_comments.php';
 require_once dirname(__FILE__)."/CL_brands.php";
 require_once dirname(__FILE__)."/CL_dates.php";
 require_once dirname(__FILE__)."/FN_pilot.php";
@@ -111,6 +112,7 @@ var $olcFilename="";
 var $olcDateSubmited;
 
 var $flightScore;
+var $flightComments;
 
 /*
 #externalFlightType
