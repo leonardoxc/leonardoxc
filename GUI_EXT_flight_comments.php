@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.1 2010/11/12 12:28:21 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.2 2010/11/13 22:17:05 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -43,7 +43,7 @@
 
 	if (!$flight->commentsNum) {
 		// no comments
-		return;
+		// return;
 	}
 
 
@@ -88,8 +88,141 @@
 	.depth8 { margin-left:160px;}
 	.depth9 { margin-left:180px;}
 	
+	
+	
+
+.comment_box
+{
+background-color:#D3E7F5; border-bottom:#ffffff solid 1px; padding-top:3px
+}
+a
+	{
+	text-decoration:none;
+	color:#d02b55;
+	}
+	a:hover
+	{
+	text-decoration:underline;
+	color:#d02b55;
+	}
+	*{margin:0;padding:0;}
+	
+	
+	ol.timeline
+	{list-style:none;font-size:1.2em;}
+	ol.timeline li{ display:none;position:relative;padding:.7em 0 .6em 0;}ol.timeline li:first-child{}
+	
+	#main
+	{
+	width:500px;  margin-left:100px;
+	font-family:"Trebuchet MS";
+	}
+	#flash
+	{
+	margin-left:100px;
+	
+	}
+	.box
+	{
+	height:85px;
+	border-bottom:#dedede dashed 1px;
+	margin-bottom:20px;
+	}
+
+#submitComment input {
+	color:#000000;
+	font-size:14px;
+	border:#666666 solid 2px;
+	height:24px;
+	margin-bottom:10px;
+	width:200px;	
+}
+	
+#submitComment textarea {
+	color:#000000;
+	font-size:14px;
+	border:#666666 solid 2px;
+	height:124px;
+	margin-bottom:10px;
+	width:200px;	
+}
+
+#submitComment .titles{
+	font-size:13px;
+	padding-left:10px;
+}
+	
+#submitComment .star{
+	color:#FF0000; font-size:16px; font-weight:bold;
+	padding-left:5px;
+}
+
+#submitComment {
+	width:600px;
+	display:block;
+	position:absolute;
+	border:1px solid #999999;
+	display:none;
+}
+
+.reply {
+	font-size:14px;
+	background-color:#E3DDB7;
+	padding:4px;
+	border:1px solid #999999;
+	font-weight:bold;
+	cursor:pointer;cursor:hand;
+	display:block;
+	width:130px;
+	text-align:center;
+}
 </style>
+
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/ckeditor/ckeditor.js"></script>
+
 </head>
+<body>
+<script language="javascript">
+
+$(document).ready(function(){
+	CKEDITOR.replace( 'commentBox' );
+
+$(".Reply").click(function(f) {
+		$("#submitComment").show();
+	});
+
+$(".submit").click(function(f) {
+
+		$("#submitComment").hide();
+		var oEditor = CKEDITOR.instances.commentBox;
+		var commentText=oEditor.getData();
+		$("#replyText").html( commentText );
+		
+		$.post('<?=$moduleRelPath?>/EXT_comments_functions.php', 
+			{ op:"add" , flightID: <?=$flightID?>, parent: parent ,name: name , email: email, commentText: commentText } 
+			function(data) {
+			  $('.result').html(data);
+			});
+
+	});
+
+
+});
+</script>
+
+<div id='submitComment' >
+<form action="#" method="post">
+<input type="text" id="name"/><span class="titles">Name</span><span class="star">*</span><br />
+<input type="text" id="email"/><span class="titles">Email</span><span class="star">*</span><br />
+<textarea name="commentBox" id="commentBox" cols="120" rows="10"></textarea><br />
+<input type="button" class="submit" value=" Submit Comment " />
+</form>
+</div>
+
+<div id='parent0' class='reply'>Reply</div>
+
+<div id='replyText'>...</div>
 <?
 
 		$str='';
@@ -104,3 +237,5 @@
 
 
 ?>
+
+</body>

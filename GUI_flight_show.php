@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.100 2010/11/12 12:28:21 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.101 2010/11/13 22:17:05 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -446,6 +446,8 @@ if ($flight->commentsNum) {
 	$flightComments->getFromDB();
 	$comments=$flightComments->getThreadsOutput();
 		 
+} else {
+	$comments="<br>";
 }
 
 $linkURL=_N_A;
@@ -700,7 +702,8 @@ if ( $divsToShow>1) { // use tabber
 	}		  
 
 	if ($comments) {
-			$mapImg.="<div class='tabbertab' title='"._COMMENTS."' style='width:745px; text-align:left;'>
+			$mapImg.="<div class='tabbertab' title='"._COMMENTS." (".$flight->commentsNum.")' style='width:745px; text-align:left;'>
+			<a href='".$moduleRelPath."/GUI_EXT_flight_comments.php?flightID=".$flight->flightID."'> comments </a>
 				  $comments
 				  </div>";
 	}	
