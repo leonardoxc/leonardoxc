@@ -1,4 +1,4 @@
-&nbsp;<?
+<?
 //************************************************************************
 // Leonardo XC Server, http://www.leonardoxc.net
 //
@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.37 2010/11/08 13:13:58 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.38 2010/11/14 20:59:12 manolis Exp $                                                                 
 //
 //************************************************************************
 

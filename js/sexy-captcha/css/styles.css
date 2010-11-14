@@ -1,0 +1,64 @@
+img { 
+	behavior: url(iepngfix.htc); 
+}
+.instructions {
+	width: 430px;
+	padding: 5px 10px;
+	color: #FFFFFF;
+}
+.captchaWrapper {
+	background: url('images/bwm-captcha.png') 0 -204px no-repeat;
+	position: relative;
+	width: 433px;
+	height: 112px;
+}
+a.captchaRefresh:link, a.captchaRefresh:visited, a.captchaRefresh:active {
+	background: url('images/bwm-captcha.png') -265px -170px no-repeat;
+	width: 88px;
+	height: 16px;
+	position: absolute;
+	top: 0;
+	left: 15px;
+	display: block;
+}
+a.captchaRefresh:hover {
+	background: url('images/bwm-captcha.png') -265px -187px no-repeat;
+	width: 88px;
+	height: 16px;
+	position: absolute;
+	top: 0;
+	left: 15px;
+	display: block;
+}
+.targetWrapper {
+	position: absolute;
+	width: 130px;
+	height: 79px;
+	left: 294px;
+	top: 21px;
+}
+.captchaFail {
+	background: url('images/bwm-captcha.png') 0 -122px no-repeat;
+	width: 132px;
+	height: 82px;
+}
+.captchaSuccess {
+	background: url('images/bwm-captcha.png') -132px -122px no-repeat;
+	width: 132px;
+	height: 82px;
+}
+.target {
+	background: url('images/bwm-captcha.png');
+	width: 56px; 
+	height: 55px; 
+	margin: 13px auto 0 auto;
+}
+.draggable {
+	background: url('images/bwm-captcha.png');
+	position: absolute;
+	z-index: 10000;
+	width: 56px;
+	height: 55px;
+	top: 35px; 
+	cursor: move;
+}

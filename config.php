@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.156 2010/10/18 14:05:21 manolis Exp $                                                                 
+// $Id: config.php,v 1.157 2010/11/14 20:59:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -469,6 +469,9 @@ setlocale(LC_NUMERIC, 'en_US') ;
   
   $CONF['photos']['thumbs']['max_width']=130;
   $CONF['photos']['thumbs']['max_height']=130;
+  
+  $CONF['photos']['tiny']['max_width']=60;
+  $CONF['photos']['tiny']['max_height']=60;
   
   $CONF['photos']['compression']=20;
   

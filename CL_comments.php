@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.2 2010/11/12 12:28:20 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.3 2010/11/14 20:59:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -36,18 +36,25 @@ class flightComments {
 	}
 
 	
-	function addComment($num,$path,$name,$description,$updateFlightsTable=1) {
+	function addComment($params,$updateFlightsTable=1) {
 		global $db,$commentsTable,$flightsTable;
-		// $this->comments[$this->commentsNum]['ID']=$row['ID'];
-		$this->comments[$num]['path']=$path;
-		$this->comments[$num]['name']=$name;
-		$this->comments[$num]['description']=$description;
-		$this->commentsNum++;	
+		
 
-		$query="INSERT INTO $commentsTable  (flightID,path,name,description) VALUES (".
-			$this->flightID.",'".prep_for_DB($path)."','".
-								 prep_for_DB($name)."','".
-								 prep_for_DB($description)."' ) ";
+		$now=gmdate("Y-m-d H:i:s");
+
+		$query="INSERT INTO $commentsTable (flightID,parentID,userID,userServerID,guestName,guestPass,guestEmail,
+											text,languageCode,dateAdded,dateUpdated) 
+			VALUES (".
+			$this->flightID.",'".prep_for_DB($params['parentID'])."','".
+								 prep_for_DB($params['userID'])."','".
+								 prep_for_DB($params['userServerID'])."','".
+								 prep_for_DB($params['guestName'])."','".
+								 prep_for_DB($params['guestPass'])."','".
+								 prep_for_DB($params['guestEmail'])."','".
+								 prep_for_DB($params['text'])."','".
+								 prep_for_DB($params['languageCode'])."','".
+								 $now."','".
+								 $now."' ) ";
 	
 		// echo $query;
 		$res= $db->sql_query($query);
@@ -60,10 +67,10 @@ class flightComments {
 		$this->comments[$num]['ID']=$newID;
 
 		if ($updateFlightsTable) {
-			$query="UPDATE $flightsTable SET commentsNum=".$this->commentsNum." WHERE ID=".$this->flightID;
+			$query="UPDATE $flightsTable SET commentsNum=commentsNum+1 WHERE ID=".$this->flightID;
 			$res= $db->sql_query($query );
 			if($res <= 0){   
-				 echo "Error updating hascomments for flight ".$this->flightID." : $query<BR>";
+				 echo "Error updating commentsNum for flight ".$this->flightID." : $query<BR>";
 			}
 		}	
 

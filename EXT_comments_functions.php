@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.1 2010/11/13 22:17:05 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.2 2010/11/14 20:59:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,6 +17,7 @@
  	require_once "EXT_config.php";
 
 	require_once "CL_flightData.php";
+	require_once "CL_comments.php";
 	require_once "FN_functions.php";	
 	require_once "FN_UTM.php";
 	require_once "FN_waypoint.php";	
@@ -33,9 +34,32 @@
 
 	if ($op=='add'){	
 		$flightID=makeSane($_POST['flightID']);
-	
-
+		$parentID=makeSane($_POST['parentID'])+0;
+		$guestName=makeSane($_POST['guestName']);
+		$guestEmail=makeSane($_POST['guestEmail']);
+		$guestPass=makeSane($_POST['guestPass']);
+		$commentText=$_POST['commentText'];
+		$userID=makeSane($_POST['userID']);
+		$userServerID=makeSane($_POST['userServerID']);
+		$languageCode=makeSane($_POST['languageCode']);
 		
+		
+		$flightComments=new flightComments($flightID);
+		$flightComments->addComment(
+				array(
+					'parentID'=>$parentID,
+					'userID'=>$userID,
+					'userServerID'=>$userServerID,
+					'guestName'=>$guestName,
+					'guestPass'=>$guestPass,
+					'guestEmail'=>$guestEmail,
+					'text'=>$commentText,
+					'languageCode'=>$languageCode
+					)
+		);			
+								 
+		echo " $flightID $parentID $name $email $commentText <BR>";
+		echo "OK";
 	} 
 
 	
