@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.101 2010/11/13 22:17:05 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.102 2010/11/15 22:03:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -702,10 +702,17 @@ if ( $divsToShow>1) { // use tabber
 	}		  
 
 	if ($comments) {
-			$mapImg.="<div class='tabbertab' title='"._COMMENTS." (".$flight->commentsNum.")' style='width:745px; text-align:left;'>
-			<a href='".$moduleRelPath."/GUI_EXT_flight_comments.php?flightID=".$flight->flightID."'> comments </a>
-				  $comments
-				  </div>";
+			$mapImg.="<div class='tabbertab' title='"._COMMENTS." (".$flight->commentsNum.")' style='width:745px; height:600px; text-align:left;'>
+			<iframe id='comments_iframe' align='left'
+		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
+		$flight->flightID."' ".
+		 " TITLE='Comments' width='100%' height='100%'
+		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
+		</iframe></div>";
+		  
+			//<a href='".$moduleRelPath."/GUI_EXT_flight_comments.php?flightID=".$flight->flightID."'> comments </a>
+			//	  $comments
+			//	  </div>";
 	}	
 
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.3 2010/11/15 15:00:13 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.4 2010/11/15 22:03:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -62,8 +62,18 @@
 				parentID=$parentID, guestName=$guestName, userID=$userID,
 				<hr> $commentText <BR>";
 		//echo "OK";
-	} 
-
-	
+	} else if ($op=='delete'){	
+		$flightID=makeSane($_POST['flightID']);
+		$commentID=makeSane($_POST['commentID'])+0;
+		$parentID=makeSane($_POST['parentID'])+0;
+		
+		if (!$flightID|| !$commentID) {
+			echo "0:Bad paramters";
+			return;		
+		}
+		$flightComments=new flightComments($flightID);
+		$result=$flightComments->deleteComment($commentID,$parentID);
+		echo "Result: $result";
+	}
 
 ?>

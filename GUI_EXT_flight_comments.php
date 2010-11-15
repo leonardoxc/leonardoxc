@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.4 2010/11/15 15:00:13 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.5 2010/11/15 22:03:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -84,16 +84,16 @@
 	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
 }
   
-	.depth0 { margin-left:0px;  width:730px;}
-	.depth1 { margin-left:20px;  width:710px;}
-	.depth2 { margin-left:40px;  width:690px;}
-	.depth3 { margin-left:60px;  width:670px;}
-	.depth4 { margin-left:80px;  width:650px;}
-	.depth5 { margin-left:100px; width:630px;}
-	.depth6 { margin-left:120px; width:610px;}
-	.depth7 { margin-left:140px; width:590px;}
-	.depth8 { margin-left:160px; width:570px;}
-	.depth9 { margin-left:180px; width:550px;}
+	.depth0 { margin-left:0px;  width:710px;}
+	.depth1 { margin-left:20px;  width:690px;}
+	.depth2 { margin-left:40px;  width:670px;}
+	.depth3 { margin-left:60px;  width:650px;}
+	.depth4 { margin-left:80px;  width:630px;}
+	.depth5 { margin-left:100px; width:610px;}
+	.depth6 { margin-left:120px; width:590px;}
+	.depth7 { margin-left:140px; width:570px;}
+	.depth8 { margin-left:160px; width:550px;}
+	.depth9 { margin-left:180px; width:530px;}
 	
 	
 	a {
@@ -145,8 +145,8 @@
 	padding-left:5px;
 }
 
-#submitComment {
-	width:738px;
+#deleteWindow{
+	width:710px;
 	display:block;
 	position:absolute;
 	top:-400px;
@@ -156,14 +156,29 @@
 	border-top:3px solid #FF9966;
 	border-bottom:3px solid #FF9966;
 	background-color:#CEF775;
-	
+	padding-top:10px;
+	padding-bottom:10px;
+	text-align:center;
+}
+
+#submitComment {
+	width:710px;
+	display:block;
+	position:absolute;
+	top:-400px;
+	left:-1000px;
+	border:1px solid #999999;
+	border:none;
+	border-top:3px solid #FF9966;
+	border-bottom:3px solid #FF9966;
+	background-color:#CEF775;
 }
 
 #submitComment , #submitComment p, #submitComment td, #submitComment div,#submitComment span{
 	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
 }
 
-.commentActions , .commentActionsIcons{
+.commentActions , .commentActionsIcons, .deleteConfirm, .deleteCancel{
 	font-size:11px;
 	background-color:#E3DDB7;
 	padding:2px;
@@ -177,6 +192,14 @@
 	text-align:center;
 	float:left;
 	clear:none;
+}
+
+.deleteConfirm, .deleteCancel{
+	display:inline;
+	float:none;
+	clear:none;
+	font-size:14px;
+	padding:4px;
 }
 
 .commentActionsIcons {
@@ -264,6 +287,8 @@ echo makePilotPopup();
 
 var parent=0;
 var submitWindowActive=false;
+var commentIdtoDelete=0;
+var	parentIdtoDelete=0;
 
 function translateComment(commentID,srcLang){
 	$("#commentText"+commentID).translate(srcLang, 'de');
@@ -281,9 +306,32 @@ function hideSubmitWindow () {
 
 function showSubmitWindow () {
 	$(".media_embed").hide();	
-	$("#submitComment").show();
+	$("#submitComment").fadeIn('slow');
 	submitWindowActive=true;
 }
+
+function editComment( ev )
+{
+	// Get the element which fired the event. This is not necessarily the
+	// element to which the event has been attached.
+	var element = ev.target || ev.srcElement;
+
+	// Find out the div that holds this element.
+	element = element.parentNode;
+
+	if ( element.nodeName.toLowerCase() == 'div'
+		 && ( element.className.indexOf( 'editable' ) != -1 ) )
+		replaceDiv( element );
+}
+
+var editor;
+
+function replaceDiv( div ) {
+	if ( editor )
+		editor.destroy();
+	editor = CKEDITOR.replace( div );
+}
+
 
 $(document).ready(function(){
 	CKEDITOR.replace( 'commentBox' );
@@ -299,6 +347,7 @@ $(document).ready(function(){
 		if (submitWindowActive) {
 			hideSubmitWindow();
 		} else {
+			$("#deleteWindow").hide();
 			$("#submitComment").css({			
 								left:$("#commentsContainer").offset().left,
 								top:$(this).offset().top+$(this).height()+6
@@ -307,21 +356,66 @@ $(document).ready(function(){
 			
 			parent=$(this).attr('id').substring(6);			
 			// $("#submitComment").show();
-		}	
+		}
 	});
 
-	$(".delete").click(function(f) {
-		$("#submitComment").css({
-							left:$(this).offset().left,
-							top:$(this).offset().top+$(this).height()+6
-		}).show();	
+	$(".edit").click(function(f) {
+		var commentID=$(this).attr('id').substring(4);
 		
-		parent=$(this).attr('id').substring(6);			
-		// $("#submitComment").show();
+		if ( editor ) {
+			editor.destroy();
+		}
+		editor = CKEDITOR.replace( 'commentText'+commentID );
+	
+		return;
+		/*
+		if (submitWindowActive) {
+			hideSubmitWindow();
+		} else {
+			$("#deleteWindow").hide();
+			$("#submitComment").css({			
+								left:$("#commentsContainer").offset().left,
+								top:$(this).offset().top+$(this).height()+6
+			});	
+			showSubmitWindow();
+			
+			parent=$(this).attr('id').substring(6);			
+			// $("#submitComment").show();
+		}
+		*/
+	});
+	
+	$(".delete").click(function(f) {
+		hideSubmitWindow();
+		
+		commentIdtoDelete=$(this).attr('id').substring(6);
+		parentIdtoDelete=$(this).children(':first-child').attr('id').substring(7);
+		
+		
+		$("#deleteWindow").css({
+					left:$("#commentsContainer").offset().left,
+					top:$(this).offset().top+$(this).height()+6
+		}).fadeIn('slow');
 	});
 
-
-$(".submit").click(function(f) {
+	$(".deleteConfirm").click(function(f) {
+		$("#deleteWindow").fadeOut('fast');	
+		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
+			{ op:"delete" , flightID: <?=$flightID?>, commentID: commentIdtoDelete , parentID: parentIdtoDelete } ,
+			function(data) {
+			  $('#replyText').html(data);
+			  $('#comment_'+commentIdtoDelete).fadeOut('slow');	
+			}
+		);
+		
+	});
+	
+	$(".deleteCancel").click(function(f) {
+		commentIdtoDelete=0;
+		$("#deleteWindow").fadeOut('slow');	
+	});
+	
+	$(".submit").click(function(f) {
 
 		hideSubmitWindow();
 
@@ -416,8 +510,12 @@ if ($userID) {
 </form>
 </div>
 
+<div id='deleteWindow'>
+Are you sure you want to delete this comment?
+<span class='deleteConfirm'>yes</span> <span class='deleteCancel'>No - Cancel</span>
+</div>
 
-<div id='commentsContainer' style='width:740px'>
+<div id='commentsContainer' style='width:720px'>
 <div id='parent0' class='commentActions reply' style='width:200px;'>Leave a comment</div>
 <div style='clear:both'></div>
 
@@ -435,8 +533,9 @@ if ($userID) {
 		$i=0;
 		foreach($flightComments->threads as $thread) {	
 			$i++;	
+			$commentID=$thread['id'];
 			$commentData=$flightComments->comments[$thread['id']];			
-			$str.="<div class='commentBox depth".$thread['depth']."'>";
+			$str.="<div id='comment_$commentID' class='commentBox depth".$thread['depth']."'>";
 			$str.="<table class='commentRowTable' width='100%'>";
 			
 			if ($commentData['userID']) {
@@ -453,13 +552,13 @@ if ($userID) {
 				}
 					
 				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
-				$str.="<td valign='top'><div id='commentText".$commentData['commentID']."' class='commentBody'>".$commentData['text']."</div></td></tr>";
+				$str.="<td valign='top'><div id='commentText$commentID' class='commentBody'>".$commentData['text']."</div></td></tr>";
 			} else {
 			
 				$header="<img src='$moduleRelPath/img/photo_guest.jpg' width='50' height='50'  border=0>";
 
 				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
-				$str.="<td valign='top'><div id='commentText".$commentData['commentID']."' class='commentBody'>".$commentData['text']."</div></td></tr>";
+				$str.="<td valign='top'><div id='commentText$commentID' class='commentBody'>".$commentData['text']."</div></td></tr>";
 				
 				//$str.="<div class='commentHeaderGuest'>".$commentData['guestName']."</div>";
 				//$str.="<div class='commentBodyGuest'>".$commentData['text']."</div>";
@@ -491,10 +590,11 @@ if ($userID) {
 			$str.="<div class='actionBox' id='p_$i'>";
 			$str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText</div>";
 			
-			$str.="<div id='parent".$commentData['commentID']."' class='commentActions reply'>Reply</div>";
+			$str.="<div id='parent$commentID' class='commentActions reply'>Reply</div>";
 			if ($moderatorRights || $commentData['userID']==$userID) {
-				$str.="<div id='edit".$commentData['commentID']."'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
-				$str.="<div id='delete".$commentData['commentID']."' class='commentActionsIcons delete'><img src='$moduleRelPath/img/delete_icon.png'></div>";
+				$str.="<div id='edit$commentID'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
+				$str.="<div id='delete$commentID' class='commentActionsIcons delete'><img 
+						id='deletep".$commentData['parentID']."' src='$moduleRelPath/img/delete_icon.png'></div>";
 
 			}
 			//	$str.="<div style='clear:both'></div>";

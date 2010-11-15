@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.4 2010/11/15 15:00:13 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.5 2010/11/15 22:03:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -76,25 +76,35 @@ class flightComments {
 		return $newID;	
 	}
 
-	function deleteComment($commentNum,$updateFlightsTable=1) {
-		if (!$this->gotValues) $this->getFromDB();
-		
+	function deleteComment($commentID,$parentID,$updateFlightsTable=1) {
+		//if (!$this->gotValues) $this->getFromDB();		
 	
 		global $db,$commentsTable,$flightsTable;
 		
+		$result=0;
 		if ($updateFlightsTable) {
 			$res= $db->sql_query("UPDATE $flightsTable SET commentsNum=commentsNum-1 WHERE ID=".$this->flightID );
 			if($res <= 0){   
-				 echo "Error updating hascomments for flight".$this->flightID."<BR>";
+				 echo "Error updating commentsNum for flight".$this->flightID."<BR>";
+				 $result++;
 			}
 		}		
 		
 		// echo "###".$this->comments[$commentNum]['ID'];
-		$res= $db->sql_query("DELETE FROM  $commentsTable WHERE ID=".$this->comments[$commentNum]['ID'] );
+		$res= $db->sql_query("DELETE FROM $commentsTable WHERE commentID=$commentID");
   		if($res <= 0){   
-			 echo "Error deleting comment $commentNum for flight".$this->flightID."<BR>";
+			 echo "Error deleting comment $commentID for flight".$this->flightID."<BR>";
+			 $result++;
 	    }
-		unset($this->comments[$commentNum]);
+		
+		// make all childs of this comment to have the parent of the deleted comment
+		
+		$res= $db->sql_query("UPDATE $commentsTable SET parentID=$parentID WHERE parentID=$commentID");
+		if($res <= 0){   
+				 echo "Error updating orphaned childen of deleted comment<BR>";
+				 $result++;
+		}
+		return $result;	
 
 	}
 
