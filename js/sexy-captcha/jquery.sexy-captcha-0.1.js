@@ -20,6 +20,8 @@
 					$.post(url, { action: 'verify', captcha: $(ui.draggable).attr('id') }, function(data) {
 						if (data.status == "success") {
 							$('#captchaWrapper').find('.targetWrapper').addClass('captchaSuccess').hide().fadeIn('slow');
+							$('#captchaWrapper').fadeOut('slow');
+
 						} else {
 							$('#captchaWrapper').find('.targetWrapper').addClass('captchaFail').hide().fadeIn('slow');
 						}
@@ -41,6 +43,7 @@
 					$.post(url, { action: 'verify', captcha: $(this).attr('id') }, function(data) {
 						if (data.status == "success") {
 							$('#captchaWrapper').find('.targetWrapper').addClass('captchaSuccess').hide().fadeIn('slow');
+							$('#captchaWrapper').fadeOut('slow');
 						} else {
 							$('#captchaWrapper').find('.targetWrapper').addClass('captchaFail').hide().fadeIn('slow');
 						}

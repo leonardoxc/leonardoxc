@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.3 2010/11/14 20:59:12 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.4 2010/11/15 15:00:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,6 +28,7 @@
 	setDEBUGfromGET();
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
+
 
 	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
@@ -55,8 +56,11 @@
 	
   ?><head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
+  
+<link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
 
 <style type="text/css">
+/*
 	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
 	 td {border:1px solid #777777; }
 	 body {margin:0px; background-color:#FFFFFF}
@@ -73,26 +77,26 @@
 	.header1 { background-color:#E2ECF8 }
 	.header2 { background-color:#F9F8E1 }
 	.header3 { background-color:#E6EEE7 }
+*/
+  
 
-
-	.depth0 { margin-left:0px;}
-	.depth1 { margin-left:20px;}
-	.depth2 { margin-left:40px;}
-	.depth3 { margin-left:60px;}
-	.depth4 { margin-left:80px;}
-	.depth5 { margin-left:100px;}
-	.depth6 { margin-left:120px;}
-	.depth7 { margin-left:140px;}
-	.depth8 { margin-left:160px;}
-	.depth9 { margin-left:180px;}
+#commentsContainer , #commentsContainer p, #commentsContainer td, #commentsContainer div,#commentsContainer span{
+	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
+}
+  
+	.depth0 { margin-left:0px;  width:730px;}
+	.depth1 { margin-left:20px;  width:710px;}
+	.depth2 { margin-left:40px;  width:690px;}
+	.depth3 { margin-left:60px;  width:670px;}
+	.depth4 { margin-left:80px;  width:650px;}
+	.depth5 { margin-left:100px; width:630px;}
+	.depth6 { margin-left:120px; width:610px;}
+	.depth7 { margin-left:140px; width:590px;}
+	.depth8 { margin-left:160px; width:570px;}
+	.depth9 { margin-left:180px; width:550px;}
 	
 	
-	
-
-
-
-a
-	{
+	a {
 	text-decoration:none;
 	color:#d02b55;
 	}
@@ -101,37 +105,21 @@ a
 	text-decoration:underline;
 	color:#d02b55;
 	}
+	
 	*{margin:0;padding:0;}
-	
-	
+	/*
 	ol.timeline
 	{list-style:none;font-size:1.2em;}
 	ol.timeline li{ display:none;position:relative;padding:.7em 0 .6em 0;}ol.timeline li:first-child{}
+	*/
 	
-	#main
-	{
-	width:500px;  margin-left:100px;
-	font-family:"Trebuchet MS";
-	}
-	#flash
-	{
-	margin-left:100px;
-	
-	}
-	.box
-	{
-	height:85px;
-	border-bottom:#dedede dashed 1px;
-	margin-bottom:20px;
-	}
-
 #submitComment input {
 	color:#000000;
 	font-size:14px;
 	border:#666666 solid 2px;
 	height:24px;
 	margin-bottom:10px;
-	width:200px;	
+	width:160px;	
 }
 	
 #submitComment textarea {
@@ -145,25 +133,37 @@ a
 
 #submitComment .titles{
 	font-size:13px;
+	height:24px;
 	padding-left:10px;
 }
 	
 #submitComment .star{
-	color:#FF0000; font-size:16px; font-weight:bold;
+	color:#FF0000;
+	font-size:16px;
+	height:24px; 
+	font-weight:bold;
 	padding-left:5px;
 }
 
 #submitComment {
-	width:600px;
+	width:738px;
 	display:block;
 	position:absolute;
 	top:-400px;
 	left:-1000px;
 	border:1px solid #999999;
-	background-color:#FFFFFF;
+	border:none;
+	border-top:3px solid #FF9966;
+	border-bottom:3px solid #FF9966;
+	background-color:#CEF775;
+	
 }
 
-.commentActions {
+#submitComment , #submitComment p, #submitComment td, #submitComment div,#submitComment span{
+	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
+}
+
+.commentActions , .commentActionsIcons{
 	font-size:11px;
 	background-color:#E3DDB7;
 	padding:2px;
@@ -173,25 +173,31 @@ a
 	display:block;
 	width:70px;
 	margin-right:3px;
-	height:13px;
+	height:14px;
 	text-align:center;
 	float:left;
 	clear:none;
 }
 
+.commentActionsIcons {
+	width:30px;
+}
+
 .actionBox {
 	display:block;
-	margin-top:-5px;
+	/*margin-top:-5px;
+	
+	height:25px;
+	*/
 	float:right;
 	clear:both;
 }
 
 .commentBox {
-		
 		background-color:#EEECE8;
 		border-bottom:#E8E9DC 1px solid;		
 		margin-bottom: 5px;
-		width:auto;
+		
 }	
 	
 .comment_box {
@@ -227,48 +233,81 @@ clear:none;
 
 </style>
 
-<link href="<?=moduleRelPath()?>js/sexy-captcha/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?=moduleRelPath()?>/js/sexy-captcha/css/styles.css" rel="stylesheet" type="text/css" media="all" />
 <style type="text/css">
 <!--
 
-img.brands { background: url(<?=$moduleRelPath?>img/sprite_brands.png) no-repeat left top; }
-img.fl {   background: url(<?=$moduleRelPath?>img/sprite_flags.png) no-repeat left top ; }
-img.icons1 {   background: url(<?=$moduleRelPath?>img/sprite_icons1.png) no-repeat left  top ; }
+img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.png) no-repeat left top; }
+img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.png) no-repeat left top ; }
+img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-repeat left  top ; }
 -->
 </style>
-<link rel="stylesheet" type="text/css" href="<?=moduleRelPath()?>templates/<?=$PREFS->themeName?>/sprites.css">
+<link rel="stylesheet" type="text/css" href="<?=moduleRelPath()?>/templates/<?=$PREFS->themeName?>/sprites.css">
 
-<script type="text/javascript" src="<?=moduleRelPath()?>js/jquery.js"></script>
-<script type="text/javascript" src="<?=moduleRelPath()?>js/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="<?=moduleRelPath()?>js/xns.js"></script>
-<script type="text/javascript" src="<?=moduleRelPath()?>js/sexy-captcha/jquery-ui-1.7.2.custom.min.js"></script>
-<script type="text/javascript" src="<?=moduleRelPath()?>js/sexy-captcha/jquery.sexy-captcha-0.1.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/jquery.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/xns.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/DHTML_functions.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/sexy-captcha/jquery-ui-1.7.2.custom.min.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/sexy-captcha/jquery.sexy-captcha-0.1.js"></script>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/jquery.translate.js"></script>
 
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
+
+
+<? 
+echo makePilotPopup();
+?>
 
 <script language="javascript">
 
 var parent=0;
+var submitWindowActive=false;
+
+function translateComment(commentID,srcLang){
+	$("#commentText"+commentID).translate(srcLang, 'de');
+}
+/*
+hide / make opaque flash
+http://www.communitymx.com/content/article.cfm?cid=E5141
+http://stackoverflow.com/questions/1825792/jquery-hide-a-div-that-contains-flash-without-resetting-it
+*/
+function hideSubmitWindow () {
+	$("#submitComment").css({left:-1000,top:-1000});	
+	$(".media_embed").show();	
+	submitWindowActive=false;
+}
+
+function showSubmitWindow () {
+	$(".media_embed").hide();	
+	$("#submitComment").show();
+	submitWindowActive=true;
+}
 
 $(document).ready(function(){
 	CKEDITOR.replace( 'commentBox' );
 
- 	$('.myCaptcha').sexyCaptcha('<?=moduleRelPath()?>js/sexy-captcha/captcha.process.php');
-
+ 	$('.myCaptcha').sexyCaptcha('<?=moduleRelPath()?>/js/sexy-captcha/captcha.process.php');
 
 	$(".cancelSubmit").click(function(f) {
-		$("#submitComment").hide();
+		hideSubmitWindow();
 	});
 
 
 	$(".reply").click(function(f) {
-		$("#submitComment").css({
-		
-							left:$("#commentsContainer").offset().left,
-							top:$(this).offset().top+$(this).height()+6
-		}).show();	
-		
-		parent=$(this).attr('id').substring(6);			
-		// $("#submitComment").show();
+		if (submitWindowActive) {
+			hideSubmitWindow();
+		} else {
+			$("#submitComment").css({			
+								left:$("#commentsContainer").offset().left,
+								top:$(this).offset().top+$(this).height()+6
+			});	
+			showSubmitWindow();
+			
+			parent=$(this).attr('id').substring(6);			
+			// $("#submitComment").show();
+		}	
 	});
 
 	$(".delete").click(function(f) {
@@ -284,7 +323,9 @@ $(document).ready(function(){
 
 $(".submit").click(function(f) {
 
-		$("#submitComment").hide();
+		hideSubmitWindow();
+
+		
 		var oEditor = CKEDITOR.instances.commentBox;
 		var commentText=oEditor.getData();
 		$("#replyText").html( commentText );
@@ -298,7 +339,7 @@ $(".submit").click(function(f) {
 		var userServerID=$("#userServerID").val();
 		var languageCode=$("#languageCode").val();
 		
-		$.post('<?=moduleRelPath()?>EXT_comments_functions.php', 
+		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
 			{ op:"add" , flightID: <?=$flightID?>, parentID: parent ,userID:userID, userServerID:userServerID, languageCode:languageCode,
 							guestName: guestName , guestEmail: guestEmail, commentText: commentText } ,
 			function(data) {
@@ -314,19 +355,36 @@ $(".submit").click(function(f) {
 
 <div id='submitComment' >
 <form action="#" method="post">
-<? if ($userID) { 
+<? 
+// debug
+//  $userID=0;
+// caching pilot names in an array
+$pilotNames=array();
+
+
+if ($userID) { 
 
 			$imgBigRel=getPilotPhotoRelFilename($userServerID,$userID);	
 			$imgBig=getPilotPhotoFilename($userServerID,$userID);	
-			
-			list($width, $height, $type, $attr) = getimagesize($imgBig);
-			list($width2, $height2)=CLimage::getJPG_NewSize($CONF['photos']['tiny']['max_width'], $CONF['photos']['tiny']['max_height'], $width, $height);
-			echo "<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($userServerID,$userID,1)."' 
-			width='$width2' height='$height2' onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
-			 border=0></a>";
-			 			 
+			if (is_file($imgBig) ) {
+					list($width, $height, $type, $attr) = getimagesize($imgBig);
+					list($width2, $height2)=CLimage::getJPG_NewSize($CONF['photos']['tiny']['max_width'], $CONF['photos']['tiny']['max_height'], $width, $height);
+					echo "<a href='$imgBigRel' target='_blank'><img src='".
+							getPilotPhotoRelFilename($userServerID,$userID,1).
+							"' width='$width2' height='$height2' align='absmiddle'  border=0></a>";
+			} else {
+				echo "<img src='$moduleRelPath/img/photo_no_profile_photo.jpg' width='50' height='50' align='absmiddle' border=0>";
+			}		 			 
 			 
+			$name=$pilotNames[$userID][$userServerID];
+			if (!$name) {			
+					$name=getPilotRealName($userID,$userServerID+0,1,1,1);
+					$pilotNames[$userID][$userServerID]=$name;
+			}	 
+			echo "&nbsp;Logged in as: $name";
 ?>
+&nbsp;&nbsp;<input type="button" class="submit" value=" Submit Comment " />&nbsp;&nbsp;
+
 <input type="hidden" id="userID" value="<?=$userID?>"/>
 <input type="hidden" id="userServerID" value="<?=($userServerID+0)?>"/>
 
@@ -338,31 +396,45 @@ $(".submit").click(function(f) {
 <? } else { ?>
 <input type="hidden" id="userID" value="0"/>
 <input type="hidden" id="userServerID" value="0"/>
-
+<table cellpadding="0" cellspacing="0" border="0" style='margin-left:5px'><tr><td width="400">
 <input type="text" id="guestName"/><span class="titles">Name</span><span class="star">*</span><br />
 <input type="text" id="guestPass"/><span class="titles">Password</span><span class="star">*</span><br />
 <input type="text" id="guestEmail"/><span class="titles">Email</span><span class="star">*</span><br />
+</td><td>
+<div style='position:absolute; top:20px; left:450px;'><input type="button" class="submit" value=" Submit Comment " /></div>
+<div class="myCaptcha"></div>
+</td></tr>
+</table>
 <? } ?>
 
 <input type="hidden" id="languageCode" value="<?=$lang2iso[$currentlang]?>"/>
 <textarea name="commentBox" id="commentBox" cols="120" rows="10"></textarea><br />
-<div class="myCaptcha"></div>
 
-<input type="button" class="submit" value=" Submit Comment " />&nbsp;&nbsp;
-<input type="button" class="cancelSubmit" value=" Cancel" />
+
+<div align='right'><input type="button" class="cancelSubmit" value=" Cancel" />&nbsp;&nbsp;</div>
+
 </form>
 </div>
 
 
 <div id='commentsContainer' style='width:740px'>
-<div id='parent0' class='commentActions reply'>Reply</div>
+<div id='parent0' class='commentActions reply' style='width:200px;'>Leave a comment</div>
 <div style='clear:both'></div>
 
 <div id='replyText'>...</div>
 <?
+		// now the access rights :
+		$moderatorRights=false;
+		if ( ($flight->userID==$userID && $flight->userServerID==$userServerID ) || 
+				L_auth::isModerator($userID)  ) {
+			$moderatorRights=true;
+		}
+
 
 		$str='';
-		foreach($flightComments->threads as $thread) {		
+		$i=0;
+		foreach($flightComments->threads as $thread) {	
+			$i++;	
 			$commentData=$flightComments->comments[$thread['id']];			
 			$str.="<div class='commentBox depth".$thread['depth']."'>";
 			$str.="<table class='commentRowTable' width='100%'>";
@@ -373,20 +445,24 @@ $(".submit").click(function(f) {
 					list($width, $height, $type, $attr) = getimagesize($imgBig);
 				
 					list($width2, $height2)=CLimage::getJPG_NewSize($CONF['photos']['tiny']['max_width'], 
-																	$CONF['photos']['tiny']['max_height'], $width, $height);
-																					
+																	$CONF['photos']['tiny']['max_height'], $width, $height);																					
 					$header="<img src='".getPilotPhotoRelFilename($commentData['userServerID'],$commentData['userID'],1)."' 
 								width='$width2' height='$height2'  border=0>";
 				}  else {
-				
-				
+					$header="<img src='$moduleRelPath/img/photo_no_profile_photo.jpg' width='50' height='50'  border=0>";
 				}
 					
 				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
-				$str.="<td valign='top'><div class='commentBody'>".$commentData['text']."</div></td></tr>";
+				$str.="<td valign='top'><div id='commentText".$commentData['commentID']."' class='commentBody'>".$commentData['text']."</div></td></tr>";
 			} else {
-				$str.="<div class='commentHeaderGuest'>".$commentData['guestName']."</div>";
-				$str.="<div class='commentBodyGuest'>".$commentData['text']."</div>";
+			
+				$header="<img src='$moduleRelPath/img/photo_guest.jpg' width='50' height='50'  border=0>";
+
+				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
+				$str.="<td valign='top'><div id='commentText".$commentData['commentID']."' class='commentBody'>".$commentData['text']."</div></td></tr>";
+				
+				//$str.="<div class='commentHeaderGuest'>".$commentData['guestName']."</div>";
+				//$str.="<div class='commentBodyGuest'>".$commentData['text']."</div>";
 			}
 			
 			$langName=array_search ($commentData['languageCode'], $lang2iso);
@@ -397,14 +473,31 @@ $(".submit").click(function(f) {
 			$str.="<tr><td valign='bottom'>";
 			
 			
+			if ($commentData['userID']) {
+				 $name=$pilotNames[$commentData["userID"]][$commentData["userServerID"]];
+				 if (!$name) {
+					 $name=getPilotRealName($commentData["userID"],$commentData["userServerID"],1,1,1);
+					 $pilotNames[$commentData["userID"]][$commentData["userServerID"]]=$name;
+				 }	 
+			     $name=prepare_for_js($name);
+				 
+			 	 $userInfo="<a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 250, '".$commentData["userServerID"]."_".$commentData["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
+		 
+			} else {
+				$userInfo="Guest: ".$commentData['guestName']." ";
+			}
+			$translateText="<span ><a href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>Translate</a></span>";
 			
+			$str.="<div class='actionBox' id='p_$i'>";
+			$str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText</div>";
 			
-			$str.="<div class='actionBox'>";
-			$str.="<div class='commentInfo'>".$commentData['dateUpdated']." $flagImg</div>";
 			$str.="<div id='parent".$commentData['commentID']."' class='commentActions reply'>Reply</div>";
-			$str.="<div id='delete".$commentData['commentID']."' class='commentActions delete'>Delete</div>";
-			$str.="<div id='edit".$commentData['commentID']."'  class='commentActions edit'>Edit</div>";
-		//	$str.="<div style='clear:both'></div>";
+			if ($moderatorRights || $commentData['userID']==$userID) {
+				$str.="<div id='edit".$commentData['commentID']."'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
+				$str.="<div id='delete".$commentData['commentID']."' class='commentActionsIcons delete'><img src='$moduleRelPath/img/delete_icon.png'></div>";
+
+			}
+			//	$str.="<div style='clear:both'></div>";
 			$str.="</div>";
 			$str.="</td></tr>";
 			

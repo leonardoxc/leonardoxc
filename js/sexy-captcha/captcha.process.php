@@ -55,7 +55,7 @@
 		
 		//HTML output
 		echo '<div class="captchaWrapper" id="captchaWrapper">';
-		
+		echo "<span style='padding-left:110px;'>&nbsp;</span>Anti-SPAM : Click on the right shape";
 		foreach ($captchaImages as $count => $captchaImage) {
 			echo '	<a href="#" class="captchaRefresh"></a>
 							<div	id="draggable_' . $captchaCodes[$captchaImage['label']] . '" 

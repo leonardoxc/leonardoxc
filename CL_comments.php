@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.3 2010/11/14 20:59:11 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.4 2010/11/15 15:00:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -64,8 +64,7 @@ class flightComments {
 		}		
 
 		$newID=$db->sql_nextid();
-		$this->comments[$num]['ID']=$newID;
-
+		
 		if ($updateFlightsTable) {
 			$query="UPDATE $flightsTable SET commentsNum=commentsNum+1 WHERE ID=".$this->flightID;
 			$res= $db->sql_query($query );

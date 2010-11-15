@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.2 2010/11/14 20:59:12 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.3 2010/11/15 15:00:13 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -24,7 +24,7 @@
 	require_once "FN_output.php";
 	require_once "FN_pilot.php";
 	require_once "FN_flight.php";
-	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
+	//require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
 
 	
@@ -45,7 +45,7 @@
 		
 		
 		$flightComments=new flightComments($flightID);
-		$flightComments->addComment(
+		$newCommentID=$flightComments->addComment(
 				array(
 					'parentID'=>$parentID,
 					'userID'=>$userID,
@@ -58,8 +58,10 @@
 					)
 		);			
 								 
-		echo " $flightID $parentID $name $email $commentText <BR>";
-		echo "OK";
+		echo " newCommentID=$newCommentID, flightID=$flightID 
+				parentID=$parentID, guestName=$guestName, userID=$userID,
+				<hr> $commentText <BR>";
+		//echo "OK";
 	} 
 
 	
