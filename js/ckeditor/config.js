@@ -20,6 +20,19 @@ CKEDITOR.editorConfig = function( config )
 config.toolbar_Comments =
 [
     ['Templates'],
+    ['Bold','Italic','Underline'],
+	['Image','MediaEmbed','Smiley'],
+    ['NumberedList','BulletedList'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+    ['Link','Unlink'],
+    ['HorizontalRule','FontSize'],
+    ['Maximize'],
+   
+];
+
+config.toolbar_CommentsFull =
+[
+    ['Templates'],
     ['Cut','Copy','Paste','PasteText','PasteFromWord','-', 'SpellChecker', 'Scayt'],
     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
   
@@ -36,6 +49,5 @@ config.toolbar_Comments =
     ['Maximize'],
     ['Image','MediaEmbed' ,'Flash','Smiley'],
 ];
-
 
 };
