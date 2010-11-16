@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.5 2010/11/15 22:03:13 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.6 2010/11/16 14:58:14 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -72,6 +72,24 @@ class flightComments {
 				 echo "Error updating commentsNum for flight ".$this->flightID." : $query<BR>";
 			}
 		}	
+
+		return $newID;	
+	}
+	
+	function changeComment($params) {
+		global $db,$commentsTable;
+		
+
+		$now=gmdate("Y-m-d H:i:s");
+
+		$query="UPDATE $commentsTable SET `text`='".prep_for_DB($params['text'])."' , dateUpdated ='$now' 
+					 WHERE  commentID=".$params['commentID']." ";	
+		// echo $query;
+		$res= $db->sql_query($query);
+		if($res <= 0){
+		  echo "Error putting comment for flight ".$this->flightID." to DB: $query<BR>";
+		  return 0;
+		}		
 
 		return $newID;	
 	}
@@ -170,47 +188,6 @@ class flightComments {
 		return $str;
 	}
 	
-	function putToDB($updateFlightsTable=1) {
-		global $db,$commentsTable,$flightsTable;
-
-		// if (!$this->gotValues) $this->getFromDB();
-		
-		$query="DELETE FROM  $commentsTable WHERE flightID=".$this->flightID;
-		//echo $query;
-		$res= $db->sql_query( $query);
-  		if($res <= 0){   
-			 echo "Error deleting comments for flight ".$this->flightID."<BR>";
-	    }
-		//print_r($this->comments);
-		foreach ( $this->comments as $commentNum=>$commentInfo) {
-			$query="INSERT INTO $commentsTable  (flightID,path,name,lat,lon,alt,tm,description) VALUES (".
-				$this->flightID.",'".prep_for_DB($commentInfo['path'])."','".
-									 prep_for_DB($commentInfo['name'])."',".
-									 ($commentInfo['lat']+0).",".
-									 ($commentInfo['lon']+0).",".
-									 ($commentInfo['alt']+0).",".
-									 ($commentInfo['tm']+0).",'".
-									 prep_for_DB($commentInfo['description'])."' ) ";
-		
-			// echo $query;
-			$res= $db->sql_query($query);
-			if($res <= 0){
-			  echo "Error putting comment for flight ".$this->flightID." to DB: $query<BR>";
-			  return 0;
-			}		
-		}
-		
-		if ($updateFlightsTable) {
-			$query="UPDATE $flightsTable SET commentsNum=".$this->commentsNum." WHERE ID=".$this->flightID;
-			$res= $db->sql_query($query );
-			if($res <= 0){   
-				 echo "Error updating hascomments for flight ".$this->flightID." : $query<BR>";
-			}
-		}	
-		
-		$this->gotValues=1;			
-		return 1;
-    }
 
 }
 

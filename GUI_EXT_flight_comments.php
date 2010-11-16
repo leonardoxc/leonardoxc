@@ -8,9 +8,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.5 2010/11/15 22:03:13 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.6 2010/11/16 14:58:14 manolis Exp $                                                                 
 //
 //************************************************************************
+
+// nice exmple in action 
+//http://onerutter.com/open-source/jquery-facebook-like-plugin.html
 
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
@@ -35,51 +38,17 @@
 		
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
-
-		
-//   if (  !L_auth::isModerator($userID) ) {
-//		echo "go away";
-//		return;
-//   }
-
-	if (!$flight->commentsNum) {
-		// no comments
-		// return;
-	}
-
-
-
+	
 	$flightComments=new flightComments($flight->flightID);
 	$flightComments->getFromDB();
-	// $comments=$flightComments->getThreadsOutput();
-		 
-	
+		 	
   ?><head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   
 <link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
 
 <style type="text/css">
-/*
-	 body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
-	 td {border:1px solid #777777; }
-	 body {margin:0px; background-color:#FFFFFF}
-	 
-	 
-	.box {
-		 background-color:#F4F0D5;
-		 border:1px solid #555555;
-		padding:3px; 
-		margin-bottom:5px;
-	}
-	.boxTop {margin:0; }
-	
-	.header1 { background-color:#E2ECF8 }
-	.header2 { background-color:#F9F8E1 }
-	.header3 { background-color:#E6EEE7 }
-*/
-  
-
+ 
 #commentsContainer , #commentsContainer p, #commentsContainer td, #commentsContainer div,#commentsContainer span{
 	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
 }
@@ -96,22 +65,10 @@
 	.depth9 { margin-left:180px; width:530px;}
 	
 	
-	a {
-	text-decoration:none;
-	color:#d02b55;
-	}
-	a:hover
-	{
-	text-decoration:underline;
-	color:#d02b55;
-	}
-	
-	*{margin:0;padding:0;}
-	/*
-	ol.timeline
-	{list-style:none;font-size:1.2em;}
-	ol.timeline li{ display:none;position:relative;padding:.7em 0 .6em 0;}ol.timeline li:first-child{}
-	*/
+a {	text-decoration:none; 	color:#d02b55; 	}
+a:hover {  text-decoration:underline; 	color:#d02b55; 	}
+
+*{margin:0;padding:0;}
 	
 #submitComment input {
 	color:#000000;
@@ -145,7 +102,7 @@
 	padding-left:5px;
 }
 
-#deleteWindow{
+#deleteWindow, #editActions {
 	width:710px;
 	display:block;
 	position:absolute;
@@ -160,6 +117,8 @@
 	padding-bottom:10px;
 	text-align:center;
 }
+
+#editActions {z-index:0}
 
 #submitComment {
 	width:710px;
@@ -178,7 +137,7 @@
 	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
 }
 
-.commentActions , .commentActionsIcons, .deleteConfirm, .deleteCancel{
+.commentActions , .commentActionsIcons, .deleteConfirm, .deleteCancel, .editConfirm, .editCancel {
 	font-size:11px;
 	background-color:#E3DDB7;
 	padding:2px;
@@ -194,7 +153,7 @@
 	clear:none;
 }
 
-.deleteConfirm, .deleteCancel{
+.deleteConfirm, .deleteCancel, .editConfirm, .editCancel {
 	display:inline;
 	float:none;
 	clear:none;
@@ -208,10 +167,6 @@
 
 .actionBox {
 	display:block;
-	/*margin-top:-5px;
-	
-	height:25px;
-	*/
 	float:right;
 	clear:both;
 }
@@ -219,39 +174,27 @@
 .commentBox {
 		background-color:#EEECE8;
 		border-bottom:#E8E9DC 1px solid;		
-		margin-bottom: 5px;
-		
+		margin-bottom: 5px;	
 }	
-	
-.comment_box {
-background-color:#D3E7F5; border-bottom:#ffffff solid 1px; padding-top:3px;
-display:block;
-position:relative;
-
-
-}
 
 .commentHeader {
-
-display:block;
-
+	display:block;
 }
 
 .commentBody {
-
-
+	padding-right:8px;
 }
 
-.commentRowTable  , .commentRowTable td {
+.commentRowTable, .commentRowTable td {
 	border:0;
 	padding:0;	
 }
 
 .commentInfo {
-font-style:italic;
-color:#999999;
-float:left;
-clear:none;
+	font-style:italic;
+	color:#999999;
+	float:left;
+	clear:none;
 }
 
 </style>
@@ -263,9 +206,15 @@ clear:none;
 img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.png) no-repeat left top; }
 img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.png) no-repeat left top ; }
 img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-repeat left  top ; }
+
+.bookmark_list span.bookmark_icons {
+	background: url(<?=$moduleRelPath?>/js/bookmark/bookmarks.gif) no-repeat center;
+}
+
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="<?=moduleRelPath()?>/templates/<?=$PREFS->themeName?>/sprites.css">
+<link rel="stylesheet" type="text/css" href="<?=moduleRelPath()?>/js/bookmark/jquery.bookmark.css">
 
 <script type="text/javascript" src="<?=moduleRelPath()?>/js/jquery.js"></script>
 <script type="text/javascript" src="<?=moduleRelPath()?>/js/ckeditor/ckeditor.js"></script>
@@ -274,7 +223,7 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 <script type="text/javascript" src="<?=moduleRelPath()?>/js/sexy-captcha/jquery-ui-1.7.2.custom.min.js"></script>
 <script type="text/javascript" src="<?=moduleRelPath()?>/js/sexy-captcha/jquery.sexy-captcha-0.1.js"></script>
 <script type="text/javascript" src="<?=moduleRelPath()?>/js/jquery.translate.js"></script>
-
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/bookmark/jquery.bookmark.js"></script>
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 
@@ -289,6 +238,9 @@ var parent=0;
 var submitWindowActive=false;
 var commentIdtoDelete=0;
 var	parentIdtoDelete=0;
+var commentIDtoEdit=0;
+var editorOriginalValue;
+var editor;
 
 function translateComment(commentID,srcLang){
 	$("#commentText"+commentID).translate(srcLang, 'de');
@@ -306,87 +258,205 @@ function hideSubmitWindow () {
 
 function showSubmitWindow () {
 	$(".media_embed").hide();	
+	if ( editor ) {
+		editor.destroy();
+	}
+		
 	$("#submitComment").fadeIn('slow');
 	submitWindowActive=true;
 }
 
-function editComment( ev )
-{
-	// Get the element which fired the event. This is not necessarily the
-	// element to which the event has been attached.
-	var element = ev.target || ev.srcElement;
 
-	// Find out the div that holds this element.
-	element = element.parentNode;
-
-	if ( element.nodeName.toLowerCase() == 'div'
-		 && ( element.className.indexOf( 'editable' ) != -1 ) )
-		replaceDiv( element );
+function hideEditWindow () {
+	if ( editor ) {
+		editor.destroy();
+		editor=null;
+	}	
+	if (commentIDtoEdit!=0) {
+		$("#commentText"+commentIDtoEdit).html(editorOriginalValue);
+	}
+	commentIDtoEdit=0;
+	$("#editActions").fadeOut('slow');
 }
 
-var editor;
-
-function replaceDiv( div ) {
-	if ( editor )
-		editor.destroy();
-	editor = CKEDITOR.replace( div );
+function showEditWindow() {
+	$("#deleteWindow").hide();
+	hideSubmitWindow();
 }
 
 
 $(document).ready(function(){
+	$("#BookmarkButton").bookmark({
+		url: 'http://<?=$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID) )?>',
+		title: 'Flying',
+		description:'Look at this flight',
+		popup: true,
+		popupText:'<img src="<?=$moduleRelPath?>/img/share.gif" border="0">',
+		addEmail: true,
+		compact: false,
+		sites: ['facebook','delicious', 'digg','reddit','twitter','bookmarkit','myspace','stumbleupon']
+	});
+
+
 	CKEDITOR.replace( 'commentBox' );
 
  	$('.myCaptcha').sexyCaptcha('<?=moduleRelPath()?>/js/sexy-captcha/captcha.process.php');
 
+
+	//---------------------------------------------------------------------
+	// --------------------- REPLY ----------------------------------------
+	//---------------------------------------------------------------------
+	$(".reply").live('click',function(f) {
+		if (submitWindowActive) {
+			hideSubmitWindow();
+		} else {
+			$("#deleteWindow").hide();
+			hideEditWindow();
+			
+			$("#submitComment").css({			
+								left:$("#commentsContainer").offset().left,
+								top:$(this).offset().top+$(this).height()+6
+			});	
+			showSubmitWindow();
+			
+			parent=$(this).attr('id').substring(6);			
+			// $("#submitComment").show();
+		}
+	});
+	
 	$(".cancelSubmit").click(function(f) {
 		hideSubmitWindow();
 	});
-
-
-	$(".reply").click(function(f) {
-		if (submitWindowActive) {
-			hideSubmitWindow();
-		} else {
-			$("#deleteWindow").hide();
-			$("#submitComment").css({			
-								left:$("#commentsContainer").offset().left,
-								top:$(this).offset().top+$(this).height()+6
-			});	
-			showSubmitWindow();
-			
-			parent=$(this).attr('id').substring(6);			
-			// $("#submitComment").show();
-		}
-	});
-
-	$(".edit").click(function(f) {
-		var commentID=$(this).attr('id').substring(4);
-		
-		if ( editor ) {
-			editor.destroy();
-		}
-		editor = CKEDITOR.replace( 'commentText'+commentID );
 	
-		return;
-		/*
-		if (submitWindowActive) {
-			hideSubmitWindow();
-		} else {
-			$("#deleteWindow").hide();
-			$("#submitComment").css({			
-								left:$("#commentsContainer").offset().left,
-								top:$(this).offset().top+$(this).height()+6
-			});	
-			showSubmitWindow();
-			
-			parent=$(this).attr('id').substring(6);			
-			// $("#submitComment").show();
-		}
-		*/
-	});
-	
-	$(".delete").click(function(f) {
+	$(".submit").click(function(f) {
 		hideSubmitWindow();
+
+		var oEditor = CKEDITOR.instances.commentBox;
+		var commentText=oEditor.getData();
+		//$("#replyText").html( commentText );
+		
+		// var parent=$(this).attr('id'); 
+		//
+		var guestName=$("#guestName").val();
+		var guestEmail=$("#guestEmail").val();
+		var guestPass=$("#guestPass").val();
+		var userID=$("#userID").val();
+		var userServerID=$("#userServerID").val();
+		var languageCode=$("#languageCode").val();
+		
+		// find the depth of this comment and add 1
+		var newDepth=0;
+		if (parent!=0) {
+			var classList =$("#comment_"+parent).attr('class').split(/\s+/);
+			$.each( classList, function(index, item){
+				if (item.substring(0,5) == 'depth') {
+				   newDepth=parseInt(item.substring(5))+1;
+				   //$('#replyText').append("newDepth:"+newDepth+" ");
+				}
+				//$('#replyText').append(item);
+			});
+		} 
+		
+		var lastChild;
+		if (parent) lastChild=$("#comment_"+parent);
+		
+		var lastChildID=0;
+		// we need the LAST child of this comment to append our div after that..
+		$('.parentFinder').each(function(index) {			
+			if ( $(this).attr('id') == ("pid_"+parent) ) {
+				// parent is cid_$commentID
+				lastChildID=$(this).parent().attr('id').substring(4);
+				//$('#replyText').append("found child with id "+lastChildID);
+			}     		
+		});
+		
+		if (lastChildID) { // found childs
+			lastChild=$("#comment_"+lastChildID);
+		}
+		
+		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
+			{ op:"add" , flightID: <?=$flightID?>, parentID: parent ,
+				userID:userID, userServerID:userServerID, languageCode:languageCode,
+				guestName: guestName , guestEmail: guestEmail,
+				depth: newDepth,
+				commentText: commentText , leonardoAllowAll: 1 } ,
+			function(data) {
+				if (lastChild) {
+
+					// first insert the new comment				  	
+					lastChild.after(data);					
+					var newCommentDiv=lastChild.next();
+					// hide it 
+					newCommentDiv.hide();
+					
+					// scroll into place 
+   					var x = lastChild.offset().top - 100; // 100 provides buffer in viewport
+   					$('html,body').animate({scrollTop: x}, 500);
+
+					// now show it
+					// newCommentDiv.fadeIn('slow');
+					setTimeout( function() { newCommentDiv.fadeIn(1000); }, 200 );  
+					
+
+				} else { // no comments yet
+					$("#replyText").after(data);
+				} 
+			  // $('#replyText').html(data);
+			}
+		);
+
+	});
+	
+	//---------------------------------------------------------------------
+	// --------------------- EDIT -----------------------------------------
+	//---------------------------------------------------------------------
+		
+	$(".edit").live('click',function(f) {
+		// commentIDtoEdit=0;
+		hideEditWindow();
+		commentIDtoEdit=$(this).attr('id').substring(4);
+	 	// $('#replyText').html(commentIDtoEdit);
+		showEditWindow();
+		
+		editorOriginalValue=$("#commentText"+commentIDtoEdit).html();
+		
+		editor = CKEDITOR.replace( 'commentText'+commentIDtoEdit );
+		$("#editActions").css({
+					left:$("#commentsContainer").offset().left,
+					top:$("#comment_"+commentIDtoEdit).offset().top -45 // $("#editActions").height()
+		}).fadeIn('slow');
+		// $("#editActions").fadeIn('slow');	
+		
+	});
+	
+	$(".editConfirm").click(function(f) {
+	
+		var commentText=editor.getData();
+		var commentID=commentIDtoEdit;
+
+		commentIDtoEdit=0;
+		hideEditWindow();	
+		
+		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
+			{ op:"edit" , flightID: <?=$flightID?>, commentID: commentID , commentText: commentText , leonardoAllowAll: 1 } ,
+			function(data) {
+			  //$('#replyText').html(data);
+			  $('#commentText'+commentID).html(commentText);	
+			}
+		);
+		
+	});
+	
+	$(".editCancel").click(function(f) {
+		hideEditWindow();
+	});
+
+	//---------------------------------------------------------------------
+	// --------------------- DELETE ---------------------------------------
+	//---------------------------------------------------------------------	
+	$(".delete").live('click',function(f) {
+		hideSubmitWindow();
+		hideEditWindow();
 		
 		commentIdtoDelete=$(this).attr('id').substring(6);
 		parentIdtoDelete=$(this).children(':first-child').attr('id').substring(7);
@@ -403,7 +473,7 @@ $(document).ready(function(){
 		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
 			{ op:"delete" , flightID: <?=$flightID?>, commentID: commentIdtoDelete , parentID: parentIdtoDelete } ,
 			function(data) {
-			  $('#replyText').html(data);
+			 // $('#replyText').html(data);
 			  $('#comment_'+commentIdtoDelete).fadeOut('slow');	
 			}
 		);
@@ -414,34 +484,6 @@ $(document).ready(function(){
 		commentIdtoDelete=0;
 		$("#deleteWindow").fadeOut('slow');	
 	});
-	
-	$(".submit").click(function(f) {
-
-		hideSubmitWindow();
-
-		
-		var oEditor = CKEDITOR.instances.commentBox;
-		var commentText=oEditor.getData();
-		$("#replyText").html( commentText );
-		
-		// var parent=$(this).attr('id'); 
-		//
-		var guestName=$("#guestName").val();
-		var guestEmail=$("#guestEmail").val();
-		var guestPass=$("#guestPass").val();
-		var userID=$("#userID").val();
-		var userServerID=$("#userServerID").val();
-		var languageCode=$("#languageCode").val();
-		
-		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
-			{ op:"add" , flightID: <?=$flightID?>, parentID: parent ,userID:userID, userServerID:userServerID, languageCode:languageCode,
-							guestName: guestName , guestEmail: guestEmail, commentText: commentText } ,
-			function(data) {
-			  $('#replyText').html(data);
-			}
-		);
-
-	});
 
 
 });
@@ -450,8 +492,6 @@ $(document).ready(function(){
 <div id='submitComment' >
 <form action="#" method="post">
 <? 
-// debug
-//  $userID=0;
 // caching pilot names in an array
 $pilotNames=array();
 
@@ -504,22 +544,44 @@ if ($userID) {
 <input type="hidden" id="languageCode" value="<?=$lang2iso[$currentlang]?>"/>
 <textarea name="commentBox" id="commentBox" cols="120" rows="10"></textarea><br />
 
-
 <div align='right'><input type="button" class="cancelSubmit" value=" Cancel" />&nbsp;&nbsp;</div>
-
 </form>
 </div>
+
 
 <div id='deleteWindow'>
 Are you sure you want to delete this comment?
 <span class='deleteConfirm'>yes</span> <span class='deleteCancel'>No - Cancel</span>
 </div>
 
+<div id='editActions'>
+<span class='editConfirm'>Save changes</span> <span class='editCancel'>Cancel</span>
+</div>
+
+
 <div id='commentsContainer' style='width:720px'>
-<div id='parent0' class='commentActions reply' style='width:200px;'>Leave a comment</div>
+
+<table border='0' cellpadding=5 width='100%'><tr>
+<td width="350">
+	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'>Leave a comment</div>
+</td>
+<td align="left">
+	<div id="BookmarkButton" ></div>
+</td>
+<td>
+  <?
+  echo "<a href='".moduleRelPath()."/rss.php?op=comments&flightID=$flightID'>".
+  		leoHtml::img("rss.gif",0,0,'','','icons1')."</a>";
+ ?>		
+</td>
+</tr>
+</table>
+
 <div style='clear:both'></div>
 
-<div id='replyText'>...</div>
+
+<div id='replyText'></div>
+
 <?
 		// now the access rights :
 		$moderatorRights=false;
@@ -530,80 +592,12 @@ Are you sure you want to delete this comment?
 
 
 		$str='';
-		$i=0;
 		foreach($flightComments->threads as $thread) {	
-			$i++;	
 			$commentID=$thread['id'];
-			$commentData=$flightComments->comments[$thread['id']];			
-			$str.="<div id='comment_$commentID' class='commentBox depth".$thread['depth']."'>";
-			$str.="<table class='commentRowTable' width='100%'>";
+			$commentData=$flightComments->comments[$thread['id']];	
+			$commentDepth=$thread['depth'];
 			
-			if ($commentData['userID']) {
-				$imgBig=getPilotPhotoFilename($commentData['userServerID'],$commentData['userID']);	
-				if (is_file($imgBig) ) {
-					list($width, $height, $type, $attr) = getimagesize($imgBig);
-				
-					list($width2, $height2)=CLimage::getJPG_NewSize($CONF['photos']['tiny']['max_width'], 
-																	$CONF['photos']['tiny']['max_height'], $width, $height);																					
-					$header="<img src='".getPilotPhotoRelFilename($commentData['userServerID'],$commentData['userID'],1)."' 
-								width='$width2' height='$height2'  border=0>";
-				}  else {
-					$header="<img src='$moduleRelPath/img/photo_no_profile_photo.jpg' width='50' height='50'  border=0>";
-				}
-					
-				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
-				$str.="<td valign='top'><div id='commentText$commentID' class='commentBody'>".$commentData['text']."</div></td></tr>";
-			} else {
-			
-				$header="<img src='$moduleRelPath/img/photo_guest.jpg' width='50' height='50'  border=0>";
-
-				$str.="<tr><td rowspan='2' width='65'  valign='top'><div class='commentHeader'>$header</div></td>";
-				$str.="<td valign='top'><div id='commentText$commentID' class='commentBody'>".$commentData['text']."</div></td></tr>";
-				
-				//$str.="<div class='commentHeaderGuest'>".$commentData['guestName']."</div>";
-				//$str.="<div class='commentBodyGuest'>".$commentData['text']."</div>";
-			}
-			
-			$langName=array_search ($commentData['languageCode'], $lang2iso);
-			$flagCode=$CONF['lang']['lang2countryFlag'][$langName];
-			// echo "flag_code: $flagCode";
-			
-			$flagImg=leoHtml::img($flagCode.".gif",18,12,'absmiddle',_LANGUAGE,'fl');
-			$str.="<tr><td valign='bottom'>";
-			
-			
-			if ($commentData['userID']) {
-				 $name=$pilotNames[$commentData["userID"]][$commentData["userServerID"]];
-				 if (!$name) {
-					 $name=getPilotRealName($commentData["userID"],$commentData["userServerID"],1,1,1);
-					 $pilotNames[$commentData["userID"]][$commentData["userServerID"]]=$name;
-				 }	 
-			     $name=prepare_for_js($name);
-				 
-			 	 $userInfo="<a href=\"javascript:pilotTip.newTip('inline', 0, 13, 'p_$i', 250, '".$commentData["userServerID"]."_".$commentData["userID"]."','".addslashes($name)."' )\"  onmouseout=\"pilotTip.hide()\">$name</a>\n";
-		 
-			} else {
-				$userInfo="Guest: ".$commentData['guestName']." ";
-			}
-			$translateText="<span ><a href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>Translate</a></span>";
-			
-			$str.="<div class='actionBox' id='p_$i'>";
-			$str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText</div>";
-			
-			$str.="<div id='parent$commentID' class='commentActions reply'>Reply</div>";
-			if ($moderatorRights || $commentData['userID']==$userID) {
-				$str.="<div id='edit$commentID'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
-				$str.="<div id='delete$commentID' class='commentActionsIcons delete'><img 
-						id='deletep".$commentData['parentID']."' src='$moduleRelPath/img/delete_icon.png'></div>";
-
-			}
-			//	$str.="<div style='clear:both'></div>";
-			$str.="</div>";
-			$str.="</td></tr>";
-			
-			$str.="</table>";
-			
-			$str.="</div>";
+			include dirname(__FILE__).'/INC_comment_row.php';
 		}
 		echo  $str;
 		

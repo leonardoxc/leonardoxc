@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.21 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: rss.php,v 1.22 2010/11/16 14:58:14 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -24,12 +24,18 @@
 	require_once "FN_pilot.php";
 	require_once dirname(__FILE__).'/CL_filter.php';
 	setDEBUGfromGET();
-
+	define("IN_RSS",1);
+	
 	setVarFromRequest("lng",$PREFS->language); 
 
 	$count = ( isset($_GET['c']) ) ? intval($_GET['c']) : 15;
 	$count = ( $count == 0 ) ? 15 : $count;
 	$count = ( $count > 50 ) ? 50 : $count;
+
+	if ( $_GET['op']=='comments' ) {
+		require_once dirname(__FILE__).'/rss_comments.php';
+		exit;
+	}
 
 	// GUS begin
 	$category = ( isset($_GET['cat']) ) ? intval($_GET['cat']) : 0;

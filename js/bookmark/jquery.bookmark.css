@@ -1,0 +1,77 @@
+/* jQuery Bookmark styles v1.3.2 */
+.bookmark_popup_text img {
+	border: none;
+	vertical-align: bottom;
+}
+.bookmark_popup {
+	display: none;
+	position: absolute;
+	z-index: 100;
+}
+.bookmark_popup ul {
+	float: left;
+	width: 140px;
+	border: 1px solid #aaa;
+	background-color:#FFFFFF;
+}
+.bookmark_list {
+	display: inline-block;
+	float: left;
+	list-style-type: none;
+	font-size: 80%;
+	margin: 0px;
+	padding: 0px;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {  /* Safari3/Opera9 */
+	.bookmark_list {
+		font-size: 100%;
+	}
+}
+html:first-child .bookmark_list {  /* Opera */
+	font-size: 80%;
+}
+.bookmark_list li {
+	float: left;
+	width: 97%;
+	margin: 0px 1px;
+	padding: 3px;
+	background-color: #eee;
+	border: 1px outset;
+	border:none;
+}
+
+.bookmark_list li a, .bookmark_list li a:link, .bookmark_list li a:visited, .bookmark_list li a:active {
+	color:#666666;
+	font-size:12px;
+}
+
+.bookmark_compact {
+	background-color: #eee;
+	border: 1px outset;
+}
+.bookmark_compact li {
+	width: 16px;
+	height: 16px;
+	margin: 0px;
+	padding: 2px;
+	background-color: transparent;
+	border: none;
+}
+.bookmark_list a {
+	width: 100%;
+	text-decoration: none;
+	cursor: pointer;
+}
+.bookmark_list span {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+/*
+.bookmark_list span.bookmark_icons {
+	background: url(../img/bookmarks.gif) no-repeat center;
+}
+*/
+.bookmark_list img {
+	border: none;
+}
