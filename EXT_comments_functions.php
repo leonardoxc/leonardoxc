@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.5 2010/11/16 14:58:14 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.6 2010/11/19 13:31:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -33,13 +33,25 @@
 	$op=makeSane($_POST['op']);	
 
 	if ($op=='add'){	
+		session_start();
+		
+		// echo "#".			 $_POST['captcha']; print_r($_SESSION);echo "<hr>";
+ 		// echo "000";return;
+ 		$commentData['userID']=makeSane($_POST['userID']);
+		if (!$commentData['userID']) {
+			if (substr($_POST['captcha'], 10) != $_SESSION['captchaCodes'][$_SESSION['captchaAnswer']]) {
+				 echo "000";
+				 return;
+			}
+		}
+		
 		$commentData['flightID']=makeSane($_POST['flightID']);
 		$commentData['parentID']=makeSane($_POST['parentID'])+0;
 		$commentData['guestName']=makeSane($_POST['guestName']);
 		$commentData['guestEmail']=makeSane($_POST['guestEmail']);
 		$commentData['guestPass']=makeSane($_POST['guestPass']);
 		$commentData['text']=$_POST['commentText'];
-		$commentData['userID']=makeSane($_POST['userID']);
+
 		$commentData['userServerID']=makeSane($_POST['userServerID']);
 		$commentData['languageCode']=makeSane($_POST['languageCode']);
 		

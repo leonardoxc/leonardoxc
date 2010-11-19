@@ -8,7 +8,7 @@
         init: function( editor )
         {
            var me = this;
-           CKEDITOR.dialog.add( 'MediaEmbedDialog', function ()
+           CKEDITOR.dialog.add( 'MediaEmbedDialog', function (editor)
            {
               return {
                  title : 'Embed Media Dialog',
@@ -34,11 +34,15 @@
                        ],
                   onOk : function()
                  {
+					var content =  $('#iframeMediaEmbed').contents().find('#embed').val();
+		/*			 
 		  for (var i=0; i<window.frames.length; i++) {
-		     if(window.frames[i].name == 'iframeMediaEmbed') {
-		        var content = window.frames[i].document.getElementById("embed").value;
-		     }
-		  }
+			  if (window.frames[i]) {
+			   	if(window.frames[i].name == 'iframeMediaEmbed') {
+		        	var content = window.frames[i].document.getElementById("embed").value;
+		     	}
+			  }
+		  }*/
 		  final_html = 'MediaEmbedInsertData|---' + escape('<div class="media_embed">'+content+'</div>') + '---|MediaEmbedInsertData';
                     editor.insertHtml(final_html);
                     updated_editor_data = editor.getData();

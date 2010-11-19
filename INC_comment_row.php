@@ -62,10 +62,11 @@ if ($commentData['userID']) {
 } else {
 	$userInfo="Guest: ".$commentData['guestName']." ";
 }
-$translateText="<span ><a href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>Translate</a></span>";
+$translateText="<span><a id='translate_".$commentData['commentID']."' href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>Translate ".
+				leoHtml::img("icon_arrow_down.gif",0,0,'absmiddle','','icons1')."</a></span>";
 
 $str.="<div class='actionBox' id='p_$commentID'>";
-$str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText&nbsp;</div>";
+$str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText&nbsp;&nbsp;&nbsp;</div>";
 
 $str.="<div id='parent$commentID' class='commentActions reply'>Reply</div>";
 if ($moderatorRights || $commentData['userID']==$userID) {

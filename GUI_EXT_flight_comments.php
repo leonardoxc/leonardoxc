@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.6 2010/11/16 14:58:14 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.7 2010/11/19 13:31:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -139,9 +139,9 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 
 .commentActions , .commentActionsIcons, .deleteConfirm, .deleteCancel, .editConfirm, .editCancel {
 	font-size:11px;
-	background-color:#E3DDB7;
+	background-color:#CDDBE9;
 	padding:2px;
-	border:1px solid #999999;
+	border:1px solid #CCCCCC;
 	font-weight:normal;
 	cursor:pointer;cursor:hand;
 	display:block;
@@ -159,10 +159,14 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 	clear:none;
 	font-size:14px;
 	padding:4px;
+	background-color:#E6EAEE;
+
 }
 
 .commentActionsIcons {
 	width:30px;
+	border:1px solid #CCCCCC;
+	background-color:#EBF0E0;
 }
 
 .actionBox {
@@ -172,10 +176,15 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 }
 
 .commentBox {
-		background-color:#EEECE8;
+		background-color:#F6F7F8;
 		border-bottom:#E8E9DC 1px solid;		
 		margin-bottom: 5px;	
+}
+
+.commentBoxRow2 {
+		background-color:#F6F7F8;
 }	
+	
 
 .commentHeader {
 	display:block;
@@ -195,6 +204,42 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 	color:#999999;
 	float:left;
 	clear:none;
+}
+
+#rssButton, #translateButton , .translateLink {
+	cursor:pointer;cursor:hand;
+}
+
+
+.translateLink {
+	list-style:none;
+}
+
+
+#rssBox, #translateBox {
+	display:none;
+	position:absolute;
+	width:150px;
+	padding:4px;
+	border:1px solid #CCCCCC;
+	background-color:#FEFFF4;
+}
+
+#submitErrorMessage {
+	position:absolute;
+	top:30px;;
+	left:250px;
+	width:250px;
+	height:30px;
+	text-align:center;
+	display:none;
+	background-color:#FF9999;
+	border:1px solid #F78564;
+	padding:5px;
+}
+
+div #submitErrorMessage  {
+	font-size:14px;
 }
 
 </style>
@@ -242,9 +287,25 @@ var commentIDtoEdit=0;
 var editorOriginalValue;
 var editor;
 
+var translateSrcLang='';
+var translatecommentID=0;
+var originalTexts=[];
+
 function translateComment(commentID,srcLang){
-	$("#commentText"+commentID).translate(srcLang, 'de');
+	// show translate options
+	var offset = $("#translate_"+commentID).offset();
+	$("#translateBox").
+		css('left',offset.left-$("#translateBox").width()+ $("#translate_"+commentID).width() ).
+		css('top', offset.top +15).toggle();
+	
+	$("#translateBoxHeader").html('');
+	translateSrcLang=srcLang;	
+	translatecommentID=commentID;
+	// $("#replyText").html(translateSrcLang+"###"+translatecommentID+"$$");	
+	//$("#commentText"+commentID).translate(srcLang, 'de');
 }
+
+
 /*
 hide / make opaque flash
 http://www.communitymx.com/content/article.cfm?cid=E5141
@@ -284,8 +345,40 @@ function showEditWindow() {
 	hideSubmitWindow();
 }
 
+function validateEmail(elementValue){  
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;  
+    return emailPattern.test(elementValue);  
+} 
+
+function flashError(focusAfter,message) {
+	$("#submitErrorMessage").html(message).show();
+	setTimeout( function() { $("#submitErrorMessage").fadeOut(500); }, 700 ); 
+	if (focusAfter!='') {
+		// $("#"+focusAfter).focus();
+	}
+	
+}
 
 $(document).ready(function(){
+
+	$(".translateLink").click(function() {			
+	
+		// store original into array
+		if (! originalTexts[translatecommentID] ) {
+			originalTexts[translatecommentID]=$("#commentText"+translatecommentID).html();
+		}
+		// put back original text
+		$("#commentText"+translatecommentID).html(originalTexts[translatecommentID]);
+		
+		//find the target lang
+		var targetLang=$(this).attr('id').substring(4);
+		//$("#replyText").html(targetLang+"###"+translatecommentID+"$$");
+		
+		// translate!
+		$("#commentText"+translatecommentID).translate(translateSrcLang,targetLang);
+		
+	});
+	
 	$("#BookmarkButton").bookmark({
 		url: 'http://<?=$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID) )?>',
 		title: 'Flying',
@@ -297,6 +390,19 @@ $(document).ready(function(){
 		sites: ['facebook','delicious', 'digg','reddit','twitter','bookmarkit','myspace','stumbleupon']
 	});
 
+	$("#rssButton").click(function() {		
+		var offset = $("#rssButton").offset();
+		$("#rssBox").
+			css('left',offset.left-$("#rssBox").width()+30).
+			css('top', offset.top +15).toggle();
+		return false;
+	});
+	
+	$(document).click(function(event) { // Close on external click
+		$("#rssBox").hide();
+		$("#translateBox").hide();
+	});
+			
 
 	CKEDITOR.replace( 'commentBox' );
 
@@ -329,7 +435,7 @@ $(document).ready(function(){
 	});
 	
 	$(".submit").click(function(f) {
-		hideSubmitWindow();
+		
 
 		var oEditor = CKEDITOR.instances.commentBox;
 		var commentText=oEditor.getData();
@@ -343,6 +449,29 @@ $(document).ready(function(){
 		var userID=$("#userID").val();
 		var userServerID=$("#userServerID").val();
 		var languageCode=$("#languageCode").val();
+		var captcha=$("#captcha").val();
+		
+		// do some checks !
+		if (! commentText.match(/\S/) ) {
+			flashError("","Please type something");
+			return;
+		}
+		
+		if ( parseInt(userID)==0)  { // require name + email
+			if (! guestName.match(/\S/) ) {
+				flashError("guestName","Please enter your name / nickname");
+				return;
+			}
+			
+			if (! validateEmail(guestEmail) ) {
+				flashError("guestPass","Please give your email, it will not be displayed at any times");
+				return;
+			}
+		}		
+		
+		
+		hideSubmitWindow();
+		
 		
 		// find the depth of this comment and add 1
 		var newDepth=0;
@@ -379,8 +508,14 @@ $(document).ready(function(){
 				userID:userID, userServerID:userServerID, languageCode:languageCode,
 				guestName: guestName , guestEmail: guestEmail,
 				depth: newDepth,
-				commentText: commentText , leonardoAllowAll: 1 } ,
+				commentText: commentText ,
+				captcha: captcha,
+				leonardoAllowAll: 1 } ,
 			function(data) {
+				if (data=='000') {
+					// problem
+					return;
+				} 
 				if (lastChild) {
 
 					// first insert the new comment				  	
@@ -532,14 +667,16 @@ if ($userID) {
 <input type="hidden" id="userServerID" value="0"/>
 <table cellpadding="0" cellspacing="0" border="0" style='margin-left:5px'><tr><td width="400">
 <input type="text" id="guestName"/><span class="titles">Name</span><span class="star">*</span><br />
-<input type="text" id="guestPass"/><span class="titles">Password</span><span class="star">*</span><br />
+<input type="hidden" id="guestPass" value=""/>
 <input type="text" id="guestEmail"/><span class="titles">Email</span><span class="star">*</span><br />
+(Will not be displayed)
 </td><td>
 <div style='position:absolute; top:20px; left:450px;'><input type="button" class="submit" value=" Submit Comment " /></div>
 <div class="myCaptcha"></div>
 </td></tr>
 </table>
 <? } ?>
+<div id='submitErrorMessage'>Error Message</div>
 
 <input type="hidden" id="languageCode" value="<?=$lang2iso[$currentlang]?>"/>
 <textarea name="commentBox" id="commentBox" cols="120" rows="10"></textarea><br />
@@ -570,14 +707,42 @@ Are you sure you want to delete this comment?
 </td>
 <td>
   <?
-  echo "<a href='".moduleRelPath()."/rss.php?op=comments&flightID=$flightID'>".
-  		leoHtml::img("rss.gif",0,0,'','','icons1')."</a>";
+  echo "<div id='rssButton'>".leoHtml::img("rss.gif",0,0,'absmiddle','','icons1').leoHtml::img("icon_arrow_down.gif",0,0,'','','icons1')."</div>";
+		
+		
  ?>		
 </td>
 </tr>
 </table>
 
 <div style='clear:both'></div>
+
+<div id='rssBox'>
+	
+	<a href='<?=moduleRelPath()?>/rss.php?op=comments&flightID=<?=$flightID?>'>RSS</a>
+</div>
+
+<div id='translateBox'>
+	Translate to <BR />
+<?
+	$langLiStr="";
+	foreach( $availableLanguages as $tmpLang) {	
+	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);	  
+	  $cCode=$CONF['lang']['lang2countryFlag'][$tmpLang];
+  	  $flagImg=leoHtml::img("$cCode.gif",18,12,'absmiddle',$str,'fl')."&nbsp;$tmpLangStr";
+	  
+	  if ($currentlang==$tmpLang) {
+ 	    $current_flagImg=leoHtml::img($cCode.".gif",18,12,'',_LANGUAGE,'fl');
+	  }
+	  $langLiStr.="<li class='translateLink' id='lang$cCode'>$flagImg</li>\n";
+	} 
+?>
+	<ul class="short">
+		<? echo $langLiStr ?>
+	</ul>
+
+</div>
+
 
 
 <div id='replyText'></div>

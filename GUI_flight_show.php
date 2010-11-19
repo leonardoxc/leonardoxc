@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.102 2010/11/15 22:03:13 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.103 2010/11/19 13:31:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -440,15 +440,6 @@ if ($flight->is3D()) {
 		echo "<a href='javascript:nop()' onclick=\"toggleVisible('geOptionsID','geOptionsPos',14,-80,170,'auto');return false;\">Google Earth&nbsp;<img src='".$moduleRelPath."/img/icon_arrow_down.gif' border=0></a></div>";
 */
 
-if ($flight->commentsNum) {
-	//	$comments=$flight->comments;
-	$flightComments=new flightComments($flight->flightID);
-	$flightComments->getFromDB();
-	$comments=$flightComments->getThreadsOutput();
-		 
-} else {
-	$comments="<br>";
-}
 
 $linkURL=_N_A;
 if ($flight->linkURL) {
@@ -527,36 +518,37 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 	}
 
 	//	$adminPanel.='<pre>'.processIGC($flight->getIGCFilename());
-
-	// DEBUG TIMEZONE DETECTION 
-	// $firstPoint=new gpsPoint($flight->FIRST_POINT);
-	$firstPoint=new gpsPoint('',$flight->timezone);
-	$firstPoint->setLat($flight->firstLat);
-	$firstPoint->setLon($flight->firstLon);
-	$firstPoint->gpsTime=$flight->firstPointTM;				
-
-
-	// $time=substr($flight->FIRST_POINT,1,6);
-	$time=date('H:i:s',$firstPoint->gpsTime);
-	$zone= getUTMzoneLocal( $firstPoint->lon,$firstPoint->lat);
-	$timezone1= ceil(-$firstPoint->lon / (180/12) );
-
-	$timezone2=	 getTZ( $firstPoint->lat,$firstPoint->lon, $flight->DATE );
-
-	$adminPanel.="<pre><b>UTM zone:</b> $zone ";
-	$adminPanel.="<b>TZ (lat estimation):</b> $timezone1 ";
-	$adminPanel.="<b>TZ (estimation 2):</b> $timezone2 ";
-	$adminPanel.="<b>TZ (db):</b> ".$flight->timezone."\n";
-	$adminPanel.="<b>First point time:</b> $time ";
-	$adminPanel.="DATE : ".$flight->DATE." ";
-	$adminPanel.='</pre>';
-
+	if (L_auth::isAdmin($userID)) {	
+		// DEBUG TIMEZONE DETECTION 
+		// $firstPoint=new gpsPoint($flight->FIRST_POINT);
+		$firstPoint=new gpsPoint('',$flight->timezone);
+		$firstPoint->setLat($flight->firstLat);
+		$firstPoint->setLon($flight->firstLon);
+		$firstPoint->gpsTime=$flight->firstPointTM;				
+	
+	
+		// $time=substr($flight->FIRST_POINT,1,6);
+		$time=date('H:i:s',$firstPoint->gpsTime);
+		$zone= getUTMzoneLocal( $firstPoint->lon,$firstPoint->lat);
+		$timezone1= ceil(-$firstPoint->lon / (180/12) );
+	
+		$timezone2=	 getTZ( $firstPoint->lat,$firstPoint->lon, $flight->DATE );
+	
+		$adminPanel.="<pre><b>UTM zone:</b> $zone ";
+		$adminPanel.="<b>TZ (lat estimation):</b> $timezone1 ";
+		$adminPanel.="<b>TZ (estimation 2):</b> $timezone2 ";
+		$adminPanel.="<b>TZ (db):</b> ".$flight->timezone."\n";
+		$adminPanel.="<b>First point time:</b> $time ";
+		$adminPanel.="DATE : ".$flight->DATE." ";
+		$adminPanel.='</pre>';
+	}
+	
 	// display the trunpoints
 	//echo "<hr> ";
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
 
 	
-if ($flight->airspaceCheckFinal==-1) { // problem
+	if ($flight->airspaceCheckFinal==-1) { // problem
 			
 		$checkLines=explode("\n",$flight->airspaceCheckMsg);
 		if (strrchr($flight->airspaceCheckMsg,"Punkte")){
@@ -570,28 +562,43 @@ if ($flight->airspaceCheckFinal==-1) { // problem
 		for($i=1;$i<count($checkLines); $i++) {
 			$adminPanel.=$checkLines[$i]."<br>";
 		}
-}
-
-	if ($CONF_show_DBG_XML) {
-		$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
 	}
+	
+	if (L_auth::isAdmin($userID)) {
+		if ($CONF_show_DBG_XML  ) {
+			$adminPanel.="<div style='display:inline'><a href='javascript:toggleVisibility(\"xmlOutput\")';>See XML</a></div>";
+		}
 		
-	$adminPanel.="<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
-	
-	if ($CONF_show_DBG_XML) {
-		$adminPanel.="<div id=xmlOutput style='display:none; text-align:left;'><hr>";
-		$adminPanel.="XML from paraglidingEarth.com<br>";
-		$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre></div>";
-	}
-	
-	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
-	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateData'=>'1'))."'>"._UPDATE_DATA."</a> | ";
-	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateMap'=>'1'))."'>"._UPDATE_MAP."</a> | ";
-	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateCharts'=>'1'))."'>"._UPDATE_GRAPHS."</a> | ";
-	$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateScore'=>'1'))."'>"._UPDATE_SCORE."</a> ";
 
-	$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
+		$adminPanel.="<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
+		
+		if ($CONF_show_DBG_XML) {
+			$adminPanel.="<div id=xmlOutput style='display:none; text-align:left;'><hr>";
+			$adminPanel.="XML from paraglidingEarth.com<br>";
+			$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre></div>";
+		}
+		
+		$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
+		$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateData'=>'1'))."'>"._UPDATE_DATA."</a> | ";
+		$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateMap'=>'1'))."'>"._UPDATE_MAP."</a> | ";
+		$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateCharts'=>'1'))."'>"._UPDATE_GRAPHS."</a> | ";
+		$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateScore'=>'1'))."'>"._UPDATE_SCORE."</a> ";
+	
+		$adminPanel.=get_include_contents(dirname(__FILE__)."/site/admin_takeoff_info.php");
+	}	
 }
+
+
+if ($flight->commentsNum) {
+	//	$comments=$flight->comments;
+	//$flightComments=new flightComments($flight->flightID);
+	//$flightComments->getFromDB();
+	//$comments=$flightComments->getThreadsOutput(); 
+} else {
+	//$comments="<br>";
+}
+
+$comments="<br>";
 
 
 if ($flight->hasPhotos) {
@@ -660,10 +667,24 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 }
 
 $divsToShow=0;
-if ($localMap) $divsToShow++;
-if ($googleMap) $divsToShow++;
-if ($comments) $divsToShow++;
-if ($imagesHtml) $divsToShow++;
+$mapImg0.='<ul class="tabs">';
+if ($localMap) {
+	$divsToShow++;
+	$mapImg0.='<li id="tabmapli"><a href="#tabmap">'._OLC_MAP.'</a></li>';
+}
+if ($googleMap) {
+	$divsToShow++;
+	$mapImg0.='<li id="tabgmapli"><a href="#tabgmap">Google Map</a></li>';
+}	
+if (1) {
+	$divsToShow++;
+	$mapImg0.='<li id="tabcommentsli"><a href="#tabcomments">'._COMMENTS.' ('.$flight->commentsNum.')</a></li>';
+}	
+if ($imagesHtml) {
+	$divsToShow++;
+	$mapImg0.='<li id="tabphotosli"><a href="#tabphotos">'._PHOTOS.'</a></li>';
+}	
+$mapImg0.='</ul>';
 
 
 if ( $divsToShow>1) { // use tabber 
@@ -672,43 +693,51 @@ if ( $divsToShow>1) { // use tabber
 	if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
 	else $defaultTabStr1=" tabbertabdefault";
 
-	$mapImg="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
+	$mapImgxxx="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
 	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
 	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
 	<script type='text/javascript'>
 	 // document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
-	</script>
+		$(document).ready(function(){	
+		
+	  	//	$('#mapTabber').tabber.tabShow(2);
+		});
 	</script>
 	<div class='tabber' id='mapTabber'>\n";
+	
+	
+	$mapImg="<div class='tab_container'>\n";
+
 
 	if ($googleMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>
-			$googleMap
-			</div>";
+		//$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>$googleMap</div>";
+		$mapImg.="<div id='tabgmap' class='tab_content'>$googleMap</div>";
+			 
 	}	
 	if ($localMap) {
-		$mapImg.="<div class='tabbertab $defaultTabStr1'  title='"._OLC_MAP."'>
-					$localMap
-				 </div>\n";
+		//$mapImg.="<div class='tabbertab $defaultTabStr1'  title='"._OLC_MAP."'>$localMap</div>\n";
+		$mapImg.="<div id='tabmap' class='tab_content'>$localMap</div>";
 	}
 
 
 
 		
 	if ($imagesHtml) {
-			$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>
-				  $imagesHtml
-				  </div>";
+			//$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>$imagesHtml</div>";
+			$mapImg.="<div id='tabphotos' class='tab_content'>$imagesHtml</div>";
 	}		  
 
 	if ($comments) {
-			$mapImg.="<div class='tabbertab' title='"._COMMENTS." (".$flight->commentsNum.")' style='width:745px; height:600px; text-align:left;'>
+			$mapImg.="<div id='tabcomments' class='tab_content'>
+			<div style='width:745px; height:600px; text-align:left;'>
 			<iframe id='comments_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".
-		 " TITLE='Comments' width='100%' height='100%'
+		 " TITLE='Comments' width='100%' height='100%' 
 		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
-		</iframe></div>";
+		</iframe>
+		</div>
+		</div>";
 		  
 			//<a href='".$moduleRelPath."/GUI_EXT_flight_comments.php?flightID=".$flight->flightID."'> comments </a>
 			//	  $comments
@@ -720,6 +749,8 @@ if ( $divsToShow>1) { // use tabber
 
 	if ($imagesHtml) 
 		$mapImg.="<script type='text/javascript' src='$moduleRelPath/js/xns.js'></script>";
+		
+	$mapImg=$mapImg0.$mapImg;
 
 } else { // only the one div that is present (we know that only one (or zero) is here)
 	$mapImg=$localMap.$googleMap.$imagesHtml;	
@@ -791,8 +822,10 @@ if ($flight->externalFlightType &&  ! $CONF['servers']['list'][$flight->serverID
 //}
 
 if ($adminPanel) {
-   	$Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
+   	// $Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
 }
+
+//	$Ltemplate->assign_block_vars('COMMENTS', array() );
 
 $Ltemplate->pparse('body');
 

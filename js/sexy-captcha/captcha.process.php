@@ -67,7 +67,7 @@
 							<div	class="target" 
 										style="background-position: ' . $captchaImages[$randomCaptcha]['off']['top'] . ' ' . $captchaImages[$randomCaptcha]['off']['left'] . ';"></div>
 						</div>
-						<input type="hidden" class="captchaAnswer" name="captcha" value="" />
+						<input type="hidden" class="captchaAnswer" name="captcha" id="captcha" value="" />
 					</div>';
 		
 		break;
