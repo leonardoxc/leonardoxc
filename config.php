@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.157 2010/11/14 20:59:12 manolis Exp $                                                                 
+// $Id: config.php,v 1.158 2010/11/20 22:44:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -141,6 +141,12 @@ setlocale(LC_NUMERIC, 'en_US') ;
 			"croatian"=>"hr","mexican"=>"es","polish"=>"pl" ,"czech"=>"cz" ,"hungarian"=>"hu","slovenian"=>"si",
 			"danish"=>"da","chinese"=>"zh","hebrew"=>"he");
 
+ $lang2isoGoogle=array("english"=>"en","german"=>"de","dutch"=>"nl","french"=>"fr", "italian"=>"it",
+ 			"spanish"=>"es","portuguese"=>"pt","brazilian"=>"pt","greek"=>"el","turkish"=>"tr",
+			"swedish"=>"sv","finnish"=>"fi","polish"=>"pl","bulgarian"=>"bg","romanian"=>"ro","russian"=>"ru","serbian"=>"sr",
+			"croatian"=>"hr","mexican"=>"es","polish"=>"pl" ,"czech"=>"cs" ,"hungarian"=>"hu","slovenian"=>"sl",
+			"danish"=>"da","chinese"=>"zh","hebrew"=>"he");
+			
   $CONFIG_langsSpoken=array(
 	"albanian"=>array("al"),"arabic"=>array("eg"),"bulgarian"=>array("bg"),
 	"catalan"=>array("es"),"chinese"=>array("cn"),"czech"=>array("cz"),"danish"=>array("dk"),

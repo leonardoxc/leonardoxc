@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.190 2010/11/12 12:28:20 manolis Exp $
+// $Id: CL_flightData.php,v 1.191 2010/11/20 22:44:18 manolis Exp $
 //
 //************************************************************************
 
@@ -113,6 +113,7 @@ var $olcDateSubmited;
 
 var $flightScore;
 var $flightComments;
+var $commentsEnabled=1;
 
 /*
 #externalFlightType
@@ -153,6 +154,8 @@ var $maxPointNum=1000;
     function flight() {
 		global $CONF;
 		$this->startType=$CONF['defaultStartType'];
+		
+		$this->commentsEnabled=1;
 		
     	# Martin Jursa, 30.05.2007: make time gap configurable
 		global $CONF_max_allowed_time_gap;
@@ -3446,6 +3449,7 @@ $kml_file_contents=
 		$this->userID=$row["userID"];
 		$this->comments=$row["comments"];
 		$this->commentsNum=$row["commentsNum"];
+		$this->commentsEnabled=$row["commentsEnabled"]+0;
 
 		$this->glider=$row["glider"];
 		$this->gliderBrandID =$row["gliderBrandID"];
@@ -3826,7 +3830,7 @@ $kml_file_contents=
 
 		airspaceCheck,airspaceCheckFinal,airspaceCheckMsg,checkedBy,
 		NACclubID,NACid,
-		comments, commentsNum, glider, gliderBrandID, linkURL, timesViewed,
+		comments, commentsNum, commentsEnabled, glider, gliderBrandID, linkURL, timesViewed,
 
 		takeoffID, takeoffVinicity, landingID, landingVinicity,
 		DATE,
@@ -3865,7 +3869,7 @@ $kml_file_contents=
 
 		$this->airspaceCheck, $this->airspaceCheckFinal, '".prep_for_DB($this->airspaceCheckMsg)."','".prep_for_DB($this->checkedBy)."',
 		$this->NACclubID, $this->NACid,
-		'".prep_for_DB($this->comments)."', ".($this->commentsNum+0).", '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
+		'".prep_for_DB($this->comments)."', ".($this->commentsNum+0).", ".($this->commentsEnabled+0).", '".prep_for_DB($this->glider)."',  ".($this->gliderBrandID+0)." , '".prep_for_DB($this->linkURL)."', $this->timesViewed ,
 
 		'$this->takeoffID', $this->takeoffVinicity, '$this->landingID', $this->landingVinicity,
 		'$this->DATE',

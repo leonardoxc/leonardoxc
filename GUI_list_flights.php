@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.121 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.122 2010/11/20 22:44:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -719,7 +719,7 @@ function removeClubFlight(clubID,flightID) {
 			echo "<span><a class='betterTip2' id='tpa1_$flightID' href='javascript:nop();'>".
 				leoHtml::img("icon_camera.gif",0,0,'',$photosNum.' '._PHOTOS,'icons1 photoIcon2')."</a></span>";
 
-		if ($row["comments"]) $hasComments=1;
+		if ($row["commentsNum"]>0) $hasComments=1;
 		else $hasComments=0;
 	
 		if ($hasComments ) 

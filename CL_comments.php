@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.6 2010/11/16 14:58:14 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.7 2010/11/20 22:44:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,7 +34,19 @@ class flightComments {
 		$this->commentsNum=0;
 		$this->comments=array();
 	}
-
+	
+	
+	function setCommentsStatus($enable) {
+		global $db,$commentsTable,$flightsTable;
+		$query="UPDATE $flightsTable SET commentsEnabled=$enable WHERE ID=".$this->flightID;
+		$res= $db->sql_query($query );
+		if($res <= 0){   
+			 echo "Error in setCommentsStatusfor flight ".$this->flightID." : $query<BR>";
+			 return 0;
+		}
+		return 1;	
+	}
+	
 	
 	function addComment($params,$updateFlightsTable=1) {
 		global $db,$commentsTable,$flightsTable;

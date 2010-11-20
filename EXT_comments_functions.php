@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.6 2010/11/19 13:31:57 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.7 2010/11/20 22:44:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -111,6 +111,17 @@
 		$flightComments=new flightComments($flightID);
 		$result=$flightComments->deleteComment($commentID,$parentID);
 		echo "Result: $result";
+	} else if ($op=='setCommentsStatus'){	
+		$flightID=makeSane($_POST['flightID']);
+		$enable=makeSane($_POST['enable']);
+						
+		$flightComments=new flightComments($flightID);		
+		$result=$flightComments->setCommentsStatus($enable);	
+		if ($result) {
+			if ($enable) echo "<span class='green'>"._Comments_are_enabled_for_this_flight."</span>";
+			else echo "<span class='red'>"._Comments_are_disabled_for_this_flight."</span>";
+		}	else {	
+			echo "<span class='red'>"._ERROR_in_setting_the_comments_status."</span>";	
+		}	
 	}
-
 ?>

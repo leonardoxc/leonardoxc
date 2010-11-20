@@ -21,3 +21,11 @@ CREATE TABLE `leonardo_comments` (
 PRIMARY KEY ( `commentID` ) ,
 INDEX ( `flightID` )
 ) TYPE = MYISAM ;
+
+
+ALTER TABLE `leonardo_flights` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+
+
+ALTER TABLE `leonardo_pilots_info` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1';

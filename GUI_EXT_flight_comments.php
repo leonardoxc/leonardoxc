@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.7 2010/11/19 13:31:57 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.8 2010/11/20 22:44:18 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,7 +41,15 @@
 	
 	$flightComments=new flightComments($flight->flightID);
 	$flightComments->getFromDB();
-		 	
+
+	$commentsEnabled=$flight->commentsEnabled+0;
+	// now the access rights :
+	$moderatorRights=false;
+	if ( ($flight->userID==$userID && $flight->userServerID==$userServerID ) || 
+			L_auth::isModerator($userID)  ) {
+		$moderatorRights=true;
+	}
+				 	
   ?><head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   
@@ -224,6 +232,7 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 	border:1px solid #CCCCCC;
 	background-color:#FEFFF4;
 }
+#rssBox { padding:8px; padding-right:3px;}
 
 #submitErrorMessage {
 	position:absolute;
@@ -241,6 +250,9 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 div #submitErrorMessage  {
 	font-size:14px;
 }
+
+.green { color:#00FF00; font-size:9px; }
+.red{ color:#FF0000; font-size:9px; }
 
 </style>
 
@@ -402,12 +414,46 @@ $(document).ready(function(){
 		$("#rssBox").hide();
 		$("#translateBox").hide();
 	});
-			
+		
+	var enableAtStart=<?=$commentsEnabled?>;
+	if (enableAtStart) {
+		$(".reply").show();
+		$(".edit").show();
+		$(".delete").show();
+	} else {
+		$(".reply").hide();
+		$(".edit").hide();
+		$(".delete").hide();
+	}		
 
 	CKEDITOR.replace( 'commentBox' );
 
  	$('.myCaptcha').sexyCaptcha('<?=moduleRelPath()?>/js/sexy-captcha/captcha.process.php');
 
+	$('#commentsStatus').live('click',function(f) {
+		var enable=0;
+		if ( $('#commentsStatus').is(':checked') ) {
+			enable=1;
+		}
+		
+		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
+			{ op:"setCommentsStatus" , flightID: <?=$flightID?>, enable: enable } ,
+			function(data) {
+			  $('#setCommentsStatusText').html(data);	
+			  
+				if (enable) {
+					$(".reply").show();
+					$(".edit").show();
+					$(".delete").show();
+				} else {
+					$(".reply").hide();
+					$(".edit").hide();
+					$(".delete").hide();
+				}
+			}
+		);
+	
+	});
 
 	//---------------------------------------------------------------------
 	// --------------------- REPLY ----------------------------------------
@@ -453,18 +499,18 @@ $(document).ready(function(){
 		
 		// do some checks !
 		if (! commentText.match(/\S/) ) {
-			flashError("","Please type something");
+			flashError("","<?=_Please_type_something?>");
 			return;
 		}
 		
 		if ( parseInt(userID)==0)  { // require name + email
 			if (! guestName.match(/\S/) ) {
-				flashError("guestName","Please enter your name / nickname");
+				flashError("guestName","<?=_Please_enter_your_name?>");
 				return;
 			}
 			
 			if (! validateEmail(guestEmail) ) {
-				flashError("guestPass","Please give your email, it will not be displayed at any times");
+				flashError("guestPass","<?=_Please_give_your_email?>");
 				return;
 			}
 		}		
@@ -650,9 +696,9 @@ if ($userID) {
 					$name=getPilotRealName($userID,$userServerID+0,1,1,1);
 					$pilotNames[$userID][$userServerID]=$name;
 			}	 
-			echo "&nbsp;Logged in as: $name";
+			echo "&nbsp;"._Logged_in_as." $name";
 ?>
-&nbsp;&nbsp;<input type="button" class="submit" value=" Submit Comment " />&nbsp;&nbsp;
+&nbsp;&nbsp;<input type="button" class="submit" value=" <?=_Submit_Comment?> " />&nbsp;&nbsp;
 
 <input type="hidden" id="userID" value="<?=$userID?>"/>
 <input type="hidden" id="userServerID" value="<?=($userServerID+0)?>"/>
@@ -666,81 +712,90 @@ if ($userID) {
 <input type="hidden" id="userID" value="0"/>
 <input type="hidden" id="userServerID" value="0"/>
 <table cellpadding="0" cellspacing="0" border="0" style='margin-left:5px'><tr><td width="400">
-<input type="text" id="guestName"/><span class="titles">Name</span><span class="star">*</span><br />
+<input type="text" id="guestName"/><span class="titles"><?=_Name?></span><span class="star">*</span><br />
 <input type="hidden" id="guestPass" value=""/>
-<input type="text" id="guestEmail"/><span class="titles">Email</span><span class="star">*</span><br />
-(Will not be displayed)
+<input type="text" id="guestEmail"/><span class="titles"><?=_Email?></span><span class="star">*</span><br />
+<?=_Will_not_be_displayed?>
 </td><td>
-<div style='position:absolute; top:20px; left:450px;'><input type="button" class="submit" value=" Submit Comment " /></div>
+<div style='position:absolute; top:20px; left:450px;'><input type="button" class="submit" value=" <?=_Submit_Comment?> " /></div>
 <div class="myCaptcha"></div>
 </td></tr>
 </table>
 <? } ?>
 <div id='submitErrorMessage'>Error Message</div>
 
-<input type="hidden" id="languageCode" value="<?=$lang2iso[$currentlang]?>"/>
+<input type="hidden" id="languageCode" value="<?=$lang2isoGoogle[$currentlang]?>"/>
 <textarea name="commentBox" id="commentBox" cols="120" rows="10"></textarea><br />
 
-<div align='right'><input type="button" class="cancelSubmit" value=" Cancel" />&nbsp;&nbsp;</div>
+<div align='right'><input type="button" class="cancelSubmit" value=" <?=_Cancel?> " />&nbsp;&nbsp;</div>
 </form>
 </div>
 
 
 <div id='deleteWindow'>
-Are you sure you want to delete this comment?
-<span class='deleteConfirm'>yes</span> <span class='deleteCancel'>No - Cancel</span>
+<?=_Are_you_sure_you_want_to_delete_this_comment?>
+<span class='deleteConfirm'><?=_YES?></span> <span class='deleteCancel'><?=_Cancel?></span>
 </div>
 
 <div id='editActions'>
-<span class='editConfirm'>Save changes</span> <span class='editCancel'>Cancel</span>
+<span class='editConfirm'><?=_Save_changes?></span> <span class='editCancel'><?=_Cancel?></span>
 </div>
 
 
 <div id='commentsContainer' style='width:720px'>
 
 <table border='0' cellpadding=5 width='100%'><tr>
-<td width="350">
-	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'>Leave a comment</div>
-</td>
+<td width="220">
+	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'><?=_Leave_a_comment?></div></td>
 <td align="left">
-	<div id="BookmarkButton" ></div>
-</td>
+<? if ($moderatorRights) { ?>
+  <label><?=_Comments_Enabled?>
+  <input type="checkbox" name="commentsStatus" id="commentsStatus" value="checkbox" <?=$commentsEnabled?'checked':''?> />
+  </label>
+  <? } ?>  
+
+  <div id='setCommentsStatusText'>
+  <?
+  		if ($commentsEnabled) echo "<span class='green'>"._Comments_are_enabled_for_this_flight."</span>";
+		else echo "<span class='red'>"._Comments_are_disabled_for_this_flight."</span>";
+  ?></div>
+ </td>
+<td align="left">
+	<div id="BookmarkButton" ></div></td>
 <td>
   <?
   echo "<div id='rssButton'>".leoHtml::img("rss.gif",0,0,'absmiddle','','icons1').leoHtml::img("icon_arrow_down.gif",0,0,'','','icons1')."</div>";
 		
 		
- ?>		
-</td>
+ ?></td>
 </tr>
 </table>
 
 <div style='clear:both'></div>
 
 <div id='rssBox'>
-	
-	<a href='<?=moduleRelPath()?>/rss.php?op=comments&flightID=<?=$flightID?>'>RSS</a>
+	<a href='<?=moduleRelPath()?>/rss.php?op=comments&flightID=<?=$flightID?>'><?=_RSS_for_the_comments?></a>
 </div>
 
 <div id='translateBox'>
-	Translate to <BR />
+	<?=_Translate_to?><BR />
 <?
 	$langLiStr="";
 	foreach( $availableLanguages as $tmpLang) {	
 	  $tmpLangStr=strtoupper($tmpLang{0}).substr($tmpLang,1);	  
 	  $cCode=$CONF['lang']['lang2countryFlag'][$tmpLang];
+	  $cCode2=$lang2isoGoogle[$tmpLang];
   	  $flagImg=leoHtml::img("$cCode.gif",18,12,'absmiddle',$str,'fl')."&nbsp;$tmpLangStr";
 	  
 	  if ($currentlang==$tmpLang) {
  	    $current_flagImg=leoHtml::img($cCode.".gif",18,12,'',_LANGUAGE,'fl');
 	  }
-	  $langLiStr.="<li class='translateLink' id='lang$cCode'>$flagImg</li>\n";
+	  $langLiStr.="<li class='translateLink' id='lang$cCode2'>$flagImg</li>\n";
 	} 
 ?>
 	<ul class="short">
 		<? echo $langLiStr ?>
 	</ul>
-
 </div>
 
 
@@ -748,13 +803,6 @@ Are you sure you want to delete this comment?
 <div id='replyText'></div>
 
 <?
-		// now the access rights :
-		$moderatorRights=false;
-		if ( ($flight->userID==$userID && $flight->userServerID==$userServerID ) || 
-				L_auth::isModerator($userID)  ) {
-			$moderatorRights=true;
-		}
-
 
 		$str='';
 		foreach($flightComments->threads as $thread) {	

@@ -41,7 +41,7 @@ if ($commentData['userID']) {
 	//$str.="<div class='commentBodyGuest'>".$commentData['text']."</div>";
 }
 
-$langName=array_search ($commentData['languageCode'], $lang2iso);
+$langName=array_search ($commentData['languageCode'], $lang2isoEditor);
 $flagCode=$CONF['lang']['lang2countryFlag'][$langName];
 // echo "flag_code: $flagCode";
 
@@ -62,13 +62,13 @@ if ($commentData['userID']) {
 } else {
 	$userInfo="Guest: ".$commentData['guestName']." ";
 }
-$translateText="<span><a id='translate_".$commentData['commentID']."' href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>Translate ".
+$translateText="<span><a id='translate_".$commentData['commentID']."' href='javascript:translateComment(".$commentData['commentID'].",\"".$commentData['languageCode']."\")'>"._Translate.
 				leoHtml::img("icon_arrow_down.gif",0,0,'absmiddle','','icons1')."</a></span>";
 
 $str.="<div class='actionBox' id='p_$commentID'>";
 $str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText&nbsp;&nbsp;&nbsp;</div>";
 
-$str.="<div id='parent$commentID' class='commentActions reply'>Reply</div>";
+$str.="<div id='parent$commentID' class='commentActions reply'>"._Reply."</div>";
 if ($moderatorRights || $commentData['userID']==$userID) {
 	$str.="<div id='edit$commentID'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
 	$str.="<div id='delete$commentID' class='commentActionsIcons delete'><img 
