@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.16 2010/03/25 18:43:02 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.17 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,6 +17,7 @@
  	require_once dirname(__FILE__)."/EXT_config.php";
 
 	require_once dirname(__FILE__)."/CL_flightData.php";
+	require_once dirname(__FILE__)."/CL_comments.php";
 	require_once dirname(__FILE__)."/FN_functions.php";	
 	require_once dirname(__FILE__)."/FN_UTM.php";
 	require_once dirname(__FILE__)."/FN_waypoint.php";	
@@ -88,12 +89,17 @@ if ($op=='photos'){
 	}
 
 } else if ($op=='comments'){
-		$flight=new flight();
-		$flight->getFlightFromDB($flightID);
+		// $flight=new flight();
+		// $flight->getFlightFromDB($flightID);
+		
+		$flightComments=new flightComments($flightID);
+		$commentRow=$flightComments->getFirstFromDB();
 //		echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
 //		echo '<tr><td>'.$flight->comments.'</td></tr></table>';
 
-		echo "<span class='short_info'>".$flight->comments.'</span>';
+		$comment=leoHtml::cutString($commentRow['text'],300);
+		//$comment=$commentRow['text'];
+		echo "<span class='short_info'>".$comment.'</span>';
 		
 } else if ($op=='info_short'){
 
@@ -164,8 +170,12 @@ if ($flight->is3D()) {
 	echo "<TR><TD>"._TAKEOFF_ALTITUDE."</td><td>".formatAltitude($flight->TAKEOFF_ALT)."<td></tr>\n";
 }
 
-if ($flight->comments) {
-	echo "<TR class='hr'><TD>"._COMMENTS."</td><td>".$flight->comments."</td></tr>\n";
+if ($flight->commentsNum) {
+	$flightComments=new flightComments($flightID);
+	$commentRow=$flightComments->getFirstFromDB();
+	$comment=leoHtml::cutString($commentRow['text'],300);
+		
+	echo "<TR class='hr'><TD>"._COMMENTS."</td><td>".$comment."</td></tr>\n";
 }
 
   echo "</table>";

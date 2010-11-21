@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_waypoint_edit.php,v 1.12 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_waypoint_edit.php,v 1.13 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -108,7 +108,7 @@
           </tr>
           <tr>
             <td colspan="4" valign="top" bgcolor="#CFE2CF">
-			  <? createTextArea(0,0,'description',$waypt->description ,'takeoff_description','Leonardo',true,710,600);
+			  <? createTextArea(0,0,'description',$waypt->description ,'takeoff_description','Leonardo',true,710,400);
 			?>            
 			</td>
           </tr>

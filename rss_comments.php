@@ -14,13 +14,29 @@
 
 	if (!defined("IN_RSS") ) exit;
 
+		$flightID = $_GET['flightID']+0;
+		if ($flightID) $flightWhereClause=" WHERE flightID=$flightID ";
+		else $flightWhereClause='';
+		
+		$query="SELECT * 
+		 		FROM $commentsTable 
+				$flightWhereClause
+				ORDER BY dateAdded DESC LIMIT $count";
+		// echo $query;
+		$res= $db->sql_query($query);
+		if ( $_GET['debug'] ) exit($query);
+		if($res <= 0){
+			echo("<H3> Error in query! </H3>\n");
+			exit();
+		}
+		
 $encoding="utf-8";
 
 $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <rss version=\"0.92\">
 <channel>
 	<docs>http://www.leonardoxc.net</docs>
-	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</title>
+	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest comments</title>
 	<link>http://".$_SERVER['SERVER_NAME'].
 	str_replace("&","&amp;",
 		getLeonardoLink(array('op'=>'list_flights',
@@ -30,13 +46,41 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 	)						
 	."</link>
 	<language>el</language>
-	<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest flights</description>
+	<description>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest comments</description>
 	<managingEditor>".$CONF_admin_email."</managingEditor>
 	<webMaster>".$CONF_admin_email."</webMaster>
 	<lastBuildDate>". gmdate('D, d M Y H:i:s', time()) . " GMT</lastBuildDate>
 <!-- BEGIN post_item -->
 ";
+	$pilotNames=array();
 
+	while ($row = mysql_fetch_assoc($res)) { 
+		if (!$row['userID'] ) {		
+			$name=$row['guestName'];
+		} else {
+			$name=$pilotNames[$row["userID"]][$row["userServerID"]];
+		 	if (!$name) {
+		 		$name=getPilotRealName($row["userID"],$row["userServerID"],0,0,0);
+		 		$pilotNames[$row["userID"]][$row["userServerID"]]=$name;
+			}
+	 	}	 
+	 
+		$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+				getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['flightID'])) );
+
+	
+		$RSS_str.="<item>
+<title><![CDATA[$name on flight ".$row['flightID']."]]></title>
+<guid isPermaLink=\"false\">".$row['commentID']."</guid>
+<pubDate>". $row['dateUpdated'] . " GMT</pubDate>
+<link>$link</link>
+<description><![CDATA[". $row['text']."]]></description>
+</item>
+";
+	
+	}
+	
+	
 		$RSS_str.="<!-- END post_item -->
 		</channel>
 		</rss>

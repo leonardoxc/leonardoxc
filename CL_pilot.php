@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.15 2010/04/05 20:14:31 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.16 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -41,7 +41,7 @@ class pilot{
 "Spiral", "Bline", "FullStall", "Sat", "AsymmetricSpiral", "Spin", "OtherAcro",
 "camera", "camcorder", "Vario", "GPS", "Harness",  "Helmet", "Reserve", 
 "Sex","PilotPhoto", "PersonalWebPage", "FirstOlcYear",
-"clubID", 
+"clubID", "commentsEnabled"
 );
 		
 		
@@ -57,7 +57,7 @@ class pilot{
 "FavoriteBooks", "FavoriteActors", "FavoriteSingers", "FavoriteMovies", "FavoriteSite", "Sign", 
 "Spiral", "Bline", "FullStall", "Sat", "AsymmetricSpiral", "Spin", "OtherAcro",
 "camera", "camcorder", "Vario", "GPS", "Harness",  "Helmet", "Reserve", 
-"PersonalWebPage" );
+"PersonalWebPage","commentsEnabled" );
 
 		$this->gotValues=0;
 	}

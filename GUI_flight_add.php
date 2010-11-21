@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.43 2010/04/14 18:58:51 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.44 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,8 +17,14 @@
 		echo _You_are_not_login;
 		return;
 	}
-	
+
+ 
+ 
 	require_once dirname(__FILE__)."/CL_NACclub.php";
+	require_once dirname(__FILE__)."/CL_pilot.php";
+	 	
+	$thisPilot=new pilot(0,$userID);
+ 	$thisPilot->getFromDB();
 /*
 	new defines
 define("_GLIDER_CERT","Glider Certification");
@@ -319,6 +325,11 @@ function setClub(NACid) {
     <tr>
       <td colspan="4" valign="middle"><div align="left" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
 	 </div>
+	  <div align="left">
+	   <label><?=_Comments_are_enabled_for_this_flight?>
+  		<input type="checkbox" name="commentsEnabled" id="commentsEnabled" value="1" <?=(($thisPilot->commentsEnabled)?'checked':'')?> />
+  	  </label>
+	
 	    <? 	require_once dirname(__FILE__).'/FN_editor.php';
 	  		if ( L_auth::isModerator($userID) ) {
 				$toolbar='Leonardo';
@@ -328,8 +339,9 @@ function setClub(NACid) {
  				$allowUploads=false;
 			}
 			createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,
-							'flight_comments', $toolbar , $allowUploads, 700,250);
-							?>	  </td>
+							'flight_comments', $toolbar , $allowUploads, 700,200);
+							?>	  
+		</td>
     </tr>
 
     <tr>
@@ -441,6 +453,7 @@ function setClub(NACid) {
 						'gliderCertCategory'=>$gliderCertCategory,
 						'startType'=>$_POST["startType"]+0,
 						'NACclubID'=>$NACclubID,'NACid'=>$NACid,
+						'commentsEnabled'=>($_POST['commentsEnabled']+0)
 					  ) 
 				) ;
 		

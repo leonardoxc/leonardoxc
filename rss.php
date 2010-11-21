@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: rss.php,v 1.22 2010/11/16 14:58:14 manolis Exp $                                                                 
+// $Id: rss.php,v 1.23 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -62,6 +62,16 @@
 	}
 	
 	// GUS end
+
+	if ( $_GET['pilot'] ) {
+		$pparts=split("_",$_GET['pilot'] ) ;
+		$pilotID=$pparts[0]+0;
+		$pilotserverID=$pparts[1]+0;
+		if ( !$pilotID && ! $pilotserverID) {
+			$pilotserverID=0;
+			$pilotID=0;
+		}
+	}
 
 	$countryCode = ( isset($_GET['country']) ) ? mysql_real_escape_string(substr($_GET['country'],0,2)) : "";
 	$minOLCscore = ( isset($_GET['olcScore']) ) ? intval($_GET['olcScore']) : 0;
@@ -119,6 +129,11 @@ if (! is_dir($thumbsDirAbs) ) {
 
 		if ($category) { 
 			$where_clause.=" AND ( $flightsTable.cat & $category ) "; // bitwise AND category bits
+		}
+		
+			
+		if ($pilotID) { 	
+			$where_clause.=" AND $flightsTable.userServerID=$pilotserverID AND $flightsTable.userID=$pilotID ";
 		}
 		 // GUS end
 
@@ -247,7 +262,8 @@ $desc="<font size=\"+1\">Pilot:  <b><font color=\"#ff0000\">$name</font></b></fo
 "<br><font color=\"#006600\">Max Alt ASL: <b>".$row['MAX_ALT'].
 " m </b>$max_alt_stars</font><br><font color=\"#aa0000\">Min Alt ASL: <b>".$row['MIN_ALT'].
 " m </b>$min_alt_stars</font><br>Takeoff alt: <b>".$row['TAKEOFF_ALT']." m </b>$takeoff_stars";
-if ( $row['comments'] ) 
+
+if ( $row['commentsNum']  && 0)  // dont diplay commnents anyway
 {
 	$row['comments'] = trim($row['comments']," \n\r");
 	$row['comments'] = str_replace("  "," ",$row['comments']);

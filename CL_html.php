@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_html.php,v 1.4 2010/03/16 21:26:24 manolis Exp $                                                                 
+// $Id: CL_html.php,v 1.5 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -16,6 +16,15 @@ class leoHtml {
 	function html() {
 
 	}
+
+function cutString($str,$len ) {
+	if (mb_strlen($str) <=$len ) return $str;
+	
+	$str=strip_tags($str);
+	if (mb_strlen($str) <=$len ) return $str;
+
+	return mb_substr($str,0,$len)." ...";
+}
 
 function img($imgName,$width=0,$height=0,$align='',$title='',$class='',$id='',$type=1) {
 	global $CLIENT,$moduleRelPath;

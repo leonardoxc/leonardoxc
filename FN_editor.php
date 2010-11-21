@@ -8,14 +8,41 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_editor.php,v 1.9 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_editor.php,v 1.10 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__)."/js/fckeditor/fckeditor.php";
 require_once dirname(__FILE__)."/CL_pilot.php";
 
+?>
+<script type="text/javascript" src="<?=moduleRelPath()?>/js/ckeditor/ckeditor.js"></script>
+<?
+
 function createTextArea($userServerID,$userID,$name,$value,
+						$where,$toolbarSet,$allowUploads=false,$width=750,$height=800) {
+	
+	global $CONF,$PREFS;
+		
+	$useTextArea=false;
+
+	if ( ! $CONF['editor']['use_wysiwyg'][$where] ) $useTextArea=true;
+	else if ( ! $PREFS->useEditor) $useTextArea=true;	
+	
+	$cols=floor($width/10);
+	$rows=floor($height/40);
+	if ($rows<3) $rows=3;
+	
+	echo "<textarea name='$name' cols='$cols' rows='$rows'>$value</textarea>";
+	if ( $useTextArea) {
+		return;
+	}		
+
+	// $oFCKeditor->Config['DefaultLanguage']=$lang2isoEditor[$currentlang];	
+	echo  "<script type='text/javascript'> $(document).ready(function(){ CKEDITOR.replace('$name'); } ); \n</script>\n";
+
+}						
+function createTextArea_OLD($userServerID,$userID,$name,$value,
 						$where,$toolbarSet,$allowUploads=false,$width=750,$height=800) {
 		global $CONF,$PREFS;
 		

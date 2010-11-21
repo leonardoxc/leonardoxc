@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.38 2010/11/14 20:59:12 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.39 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -180,6 +180,7 @@
 		`GPS` = '".prep_for_DB($_POST['GPS'])."',
 		`Helmet` = '".prep_for_DB($_POST['Helmet'])."',
 		`Reserve` = '".prep_for_DB($_POST['Reserve'])."',
+		`commentsEnabled` = ".($_POST['commentsEnabled']+0).",
 		`PersonalWebPage` = '".prep_for_DB($_POST['PersonalWebPage'])."'
 
 		 WHERE `pilotID` = '$pilotIDview'  AND serverID='$serverIDview' ";
@@ -636,7 +637,17 @@
 } 
 
 ?>
-
+  <div class='infoHeader'><?=_COMMENTS?></div>
+   <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
+    <tr>
+      <td>
+	  <label><?=_Comments_are_enabled_by_default_for_new_flights?>
+  		<input type="checkbox" name="commentsEnabled" id="commentsEnabled" value="1" <?=($pilot['commentsEnabled']?'checked':'')?> />
+  	  </label>
+	  </td>
+	  </tr>
+	</table>
+  
   <div class='infoHeader'><?=_Flying_Stuff." ("._note_place_and_date.")" ?></div>
   <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 

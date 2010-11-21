@@ -8,13 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_rss_conf.php,v 1.9 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: GUI_rss_conf.php,v 1.10 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
  list($countriesCodes,$countriesNames)=getCountriesList();
  $rss_url_base="http://".$_SERVER['SERVER_NAME'].getRelMainDir()."rss.php";
-
+ $rss_url_base_comments.= $rss_url_base."?op=comments";
+ 
  openMain("Configure RSS Feed",0,"icons1/rss.gif"); 
  
 ?>
@@ -27,9 +28,12 @@ function updateRssURL() {
 
 	var base='<?=$rss_url_base?>?';
 	var rss_url= base.concat(a1,a2,a3);
+	var rss_url_comments= base.concat('op=comments',a3);
 	var rss_link="<a href='"+rss_url+"' target='_blank'>"+rss_url+"</a>";
+	var rss_link_comments="<a href='"+rss_url_comments+"' target='_blank'>"+rss_url_comments+"</a>";
 
    $("#rss_url").html(rss_link);
+   $("#rss_url_comments").html(rss_link_comments);
 }
 
 </script>
@@ -82,12 +86,20 @@ function updateRssURL() {
     <tr> 
       <td colspan=2><div align="right">
         <p align="center"><br>
-          <?=leoHtml::img("rss.gif",0,0,'','','icons1')?>
-          (copy paste this url to your RSS reader) 
+          <?=leoHtml::img("rss.gif",0,0,'','','icons1')?> <?=_RSS_feed_for_flights ?>
+       (copy paste this url to your RSS reader) 
       </div>
 	<div align="center" id='rss_url'><a href='<?= $rss_url_base ?>' target='_blank'><?= $rss_url_base ?></a></div></p></td>
     </tr>
     <tr> 
+	 <tr> 
+      <td colspan=2><div align="right">
+        <p align="center"><br>
+          <?=leoHtml::img("rss.gif",0,0,'','','icons1')?> <?=_RSS_feed_for_comments ?>
+          (copy paste this url to your RSS reader) 
+      </div>
+	<div align="center" id='rss_url_comments'><a href='<?= $rss_url_base_comments ?>' target='_blank'><?= $rss_url_base_comments ?></a></div></p></td>
+    </tr>
       <td colspan="2"><div align="center"> 
         </div></td>
     </tr>

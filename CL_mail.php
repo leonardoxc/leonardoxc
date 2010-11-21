@@ -8,11 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_mail.php,v 1.4 2010/03/30 11:33:57 manolis Exp $                                                                 
+// $Id: CL_mail.php,v 1.5 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
-require_once $LeoCodeBase."/lib/mail/class.phpmailer.php";
+require_once dirname(__FILE__)."/lib/mail/class.phpmailer.php";
 
 class LeonardoMail{
 

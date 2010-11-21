@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.7 2010/11/20 22:44:18 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.8 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -79,8 +79,31 @@
 		$commentID=$newCommentID;		
 		$commentDepth=$newCommentDepth;
 			
+		if ($commentData['userID'] != $userID || 1) {
+			global $LeoCodeBase;
+			require_once dirname(__FILE__).'/CL_user.php';
+			require_once dirname(__FILE__).'/CL_mail.php';
+			// send email notification to user
+			$userEmail=leoUser::getEmail($userID);
+			// echo " userEmail= $userEmail";
+			
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+				getLeonardoLink(array('op'=>'show_flight','flightID'=>$commentData['flightID'])) );
+				
+			$email_body=sprintf(_New_comment_email_body,
+						$CONF['site']['name'],$link	,$commentData['text']														
+				);		
+																												
+			LeonardoMail::sendMail("[Leonardo] ".$CONF['site']['name']." - ". sprintf(_You_have_a_new_comment,$_SERVER['SERVER_NAME']),
+						utf8_decode($email_body),
+						$userEmail,
+						addslashes($userEmail) );
+			// echo "<pre>$email_body</pre>";		
+		}	
+			
 		include dirname(__FILE__).'/INC_comment_row.php';
 		echo $str;
+									 
 									 
 		//echo " newCommentID=$newCommentID, flightID=$flightID 
 		//		parentID=$parentID, guestName=$guestName, userID=$userID,

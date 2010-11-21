@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.27 2010/04/14 18:58:51 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.28 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
@@ -18,7 +18,11 @@
 	}
 
  require_once dirname(__FILE__)."/CL_NACclub.php";
+ require_once dirname(__FILE__)."/CL_pilot.php";
    
+ $thisPilot=new pilot(0,$userID);
+ $thisPilot->getFromDB();
+ 
  openMain( _SUBMIT_FLIGHT,0,"icon_add.png");
 
  if (!isset($_FILES['zip_datafile']['name'])) {
@@ -254,6 +258,18 @@ function setClub(NACid) {
 				</select>
 			<? } ?>				</td>
     </tr>
+	
+	 <tr>
+	  <td valign="top"><div align="right" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT ?></div></td>
+      <td colspan="3" valign="top">
+	  <div align="left">
+	   <label><?=_Comments_are_enabled_for_this_flight?>
+  		<input type="checkbox" name="commentsEnabled" id="commentsEnabled" value="1" <?=(($thisPilot->commentsEnabled)?'checked':'')?> />
+  		</label>   
+	    </div>
+	  </fieldset></td>
+    </tr>
+
 	<? if ( L_auth::isAdmin($userID)) { ?>
     <tr>
       <td width="205" valign="top"><div align="right" class="styleItalic"><?=_INSERT_FLIGHT_AS_USER_ID?></div></td>
@@ -368,6 +384,7 @@ function setClub(NACid) {
 										'gliderCertCategory'=>$gliderCertCategory,
 										'startType'=>$_POST["startType"]+0,
 										'NACclubID'=>$NACclubID,'NACid'=>$NACid,
+										'commentsEnabled'=>($_POST['commentsEnabled']+0)
 										) 
 			) ;
 			 

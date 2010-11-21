@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.58 2010/08/27 13:13:13 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.59 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -165,9 +165,14 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 */
 
 	foreach ($argArray as $varName=>$varValue) {
-		if ($varName=='NACclubID' || $varName=='NACid') continue;
+		if ($varName=='NACclubID' || $varName=='NACid' || $varName=='comments' ) continue;
 		$flight->$varName=$varValue;
 	}
+
+	$comments=$argArray['comments'];
+	if ($comments) {		
+		$flight->commentsNum=1;
+	}	
 
 	if ( strtolower(substr($flight->linkURL,0,7)) == "http://" ) $flight->linkURL=substr($flight->linkURL,7);
 
@@ -496,7 +501,24 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
     } // took care of photos
 	
+	// tkae care of comments 
+	if ($comments) {
+		global $lang2isoGoogle,$currentlang;
+		
+		$flightComments=new flightComments($flight->flightID);
+		$commentInsertResult=$flightComments->addComment(
+			array(
+				'parentID'=>0,
+				'userID'=>($flight->userID+0),
+				'userServerID'=>($flight->userServerID+0),
+				'guestName'=>'',
+				'guestPass'=>'',
+				'guestEmail'=>'',
+				'text'=>$comments,
+				'languageCode'=>$lang2isoGoogle[$currentlang]
+			),0);
 	
+	}
 
 	// now is a good time to disable duplicate flights we have found from other servers
 	// AND are from the same user (using pilot's mapping table to find that out)

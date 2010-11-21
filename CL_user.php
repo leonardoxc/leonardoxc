@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_user.php,v 1.3 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_user.php,v 1.4 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -53,6 +53,18 @@ class LeoUser {
 		else return 0;
 	}
 
+	function getEmail($userID) {
+		global $db,$CONF;
+		$query="SELECT ".$CONF['userdb']['email_field']." as email FROM ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=$userID " ;
+		$res= $db->sql_query($query);
+  		if($res <= 0){   
+			 echo "Error in getEmail() $query<BR>";
+		     return;
+	    }
+		
+		if ( $row = $db->sql_fetchrow($res) ) return $row['email'];
+		else return '';
+	}
 
 	function deleteUser($deleteFlights=0,$deleteFiles=0) {
 		global $db,$pilotsTable;

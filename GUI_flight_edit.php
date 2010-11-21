@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_edit.php,v 1.51 2010/08/20 13:58:28 manolis Exp $                                                                 
+// $Id: GUI_flight_edit.php,v 1.52 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
   require_once dirname(__FILE__).'/CL_image.php';
@@ -60,7 +60,8 @@
 		$flight->airspaceCheckMsg=$_REQUEST["airspaceCheckMsg"];
 		$flight->checkedBy=$_REQUEST["checkedBy"];
 
-		 $flight->comments=$_REQUEST["comments"];
+		// $flight->comments=$_REQUEST["comments"];
+		 $flight->commentsEnabled=$_REQUEST["commentsEnabled"]+0;
 		 //echo $flight->comments."<HR><HR>";
 		 //exit;
 		 $flight->linkURL=$_REQUEST["linkURL"];
@@ -700,9 +701,15 @@ require_once dirname(__FILE__).'/FN_editor.php';
 
     <tr>
       <td colspan="2" valign="middle">
+	  
 	  <fieldset class="legendBox legend3"><legend><? echo _COMMENTS_FOR_THE_FLIGHT ?></legend>
+	  
 	  <div align="left">
-	    <?  if ( L_auth::isModerator($userID) ) {
+	   <label><?=_Comments_are_enabled_for_this_flight?>
+  		<input type="checkbox" name="commentsEnabled" id="commentsEnabled" value="1" <?=(($flight->commentsEnabled)?'checked':'')?> />
+  	</label>
+	    <?
+		/*  if ( L_auth::isModerator($userID) ) {
 				$toolbar='Leonardo';
 				$allowUploads=false;
 			} else{
@@ -710,7 +717,9 @@ require_once dirname(__FILE__).'/FN_editor.php';
  				$allowUploads=false;
 			}
 			createTextArea($flight->userServerID,$flight->userID,'comments',$flight->comments ,
-							'flight_comments', $toolbar , $allowUploads, 693,350); ?>	    
+							'flight_comments', $toolbar , $allowUploads, 693,200); 
+		*/					
+		?>	    
 	    </div>
 	  </fieldset>	</td>
     </tr>

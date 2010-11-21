@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.7 2010/11/20 22:44:18 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.8 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -159,6 +159,18 @@ class flightComments {
 
 	}
 	
+	function getFirstFromDB() {
+		global $db,$commentsTable;
+		$sql="SELECT * FROM $commentsTable WHERE flightID=".$this->flightID ." ORDER BY commentID ASC LIMIT 1";
+		$res= $db->sql_query($sql);
+  		if($res <= 0){   
+			 echo "Error getting comments from DB for flight".$this->flightID." <BR>";
+		     return 0;
+	    }
+		$row = $db->sql_fetchrow($res);
+		return $row;
+	}	
+		
 	function getFromDB() {
 		global $db,$commentsTable;
 		$sql="SELECT * FROM $commentsTable WHERE flightID=".$this->flightID ." ORDER BY commentID ASC";
