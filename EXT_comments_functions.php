@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.8 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.9 2010/11/21 20:37:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -79,12 +79,15 @@
 		$commentID=$newCommentID;		
 		$commentDepth=$newCommentDepth;
 			
-		if ($commentData['userID'] != $userID || 1) {
+		$flight=new flight();
+		$flight->getFlightFromDB($commentData['flightID']);
+	
+		if ( $flight->userID != $userID ) {
 			global $LeoCodeBase;
 			require_once dirname(__FILE__).'/CL_user.php';
 			require_once dirname(__FILE__).'/CL_mail.php';
 			// send email notification to user
-			$userEmail=leoUser::getEmail($userID);
+			$userEmail=leoUser::getEmail($flight->userID);
 			// echo " userEmail= $userEmail";
 			
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.103 2010/11/19 13:31:57 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.104 2010/11/21 20:37:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -690,9 +690,16 @@ $mapImg0.='</ul>';
 if ( $divsToShow>1) { // use tabber 
 	$defaultTabStr1="";
 	$defaultTabStr2="";
-	if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
-	else $defaultTabStr1=" tabbertabdefault";
-
+	
+	//if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
+	//else $defaultTabStr1=" tabbertabdefault";
+	
+	
+	if ($googleMap)	$activeTabName='gmap';
+	else if ($localMap) $activeTabName='map';
+	else $activeTabName='comments';
+	
+/*
 	$mapImgxxx="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
 	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
 	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
@@ -704,7 +711,7 @@ if ( $divsToShow>1) { // use tabber
 		});
 	</script>
 	<div class='tabber' id='mapTabber'>\n";
-	
+	*/
 	
 	$mapImg="<div class='tab_container'>\n";
 
@@ -793,6 +800,7 @@ $Ltemplate->assign_vars(array(
 	
 	'ADMIN_PANEL'=>$adminPanel,
 	'MAP_IMG'=>$mapImg,
+	'activeTabName'=>$activeTabName,
 	'CHART_IMG1'=>$chart1,
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,

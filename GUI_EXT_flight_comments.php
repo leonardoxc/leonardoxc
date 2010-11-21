@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.8 2010/11/20 22:44:18 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.9 2010/11/21 20:37:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -253,6 +253,13 @@ div #submitErrorMessage  {
 
 .green { color:#00FF00; font-size:9px; }
 .red{ color:#FF0000; font-size:9px; }
+
+#loadingDiv {
+	display:none;
+	position:absolute;
+	margin-left:44%;
+	margin-top:44%;
+}
 
 </style>
 
@@ -549,6 +556,9 @@ $(document).ready(function(){
 			lastChild=$("#comment_"+lastChildID);
 		}
 		
+		// show ajax loading 
+		$("#loadingDiv").show();
+		
 		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
 			{ op:"add" , flightID: <?=$flightID?>, parentID: parent ,
 				userID:userID, userServerID:userServerID, languageCode:languageCode,
@@ -558,6 +568,7 @@ $(document).ready(function(){
 				captcha: captcha,
 				leonardoAllowAll: 1 } ,
 			function(data) {
+				$("#loadingDiv").hide();
 				if (data=='000') {
 					// problem
 					return;
@@ -669,6 +680,9 @@ $(document).ready(function(){
 
 });
 </script>
+<div id='loadingDiv' >
+<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>
+</div>
 
 <div id='submitComment' >
 <form action="#" method="post">
