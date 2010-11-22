@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.104 2010/11/21 20:37:33 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.105 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -457,6 +457,9 @@ if ($flight->linkURL) {
 
 	$gliderCat = " [ ".leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1')." ".$gliderCatList[$flight->cat]." ]";
  
+ // now loaded dynamically via ajax on request
+ 
+ /*
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
 //-------------------------------------------------------------------
@@ -500,7 +503,8 @@ if ($flight->linkURL) {
 		$linkToInfoStr2.="</ul>";
   }
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
-  
+ */
+ 
 $adminPanel="";
 if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 15.2.2008 extension
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
@@ -571,12 +575,13 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 		
 
 		$adminPanel.="<div style='display:inline'> :: <a href='javascript:toggleVisibility(\"adminPanel\")';>Admin options</a></div>";
-		
+		/*
 		if ($CONF_show_DBG_XML) {
 			$adminPanel.="<div id=xmlOutput style='display:none; text-align:left;'><hr>";
 			$adminPanel.="XML from paraglidingEarth.com<br>";
 			$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre></div>";
 		}
+		*/
 		
 		$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
 		$adminPanel.="<a href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID,'updateData'=>'1'))."'>"._UPDATE_DATA."</a> | ";
@@ -589,17 +594,16 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 }
 
 
-if ($flight->commentsNum) {
-	//	$comments=$flight->comments;
-	//$flightComments=new flightComments($flight->flightID);
-	//$flightComments->getFromDB();
-	//$comments=$flightComments->getThreadsOutput(); 
-} else {
-	//$comments="<br>";
-}
-
-$comments="<br>";
-
+$commentsHtml="<div id='tabcomments' class='tab_content'>
+	<div style='width:745px; height:600px; text-align:left;'>
+		<iframe id='comments_iframe' align='left'
+		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
+		$flight->flightID."' ".
+	 " TITLE='Comments' width='100%' height='100%' 
+		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
+	</iframe>
+	</div>
+	</div>";
 
 if ($flight->hasPhotos) {
 	require_once dirname(__FILE__)."/CL_flightPhotos.php";
@@ -647,7 +651,6 @@ if ( is_file($flight->getMapFilename() ) ) {
 }
 
 if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
-	// $flight->createGPXfile();
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  ) {
@@ -666,91 +669,42 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 }
 
-$divsToShow=0;
+
 $mapImg0.='<ul class="tabs">';
 if ($localMap) {
-	$divsToShow++;
 	$mapImg0.='<li id="tabmapli"><a href="#tabmap">'._OLC_MAP.'</a></li>';
 }
 if ($googleMap) {
-	$divsToShow++;
 	$mapImg0.='<li id="tabgmapli"><a href="#tabgmap">Google Map</a></li>';
 }	
-if (1) {
-	$divsToShow++;
-	$mapImg0.='<li id="tabcommentsli"><a href="#tabcomments">'._COMMENTS.' ('.$flight->commentsNum.')</a></li>';
-}	
+
+$mapImg0.='<li id="tabcommentsli"><a href="#tabcomments">'._COMMENTS.' ('.$flight->commentsNum.')</a></li>';
+	
 if ($imagesHtml) {
-	$divsToShow++;
 	$mapImg0.='<li id="tabphotosli"><a href="#tabphotos">'._PHOTOS.'</a></li>';
 }	
 $mapImg0.='</ul>';
 
 
-if ( $divsToShow>1) { // use tabber 
-	$defaultTabStr1="";
-	$defaultTabStr2="";
-	
-	//if ($CONF_google_maps_track_order==1) $defaultTabStr2=" tabbertabdefault"; // google maps is the default tab
-	//else $defaultTabStr1=" tabbertabdefault";
-	
-	
+	// use tabber 
 	if ($googleMap)	$activeTabName='gmap';
 	else if ($localMap) $activeTabName='map';
 	else $activeTabName='comments';
 	
-/*
-	$mapImgxxx="<script type='text/javascript' src='$moduleRelPath/js/tabber.js'></script>
-	<link rel='stylesheet' href='$themeRelPath/tabber.css' TYPE='text/css' MEDIA='screen'>
-	<link rel='stylesheet' href='$themeRelPath/tabber-print.css' TYPE='text/css' MEDIA='print'>
-	<script type='text/javascript'>
-	 // document.write('<style type=\"text/css\">.tabber{display:none;}<\/style>');
-		$(document).ready(function(){	
-		
-	  	//	$('#mapTabber').tabber.tabShow(2);
-		});
-	</script>
-	<div class='tabber' id='mapTabber'>\n";
-	*/
-	
 	$mapImg="<div class='tab_container'>\n";
 
-
 	if ($googleMap) {
-		//$mapImg.="<div class='tabbertab $defaultTabStr2' style='width:745px' title='GoogleMap'>$googleMap</div>";
-		$mapImg.="<div id='tabgmap' class='tab_content'>$googleMap</div>";
-			 
+		$mapImg.="<div id='tabgmap' class='tab_content'>$googleMap</div>";			 
 	}	
 	if ($localMap) {
-		//$mapImg.="<div class='tabbertab $defaultTabStr1'  title='"._OLC_MAP."'>$localMap</div>\n";
 		$mapImg.="<div id='tabmap' class='tab_content'>$localMap</div>";
-	}
-
-
-
-		
+	}		
 	if ($imagesHtml) {
-			//$mapImg.="<div class='tabbertab' title='"._PHOTOS."' style='height:400px; background-color:#ECF0EA;'>$imagesHtml</div>";
-			$mapImg.="<div id='tabphotos' class='tab_content'>$imagesHtml</div>";
+		$mapImg.="<div id='tabphotos' class='tab_content'>$imagesHtml</div>";
 	}		  
 
-	if ($comments) {
-			$mapImg.="<div id='tabcomments' class='tab_content'>
-			<div style='width:745px; height:600px; text-align:left;'>
-			<iframe id='comments_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
-		$flight->flightID."' ".
-		 " TITLE='Comments' width='100%' height='100%' 
-		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
-		</iframe>
-		</div>
-		</div>";
-		  
-			//<a href='".$moduleRelPath."/GUI_EXT_flight_comments.php?flightID=".$flight->flightID."'> comments </a>
-			//	  $comments
-			//	  </div>";
-	}	
-
+	// always include the comments tab
+	$mapImg.=$commentsHtml;
 
 	$mapImg.="</div>";
 
@@ -759,19 +713,7 @@ if ( $divsToShow>1) { // use tabber
 		
 	$mapImg=$mapImg0.$mapImg;
 
-} else { // only the one div that is present (we know that only one (or zero) is here)
-	$mapImg=$localMap.$googleMap.$imagesHtml;	
-}
 
- // if google maps are present put photos lower down
-if ( $googleMap  ) {
-	// $margin="imgDiv2colmargin";
-	$margin="";
-	if ($localMap)  {// we use tabs so put some more space down
-		$margin="imgDiv2colmarginTabbed";
-		$margin="marginTabbed";
-	}
-} else  $margin="";
 
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
@@ -791,7 +733,6 @@ $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['
 		leoHtml::img('icon_link.gif',0,0,'',_External_Entry,'icons1 flagIcon')."</a>";
 
 
-
 $Ltemplate->assign_vars(array(
 	'extFlightLegend'=> $extFlightLegend,
 	
@@ -805,35 +746,23 @@ $Ltemplate->assign_vars(array(
 	'CHART_IMG2'=>$chart2,
 	'CHART_IMG3'=>$chart3,
 	'CHART_IMG4'=>$chart4,		
-	// 'images'=>$imagesHtml,
-	'2col'=>($imagesHtml?"2col":""),
-	'margin'=>$margin,
-	// 'comments'=>$comments,
+
+
 	'linkURL'=>$linkURL,
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
-
-	'linkToInfoHdr1'=>$linkToInfoHdr1,
-	'linkToInfoHdr2'=>$linkToInfoHdr2,
-	'linkToInfoStr1'=>$linkToInfoHdr1.$linkToInfoStr1.$linkToInfoHdr2.$linkToInfoStr2,
-	'linkToInfoStr2'=>$linkToInfoStr2,
+	'flightID'=>$flight->flightID,
+	
 
 ));
 
 if ($flight->externalFlightType &&  ! $CONF['servers']['list'][$flight->serverID]['treat_flights_as_local']) {
    	$Ltemplate->assign_block_vars('EXT_FLIGHT', array() );
 }
- 
-//if ($comments) {
-//   	$Ltemplate->assign_block_vars('COMMENTS', array() );
-//}
-
 if ($adminPanel) {
-   	// $Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
+    $Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
 }
-
-//	$Ltemplate->assign_block_vars('COMMENTS', array() );
 
 $Ltemplate->pparse('body');
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.9 2010/11/21 20:37:33 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.10 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -50,14 +50,18 @@
 		$moderatorRights=true;
 	}
 				 	
-  ?><head>
+  ?>
+  
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html>
+	<head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   
 <link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
 
 <style type="text/css">
- 
-#commentsContainer , #commentsContainer p, #commentsContainer td, #commentsContainer div,#commentsContainer span{
+
+.commentsContainer , .commentsContainer p, .commentsContainer td, .commentsContainer div,.commentsContainer span{
 	font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;
 }
   
@@ -199,7 +203,7 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 }
 
 .commentBody {
-	padding-right:8px;
+	padding-right:8px;	
 }
 
 .commentRowTable, .commentRowTable td {
@@ -261,6 +265,21 @@ div #submitErrorMessage  {
 	margin-top:44%;
 }
 
+.youtube-player {
+ z-index:-1000;
+}
+
+.media_embed {
+	z-index:-1000;
+	display:block;
+	overflow:hidden;
+	visibility:visible;
+}
+
+.commentBody , .commentBody p, .commentBody span , .commentBody div,  .commentBody a, .commentBody td   {
+	font-size:13px;
+}
+
 </style>
 
 <link href="<?=moduleRelPath()?>/js/sexy-captcha/css/styles.css" rel="stylesheet" type="text/css" media="all" />
@@ -291,7 +310,6 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 
-
 <? 
 echo makePilotPopup();
 ?>
@@ -313,6 +331,7 @@ var originalTexts=[];
 function translateComment(commentID,srcLang){
 	// show translate options
 	var offset = $("#translate_"+commentID).offset();
+	$(".media_embed").css({visibility:'hidden'});
 	$("#translateBox").
 		css('left',offset.left-$("#translateBox").width()+ $("#translate_"+commentID).width() ).
 		css('top', offset.top +15).toggle();
@@ -332,12 +351,13 @@ http://stackoverflow.com/questions/1825792/jquery-hide-a-div-that-contains-flash
 */
 function hideSubmitWindow () {
 	$("#submitComment").css({left:-1000,top:-1000});	
-	$(".media_embed").show();	
+	$(".media_embed").css({visibility:'visible'}); 
 	submitWindowActive=false;
 }
 
 function showSubmitWindow () {
-	$(".media_embed").hide();	
+	//$(".media_embed").hide();	
+	$(".media_embed").css({visibility:'hidden'}) ; 
 	if ( editor ) {
 		editor.destroy();
 	}
@@ -392,7 +412,7 @@ $(document).ready(function(){
 		//find the target lang
 		var targetLang=$(this).attr('id').substring(4);
 		//$("#replyText").html(targetLang+"###"+translatecommentID+"$$");
-		
+		$(".media_embed").css({visibility:'visible'});
 		// translate!
 		$("#commentText"+translatecommentID).translate(translateSrcLang,targetLang);
 		
@@ -411,6 +431,12 @@ $(document).ready(function(){
 
 	$("#rssButton").click(function() {		
 		var offset = $("#rssButton").offset();
+		
+		if ( $("#rssBox").is(':visible')) {
+			$(".media_embed").css({visibility:'visible'}); 
+		} else {
+			$(".media_embed").css({visibility:'hidden'}); 
+		}	
 		$("#rssBox").
 			css('left',offset.left-$("#rssBox").width()+30).
 			css('top', offset.top +15).toggle();
@@ -420,6 +446,7 @@ $(document).ready(function(){
 	$(document).click(function(event) { // Close on external click
 		$("#rssBox").hide();
 		$("#translateBox").hide();
+		$(".media_embed").css({visibility:'visible'}); 
 	});
 		
 	var enableAtStart=<?=$commentsEnabled?>;
@@ -539,8 +566,10 @@ $(document).ready(function(){
 			});
 		} 
 		
-		var lastChild;
-		if (parent) lastChild=$("#comment_"+parent);
+		var lastChild=null;
+		if (parent!=0) {			
+			lastChild=$("#comment_"+parent);
+		}
 		
 		var lastChildID=0;
 		// we need the LAST child of this comment to append our div after that..
@@ -552,7 +581,7 @@ $(document).ready(function(){
 			}     		
 		});
 		
-		if (lastChildID) { // found childs
+		if (lastChildID!=0) { // found childs
 			lastChild=$("#comment_"+lastChildID);
 		}
 		
@@ -573,7 +602,7 @@ $(document).ready(function(){
 					// problem
 					return;
 				} 
-				if (lastChild) {
+				if (lastChild!=null) {
 
 					// first insert the new comment				  	
 					lastChild.after(data);					
@@ -653,7 +682,7 @@ $(document).ready(function(){
 		commentIdtoDelete=$(this).attr('id').substring(6);
 		parentIdtoDelete=$(this).children(':first-child').attr('id').substring(7);
 		
-		
+		$(".media_embed").css({visibility:'hidden'}); 
 		$("#deleteWindow").css({
 					left:$("#commentsContainer").offset().left,
 					top:$(this).offset().top+$(this).height()+6
@@ -662,6 +691,7 @@ $(document).ready(function(){
 
 	$(".deleteConfirm").click(function(f) {
 		$("#deleteWindow").fadeOut('fast');	
+		$(".media_embed").css({visibility:'visible'}); 
 		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
 			{ op:"delete" , flightID: <?=$flightID?>, commentID: commentIdtoDelete , parentID: parentIdtoDelete } ,
 			function(data) {
@@ -674,12 +704,17 @@ $(document).ready(function(){
 	
 	$(".deleteCancel").click(function(f) {
 		commentIdtoDelete=0;
+		$(".media_embed").css({visibility:'visible'}); 
 		$("#deleteWindow").fadeOut('slow');	
 	});
 
 
 });
 </script>
+
+</head>
+<body>
+
 <div id='loadingDiv' >
 <img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>
 </div>
@@ -756,7 +791,7 @@ if ($userID) {
 </div>
 
 
-<div id='commentsContainer' style='width:720px'>
+<div id='commentsContainer' class='commentsContainer' style='width:720px'>
 
 <table border='0' cellpadding=5 width='100%'><tr>
 <td width="220">
@@ -833,3 +868,4 @@ if ($userID) {
 ?>
 </div>
 </body>
+</html>

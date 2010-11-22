@@ -11,28 +11,11 @@ text-decoration:underline;
 .borderTop {
 	border-top:1px solid #cccccc;
 }
-
 .mapDiv{
 	padding-top:0px;
 	padding-bottom:0px;
 }
 .imgDiv{ display:none; clear:none; width:0;}
-
-.mapDiv2col {
-	clear:none; width:760px; display:block; float:left;
-	padding-top:0px;
-	padding-bottom:0px;
-}
-.imgDiv2col{
-	clear:none; width:150px; display:block; float:right;
-	margin-top:0px; padding-left:0px;
-	vertical-align:top;
-	text-align:right;
-}
-
-.marginTabbed { margin-top:32px; }
-.imgDiv2colmargin{	margin-top:605px; }
-.imgDiv2colmarginTabbed {	margin-top:665px;}
 
 .imgPanel {
 	width:auto;
@@ -52,8 +35,6 @@ text-decoration:underline;
 	padding:3px;
 	margin:3px;
 }
-
-
 
 fieldset.legendBox {
 	border-style: solid;
@@ -241,6 +222,19 @@ with (docTips)
  //IESelectBoxFix = true;
 }
 
+var takeoffInfoLoaded=false;
+
+function toggleTakeoffInfo() {
+	toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);
+	
+	if (!takeoffInfoLoaded) {
+		$("#takeoffAreaInfo").html("<div align='center'><img src='{M_PATH}/img/ajax-loader.gif'></div>");
+		$("#takeoffAreaInfo").load("{M_PATH}/GUI_EXT_flight_info.php?op=takeoffInfo&flightID={flightID}") ;
+		takeoffInfoLoaded=true;
+	}	
+	
+}
+
 jQuery(document).ready(function() {
 	//When page loads...
 	jQuery(".tab_content").hide(); //Hide all content	
@@ -285,8 +279,8 @@ jQuery(document).ready(function() {
 		<div class='title'>{#_FLYING_AREA_INFO}</div>
 		<div class='closeButton'></div>
 	</div>
-	<div class='content main_text'>
-	{linkToInfoStr1}
+	<div id="takeoffAreaInfo" class='content main_text'>
+	{linkToInfoStr1xx}
 	</div>
 </div>
 
@@ -432,12 +426,12 @@ jQuery(document).ready(function() {
             </tr>
             <tr>
               <td valign="middle" height="39"><div align="right"><a href="javascript:nop()" 
-				onClick="toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
+				onClick="toggleTakeoffInfo();return false; "><img src="{M_PATH}/img/paraglidingearth_logo.gif" border="0"><br>
               </a></div></td>
             </tr>
             <tr>
               <td valign="middle" height="40"><div  align="right"><a href="javascript:nop()" 
-				onClick="toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0" id="takeoffArea1Pos"><br>
+				onClick="toggleTakeoffInfo();return false; "><img src="{M_PATH}/img/paraglider365logo.gif" border="0" id="takeoffArea1Pos"><br>
               </a></div></td>
             </tr>
           </table>

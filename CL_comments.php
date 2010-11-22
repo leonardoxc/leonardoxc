@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.8 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.9 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -55,7 +55,7 @@ class flightComments {
 		$now=gmdate("Y-m-d H:i:s");
 
 		$query="INSERT INTO $commentsTable (flightID,parentID,userID,userServerID,guestName,guestPass,guestEmail,
-											text,languageCode,dateAdded,dateUpdated) 
+											`text`,languageCode,dateAdded,dateUpdated) 
 			VALUES (".
 			$this->flightID.",'".prep_for_DB($params['parentID'])."','".
 								 prep_for_DB($params['userID'])."','".

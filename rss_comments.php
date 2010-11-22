@@ -72,7 +72,7 @@ $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 		$RSS_str.="<item>
 <title><![CDATA[$name on flight ".$row['flightID']."]]></title>
 <guid isPermaLink=\"false\">".$row['commentID']."</guid>
-<pubDate>". $row['dateUpdated'] . " GMT</pubDate>
+<pubDate>". gmdate('D, d M Y H:i:s', strtotime($row['dateUpdated']) ) . " GMT</pubDate>
 <link>$link</link>
 <description><![CDATA[". $row['text']."]]></description>
 </item>

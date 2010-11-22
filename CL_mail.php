@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_mail.php,v 1.5 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: CL_mail.php,v 1.6 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/lib/mail/class.phpmailer.php";
 
 class LeonardoMail{
 
-function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
+function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='',$isHtml=false){
 	//echo " $Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='' <BR>";
 	global $CONF,$CONF_admin_email;
 	
@@ -24,7 +24,11 @@ function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
 	if ($fromName=='') $fromName=$CONF['site']['name'];
 	
 	if ($CONF['mail']['method']!='smtp') {  // use mail() function	
-		mail($toEmail,$Subject,$Content, "From: $fromMail");
+		$headers ="From: $fromMail";
+		if ($isHtml){
+			 $headers.="\nContent-Type: text/html; charset=UTF-8\nContent-Transfer-Encoding: 8bit\n\n";
+		}
+		mail($toEmail,$Subject,$Content, $headers);
 	} else { // use an external mail server
 		$mail = new PHPMailer(); 
 		$mail->CharSet = "UTF-8";
@@ -38,7 +42,7 @@ function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
 		$mail->Username   = $CONF['mail']['smtp']['username'];  // GMAIL username
 		$mail->Password   = $CONF['mail']['smtp']['password'];  // GMAIL password
 		$mail->SMTPDebug = 0;
-		$mail->IsHTML(false);
+		$mail->IsHTML($isHtml);
 		$mail->From     = $fromMail;
 		$mail->FromName = $fromName;
 		$mail->Subject  =  $Subject." ";
@@ -46,6 +50,7 @@ function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName=''){
 		$mail->AddAddress($toEmail, $toName);
 		
 		if (!$mail->Send())	{
+			// echo "Problem sending mail : ".$mail->ErrorInfo."<BR>";
 			return false;
 		} else{
 			return true;

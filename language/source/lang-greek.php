@@ -779,4 +779,39 @@ define('_Loading_thermals','Προετοιμασία εμφάνισης Θερμικών');
 define('_Layers','Πρόσθετοι Χάρτες');
 define('_Select_Area','Επιλογή περιοχής');
 
+
+//2010-11-20 commenting system
+define('_Leave_a_comment','Σχολιάστε');
+define('_Reply','Απάντηση');
+define('_Translate','Μετάφραση');
+define('_Translate_to','Μετάφραση σε');
+define('_Submit_Comment','Υποβολή σχολίου');
+define('_Logged_in_as','Είστε συνδεδεμένος ώς:');
+define('_Name','Όνομα');
+define('_Email','Email');
+define('_Will_not_be_displayed','(Δεν θα εμφανιστεί)');
+define('_Please_type_something','Γράψτε το σχόλιο σας');
+define('_Please_enter_your_name','Δώστε το όνομα/ ψευδόνυμο σας');
+define('_Please_give_your_email','Δώστε το email σας, δεν θα εμφανιστεί πουθενά στην σελίδα');
+define('_RSS_for_the_comments','Αυτός ειναι ο δεσμός για την ροή RSS για τα σχόλια αυτής τηε πτήσης<BR>Κάντε το Copy - Paste στον αναγνώστη RSS');
+
+// on profile
+define('_Comments_are_enabled_by_default_for_new_flights','Τα σχόλια είναι ενεργοποιημένα για τις νέες πτήσεις');
+
+define('_Comments_Enabled','Σχόλια ενεργοποιημένα');
+define('_Comments_are_enabled_for_this_flight','Τα σχόλια είναι ενεργοποιημένα για αυτή τη πτήση');
+define('_Comments_are_disabled_for_this_flight','Τα σχόλια είναι απενεργοποιημένα για αυτή τη πτήση');
+define('_ERROR_in_setting_the_comments_status','Προέκυψε ΛΑΘΟΣ στην λειτουργία');
+define('_Save_changes','Αποθήκευση αλλαγών');
+define('_Cancel','Ακύρωση');
+define('_Are_you_sure_you_want_to_delete_this_comment','Είστε σίγουρος οτι θέλετε να διαγράψετε αυτό το σχόλιο;');
+
+define('_RSS_feed_for_comments','Ροή RSS για τα σχόλια');
+define('_RSS_feed_for_flights','Ροή RSS για τις πτήσεις');
+define('_RSS_of_pilots_flights','Ροή RSS για τις πτήσεις του πιλότου');
+
+
+define('_You_have_a_new_comment','Έχεις ένα νέο σχόλιο στο %s');
+define('_New_comment_email_body','Έχεις ένα νέο σχόλιο στο %s<BR><BR><a href="%s">Κάνε Click εδώ για να διαβάσεις όλα τα σχόλια</a><hr>%s');
+
 ?>

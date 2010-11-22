@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.9 2010/11/21 20:37:33 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.10 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -44,8 +44,8 @@
 				 return;
 			}
 		}
-		
-		$commentData['flightID']=makeSane($_POST['flightID']);
+		$flightID=makeSane($_POST['flightID']);
+		$commentData['flightID']=$flightID;
 		$commentData['parentID']=makeSane($_POST['parentID'])+0;
 		$commentData['guestName']=makeSane($_POST['guestName']);
 		$commentData['guestEmail']=makeSane($_POST['guestEmail']);
@@ -98,9 +98,9 @@
 				);		
 																												
 			LeonardoMail::sendMail("[Leonardo] ".$CONF['site']['name']." - ". sprintf(_You_have_a_new_comment,$_SERVER['SERVER_NAME']),
-						utf8_decode($email_body),
+						$email_body,
 						$userEmail,
-						addslashes($userEmail) );
+						addslashes($userEmail),'','',true );
 			// echo "<pre>$email_body</pre>";		
 		}	
 			

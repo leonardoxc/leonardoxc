@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_info.php,v 1.17 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_info.php,v 1.18 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -30,10 +30,10 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
 
-	$op=makeSane($_GET['op'],0);
+	$op=makeSane($_REQUEST['op'],0);
 	if (!$op) $op='sql';
 	
-	$flightID=makeSane($_GET['flightID'],1);
+	$flightID=makeSane($_REQUEST['flightID'],1);
 	if ($flightID<=0) exit;
 		
 if ($op=='photos'){
@@ -117,7 +117,7 @@ if ($op=='photos'){
 	header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
 
 //  echo "<pre class='short_info'>";
-  echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
+    echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
 	echo "<TR><TD width=160>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
 
 	$gliderBrandImg=brands::getBrandText($flight->gliderBrandID,$flight->glider,$flight->cat);
@@ -231,5 +231,68 @@ if ($flight->commentsNum) {
 		$i++;
 	}		
 	echo "</table>";
+} else if ($op=='takeoffInfo'){
+	//$flightID=makeSane($_REQUEST['flightID'],1);
+	//$flightID+=0;
+ 	$flight=new flight();
+	if ( ! $flight->getFlightFromDB($flightID) ) {
+  		echo "<br><div align='center'>No such flight exists</div><br><BR>";
+		return;  
+  	}
+  
+	
+	 // $firstPoint=new gpsPoint($flight->FIRST_POINT,$flight->timezone);						
+	$firstPoint=new gpsPoint('',$flight->timezone);
+	$firstPoint->setLat($flight->firstLat);
+	$firstPoint->setLon($flight->firstLon);
+	$firstPoint->gpsTime=$flight->firstPointTM;	
+//-------------------------------------------------------------------
+// get from paraglidingearth.com
+//-------------------------------------------------------------------
+	$takoffsList=getExtrernalServerTakeoffs(1,$firstPoint->lat,-$firstPoint->lon,50,5);
+	
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr1="<a href='http://www.paraglidingearth.com/en-html/sites_around.php?lng=".-$firstPoint->lon."&lat=".$firstPoint->lat."&dist=20' target=_blank>";
+	    $linkToInfoHdr1.="<img src='".$moduleRelPath."/img/paraglidingearth_logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
+		
+		$linkToInfoStr1="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				$distance=$takeoffItem['distance']; 
+				if ($takeoffItem['area']!='not specified')
+					$areaStr=" - ".$takeoffItem['area'];
+				else 
+					$areaStr="";
+
+				$takeoffLink="<a href='".$takeoffItem['url']."' target=_blank>".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
+
+				$linkToInfoStr1.="<li>$takeoffLink";
+		}
+		$linkToInfoStr1.="</ul>";
+  }
+ // $xmlSites1=str_replace("<","&lt;",$xmlSites);
+//-------------------------------------------------------------------
+// get from paragliding365.com
+//-------------------------------------------------------------------
+  	$takoffsList=getExtrernalServerTakeoffs(2,$firstPoint->lat,-$firstPoint->lon,50,5);
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr2="<a href='http://www.paragliding365.com/paragliding_sites.html?longitude=".-$firstPoint->lon."&latitude=".$firstPoint->lat."&radius=50' target=_blank>";
+		$linkToInfoHdr2.="<img src='".$moduleRelPath."/img/paraglider365logo.gif' border=0> "._FLYING_AREA_INFO."</a>";
+			
+		$linkToInfoStr2="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				if ($takeoffItem['area']!='not specified')	$areaStr=" - ".$takeoffItem['area'];
+				else $areaStr="";
+				$linkToInfoStr2.="<li><a href='".$takeoffItem['url']."' target=_blank>".
+									$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].
+									") [~".formatDistance($takeoffItem['distance'],1)."]</a>";
+		}
+		$linkToInfoStr2.="</ul>";
+  }
+  
+  echo $linkToInfoHdr1.$linkToInfoStr1.$linkToInfoHdr2.$linkToInfoStr2;
+  
+
 }
+
+
 ?>

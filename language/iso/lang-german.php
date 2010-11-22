@@ -923,6 +923,41 @@ define('_YOU_HAVENT_ENTERED_GLIDER', 'Du hast vergessen den Gerätehersteller ode
 
 define('_BRAND_NOT_IN_LIST', 'Hersteller nicht gelistet');
 
+//2010-11-20 commenting system
+define('_Leave_a_comment','Leave a comment');
+define('_Reply','Reply');
+define('_Translate','Translate');
+define('_Translate_to','Translate to');
+define('_Submit_Comment','Submit Comment');
+define('_Logged_in_as','Logged in as:');
+define('_Name','Name');
+define('_Email','Email');
+define('_Will_not_be_displayed','(Will not be displayed)');
+define('_Please_type_something','Please type something');
+define('_Please_enter_your_name','Please enter your name / nickname');
+define('_Please_give_your_email','Please give your email, it will not be displayed at any times');
+define('_RSS_for_the_comments','This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader');
+
+// on profile
+define('_Comments_are_enabled_by_default_for_new_flights','Comments are enabled by default for new flights');
+
+define('_Comments_Enabled','Comments Enabled');
+define('_Comments_are_enabled_for_this_flight','Comments are enabled for this flight');
+define('_Comments_are_disabled_for_this_flight','Comments are disabled for this flight');
+define('_ERROR_in_setting_the_comments_status','ERROR in setting the comments status');
+define('_Save_changes','Save changes');
+define('_Cancel','Cancel');
+define('_Are_you_sure_you_want_to_delete_this_comment','Are you sure you want to delete this comment?');
+
+define('_RSS_feed_for_comments','RSS feed for comments');
+define('_RSS_feed_for_flights','RSS feed for flights');
+define('_RSS_of_pilots_flights','RSS of pilot\'s flights');
+
+
+define('_You_have_a_new_comment','You have a new comment on %s');
+define('_New_comment_email_body','You have a new comment on %s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s');
+
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
@@ -1080,31 +1115,5 @@ define("_Load_Thermals","Load Thermals");
 define("_Loading_thermals","Loading Thermals"); 
 define("_Layers","Layers"); 
 define("_Select_Area","Select Area"); 
-define("_Leave_a_comment","Leave a comment"); 
-define("_Reply","Reply"); 
-define("_Translate","Translate"); 
-define("_Translate_to","Translate to"); 
-define("_Submit_Comment","Submit Comment"); 
-define("_Logged_in_as","Logged in as:"); 
-define("_Name","Name"); 
-define("_Email","Email"); 
-define("_Will_not_be_displayed","(Will not be displayed)"); 
-define("_Please_type_something","Please type something"); 
-define("_Please_enter_your_name","Please enter your name / nickname"); 
-define("_Please_give_your_email","Please give your email, it will not be displayed at any times"); 
-define("_RSS_for_the_comments","This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader"); 
-define("_Comments_are_enabled_by_default_for_new_flights","Comments are enabled by default for new flights"); 
-define("_Comments_Enabled","Comments Enabled"); 
-define("_Comments_are_enabled_for_this_flight","Comments are enabled for this flight"); 
-define("_Comments_are_disabled_for_this_flight","Comments are disabled for this flight"); 
-define("_ERROR_in_setting_the_comments_status","ERROR in setting the comments status"); 
-define("_Save_changes","Save changes"); 
-define("_Cancel","Cancel"); 
-define("_Are_you_sure_you_want_to_delete_this_comment","Are you sure you want to delete this comment?"); 
-define("_RSS_feed_for_comments","RSS feed for comments"); 
-define("_RSS_feed_for_flights","RSS feed for flights"); 
-define("_RSS_of_pilots_flights","RSS of pilot\'s flights"); 
-define("_You_have_a_new_comment","You have a new comment on %s"); 
-define("_New_comment_email_body","You have a new comment on $s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s"); 
 
 ?>
