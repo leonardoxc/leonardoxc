@@ -7,11 +7,13 @@
 	switch($requestVars['action']) {
 		case 'verify':
 			if (substr($requestVars['captcha'], 10) == $_SESSION['captchaCodes'][$_SESSION['captchaAnswer']]) {
-				echo json_encode(array('status' => 'success'));
+				//echo json_encode(array('status' => 'success'));
+				echo '{"status":"success"}';
 			} else {
 				$_SESSION['captchaCodes'] = NULL;
 				$_SESSION['captchaAnswer'] = NULL;
-				echo json_encode(array('status' => 'error'));
+				//echo json_encode(array('status' => 'error'));
+				echo '{"status":"error"}';
 			}
 			
 			break;
