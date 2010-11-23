@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.10 2010/11/22 14:28:48 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.11 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,7 +38,9 @@
 		// echo "#".			 $_POST['captcha']; print_r($_SESSION);echo "<hr>";
  		// echo "000";return;
  		$commentData['userID']=makeSane($_POST['userID']);
-		if (!$commentData['userID']) {
+		if ($commentData['userID']<0 ) $commentData['userID']=0;
+		
+		if (!$commentData['userID'] ) {
 			if (substr($_POST['captcha'], 10) != $_SESSION['captchaCodes'][$_SESSION['captchaAnswer']]) {
 				 echo "000";
 				 return;

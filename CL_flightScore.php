@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightScore.php,v 1.20 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_flightScore.php,v 1.21 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -56,7 +56,7 @@ class flightScore {
 			$igcFilename=tempnam($path."/tmpFiles","IGC.");  //urlencode($basename)
 			@unlink($igcFilename);
 			
-			$lines=file($file);
+			$lines=file(rawurldecode($file));
 	
 			$cont="";
 			foreach($lines as $line) {
@@ -291,7 +291,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 
 		$tpNum=1;
 
-		$lines=file($file);
+		$lines=file(rawurldecode($file));
 		$out='';
 		$outLines=array();
 		$bRecs=0;

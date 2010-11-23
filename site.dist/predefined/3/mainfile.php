@@ -51,9 +51,12 @@ foreach ($_GET as $secvalue) {
 }
 
 foreach ($_POST as $secvalue) {
-    if ((eregi("<[^>]*script*\"?[^>]*>", $secvalue)) ||        (eregi("<[^>]*style*\"?[^>]*>", $secvalue))) {
-        Header("Location: index.php");
-        die();
+    if ((eregi("<[^>]*[^w]script*\"?[^>]*>", $secvalue)) ||        (eregi("<[^>]*style*\"?[^>]*>", $secvalue))) {
+		if (!$_POST['leonardoAllowAll']) {
+			//echo "BAD ~!!!!!";
+			Header("Location: index.php");
+			die();
+		}
     }
 }
 

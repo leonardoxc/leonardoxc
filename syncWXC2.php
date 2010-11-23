@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.9 2010/11/23 11:41:08 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.10 2010/11/23 15:05:42 manolis Exp $                                                                 
 // patched by AR Version 2010/04/06 12:00:00, implemented commentInternal, extend invalid/disabled/non-public flight handling
 // patched by PW,AR Version 2010/07/08  13:18:00 adding "approved" handling at admin airspaceCheckMsg in case some airspaces are individual ok
 //************************************************************************
@@ -282,7 +282,11 @@ foreach ($xRow as $row) {
 		  'GliderCat','Glider','TakeoffTime','LandingTime','TakeoffName','TakeoffCountry','CommentInternal','FlightUrl');
 		foreach($row as $key => $value){
         	if(in_array($key,$WxcFields)){  
-            	$FlighsXML[$item_ok].= '      '."<".$key.">".$value."</".$key.">"."\n";
+				$valueSafe=$value;
+				if (in_array($key,array('PilotFirstName','PilotLastName','Glider','TakeoffName','CommentInternal') ) ) {
+					$valueSafe="<![CDATA[$value]]>";
+				}
+            	$FlighsXML[$item_ok].= "      <$key>$valueSafe</$key>\n";
       		}
       	}
       	$item_ok++;

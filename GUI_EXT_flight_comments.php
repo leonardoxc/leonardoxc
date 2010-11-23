@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.10 2010/11/22 14:28:48 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.11 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -537,7 +537,7 @@ $(document).ready(function(){
 			return;
 		}
 		
-		if ( parseInt(userID)==0)  { // require name + email
+		if ( parseInt(userID)<=0)  { // require name + email
 			if (! guestName.match(/\S/) ) {
 				flashError("guestName","<?=_Please_enter_your_name?>");
 				return;
@@ -726,7 +726,7 @@ $(document).ready(function(){
 $pilotNames=array();
 
 
-if ($userID) { 
+if ($userID>0) { 
 
 			$imgBigRel=getPilotPhotoRelFilename($userServerID,$userID);	
 			$imgBig=getPilotPhotoFilename($userServerID,$userID);	

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.59 2010/10/18 14:05:21 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.60 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -187,15 +187,19 @@ echo "</ul><br><hr>";
 			return;
 		}
 		
-		$query="SELECT * from $flightsTable WHERE comments <>''";
+		$query="SELECT ID,serverID,userID,userServerID,comments,dateUpdated  from $flightsTable WHERE comments <>''";
 		$res= $db->sql_query($query);
 
 		$num=0;
 		
 		if($res == 0){
-			echo "Probem in query $query<BR>";
+			echo "Problem in query $query<BR>";
 			return;
 		}
+		
+		
+		$commentsDefaultLang=$lang2isoGoogle[$nativeLanguage];
+		if (!$commentsDefaultLang) $commentsDefaultLang='en';
 		
 		$fids='';
 		while ($row = mysql_fetch_assoc($res)) { 
@@ -206,7 +210,7 @@ echo "</ul><br><hr>";
 			
 			$query1="INSERT INTO $commentsTable 
 				(parentID,flightID,userID,userServerID,dateAdded,dateUpdated,active,title,text,languageCode ) 
-				VALUES( 0, '".$row['ID']."', '".$row['userID']."', '".$row['userServerID']."', '$now', '$now', 1, '', '".$row['comments']."', 'en') " ;
+				VALUES( 0, '".$row['ID']."', '".$row['userID']."', '".$row['userServerID']."', '$now', '$now', 1, '', '".$row['comments']."', '$commentsDefaultLang') " ;
 			$res1= $db->sql_query($query1);
 			if(!$res1){
 				echo "Problem in query:$query1<BR>";

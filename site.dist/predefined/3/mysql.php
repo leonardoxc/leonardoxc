@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.4 2010/03/31 13:40:40 manolis Exp $
+ *   $Id: mysql.php,v 1.5 2010/11/23 15:05:42 manolis Exp $
  *
  ***************************************************************************/
 

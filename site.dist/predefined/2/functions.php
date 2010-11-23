@@ -12,7 +12,7 @@ function leonardo_check_password($password,$hash) {
 
 /**
 *
-* @version Version 0.1 / $Id: functions.php,v 1.2 2010/04/06 21:21:23 manolis Exp $
+* @version Version 0.1 / $Id: functions.php,v 1.3 2010/11/23 15:05:42 manolis Exp $
 *
 * Portable PHP password hashing framework.
 *

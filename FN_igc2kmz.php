@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.15 2010/03/22 14:27:45 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.16 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -32,7 +32,20 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	
 	
 	$path=realpath($CONF['googleEarth']['igc2kmz']['path']);
-	$engine=constant('SQL_LAYER')."://".$db->user.':'.$db->password.'@'.$db->server.'/'.$db->dbname;
+	if (! defined('SQL_LAYER') )  define('SQL_LAYER','mysql');
+	
+	
+	
+	global $dbhost,$dbname,$dbuser,$dbpasswd;
+	
+	$dbpasswdCon=$dbpasswd;
+	if (!$dbpasswdCon) $dbpasswdCon=$db->password;
+	
+	$dbhostCon=$dbhost;
+	if (!$dbhostCon) $dbhostCon=$db->server;
+	if (!$dbhostCon) $dbhostCon='localhost';
+
+	$engine=SQL_LAYER."://".$db->user.':'.$dbpasswdCon.'@'.$dbhostCon.'/'.$db->dbname;
 	
 	$cmd="$python $path/bin/leonardo2kmz.py";
 	$cmd.=" --engine '$engine'";
@@ -43,9 +56,10 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
-	$cmd.=" --igc-path=data/flights/intermediate/%YEAR%/%PILOTID% ";
+	$cmd.=" --igc-path=".$CONF['paths']['intermediate']." "; // data/flights/intermediate/%YEAR%/%PILOTID%
 	$cmd.=" $flightID";
 	
+		
 	DEBUG('igc2kmz',1,"igc2kmz: $cmd <BR>");
 
 
@@ -56,6 +70,8 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 		echo "timezone: $timezone<br>";
 		echo "cmd: $cmd<BR>";
 		print_r($res);
+		print_r($db);
+		echo "$dbhost ,	$dbname ,$dbuser ,$dbpasswd @";
 		exit;
 	}	
 	return $version;

@@ -45,6 +45,7 @@ $CONF['userdb']['users_table']='jos_users';
 $CONF['userdb']['user_id_field']='id';
 $CONF['userdb']['username_field']='username';
 $CONF['userdb']['password_field']='password';
+$CONF['userdb']['email_field']='user_email';
 
 $CONF['userdb']['use_leonardo_real_names']=1;
 

@@ -29,6 +29,7 @@ function moduleRelPath($forUtilityFiles=0){
 //$CONF['userdb']['password_username_field']='username';
 //$CONF['userdb']['password_password_field']='password';
 
+$CONF['userdb']['email_field']='user_email';
 $CONF['userdb']['users_table']='phpbb_users';
 
 $CONF['userdb']['user_id_field']='user_id';

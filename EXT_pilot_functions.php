@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.15 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.16 2010/11/23 15:05:42 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -63,7 +63,7 @@
 			if ($row['countryCode']) $flag=	strtolower($row['countryCode']);
 			else $flag='unknown';
 			
-			$flagIcon="<img src='".moduleRelPath()."/img/flags/$flag.gif' border=0> ";
+			$flagIcon="<img src='".moduleRelPath()."/img/fl/$flag.gif' border=0> ";
 			//$flagIcon="<img class='fl fl.sprite-$tmpLang' src='".moduleRelPath()."/img/space.gif' border=0> ";
 			
 			if ($row['Sex']=='F') $sexIcon="<img src='".moduleRelPath()."/img/icon_female.gif' border=0> ";
