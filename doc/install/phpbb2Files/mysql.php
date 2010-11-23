@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: mysql.php,v 1.1 2008/12/01 11:11:02 manolis Exp $
+ *   $Id: mysql.php,v 1.2 2010/11/23 11:41:08 manolis Exp $
  *
  ***************************************************************************/
 
@@ -21,6 +21,11 @@
 
 if(!defined("SQL_LAYER"))
 {
+
+// uncommnet this to activate mirror reads for leonardo tables;
+// define("READ_DB_P19","1") ;
+// how to add 2nd slave
+// http://www.redips.net/mysql/add-new-slave/
 
 define("SQL_LAYER","mysql");
 if (! function_exists(getmicrotime) ){
@@ -41,6 +46,17 @@ class sql_db
 	var $rowset = array();
 	var $num_queries = 0;
 
+	//var $db_connect_id_read;
+		
+	var $db_slaves=array();
+	var $db_slaves_config=array(
+		0=>array('hostname'=>'hostname1','dbname'=>'dbname1','user'=>'user','pass'=>'pass'=>false),
+		// only for leonardo queries
+		1=>array('hostname'=>'hostname2','dbname'=>'dbname2','user'=>'user','pass'=>'pass','useutf'=>true),		
+	);
+	var $db_slaves_num;
+
+				
 	//
 	// Constructor
 	//
@@ -73,13 +89,46 @@ class sql_db
 					$this->db_connect_id = $dbselect;
 				}
 			}
-			$this->sql_query("SET SESSION sql_mode='ALLOW_INVALID_DATES' ");
-			return $this->db_connect_id;
+			if ( !defined("READ_DB_P19") ) return $this->db_connect_id;
 		}
 		else
 		{
 			return false;
 		}
+		
+		if ( defined("READ_DB_P19") ) {
+			foreach($this->db_slaves_config as $slave_num=>$slave_config) {
+			
+				$this->db_slaves[$slave_num]=array();
+				
+				if($this->persistency) {
+					$this->db_slaves[$slave_num]['db_connect_id']=
+								 @mysql_pconnect($slave_config['hostname'], $slave_config['user'], $slave_config['pass']);
+				} else {
+					$this->db_slaves[$slave_num]['db_connect_id']=
+								 @mysql_connect($slave_config['hostname'], $slave_config['user'], $slave_config['pass']);
+					//$this->db_connect_id_read = @mysql_connect('mysql2.s2', 'p19mysql', 'man1821');
+				}
+				
+				if($this->db_slaves[$slave_num]['db_connect_id']) {
+					if ( $slave_config['useutf'] ) {
+						@mysql_query("SET NAMES 'utf8'",  $this->db_slaves[$slave_num]['db_connect_id'] );
+					}
+					
+					$dbselect_read = @mysql_select_db($slave_config['dbname']);
+					if(!$dbselect_read)	{
+						echo "Cannot connect to sql server $slave_num<HR><HR>";
+						@mysql_close( $this->db_slaves[$slave_num]['db_connect_id'] );
+						$this->db_slaves[$slave_num]['db_connect_id'] = false;
+					}
+					
+				}
+			} // foreach
+			
+			$this->db_slaves_num=count($this->db_slaves);
+		}
+				
+		return $this->db_connect_id;
 	}
 
 	//
@@ -106,9 +155,41 @@ class sql_db
 	// Base query method
 	//
 	function sql_query($query = "", $transaction = FALSE)
-	{		
+	{
+
 		global $DBGlvl;				
 		if ($DBGlvl) { $start=getmicrotime(); }
+
+		$q1=strtolower(trim($query));
+		
+		// is is SELECT 
+		if ( defined("READ_DB_P19") && 
+				substr($q1,0,7) == 'select ' // && strpos($q1,"from leonardo_")
+			 )  
+		{		
+			global $sqlSlaveQueriesNum;
+			$sqlSlaveQueriesNum++;
+			
+			// load balance reads between available slaves			
+			// $slave_num_selected = $sqlSlaveQueriesNum % $this->db_slaves_num;
+			
+			$slave_num_selected =0; // use the first one by default
+			if ( strpos($q1,"from leonardo_") ) {
+				$slave_num_selected =1;
+			}
+			
+			$selQuery=1;
+			// $cid=$this->db_connect_id_read;
+			$cid=$this->db_slaves[$slave_num_selected]['db_connect_id'];
+			if (!$cid) {
+				echo "<HR>Problem selecting db server $slave_num_selected<HR>";
+			}
+			// file_put_contents(dirname(__FILE__).'/../read_queries.txt',$query);
+		} else {
+			$selQuery=0;
+			$cid=$this->db_connect_id;
+		}
+		
 		
 		// Remove any pre-existing queries
 		unset($this->query_result);
@@ -116,9 +197,7 @@ class sql_db
 		{
 			$this->num_queries++;
 
-			// conv from utf to latin1
-			// $query=iconv('utf-8','iso-8859-1',$query);
-			$this->query_result = @mysql_query($query, $this->db_connect_id);
+			$this->query_result = @mysql_query($query, $cid);
 		}
 		if($this->query_result)
 		{
@@ -219,8 +298,8 @@ class sql_db
 	}
 	function sql_fetchrow($query_id = 0)
 	{
-		global $DBGlvl;			
-		if ($DBGlvl) { $start=getmicrotime(); }
+		//global $DBGlvl;			
+		//if ($DBGlvl) { $start=getmicrotime(); }
 
 		if(!$query_id)
 		{
@@ -229,7 +308,7 @@ class sql_db
 		if($query_id)
 		{
 			$this->row[$query_id] = @mysql_fetch_array($query_id);
-			
+
 			if ($DBGlvl ) {
 				global $sqlFetchTime,$sqlFetchNum;
 				$end=getmicrotime();
@@ -255,9 +334,6 @@ class sql_db
 			unset($this->row[$query_id]);
 			while($this->rowset[$query_id] = @mysql_fetch_array($query_id))
 			{
-				// conv from  latin1 (internal db format) to utf8
-				// $this->rowset[$query_id]=iconv('iso-8859-1','utf-8',$this->rowset[$query_id]);
-
 				$result[] = $this->rowset[$query_id];
 			}
 			return $result;
@@ -292,7 +368,7 @@ class sql_db
 				{
 					if($this->rowset[$query_id])
 					{
-						$result = $this->rowset[$query_id][$field];
+						$result = $this->rowset[$query_id][0][$field];
 					}
 					else if($this->row[$query_id])
 					{

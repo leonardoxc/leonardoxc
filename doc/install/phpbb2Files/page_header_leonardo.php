@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.10 2010/01/02 22:54:56 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.11 2010/11/23 11:41:08 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -165,7 +165,7 @@ $Ltemplate->assign_vars(array(
 	'TOP_CUSTOM_LOGO_DISPLAY'=>$topCustomLogo?'block':'none',
 	
 	'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
-	'U_INDEX' => append_sid('index.'.$phpEx),
+	'U_INDEX' => '/'.append_sid('index.'.$phpEx),
 	
 	'T_HEAD_STYLESHEET' => $tplPath.'/style.css',
 	'T_BODY_BACKGROUND' => $theme['body_background'],

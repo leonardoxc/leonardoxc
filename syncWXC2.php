@@ -8,8 +8,9 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.8 2010/04/06 13:55:53 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.9 2010/11/23 11:41:08 manolis Exp $                                                                 
 // patched by AR Version 2010/04/06 12:00:00, implemented commentInternal, extend invalid/disabled/non-public flight handling
+// patched by PW,AR Version 2010/07/08  13:18:00 adding "approved" handling at admin airspaceCheckMsg in case some airspaces are individual ok
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
 /************** Mon Jan 14 18:54:15 CET 2008, by mk *********************/
@@ -166,6 +167,7 @@ $tableName.original_ID,
 $tableName.checkedBy,
 $tableName.private,
 $tableName.airspaceCheckFinal,
+$tableName.airspaceCheckMsg,
 DATE_FORMAT($tableName.DATE,'%Y') as Year
  FROM $tableName,$pilotsTable,$waypointsTable     
  WHERE 
@@ -239,7 +241,8 @@ foreach ($xRow as $row) {
 		if($row['private'] > 0) {
 			$row['NacStatus'] = "d";
 		}
-		if($row['airspaceCheckFinal'] == "-1") {
+		//in case of detected airspace violation, pilot might still have approval for that airspace... so we allow sync when word "approved" is set at comment first
+		if(($row['airspaceCheckFinal'] == "-1") && (strtolower(substr($row['airspaceCheckMsg'],0,8)!="approved")) ) {
 			$row['NacStatus'] = "d";
 		}
 		

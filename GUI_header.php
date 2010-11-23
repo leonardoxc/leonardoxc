@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_header.php,v 1.17 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_header.php,v 1.18 2010/11/23 11:41:08 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -137,7 +137,7 @@ $Ltemplate->assign_vars(array(
 	'TOP_CUSTOM_LOGO_DISPLAY'=>$topCustomLogo?'block':'none',
 	
 	'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
-	'U_INDEX' => append_sid('index.'.$phpEx),
+	'U_INDEX' => '/'.append_sid('index.'.$phpEx),
 	
 	'T_HEAD_STYLESHEET' => $tplPath.'/style.css',
 	'T_BODY_BACKGROUND' => $theme['body_background'],

@@ -65,6 +65,16 @@ foreach ($_GET as $secvalue) {
 }
 
 foreach ($_POST as $secvalue) {
+    if ((eregi("<[^>]*[^w]script*\"?[^>]*>", $secvalue)) ||        (eregi("<[^>]*style*\"?[^>]*>", $secvalue))) {
+		if (!$_POST['leonardoAllowAll']) {
+			//echo "BAD ~!!!!!";
+			Header("Location: index.php");
+			die();
+		}
+    }
+}
+/*
+foreach ($_POST as $secvalue) {
     if ( eregi("<[^>]*script*\"?[^>]*>", $secvalue) ||   
 			( eregi("<[^>]*style*\"?[^>]*>", $secvalue) && ! eregi("<[^>]*style=\"color:*\"?[^>]*>", $secvalue)  )
 		) {
@@ -72,7 +82,7 @@ foreach ($_POST as $secvalue) {
         die();
     }
 }
-
+*/
 
 if (eregi("mainfile.php",$PHP_SELF)) {
     Header("Location: index.php");
