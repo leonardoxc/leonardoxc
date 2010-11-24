@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.16 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.17 2010/11/24 14:23:56 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -36,8 +36,7 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	
 	
 	
-	global $dbhost,$dbname,$dbuser,$dbpasswd;
-	
+	global $phpbb3AbsPath, $dbhost,$dbname,$dbuser,$dbpasswd;
 	$dbpasswdCon=$dbpasswd;
 	if (!$dbpasswdCon) $dbpasswdCon=$db->password;
 	
@@ -67,11 +66,11 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	
 	
 	if (0) {
-		echo "timezone: $timezone<br>";
+		//echo "timezone: $timezone<br>";
 		echo "cmd: $cmd<BR>";
 		print_r($res);
-		print_r($db);
-		echo "$dbhost ,	$dbname ,$dbuser ,$dbpasswd @";
+		//print_r($db);
+		//echo "$dbhost ,	$dbname ,$dbuser ,$dbpasswd @";
 		exit;
 	}	
 	return $version;
