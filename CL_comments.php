@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_comments.php,v 1.9 2010/11/22 14:28:48 manolis Exp $                                                                 
+// $Id: CL_comments.php,v 1.10 2010/11/25 12:36:16 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -140,9 +140,6 @@ class flightComments {
 
 	function deleteAllComments($updateFlightsTable=1) {
 		global $db,$commentsTable,$flightsTable;
-
-		if (!$this->gotValues) $this->getFromDB();
-					
 		
 		if ($updateFlightsTable) {
 			$res= $db->sql_query("UPDATE $flightsTable SET commentsNum=0 WHERE ID=".$this->flightID );

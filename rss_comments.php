@@ -15,13 +15,15 @@
 	if (!defined("IN_RSS") ) exit;
 
 		$flightID = $_GET['flightID']+0;
-		if ($flightID) $flightWhereClause=" WHERE flightID=$flightID ";
+		if ($flightID) $flightWhereClause=" AND $commentsTable.flightID=$flightID ";
 		else $flightWhereClause='';
 		
-		$query="SELECT * 
-		 		FROM $commentsTable 
+		$query="SELECT $commentsTable.* 
+		 		FROM $commentsTable , $flightsTable
+				WHERE $commentsTable.flightID = $flightsTable.ID
+						AND $flightsTable.private=0
 				$flightWhereClause
-				ORDER BY dateAdded DESC LIMIT $count";
+				ORDER BY $commentsTable.dateAdded DESC LIMIT $count";
 		// echo $query;
 		$res= $db->sql_query($query);
 		if ( $_GET['debug'] ) exit($query);

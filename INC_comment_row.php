@@ -69,7 +69,9 @@ $str.="<div class='actionBox' id='p_$commentID'>";
 $str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText&nbsp;&nbsp;&nbsp;</div>";
 
 $str.="<div id='parent$commentID' class='commentActions reply'>"._Reply."</div>";
-if ($moderatorRights || $commentData['userID']==$userID) {
+
+if ($moderatorRights || $flight->belongsToUser($userID)) { 
+
 	$str.="<div id='edit$commentID'  class='commentActionsIcons edit'><img src='$moduleRelPath/img/change_icon.png'></div>";
 	$str.="<div id='delete$commentID' class='commentActionsIcons delete'><img 
 			id='deletep".$commentData['parentID']."' src='$moduleRelPath/img/delete_icon.png'></div>";

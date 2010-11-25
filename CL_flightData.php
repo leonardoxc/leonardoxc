@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.191 2010/11/20 22:44:18 manolis Exp $
+// $Id: CL_flightData.php,v 1.192 2010/11/25 12:36:17 manolis Exp $
 //
 //************************************************************************
 
@@ -3448,7 +3448,7 @@ $kml_file_contents=
 		$this->filename=$row["filename"];
 		$this->userID=$row["userID"];
 		$this->comments=$row["comments"];
-		$this->commentsNum=$row["commentsNum"];
+		$this->commentsNum=$row["commentsNum"]+0;
 		$this->commentsEnabled=$row["commentsEnabled"]+0;
 
 		$this->glider=$row["glider"];
@@ -3751,7 +3751,13 @@ $kml_file_contents=
 			$flightPhotos=new flightPhotos($this->flightID);
 			$flightPhotos->deleteAllPhotos(0);
 		}
-
+		
+		if ($this->commentsNum) {
+			require_once dirname(__FILE__).'/CL_comments.php';
+			$comments=new flightComments($this->flightID);
+			$comments->deleteAllComments(0); // dont update the flights table
+		}
+		
 		// Now also hide/unhide same flights
 		$this->hideSameFlights();
 
