@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.11 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.12 2010/11/25 21:48:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -316,7 +316,7 @@ echo makePilotPopup();
 
 <script language="javascript">
 
-var parent=0;
+var parent_id=0;
 var submitWindowActive=false;
 var commentIdtoDelete=0;
 var	parentIdtoDelete=0;
@@ -353,6 +353,7 @@ function hideSubmitWindow () {
 	$("#submitComment").css({left:-1000,top:-1000});	
 	$(".media_embed").css({visibility:'visible'}); 
 	submitWindowActive=false;
+	//resizeIframe();
 }
 
 function showSubmitWindow () {
@@ -363,7 +364,9 @@ function showSubmitWindow () {
 	}
 		
 	$("#submitComment").fadeIn('slow');
+	// $("#submitComment").show();
 	submitWindowActive=true;
+	//resizeIframe();
 }
 
 
@@ -398,7 +401,26 @@ function flashError(focusAfter,message) {
 	
 }
 
+function resizeIframe() {
+	var theFrame = $("#comments_iframe", parent.document.body);	
+	theFrame.height( $(document.body).height() + 30);
+	
+	return;
+	$("#replyText").append("#");
+	$("#replyText").append(document.body.offsetHeight);
+	$("#replyText").append(",");
+	$("#replyText").append($(document.body).height() );
+	$("#replyText").append(",");
+	$("#replyText").append($(document).height());
+	$("#replyText").append(",");
+	$("#replyText").append($(window).height());
+	
+}
+
 $(document).ready(function(){
+
+
+	resizeIframe();
 
 	$(".translateLink").click(function() {			
 	
@@ -505,7 +527,7 @@ $(document).ready(function(){
 			});	
 			showSubmitWindow();
 			
-			parent=$(this).attr('id').substring(6);			
+			parent_id=$(this).attr('id').substring(6);			
 			// $("#submitComment").show();
 		}
 	});
@@ -521,7 +543,7 @@ $(document).ready(function(){
 		var commentText=oEditor.getData();
 		//$("#replyText").html( commentText );
 		
-		// var parent=$(this).attr('id'); 
+		// var parent_id=$(this).attr('id'); 
 		//
 		var guestName=$("#guestName").val();
 		var guestEmail=$("#guestEmail").val();
@@ -555,8 +577,8 @@ $(document).ready(function(){
 		
 		// find the depth of this comment and add 1
 		var newDepth=0;
-		if (parent!=0) {
-			var classList =$("#comment_"+parent).attr('class').split(/\s+/);
+		if (parent_id!=0) {
+			var classList =$("#comment_"+parent_id).attr('class').split(/\s+/);
 			$.each( classList, function(index, item){
 				if (item.substring(0,5) == 'depth') {
 				   newDepth=parseInt(item.substring(5))+1;
@@ -567,14 +589,14 @@ $(document).ready(function(){
 		} 
 		
 		var lastChild=null;
-		if (parent!=0) {			
-			lastChild=$("#comment_"+parent);
+		if (parent_id!=0) {			
+			lastChild=$("#comment_"+parent_id);
 		}
 		
 		var lastChildID=0;
 		// we need the LAST child of this comment to append our div after that..
 		$('.parentFinder').each(function(index) {			
-			if ( $(this).attr('id') == ("pid_"+parent) ) {
+			if ( $(this).attr('id') == ("pid_"+parent_id) ) {
 				// parent is cid_$commentID
 				lastChildID=$(this).parent().attr('id').substring(4);
 				//$('#replyText').append("found child with id "+lastChildID);
@@ -589,7 +611,7 @@ $(document).ready(function(){
 		$("#loadingDiv").show();
 		
 		$.post('<?=moduleRelPath()?>/EXT_comments_functions.php', 
-			{ op:"add" , flightID: <?=$flightID?>, parentID: parent ,
+			{ op:"add" , flightID: <?=$flightID?>, parentID: parent_id ,
 				userID:userID, userServerID:userServerID, languageCode:languageCode,
 				guestName: guestName , guestEmail: guestEmail,
 				depth: newDepth,
@@ -622,6 +644,8 @@ $(document).ready(function(){
 				} else { // no comments yet
 					$("#replyText").after(data);
 				} 
+				
+				// resizeIframe();
 			  // $('#replyText').html(data);
 			}
 		);

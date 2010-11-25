@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.122 2010/11/20 22:44:18 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.123 2010/11/25 21:48:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -719,12 +719,20 @@ function removeClubFlight(clubID,flightID) {
 			echo "<span><a class='betterTip2' id='tpa1_$flightID' href='javascript:nop();'>".
 				leoHtml::img("icon_camera.gif",0,0,'',$photosNum.' '._PHOTOS,'icons1 photoIcon2')."</a></span>";
 
-		if ($row["commentsNum"]>0) $hasComments=1;
-		else $hasComments=0;
+		if ($row["commentsNum"]>0) {
+			$hasComments=1;
+			if ($row["commentsNum"]>1) {
+				$commentsImgName="icon_comments_many.gif";
+			} else {
+				$commentsImgName="icon_comments.gif";
+			}	
+		} else {
+			$hasComments=0;
+		}	
 	
 		if ($hasComments ) 
 				echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'>".
-						leoHtml::img("icon_comments.gif",0,0,'',$photosNum.' '._PHOTOS,'icons1 commentDiv')."</a>";
+						leoHtml::img($commentsImgName,0,0,'',$row["commentsNum"].' '._COMMENTS,'icons1 commentDiv','',0)."</a>";
 		
 
 		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
