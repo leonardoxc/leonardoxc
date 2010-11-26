@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.123 2010/11/25 21:48:50 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.124 2010/11/26 08:33:32 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -732,7 +732,7 @@ function removeClubFlight(clubID,flightID) {
 	
 		if ($hasComments ) 
 				echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'>".
-						leoHtml::img($commentsImgName,0,0,'',$row["commentsNum"].' '._COMMENTS,'icons1 commentDiv','',0)."</a>";
+						leoHtml::img($commentsImgName,0,0,'',$row["commentsNum"].' '._COMMENTS,'icons1 commentDiv','',1)."</a>";
 		
 
 		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
