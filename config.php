@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.159 2010/11/23 11:41:08 manolis Exp $                                                                 
+// $Id: config.php,v 1.160 2010/11/29 12:53:06 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -745,6 +745,9 @@ $CONF['log']['logActionsType']=array(
 16 => "Rename TrackLog",
 32 => "Create Map",
 );
+	
+$CONF['comments']['guestComments']=true;
+
 	
 // we over ride the config values with our custom ones here 
 @include_once dirname(__FILE__)."/site/config_custom.php";

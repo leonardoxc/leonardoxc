@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.12 2010/11/25 21:48:49 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.13 2010/11/29 12:53:06 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -819,7 +819,11 @@ if ($userID>0) {
 
 <table border='0' cellpadding=5 width='100%'><tr>
 <td width="220">
-	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'><?=_Leave_a_comment?></div></td>
+<? if ($CONF['comments']['guestComments'] ||  $userID>0 ) { ?>
+	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'><?=_Leave_a_comment?></div>
+<? } ?>    
+</td>
+    
 <td align="left">
 <? if ($moderatorRights) { ?>
   <label><?=_Comments_Enabled?>

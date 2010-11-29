@@ -68,7 +68,9 @@ $translateText="<span><a id='translate_".$commentData['commentID']."' href='java
 $str.="<div class='actionBox' id='p_$commentID'>";
 $str.="<div class='commentInfo'>".$userInfo." @ ".$commentData['dateUpdated']." GMT $flagImg $translateText&nbsp;&nbsp;&nbsp;</div>";
 
-$str.="<div id='parent$commentID' class='commentActions reply'>"._Reply."</div>";
+if ($CONF['comments']['guestComments'] || $userID>0 ) {
+	$str.="<div id='parent$commentID' class='commentActions reply'>"._Reply."</div>";
+}
 
 if ($moderatorRights || $flight->belongsToUser($userID)) { 
 
