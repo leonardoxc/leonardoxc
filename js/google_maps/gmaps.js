@@ -105,6 +105,7 @@
 		
 		var speedStr=flight.speed[tm];
 		var altStr=flight.elev[tm];
+		var altVStr=flight.elevV[tm];
 		var varioStr=flight.vario[tm];
 		
 		if (metricSystem==2) {
@@ -119,6 +120,9 @@
 		altStr=Math.round(altStr);
 		altStr=altStr+altUnits;
 		
+		altVStr=Math.round(altVStr);
+		altVStr=altVStr+altUnits;
+		
 		if (metricSystem==2) {
 			varioStr*=196.8;
 			varioStr=Math.round(varioStr);
@@ -131,6 +135,7 @@
 		//  speed.value=speedStr;
 		MWJ_changeContents('speed',speedStr);
 		MWJ_changeContents('alt',altStr);
+		if (userAccessPriv) MWJ_changeContents('altV',altVStr);
 		MWJ_changeContents('vario',varioStr);	
 	}
 

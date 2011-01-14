@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.53 2010/08/23 09:21:51 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.54 2011/01/14 14:39:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -161,6 +161,9 @@
 				<TR><td><div align="left"><?=_Time_Short?>:</div></td><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
 				<TR><td><div align="left"><?=_Speed?>:</div></td><TD><span id='speed' class='infoString'>-</span></TD></TR>
 				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
+                <? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+                <TR><td><div align="left"><?=_Altitude_Short?> (Baro):</div></td><TD><span id='altV' class='infoString'>-</span></TD></TR>
+                <? } ?>
 				<TR><td><div align="left"><?=_Vario_Short?>:</div></td><TD><span id='vario' class='infoString'>-</span></TD></TR>
 		</table>
 		</fieldset>
@@ -249,7 +252,7 @@ var marginLeft=37;
 var marginRight=5;
 
 
-var flight={ "time":[],"elev":[],"elevGnd":[],"lat":[],"lon":[],"speed":[],"vario":[],"distance":[] , "labels":[] };
+var flight={ "time":[],"elev":[], "elevV":[], "elevGnd":[],"lat":[],"lon":[],"speed":[],"vario":[],"distance":[] , "labels":[] };
 	
 var CurrTime=new Array();
 CurrTime[1] = 0;
@@ -263,6 +266,10 @@ var lon=0;
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
 
 <script type="text/javascript">
+	var userAccessPriv=false;
+	<? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+	userAccessPriv=true;
+	<? } ?>
 	
 	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
 
@@ -296,6 +303,7 @@ TODO move to API v3 !!!!
 				if (flightArray.time[i]>=StartTime && flightArray.time[i]<= StartTime + Duration) {
 					flight.time[j]=sec2Time(flightArray.time[i]);
 					flight.elev[j]=flightArray.elev[i];
+					flight.elevV[j]=flightArray.elevV[i];
 					flight.elevGnd[j]=flightArray.elevGnd[i];
 					flight.lat[j]=flightArray.lat[i];
 					flight.lon[j]=flightArray.lon[i];
@@ -366,6 +374,9 @@ TODO move to API v3 !!!!
 		c.setShowLegend(false);
 		c.setLabelPrecision(0);
 		c.setHorizontalLabels(flight.labels);
+		<? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+		c.add('Altitude Baro',  '#6EC9E0', flight.elevV);
+		<? } ?>
 		c.add('Altitude',     '#FF3333', flight.elev);
 		c.add('Ground Elev',  '#C0AF9C', flight.elevGnd,CHART_AREA);
 		c.draw();

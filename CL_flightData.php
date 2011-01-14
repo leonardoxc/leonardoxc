@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.192 2010/11/25 12:36:17 manolis Exp $
+// $Id: CL_flightData.php,v 1.193 2011/01/14 14:39:11 manolis Exp $
 //
 //************************************************************************
 
@@ -1779,10 +1779,16 @@ $kml_file_contents=
 
 			$jsTrack['time'][$i]	=$time;
 			$jsTrack['elev'][$i]	=$alt;
+			$jsTrack['elevV'][$i] 	= $altV;
 			$jsTrack['lat'][$i] 	=sprintf('%0.6f',$lat);
 			$jsTrack['lon'][$i]		= sprintf('%0.6f',-$lon);
 			$jsTrack['speed'][$i] 	= sprintf('%.2f',$speed);
 			$jsTrack['vario'][$i] 	= sprintf('%.2f',$vario);
+			
+			
+			
+
+
 
 			if ( $CONF['maps']['3d'] ) {
 				require_once dirname(__FILE__).'/CL_hgt.php';
@@ -2001,6 +2007,7 @@ $kml_file_contents=
 					$goodPoints[$i]['lat']=$thisPoint->lat;
 
 					$goodPoints[$i]['alt']=$thisPoint->getAlt();
+					$goodPoints[$i]['altV']=$thisPoint->getAlt(true); // prefer vario Alt
 
 					if ($i>0) {
 						$tmp = $lastPoint->calcDistance($thisPoint);
@@ -2079,6 +2086,7 @@ $kml_file_contents=
 				$normPoints[$norm_array_pos]['speed']=$goodPoints[$org_array_pos]['speed'];
 				$normPoints[$norm_array_pos]['vario']=$goodPoints[$org_array_pos]['vario'];
 				$normPoints[$norm_array_pos]['alt']=$goodPoints[$org_array_pos]['alt'];
+				$normPoints[$norm_array_pos]['altV']=$goodPoints[$org_array_pos]['altV'];
 				$normPoints[$norm_array_pos]['dis']=$goodPoints[$org_array_pos]['dis'];
 				// if ($normPoints[$norm_array_pos]['alt']==0) $normPoints[$norm_array_pos]['alt']="-";
 
@@ -2092,6 +2100,7 @@ $kml_file_contents=
 					$normPoints[$norm_array_pos]['speed']=$normPoints[$norm_array_pos-1]['speed'];
 					$normPoints[$norm_array_pos]['vario']=$normPoints[$norm_array_pos-1]['vario'];
 					$normPoints[$norm_array_pos]['alt']=$normPoints[$norm_array_pos-1]['alt'];
+					$normPoints[$norm_array_pos]['altV']=$normPoints[$norm_array_pos-1]['altV'];
 					$normPoints[$norm_array_pos]['dis']=$normPoints[$norm_array_pos-1]['dis'];
 				}	else {
 					$normPoints[$norm_array_pos]['lon']=$goodPoints[0]['lon'];
@@ -2099,6 +2108,7 @@ $kml_file_contents=
 					$normPoints[$norm_array_pos]['speed']=$goodPoints[0]['speed'];
 					$normPoints[$norm_array_pos]['vario']=$goodPoints[0]['vario'];
 					$normPoints[$norm_array_pos]['alt']=$goodPoints[0]['alt'];
+					$normPoints[$norm_array_pos]['altV']=$goodPoints[0]['altV'];
 					$normPoints[$norm_array_pos]['dis']=$goodPoints[0]['dis'];
 				}
 	/*
@@ -2119,7 +2129,7 @@ $kml_file_contents=
 		// $jsOutput="";
 		foreach ($normPoints as $point) {
 			$outputBuffer.='$time='.$point['time'].'; $lat='.$point['lat'].'; $lon='.$point['lon'].
-			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
+			'; $dis='.$point['dis'].'; $alt='.$point['alt'].'; $altV='.$point['altV'].'; $speed='.$point['speed'].'; $vario='.$point['vario'].";\n";
 			$this_tm=$point['time']-$min_time;
 
 //$jsOutput.=sprintf("lt[$this_tm]=%.6f;ln[$this_tm]=%.6f;d[$this_tm]=%d;a[$this_tm]=%d;s[$this_tm]=%0.1f;v[$this_tm]=%.2f;\n"
