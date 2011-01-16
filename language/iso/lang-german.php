@@ -67,7 +67,7 @@ define("_OPEN_DISTANCE","Luftlinie");
 define("_MAX_DISTANCE","Maximale Distanz");
 define("_OLC_SCORE_TYPE","XC Punkte Typ");
 define("_OLC_DISTANCE","XC Distanz");
-define("_OLC_SCORING","DHV-XC (International) Punkte");
+define("_OLC_SCORING","DHV-XC Punkte");
 define("_MAX_SPEED","Maximale Geschwindigkeit");
 define("_MAX_VARIO","Maximales Steigen");
 define("_MEAN_SPEED","Durchschnittsgeschw.(Luft)");
@@ -126,7 +126,7 @@ define("_FILE_DOESNT_END_IN_IGC","Die angegebene Datei hat keine .igc Endung");
 define("_THIS_ISNT_A_VALID_IGC_FILE","Keine gültige .igc Datei");
 define("_THERE_IS_SAME_DATE_FLIGHT","Eine Datei mit dem selben Datum und Uhrzeit existiert bereits");
 define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Wenn Du diese Datei ersetzen möchtest, sollte Du zuerst");
-define("_OUTSIDE_SUBMIT_WINDOW","14 Tage Einreichfrist bereits abgelaufen.");
+define("_OUTSIDE_SUBMIT_WINDOW","Einreichfrist bereits abgelaufen. (14 Tage bzw. 48 Std nach Saisonsende.)");
 define("_DELETE_THE_OLD_ONE","die Alte löschen");
 define("_THERE_IS_SAME_FILENAME_FLIGHT","Eine Datei mit dem selben Nahmen exisitiert bereits");
 define("_CHANGE_THE_FILENAME","Sollte dieser Flug unterschiedlich sein, dann ändere bitte den Dateinamen und versuche es noch einmal");
@@ -136,7 +136,7 @@ define("_WILL_BE_ACTIVATED_SOON","(er wird in 1-2 Minuten aktiviert)");
 
 // add_from_zip
 define("_SUBMIT_MULTIPLE_FLIGHTS","Mehrere Flüge einreichen");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Nur Flüge ab 10.10.2006 werden in der Wertung angezeigt.<br>Flug Einreichfrist: 14 Tage.<br>Es werden nur IGC Datein in den ZIP verarbeitet");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Flug Einreichfrist: 14 Tage.<br>Es werden nur IGC Datein in den ZIP verarbeitet");
 define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Übertrage die ZIP Datei<br>die die Flüge beinhaltet");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Zum Einreichen der Flüge hier klicken");
 define("_DHV_DISCLAIMER","Mit der Einreichung des Fluges bestätige ich, dass ich alle luftrechtlichen Bestimmungen eingehalten habe. Falls Freigaben für bestimmte Lufträume erforderlich waren, habe ich diese bei der zuständigen Stelle eingeholt.");
@@ -163,11 +163,13 @@ define("_PROJECT_RULES","Ausschreibung 2007");
 define("_MENU_MAIN_MENU","Piloten");
 define("_MENU_DATE","Datum auswählen");
 define("_MENU_COUNTRY","Land auswählen");
-define("_MENU_XCLEAGUE","Wertung");
+define("_MENU_XCLEAGUE","Wertungslisten");
+define("_MENU_XCLEAGUE2","Top 6 (Weltweit)");
+
 define("_MENU_ADMIN","Admin");
 
 define("_MENU_COMPETITION_LEAGUE","Wertung - Alle Kategorien");
-define("_MENU_OLC","DHV-XC (International)");
+define("_MENU_OLC","DHV-XC Punkte");
 define("_MENU_OPEN_DISTANCE","Offene Distanz");
 define("_MENU_DURATION","Dauer");
 define("_MENU_ALL_FLIGHTS","Alle Flüge anzeigen");
@@ -195,14 +197,14 @@ define("_ALL_TIMES","ALLE ZEITEN");
 define("_TOTAL_DISTANCE","Gesamt Distanz");
 define("_TOTAL_DURATION","Gesamt Flugdauer");
 define("_BEST_OPEN_DISTANCE","Beste Distanz");
-define("_TOTAL_OLC_DISTANCE","Gesamt DHV-XC (International) Distanz");
+define("_TOTAL_OLC_DISTANCE","Gesamt DHV-XC Distanz");
 //already defined define("_TOTAL_OLC_SCORE","Gesamt DHV-XC (International) Punkte");
 //already defined define("_BEST_OLC_SCORE","Best DHV-XC (International) score");
 //already defined define("_MEAN_DURATION","Durchschnittliche Flugdauer");
 define("_MEAN_DISTANCE","Durchschnittliche Distanz");
 define("_PILOT_STATISTICS_SORT_BY","Piloten - sortiert nach");
-define("_CATEGORY_FLIGHT_NUMBER","Kategorie 'FastJoe' - Anzahl der Flüge");
-define("_CATEGORY_TOTAL_DURATION","Kategorie 'DURACELL' - Gesamt Flugdauer aller Flüge");
+define("_CATEGORY_FLIGHT_NUMBER","Kategorie Anzahl der Flüge");
+define("_CATEGORY_TOTAL_DURATION","Kategorie Gesamt Flugdauer aller Flüge");
 define("_CATEGORY_OPEN_DISTANCE","Kategorie 'Offene Distanz'");
 define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Keine Piloten vorhanden !");
 
@@ -224,7 +226,7 @@ define("_NO","NEIN");
 
 define("_LEAGUE_RESULTS","Rank");
 define("_N_BEST_FLIGHTS"," beste Flüge");
-define("_OLC","DHV-XC (International)");
+define("_OLC","DHV-XC ");
 define("_OLC_TOTAL_SCORE","DHV-XC Gesamtpunkte");
 define("_KILOMETERS","Kilometer");
 define("_TOTAL_ALTITUDE_GAIN","Gesamt Höhengewinn");
@@ -263,8 +265,8 @@ define("_COUNTRY","Land*");
 define("_SELECT_COUNTRY","Land auswählen");
 define("_OTHER_FILTERS","Andere Filter");
 define("_LINEAR_DISTANCE_SHOULD_BE","Die Luftlinie sollte ... sein");
-define("_OLC_DISTANCE_SHOULD_BE","Die DHV-XC (International) Distanz sollte ... sein");
-define("_OLC_SCORE_SHOULD_BE","Die DHV-XC (International) Punktzahl sollte ... sein");
+define("_OLC_DISTANCE_SHOULD_BE","Die DHV-XC Distanz sollte ... sein");
+define("_OLC_SCORE_SHOULD_BE","Die DHV-XC Punktzahl sollte ... sein");
 define("_DURATION_SHOULD_BE","Die Flugdauer sollte ... sein");
 define("_ACTIVATE_CHANGE_FILTER","Filter Aktivieren / Ändern");
 define("_DEACTIVATE_FILTER","Filter deaktivieren");
@@ -315,7 +317,7 @@ define("_THE_OLC_REFERENCE_NUMBER_IS","Die FAI Referenz Nummer ist");
 define("_THERE_WAS_A_PROBLEM_ON_OLC_SUBMISSION","Es ist ein Problem bei der Übertragung zum FAI augetreten");
 define("_LOOK_BELOW_FOR_THE_CAUSE_OF_THE_PROBLEM","Bitte schaue nach unten für die mögliche Ursache des Problems");
 define("_FLIGHT_SUCCESFULLY_REMOVED_FROM_OLC","Der Flug wurde erfolgreich vom FAI gelöscht");
-define("_FLIGHT_NOT_SCORED","Der Flug hat keine DHV-XC (International) Punktzahl und kann daher nicht eingereicht werden");
+define("_FLIGHT_NOT_SCORED","Der Flug hat keine DHV-XC Punkte und kann daher nicht eingereicht werden");
 define("_TOO_LATE","Der Abgabetermin ist überschritten, daher kann der Flug nicht eingereicht werden");
 define("_CANNOT_BE_SUBMITTED","Der Abgabetermin für diesen Flug ist überschritten");
 define("_NO_PILOT_OLC_DATA","<p><strong>Keine FAI Daten für diesen Piloten</strong><br>
@@ -491,7 +493,7 @@ define("_First_flight_logged","Erster aufgezeichneter Flug");
 define("_Last_flight_logged","Letzter aufgezeichneter Flug");
 define("_Flying_period_covered","Zeitraum");
 define("_Total_Distance","Gesamt Distanz");
-define("_Total_OLC_Score","Gesamt DHV-XC (International) Punktzahl");
+define("_Total_OLC_Score","Gesamt DHV-XC Punktzahl");
 define("_Total_Hours_Flown","Gesamt Flugstunden");
 define("_Total_num_of_flights","Gesamt Anzahl Flüge ");
 
@@ -500,7 +502,7 @@ define("_Best_Open_Distance","Beste Offene Distanz");
 define("_Best_FAI_Triangle","Bestes FAI Dreieck");
 define("_Best_Free_Triangle","Bestes Freies Dreieck");
 define("_Longest_Flight","Längster Flug");
-define("_Best_OLC_score","Beste DHV-XC (International) Punktzahl");
+define("_Best_OLC_score","Beste DHV-XC Punktzahl");
 
 define("_Absolute_Height_Record","Absoluter Höhen Rekord");
 define("_Altitute_gain_Record","Höhengewinn Rekord");
@@ -554,7 +556,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Fluggebietsrekord<br>(offene Distanz)");
 define("_GLIDER_TYPE","Fluggerätetyp");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Gleitschirm',2=>'Flex wing FAI1',4=>'Starflügler FAI5',8=>'Drachen');
+	$gliderCatList=array(1=>'Gleitschirm',2=>'Drachen FAI1',4=>'Starrflügler FAI5',8=>'Starrflügler FAI2');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -565,7 +567,7 @@ setGliderCats();
 //--------------------------------------------
 function setClassList() {
 	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
-	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
+	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Turmdrachen",2=>"Turmloser Drachen");
 	global $CONF;
 	foreach($CONF['gliderClasses'] as $i=>$gClass) {
 		foreach($gClass['classes'] as $j=>$n) {
@@ -829,14 +831,14 @@ define('_SELECT_NACCLUB', '[nacname]-Verein wählen');
 
 // pilot profile
 define('_FirstOlcYear', 'Erste Saison einer Online-XC-Teilnahme Teilnahme');
-define('_FirstOlcYearComment', 'Die Saison der ersten Teilnahme an irgendeinem Online-XC/OLC ist gemeint. <br/>Dieses Feld ist relevant für die Newcomer-Wertung.');
+define('_FirstOlcYearComment', 'Relevant für die Newcomer-Wertung.');
 
 //end 2007/05/23
 
 // new on 2007/03/08
-define("_Select_Club","Select Club");
-define("_Close_window","Close window");
-define("_EnterID","Enter ID");
+define("_Select_Club","Club auswählen");
+define("_Close_window","Fenster schliessen");
+define("_EnterID","ID eingeben");
 define("_Club","Club");
 define("_Sponsor","Sponsor");
 
@@ -872,7 +874,7 @@ define('_MEAN_SPEED1','Durchschnitts');
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english'
 //--------------------------------------------------------
-define("_NOTE_TAKEOFF_NAME","Please note the takeoff name location and country");
+define("_NOTE_TAKEOFF_NAME","Startplatz Name und Land eingeben");
 define("_Select_Brand","Hersteller wählen");
 define("_All_Brands","Alle Hersteller");
 define("_DAY","DAY");
@@ -904,9 +906,12 @@ define("_Info","Info");
 define("_Control","Control");
 define("_Zoom_to_flight","Zoom auf den Flug");
 define("_Follow_Glider","Dem Gerät folgen");
-define("_Show_Task","Task<br>zeigen");
+define("_Show_Task","Task zeigen");
 define("_Show_Airspace","Lufträume anzeigen");
 define("_Show_Optimization_details","Optimierungsdetails zeigen");
+define("_Thermals","Thermals");
+define("_Load_Thermals","Thermik anzeigen");
+
 
 //New on 2008/05/17
 define('_MemberID_Missing', 'Die Mitgliedsnummer fehlt');
@@ -924,196 +929,212 @@ define('_YOU_HAVENT_ENTERED_GLIDER', 'Du hast vergessen den Gerätehersteller ode
 define('_BRAND_NOT_IN_LIST', 'Hersteller nicht gelistet');
 
 //2010-11-20 commenting system
-define('_Leave_a_comment','Leave a comment');
-define('_Reply','Reply');
-define('_Translate','Translate');
-define('_Translate_to','Translate to');
-define('_Submit_Comment','Submit Comment');
-define('_Logged_in_as','Logged in as:');
+define('_Leave_a_comment','Kommentar schreiben');
+define('_Reply','Antworten');
+define('_Translate','Übersetzen');
+define('_Translate_to','Übersetzen in');
+define('_Submit_Comment','Kommentar einfügen');
+define('_Logged_in_as','Eingelogged als:');
 define('_Name','Name');
 define('_Email','Email');
-define('_Will_not_be_displayed','(Will not be displayed)');
-define('_Please_type_something','Please type something');
-define('_Please_enter_your_name','Please enter your name / nickname');
-define('_Please_give_your_email','Please give your email, it will not be displayed at any times');
-define('_RSS_for_the_comments','This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader');
+define('_Will_not_be_displayed','(wird nicht angezeigt)');
+define('_Please_type_something','schreib bitte etwas');
+define('_Please_enter_your_name','Name hinfügen');
+define('_Please_give_your_email','Email Adresse hinfügen - es wird nie angezeigt');
+define('_RSS_for_the_comments','RSS Feed für Kommentare zu diesen Flug<BR>Kopieren / Einfügen in einen RSS Reader');
 
 // on profile
-define('_Comments_are_enabled_by_default_for_new_flights','Comments are enabled by default for new flights');
+define('_Comments_are_enabled_by_default_for_new_flights','Kommentare sind standardmäßig aktiviert für neue Flüge');
 
-define('_Comments_Enabled','Comments Enabled');
-define('_Comments_are_enabled_for_this_flight','Comments are enabled for this flight');
-define('_Comments_are_disabled_for_this_flight','Comments are disabled for this flight');
-define('_ERROR_in_setting_the_comments_status','ERROR in setting the comments status');
-define('_Save_changes','Save changes');
-define('_Cancel','Cancel');
-define('_Are_you_sure_you_want_to_delete_this_comment','Are you sure you want to delete this comment?');
+define('_Comments_Enabled','Kommentare aktiviert');
+define('_Comments_are_enabled_for_this_flight','Kommentare aktiviert für diesen Flug');
+define('_Comments_are_disabled_for_this_flight','Kommentare deaktiviert für diesen Flug');
+define('_ERROR_in_setting_the_comments_status','Kommentar Status FEHLER');
+define('_Save_changes','Änderungen speichern');
+define('_Cancel','Abbrechen');
+define('_Are_you_sure_you_want_to_delete_this_comment','Soll diese Kommentar wirklich gelöscht werden?');
 
-define('_RSS_feed_for_comments','RSS feed for comments');
-define('_RSS_feed_for_flights','RSS feed for flights');
-define('_RSS_of_pilots_flights','RSS of pilot\'s flights');
+define('_RSS_feed_for_comments','RSS Feed für Kommentare');
+define('_RSS_feed_for_flights','RSS Feed für Flüge');
+define('_RSS_of_pilots_flights','RSS Feed für Flüge dieser Pilot');
 
 
-define('_You_have_a_new_comment','You have a new comment on %s');
-define('_New_comment_email_body','You have a new comment on %s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s');
+define('_You_have_a_new_comment','Neue Kommentare hier: %s');
+define('_New_comment_email_body','Neue Kommentare hier: %s<BR><BR><a href="%s">Hier klicken um alle Kommentare zu lesen</a><hr>%s');
 
 
 //--------------------------------------------------------
 //--------------------------------------------------------
-// Missing defines , autoreplaced values from 'english' 
+// Added 13.05.2009 -- mod. P. Wild 14.05.09
 //--------------------------------------------------------
-define("_Thermals","Thermals"); 
-define("_MENU_SEARCH_PILOTS","Search"); 
-define("_Email_new_password","<p align='justify'>The server have sent a email to the pilot with the new password and activation key</p> <p align='justify'>Please, check your email box and follow the procedures in the email body</p>"); 
-define("_informed_user_not_found","This user was not found in the database"); 
-define("_impossible_to_gen_new_pass","<p align='justify'>We are sorry to inform you that is not possible to generate a new password for you at this time, there is already a request that will expire in <b>%s</b>. Only after the expiration time you can do a new request.</p><p align='justify'>If you do not have access to the email contact the server admin</p>"); 
-define("_Password_subject_confirm","Confirmation email (new password)"); 
-define("_request_key_not_found","the request key that you have provided was not found!"); 
-define("_request_key_invalid","request key that you have provided is invalid!"); 
-define("_Email_allready_yours","The provided email is allready yours, nothing to do"); 
-define("_Email_allready_have_request","There is already an request for changing to this email, nothing to do"); 
-define("_Email_used_by_other","This email is used by another pilot, nothing to do"); 
-define("_Email_used_by_other_request","This email is used by another pilot in a pending request"); 
-define("_Email_canot_change_quickly","You can not change your email right now, wait for the expiring time: %s"); 
-define("_Email_sent_with_confirm","A confirmation email is send, please check you mailbox so that you can confirm the changing of email"); 
-define("_Email_subject_confirm","Confirmation email (new email)"); 
-define("_Email_AndConfDontMatch","Email and confirmation are different."); 
-define("_ChangingEmailForm"," Changing Email Form"); 
-define("_Email_current","Current Email"); 
-define("_New_email","New Email Address"); 
-define("_New_email_confirm","Confirm New Email"); 
-define("_MENU_CHANGE_PASSWORD","Change my password"); 
-define("_MENU_CHANGE_EMAIL","Change my email"); 
-define("_New_Password","New Password"); 
-define("_ChangePasswordForm","Change Password Form"); 
-define("_lost_password","Lost Password Form"); 
-define("_PASSWORD_RECOVERY_TOOL","Password Recovery Form"); 
-define("_PASSWORD_RECOVERY_TOOL_MESSAGE","The Server will search in his entire database for the inserted text in the textbox, if and when the server find the user, email, or civlid, A mail will be sended for the registered email address with a new password and activation link.<br><br> note: only after activation of the new password through activation link inside mail body, the new password will be valid.<br><br>"); 
-define("_username_civlid_email","Please fill with: CIVLID or User Name or Email Address"); 
-define("_Recover_my_pass","Recover my Password"); 
-define("_You_are_not_login","<BR><BR><center><br>You are not logged in. <br><br>Please Login<BR><BR></center>"); 
-define("_Requirements","Requeriments"); 
-define("_Mandatory_CIVLID","Is mandatory tho have an valid <b>CIVLID</b>"); 
-define("_Mandatory_valid_EMAIL","Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
-define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
-define("_Email_asking_conf","We will send a confirmation e-mail to the provided email address"); 
-define("_Email_time_conf","You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
-define("_After_conf_time"," After that time, your pre-registration will be <b>removed</b> from our database"); 
-define("_Only_after_time","<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
-define("_Disable_Anti_Spam","<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
-define("_If_you_agree","If you agree with this requirements please go further."); 
-define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
-define("_NICK_NAME","Nick Name"); 
-define("_LOCAL_PWD","Local Password"); 
-define("_LOCAL_PWD_2","Repeat Local Password"); 
-define("_CONFIRM","Confirm"); 
-define("_REQUIRED_FIELD","Mandatory Fields"); 
-define("_Registration_Form","Registration Form at %s (Leonardo)"); 
-define("_MANDATORY_NAME","Is Mandatory to provide your name"); 
-define("_MANDATORY_FAI_NATION","Is Mandatory to provide your FAI NATION"); 
-define("_MANDATORY_GENDER","Please provide your Sex"); 
-define("_MANDATORY_BIRTH_DATE_INVALID","Birth Date Invalid"); 
-define("_MANDATORY_CIVL_ID","Please provide your CIVLID"); 
-define("_Attention_mandatory_to_have_civlid","ATENTION!! For now one is Mandatory to have CIVLID in the %s database"); 
-define("_Email_confirm_success","Your registration was successfully confirmed!"); 
-define("_Success_login_civl_or_user","Success, now you can login using your CIVLID as username, or continue with your old username"); 
-define("_Server_did_not_found_registration","Registration not found, please copy and paste in your browser address field the link provided in the email that was send to you, or maybe your registration time has expired"); 
-define("_Pilot_already_registered","Pilot already registered with CIVLID %s and name %s"); 
-define("_User_already_registered","User already registered with this email or name"); 
-define("_Pilot_civlid_email_pre_registration","Hi %s This Civl ID and email is already used in a pre-registration"); 
-define("_Pilot_have_pre_registration"," You already have a pre registration, but have not answered our mail, we resend the confirmation email for you, you have 3 hours after now to answer the email, if not you will be removed from pre registration. please read the email and follow the procedures described inside, thank you"); 
-define("_Pre_registration_founded","We already have a pre-registration with this civlID and Email,wait for finishing the period of 3 hours until then this registration will be removed, in no hipotisis confirm the email that was send  because will be generated an double registration, and your old flights will not be transfered for the new user"); 
-define("_Civlid_already_in_use","This CIVLID is used for another pilot, we can not have double CIVLID!"); 
-define("_Pilot_email_used_in_reg_dif_civlid","Hi %s This Email is used in another register with different CIVLID"); 
-define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in another register with different EMAIL"); 
-define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
-define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
-define("_Server_send_conf_email","The server have sended to the %s an email asking for confirmation, you have 3 hours from now to confirm your registration by clicking or copying and pasting the link that are in the email body in your browser addres"); 
+define("_MENU_SEARCH_PILOTS","Suche nach");
+define("_Email_new_password","<p align='justify'>Eine Email mit dem neuen Kennwort und dem Link zu seiner Aktivierung wurde versandt.</p> <p align='justify'>Wenn die Email nicht in Kürze in deinem Posteingang eintrifft, überprüfe bitte auch deinen Spam Ordner.</p>");
+define("_informed_user_not_found", "Dieser Benutzer wurde nicht gefunden.");
+define("_informed_user_found_but_duplicate", "Es wurden mehrere Benutzer gefunden die diesem Kriterium entsprechen. Bitte versuche eine andere Möglichkeit der Identifikation (Email, Benutzername, CIVL-ID).");
+define("_impossible_to_gen_new_pass","<p align='justify'>Eine Registrierungsversuch läuft bereits. Ein neuer Versuch kann erst nach Ablauf der Aktivierungsperiode, d.h. nach <b>%s</b> gemacht werden.</p>");
+define("_Password_subject_confirm","Bestaetigungsmail (neues Kennwort)");
+define("_request_key_not_found","Aktivierungsschlussel nicht gefunden!");
+define("_request_key_invalid","Aktivierungsschlussel ungültig!");
+define("_Email_allready_yours","Error: Diese Emailadresse ist Deine.");
+define("_Email_allready_have_request","Error: Eine Änderungsanfrage läuft bereits.");
+define("_Email_used_by_other","Error: Diese Emailadresse wird bereits verwendet.");
+define("_Email_used_by_other_request","Error: Diese Emailadresse wird bereits in eine Anfrage verwendet.");
+define("_Email_canot_change_quickly","Eine Emailadress Änderung kann erst nach ablauf der Aktivierungsperiod stattfinden: %s");
+define("_Email_sent_with_confirm","Eine Bestätigungsmail wurde versandt.");
+define("_Email_subject_confirm","Bestätigungsmail (neue Emailadresse)");
+define("_Email_AndConfDontMatch","Emailadresse and Bestätigungsadresse sind unterschiedlich.");
+define("_ChangingEmailForm"," Emailadressänderung.");
+define("_Email_current","Aktuelle Emailadresse");
+define("_New_email","Neue Emailadresse");
+define("_New_email_confirm","Neue Emailadresse bestätigen");
+define("_MENU_CHANGE_PASSWORD","Kennwortänderung");
+define("_MENU_CHANGE_EMAIL","Emailadressänderung");
+define("_New_Password","Neue Kennwort");
+define("_ChangePasswordForm","Kennwortänderung");
+define("_lost_password","Kennwort vergessen");
+define("_PASSWORD_RECOVERY_TOOL","Kennwortwiederherstellung");
+define("_PASSWORD_RECOVERY_TOOL_MESSAGE","Sollte die Suche in Benutzername, Emailadressen oder CIVL-ID erfolgreich sein, wird eine neue Aktivierungsmail mit neuen Kennwort versandt.<br><br> Die neue Kennwort wird erst nach erneuten Aktivierung gültig.<br><br>");
+define("_username_civlid_email","CIVLID, Benutzername oder Emailadress");
+define("_Recover_my_pass","Kennwortwiederherstellung");
+define("_You_are_not_login","<BR><BR><center><br>Nicht angemeldet. <br><br>Bitte einloggen<BR><BR></center>");
+define("_Requirements","Voraussetzungen");
+define("_Mandatory_CIVLID","Eine gültige <b>CIVLID</b>.");
+define("_Mandatory_valid_EMAIL","Eine eigene gültige <b>Emailadresse</b> wird für die Aktivierung benötigt");
+define("_Email_periodic","Diese Emailadresse wird gelegentlich kontrolliert.");
+define("_Email_asking_conf","Eine Bestätigungsmail mit Aktivierungslink wurde an die angegebene E-Mail-Adresse versandt");
+define("_Email_time_conf","Der Aktivierungslink hat eine Gültigkeitsdauer von drei Stunden");
+define("_After_conf_time","Sollte der Anmeldeversuch nicht innerhalb der Gültigkeitsdauer mit dem Aktivierungslink bestätigt werden, werden die Daten vom Server entfernt");
+define("_Only_after_time","<b>Erneute Anmeldeversuche können nur nach dem Entfernen abgebrochener Versuche vorgenommen werden</b>");
+define("_Disable_Anti_Spam","<b>Achtung!</b> Spamfilter Einstellungen kontrollieren für <b>%s</b>");
+define("_If_you_agree","Mit der Anmeldung erklärt sich der Benutzer einverstanden mit den o.g. Richtlinien.");
+define("_Search_civl_by_name","%sNamenssuche in der CIVL Datenbank%s. Ein neues Fenster wird geöffnet: Suche mit mindestens 3 Buchstaben Vor- oder Nachname.");
+define("_Register_civl_as_new_pilot"," %sNeue CIVL Registration%s");
+define("_NICK_NAME","Nick Name");
+define("_LOCAL_PWD","Kennwort");
+define("_LOCAL_PWD_2","Kennwort bestätigen");
+define("_CONFIRM","bestätigen");
+define("_REQUIRED_FIELD","Pflichtfelder");
+define("_Registration_Form","Anmeldung: %s ");
+define("_MANDATORY_NAME","Pflichtfeld: NAME");
+define("_MANDATORY_FAI_NATION","Pflichtfeld: NATIONALITÄT");
+define("_MANDATORY_GENDER","Pflichtfeld: GESCHLECHT");
+define("_MANDATORY_BIRTH_DATE_INVALID","Das Geburtsdatum ist ungültig");
+define("_MANDATORY_CIVL_ID","Bitte die CIVL-ID angeben");
+define("_Attention_mandatory_to_have_civlid","ACHTUNG!! Pflichtfeld: CIVLID ");
+define("_Email_confirm_success","Deine Anmeldung wurde bestätigt!");
+define("_Success_login_civl_or_user","Erfolg, bitte mit CIVLID oder Benutzername einloggen");
+define("_Server_did_not_found_registration","Anmeldeversuch nicht gefunden, bitte erneut den Aktivierungslink benutzen");
+define("_Pilot_already_registered","Pilot bereits angemeldet mit CIVLID %s und Name %s");
+define("_User_already_registered","Benutzer bereits mit diesen Name oder Emailadresse angemeldet");
+define("_Pilot_civlid_email_pre_registration"," %s Eine Anmeldeversuch läuft bereits mit diesen Emailadresse oder CIVLID");
+define("_Pilot_have_pre_registration","Eine Anmeldeversuch läuft bereits aber die Aktivierungslink wurde nicht benutzt. Eine neue Bestätigungsmail mit Aktivierungslink wurde versandt. Nach 3 Stunden verlert diesen Aktivierungslink seine Gültigkeit.");
+define("_Pre_registration_founded","Eine Anmeldeversuch läuft bereits mit diesen CIVLID und Emailadresse, bitte den Gültigkeitsperiodablauf abwarten, dass erneut versucht werden kann. Bitte nicht aktivieren, sonst wird ein Doppelkonto angelegt!");
+define("_Civlid_already_in_use","Error: doppelte CIVLID!");
+define("_Pilot_email_used_in_reg_dif_civlid","Error: Diese Emailadresse wird bereits für eine andere CIVLID Verwendet");
+define("_Pilot_civlid_used_in_reg_dif_email","Error: Diese CIVLID wird bereits für eine andere Emailadresse Verwendet");
+define("_Pilot_email_used_in_pre_reg_dif_civlid","Error: Diese Emailadresse wird bereits für eine Anmeldeversuch mit einen anderen CIVLID Verwendet");
+define("_Pilot_civlid_used_in_pre_reg_dif_email","Error: Diese CIVLID wird bereits für eine Anmeldeversuch mit einen anderen Emailadresse Verwendet");
+define("_Server_send_conf_email", "Eine Email zur Bestätigung dieser Registrierung wurde an %s gesandt.<br>Du hast nun 3 Stunden Zeit die Registrierung durch Klick auf den Link in der Email zu bestätigen.");
+define("_Pilot_confirm_subscription_subject","Bestaetigungs-Email");
 define("_Pilot_confirm_subscription","===================================
 
-%s Leonardo new user
-                
-Hi %s,
+Hallo %s,
 
-This is a verification email sent from %s
- 
-To finally create your account, you will need to click on link below to verify your email address:
+Das ist eine Email zur Bestätigung deiner Registrierung auf %s .
 
-http://%s?op=register&rkey=%s 
+Bitte klicke auf folgenden Link um deine Registrierung zu bestätigen und einen neuen Benutzer entsprechend deiner zuvor gemachten Angaben anzulegen:
 
-Regards,
+%s
+
+Mit freundlichen Grüßen,
+Das %s Team.
 
 --------
-Note: This is auto-response. Do not send any email to this email address
---------"); 
+Bitte beachten: Das ist eine automatisch generierte Email. Bitte nicht darauf antworten.
+--------");
 define("_Pilot_confirm_change_email","===================================
 
-%s Leonardo user
-                
-Hi %s,
+Hallo %s,
 
-This is a verification email sent from %s
- 
-To finally change your email address, you will need to click on link below to verify your email address:
+Das ist eine Email zur Bestätigung deiner Registrierung auf %s .
+
+Bitte klicke auf folgenden Link um deine Registrierung zu bestätigen und einen neuen Benutzer entsprechend deiner zuvor gemachten Angaben anzulegen:
 
 http://%s?op=chem&rkey=%s
 
-Regards,
+Mit freundlichen Grüßen,
+Das %s Team.
 
 --------
-Note: This is auto-response. Do not send any email to this email address
---------"); 
+Bitte beachten: Das ist eine automatisch generierte Email. Bitte nicht darauf antworten.
+--------");
 define("_Password_recovery_email","===================================
 
-%s (Leonardo) user
-                
-Hi %s,
+Hallo %s,
 
-This is a verification email sent from %s
-                
-With Password recovery for you
-                
-Username:%s
-                
-CIVLID:%s
-                
-NewPassword:%s
- 
-To activate your new password, you will need to click on link below to verify your email address:
+Diese Email wurde dir zugesandt weil du auf %s ein neues Kennwort angefordert hast.
 
-http://%s?op=send_password&rkey=%s 
+Du bist registriert unter dem Benutzernamen: %s
 
-Regards,
+Deine CIVL-ID lautet: %s
+
+Dein neues Kennwort ist: %s
+
+Bitte klicke auf folgenden Link um die Kennwortänderung zu bestätigen:
+
+%s
+
+Mit freundlichen Grüßen,
+Das %s Team.
 
 --------
-Note: This is auto-response. Do not send any email to this email address
---------"); 
-define("_MENU_AREA_GUIDE","Area Guide"); 
-define("_All_XC_types","All XC types"); 
-define("_xctype","XC type"); 
-define("_Flying_Areas","Flying Areas"); 
-define("_Name_of_Area","Name of Area"); 
-define("_See_area_details","See the details and takeoffs for this area"); 
-define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display"); 
-define("_ge_module_advanced_1","(Most detailed, bigger size)"); 
-define("_ge_module_advanced_2","(Many details, big size) "); 
-define("_ge_module_Simple","Simple (Only Task, very small)"); 
-define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name"); 
-define("_All_classes","All classes"); 
-define("_Class","Class"); 
-define("_Photos_filter_off","With/without photos"); 
-define("_Photos_filter_on","With photos only"); 
-define("_You_are_already_logged_in","You are already logged in"); 
-define("_See_The_filter","See the filter"); 
-define("_PilotBirthdate","Pilot Birthdate"); 
-define("_Start_Type","Start Type"); 
-define("_GLIDER_CERT","Glider Certification"); 
-define("_MENU_BROWSER","Browse in Google Maps"); 
-define("_FLIGHT_BROSWER","Search the flights and takeoff database with Google Maps"); 
-define("_Load_Thermals","Load Thermals"); 
-define("_Loading_thermals","Loading Thermals"); 
-define("_Layers","Layers"); 
-define("_Select_Area","Select Area"); 
+Bitte beachten: Das ist eine automatisch generierte Email. Bitte nicht darauf antworten.
+--------");
+define("_MENU_AREA_GUIDE","Area Guide");
+define("_All_XC_types","All XC types");
+define("_xctype","XC type");
+define("_Flying_Areas","Flying Areas");
+define("_Name_of_Area","Name of Area");
+define("_See_area_details","See the details and takeoffs for this area");
+define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display");
+define("_ge_module_advanced_1","(Most detailed, bigger size)");
+define("_ge_module_advanced_2","(Many details, big size) ");
+define("_ge_module_Simple","Simple (Only Task, very small)");
+define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name");
+define("_All_classes","All classes");
+define("_Class","Class");
+define("_Photos_filter_off","With/without photos");
+define("_Photos_filter_on","With photos only");
+define("_You_are_already_logged_in","You are already logged in");
 
+define("_MANDATORY_FIRSTNAME", "Bitte Vornamen angeben");
+define("_MANDATORY_LASTNAME", "Bitte Nachnamen angeben");
+define("_MANDATORY_USERNAME", "Bitte Benutzernamen angeben");
+define("_MANDATORY_EMAIL_CONFIRM", "Bitte die Email Adresse bestätigen");
+
+/**
+ * Added 10.06.2009, Manolis
+ */
+define("_GLIDER_CERT","Zulassung");
+define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Bitte Zulassung auswählen");
+//added 23.07.09 P:Wild
+define('_PG', 'Gleitschirm');
+define('_HG', 'Drachenflieger');
+define('_RG', 'Starrflügel');
+define('_SHOW_NEWS', 'News Ticker');
+define('_START_TYPE', 'Startart');
+define('_Start_Type', 'Startart');
+//added 26.03.2010 P. Wild
+define('_See_The_filter', 'Filter Anschauen');
+define('_PilotBirthdate', 'Geburtstag');
+define('_Start_type', 'Startart');
+define('_MENU_BROWSER', 'Überblick in Google Maps');
+define('_FLIGHT_BROSWER', 'Google Maps Flug Suche');
+define('_Loading_thermals', 'Thermik laden');
+define('_Layers', 'Layers');
+define('_Select_Area', 'Gebiet auswählen');
+define('_Kingpost', 'Turmdrachen');
+define('_Topless', 'Turmloser Drachen');
+// 08.06.2010 P. Wild
+define('_Note', 'Hinweis: um einen Verein einzutragen muss zuerst die Mitgliedsnummer ausgefüllt sein ');
 ?>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.106 2010/11/25 21:48:50 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.107 2011/01/16 21:38:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -595,7 +595,7 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 
 
 $commentsHtml="<div id='tabcomments' class='tab_content'>
-	<div id='comments_iframe_div' style='width:745px; text-align:left;'>
+	<div id='comments_iframe_div' style='width:745px; height:600px; text-align:left;'>
 		<iframe id='comments_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".

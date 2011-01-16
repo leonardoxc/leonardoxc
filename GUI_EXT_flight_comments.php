@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.13 2010/11/29 12:53:06 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.14 2011/01/16 21:38:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -420,7 +420,7 @@ function resizeIframe() {
 $(document).ready(function(){
 
 
-	resizeIframe();
+	// resizeIframe();
 
 	$(".translateLink").click(function() {			
 	

@@ -927,6 +927,6 @@ define("_RSS_feed_for_comments","RSS feed for comments");
 define("_RSS_feed_for_flights","RSS feed for flights"); 
 define("_RSS_of_pilots_flights","RSS of pilot\'s flights"); 
 define("_You_have_a_new_comment","You have a new comment on %s"); 
-define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s"); 
+define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href='%s'>Click here to read all comments</a><hr>%s"); 
 
 ?>

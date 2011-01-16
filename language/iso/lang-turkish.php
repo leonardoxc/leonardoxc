@@ -97,7 +97,7 @@ define("_UPDATE_SCORE","Puaný güncelle");
 
 define("_TAKEOFF_COORDS","Kalkýþ Pisti koordinatlarý:");
 define("_NO_KNOWN_LOCATIONS","Uçuþ bölgeleri bilinmemekte!");
-define("_FLYING_AREA_INFO","Flying area info");
+define("_FLYING_AREA_INFO","Bölge Bilgileri");
 
 //--------------------------------------------
 // index.php
@@ -266,8 +266,8 @@ define("_LINEAR_DISTANCE_SHOULD_BE","Kuþ Uçuþu Mesafe");
 define("_OLC_DISTANCE_SHOULD_BE","Kuþ Uçuþu Mesafe");
 define("_OLC_SCORE_SHOULD_BE","OLC Puani");
 define("_DURATION_SHOULD_BE","Mesafe");
-define("_ACTIVATE_CHANGE_FILTER","Filtre Aktif / Filtre Deðiþtir");
-define("_DEACTIVATE_FILTER","Filtrelemeyi Kapat");
+define("_ACTIVATE_CHANGE_FILTER","Aktif / Filtre deðiþtir");
+define("_DEACTIVATE_FILTER","Filtre kapalý");
 define("_HOURS","saatler");
 define("_MINUTES","dakika");
 
@@ -316,7 +316,7 @@ define("_OLC_BARO","BAROMETRE");
 //--------------------------------------------
 define("_Pilot_Profile","Pilot Profil");
 define("_back_to_flights","Uçuþlara dön");
-define("_pilot_stats","pilot istatistikleri");
+define("_pilot_stats","Pilot istatistikleri");
 define("_edit_profile","Profili düzenle");
 define("_flights_stats","Uçuþlarýn istatistikleri");
 define("_View_Profile","Profil görüntüle");
@@ -455,7 +455,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","En iyi Mesafesi<br>(Açýk Mesafe)");
 define("_GLIDER_TYPE","Uçuþ aracý");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Yamaçparaþütü',2=>'YelkenKanat (esnek tip)',4=>'YelkenKanat (sert tip)',8=>'Planör'); 
+	$gliderCatList=array(1=>'Yamaçparaþütü',2=>'YelkenKanat (esnek)',4=>'YelkenKanat (sert)',8=>'Planör'); 
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -465,7 +465,7 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Spor",2=>"Acik",3=>"Tandem");
 	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
 	global $CONF;
 	foreach($CONF['gliderClasses'] as $i=>$gClass) {
@@ -671,7 +671,7 @@ define("_Filter_Button_Select","Seç");
 define("_Filter_Button_Delete","Sil"); 
 define("_Filter_Button_Accept","Seçimi kaydet"); 
 define("_Filter_Button_Cancel","Ýptal"); 
-define("_MENU_FILTER_NEW","Filtre **Yeni Versiyon**"); 
+define("_MENU_FILTER_NEW","Filter **Yeni Versiyon**"); 
 define("_ALL_NACCLUBS","Tüm Kulüpler"); 
 define("_SELECT_NACCLUB","Seç, [nacname]-Kulüb"); 
 define("_FirstOlcYear","First year of participation in an online XC contest"); 
@@ -682,9 +682,9 @@ define("_DAY","Gün");
 define("_Glider_Brand","Marka"); 
 define("_Or_Select_from_previous","ya da öncekinden seç"); 
 define("_Explanation_AddToBookmarks_IE","Bu filtre ayarlarýný favorilerinize ekleyin"); 
-define("_Msg_AddToBookmarks_IE","Sýk kullanýlanlara a bu filtre ayarlarýný ekleyebilirsiniz"); 
+define("_Msg_AddToBookmarks_IE","Bookmarks a bu filtre ayarlarýný ekleyin"); 
 define("_Explanation_AddToBookmarks_nonIE","(Bookmarks a bu linki kaydedin)"); 
-define("_Msg_AddToBookmarks_nonIE","Bu filtrelemeyi sýk kullanýlanlara kayýt ederek direk bu filtreleme ile uçuþlarý görebilirsiniz"); 
+define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
 define("_PROJECT_RULES2","2008 Düzenlemeler"); 
 define("_MEAN_SPEED1","Ortalama Hýz"); 
 define("_External_Entry","Baþka site girdisi"); 
@@ -702,8 +702,8 @@ define("_Ext_text3","Uçuþun orjinal linki");
 define('_Male_short','E');
 define('_Female_short','K');
 define('_Male','Erkek');
-define('_Female','kadýn');
-define('_Pilot_Statistics','Pilot Statistics');
+define('_Female','Kadýn');
+define('_Pilot_Statistics','Pilot Ýstatistikleri');
 
 //--------------------------------------------------------
 //--------------------------------------------------------
@@ -711,16 +711,16 @@ define('_Pilot_Statistics','Pilot Statistics');
 //--------------------------------------------------------
 define("_Altitude_Short","Alt"); 
 define("_Vario_Short","Vario"); 
-define("_Time_Short","Time"); 
-define("_Info","Info"); 
-define("_Control","Control"); 
-define("_Zoom_to_flight","Zoom to flight"); 
-define("_Follow_Glider","Follow Glider"); 
-define("_Show_Task","Show Task"); 
-define("_Show_Airspace","Show Airspace"); 
+define("_Time_Short","Süre"); 
+define("_Info","Bilgi"); 
+define("_Control","Kontrol"); 
+define("_Zoom_to_flight","Uçuþa zoom"); 
+define("_Follow_Glider","Kanadý izle"); 
+define("_Show_Task","Task Göster"); 
+define("_Show_Airspace","Airspace Göster"); 
 define("_Thermals","Thermals"); 
 define("_Show_Optimization_details","Show Optimization Details"); 
-define("_MENU_SEARCH_PILOTS","Search"); 
+define("_MENU_SEARCH_PILOTS","Ara"); 
 define("_MemberID_Missing","Your member ID is missing"); 
 define("_MemberID_NotNumeric","The member ID must be numeric"); 
 define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight."); 
@@ -874,14 +874,20 @@ define("_Photos_filter_on","With photos only");
 define("_You_are_already_logged_in","You are already logged in"); 
 define("_See_The_filter","See the filter"); 
 define("_PilotBirthdate","Pilot Birthdate"); 
-define("_Start_Type","Start Type"); 
-define("_GLIDER_CERT","Glider Certification"); 
-define("_MENU_BROWSER","Browse in Google Maps"); 
+define("_Start_type","Kalkýþ Tipi"); 
+define("_GLIDER_CERT","Kanat Sertifikasyon"); 
+define("_MENU_BROWSER","Google Map de görüntüleme"); 
 define("_FLIGHT_BROSWER","Search the flights and takeoff database with Google Maps"); 
 define("_Load_Thermals","Load Thermals"); 
 define("_Loading_thermals","Loading Thermals"); 
 define("_Layers","Layers"); 
-define("_Select_Area","Select Area"); 
+define("_Select_Area","Bölge Seç"); 
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_Start_Type","Start Type"); 
 define("_Leave_a_comment","Leave a comment"); 
 define("_Reply","Reply"); 
 define("_Translate","Translate"); 
@@ -907,6 +913,6 @@ define("_RSS_feed_for_comments","RSS feed for comments");
 define("_RSS_feed_for_flights","RSS feed for flights"); 
 define("_RSS_of_pilots_flights","RSS of pilot\'s flights"); 
 define("_You_have_a_new_comment","You have a new comment on %s"); 
-define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s"); 
+define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href='%s'>Click here to read all comments</a><hr>%s"); 
 
 ?>

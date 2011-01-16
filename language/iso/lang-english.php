@@ -650,10 +650,10 @@ define("_Filter_NoSelection", "No selection");
 define("_Filter_CurrentlySelected", "Current selection");
 define("_Filter_DialogMultiSelectInfo", "Press Ctrl for multiple selection.");
 
-define('_Filter_FilterTitleIncluding', 'Only selected [items]');
-define('_Filter_FilterTitleExcluding', 'Exclude [items]');
-define('_Filter_DialogTitleIncluding', 'Select [items]');
-define('_Filter_DialogTitleExcluding', 'Select [items]');
+define("_Filter_FilterTitleIncluding","Only selected [items]");
+define("_Filter_FilterTitleExcluding","Exclude [items]");
+define("_Filter_DialogTitleIncluding","Select [items]");
+define("_Filter_DialogTitleExcluding","Select [items]");
 
 define("_Filter_Items_pilot", "pilots");
 define("_Filter_Items_nacclub", "clubs");
@@ -677,7 +677,7 @@ define("_MENU_FILTER_NEW","Filter **NEW VERSION**");
 // second menu NACCclub selection
 define("_ALL_NACCLUBS", "All Clubs");
 // Note to translators: use the placeholder $nacname in your translation as it is, don"t translate it
-define("_SELECT_NACCLUB", 'Select [nacname]-Club');
+define("_SELECT_NACCLUB", "Select [nacname]-Club");
 
 // pilot profile
 define("_FirstOlcYear", "First year of participation in an online XC contest");
@@ -689,50 +689,50 @@ define("_FirstOlcYearComment", "Please select the year of your first participati
 define("_Select_Brand","Select Brand");
 define("_All_Brands","All Brands");
 define("_DAY","DAY");
-define('_Glider_Brand','Glider Brand');
-define('_Or_Select_from_previous','Or Select from previous');
+define("_Glider_Brand","Glider Brand");
+define("_Or_Select_from_previous","Or Select from previous");
 
-define('_Explanation_AddToBookmarks_IE', 'Add these filter settings to your favourites');
-define('_Msg_AddToBookmarks_IE', 'Click here to add these filter settings to your bookmarks.');
-define('_Explanation_AddToBookmarks_nonIE', '(Save this link to your bookmarks.)');
-define('_Msg_AddToBookmarks_nonIE', 'To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.');
+define("_Explanation_AddToBookmarks_IE","Add these filter settings to your favourites");
+define("_Msg_AddToBookmarks_IE","Click here to add these filter settings to your bookmarks.");
+define("_Explanation_AddToBookmarks_nonIE","(Save this link to your bookmarks.)");
+define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.");
 
-define('_PROJECT_HELP','Help');
-define('_PROJECT_NEWS','News');
-define('_PROJECT_RULES','Regulations 2007');
-define('_PROJECT_RULES2','Regulations 2008');
+define("_PROJECT_HELP","Help");
+define("_PROJECT_NEWS","News");
+define("_PROJECT_RULES","Regulations 2007");
+define("_PROJECT_RULES2","Regulations 2008");
 
 //end 2007/11/06
-define('_MEAN_SPEED1','Mean Speed');
-define('_External_Entry','External Entry');
+define("_MEAN_SPEED1","Mean Speed");
+define("_External_Entry","External Entry");
 
 // New on 2007/11/25
-define('_Altitude','Altitude');
-define('_Speed','Speed');
-define('_Distance_from_takeoff','Distance from takeoff');
+define("_Altitude","Altitude");
+define("_Speed","Speed");
+define("_Distance_from_takeoff","Distance from takeoff");
 
 // New on 2007/12/03
-define('_LAST_DIGIT','last digit');
+define("_LAST_DIGIT","last digit");
 
-define('_Filter_Items_nationality','nationality');
-define('_Filter_Items_server','server');
+define("_Filter_Items_nationality","nationality");
+define("_Filter_Items_server","server");
 
 // New on 2007/12/15
-define('_Ext_text1','This is a flight originally submited at ');
-define('_Ext_text2','Link to full flight maps and charts');
-define('_Ext_text3','Link to original flight');
+define("_Ext_text1","This is a flight originally submited at ");
+define("_Ext_text2","Link to full flight maps and charts");
+define("_Ext_text3","Link to original flight");
 
 
 // New on 2008/2/15
-define('_Male_short','M');
-define('_Female_short','F');
-define('_Male','Male');
-define('_Female','Female');
-define('_Pilot_Statistics','Pilot Statistics');
+define("_Male_short","M");
+define("_Female_short","F");
+define("_Male","Male");
+define("_Female","Female");
+define("_Pilot_Statistics","Pilot Statistics");
 
 
 // New on 2008/2/19
-define('_Altitude_Short','Alt');
+define("_Altitude_Short","Alt");
 define("_Vario_Short","Vario");
 define("_Time_Short","Time");
 define("_Info","Info");
@@ -749,18 +749,18 @@ define("_Show_Optimization_details","Show Optimization Details");
 define("_MENU_SEARCH_PILOTS","Search");
 
 //New on 2008/05/17
-define('_MemberID_Missing', 'Your member ID is missing');
-define('_MemberID_NotNumeric', 'The member ID must be numeric');
+define("_MemberID_Missing","Your member ID is missing");
+define("_MemberID_NotNumeric","The member ID must be numeric");
 
-define('_FLIGHTADD_CONFIRMATIONTEXT', 'By submitting this form I confirm that I have respected all legal obligations concerning this flight.');
-define('_FLIGHTADD_IGC_MISSING', 'Please select your .igc-file');
-define('_FLIGHTADD_IGCZIP_MISSING', 'Please select the zip-file containing your .igc-file');
-define('_FLIGHTADD_CATEGORY_MISSING', 'Please select the category');
-define('_FLIGHTADD_BRAND_MISSING', 'Please select the brand of your glider');
-define('_FLIGHTADD_GLIDER_MISSING', 'Please enter the type of your glider');
-define('_YOU_HAVENT_ENTERED_GLIDER', 'You have not entered brand or glider');
+define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight.");
+define("_FLIGHTADD_IGC_MISSING","Please select your .igc-file");
+define("_FLIGHTADD_IGCZIP_MISSING","Please select the zip-file containing your .igc-file");
+define("_FLIGHTADD_CATEGORY_MISSING","Please select the category");
+define("_FLIGHTADD_BRAND_MISSING","Please select the brand of your glider");
+define("_FLIGHTADD_GLIDER_MISSING","Please enter the type of your glider");
+define("_YOU_HAVENT_ENTERED_GLIDER","You have not entered brand or glider");
 
-define('_BRAND_NOT_IN_LIST', 'Brand not in list');
+define("_BRAND_NOT_IN_LIST","Brand not in list");
 
 
 /*------------------------------------------------------------
@@ -894,92 +894,92 @@ Note: This is auto-response. Do not send any email to this email address
 
 
 // New on 2008/11/26
-define('_MENU_AREA_GUIDE','Area Guide');
-define('_All_XC_types','All XC types');
-define('_xctype','XC type');
+define("_MENU_AREA_GUIDE","Area Guide");
+define("_All_XC_types","All XC types");
+define("_xctype","XC type");
 
 
-define('_Flying_Areas','Flying Areas');
-define('_Name_of_Area','Name of Area');
-define('_See_area_details','See the details and takeoffs for this area');
+define("_Flying_Areas","Flying Areas");
+define("_Name_of_Area","Name of Area");
+define("_See_area_details","See the details and takeoffs for this area");
 
-define('_choose_ge_module','Please choose the module to use<BR>for Google Earth Display');
-define('_ge_module_advanced_1','(Most detailed, bigger size)');
-define('_ge_module_advanced_2','(Many details, big size) ');
-define('_ge_module_Simple','Simple (Only Task, very small)');
+define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display");
+define("_ge_module_advanced_1","(Most detailed, bigger size)");
+define("_ge_module_advanced_2","(Many details, big size) ");
+define("_ge_module_Simple","Simple (Only Task, very small)");
 
-define('_Pilot_search_instructions','Enter at least 3 letters of the First or Last Name');
+define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name");
 
-define('_All_classes','All classes');
-define('_Class','Class');
+define("_All_classes","All classes");
+define("_Class","Class");
 
 /*
 
-define('Show Optimization Details
-define('Optimization
-define('Scoring Factors Used: XC scoring
+define("Show Optimization Details
+define("Optimization
+define("Scoring Factors Used: XC scoring
 
-define('Type of Flight
-define('Factor
-define('XC distance	
-define('XC Score
+define("Type of Flight
+define("Factor
+define("XC distance	
+define("XC Score
 
 */
 
 // 2009-03-20 filter for photos
-define('_Photos_filter_off','With/without photos');
-define('_Photos_filter_on','With photos only');
+define("_Photos_filter_off","With/without photos");
+define("_Photos_filter_on","With photos only");
 
-define('_You_are_already_logged_in','You are already logged in');
+define("_You_are_already_logged_in","You are already logged in");
 
 
 // 2010-03-14
-define('_See_The_filter','See the filter');
-define('_PilotBirthdate','Pilot Birthdate');
-define('_Start_Type','Start Type');
-define('_GLIDER_CERT','Glider Certification');
+define("_See_The_filter","See the filter");
+define("_PilotBirthdate","Pilot Birthdate");
+define("_Start_Type","Start Type");
+define("_GLIDER_CERT","Glider Certification");
 
 // 2010-03-21
-define('_MENU_BROWSER','Browse in Google Maps');
-define('_FLIGHT_BROSWER','Search the flights and takeoff database with Google Maps');
-define('_Load_Thermals','Load Thermals');
-define('_Loading_thermals','Loading Thermals');
-define('_Layers','Layers');
-define('_Select_Area','Select Area');
+define("_MENU_BROWSER","Browse in Google Maps");
+define("_FLIGHT_BROSWER","Search the flights and takeoff database with Google Maps");
+define("_Load_Thermals","Load Thermals");
+define("_Loading_thermals","Loading Thermals");
+define("_Layers","Layers");
+define("_Select_Area","Select Area");
 
 
 //2010-11-20 commenting system
-define('_Leave_a_comment','Leave a comment');
-define('_Reply','Reply');
-define('_Translate','Translate');
-define('_Translate_to','Translate to');
-define('_Submit_Comment','Submit Comment');
-define('_Logged_in_as','Logged in as:');
-define('_Name','Name');
-define('_Email','Email');
-define('_Will_not_be_displayed','(Will not be displayed)');
-define('_Please_type_something','Please type something');
-define('_Please_enter_your_name','Please enter your name / nickname');
-define('_Please_give_your_email','Please give your email, it will not be displayed at any times');
-define('_RSS_for_the_comments','This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader');
+define("_Leave_a_comment","Leave a comment");
+define("_Reply","Reply");
+define("_Translate","Translate");
+define("_Translate_to","Translate to");
+define("_Submit_Comment","Submit Comment");
+define("_Logged_in_as","Logged in as:");
+define("_Name","Name");
+define("_Email","Email");
+define("_Will_not_be_displayed","(Will not be displayed)");
+define("_Please_type_something","Please type something");
+define("_Please_enter_your_name","Please enter your name / nickname");
+define("_Please_give_your_email","Please give your email, it will not be displayed at any times");
+define("_RSS_for_the_comments","This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader");
 
 // on profile
-define('_Comments_are_enabled_by_default_for_new_flights','Comments are enabled by default for new flights');
+define("_Comments_are_enabled_by_default_for_new_flights","Comments are enabled by default for new flights");
 
-define('_Comments_Enabled','Comments Enabled');
-define('_Comments_are_enabled_for_this_flight','Comments are enabled for this flight');
-define('_Comments_are_disabled_for_this_flight','Comments are disabled for this flight');
-define('_ERROR_in_setting_the_comments_status','ERROR in setting the comments status');
-define('_Save_changes','Save changes');
-define('_Cancel','Cancel');
-define('_Are_you_sure_you_want_to_delete_this_comment','Are you sure you want to delete this comment?');
+define("_Comments_Enabled","Comments Enabled");
+define("_Comments_are_enabled_for_this_flight","Comments are enabled for this flight");
+define("_Comments_are_disabled_for_this_flight","Comments are disabled for this flight");
+define("_ERROR_in_setting_the_comments_status","ERROR in setting the comments status");
+define("_Save_changes","Save changes");
+define("_Cancel","Cancel");
+define("_Are_you_sure_you_want_to_delete_this_comment","Are you sure you want to delete this comment?");
 
-define('_RSS_feed_for_comments','RSS feed for comments');
-define('_RSS_feed_for_flights','RSS feed for flights');
-define('_RSS_of_pilots_flights','RSS of pilot\'s flights');
+define("_RSS_feed_for_comments","RSS feed for comments");
+define("_RSS_feed_for_flights","RSS feed for flights");
+define("_RSS_of_pilots_flights","RSS of pilot\'s flights");
 
 
-define('_You_have_a_new_comment','You have a new comment on %s');
-define('_New_comment_email_body','You have a new comment on %s<BR><BR><a href="%s">Click here to read all comments</a><hr>%s');
+define("_You_have_a_new_comment","You have a new comment on %s");
+define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href='%s'>Click here to read all comments</a><hr>%s");
 
 ?>
