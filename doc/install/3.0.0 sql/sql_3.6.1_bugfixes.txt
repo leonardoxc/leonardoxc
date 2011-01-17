@@ -1,0 +1,7 @@
+
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `OtherInterests` `OtherInterests` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `BestMemory` `BestMemory` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `WorstMemory` `WorstMemory` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
