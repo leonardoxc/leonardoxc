@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.18 2011/01/31 08:21:37 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.19 2011/01/31 15:04:47 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -54,6 +54,14 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	// $cmd.=" --igcpath '".dirname(__FILE__).'/'.$CONF['paths']['intermediate']."'";
 	// $cmd.=" --directory '".realpath(dirname(__FILE__).'/../..')."'";
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
+	
+// 	$cmd.=" --icon '$baseInstallationPath/templates/basic/tpl/leonardo_logo.gif' ";
+//	$cmd.=" --photos_path '".$CONF['paths']['photos']."' ";
+//	$cmd.=" --photos_url '$baseInstallationPath/'".$CONF['paths']['photos']."'' ";
+
+	//DEFAULT_PHOTOS_PATH = 'data/flights/photos/%YEAR%/%PILOTID%'
+	//DEFAULT_PHOTOS_URL = '/modules/leonardo/data/flights/photos/%YEAR%/%PILOTID%'
+	
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
 	$cmd.=" --igc-path=".$CONF['paths']['intermediate']." "; // data/flights/intermediate/%YEAR%/%PILOTID%
