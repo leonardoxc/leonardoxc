@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.80 2010/09/09 12:46:40 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.81 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -1267,5 +1267,22 @@ function getDownloadLink($argArray) {
 	
 		return $CONF['links']['baseURL'].'/'.$args;
 	}
+}
+
+function getClientIpAddr()
+{
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+    {
+      $ip=$_SERVER['HTTP_CLIENT_IP'];
+    }
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+    {
+      $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    else
+    {
+      $ip=$_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
 }
 ?>

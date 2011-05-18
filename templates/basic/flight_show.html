@@ -128,6 +128,8 @@ html>body .flightShowBox {
 #geOptionsID { width:310px; background-color:#F3F5C5}
 #takeoffArea1 {width:320px; background-color:#F3F5C5}
 
+#IgcDownload {width:320px; background-color:#F3F5C5}
+
 .takeoffOptionsDropDown {width:410px; }
 
 .scoreInfoHeader {background-color: #4967A0 ; border-left-color: #4967A0 ; }
@@ -223,6 +225,7 @@ with (docTips)
 }
 
 var takeoffInfoLoaded=false;
+var IgcDownloadLoaded=false;
 
 function toggleTakeoffInfo() {
 	toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);
@@ -233,6 +236,11 @@ function toggleTakeoffInfo() {
 		takeoffInfoLoaded=true;
 	}	
 	
+}
+
+function toggleIgcDownload() {
+	var url='{M_PATH}/GUI_EXT_download_igc.php?flightID={flightID}';
+	popupBox('IgcDownload',"IGC Download",url,440,140,-320,18);
 }
 
 jQuery(document).ready(function() {
@@ -268,6 +276,7 @@ jQuery(document).ready(function() {
 
 });
 
+
 </script>
 <div id="docTipsLayer" style="position: absolute; z-index: 10000; visibility: hidden;
  left: 0px; top: 0px; width: 10px">&nbsp;</div>
@@ -283,6 +292,9 @@ jQuery(document).ready(function() {
 	{linkToInfoStr1xx}
 	</div>
 </div>
+
+
+
 
 <div class='flightShowBoxHeader'>
 	<div id='pilot_pos' class='titleDiv'>{legend}</div>
@@ -407,7 +419,8 @@ jQuery(document).ready(function() {
               <th height="22"><div align="center">{#_FLIGHT_FILE}</div></th>
             </tr>
             <tr>
-              <td><div aling=center  style="height:28px; text-align:center"><a href="{igcPath}" target="_blank">IGC</a> ::
+              <td><div aling=center  style="height:28px; text-align:center">
+                    {igcLink}::
 					<a href="#" onClick="toggleDiv('geOptionsID','geOptionsPos',14,-305);return false;">Google
                     Earth&nbsp;<img id="geOptionsPos" src="{M_PATH}/img/icon_arrow_down.gif" alt="a1" border="0"></a></div></td>
             </tr>

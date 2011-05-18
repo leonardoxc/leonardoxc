@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.30 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.31 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -312,12 +312,16 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 				$thisFlightBrandID=$pilot['flights'][$flightID]['brandID'];
 				if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
 	
+				$flightComment=$pilot['flights'][$flightID]['comment'];
+				
 				if (!$val)  $outVal="-";
 				else if ($formatFunction) $outVal=$formatFunction($val);
 				else $outVal=$val;
 				// $descr=_GLIDER.": $glider, "._COUNTRY.": $country";
 				if ($val) {
-					echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal."</a>";
+					if ($flightComment) $flightCommentStr="<br>($flightComment)";
+					else $flightCommentStr='';
+					echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal.$flightCommentStr."</a>";
 					
 					//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
 					echo "</TD>"; 	 		  

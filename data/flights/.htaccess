@@ -1,1 +1,10 @@
 php_flag engine off
+RewriteEngine on
+
+RewriteEngine on
+# fix nasty bug with double slashes
+RewriteCond %{REQUEST_URI} ^(.*)//(.*)$ 
+RewriteRule ^. %1/%2 [R=301,L]
+
+
+RewriteRule ^(.*\.igc)$ /modules/leonardo/GUI_EXT_download_igc.php?file=$1 [L,NC]

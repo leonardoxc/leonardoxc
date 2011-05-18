@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_auth.php,v 1.6 2010/03/14 20:56:09 manolis Exp $                                                                 
+// $Id: CL_auth.php,v 1.7 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -43,6 +43,14 @@ class L_auth {
 		else return 0;
 	}
 	
+	function canDownloadIGC($ip) {
+		global $CONF;	
+		if ( in_array($ip,$CONF['auth']['download_igc']['allowed_ips'])   )  {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
 

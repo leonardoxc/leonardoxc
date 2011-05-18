@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.108 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: GUI_flight_show.wide.php,v 1.1 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -44,20 +44,6 @@
 	$geUrl=getDownloadLink(array('type'=>'kml_trk','flightID'=>$flightID,'lang'=>$lng));
 	// $moduleRelPath."/download.php?lang=$lng&type=kml_trk";
 
-    $clientIP=getClientIpAddr();
-	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ) {
-		$directIGCLink=1;
-		$base_name=md5(basename($flight->getIGCRelPath()));
-		$_SESSION['di'.$base_name]=1;
-		echo 'downloadigc'+$base_name;
-		$igcLink="<a href='".$flight->getIGCRelPath()."' >IGC</a>";
-	} else {
-		$directIGCLink=0;
-		$igcLink=" <a href='javascript:nop()' onClick='toggleIgcDownload();return false;' id='IgcDownloadPos'>IGC</a>";
-	}	
-
-     
-			  
 //experiment with google static maps
 if (0) {
 	list($min_lat,$min_lon,$max_lat,$max_lon)=$flight->getBounds();
@@ -194,9 +180,6 @@ $(document).ready(function(){
  makePopupBox('scoreInfo'); 
  makePopupBox('setBounds'); 
  makePopupBox('takeoffAdd'); 
- if (!$directIGCLink) {
-	 makePopupBox('IgcDownload'); 
- }	 
 
 ?>
 
@@ -264,7 +247,6 @@ $(document).ready(function(){
 					   <a href='".getLeonardoLink(array('op'=>'edit_flight','flightID'=>$flightID))."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 		}
 	}
-
 
 	if (  L_auth::isAdmin($userID) ) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
@@ -613,11 +595,11 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 
 
 $commentsHtml="<div id='tabcomments' class='tab_content'>
-	<div id='comments_iframe_div' style='width:745px; height:600px; text-align:left;'>
+	<div style='width:945px; height:600px; text-align:left;'>
 		<iframe id='comments_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".
-	 " TITLE='Comments' width='100%' height='100%'  style='padding:0;margin:0;'
+	 " TITLE='Comments' width='100%' height='100%' 
 		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 	</iframe>
 	</div>
@@ -672,7 +654,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  ) {
-		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
+		 $googleMap="<div id='gmaps_div' style='display:block; width:945px; height:610px;'><iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track.php?id=".
 		$flight->flightID."' ".
 		 " TITLE='Google Map' width='100%' height='100%'
@@ -687,7 +669,6 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 }
 
- 
 
 $mapImg0.='<ul class="tabs">';
 if ($localMap) {
@@ -709,8 +690,6 @@ $mapImg0.='</ul>';
 	if ($googleMap)	$activeTabName='gmap';
 	else if ($localMap) $activeTabName='map';
 	else $activeTabName='comments';
-	
-
 	
 	$mapImg="<div class='tab_container'>\n";
 
@@ -738,13 +717,13 @@ $mapImg0.='</ul>';
 
 
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
-	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
+	$chart1= "<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
 if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2="<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
+	$chart2="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
 if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
+	$chart3="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
 if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
+	$chart4="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
 $extLinkLanguageStr="";
 if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
@@ -773,7 +752,6 @@ $Ltemplate->assign_vars(array(
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
-	'igcLink'=> $igcLink,
 	'flightID'=>$flight->flightID,
 	
 

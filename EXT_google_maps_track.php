@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.54 2011/01/14 14:39:12 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.55 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -67,7 +67,7 @@
 		$GMapType= $CONF['google_maps']['default_maptype'];
 	}
 
-	if ( ( $CONF_airspaceChecks && L_auth::isAdmin($userID) ) || $CONF['thermals']['enable'] ) { 
+	if ( ( $CONF_airspaceChecks && ( L_auth::isAdmin($userID) || $flight->belongsToUser($userID) )  ) || $CONF['thermals']['enable'] ) { 
 		// find min/max lat/lon
 		$filename=$flight->getIGCFilename();
 		$lines = file ($filename); 
