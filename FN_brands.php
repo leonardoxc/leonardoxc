@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_brands.php,v 1.18 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: FN_brands.php,v 1.19 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -81,6 +81,11 @@
 	81=>'JoJo Wings',
 	82=>'Sky Country',
 	83=>'Ynovar',
+	
+	90=>'Archaeopteryx',
+	91=>'Air Design',
+	92=>'Paramania',
+	
  );
 
 ?>

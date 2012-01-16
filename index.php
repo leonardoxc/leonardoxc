@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.123 2010/04/27 09:02:42 manolis Exp $
+// $Id: index.php,v 1.124 2012/01/16 07:21:23 manolis Exp $
 //
 //************************************************************************
 
@@ -140,6 +140,28 @@ if ($opMode==1 ) { // phpnuke
 
 $_SESSION['userID']=$userID;
 
+
+if ($_GET['remote']) {
+	$RUN['remote']='remote';	
+}
+
+if (substr($_SERVER['REQUEST_URI'],-5)=='print' || $_GET['print'] ) {
+	global $RUN;	
+	$RUN['view']='print';
+	$CONF_compItemsPerPage=10000;
+	$PREFS->itemsPerPage=$CONF['pdf']['maxflightsPerPrint'];	
+}
+if (substr($_SERVER['REQUEST_URI'],-6)=='print0' || $_GET['print0'] ) {
+	global $RUN;	
+	$RUN['view']='print';
+	$RUN['view0']='print0';
+	$CONF_compItemsPerPage=10000;
+	$PREFS->itemsPerPage=$CONF['pdf']['maxflightsPerPrint'];	
+}
+	
+//$RUN['view']='';
+//$RUN['view0']='';
+	
 if ($_GET['leoSeo']) {
 	// inject some $_GET values
 	$seoParamsOrg=split(',',$_GET['leoSeo']);
@@ -336,6 +358,18 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 	ob_start();
 }
 
+if ($op=="show_flight" ) {  // get the flight info now since we need to create meta tags
+  $flightID+=0;
+  $flight=0;
+  if ($flightID>0) {
+	  $flight=new flight();
+	  if ( ! $flight->getFlightFromDB($flightID) ) {
+		echo "<br><div align='center'>No such flight exists</div><br><BR>";
+		return;  
+	  }
+  }	  
+}
+
 if ($opMode==3 || $opMode==4 || $opMode==6  || ($opMode==5 &&  $CONF_use_own_template ) )  { // stand alone , we use phpbb3 as standalone too	
 	require_once dirname(__FILE__)."/GUI_header.php";
 }
@@ -345,6 +379,35 @@ if ($opMode==1) include("header.php");
 ?>
 
 <link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
+<link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/width.css"; ?>" rel="stylesheet" type="text/css">
+<style type="text/css">
+<?php  if ( $print ||  $RUN['view']=='print'  ) {?>
+
+
+.mainBodyTable {  
+	border:0;
+	margin-bottom:0px;
+}
+.bodyline , body {
+   border:none;
+   background:none;
+}
+
+.main_text a:link, a:active,
+ a:visited, a:hover , .listTable a, .listTable a:visited {
+text-decoration: none;
+}
+
+<?php  } else { ?>
+.mainBodyTable {  
+	border:0;
+	border-left-color:#000000; border-left-style:solid; border-left-width:2px; 
+	border-right-color:#000000; border-right-style:solid; border-right-width:2px; 
+	margin-bottom:0px;
+}
+
+<?php } ?>
+</style>
 
 <?
 if ($opMode==1) OpenTable();
@@ -373,6 +436,34 @@ require_once dirname(__FILE__)."/MENU_menu.php";
 //---------------------------------------------
 $LeoCodeBase=dirname(__FILE__);
 
+if ( $RUN['view']=='print' && $RUN['view0']!='print0'  ) {
+	if ($op=="competition" || $op=="comp" || $op=="stat_flights" || $op=='pilot_profile_stats') {
+		
+		if ($RUN['remote']=='remote') {
+			$url="http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'0';
+			echo "START PDF\n";
+			echo "PDF URL:$url\n";	
+			echo "END PDF\n";
+			//echo "Will make pdf out of $url<BR>";			
+		} else {
+			require_once dirname(__FILE__)."/CL_pdf.php";
+			$url="http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'0';
+			echo "Wil make pdf out of $url<BR>";
+			
+			$pdfFile=leoPdf::createPDF($url,md5($url));
+			if ($pdfFile) {				
+				echo "<a href='".$moduleRelPath.'/'.$CONF['pdf']['tmpPathRel'].'/'.$pdfFile."' target='_blank'>PDF is ready</a>";
+				
+				echo "\n\n".$moduleRelPath.'/'.$CONF['pdf']['tmpPathRel'].'/'.$pdfFile;
+			} else {				
+				echo "ERROR: PDF creation failed";
+			}
+		}					
+		
+		exit;
+	}
+}
+	
 if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_index_full.php";
 } else if ($op=="index_help") {
@@ -393,6 +484,8 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_list_clubs.php";
 } else if ($op=="list_flights") {
 	require $LeoCodeBase."/GUI_list_flights.php";
+} else if ($op=="stat_flights") {
+	require $LeoCodeBase."/GUI_stat_flights.php";
 } else if ($op=="export_flights") {  // only for admin
 	require $LeoCodeBase."/GUI_flights_export.php";
 } else if ($op=="list_pilots" ) {
@@ -416,7 +509,12 @@ if ($op=="index_full") {
 // "Flight" related actions
 //--------------------------
 } else if ($op=="show_flight" ) {
-    require $LeoCodeBase."/GUI_flight_show.php";
+	if ($RUN['view']=='print' ) {
+		require $LeoCodeBase."/GUI_flight_show_print.php";	
+	} else {
+		require $LeoCodeBase."/GUI_flight_show.php";
+	}
+    
 } else if ($op=="add_flight") {
 	// add by Durval Henke www.xcbrasil.org 19/12/2008
     if($CONF_force_civlid==1 && !$civlID && 0)
@@ -483,6 +581,7 @@ if ($op=="index_full") {
 } else if ($op=="pilot_olc_profile_edit") {
 	require $LeoCodeBase."/GUI_pilot_olc_profile_edit.php";
 } else if ($op=="pilot_profile_stats") {
+	
 	require $LeoCodeBase."/GUI_pilot_profile_stats.php";
 } else if ($op=="pilot_flights") {
 	require $LeoCodeBase."/GUI_pilot_flights.php";
@@ -544,11 +643,14 @@ function exitPage($exitNow=1){
    global $opMode,$noFooterMenu,$moduleRelPath,$PREFS,$CONF_use_own_template,$CONF;
    global $sqlQueriesTime ,$sqlQueriesNum,$sqlFetchTime,$sqlFetchNum;
    global $pageStart,$DBGlvl;
+   global $RUN;
 
 
    echo "<br>";
    if (!$noFooterMenu ) {
-	 echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
+   	 if ($RUN['view']!='print') {
+	 	echo "<br><div class='main_text' align=center><a href='#top_of_page'>"._RETURN_TO_TOP."</a></div>";
+   	 }
    }
    echo "</div>";
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.161 2011/01/16 21:38:37 manolis Exp $                                                                 
+// $Id: config.php,v 1.162 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -28,7 +28,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
 // 3 = standalone -- still work in progress
  $opMode= 2; 
  require dirname(__FILE__)."/site/config_op_mode.php";
-  
+
  // Here we define which server Id is the master server of the leonardo Network
  $CONF_master_server_id=1;
 
@@ -255,6 +255,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $thermalsTable		=  $CONF_tables_prefix."_thermals";
  $commentsTable		=  $CONF_tables_prefix."_comments";
 
+ $jobsTable			= $CONF_tables_prefix."_queue";
  
  // Mrsid tiles config
  $maxMrSidResolution=28.5; // m/pixel Smaller is better.
@@ -283,7 +284,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
 
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
-				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
+				16=>"Paramotor",32=>"Trike", 64=>"Powered flight",256=>"HG Mosquito" );
 // $CONF_glider_types=array(1=>"Paraglider");
 
 
@@ -530,6 +531,12 @@ Triangle conform to the FAI definition
     $CONF['NAC']['display_club_details_on_pilot_list']=0;
 	
 	$CONF['db_browser']['maxTrackNum']=50;
+	
+	$CONF['pdf']['pdfcreator']=dirname(__FILE__).'/lib/pdf/wkhtmltopdf   ';
+	$CONF['pdf']['tmpPath']=dirname(__FILE__).'/data/pdf/tmp';
+	$CONF['pdf']['tmpPathRel']="data/pdf/tmp";
+	$CONF['pdf']['maxflightsPerPrint']=20;
+	$CONF['pdf']['daysTokeepPdfOnServer']=3;
 //-----------------------------------------------------------------------------
 // DONT EDIT BELOW THIS LINE --- EDIT last lines only
 //-----------------------------------------------------------------------------
@@ -930,6 +937,11 @@ if (!function_exists('str_ireplace')) {
 
 //$CONF['sprites']
 
+// list of takeoffs that will make all flights from them PRIVATE!
+$CONF['takeoffs']['private']=array() ;
 
+if ($db) {
+	$db->sql_query("set sql_mode = ''");
+}
 
 ?>

@@ -8,10 +8,10 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: BLOCKS_start.php,v 1.5 2010/03/14 20:56:09 manolis Exp $                                                                 
+// $Id: BLOCKS_start.php,v 1.6 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
 <table align=center valign="top" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td valign="top" >
+    <td class='mainWrapCell' valign="top" >

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.60 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.61 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -775,8 +775,8 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 $flight=new flight();
 				 $flight->getFlightFromDB($row["ID"],1); // this computes takeoff/landing also
-				 //$flight->updateTakeoffLanding();
-				 //$flight->putFlightToDB(1);
+				 $flight->updateTakeoffLanding();
+				 $flight->putFlightToDB(1);
 				 unset($flight);
 				# martin jursa update batchOpProcessed field
 				setBatchBit($row["ID"]);
@@ -795,6 +795,16 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 					$files_total++;
 
 					if (! $row['FIRST_POINT'] || ! $row['LAST_POINT']) {
+						$flight=new flight();
+  						$flight->getFlightFromDB($row['ID']);
+  						echo $flight->getIGCFilename()."<br>";
+						$flight->getFlightFromIGC( $flight->getIGCFilename() );
+						$flight->updateTakeoffLanding();
+						//$flight->createEncodedPolyline(1);
+						//$flight->makeJSON(1);
+						
+						$flight->putFlightToDB(1); // 1== UPDATE
+	
 						$not_set++;
 						continue;
 					}

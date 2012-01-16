@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.109 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_flight_show_print.php,v 1.1 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -17,7 +17,7 @@
 
 	$Ltemplate = new LTemplate($LeoCodeBase.'/templates/'.$PREFS->themeName);
 
-
+	$print=1;
   $flightID+=0;
   $flight=new flight();
   if ( ! $flight->getFlightFromDB($flightID) ) {
@@ -39,14 +39,12 @@
 
 
 	$Ltemplate ->set_filenames(array(
-		'body' => 'flight_show.html'));
+		'body' => 'flight_show_print.html'));
 
 	$geUrl=getDownloadLink(array('type'=>'kml_trk','flightID'=>$flightID,'lang'=>$lng));
 	// $moduleRelPath."/download.php?lang=$lng&type=kml_trk";
 
     $clientIP=getClientIpAddr();
-    $directIGCLink=1;
-    
 	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ) {
 		$directIGCLink=1;
 		$base_name=md5(basename($flight->getIGCRelPath()));
@@ -293,7 +291,11 @@ $(document).ready(function(){
 			$flight->userServerID."_".$flight->userID."','".addslashes(prepare_for_js($flight->userName))."' )\"  onmouseout=\"pilotTip.hide()\">".
 			$flight->userName."</a>&nbsp;&nbsp; "._DATE_SORT.": ".formatDate($flight->DATE);
 	
+	$legend=$flight->userName;
+			
+			
 	$Ltemplate->assign_vars(array(
+		'FLIGHT_DATE'=>formatDate($flight->DATE),
 		'legend'=>$legend,
 		'legendRight'=>$legendRight,
 	));
@@ -353,16 +355,6 @@ $(document).ready(function(){
 
   if ($CONF_airspaceChecks) {
 		if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
-		
-   		if ($flight->airspaceCheckFinal==-1)    { 
-   			$vImg="icon_att4.gif"; 
-   			$vStr="Airspace Violation: ".$flight->airspaceCheckMsg; 
-   		}  else if ($flight->airspaceCheckFinal==1)  {
-   			$vImg="icon_ok.gif"; 
-   			$vStr="No Airspace Violations"; 
-   		}
-		$valiStr.="&nbsp;".leoHtml::img($vImg,12,12,'absmiddle',$vStr,'icons1 listIcons','',0);
-   		
   }
 
 	if ($flight->autoScore) { // means that there is manual optimization present
@@ -390,19 +382,21 @@ $(document).ready(function(){
 		$maxDistanceSpeed=0;
 		$olcDistanceSpeed=0;	
 	}
+	if ($print) {
+		$takeoffLink=$location;
+	} else {
 	
-
-	$takeoffLink="<div id='takeoffAddPos'><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
-		
-	if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
-		$takeoffLink.="<div id='attentionLinkPos' class='attentionLink'><a
-			 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
-			 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img
-			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>"._Unknown_takeoff."<img 
-			 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
+		$takeoffLink="<div id='takeoffAddPos'><a href=\"javascript:takeoffTip.newTip('inline',0,13, 'takeoffAddPos', 250, '".$flight->takeoffID."','".str_replace("'","\'",$location)."',".$firstPoint->lat.",".$firstPoint->lon.")\"  onmouseout=\"takeoffTip.hide()\">$location</a>";
+			
+		if ($flight->takeoffVinicity>$takeoffRadious*2 ) {
+			$takeoffLink.="<div id='attentionLinkPos' class='attentionLink'><a
+				 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\" 
+				 onmouseover='unknownTakeoffTip.show(\"floating\")'  onmouseout='unknownTakeoffTip.hide()'><img
+				 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>"._Unknown_takeoff."<img 
+				 src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle></a></div>";
+		}
+		$takeoffLink.="</div>";
 	}
-	$takeoffLink.="</div>";
-
 
 $Ltemplate->assign_vars(array(
 	'TAKEOFF_LOCATION'=>$takeoffLink,
@@ -624,11 +618,11 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 }
 
 
-$commentsHtml="<div id='tabcomments' class='tab_content'>
-	<div id='comments_iframe_div' style='width:745px; height:600px; text-align:left;'>
-		<iframe id='comments_iframe' align='left'
+$commentsHtml="<div id='tabcomments0' class='tab_content0'>
+	<div id='comments_iframe_div0' style='width:745px; height:auto; text-align:left;'>
+		<iframe id='comments_iframe0' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
-		$flight->flightID."' ".
+		$flight->flightID."&print=1' ".
 	 " TITLE='Comments' width='100%' height='100%'  style='padding:0;margin:0;'
 		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
 	</iframe>
@@ -654,6 +648,11 @@ if ($flight->hasPhotos) {
 			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
 			
+			
+			
+			$imgStr="<img src='$imgBigRel'  width='355'  class=\"photos\" border=\"0\">";
+			
+			/*
 			if (file_exists($imgBig) ) {
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
 				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
@@ -665,7 +664,8 @@ if ($flight->hasPhotos) {
 			} else {
 				$imgStr="&nbsp;";
 			}
-	
+	*/
+			// $imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
 			$imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
 	
 		}		
@@ -685,7 +685,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 	if ( $CONF_google_maps_api_key  ) {
 		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track.php?id=".
+		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_print.php?id=".
 		$flight->flightID."' ".
 		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
@@ -701,7 +701,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
  
 
-$mapImg0.='<ul class="tabs">';
+$mapImg0.='<ul class="tabs0">';
 if ($localMap) {
 	$mapImg0.='<li id="tabmapli"><a href="#tabmap">'._OLC_MAP.'</a></li>';
 }
@@ -716,6 +716,7 @@ if ($imagesHtml) {
 }	
 $mapImg0.='</ul>';
 
+$mapImg0='';
 
 	// use tabber 
 	if ($googleMap)	$activeTabName='gmap';
@@ -724,23 +725,32 @@ $mapImg0.='</ul>';
 	
 
 	
-	$mapImg="<div class='tab_container'>\n";
+	$mapImg="<div class='tab_container0'>\n";
 
 	if ($googleMap) {
-		$mapImg.="<div id='tabgmap' class='tab_content'>$googleMap</div>";			 
+		$mapImg.="<div id='tabgmap' class='tab_content0'>$googleMap</div>";			 
 	}	
-	if ($localMap) {
-		$mapImg.="<div id='tabmap' class='tab_content'>$localMap</div>";
+	if ($localMap && !$print) {
+		$mapImg.="<div id='tabmap' class='tab_content0'>$localMap</div>";
 	}		
-	if ($imagesHtml) {
-		$mapImg.="<div id='tabphotos' class='tab_content'>$imagesHtml</div>";
-	}		  
 
+	ob_start();
+	include "GUI_EXT_flight_comments.php";
+	$commentsHtml = ob_get_contents();
+	ob_end_clean();
+	
 	// always include the comments tab
 	$mapImg.=$commentsHtml;
 
+	if ($imagesHtml) {
+		$mapImg.="<div id='tabphotos' class='tab_conten0t'>$imagesHtml</div>";
+	}		  
+	
+	
 	$mapImg.="</div>";
 
+
+	
 	if ($imagesHtml) 
 		$mapImg.="<script type='text/javascript' src='$moduleRelPath/js/xns.js'></script>";
 		
@@ -748,15 +758,17 @@ $mapImg0.='</ul>';
 
 
 
+if (!$print) {
+	if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
+		$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
+	if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
+		$chart2="<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
+	if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
+		$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
+	if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
+		$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
-if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
-	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2="<br><br><img src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
-if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
+}
 
 $extLinkLanguageStr="";
 if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";

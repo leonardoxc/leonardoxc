@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync_new.php,v 1.10 2010/03/14 20:56:12 manolis Exp $                                                                 
+// $Id: sync_new.php,v 1.11 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -100,7 +100,8 @@ $where_clause.=	$getOnlyServersListClause;
 
 
 if (!$op) $op="latest";	
-if (!in_array($op,array("latest","get_hash","get_igc")) ) return;
+
+if (!in_array($op,array("latest","get_hash","get_igc","error")) ) return;
 
 $encoding="utf-8";
 
@@ -179,6 +180,7 @@ if ($op=="get_hash") {
 
 
 } else if ($op=="latest") {
+
 	$sync_type = makeSane($_GET['sync_type'],1);		 
 	$getIGCfiles = $sync_type & SYNC_INSERT_FLIGHT_LOCAL ;
 	
@@ -198,7 +200,7 @@ if ($op=="get_hash") {
 	$RSS_str='{ "protocol_version": 2,"log": [ ';
 	
 	$tableNames=array("active"=>$flightsTable,"deleted"=>$deletedFlightsTable);
-	
+
 	foreach($tableNames as $tableType=>$tableName ) {
 
 		if ($tableType=='deleted') {

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.193 2011/01/14 14:39:11 manolis Exp $
+// $Id: CL_flightData.php,v 1.194 2012/01/16 07:21:22 manolis Exp $
 //
 //************************************************************************
 
@@ -1677,6 +1677,11 @@ $kml_file_contents=
 		$i=0;
 		$day_offset =0;
 
+		
+		$duration=$this->DURATION; // in secs
+		$intervalSecs=floor($duration/600);
+		if ($intervalSecs>20) $intervalSecs=20;
+					
 		foreach($lines as $line) {
 			$line=trim($line);
 			if  (strlen($line)==0) continue;
@@ -1709,6 +1714,11 @@ $kml_file_contents=
 							$lastPoint->gpsTime+=$day_offset;
 							 continue;
 						}
+						
+						if ( ($thisPoint->getTime() - $lastPoint->getTime() ) < $intervalSecs  ) {
+							continue;						
+						}
+						        		        	
 						$deltaseconds = $thisPoint->getTime() - $lastPoint->getTime() ;
 						if ($deltaseconds) {
 							$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
@@ -2351,6 +2361,10 @@ $kml_file_contents=
 
 		$done=0;
 		$try_no_takeoff_detection=0;
+		
+		$tm1=time()+3600*24*30;
+		$tm2=0;
+		
 		while(!$done) {
 
 			$lines = file ($filename);
@@ -2404,8 +2418,19 @@ $kml_file_contents=
 						$mean_vario+=$T_vario[$t1];
 				}
 				$mean_speed = $mean_speed/($getPointsNum-1);
-				$mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
+				$mean_vario=( $neighboors[$getPointsNum-1]->getAlt() - $neighboors[0]->getAlt() ) / 
+							( $neighboors[$getPointsNum-1]->getTime() - $neighboors[0]->getTime()  )	;
+				//if ($mean_vario<0) {
+				//		DEBUG("IGC",8,"[$Brecords-$p] mean_vario :$mean_vario <0 <br>");
+				//}
+							
+				$data_speed[$i]=$mean_speed; 
+				$data_vario[$i]=$mean_vario;			
+				// $mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
 
+				if ($neighboors[0]->getTime() < $tm1 ) $tm1=$neighboors[0]->getTime();
+				if ($neighboors[0]->getTime() > $tm2 ) $tm2=$neighboors[0]->getTime();
+				
 				if ( ($neighboors[0]->getTime() - $neighboors[1]->getTime()  ) > 0   )  {  // the next point is more than one hour in the past
 						// echo "#"; $pointOK=0;
 				}
@@ -2466,6 +2491,7 @@ $kml_file_contents=
 					$lines[$i]{1}='X';
 				} else  {
 					$p++;
+				
 					if ($p==5) DEBUG("IGC",1,"Passed the strict testing (p=5)<br>");
 				}
 
@@ -2514,7 +2540,19 @@ $kml_file_contents=
 			// $mod= ceil( $p / $this->maxPointNum );
 		}
 		DEBUG("IGC",1,"will use a reduce array of length $mod<br>");
-
+		
+		$duration=$tm2-$tm1;
+		$intervalSecs=round($duration/$p);
+		
+		// echo "<hr>good points: $p duration:$duration, intervalSecs:$intervalSecs<hr>";
+		
+		$pointsNeededForTakeoff=5;
+		
+		if ($intervalSecs>=8) {			
+			$pointsNeededForTakeoff=2;
+		}
+		
+		
 		$alreadyInPoints=0;
 		$stopReadingPoints=0;
 		$this->timezone=1000;
@@ -2527,7 +2565,7 @@ $kml_file_contents=
 
 		$tmpDate=0;
 
-		foreach($lines as $line) {
+		foreach($lines as $iii=>$line) {
 			if ($foundNewTrack) break;
 			$outputLine=$line;
 			$line=trim($line);
@@ -2603,7 +2641,7 @@ $kml_file_contents=
 					// echo "times: ".$firstPoint->gpsTime.", ".$firstPoint->getTime()." start_time: ".$this->START_TIME ."<BR> ";
 					if ( $this->forceBounds && ! $this->checkBound($firstPoint->getTime() ) ) continue; // not inside time window
 
-					// $this->FIRST_POINT=$line;
+					//$this->FIRST_POINT=$line;
 					$this->firstPointTM= $firstPoint->gpsTime;
 					$this->firstLat=$firstPoint->lat();
 					$this->firstLon=$firstPoint->lon();
@@ -2612,6 +2650,7 @@ $kml_file_contents=
 					$this->MIN_ALT= $firstPoint->getAlt();
 					if ( ! $this->forceBounds) $this->START_TIME = $firstPoint->getTime();
 					$prevPoint=new gpsPoint($line,$this->timezone);
+					$prevPoint2=new gpsPoint($line,$this->timezone);
 				} else  {
 					$lastPoint=new gpsPoint($line,$this->timezone);
 					$lastPoint->gpsTime+=$day_offset;
@@ -2622,6 +2661,8 @@ $kml_file_contents=
 					}
 
 					$time_diff= $lastPoint->getTime() - $prevPoint->getTime() ;
+					$time_diff2= $lastPoint->getTime() - $prevPoint2->getTime() ;
+					
 					// echo "time diff: $time_diff # $line<br>";
 					if (  $time_diff < 0 && $time_diff > -36000  )  { // if the time is less than 10 hours in the past  we just ignore it
                     		// $day_offset = 86400; // if time seems to have gone backwards, add a day
@@ -2661,7 +2702,7 @@ $kml_file_contents=
 					if ($deltaseconds) $vario=($alt-$prevPoint->getAlt() ) / $deltaseconds;
 
 					if (!$garminSpecialCase && ! $this->forceBounds) {
-						if ( ($fast_points>=5 || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
+						if ( ($fast_points>=$pointsNeededForTakeoff || $fast_points_dt>30) && $stillOnGround) { // found 5 flying points or 30 secs
 							$stillOnGround=0;
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found Takeoff <br>");
@@ -2696,7 +2737,7 @@ $kml_file_contents=
 						}
 
 						// found landing (5 stopped points and >2mins) or 5 mins (300 secs)
-						if ( ($slow_points>5 && $slow_points_dt>180)  || $slow_points_dt>300) {
+						if ( ($slow_points>$pointsNeededForTakeoff && $slow_points_dt>180)  || $slow_points_dt>300) {
 							$foundNewTrack=1;
 							DEBUG("IGC",1,"[$points] $line<br>");
 							DEBUG("IGC",1,"[$points] Found a new track  /landing <br>");
@@ -2713,18 +2754,33 @@ $kml_file_contents=
 					$takeoffDistance=$lastPoint->calcDistance($firstPoint);
 					if ($takeoffDistance > $this->LINEAR_DISTANCE )  $this->LINEAR_DISTANCE=$takeoffDistance;
 
-					// update maximum speed
-					if ($speed > $this->MAX_SPEED)  $this->MAX_SPEED=$speed;
-					$this->MEAN_SPEED +=$speed;
-
+					if ($time_diff2>10) {
+						$tmp = $lastPoint->calcDistance($prevPoint2);
+						$alt = $lastPoint->getAlt();
+						$deltaseconds = $time_diff2;
+						$speed = ($deltaseconds)?$tmp*3.6/($deltaseconds):0.0; /* in km/h */
+						if ($deltaseconds) $vario=($alt-$prevPoint2->getAlt() ) / $deltaseconds;
+						$prevPoint2=new gpsPoint($line,$this->timezone);
+						$prevPoint2->gpsTime+=$day_offset;
+						
+						// update maximum speed
+						if ($speed > $this->MAX_SPEED)  $this->MAX_SPEED=$speed;
+						$this->MEAN_SPEED +=$speed;
+						$MEAN_SPEED_POINTS++;
+						// UPDATE MIN-MAX VARIO
+						if ($vario > $this->MAX_VARIO) $this->MAX_VARIO=$vario;
+						if ($vario < $this->MIN_VARIO) $this->MIN_VARIO=$vario;
+						
+					}
+					
+					//$speed=$data_speed[$iii-1]+0; 
+					// $vario=$data_vario[$iii-1]+0;					
+					
 					// UPDATE MIN-MAX ALT
 					if ($alt> $this->MAX_ALT) $this->MAX_ALT=$alt;
 					if ($alt< $this->MIN_ALT) $this->MIN_ALT=$alt;
 
-					// UPDATE MIN-MAX VARIO
-					if ($vario > $this->MAX_VARIO) $this->MAX_VARIO=$vario;
-					if ($vario < $this->MIN_VARIO) $this->MIN_VARIO=$vario;
-
+					
 					// end computing
 					$prevPoint=new gpsPoint($line,$this->timezone);
 					$prevPoint->gpsTime+=$day_offset;
@@ -2738,7 +2794,8 @@ $kml_file_contents=
 
 		} // end main loop
 
-				//
+		// echo "<HR>MIN VARIO".$this->MIN_VARIO."<HR>";
+		//
 		if ($stillOnGround && $this->LINEAR_DISTANCE < 50 )  {
 			DEBUG("IGC",1,"NO TAKEOFF FOUND: ");
 			return 0; // no valid points found
@@ -2789,7 +2846,7 @@ $kml_file_contents=
 		}
 
 		$this->DURATION =   $this->END_TIME - $this->START_TIME ;
-		$this->MEAN_SPEED = $this->MEAN_SPEED / $points;
+		$this->MEAN_SPEED = $this->MEAN_SPEED / $MEAN_SPEED_POINTS;
 
 		return 1;
 	} // end function getFlightFromIGC()
@@ -3871,6 +3928,7 @@ $kml_file_contents=
 		"autoScore,
 		forceBounds,
 		externalFlightType,	isLive,
+	
 		firstPointTM, firstLat, firstLon,
 		lastPointTM, lastLat, lastLon
 
@@ -3909,6 +3967,7 @@ $kml_file_contents=
 		"$this->autoScore,
 		$this->forceBounds,
 		$this->externalFlightType,	$this->isLive,
+		
 		".($this->firstPointTM+0).", $this->firstLat, $this->firstLon,
 		".($this->lastPointTM+0).", $this->lastLat, $this->lastLon
 
@@ -4341,7 +4400,7 @@ foreach ($data_time as $i=>$tm) {
 
 	// assigns the flight to a new user
 	function changeUser($newUserID,$newUserServerID) {
-		global $CONF_photosPerFlight;
+		global $CONF,$CONF_photosPerFlight;
 
 		$pilotDir=$this->getPilotAbsDir();
 
@@ -4437,7 +4496,7 @@ foreach ($data_time as $i=>$tm) {
 		// now move the igc file (and optionally the olc if it exists
 		@rename($igcOrg,$this->getIGCFilename(0));
 		@rename($igcOrg.".olc",$this->getIGCFilename(0).".olc");
-		
+		//  echo "will put to db $newUserServerID $newUserID<BR>";
 		$this->putFlightToDB(1);
 
 		// take care of same flights (hide /unhide)

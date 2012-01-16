@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.10 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.11 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -195,7 +195,7 @@ if (0) {
 	$startNum=($page_num-1)*$PREFS->itemsPerPage;
 	$pagesNum=ceil ($itemsNum/$PREFS->itemsPerPage);
 }
-	
+	// echo "<hr>#$extra_table_str $extra_table_str2#<hr>$where_clause#<hr>$where_clause2#<hr>";
 	$query="SELECT $flightsTable.* , $pilotIncludedFields
 				$flightsTable.glider as flight_glider, 
 				$flightsTable.takeoffID as flight_takeoffID, 

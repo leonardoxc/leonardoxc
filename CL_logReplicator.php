@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.55 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.56 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -113,13 +113,14 @@ class logReplicator {
 
 	function checkPilot($serverID,$pilotArray){
 		global $remotePilotsTable ,$db;
+		// echo "####"; print_r($pilotArray);
 		/*  [pilot] => Array
 			(
 				[userID] => 347
 				[civlid] => 0
 				[userName] => 
-				[pilotFirstName] => Ãéþñãïò
-				[pilotLastName] => Ìåñéóéþôçò
+				[pilotFirstName] => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				[pilotLastName] => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				[pilotCountry] => gr
 				[pilotBirthdate] => 
 				[pilotSex] => 
@@ -180,7 +181,8 @@ class logReplicator {
 		$pilot=new pilot($serverID,$pilotArray['userID']) ;
 		$pilot->createDirs();
 
-		if ( ! $pilot->pilotExists() ) {			
+		if ( ! $pilot->pilotExists() ) {
+			//echo "pilot $serverID ".$pilotArray['userID']." does not exists";			
 			$update=0;
 		}
 
@@ -332,10 +334,13 @@ class logReplicator {
 			//	check 'alien' pilot  and insert him or update him anyway
 			$userServerID=$actionData['flight']['serverID'];
 			if ($userServerID==0)  $userServerID=$serverID;				
-
+			//  echo "logReplicator::checkPilot";
 			list ($effectiveServerID,$effectiveUserID )= 
 					logReplicator::checkPilot($userServerID,$actionData['flight']['pilot']);
 
+			//echo "effectiveServerID: $effectiveServerID, effectiveUserID: $effectiveUserID  
+			// userServerID: $userServerID, userID: ".$actionData['flight']['pilot']['userID']."<BR>";
+			
 			// check if a maping took place and LOG it!!
 			if ($effectiveServerID != $userServerID || $effectiveUserID != $actionData['flight']['pilot']['userID'] ) {
 				$orgUserIDstr= ($userServerID+0).'_'.$actionData['flight']['pilot']['userID'];
@@ -515,10 +520,14 @@ class logReplicator {
 						// get igc if required
 						if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL) {
 							echo " Geting IGC file : ";
-							
+							if (!$e['tmpDir']) {
+								$e['tmpDir']='/tmp';
+							}
 							$igcFileTmp=$e['tmpDir'].'/'.$actionData['flight']['id'].'.igc';
 							
 							if ( ! is_file($igcFileTmp) ) {
+								echo "igc file: $igcFileURL<BR>\n";
+								echo "tmpfile: $igcFileTmp<BR>\n";
 								echo "NOT in zip -> will fetch ...";
 								if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 									return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");

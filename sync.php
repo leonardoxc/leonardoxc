@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.31 2010/07/29 14:00:58 manolis Exp $                                                                 
+// $Id: sync.php,v 1.32 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
@@ -20,6 +20,7 @@
 		echo "Sync protocol version 1 is inactive, please use version 2";
 		exit;
 	} 
+	
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once "config.php";
  	require_once "EXT_config.php";

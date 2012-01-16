@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.16 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.17 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -50,7 +50,7 @@
 
 		$pilotName=stripslashes  ($_GET['q']);
 	
-		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' ) LIMIT 15";
+		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' OR CONCAT(FirstName,' ',LastName) LIKE  '%$pilotName%') LIMIT 15";
 		// echo "a|$query|0";
 		//return;
 		$res= $db->sql_query($query);
@@ -97,7 +97,42 @@ return;
 		  if($res <= 0){   
 			 echo("<H3> Error in mapping pilots: $query</H3>\n");
 		  } else echo "Pilot Mapping successfull";
-	}  if ($op=='getExternalPilotInfo'){	
+	} else if ($op=='copyRemoteToLocalInfo'){		  
+		    $pilotID1=makeSane($_GET['pilotID1'],0);
+		    $pilotID2=makeSane($_GET['pilotID2'],0);
+			
+			$serverID1=makeSane($_GET['serverID1'],0);
+			$serverID2=makeSane($_GET['serverID2'],0);
+			require_once "CL_pilot.php";
+
+			echo "Copying Pilot Info from $serverID1  $pilotID1 -> $serverID2 $pilotID2<br>";
+			$pilot1=new pilot($serverID1,$pilotID1);
+			$pilot1->getFromDB();
+			
+			$pilot1->pilotID=$pilotID2;
+			$pilot1->serverID=$serverID2;
+			
+			$res=$pilot1->putToDB1(1);
+			echo "Res:$res<BR>";
+			
+	} else if ($op=='movePilotFlights'){	
+			$pilotID1=makeSane($_GET['pilotID1'],0);
+			$pilotID2=makeSane($_GET['pilotID2'],0);
+			
+			$serverID1=makeSane($_GET['serverID1'],0);
+			$serverID2=makeSane($_GET['serverID2'],0);
+
+			echo "moving flights from $serverID1  $pilotID1 -> $serverID2 $pilotID2 ";
+			
+			require_once "CL_pilot.php";
+			
+			$pilot=new pilot($serverID1,$pilotID1);
+			$res=$pilot->movePilotFlights($serverID2,$pilotID2);
+			
+			echo "Res:$res<BR>";
+		  	return;
+		  
+	} else  if ($op=='getExternalPilotInfo'){	
 		//$pilotID1=makeSane($_GET['pilotID'],0);
 		//list($serverID1,$userID1)=explode('_',$pilotID1);
 		

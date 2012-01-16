@@ -71,6 +71,9 @@ $CONF_arg_name="name";
 
 define('IN_PHPBB', true);
 define('IN_CRON', true);
+if (!defined('PHPBB_INSTALLED')) {
+        define('PHPBB_INSTALLED', true);
+}
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 
 require_once $phpbb3AbsPath.'/common.php';

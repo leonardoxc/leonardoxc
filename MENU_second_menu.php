@@ -8,84 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.58 2010/03/21 22:51:58 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.59 2012/01/16 07:21:22 manolis Exp $
 //
 //************************************************************************
-
-
-  //require_once dirname(__FILE__)."/MENU_dates.php";
-  //require_once dirname(__FILE__)."/MENU_countries.php";
-
-  $dateLegend="";
-  $allTimesDisplay=0;
-
-	if ( $op!='comp' ) {
-		if (! $CONF['seasons']['use_season_years'] ) $season=0;
-	}
-
-	if ($season) {
-		$dateLegend.=_SEASON.' '.$season;
-	} else {
-	  if ($year && $month && $day && $op=="list_flights") $dateLegend.=sprintf("%02d.%02d.%04d",$day,$month,$year);
-	  else if ($year && !$month ) $dateLegend.=$year;
-	  else if ($year && $month ) $dateLegend.=$monthList[$month-1]." ".$year;
-	  else if (! $year ) {
-		// $dateLegend.=_ALL_TIMES;
-		$dateLegend.=_SELECT_DATE;
-		$allTimesDisplay=1;
-	  }
-	}
-
-  $countryLegend="";
-  $allCountriesDisplay=0;
-  if ($country) $countryLegend=$countries[$country];
-  else {
-  	$countryLegend=_WORLD_WIDE;
-  	$allCountriesDisplay=1;
-  }
-
-
-  $pilotLegend="";
-  $allPilotsDisplay=0;
-  if ($pilotID) $pilotLegend=getPilotRealName($pilotID,$serverID);
-  else {
-  	$pilotLegend=_ALL_PILOTS;
-  	$allPilotsDisplay=1;
-  }
-
-  $takeoffLegend="";
-  $allTakeoffDisplay=0;
-  if ($takeoffID) $takeoffLegend=getWaypointName($takeoffID);
-  else {
-		$takeoffLegend=_ALL_TAKEOFFS;
-		$allTakeoffDisplay=1;
-	}
-
-	# Martin Jursa, 22.05.2007
-	$showNacClubSelection=!empty($CONF_use_NAC) && empty($dontShowNacClubSelection);
-	if ($showNacClubSelection) {
-		$nacClubLegend=_ALL_NACCLUBS;
-		if (!empty($forceNacId)) $nacid=$forceNacId; # just to make sure
-		if ($nacid) {
-			if ($nacclubid) {
-				require_once(dirname(__FILE__)."/CL_NACclub.php");
-				$nacClubLegend=NACclub::getClubName($nacid, $nacclubid);
-				if ($nacClubLegend=='') {
-					$nacclubid=0;
-					$nacClubLegend=_ALL_NACCLUBS;
-				}
-			}
-		}
-	}
-
-
-  if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
-  else $isCompDisplay=0;
-
-
-$arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
-
 ?>
+
 <style type="text/css">
 
 .secondMenuDropLayer {
@@ -302,7 +229,49 @@ function changeCountry(sl) {
 function resetFilter() {
 	$("#filterResultDiv").load('<?=$moduleRelPath?>/EXT_filter_functions.php?filter_op=reset');
 }
+<?php 
 
+if ($userID>0) {
+	$helperUrl=$CONF['pdf']['helperUrl'];
+	if (!$helperUrl) { 
+		$helperUrl=$moduleRelPath;
+		$remote='';
+	}else {
+	    require_once "CL_user.php";
+	    $userIDnotify =$userID;
+	    $userEmailNotify=LeoUser::getEmail($userID);
+		$remote="&remote=1&userIDnotify=$userIDnotify&userEmailNotify=$userEmailNotify";
+	}
+	
+	if ($_GET['sortOrder']) {
+		$remote.="&sortOrder=".$_GET['sortOrder'];
+}
+
+			
+?>
+
+function printPDF(url) {
+	<?php  if ($remote) { ?>
+		$("#pdfDiv").html('<iframe frameborder="0" scrolling="auto" width="650" height="auto" src="<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&url='+url+'"></iframe>');
+	<?php  } else { ?>
+		$("#pdfDiv").html("<?=_Sending_Request?><BR><img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();
+		$("#pdfDiv").load('<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&url='+url);
+	<?php  } ?>
+}
+
+function printPDFdirect(url) {
+	<?php  if ($remote) { ?>
+		$("#pdfDiv").html('<iframe frameborder="0" scrolling="auto" width="650" height="auto" src="<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&direct=1&url='+url+'"></iframe>');
+	<?php  } else { ?>
+		$("#pdfDiv").html("<?=_Sending_Request?><BR><img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();
+		$("#pdfDiv").load('<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&direct=1&url='+url);
+	<?php  } ?>
+}
+<?php  } // end if $userID ?>
+
+function closePdfDiv(){
+	$("#pdfDiv").hide();
+}
 
 function toogleMenu(name) {
 	// first hide/restore other open layers
@@ -337,6 +306,83 @@ $(document).ready(function(){
 });
 
 </script>
+
+<?   
+   if (isPrint()) return;
+
+  //require_once dirname(__FILE__)."/MENU_dates.php";
+  //require_once dirname(__FILE__)."/MENU_countries.php";
+
+  $dateLegend="";
+  $allTimesDisplay=0;
+
+	if ( $op!='comp' ) {
+		if (! $CONF['seasons']['use_season_years'] ) $season=0;
+	}
+
+	if ($season) {
+		$dateLegend.=_SEASON.' '.$season;
+	} else {
+	  if ($year && $month && $day && $op=="list_flights") $dateLegend.=sprintf("%02d.%02d.%04d",$day,$month,$year);
+	  else if ($year && !$month ) $dateLegend.=$year;
+	  else if ($year && $month ) $dateLegend.=$monthList[$month-1]." ".$year;
+	  else if (! $year ) {
+		// $dateLegend.=_ALL_TIMES;
+		$dateLegend.=_SELECT_DATE;
+		$allTimesDisplay=1;
+	  }
+	}
+
+  $countryLegend="";
+  $allCountriesDisplay=0;
+  if ($country) $countryLegend=$countries[$country];
+  else {
+  	$countryLegend=_WORLD_WIDE;
+  	$allCountriesDisplay=1;
+  }
+
+
+  $pilotLegend="";
+  $allPilotsDisplay=0;
+  if ($pilotID) $pilotLegend=getPilotRealName($pilotID,$serverID);
+  else {
+  	$pilotLegend=_ALL_PILOTS;
+  	$allPilotsDisplay=1;
+  }
+
+  $takeoffLegend="";
+  $allTakeoffDisplay=0;
+  if ($takeoffID) $takeoffLegend=getWaypointName($takeoffID);
+  else {
+		$takeoffLegend=_ALL_TAKEOFFS;
+		$allTakeoffDisplay=1;
+	}
+
+	# Martin Jursa, 22.05.2007
+	$showNacClubSelection=!empty($CONF_use_NAC) && empty($dontShowNacClubSelection);
+	if ($showNacClubSelection) {
+		$nacClubLegend=_ALL_NACCLUBS;
+		if (!empty($forceNacId)) $nacid=$forceNacId; # just to make sure
+		if ($nacid) {
+			if ($nacclubid) {
+				require_once(dirname(__FILE__)."/CL_NACclub.php");
+				$nacClubLegend=NACclub::getClubName($nacid, $nacclubid);
+				if ($nacClubLegend=='') {
+					$nacclubid=0;
+					$nacClubLegend=_ALL_NACCLUBS;
+				}
+			}
+		}
+	}
+
+
+  if ( $op=="list_pilots" && $comp) $isCompDisplay=1;
+  else $isCompDisplay=0;
+
+
+$arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
+
+?>
 
 
 <div class="mainBox secondMenu" align="left" style="margin-top:-1px;">
@@ -605,6 +651,13 @@ if (! $dontShowCountriesSelection ) {
 			<?=leoHtml::img("icon_settings.gif",0,0,'absmiddle',_MENU_MY_SETTINGS,'icons1')?>			
 			 <? echo $arrDownImg; ?></a>
     </div>
+    <?php  if ( in_array($op,array('list_flights','comp','competition')) && L_auth::isAdmin($userID)  ) { ?>
+    <div id='pdfMenuID' class="menuButton">
+			<a href="#" onClick="toogleMenu('pdf');return false;">
+			 <?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?>
+			 <? echo $arrDownImg; ?></a>
+    </div> 
+   <?php  }?>
 
 </div> <?php  // end of second menu div ?>
 
@@ -614,13 +667,57 @@ if (! $dontShowCountriesSelection ) {
 <div class='closeButton closeLayerButton'></div>
 <div class='content' style='padding:5px;'>
         <? // display this url 	, New way , all is taken care from getLeonardoLink()
-            $thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
-                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
+        
+                	$currentArgs=array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
+                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) ;
+        	
+        	if ($_GET['fltr']) $currentArgs['fltr']=$_GET['fltr'];
+        	if ($_GET['comp']) $currentArgs['comp']=$_GET['comp'];
+        	//if ($_GET['filter01']) $currentArgs['filter01']=$_GET['filter01'];
+        
+            $thisURL=getLeonardoLink($currentArgs,($CONF['links']['type']==1?2:0) );
+            // $thisURL=str_replace('&','_',$thisURL);
+            // echo $thisURL;
+        
+             
+            //$thisURL=getLeonardoLink(array('op'=>'useCurrent','takeoffID'=>($takeoffID+0),
+            //                        'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
         ?>
         <a  href='<?=$thisURL?>'><?=leoHtml::img("icon_bookmark.gif",0,0,'absmiddle',_This_is_the_URL_of_this_page,'icons1')?> <?=_This_is_the_URL_of_this_page?></a>
 
 </div>
 </div>
+
+<?php  if ( in_array($op,array('list_flights','comp','competition')) && L_auth::isAdmin($userID) ) { ?>
+
+<div id="pdfDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>
+<div class='content' style='padding:10px; text-align:center;'>
+        <? 
+        
+        //$printArgs=array_merge( $_GET, array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
+         //                           'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
+        	$currentArgs=array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
+                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) ;
+        	
+        	if ($_GET['fltr']) $currentArgs['fltr']=$_GET['fltr'];
+        	if ($_GET['comp']) $currentArgs['comp']=$_GET['comp'];
+        	//if ($_GET['filter01']) $currentArgs['filter01']=$_GET['filter01'];
+        
+            $thisURL=urlencode( $_SERVER['SERVER_NAME'].getLeonardoLink($currentArgs,($CONF['links']['type']==1?2:0) ) );
+            // $thisURL=str_replace('&','_',$thisURL);
+            // echo $thisURL;
+        ?>
+        <a  href='javascript:printPDF("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?></a>
+        <?php  if (  L_auth::isAdmin($userID) ) { ?>
+        <a  href='javascript:printPDFdirect("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?> [*]</a>
+        <?php } ?>
+        
+        <BR><BR>
+	<div id='pdfDiv'></div>
+</div>
+</div>
+<? } ?>
 
 <div id="filterDropDownID" class="secondMenuDropLayer"  >
 <div class='closeButton closeLayerButton'></div>

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_comp.php,v 1.31 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: GUI_comp.php,v 1.32 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -282,10 +282,17 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 	     $pilotIDinfo=str_replace("_","u",$pilotID);
 		 echo "<TR $bg>";
 		 echo "<TD>".($i)."</TD>"; 	
-	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>".		 
-				"<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
+	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>";
+
+	     if (!isPrint()) {
+			 echo "<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>";
-					
+	     } else {
+	     	 echo "<a class='betterTip' id='tpa0_$pilotIDinfo' href='".
+	     	 getLeonardoLink(array('op'=>'pilot_profile','pilotID'=>$pilotID)).
+	     	  "'  >".$pilot['name']."</a>";
+	     }
+	     			
 		if ($pilot['NACid'] && $pilot['NACmemberID'] && $pilot['NACclubID'] &&
 				 $CONF['NAC']['display_club_details_on_pilot_list']
 		) {	

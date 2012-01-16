@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.28 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.29 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
@@ -149,7 +149,7 @@ function setClub(NACid) {
 		<? } ?></td>
     </tr>
     <tr>
-      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
+      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_Type?></div></td>
       <td  valign="top"><select name="startType" id="startType">
         <?
 			foreach ( $CONF['startTypes'] as $s_id=>$s_type) {

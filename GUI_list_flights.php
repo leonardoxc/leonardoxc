@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.124 2010/11/26 08:33:32 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.125 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -16,9 +16,6 @@
 	// Support for filtering by NACclubs via $_REQUEST[nacclub] added
 	// computed column "SCORE_SPEED"=FLIGHT_KM/DURATION added
 	
-	function replace_spaces($str) {
-		return str_replace(" ","&nbsp;",$str);
-	}
 
 	$legend="";
 	$legend="<b>"._MENU_FLIGHTS."</b> ";
@@ -286,6 +283,67 @@ if (0) {
 		}		
 		echo "</pre>";
 		echo "#flight found : $igcNum<BR>";
+		exit;
+	}
+	
+	if ($RUN['view']=='print' ) {
+		
+		 
+		require_once dirname(__FILE__)."/CL_pdf.php";
+		
+		require_once dirname(__FILE__)."/MENU_second_menu.php";
+		// now the real query	
+		$res= $db->sql_query($query);
+		
+		if($res <= 0){
+		 echo("<H3> Error in query! </H3>\n");
+		 exit();
+		}
+		
+		$tmpDir=md5($_SERVER['REQUEST_URI']);
+		echo "START PDF\n";
+		$num=0;
+		
+		$flightUrl=str_replace("list_flights","pilot_profile_stats","http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"]).'0';
+		//$flightUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights','print'=>1) );
+		$flights[$num]=$flightUrl;
+		
+			
+		// echo "<hr> url is ".$_SERVER['REQUEST_URI'].'<hr> path info is '.$_SERVER['PATH_INFO'].'<hr>';
+		
+		
+		echo "PDF URL:$flightUrl\n";
+		
+		$num++;
+		while ($row = $db->sql_fetchrow($res)) { 
+			
+			$flightUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"],'print'=>1) );
+			$flights[$num]=$flightUrl;
+			 
+			echo "PDF URL:$flightUrl\n";
+			
+			$num++;
+			if ($num>$CONF['pdf']['maxflightsPerPrint']) break;		
+		}
+		if ($RUN['remote']=='remote' ) {
+			// no real proccess is done here
+			echo "END PDF\n";
+			exit;
+		}
+		
+		//do {
+		//	$tmpDir=rand(0,10000000);
+		//} while (is_dir($CONF['pdf']['tmpPath'].'/'.$tmpDir)) ;
+		// print_r($flights);
+		$pdfFile=leoPdf::createPDFmulti($flights,$tmpDir);	
+
+		// $pdfFile=$tmpDir.'/logbook.pdf';
+		if ($pdfFile) {				
+			echo "<a href='".$moduleRelPath.'/'.$CONF['pdf']['tmpPathRel'].'/'.$pdfFile."' target='_blank'>PDF is ready</a>";
+			echo "\n\n".$moduleRelPath.'/'.$CONF['pdf']['tmpPathRel'].'/'.$pdfFile;
+		} else {				
+			echo "ERROR: PDF creation failed";
+		}
 		exit;
 	}
 	
@@ -642,8 +700,21 @@ function removeClubFlight(clubID,flightID) {
 			echo $valStr;
 		}
 	   echo "</TD>";
-	   echo "<TD>".leoHtml::img("icon_cat_".$row["cat"].".png",0,0,'',$gliderCatList[$row["cat"]],'icons1')."</td>".
-   	   "\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
+	   
+	    
+	   echo "<TD><div class='catInfo'>";
+	   
+	   $gliderTypeDesc=$gliderCatList[$row["cat"]];
+	   if ($row["category"]) {
+	   		$gliderTypeDesc.=" - ".$CONF['gliderClasses'][$row["cat"]]['classes'][$row["category"]];
+	   		$categoryImg="<div class='categoryListIconDiv'>".leoHtml::img("icon_class_".$row["category"].".png",0,0,'top',$gliderTypeDesc,'icons1','')."</div>";	    	
+	   } else {
+	   		$categoryImg='';
+	   }
+	   
+	   echo leoHtml::img("icon_cat_".$row["cat"].".png",0,0,'top',$gliderTypeDesc,'icons1 catListIcon'). $categoryImg;
+	   
+	   echo "</div></td>\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
 		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
 			if ( $row['airspaceCheckFinal']==-1 ) {
@@ -663,15 +734,14 @@ function removeClubFlight(clubID,flightID) {
 					if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
 						$airspaceProblem=' bgcolor=#FF0008 ';
 					}
-				}
-				else{
+				} else {
 					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
-					$airspaceProblem=' bgcolor=#FF0008 ';
-				}
-					elseif (strpos($tmpairspaceName, 'CLASSD')!==false) { 
 						$airspaceProblem=' bgcolor=#FF0008 ';
-					}
-					else $airspaceProblem=' bgcolor=#FFFF00 ';
+					} else if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					} else {
+						$airspaceProblem=' bgcolor=#FFFF00 ';
+					}	
 				}
 				# end hack
 			} else

@@ -71,7 +71,7 @@ if ($opMode==1) { // phpnuke -> always used with phpnuke template only
 	// phpbb3 is installed on /phpbb3 
 	// leonardo/ is installed on /other/leonardo
 	// $phpbb3AbsPath=realpath( dirname(__FILE__).'/../../../phpbb3' );
-
+	$phpbb_root_path=$phpbb3AbsPath.'/';
 }
 
 

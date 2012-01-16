@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.16 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.17 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -69,11 +69,41 @@ class pilot{
   		if($res <= 0){   
 			 echo "Error in pilotExists() $query<BR>";
 		     return;
-	    }
-		if ($db->sql_numrows($res) ) return 1;
+	    }   
+		if ($row = $db->sql_fetchrow($res) ) return 1;
 		else return 0;
 	}
 
+	
+	function movePilotFlights($newServerID,$newUserID){
+		$newPilot=new pilot($newServerID,$newUserID);
+		if (!$newPilot->pilotExists()) {
+			echo "movePilotFlights($newServerID,$newUserID): The target pilot does not exist<BR>";
+			return 0;
+		}
+		
+		global $db,$flightsTable;
+		// first see if a mapping exists
+		
+		$query="SELECT ID FROM $flightsTable WHERE userID=".$this->pilotID.
+				" AND userServerID=".$this->serverID." ";
+		
+			
+		$res= $db->sql_query($query);		
+		if($res <= 0){
+			echo("<H3> Error in movePilotFlights query! $query</H3>\n");
+			return 0;
+		}	
+		while (  $row = $db->sql_fetchrow($res) ) {	
+			echo "moving flight ".$row['ID'].'<BR>';
+			// continue;
+			$flight2move=new flight();
+			$flight2move->getFlightFromDB($row['ID']);
+			$flight2move->changeUser($newUserID,$newServerID);
+		}
+		
+	}
+	
 	function pilotMapping() {
 		global $db,$pilotsTable,$remotePilotsTable;
 		// first see if a mapping exists
@@ -186,8 +216,9 @@ class pilot{
     }
 
 	function putToDB($update=0) {
-		$this->putToDB1($update);
-		$this->putToDB2($update);
+		$res1=$this->putToDB1($update);
+		$res2=$this->putToDB2($update);
+		return $res1 && $res2;
 	}
 	
 	function putToDB1($update=0) {

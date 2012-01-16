@@ -125,7 +125,7 @@ function _MiniXMLLog ($message)
 
 function _MiniXMLError ($message)
 {
-	error_log("MiniXML ERROR:\n$message\n");
+	// error_log("MiniXML ERROR:\n$message\n");
 	
 	return NULL;
 	

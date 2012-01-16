@@ -8,13 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.14 2011/01/16 21:38:37 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.15 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
 // nice exmple in action 
 //http://onerutter.com/open-source/jquery-facebook-like-plugin.html
 
+if (! $flightID) {
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
 	require_once dirname(__FILE__)."/config.php";
  	require_once dirname(__FILE__)."/EXT_config.php";
@@ -23,6 +24,7 @@
 	require_once dirname(__FILE__)."/CL_flightData.php";
 	require_once dirname(__FILE__)."/FN_functions.php";	
 	require_once dirname(__FILE__)."/FN_UTM.php";
+
 	require_once dirname(__FILE__)."/FN_waypoint.php";	
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/FN_pilot.php";
@@ -32,10 +34,12 @@
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 
-
 	$flightID=makeSane($_GET['flightID'],1);
 	if ($flightID<=0) exit;
-		
+	$print=$_GET['print'];		
+
+}
+
 	$flight=new flight();
 	$flight->getFlightFromDB($flightID);
 	
@@ -49,16 +53,17 @@
 			L_auth::isModerator($userID)  ) {
 		$moderatorRights=true;
 	}
-				 	
+	
+		 	
   ?>
-  
+<?php  if (!$print) { ?>
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html>
 	<head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?=$CONF_ENCODING?>">
   
 <link href="<?=$moduleRelPath."/templates/".$PREFS->themeName."/style.css"; ?>" rel="stylesheet" type="text/css">
-
+<?php  } ?>
 <style type="text/css">
 
 .commentsContainer , .commentsContainer p, .commentsContainer td, .commentsContainer div,.commentsContainer span{
@@ -76,11 +81,12 @@
 	.depth8 { margin-left:160px; width:550px;}
 	.depth9 { margin-left:180px; width:530px;}
 	
-	
+<?php  if (!$print) { ?>	
 a {	text-decoration:none; 	color:#d02b55; 	}
 a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 
 *{margin:0;padding:0;}
+<?php  } ?>
 	
 #submitComment input {
 	color:#000000;
@@ -819,13 +825,13 @@ if ($userID>0) {
 
 <table border='0' cellpadding=5 width='100%'><tr>
 <td width="220">
-<? if ($CONF['comments']['guestComments'] ||  $userID>0 ) { ?>
+<? if ( ( $CONF['comments']['guestComments'] ||  $userID>0) && !$print) { ?>
 	<div id='parent0' class='commentActions reply' style='width:200px; height:24px; padding-top:8px; font-size:16px;'><?=_Leave_a_comment?></div>
 <? } ?>    
 </td>
     
 <td align="left">
-<? if ($moderatorRights) { ?>
+<? if ($moderatorRights && !$print) { ?>
   <label><?=_Comments_Enabled?>
   <input type="checkbox" name="commentsStatus" id="commentsStatus" value="checkbox" <?=$commentsEnabled?'checked':''?> />
   </label>
@@ -833,16 +839,21 @@ if ($userID>0) {
 
   <div id='setCommentsStatusText'>
   <?
-  		if ($commentsEnabled) echo "<span class='green'>"._Comments_are_enabled_for_this_flight."</span>";
-		else echo "<span class='red'>"._Comments_are_disabled_for_this_flight."</span>";
+  		if (!$print ) {
+  			if ($commentsEnabled ) echo "<span class='green'>"._Comments_are_enabled_for_this_flight."</span>";
+			else echo "<span class='red'>"._Comments_are_disabled_for_this_flight."</span>";
+  		}
   ?></div>
  </td>
 <td align="left">
+	<?php  if (!$print ) { ?>
 	<div id="BookmarkButton" ></div></td>
+	<?php  } ?>
 <td>
   <?
-  echo "<div id='rssButton'>".leoHtml::img("rss.gif",0,0,'absmiddle','','icons1').leoHtml::img("icon_arrow_down.gif",0,0,'','','icons1')."</div>";
-		
+  if (!$print ) {
+  	echo "<div id='rssButton'>".leoHtml::img("rss.gif",0,0,'absmiddle','','icons1').leoHtml::img("icon_arrow_down.gif",0,0,'','','icons1')."</div>";
+  }		
 		
  ?></td>
 </tr>
@@ -850,9 +861,13 @@ if ($userID>0) {
 
 <div style='clear:both'></div>
 
+<?php  if (!$print ) { ?>
 <div id='rssBox'>
 	<a href='<?=moduleRelPath()?>/rss.php?op=comments&flightID=<?=$flightID?>'><?=_RSS_for_the_comments?></a>
 </div>
+
+<?php  } ?>
+
 
 <div id='translateBox'>
 	<?=_Translate_to?><BR />

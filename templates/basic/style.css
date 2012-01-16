@@ -171,9 +171,7 @@ html>body .tableTitle {
 	
 }
 
-html>body .mainBox {
-	width:756px;
-}
+
 
 
 .tableHeader {
@@ -397,6 +395,15 @@ border:0;
 	
 }
 
+
+.categoryListIcon {display:block; position:absolute; top:0px; left:0px; float:none; clear:none; z-index:22; }
+.categoryListIconDiv  { display:block; position:absolute; top:9px; left:9px; float:none; clear:none; z-index:22;  }
+.catListIcon { display:block; position:absolute; top:0px; left:0px; float:none; clear:none; z-index:1; }
+
+.catInfo { display:block; margin:0; padding:0; width:22px; height:22px; clear:none; overflow:hidden; position:relative; z-index:0;}
+
+
+
 .commentDiv { display:block; position:absolute; top:0px; left:44px; float:none; clear:none; z-index:1;}
 
 .checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px;
@@ -431,12 +438,6 @@ table.listTable tr:hover , table.listTable tr.sfhover {
 /*------------------------
  End of listTable rtelated items
 ------------------------*/
-
-/*  listTable for tabber needs to be 15 px less*/
-.listTableTabber {
-width:760px;
-}
-
 
 .SortHeader {
 	/*norad*/

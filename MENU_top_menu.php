@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.95 2010/09/13 14:00:10 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.96 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -376,7 +376,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
         <li><a href="<?=getLeonardoLink(array('op'=>'change_email')) ?>"><?=_MENU_CHANGE_EMAIL?></a></li>       
         <? } ?>
         
-		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotID'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
 		<li class='li_space'></li>
 		<? } ?>
 		

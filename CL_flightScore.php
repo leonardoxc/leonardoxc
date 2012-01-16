@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightScore.php,v 1.21 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: CL_flightScore.php,v 1.22 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -134,8 +134,9 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 */	
 		$this->scoresNum=0;
 		$this->scores=array();
-
-		for ($i=1;$i<=2;$i++) {
+		$scoringSetsNum=count($CONF['scoring']['sets']);
+		
+		for ($i=1;$i<=$scoringSetsNum;$i++) {
 			$this->scores[$i]['bestScore']=0;
 			$this->scores[$i]['bestScoreType']=0;
 		}
@@ -152,7 +153,7 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 			// method=2 WXC
 			if ($var_name=='TYPE') {
 				$scoreType=$var_value ;
-				for ($i=1;$i<=2;$i++) {
+				for ($i=1;$i<=$scoringSetsNum;$i++) {
 					$this->scores[$i][$scoreType]=array();					
 				}
 				$turnpointNum=1;
@@ -190,13 +191,17 @@ OUT p2206 15:02:11 N45:18.088 E 5:54.149 18.013 km=c
 				$thisTP=new gpsPoint( $pointStringFaked , 0 );	
 				$tpStr=$thisTP->to_IGC_Record();
 
-				$this->scores[1][$scoreType]['tp'][$turnpointNum]=$tpStr;
-				$this->scores[2][$scoreType]['tp'][$turnpointNum]=$tpStr;
+				//$this->scores[1][$scoreType]['tp'][$turnpointNum]=$tpStr;			
+				//$this->scores[2][$scoreType]['tp'][$turnpointNum]=$tpStr;
+				
+				for ($ik=1;$ik<=$scoringSetsNum;$ik++) {
+					$this->scores[$ik][$scoreType]['tp'][$turnpointNum]=$tpStr;
+				}
 				$turnpointNum++;
 
 			} else if ($var_name=='FLIGHT_KM') {
 				$distanceTmp=trim($var_value);
-				for ($i=1;$i<=2;$i++) {
+				for ($i=1;$i<=$scoringSetsNum;$i++) {
 					$this->scores[$i][$scoreType]['distance']=$distanceTmp;	
 					$this->scores[$i][$scoreType]['score']=$CONF['scoring']['sets'][$i]['types'][$scoreType] * $distanceTmp;
 					if ( $this->scores[$i][$scoreType]['score'] > $this->scores[$i]['bestScore'] ) {

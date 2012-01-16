@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.59 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.60 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -540,6 +540,11 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	set_time_limit (200);
 	$flight->computeScore();
 	$flight->updateTakeoffLanding();
+	
+	//	echo "TakeoffID:".$flight->takeoffID."<BR>";
+	if ( in_array($flight->takeoffID, $CONF['takeoffs']['private']) ) {
+		$flight->private=1;
+	}
 	$flight->putFlightToDB(1); // update
 	
 	return array(1,$flight->flightID); // ALL OK;

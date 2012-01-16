@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.19 2010/03/16 13:00:12 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.20 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
@@ -39,7 +39,11 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
 
 	
-<? require_once dirname(__FILE__)."/MENU_top_menu.php"; ?>
+<? 
+if ( !isPrint() ) { 
+	require_once dirname(__FILE__)."/MENU_top_menu.php"; 
+}
+?>
 
 <div class="main_text" align="left" style="clear:both;padding:0;margin:0">
 <a name="top_of_page" ></a>

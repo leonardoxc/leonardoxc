@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_pilot_map.php,v 1.11 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_admin_pilot_map.php,v 1.12 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -23,10 +23,10 @@
   if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
   
   $legend="Pilot Mapping Tables";
+  
   openMain($legend,0,'');
   
-  
-	if ($_GET['moveFlights']) {
+  if ($_GET['moveFlights']) {
 		$confirmMove=$_GET['confirmMoveFlights']+0;
 		echo "MOVING ALL FLIGHTS FROM MAPPED EXTERNAL PILOTS TO THEIR LOCALY MAPPED ID<BR><BR>";
 	
@@ -35,7 +35,7 @@
 		}
 		
 		$compareField='hash';
-		if (0) {
+		if (1) {
 			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  = 0 ";
 		} else {
 			$localServerOnlyClause=" AND  $remotePilotsTable.serverID  = 5 ";
@@ -135,13 +135,56 @@ function getPilotsInfo(row_id,serverID1,pilotID1,serverID2,pilotID2) {
 		top:$("#row_"+row_id).offset().top+16 					
 	}).show();	
 	
-	$("#updateDataDiv").html("<a href='javascript: getPilotInfo("+serverID1+","+pilotID1+",\"pilotInfoDiv1\",1)'>Update Local DB</a>  \
-:: <a href='javascript: getPilotInfo("+serverID1+","+pilotID1+",\"pilotInfoDiv1\",2)'>Update Local DB (delete all current data)</a>");
+	$("#updateDataDiv").html("<a href='javascript: getPilotInfo("+serverID1+","+pilotID1+
+			",\"pilotInfoDiv1\",1)'>Update Local DB</a>" +
+			":: <a href='javascript: getPilotInfo("+serverID1+","+pilotID1+
+			",\"pilotInfoDiv1\",2)'>Update Local DB (delete all current data)</a> :: "+
+			 "<a href='javascript:copyRemoteToLocalInfo("+serverID1+","+pilotID1+","+serverID2+","+pilotID2+
+					",\"pilotInfoDiv1\")'>Copy Remote Info -> Local</a> :: "
+
+			);
 
 	getPilotInfo(serverID1,pilotID1,"pilotInfoDiv1",0) ;
 	getPilotInfo(serverID2,pilotID2,"pilotInfoDiv2",0) ;
 
 }
+
+
+function movePilotsFlights(divName,serverID,pilotID,serverID2,pilotID2) {
+	$("#pilotInfoDivExt").css({
+		left:$("#row_"+divName).offset().left,
+		top:$("#row_"+divName).offset().top+16 					
+	}).show();	
+
+	
+    $("#updateDataDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
+	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
+		{ op:"movePilotFlights","serverID1":serverID,"pilotID1":pilotID,"serverID2":serverID2,"pilotID2":pilotID2}, 
+		function(result){ 
+			
+			$("#updateDataDiv").html(result).show();	
+			$("#pilotInfoDivExt").show();	
+			
+		}
+	);		
+	
+}
+
+
+
+function copyRemoteToLocalInfo(serverID1,pilotID1,serverID2,pilotID2,divName) {
+    $("#"+divName).html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
+	$.get('<?=$moduleRelPath?>/EXT_pilot_functions.php',
+		{ op:"copyRemoteToLocalInfo","serverID1":serverID1,"pilotID1":pilotID1,"serverID2":serverID2,"pilotID2":pilotID2}, 
+		function(result){ 
+
+			$("#"+divName).html(result).show();	
+			$("#pilotInfoDivExt").show();	
+			
+		}
+	);		
+	
+}	
 
 function getPilotInfo(serverID,pilotID,divName,update) {
     $("#"+divName).html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();	
@@ -161,6 +204,7 @@ function getPilotInfo(serverID,pilotID,divName,update) {
 	);		
 	
 }
+
 
 function showResults(textStr) {
   $("stickyEl").html(textStr); 
@@ -200,7 +244,20 @@ function showResults(textStr) {
 			<td id='$pilotID1'>".$row['remoteServerID']."</td>		
 			<td>".$row['remoteUserID']."</td>
 			<td><a href='".CONF_MODULE_ARG."&op=list_flights&year=0&month=0&pilotID=$pilotID2'>".$pilotNames[$pilotID2]['lname']." ".$pilotNames[$pilotID2]['fname']."</td><td>".$pilotNames[$pilotID2]['country']."</td><td>".$pilotNames[$pilotID2]['CIVL_ID']."</td>
-			<td> -> </td>
+			<td width=80>  
+			
+				<a href='javascript:movePilotsFlights($i,".
+			 $row['remoteServerID'].','.$row['remoteUserID'].','.
+			 $row['serverID'].','.$row['userID'].")'>*-></a>
+
+			 ->
+			 
+			 <a href='javascript:movePilotsFlights($i,".
+			 $row['serverID'].','.$row['userID'].','.
+			 $row['remoteServerID'].','.$row['remoteUserID'].")'><-*</a>
+			 
+			
+			</td>
 			<td id='$pilotID2'>".$row['serverID']."</td>
 			<td>".$row['userID']."</td>
 			

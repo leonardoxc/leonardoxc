@@ -8,12 +8,15 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.81 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.82 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
 require_once dirname(__FILE__)."/CL_auth.php"; 
 
+function replace_spaces($str) {
+	return str_replace(" ","&nbsp;",$str);
+}
 
 function htmlDecode($encoded) {
 	return strtr($encoded,array_flip(get_html_translation_table(HTML_ENTITIES)));
@@ -974,15 +977,23 @@ function get_absolute_path($path) {
 		return implode(DIRECTORY_SEPARATOR, $absolutes);
 }
 	
+function isPrint() {	
+	global $RUN;
+	
+	if( $RUN['view']=='print') return 1;
+	else return 0;
+
+}
 // the method to use for links in the menu and other parts of leonardo
 // 1 -> current old way, using &name=value args + session variables
 // 2 -> same as 1 but all sessions vars are in the url, this means that the url 
 // 3 -> SEO urls
 
-function getLeonardoLink($argArray) {
+function getLeonardoLink($argArray,$forcedLinkType=0) {
 	global $CONF,$lng, $lang2iso,$op;
 	
 	$linkType=	$CONF['links']['type'];
+	if ($forcedLinkType) $linkType=$forcedLinkType;
 	
 	if (in_array($argArray['op'],array('login','admin','conf_htaccess') ) ) {
 		$linkType=1;
@@ -991,7 +1002,7 @@ function getLeonardoLink($argArray) {
 	// echo "#".$_SESSION['fltr'];
 	$filterArg='';
 	if ($_SESSION['fltr'] && !in_array("fltr",$argArray,true )) {
-		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots','explore_ge'))  ) {
+		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots','pilot_profile_stats','explore_ge'))  ) {
 			$filterArg.="&fltr=".$_SESSION['fltr'];				
 		}
 	}
@@ -1008,6 +1019,8 @@ function getLeonardoLink($argArray) {
 	} else 	if ($linkType==2) {
 		global $op,$rank,$subrank;
 		global $year,$month,$day,$season,$pilotID,$takeoffID,$country,$cat,$clubID;
+		global $brandID,$filter01,$xctype,$class;
+		
 		global $nacid,$nacclubid;
 
 		foreach($argArray as $argName=>$argValue){
@@ -1025,6 +1038,10 @@ function getLeonardoLink($argArray) {
 			$thisURL.="&rank=$rank&subrank=$subrank&year=$year&season=$season";
 		else
 			$thisURL.="&year=$year&month=$month&day=$day&season=$season&pilotID=$pilotID&takeoffID=$takeoffID&country=$country&cat=$cat&clubID=$clubID";
+		
+		if ($op=="list_flights")
+					$thisURL.="&brandID=$brandID&filter01=$filter01&xctype=$xctype&class=$class";
+					 			
 		# Martin Jursa 25.05.2007: support for nacclub-filtering
 		if (!empty($CONF_use_NAC)) {
 			if ($nacclubid && $nacid) {
@@ -1035,7 +1052,7 @@ function getLeonardoLink($argArray) {
 		
 	} else 	if ($linkType==3) { // SEO URLS 
 		global $op,$rank,$subrank;
-		global $year,$month,$day,$season,$serverID,$pilotID,$pilotIDview;
+		global $year,$month,$day,$season,$serverID,$serverIDview,$pilotID,$pilotIDview;
 		global $takeoffID,$country,$cat,$class,$xctype,$clubID;
 		global $nacid,$nacclubid,$brandID;
 
@@ -1079,9 +1096,13 @@ function getLeonardoLink($argArray) {
 			$args.='pilot/'.$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
 						
-		} else if ($opTmp=='pilot_profile_stats') {	
-			$args.='pilot/'.$argArray['pilotIDview'].'/stats/';
-			return $CONF['links']['baseURL'].'/'.$args;
+		} else if ($opTmp=='pilot_profile_stats') {
+			
+			// $args.='pilot/'.($serverIDview+0).'_'.($pilotIDview).'/stats/';
+			$args.='stats/';
+			// $args.='pilot/'.$argArray['pilotIDview'].'/stats/';
+			
+			// return $CONF['links']['baseURL'].'/'.$args;
 			
 		} else if ($opTmp=='show_waypoint') {
 			$args.='takeoff/'.$argArray['waypointIDview'];
@@ -1099,7 +1120,7 @@ function getLeonardoLink($argArray) {
 		}
 		
 		
-		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
+		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp','pilot_profile_stats');
 		$args2process=array('year','month','day','season','country','rank','subrank','cat','class','xctype','brandID',
 							'clubID','nacclubid','nacid','pilotID','takeoffID');
 		$args2Array=array();
@@ -1114,7 +1135,9 @@ function getLeonardoLink($argArray) {
 					$args2Array[$argName]=$argArray[$argName];				
 				}else {				
 					if ( $argName=='pilotID') {
-						$args2Array[$argName]=($serverID+0).'_'.($pilotID);					
+						//if ($opTmp!='pilot_profile_stats' ) {
+							$args2Array[$argName]=($serverID+0).'_'.($pilotID);
+						//}					
 					}else {
 						$args2Array[$argName]=${$argName};
 					}	
@@ -1177,7 +1200,7 @@ function getLeonardoLink($argArray) {
 			
 			if ($opTmp!='comp' &&  $opTmp!='competition') {
 				
-				if ($opTmp!='list_pilots')
+				if ($opTmp!='list_pilots' )
 					$args.=',pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all');			
 				if ( $opTmp!='list_takeoffs' )	
 					$args.=',takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');
@@ -1205,7 +1228,10 @@ function getLeonardoLink($argArray) {
 			$args.='page/'.$argArray['op'];
 			unset($argArray['op']);
 		}
-		
+		if ($argArray['print']) {
+			$isPrint=1;
+			unset($argArray['print']);
+		}
 		$i=0;
 		foreach($argArray as $argName=>$argValue){
 			if ($argName!='op' ) {
@@ -1215,6 +1241,9 @@ function getLeonardoLink($argArray) {
 			}	
 		}
 		$args.=$filterArg;
+		
+		if ($isPrint) $args.='&print';
+		 
 		return $CONF['links']['baseURL'].'/'.$args;
 	}
 }

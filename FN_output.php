@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.58 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.59 2012/01/16 07:21:22 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -595,7 +595,7 @@ with (pilotTip)
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 	
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotID'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
 	'</td></tr>'+
     '<tr><td class="infoBox">'+

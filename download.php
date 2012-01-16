@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download.php,v 1.36 2010/09/16 09:44:26 manolis Exp $                                                                 
+// $Id: download.php,v 1.37 2012/01/16 07:21:23 manolis Exp $                                                                 
 //
 //************************************************************************
 	
@@ -243,11 +243,13 @@
 		
 		$xml.="</Folder>\n</kml>\n";
 		
-		require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
-		$NewEncoding = new ConvertCharset;
-		$FromCharset=$langEncodings[$currentlang];
-		$xml = $NewEncoding->Convert($xml, $FromCharset, "utf-8", $Entities);
-		
+		if ( ! $CONF_use_utf) {
+			require_once dirname(__FILE__)."/lib/ConvertCharset/ConvertCharset.class.php";
+			$NewEncoding = new ConvertCharset;
+			$FromCharset=$langEncodings[$currentlang];
+			$xml = $NewEncoding->Convert($xml, $FromCharset, "utf-8", $Entities);
+		}
+				
 		$file_name="Leonardo site guide.kml";
 	
 	} else if ($type=="explore_ge") {

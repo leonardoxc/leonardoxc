@@ -6,7 +6,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: page_header_leonardo.php,v 1.11 2010/11/23 11:41:08 manolis Exp $
+ *   $Id: page_header_leonardo.php,v 1.12 2012/01/16 07:21:23 manolis Exp $
  *
  *
  ***************************************************************************/
@@ -146,7 +146,8 @@ $Ltemplate->assign_vars(array(
 <meta name="robots" content="' . $board_config['meta_robots'] .'">
 <meta name="distribution" content="' . $board_config['meta_distribution'] .'">
 <meta name="date-creation-yyyymmdd" content="' . $board_config['meta_date_creation_year'] . '' . $board_config['meta_date_creation_month'] . '' . $board_config['meta_date_creation_day'] . '">
-<meta name="date-revision-yyyymmdd" content="' . $board_config['meta_date_revision_year'] . '' . $board_config['meta_date_revision_month'] . '' . $board_config['meta_date_revision_day'] . '">',
+<meta name="date-revision-yyyymmdd" content="' . $board_config['meta_date_revision_year'] . '' . $board_config['meta_date_revision_month'] . '' . $board_config['meta_date_revision_day'] . '">
+'.$metaFlight,
 
 	'PAGE_TITLE' => $page_title,
 	'LAST_VISIT_DATE' => sprintf($lang['You_last_visit'], $s_last_visit),
