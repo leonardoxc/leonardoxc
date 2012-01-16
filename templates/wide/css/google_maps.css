@@ -1,0 +1,112 @@
+ 
+body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
+
+body {margin:0px; background-color:#FFFFFF}
+
+.box {
+	background-color:#F4F0D5;
+	border:1px solid #555555;
+	padding:3px; 
+	margin-bottom:5px;
+}
+
+.boxTop {margin:0; }
+
+.infoString{
+	color:#FF6633;
+	font-size:10px;
+	font-weight:normal;
+}
+
+#map { 
+	 margin:0;
+	 padding:0;
+	 width:600px;
+	 height:480px;
+	 border: 1px solid #999999;
+}
+			 
+#sidebar2 {   		
+	  display:block; 
+	  font-size: 11px;		  
+	  border: 1px solid #999999;
+	  height:100%;
+	  margin-left:10px;
+	  padding-left: 0.5em;
+	  padding-right: 0.5em;
+	  font-family: Helvetica, Arial, sans-serif;
+}
+
+.controls { margin: 0; padding: 0; font-size: 11px; text-align: left;  width: 100%;}
+.controls button { font-size: 11px;	margin:0px;	padding:0px;	border:1px solid darkred; background-color: #eee;}
+* html .controls button { margin: 0 2px 0 0px;  line-height: 12px; }
+
+.info img { float: left; }
+#zselect { padding-top: 1em; }
+v\:* {
+	  behavior:url(#default#VML);
+}
+     
+div.markerTooltip, div.markerDetail {
+	  color: black;
+	  font-weight: bold;
+	  background-color: white;
+	  white-space: nowrap;
+	  margin: 0;
+	  padding: 2px 4px;
+	  border: 1px solid black;
+}
+
+a:link, a:visited, a:active { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:11px; text-decoration:none;  }
+
+fieldset.legendBox  { 
+	height:auto;
+	
+	border-style: solid; 
+	border-right-width: 1px; border-bottom-width: 1px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E5E5E5; border-left-color: #E5E5E5;
+
+	display:block;
+	float:right;
+	clear:both;
+
+	padding:0;
+	padding-left:1px; 	
+	padding-bottom:4px;
+	
+	margin-bottom:0.5em;
+	margin-right:0px;
+	margin-left:2px;
+	text-align:left;
+	background-color:#FFFFFA;
+
+	width:135px;
+}
+
+
+
+.legendBox legend {
+	border:1px outset #E2E2E2;
+	padding:0.13em 0.95em 0.13em 0.95em;
+	margin:0;
+	color:#000000;
+	font-weight:normal;
+	font-size:10px;
+	background-color:#EDEAD3;
+}
+
+.imgBox {
+	width:auto;
+	display:block;
+	float:right;
+	clear:both;
+	background-color:#F5F7F9;
+	padding:3px;
+	margin:3px;
+}
+.shadowBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+}
+

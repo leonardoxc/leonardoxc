@@ -1,0 +1,262 @@
+<style type="text/css">
+<!--
+	#vnav, #vnav ul { /* all lists */
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		float : left;
+		width : 10em;
+
+		/*background-color:#e0e0e0;*/
+		z-index:-1;
+	}
+
+	#vnav {
+		background-image:none;
+		margin-left:10px;
+		padding-bottom:20px;
+	}
+
+	#vnav li { /* all list items */
+		background-image:none;
+		position : relative;
+		float : left;
+		line-height : 1.25em;
+		margin-bottom : -1px;
+		width: 10em;
+	}
+	
+	#vnav li ul { /* second-level lists */
+		position : absolute;
+
+		left: -999em;
+		margin-left : 10.025em;
+		margin-top : -1.85em;
+		z-index:1;
+	}
+	
+	#vnav li ul ul { /* third-and-above-level lists */
+		left: -999em;
+	}
+	
+	#vnav li a {
+		width: 11em;
+		w\idth : 10em;
+		display : block;
+				
+		padding : 0 0.3em;
+
+		font-size:11px;
+		color : black;
+		font-weight : normal;
+		text-decoration : none;
+
+		border-width: 1px;
+		border-style: solid;
+		border-color: #ccc #888 #555 #bbb;
+		margin: 0;
+
+		padding: 2px 6px;
+
+		background-color:#ECEFF2;
+		z-index:-1;
+	}
+	
+#vnav li ul a {
+	padding: 1px 6px;
+	z-index:2;
+}
+
+	#vnav li a:hover {
+		color : white;
+		background-color : black;
+	}
+	
+	#vnav li:hover ul ul, #vnav li:hover ul ul ul, #vnav li.sfhover ul ul, #vnav li.sfhover ul ul ul {
+		left: -999em;
+	}
+	
+	#vnav li:hover ul, #vnav li li:hover ul, #vnav li li li:hover ul, #vnav li.sfhover ul, #vnav li li.sfhover ul, #vnav li li li.sfhover ul { 
+		/* lists nested under hovered list items */
+		left: auto;
+	}
+
+
+div#b_nav  {
+	background-image:none;
+}
+
+div#b_nav ul {
+	margin: 0px 0 12px 0;
+	padding: 0;
+	list-style: none inside;
+}
+div#b_nav ul li {
+	background-image:none;
+	list-style: none;
+	text-align: center;
+	display: inline;
+	font: 11px Verdana,Arial,Helvetica,sans-serif;
+
+	margin: 2px 1px 2px 1px;
+
+	padding:0;
+}
+
+div#b_nav ul li a {
+	color: #000;
+	background-color: #DAE4E6;
+	text-decoration: none;
+
+	padding:4px 0px 4px 0px;
+	margin-top: 0px;
+	margin-bottom: 4px;
+	margin-right: 1px;
+
+	border-right: 1px solid  #52371F;
+	border-bottom: 1px solid #52371F;
+	height:auto;
+	display:inline;
+	float:left;
+	width:197px;
+	width:24%;
+}
+
+html>div #b_nav {
+	width:197px;
+	width:30%;
+}
+
+div#b_nav ul li a:hover, 
+div#b_nav ul li.header a:hover,
+div#b_nav ul li a.on,
+div#b_nav ul li.header a.on {
+	background-color: #0F256A;
+	color: #FFF;
+}
+
+
+.catHeader {
+	/*background-color:#E2DEB4;*/
+	font-weight:bold;
+	padding: 3px;
+	border-bottom-width:2px;
+	border-bottom-color:#FFCC66;	
+}
+
+
+#vnav li:hover, #vnav li.hover {
+  position:static;
+} 
+
+-->
+</style>
+
+<script language="javascript">
+    function jumpToLeague(countryCode) {
+	  var leagueYear = document.navForm.leagueYear.value;
+	  var leagueCat  = document.navForm.leagueCat.value;
+	  
+	  var flightsUrl  = "{SHOW_LEAGUE_URL}";
+	  flightsUrl=flightsUrl.replace('%cat%',leagueCat).replace('%country%',countryCode).replace('%year%',leagueYear);
+	  window.location =flightsUrl;
+      //window.location = "{SHOW_LEAGUE_URL}"+"&country="+countryCode+"&year="+leagueYear+"&cat="+leagueCat;
+      return false;
+    }
+    function jumpToFlights(countryCode) {
+	  var flightsYear = document.navForm.flightsYear.value;
+	  var flightsCat  = document.navForm.flightsCat.value;
+	  var flightsUrl  = "{SHOW_FLIGHTS_URL}";
+	  flightsUrl=flightsUrl.replace('%cat%',flightsCat).replace('%country%',countryCode).replace('%year%',flightsYear);
+	  window.location =flightsUrl;
+      
+      return false;
+    }
+    function jumpToTakeoffs(countryCode) {
+	  var takeoffsUrl  = "{SHOW_TAKEOFFS_URL}";
+	  takeoffsUrl=takeoffsUrl.replace('%country%',countryCode);
+	  window.location= takeoffsUrl;
+     // window.location = "{SHOW_TAKEOFFS_URL}"+"&country="+countryCode+"&year="+takeoffsYear+"&cat="+takeoffsCat;
+      return false;
+    }
+
+
+</script>
+
+<form name="navForm" method="post" action="">
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0" class=main_text>
+  <tr>
+    <td colspan="4" valign="top"><div align="center">
+      <p><strong>{#_INDEX_HEADER}<br>
+      </strong></p>
+    </div></td>
+  </tr>
+  <tr>
+    <td colspan="4"><div align="center">{#_INDEX_MESSAGE}</div></td>
+  </tr>
+  <tr>
+    <td height=10 colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center" valign="top">
+  <div id="b_nav" align=center>
+        <ul>
+		  <li><a href="{LINK_SITES_GUIDE}">{#_MENU_SITES_GUIDE}</a></li>
+		  <li><a href="{LINK_SHOW_LAST_ADDED}">{#_MENU_SHOW_LAST_ADDED}</a></li>
+		  <li><a href="{LINK_SHOW_PILOTS}">{#_MENU_SHOW_PILOTS}</a></li>
+		  <li><a href="{LINK_SUBMIT_FLIGHT}">{#_MENU_SUBMIT_FLIGHT}</a></li>
+        </ul>
+    </div></td>
+  </tr>
+  <!-- BEGIN myMenu -->
+  <tr>
+    <td colspan="4" align="center">
+      <div id="b_nav" align=center>
+        <ul>
+		  <li><a href="{myMenu.LINK_MY_FLIGHTS}">{#_MENU_MY_FLIGHTS}</a></li>
+		  <li><a href="{myMenu.LINK_MY_STATS}">{#_MENU_MY_STATS}</a></li>
+		  <li><a href="{myMenu.LINK_MY_PROFILE}">{#_MENU_MY_PROFILE}</a></li>
+		  <li><a href="{myMenu.LINK_MY_SETTINGS}">{#_MENU_MY_SETTINGS}</a></li>
+        </ul>
+    </div></td>
+  </tr>
+  <!-- END myMenu -->
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="32%" bgcolor="#F4EAD5" class="catHeader">{#_National_XC_Leagues_for} <br />
+    <select name="leagueYear" id="leagueYear">
+      <option value="0">{#_ALL_YEARS}</option>
+			{YEARS_OPTION}
+          </select>
+      <select name="leagueCat" id="leagueCat">
+            {CATS_OPTION}
+          </select></td>
+    <td width="32%" bgcolor="#D7EDD3" class="catHeader">{#_Flights_per_Country} <br />
+      <select name="flightsYear" id="flightsYear">
+        <option value="0">{#_ALL_YEARS}</option>
+        
+			{YEARS_OPTION}
+          
+      </select>
+      <select name="flightsCat" id="flightsCat">
+      <option value="0">{#_ALL}</option>
+        
+ 			{CATS_OPTION}
+	      
+      </select></td>
+    <td width="32%" valign="bottom" bgcolor="#CED8E1" class="catHeader">{#_Takeoffs_per_Country}</td>
+    <td valign="bottom" class="catHeader">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align=left  bgcolor="#F4EAD5">{lgStr}</td>
+    <td align=left valign="top" bgcolor="#D7EDD3">{ctStr}<br></td>
+    <td align=left valign="top" bgcolor="#CED8E1">{tkStr}<br></td>
+    <td align=left valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+</table>
+</form>

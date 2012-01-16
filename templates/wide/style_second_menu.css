@@ -1,0 +1,182 @@
+
+
+#dropMenu, #dropMenu ul {
+	float: left;
+	width: auto;
+	font-weight:normal;
+	list-style: none;
+	line-height: 1em;
+	background-color:#f6f5fa;
+	
+	padding: 0;
+/*
+	border: solid #eda;
+	border-width: 1px 1px;
+*/
+/*	margin: 0 0 0.3em 0;*/
+ margin:0;
+	z-index:1000;
+}
+
+/*
+#dropMenu a {
+	width:auto;
+	display: block;		
+	color: #7C6240;
+	color: #000022;
+	text-decoration: none;
+	padding:0;
+}
+*/
+
+/* the top items a */
+#dropMenu li {
+	background-image: none;
+	font-weight:normal;
+	
+	font-size:11px;
+
+	width:8em;
+
+	text-align:left;
+	
+	white-space:nowrap;
+
+	float:left;
+	padding-right:0.3em;
+	padding-left:0.3em;
+	
+	border: solid #CA9F2A;
+	/*norad */
+	border: solid #d3cfe4;
+	border-width: 1px 1px;
+
+	margin-left:2px;
+	margin-right:2px;
+}
+
+#dropMenu>li {
+width:auto;
+
+}
+
+
+/* the top items a */
+#dropMenu li a {
+	border:none;
+	height:1.3em;
+	height:16px;
+
+	vertical-align:middle;
+	text-align:left;
+	
+	padding-top:0.25em;
+	padding-bottom:0.25em;
+	padding-right:0.1em;
+	padding-left:0.1em;
+white-space:nowrap;
+width:auto;
+
+	
+	display: block;	
+	color: #000022;
+	text-decoration: none;
+
+	line-height:100%;
+
+}
+
+#dropMenu>li a {
+	height:17px;
+}
+
+/* redefine the "a" for the dropdonwn container */
+#dropMenu li ul a {
+	border:none;
+	height:auto;	
+	vertical-align:middle;
+	text-align:left;	
+	padding:0.1em;
+}
+
+/* the dropdown container*/
+#dropMenu li ul {
+	position: absolute;
+	left: -999em;
+	
+
+	text-align:left;
+	height: auto;
+
+
+	font-weight: normal;
+	border-width:1px;
+	margin: 0;
+	padding:0;
+
+	/* for ie6 and lower */
+	margin-left:0em;
+	display:block;
+}
+
+/* this is not seen by ie6 - */
+#dropMenu>li ul{  margin-left:0em; }
+
+
+#dropMenu li ul ul {
+/*	margin: -1.75em 0 0 14em;*/
+margin-top: -1.75em ;
+margin-left:18em;
+
+}
+
+/* needed in order to display ul inside the dropdown*/
+#dropMenu li ul li , #dropMenu li ul li ul {
+	position: relative;
+	left:auto;
+	display:block;
+	margin:0;
+	padding:0;
+	border:0;
+}
+
+/* needed in order to display ul inside the dropdown*/
+#dropMenu li:hover ul li ul{
+	left: auto;
+}
+
+#dropMenu li:hover ul ul, #dropMenu li.sfhover ul ul {
+	left: -999em;
+}
+
+#dropMenu li:hover ul, #dropMenu li li:hover ul, #dropMenu li.sfhover ul, #dropMenu li li.sfhover ul {	
+	left: auto;
+	width:auto;
+}
+
+#dropMenu li:hover, #dropMenu li.sfhover, li ul a:hover {
+/*	background: #eda;*/
+/*	background-color:#F6EF80;*/
+	background-color:#F8C90C;
+}
+
+#dropMenu .smallItem , .smallItem{
+	width:32px;
+	height:17px;
+	vertical-align:middle;
+}
+
+
+#dropMenu li:hover, #dropMenu li.hover {
+  position:static;
+} 
+
+
+.calBox ,  .calBox font ,  .calBox td , .calBox a ,  .calBox a:visited , .calBox a:link {
+	font-size:10px;
+	margin:0;
+	padding:0;
+}
+.calBox ,  .calBox font  {
+	font-size:10px;
+}

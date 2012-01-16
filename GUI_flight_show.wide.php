@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.wide.php,v 1.1 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: GUI_flight_show.wide.php,v 1.2 2012/01/16 07:31:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -44,6 +44,20 @@
 	$geUrl=getDownloadLink(array('type'=>'kml_trk','flightID'=>$flightID,'lang'=>$lng));
 	// $moduleRelPath."/download.php?lang=$lng&type=kml_trk";
 
+    $clientIP=getClientIpAddr();
+	if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ) {
+		$directIGCLink=1;
+		$base_name=md5(basename($flight->getIGCRelPath()));
+		$_SESSION['di'.$base_name]=1;
+		// echo 'downloadigc'+$base_name;
+		$igcLink="<a href='".$flight->getIGCRelPath()."' >IGC</a>";
+	} else {
+		$directIGCLink=0;
+		$igcLink=" <a href='javascript:nop()' onClick='toggleIgcDownload();return false;' id='IgcDownloadPos'>IGC</a>";
+	}	
+
+     
+			  
 //experiment with google static maps
 if (0) {
 	list($min_lat,$min_lon,$max_lat,$max_lon)=$flight->getBounds();
@@ -180,6 +194,9 @@ $(document).ready(function(){
  makePopupBox('scoreInfo'); 
  makePopupBox('setBounds'); 
  makePopupBox('takeoffAdd'); 
+ if (!$directIGCLink) {
+	 makePopupBox('IgcDownload'); 
+ }	 
 
 ?>
 
@@ -247,6 +264,7 @@ $(document).ready(function(){
 					   <a href='".getLeonardoLink(array('op'=>'edit_flight','flightID'=>$flightID))."'><img src='".$moduleRelPath."/img/change_icon.png' border=0 align=bottom></a>"; 
 		}
 	}
+
 
 	if (  L_auth::isAdmin($userID) ) {
 		$legendRight.="<a href='javascript:flight_db_info($flightID)'><img src='".$moduleRelPath."/img/icon_db.gif' title='DB record for the flight' border=0 align=bottom></a> ";
@@ -691,6 +709,8 @@ $mapImg0.='</ul>';
 	else if ($localMap) $activeTabName='map';
 	else $activeTabName='comments';
 	
+
+	
 	$mapImg="<div class='tab_container'>\n";
 
 	if ($googleMap) {
@@ -752,6 +772,7 @@ $Ltemplate->assign_vars(array(
 	'glider'=>$glider,
 	'gliderCat'=>$gliderCat,
 	'igcPath'=> $flight->getIGCRelPath(),
+	'igcLink'=> $igcLink,
 	'flightID'=>$flight->flightID,
 	
 
