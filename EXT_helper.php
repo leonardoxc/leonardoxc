@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_helper.php,v 1.1 2012/01/16 07:21:23 manolis Exp $                                                                 
+// $Id: EXT_helper.php,v 1.2 2012/06/02 08:40:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,7 +34,10 @@
 	// $SERVER_URL='';
 
 	if ($op=="create_pdf") {
-		if ($userID <=0) {
+		$direct=$_GET['direct']+0;
+		$remote=$_GET['remote']+0;
+		
+		if ($userID <=0 || $remote) {
 			//echo "Not valid user";
 			// exit;
 			$userID =makeSane($_GET['userIDnotify']);
@@ -47,8 +50,7 @@
 			$userEmail=LeoUser::getEmail($userID);
 		}
 		
-		$direct=$_GET['direct']+0;
-		$remote=$_GET['remote']+0;
+		
 		
 		unset($_GET['op1']);
 		unset($_GET['direct']);

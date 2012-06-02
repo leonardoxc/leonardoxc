@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.60 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.61 2012/06/02 08:40:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -409,15 +409,23 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	if ( $CONF_use_NAC ) {
 		require_once dirname(__FILE__)."/CL_NACclub.php";
 		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userIDforFlight);
+		
+				
+		DEBUG("FLIGHT",1,"addFlightFromFile: pilotNACID:$pilotNACID, pilotNACclubID: $pilotNACclubID<br>");					
+		
 		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
 		
+			DEBUG("FLIGHT",1,"addFlightFromFile: use_clubs is on<br>");
 			if ( $argArray['NACclubID'] >0  && $argArray['NACid']>0 ) {
 				$flight->NACclubID=$argArray['NACclubID'];
 				$flight->NACid=$argArray['NACid'];
+				
+				DEBUG("FLIGHT",1,"addFlightFromFile: using arguments NACclubID NACid<br>");
 			} else {
-			
+				DEBUG("FLIGHT",1,"addFlightFromFile: calculating  NACclubID NACid<br>");
 				// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
 				$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];
+				DEBUG("FLIGHT",1,"addFlightFromFile: currSeasonYear:  $currSeasonYear<br>");
 				
 				if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
 					$seasonStart=($currSeasonYear-1)."-12-31";
@@ -427,7 +435,9 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 					$seasonEnd=$currSeasonYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
 				}
 	
-				if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
+				DEBUG("FLIGHT",1,"addFlightFromFile: seasonStart:$seasonStart , seasonEnd:$seasonEnd<br>");
+				if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 
+					DEBUG("FLIGHT",1,"addFlightFromFile: inside Season !!<br>");			
 					$flight->NACclubID=$pilotNACclubID;
 					$flight->NACid=$pilotNACID;
 				}

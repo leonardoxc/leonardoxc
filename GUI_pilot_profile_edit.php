@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.39 2010/11/21 14:26:01 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.40 2012/06/02 08:40:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -119,7 +119,9 @@
 
 
    $query="UPDATE $pilotsTable SET
-   		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
+   		`FirstNameEn` = '".prep_for_DB($_POST['FirstNameEn'])."',
+		`LastNameEn` = '".prep_for_DB($_POST['LastNameEn'])."',
+		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
 		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
 		`NACid` = $NACid,
@@ -497,6 +499,19 @@
 		</td>
       <td>&nbsp;</td>
     </tr>
+    
+    <tr>
+      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _First_Name ?> (EN)</div></td>
+      <td valign="top"><input name="FirstNameEn" type="text" value="<? echo $pilot['FirstNameEn'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly?> ></td>
+      <td>&nbsp;</td>
+    </tr>
+    
+    <tr>
+      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?> (EN)</div></td>
+      <td valign="top"><input name="LastNameEn" type="text" value="<? echo $pilot['LastNameEn'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> ></td>
+      <td>&nbsp;</td>
+    </tr>
+      
     <tr>
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
       <td valign="top"><? echo getNationalityDropDown($pilot['countryCode'], in_array('countriesList', $readonly_fields)) ?></td>

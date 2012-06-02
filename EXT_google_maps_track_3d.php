@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.56 2012/06/02 08:40:12 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_3d.php,v 1.1 2012/06/02 08:40:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -62,10 +62,13 @@
 
 	# martin jursa 22.06.2008: enable configuration of map type
 	$GMapType='G_SATELLITE_MAP';
+	
+	
 	if ( in_array( $CONF['google_maps']['default_maptype'],
 			 array('G_NORMAL_MAP', 'G_HYBRID_MAP', 'G_PHYSICAL_MAP', 'G_SATELLITE_MAP','G_SATELLITE_3D_MAP'))) {
 		$GMapType= $CONF['google_maps']['default_maptype'];
 	}
+	$GMapType='G_SATELLITE_3D_MAP';
 
 	if ( ( $CONF_airspaceChecks && ( L_auth::isAdmin($userID) || $flight->belongsToUser($userID) )  ) || $CONF['thermals']['enable'] ) { 
 		// find min/max lat/lon
@@ -97,7 +100,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang_enc?>">
-<title>Google Maps</title>
+<title>Leonardo 3D tracklog</title>
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
 <script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
@@ -132,9 +135,9 @@
 </head>
 <body  onUnload="GUnload()">
 
-<table border="0" cellpadding="0" cellspacing="0" class="mapTable">
+<table border="0" cellpadding="0" cellspacing="0" class="mapTable" style="width: 100%; height:100%;">
   <tr>
-	<td colspan=2 valign="top"><div style="position: relative; width: 745px; height:120px;"> 
+	<td colspan=2 valign="top"><div style="position: relative; width: 100%; height:120px;"> 
 	  <div style="position: absolute; top: 6px; left: 40px; z-index: 100; 
 	  				height:95px;  width:2px; background-color:#44FF44;" 
 				  id="timeLine1"></div>
@@ -142,20 +145,20 @@
 	  <div style="position: absolute; float:right; right:4px; top: 0px; z-index: 150; padding-right:4px; text-align:right; height:12px; width:110px; border:0px solid #777777;  background-color:none; color:FF3333;" 
 	  id="timeBar"><?=$title1?></div>
 
-	  <div id="chart" class="chart" style="width: 745px; height: 120px;" ></div>
+	  <div id="chart" class="chart" style="width: 100%; height: 120px;" ></div>
 	</div></td>
 	</tr>
 	<tr>
-		<td valign="top"><div id="map"></div></td>
+		<td valign="top" width="100%" height='100%'><div id="map" style="width: 100%; height:100%;"></div></td>
 		<td valign="top">
 		<form name="form1" method="post" action="">
 		<div style="display:block">
 		
-
-		<div style="position:relative; float:right; clear:both; margin-top:8px">
+	<div style="position:relative; float:right; clear:both; margin-top:8px">
 			<a href='javascript:toogleFullScreen();'><img src='img/icon_maximize.gif' border=0></a>
 		</div>
 		<br>
+	
  		<fieldset class="legendBox"><legend><?=_Info?></legend><BR />
 			<table align="center" cellpadding="2" cellspacing="0">
 				<TR><td><div align="left"><?=_Time_Short?>:</div></td><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
@@ -208,8 +211,16 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	initialize();
-	 
+
+	ImgW = $(window).width();
+
+	$(window).resize(function(){
+		ImgW = $(window).width();
+		drawChart();
+
+    });
+
+	
 	  $("#chart").bind('mousemove',
 		function(e){ 
 			// var x=e.clientX ;
@@ -218,7 +229,8 @@ $(document).ready(function(){
 			SetTimer();
 		});
 
-	 
+	  polyline_color='#454545';
+
 });
 
 var wpID=<?=$flight->takeoffID?>;
@@ -264,129 +276,50 @@ DisplayCrosshair(1);
 
 var lat=0;
 var lon=0;
-
-
-
-
 </script>
 
 <script src="<?=$flight->getJsonRelPath()?>" type="text/javascript"></script>
 
 <script type="text/javascript">
-	//We define the function first
-	function TextualZoomControl() 
-	{
-	}
-
-function initialize() {
-	TextualZoomControl.prototype = new GControl();
-
-
-	TextualZoomControl.prototype.initialize = function(map) {
-	  var container = document.createElement("div");
-	  container.style.width = "70px";
-
-	  var zoomInDivOuter = document.createElement("div");
-	  var zoomInDivInner = document.createElement("div");
-	  var isActive = false;
-
-	  this.setInnerButtonStyleInactive_ (zoomInDivInner, "Earth 3D");
-
-	  container.appendChild(zoomInDivOuter);
-	  zoomInDivOuter.appendChild(zoomInDivInner);
-
-	  GEvent.addDomListener(zoomInDivOuter, "click", function() {		 
-		  window.location = "EXT_google_maps_track_3d.php?id=<?php echo $flightID?>";		 
-	  });
-
-	  map.getContainer().appendChild(container);
-	  return container;
-	  
-	}
-
-
-	TextualZoomControl.prototype.getDefaultPosition = function() {
-	  return new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(7, 7));
-	}
-
-	TextualZoomControl.prototype.setInnerButtonStyleInactive_ = function(button, name) {
-		
-		button.style.backgroundColor = "#CAFFB2"; 
-		button.style.padding = "2px"; 
-	
-		button.style.border = "1px solid black"; 
-		button.style.fontSize = "12px";
-		button.style.fontWeight = "bold";
-		button.style.cursor = "pointer"; 
-		button.style.textAlign = "center"; 
-		button.title = name;
-		button.innerHTML = name;
-		button.style.display = "inline-block";
-	}
-
-	TextualZoomControl.prototype.setOuterButtonStyle_ = function(button) {
-		button.style.border = "1px solid black"; 
-		button.style.backgroundColor = "white"; 
-		button.style.textAlign = "center"; 
-		button.style.width = "6em"; 
-		button.style.padding = "1px"; 
-		button.style.cursor = "pointer"; 
-		button.style.display = "inline-block";
-	}
-
-	TextualZoomControl.prototype.setInnerButtonStyleActive_ = function(button, name) {
-		
-		button.style.borderStyle = "solid"; 
-		button.style.borderColor = "rgb(52, 86, 132) rgb(108, 157, 223) rgb(108, 157, 223) rgb(52, 86, 132)"; 
-		button.style.borderWidth = "1px"; 
-		button.style.fontSize = "12px"; 
-		button.style.fontWeight = "bold";
-		button.title = name;
-		button.innerHTML = name;
-	}
-
-	map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP]}); 
-	// G_SATELLITE_3D_MAP
-	//	    map.addMapType(G_PHYSICAL_MAP) ;
-	
-	map.addControl(new TextualZoomControl());
-
-	var topRight = new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(80,7));
-
-	
-	map.addControl(new GLargeMapControl());
-	map.addControl(new GMapTypeControl(),topRight);
-	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
-
-	displayTask(tp);
-	
-	GDownloadUrl(polylineURL, process_polyline);
-
-	drawChart();
-
-	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
-	
-}
-
-/*
-TODO move to API v3 !!!!
-*/
-
-	var map;
 	var userAccessPriv=false;
 	<? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
 	userAccessPriv=true;
 	<? } ?>
 	
+	var map = new GMap2(document.getElementById("map"),   {mapTypes:[G_HYBRID_MAP,G_PHYSICAL_MAP,G_SATELLITE_MAP,G_NORMAL_MAP,G_SATELLITE_3D_MAP]}); 
 
+	//	    map.addMapType(G_PHYSICAL_MAP) ;
+	map.addControl(new GLargeMapControl());
+	map.addControl(new GMapTypeControl());
+	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
+/*
+TODO move to API v3 !!!!
+*/
 
 	//var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_task&flightID=14142&t=a.kml");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/modules/leonardo/download.php?type=kml_trk&flightID=14722&lang=english&w=2&c=FF0000&an=1&t=a.kml");
 	// var kmlOverlay = new GGeoXml("http://pgforum.thenet.gr/1.kml");
 	// map.addOverlay(kmlOverlay);
 
+	<?php 
+	
+	$kmz=$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getKMLRelPath(0);
+	$kmz=str_replace('//','/', $kmz);
+	$kmz=str_replace('//','/', $kmz);
+	
+	$flightKMZ="http://".$kmz;
+	
+	
+	?>
+	var kmlOverlay = new GGeoXml("<?php echo $flightKMZ;?>");
+	
+	map.addOverlay(kmlOverlay);
+	
 	var tp = <? echo $flight->gMapsGetTaskJS(); ?> ;
 	
+	displayTask(tp);
+	
+	GDownloadUrl(polylineURL, process_polyline);
 		
 	function drawChart() {
 		// trim off points before start / after end
@@ -480,7 +413,7 @@ TODO move to API v3 !!!!
 
 
 
-
+	drawChart();
 	//	getAjax(jsonURL,null,drawChart );
 	//window.onload = function() {
 	//	ieCanvasInit('js/chartFX/iecanvas.htc');
@@ -531,14 +464,23 @@ TODO move to API v3 !!!!
 			var takeoffPoint= new GLatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
 			
 			if (results.waypoints[i].id ==wpID ) {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+				//var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
+				//var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+
+				var iconUrl		= "/<?=$moduleRelPath?>/img/gmaps/icon5.png";
+				var shadowUrl	= "/<?=$moduleRelPath?>/img/gmaps/icon5s.png";
 			} else if (results.waypoints[i].type<1000) {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+				//var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
+				//var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+
+				var iconUrl		= "/<?=$moduleRelPath?>/img/gmaps/icon21.png";
+				var shadowUrl	= "/<?=$moduleRelPath?>/img/gmaps/icon21s.png";
 			} else {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
+				//var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
+				//var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";	
+
+				var iconUrl		= "/<?=$moduleRelPath?>/img/gmaps/icon13.png";
+				var shadowUrl	= "/<?=$moduleRelPath?>/img/gmaps/icon13s.png";	
 			}
 			
 			var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
@@ -547,6 +489,7 @@ TODO move to API v3 !!!!
 		}	
 	}
 
+	getAjax('EXT_takeoff.php?op=get_nearest&lat='+lat+'&lon='+lon,null,drawTakeoffs);
 
 	function hidePhoto() {
 		$('#photoDiv').hide();

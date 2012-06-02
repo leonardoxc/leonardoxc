@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.54 2010/03/21 22:51:58 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.55 2012/06/02 08:40:12 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -254,10 +254,15 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 		$serverID=$parts[0];
 	}
 
-	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
-	else $nOrder="CONCAT(LastName,' ',FirstName)";
+	if ($PREFS->nameOrder==1) {
+		$nOrder="CONCAT(FirstName,' ',LastName)";
+		$nOrderEn="CONCAT(FirstNameEn,' ',LastNameEn)";
+	} else {
+		$nOrder="CONCAT(LastName,' ',FirstName)";
+		$nOrderEn="CONCAT(LastNameEn,' ',FirstNameEn)";
+	}
 
-	$query="SELECT $nOrder as realName ,countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
+	$query="SELECT $nOrder as realName ,$nOrderEn as realNameEn, countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
 	$res= $db->sql_query($query);
 	// echo $query;
 
@@ -269,8 +274,11 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
+		$realNameEn=$pilot['realNameEn'];
+		
 		$pilotCountry=strtolower($pilot['countryCode']);
 
+	
 		if ( strlen($realName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name
 			$str=$realName;
 
@@ -288,7 +296,14 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			// echo ">$realName#$pilotLang#$pilotCountry#<br>";
 
 			$enc=$langEncodings[$pilotLang];
-			if ($enc) $str=transliterate($str,$enc);
+			if ($enc) {
+				
+				if ( strlen($realNameEn)>1 ) {
+					$str=$realNameEn;
+				} else { 				
+					$str=transliterate($str,$enc);
+				}	
+			}
 			//echo $realName."@";
 			// else return as is.
 
@@ -346,7 +361,14 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			 // echo "($str)>".$pilotLang."#".$pilotCountry."$";
 
 			$enc=$langEncodings[$pilotLang];
-			if ($enc) $str=transliterate($str,$enc);
+			if ($enc) {
+				if (strlen($realNameEn)>1) {
+					$str=$realNameEn;
+				} else { 				
+					$str=transliterate($str,$enc);
+				}	
+							
+			}
 			//echo $realName."@";
 			// else return as is.
 		}
