@@ -8,12 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.15 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.16 2012/09/04 09:38:57 manolis Exp $                                                                 
 //
 //************************************************************************
 
 // nice exmple in action 
 //http://onerutter.com/open-source/jquery-facebook-like-plugin.html
+
+if ($_GET['flightID']) $flightID=0;
 
 if (! $flightID) {
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
