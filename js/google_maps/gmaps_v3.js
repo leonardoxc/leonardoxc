@@ -14,8 +14,8 @@
 	}
 	
 	function DisplayCrosshair(i){ // i=1 for the start , 2 end 	 
-		var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime) ;
-		timeLine[i].left = marginLeft + Temp  + "px";		
+		//var Temp = Math.floor( (ImgW-marginLeft-marginRight) * CurrTime[i] / EndTime) ;
+		//timeLine[i].left = marginLeft + Temp  + "px";		
 		
 	}
 
@@ -71,7 +71,7 @@
 		// tm=Math.floor(CurrTime[1]/20)*20;
 		tm=Math.floor(CurrTime[1]/EndTime * flight.points_num);
 		
-		$('#timeText'+i).html(flight.time[tm]);
+		$('#timeText1').html(flight.time[tm]);
 	
 		// get the lat lon
 		lat=flight.lat[tm];
