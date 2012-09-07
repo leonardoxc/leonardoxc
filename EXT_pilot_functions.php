@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.17 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.18 2012/09/07 21:54:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,8 +25,6 @@
 	require_once "FN_flight.php";
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
-
-	
 
 
 	$op=makeSane($_GET['op']);	
@@ -46,11 +44,33 @@
 			$CONF_ENCODING=$langEncodings[$currentlang];
 		}
 
-		header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
+		// header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
 
-		$pilotName=stripslashes  ($_GET['q']);
+		$pilotName0=stripslashes($_GET['q']);
+		$pilotName0=trim($pilotName0);
+		
+		$pilotName=str_replace(" ", "%",$pilotName0);
+
+		/*
+		$parts=explode(" ",$pilotName );
+		foreach ($parts as $part ) {
+			
+			
+		}
 	
-		$query="SELECT * FROM $pilotsTable WHERE serverID=0 AND (FirstName LIKE '%$pilotName%' OR LastName LIKE '%$pilotName%' OR CONCAT(FirstName,' ',LastName) LIKE  '%$pilotName%') LIMIT 15";
+		$nameDistanceFromPrevious1=levenshtein (strtolower($lastIntName),strtolower($row2['intName'])); 
+		similar_text (strtolower($lastIntName),strtolower($row2['intName']),&$nameDistanceFromPrevious2); 
+			*/		
+					
+		$query="SELECT * FROM $pilotsTable WHERE 
+			serverID=0 AND 
+			(	FirstName LIKE '%$pilotName%' OR 
+				LastName LIKE '%$pilotName%' OR 
+				CONCAT(FirstName,' ',LastName) LIKE  '%$pilotName%'  OR 
+				CONCAT(LastName,' ',FirstName) LIKE  '%$pilotName%'
+			) 
+			LIMIT 200";
+		
 		// echo "a|$query|0";
 		//return;
 		$res= $db->sql_query($query);
@@ -75,11 +95,43 @@
 			$pilotName=strtoupper($pilotName{0}).substr($pilotName,1);
 			$name=str_replace($pilotName,"<b>$pilotName</b>",$name);
 
-			echo $row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+			$pilotName0=strtolower($pilotName0);
+			
+			$d1=levenshtein ($pilotName0,strtolower($row['FirstName'].' '.$row['LastName'] )  ); 
+			$d2=levenshtein ($pilotName0,strtolower($row['LastName'].' '.$row['FirstName'])); 
+			$d3=levenshtein ($pilotName0,strtolower($row['FirstName'])); 
+			$d4=levenshtein ($pilotName0,strtolower($row['LastName']));
+
+			$dmax=max(array($d1,$d2,$d3,$d4));
+			// similar_text (strtolower($lastIntName),strtolower($row2['intName']),&$nameDistanceFromPrevious2);
+
+			$html="[$dmax] ".$row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+		    $pilots[]=array('score'=>$dmax,'text'=>$html);
+			
 			
 		}
 
-return;
+		function cmp($a0, $b0)
+		{
+			$a=$a0['score'];
+			$b=$b0['score'];
+		    if ($a == $b) {
+		        return 0;
+		    }
+		    return ($a < $b) ? -1 : 1;
+		}
+				
+		
+		usort($pilots, "cmp");
+		
+		$i=0;
+		foreach ($pilots as $pilot) {
+		    echo $pilot['text'];
+		    $i++;
+		    if ($i>15) break;
+		}
+
+		return;
 
 	}
 	

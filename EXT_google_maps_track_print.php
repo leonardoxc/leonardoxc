@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_print.php,v 1.1 2012/01/16 07:21:23 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_print.php,v 1.2 2012/09/07 21:54:04 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -202,7 +202,6 @@
 	</div></td>
 	</tr>
 </table>
-<div id="pdmarkerwork"></div>
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
