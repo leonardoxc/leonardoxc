@@ -1,41 +1,37 @@
 
 
-//-------------------------------------------------------------------
-
-var icon = new google.maps.Icon();
-icon.image = "img/thermals/class_1.png";
-icon.shadow = "img/thermals/class_shadow.png";
-icon.iconSize = new google.maps.Size(12, 20);
-icon.shadowSize = new google.maps.Size(22, 20);
-icon.iconAnchor = new google.maps.Point(6, 20);
-icon.infoWindowAnchor = new google.maps.Point(5, 1);           
-  
 var classIcons=[];
 var thermalNum=new Array ();	
 var thermalMarkers=new Array ();
 var cluster=[];
 var init_thermals=false;
 
-  function createThermalMarker(point,html,thermalClass) {
-	var marker = new google.maps.Marker(point, {icon:classIcons[thermalClass]});
-	google.maps.Event.addListener(marker, "click", function() {
-	  marker.openInfoWindowHtml(html);
-	});		
+function createThermalMarker(point,html,thermalClass) {
+	var marker = new google.maps.Marker( {
+		position: point,
+		icon: classIcons[thermalClass]
+	});
+	
+	google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(html); 
+        infowindow.open(map,marker);
+	});
+		
 	return marker;
   }
 	  
   function showThermalClass(thermalClass) {
 	cluster[thermalClass].addMarkers( thermalMarkers[thermalClass] );
-	cluster[thermalClass].refresh(true);
+	//cluster[thermalClass].refresh(true);
 	document.getElementById(thermalClass+"_box").checked = true;
   }
 
   function hideThermalClass(thermalClass) {		
-	cluster[thermalClass].removeMarkers();
-	cluster[thermalClass].refresh(true);
+	cluster[thermalClass].clearMarkers();
+	// cluster[thermalClass].refresh(true);
 	document.getElementById(thermalClass+"_box").checked = false;
 	// == close the info window, in case its open on a marker that we just hid
-	map.closeInfoWindow();
+	infowindow.close();
   }
    
    function boxclick(box,thermalClass){
@@ -52,7 +48,8 @@ function importThermals(jsonString){
 	
 	for(var i=0;i<results.waypoints.length;i++) {	
 		var thermalPoint= new google.maps.LatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
-		var icon2=icon;
+		
+		// var icon2=icon;
 		
 		var thermalClass=results.waypoints[i].c;
 		var climbmeters=results.waypoints[i].m;
@@ -90,15 +87,97 @@ function importThermals(jsonString){
 	$("#thermalControls").show();
 }
 
+var styles=[];
+
+styles[1]=               
+  [{
+    url: 'img/thermals/cluster_1_3.png',  height: 30, width: 30,    
+    textColor: '#151515', textSize: 10
+  }, {
+    url: 'img/thermals/cluster_1_2.png', height: 50, width: 50,
+    textColor: '#151515', textSize: 11
+  }, {
+    url: 'img/thermals/cluster_1.png', height: 90,   width: 90,    
+    textColor: '#151515', textSize: 12
+  }];
+
+styles[2]=               
+	  [{
+	    url: 'img/thermals/cluster_2_3.png',  height: 30, width: 30,    
+	    textColor: '#151515', textSize: 10
+	  }, {
+	    url: 'img/thermals/cluster_2_2.png', height: 50, width: 50,
+	    textColor: '#151515', textSize: 11
+	  }, {
+	    url: 'img/thermals/cluster_2.png', height: 90,   width: 90,    
+	    textColor: '#151515', textSize: 12
+	  }];
+styles[3]=               
+	  [{
+	    url: 'img/thermals/cluster_3_3.png',  height: 30, width: 30,    
+	    textColor: '#151515', textSize: 10
+	  }, {
+	    url: 'img/thermals/cluster_3_2.png', height: 50, width: 50,
+	    textColor: '#151515', textSize: 11
+	  }, {
+	    url: 'img/thermals/cluster_3.png', height: 90,   width: 90,    
+	    textColor: '#151515', textSize: 12
+	  }];
+
+styles[4]=               
+	  [{
+	    url: 'img/thermals/cluster_4_3.png',  height: 30, width: 30,    
+	    textColor: '#151515', textSize: 10
+	  }, {
+	    url: 'img/thermals/cluster_4_2.png', height: 50, width: 50,
+	    textColor: '#151515', textSize: 11
+	  }, {
+	    url: 'img/thermals/cluster_4.png', height: 90,   width: 90,    
+	    textColor: '#151515', textSize: 12
+	  }];
+
+styles[5]=               
+	  [{
+	    url: 'img/thermals/cluster_5_3.png',  height: 30, width: 30,    
+	    textColor: '#151515', textSize: 10
+	  }, {
+	    url: 'img/thermals/cluster_5_2.png', height: 50, width: 50,
+	    textColor: '#151515', textSize: 11
+	  }, {
+	    url: 'img/thermals/cluster_6.png', height: 90,   width: 90,    
+	    textColor: '#151515', textSize: 12
+	  }];
+
 function initThermals() {
 	if (init_thermals) return;
+	
+	var mcOptions = {
+			gridSize: 50, 
+			maxZoom: 15,
+			title:" Click to zoom to thermals" ,
+			gridSize: 40,
+			minimumClusterSize:4 
+	};
+	
 	for(var i=1;i<=5;i++) { 
 		thermalMarkers[i]=new Array();
 		thermalNum[i]=0;
-		cluster[i]=new ClusterMarker(map, { clusterClass: i,  minClusterSize:4 , clusterMarkerTitle:" Click to zoom to %count thermals" } );
-		cluster[i].intersectPadding=10;
 		
-		classIcons[i]=new google.maps.Icon(icon,"img/thermals/class_"+i+".png"); 
+		var mcOptions0= mcOptions;
+		mcOptions0['styles']=styles[i];
+		
+		cluster[i] = new MarkerClusterer(map, [], mcOptions0);
+		/*
+		cluster[i]=new ClusterMarker(map, 
+		{ 
+			clusterClass: i, 
+			minClusterSize:4 , 
+			clusterMarkerTitle:" Click to zoom to %count thermals" } );
+		cluster[i].intersectPadding=10;
+		*/
+		
+		classIcons[i]="img/thermals/class_"+i+".png";
+		
 	}	
 	init_thermals=true;	
 }

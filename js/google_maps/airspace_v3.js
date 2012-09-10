@@ -53,11 +53,11 @@ function clearAirspaces() {
 	airspace_labels=[];	
 }
 
-function toggleAirspace(radioObjName,computeBounds) {
-	if(!radioObjName) return "";	
+function toggleAirspace(computeBounds) {
+	
 	if(!map) return "";	
 	
-	if( $("#"+radioObjName).is(":checked") ) {
+	if( $("#airspaceShow").is(":checked") ) {
 		showAirspace=1;
 		if (computeBounds) computeMinMaxLatLon();
 		clearAirspaces();		

@@ -12,18 +12,26 @@ body {margin:0px; background-color:#FFFFFF}
 
 .boxTop {margin:0; }
 
-.infoString{
-	color:#FFFFFF;
-	font-size:11px;
-	font-weight:bold;
+#msg {
+	position:absolute;
+	top:0;
+	left:0;
+	width:200px;
+	height:50px;
+	background:#ffffff;
+	z-index:99999;
+	display:none;
 }
+
 
 #map { 
 	 margin:0;
 	 padding:0;
-	 width:600px;
-	 height:480px;
-	 border: 1px solid #999999;
+	 width:100% ;
+	height:100%;
+
+		
+	
 }
 			 
 #sidebar2 {   		
@@ -57,14 +65,17 @@ div.markerTooltip, div.markerDetail {
 	  border: 1px solid black;
 }
 
+
 #placeDetails a:link, #placeDetails a:visited, #placeDetails a:active 
 { 
-	font-size:12px;
-	text-decoration:none;
-	color:#f0f0f0;
-	padding:4px;
-	border:1px solid #ffffff;	
-	 background-color: rgba(22,22,22,1); 
+background-color: #2C2C2C;
+border: 1px solid #B4B4B4;
+color: #F0F0F0;
+display: block;
+font-size: 11px;
+margin: 0;
+padding: 2px 2px 2px 4px;
+text-decoration: none;
 }
 
 #placeDetails label {
@@ -95,7 +106,7 @@ fieldset.legendBox  {
 	
 	background:none;
 
-	width:135px;
+	width:100%;
 }
 
 
@@ -129,3 +140,290 @@ fieldset.legendBox  {
 	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
 }
 
+
+#placeDetails {  
+    /* Place the div off the bottom right of the map */  
+    position: absolute;  
+    width: 150px;  
+    height:auto;
+    
+    bottom:20px;    
+    right: 0px;
+	
+	
+    padding-left: 9px;  
+    padding-right: 5px;  
+    /* Semi-transparent background */
+    background-color: #505050; 
+    background-color: rgba(0,0,0,0.6);  
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-left-radius: 10px;  
+    -moz-border-radius-topleft: 10px;  
+    -webkit-border-top-left-radius: 10px;  
+ }  
+  
+  #chartDiv { 
+  	position: absolute; 
+  	width:100%;
+	height:20%;
+  	top:80%;  
+   	overflow: hidden;  
+  		
+  }
+  
+  #chart {
+  	
+  	position: absolute;
+	top:0;
+	left:0; 
+  	width:100%;
+    height:100%;
+  	background-color: rgba(255,255,255,0.5);
+  }
+  
+	
+    #mapDiv {  
+    width: 100%;  
+    height:80%;
+    position: absolute;
+	top:0;
+	left:0;  
+    overflow: hidden;  
+  }
+  
+  #thermalControls img {  
+  	padding-left: 3px;
+    vertical-align: middle;
+  }
+  #thermalControls label { cursor:pointer; }  
+  
+.legendBox label { cursor:pointer; }  
+
+/* track info display */
+
+ 
+ 
+#trackInfoTpl{
+	display:none;	
+}
+
+.infoDisplay {
+	position:relative;
+	color:#FFFFFF;
+	font-size:11px;
+}
+.infoDisplay * {
+	color:#FFFFFF;
+	font-size:11px;
+}
+
+.infoDisplay{
+	position:relative;
+	 width:100% ;
+}
+
+.infoDisplayItem {
+	position:relative;
+	 width:100% ;
+	 float: left;
+}
+
+.infoDisplayText { 
+	float:left;
+	width:60px;
+}
+
+.infoString{
+	float:right;
+	clear:right;
+	
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+}
+
+
+
+#trackCompareFinder {
+    /* Place the div off the bottom right of the map */  
+    position: relative;  
+	float:left;
+	width: auto;
+    height:auto;
+
+	padding:5px;
+    padding-left: 9px;  
+    padding-right: 5px;
+	
+    padding:0px;
+	margin-left:-4px;
+  
+    /* Semi-transparent background */
+    background-color: #505050;  
+    background-color: rgba(0,0,0,0.6);
+    background:none;
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-right-radius: 10px;  
+    -moz-border-radius-topright: 10px;  
+    -webkit-border-top-right-radius: 10px;  
+
+    border-bottom-right-radius: 10px;  
+    -moz-border-radius-bottomright: 10px;  
+    -webkit-border-bottom-right-radius: 10px;
+
+    display:block;
+}  
+
+#trackCompareFinder div {
+	padding:2px;
+}
+
+#trackFinderTplMulti {
+	display:none;
+}
+
+
+/* wide for multiple tracks
+*/
+#trackDetails {  
+    /* Place the div off the bottom right of the map */  
+    position: absolute;  
+
+	width: auto;
+    height:auto;
+    bottom:20px;
+
+	padding:5px;
+    padding-left: 9px;  
+    padding-right: 5px;
+    
+    /* Semi-transparent background */
+    background-color: #505050;  
+    background-color: rgba(0,0,0,0.6);  
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-right-radius: 10px;  
+    -moz-border-radius-topright: 10px;  
+    -webkit-border-top-right-radius: 10px;  
+
+    border-bottom-right-radius: 10px;  
+    -moz-border-radius-bottomright: 10px;  
+    -webkit-border-bottom-right-radius: 10px;  
+}  
+
+#trackInfoTplMulti {
+	display:none;
+}
+
+.trackDisplayItem {
+	position:relative;
+	width:100% ;
+	float: left;
+	border-bottom:1px solid  rgba(40,40,40,0.8);  
+}
+
+.trackDisplayItem .color	{
+	width:14px;
+	height:14px;
+	margin-right:3px;
+
+	border-radius: 2px;  
+    -moz-border-radius: 2px;  
+    -webkit-border-top: 2px;  
+}
+
+#trackCompareFinderHeader, #trackCompareFinderHeaderAct , #trackCompareFinderHeaderClose {
+ 	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	cursor:pointer;
+}
+
+#trackCompareFinderHeaderExpand { 
+	display:none;
+}
+
+div#trackCompareFinderHeaderAct {
+	padding-left:30px;
+	padding-right:30px;
+}
+#trackCompareFinderHeaderAct {
+	float:right;
+	background: none repeat scroll 0 0 #175196;
+	border: 1px solid #E3E3E3;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px; 
+}
+
+
+#trackCompareFinderHeaderClose {
+    background: none repeat scroll 0 0 #373737;
+	border: 1px solid #E3E3E3;
+	
+	float: left;
+	font-size: 11px;
+	width: 70px;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px;
+
+}
+
+#trackCompareFinderHeader 	 {display: block;}
+#trackCompareFinderList		 {display: none;}
+
+.trackDisplayItem .date		{width:50px;text-align:left;}
+.trackDisplayItem .score	{width:75px;text-align:right;}
+.trackDisplayItem .info		{width:20px;}
+.trackDisplayItem .glider	{width:50px; ;text-align:center;}
+#trackCompareFinder .trackDisplayItem .name 	{width:120px;text-align:left;}
+.trackDisplayItem .tick		{width:25px;text-align:center;}
+
+.trackDisplayItem .tick	input { width:23px; height:23px; cursor:pointer;}
+
+.trackDisplayItem .name		{width:150px;}
+.trackDisplayItem .alt		{width:55px;}
+.trackDisplayItem .speed	{width:70px;}
+.trackDisplayItem .vario 	{width:75px;}
+
+
+.trackStr, .trackListStr {
+	float:left;
+	clear:none;
+	display:inline;
+ 	width:80px;
+	color:#FFFFFF;
+	font-size:10px;
+	font-weight:bold;
+	text-align:right;
+	border:1px solid #000000;
+	border:none;
+	padding:2px;
+}
+
+#timeDiv {
+	font-size:15px;
+	font-weight:bold;
+	text-align:center;
+}
+
+/* some fancy checkboxes */
+.label_check input,
+.label_radio input  { margin-right: 5px; }
+
+.has-js .label_check,
+.has-js .label_radio    { padding-left: 34px; }
+.has-js .label_radio    { background: url(img/radio-off.png) no-repeat; }
+.has-js .label_check    { background: url(img/check-off.png) no-repeat; }
+.has-js label.c_on      { background: url(img/check-on.png) no-repeat; }
+.has-js label.r_on      { background: url(img/radio-on.png) no-repeat; }
+.has-js .label_check input,
+.has-js .label_radio input  { position: absolute; left: -9999px; }
+
+ 

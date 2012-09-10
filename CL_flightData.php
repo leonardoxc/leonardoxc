@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.194 2012/01/16 07:21:22 manolis Exp $
+// $Id: CL_flightData.php,v 1.195 2012/09/10 02:03:19 manolis Exp $
 //
 //************************************************************************
 
@@ -1960,6 +1960,15 @@ $kml_file_contents=
 		return $l;
 	}
 
+	function getPolyHeader(){
+		$handle = fopen($this->getPolylineFilename(), "r");
+		$l=array();
+		$l[0]= fgets($handle, 4096);
+		$l[1]= fgets($handle, 4096);
+		$l[2]= fgets($handle, 4096);
+		fclose ($handle);
+		return $l;
+	}
 
 	function storeIGCvalues() {
 		$data_time =array();

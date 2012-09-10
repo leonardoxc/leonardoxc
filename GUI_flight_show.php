@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.109 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.110 2012/09/10 02:03:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -685,7 +685,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 	if ( $CONF_google_maps_api_key  ) {
 		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track.php?id=".
+		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
 		$flight->flightID."' ".
 		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>

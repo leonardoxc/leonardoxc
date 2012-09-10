@@ -2,73 +2,115 @@
 
 
 var chartObj;
-var ImgW = 745;
-
-function updateChartWidth() {
-	ImgW=$("#chart").width();	
-}
-
-var plot;
+var plot=null;
 var updateLegendTimeout = null;
 var latestPosition = null;
 
-function drawChart() {
+var chartDataSeries=[];
+var chartDataSeriesNum=0;
+
+var trackStartIndex=0;
+
+var chartInit=0;
+
+var firstStartTm=null;
+
+function drawChart(data) {
 	var d0 = [];
 	var d1 = [];
-	var d2 = [];
 	
-	for(i=0;i<flightArray.time.length;i++) {	
-		 d1.push([flightArray.time[i]*1000+StartTm,flightArray.elev[i]]);
-		 
-		 d0.push([flightArray.time[i]*1000+StartTm,flightArray.elev[i]-100]);
-		 
-		 d2.push([flightArray.time[i]*1000+StartTm,flightArray.elev[i]-50]);
-	}
+	var dataArray=[];
+	var optionsArray=[];
 	
-	plot=$.plot($("#chart"), [
-	   {
-	       data: d1,
-	       label: "Alt= 0"
-	   }, 
-	   {
-	       data: d2,
-	       label: "AltV= 0"
-	   }, 
-	   {
-		   data: d0,
-	       label: "Ground",
-		   lines: { 
-			   fill: true,			  
-			   fillColor: "#919733"
-		   }
-	   }
-	], {
-		series: {
-			lines: { 
-				show: true, 
-				lineWidth: 2,
-				fill: false 
-			},
-			shadowSize: 0
-		},
-		colors: ["#d18b2c", "#dba255", "#919733"],
-		xaxis: { mode: "time" } ,
-		yaxis: { min: 0 },
-		crosshair: { mode: "x" },
-        grid: {
-        	margin:15,
-        	hoverable: true, 
-        	borderWidth: 0,
-            borderColor: "#454545",
-			autoHighlight: false 
+	var flightsNum=flights.length;
+	// $("#msg").html(flightsNum);
+	
+	
+	chartDataSeries=[];
+	chartDataSeriesNum=0;
+
+	for(var fnum in flights) {
+		var data=flights[fnum].data;
+	
+		var flightID=data.flightID;
+		var StartTm=data.startTm;
+		
+		if (firstStartTm==null) {
+			firstStartTm=StartTm;
 		}
+	
+		// $("#msg").append("StartTm:"+StartTm);
+		
+		dataArray[fnum]=[];
+		
+		
+		for(i=0;i<data.points.time.length;i++) {
+			
+			var tm=+firstStartTm+(data.points.time[i]*1000);
+			if (flightsTotNum==1) {
+			 	// ground 
+			 	d0.push([tm,data.points.elevGnd[i]*multMetric ]);
+			 
+				// atlitude varo
+			 	if (baroGraph) {
+			 		d1.push([tm,data.points.elevV[i]*multMetric ]);
+			 	}
+			}
+		
+			// altitude  gps
+			dataArray[fnum].push([tm,data.points.elev[i]*multMetric]);
+			 
+		}
+	
+		if (flightsTotNum==1) {
+	 		// ground 	 		
+	 		optionsArray.push( { data:d0,label: "ground", lines: { 
+   			   		fill: true,			  
+   			   		fillColor: "#AB7224"
+  		   		}
+	 		} );
+	 	
+	 		// atlitude varo
+	 		if (baroGraph) {	 			
+	 			optionsArray.push( { data:d1,label: AltitudeStrBaro } );
+	 		}
+	 		optionsArray.push( { data:dataArray[fnum],label:AltitudeStr } );
+	 		
+		} else {
+			optionsArray.push( { data:dataArray[fnum] } );
+		}
+		
+		chartDataSeries[chartDataSeriesNum]=data.flightID;
+		chartDataSeriesNum++;
 	}
 	
+	plot=$.plot($("#chart"),
+		optionsArray, 
+		{
+			series: {
+				lines: { 
+					show: true, 
+					lineWidth: 1,
+					fill: false 
+				},
+				shadowSize: 0
+			},
+			colors: trackColors ,
+			xaxis: { mode: "time",  show: true } ,
+			yaxis: { min: 0 },
+			crosshair: { mode: "x" },
+	        grid: {	        	 
+	        	margin:8,
+	        	hoverable: true, 
+	        	borderWidth: 0,
+	            borderColor: "#454545",
+				autoHighlight: false 
+			}
+		}	
 	);
 	
+	// plot.setupGrid();
 
-
-    
     $("#chart").bind("plothover",  function (event, pos, item) {
         latestPosition = pos;
         if (!updateLegendTimeout)
@@ -90,14 +132,23 @@ function updateLegend() {
         return;
 	}
     
+  
+    
     var i, j, dataset = plot.getData();
+    
+  // $("#msg").html("#dalaten="+dataset.length);
+    
     for (i = 0; i < dataset.length; ++i) {
+    	
+    	//$("#msg").append("#"+i);
+    	
         var series = dataset[i];
 
         // find the nearest points, x-wise
-        for (j = 0; j < series.data.length; ++j)
-            if (series.data[j][0] > pos.x)
+        for (j = 0; j < series.data.length; ++j) {
+            if (series.data[j][0] > pos.x) 
                 break;
+        }
         
         // now interpolate
         var y, p1 = series.data[j - 1], p2 = series.data[j];
@@ -108,40 +159,76 @@ function updateLegend() {
         else
             y = p1[1] + (p2[1] - p1[1]) * (pos.x - p1[0]) / (p2[0] - p1[0]);
 
-        $("#msg").html(y.toFixed(2)+"#"+series.data.length+"#"+j);
+        
+        //  $("#msg").html(y.toFixed(2)+"#"+series.data.length+"#"+j);
         
         // legends.eq(i).text(series.label.replace(/=.*/, "= " + y.toFixed(2)));
+        var flightID=chartDataSeries[i];
         
-		$('#timeText1').html( sec2Time(flightArray.time[j]) );
-        
-		// get the lat lon
-		var lat=flightArray.lat[j];
-		var lon=flightArray.lon[j];
-		var newpos= new google.maps.LatLng(lat, lon);
-		posMarker.setPosition(newpos);
+       // $("#msg").append("flightID"+flightID);
+        if (flightID) {
+        	// $("#msg").html("@@@"+i);
+        	updateVisuals(flightID,i,j);
+    	}
 		
-		if (followGlider) map.setCenter(newpos, null);
+    }
+}
+
+
+function updateVisuals(flightID,num,j) {
+	
+	// num=num+trackStartIndex;
+	
+	var displayBoxName="#trackInfo"+num;
+	// $("#msg").append("#displayBoxName:"+displayBoxName);
+	// get the lat lon
+	var lat=flights[flightID].data.points.lat[j];
+	var lon=flights[flightID].data.points.lon[j];
+	var speedStr=flights[flightID].data.points.speed[j];
+	var altStr=flights[flightID].data.points.elev[j];
+	var altVStr=flights[flightID].data.points.elevV[j];
+	var varioStr=flights[flightID].data.points.vario[j];
+	var timeStr=flights[flightID].data.points.time[j];
 		
-        var speedStr=flightArray.speed[j];
-		var altStr=flightArray.elev[j];
-		var altVStr=flightArray.elevV[j];
-		var varioStr=flightArray.vario[j];
-		
+	var newpos= new google.maps.LatLng(lat, lon);
+	posMarker[num].setPosition(newpos);
+	
+	if (followGlider) map.setCenter(newpos, null);
+	
+
+	if ( isNaN(speedStr)) { 
+		speedStr='-';
+	} else {
 		if (metricSystem==2) {
 			speedStr*=0.62;
 		}
 		speedStr=Math.round(speedStr*10)/10;
 		speedStr=speedStr+speedUnits;
-		
-		//if (metricSystem==2) {
-		//	altStr*=3.28;
-		//}
-		altStr=Math.round(altStr);
+	}
+	
+	if ( isNaN(altStr)) { 
+		altStr='-'; 
+	} else {
+		altStr=Math.round(altStr*multMetric);
 		altStr=altStr+altUnits;
-		
-		altVStr=Math.round(altVStr);
+	}
+	
+	if ( isNaN(altVStr)) { 
+		altVStr='-'; 
+	} else {
+		altVStr=Math.round(altVStr*multMetric);
 		altVStr=altVStr+altUnits;
+	}
 		
+	if ( isNaN(timeStr)  ) { 
+		timeStr='-'; 
+	} else {
+		timeStr=sec2Time(timeStr);		
+	}
+	
+	if ( isNaN(varioStr)) { 
+		varioStr='-'; 
+	} else {
 		if (metricSystem==2) {
 			varioStr*=196.8;
 			varioStr=Math.round(varioStr);
@@ -149,26 +236,22 @@ function updateLegend() {
 			varioStr=Math.round(varioStr*10)/10;
 		}
 		varioStr=varioStr+varioUnits;
-		
-		//	speed=document.getElementById("speed");
-		//  speed.value=speedStr;
-		$("#speed").html(speedStr);
-		$("#alt").html(altStr);
-		$("#vario").html(varioStr);
-		if (userAccessPriv) $("#altV").html(altVStr);
-		
-		
-    }
+	}
+	
+	
+	if (flightsTotNum==1) {
+		$(displayBoxName+' .time').html(timeStr);
+	} else {
+		if (timeStr!='-')  {
+			$('#timeDiv').html(timeStr);
+		}
+	}
+	$(displayBoxName+' .speed').html(speedStr);
+	$(displayBoxName+' .alt').html(altStr);
+	$(displayBoxName+' .vario').html(varioStr);
+	if (userAccessPriv && flightsTotNum==1) $(displayBoxName+' .altV').html(altVStr);
+	
 }
-
-/*
-	$("#chart").resize(function () {
-		ImgW=$("#chart").width();	
-	    alert("Placeholder is now "
-	                       + $(this).width() + "x" + $(this).height()
-	                       + " pixels");
-	});
-*/
 
 function drawChart0() {
 	// draw all flights

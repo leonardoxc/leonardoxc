@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.23 2010/05/05 14:00:04 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.24 2012/09/10 02:03:19 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,10 +25,11 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
+	
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
-	if (!in_array($op,array("find_flights","list_flights","submit_flight","list_flights_json","get_info","polylineURL","get_task_json")) ) return;
+	if (!in_array($op,array("flight_info","find_flights","list_flights","submit_flight","list_flights_json","get_info","polylineURL","get_task_json")) ) return;
 
 	$encoding="iso-8859-1";
 	if ($op=="find_flights") {
@@ -140,6 +141,210 @@
 		$flight->flightID=$flightID;
 		//$flight->getFlightFromDB($flightID,0);	
 		echo $flight->gMapsGetTaskJS();
+		
+	} else if ($op=="flight_info") {
+		require_once dirname(__FILE__).'/CL_flightData.php';
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+				
+		$flightID=$_REQUEST['flightID']+0;
+		if (!$flightID) return;
+		
+		$flight=new flight();
+		$flight->getFlightFromDB($flightID,0);
+	
+		$flight->makeJSON(0);  // no force
+	
+		$i=0;
+		$JSON_str="";
+		if (1) {
+			//$nearestWaypoint=new waypoint($takeoffIDTmp);
+			//$nearestWaypoint->getFromDB();
+	
+			$name=getPilotRealName($flight->userID,$flight->userServerID);
+			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
+										getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID)) 
+									);
+										
+			$this_year=substr($flight->DATE,0,4);		
+			$linkIGC=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].getRelMainDir().
+					str_replace("%PILOTID%",getPilotID($flight->userServerID,$flight->userID),str_replace("%YEAR%",$this_year,$CONF['paths']['igc']) ).'/'.
+					$flight->filename );  
+					//$flightsRelPath."/".$row[userID]."/flights/".$this_year."/".$row[filename] );  
+			
+			if ($flight->takeoffVinicity > $takeoffRadious ) 
+				$location=getWaypointName($flight->takeoffID)." [~".sprintf("%.1f",$flight->takeoffVinicity/1000)." km]"; 
+			else $location=getWaypointName($flight->takeoffID);
+	
+				
+			$START_TIME=$flight->START_TIME;
+			$END_TIME=$flight->END_TIME;
+			$DURATION=$END_TIME-$START_TIME;	
+			
+			$year=substr($flight->DATE,0,4);
+			$month=substr($flight->DATE,5,2);
+			$day=substr($flight->DATE,8,2);	
+			$startTm=gmmktime(0,0,0,$month,$day,$year) ; // + $START_TIME; // + $flight->timezone*3600 +
+			$startTm*=1000;	
+			// echo "$month,$day,$year $startTm#$START_TIME#";exit;
+					
+	
+			$polyFile=$flight->getPolylineFilename();
+			$polyPath="http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flight->getPolylineRelPath();
+			
+			$lines=$flight->getPolyHeader();
+			
+			 //[0] => 51.7671|14.295933333333|Takeoff|Takeoff 
+		 //	[1] => 52.03905|15.095716666667|Landing|Landing 
+		
+			$parts = explode('|',$lines[0]);
+			$takeoff_lat = $parts[0];
+			$takeoff_lon = $parts[1];
+			
+			$parts = explode('|',$lines[1]);
+			$landing_lat = $parts[0];
+			$landing_lon = $parts[1];			
+			
+		 	$parts = explode(',',$lines[2]);
+			$min_lat = $parts[0];
+			$max_lat = $parts[1];
+			$min_lon = $parts[2];
+			$max_lon = $parts[3];
+	
+			$jsonGraphData="http://".$_SERVER['SERVER_NAME'].getRelMainDir().$flight->getJsonRelPath();
+			
+			$kmz=$_SERVER['SERVER_NAME']."/$baseInstallationPath/".$flight->getKMLRelPath(0);
+			$kmz=str_replace('//','/', $kmz);
+			$kmz=str_replace('//','/', $kmz);
+			
+			$flightKMZ="http://".$kmz;
+			
+			// access the kmz file and create it if it does not exists
+			$kmlStr=$flight->kmlGetTrack("ff0000",1,2,0);
+			
+			
+			$markerIconUrl=$_SERVER['SERVER_NAME'].getRelMainDir()."/img/icon_cat_".$flight->cat.".png";
+			$markerIconUrl=str_replace('//','/', $markerIconUrl);
+			$markerIconUrl=str_replace('//','/', $markerIconUrl);
+			$markerIconUrl="http://".$markerIconUrl;
+			
+			// remove the string  
+			// var flightArray=
+			// it is 16 bytes
+			$flightJsonStr=file_get_contents($flight->getJsonFilename());
+			$flightJsonStr=substr($flightJsonStr,16);
+			
+			
+			$photosStr=" [] ";
+			if ($flight->hasPhotos) {
+				require_once dirname(__FILE__)."/CL_flightPhotos.php";
+			
+				$flightPhotos=new flightPhotos($flight->flightID);
+				$flightPhotos->getFromDB();
+			
+				// get geoinfo
+				$flightPhotos->computeGeoInfo();
+			
+				$imagesHtml="";
+				foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
+					//$photoInfo['lat']=51.8;
+					//$photoInfo['lon']=14.0;
+					
+					$pnum=0;
+					if ($photoInfo['lat'] && $photoInfo['lon'] ) {
+						$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+						$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+				
+						$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
+						$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
+			
+						if (file_exists($imgBig) ) {
+							list($width, $height, $type, $attr) = getimagesize($imgBig);
+							list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+							$imgTarget=$imgBigRel;
+						} else 	if (file_exists($imgIcon) ) {
+							list($width, $height, $type, $attr) = getimagesize($imgIcon);
+							list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+							$imgTarget=$imgIconRel;
+						} 
+			
+						// echo " 	drawPhoto(".$photoInfo['lat'].",".$photoInfo['lon'].",$photoNum,'$imgIconRel','$imgTarget',$width,$height); \n";
+						
+						if ($pnum>0) $photosStr.=" , \n";
+						$photosStr= ' { "lat":'.json::prepStr($photoInfo['lat']).', "lon":'.json::prepStr($photoInfo['lon']).
+							', "num" : '.$photoNum.', "icon": "'.json::prepStr($imgIconRel).'" ,"photo":"'.json::prepStr($imgTarget).'", "width": '.$width.
+							', "height": '.$height.' } ';
+						
+						 
+						$pnum++;	
+					}		
+					
+				}
+				if ($pnum>0) {
+					$photosStr="[".$photosStr ."]";				
+				}
+			}
+			
+			
+				
+			// print_r($lines);
+			// if ($i>0) $JSON_str.=", ";
+			
+			$JSON_str.=' {"flightID": "'.$flightID.'", "date": "'.json::prepStr($flight->DATE).'", '.
+					'"firstLat": "'.json::prepStr($flight->firstLat).'", '.
+					'"firstLon": "'.json::prepStr($flight->firstLon).'", '.
+					
+					'"lastLat": "'.json::prepStr($flight->lastLat).'", '.
+					'"lastLon": "'.json::prepStr($flight->lastLon).'", '.
+					
+					'"DURATION": "'.json::prepStr($DURATION).'", '.
+					'"START_TIME": "'.json::prepStr($START_TIME).'", '.
+					'"END_TIME": "'.json::prepStr($END_TIME).'", '.
+					'"startTm": "'.json::prepStr($startTm).'", '.
+					
+					//'"polyUrl": "'.json::prepStr($polyPath).'", '.
+					//'"graphUrl": "'.json::prepStr($jsonGraphData).'", '.
+					
+					'"flightKMZUrl": "'.json::prepStr($flightKMZ).'", '.			
+					'"markerIconUrl": "'.json::prepStr($markerIconUrl).'", '.
+			
+					// ARRAYS !!!
+					'"task": '.$flight->gMapsGetTaskJS().', '.
+	
+					'"points": '.$flightJsonStr.', '.
+			
+					'"photos": '.$photosStr.', '.
+			
+			
+					'"min_lat": "'.json::prepStr($min_lat).'", '.
+					'"max_lat": "'.json::prepStr($max_lat).'", '.
+					'"min_lon": "'.json::prepStr($min_lon).'", '.
+					'"max_lon": "'.json::prepStr($max_lon).'", '.			
+			
+					'"takeoff_lat": "'.json::prepStr($takeoff_lat).'", '.
+					'"takeoff_lon": "'.json::prepStr($takeoff_lon).'", '.
+			
+					'"landing_lat": "'.json::prepStr($landing_lat).'", '.
+					'"landing_lon": "'.json::prepStr($landing_lon).'", '.	
+			
+					'"pilotName": "'.json::prepStr($name).'", '.
+					'"takeoff": "'.json::prepStr($location).'"  } ';
+			
+		}
+
+		//$JSON_str='{"totalCount":"'.$i.'","flights":[ '. $JSON_str."  ] } ";	
+		//$JSON_str='{ "flights":[ '. $JSON_str."  ] } ";	
+			
+		
+		if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
+		header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
+		else header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
+		header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+		header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header ('Content-Type: text/html');				
+
+
+		echo $JSON_str;
+		
 	} else if ($op=="get_info") {
 		require_once dirname(__FILE__).'/lib/json/CL_json.php';
 				
@@ -294,7 +499,7 @@
 			 $nearestWaypoint=new waypoint($takeoffIDTmp);
 			 $nearestWaypoint->getFromDB();
 	
-			$name=getPilotRealName($row["userID"],$row["userServerID"]);
+			$name=getPilotRealName($row["userID"],$row["userServerID"],1);
 			$link=htmlspecialchars ("http://".$_SERVER['SERVER_NAME'].
 										getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])) 
 									);
@@ -311,12 +516,87 @@
 	
 			if ($i>0) $JSON_str.=", ";
 			
+			$START_TIME=sec2Time24h($row['START_TIME'],1);
+			$END_TIME=sec2Time24h($row['END_TIME'],1);
+			$duration=sec2Time($row['DURATION'],1);
+
+			$linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
+			$olcDistance=formatDistanceOpen($row["FLIGHT_KM"]);
+			$olcScore=formatOLCScore($row["FLIGHT_POINTS"]);
+			$scoreSpeed=formatSpeed($row["SCORE_SPEED"]);
+	
+	
+			// get the OLC score type
+			$olcScoreType=$row['BEST_FLIGHT_TYPE'];
+			if ($olcScoreType=="FREE_FLIGHT") {
+				$olcScoreTypeImg="icon_turnpoints.gif";
+			} else if ($olcScoreType=="FREE_TRIANGLE") {
+				$olcScoreTypeImg="icon_triangle_free.gif";
+			} else if ($olcScoreType=="FAI_TRIANGLE") {
+				$olcScoreTypeImg="icon_triangle_fai.gif";
+			} else { 
+				$olcScoreTypeImg="photo_icon_blank.gif";
+			}
+	
+			$olcScoreType=leoHtml::img($olcScoreTypeImg,16,16,'top',formatOLCScoreType($olcScoreType,0),'icons1');
+			
+			$gliderType=$row["cat"]; // 1=pg 2=hg flex 4=hg rigid 8=glider
+		    $gliderBrandImg=brands::getBrandImg($row["gliderBrandID"],$row['flight_glider'],$gliderType);
+			
+		   $gliderTypeDesc=$gliderCatList[$row["cat"]];
+	   		if ($row["category"]) {
+	   		$gliderTypeDesc.=" - ".$CONF['gliderClasses'][$row["cat"]]['classes'][$row["category"]];
+	   		$categoryImg="<div class='categoryListIconDiv'>".leoHtml::img("icon_class_".$row["category"].".png",0,0,'top',$gliderTypeDesc,'icons1','')."</div>";	    	
+		   } else {
+		   		$categoryImg='';
+		   }
+		   
+		   $gliderCat=leoHtml::img("icon_cat_".$row["cat"].".png",0,0,'top',$gliderTypeDesc,'icons1 catListIcon');
+		   
+		   
+		   $MAX_ALT=formatAltitude($row['MAX_ALT']);
+		   $MAX_VARIO=formatVario($row['MAX_VARIO']);
+		   
+	    
+/*MIN_VARIO
+LINEAR_DISTANCE
+MAX_LINEAR_DISTANCE
+BEST_FLIGHT_TYPE] => FREE_FLIGHT 
+FLIGHT_KM
+FLIGHT_POINTS
+glider
+gliderBrandID
+startType
+takeoffID
+ */
+			
 			$JSON_str.=' {"flightID": "'.$row["ID"].'", "date": "'.json::prepStr($row["DATE"]).'", '.
 					'"firstLat": "'.json::prepStr($row["firstLat"]).'", '.
 					'"firstLon": "'.json::prepStr($row["firstLon"]).'", '.
 					
 					'"lastLat": "'.json::prepStr($row["lastLat"]).'", '.
 					'"lastLon": "'.json::prepStr($row["lastLon"]).'", '.
+			
+					'"DURATION": "'.json::prepStr($duration).'", '.
+					'"START_TIME": "'.json::prepStr($START_TIME).'", '.
+					'"END_TIME": "'.json::prepStr($END_TIME).'", '.
+			
+					'"MAX_ALT": "'.json::prepStr($MAX_ALT).'", '.
+					'"MAX_VARIO": "'.json::prepStr($MAX_VARIO).'", '.
+			
+
+					'"linearDistance": "'.json::prepStr($linearDistance).'", '.
+					'"olcDistance": "'.json::prepStr($olcDistance).'", '.
+					'"olcScore": "'.json::prepStr($olcScore).'", '.
+					'"scoreSpeed": "'.json::prepStr($scoreSpeed).'", '.
+					'"olcScoreType": "'.json::prepStr($olcScoreType).'", '.
+			
+			
+					'"gliderBrandImg": "'.json::prepStr($gliderBrandImg).'", '.
+					'"gliderCat": "'.json::prepStr($gliderCat).'", '.
+					'"categoryImg": "'.json::prepStr($categoryImg).'", '.
+			
+
 					
 					'"pilotName": "'.json::prepStr($name).'", '.
 					'"takeoff": "'.json::prepStr($location).'"  } ';

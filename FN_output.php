@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.59 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.60 2012/09/10 02:03:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,8 +21,11 @@ function sec2Time($secs,$no_seconds=false) {
     return '<span class="time_style">'.sprintf("%d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60).'</span>';
 }
 
-function sec2Time24h($secs) {
-    return sprintf("%02d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60);
+function sec2Time24h($secs,$no_seconds=false) {
+	if ($no_seconds)
+    	return sprintf("%02d:%02d",$secs/3600,($secs%3600)/60);
+	else 
+		return sprintf("%02d:%02d:%02d",$secs/3600,($secs%3600)/60,$secs%60);
 }
 
 
