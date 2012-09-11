@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_ajax_functions.php,v 1.5 2010/04/07 13:08:54 manolis Exp $                                                                 
+// $Id: EXT_ajax_functions.php,v 1.6 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -58,6 +58,11 @@
 		$str=substr($str,0,-1);
 		$str.=" ] } ";
 		echo $str;
+	} else if ($op=='storeFavs') {
+		
+	
+		$_SESSION['favHtml']=$_POST['favHtml'];
+		echo "OK";
 	} else if ($op=='getCountriesSelect') {
 		require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
 		asort($countries);

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_second_menu.php,v 1.59 2012/01/16 07:21:22 manolis Exp $
+// $Id: MENU_second_menu.php,v 1.60 2012/09/11 19:27:11 manolis Exp $
 //
 //************************************************************************
 ?>
@@ -208,6 +208,26 @@ border-bottom-style:none;
 	font-weight: bold;
 }
 
+
+.indexCell div , .indexCell {margin:0 ; padding:0;}
+.selectTrack input { hmargin:0; padding:0; cursor:pointer;}
+.fav_remove { cursor:pointer; }
+.fav_remove img { margin-left:20px; }
+
+#compareFavoritesText  { display:block; }
+#compareFavoritesLink { display:none;}
+
+.greenButton , a.greenButton:link,  a.greenButton:visited {
+	background: none repeat scroll 0 0 #51B550;
+	border: 1px solid #989797;
+	color: #FFFFFF;
+	padding: 5px 15px;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px;
+}
+
+.dateHidden {display:none;}
 </style>
 
 <script language="javascript">
@@ -292,11 +312,8 @@ function toogleMenu(name) {
 
 $(document).ready(function(){
 
-	$(".closeButton").livequery('click', function(e) {
-		// $(this).parent().parent().hide();
-	});
 
-	$(".closeLayerButton").livequery('click', function(e) {
+	$(".closeLayerButton").live('click', function(e) {
 		$(this).parent().slideToggle(200);
 		$(".menuButton").removeClass("menuButtonActive");
 		$(".menuButton").addClass("menuButtonNormal");
@@ -387,6 +404,13 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 <div class="mainBox secondMenu" align="left" style="margin-top:-1px;">
 
+<? if ($op=='list_flights') { ?>
+	<div id='favMenuID' class="menuButton"><a href="#" onClick="toogleFav(); return false;">
+	<?=leoHtml::img('icon_fav.png',0,0,'absmiddle','','icons1','',0);?>
+	<? echo $arrDownImg; ?></a>
+    </div>
+<? } ?>
+    
 <? if ($op!='comp'  || 1 ) { // custom ranks , we now allow also on custom ranks?>
 <? if ($_SESSION["filter_clause"]) {
 		$filterIcon='icon_filter_active.png';
@@ -812,6 +836,10 @@ if (! $dontShowCountriesSelection ) {
 
 
 <?
+if ($op=='list_flights') { 
+	require_once  dirname(__FILE__).'/MENU_fav.php';
+}
+
 require_once  dirname(__FILE__).'/MENU_clubs.php';
 
 if ($countriesNum>1)

@@ -78,6 +78,26 @@ padding: 2px 2px 2px 4px;
 text-decoration: none;
 }
 
+#animControl a:link, #animControl a:visited, #animControl a:active {
+	display:inline;
+	background:none;
+	padding:0;
+	color:#d0d0d0;
+	border:0;
+	
+}
+
+#animControl { margin-bottom:8px; }
+#animControl img {
+	vertical-align: middle;
+}
+#animControl button {
+	font-size: 14px;
+	font-weight: bold;
+	height: 22px;
+	margin-top: 0;
+}
+
 #placeDetails label {
 	font-size:12px;
 }
@@ -293,7 +313,7 @@ fieldset.legendBox  {
     /* Place the div off the bottom right of the map */  
     position: absolute;  
 
-	width: auto;
+	width: 400px;
     height:auto;
     bottom:20px;
 
@@ -322,7 +342,8 @@ fieldset.legendBox  {
 
 .trackDisplayItem {
 	position:relative;
-	width:100% ;
+	
+
 	float: left;
 	border-bottom:1px solid  rgba(40,40,40,0.8);  
 }
@@ -337,15 +358,19 @@ fieldset.legendBox  {
     -webkit-border-top: 2px;  
 }
 
-#trackCompareFinderHeader, #trackCompareFinderHeaderAct , #trackCompareFinderHeaderClose {
+#trackCompareFinderHeader, #trackCompareFinderHeaderAct , 
+#trackCompareFinderHeaderClose, #trackCompareFinderHeaderMore  {
  	font-size:14px;
 	font-weight:bold;
 	text-align:center;
 	cursor:pointer;
 }
 
+
 #trackCompareFinderHeaderExpand { 
 	display:none;
+	width:380px;
+	overflow:hidden;
 }
 
 div#trackCompareFinderHeaderAct {
@@ -361,6 +386,20 @@ div#trackCompareFinderHeaderAct {
     -webkit-border-top: 5px; 
 }
 
+#trackCompareFinderHeaderMore
+{
+    background: none repeat scroll 0 0 #EEC132;
+	border: 1px solid #E3E3E3;	
+	float: right;
+	clear:both;
+	font-size: 11px;
+	width: 70px;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px;
+	display:none;
+
+}
 
 #trackCompareFinderHeaderClose {
     background: none repeat scroll 0 0 #373737;
@@ -375,15 +414,25 @@ div#trackCompareFinderHeaderAct {
 
 }
 
-#trackCompareFinderHeader 	 {display: block;}
-#trackCompareFinderList		 {display: none;}
+#trackCompareFinderHeader 	 {display: block;float:left; width:400px;}
+#trackCompareFinderList		 {display: none; clear:both; float:left; width:400px;}
 
-.trackDisplayItem .date		{width:50px;text-align:left;}
-.trackDisplayItem .score	{width:75px;text-align:right;}
-.trackDisplayItem .info		{width:20px;}
+
+.trackDisplayItem .date		{
+background: none repeat scroll 0 0 #967D7D;
+background: none;
+text-align: left;
+width: 70px;
+}
+.trackDisplayItem .score	{
+background: none repeat scroll 0 0 rgba(144, 139, 164, 0.57);
+background: none;
+text-align: right;
+width: 55px;}
+.trackDisplayItem .info		{width:36px;}
 .trackDisplayItem .glider	{width:50px; ;text-align:center;}
-#trackCompareFinder .trackDisplayItem .name 	{width:120px;text-align:left;}
-.trackDisplayItem .tick		{width:25px;text-align:center;}
+#trackCompareFinder .trackDisplayItem .name 	{width:115px;text-align:left;}
+.trackDisplayItem .tick		{width:20px;text-align:center;}
 
 .trackDisplayItem .tick	input { width:23px; height:23px; cursor:pointer;}
 

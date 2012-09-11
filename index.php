@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.124 2012/01/16 07:21:23 manolis Exp $
+// $Id: index.php,v 1.125 2012/09/11 19:27:11 manolis Exp $
 //
 //************************************************************************
 
@@ -514,7 +514,8 @@ if ($op=="index_full") {
 	} else {
 		require $LeoCodeBase."/GUI_flight_show.php";
 	}
-    
+ } else if ($op=="compare" ) {
+	require $LeoCodeBase."/GUI_flight_compare.php";       
 } else if ($op=="add_flight") {
 	// add by Durval Henke www.xcbrasil.org 19/12/2008
     if($CONF_force_civlid==1 && !$civlID && 0)

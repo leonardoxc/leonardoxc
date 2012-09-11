@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.125 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.126 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -418,6 +418,8 @@ TR .newDate {
 	text-align:right;	
 }
 
+
+
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
 
@@ -425,6 +427,11 @@ TR .newDate {
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
 <script type="text/javascript">
+
+
+//$(document).ready(function(){
+//});
+	
 
 var BT_base_urls=[];
 BT_base_urls[0]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
@@ -606,7 +613,7 @@ function removeClubFlight(clubID,flightID) {
   	   		 $dateStr= formatDate($row["DATE"]);
 			$rowStr=" newDate ";  	   		
   	   } else {
-  	   		$dateStr="&nbsp;";  
+  	   		$dateStr= "<span class='dateHidden'>".formatDate($row["DATE"])."</span>";
 			$rowStr="";
   	   }
 
@@ -623,7 +630,7 @@ function removeClubFlight(clubID,flightID) {
 		$date2row.=$extLinkImgStr;
 		if ($date2row=='') $date2row.='&nbsp;';
 
-		echo "\n\n<tr class='$sortRowClass $rowStr'>\n";
+		echo "\n\n<tr class='$sortRowClass $rowStr' id='row_$flightID'>\n";
 
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
@@ -650,7 +657,7 @@ function removeClubFlight(clubID,flightID) {
 	    $gliderBrandImg=brands::getBrandImg($row["gliderBrandID"],$row['flight_glider'],$gliderType);
 
 
-	   echo "\n<TD $first_col_back_color class='dateString'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
+	   echo "\n<TD $first_col_back_color class='indexCell'><div>".($i-1+$startNum)."</div>$privateIcon</TD>";
 	   echo "<TD class='dateString' valign='top'><div>$dateStr</div>$date2row";
 
 			if ( ( L_auth::isClubAdmin($userID,$clubID) || L_auth::isAdmin($userID) )&&  $add_remove_mode )  {
@@ -686,10 +693,17 @@ function removeClubFlight(clubID,flightID) {
 	   		echo "<TD class='distance'>$linearDistance</TD>";
 	   } else {
   		    echo "<TD class='speed'>$scoreSpeed</TD>";
-	   }	
-	   echo "<TD class='distance'>$olcDistance</TD>".
-	   "<TD nowrap class='OLCScore'>$olcScore&nbsp;".leoHtml::img($olcScoreTypeImg,16,16,'top',formatOLCScoreType($olcScoreType,0),'icons1');
-
+	   }
+	   
+	   echo "<TD class='distance'>$olcDistance</TD>";
+	   //P. Wild 22.03.2011 - Deutschland Flüge Fett hervorheben, Admin Farbkennzeichnung Luftraum	
+       $tmpairspaceName=$row['airspaceCheckMsg']; 
+       if (strrchr( $tmpairspaceName,"Punkte")){       		
+	   		echo "<TD nowrap class='OLCScore'><b>$olcScore</b>&nbsp;".leoHtml::img($olcScoreTypeImg,16,16,'top',formatOLCScoreType($olcScoreType,0),'icons1');
+       } else {        	
+	   		echo "<TD nowrap class='OLCScore'>$olcScore&nbsp;".leoHtml::img($olcScoreTypeImg,16,16,'top',formatOLCScoreType($olcScoreType,0),'icons1');
+       }
+       
 		if ($CONF_use_validation) {
 			$isValidated=$row['validated'];
 			if ($isValidated==-1) $vImg="icon_valid_nok.gif";

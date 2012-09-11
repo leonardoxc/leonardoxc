@@ -91,6 +91,7 @@ The plugin also adds four public methods:
         }
 
         function onMouseOut(e) {
+        	return;
             if (crosshair.locked)
                 return;
 
@@ -104,14 +105,15 @@ The plugin also adds four public methods:
             if (crosshair.locked)
                 return;
                 
-            if (plot.getSelection && plot.getSelection()) {
+            if (plot.getSelection && plot.getSelection() ) {
                 crosshair.x = -1; // hide the crosshair while selecting
                 return;
             }
-                
+            if (!animIsRunning) {   
             var offset = plot.offset();
             crosshair.x = Math.max(0, Math.min(e.pageX - offset.left, plot.width()));
             crosshair.y = Math.max(0, Math.min(e.pageY - offset.top, plot.height()));
+            }
             plot.triggerRedrawOverlay();
         }
         

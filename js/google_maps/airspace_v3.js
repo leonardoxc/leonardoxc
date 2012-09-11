@@ -55,7 +55,7 @@ function clearAirspaces() {
 
 function toggleAirspace(computeBounds) {
 	
-	if(!map) return "";	
+	if(!map) return ;	
 	
 	if( $("#airspaceShow").is(":checked") ) {
 		showAirspace=1;

@@ -59,11 +59,15 @@ function myclick(i) {
 
   
 function computeMinMaxLatLon(){
-	var bounds = map.getBounds();
-	if (bounds==null) return;
+	var bounds0 = map.getBounds();
+	if (bounds0==null) {
+		if (bounds==null) return ;
+			
+		bounds0=bounds;
+	}
 	
-	var southWest = bounds.getSouthWest();
-	var northEast = bounds.getNorthEast();	
+	var southWest = bounds0.getSouthWest();
+	var northEast = bounds0.getNorthEast();	
 	if (northEast.lat() >  southWest.lat() ){
 		min_lat=southWest.lat();
 		max_lat=northEast.lat();

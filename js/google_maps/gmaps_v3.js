@@ -42,6 +42,69 @@ custom button
 Utils
 **********************************************/
 
+ var fullScreen=0;
+ function toogleFullScreen() {
+ 	if (fullScreen==0) {
+ 		$("html, body",top.document).animate({ scrollTop: 0 }, 1);
+ 	
+ 		$('html, body', top.document).css(
+ 			 {
+ 				 "position": "relative",
+ 				  "width": "100%",
+ 				  "height": "100%",
+ 				  "z-index": "10",
+ 				  "margin": "0",
+ 				  "padding": "0",			
+ 				  "overflow":"hidden"
+ 				});	 
+
+ 	
+ 	 	
+ 	 $('#gmaps_iframe', top.document).css(
+ 		{
+ 		 "display": "block",
+ 		  "position": "absolute",
+ 		  "top": "0px",
+ 		  "left": "0",
+ 		  "width": "100%",
+ 		  "height": "100%",
+ 		  "z-index": "9999",
+ 		  "margin": "0",
+ 		  "padding": "0"
+ 		});
+ 	  fullScreen=1;
+ 	  
+ 	}else {
+ 		$('html, body', top.document).css(
+ 				 {
+ 					 "position": "relative",
+ 					  "width": "auto",
+ 					  "height": "auto%",
+ 					  "z-index": "10",
+ 					  "margin": "0",
+ 					  "padding": "0",			
+ 					  "overflow":"visible"
+ 					});	 
+
+ 		
+ 		 	
+ 		 $('#gmaps_iframe', top.document).css(
+ 			{
+ 			 "display": "block",
+ 			  "position": "relative",
+ 			  "top": "0px",
+ 			  "left": "0",
+ 			  "width": "100%",
+ 			  "height": "100%",
+ 			  "z-index": "9999",
+ 			  "margin": "0",
+ 			  "padding": "0"
+ 			});
+ 		 fullScreen=0;
+ 	}
+
+ }
+ 
 	function toogleGmapsFullScreen () {
 		window.parent.toogleGmapsFullScreen() ;
 	}
@@ -97,65 +160,6 @@ Utils
 		return "";
 	}
 
-	function SetTimer(evt) {
-
-		if ( CurrTime[1] <0 )  { CurrTime[1] =0; }
-		if ( CurrTime[1] >= CurrTime[2]-4 )  { CurrTime[1] =CurrTime[2]-5; }
-
-		DisplayCrosshair(1);
-		
-		// round up to 20secs..
-		// tm=Math.floor(CurrTime[1]/20)*20;
-		tm=Math.floor(CurrTime[1]/EndTime * flight.points_num);
-		
-		$('#timeText1').html(flight.time[tm]);
-	
-		// get the lat lon
-		lat=flight.lat[tm];
-		lon=flight.lon[tm];
-		var newpos= new google.maps.LatLng(lat, lon);
-		posMarker.setPosition(newpos);
-		
-		if (followGlider) map.setCenter(newpos, null);
-		
-		var speedStr=flight.speed[tm];
-		var altStr=flight.elev[tm];
-		var altVStr=flight.elevV[tm];
-		var varioStr=flight.vario[tm];
-		
-		if (metricSystem==2) {
-			speedStr*=0.62;
-		}
-		speedStr=Math.round(speedStr*10)/10;
-		speedStr=speedStr+speedUnits;
-		
-		//if (metricSystem==2) {
-		//	altStr*=3.28;
-		//}
-		altStr=Math.round(altStr);
-		altStr=altStr+altUnits;
-		
-		altVStr=Math.round(altVStr);
-		altVStr=altVStr+altUnits;
-		
-		if (metricSystem==2) {
-			varioStr*=196.8;
-			varioStr=Math.round(varioStr);
-		} else {
-			varioStr=Math.round(varioStr*10)/10;
-		}
-		varioStr=varioStr+varioUnits;
-		
-		//	speed=document.getElementById("speed");
-		//  speed.value=speedStr;
-		$("#speed").html(speedStr);
-		$("#alt").html(altStr);
-		$("#vario").html(varioStr);
-		if (userAccessPriv) $("#altV").html(altVStr);
-		
-	}
-
-	
 	function showInfoWindow(html,marker) {
 		infowindow.setContent(html); 
 	    infowindow.open(map,marker);     
@@ -265,24 +269,44 @@ Task
 	Flight Finder
 **********************************************/
 	
-function addFlightsToList(results) {
+function addFlightsToList(results,limit) {
 	var tnum=0;
+	$('#trackCompareFinderHeader').hide();
+		
+	$("#trackCompareFinderList").slideDown(700);
+	$('#trackCompareFinderHeaderExpand').fadeIn(800,function(){
+		$('#trackCompareFinderHeaderMore').fadeIn(100);
+	});
+	
+	
+	//$("#trackCompareFinderList").append("<div>asdasdasdasad</div>");
+	//return;
+		
 	for(i=0;i<results.flights.length;i++) {	
-		// is it the current flight ?
-		if (results.flights[i].flightID == flightList[0]  ) continue;
+		
+		// is it the current flight or in the current list ?
+		var f= $.inArray( parseInt(results.flights[i].flightID) , flightList);
+		if (f  >=0  )  continue; 
+		
+		
 		
 		var f=results.flights[i];
+		
+		foundTracksList[f.flightID]=f;
 		// var takeoffPoint= new google.maps.LatLng(results.flights[i].firstLat, results.flights[i].firstLon) ;
 		
-		$('#trackFinderTplMulti').clone().attr('id', 'trackFinderInfo'+(tnum)  ).appendTo("#trackCompareFinderList");
+		
+		$('#trackFinderTplMulti').clone().attr('id', 'trackFinderInfo'+(tnum)  ).addClass('foundTrackItem').appendTo("#trackCompareFinderList");
 		// name of track
 		//'"DURATION 		'"START_TIME 		'"END_TIME 		'"MAX_ALT 	
 		//'"MAX_VARIO 		'"linearDistance 	'"olcDistance 		'"olcScore 		'"scoreSpeed 
 		//'"gliderBrandImg 		'"gliderCat
 		
+		
+		
 		$("#trackFinderInfo"+tnum+" .date").html(f.date+' '+f.START_TIME);
 		$("#trackFinderInfo"+tnum+" .score").html(f.olcScore+'<br>'+f.DURATION+' '+f.olcScoreType);
-		$("#trackFinderInfo"+tnum+" .info").html(f.gliderCat+'<br>'+f.categoryImg);
+		$("#trackFinderInfo"+tnum+" .info").html(f.gliderCat+' '+f.categoryImg);
 		$("#trackFinderInfo"+tnum+" .glider").html(f.gliderBrandImg);
 		$("#trackFinderInfo"+tnum+" .name").html(f.pilotName);
 		
@@ -293,53 +317,141 @@ function addFlightsToList(results) {
 		// color
 		//$("#trackFinderInfo"+tnum+" .color").css('background-color',trackColor);
 		tnum++;
-		if (tnum==5) break;
+		if (tnum==limit) break;
 	}
 
-	
-	$("#trackCompareFinderList").slideDown(800);
-	$('#trackCompareFinderHeader').hide();
-	$('#trackCompareFinderHeaderExpand').fadeIn(300);
+	resultsloaded=tnum;
 	
 	searchDone=1;
 }
+var foundTracksList=[];
 
 var searchDone=0;
+var resultsloaded=0;
+
+
+var compareTrackLine=null;
+function showLine(lat1,lon1,lat2,lon2) {
+	if (compareTrackLine==null) {
+		
+		compareTrackLine=new  google.maps.Polyline(
+		{
+			strokeColor:"#3F48CC",
+			strokeOpacity:1,
+			strokeWeight:4
+		});
+	} 	
+	compareTrackLine.setPath([new google.maps.LatLng(lat1,lon1),new google.maps.LatLng(lat2,lon2) ]);
+	compareTrackLine.setMap(map);
+}
+
+function hideLine() {	
+	compareTrackLine.setMap(null);
+}
 
 $(document).ready(function(){
 
-	$(".flightTick").live("click", function(){
-		var url=$(location).attr('href');
+	
+	$(".flightTick").live('mouseenter',function () {	  
+		var flightID=$(this).val();
+		
+		var lat1=foundTracksList[flightID].firstLat;
+		var lon1=foundTracksList[flightID].firstLon;
+		var lat2=foundTracksList[flightID].lastLat;
+		var lon2=foundTracksList[flightID].lastLon;
+		showLine(lat1,lon1,lat2,lon2);		
+		// $("#msg").html("enter:"+flightID);					
+	});
+	
+	$(".flightTick").live('mouseleave',function () {	  
+		var flightID=$(this).val();		
+		hideLine();		
+	});
+	
 
+	
+	$(".flightTick").live("click", function(){
+		// var url=$(location).attr('href');
+		var url=compareUrlBase;
+		var i=0;
 		$(".flightTick").each(function() {
 			if ( $(this).is(':checked') ) {
 				 url+=','+$(this).val();
+				 i++;
 			}		    
 		});
-		compareUrl=url;
+		if (i>0) {
+			compareUrl=url;
+		} else {
+			compareUrl='';
+		}
 		// $("#msg").html("###"+url);
 	});
 
 	$("#trackCompareFinderHeaderAct").click(function(f) {	
-		window.location.href =compareUrl;
+		// window.location.href =compareUrl;
+		if (compareUrl)
+			window.parent.location.href =compareUrl;
+		
 	});
 
 	$("#trackCompareFinderHeaderClose").click(function(f) {
 		$('#trackCompareFinderHeaderExpand').hide();
+		$('#trackCompareFinderHeaderMore').hide();		
 		$("#trackCompareFinderList").slideToggle(500);				
 		$('#trackCompareFinderHeader').fadeIn(500);
 		
 	});
 	
+	$("#trackCompareFinderHeaderMore").click(function(f) {
+		$("#trackCompareFinderList .foundTrackItem").remove();		
+		$("#trackCompareFinderHeaderMore").remove();
+		
+		for( var i in flights) {
+			var fl=flights[i].data;
+			$.getJSON('EXT_flight.php?op=list_flights_json&lat='+
+					fl.firstLat+'&lon='+fl.firstLon+
+					'&date='+fl.date+
+					'&startTime='+fl.START_TIME+
+					'&endTime='+fl.END_TIME+
+					'&takeoffID='+fl.takeoffID+
+					'&count=110'+
+					'&distance='+radiusKm+queryString,null,
+				function(results){
+					addFlightsToList(results,100);
+					$("#trackCompareFinderList").css({
+						height:'300px',
+						'overflow-y': 'scroll'
+					});	
+				}	
+			);
+			
+			break;
+		}	
+	});
+		
 	
 	$("#trackCompareFinderHeader").click(function(f) {
 		if (searchDone) {
-			$("#trackCompareFinderList").slideDown(500);
 			$('#trackCompareFinderHeader').hide();
-			$('#trackCompareFinderHeaderExpand').fadeIn(500);
+			
+			$('#trackCompareFinderHeaderMore').fadeIn(300);
+			$('#trackCompareFinderHeaderExpand').fadeIn(300);
+			$("#trackCompareFinderList").slideDown(700);
+		
 		} else {
+			
 			for( var i in flights) {
-				$.getJSON('EXT_flight.php?op=list_flights_json&lat='+flights[i].data.firstLat+'&lon='+flights[i].data.firstLon+'&distance='+radiusKm+queryString,null,addFlightsToList);
+				var fl=flights[i].data;
+				$.getJSON('EXT_flight.php?op=list_flights_json&lat='+
+						fl.firstLat+'&lon='+fl.firstLon+
+						'&date='+fl.date+
+						'&startTime='+fl.START_TIME+
+						'&endTime='+fl.END_TIME+
+						'&takeoffID='+fl.takeoffID+
+						'&count=10'+
+						'&distance='+radiusKm+queryString,null,
+						function(results){addFlightsToList(results,5)});
 				break;
 			}
 		}

@@ -8,13 +8,16 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_menu.php,v 1.20 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: MENU_menu.php,v 1.21 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 ?>
 
-<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.js"></script>
-<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/google_maps/jquery.js"></script>
+<script type="text/javascript" src="<?=$moduleRelPath?>/js/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="<?=$moduleRelPath ?>/js/jquery.livequery0.js"></script>
+
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/jqModal.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath?>/js/DHTML_functions.js"></script>
 

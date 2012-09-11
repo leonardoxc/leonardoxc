@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.24 2012/09/10 02:03:19 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.25 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -327,6 +327,7 @@
 					'"landing_lon": "'.json::prepStr($landing_lon).'", '.	
 			
 					'"pilotName": "'.json::prepStr($name).'", '.
+					'"takeoffID": "'.json::prepStr($flight->takeoffID).'"  } ';
 					'"takeoff": "'.json::prepStr($location).'"  } ';
 			
 		}
@@ -430,8 +431,11 @@
 			$where_clause.=" AND userID='".$pilotIDview."'  AND userServerID=$serverID "; 
 		} 
 		
-		
 
+		$takeoffID=makeSane($_REQUEST['$takeoffID'],1); 
+		
+ 		$startTime=makeSane($_REQUEST['startTime'],1); // secs fro mstart of day
+		$endTime=makeSane($_REQUEST['endTime'],1); // secs fro mstart of day
 		
 		 $tm=makeSane($_REQUEST['from_tm'],1); // timestamp
 		 //  $tm=time()-60*60*24*70; // 1 week back
@@ -444,7 +448,7 @@
 		 
 		 
 		 $date1=makeSane($_REQUEST['date']); // date dd.mm.yyy format
-		 if ($date1) {
+		 if ($date1 && ( !$startTime ) ) {
 			 $dateParts=split("\.",$date1);
 			 $tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);			 
 			 //$tm1=gmmktime(0,0,0,1,1,2007);
@@ -468,6 +472,16 @@
 		 else  $lim="";
 		
 
+		 $orderBy=" FLIGHT_POINTS DESC ";
+		 
+		 if ($startTime && $endTime  && $date1 && $takeoffID) {
+		 	
+		 	$select_clause.=", DATEDIFF(DATE,'') as date_diff , 
+		 					(takeoffID=$takeoffID?1:0) as takeoff_diff, 
+		 					ABS(START_TM-$startTM) as  start_diff \n".
+		 	
+		 	$orderBy=" date_diff ASC , takeoff_diff DESC , start_diff ASC ";
+		 } 
 		
 		// $distance*=1000;
 		if ($lat && $lon && $distance ) {
@@ -485,7 +499,7 @@
 				"* 6392 , 3) <= " . $distance. " " ;
 		}
 		
-		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY FLIGHT_POINTS DESC $lim ";  // , distance ASC , dateAdded DESC
+		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY $orderBy $lim ";  // , distance ASC , dateAdded DESC
 		 //echo $query;
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
@@ -546,7 +560,7 @@
 		   $gliderTypeDesc=$gliderCatList[$row["cat"]];
 	   		if ($row["category"]) {
 	   		$gliderTypeDesc.=" - ".$CONF['gliderClasses'][$row["cat"]]['classes'][$row["category"]];
-	   		$categoryImg="<div class='categoryListIconDiv'>".leoHtml::img("icon_class_".$row["category"].".png",0,0,'top',$gliderTypeDesc,'icons1','')."</div>";	    	
+	   		$categoryImg=leoHtml::img("icon_class_".$row["category"].".png",0,0,'top',$gliderTypeDesc,'icons1','');	    	
 		   } else {
 		   		$categoryImg='';
 		   }
@@ -556,19 +570,6 @@
 		   
 		   $MAX_ALT=formatAltitude($row['MAX_ALT']);
 		   $MAX_VARIO=formatVario($row['MAX_VARIO']);
-		   
-	    
-/*MIN_VARIO
-LINEAR_DISTANCE
-MAX_LINEAR_DISTANCE
-BEST_FLIGHT_TYPE] => FREE_FLIGHT 
-FLIGHT_KM
-FLIGHT_POINTS
-glider
-gliderBrandID
-startType
-takeoffID
- */
 			
 			$JSON_str.=' {"flightID": "'.$row["ID"].'", "date": "'.json::prepStr($row["DATE"]).'", '.
 					'"firstLat": "'.json::prepStr($row["firstLat"]).'", '.

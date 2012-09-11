@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.1 2012/09/10 02:03:20 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.2 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -27,9 +27,12 @@
 	$flightIDstr=makeSane($_GET['id']);
 	$flightsListTmp=explode(",",$flightIDstr);
 	$flightsList=array();
+	$i=0;
 	foreach($flightsListTmp as $flightID) {
 		$flightID+=0;
 		if ($flightID) $flightsList[]=$flightID;
+		$i++;
+		if ($i>20) break;
 	} 
 	$flightsNum=count($flightsList);
 	sort($flightsList);
@@ -68,7 +71,7 @@
 	$flightListStr='';
 	foreach ($flightsList as $f) {
 		if ($flightListStr) $flightListStr.=',';
-		$flightListStr.=" $f";		
+		$flightListStr.="$f";		
 	}
 	
 
@@ -92,13 +95,13 @@
 	}
 	
 	 $isAdmin=1;
+	 $airspaceCheck=1;
 	 $CONF['thermals']['enable'] =1;
 	 $CONF['airspace']['enable'] =1;
 	 
 	 $is3dEnabled =0;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Leonardo Track</title>
@@ -153,48 +156,46 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 <div id='mapDiv'>  
 	<div id='map'></div>  
 	
-	
-
-	
-	
 	<div id='trackDetails'>
 	  
-	<div id='trackCompareFinder'>
-		<div id="trackCompareFinderHeader">
-		Find and Compare Flights >> 
-		</div> 
-		<div id="trackCompareFinderHeaderExpand"> 
-			
-			<div id="trackCompareFinderHeaderClose">
-			Close
+		<div id='trackCompareFinder'>
+			<div id="trackCompareFinderHeader">
+			Find and Compare Flights >> 
+			</div> 
+			<div id="trackCompareFinderHeaderExpand" > 				
+				<div id="trackCompareFinderHeaderClose">
+				Close
+				</div>			
+				<div id="trackCompareFinderHeaderAct">
+				Compare Selected Flights 
+				</div>  
 			</div>
-			<div id="trackCompareFinderHeaderAct">
-			Compare Selected Flights 
-			</div>  
+			<div id="trackCompareFinderList">
+				<div id="trackFinderTplMulti" class='trackInfoDisplay'>
+				 	<div class="trackDisplayItem">
+				 		<div class='trackListStr date'></div>
+				 		<div class='trackListStr score'>-</div>	 			 	
+						<div class='trackListStr info'>-</div>
+						<div class='trackListStr glider'>-</div>
+						<div class='trackListStr name'>-</div>	 	
+						<div class='trackListStr tick'></div>	 		
+				 	</div>
+				</div>
+			</div>
+			<div id="trackCompareFinderHeaderMore">
+				More...
+			</div>
 		</div>
-		<div id="trackCompareFinderList">
-			<div id="trackFinderTplMulti" class='trackInfoDisplay'>
-			 	<div class="trackDisplayItem">
-			 		<div class='trackListStr date'></div>
-			 		<div class='trackListStr score'>-</div>	 			 	
-					<div class='trackListStr info'>-</div>
-					<div class='trackListStr glider'>-</div>
-					<div class='trackListStr name'>-</div>	 	
-					<div class='trackListStr tick'></div>	 		
-			 	</div>
-			</div>
-		</div>	
-	</div>
-	
-	<div id="trackInfoTplMulti" class='trackInfoDisplay'>
-	 	<div class="trackDisplayItem">
-	 		<div class='trackStr color'></div>
-	 		<div class='trackStr name'>-</div>	 			 	
-			<div class='trackStr alt'>-</div>
-			<div class='trackStr speed'>-</div>
-	 		<div class='trackStr vario'>-</div>
-	 	</div>
-	</div>
+		
+		<div id="trackInfoTplMulti" class='trackInfoDisplay'>
+		 	<div class="trackDisplayItem">
+		 		<div class='trackStr color'></div>
+		 		<div class='trackStr name'>-</div>	 			 	
+				<div class='trackStr alt'>-</div>
+				<div class='trackStr speed'>-</div>
+		 		<div class='trackStr vario'>-</div>
+		 	</div>
+		</div>
 	</div>
 
 
@@ -230,7 +231,17 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 				<label for='airspaceShow'><?=_Show_Airspace?></label>		
 			<?  } ?>
 		</fieldset>
-	        
+	     
+	    <fieldset class="legendBox">	  
+	    <div id='animControl'>
+		   <a href="javascript:;" onclick='ToggleTimer();'><img src='<?=$moduleRelPath?>/img/icon_anim_play.gif' border="0" title="<?=_Normal_Speed?>"></a>
+		   <a href="javascript:;" onclick='resetTimer()'><img src='<?=$moduleRelPath?>/img/icon_anim_stop.gif' border="0" title="<?=_Stop?>"></a>
+		   <button class="navbutt" onclick="TimeStep/=1.5;" title="<?=_Slower?>">-</button>
+		   <button class="navbutt" onclick="TimeStep*=1.5;" title="<?=_Faster?>">+</button>
+		</div>
+ 		</fieldset>
+	  
+	  
 		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
 	         <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
@@ -264,7 +275,7 @@ var trackColors= [ <?php  echo $colotStr; ?>] ;
 var relpath="<?=$moduleRelPath?>";
 
 var posMarker=[];
-
+var posMarker2=[];
 var tracksNum=0;
 
 var followGlider=0;
@@ -294,8 +305,11 @@ var flightList=[ <?php echo $flightListStr;?> ];
 var flightsTotNum=<?php  echo $flightsNum ?>;
 var takeoffID=<?php echo $takeoffID?>;
 var flightID=<?php echo $flightID?>;
+var compareUrlBase='<?php echo getLeonardoLink(array('op'=>'compare','flightID'=>$flightListStr));?>';
+var TimeStep = 10000; //  in millisecs
+var CurrTime=null;
 
-var airspaceCheck=<?php echo airspaceCheck; ?>;
+var airspaceCheck=<?php echo $airspaceCheck; ?>;
 <? if ( $isAdmin ) { ?>
 	var baroGraph=true;
 	userAccessPriv=true;
@@ -318,68 +332,6 @@ $(document).ready(function(){
 	 
 });
 
-var fullScreen=0;
-function toogleFullScreen() {
-	if (fullScreen==0) {
-		$("html, body",top.document).animate({ scrollTop: 0 }, 1);
-	
-		$('html, body', top.document).css(
-			 {
-				 "position": "relative",
-				  "width": "100%",
-				  "height": "100%",
-				  "z-index": "10",
-				  "margin": "0",
-				  "padding": "0",			
-				  "overflow":"hidden"
-				});	 
-
-	
-	 	
-	 $('#gmaps_iframe', top.document).css(
-		{
-		 "display": "block",
-		  "position": "absolute",
-		  "top": "0px",
-		  "left": "0",
-		  "width": "100%",
-		  "height": "100%",
-		  "z-index": "9999",
-		  "margin": "0",
-		  "padding": "0"
-		});
-	  fullScreen=1;
-	  
-	}else {
-		$('html, body', top.document).css(
-				 {
-					 "position": "relative",
-					  "width": "auto",
-					  "height": "auto%",
-					  "z-index": "10",
-					  "margin": "0",
-					  "padding": "0",			
-					  "overflow":"visible"
-					});	 
-
-		
-		 	
-		 $('#gmaps_iframe', top.document).css(
-			{
-			 "display": "block",
-			  "position": "relative",
-			  "top": "0px",
-			  "left": "0",
-			  "width": "100%",
-			  "height": "100%",
-			  "z-index": "9999",
-			  "margin": "0",
-			  "padding": "0"
-			});
-		 fullScreen=0;
-	}
-
-}
 		
 function initialize() {
 	<?php  if ($is3dEnabled ) { ?>
@@ -440,7 +392,6 @@ function initialize() {
     
 }
 
-   // googleEarth = new GoogleEarth(map);
  
     infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(map, 'click', function() {
@@ -449,6 +400,7 @@ function initialize() {
 	
 	map.setCenter (new google.maps.LatLng(0,0) );
 
+	flightList.sort();
 	for( var i in flightList ) {
 		loadFlight(flightList[i]);
 	}	
@@ -456,6 +408,8 @@ function initialize() {
 }
 
 var flights=[];
+var MIN_START=86000;
+var MAX_END=0;
 
 function loadFlight(flightID) {
 
@@ -477,6 +431,9 @@ function loadFlight(flightID) {
 		if (flightsTotNum==1) {
 			trackColor=trackColors[2];
 		}
+
+		if (data.START_TIME < MIN_START)	MIN_START=data.START_TIME ;
+		if (data.END_TIME  > MAX_END) 	MAX_END=data.END_TIME ;
 		
 		flights[flightID]['trackLayer'] = new google.maps.Polyline({
 			  path: trackPoints,
@@ -500,13 +457,28 @@ function loadFlight(flightID) {
 			// $("#trackDetails").hide();		
 			$('#trackInfoTpl').clone().attr('id', 'trackInfo'+(tracksNum)  ).appendTo("#trackInfoList");			
 		}
-		
-		
+
 		posMarker[tracksNum] = new google.maps.Marker({
 			position: new google.maps.LatLng(data.firstLat,data.firstLon),       
 			map: map,
 			icon: data.markerIconUrl
 		});
+		
+		posMarker2[tracksNum] = new google.maps.Marker({
+			position: new google.maps.LatLng(data.firstLat,data.firstLon),       
+			map: map,
+			icon: {
+				path: google.maps.SymbolPath.CIRCLE,
+		        scale: 18,		        
+		        fillOpacity: 0.1,
+		        fillColor: trackColor,		        
+		        strokeWeight: 1,
+		        strokeOpacity: 0.7,
+		        strokeColor: trackColor
+	          }
+			//icon: data.markerIconUrl
+		});
+
 		
 		// now the graph , redraw if it not the first time called
 		// only draw it one at the end
@@ -545,8 +517,7 @@ function loadFlight(flightID) {
 			
 		// this is the last track! 
 		// do some house keeping 
-		if (tracksNum==(flightsTotNum-1) ) {
-			
+		if (tracksNum==(flightsTotNum-1) ) {			
 			// get min max values from bounds obj
 			computeMinMaxLatLon();
 			if (airspaceCheck) {	
