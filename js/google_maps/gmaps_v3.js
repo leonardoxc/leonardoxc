@@ -1,44 +1,5 @@
 
 /********************************************* 
-custom button
-**********************************************/
- function EarthButton(controlDiv, map) {
-
-        // Set CSS styles for the DIV containing the control
-        // Setting padding to 5 px will offset the control
-        // from the edge of the map
-        controlDiv.style.padding = '5px';
-        controlDiv.style.paddingRight = '2px';
-        
-        // Set CSS for the control border
-        var controlUI = document.createElement('div');
-        controlUI.style.backgroundColor = 'white';
-        controlUI.style.borderStyle = 'solid';
-        controlUI.style.borderWidth = '1px';
-        controlUI.style.cursor = 'pointer';
-        controlUI.style.textAlign = 'center';
-        controlUI.title = 'Click for 3D view';
-        controlDiv.appendChild(controlUI);
-
-        // Set CSS for the control interior
-        var controlText = document.createElement('div');
-        controlText.style.fontFamily = 'Arial,sans-serif';
-        controlText.style.fontSize = '12px';
-        controlText.style.paddingLeft = '7px';
-        controlText.style.paddingRight = '7px';
-        controlText.style.paddingTop = '2px';
-        controlText.style.paddingBottom= '2px';
-        controlText.innerHTML = '<b>3D Earth</b>';
-        controlUI.appendChild(controlText);
-
-        // Setup the click event listeners: simply set the map to
-        // Chicago
-        google.maps.event.addDomListener(controlUI, 'click', function() {
-        	window.location.href="EXT_google_maps_track_3d.php?id="+flightID;
-        });
-
-      }
-/********************************************* 
 Utils
 **********************************************/
 

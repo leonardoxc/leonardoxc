@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile.php,v 1.29 2010/03/17 15:06:24 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile.php,v 1.30 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -61,8 +61,9 @@
  
  // openMain("<table class=\"main_text\"  width=\"90%\"><tr><td>$legend</td><td width=350 align=\"right\" bgcolor=\"#eeeeee\">$legendRight</td></tr></table>",0,"icon_profile.png");
 
- openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
-
+  if (INLINE_VIEW!=1){ 
+ 	openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
+  }
 
 ?> 
 
@@ -75,7 +76,7 @@
 <div id="pilotInfoDiv" style="display:none;background-color:#EEECBF;width:100%;height:auto;">Results HERE</div>
 </div>
 
-<?  if (  L_auth::isAdmin($userID) && $serverIDview!=-1  ) { ?>
+<?  if (  L_auth::isAdmin($userID) && $serverIDview!=-1  && INLINE_VIEW!=1) { ?>
 <script language="javascript">
 
 function hidePilotDiv() {
@@ -102,8 +103,9 @@ function getPilotInfo(serverID,pilotID,update) {
 }
 </script>
 <? } ?>
-
+<?php  if (INLINE_VIEW!=1) { ?> 
 <script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
+<?php  } ?>
 <div class='infoHeader'><?=_Personal_Stuff ?></div>
 <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr> 
@@ -361,5 +363,7 @@ function getPilotInfo(serverID,pilotID,update) {
   </tr>
   </table>
 <?
-	closeMain();
+	if (INLINE_VIEW!=1){ 
+		closeMain();
+	}
 ?>

@@ -849,3 +849,23 @@ span.ok  {
 	font-size:11px;
 	font-weight:bold;
 }
+
+.greenButtonLink {
+	background: none repeat scroll 0 0 #679924;
+	border: 1px solid #E3E3E3;
+	border-radius: 5px 5px 5px 5px;
+	clear: both;	
+	font-size: 13px;
+	width: auto;
+	padding:3px;
+	padding-left:15px;
+	padding-right:15px;
+	color:#ffffff;
+	font-weight:bold;
+}
+
+a.greenButtonLink:link, a.greenButtonLink:active, a.greenButtonLink:visited, a.greenButtonLink:hover {	
+	color:#ffffff;
+	font-weight:bold;
+	text-decoration:none;	
+}

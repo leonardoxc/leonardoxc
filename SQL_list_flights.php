@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.11 2012/01/16 07:21:23 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.12 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -179,7 +179,7 @@
 	
 	
 	$queryCount="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
-	// echo "queryCount:$query#<BR>";
+	// echo "queryCount:$queryCount#<BR>";
 
 
 if (0) {

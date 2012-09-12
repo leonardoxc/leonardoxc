@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.18 2012/09/07 21:54:04 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.19 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,6 +38,8 @@
 			}
 		}
 
+		require_once dirname(__FILE__).'/lib/json/CL_json.php';
+		
 		if ($CONF_use_utf) {		
 			$CONF_ENCODING='utf-8';
 		} else  {		
@@ -105,8 +107,35 @@
 			$dmax=max(array($d1,$d2,$d3,$d4));
 			// similar_text (strtolower($lastIntName),strtolower($row2['intName']),&$nameDistanceFromPrevious2);
 
-			$html="[$dmax] ".$row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
-		    $pilots[]=array('score'=>$dmax,'text'=>$html);
+	
+			$html=$row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+			
+			$serverIDview=$row["serverID"];
+			$pilotIDview=$row["pilotID"];
+			$photo='';	
+			if ($row['PilotPhoto']>0) {
+		
+				checkPilotPhoto($serverIDview,$pilotIDview);
+	     		$imgBigRel=getPilotPhotoRelFilename($serverIDview,$pilotIDview);	
+				$imgBig=getPilotPhotoFilename($serverIDview,$pilotIDview);	
+				list($width, $height, $type, $attr) = getimagesize($imgBig);
+				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				$photo="<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
+			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
+			 border=0></a>";					
+				
+				$photo="<img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'>";
+			}
+			
+			$photo=json::prepStr($photo);
+			
+			$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.			
+			' "name":"'.json::prepStr($name).'",'.
+			' "flag":"'.json::prepStr($flagIcon).'",'.
+			' "photo":"'.$photo.'", '.
+			' "sex":"'.json::prepStr($sexIcon).'", "userID":"'.json::prepStr($row["serverID"].'u'.$row["pilotID"]).'" } ';
+			
+		    $pilots[]=array("score"=>$dmax,"text"=>$html,"json"=>$json);
 			
 			
 		}
@@ -125,12 +154,26 @@
 		usort($pilots, "cmp");
 		
 		$i=0;
+		$count=$_GET['count'];
+		if (!$count) $count=15;
+		
+		if ($_GET['json']) {
+			echo ' { "pilots":[ ';
+		}
 		foreach ($pilots as $pilot) {
-		    echo $pilot['text'];
+			if ($_GET['json']) {
+				if ( $i>0) echo " ,\n";
+				echo $pilot['json'];
+			} else {
+		    	echo $pilot['text'];
+			}	
 		    $i++;
-		    if ($i>15) break;
+		    if ($i>$count) break;
 		}
 
+		if ($_GET['json']) {
+			echo "]} ";
+		}
 		return;
 
 	}

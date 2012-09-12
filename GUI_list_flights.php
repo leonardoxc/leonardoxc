@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.126 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.127 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -376,24 +376,28 @@ if (0) {
 	<div class='pagesDiv' style='white-space:nowrap'>$legendRight</div>
 	</div>" ;
 
-	require_once dirname(__FILE__)."/MENU_second_menu.php";
+	if (INLINE_VIEW!=1){ 
+		require_once dirname(__FILE__)."/MENU_second_menu.php";
 	
-    echo "<div class='list_header'>
+	
+    	echo "<div class='list_header'>
 				<div class='list_header_r'></div>
 				<div class='list_header_l'></div>
 				<h1>$legend</h1>
 				<div class='pagesDiv'>$legendRight</div>
 			</div>";
-
+	}
+	
 	listFlights($res,$legend, $queryExtraArray,$sortOrder);
 	//P.Wild 15.12.2008	
-	echo "<div class='list_header list_header_bottom'>
+	if (INLINE_VIEW!=1){ 
+		echo "<div class='list_header list_header_bottom'>
 				<div class='list_header_r list_header_r_bottom'></div>
 				<div class='list_header_l list_header_l_bottom'></div>
 				<h1>$legend</h1>
 				<div class='pagesDiv'>$legendRight</div>
 			</div>";
-
+	}
 ?>
 <style type="text/css">
 TR .newDate {
@@ -418,11 +422,11 @@ TR .newDate {
 	text-align:right;	
 }
 
-
+.pilotTakeoffCell { width:300px;}
 
 </style>
 <link rel="stylesheet" href="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.css" type="text/css" />
-
+<?php  if (INLINE_VIEW!=1){  ?>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/bettertip/jquery.bettertip.js"></script>
 <script type="text/javascript" src="<?=$moduleRelPath ?>/js/tipster.js"></script>
 <script type='text/javascript' src='<?=$moduleRelPath ?>/js/xns.js'></script>
@@ -457,6 +461,7 @@ BT_close_wait = 400;
 <? echo makePilotPopup(); ?>
 <? echo makeTakeoffPopup(); ?>
 <? echo makeFlightActionsPopup(); ?>
+<?php  } ?>
 
 <?
 
@@ -470,6 +475,7 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$s
   if ($fieldName=="pilotName") $alignClass="alLeft";
   else $alignClass="";
   
+  $alignClass.=" class_$fieldName ";
   if ($sort) {
 	  if ($sortOrder==$fieldName) { 
 	   echo "<td class='SortHeader activeSortHeader $alignClass' $widthStr>	\n
@@ -545,7 +551,7 @@ function removeClubFlight(clubID,flightID) {
   ?>
   	<table class='listTable' style='clear:both' width="100%" cellpadding="2" cellspacing="0">
 	<tr> 
-	  <td class='SortHeader' width="25"><? echo _NUM ?></td>
+	  <td class='SortHeader indexCell' width="25"><? echo _NUM ?></td>
 		 <?
 		   printHeader(60,$sortOrder,"DATE",_DATE_SORT,$queryExtraArray) ;
 		   printHeader(160,$sortOrder,"pilotName",_PILOT,$queryExtraArray) ;
@@ -561,7 +567,7 @@ function removeClubFlight(clubID,flightID) {
 		?>
 	  <td width="18" class='SortHeader'>&nbsp;</td>
   	  <td width="50" class='SortHeader'>&nbsp;</td>
-	  <td width="70" class='SortHeader alLeft'><? echo _SHOW ?></td>
+	  <td width="70" class='SortHeader displayCell alLeft'><? echo _SHOW ?></td>
   </tr>
 <?
    $i=1;
@@ -671,7 +677,7 @@ function removeClubFlight(clubID,flightID) {
 
 		echo "</TD>";
 
-	      echo  "<TD width=300 colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
+	      echo  "<TD  class='pilotTakeoffCell' colspan=2 ".$sortArrayStr["pilotName"].$sortArrayStr["takeoffID"].">".
 		"<div id='p_$i' class='pilotLink'>";
 		
 		//echo "<span class='fl sprite-gr'></span>";
@@ -770,7 +776,7 @@ function removeClubFlight(clubID,flightID) {
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			// add class='betterTip' for tooltip
-			echo "<a  id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
+			echo "<a class='flightLink' id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
 			leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon')."</a>";
 			
 		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
@@ -778,7 +784,7 @@ function removeClubFlight(clubID,flightID) {
 					leoHtml::img("geicon.gif",0,0,'top',_Navigate_with_Google_Earth,'icons1 geIcon','ge_'.$i)."</a>";
 
 		} else {
-			echo "<a  href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
+			echo "<a class='flightLink' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
 					leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon')."</a>";
 
 			$originalKML=$row["originalKML"];

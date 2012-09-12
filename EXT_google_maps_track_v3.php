@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.2 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.3 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -100,6 +100,8 @@
 	 $CONF['airspace']['enable'] =1;
 	 
 	 $is3dEnabled =0;
+	 
+	 $is3D=1;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head>
@@ -152,8 +154,20 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 <div id='chartDiv'>
 	<div id="chart" class="chart"></div>  			 
 </div>
+
+<div style='display:none;'>
+	<div id='control3d' class='controlButton'>
+		<div class='controlButtonInner'>3D View</div>
+	</div>
+	
+	<div id='controlSkyways' class='controlButton skywaysButton'>
+		<div class='controlButtonInner'>Skyways</div>
+	</div>
+</div>
 	
 <div id='mapDiv'>  
+
+
 	<div id='map'></div>  
 	
 	<div id='trackDetails'>
@@ -268,7 +282,6 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
-
 <script type="text/javascript">
 
 var trackColors= [ <?php  echo $colotStr; ?>] ;
@@ -318,7 +331,7 @@ var airspaceCheck=<?php echo $airspaceCheck; ?>;
 	var userAccessPriv=false;
 <?php  } ?>
 
-
+var skywaysVisible=0;
 var map;
 var googleEarth;   
 var compareUrl=null;
@@ -327,42 +340,90 @@ var queryString='';
 
 
 $(document).ready(function(){
-	
 	initialize();
-	 
 });
 
-		
 function initialize() {
 	<?php  if ($is3dEnabled ) { ?>
 	google.load('earth', '1'); 
 	<?php  } ?>
+
 	
-    var mapOptions = {
+	var reliefTypeOptions = {
+	  getTileUrl: function(a,b) {
+	    	return "http://maps-for-free.com/layer/relief/z" + b + "/row" + a.y + "/" + b + "_" + a.x + "-" + a.y + ".jpg";
+	    },
+	  maxZoom: 15,
+	  minZoom: 0,
+	  tileSize: new google.maps.Size(256, 256),
+	  name: "Relief"
+	};
+	var reliefMapType = new google.maps.ImageMapType(reliefTypeOptions);
+		
+    var mapOptions= {
             zoom: 8,
             mapTypeControl: true,
             mapTypeControlOptions: {
+                mapTypeIds: [
+					"Relief",
+					google.maps.MapTypeId.ROADMAP,
+					google.maps.MapTypeId.SATELLITE,
+					google.maps.MapTypeId.HYBRID,
+					google.maps.MapTypeId.TERRAIN,
+                    ],
                 style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
-              },
+            },
             mapTypeIds: [
                 google.maps.MapTypeId.ROADMAP,
                 google.maps.MapTypeId.SATELLITE,
                 google.maps.MapTypeId.HYBRID,
-                google.maps.MapTypeId.TERRAIN
+                google.maps.MapTypeId.TERRAIN,
+             
                // 'Earth'
             ],
             mapTypeId: mapType
           };
-    
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    map.mapTypes.set('Relief', reliefMapType);
+    // map.setMapTypeId('Relief');
+
+    skywaysOverlay= new google.maps.ImageMapType({
+	    getTileUrl: function(tile, zoom) {
+	    	var y= (1<<zoom)-tile.y-1;
+    		return "http://thermal.kk7.ch/php/tile.php?typ=skyways&t=all&z="+zoom+"&x="+tile.x+"&y="+y; 
+	    },
+	    tileSize: new google.maps.Size(256, 256),
+	    opacity:0.60,
+	    isPng: true
+	});
+
+    map.overlayMapTypes.push(null); // create empty overlay entry 0 -> skyways
+        
     if (flightsTotNum==1) {
-	    var earthControlDiv = document.createElement('div');
-	    var earthControl = new EarthButton(earthControlDiv, map);
-	
-	    earthControlDiv.index = 1;
-	    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(earthControlDiv);
+		var controlButton=$("#control3d").get(0);
+	    google.maps.event.addDomListener(controlButton , 'click', function() {
+        	window.location.href="EXT_google_maps_track_3d.php?id="+flightID;
+        });
+	    controlButton.index = 1;
+	    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButton);
     }
+
+    var controlButton=$("#controlSkyways").get(0);
+    google.maps.event.addDomListener(controlButton , 'click', function() {
+        if (skywaysVisible) {
+        	map.overlayMapTypes.setAt("0",null); 
+        	skywaysVisible=0;
+        	$("#controlSkyways").removeClass('skywaysButtonPressed');
+        } else {
+    		map.overlayMapTypes.setAt("0",skywaysOverlay); 
+    		skywaysVisible=1;
+    		$("#controlSkyways").addClass('skywaysButtonPressed');
+        }
+    });
+    controlButton.index = 5;
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButton);
+
     
     <?php  if ($is3dEnabled ) { ?>
   	googleEarth = new GoogleEarth(map);

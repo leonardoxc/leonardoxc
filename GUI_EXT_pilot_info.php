@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_pilot_info.php,v 1.10 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: GUI_EXT_pilot_info.php,v 1.11 2012/09/12 19:41:03 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,6 +38,48 @@
 		return;
 	}
 	
+	if ($op=='info_full') {  	
+  		// $pilotIDview =
+  		$serverIDview=$serverID;
+  		$pilotID=$pilotIDview;
+  		
+  		//echo "$serverIDview:$pilotID";
+  		define('INLINE_VIEW',1);  		
+  		
+  		$filter01='';
+  		$country='';
+  		$takeoffID=0;
+  		$nacid=0;
+  		$nacclubid=0;
+  		$class='';
+  		$xctype='';
+  		$season=0;
+  		$year=0;
+  		$month=0;
+  		$PREFS->itemsPerPage=5;
+  		
+	  	
+	  	$pilotFlights="<a class='greenButtonLink' href='".
+	  			getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>'')).
+				"'>"._PILOT_FLIGHTS."</a>";
+	  	
+	  	$pilotStats="<a class='greenButtonLink' href='".
+			getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>$serverID.'_'.$pilotIDview)).
+			"'>"._pilot_stats."</a>";
+
+		$pilotProfile="<a class='greenButtonLink' href='".getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview)).
+			"'>"._Pilot_Profile."</a>";
+		
+	
+  		echo "<div class='pilotLinks'>$pilotFlights $pilotStats $pilotProfile</div><hr>";
+  		
+  		require_once "GUI_list_flights.php";
+  		
+  		require_once "GUI_pilot_profile.php";
+  		
+  		
+  		exit;
+	}
 	
 	if ($CONF_use_utf) {		
 		$CONF_ENCODING='utf-8';
@@ -84,7 +126,8 @@
 		echo $row['clubName'];
 		
 		exit;
-  }
+  } 
+  
 
   $pilotName=getPilotRealName($pilotIDview,$serverID,1);
   $legend=_Pilot_Profile.": <b>$pilotName</b>";

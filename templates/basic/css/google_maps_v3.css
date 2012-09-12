@@ -475,4 +475,31 @@ width: 55px;}
 .has-js .label_check input,
 .has-js .label_radio input  { position: absolute; left: -9999px; }
 
- 
+ /* google maps control button styling */
+.controlButton {
+	-moz-user-select: none;
+	background: none repeat scroll 0 0 #CDD8FF;
+	border: 1px solid #717B87;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+	color: #000000;
+	cursor: pointer;
+	direction: ltr;
+	font-family: Arial,sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	margin-top: 5px;
+	min-width: 29px;
+	overflow: hidden;
+	padding: 1px 7px;
+	text-align: center;
+}
+
+.skywaysButton {
+	margin-right: 15px;
+	background: none repeat scroll 0 0 #F7DC59;	
+}
+
+.skywaysButtonPressed {
+	background: none repeat scroll 0 0 #D9AC1D;
+	color:white;
+}

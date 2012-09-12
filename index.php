@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: index.php,v 1.125 2012/09/11 19:27:11 manolis Exp $
+// $Id: index.php,v 1.126 2012/09/12 19:41:03 manolis Exp $
 //
 //************************************************************************
 
@@ -573,7 +573,11 @@ if ($op=="index_full") {
 // "Pilots" related actions
 //--------------------------
 } else if ($op=="pilot_search") {
-	require $LeoCodeBase."/GUI_pilot_search.php";
+	// require $LeoCodeBase."/GUI_pilot_search.php";
+	// new code!
+	require $LeoCodeBase."/GUI_pilot_find.php";
+} else if ($op=="pilot_find") {
+	require $LeoCodeBase."/GUI_pilot_find.php";
 } else if ($op=="pilot_profile") {
 	if ($userID>0 || $CONF_showProfilesToGuests ) require $LeoCodeBase."/GUI_pilot_profile.php";
 	else echo "<center><br><BR><span class='note'>"._You_are_not_login."<br><br>Please login<BR></span><BR><BR></center>";
