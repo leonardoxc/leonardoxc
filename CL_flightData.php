@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_flightData.php,v 1.195 2012/09/10 02:03:19 manolis Exp $
+// $Id: CL_flightData.php,v 1.196 2012/09/17 22:33:48 manolis Exp $
 //
 //************************************************************************
 
@@ -2910,6 +2910,14 @@ $kml_file_contents=
 			
 				if (trim($contents[$lnum])=="VALI:OK") {
 					$ok=1;
+					$valStr=trim($contents[$lnum+1]);
+				}
+				if (trim($contents[$lnum])=="VALI:NOK") {
+					$ok=-1;
+					$valStr=trim($contents[$lnum+1]);
+				}
+				if (trim($contents[$lnum])=="VALI:NNOK") {
+					$ok=-2;
 					$valStr=trim($contents[$lnum+1]);
 				}
 			}

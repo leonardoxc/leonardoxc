@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_airspace_admin.php,v 1.8 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_airspace_admin.php,v 1.9 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -69,12 +69,12 @@ function putAirspaceToDB() {
 		$names[$AirspaceArea[$i]->Name]++;
 	
 		$id=$data[$AirspaceArea[$i]->Name][$serial]['id']+0;
-		$Comments=$data[$AirspaceArea[$i]->Name][$serial]['Comments'];
+		$Comments=prep_for_DB($data[$AirspaceArea[$i]->Name][$serial]['Comments']);
 		$disabled=$data[$AirspaceArea[$i]->Name][$serial]['disabled']+0;
 		
 	    //	print_r($AirspaceArea[$i]->Base);
 		$fields=" id, Name, serial, updated,  Type, Shape, Comments, disabled, minx, miny, maxx, maxy , Base , Top, ";
-		$values=" $id , '".$AirspaceArea[$i]->Name."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', $disabled ,
+		$values=" $id , '".prep_for_DB($AirspaceArea[$i]->Name)."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', $disabled ,
 					".$AirspaceArea[$i]->minx.", ".$AirspaceArea[$i]->miny.", ".$AirspaceArea[$i]->maxx.",  ".$AirspaceArea[$i]->maxy." ,
 				 '".serialize($AirspaceArea[$i]->Base)."' ,'".serialize($AirspaceArea[$i]->Top)."' , ";
 		if ($AirspaceArea[$i]->Shape==1) { //area

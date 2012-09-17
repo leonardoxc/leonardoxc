@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.3 2012/09/12 19:41:03 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.4 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -42,6 +42,7 @@
 	if ( $flightsNum==1) {
 		$flight=new flight();
 		$flight->getFlightFromDB($flightsList[0],0);
+		
 		$flightID=$flightsList[0];
 		if ($flight->is3D() ) {		
 			$title1=_Altitude.' ('.(($PREFS->metricSystem==1)?_M:_FT).')';
@@ -94,14 +95,14 @@
 		$airspaceCheck=0;
 	}
 	
-	 $isAdmin=1;
-	 $airspaceCheck=1;
-	 $CONF['thermals']['enable'] =1;
-	 $CONF['airspace']['enable'] =1;
+	// $isAdmin=1;
+	// $airspaceCheck=1;
+	// $CONF['thermals']['enable'] =1;
+	// $CONF['airspace']['enable'] =1;
 	 
 	 $is3dEnabled =0;
 	 
-	 $is3D=1;
+	// $is3D=1;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head>
@@ -174,14 +175,14 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 	  
 		<div id='trackCompareFinder'>
 			<div id="trackCompareFinderHeader">
-			Find and Compare Flights >> 
+			<?php  echo _Find_and_Compare_Flights?> >> 
 			</div> 
 			<div id="trackCompareFinderHeaderExpand" > 				
 				<div id="trackCompareFinderHeaderClose">
-				Close
+				<?php  echo _Close ?>
 				</div>			
 				<div id="trackCompareFinderHeaderAct">
-				Compare Selected Flights 
+				<?php  echo _Compare_Selected_Flights ?>
 				</div>  
 			</div>
 			<div id="trackCompareFinderList">
@@ -197,7 +198,7 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 				</div>
 			</div>
 			<div id="trackCompareFinderHeaderMore">
-				More...
+				<?php echo _More ?>...
 			</div>
 		</div>
 		
@@ -279,14 +280,15 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 
 <div id='msg'>DEBUG</div>
+<div id='kk7Copyright' style='padding:3px;'>Skyways Layer &copy; <a href='http://thermal.kk7.ch' target='_blank'>thermal.kk7.ch</a></div>
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
 <script type="text/javascript">
 
 var trackColors= [ <?php  echo $colotStr; ?>] ;
-var relpath="<?=$moduleRelPath?>";
-
+var relpath="<?php echo $moduleRelPath?>";
+var SERVER_NAME = '<?php  echo $_SERVER['SERVER_NAME'] ?>';
 var posMarker=[];
 var posMarker2=[];
 var tracksNum=0;
@@ -353,7 +355,7 @@ function initialize() {
 	  getTileUrl: function(a,b) {
 	    	return "http://maps-for-free.com/layer/relief/z" + b + "/row" + a.y + "/" + b + "_" + a.x + "-" + a.y + ".jpg";
 	    },
-	  maxZoom: 15,
+	  maxZoom: 20,
 	  minZoom: 0,
 	  tileSize: new google.maps.Size(256, 256),
 	  name: "Relief"
@@ -391,7 +393,7 @@ function initialize() {
     skywaysOverlay= new google.maps.ImageMapType({
 	    getTileUrl: function(tile, zoom) {
 	    	var y= (1<<zoom)-tile.y-1;
-    		return "http://thermal.kk7.ch/php/tile.php?typ=skyways&t=all&z="+zoom+"&x="+tile.x+"&y="+y; 
+    		return "http://thermal.kk7.ch/php/tile.php?typ=skyways&t=all&z="+zoom+"&x="+tile.x+"&y="+y+"&src="+SERVER_NAME; 
 	    },
 	    tileSize: new google.maps.Size(256, 256),
 	    opacity:0.60,
@@ -399,7 +401,13 @@ function initialize() {
 	});
 
     map.overlayMapTypes.push(null); // create empty overlay entry 0 -> skyways
-        
+
+    
+    var kk7Copyright=$("#kk7Copyright").get(0);
+    kk7Copyright.index = 0; // used for ordering
+    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(kk7Copyright);
+
+       
     if (flightsTotNum==1) {
 		var controlButton=$("#control3d").get(0);
 	    google.maps.event.addDomListener(controlButton , 'click', function() {

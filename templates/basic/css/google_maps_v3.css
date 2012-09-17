@@ -374,8 +374,8 @@ fieldset.legendBox  {
 }
 
 div#trackCompareFinderHeaderAct {
-	padding-left:30px;
-	padding-right:30px;
+	padding-left:20px;
+	padding-right:20px;
 }
 #trackCompareFinderHeaderAct {
 	float:right;
@@ -393,7 +393,9 @@ div#trackCompareFinderHeaderAct {
 	float: right;
 	clear:both;
 	font-size: 11px;
-	width: 70px;
+	width: auto;
+	padding-left:10px;
+	padding-right:10px;
 	border-radius: 5px;  
     -moz-border-radius: 5px;  
     -webkit-border-top: 5px;

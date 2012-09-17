@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_pilot_functions.php,v 1.19 2012/09/12 19:41:03 manolis Exp $                                                                 
+// $Id: EXT_pilot_functions.php,v 1.20 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -115,26 +115,34 @@
 			$photo='';	
 			if ($row['PilotPhoto']>0) {
 		
-				checkPilotPhoto($serverIDview,$pilotIDview);
+				//checkPilotPhoto($serverIDview,$pilotIDview);
 	     		$imgBigRel=getPilotPhotoRelFilename($serverIDview,$pilotIDview);	
 				$imgBig=getPilotPhotoFilename($serverIDview,$pilotIDview);	
+				// echo $imgBig."<BR>";
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
+				
+				//echo $imgBig."  $CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height <br>";
 				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				
+				
 				$photo="<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
 			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
 			 border=0></a>";					
 				
 				$photo="<img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'>";
 			}
-			
-			$photo=json::prepStr($photo);
-			
-			$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.			
+			if( $_GET['json'] ){
+				$photo=json::prepStr($photo);
+			}
+			if ($_GET['json']) {
+				$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.			
 			' "name":"'.json::prepStr($name).'",'.
 			' "flag":"'.json::prepStr($flagIcon).'",'.
 			' "photo":"'.$photo.'", '.
 			' "sex":"'.json::prepStr($sexIcon).'", "userID":"'.json::prepStr($row["serverID"].'u'.$row["pilotID"]).'" } ';
-			
+			} else {
+				$jsom='';
+			}
 		    $pilots[]=array("score"=>$dmax,"text"=>$html,"json"=>$json);
 			
 			

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_program_info.php,v 1.19 2010/03/26 13:16:50 manolis Exp $                                                                 
+// $Id: GUI_program_info.php,v 1.20 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -27,26 +27,35 @@
       
         <p align="left"><strong>Leonardo Installations </strong></p>
         <ul>
-          <li> <a href="http://www.paraglidingforum.com/modules.php?name=leonardo&amp;op=list_flights&amp;sortOrder=DATE&amp;year=0&amp;month=0&amp;pilotID=0" target="_blank">International
-            Leonardo</a></li>
-          <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest Leonardo</a></li>
+        
+          <li><a href="http://www.paraglidingforum.com/leonardo" target="_blank">International XC database</a></li>
+          <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest</a></li>
           <li><a href="http://www.xcbrasil.org" target="_blank">Brazilian Leonardo</a></li>
-          <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL Leonardo</a></li>
-          <li> <a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
-          <li> <a href="http://www.sky.gr/leonardo" target="_blank">Greek Leonardo</a></li>
-          <li><a href="http://forum.skynomad.net/leonardo" target="_blank">Bulgarian - skynomad Leonardo</a></li>
-          <li><a href="http://www.xcaustralia.org/">Australian Leonardo</a></li>
-          <li> <a href="http://www.ypforum.com/leonardo" target="_blank">Turkish   Leonardo</a></li>
+          <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL</a></li>
+          <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine XC</a> </li>
+          <li><a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
+          <li><a href="http://www.sky.gr/leonardo" target="_blank">Greek XC League</a></li>
+          <li><a href="http://hang-gliding.eu" target="_blank">Greek HG League</a></li>   
+          <li><a href="http://www.paraplanoff.net/leonardo">Russian XC Leonardo</a></li>       
+          <li><a href="http://www.xc-lux.org" target="_blank">Luxemburg XC League</a></li>  
+          <li><a href="http://www.fbvl.be/leo/index.php?name=leo&lng=french&op=list_flights" target="_blank">Belgian XC Leonardo</a></li>  
+          <li><a href="http://forum.skynomad.net/leonardo" target="_blank">Bulgarian - Skynomad Leonardo</a></li>
+          <li><a href="http://www.xcolombia.co" target="_blank">Colombian  XC Leonardo</a></li>
+          <li><a href="http://www.xcaustralia.org/">Australian Leonardo</a></li>          
+          <li><a href="http://www.ypforum.com/leonardo" target="_blank">Turkish   Leonardo</a></li>
           <li><a href="http://www.pg-leonardo.cz/leonardo" target="_blank">Czech Leonardo</a></li>
-          <li><a href="http://www.holywind.net/index.php?option=leonardo" target="_blank">Isreali Leonardo</a></li>
-          <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>
-          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL
-            Canadian League</a></li>
-          <li><a href="http://cnd.favl.info/modules.php?name=leonardo&amp;op=list_flights" target="_blank">FAVL - Argentine League</a> </li>
-          <li> <a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
+          <li><a href="http://www.holywind.net/index.php?option=leonardo" target="_blank">Isreali Leonardo</a></li>          
+          <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL Canadian League</a></li>
+          <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
           <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
-          <li> <a href="http://www.foroparapente.com/leonardo" target="_blank">Chilian Leonardo</a></li>
-          <li><a href="http://xc.aerospara.com/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></li>
+          <li><a href="http://www.foroparapente.com/leonardo" target="_blank">Chilian Leonardo</a></li>
+          <li><a href="http://xc.aerospara.com/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></li>          
+          <li><a href="http://xc.fly.kg">Kyrgyzstan XC Leonardo</a></li>
+          
+          <li><a href="http://www.nhpc.org.uk/nhpc/modules.php?name=leonardo" target="_blank">NHPC Leonardo</a></li>          
+          <li><a href="http://xc.rmhpa.org" target="_blank">Rocky Mountain Hang gliding & Paragliding Association</a></li>
+          <li><a href="http://www.coloradoflyweek.com" target="_blank">Colorado Flying Week Server</a></li>
+          <li><a href="http://www.xcweb.cz">El Speedo XC Leonardo(Czech)</a></li>
         </ul>
       </div></td>
     </tr>
@@ -79,8 +88,21 @@
       <td>Some code adapted from <a href="http://xcsoar.sourceforge.net/" target="_blank">xcsoar</a> project </td>
     </tr>
     <tr>
+      <td><div align="right">Skyways Layer </div></td>
+      <td>Big thanks to Michael Vonkaenel  and his project 
+      <a  target="_blank" href='http://thermal.kk7.ch'>Paragliding Thermal Maps</a>
+      </td>
+    </tr>
+    <tr>
       <td><div align="right">Js Libraries</div></td>
-      <td><a href="http://www.twinhelix.com" target="_blank">Tipster</a>, <a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph</a>, <a href="http://www.jquery.com" target="_blank">JQuery</a></td>
+      <td>
+      <ul>
+      	 <li><a href="http://www.jquery.com" target="_blank">jQuery (jQuery the +8m/ec equivelant of the web :-)</a>
+      	 <li><a href="http://www.twinhelix.com" target="_blank">Tipster</a>
+      	 <li><a href="http://www.aditus.nu/jpgraph/index.php" target="_blank">Jpgraph</a>
+      	 <li><a href="http://www.flotcharts.org/" target="_blank">Flot graphs</a>
+       </ul>
+      </td>
     </tr>
 
     <tr>
@@ -104,6 +126,8 @@
           <li><strong><a href="http://www.dhv.de" target="_blank">DHV</a></strong> for  sponsoring the development of <br />
             a) Custom rankings / National custom rankings / Club rankings <br />
             b) Airspace infrigments checking <br />
+            c) Comments for flights<br>
+            d) Compare flights and rewrite to Gmaps api v3<br>
           </li>
           <li><strong>Peter Wild (DHV) , Martin Jursa (DHV)</strong> for believing in the power of open source and their valuable contributions and assistance.</li>
           <li><strong>Tom Payne</strong> for his <a href="http://wiki.github.com/twpayne/igc2kmz/" target="_blank">igc2kmz</a> a great visualisation tool for google earth</li>

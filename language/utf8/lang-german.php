@@ -126,7 +126,7 @@ define("_FILE_DOESNT_END_IN_IGC","Die angegebene Datei hat keine .igc Endung");
 define("_THIS_ISNT_A_VALID_IGC_FILE","Keine gültige .igc Datei");
 define("_THERE_IS_SAME_DATE_FLIGHT","Eine Datei mit dem selben Datum und Uhrzeit existiert bereits");
 define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Wenn Du diese Datei ersetzen möchtest, sollte Du zuerst");
-define("_OUTSIDE_SUBMIT_WINDOW","Einreichfrist bereits abgelaufen. (14 Tage bzw. 48 Std nach Saisonsende.)");
+define("_OUTSIDE_SUBMIT_WINDOW","Wertungs-Einreichfrist bereits abgelaufen. (14 Tage bzw. 48 Std nach Saisonsende.)<br>Diese Flug kann nur unter Category -> Nur Flugbuch eingereicht werden.");
 define("_DELETE_THE_OLD_ONE","die Alte löschen");
 define("_THERE_IS_SAME_FILENAME_FLIGHT","Eine Datei mit dem selben Nahmen exisitiert bereits");
 define("_CHANGE_THE_FILENAME","Sollte dieser Flug unterschiedlich sein, dann ändere bitte den Dateinamen und versuche es noch einmal");
@@ -176,6 +176,7 @@ define("_MENU_ALL_FLIGHTS","Alle Flüge anzeigen");
 define("_MENU_FLIGHTS","Flüge");
 define("_MENU_TAKEOFFS","Startplatz");
 define("_MENU_FILTER","Filter");
+define("_MENU_FILTER2","Filter: nur Flüge >15km");
 define("_MENU_MY_FLIGHTS","Meine Flüge");
 define("_MENU_MY_PROFILE","Mein Profil");
 define("_MENU_MY_STATS","Meine Statistik");
@@ -279,7 +280,7 @@ define("_Today_is","Heute ist");
 //--------------------------------------------
 
 define("_SUBMIT_FLIGHT","Flug einreichen");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","Nur Flüge ab 10.10.2006 werden in der Wertung angezeigt.<br>Flug Einreichfrist: 14 Tage.<br>(nur das IGC File wird benötigt)");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","Wertungs Einreichfrist: 14 Tage.<br>Flüge werden außerhalb dieser Frist nur im Piloten Flugbuch angezeigt.");
 define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Übertrage das<br>IGC File des Fluges");
 define("_NOTE_TAKEOFF_NAME","Bitte beachte den Namen des Startplatzes /-gebietes und das Land");
 define("_COMMENTS_FOR_THE_FLIGHT","Kommentare zum Flug");
@@ -356,7 +357,7 @@ define("_Birthdate","Geburtstag*");
 define("_dd_mm_yy","jjjj-mm-tt");
 define("_Sign","Rufsignal");
 define("_Sponsor","Sponsor");
-
+define("_RESIDENCE","Wohnsitz");
 define("_pilot_email","Email Adresse");
 define("_pilot_password","Kennwort");
 
@@ -566,7 +567,7 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport",2=>"Open",3=>"Tandem");
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(4=>"Fun Cup",5=>"Standard",1=>"Sport",3=>"Tandem",2=>"Performance");
 	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Turmdrachen",2=>"Turmloser Drachen");
 	global $CONF;
 	foreach($CONF['gliderClasses'] as $i=>$gClass) {
@@ -583,7 +584,7 @@ setClassList();
 //--------------------------------------------
 function setXCtypesList() {
 	global  $CONF_xc_types,$xcTypesList;
-	$xcTypesList=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
+	$xcTypesList=array(1=>"Freie Strecke (3 WP)",2=>"Flaches Dreieck",4=>"FAI Dreieck");
 	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
 }
 setXCtypesList(); 
@@ -788,7 +789,7 @@ define("_LOGIN_RETURN","%sHier%s klicken für den Startseite");
 // end 2007/02/20
 
 define("_Category","Category");
-define("_MEMBER_OF","Mitglied von");
+define("_MEMBER_OF","Mitglied");
 define("_MemberID","Mitgliedsnummer");
 define("_EnterID","Mitgliedsnummer automatisch holen");
 define("_Clubs_Leagues","Vereine / Wertung");
@@ -917,12 +918,13 @@ define("_Load_Thermals","Thermik anzeigen");
 define('_MemberID_Missing', 'Die Mitgliedsnummer fehlt');
 define('_MemberID_NotNumeric', 'Die Mitgliedsnummer muss eine Zahl sein');
 
-define('_FLIGHTADD_CONFIRMATIONTEXT', 'Mit dem Abschicken dieser Daten bestätige ich, dass ich die für den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe.');
+define('_FLIGHTADD_CONFIRMATIONTEXT', 'Mit dem Abschicken dieser Daten bestätige ich, dass ich die für den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe und akzeptiere die <a href=/xc/modules/leonardo/index.php?name=leonardo&op=nutzung>"Nutzungsrechtvereinbarung"</a>');
 
 define('_FLIGHTADD_IGC_MISSING', 'Bitte igc-Datei angeben');
 define('_FLIGHTADD_IGCZIP_MISSING', 'Bitte das zip-Archiv mit der igc-Datei angeben');
 define('_FLIGHTADD_CATEGORY_MISSING', 'Bitte die Klasse wählen');
 define('_FLIGHTADD_BRAND_MISSING', 'Bitte Gerätehersteller wählen');
+define('_FLIGHTADD_STARTTYPE_MISSING', 'Bitte Startart wählen');
 define('_FLIGHTADD_GLIDER_MISSING', 'Bitte Gerät eingeben');
 define('_YOU_HAVENT_ENTERED_GLIDER', 'Du hast vergessen den Gerätehersteller oder das Gerät anzugeben');
 
@@ -1082,7 +1084,7 @@ Dein neues Kennwort ist: %s
 
 Bitte klicke auf folgenden Link um die Kennwortänderung zu bestätigen:
 
-%s
+http://%s
 
 Mit freundlichen Grüßen,
 Das %s Team.
@@ -1091,21 +1093,21 @@ Das %s Team.
 Bitte beachten: Das ist eine automatisch generierte Email. Bitte nicht darauf antworten.
 --------");
 define("_MENU_AREA_GUIDE","Area Guide");
-define("_All_XC_types","All XC types");
-define("_xctype","XC type");
-define("_Flying_Areas","Flying Areas");
-define("_Name_of_Area","Name of Area");
-define("_See_area_details","See the details and takeoffs for this area");
-define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display");
-define("_ge_module_advanced_1","(Most detailed, bigger size)");
-define("_ge_module_advanced_2","(Many details, big size) ");
-define("_ge_module_Simple","Simple (Only Task, very small)");
-define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name");
-define("_All_classes","All classes");
-define("_Class","Class");
-define("_Photos_filter_off","With/without photos");
-define("_Photos_filter_on","With photos only");
-define("_You_are_already_logged_in","You are already logged in");
+define("_All_XC_types","Alle XC Typen");
+define("_xctype","XC Typ");
+define("_Flying_Areas","Fluggebiete");
+define("_Name_of_Area","Gebietsname");
+define("_See_area_details","Details und Startplätze für diesen Gebiet");
+define("_choose_ge_module","Google Earth Module auswählen");
+define("_ge_module_advanced_1","(viele Details, groß)");
+define("_ge_module_advanced_2","(einige Details, mittel) ");
+define("_ge_module_Simple","Einfach (nur Aufgabe, klein)");
+define("_Pilot_search_instructions","Mind. 3 Buchstaben der Vor- oder Nachname");
+define("_All_classes","Alle Klassen");
+define("_Class","Klasse");
+define("_Photos_filter_off","Alle Flüge");
+define("_Photos_filter_on","Nur Flüge mit Fotos");
+define("_You_are_already_logged_in","Bereits eingelogged");
 
 define("_MANDATORY_FIRSTNAME", "Bitte Vornamen angeben");
 define("_MANDATORY_LASTNAME", "Bitte Nachnamen angeben");
@@ -1133,8 +1135,48 @@ define('_FLIGHT_BROSWER', 'Google Maps Flug Suche');
 define('_Loading_thermals', 'Thermik laden');
 define('_Layers', 'Layers');
 define('_Select_Area', 'Gebiet auswählen');
+
+//config_menu extensions -- P.Wild 19.01.2011
+define('_REGULATIONS','Ausschreibung');
+define('_REGISTRATION','Anmeldung');
+define('_FAQ','F.A.Q.');
+define('_FORUM','Forum');
+define('_PRIZES','Siegerehrung');
+define('_STARTDB','Startplatz Datenbank');
+define('_THERMIKDB','Thermik Datenbank');
+define('_SHOP','Shop');
+define('_RIGHTS','Nutzungsrechtvereinbarung');
+define('_IMPRESSUM','Impressum');
+
+
 define('_Kingpost', 'Turmdrachen');
 define('_Topless', 'Turmloser Drachen');
 // 08.06.2010 P. Wild
 define('_Note', 'Hinweis: um einen Verein einzutragen muss zuerst die Mitgliedsnummer ausgefüllt sein ');
+define('_FOOT', 'Fuß');
+define('_WINCH', 'Winde');
+define('_EMOTOR', 'E_Lift');
+define('_ULTOW', 'UL_Schlepp');
+define('_Print_a_pdf_booklet', 'PDF Erstellen ');
+define('_PreviousJob', 'Diese Auftrag wurde bereits verschickt am');
+define('_ReadyOn', 'Es wird nach Fertigstellen der PDF-Dateien ein Download-Link verschickt an');
+
+define('_G_REC_VALI_FAIL', 'Der G-Record im IGC Tracklog konnte nicht validiert werden.<br>Dieser Flug erscheint nur im Flugbuch und wird nicht gewertet.');
+define('_G_REC_MISSING', 'Der G-Record fehlt oder die IGC Datei ist beschädigt.<br>Erneutes Auslesen vom Vario und Hochladen zum DHVXC Server könnte dieses Problem beheben. ');
+define('_VALI_SRV_NO_RESP', 'Der Validierungsserver ist offline. Eine neuer Validierungsversuch wird automatisch erfolgen. ');
+define('_NO_VALI_EXE', 'Dieses Vario / dieser Logger wird derzeit nicht unterstützt.<br> Bitte dem DHVXC Admin melden.');
+define('_Cat_Info', 'Fun Cup: LTF 1,A<br>Standard: LTF 1,1-2,A,B<br>Sport: LTF 1,1-2,2,A,B,C<br>Performance: LTF 1,1-2,2,2-3,3,A,B,C,D');
+
+//17.09.2012 P.Wild
+define('_Remove_From_Favorites', 'Flugvergleich Entfernen');
+define('_Favorites', 'Flugvergleich');
+define('_Compare_flights_line_1', 'Flüge auswählen per Checkbox');
+define('_Compare_flights_line_2', 'und miteinander vergleichen in Google Maps');
+define('_Compare_Favorite_Tracks', 'Flüge vergleichen');
+define('_Remove_all_favorites', 'Alle Vergleichsflüge entfernen');
+define('_Find_and_Compare_Flights', 'Flüge suchen und vergleichen');
+define('_Compare_Selected_Flights', 'Ausgewählte Flüge vergleichen');
+define('_More', 'mehr');
+define('_Close', 'schliessen');
+
 ?>

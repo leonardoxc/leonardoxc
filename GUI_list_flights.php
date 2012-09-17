@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.127 2012/09/12 19:41:03 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.128 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -691,8 +691,8 @@ function removeClubFlight(clubID,flightID) {
 		}	
 		
 		echo "</div>";
-		echo "<div id='t_$i' class='takeoffLink'>";
-		echo "<a href=\"javascript:takeoffTip.newTip('inline',25, 13,'t_$i', 250, '".$row["takeoffID"]."','".addslashes($takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
+		echo "<div id='at_$i' class='takeoffLink'>";
+		echo "<a id='t_$i' href=\"javascript:takeoffTip.newTip('inline',-25, 13,'t_$i', 250, '".$row["takeoffID"]."','".addslashes($takeoffName)."')\"  onmouseout=\"takeoffTip.hide()\">$takeoffNameFrm</a>\n";
 		echo "</div></TD>".
 	   "<TD>$duration</TD>";
 	   if ($CONF['list_flights']['fields']['scoring'][0]=='LINEAR_DISTANCE') {

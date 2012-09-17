@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_fav.php,v 1.1 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: MENU_fav.php,v 1.2 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
  
@@ -41,7 +41,7 @@ function activateFavorites() {
 	if (favSelectInit) {
 		$(".indexCell .selectTrack").show();
 	} else {
-		$(".indexCell").append("<input class='selectTrack' type='checkbox' value='1' >");
+		$(".indexCell").not('.SortHeader').append("<input class='selectTrack' type='checkbox' value='1' >");
 		favSelectInit=1;
 	}
 }
@@ -75,7 +75,7 @@ function addFav(flightID ){
 	$("#fav_"+flightID+" .indexCell").remove();
 	$("#fav_"+flightID+" .indexCell").remove();
 	$("#fav_"+flightID+" .smallInfo").html("<div class='fav_remove' id='fav_remove_"+flightID+"'>"+
-				"<?php echo leoHtml::img("icon_fav_remove.png",0,0,'absmiddle',_Remove_From_Favorites_,'icons1','',0)?></div>");
+				"<?php echo leoHtml::img("icon_fav_remove.png",0,0,'absmiddle',_Remove_From_Favorites,'icons1','',0)?></div>");
 	favList.push(flightID);
 
 	updateLink();
@@ -188,15 +188,18 @@ $(document).ready(function(){
 
 	<div style='text-align:center;margin-top:10px;'>
 		<span class='info' id='compareFavoritesText'>
-		<h2>Favorites</h2>
-			Select Flights by clicking on the checkbox 
-		
-			<BR>You can then compare all your selected flights in google maps<br><BR>	
+		<h2><?php echo _Favorites ?></h2>
+		<?php echo _Compare_flights_line_1 ?>
+		<BR>
+		<!-- Select Flights by clicking on the checkbox  -->	
+		<?php echo _Compare_flights_line_2 ?>
+			<!-- You can then compare all your selected flights in google maps -->	
+			<br><BR>	
 		</span>
 		
-		<a id='compareFavoritesLink' class='greenButton' href=''>Compare Favorite Tracks</a>
+		<a id='compareFavoritesLink' class='greenButton' href=''><?php echo _Compare_Favorite_Tracks ?></a>
 		
-		<a class='redButton smallButton' href='javascript:clearFavs()'>Remove all favorites</a>
+		<a class='redButton smallButton' href='javascript:clearFavs()'><?php echo _Remove_all_favorites?></a>
 		
 		<hr>
 	</div>	 

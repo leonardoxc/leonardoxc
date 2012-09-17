@@ -814,13 +814,24 @@ define('_RSS_of_pilots_flights','Ροή RSS για τις πτήσεις του πιλότου');
 define('_You_have_a_new_comment','Έχεις ένα νέο σχόλιο στο %s');
 define('_New_comment_email_body','Έχεις ένα νέο σχόλιο στο %s<BR><BR><a href="%s">Κάνε Click εδώ για να διαβάσεις όλα τα σχόλια</a><hr>%s');
 
+define("_Thermals","Θερμικά"); 
+define("_Remove_From_Favorites","Αφαίρεση απο τις Επιλεγμένες"); 
+define("_Favorites","Επιλεγμένες πτήσεις"); 
+define("_Compare_flights_line_1","Επέλεξε τις πτήσεις τσεκάροντας το κουτάκι στα αριστερά τους"); 
+define("_Compare_flights_line_2","Μετά μπορείς να τις συγκρίνεις όλες μαζί σε Google Maps"); 
+define("_Compare_Favorite_Tracks","Σύγκριση επιλεγμένων πτήσεων"); 
+define("_Remove_all_favorites","Αφαίρεση όλων απο τις επιλεγμένες"); 
+define("_Find_and_Compare_Flights","Εύρεση και σύγκριση πτήσεων"); 
+define("_Compare_Selected_Flights","Σύγκριση επιλεγμένων πτήσεων"); 
+define("_More","Περισσότερα"); 
+define("_Close","Κλείσιμο"); 
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
 define("_SUBMIT_TO_OLC","Submit to OLC"); 
 define("_pilot_email","Email Address"); 
-define("_Thermals","Thermals"); 
 define("_MemberID_Missing","Your member ID is missing"); 
 define("_MemberID_NotNumeric","The member ID must be numeric"); 
 define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight."); 
@@ -859,7 +870,7 @@ define("_PASSWORD_RECOVERY_TOOL_MESSAGE","The Server will search in his entire d
 define("_username_civlid_email","Please fill with: CIVLID or User Name or Email Address"); 
 define("_Recover_my_pass","Recover my Password"); 
 define("_You_are_not_login","<BR><BR><center><br>You are not logged in. <br><br>Please Login<BR><BR></center>"); 
-define("_Requirements","Requeriments"); 
+define("_Requirements","Requirements"); 
 define("_Mandatory_CIVLID","Is mandatory tho have an valid <b>CIVLID</b>"); 
 define("_Mandatory_valid_EMAIL","Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
 define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 

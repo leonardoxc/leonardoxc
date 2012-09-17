@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.php,v 1.110 2012/09/10 02:03:20 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.111 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -111,8 +111,8 @@ with (unknownTakeoffTip)
 </script>
 <div id="unknownTakeoffTipLayer" class="shadowBox" style="position: absolute; z-index: 10000; visibility: hidden; left: 0px; top: 0px; width: 10px">&nbsp;</div>
 
-
-<? if ( L_auth::isAdmin($userID) ) { ?>
+		
+<? if ( L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
 <script language="javascript">
 function add_takeoff(lat,lon,id) {	 
 	takeoffTip.hide();
@@ -322,9 +322,9 @@ $(document).ready(function(){
 
 	$flight->putFlightToDB(1); // 1== UPDATE
   }
-
+  $flight->checkDirs(); //Added 27.11.2011 for localhost installations P.Wild
   $flight->updateAll(0);
-
+  //echo "START<br>";
   $location=formatLocation(getWaypointName($flight->takeoffID),$flight->takeoffVinicity,$takeoffRadious);
 
 
@@ -344,7 +344,7 @@ $(document).ready(function(){
   if ($CONF_use_validation) {
 		if ($flight->grecord==0) $flight->validate(1);
 		
-		if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
+		if ($flight->grecord<0) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
 		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 							
@@ -625,7 +625,7 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 
 
 $commentsHtml="<div id='tabcomments' class='tab_content'>
-	<div id='comments_iframe_div' style='width:745px; height:600px; text-align:left;'>
+	<div id='comments_iframe_div' style='width:100%; height:600px; text-align:left;'>
 		<iframe id='comments_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".
@@ -684,7 +684,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	$flight->createEncodedPolyline();
 
 	if ( $CONF_google_maps_api_key  ) {
-		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'><iframe id='gmaps_iframe' align='left'
+		 $googleMap="<div id='gmaps_div' style='display:block; width:100%; height:610px;'><iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
 		$flight->flightID."' ".
 		 " TITLE='Google Map' width='100%' height='100%'

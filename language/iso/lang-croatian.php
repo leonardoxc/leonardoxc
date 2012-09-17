@@ -738,7 +738,7 @@ define("_PASSWORD_RECOVERY_TOOL_MESSAGE","The Server will search in his entire d
 define("_username_civlid_email","Please fill with: CIVLID or User Name or Email Address"); 
 define("_Recover_my_pass","Recover my Password"); 
 define("_You_are_not_login","<BR><BR><center><br>You are not logged in. <br><br>Please Login<BR><BR></center>"); 
-define("_Requirements","Requeriments"); 
+define("_Requirements","Requirements"); 
 define("_Mandatory_CIVLID","Is mandatory tho have an valid <b>CIVLID</b>"); 
 define("_Mandatory_valid_EMAIL","Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
 define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
@@ -887,5 +887,15 @@ define("_RSS_feed_for_flights","RSS feed for flights");
 define("_RSS_of_pilots_flights","RSS of pilot\'s flights"); 
 define("_You_have_a_new_comment","You have a new comment on %s"); 
 define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href='%s'>Click here to read all comments</a><hr>%s"); 
+define("_Remove_From_Favorites","Remove From Favorites"); 
+define("_Favorites","Favorites"); 
+define("_Compare_flights_line_1","Choose flights per Checkbox"); 
+define("_Compare_flights_line_2","and compare them with each other in Google Maps"); 
+define("_Compare_Favorite_Tracks","Compare Favorite Tracks"); 
+define("_Remove_all_favorites","Remove all favorites"); 
+define("_Find_and_Compare_Flights","Find and Compare Flights"); 
+define("_Compare_Selected_Flights","Compare Selected Flights"); 
+define("_More","More"); 
+define("_Close","Close"); 
 
 ?>

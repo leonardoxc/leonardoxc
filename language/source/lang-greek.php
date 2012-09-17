@@ -814,4 +814,16 @@ define('_RSS_of_pilots_flights','Ροή RSS για τις πτήσεις του πιλότου');
 define('_You_have_a_new_comment','Έχεις ένα νέο σχόλιο στο %s');
 define('_New_comment_email_body','Έχεις ένα νέο σχόλιο στο %s<BR><BR><a href="%s">Κάνε Click εδώ για να διαβάσεις όλα τα σχόλια</a><hr>%s');
 
+define("_Thermals","Θερμικά"); 
+define("_Remove_From_Favorites","Αφαίρεση απο τις Επιλεγμένες"); 
+define("_Favorites","Επιλεγμένες πτήσεις"); 
+define("_Compare_flights_line_1","Επέλεξε τις πτήσεις τσεκάροντας το κουτάκι στα αριστερά τους"); 
+define("_Compare_flights_line_2","Μετά μπορείς να τις συγκρίνεις όλες μαζί σε Google Maps"); 
+define("_Compare_Favorite_Tracks","Σύγκριση επιλεγμένων πτήσεων"); 
+define("_Remove_all_favorites","Αφαίρεση όλων απο τις επιλεγμένες"); 
+define("_Find_and_Compare_Flights","Εύρεση και σύγκριση πτήσεων"); 
+define("_Compare_Selected_Flights","Σύγκριση επιλεγμένων πτήσεων"); 
+define("_More","Περισσότερα"); 
+define("_Close","Κλείσιμο"); 
+
 ?>

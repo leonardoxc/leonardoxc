@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.25 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.26 2012/09/17 22:33:49 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -153,7 +153,8 @@
 		$flight->getFlightFromDB($flightID,0);
 	
 		$flight->makeJSON(0);  // no force
-	
+		$flight->createEncodedPolyline(0); // no force
+		
 		$i=0;
 		$JSON_str="";
 		if (1) {
