@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.26 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.27 2012/10/04 05:59:26 manolis Exp $                                                                 
 //
 //************************************************************************
 

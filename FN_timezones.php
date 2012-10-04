@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_timezones.php,v 1.5 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_timezones.php,v 1.6 2012/10/04 05:59:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -65,6 +65,7 @@ mexico
 http://www.statoids.com/tmx.html
 
 */
+global $Countries2timeZones;
 
 $Countries2timeZones=array(
 // AFRICA 

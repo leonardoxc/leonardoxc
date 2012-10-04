@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.60 2012/09/10 02:03:20 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.61 2012/10/04 05:59:26 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -300,6 +300,7 @@ function getTZ($lat,$lon, $theDate) {
 	// else '' will be returned
 	require_once dirname(__FILE__).'/FN_timezones.php';
 	// $TZone=getTZforCountry($countryCode);
+	global $Countries2timeZones;
 	$TZone= $Countries2timeZones[strtoupper($countryCode)];
 
 	if (strtoupper($countryCode)=='AU' ){
