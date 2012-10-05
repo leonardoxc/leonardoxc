@@ -167,7 +167,7 @@ fieldset.legendBox  {
     width: 150px;  
     height:auto;
     
-    bottom:20px;    
+    bottom:30px;    
     right: 0px;
 	
 	
@@ -315,7 +315,7 @@ fieldset.legendBox  {
 
 	width: 400px;
     height:auto;
-    bottom:20px;
+    bottom:30px;
 
 	padding:5px;
     padding-left: 9px;  

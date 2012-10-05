@@ -17,7 +17,22 @@ var chartInit=0;
 
 var firstStartTm=null;
 
-function drawChart(data) {
+var syncTimeToFirst=0;
+var firstTrackTMoffset=0;
+var tmOffset=0;
+
+
+function toggleSyncStarts(cotrol){	
+	if (syncTimeToFirst==0) {
+		syncTimeToFirst=1;
+		drawChart();
+	} else {
+		syncTimeToFirst=0;
+		drawChart();
+	}
+}
+
+function drawChart() {
 	var d0 = [];
 	var d1 = [];
 	
@@ -29,28 +44,49 @@ function drawChart(data) {
 	chartDataSeries=[];
 	chartDataSeriesNum=0;
 
+	MIN_START=86000;
+	MAX_END=0;
+	
+	
 	for(var fnum in flights) {
 		var data=flights[fnum].data;
 	
 		var flightID=data.flightID;
 		var StartTm=data.startTm;
 		
-		if (firstStartTm==null) {
+		if (firstStartTm==null) { 
+			// this is the first track
 			firstStartTm=StartTm;
 		}
 	
+		if (syncTimeToFirst) {
+			if (chartDataSeriesNum==0)  {
+				firstTrackTMoffset=data.points.time[0];			
+			}
+			tmOffset=firstTrackTMoffset-data.points.time[0];
+		} else {
+			tmOffset=0;			
+		}
+		
+		
 		dataArray[fnum]=[];
 		
-		
+		if (+data.START_TIME+tmOffset < MIN_START)	MIN_START=+data.START_TIME+tmOffset ;
+		if (+data.END_TIME+tmOffset  > MAX_END) 	MAX_END=+data.END_TIME+tmOffset ;
+				
 		for(i=0;i<data.points.time.length;i++) {
-			
-			var tm=+firstStartTm+(data.points.time[i]*1000);
+			// the + is important, dont remove
+			var tm=+firstStartTm + ( (data.points.time[i]+tmOffset) *1000);
 			if (flightsTotNum==1) {
 			 	// ground 
+				if ( data.points.elevGnd[i] == 0 && i>0) {
+		 			data.points.elevGnd[i] = (data.points.elevGnd[i-1] *0.95 ) + (data.points.elevGnd[i-1]* 0.1* (Math.random()));
+		 		}
 			 	d0.push([tm,data.points.elevGnd[i]*multMetric ]);
 			 
 				// atlitude varo
 			 	if (baroGraph) {
+
 			 		d1.push([tm,data.points.elevV[i]*multMetric ]);
 			 	}
 			}
@@ -177,12 +213,22 @@ function updateVisuals(flightID,num,j) {
 	var varioStr=flights[flightID].data.points.vario[j];
 	var timeStr=flights[flightID].data.points.time[j];
 		
-	var newpos= new google.maps.LatLng(lat, lon);
-	posMarker[num].setPosition(newpos);
-	posMarker2[num].setPosition(newpos);
-	
-	if (followGlider) map.setCenter(newpos, null);
-	
+	if (is3D) {
+		posMarker[num].getGeometry().setLatLngAlt(+lat,+lon,+altStr);
+		if (followGlider) {
+			var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);			
+			lookAt.setLatitude(+lat);
+			lookAt.setLongitude(+lon);
+			lookAt.setRange(lookAt.getRange() * 0.9);
+
+			ge.getView().setAbstractView(lookAt);
+		}
+	} else {
+		var newpos= new google.maps.LatLng(lat, lon);
+		posMarker[num].setPosition(newpos);	
+		posMarker2[num].setPosition(newpos);
+		if (followGlider) map.setCenter(newpos, null);
+	}
 
 	if ( isNaN(speedStr)) { 
 		speedStr='-';

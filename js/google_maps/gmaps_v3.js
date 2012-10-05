@@ -3,6 +3,36 @@
 Utils
 **********************************************/
 
+function rgb2bgr(s) {
+	var r = s.substr(1, 2);
+    var g = s.substr(3, 2);
+    var b = s.substr(5, 2);
+    return b+g+r;
+}
+
+function addShim(thisDiv){
+	var iframeShim = document.createElement('IFRAME');
+	//this.iframeShim_ = iframeShim ;
+	// iframeShim.src = 'javascript:false;';
+	iframeShim.src = '';
+	iframeShim.scrolling = 'no';
+	iframeShim.frameBorder = '0';
+	
+	var style = iframeShim.style;
+	//style.zIndex = -100000;
+	style.zIndex = -10;  
+	style.width = style.height = '100%';
+	
+	style.position = 'absolute';
+	style.left = style.top = 0;
+	
+	// Appends the iframe to the map type control's DIV so that its width and
+	// height will be 100% and if the control changes from a bar to a drop down,
+	// it flows nicely.
+	thisDiv.appendChild(iframeShim);
+	thisDiv.style.zIndex = 10;
+}
+
  var fullScreen=0;
  function toogleFullScreen() {
  	if (fullScreen==0) {
@@ -92,20 +122,37 @@ Utils
 	}
 
 	function toggleTask(radioObj) {
-		if(!radioObj) return "";	
-		if(radioObj.checked) { 
-			showTask=1;
-			for (var i=0; i<taskLayer.length; i++) {
-				//map.addOverlay(taskLayer[i]);
-				taskLayer[i].setMap(map);
+		if(!radioObj) return "";
+	
+		if (is3D) {
+			if(radioObj.checked) { 
+				showTask=1;
+				for (var i=0; i<taskLayer.length; i++) {	
+					ge.getFeatures().appendChild(taskLayer[i]);
+					
+				}
+			} else {
+				showTask=0;
+				for (var i=0; i<taskLayer.length; i++) {
+					ge.getFeatures().removeChild(taskLayer[i]);
+				}
 			}
-		} else {
-			showTask=0;
-			for (var i=0; i<taskLayer.length; i++) {
-				taskLayer[i].setMap(null);
-				// map.removeOverlay(taskLayer[i]);
+			
+		} else {			
+			if(radioObj.checked) { 
+				showTask=1;
+				for (var i=0; i<taskLayer.length; i++) {
+					//map.addOverlay(taskLayer[i]);
+					taskLayer[i].setMap(map);
+				}
+			} else {
+				showTask=0;
+				for (var i=0; i<taskLayer.length; i++) {
+					taskLayer[i].setMap(null);
+					// map.removeOverlay(taskLayer[i]);
+				}
 			}
-		}
+		}	
 		refreshMap();	
 	}
 
@@ -126,8 +173,12 @@ Utils
 	    infowindow.open(map,marker);     
 	}
 
-	function zoomToFlight() {	
-		map.fitBounds(bounds);
+	function zoomToFlight() {
+		if (is3D){
+			gex.view.setToBoundsView(bounds, { aspectRatio: 1.0 });
+		} else {
+			map.fitBounds(bounds);
+		}
 	}
 
 /********************************************* 
@@ -184,6 +235,65 @@ Task
 		}
 	}
 	
+    function createTaskMarkerGE(point,name,ba) {      	
+    	var placemark = ge.createPlacemark('');
+		var icon = ge.createIcon('');
+		icon.setHref(taskicons[ba]);
+		var style = ge.createStyle('');
+		style.getIconStyle().setIcon(icon);
+		
+		placemark.setStyleSelector(style);		
+		placemark.setGeometry(point);
+		placemark.setName(name);
+		// ge.getFeatures().appendChild(placemark);		
+		return placemark;
+	}
+
+    function displayTaskGE(tp) {
+		var tpPoints=[];
+		if (tp.turnpoints.length>0) {
+			
+			var trackLayer = ge.createPlacemark('');
+			var lineString = ge.createLineString('');
+			trackLayer.setGeometry(lineString);
+			var coords = lineString.getCoordinates();
+			
+			for(j=0;j<tp.turnpoints.length;j++){	
+				var point = ge.createPoint('');
+				point.set(tp.turnpoints[j].lat,tp.turnpoints[j].lon,0,ge.ALTITUDE_ABSOLUTE,false,false);				
+				tpPoints[j]=point;
+				coords.pushLatLngAlt(tp.turnpoints[j].lat,tp.turnpoints[j].lon,0);
+				// coords.pushLatLngAlt (
+			}
+			
+
+			/*
+			var lat=0;
+			var lon=0;
+			var alt=0;
+			for(i=0;i<data.points.lat.length;i++) {
+				  lon=+data.points.lon[i];
+				  lat=+data.points.lat[i];
+				  alt=+data.points.elev[i];
+				  lineString.getCoordinates().pushLatLngAlt(lat,lon,alt);				 
+			}*/
+			
+			lineString.setExtrude(false);
+			lineString.setAltitudeMode(ge.ALTITUDE_CLAMP_TO_GROUND);
+			trackLayer.setStyleSelector(ge.createStyle(''));
+			var lineStyle = trackLayer.getStyleSelector().getLineStyle();
+			lineStyle.setWidth(2);
+			lineStyle.getColor().set('ffFFFFFF');  // aabbggrr format
+			//ge.getFeatures().appendChild(trackLayer);
+			
+			taskLayer.push(trackLayer); 
+			
+			for(j=0;j<tp.turnpoints.length;j++){	
+				var marker = createTaskMarkerGE(tpPoints[j],tp.turnpoints[j].name,tp.turnpoints[j].id ) ;
+				taskLayer.push(marker); 
+			}
+		}
+	}
     
     
 /********************************************* 

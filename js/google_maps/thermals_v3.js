@@ -85,6 +85,9 @@ function importThermals(jsonString){
 	$("#thermalLoading").hide();
 	$("#thermalLoad").hide();		
 	$("#thermalControls").show();
+	
+	$("#thermalClose").show();
+	
 }
 
 var styles=[];
@@ -182,6 +185,37 @@ function initThermals() {
 	init_thermals=true;	
 }
 
+function hideThermalsLayer() {
+	for(var i=1;i<=5;i++) {
+		hideThermalClass(i);
+	}
+	$("#thermalControls").hide();	
+}
+
+function showThermalsLayer() {
+	$("#thermalControls").show();
+	for(var i=1;i<=5;i++) {		
+		if ( $("#"+i+"_box").attr('checked') ) {
+			showThermalClass(i);
+		}
+	}
+		
+}
+
+function toggleThermals() {
+	
+	if ( $("#thermalControls").is(':visible') ) {
+		hideThermalsLayer();
+		$("#thermalClose").hide();	
+		$("#thermalOpen").show();	
+	} else {
+		showThermalsLayer();
+		$("#thermalClose").show();	
+		$("#thermalOpen").hide();	
+	}
+	
+	
+}
 function loadThermals(msg) {
 	initThermals();
 	

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.4 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.5 2012/10/05 09:01:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -99,10 +99,16 @@
 	// $airspaceCheck=1;
 	// $CONF['thermals']['enable'] =1;
 	// $CONF['airspace']['enable'] =1;
+	
+	// use the google earth plugin directly, not the hack
+	$useGE=1;
 	 
-	 $is3dEnabled =0;
-	 
+	$is3D=$_GET['3d']+0;
+
+	// force for tests
 	// $is3D=1;
+	
+	$googleAPIkey="AIzaSyCDsje-qh93J3L7Sk7kewxYLReiCjtIq5k";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head>
@@ -116,17 +122,44 @@
 img.brands { background: url(<?=$moduleRelPath?>/img/sprite_brands.png) no-repeat left top; }
 img.fl {   background: url(<?=$moduleRelPath?>/img/sprite_flags.png) no-repeat left top ; }
 img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-repeat left  top ; }
+
+#control2d {
+	position:absolute;
+	top:5px;
+	right:10px;
+	dislay:block;
+}
+#distanceDiv {
+	position:absolute;
+	top:5px;
+	right:100px;
+	dislay:block;
+}
+
+.solidBackground , #placeDetails.solidBackground , #trackDetails.solidBackground {
+ background:#565656; 
+ border-radius: 0;  
+ -moz-border-radius: 0;  
+ -webkit-border-radius: 0;  
+}
+
+#placeDetails.solidBackground {
+	bottom:95px;
+}
+#trackDetails.solidBackground {
+	bottom:65px;
+}
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
 
+<? if ( $is3D ) { ?> 
+<script src="https://www.google.com/jsapi?key=<?php echo $googleAPIkey ?>"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&key=<?php echo $googleAPIkey ?>" type="text/JavaScript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/googleearth_v3xx.js" type="text/javascript"></script>
+<script src="<?=$moduleRelPath?>/js/google_maps/extensions.pack.js" type="text/javascript"></script>
+<? } else { ?>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry" type="text/JavaScript"></script>
-
-<? if ( $is3dEnabled ) { ?> 
-<script src="https://www.google.com/jsapi"></script>
-<script src="<?=$moduleRelPath?>/js/google_maps/googleearth-compiled.js" type="text/javascript"></script>
-<script src="<?=$moduleRelPath?>/js/google_maps/graticule.3x.js"></script>
-<script src="<?=$moduleRelPath?>/js/google_maps/earth_map_typex.js"></script>
 <? } ?>
 
 <script src="<?=$moduleRelPath?>/js/google_maps/jquery.js" type="text/javascript"></script>
@@ -166,6 +199,16 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 	</div>
 </div>
 	
+
+<div id='control2d' class='controlButton' style='display:none;'>
+	<div class='controlButtonInner'>2D View</div>
+</div>
+	
+<div id='distanceDiv' class='controlButton' style='display:none;'>
+<strong>Distance: </strong><span id="distance">N/A</span>
+</div>
+
+
 <div id='mapDiv'>  
 
 
@@ -236,7 +279,11 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 		<fieldset class="legendBox">	
 			<a href='javascript:zoomToFlight()'><?=_Zoom_to_flight?></a>
 			<div id="side_bar"></div> 
-			
+						
+			<?php  if ( $flightsNum>1) { ?>
+			<input type="checkbox" value="1" id='syncStarts' onClick="toggleSyncStarts(this)">
+			<label for='syncStarts'><?=_Sync_Start_Times?></label><br>
+			<?php  } ?>
 			<input type="checkbox" value="1" id='followGlider' name='followGlider' onClick="toggleFollow(this)">
 			<label for='followGlider'><?=_Follow_Glider?></label><br>
 			<input type="checkbox" value="1" checked id='showTask' name='showTask'  onClick="toggleTask(this)">
@@ -260,6 +307,8 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 		<? if ( $CONF['thermals']['enable']  ) { ?>
 		<fieldset id='themalBox' class="legendBox"><legend><?=_Thermals?></legend>
 	         <div id='thermalLoad'><a href='javascript:loadThermals("<?=_Loading_thermals?><BR>")'><?=_Load_Thermals?></a></div>
+	         <div id='thermalClose' style="display:none"><a href='javascript:toggleThermals()'><?=_Close?></a></div>
+	         <div id='thermalOpen' style="display:none"><a href='javascript:toggleThermals()'><?=_Load_Thermals?></a></div>
 	         <div id='thermalLoading' style="display:none"></div>
 	         <div id='thermalControls' style="display:none">
 	      		<input type="checkbox" id="1_box" onClick="boxclick(this,'1')" /><label for='1_box'> A Class<img src='img/thermals/class_1.png'></label><BR>
@@ -286,6 +335,8 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 <script type="text/javascript">
 
+var is3D=<?php  echo $is3D ?>;
+var useGE=<?php  echo $useGE ?>; 
 var trackColors= [ <?php  echo $colotStr; ?>] ;
 var relpath="<?php echo $moduleRelPath?>";
 var SERVER_NAME = '<?php  echo $_SERVER['SERVER_NAME'] ?>';
@@ -299,7 +350,8 @@ var showTask=1;
 var taskLayer=[];
 var infowindow ;
 
-var mapType=google.maps.MapTypeId.<?php echo $GMapType ?>;
+var mapType;
+
 var metricSystem=<?=$PREFS->metricSystem?>;
 var multMetric=1;
 if (metricSystem==2) {
@@ -320,6 +372,7 @@ var flightList=[ <?php echo $flightListStr;?> ];
 var flightsTotNum=<?php  echo $flightsNum ?>;
 var takeoffID=<?php echo $takeoffID?>;
 var flightID=<?php echo $flightID?>;
+var flightIDstr='<?php echo $flightIDstr?>';
 var compareUrlBase='<?php echo getLeonardoLink(array('op'=>'compare','flightID'=>$flightListStr));?>';
 var TimeStep = 10000; //  in millisecs
 var CurrTime=null;
@@ -336,21 +389,103 @@ var airspaceCheck=<?php echo $airspaceCheck; ?>;
 var skywaysVisible=0;
 var map;
 var googleEarth;   
+var ge;
 var compareUrl=null;
 var radiusKm=10
 var queryString='';
+var gex;
 
+
+<?php  if ($is3D ) { ?>
+google.load("earth", "1");
+if (useGE) {
+	google.setOnLoadCallback(initializeGE);	
+} else {
+	google.setOnLoadCallback(initialize0);
+}	
+// google.load("maps", "3", {other_params: "sensor=false"});
+<?php  }  else { ?>
 
 $(document).ready(function(){
 	initialize();
 });
 
-function initialize() {
-	<?php  if ($is3dEnabled ) { ?>
-	google.load('earth', '1'); 
-	<?php  } ?>
+//google.setOnLoadCallback(initialize);
+//google.load("maps", "3", {other_params: "sensor=false"});
+<?php  } ?>
 
+function initialize0() {
+	$.getScript("<?=$moduleRelPath?>/js/google_maps/googleearth_org.js").done(function(script, textStatus) {
+		initialize();
+	});
+}
+
+function initializeGE(){
+
+	$("#control2d").show();
+	$("#control2d").click(function(){
+		window.location.href="EXT_google_maps_track_v3.php?id="+flightIDstr+"&3d=0";
+	});
+	// $("#distanceDiv").show();
 	
+	addShim($("#control2d").get(0));
+	addShim($("#distanceDiv").get(0));
+	addShim($("#trackDetails").get(0));
+	addShim($("#placeDetails").get(0));  
+	$("#trackDetails").addClass('solidBackground');
+	$("#placeDetails").addClass('solidBackground');
+	  
+    var ge_problem='';
+    if (!google || !google.earth) {
+    	ge_problem='google.earth not loaded';
+      }
+
+      if (!google.earth.isSupported()) {
+    	  ge_problem='Google Earth API is not supported on this system';
+      }
+
+      if (!google.earth.isInstalled()) {
+    	  ge_problem='Google Earth API is not installed on this system';
+      }
+
+      if (ge_problem!='') {
+          alert(ge_problem);        
+      } else {
+    	 google.earth.createInstance("map", initCallback, failureCallback);    	
+      } 
+}
+
+function initCallback(object) {
+	ge = object;
+	ge.getWindow().setVisibility(true);
+	ge.getNavigationControl().setVisibility(ge.VISIBILITY_SHOW);
+	ge.getNavigationControl().getScreenXY().setXUnits(ge.UNITS_PIXELS);
+	ge.getNavigationControl().getScreenXY().setYUnits(ge.UNITS_INSET_PIXELS);
+	ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+
+	ge.getLayerRoot().enableLayerById(ge.LAYER_TERRAIN, true);
+	ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+    ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+
+    ge.getOptions().setScaleLegendVisibility(true); 	//Displays the current scale of the map.
+    ge.getOptions().setStatusBarVisibility(true); 	//Displays a status bar at the bottom of the Earth window, containing geographic coordinates and altitude of the terrain below the current cursor position, as well as the range from which the user is viewing the Earth.
+    //ge.getOptions().setOverviewMapVisibility(true); 	//Displays an inset map of the entire world in the bottom right corner. The current viewport is displayed on the inset map as a red rectangle.
+    //ge.getOptions().setGridVisibility(true); 		//Displays the lines of latitude and longitude on the globe.
+    //ge.getOptions().setAtmosphereVisibility(true); 	//Displays scattered light in the Earth's atmosphere.
+    //ge.getSun().setVisibility(true);
+        
+    gex = new GEarthExtensions(ge);
+    
+	addOverlays();
+	// addGEruler();
+}
+
+function failureCallback(object) {
+}
+  		
+function initialize() {
+
+	mapType=google.maps.MapTypeId.<?php echo $GMapType ?>;
 	var reliefTypeOptions = {
 	  getTileUrl: function(a,b) {
 	    	return "http://maps-for-free.com/layer/relief/z" + b + "/row" + a.y + "/" + b + "_" + a.x + "-" + a.y + ".jpg";
@@ -365,6 +500,7 @@ function initialize() {
     var mapOptions= {
             zoom: 8,
             mapTypeControl: true,
+            scaleControl: true,            
             mapTypeControlOptions: {
                 mapTypeIds: [
 					"Relief",
@@ -408,10 +544,10 @@ function initialize() {
     map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(kk7Copyright);
 
        
-    if (flightsTotNum==1) {
+    if (flightsTotNum==1 || 1) {
 		var controlButton=$("#control3d").get(0);
 	    google.maps.event.addDomListener(controlButton , 'click', function() {
-        	window.location.href="EXT_google_maps_track_3d.php?id="+flightID;
+        	window.location.href="EXT_google_maps_track_v3.php?id="+flightIDstr+"&3d=1";
         });
 	    controlButton.index = 1;
 	    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButton);
@@ -433,47 +569,112 @@ function initialize() {
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(controlButton);
 
     
-    <?php  if ($is3dEnabled ) { ?>
-  	googleEarth = new GoogleEarth(map);
-    <?php  } ?>
-    
-	if (0) {
-	    window.earth = new EarthMapType(map);
-	    GM.event.addListener(earth, 'initialized', function (plugin_loaded) {
-	      if (plugin_loaded) {
-	        map.setMapTypeId('Earth');
-	      }
-	      window.earth.set('graticules', true);
-	      var path = [
-	        new GM.LatLng(32.86355, -117.25464),
-	        new GM.LatLng(32.86604, -117.2542),
-	        new GM.LatLng(32.86694, -117.2575),
-	        new GM.LatLng(32.86716, -117.2574),
-	        new GM.LatLng(32.86625, -117.2541),
-	        new GM.LatLng(32.87175, -117.2530),
-	        new GM.LatLng(32.87047, -117.2481),
-	        new GM.LatLng(32.86427, -117.2478),
-	      ];
-	      path.push(path[0]);
-	      var poly = new GM.Polygon({path: path});
-	      poly.setMap(map);
-    });
-    
-}
+    <?php  if ($is3D) { ?>
+    var ge_problem='';
+    if (!google || !google.earth) {
+    	ge_problem='google.earth not loaded';
+      }
 
- 
+      if (!google.earth.isSupported()) {
+    	  ge_problem='Google Earth API is not supported on this system';
+      }
+
+      if (!google.earth.isInstalled()) {
+    	  ge_problem='Google Earth API is not installed on this system';
+      }
+
+      if (ge_problem!='') {
+          alert(ge_problem);
+          addOverlays();
+      } else {
+    	googleEarth = new GoogleEarth(map);    	
+    	google.maps.event.addListenerOnce(map, 'tilesloaded', addOverlays);
+      }	
+    <?php  } else { ?>
+    addOverlays();    
+    <?php  } ?>
+
+   
     infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(map, 'click', function() {
         infowindow.close();
-    });
-	
+    });	
 	map.setCenter (new google.maps.LatLng(0,0) );
+	
 
+}
+function addGEruler() {
+
+	 gex.util.lookAt([1, 1], { range: 800000, tilt: 40 });
+	   
+	    // create start and end placemark
+	    var rulerColor = '#fc0';
+	   
+	    var placemarkOptions = {
+	      style: {
+	        icon: {
+	          color: rulerColor,
+	          stockIcon: 'paddle/wht-stars',
+	          hotSpot: { left: '50%', bottom: 0 }
+	        }
+	      }
+	    };
+	   
+	    var startPlacemark = gex.dom.addPointPlacemark([0, -1], placemarkOptions);
+	    var endPlacemark = gex.dom.addPointPlacemark([0, 1], placemarkOptions);
+	   
+	    // create the distance updater function
+	    var _updateDistance = function() {
+	      document.getElementById('distance').innerHTML =
+	          '~' +
+	          (new geo.Point(startPlacemark.getGeometry()).distance(
+	            new geo.Point(endPlacemark.getGeometry())) / 1609.344).toFixed(2) +
+	          ' mi';
+	    };
+	   
+	    // create the line placemark
+	    var linePlacemark = gex.dom.addPlacemark({
+	      lineString: {
+	        path: [startPlacemark.getGeometry(),
+	               endPlacemark.getGeometry()],
+	        altitudeMode: ge.ALTITUDE_CLAMP_TO_GROUND,
+	        tessellate: true
+	      },
+	      style: {
+	        line: { color: rulerColor, opacity: 0.5, width: 10 }
+	      }
+	    });
+	   
+	    // make them draggable
+	    var dragOptions = {
+	      bounce: false,
+	      dragCallback: function() {
+	        linePlacemark.setGeometry(
+	            gex.dom.buildLineString({
+	              path: [startPlacemark.getGeometry(),
+	                     endPlacemark.getGeometry()],
+	              altitudeMode: ge.ALTITUDE_CLAMP_TO_GROUND,
+	              tessellate: true
+	            }));
+	       
+	        // update the distance on drag
+	        _updateDistance();
+	      }
+	    };
+	   
+	    // show start distance
+	    _updateDistance();
+	   
+	    gex.edit.makeDraggable(startPlacemark, dragOptions);
+	    gex.edit.makeDraggable(endPlacemark, dragOptions);
+
+		
+}
+function addOverlays(){
 	flightList.sort();
 	for( var i in flightList ) {
 		loadFlight(flightList[i]);
 	}	
-
 }
 
 var flights=[];
@@ -491,26 +692,51 @@ function loadFlight(flightID) {
 		//flights[flightID]['kmlLayer'] =new google.maps.KmlLayer(data.flightKMZUrl);
 		//flights[flightID]['kmlLayer'].setMap(map);
 
-		var trackPoints=[];
-		for(i=0;i<data.points.lat.length;i++) {
-			trackPoints.push( new  google.maps.LatLng(data.points.lat[i],data.points.lon[i]) ) ;
-		}
-
 		var trackColor=trackColors[tracksNum];
 		if (flightsTotNum==1) {
 			trackColor=trackColors[2];
 		}
-
 		if (data.START_TIME < MIN_START)	MIN_START=data.START_TIME ;
 		if (data.END_TIME  > MAX_END) 	MAX_END=data.END_TIME ;
+
 		
-		flights[flightID]['trackLayer'] = new google.maps.Polyline({
-			  path: trackPoints,
-	          strokeColor: trackColor,
-	          strokeOpacity: 1.0,
-	          strokeWeight: 2,
-	          map:map
-		});
+		
+		if (is3D){
+			var trackLayer = ge.createPlacemark('');
+			var lineString = ge.createLineString('');
+			trackLayer.setGeometry(lineString);
+			var coords = lineString.getCoordinates();
+			
+			var lat=0;
+			var lon=0;
+			var alt=0;
+			for(i=0;i<data.points.lat.length;i++) {
+				  lon=+data.points.lon[i];
+				  lat=+data.points.lat[i];
+				  alt=+data.points.elev[i];
+				  lineString.getCoordinates().pushLatLngAlt(lat,lon,alt);				 
+			}
+			lineString.setExtrude(false);
+			lineString.setAltitudeMode(ge.ALTITUDE_ABSOLUTE);
+			trackLayer.setStyleSelector(ge.createStyle(''));
+			var lineStyle = trackLayer.getStyleSelector().getLineStyle();
+			lineStyle.setWidth(2);
+			lineStyle.getColor().set('ff'+rgb2bgr(trackColor));  // aabbggrr format
+			ge.getFeatures().appendChild(trackLayer);
+			flights[flightID]['trackLayer']=trackLayer;
+		} else {
+			var trackPoints=[];
+			for(i=0;i<data.points.lat.length;i++) {
+				trackPoints.push( new  google.maps.LatLng(data.points.lat[i],data.points.lon[i]) ) ;
+			}
+			flights[flightID]['trackLayer'] = new google.maps.Polyline({
+				  path: trackPoints,
+		          strokeColor: trackColor,
+		          strokeOpacity: 1.0,
+		          strokeWeight: 2,
+		          map:map
+			});
+		}
 		
 		if (flightsTotNum>1) {
 			if (tracksNum==0) {
@@ -527,79 +753,129 @@ function loadFlight(flightID) {
 			$('#trackInfoTpl').clone().attr('id', 'trackInfo'+(tracksNum)  ).appendTo("#trackInfoList");			
 		}
 
-		posMarker[tracksNum] = new google.maps.Marker({
-			position: new google.maps.LatLng(data.firstLat,data.firstLon),       
-			map: map,
-			icon: data.markerIconUrl
-		});
-		
-		posMarker2[tracksNum] = new google.maps.Marker({
-			position: new google.maps.LatLng(data.firstLat,data.firstLon),       
-			map: map,
-			icon: {
-				path: google.maps.SymbolPath.CIRCLE,
-		        scale: 18,		        
-		        fillOpacity: 0.1,
-		        fillColor: trackColor,		        
-		        strokeWeight: 1,
-		        strokeOpacity: 0.7,
-		        strokeColor: trackColor
-	          }
-			//icon: data.markerIconUrl
-		});
 
+		if (is3D) {
+
+			var placemark = ge.createPlacemark('');
+			// placemark.setName("placemark");			
+			var icon = ge.createIcon('');
+			icon.setHref(data.markerIconUrl);
+			var style = ge.createStyle('');
+			style.getIconStyle().setIcon(icon);
+			placemark.setStyleSelector(style);
+
+			// Create point
+			var point = ge.createPoint('');
+			point.set(+data.firstLat,+data.firstLon,0,ge.ALTITUDE_ABSOLUTE,false,false);
+			placemark.setGeometry(point);
+
+			ge.getFeatures().appendChild(placemark);
+			posMarker[tracksNum] =placemark;
+			
+		} else {
+			posMarker[tracksNum] = new google.maps.Marker({
+				position: new google.maps.LatLng(data.firstLat,data.firstLon),       
+				map: map,
+				icon: data.markerIconUrl
+			});
+			
+			posMarker2[tracksNum] = new google.maps.Marker({
+				position: new google.maps.LatLng(data.firstLat,data.firstLon),       
+				map: map,				
+				icon: {
+					path: google.maps.SymbolPath.CIRCLE,
+			        scale: 18,		        
+			        fillOpacity: 0.1,
+			        fillColor: trackColor,		        
+			        strokeWeight: 1,
+			        strokeOpacity: 0.7,
+			        strokeColor: trackColor
+		          }				
+			});
+		}
 		
 		// now the graph , redraw if it not the first time called
 		// only draw it one at the end
 		if (tracksNum==(flightsTotNum-1)) {
 			drawChart();
 		}
-
-		// the photos 
-		drawPhotos(data.photos); 		
-
-		// the task tps		
-		displayTask(data.task);		
-
-		// general map stuff 
-		//center_lat=(data.max_lat+data.min_lat)/2;
-		//center_lon=(data.max_lon+data.min_lon)/2;	
-				
-		var newbounds = new google.maps.LatLngBounds(new google.maps.LatLng(data.max_lat,data.min_lon ),new google.maps.LatLng(data.min_lat,data.max_lon) );
-		if (bounds ==null ) {
-			bounds=newbounds;
-		} else {
-			bounds.union(newbounds);
-		}
-		map.fitBounds(bounds);
-
-		// add takeoff and landing markers ( previously done on proccess_waypoints 
-		var marker1 = createMarker(new google.maps.LatLng(data.takeoff_lat,data.takeoff_lon),takeoffString,takeoffString,"start");
-		if (flightsTotNum==0 ) {
-			$("#side_bar").append(side_bar_html); 
-		}
-		var marker2 = createMarker(new google.maps.LatLng(data.landing_lat,data.landing_lon),landingString,landingString,"stop");		
-		if (flightsTotNum==0) { 
-			$("#side_bar").append(side_bar_html);
-		}
-
-			
-		// this is the last track! 
-		// do some house keeping 
-		if (tracksNum==(flightsTotNum-1) ) {			
-			// get min max values from bounds obj
-			computeMinMaxLatLon();
-			if (airspaceCheck) {	
-				toggleAirspace(false);
-			}			
-			
-			$.get('EXT_takeoff.php?op=get_nearest&lat='+data.firstLat+'&lon='+data.firstLon, function(data) {
-				drawTakeoffs(data);
-			});	
-
-			
-		}
 		
+
+		if (is3D) {
+			// the task tps		
+			displayTaskGE(data.task);		
+			
+			var bounds0 = gex.dom.computeBounds(flights[flightID]['trackLayer']);
+			computeMinMaxLatLonGE(bounds0);
+			
+			if (bounds==null) {
+				bounds=bounds0;
+			} else {
+				bounds.extend( new geo.Point([min_lat,max_lon]) );
+				bounds.extend( new geo.Point([max_lat,min_lon]) );
+			}
+			
+			if (tracksNum==(flightsTotNum-1) ) {	
+				 
+				computeMinMaxLatLonGE(bounds);
+				gex.view.setToBoundsView(bounds, { aspectRatio: 1.0 });
+
+				showTask=1;
+				for (var i=0; i<taskLayer.length; i++) {	
+					ge.getFeatures().appendChild(taskLayer[i]);
+					
+				}
+				if (airspaceCheck) {	
+					toggleAirspace(false);
+				}
+				
+			}
+			
+		} else {		
+			// the photos 
+			drawPhotos(data.photos); 		
+	
+			// the task tps		
+			displayTask(data.task);		
+	
+			// general map stuff 
+			//center_lat=(data.max_lat+data.min_lat)/2;
+			//center_lon=(data.max_lon+data.min_lon)/2;	
+			
+			var newbounds = new google.maps.LatLngBounds(new google.maps.LatLng(data.max_lat,data.min_lon ),new google.maps.LatLng(data.min_lat,data.max_lon) );
+			if (bounds ==null ) {
+				bounds=newbounds;
+			} else {
+				bounds.union(newbounds);
+			}
+			map.fitBounds(bounds);
+	
+			// add takeoff and landing markers ( previously done on proccess_waypoints 
+			var marker1 = createMarker(new google.maps.LatLng(data.takeoff_lat,data.takeoff_lon),takeoffString,takeoffString,"start");
+			if (flightsTotNum==0 ) {
+				$("#side_bar").append(side_bar_html); 
+			}
+			var marker2 = createMarker(new google.maps.LatLng(data.landing_lat,data.landing_lon),landingString,landingString,"stop");		
+			if (flightsTotNum==0) { 
+				$("#side_bar").append(side_bar_html);
+			}
+
+			// this is the last track! 
+			// do some house keeping 
+			if (tracksNum==(flightsTotNum-1) ) {			
+				// get min max values from bounds obj
+				computeMinMaxLatLon();
+				if (airspaceCheck) {	
+					toggleAirspace(false);
+				}			
+				
+				$.get('EXT_takeoff.php?op=get_nearest&lat='+data.firstLat+'&lon='+data.firstLon, function(data) {
+					drawTakeoffs(data);
+				});	
+	
+			}
+		}
+				
 		tracksNum++;
 
 	});
