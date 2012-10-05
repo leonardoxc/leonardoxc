@@ -79,6 +79,29 @@ function computeMinMaxLatLonGE(bounds0){
 		max_lon=t;
 	}	
 }
+
+function computeMinMaxLatLonGE2(bounds0){	
+	if (bounds0==null)	return ;
+	
+	
+	min_lat=bounds0.getSouth();
+	max_lat=bounds0.getNorth();
+	min_lon=bounds0.getWest();
+	max_lon=bounds0.getEast();
+	
+	if (min_lat>max_lat) {
+		var t=min_lat;
+		min_lat=max_lat;
+		max_lat=t;
+	}
+	if (min_lon>max_lon) {
+		var t=min_lon;
+		min_lon=max_lon;
+		max_lon=t;
+	}	
+}
+  
+
   
 function computeMinMaxLatLon(){
 	var bounds0 = map.getBounds();

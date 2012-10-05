@@ -23,27 +23,78 @@ function drawAirspaces(jsonString) {
 }
 
 function drawAirspace3D(rec) {
+	var top=+rec.top;
+	var base=+rec.base;
+		
 	var pts=[];
 	
+	var trackLayer = ge.createPlacemark('');
+	var lineString = ge.createPolygon('');
+	var outer = ge.createLinearRing('');	
+	var coords = outer.getCoordinates();
 	var i=0;
+	
+	
+	
 	for(var j=0;j<rec.points.length;j+=2) {
-		pts[i] = new google.maps.LatLng(rec.points[j],rec.points[j+1]);
+		//var point = ge.createPoint('');
+		//point.set(rec.points[j],rec.points[j+1],0,ge.ALTITUDE_CLAMP_TO_GROUND,false,false);				
+		//pts[i]=point;
+		coords.pushLatLngAlt(rec.points[j],rec.points[j+1],+top);
 		i++;
 	}	
 	
-	var poly = new google.maps.Polygon({
-		paths:pts,
-		strokeColor:'#000000',
-		strokeOpacity:1,
-		strokeWeight:1,
-		fillColor:  rec.color,
-		fillOpacity:0.05,
-		map:map
-	}); 
-	airspace_polys.push(poly); 
+	
+	lineString.setExtrude(true);
+	lineString.setAltitudeMode(ge.ALTITUDE_ABSOLUTE); // ALTITUDE_CLAMP_TO_GROUND
+	trackLayer.setStyleSelector(ge.createStyle(''));
+	var lineStyle = trackLayer.getStyleSelector().getLineStyle();
+	lineStyle.setWidth(1);
+	lineStyle.getColor().set('ff'+rgb2bgr(rec.color));  // aabbggrr format
+	
+	var polyStyle=	trackLayer.getStyleSelector().getPolyStyle();	
+	polyStyle.getColor().set('2f'+rgb2bgr(rec.color));  // aabbggrr format
+
+	lineString.setOuterBoundary(outer);    
+	trackLayer.setGeometry(lineString);
+
+	airspace_polys.push(trackLayer);
+	ge.getFeatures().appendChild(trackLayer);
 	airspace_labels.push(rec.name+' ['+rec.type+'] ('+rec.base+'m-'+rec.top+'m)');
 
-	ge.getFeatures().appendChild(poly);
+	
+	if (base>0) {
+		var pts=[];
+		
+		var trackLayer = ge.createPlacemark('');
+		var lineString = ge.createPolygon('');
+		var outer = ge.createLinearRing('');	
+		var coords = outer.getCoordinates();
+		for(var j=0;j<rec.points.length;j+=2) {
+			//var point = ge.createPoint('');
+			//point.set(rec.points[j],rec.points[j+1],0,ge.ALTITUDE_CLAMP_TO_GROUND,false,false);				
+			//pts[i]=point;
+			coords.pushLatLngAlt(rec.points[j],rec.points[j+1],+base);
+			i++;
+		}	
+				
+		lineString.setExtrude(true);
+		lineString.setAltitudeMode(ge.ALTITUDE_ABSOLUTE); // ALTITUDE_CLAMP_TO_GROUND
+		trackLayer.setStyleSelector(ge.createStyle(''));
+		var lineStyle = trackLayer.getStyleSelector().getLineStyle();
+		lineStyle.setWidth(1);
+		lineStyle.getColor().set('ffffffff');  // aabbggrr format
+		
+		var polyStyle=	trackLayer.getStyleSelector().getPolyStyle();	
+		polyStyle.getColor().set('9fffffff');  // aabbggrr format
+
+		lineString.setOuterBoundary(outer);    
+		trackLayer.setGeometry(lineString);
+
+		airspace_polys.push(trackLayer);	
+		ge.getFeatures().appendChild(trackLayer);
+	} 
+
 	
 	// google.maps.event.addListener(poly,'click', function(point) { checkPoint(point.latLng); }  ); 
 		
@@ -90,11 +141,18 @@ function clearAirspaces() {
 
 function toggleAirspace(computeBounds) {
 	
-	if(!map) return ;	
+	if(!map && !ge) return ;	
 	
 	if( $("#airspaceShow").is(":checked") ) {
 		showAirspace=1;
-		if (computeBounds) computeMinMaxLatLon();
+		if (computeBounds) {
+			if (is3D) {
+				var globeBounds = ge.getView().getViewportGlobeBounds();
+				computeMinMaxLatLonGE2(globeBounds);
+			} else {
+				computeMinMaxLatLon();
+			}
+		}
 		clearAirspaces();		
 		loadAirspace(min_lat,max_lat,min_lon,max_lon);
 	} else {
