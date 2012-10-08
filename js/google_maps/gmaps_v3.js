@@ -3,6 +3,34 @@
 Utils
 **********************************************/
 
+
+/**
+* @param {google.maps.Map} map
+* @param {google.maps.LatLng} latlng
+* @param {int} z
+* @return {google.maps.Point}
+*/
+var latlngToPoint = function(map, latlng){
+	var z=map.getZoom();
+	var normalizedPoint = map.getProjection().fromLatLngToPoint(latlng); // returns x,y normalized to 0~255
+	var scale = Math.pow(2, z);
+	var pixelCoordinate = new google.maps.Point(normalizedPoint.x * scale, normalizedPoint.y * scale);
+	return pixelCoordinate;
+};
+/**
+* @param {google.maps.Map} map
+* @param {google.maps.Point} point
+* @param {int} z
+* @return {google.maps.LatLng}
+*/
+var pointToLatlng = function(map, point){
+	var z=map.getZoom();
+	var scale = Math.pow(2, z);
+	var normalizedPoint = new google.maps.Point(point.x / scale, point.y / scale);
+	var latlng = map.getProjection().fromPointToLatLng(normalizedPoint);
+	return latlng;
+};
+
 function rgb2bgr(s) {
 	var r = s.substr(1, 2);
     var g = s.substr(3, 2);

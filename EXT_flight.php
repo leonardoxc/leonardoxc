@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.27 2012/10/04 05:59:26 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.28 2012/10/08 07:25:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -435,7 +435,7 @@
 
 		$takeoffID=makeSane($_REQUEST['$takeoffID'],1); 
 		
- 		$startTime=makeSane($_REQUEST['startTime'],1); // secs fro mstart of day
+ 		$startTime=makeSane($_REQUEST['startTime'],1); // secs from start of day
 		$endTime=makeSane($_REQUEST['endTime'],1); // secs fro mstart of day
 		
 		 $tm=makeSane($_REQUEST['from_tm'],1); // timestamp
@@ -449,12 +449,19 @@
 		 
 		 
 		 $date1=makeSane($_REQUEST['date']); // date dd.mm.yyy format
-		 if ($date1 && ( !$startTime ) ) {
-			 $dateParts=split("\.",$date1);
-			 $tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);			 
-			 //$tm1=gmmktime(0,0,0,1,1,2007);
- 			 $tm2=gmmktime(0,0,0,$dateParts[1],$dateParts[0]+1,$dateParts[2]);
+		 if ($date1) {
+		 	if  ( !$startTime  ) {		 
+			 	$dateParts=split("\.",$date1);
+			 	$tm1=gmmktime(0,0,0,$dateParts[1],$dateParts[0],$dateParts[2]);			 
+				//$tm1=gmmktime(0,0,0,1,1,2007);
+ 			 	$tm2=gmmktime(0,0,0,$dateParts[1],$dateParts[0]+1,$dateParts[2]);
+		 	} else {
+		 		$dateParts=split("\-",$date1);
+			 	
+ 			 	// $select_clause.="  , TIMEDIFF ( `DATE`, '$date1') as DAYDIFF ";		 		
+		 	} 
 		 }
+		 
 		 
 		 if ($tm1 && $tm2) {
 			 $where_clause.=" AND `DATE` >= FROM_UNIXTIME($tm1,'%Y-%m-%d') AND `DATE` <= FROM_UNIXTIME($tm2,'%Y-%m-%d') "; 
@@ -475,13 +482,13 @@
 
 		 $orderBy=" FLIGHT_POINTS DESC ";
 		 
-		 if ($startTime && $endTime  && $date1 && $takeoffID) {
+		 if ($startTime && $endTime  && $date1 ) {
 		 	
-		 	$select_clause.=", DATEDIFF(DATE,'') as date_diff , 
-		 					(takeoffID=$takeoffID?1:0) as takeoff_diff, 
-		 					ABS(START_TM-$startTM) as  start_diff \n".
+		 	$select_clause.=", ABS( TO_DAYS(`DATE`) - TO_DAYS('$date1') ) as date_diff , 
+		 					
+		 					ABS(START_TIME-$startTime) as  start_diff \n";
 		 	
-		 	$orderBy=" date_diff ASC , takeoff_diff DESC , start_diff ASC ";
+		 	$orderBy=" date_diff ASC , distance DESC , start_diff ASC ";
 		 } 
 		
 		// $distance*=1000;
@@ -501,7 +508,7 @@
 		}
 		
 		 $query="SELECT * $select_clause FROM $flightsTable WHERE $where_clause ORDER BY $orderBy $lim ";  // , distance ASC , dateAdded DESC
-		 //echo $query;
+		// echo $query."<BR><BR>";
 		 $res= $db->sql_query($query);
 		 if($res <= 0){
 			 echo("<H3> Error in query! $query </H3>\n");

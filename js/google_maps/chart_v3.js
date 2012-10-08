@@ -212,20 +212,77 @@ function updateVisuals(flightID,num,j) {
 	var altVStr=flights[flightID].data.points.elevV[j];
 	var varioStr=flights[flightID].data.points.vario[j];
 	var timeStr=flights[flightID].data.points.time[j];
-		
+	var altGround=flights[flightID].data.points.elevGnd[j];
+	
+	
+	var altAboveGround=+altStr-altGround;
+	
+	
 	if (is3D) {
-		posMarker[num].getGeometry().setLatLngAlt(+lat,+lon,+altStr);
-		if (followGlider) {
-			var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);			
-			lookAt.setLatitude(+lat);
-			lookAt.setLongitude(+lon);
-			lookAt.setRange(lookAt.getRange() * 0.9);
-
-			ge.getView().setAbstractView(lookAt);
+		if (posMarker[num] && j<=flights[flightID].data.points.lat.length && +lat && +lon ) {
+			
+			posMarker[num].getGeometry().setLatLngAlt(+lat,+lon,+altStr);
+			
+			if (followGlider) {
+				var lookAt = ge.getView().copyAsLookAt(ge.ALTITUDE_RELATIVE_TO_GROUND);			
+				lookAt.setLatitude(+lat);
+				lookAt.setLongitude(+lon);
+				lookAt.setRange(lookAt.getRange() * 0.9);
+	
+				ge.getView().setAbstractView(lookAt);
+			}
 		}
 	} else {
+		
 		var newpos= new google.maps.LatLng(lat, lon);
-		posMarker[num].setPosition(newpos);	
+		var point=latlngToPoint(map,newpos);
+		var varioPoint=latlngToPoint(map,newpos);
+		var varioPoint2=latlngToPoint(map,newpos);
+		
+		var varioHeight=Math.round(+varioStr * 7);
+		var altFactor=1;		
+		// max line height is 50 pixels
+		// max altitude above ground is 2000m
+		// 0 - 500 m -> 50 pix
+		// 500 - 1000 -> 25 px
+		// 1000 - 2000 -> 25 px
+		// 2000  -.... xxx
+		var pxOffset=0;
+		
+		if (altAboveGround > 2000 ) {
+			pxOffset =100;
+		} else {
+			if ( altAboveGround > 1000 ) {
+				pxOffset=75 + ( ( altAboveGround -1000 ) *25  )/ 1000 ; 
+			}  else if ( altGround > 500 ) {
+				pxOffset=50 + ( ( altAboveGround - 500 ) *25  )/ 500 ; 
+			}  else {
+				pxOffset=0 + ( ( altAboveGround - 0  ) *50  )/ 500 ;
+			}			
+		}
+		point.y-=Math.round( Math.exp(altAboveGround / 1000  * 2.5  ) );
+					
+		var newpos2= pointToLatlng(map,point);		
+		altMarker[num].setPath( [ newpos, newpos2 ] );		
+		
+		if (varioHeight>=0) {
+			varioColor='#00ff00';
+		} else {
+			// varioHeight=-varioHeight;
+			varioColor='#ff0000';
+		}
+		varioPoint.x+=5;	
+		varioPoint.y=point.y;
+		
+		varioPoint2.x+=5;						
+		varioPoint2.y= point.y - varioHeight;
+		var p1=pointToLatlng(map,varioPoint);
+		var p2=pointToLatlng(map,varioPoint2);
+		varioMarker[num].setOptions({'strokeColor': varioColor });
+		varioMarker[num].setPath( [ p2,p1 ] );
+	
+		
+		posMarker[num].setPosition(newpos2);	
 		posMarker2[num].setPosition(newpos);
 		if (followGlider) map.setCenter(newpos, null);
 	}

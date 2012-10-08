@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.5 2012/10/05 09:01:01 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.6 2012/10/08 07:25:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -101,14 +101,18 @@
 	// $CONF['airspace']['enable'] =1;
 	
 	// use the google earth plugin directly, not the hack
-	$useGE=1;
-	 
+	$useGE=1;	 
 	$is3D=$_GET['3d']+0;
-
-	// force for tests
-	// $is3D=1;
+			
+	if ($CONF_google_api_key) {
+		$googleApiKeyStr="?key=$CONF_google_api_key";
+	} else {
+		$googleApiKeyStr='';
+	}
 	
-	$googleAPIkey="AIzaSyCDsje-qh93J3L7Sk7kewxYLReiCjtIq5k";
+	if ($is3D) {
+		 $CONF['thermals']['enable'] =0;
+	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <head>
@@ -152,11 +156,10 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
-
+ 
 <? if ( $is3D ) { ?> 
-<script src="https://www.google.com/jsapi?key=<?php echo $googleAPIkey ?>"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry&key=<?php echo $googleAPIkey ?>" type="text/JavaScript"></script>
-<script src="<?=$moduleRelPath?>/js/google_maps/googleearth_v3xx.js" type="text/javascript"></script>
+<script src="https://www.google.com/jsapi<?php echo $googleApiKeyStr ?>"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry<?php echo $googleApiKeyStr ?>" type="text/JavaScript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/extensions.pack.js" type="text/javascript"></script>
 <? } else { ?>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry" type="text/JavaScript"></script>
@@ -342,6 +345,10 @@ var relpath="<?php echo $moduleRelPath?>";
 var SERVER_NAME = '<?php  echo $_SERVER['SERVER_NAME'] ?>';
 var posMarker=[];
 var posMarker2=[];
+var altMarker=[];
+var varioMarker=[];
+var speedMarker=[];
+
 var tracksNum=0;
 
 var followGlider=0;
@@ -778,7 +785,28 @@ function loadFlight(flightID) {
 				map: map,
 				icon: data.markerIconUrl
 			});
+
+			altMarker[tracksNum]= new google.maps.Polyline({
+				map: map,	          
+	            strokeColor: trackColor,
+	            strokeOpacity: 0.7,
+	            strokeWeight: 3
+			});
 			
+			varioMarker[tracksNum]= new google.maps.Polyline({
+				map: map,	          
+	            strokeColor: "#00ff00",
+	            strokeOpacity: 0.7,
+	            strokeWeight: 8
+			});
+
+			speedMarker[tracksNum]= new google.maps.Polyline({
+				map: map,	          
+	            strokeColor: trackColor,
+	            strokeOpacity: 0.7,
+	            strokeWeight: 5
+			});              
+			  			
 			posMarker2[tracksNum] = new google.maps.Marker({
 				position: new google.maps.LatLng(data.firstLat,data.firstLon),       
 				map: map,				
