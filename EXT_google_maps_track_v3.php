@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_v3.php,v 1.6 2012/10/08 07:25:39 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track_v3.php,v 1.7 2012/10/17 09:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -112,6 +112,7 @@
 	
 	if ($is3D) {
 		 $CONF['thermals']['enable'] =0;
+		 $airspaceCheck=0;
 	}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -133,6 +134,16 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 	right:10px;
 	dislay:block;
 }
+
+.control2dBig {
+	position:absolute;
+	top:5px;
+	right:10px;
+	dislay:block;
+	font-size:25px;
+	font-weight:bold;
+	padding:10px;
+}
 #distanceDiv {
 	position:absolute;
 	top:5px;
@@ -153,6 +164,26 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 #trackDetails.solidBackground {
 	bottom:65px;
 }
+
+#overlay {
+	position:fixed; 
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+}
+
+#modal {
+	position:absolute;
+	background:url(tint20.png) 0 0 repeat;
+	background:rgba(0,0,0,0.2);
+	border-radius:14px;
+	padding:8px;
+}
+
 -->
 </style>
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
@@ -286,10 +317,15 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 			<?php  if ( $flightsNum>1) { ?>
 			<input type="checkbox" value="1" id='syncStarts' onClick="toggleSyncStarts(this)">
 			<label for='syncStarts'><?=_Sync_Start_Times?></label><br>
+			
+				<?php  if ( 0) { ?>
+				<input type="checkbox" value="1" id='syncStartsTz' onClick="toggleSyncStartsTimezone(this)">
+				<label for='syncStartsTz'><?=_Sync_Start_Timezones?></label><br>
+				<?php  } ?>
 			<?php  } ?>
 			<input type="checkbox" value="1" id='followGlider' name='followGlider' onClick="toggleFollow(this)">
 			<label for='followGlider'><?=_Follow_Glider?></label><br>
-			<input type="checkbox" value="1" checked id='showTask' name='showTask'  onClick="toggleTask(this)">
+			<input type="checkbox" value="1" <?php echo (($flightsNum==1)?'checked':'') ?> id='showTask' name='showTask'  onClick="toggleTask(this)">
 			<label for='showTask'><?=_Show_Task?></label><br>
 			<? if ($CONF_airspaceChecks && $isAdmin ) { ?>
 				<input type="checkbox" value="1"  checked="checked" name='airspaceShow' id='airspaceShow' onClick="toggleAirspace(true)">
@@ -380,7 +416,7 @@ var flightsTotNum=<?php  echo $flightsNum ?>;
 var takeoffID=<?php echo $takeoffID?>;
 var flightID=<?php echo $flightID?>;
 var flightIDstr='<?php echo $flightIDstr?>';
-var compareUrlBase='<?php echo getLeonardoLink(array('op'=>'compare','flightID'=>$flightListStr));?>';
+var compareUrlBase='<?php echo getLeonardoLink(array('op'=>'compare'.($is3D?'3d':''),'flightID'=>$flightListStr));?>';
 var TimeStep = 10000; //  in millisecs
 var CurrTime=null;
 
@@ -435,30 +471,45 @@ function initializeGE(){
 	});
 	// $("#distanceDiv").show();
 	
-	addShim($("#control2d").get(0));
-	addShim($("#distanceDiv").get(0));
-	addShim($("#trackDetails").get(0));
-	addShim($("#placeDetails").get(0));  
-	$("#trackDetails").addClass('solidBackground');
-	$("#placeDetails").addClass('solidBackground');
+	
 	  
     var ge_problem='';
+    var ge_problem_num=0;
     if (!google || !google.earth) {
     	ge_problem='google.earth not loaded';
-      }
+    	ge_problem_num=1;
+     }
 
-      if (!google.earth.isSupported()) {
-    	  ge_problem='Google Earth API is not supported on this system';
-      }
+     if (!google.earth.isSupported()) {
+     	ge_problem='Google Earth Plugin is not supported on this system';
+     	ge_problem_num=2;
 
-      if (!google.earth.isInstalled()) {
-    	  ge_problem='Google Earth API is not installed on this system';
-      }
+     	$('#mapDiv').html('<iframe width="100%" height="100%" src="http://www.google.com/earth/plugin/error.html#error=ERR_UNSUPPORTED_PLATFORM" frameBorder="0">');
+  	  	addShim($("#control2d").get(0)); 
+  	  	$("#control2d").addClass('control2dBig'); 	
+     }
 
-      if (ge_problem!='') {
-          alert(ge_problem);        
+     if (!google.earth.isInstalled()) {
+    	  ge_problem='Google Earth Plugin is not installed on this system';
+    	  ge_problem_num=3;
+    	  $('#mapDiv').html('<iframe width="100%" height="100%" src="http://www.google.com/earth/plugin/error.html#error=ERR_NOT_INSTALLED" frameBorder="0">');
+    	  addShim($("#control2d").get(0));
+    	  $("#control2d").addClass('control2dBig'); 
+     }
+
+     if (ge_problem!='' || ge_problem_num>0 ) {
+         if (ge_problem_num!=3 && ge_problem_num!=2 ) {
+         	alert(ge_problem);
+	         // modal.open({content: ge_problem});
+         }        
       } else {
-    	 google.earth.createInstance("map", initCallback, failureCallback);    	
+    	addShim($("#control2d").get(0));
+    	addShim($("#distanceDiv").get(0));
+    	addShim($("#trackDetails").get(0));
+    	addShim($("#placeDetails").get(0));  
+    	$("#trackDetails").addClass('solidBackground');
+    	$("#placeDetails").addClass('solidBackground');
+    	google.earth.createInstance("map", initCallback, failureCallback);    	
       } 
 }
 
@@ -610,6 +661,7 @@ function initialize() {
 	
 
 }
+
 function addGEruler() {
 
 	 gex.util.lookAt([1, 1], { range: 800000, tilt: 40 });
@@ -848,11 +900,14 @@ function loadFlight(flightID) {
 				computeMinMaxLatLonGE(bounds);
 				gex.view.setToBoundsView(bounds, { aspectRatio: 1.0 });
 
-				showTask=1;
-				for (var i=0; i<taskLayer.length; i++) {	
-					ge.getFeatures().appendChild(taskLayer[i]);
-					
+				if (flightsTotNum==1) {				
+					showTask=1;
+					for (var i=0; i<taskLayer.length; i++) {	
+						ge.getFeatures().appendChild(taskLayer[i]);
+						
+					}
 				}
+				
 				if (airspaceCheck) {	
 					toggleAirspace(false);
 				}

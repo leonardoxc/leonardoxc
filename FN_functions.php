@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.83 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.84 2012/10/17 09:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -1096,7 +1096,12 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 				$args.=$argArray['flightID'];
 				unset($argArray['flightID']);
 			}	
-			
+		} else if ($opTmp=='compare3d') { 
+						$args.='compare3d/';
+			if ($argArray['flightID']!='skipValue') {
+				$args.=$argArray['flightID'];
+				unset($argArray['flightID']);
+			}			
 		} else if ($opTmp=='pilot_profile') {			
 			// if (!$argArray['pilotIDview']) $argArray['pilotIDview']=$pilotIDview;			
 			$args.='pilot/'.$argArray['pilotIDview'];

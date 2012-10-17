@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_compare.php,v 1.1 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: GUI_flight_compare.php,v 1.2 2012/10/17 09:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -24,11 +24,17 @@
  
 	$flights=$_GET['flightID'];
 	
+	if ($force3D==1) {
+		$str3d="&3d=1";
+	} else {
+		$str3d='';
+	}
+	
 	if ( $CONF_google_maps_api_key  ) {
 		 $googleMap="<div id='gmaps_div' style='display:block; width:745px; height:610px;'>
 		 <iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
-		$flights."' TITLE='Google Map' width='100%' height='100%'
+		$flights.$str3d."' TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	
 		You should upgrade to a more current browser.

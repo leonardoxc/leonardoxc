@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_flight.php,v 1.28 2012/10/08 07:25:39 manolis Exp $                                                                 
+// $Id: EXT_flight.php,v 1.29 2012/10/17 09:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -296,7 +296,9 @@
 					
 					'"lastLat": "'.json::prepStr($flight->lastLat).'", '.
 					'"lastLon": "'.json::prepStr($flight->lastLon).'", '.
-					
+							 
+					'"TZoffset": "'.json::prepStr( $flight->timezone).'", '.
+					//'"TZoffset": "'.json::prepStr( 1+ $flightID%2 ).'", '.
 					'"DURATION": "'.json::prepStr($DURATION).'", '.
 					'"START_TIME": "'.json::prepStr($START_TIME).'", '.
 					'"END_TIME": "'.json::prepStr($END_TIME).'", '.

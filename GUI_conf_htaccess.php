@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.20 2012/09/11 19:27:11 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.21 2012/10/17 09:45:24 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -66,6 +66,7 @@ RewriteRule ^".$virtPath2."flight/(\d*)(.*)$ $baseUrl&op=show_flight&flightID=$1
 
 #compare
 RewriteRule ^".$virtPath2."compare/(\d*)(.*)$ $baseUrl&op=compare&flightID=$1$2 [L,NC]
+RewriteRule ^".$virtPath2."compare3d/(\d*)(.*)$ $baseUrl&op=compare3d&flightID=$1$2 [L,NC]
 
 # various operations on a takeoff
 RewriteRule ^".$virtPath2."takeoff/(\d*)/kml/?$ $basePath/download.php?type=kml_wpt&wptID=$1 [L,NC]

@@ -18,16 +18,31 @@ var chartInit=0;
 var firstStartTm=null;
 
 var syncTimeToFirst=0;
+var syncTimezoneToFirst=0;
 var firstTrackTMoffset=0;
 var tmOffset=0;
 
+var firstTrackTZoffset=0;
+var tzOffset=0;
 
 function toggleSyncStarts(cotrol){	
 	if (syncTimeToFirst==0) {
+		syncTimezoneToFirst=0;
 		syncTimeToFirst=1;
 		drawChart();
 	} else {
 		syncTimeToFirst=0;
+		drawChart();
+	}
+}
+
+function toggleSyncStartsTimezone(cotrol){	
+	if (syncTimezoneToFirst==0) {
+		syncTimeToFirst=0;
+		syncTimezoneToFirst=1;
+		drawChart();
+	} else {
+		syncTimezoneToFirst=0;
 		drawChart();
 	}
 }
@@ -64,6 +79,12 @@ function drawChart() {
 				firstTrackTMoffset=data.points.time[0];			
 			}
 			tmOffset=firstTrackTMoffset-data.points.time[0];
+		} else if (syncTimezoneToFirst || 1) {
+			if (chartDataSeriesNum==0)  {	
+				firstTrackTZoffset=data.TZoffset *3600;
+			}
+			tmOffset=firstTrackTZoffset-data.TZoffset * 3600;
+			
 		} else {
 			tmOffset=0;			
 		}
