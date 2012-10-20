@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_brands.php,v 1.19 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: FN_brands.php,v 1.20 2012/10/20 07:45:39 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -86,6 +86,7 @@
 	91=>'Air Design',
 	92=>'Paramania',
 	
+	93=>'Triple Seven',
  );
 
 ?>
