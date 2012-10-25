@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_list_flights.php,v 1.128 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.129 2012/10/25 18:39:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -497,7 +497,7 @@ function printHeader($width,$sortOrder,$fieldName,$fieldDesc,$queryExtraArray,$s
 function listFlights($res,$legend, $queryExtraArray=array(),$sortOrder="DATE") {
    global $db,$Theme;
    global $takeoffRadious;
-   global $userID;
+   global $userID, $serverID;
    global $NACclubID;
    global $clubID,$clubFlights,$clubsList, $add_remove_mode;
    global $moduleRelPath;
@@ -736,7 +736,14 @@ function removeClubFlight(clubID,flightID) {
 	   
 	   echo "</div></td>\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
-		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
+		if ( L_auth::airspaceVisible($userID, $row["userID"],$row["userServerID"] ) ) {
+		/*
+		$CONF_airspaceChecks && 
+			( L_auth::isAdmin($userID) || $CONF['airspace']['view']=='public' ||   
+			( $CONF['airspace']['view']=='registered' && $userID >0 ) || 
+			( $CONF['airspace']['view']=='own' && $userID == $row["userID"] && $row["userServerID"]==$serverID )   
+		) 
+		) {*/
 			if ( $row['airspaceCheckFinal']==-1 ) {
 				//original: $airspaceProblem=' bgcolor=#F7E5C9 ';
 				# peter Wild hack taking into account the deutschlandpokal-hack
@@ -755,13 +762,16 @@ function removeClubFlight(clubID,flightID) {
 						$airspaceProblem=' bgcolor=#FF0008 ';
 					}
 				} else {
-					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
-						$airspaceProblem=' bgcolor=#FF0008 ';
-					} else if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
-						$airspaceProblem=' bgcolor=#FF0008 ';
-					} else {
-						$airspaceProblem=' bgcolor=#FFFF00 ';
-					}	
+					
+					$airspaceColor='';
+					foreach($CONF['aispace']['list']['colors'] as $className=>$classColor) {
+						if ( strpos($tmpairspaceName, $className)!==false) { 
+							$airspaceColor=$classColor;
+							break;
+						}
+					}
+					if (!$airspaceColor) $airspaceColor=$CONF['aispace']['list']['colors']['ALLOTHER'];				
+					$airspaceProblem=" bgcolor=#$airspaceColor ";				
 				}
 				# end hack
 			} else

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_auth.php,v 1.8 2012/10/20 07:45:39 manolis Exp $                                                                 
+// $Id: CL_auth.php,v 1.9 2012/10/25 18:39:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -50,6 +50,23 @@ class L_auth {
 		} else {
 			return false;
 		}
+	}
+	
+	static function airspaceVisible($userID,$flightUserID,$flightUserserverID) {
+		global $CONF,$CONF_airspaceChecks,$CONF_server_id ;;
+		
+		if ( $CONF_airspaceChecks && 
+			(	 L_auth::isAdmin($userID) || $CONF['airspace']['view']=='public' ||   
+				( $CONF['airspace']['view']=='registered' && $userID >0 ) || 
+				( $CONF['airspace']['view']=='own' && $userID == $flightUserID 
+					&& ($flightUserserverID==0 || $flightUserserverID==$CONF_server_id ) )   
+			)
+		) {
+			return 1;
+		} else {
+			return 0;
+		}
+		
 	}
 
 }

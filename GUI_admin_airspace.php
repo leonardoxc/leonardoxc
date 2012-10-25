@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_airspace.php,v 1.9 2010/03/14 20:56:11 manolis Exp $                                                                 
+// $Id: GUI_admin_airspace.php,v 1.10 2012/10/25 18:39:52 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -38,7 +38,9 @@
 		}
 		
 	} else if ($_GET['act']=='check_flights') {	
-	
+		$airspaceChunk=$_GET['num'];
+		if (!$airspaceChunk) $airspaceChunk=50;
+		
 		DEBUG('AdminAirspace',1,"Checking all flights for airspace violations<BR>");
 		echo "Checking all flights for airspace violations<BR>";
 		$query="SELECT ID,active from $flightsTable  WHERE airspaceCheck=0 OR airspaceCheckFinal=0 ";
@@ -62,7 +64,7 @@
 					
 				 }
 				$i++;
-				if ($i>10) break;
+				if ($i>$airspaceChunk) break;
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
@@ -81,7 +83,10 @@
  <table class='simpleTable' width="100%" border=0 cellpadding="2" cellspacing="0">
    <tr>
      <td colspan="3"><strong>Actions :: <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=delete_all">Delete all airspace entries in the DB</a> :: 
-	  <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong></td>
+	  <a id='updateairspace' href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong>
+	  <input type='text' id='num' size=3 value='10'>
+	  
+	  </td>
    </tr>
    <tr>
      <td colspan="3">&nbsp;</td>
@@ -115,6 +120,13 @@ function update_comment(area_id) {
 	MWJ_changeSize( 'takeoffAddID', 270,130 );
 	toggleVisible('takeoffAddID','takeoffAddPos'+area_id,14,-50,410,320);
 }
+
+$(document).ready(function() {
+	$("#num").change( function () {	  
+		var url='<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights&num='+$("#num").val();
+		$("#updateairspace").attr('href',url);		
+	});
+});
 </script>	
 <style type="text/css">
 .dropBox {
