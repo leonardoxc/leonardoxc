@@ -1,0 +1,15 @@
+CREATE TABLE leonardo_queue (
+`jobID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`jobType` VARCHAR( 30 ) NOT NULL ,
+`priority` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+`timeCreated` DATETIME NOT NULL ,
+`timeProccessed` DATETIME NOT NULL ,
+`status` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+`param1` TEXT NOT NULL ,
+`param2` TEXT NOT NULL ,
+`param3` TEXT NOT NULL
+) ENGINE = MyIsam;
+
+# 2012-05-06 add english version of names
+ALTER TABLE `leonardo_pilots` ADD `FirstNameEn` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `LastName` ,
+ADD `LastNameEn` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `FirstNameEn` ;
