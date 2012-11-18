@@ -316,7 +316,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	  if ($currentlang==$tmpLang) {
  	    $current_flagImg=leoHtml::img($cCode.".gif",18,12,'',_LANGUAGE,'fl');
 	  }
-	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
+	  $langLiStr.="<li><a rel='nofollow' href='$flagLink'>$flagImg</a></li>\n";
 	} 
 ?>
 <li class="smallItem short"><a class="smallItem"  href='#'><?=$current_flagImg?></a>
