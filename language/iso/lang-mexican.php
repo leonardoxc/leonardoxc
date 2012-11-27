@@ -624,7 +624,7 @@ define('_Click_to_select_a_month','Presione para seleccionar un mes');
 define('_Click_to_select_a_year','Presione para seleccionar un ano');
 define('_Select_date_as_date.','Seleccione [date] como fecha.'); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
+// end 2007/03/13
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

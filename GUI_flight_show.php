@@ -30,6 +30,9 @@
 		return;
   }
 
+    //debug
+    $mapUrl=$flight->createStaticMap(1);
+
   $flight->incViews();
 
   if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){

@@ -61,7 +61,7 @@
 		 $nearestWaypoint->getFromDB();
 
 		 $XML_str="<result>\n";
-		$XML_str.="
+		 $XML_str.="
 			<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Flight list</title>
 			<link>http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights')) ."</link>		
 			<date>". gmdate('D, d M Y H:i:s', time()) . " GMT</date>

@@ -701,7 +701,7 @@ $resStr='{
 		if ($num) $suffix="3d";
 		else $suffix="";
 		return $moduleRelPath.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).'/'.
-				rawurlencode($this->filename).$suffix.".jpg";
+				rawurlencode($this->filename).$suffix.".png";
 		//return $this->getPilotRelDir()."/maps/".$this->getYear()."/".rawurlencode($this->filename).$suffix.".jpg";
 	}
 
@@ -785,17 +785,16 @@ $resStr='{
 		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['kml']) ).'/'.$this->filename.".xml";
 		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".xml";
 	}
-	function getPolylineFilename() {
+	function getPolylineFilename($suffix='') {
 		global $CONF;
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename.".poly.txt";
-		//return $this->getPilotAbsDir()."/flights/".$this->getYear()."/".$this->filename.".poly.txt";
+        if ($suffix) $suffix.='.';
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['intermediate']) ).'/'.$this->filename.".poly".$suffix.".txt";
 	}
 	function getMapFilename($num=0) {
 		global $CONF;
 		if ($num) $suffix="3d";
 		else $suffix="";
-		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).'/'.$this->filename.$suffix.".jpg";
-		//return $this->getPilotAbsDir()."/maps/".$this->getYear()."/".$this->filename.$suffix.".jpg";
+		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['map']) ).'/'.$this->filename.$suffix.".png";
 	}
 	function getChartFilename($chartType,$unitSystem=1,$rawChart=0) {
 		global $CONF;
@@ -806,7 +805,6 @@ $resStr='{
 		else $suffix.="";
 
 		return LEONARDO_ABS_PATH.'/'.str_replace("%PILOTID%",$this->getPilotID(),str_replace("%YEAR%",$this->getYear(),$CONF['paths']['charts']) ).'/'.$this->filename.".".$chartType.$suffix.".png";
-		// return $this->getPilotAbsDir()."/charts/".$this->getYear()."/".$this->filename.".".$chartType.$suffix.".png";
 	}
 	function getPhotoFilename($photoNum) {
 		global $CONF;
@@ -1550,6 +1548,107 @@ $kml_file_contents.="
 		fclose($handle);
 		return 1;
 	}
+
+    function createStaticMap($forceRefresh=0) {
+
+        $maxPoints=400;
+        $width=350;
+        $height=350;
+
+        global $moduleRelPath,$baseInstallationPath;
+        global $langEncodings,$currentlang;
+
+        if ( is_file($this->getMapFilename())  && !$forceRefresh )  return $this->getMapRelPath();
+
+        $filename=$this->getIGCFilename(1);
+        $lines = file ($filename);
+        if (!$lines) return;
+        $i=0;
+        $kml_file_contents="";
+
+
+        $prevLat=0;
+        $prevLon=0;
+
+
+        $totLines=count($lines);
+       // echo "tot line: ".$totLines;
+
+        $mod0=0;
+        if ($totLines > $maxPoints ){
+            $reduceArray=getReduceArray($totLines ,$maxPoints);
+            // print_r($recudeArray);
+            $mod0=count($reduceArray);
+            // $mod= ceil( $p / $this->maxPointNum );
+        }
+
+
+        // compute num of B lines
+        $numLines=0;
+        $points=0;
+        $i++;
+        foreach($lines as $line) {
+            if ($line{0}=='B' && strlen($line) >= 23 && $line{24}!='V' ) {
+                // real line
+                $points++;
+                if ($mod0>=1)  {
+                    if ( $reduceArray[ $points % $mod0]  == 0  ) {
+                        $lines[$i]{0}='X';
+                        //unset($lines[$i]);
+                        $i++;
+                        continue;
+                    }
+                }
+                $numLines++;
+            } else {
+                $lines[$i]{0}='X';
+               // unset($lines[$i]);
+
+            }
+            $i++;
+        }
+
+        //echo "<BR>real b  lines: ".$numLines;
+        //echo "<BR>lines left in arays: ".count($lines);
+
+        foreach($lines as $line) {
+            $line=trim($line);
+            if  (strlen($line)==0) continue;
+            if ($line{0}!='B') continue;
+            if  ( strlen($line) < 23 ) 	continue;
+            if ($line{24}=='V') continue;
+
+            $thisPoint=new gpsPoint($line,$this->timezone);
+            $lat=$thisPoint->lat;
+            $lon=-$thisPoint->lon;
+
+            $kml_file_contents.=encodeNumber($lat-$prevLat).encodeNumber($lon-$prevLon);
+
+            $prevLat=$lat;
+            $prevLon=$lon;
+
+            $i++;
+        }
+
+        // write to file
+
+        // echo "<br>encoded len: ".strlen ($kml_file_contents);
+
+        $staticMap="https://maps.googleapis.com/maps/api/staticmap?path=color:0xff0000|weight:2|enc:$kml_file_contents&maptype=terrain&size=".$width."x".$height."&sensor=false";
+        //echo "<br>".strlen($staticMap);
+
+        // get from google
+        $imgStr=file_get_contents($staticMap);
+        echo "<br>".strlen($imgStr);
+
+        $handle = fopen($this->getMapFilename(), "w");
+        fwrite($handle, $imgStr);
+        fclose($handle);
+
+        echo "<img src='".$this->getMapRelPath()."'>";
+
+        return $this->getMapRelPath();
+    }
 
 	function createKMLfile($lineColor="ff0000",$exaggeration=1,$lineWidth=2,$extendedInfo=0) {
 		global $takeoffRadious,$landingRadious;

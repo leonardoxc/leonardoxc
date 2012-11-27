@@ -615,7 +615,7 @@ define('_Click_to_select_a_month','点击选择月份.');
 define('_Click_to_select_a_year','点击选择年份.');
 define('_Select_date_as_date.','选择[date]为日期.'); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

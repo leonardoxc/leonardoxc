@@ -31,7 +31,21 @@ function img($imgName,$width=0,$height=0,$align='',$title='',$class='',$id='',$t
 
 	//if ($CLIENT['browser'][0]=='MSIE') $type=0;	
 	//$type=0;
-	
+    global $OVERRIDE;
+
+	if (isset($OVERRIDE['imgtype'])){
+        $type=$OVERRIDE['imgtype'];
+    }
+
+    if (isset($OVERRIDE['fullurl'])){
+        $fullurl=$OVERRIDE['fullurl'];
+    }
+    $server_url='';
+    if ($fullurl) {
+        $server_url="http://".$_SERVER['SERVER_NAME'];
+    }
+
+
 	$str=" border='0' ";	
 	if ($title) $str.=" title='$title'  alt='$title' ";
 	if ($width) $str.=" width='$width' ";
@@ -49,12 +63,16 @@ function img($imgName,$width=0,$height=0,$align='',$title='',$class='',$id='',$t
 				$strClass=" class='$class' ";
 			} else $dir=$class.'/';
 		} 
-		
-		$imgStr="<img $strClass src='".$moduleRelPath."/img/$dir$imgName' $str>";
+		$imgUrl=$server_url.$moduleRelPath."/img/$dir$imgName";
+        $imgUrl=str_replace("http://xc.dhv.de.//img","http://xc.dhv.de/xc/modules/leonardo/img",$imgUrl);
+        $imgUrl=str_replace("http://xc.dhv.de.//data","http://xc.dhv.de/xc/modules/leonardo/data",$imgUrl);
+
+
+		$imgStr="<img $strClass src='$imgUrl' $str>";
 	} else {
 		$imgName=str_replace("\/","-",$imgName);
 		$imgName=substr($imgName,0,-4);
-		$imgStr="<img class='$class sprite-$imgName' src='".$moduleRelPath."/img/space.gif' $str>";
+		$imgStr="<img class='$class sprite-$imgName' src='".$server_url.$moduleRelPath."/img/space.gif' $str>";
 	}		
 	return $imgStr;
 }

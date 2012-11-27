@@ -683,7 +683,7 @@ define("_External_Entry","Entradas Externas");
 define("_Altitude","Altitude"); 
 define("_Speed","Velocidade"); 
 define("_Distance_from_takeoff","Distância da decolagem"); 
-define("_LAST_DIGIT","Último dígito");
+define("_LAST_DIGIT","Último dígito");
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

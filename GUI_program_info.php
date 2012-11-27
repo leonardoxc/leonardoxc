@@ -32,7 +32,8 @@
           <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest</a></li>
           <li><a href="http://www.xcbrasil.org" target="_blank">Brazilian Leonardo</a></li>
           <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL</a></li>
-          <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine XC</a> </li>
+          <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine Leonardo</a> </li>
+          <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentina XC Leonardo</a></li>
           <li><a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
           <li><a href="http://www.sky.gr/leonardo" target="_blank">Greek XC League</a></li>
           <li><a href="http://hang-gliding.eu" target="_blank">Greek HG League</a></li>   
@@ -46,7 +47,7 @@
           <li><a href="http://www.pg-leonardo.cz/leonardo" target="_blank">Czech Leonardo</a></li>
           <li><a href="http://www.holywind.net/index.php?option=leonardo" target="_blank">Isreali Leonardo</a></li>          
           <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL Canadian League</a></li>
-          <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
+          
           <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
           <li><a href="http://www.foroparapente.com/leonardo" target="_blank">Chilian Leonardo</a></li>
           <li><a href="http://xc.aerospara.com/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></li>          

@@ -809,7 +809,7 @@ define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Scegli la certificazione del 
 define("_SHOW_NEWS","Mostra News");
 
 
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

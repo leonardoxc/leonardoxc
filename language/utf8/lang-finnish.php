@@ -719,7 +719,7 @@ define('_Filter_Items_server','palvelin');
 // New on 2007/12/15
 define('_Ext_text1','Tämä lento tallennettiin alunperin ');
 define('_Ext_text2','Linkki lennon karttoihin ja kaavioihin');
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

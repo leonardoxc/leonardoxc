@@ -825,7 +825,7 @@ define("_Find_and_Compare_Flights","Εύρεση και σύγκριση πτήσεων");
 define("_Compare_Selected_Flights","Σύγκριση επιλεγμένων πτήσεων"); 
 define("_More","Περισσότερα"); 
 define("_Close","Κλείσιμο"); 
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

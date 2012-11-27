@@ -620,7 +620,7 @@ define('_Click_to_select_a_month','Click to select a month.');
 define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
+// end 2007/03/13
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

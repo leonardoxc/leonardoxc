@@ -949,7 +949,7 @@ define("_Load_Thermals","Load Thermals");
 define("_Loading_thermals","Loading Thermals"); 
 define("_Layers","Layers"); 
 define("_Select_Area","Select Area"); 
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 

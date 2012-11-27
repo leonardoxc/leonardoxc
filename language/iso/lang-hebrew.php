@@ -623,7 +623,7 @@ define('_Click_to_select_a_month','נא להקיש לבחירה חודש נוכחי');
 define('_Click_to_select_a_year','.נא להקיש לבחירה שנה נוכחית');
 define('_Select_date_as_date.','תאריך [date] נא לבחור '); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
-
+
 //--------------------------------------------------------
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
