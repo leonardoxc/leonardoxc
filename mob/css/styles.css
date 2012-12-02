@@ -1,0 +1,14 @@
+
+.graphs {
+    width:100%;
+    margin-bottom:0.1em;
+}
+
+#employeeDetails p {
+	margin-top: 0px;
+	margin-bottom: 8px;
+}
+
+#actionList {
+	clear: both;
+}
