@@ -14,7 +14,7 @@
 /* NSN Groups                                           */
 /* By: NukeScripts Network (webmaster@nukescripts.net)  */
 /* http://www.nukescripts.net                           */
-/* Copyright © 2000-2004 by NukeScripts Network         */
+/* Copyright ï¿½ 2000-2004 by NukeScripts Network         */
 /********************************************************/
 
 $phpver = phpversion();
@@ -50,28 +50,28 @@ if (!ini_get("register_globals")) {
 
 
 foreach ($_GET as $secvalue) {
-    if ((eregi("<[^>]*script*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*object*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*iframe*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*applet*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*meta*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*style*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*form*\"?[^>]*>", $secvalue)) ||
-        (eregi("<[^>]*img*\"?[^>]*>", $secvalue)) ||
-        (eregi("\([^>]*\"?[^)]*\)", $secvalue)) ||
-        (eregi("\"", $secvalue))) {
+    if ((preg_match("~<[^>]*script*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*object*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*iframe*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*applet*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*meta*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*style*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*form*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~<[^>]*img*\"?[^>]*>~i", $secvalue)) ||
+        (preg_match("~\([^>]*\"?[^)]*\)~i", $secvalue)) ||
+        (preg_match("~\"~i", $secvalue))) {
         die ("I don't like you...");
     }
 }
 
 foreach ($_POST as $secvalue) {
-    if ((eregi("<[^>]*script*\"?[^>]*>", $secvalue)) ||        (eregi("<[^>]*style*\"?[^>]*>", $secvalue))) {
+    if ((preg_match("~<[^>]*script*\"?[^>]*>~i", $secvalue)) ||        (preg_match("~<[^>]*style*\"?[^>]*>~i", $secvalue))) {
         Header("Location: index.php");
         die();
     }
 }
 
-if (eregi("mainfile.php",$PHP_SELF)) {
+if (preg_match("~mainfile.php~i",$PHP_SELF)) {
     Header("Location: index.php");
     die();
 }
