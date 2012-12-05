@@ -23,7 +23,7 @@ if(!defined("SQL_LAYER"))
 {
 
 define("SQL_LAYER","mysql");
-if (! function_exists(getmicrotime) ){
+if (! function_exists("getmicrotime") ){
 
 	function getmicrotime() {
 	   list($usec, $sec) = explode(" ", microtime());
