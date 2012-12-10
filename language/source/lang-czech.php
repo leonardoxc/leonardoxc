@@ -399,7 +399,7 @@ define("_Your_profile_has_been_updated","Tvuj profil byl upraven");
 define("_Submit_Change_Data","Predloz - Zmen Data");
 
 //--------------------------------------------
-// pilot_�lc_profile_edit.php
+// pilot_�lc_profile_edit.php
 //--------------------------------------------
 define("_edit_OLC_info","Uprav OLC info");
 define("_OLC_information","OLC informace");
@@ -531,6 +531,16 @@ function setXCtypesList() {
 	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
 }
 setXCtypesList(); 
+
+//--------------------------------------------
+// Start types translated to Czech 
+//--------------------------------------------
+function setStartTypeList() {
+	Global $CONF;
+	$CONF['startTypes']=array(1=>"Země",2=>"Naviják/Odviják",4=>"Microlight vlek",8=>"E-motor" );
+ }
+setStartTypeList(); 
+
 
 //--------------------------------------------
 // user prefs  & units
