@@ -1,15 +1,19 @@
 <?php
 /**************************************************************************/
-/* Spanish language translation by                                        */
-/* Ale Spitznagel   (contacto@parapente.com.ar)                           */
+/* Spanish language                                                       */
+/* ================                                                       */
+/* Initial translation by:                                                */
+/*   * Ale Spitznagel (contacto@parapente.com.ar)                         */
+/* Currently maintained by:                                               */
+/*   * Fernando García (fernando.gs@gmail.com)                            */
 /**************************************************************************/
 
 /************************************************************************/
-/* Leonardo: Gliding XC Server					                        */
+/* Leonardo: Gliding XC Server					                                */
 /* ============================================                         */
 /*                                                                      */
 /* Copyright (c) 2004-5 by Andreadakis Manolis                          */
-/* http://leonardo.thenet.gr 											*/
+/* http://leonardo.thenet.gr 										                      	*/
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -40,6 +44,7 @@ define("_FREE_TRIANGLE","Triángulo Libre");
 define("_FAI_TRIANGLE","Triángulo FAI");
 
 define("_SUBMIT_FLIGHT_ERROR","Ocurrió un problema enviando el vuelo");
+define("_SEASON","Temporada"); 
 
 // list_pilots()
 define("_NUM","#");
@@ -51,8 +56,6 @@ define("_TOTAL_KM","Km Totales volados");
 define("_TOTAL_DURATION_OF_FLIGHTS","Duración total de vuelos");
 define("_MEAN_DURATION","Duración Media de vuelos");
 define("_TOTAL_OLC_KM","Distancia Total OLC");
-define("_TOTAL_OLC_SCORE","Puntaje Total OLC");
-define("_BEST_OLC_SCORE","Mejor puntaje OLC");
 define("_From","de");
 
 // list_flights()
@@ -69,9 +72,9 @@ define("_LANDING_LOCATION","Aterrizaje");
 define("_LANDING_TIME","Hora de Aterrizaje");
 define("_OPEN_DISTANCE","Distancia lineal");
 define("_MAX_DISTANCE","Distancia Máx.");
-define("_OLC_SCORE_TYPE","Tipo de puntaje OLC");
+define("_OLC_SCORE_TYPE","Tipo de puntuación OLC");
 define("_OLC_DISTANCE","Distancia OLC");
-define("_OLC_SCORING","Puntaje OLC");
+define("_OLC_SCORING","Puntuación OLC");
 define("_MAX_SPEED","Velocidad Máx.");
 define("_MAX_VARIO","Vario Máx.");
 define("_MEAN_SPEED","Velocidad media");
@@ -90,17 +93,17 @@ define("_UPDATE_DATA","Actualizar datos");
 define("_UPDATE_MAP","Actualizar mapa");
 define("_UPDATE_3D_MAP","Actualizar mapa 3D");
 define("_UPDATE_GRAPHS","Actualizar gráficas");
-define("_UPDATE_SCORE","Actualizar puntaje");
+define("_UPDATE_SCORE","Actualizar puntuación");
 
 define("_TAKEOFF_COORDS","Coordenadas del despegue:");
 define("_NO_KNOWN_LOCATIONS","¡No hay ubicaciones conocidas!");
-define("_FLYING_AREA_INFO","Flying area info");
+define("_FLYING_AREA_INFO","Información de la zona");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","^arriba");
+define("_RETURN_TO_TOP","^ subir ^");
 // list flight
 define("_PILOT_FLIGHTS","Vuelos del Piloto");
 
@@ -110,7 +113,7 @@ define("_TAKEOFF","Despegue");
 define("_DURATION","Duración");
 define("_LINEAR_DISTANCE","Distancia Libre");
 define("_OLC_KM","OLC km");
-define("_OLC_SCORE","Puntaje OLC");
+define("_OLC_SCORE","Puntuación OLC");
 define("_DATE_ADDED","Ultimo envio");
 
 define("_SORTED_BY","Ordenar por:");
@@ -132,14 +135,14 @@ define("_DELETE_THE_OLD_ONE","borrar el anterior");
 define("_THERE_IS_SAME_FILENAME_FLIGHT","Existe ya un vuelo con el mismo nombre de archivo");
 define("_CHANGE_THE_FILENAME","Si este vuelo es uno diferente por favor cambiale el nombre de archivo e intentalo de nuevo");
 define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tu vuelo ha sido enviado");
-define("_PRESS_HERE_TO_VIEW_IT","Presioná aquí para verlo");
+define("_PRESS_HERE_TO_VIEW_IT","Pincha aquí para verlo");
 define("_WILL_BE_ACTIVATED_SOON","(será activado en 1-2 minutos)");
 
 // add_from_zip
 define("_SUBMIT_MULTIPLE_FLIGHTS","Enviar varios vuelos");
 define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Solo se procesarán archivos IGC");
 define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Enviar archivo ZIP<br>conteniendo los vuelos");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Presioná aquí para enviar los vuelos");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Pincha aquí para enviar los vuelos");
 
 define("_FILE_DOESNT_END_IN_ZIP","El archivo enviado no tiene extensión .zip");
 define("_ADDING_FILE","Enviando archivo");
@@ -155,7 +158,7 @@ define("_ANDREADAKIS_MANOLIS","Andreadakis Manolis");
 define("_PROJECT_URL","Sitio del proyecto");
 define("_VERSION","Versión");
 define("_MAP_CREATION","Creación de Mapas");
-define("_PROJECT_INFO","Información del proyecto");
+define("_PROJECT_INFO","Información sobre LeonardoXC");
 
 // menu bar 
 define("_MENU_MAIN_MENU","Menú Principal");
@@ -165,22 +168,22 @@ define("_MENU_XCLEAGUE","Liga XC");
 define("_MENU_ADMIN","Admin");
 
 define("_MENU_COMPETITION_LEAGUE","Liga - todas las categorías");
-define("_MENU_OLC","OLC");
-define("_MENU_OPEN_DISTANCE","Distancia Libre");
-define("_MENU_DURATION","Duración");
+define("_MENU_OLC","Por puntuación OLC");
+define("_MENU_OPEN_DISTANCE","Por distancia Libre");
+define("_MENU_DURATION","Por duración");
 define("_MENU_ALL_FLIGHTS","Mostrar todos los vuelos");
-define("_MENU_FLIGHTS","Vuelos");
+define("_MENU_FLIGHTS","Por número de vuelos");
 define("_MENU_TAKEOFFS","Despegues");
-define("_MENU_FILTER","Filtro");
+define("_MENU_FILTER","Filtrar");
 define("_MENU_MY_FLIGHTS","Mis vuelos");
 define("_MENU_MY_PROFILE","Mi perfil");
 define("_MENU_MY_STATS","Mis estadísticas"); 
-define("_MENU_MY_SETTINGS","My settings"); 
+define("_MENU_MY_SETTINGS","Mis opciones de navegación"); 
 define("_MENU_SUBMIT_FLIGHT","Enviar vuelo");
 define("_MENU_SUBMIT_FROM_ZIP","Enviar vuelos desde zip");
 define("_MENU_SHOW_PILOTS","Pilotos");
 define("_MENU_SHOW_LAST_ADDED","Mostrar envios recientes");
-define("_FLIGHTS_STATS","Flights Stats");
+define("_FLIGHTS_STATS","Estadísticas de todos los vuelos");
 
 define("_SELECT_YEAR","Seleccionar año");
 define("_SELECT_MONTH","Seleccionar mes");
@@ -189,14 +192,14 @@ define("_ALL_COUNTRIES","Mostrar todos los países");
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","TODOS");
+define("_ALL_TIMES","De todos los tiempos");
 define("_NUMBER_OF_FLIGHTS","Número de vuelos");
 define("_TOTAL_DISTANCE","Distacia total");
 define("_TOTAL_DURATION","Duración total");
 define("_BEST_OPEN_DISTANCE","Mejor distancia");
 define("_TOTAL_OLC_DISTANCE","Distancia total OLC");
-define("_TOTAL_OLC_SCORE","Puntaje total OLC");
-define("_BEST_OLC_SCORE","Mejor puntaje OLC");
+define("_TOTAL_OLC_SCORE","Puntuación total OLC");
+define("_BEST_OLC_SCORE","Mejor puntuación OLC");
 define("_MEAN_DURATION","Duración media");
 define("_MEAN_DISTANCE","Distancia media");
 define("_PILOT_STATISTICS_SORT_BY","Pilotos - Ordenar por");
@@ -224,7 +227,7 @@ define("_NO","NO");
 define("_LEAGUE_RESULTS","Resultados de liga");
 define("_N_BEST_FLIGHTS","mejores vuelos");
 define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","puntaje total OLC");
+define("_OLC_TOTAL_SCORE","Puntuación total OLC");
 define("_KILOMETERS","Kilómetros");
 define("_TOTAL_ALTITUDE_GAIN","Ganacia total de altura");
 define("_TOTAL_KM","Km totales");
@@ -260,10 +263,10 @@ define("_SELECT_COUNTRY","Seleccionar país");
 define("_OTHER_FILTERS","Otros filtros");
 define("_LINEAR_DISTANCE_SHOULD_BE","La distancia lineal debe ser");
 define("_OLC_DISTANCE_SHOULD_BE","La distancia OLC debe ser");
-define("_OLC_SCORE_SHOULD_BE","El puntaje OLC debe ser");
+define("_OLC_SCORE_SHOULD_BE","La puntuación OLC debe ser");
 define("_DURATION_SHOULD_BE","La duración debe ser");
-define("_ACTIVATE_CHANGE_FILTER","Activar / cambiar FILTRO");
-define("_DEACTIVATE_FILTER","Desactivar FILTRO");
+define("_ACTIVATE_CHANGE_FILTER","Activar / Cambiar Filtro");
+define("_DEACTIVATE_FILTER","Desactivar Filtro");
 define("_HOURS","horas");
 define("_MINUTES","min");
 
@@ -274,13 +277,13 @@ define("_MINUTES","min");
 define("_SUBMIT_FLIGHT","Enviar vuelo");
 define("_ONLY_THE_IGC_FILE_IS_NEEDED","(sólo es necesario el archivo IGC)");
 define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Enviar el<br>archivo IGC del vuelo");
-define("_NOTE_TAKEOFF_NAME","Por favor anotá el nombre del despegue, ubicación y país");
+define("_NOTE_TAKEOFF_NAME","Por favor, escribe el nombre del despegue, la ubicación y el país");
 define("_COMMENTS_FOR_THE_FLIGHT","Comentarios del vuelo");
 define("_PHOTO","Foto");
 define("_PHOTOS_GUIDELINES","Las fotos deben estar en formato jpg y con un tamaño menor a ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Presioná aquí para enviar el vuelo");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Pincha aquí para enviar el vuelo");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","¿Querés enviar varios vuelos juntos?");
-define("_PRESS_HERE","Cliqueá aquí");
+define("_PRESS_HERE","Pincha aquí");
 
 define("_IS_PRIVATE","No mostrar público");
 define("_MAKE_THIS_FLIGHT_PRIVATE","No mostrar público");
@@ -295,7 +298,7 @@ define("_CHANGE_FLIGHT_DATA","Cambiar datos del vuelo");
 define("_IGC_FILE_OF_THE_FLIGHT","Archivo IGC del vuelo");
 define("_DELETE_PHOTO","Borrar");
 define("_NEW_PHOTO","nueva foto");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Presioná aquí para cambiar los datos del vuelo");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Pincha aquí para cambiar los datos del vuelo");
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","Los cambios han sido aplicados");
 define("_RETURN_TO_FLIGHT","Volver al vuelo");
 
@@ -311,10 +314,10 @@ define("_OLC_BARO","Barograma");
 // pilot_profile.php
 //--------------------------------------------
 define("_Pilot_Profile","Perfil del piloto");
-define("_back_to_flights","^arriba");
-define("_pilot_stats","estadísticas del piloto");
-define("_edit_profile","editar perfil");
-define("_flights_stats","estadísticas de vuelo");
+define("_back_to_flights","^ subir ^");
+define("_pilot_stats","Estadísticas del piloto");
+define("_edit_profile","Editar perfil");
+define("_flights_stats","Estadísticas de vuelo");
 define("_View_Profile","Ver perfil");
 
 define("_Personal_Stuff","Datos Personales");
@@ -389,16 +392,16 @@ define("_First_flight_logged","Primer vuelo ingresado");
 define("_Last_flight_logged","Ultimo vuelo ingresado");
 define("_Flying_period_covered","Período de vuelo cubierto");
 define("_Total_Distance","Distancia Total");
-define("_Total_OLC_Score","Puntaje Total OLC");
+define("_Total_OLC_Score","Puntuación Total OLC");
 define("_Total_Hours_Flown","Total de Horas de Vuelo");
-define("_Total_num_of_flights","Cantida de Vuelos ");
+define("_Total_num_of_flights","Cantidad de Vuelos ");
 
 define("_Personal_Bests","Mejores Resultados Personales");
 define("_Best_Open_Distance","Mejor Distancia Libre");
 define("_Best_FAI_Triangle","Mejor Triángulo FAI");
 define("_Best_Free_Triangle","Mejor Triángulo Libre");
 define("_Longest_Flight","Vuelo Más Largo");
-define("_Best_OLC_score","Mejor Puntaje OLC");
+define("_Best_OLC_score","Mejor Puntuación OLC");
 
 define("_Absolute_Height_Record","Record de Altura Absoluta");
 define("_Altitute_gain_Record","Record en ganacia de Altura");
@@ -431,8 +434,8 @@ define("_SITE_DESCR","Descripción del Sitio/Despegue");
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","See more details");
-define("_KML_file_made_by","KML file made by");
+define("_See_more_details","Ver más detalles");
+define("_KML_file_made_by","Fichero KML hecho por");
 
 //--------------------------------------------
 // add_waypoint.php
@@ -486,16 +489,16 @@ setXCtypesList();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","Your settings have been updated");
+define("_Your_settings_have_been_updated","Tus opciones de navegación han sido actualizadas.");
 
-define("_THEME","Theme");
-define("_LANGUAGE","Language");
-define("_VIEW_CATEGORY","View category");
-define("_VIEW_COUNTRY","View country");
-define("_UNITS_SYSTEM" ,"Units system");
-define("_METRIC_SYSTEM","Metric (km,m)");
+define("_THEME","Apariencia");
+define("_LANGUAGE","Idioma");
+define("_VIEW_CATEGORY","Ver categoría");
+define("_VIEW_COUNTRY","Ver país");
+define("_UNITS_SYSTEM" ,"Sistema");
+define("_METRIC_SYSTEM","Métrico (km,m)");
 define("_IMPERIAL_SYSTEM","Imperial (miles,feet)");
-define("_ITEMS_PER_PAGE","Items per page");
+define("_ITEMS_PER_PAGE","Elementos por página");
 
 define("_MI","mi");
 define("_KM","km");
@@ -510,106 +513,98 @@ define("_M_PER_SEC","m/sec");
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","World Wide");
-define("_National_XC_Leagues_for","National XC Leagues for");
-define("_Flights_per_Country","Flights per Country");
-define("_Takeoffs_per_Country","Takeoffs per Country");
-define("_INDEX_HEADER","Welcome to Leonardo XC League");
-define("_INDEX_MESSAGE","You can use the &quot;Main menu&quot; to navigate or use the most common choices presented below.");
+define("_WORLD_WIDE","En todo el mundo");
+define("_National_XC_Leagues_for","Ligas XC Nacionales para");
+define("_Flights_per_Country","Vuelos por País");
+define("_Takeoffs_per_Country","Despegues por País");
+define("_INDEX_HEADER","Bienvenidos/as a la Liga Leonardo XC");
+define("_INDEX_MESSAGE","Puedes utilizar el &quot;Menú Principal&quot; para navegar o usar las opciones más comunes que te mostramos a continuación.");
 
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","First (Summary) Page");
-define("_Display_ALL","Display ALL");
-define("_Display_NONE","Display NONE");
-define("_Reset_to_default_view","Reset to default view");
-define("_No_Club","No Club");
-define("_This_is_the_URL_of_this_page","This is the URL of this page");
-define("_All_glider_types","All glider types");
+define("_MENU_SUMMARY_PAGE","Página inicial (Sumario)");
+define("_Display_ALL","Mostrar TODOS");
+define("_Display_NONE","Mostrar NINGUNO");
+define("_Reset_to_default_view","Restablecer vista por defecto");
+define("_No_Club","Sin Club");
+define("_This_is_the_URL_of_this_page","Esta es la URL de esta página");
+define("_All_glider_types","Todos los tipos");
 
-define("_MENU_SITES_GUIDE","Flying Sites Guide");
-define("_Site_Guide","Site Guide");
+define("_MENU_SITES_GUIDE","Guía de Zonas de Vuelo");
+define("_Site_Guide","Guía de Zona de Vuelo");
 
-define("_Search_Options","Search Options");
+define("_Search_Options","Opciones de búsqueda");
 define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
 define("_Clear_this_list","Clear this list");
 define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
-define("_Available_Takeoffs","Available Takeoffs");
-define("_Search_site_by_name","Search site by name");
+define("_Available_Takeoffs","Despegues disponibles");
+define("_Search_site_by_name","Buscar sitio por nombre");
 define("_give_at_least_2_letters","give at least 2 letters");
 define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
-define("_Takeoff_Details","Takeoff Details");
+define("_Takeoff_Details","Detalles del Despegue");
 
-
-define("_Takeoff_Info","Takeoff Info");
+define("_Takeoff_Info","Despegue/Aterrizaje");
 define("_XC_Info","XC Info");
-define("_Flight_Info","Flight Info");
+define("_Flight_Info","Información del vuelo");
 
-define("_MENU_LOGOUT","Logout");
-define("_MENU_LOGIN","Login");
-define("_MENU_REGISTER","Open an account");
+define("_MENU_LOGOUT","Cerrar sesión");
+define("_MENU_LOGIN","Iniciar sesión");
+define("_MENU_REGISTER","Abrir una cuenta");
 
-
-define("_Africa","Africa");
-define("_Europe","Europe");
+define("_Africa","África");
+define("_Europe","Europa");
 define("_Asia","Asia");
 define("_Australia","Australia");
-define("_North_Central_America","North/Central America");
-define("_South_America","South America");
+define("_North_Central_America","América del Norte/Central");
+define("_South_America","America del Sur");
 
-define("_Recent","Recent");
-
-
-define("_Unknown_takeoff","Unknown takeoff");
-define("_Display_on_Google_Earth","Display on Google Earth");
-define("_Use_Man_s_Module","Use Man's Module");
-define("_Line_Color","Line Color");
-define("_Line_width","Line width");
-define("_unknown_takeoff_tooltip_1","This flight has an uknown Takeoff");
-define("_unknown_takeoff_tooltip_2","If you do know from which takeoff/launch this flight began please click to fill it in !");
-define("_EDIT_WAYPOINT","Edit Takeoff Info");
-define("_DELETE_WAYPOINT","Delete Takeoff");
-define("_SUBMISION_DATE","Submission Date"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Times Viewed"); // the times that this flight havs been viewed
+define("_Recent","Recientes");
 
 
-define("_takeoff_add_help_1","You can enter the takeoff infomation if you know it. If not sure it is OK to close this window");
-define("_takeoff_add_help_2","If the launch of your flight is the one displayed above the 'Unknown Takeoff' then there is no need to enter it again. Just close this window. ");
-define("_takeoff_add_help_3","If you see the launch name below you can click on it to auto-fill the fields to the left.");
-define("_Takeoff_Name","Takeoff Name");
-define("_In_Local_Language","In Local Language");
-define("_In_English","In English");
+define("_Unknown_takeoff","Despegue desconocido");
+define("_Display_on_Google_Earth","Mostrar en Google Earth");
+define("_Use_Man_s_Module","Usar módulo de Man");
+define("_Line_Color","Color de la línea");
+define("_Line_width","Anchura de la línea");
+define("_unknown_takeoff_tooltip_1","Este vuelo tiene un despegue desconocido");
+define("_unknown_takeoff_tooltip_2","Si conoces el despegue en el que comenzó este vuelo, por favor pincha aquí para meter sus datos");
+define("_EDIT_WAYPOINT","Editar la información del despegue");
+define("_DELETE_WAYPOINT","Borrar despegue");
+define("_SUBMISION_DATE","Fecha de envío"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","Veces visto"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","Puedes introducir la información del despegue si la conoces bien. Si no estás seguro/a puedes puedes cerrar esta ventana directamente.");
+define("_takeoff_add_help_2","Si el despegue de tu vuelo es el que se muestra encima de 'Despegue desconocido' entonces no hay necesidad de meterlo de nuevo. Simplemente cierra esta ventana. ");
+define("_takeoff_add_help_3","Si ves el nombre del despegue debajo, puedes pinchar en él para autocompletar los campos.");
+define("_Takeoff_Name","Nombre del despegue");
+define("_In_Local_Language","En el idioma local");
+define("_In_English","En Inglés");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Please enter your username and password to log in.");
-define("_SEND_PASSWORD","I forgot my password");
-define("_ERROR_LOGIN","You have specified an incorrect or inactive username, or an invalid password.");
-define("_AUTO_LOGIN","Log me on automatically each visit");
-define("_USERNAME","Username");
-define("_PASSWORD","Password");
-define("_PROBLEMS_HELP","If you have problems to log in contact the administrator");
+define("_ENTER_PASSWORD","Por favor introduce tu nombre de usuario y contraseña para iniciar sesión.");
+define("_SEND_PASSWORD","He olvidado mi contraseña");
+define("_ERROR_LOGIN","El nombre de usuario indicado no es correcto o está inactivo, o la contraseña es incorrecta.");
+define("_AUTO_LOGIN","Iniciar sesión automáticamente en cada visita");
+define("_USERNAME","Nombre de usuario");
+define("_PASSWORD","Contraseña");
+define("_PROBLEMS_HELP","Si tienes problemas para iniciar sesión ponte en contacto con nosotros.");
+define("_LOGIN_TRY_AGAIN","Pincha %saquí%s para intentarlo de nuevo");
+define("_LOGIN_RETURN","Pincha %saquí%s para volver al índice");
 
-define("_LOGIN_TRY_AGAIN","Click %sHere%s to try again");
-define("_LOGIN_RETURN","Click %sHere%s to return to the Index");
-// end 2007/02/20
-
-define("_Category","Category");
-define("_MEMBER_OF","Member of");
-define("_MemberID","Member ID");
-define("_EnterID","Enter ID");
-define("_Clubs_Leagues","Clubs / Leagues");
-define("_Pilot_Statistics","Pilot Statistics");
-define("_National_Rankings","National Rankings");
-
-
-
+define("_Category","Categoría");
+define("_MEMBER_OF","Miembro de");
+define("_Clubs_Leagues","Clubs / Ligas");
+define("_Pilot_Statistics","Estadísticas de Pilotos");
+define("_National_Rankings","Rankings Nacionales");
+define("_MemberID","ID");
 
 // new on 2007/03/08
-define("_Select_Club","Select Club");
-define("_Close_window","Close window");
-define("_EnterID","Enter ID");
+define("_Select_Club","Seleccionar Club");
+define("_Close_window","Cerrar ventana");
+define("_EnterID","Teclea ID");
 define("_Club","Club");
 define("_Sponsor","Sponsor");
 
@@ -624,150 +619,157 @@ define('_Click_to_select_a_month','Presione para seleccionar un mes');
 define('_Click_to_select_a_year','Presione para seleccionar un ano');
 define('_Select_date_as_date.','Seleccione [date] como fecha.'); // do not replace [date], it will be replaced by date.
 
-// end 2007/03/13
-//--------------------------------------------------------
-//--------------------------------------------------------
-// Missing defines , autoreplaced values from 'english' 
-//--------------------------------------------------------
-define("_SEASON","Season"); 
-define("_SUBMIT_TO_OLC","Submit to OLC"); 
-define("_pilot_email","Email Address"); 
-define("_Sex","Sex"); 
-define("_Login_Stuff","Change Login-Data"); 
-define("_PASSWORD_CONFIRMATION","Confirm password"); 
-define("_EnterPasswordOnlyToChange","Only enter the password, if you want to change it:"); 
-define("_PwdAndConfDontMatch","Password and confirmation are different."); 
-define("_PwdTooShort","The password is too short. It must have a length of at least $passwordMinLength characters."); 
-define("_PwdConfEmpty","The password has not be confirmed."); 
-define("_PwdChanged","The password was changed."); 
-define("_PwdNotChanged","The password has NOT been changed."); 
-define("_PwdChangeProblem","A problem occurred when changing the password."); 
-define("_EmailEmpty","The email address must not be empty."); 
-define("_EmailInvalid","The email address is invalid."); 
-define("_EmailSaved","The email address was saved"); 
-define("_EmailNotSaved","The email address has not been saved."); 
-define("_EmailSaveProblem","A problem occurred when saving the email address."); 
-define("_PROJECT_HELP","Help"); 
-define("_PROJECT_NEWS","News"); 
-define("_PROJECT_RULES","Regulations 2007"); 
-define("_Filter_NoSelection","No selection"); 
-define("_Filter_CurrentlySelected","Current selection"); 
-define("_Filter_DialogMultiSelectInfo","Press Ctrl for multiple selection."); 
-define("_Filter_FilterTitleIncluding","Only selected [items]"); 
-define("_Filter_FilterTitleExcluding","Exclude [items]"); 
-define("_Filter_DialogTitleIncluding","Select [items]"); 
-define("_Filter_DialogTitleExcluding","Select [items]"); 
-define("_Filter_Items_pilot","pilots"); 
+
+define("_SUBMIT_TO_OLC","Mandar al OLC"); 
+define("_pilot_email","Email"); 
+define("_Sex","Sexo"); 
+define("_Login_Stuff","Cambiar datos de acceso"); 
+define("_PASSWORD_CONFIRMATION","Confirmar contraseña"); 
+define("_PROJECT_HELP","Ayuda"); 
+define("_PROJECT_NEWS","Noticias"); 
+define("_PROJECT_RULES","Reglamento 2007"); 
+define("_Filter_NoSelection","Sin selección actual"); 
+define("_Filter_CurrentlySelected","Selección actual"); 
+define("_Filter_DialogMultiSelectInfo","Presiona Ctrl para seleccionar más de una opción."); 
+define("_Filter_FilterTitleIncluding","Sólo [items] seleccionados/as"); 
+define("_Filter_FilterTitleExcluding","Excluir [items]"); 
+define("_Filter_DialogTitleIncluding","Seleccionar [items]"); 
+define("_Filter_DialogTitleExcluding","Excluir [items]"); 
+define("_Filter_Items_pilot","pilotos"); 
+define("_Filter_Items_country","paises"); 
+define("_Filter_Items_takeoff","despegues"); 
+define("_Filter_Button_Select","Seleccionar"); 
+define("_Filter_Button_Delete","Borrar"); 
+define("_Filter_Button_Accept","Aceptar selección"); 
+define("_Filter_Button_Cancel","Cancelar"); 
+define("_MENU_FILTER_NEW","Filtro **NUEVA VERSIÓN**"); 
+define("_ALL_NACCLUBS","Todos los Clubs"); 
+define("_FirstOlcYearComment","Por favor elige el año de tu primera participación en un torneo XC on-line (no sólo en este).<br/>Este campo es relevante para los rankings de &quot;pilotos noveles&quot;."); 
+define("_Select_Brand","Seleccionar marca"); 
+define("_All_Brands","Todas las marcas"); 
+define("_DAY","DÍA"); 
+define("_Glider_Brand","Marca del ala"); 
+define("_MENU_SEARCH_PILOTS","Buscar piloto"); 
+define("_FLIGHTADD_CONFIRMATIONTEXT","Enviando este vuelo confirmo que he respetado todas las obligaciones legales relacionas con el mismo."); 
+define("_FLIGHTADD_IGC_MISSING","Por favor elige tu fichero .IGC"); 
+define("_FLIGHTADD_IGCZIP_MISSING","Por favor elige el fichero .ZIP que contiene tu/s fichero/s .IGC"); 
+define("_FLIGHTADD_CATEGORY_MISSING","Por favor elige la categoría"); 
+define("_FLIGHTADD_BRAND_MISSING","Por favor elige la marca de tu ala"); 
+define("_FLIGHTADD_GLIDER_MISSING","Por favor indica el tipo de ala"); 
+define("_YOU_HAVENT_ENTERED_GLIDER","No has indicado la marca o modelo"); 
+define("_BRAND_NOT_IN_LIST","No está en la lista"); 
+define("_MANDATORY_GENDER","Por favor indica tu sexo"); 
+define("_Pilot_search_instructions","mete al menos tres caracteres del nombre o apellido"); 
+define("_See_The_filter","Ver el Filtro actual"); 
+define("_PilotBirthdate","Fecha de nacimiento"); 
+define("_Start_Type","Tipo de despegue"); 
+define("_GLIDER_CERT","Certificación"); 
+define("_MENU_BROWSER","Ver en Google Maps"); 
+define("_Load_Thermals","Cargar térmicas"); 
+define("_Loading_thermals","Cargando térmicas"); 
+define("_Layers","Capas"); 
+define("_Select_Area","Seleccionar área"); 
+define("_Leave_a_comment","Dejar un comentario"); 
+define("_Reply","Contestar"); 
+define("_Translate","Traducir"); 
+define("_Translate_to","Traducir a"); 
+define("_Submit_Comment","Enviar comentario"); 
+define("_Logged_in_as","Sesión iniciada como:"); 
+define("_Name","Nombre"); 
+define("_Will_not_be_displayed","(no será mostrado)"); 
+define("_Please_type_something","Por favor escribe algo"); 
+define("_SHOW_NEWS","Mostrar noticias");
+
+define("_EnterPasswordOnlyToChange","Teclea la contraseña sólo si quieres cambiarla:"); 
+define("_PwdAndConfDontMatch","La contraseña y su confirmación son diferentes."); 
+define("_PwdTooShort","La contraseña es muy corta. Debe tener al menos $passwordMinLength caracteres."); 
+define("_PwdConfEmpty","Falta la confirmación de la contraseña."); 
+define("_PwdChanged","La contraseña ha sido cambiada."); 
+define("_PwdNotChanged","La contraseña NO ha sido cambiada."); 
+define("_PwdChangeProblem","Se produjo un problema mientras al cambiar la contraseña."); 
+define("_EmailEmpty","La dirección de correo electrónico no puede estar vacía."); 
+define("_EmailInvalid","La dirección de correo electrónico no es válida."); 
+define("_EmailSaved","La dirección de correo electrónico ha sido guardada."); 
+define("_EmailNotSaved","La dirección de correo electrónico NO ha sido guardada."); 
+define("_EmailSaveProblem","Se produjo un problema al guardar la dirección de correo electrónico."); 
 define("_Filter_Items_nacclub","clubs"); 
-define("_Filter_Items_country","countries"); 
-define("_Filter_Items_takeoff","take offs"); 
-define("_Filter_Button_Select","Select"); 
-define("_Filter_Button_Delete","Delete"); 
-define("_Filter_Button_Accept","Accept selection"); 
-define("_Filter_Button_Cancel","Cancel"); 
-define("_MENU_FILTER_NEW","Filter **NEW VERSION**"); 
-define("_ALL_NACCLUBS","All Clubs"); 
-define("_SELECT_NACCLUB","Select [nacname]-Club"); 
-define("_FirstOlcYear","First year of participation in an online XC contest"); 
-define("_FirstOlcYearComment","Please select the year of your first participation in any online XC contest, not just this one.<br/>This field is relevant for the &quot;newcomer&quot;-rankings."); 
-define("_Select_Brand","Select Brand"); 
-define("_All_Brands","All Brands"); 
-define("_DAY","DAY"); 
-define("_Glider_Brand","Glider Brand"); 
-define("_Or_Select_from_previous","Or Select from previous"); 
-define("_Explanation_AddToBookmarks_IE","Add these filter settings to your favourites"); 
-define("_Msg_AddToBookmarks_IE","Click here to add these filter settings to your bookmarks."); 
-define("_Explanation_AddToBookmarks_nonIE","(Save this link to your bookmarks.)"); 
-define("_Msg_AddToBookmarks_nonIE","To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser."); 
-define("_PROJECT_RULES2","Regulations 2008"); 
-define("_MEAN_SPEED1","Mean Speed"); 
-define("_External_Entry","External Entry"); 
-define("_Altitude","Altitude"); 
-define("_Speed","Speed"); 
-define("_Distance_from_takeoff","Distance from takeoff"); 
-define("_LAST_DIGIT","last digit"); 
-define("_Filter_Items_nationality","nationality"); 
-define("_Filter_Items_server","server"); 
-define("_Ext_text1","This is a flight originally submited at "); 
-define("_Ext_text2","Link to full flight maps and charts"); 
-define("_Ext_text3","Link to original flight"); 
-define("_Male_short","M"); 
-define("_Female_short","F"); 
-define("_Male","Male"); 
-define("_Female","Female"); 
+define("_SELECT_NACCLUB","Selecciona [nacname]-Club"); 
+define("_FirstOlcYear","Primer año de participación en un campeonado de XC online"); 
+define("_Or_Select_from_previous","O elige alguno/a de las anteriores"); 
+define("_Explanation_AddToBookmarks_IE","Añadir estos ajustes del filtro a tus favoritos"); 
+define("_Msg_AddToBookmarks_IE","Pincha aquí para añadir estos ajustes del filtro a tus marcadores."); 
+define("_Explanation_AddToBookmarks_nonIE","(Guardar este enlace en tus marcadores.)"); 
+define("_Msg_AddToBookmarks_nonIE","Para guardar estos ajustes del filtro entre tus marcadores utiliza la opción \'Guardar en marcadores\' de tu navegador."); 
+define("_PROJECT_RULES2","Reglamento 2008"); 
+define("_MEAN_SPEED1","Velocidad media"); 
+define("_External_Entry","Entrada externa"); 
+define("_Altitude","Altitud"); 
+define("_Speed","Velocidad"); 
+define("_Distance_from_takeoff","Distancia desde el despegue"); 
+define("_LAST_DIGIT","último dígido"); 
+define("_Filter_Items_nationality","nacionalidad"); 
+define("_Filter_Items_server","servidor"); 
+define("_Ext_text1","Este vuelo fue originalmente enviado el "); 
+define("_Ext_text2","Enlace a todos los mapas y gráficas vuelo"); 
+define("_Ext_text3","Enlace al vuelo original"); 
+define("_Male_short","H"); 
+define("_Female_short","M"); 
+define("_Male","Hombre"); 
+define("_Female","Mujer"); 
 define("_Altitude_Short","Alt"); 
 define("_Vario_Short","Vario"); 
-define("_Time_Short","Time"); 
+define("_Time_Short","Tiempo"); 
 define("_Info","Info"); 
 define("_Control","Control"); 
-define("_Zoom_to_flight","Zoom to flight"); 
-define("_Follow_Glider","Follow Glider"); 
-define("_Show_Task","Show Task"); 
-define("_Show_Airspace","Show Airspace"); 
-define("_Thermals","Thermals"); 
-define("_Show_Optimization_details","Show Optimization Details"); 
-define("_MENU_SEARCH_PILOTS","Search"); 
-define("_MemberID_Missing","Your member ID is missing"); 
-define("_MemberID_NotNumeric","The member ID must be numeric"); 
-define("_FLIGHTADD_CONFIRMATIONTEXT","By submitting this form I confirm that I have respected all legal obligations concerning this flight."); 
-define("_FLIGHTADD_IGC_MISSING","Please select your .igc-file"); 
-define("_FLIGHTADD_IGCZIP_MISSING","Please select the zip-file containing your .igc-file"); 
-define("_FLIGHTADD_CATEGORY_MISSING","Please select the category"); 
-define("_FLIGHTADD_BRAND_MISSING","Please select the brand of your glider"); 
-define("_FLIGHTADD_GLIDER_MISSING","Please enter the type of your glider"); 
-define("_YOU_HAVENT_ENTERED_GLIDER","You have not entered brand or glider"); 
-define("_BRAND_NOT_IN_LIST","Brand not in list"); 
-define("_Email_new_password","<p align='justify'>The server have sent a email to the pilot with the new password and activation key</p> <p align='justify'>Please, check your email box and follow the procedures in the email body</p>"); 
-define("_informed_user_not_found","This user was not found in the database"); 
-define("_impossible_to_gen_new_pass","<p align='justify'>We are sorry to inform you that is not possible to generate a new password for you at this time, there is already a request that will expire in <b>%s</b>. Only after the expiration time you can do a new request.</p><p align='justify'>If you do not have access to the email contact the server admin</p>"); 
-define("_Password_subject_confirm","Confirmation email (new password)"); 
-define("_request_key_not_found","the request key that you have provided was not found!"); 
-define("_request_key_invalid","request key that you have provided is invalid!"); 
-define("_Email_allready_yours","The provided email is allready yours, nothing to do"); 
-define("_Email_allready_have_request","There is already an request for changing to this email, nothing to do"); 
-define("_Email_used_by_other","This email is used by another pilot, nothing to do"); 
-define("_Email_used_by_other_request","This email is used by another pilot in a pending request"); 
-define("_Email_canot_change_quickly","You can not change your email right now, wait for the expiring time: %s"); 
-define("_Email_sent_with_confirm","A confirmation email is send, please check you mailbox so that you can confirm the changing of email"); 
-define("_Email_subject_confirm","Confirmation email (new email)"); 
-define("_Email_AndConfDontMatch","Email and confirmation are different."); 
-define("_ChangingEmailForm"," Changing Email Form"); 
-define("_Email_current","Current Email"); 
-define("_New_email","New Email Address"); 
-define("_New_email_confirm","Confirm New Email"); 
-define("_MENU_CHANGE_PASSWORD","Change my password"); 
-define("_MENU_CHANGE_EMAIL","Change my email"); 
-define("_New_Password","New Password"); 
-define("_ChangePasswordForm","Change Password Form"); 
-define("_lost_password","Lost Password Form"); 
-define("_PASSWORD_RECOVERY_TOOL","Password Recovery Form"); 
-define("_PASSWORD_RECOVERY_TOOL_MESSAGE","The Server will search in his entire database for the inserted text in the textbox, if and when the server find the user, email, or civlid, A mail will be sended for the registered email address with a new password and activation link.<br><br> note: only after activation of the new password through activation link inside mail body, the new password will be valid.<br><br>"); 
-define("_username_civlid_email","Please fill with: CIVLID or User Name or Email Address"); 
-define("_Recover_my_pass","Recover my Password"); 
-define("_You_are_not_login","<BR><BR><center><br>You are not logged in. <br><br>Please Login<BR><BR></center>"); 
-define("_Requirements","Requirements"); 
-define("_Mandatory_CIVLID","Is mandatory tho have an valid <b>CIVLID</b>"); 
-define("_Mandatory_valid_EMAIL","Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
-define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
-define("_Email_asking_conf","We will send a confirmation e-mail to the provided email address"); 
-define("_Email_time_conf","You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
-define("_After_conf_time"," After that time, your pre-registration will be <b>removed</b> from our database"); 
-define("_Only_after_time","<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
-define("_Disable_Anti_Spam","<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
-define("_If_you_agree","If you agree with this requirements please go further."); 
-define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
-define("_NICK_NAME","Nick Name"); 
-define("_LOCAL_PWD","Local Password"); 
-define("_LOCAL_PWD_2","Repeat Local Password"); 
-define("_CONFIRM","Confirm"); 
-define("_REQUIRED_FIELD","Mandatory Fields"); 
-define("_Registration_Form","Registration Form at %s (Leonardo)"); 
-define("_MANDATORY_NAME","Is Mandatory to provide your name"); 
-define("_MANDATORY_FAI_NATION","Is Mandatory to provide your FAI NATION"); 
-define("_MANDATORY_GENDER","Please provide your Sex"); 
-define("_MANDATORY_BIRTH_DATE_INVALID","Birth Date Invalid"); 
-define("_MANDATORY_CIVL_ID","Please provide your CIVLID"); 
+define("_Zoom_to_flight","Zoom hasta el vuelo"); 
+define("_Follow_Glider","Seguir vela"); 
+define("_Show_Task","Mostrar prueba"); 
+define("_Show_Airspace","Mostrar espacio aéreo"); 
+define("_Thermals","Térmicas"); 
+define("_Show_Optimization_details","Mostrar detalles de optimización"); 
+define("_MemberID_Missing","Tu ID de miembro no ha sido encontrado"); 
+define("_MemberID_NotNumeric","El ID de miembro debe ser numérico"); 
+define("_Email_new_password","<p align='justify'>El servidor ha enviado un email al piloto con la nueva contraseña y clave de activación.</p> <p align='justify'>Por favor, comprueba tus correos electrónicos y sigue las instrucciones indicadas en el correo.</p>"); 
+define("_informed_user_not_found","Este usuario no ha sido encontrado en la base de datos"); 
+define("_impossible_to_gen_new_pass","<p align='justify'>Lamentamos informarte de que no es posible generar una nueva contraseña para ti, hay actualmente una petición de cambio que expirará en <b>%s</b>. Sólo después de que expire dicha petición podrás solicitar una nueva.</p><p align='justify'>Si no tienes acceso a tu correo electrónico, por favor, contacta con el administrador.</p>"); 
+define("_Password_subject_confirm","Correo de confirmación (nueva contraseña)"); 
+define("_request_key_not_found","La clave de confirmación que has facilitado no existe."); 
+define("_request_key_invalid","La clave de confirmación que has facilitado no es válida."); 
+define("_Email_allready_yours","La dirección de correo ya es tuya, nada que hacer."); 
+define("_Email_allready_have_request","Ya hay una petición para cambiar este correo electrónico, nada que hacer."); 
+define("_Email_used_by_other","Este correo electrónico está siendo usada por otro piloto, nada que hacer."); 
+define("_Email_used_by_other_request","Este correo electrónico está solicitado por otro usuario"); 
+define("_Email_canot_change_quickly","No puedes cambiar tu correo electrónico en este momento, tienes que esperar a que expire la solicitud de cambio anterior: %s"); 
+define("_Email_sent_with_confirm","Un correo de confirmación ha sido enviado, por favor comprueba tu correo para confirmar el cambio de email"); 
+define("_Email_subject_confirm","Correo de confirmación (nuevo email)"); 
+define("_Email_AndConfDontMatch","El email facilitado y su confirmación son diferentes."); 
+define("_ChangingEmailForm"," Formulario de cambio de correo electrónico"); 
+define("_Email_current","Email actual"); 
+define("_New_email","Nuevo Email"); 
+define("_New_email_confirm","Confirma el nuevo Email"); 
+define("_MENU_CHANGE_PASSWORD","Cambiar mi contraseña"); 
+define("_MENU_CHANGE_EMAIL","Cambiar mi correo electrónico"); 
+define("_New_Password","Nueva contraseña"); 
+define("_ChangePasswordForm","Formulario de cambio de contraseña"); 
+define("_lost_password","Formulario de recuperación de contraseña"); 
+define("_PASSWORD_RECOVERY_TOOL","Formulario de recuperación de contraseña"); 
+define("_PASSWORD_RECOVERY_TOOL_MESSAGE","El servidor buscará en la totalidad de la base de datos y cuando encuentre un nombre, correo o CIVL ID que coincida un email será mandado al piloto asociado con una nueva contraseña y enlace de activación.<br><br> NOTA: la nueva contraseña sólo será válida después de utilizar en enlace de activación.<br><br>"); 
+define("_username_civlid_email","Por favor, rellenar con: CIVLID, nombre de usuario o Email"); 
+define("_Recover_my_pass","Recuperar mi contraseña"); 
+define("_You_are_not_login","<BR><BR><center><br>No estás identificado. <br><br>Por favor, inicia sesión<BR><BR></center>"); 
+define("_Requirements","Requerimientos"); 
+define("_Mandatory_CIVLID","Es obligatorio tener un <b>CIVLID</b> válido"); 
+define("_Mandatory_valid_EMAIL","Es obligatorio facilitar un <b>Email válido</b> para futuras comunicaciones con el administrador del servidor"); 
+define("_NICK_NAME","Mote"); 
+define("_LOCAL_PWD","Contraseña local"); 
+define("_LOCAL_PWD_2","Repite la contraseña local"); 
+define("_CONFIRM","Confirmar"); 
+define("_REQUIRED_FIELD","Campos obligatorios"); 
+define("_Registration_Form","Formulario de registro en %s (Leonardo)"); 
+define("_MANDATORY_NAME","Es obligatorio facilitar el nombre"); 
+define("_MANDATORY_FAI_NATION","Es obligatorio facilitar tu país FAI"); 
+define("_MANDATORY_BIRTH_DATE_INVALID","Fecha de nacimiento incorrecta"); 
+define("_MANDATORY_CIVL_ID","Por favor, indica tu CIVLID"); 
 define("_Attention_mandatory_to_have_civlid","ATENTION!! For now one is Mandatory to have CIVLID in the %s database"); 
 define("_Email_confirm_success","Your registration was successfully confirmed!"); 
 define("_Success_login_civl_or_user","Success, now you can login using your CIVLID as username, or continue with your old username"); 
@@ -782,127 +784,123 @@ define("_Pilot_email_used_in_reg_dif_civlid","Hi %s This Email is used in anothe
 define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in another register with different EMAIL"); 
 define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
 define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
-define("_Server_send_conf_email","The server have sended to the %s an email asking for confirmation, you have 3 hours from now to confirm your registration by clicking or copying and pasting the link that are in the email body in your browser addres"); 
+define("_Server_send_conf_email","El servidor ha enviado al correo %s pidiendo confirmación. Tienes tres horas desde ahora para confirmar tu registro pinchando (o copiando y pegando en el navegador) en el enlace que verás en el cuerpo del mensaje.");
 define("_Pilot_confirm_subscription","===================================
 
-%s Leonardo new user
+Nuevo usuario en %s
                 
-Hi %s,
+Hola %s,
 
-This is a verification email sent from %s
+Este es un correo de verificación enviado desde %s.
  
-To finally create your account, you will need to click on link below to verify your email address:
+Para crear tu cuenta es necesario que valides tu correo visitando con tu navegador la siguiente dirección:
 
 http://%s?op=register&rkey=%s 
 
-Regards,
+Un saludo y buenos vuelos,
 
 --------
-Note: This is auto-response. Do not send any email to this email address
+Nota: Este es un correo automático. Por favor, no respondas a este correo.
 --------"); 
 define("_Pilot_confirm_change_email","===================================
 
-%s Leonardo user
+Usuario de %s
                 
-Hi %s,
+Hola %s,
 
-This is a verification email sent from %s
+Este es un correo de verificación enviado desde %s.
  
-To finally change your email address, you will need to click on link below to verify your email address:
+Para cambiar tu correo electrónico es necesario que visites con tu navegador la siguiente dirección:
 
 http://%s?op=chem&rkey=%s
 
-Regards,
+Un saludo y buenos vuelos,
 
 --------
-Note: This is auto-response. Do not send any email to this email address
+Nota: Este es un correo automático. Por favor, no respondas a este correo.
 --------"); 
 define("_Password_recovery_email","===================================
 
-%s (Leonardo) user
+Usuario de %s
                 
-Hi %s,
+Hola %s,
 
-This is a verification email sent from %s
+Este es un correo de verificación enviado desde %s.
                 
-With Password recovery for you
+Recuperación de contraseña
                 
-Username:%s
+Nombre de usuario: %s
                 
-CIVLID:%s
+CIVLID: %s
                 
-NewPassword:%s
+Nueva contraseña: %s
  
-To activate your new password, you will need to click on link below to verify your email address:
+Para activar tu nueva contraseña es necesario que visites con tu navegador la siguiente dirección:
 
 http://%s?op=send_password&rkey=%s 
 
-Regards,
+Un saludo y buenos vuelos,
 
 --------
-Note: This is auto-response. Do not send any email to this email address
+Nota: Este es un correo automático. Por favor, no respondas a este correo.
 --------"); 
-define("_MENU_AREA_GUIDE","Area Guide"); 
-define("_All_XC_types","All XC types"); 
-define("_xctype","XC type"); 
-define("_Flying_Areas","Flying Areas"); 
-define("_Name_of_Area","Name of Area"); 
-define("_See_area_details","See the details and takeoffs for this area"); 
-define("_choose_ge_module","Please choose the module to use<BR>for Google Earth Display"); 
-define("_ge_module_advanced_1","(Most detailed, bigger size)"); 
-define("_ge_module_advanced_2","(Many details, big size) "); 
-define("_ge_module_Simple","Simple (Only Task, very small)"); 
-define("_Pilot_search_instructions","Enter at least 3 letters of the First or Last Name"); 
-define("_All_classes","All classes"); 
-define("_Class","Class"); 
-define("_Photos_filter_off","With/without photos"); 
-define("_Photos_filter_on","With photos only"); 
-define("_You_are_already_logged_in","You are already logged in"); 
-define("_See_The_filter","See the filter"); 
-define("_PilotBirthdate","Pilot Birthdate"); 
-define("_Start_Type","Start Type"); 
-define("_GLIDER_CERT","Glider Certification"); 
-define("_MENU_BROWSER","Browse in Google Maps"); 
-define("_FLIGHT_BROSWER","Search the flights and takeoff database with Google Maps"); 
-define("_Load_Thermals","Load Thermals"); 
-define("_Loading_thermals","Loading Thermals"); 
-define("_Layers","Layers"); 
-define("_Select_Area","Select Area"); 
-define("_Leave_a_comment","Leave a comment"); 
-define("_Reply","Reply"); 
-define("_Translate","Translate"); 
-define("_Translate_to","Translate to"); 
-define("_Submit_Comment","Submit Comment"); 
-define("_Logged_in_as","Logged in as:"); 
-define("_Name","Name"); 
+define("_MENU_AREA_GUIDE","Guía de la zona"); 
+define("_All_XC_types","Todos los tipos de XC"); 
+define("_xctype","Tipo de XC"); 
+define("_Flying_Areas","Zonas de Vuelo"); 
+define("_Name_of_Area","Nombre de la Zona"); 
+define("_See_area_details","Ver detalles y despegues de esta zona"); 
+define("_choose_ge_module","Por favor, escoge el tipo de fichero<BR>para mostrar en Google Earth"); 
+define("_ge_module_advanced_1","(Más detallado, fichero más pesado)"); 
+define("_ge_module_advanced_2","(Muchos detalles, fichero grande) "); 
+define("_ge_module_Simple","Sencillo (Sólo el vuelo, fichero pequeño)"); 
+define("_All_classes","Todos los tipos"); 
+define("_Class","Clase"); 
+define("_Photos_filter_off","Con/Sin fotos"); 
+define("_Photos_filter_on","Sólo con fotos"); 
+define("_You_are_already_logged_in","Ya tienes una sesión iniciada"); 
+define("_FLIGHT_BROSWER","Buscar vuelos y despegues con Google Maps"); 
 define("_Email","Email"); 
-define("_Will_not_be_displayed","(Will not be displayed)"); 
-define("_Please_type_something","Please type something"); 
-define("_Please_enter_your_name","Please enter your name / nickname"); 
-define("_Please_give_your_email","Please give your email, it will not be displayed at any times"); 
-define("_RSS_for_the_comments","This is the RSS link for this flight\'s comments<BR>Copy Paste it into your RSS reader"); 
-define("_Comments_are_enabled_by_default_for_new_flights","Comments are enabled by default for new flights"); 
-define("_Comments_Enabled","Comments Enabled"); 
-define("_Comments_are_enabled_for_this_flight","Comments are enabled for this flight"); 
-define("_Comments_are_disabled_for_this_flight","Comments are disabled for this flight"); 
-define("_ERROR_in_setting_the_comments_status","ERROR in setting the comments status"); 
-define("_Save_changes","Save changes"); 
-define("_Cancel","Cancel"); 
-define("_Are_you_sure_you_want_to_delete_this_comment","Are you sure you want to delete this comment?"); 
-define("_RSS_feed_for_comments","RSS feed for comments"); 
-define("_RSS_feed_for_flights","RSS feed for flights"); 
-define("_RSS_of_pilots_flights","RSS of pilot\'s flights"); 
-define("_You_have_a_new_comment","You have a new comment on %s"); 
-define("_New_comment_email_body","You have a new comment on %s<BR><BR><a href='%s'>Click here to read all comments</a><hr>%s"); 
-define("_Remove_From_Favorites","Remove From Favorites"); 
-define("_Favorites","Favorites"); 
-define("_Compare_flights_line_1","Choose flights per Checkbox"); 
-define("_Compare_flights_line_2","and compare them with each other in Google Maps"); 
-define("_Compare_Favorite_Tracks","Compare Favorite Tracks"); 
-define("_Remove_all_favorites","Remove all favorites"); 
-define("_Find_and_Compare_Flights","Find and Compare Flights"); 
-define("_Compare_Selected_Flights","Compare Selected Flights"); 
-define("_More","More"); 
-define("_Close","Close"); 
+define("_Please_enter_your_name","Por favor, dinos tu nombre / mote"); 
+define("_Please_give_your_email","Por favor, danos tu correo electrónico, no será mostrado nunca públicamente"); 
+define("_RSS_for_the_comments","Este es el enlace RSS para los comentarios de este vuelo<BR>Copia y pégalo en tu lector de RSS"); 
+define("_Comments_are_enabled_by_default_for_new_flights","Los comentarios están activos por defecto para nuevos vuelos"); 
+define("_Comments_Enabled","Comentarios habilitados"); 
+define("_Comments_are_enabled_for_this_flight","Los comentarios están habilitados para este vuelo"); 
+define("_Comments_are_disabled_for_this_flight","Los comentarios están deshabilidados para este vuelo"); 
+define("_ERROR_in_setting_the_comments_status","ERROR estableciendo el estado de los comentarios"); 
+define("_Save_changes","Guardar cambios"); 
+define("_Cancel","Cancelar"); 
+define("_Are_you_sure_you_want_to_delete_this_comment","¿Estás seguro/a de que quieres borrar este comentario?"); 
+define("_RSS_feed_for_comments","RSS feed de nuevos comentarios"); 
+define("_RSS_feed_for_flights","RSS feed de vuelos nuevos vuelos"); 
+define("_RSS_of_pilots_flights","RSS de vuelos del piloto"); 
+define("_You_have_a_new_comment","Tienes un nuevo comentario en %s"); 
+define("_New_comment_email_body","Tienes un nuevo comentario en %s<BR><BR><a href='%s'>Pincha aquí para leer todos los comentarios</a><hr>%s"); 
+define("_Remove_From_Favorites","Eliminar de favoritos"); 
+define("_Favorites","Favoritos"); 
+define("_Compare_flights_line_1","Elige los vuelos en sus checks"); 
+define("_Compare_flights_line_2","y compáralos con Google Maps"); 
+define("_Compare_Favorite_Tracks","Comparar Tracks Favoritos"); 
+define("_Remove_all_favorites","Eliminar todos los favoritos"); 
+define("_Find_and_Compare_Flights","Busca y compara vuelos"); 
+define("_Compare_Selected_Flights","Comparar vuelos seleccionados"); 
+define("_More","Más"); 
+define("_Close","Cerrar"); 
+
+
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
+define("_Email_asking_conf","We will send a confirmation e-mail to the provided email address"); 
+define("_Email_time_conf","You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
+define("_After_conf_time"," After that time, your pre-registration will be <b>removed</b> from our database"); 
+define("_Only_after_time","<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
+define("_Disable_Anti_Spam","<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
+define("_If_you_agree","If you agree with this requirements please go further."); 
+define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
+define("_Register_civl_as_new_pilot","If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
 
 ?>
