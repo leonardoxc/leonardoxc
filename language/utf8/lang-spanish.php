@@ -887,20 +887,14 @@ define("_Find_and_Compare_Flights","Busca y compara vuelos");
 define("_Compare_Selected_Flights","Comparar vuelos seleccionados"); 
 define("_More","Más"); 
 define("_Close","Cerrar"); 
-
-
-//--------------------------------------------------------
-//--------------------------------------------------------
-// Missing defines , autoreplaced values from 'english' 
-//--------------------------------------------------------
-define("_Email_periodic","Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
-define("_Email_asking_conf","We will send a confirmation e-mail to the provided email address"); 
-define("_Email_time_conf","You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
-define("_After_conf_time"," After that time, your pre-registration will be <b>removed</b> from our database"); 
-define("_Only_after_time","<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
-define("_Disable_Anti_Spam","<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
-define("_If_you_agree","If you agree with this requirements please go further."); 
-define("_Search_civl_by_name","%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
+define("_Email_periodic","Mandaremos periódicamente correos de confirmación a la dirección facilitada, y si no recibimos respuesta finalmente la cuenta será bloqueada");
+define("_Email_asking_conf","Mandaremos un email de confirmación a la dirección de correo facilitada");
+define("_Email_time_conf","Sólo tendrás <b>3 horas</b> tras finalizar el pre-registro para contestar al correo");
+define("_After_conf_time"," Tras ese tiempo, tu pre-registro será <b>eliminado</b> de nuestra base de datos");
+define("_Only_after_time","<b>Y sólo después de que borremos tu pre-registro podrás realizarlo de nuevo</b>"); 
+define("_Disable_Anti_Spam","<b>ATENCIÓN!!! Deshabilitar</b> el anti spam para correos procedentes de <b>%s</b>"); 
+define("_If_you_agree","Si tu estás de acuerdo con estos requerimientos, por favor sigue adelante."); 
+define("_Search_civl_by_name","%sBusca tu nombre en la base de datos de la CIVL%s . Cuando pinches en el enlace de la izquierda se abrirá una nueva ventana. Por favor, introduce sólo tres letras de tu nombre o apellido y la CIVL te devolverá tu CIVLID, nombre y nacionalidad FAI (posiblemente junto con la de otros pilotos."); 
+define("_Register_civl_as_new_pilot","Si no estás registrado en la base de datos de la CIVL, por favor %sREGÍSTRAME COMO NUEVO PILOTO%s"); 
 
 ?>
