@@ -887,5 +887,14 @@ define("_Find_and_Compare_Flights","Busca y compara vuelos");
 define("_Compare_Selected_Flights","Comparar vuelos seleccionados"); 
 define("_More","Más"); 
 define("_Close","Cerrar"); 
+define("_Email_periodic","Mandaremos periódicamente correos de confirmación a la dirección facilitada, y si no recibimos respuesta finalmente la cuenta será bloqueada");
+define("_Email_asking_conf","Mandaremos un email de confirmación a la dirección de correo facilitada");
+define("_Email_time_conf","Sólo tendrás <b>3 horas</b> tras finalizar el pre-registro para contestar al correo");
+define("_After_conf_time"," Tras ese tiempo, tu pre-registro será <b>eliminado</b> de nuestra base de datos");
+define("_Only_after_time","<b>Y sólo después de que borremos tu pre-registro podrás realizarlo de nuevo</b>"); 
+define("_Disable_Anti_Spam","<b>ATENCIÓN!!! Deshabilitar</b> el anti spam para correos procedentes de <b>%s</b>"); 
+define("_If_you_agree","Si tu estás de acuerdo con estos requerimientos, por favor sigue adelante."); 
+define("_Search_civl_by_name","%sBusca tu nombre en la base de datos de la CIVL%s . Cuando pinches en el enlace de la izquierda se abrirá una nueva ventana. Por favor, introduce sólo tres letras de tu nombre o apellido y la CIVL te devolverá tu CIVLID, nombre y nacionalidad FAI (posiblemente junto con la de otros pilotos."); 
+define("_Register_civl_as_new_pilot","Si no estás registrado en la base de datos de la CIVL, por favor %sREGÍSTRAME COMO NUEVO PILOTO%s"); 
 
 ?>
