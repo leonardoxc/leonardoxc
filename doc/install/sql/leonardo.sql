@@ -457,6 +457,8 @@ CREATE TABLE `leonardo_pilots` (
   `Helmet` varchar(60) NOT NULL default '',
   `PilotPhoto` varchar(30) NOT NULL default '',
   `FirstOlcYear` int(10) NOT NULL default '0',
+  `FirstNameEn` int(40) NOT NULL default '',
+  `LastNameEn` int(50) NOT NULL default '',
   PRIMARY KEY  (`pilotID`,`serverID`),
   KEY `FirstName` (`FirstName`),
   KEY `LastName` (`LastName`)
