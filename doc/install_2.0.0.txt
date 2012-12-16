@@ -69,22 +69,28 @@ Prerequisites in order to install Leonardo
   Execute the file "waypoints.sql"  in the same way as above. This will 
   add the coordinates of 3800 major world cities to get you started.
 
+  For Standalone opMode execute the file "standalone_extra_tables.sql".
 
 - STEP 3. Edit the config files in modules/leonardo/site/
 
    DON NOT EDIT modules/leonardo/config.php ,your changes will be overriden
 
-   The 3 variables that you NEED to change are
+   The 2 variables that you NEED to change are:
+
    1)  $opMode  ( in file modules/leonardo/site/config_op_mode.php )
-	1 = for use with a PHPnuke portal
-	2 = for use with a phBB2 forum
+      1 = for use with a PHPnuke portal
+      2 = for use with a phBB2 forum
+      3 = standalone -- still work in progress
+      4 = for use with discuz
+      5 = for use with joomla  1.0 and 1.5
+      6 = for use with phpbb3
 
    2) $admin_users ( in file modules/leonardo/site/config_admin_users.php )
 	-> set this to the user id's (from the phpnuke/phpbb table of users) 
                  that will have admin previledges
 
 
-   You should deside which users will be admins for leonardo.
+   You should decide which users will be admins for leonardo.
    those users will have the rights to delete any flight, modify any flight, 
    regenerate the maps and charts for any flight etc. Lets say that you are 
    user "admin" on your forum and want to put yourself in the $admin_users.
@@ -97,7 +103,8 @@ Prerequisites in order to install Leonardo
    if you wish to add another user (lets say with user id 132) you should make this :
        $admin_users=array(230,132); 
 
-
+   For a Standalone instalation this ID will probably be 1 if you're the first user
+   to register.
 
 - STEP 4. check the permissions for the OLC Scoring script
   1. go to dir modules/leonardo/server
