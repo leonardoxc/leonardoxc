@@ -419,8 +419,8 @@ CREATE TABLE `leonardo_pilots` (
   `BirthdateHideMask` varchar(10) NOT NULL default 'xx.xx.xxxx',
   `PilotPhoto` varchar(30) NOT NULL default '',
   `FirstOlcYear` int(10) NOT NULL default '0',
-  `FirstNameEn` int(40) NOT NULL default '',
-  `LastNameEn` int(50) NOT NULL default '',
+  `FirstNameEn` varchar(40) NOT NULL default '',
+  `LastNameEn` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`pilotID`,`serverID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
