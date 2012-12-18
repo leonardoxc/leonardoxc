@@ -587,7 +587,7 @@ define("_In_English","En Inglés");
 define("_ENTER_PASSWORD","Por favor introduce tu nombre de usuario y contraseña para iniciar sesión.");
 define("_SEND_PASSWORD","He olvidado mi contraseña");
 define("_ERROR_LOGIN","El nombre de usuario indicado no es correcto o está inactivo, o la contraseña es incorrecta.");
-define("_AUTO_LOGIN","Iniciar sesión automáticamente en cada visita");
+define("_AUTO_LOGIN","Iniciar sesión automáticamente");
 define("_USERNAME","Nombre de usuario");
 define("_PASSWORD","Contraseña");
 define("_PROBLEMS_HELP","Si tienes problemas para iniciar sesión ponte en contacto con nosotros.");
@@ -770,20 +770,20 @@ define("_MANDATORY_NAME","Es obligatorio facilitar el nombre");
 define("_MANDATORY_FAI_NATION","Es obligatorio facilitar tu país FAI"); 
 define("_MANDATORY_BIRTH_DATE_INVALID","Fecha de nacimiento incorrecta"); 
 define("_MANDATORY_CIVL_ID","Por favor, indica tu CIVLID"); 
-define("_Attention_mandatory_to_have_civlid","ATENTION!! For now one is Mandatory to have CIVLID in the %s database"); 
-define("_Email_confirm_success","Your registration was successfully confirmed!"); 
-define("_Success_login_civl_or_user","Success, now you can login using your CIVLID as username, or continue with your old username"); 
-define("_Server_did_not_found_registration","Registration not found, please copy and paste in your browser address field the link provided in the email that was send to you, or maybe your registration time has expired"); 
-define("_Pilot_already_registered","Pilot already registered with CIVLID %s and name %s"); 
-define("_User_already_registered","User already registered with this email or name"); 
-define("_Pilot_civlid_email_pre_registration","Hi %s This Civl ID and email is already used in a pre-registration"); 
-define("_Pilot_have_pre_registration"," You already have a pre registration, but have not answered our mail, we resend the confirmation email for you, you have 3 hours after now to answer the email, if not you will be removed from pre registration. please read the email and follow the procedures described inside, thank you"); 
-define("_Pre_registration_founded","We already have a pre-registration with this civlID and Email,wait for finishing the period of 3 hours until then this registration will be removed, in no hipotisis confirm the email that was send  because will be generated an double registration, and your old flights will not be transfered for the new user"); 
-define("_Civlid_already_in_use","This CIVLID is used for another pilot, we can not have double CIVLID!"); 
-define("_Pilot_email_used_in_reg_dif_civlid","Hi %s This Email is used in another register with different CIVLID"); 
-define("_Pilot_civlid_used_in_reg_dif_email","Hi %s This CIVLID is used in another register with different EMAIL"); 
-define("_Pilot_email_used_in_pre_reg_dif_civlid","Hi %s This Email is used in another pre-register with different CIVLID"); 
-define("_Pilot_civlid_used_in_pre_reg_dif_email","Hi %s This CIVLID is used in another pre-register with different EMAIL"); 
+define("_Attention_mandatory_to_have_civlid","ATENCIÓN: Por ahora es obligatorio tener CIVLID en la base de datos %s"); 
+define("_Email_confirm_success","¡Tu registro ha sido confirmado con éxito!"); 
+define("_Success_login_civl_or_user","¡Exito! Ahora puedes identificarte usando tu CIVLID como nombre de usuario, o continuar con tu antiguo nombre de usuario"); 
+define("_Server_did_not_found_registration","Registro no encontrado, por favor, copia y pega en tu navegador el enlace que tienes en el correo que te hemos enviado. Si no te funciona puede que el tiempo para activar la cuenta haya expirado y tengas que volver a intentarlo"); 
+define("_Pilot_already_registered","Ya existe un piloto registrado con CIVLID %s y nombre %s"); 
+define("_User_already_registered","Ya existe un piloto registrado con dicho correo o nombre"); 
+define("_Pilot_civlid_email_pre_registration","Hola %s, este CIVLID y correo está siendo utilizado en otro proceso de registro"); 
+define("_Pilot_have_pre_registration","Ya tienes un proceso de registro en curso, pero no has respondido a nuestro correo, te hemos reenviado el correo de confirmación y tienes tres horas para utilizar el enlace de confirmación. Por favor lee dicho correo y sigue sus instrucciones para activar definitivamente tu cuenta. ¡Gracias!"); 
+define("_Civlid_already_in_use","Este CIVLID ya está siendo utilizado por otro piloto, no podemos tener CIVLID duplicados!"); 
+define("_Pilot_email_used_in_reg_dif_civlid","Hola %s, este correo electrónico está siendo utilizado por piloto con otro CIVLID"); 
+define("_Pilot_civlid_used_in_reg_dif_email","Hola %s, este CIVLID ya está siendo utilizado por otro piloto con otro correo electrónico"); 
+define("_Pilot_email_used_in_pre_reg_dif_civlid","Hola %s, este correo electrónico está siendo utilizado en otro proceso de registro con otro CIVLID"); 
+define("_Pilot_civlid_used_in_pre_reg_dif_email","Hola %s, este CIVLID está siendo utilizado por otro proceso de registro con otro correo electrónico"); 
+define("_Pre_registration_founded","Ya tenemos un proceso de registro con dicho CIVLID y correo electrónico. Espera a que termine el periodo de tres horas tras las cuales ese proceso de registro será eliminado. En ningún caso respondas al posible correo que pueda llegarte durante dicha espera, ya que tus vuelos antiguos podrían no ser transferidos al nuevo usuario."); 
 define("_Server_send_conf_email","El servidor ha enviado al correo %s pidiendo confirmación. Tienes tres horas desde ahora para confirmar tu registro pinchando (o copiando y pegando en el navegador) en el enlace que verás en el cuerpo del mensaje.");
 define("_Pilot_confirm_subscription","===================================
 
@@ -895,6 +895,6 @@ define("_Only_after_time","<b>Y sólo después de que borremos tu pre-registro p
 define("_Disable_Anti_Spam","<b>ATENCIÓN!!! Deshabilitar</b> el anti spam para correos procedentes de <b>%s</b>"); 
 define("_If_you_agree","Si tu estás de acuerdo con estos requerimientos, por favor sigue adelante."); 
 define("_Search_civl_by_name","%sBusca tu nombre en la base de datos de la CIVL%s . Cuando pinches en el enlace de la izquierda se abrirá una nueva ventana. Por favor, introduce sólo tres letras de tu nombre o apellido y la CIVL te devolverá tu CIVLID, nombre y nacionalidad FAI (posiblemente junto con la de otros pilotos."); 
-define("_Register_civl_as_new_pilot","Si no estás registrado en la base de datos de la CIVL, por favor %sREGÍSTRAME COMO NUEVO PILOTO%s"); 
+define("_Register_civl_as_new_pilot","Si no estás registrado en la base de datos de la CIVL, por favor %sREGÍSTRATE COMO NUEVO PILOTO%s"); 
 
 ?>
