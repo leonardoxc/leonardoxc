@@ -568,3 +568,100 @@ CREATE TABLE `leonardo_waypoints` (
   KEY `countryCode` (`countryCode`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
+-- from sql_3.1.0.txt
+
+ALTER TABLE `leonardo_flights` ADD `gliderCertCategory` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `category` ;
+
+ALTER TABLE `leonardo_flights_deleted` ADD `gliderCertCategory` SMALLINT UNSIGNED NOT NULL DEFAULT '0' AFTER `category` ;
+
+
+#2009/09/10
+# to speed up queries
+
+ ALTER TABLE `leonardo_flights` ADD INDEX `userIDonly` ( `userID` )  ;
+
+
+#2010/02/25
+#  drop very very old OLC fields
+ALTER TABLE `leonardo_pilots`   DROP `olcBirthDate`,   DROP `olcFirstName`,   DROP `olcLastName`, 
+  DROP `olcCallSign`,   DROP `olcFilenameSuffix`,   DROP `olcAutoSubmit`;
+
+#2010/02/25
+# Split pilots table to 2
+
+CREATE TABLE leonardo_pilots_info  SELECT * FROM leonardo_pilots;
+ALTER TABLE `leonardo_pilots_info` ENGINE = MYISAM ;
+ALTER TABLE `leonardo_pilots_info` ADD PRIMARY KEY ( `pilotID` , `serverID` ) ;
+
+ALTER TABLE `leonardo_pilots` 
+DROP `sponsor` , DROP `Occupation` ,  DROP `MartialStatus` , DROP `OtherInterests` ,
+DROP `PersonalWebPage` ,  DROP `PilotLicence` , DROP `BestMemory` , DROP `WorstMemory` ,
+DROP `Training` , DROP `personalDistance` , DROP `personalHeight` , DROP `glider` ,
+DROP `FlyingSince` , DROP `HoursFlown` , DROP `HoursPerYear` , DROP `FavoriteLocation` ,
+DROP `UsualLocation` , DROP `FavoriteBooks` , DROP `FavoriteActors` , DROP `FavoriteSingers` ,
+DROP `FavoriteMovies` , DROP `FavoriteSite` ,  DROP `Sign` , DROP `Spiral` ,
+DROP `Bline` , DROP `FullStall` , DROP `Sat` , DROP `AsymmetricSpiral` , DROP `Spin` ,
+DROP `OtherAcro` , DROP `camera` , DROP `camcorder` , DROP `Vario` , DROP `GPS` ,
+DROP `Harness` , DROP `Reserve` , DROP `Helmet` ;
+
+ALTER TABLE `leonardo_pilots_info`
+  DROP `countryCode`,   DROP `CIVL_ID`,   DROP `CIVL_NAME`,   DROP `NACid`,
+  DROP `NACmemberID`,    DROP `NACclubID`,   DROP `FirstName`,   DROP `LastName`,
+  DROP `NickName`,   DROP `clubID`,   DROP `Sex`,   DROP `Birthdate`,   DROP `BirthdateHideMask`,
+  DROP `PilotPhoto`,   DROP `FirstOlcYear`; 
+
+#2010/03/06
+ALTER TABLE `leonardo_flights` ADD `startType` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `gliderCertCategory` ;
+ALTER TABLE `leonardo_flights_deleted` ADD `startType` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `gliderCertCategory` ;
+
+
+
+
+ALTER TABLE `leonardo_photos` ADD `tm` INT UNSIGNED DEFAULT '0' NOT NULL, ADD `lat` FLOAT DEFAULT '0' NOT NULL, ADD `lon` FLOAT DEFAULT '0' NOT NULL;
+
+ALTER TABLE `leonardo_photos` ADD `alt` SMALLINT DEFAULT '0' NOT NULL;
+
+
+
+
+
+
+-- from sql_3.6.0.txt
+ALTER TABLE `leonardo_flights` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+CREATE TABLE `leonardo_comments` (
+`commentID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`parentID` BIGINT UNSIGNED NOT NULL ,
+`flightID` BIGINT NOT NULL ,
+`userID` MEDIUMINT NOT NULL ,
+`userServerID` MEDIUMINT( 0 ) DEFAULT '0' NOT NULL ,
+`guestName` VARCHAR( 50 ) NULL ,
+`guestEmail` VARCHAR( 255 ) NULL ,
+`guestPass` VARCHAR( 40 ) NULL ,
+`dateAdded` DATETIME NOT NULL ,
+`dateUpdated` DATETIME NOT NULL ,
+`active` TINYINT UNSIGNED DEFAULT '1' NOT NULL ,
+`title` VARCHAR( 255 ) NULL ,
+`text` TEXT NOT NULL ,
+`languageCode` VARCHAR( 15 ) NOT NULL ,
+PRIMARY KEY ( `commentID` ) ,
+INDEX ( `flightID` )
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+ALTER TABLE `leonardo_flights` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+ALTER TABLE `leonardo_pilots_info` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+
+-- from sql_3.8.0.txt
+CREATE TABLE leonardo_queue (
+`jobID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`jobType` VARCHAR( 30 ) NOT NULL ,
+`priority` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+`timeCreated` DATETIME NOT NULL ,
+`timeProccessed` DATETIME NOT NULL ,
+`status` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+`param1` TEXT NOT NULL ,
+`param2` TEXT NOT NULL ,
+`param3` TEXT NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
