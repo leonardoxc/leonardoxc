@@ -172,7 +172,7 @@ define("_MENU_OLC","Por puntuación OLC");
 define("_MENU_OPEN_DISTANCE","Por distancia Libre");
 define("_MENU_DURATION","Por duración");
 define("_MENU_ALL_FLIGHTS","Mostrar todos los vuelos");
-define("_MENU_FLIGHTS","Por número de vuelos");
+define("_MENU_FLIGHTS","Vuelos");
 define("_MENU_TAKEOFFS","Despegues");
 define("_MENU_FILTER","Filtrar");
 define("_MENU_MY_FLIGHTS","Mis vuelos");
@@ -481,7 +481,7 @@ setClassList();
 //--------------------------------------------
 function setXCtypesList() {
 	global  $CONF_xc_types,$xcTypesList;
-	$xcTypesList=array(1=>"3 Turnpoints XC",2=>"Open Triangle",4=>"Closed Triangle");
+	$xcTypesList=array(1=>"XC con 3 Puntos de Giro",2=>"Triángulo libre",4=>"Triángulo FAI");
 	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
 }
 setXCtypesList(); 
@@ -497,7 +497,7 @@ define("_VIEW_CATEGORY","Ver categoría");
 define("_VIEW_COUNTRY","Ver país");
 define("_UNITS_SYSTEM" ,"Sistema");
 define("_METRIC_SYSTEM","Métrico (km,m)");
-define("_IMPERIAL_SYSTEM","Imperial (miles,feet)");
+define("_IMPERIAL_SYSTEM","Imperial (millas,pies)");
 define("_ITEMS_PER_PAGE","Elementos por página");
 
 define("_MI","mi");
@@ -536,13 +536,13 @@ define("_MENU_SITES_GUIDE","Guía de Zonas de Vuelo");
 define("_Site_Guide","Guía de Zona de Vuelo");
 
 define("_Search_Options","Opciones de búsqueda");
-define("_Below_is_the_list_of_selected_sites","Below is the list of selected sites");
-define("_Clear_this_list","Clear this list");
-define("_See_the_selected_sites_in_Google_Earth","See the selected sites in Google Earth");
+define("_Below_is_the_list_of_selected_sites","Debajo está la lista de sitios seleccionados");
+define("_Clear_this_list","Borrar esta lista");
+define("_See_the_selected_sites_in_Google_Earth","Ver los sitions seleccionados en Google Earth");
 define("_Available_Takeoffs","Despegues disponibles");
 define("_Search_site_by_name","Buscar sitio por nombre");
-define("_give_at_least_2_letters","give at least 2 letters");
-define("_takeoff_move_instructions_1","You can move all availabe takeoffs to the selected list on the right panel by using >> or the selected one by using > ");
+define("_give_at_least_2_letters","mete al menos dos letras");
+define("_takeoff_move_instructions_1","Puedes mover todos los despegues a la lista seleccionada en el panel de la derecha usando '>>' o sólo el seleccionado utilizando '>' ");
 define("_Takeoff_Details","Detalles del Despegue");
 
 define("_Takeoff_Info","Despegue/Aterrizaje");
@@ -896,5 +896,4 @@ define("_Disable_Anti_Spam","<b>ATENCIÓN!!! Deshabilitar</b> el anti spam para 
 define("_If_you_agree","Si tu estás de acuerdo con estos requerimientos, por favor sigue adelante."); 
 define("_Search_civl_by_name","%sBusca tu nombre en la base de datos de la CIVL%s . Cuando pinches en el enlace de la izquierda se abrirá una nueva ventana. Por favor, introduce sólo tres letras de tu nombre o apellido y la CIVL te devolverá tu CIVLID, nombre y nacionalidad FAI (posiblemente junto con la de otros pilotos."); 
 define("_Register_civl_as_new_pilot","Si no estás registrado en la base de datos de la CIVL, por favor %sREGÍSTRATE COMO NUEVO PILOTO%s"); 
-
 ?>
