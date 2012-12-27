@@ -489,10 +489,10 @@ with (flightActionTip)
   template = '<table bgcolor="#000000" cellpadding="0" cellspacing="0" width="%3%" border="0">' +
   '<tr><td class="infoBoxHeader"><? echo "Actions"; ?></td></tr>'+
   '<tr><td class="infoBox">'+
-  "<img src='<?=$moduleRelPath?>/img/change_icon.png' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'edit_flight','flightID'=>'%4%'))?>'><? echo 'Edit flight'; ?></a>"+
+  "<img src='<?=$moduleRelPath?>/img/change_icon.png' width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'edit_flight','flightID'=>'%4%'))?>'><? echo _EDIT_FLIGHT; ?></a>"+
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
-	"<img src='<?=$moduleRelPath?>/img/x_icon.gif'  width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'delete_flight','flightID'=>'%4%'))?>'><? echo 'Delete flight'; ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/x_icon.gif'  width='16' height='16' border='0' align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'delete_flight','flightID'=>'%4%'))?>'><? echo _DELETE_FLIGHT; ?></a>"+
 	'</td></tr></table>';
 
  tipStick = 0;
