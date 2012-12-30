@@ -2,7 +2,7 @@
 
 /**************************************************************************/
 /* Hungarian language translation by                                        */
-/* Zsolt Röhberg (rohberg@vnet.hu)                               */
+/* Zsolt Rï¿½hberg (rohberg@vnet.hu)                               */
 /**************************************************************************/
 
 /************************************************************************/
@@ -23,8 +23,8 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Január','Február','Március','Április','Május','Június',
-					'Július','Augusztus','Szeptember','Október','November','December');
+	$monthList=array('Januï¿½r','Februï¿½r','Mï¿½rcius','ï¿½prilis','Mï¿½jus','Jï¿½nius',
+					'Jï¿½lius','Augusztus','Szeptember','Oktï¿½ber','November','December');
 	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
@@ -33,185 +33,185 @@ setMonths();
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","Szabadtáv");
-define("_FREE_TRIANGLE","Háromszög");
-define("_FAI_TRIANGLE","FAI háromszög");
+define("_FREE_FLIGHT","Szabadtï¿½v");
+define("_FREE_TRIANGLE","Hï¿½romszï¿½g");
+define("_FAI_TRIANGLE","FAI hï¿½romszï¿½g");
 
-define("_SUBMIT_FLIGHT_ERROR","Probléma adódott a repülés beküldésénél");
+define("_SUBMIT_FLIGHT_ERROR","Problï¿½ma adï¿½dott a repï¿½lï¿½s bekï¿½ldï¿½sï¿½nï¿½l");
 
 // list_pilots()
 define("_NUM","#");
-define("_PILOT","Pilóta");
-define("_NUMBER_OF_FLIGHTS","Repülések száma");
-define("_BEST_DISTANCE","Legjobb táv");
-define("_MEAN_KM","Átlag # km per repülés");
-define("_TOTAL_KM","Összes repült km");
-define("_TOTAL_DURATION_OF_FLIGHTS","Összes repült idõtartam");
-define("_MEAN_DURATION","Átlagos repült idõtartam");
-define("_TOTAL_OLC_KM","Összes OLC táv");
-define("_TOTAL_OLC_SCORE","Összes OLC pont");
+define("_PILOT","Pilï¿½ta");
+define("_NUMBER_OF_FLIGHTS","Repï¿½lï¿½sek szï¿½ma");
+define("_BEST_DISTANCE","Legjobb tï¿½v");
+define("_MEAN_KM","ï¿½tlag # km per repï¿½lï¿½s");
+define("_TOTAL_KM","ï¿½sszes repï¿½lt km");
+define("_TOTAL_DURATION_OF_FLIGHTS","ï¿½sszes repï¿½lt idï¿½tartam");
+define("_MEAN_DURATION","ï¿½tlagos repï¿½lt idï¿½tartam");
+define("_TOTAL_OLC_KM","ï¿½sszes OLC tï¿½v");
+define("_TOTAL_OLC_SCORE","ï¿½sszes OLC pont");
 define("_BEST_OLC_SCORE","Legjobb OLC pont");
-define("_From","tól");
+define("_From","tï¿½l");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Idõ (ó:p)");
-define("_SHOW","Megjelenítés");
+define("_DURATION_HOURS_MIN","Idï¿½ (ï¿½:p)");
+define("_SHOW","Megjelenï¿½tï¿½s");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","A repülés 1-2 percen belül aktiválódik. ");
-define("_TRY_AGAIN","Kérem, próbálja meg késõbb!");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","A repï¿½lï¿½s 1-2 percen belï¿½l aktivï¿½lï¿½dik. ");
+define("_TRY_AGAIN","Kï¿½rem, prï¿½bï¿½lja meg kï¿½sï¿½bb!");
 
 define("_TAKEOFF_LOCATION","Starthely");
-define("_TAKEOFF_TIME","Startidõpont");
-define("_LANDING_LOCATION","Leszállás");
-define("_LANDING_TIME","Leszállás idõpontja");
-define("_OPEN_DISTANCE","Egyenes távolság");
-define("_MAX_DISTANCE","Max távolság");
-define("_OLC_SCORE_TYPE","OLC pont típus");
-define("_OLC_DISTANCE","OLC távolság");
+define("_TAKEOFF_TIME","Startidï¿½pont");
+define("_LANDING_LOCATION","Leszï¿½llï¿½s");
+define("_LANDING_TIME","Leszï¿½llï¿½s idï¿½pontja");
+define("_OPEN_DISTANCE","Egyenes tï¿½volsï¿½g");
+define("_MAX_DISTANCE","Max tï¿½volsï¿½g");
+define("_OLC_SCORE_TYPE","OLC pont tï¿½pus");
+define("_OLC_DISTANCE","OLC tï¿½volsï¿½g");
 define("_OLC_SCORING","OLC pont");
-define("_MAX_SPEED","Max sebesség");
+define("_MAX_SPEED","Max sebessï¿½g");
 define("_MAX_VARIO","Max vario");
-define("_MEAN_SPEED","Átlagsebesség");
+define("_MEAN_SPEED","ï¿½tlagsebessï¿½g");
 define("_MIN_VARIO","Min vario");
 define("_MAX_ALTITUDE","Max mag (ASL)");
 define("_TAKEOFF_ALTITUDE","Start mag (ASL)");
 define("_MIN_ALTITUDE","Min mag (ASL)");
-define("_ALTITUDE_GAIN","Magasságnyerés");
-define("_FLIGHT_FILE","Repülés fájl");
-define("_COMMENTS","Megjegyzések");
-define("_RELEVANT_PAGE","Kapcsolódó web-oldal (URL)");
-define("_GLIDER","Siklóernyõ");
-define("_PHOTOS","Fotók");
+define("_ALTITUDE_GAIN","Magassï¿½gnyerï¿½s");
+define("_FLIGHT_FILE","Repï¿½lï¿½s fï¿½jl");
+define("_COMMENTS","Megjegyzï¿½sek");
+define("_RELEVANT_PAGE","Kapcsolï¿½dï¿½ web-oldal (URL)");
+define("_GLIDER","Siklï¿½ernyï¿½");
+define("_PHOTOS","Fotï¿½k");
 define("_MORE_INFO","Egyebek");
-define("_UPDATE_DATA","Adatok frissítése");
-define("_UPDATE_MAP","Térkép frissítése");
-define("_UPDATE_3D_MAP","3D térkép frissítése");
-define("_UPDATE_GRAPHS","Diagrammok frissítése");
-define("_UPDATE_SCORE","Pontozás frissítése");
+define("_UPDATE_DATA","Adatok frissï¿½tï¿½se");
+define("_UPDATE_MAP","Tï¿½rkï¿½p frissï¿½tï¿½se");
+define("_UPDATE_3D_MAP","3D tï¿½rkï¿½p frissï¿½tï¿½se");
+define("_UPDATE_GRAPHS","Diagrammok frissï¿½tï¿½se");
+define("_UPDATE_SCORE","Pontozï¿½s frissï¿½tï¿½se");
 
-define("_TAKEOFF_COORDS","Felszállás koordinátái:");
+define("_TAKEOFF_COORDS","Felszï¿½llï¿½s koordinï¿½tï¿½i:");
 define("_NO_KNOWN_LOCATIONS","Nincsenek ismert helyek!");
-define("_FLYING_AREA_INFO","Repülési terület infók");
+define("_FLYING_AREA_INFO","Repï¿½lï¿½si terï¿½let infï¿½k");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","Vissza a lap tetejére");
+define("_RETURN_TO_TOP","Vissza a lap tetejï¿½re");
 // list flight
-define("_PILOT_FLIGHTS","Pilóta repülései");
+define("_PILOT_FLIGHTS","Pilï¿½ta repï¿½lï¿½sei");
 
-define("_DATE_SORT","Dátum");
-define("_PILOT_NAME","Pilóta neve");
+define("_DATE_SORT","Dï¿½tum");
+define("_PILOT_NAME","Pilï¿½ta neve");
 define("_TAKEOFF","Starthely");
-define("_DURATION","Idõtartam");
-define("_LINEAR_DISTANCE","Szabadtáv");
+define("_DURATION","Idï¿½tartam");
+define("_LINEAR_DISTANCE","Szabadtï¿½v");
 define("_OLC_KM","OLC km");
 define("_OLC_SCORE","OLC pont");
-define("_DATE_ADDED","Legutóbb beküldött repülések");
+define("_DATE_ADDED","Legutï¿½bb bekï¿½ldï¿½tt repï¿½lï¿½sek");
 
-define("_SORTED_BY","Rendezés:");
-define("_ALL_YEARS","Minden év");
-define("_SELECT_YEAR_MONTH","Év (és hónap) kiválasztása");
-define("_ALL","Összes");
-define("_ALL_PILOTS","Összes pilóta megjelenítése");
-define("_ALL_TAKEOFFS","Összes starthely megjelenítése");
-define("_ALL_THE_YEAR","Egész év");
+define("_SORTED_BY","Rendezï¿½s:");
+define("_ALL_YEARS","Minden ï¿½v");
+define("_SELECT_YEAR_MONTH","ï¿½v (ï¿½s hï¿½nap) kivï¿½lasztï¿½sa");
+define("_ALL","ï¿½sszes");
+define("_ALL_PILOTS","ï¿½sszes pilï¿½ta megjelenï¿½tï¿½se");
+define("_ALL_TAKEOFFS","ï¿½sszes starthely megjelenï¿½tï¿½se");
+define("_ALL_THE_YEAR","Egï¿½sz ï¿½v");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Nem küldtél még be repülésfájlt");
-define("_NO_SUCH_FILE","A megadott repülésfájlt nem találom a szerveren");
-define("_FILE_DOESNT_END_IN_IGC","A fájl neve nem .igc -re végzõdik");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Ez nem egy érvényes .igc fájl");
-define("_THERE_IS_SAME_DATE_FLIGHT","Van már egy repülés ugyanezzel a dátummal és idõponttal");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Ha ki akarod cserélni, akkor elõször");
-define("_DELETE_THE_OLD_ONE","le kell törölnöd a régit");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Van már egy repülés ugyanezzel a ugyanezzel a fájlnévvel");
-define("_CHANGE_THE_FILENAME","Ha ez egy másik repülés, változtasd meg a fájl nevét és próbáld meg újra");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","A repülésed sikeresen beküldve");
-define("_PRESS_HERE_TO_VIEW_IT","Kattints ide, ha meg akarod nézni");
-define("_WILL_BE_ACTIVATED_SOON","(1-2 percen belül aktiválódik)");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Nem kï¿½ldtï¿½l mï¿½g be repï¿½lï¿½sfï¿½jlt");
+define("_NO_SUCH_FILE","A megadott repï¿½lï¿½sfï¿½jlt nem talï¿½lom a szerveren");
+define("_FILE_DOESNT_END_IN_IGC","A fï¿½jl neve nem .igc -re vï¿½gzï¿½dik");
+define("_THIS_ISNT_A_VALID_IGC_FILE","Ez nem egy ï¿½rvï¿½nyes .igc fï¿½jl");
+define("_THERE_IS_SAME_DATE_FLIGHT","Van mï¿½r egy repï¿½lï¿½s ugyanezzel a dï¿½tummal ï¿½s idï¿½ponttal");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Ha ki akarod cserï¿½lni, akkor elï¿½szï¿½r");
+define("_DELETE_THE_OLD_ONE","le kell tï¿½rï¿½lnï¿½d a rï¿½git");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","Van mï¿½r egy repï¿½lï¿½s ugyanezzel a ugyanezzel a fï¿½jlnï¿½vvel");
+define("_CHANGE_THE_FILENAME","Ha ez egy mï¿½sik repï¿½lï¿½s, vï¿½ltoztasd meg a fï¿½jl nevï¿½t ï¿½s prï¿½bï¿½ld meg ï¿½jra");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","A repï¿½lï¿½sed sikeresen bekï¿½ldve");
+define("_PRESS_HERE_TO_VIEW_IT","Kattints ide, ha meg akarod nï¿½zni");
+define("_WILL_BE_ACTIVATED_SOON","(1-2 percen belï¿½l aktivï¿½lï¿½dik)");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Több repülés együttes beküldése");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Csak az IGC fájlok lesznek feldolgozva");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Add meg a repüléseket<br>tartalmazó ZIP fájlt");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","A repülések beküldéséhez kattints ide");
+define("_SUBMIT_MULTIPLE_FLIGHTS","Tï¿½bb repï¿½lï¿½s egyï¿½ttes bekï¿½ldï¿½se");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Csak az IGC fï¿½jlok lesznek feldolgozva");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Add meg a repï¿½lï¿½seket<br>tartalmazï¿½ ZIP fï¿½jlt");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","A repï¿½lï¿½sek bekï¿½ldï¿½sï¿½hez kattints ide");
 
-define("_FILE_DOESNT_END_IN_ZIP","A fájl neve nem .zip -re végzõdik");
-define("_ADDING_FILE","Fájl beküldése");
-define("_ADDED_SUCESSFULLY","A beküldés sikeres");
-define("_PROBLEM","Probléma");
-define("_TOTAL","Összesen ");
-define("_IGC_FILES_PROCESSED","repülés lett feldolgozva");
-define("_IGC_FILES_SUBMITED","repülés lett beküldve");
+define("_FILE_DOESNT_END_IN_ZIP","A fï¿½jl neve nem .zip -re vï¿½gzï¿½dik");
+define("_ADDING_FILE","Fï¿½jl bekï¿½ldï¿½se");
+define("_ADDED_SUCESSFULLY","A bekï¿½ldï¿½s sikeres");
+define("_PROBLEM","Problï¿½ma");
+define("_TOTAL","ï¿½sszesen ");
+define("_IGC_FILES_PROCESSED","repï¿½lï¿½s lett feldolgozva");
+define("_IGC_FILES_SUBMITED","repï¿½lï¿½s lett bekï¿½ldve");
 
 // info
-define("_DEVELOPMENT","Fejlesztõ");
+define("_DEVELOPMENT","Fejlesztï¿½");
 define("_ANDREADAKIS_MANOLIS","Andreadakis Manolis");
 define("_PROJECT_URL","A projekt honlapja");
-define("_VERSION","Verzió");
-define("_MAP_CREATION","Térképek létrehozása");
-define("_PROJECT_INFO","Projekt információ");
+define("_VERSION","Verziï¿½");
+define("_MAP_CREATION","Tï¿½rkï¿½pek lï¿½trehozï¿½sa");
+define("_PROJECT_INFO","Projekt informï¿½ciï¿½");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Fõmenü");
-define("_MENU_DATE","Dátum");
-define("_MENU_COUNTRY","Ország");
-define("_MENU_XCLEAGUE","Verseny állása");
-define("_MENU_ADMIN","Adminisztráció");
+define("_MENU_MAIN_MENU","Fï¿½menï¿½");
+define("_MENU_DATE","Dï¿½tum");
+define("_MENU_COUNTRY","Orszï¿½g");
+define("_MENU_XCLEAGUE","Verseny ï¿½llï¿½sa");
+define("_MENU_ADMIN","Adminisztrï¿½ciï¿½");
 
-define("_MENU_COMPETITION_LEAGUE","Összesített OLC ponttábla");
+define("_MENU_COMPETITION_LEAGUE","ï¿½sszesï¿½tett OLC ponttï¿½bla");
 define("_MENU_OLC","Legjobb OLC pontok");
-define("_MENU_OPEN_DISTANCE","Legjobb távok");
-define("_MENU_DURATION","Össz idõtartam");
-define("_MENU_ALL_FLIGHTS","Összes repülés");
-define("_MENU_FLIGHTS","Repülések (szûrve)");
+define("_MENU_OPEN_DISTANCE","Legjobb tï¿½vok");
+define("_MENU_DURATION","ï¿½ssz idï¿½tartam");
+define("_MENU_ALL_FLIGHTS","ï¿½sszes repï¿½lï¿½s");
+define("_MENU_FLIGHTS","Repï¿½lï¿½sek (szï¿½rve)");
 define("_MENU_TAKEOFFS","Starthelyek");
-define("_MENU_FILTER","Szûrõk");
-define("_MENU_MY_FLIGHTS","Saját repülések");
-define("_MENU_MY_PROFILE","Saját profil");
-define("_MENU_MY_STATS","Saját statisztikák"); 
-define("_MENU_MY_SETTINGS","Egyéb beállítások"); 
-define("_MENU_SUBMIT_FLIGHT","Repülés beküldése");
-define("_MENU_SUBMIT_FROM_ZIP","Több repülés beküldése");
-define("_MENU_SHOW_PILOTS","Pilóták");
-define("_MENU_SHOW_LAST_ADDED","Legfrissebb repülések");
-define("_FLIGHTS_STATS","Repülési statisztikák");
+define("_MENU_FILTER","Szï¿½rï¿½k");
+define("_MENU_MY_FLIGHTS","Sajï¿½t repï¿½lï¿½sek");
+define("_MENU_MY_PROFILE","Sajï¿½t profil");
+define("_MENU_MY_STATS","Sajï¿½t statisztikï¿½k"); 
+define("_MENU_MY_SETTINGS","Egyï¿½b beï¿½llï¿½tï¿½sok"); 
+define("_MENU_SUBMIT_FLIGHT","Repï¿½lï¿½s bekï¿½ldï¿½se");
+define("_MENU_SUBMIT_FROM_ZIP","Tï¿½bb repï¿½lï¿½s bekï¿½ldï¿½se");
+define("_MENU_SHOW_PILOTS","Pilï¿½tï¿½k");
+define("_MENU_SHOW_LAST_ADDED","Legfrissebb repï¿½lï¿½sek");
+define("_FLIGHTS_STATS","Repï¿½lï¿½si statisztikï¿½k");
 
-define("_SELECT_YEAR","Év kiválasztása");
-define("_SELECT_MONTH","Hónap kiválasztása");
-define("_ALL_COUNTRIES","Összes ország megjelenítése");
+define("_SELECT_YEAR","ï¿½v kivï¿½lasztï¿½sa");
+define("_SELECT_MONTH","Hï¿½nap kivï¿½lasztï¿½sa");
+define("_ALL_COUNTRIES","ï¿½sszes orszï¿½g megjelenï¿½tï¿½se");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","BÁRMIKOR");
-define("_NUMBER_OF_FLIGHTS","Repülések száma");
-define("_TOTAL_DISTANCE","Összes távolság");
-define("_TOTAL_DURATION","Összes idõtartam");
-define("_BEST_OPEN_DISTANCE","Legnagyobb távolság");
-define("_TOTAL_OLC_DISTANCE","Összes OLC távolság");
-define("_TOTAL_OLC_SCORE","Összes OLC pont");
+define("_ALL_TIMES","Bï¿½RMIKOR");
+define("_NUMBER_OF_FLIGHTS","Repï¿½lï¿½sek szï¿½ma");
+define("_TOTAL_DISTANCE","ï¿½sszes tï¿½volsï¿½g");
+define("_TOTAL_DURATION","ï¿½sszes idï¿½tartam");
+define("_BEST_OPEN_DISTANCE","Legnagyobb tï¿½volsï¿½g");
+define("_TOTAL_OLC_DISTANCE","ï¿½sszes OLC tï¿½volsï¿½g");
+define("_TOTAL_OLC_SCORE","ï¿½sszes OLC pont");
 define("_BEST_OLC_SCORE","Legjobb OLC pont");
-define("_MEAN_DURATION","Átlagos idõtartam");
-define("_MEAN_DISTANCE","Átlagos távolság");
-define("_PILOT_STATISTICS_SORT_BY","Pilóták - Rendezés:");
-define("_CATEGORY_FLIGHT_NUMBER","'VillámVili' kategória (repülések száma)");
-define("_CATEGORY_TOTAL_DURATION","'DURACELL' kategória - (repülések össz idõtartama)");
-define("_CATEGORY_OPEN_DISTANCE","'Szabadtáv' kategória");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Nincs ilyen pilóta!");
+define("_MEAN_DURATION","ï¿½tlagos idï¿½tartam");
+define("_MEAN_DISTANCE","ï¿½tlagos tï¿½volsï¿½g");
+define("_PILOT_STATISTICS_SORT_BY","Pilï¿½tï¿½k - Rendezï¿½s:");
+define("_CATEGORY_FLIGHT_NUMBER","'Villï¿½mVili' kategï¿½ria (repï¿½lï¿½sek szï¿½ma)");
+define("_CATEGORY_TOTAL_DURATION","'DURACELL' kategï¿½ria - (repï¿½lï¿½sek ï¿½ssz idï¿½tartama)");
+define("_CATEGORY_OPEN_DISTANCE","'Szabadtï¿½v' kategï¿½ria");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Nincs ilyen pilï¿½ta!");
 
 	
 //--------------------------------------------
 // delete_flight.php
 //--------------------------------------------
 
-define("_THE_FLIGHT_HAS_BEEN_DELETED","A repülés törölve");
+define("_THE_FLIGHT_HAS_BEEN_DELETED","A repï¿½lï¿½s tï¿½rï¿½lve");
 define("_RETURN","Vissza");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","FIGYELEM - Törölni akarod ezt a repülést");
-define("_THE_DATE","Dátum ");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","FIGYELEM - Tï¿½rï¿½lni akarod ezt a repï¿½lï¿½st");
+define("_THE_DATE","Dï¿½tum ");
 define("_YES","IGEN");
 define("_NO","NEM");
 
@@ -219,13 +219,13 @@ define("_NO","NEM");
 // competition.php
 //--------------------------------------------
 
-define("_LEAGUE_RESULTS","Liga eredmények");
-define("_N_BEST_FLIGHTS"," legjobb repülés");
+define("_LEAGUE_RESULTS","Liga eredmï¿½nyek");
+define("_N_BEST_FLIGHTS"," legjobb repï¿½lï¿½s");
 define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","OLC össz pontszám");
-define("_KILOMETERS","Kilométer");
-define("_TOTAL_ALTITUDE_GAIN","Összes magasságnyerés");
-define("_TOTAL_KM","Összes km");
+define("_OLC_TOTAL_SCORE","OLC ï¿½ssz pontszï¿½m");
+define("_KILOMETERS","Kilomï¿½ter");
+define("_TOTAL_ALTITUDE_GAIN","ï¿½sszes magassï¿½gnyerï¿½s");
+define("_TOTAL_KM","ï¿½sszes km");
 
 //--------------------------------------------
 // filter.php
@@ -234,222 +234,222 @@ define("_TOTAL_KM","Összes km");
 define("_IS","=");
 define("_IS_NOT","nem =");
 define("_OR","vagy");
-define("_AND","és");
-define("_FILTER_PAGE_TITLE","Repülések szûrése");
-define("_RETURN_TO_FLIGHTS","Vissza a repülésekhez");
-define("_THE_FILTER_IS_ACTIVE","A szûrõ bekapcsolva");
-define("_THE_FILTER_IS_INACTIVE","A szûrõ nincs bekapcsolva");
-define("_SELECT_DATE","Idõszak kiválasztása");
-define("_SHOW_FLIGHTS","Repülések megjelenítése eszerint");
-define("_ALL2","ÖSSZES");
-define("_WITH_YEAR","Az év");
-define("_MONTH","Hónap");
-define("_YEAR","Év");
-define("_FROM","Tól");
-define("_from","tól");
+define("_AND","ï¿½s");
+define("_FILTER_PAGE_TITLE","Repï¿½lï¿½sek szï¿½rï¿½se");
+define("_RETURN_TO_FLIGHTS","Vissza a repï¿½lï¿½sekhez");
+define("_THE_FILTER_IS_ACTIVE","A szï¿½rï¿½ bekapcsolva");
+define("_THE_FILTER_IS_INACTIVE","A szï¿½rï¿½ nincs bekapcsolva");
+define("_SELECT_DATE","Idï¿½szak kivï¿½lasztï¿½sa");
+define("_SHOW_FLIGHTS","Repï¿½lï¿½sek megjelenï¿½tï¿½se eszerint");
+define("_ALL2","ï¿½SSZES");
+define("_WITH_YEAR","Az ï¿½v");
+define("_MONTH","Hï¿½nap");
+define("_YEAR","ï¿½v");
+define("_FROM","Tï¿½l");
+define("_from","tï¿½l");
 define("_TO","Ig");
-define("_SELECT_PILOT","Pilóta kiválasztása");
-define("_THE_PILOT","A pilóta");
+define("_SELECT_PILOT","Pilï¿½ta kivï¿½lasztï¿½sa");
+define("_THE_PILOT","A pilï¿½ta");
 define("_THE_TAKEOFF","A starthely");
-define("_SELECT_TAKEOFF","A starthely kiválasztása");
-define("_THE_COUNTRY","Az ország");
-define("_COUNTRY","Ország");
-define("_SELECT_COUNTRY","Ország kiválasztása");
-define("_OTHER_FILTERS","További szûrõk");
-define("_LINEAR_DISTANCE_SHOULD_BE","Az egyenes távolság legyen");
-define("_OLC_DISTANCE_SHOULD_BE","Az OLC távolság legyen");
-define("_OLC_SCORE_SHOULD_BE","Az OLC pontszám legyen");
-define("_DURATION_SHOULD_BE","Az idõtartam legyen");
-define("_ACTIVATE_CHANGE_FILTER","A SZÛRÕ bekapcsolása / módosítása");
-define("_DEACTIVATE_FILTER","A SZÛRÕ kikapcsolása");
-define("_HOURS","óra");
+define("_SELECT_TAKEOFF","A starthely kivï¿½lasztï¿½sa");
+define("_THE_COUNTRY","Az orszï¿½g");
+define("_COUNTRY","Orszï¿½g");
+define("_SELECT_COUNTRY","Orszï¿½g kivï¿½lasztï¿½sa");
+define("_OTHER_FILTERS","Tovï¿½bbi szï¿½rï¿½k");
+define("_LINEAR_DISTANCE_SHOULD_BE","Az egyenes tï¿½volsï¿½g legyen");
+define("_OLC_DISTANCE_SHOULD_BE","Az OLC tï¿½volsï¿½g legyen");
+define("_OLC_SCORE_SHOULD_BE","Az OLC pontszï¿½m legyen");
+define("_DURATION_SHOULD_BE","Az idï¿½tartam legyen");
+define("_ACTIVATE_CHANGE_FILTER","A SZï¿½Rï¿½ bekapcsolï¿½sa / mï¿½dosï¿½tï¿½sa");
+define("_DEACTIVATE_FILTER","A SZï¿½Rï¿½ kikapcsolï¿½sa");
+define("_HOURS","ï¿½ra");
 define("_MINUTES","perc");
 
 //--------------------------------------------
 // add_flight.php
 //--------------------------------------------
 
-define("_SUBMIT_FLIGHT","Repülés beküldése");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(csak az IGC fájl szükséges hozzá)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Add meg a repülés<br>IGC fájlját");
-define("_NOTE_TAKEOFF_NAME","Írd be legalább a starthely helyének nevét és az országot");
-define("_COMMENTS_FOR_THE_FLIGHT","Megjegyzések a repüléshez");
-define("_PHOTO","Fotó");
-define("_PHOTOS_GUIDELINES","A fotók jpg formátumúak legyenek és kisebbek, mint ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","A repülés beküldéséhez ezt nyomd meg");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Több repülést szeretnél egyszerre beküldeni ?");
+define("_SUBMIT_FLIGHT","Repï¿½lï¿½s bekï¿½ldï¿½se");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(csak az IGC fï¿½jl szï¿½ksï¿½ges hozzï¿½)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Add meg a repï¿½lï¿½s<br>IGC fï¿½jljï¿½t");
+define("_NOTE_TAKEOFF_NAME","ï¿½rd be legalï¿½bb a starthely helyï¿½nek nevï¿½t ï¿½s az orszï¿½got");
+define("_COMMENTS_FOR_THE_FLIGHT","Megjegyzï¿½sek a repï¿½lï¿½shez");
+define("_PHOTO","Fotï¿½");
+define("_PHOTOS_GUIDELINES","A fotï¿½k jpg formï¿½tumï¿½ak legyenek ï¿½s kisebbek, mint ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","A repï¿½lï¿½s bekï¿½ldï¿½sï¿½hez ezt nyomd meg");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Tï¿½bb repï¿½lï¿½st szeretnï¿½l egyszerre bekï¿½ldeni ?");
 define("_PRESS_HERE","Kattints ide!");
 
-define("_IS_PRIVATE","Ne mutasd meg másoknak");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Ne mutasd meg másoknak");
-define("_INSERT_FLIGHT_AS_USER_ID","Repülés beszúrása ehhez a felhasználói azonosítóhoz (ID)");
-define("_FLIGHT_IS_PRIVATE","Ez a repülés nem publikus");
+define("_IS_PRIVATE","Ne mutasd meg mï¿½soknak");
+define("_MAKE_THIS_FLIGHT_PRIVATE","Ne mutasd meg mï¿½soknak");
+define("_INSERT_FLIGHT_AS_USER_ID","Repï¿½lï¿½s beszï¿½rï¿½sa ehhez a felhasznï¿½lï¿½i azonosï¿½tï¿½hoz (ID)");
+define("_FLIGHT_IS_PRIVATE","Ez a repï¿½lï¿½s nem publikus");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","Repülési adatok módosítása");
-define("_IGC_FILE_OF_THE_FLIGHT","A repülés IGC fájlja");
-define("_DELETE_PHOTO","Törlés");
-define("_NEW_PHOTO","új fotó");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","A repülési adatok módosításához ezt nyomd meg");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","A módosítások magtörténtek");
-define("_RETURN_TO_FLIGHT","Vissza a repülésekhez");
+define("_CHANGE_FLIGHT_DATA","Repï¿½lï¿½si adatok mï¿½dosï¿½tï¿½sa");
+define("_IGC_FILE_OF_THE_FLIGHT","A repï¿½lï¿½s IGC fï¿½jlja");
+define("_DELETE_PHOTO","Tï¿½rlï¿½s");
+define("_NEW_PHOTO","ï¿½j fotï¿½");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","A repï¿½lï¿½si adatok mï¿½dosï¿½tï¿½sï¿½hoz ezt nyomd meg");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","A mï¿½dosï¿½tï¿½sok magtï¿½rtï¿½ntek");
+define("_RETURN_TO_FLIGHT","Vissza a repï¿½lï¿½sekhez");
 
 //--------------------------------------------
 // olc
 //--------------------------------------------
-define("_RETURN_TO_FLIGHT","Vissza a repülésekhez");
-define("_READY_FOR_SUBMISSION","Beküldésre kész");
-define("_OLC_MAP","Térkép");
-define("_OLC_BARO","Barográf");
+define("_RETURN_TO_FLIGHT","Vissza a repï¿½lï¿½sekhez");
+define("_READY_FOR_SUBMISSION","Bekï¿½ldï¿½sre kï¿½sz");
+define("_OLC_MAP","Tï¿½rkï¿½p");
+define("_OLC_BARO","Barogrï¿½f");
 
 //--------------------------------------------
 // pilot_profile.php
 //--------------------------------------------
-define("_Pilot_Profile","Pilóta adatai");
-define("_back_to_flights","vissza a repülésekhez");
-define("_pilot_stats","pilóta statisztikái");
-define("_edit_profile","adatok szerkesztése");
-define("_flights_stats","repülés statisztikái");
-define("_View_Profile","Adatok megtekintése");
+define("_Pilot_Profile","Pilï¿½ta adatai");
+define("_back_to_flights","vissza a repï¿½lï¿½sekhez");
+define("_pilot_stats","pilï¿½ta statisztikï¿½i");
+define("_edit_profile","adatok szerkesztï¿½se");
+define("_flights_stats","repï¿½lï¿½s statisztikï¿½i");
+define("_View_Profile","Adatok megtekintï¿½se");
 
-define("_Personal_Stuff","Személyes adatok");
-define("_First_Name","Keresztnév");
-define("_Last_Name","Vezetéknév");
-define("_Birthdate","Születési dátum");
-define("_dd_mm_yy","nn.hh.éé");
+define("_Personal_Stuff","Szemï¿½lyes adatok");
+define("_First_Name","Keresztnï¿½v");
+define("_Last_Name","Vezetï¿½knï¿½v");
+define("_Birthdate","Szï¿½letï¿½si dï¿½tum");
+define("_dd_mm_yy","nn.hh.ï¿½ï¿½");
 define("_Sign","Jel");
-define("_Marital_Status","Családi állapot");
-define("_Occupation","Foglalkozás");
+define("_Marital_Status","Csalï¿½di ï¿½llapot");
+define("_Occupation","Foglalkozï¿½s");
 define("_Web_Page","Honlap");
 define("_N_A","<N/A>");
-define("_Other_Interests","Egyéb érdeklõdési kör");
-define("_Photo","Fotó");
+define("_Other_Interests","Egyï¿½b ï¿½rdeklï¿½dï¿½si kï¿½r");
+define("_Photo","Fotï¿½");
 
-define("_Flying_Stuff","Repüléssel kapcsolatos adatok");
-define("_note_place_and_date","ahol lehet, add meg a helyet, országot és dátumot");
-define("_Flying_Since","Mióta repülsz");
-define("_Pilot_Licence","Pilóta licenceszám");
-define("_Paragliding_training","Silóernyõs jogosítás");
+define("_Flying_Stuff","Repï¿½lï¿½ssel kapcsolatos adatok");
+define("_note_place_and_date","ahol lehet, add meg a helyet, orszï¿½got ï¿½s dï¿½tumot");
+define("_Flying_Since","Miï¿½ta repï¿½lsz");
+define("_Pilot_Licence","Pilï¿½ta licenceszï¿½m");
+define("_Paragliding_training","Silï¿½ernyï¿½s jogosï¿½tï¿½s");
 define("_Favorite_Location","Kedvenc hely");
 define("_Usual_Location","Szokott hely");
-define("_Best_Flying_Memory","Legszebb repülési emlék");
-define("_Worst_Flying_Memory","Legrosszabb repülési emlék");
-define("_Personal_Distance_Record","Egyéni távrekord");
-define("_Personal_Height_Record","Egyéni magasságrekord");
-define("_Hours_Flown","Repült órák száma");
-define("_Hours_Per_Year","Évente repült órák száma");
+define("_Best_Flying_Memory","Legszebb repï¿½lï¿½si emlï¿½k");
+define("_Worst_Flying_Memory","Legrosszabb repï¿½lï¿½si emlï¿½k");
+define("_Personal_Distance_Record","Egyï¿½ni tï¿½vrekord");
+define("_Personal_Height_Record","Egyï¿½ni magassï¿½grekord");
+define("_Hours_Flown","Repï¿½lt ï¿½rï¿½k szï¿½ma");
+define("_Hours_Per_Year","ï¿½vente repï¿½lt ï¿½rï¿½k szï¿½ma");
 
-define("_Equipment_Stuff","Eszközökkel kapcsolatos adatok");
-define("_Glider","Siklóernyõ");
-define("_Harness","Beülõ");
-define("_Reserve_chute","Mentõernyõ");
-define("_Camera","Fényképezõgép");
-define("_Vario","Varió");
+define("_Equipment_Stuff","Eszkï¿½zï¿½kkel kapcsolatos adatok");
+define("_Glider","Siklï¿½ernyï¿½");
+define("_Harness","Beï¿½lï¿½");
+define("_Reserve_chute","Mentï¿½ernyï¿½");
+define("_Camera","Fï¿½nykï¿½pezï¿½gï¿½p");
+define("_Vario","Variï¿½");
 define("_GPS","GPS");
 define("_Helmet","Sisak");
 define("_Camcorder","Kamera");
 
-define("_Manouveur_Stuff","Manõverek");
-define("_note_max_descent_rate","ahol lehet, add meg a max. süllyedési sebességedet");
-define("_Spiral","Spirál");
+define("_Manouveur_Stuff","Manï¿½verek");
+define("_note_max_descent_rate","ahol lehet, add meg a max. sï¿½llyedï¿½si sebessï¿½gedet");
+define("_Spiral","Spirï¿½l");
 define("_Bline","B-stall");
 define("_Full_Stall","Full-stall");
-define("_Other_Manouveurs_Acro","Acro manõverek");
+define("_Other_Manouveurs_Acro","Acro manï¿½verek");
 define("_Sat","Sat");
-define("_Asymmetric_Spiral","Asszimmetrikus spirál");
-define("_Spin","Negatív");
+define("_Asymmetric_Spiral","Asszimmetrikus spirï¿½l");
+define("_Spin","Negatï¿½v");
 
-define("_General_Stuff","Egyéb adatok");
-define("_Favorite_Singer","Kedvenc énekes");
+define("_General_Stuff","Egyï¿½b adatok");
+define("_Favorite_Singer","Kedvenc ï¿½nekes");
 define("_Favorite_Movie","Kedvenc film");
 define("_Favorite_Internet_Site","Kedvenc<br>internet oldal");
-define("_Favorite_Book","Kedvenc könyv");
-define("_Favorite_Actor","Kedvenc színész");
+define("_Favorite_Book","Kedvenc kï¿½nyv");
+define("_Favorite_Actor","Kedvenc szï¿½nï¿½sz");
 
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Új fotó feltöltése");
-define("_Delete_Photo","Fotó törlése");
-define("_Your_profile_has_been_updated","Az adataid frissítése megtörtént");
-define("_Submit_Change_Data","A megváltoztatott adatok beküldése");
+define("_Upload_new_photo_or_change_old","ï¿½j fotï¿½ feltï¿½ltï¿½se");
+define("_Delete_Photo","Fotï¿½ tï¿½rlï¿½se");
+define("_Your_profile_has_been_updated","Az adataid frissï¿½tï¿½se megtï¿½rtï¿½nt");
+define("_Submit_Change_Data","A megvï¿½ltoztatott adatok bekï¿½ldï¿½se");
 
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
-define("_hh_mm","óó:pp");
+define("_hh_mm","ï¿½ï¿½:pp");
 
-define("_Totals","Összesítés");
-define("_First_flight_logged","Az elsõ naplózott repülés");
-define("_Last_flight_logged","A legutolsó naplózott repülés");
-define("_Flying_period_covered","A teljes repülési idõszak");
-define("_Total_Distance","Összes távolság");
-define("_Total_OLC_Score","Összes OLC pont");
-define("_Total_Hours_Flown","Összes idõ órákban");
-define("_Total_num_of_flights","Repülések száma összesen");
+define("_Totals","ï¿½sszesï¿½tï¿½s");
+define("_First_flight_logged","Az elsï¿½ naplï¿½zott repï¿½lï¿½s");
+define("_Last_flight_logged","A legutolsï¿½ naplï¿½zott repï¿½lï¿½s");
+define("_Flying_period_covered","A teljes repï¿½lï¿½si idï¿½szak");
+define("_Total_Distance","ï¿½sszes tï¿½volsï¿½g");
+define("_Total_OLC_Score","ï¿½sszes OLC pont");
+define("_Total_Hours_Flown","ï¿½sszes idï¿½ ï¿½rï¿½kban");
+define("_Total_num_of_flights","Repï¿½lï¿½sek szï¿½ma ï¿½sszesen");
 
-define("_Personal_Bests","Egyéni legjobbak");
-define("_Best_Open_Distance","Legjobb szabadtáv");
-define("_Best_FAI_Triangle","Legjobb FAI háromszög");
-define("_Best_Free_Triangle","Legjobb szabad háromszög");
-define("_Longest_Flight","Leghosszabb repülés");
-define("_Best_OLC_score","Legjobb OLC pontszám");
+define("_Personal_Bests","Egyï¿½ni legjobbak");
+define("_Best_Open_Distance","Legjobb szabadtï¿½v");
+define("_Best_FAI_Triangle","Legjobb FAI hï¿½romszï¿½g");
+define("_Best_Free_Triangle","Legjobb szabad hï¿½romszï¿½g");
+define("_Longest_Flight","Leghosszabb repï¿½lï¿½s");
+define("_Best_OLC_score","Legjobb OLC pontszï¿½m");
 
-define("_Absolute_Height_Record","Abszolút magassági rekord");
-define("_Altitute_gain_Record","Magasságnyerési rekord");
-define("_Mean_values","Átlagértékek");
-define("_Mean_distance_per_flight","Repülések átlagos hossza");
-define("_Mean_flights_per_Month","Repülések átlagos száma havonta");
-define("_Mean_distance_per_Month","Átlagos repülési távolság havonta");
-define("_Mean_duration_per_Month","Átlagos repülési idõtartam havonta");
-define("_Mean_duration_per_flight","Átlagos idõtartam repülésenként");
-define("_Mean_flights_per_Year","Repülések átlagos száma évente");
-define("_Mean_distance_per_Year","Átlagos repülési távolság évente");
-define("_Mean_duration_per_Year","Átlagos repülési idõtartam évente");
+define("_Absolute_Height_Record","Abszolï¿½t magassï¿½gi rekord");
+define("_Altitute_gain_Record","Magassï¿½gnyerï¿½si rekord");
+define("_Mean_values","ï¿½tlagï¿½rtï¿½kek");
+define("_Mean_distance_per_flight","Repï¿½lï¿½sek ï¿½tlagos hossza");
+define("_Mean_flights_per_Month","Repï¿½lï¿½sek ï¿½tlagos szï¿½ma havonta");
+define("_Mean_distance_per_Month","ï¿½tlagos repï¿½lï¿½si tï¿½volsï¿½g havonta");
+define("_Mean_duration_per_Month","ï¿½tlagos repï¿½lï¿½si idï¿½tartam havonta");
+define("_Mean_duration_per_flight","ï¿½tlagos idï¿½tartam repï¿½lï¿½senkï¿½nt");
+define("_Mean_flights_per_Year","Repï¿½lï¿½sek ï¿½tlagos szï¿½ma ï¿½vente");
+define("_Mean_distance_per_Year","ï¿½tlagos repï¿½lï¿½si tï¿½volsï¿½g ï¿½vente");
+define("_Mean_duration_per_Year","ï¿½tlagos repï¿½lï¿½si idï¿½tartam ï¿½vente");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","E pont közelében történt repülések megjelenítése");
-define("_Waypoint_Name","Útpont név");
-define("_Navigate_with_Google_Earth","Navigálás a Google Earth segítségével");
-define("_See_it_in_Google_Maps","Megjelenítés a Google Mapsben");
-define("_See_it_in_MapQuest","Megjelenítés a MapQuestben");
-define("_COORDINATES","Koordináták");
-define("_FLIGHTS","Repülések");
+define("_See_flights_near_this_point","E pont kï¿½zelï¿½ben tï¿½rtï¿½nt repï¿½lï¿½sek megjelenï¿½tï¿½se");
+define("_Waypoint_Name","ï¿½tpont nï¿½v");
+define("_Navigate_with_Google_Earth","Navigï¿½lï¿½s a Google Earth segï¿½tsï¿½gï¿½vel");
+define("_See_it_in_Google_Maps","Megjelenï¿½tï¿½s a Google Mapsben");
+define("_See_it_in_MapQuest","Megjelenï¿½tï¿½s a MapQuestben");
+define("_COORDINATES","Koordinï¿½tï¿½k");
+define("_FLIGHTS","Repï¿½lï¿½sek");
 define("_SITE_RECORD","Helyi rekord");
-define("_SITE_INFO","Helyi információ");
-define("_SITE_REGION","Regió");
-define("_SITE_LINK","További információkra mutató link");
-define("_SITE_DESCR","Hely/starthely bemutatása");
+define("_SITE_INFO","Helyi informï¿½ciï¿½");
+define("_SITE_REGION","Regiï¿½");
+define("_SITE_LINK","Tovï¿½bbi informï¿½ciï¿½kra mutatï¿½ link");
+define("_SITE_DESCR","Hely/starthely bemutatï¿½sa");
 
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","Mutasd meg részletesebben");
-define("_KML_file_made_by","KML fájl, készítette");
+define("_See_more_details","Mutasd meg rï¿½szletesebben");
+define("_KML_file_made_by","KML fï¿½jl, kï¿½szï¿½tette");
 
 //--------------------------------------------
 // add_waypoint.php
 //--------------------------------------------
-define("_ADD_WAYPOINT","Starthely regisztrációja");
-define("_WAYPOINT_ADDED","A starthelyet már regisztrálták.");
+define("_ADD_WAYPOINT","Starthely regisztrï¿½ciï¿½ja");
+define("_WAYPOINT_ADDED","A starthelyet mï¿½r regisztrï¿½ltï¿½k.");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Helyi rekord<br>(szabadtáv)");
+define("_SITE_RECORD_OPEN_DISTANCE","Helyi rekord<br>(szabadtï¿½v)");
 	
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Siklórepülõ típus");
+define("_GLIDER_TYPE","Siklï¿½repï¿½lï¿½ tï¿½pus");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Siklóernyõ',2=>'Rugalmas szárny FAI1',4=>'Merevszárny FAI5',8=>'Vitorlázórepülõ');
+	$gliderCatList=array(1=>'Siklï¿½ernyï¿½',2=>'Rugalmas szï¿½rny FAI1',4=>'Merevszï¿½rny FAI5',8=>'Vitorlï¿½zï¿½repï¿½lï¿½');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -484,23 +484,23 @@ setXCtypesList();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","A beállításaid frissültek.");
+define("_Your_settings_have_been_updated","A beï¿½llï¿½tï¿½said frissï¿½ltek.");
 
-define("_THEME","Kinézet");
+define("_THEME","Kinï¿½zet");
 define("_LANGUAGE","Nyelv");
-define("_VIEW_CATEGORY","Siklórepülõ kategória");
-define("_VIEW_COUNTRY","Ország");
-define("_UNITS_SYSTEM" ,"Mértékegység rendszer");
+define("_VIEW_CATEGORY","Siklï¿½repï¿½lï¿½ kategï¿½ria");
+define("_VIEW_COUNTRY","Orszï¿½g");
+define("_UNITS_SYSTEM" ,"Mï¿½rtï¿½kegysï¿½g rendszer");
 define("_METRIC_SYSTEM","Metrikus (km,m)");
-define("_IMPERIAL_SYSTEM","Angolszász (mérföld,láb)");
-define("_ITEMS_PER_PAGE","Sorok száma laponként");
+define("_IMPERIAL_SYSTEM","Angolszï¿½sz (mï¿½rfï¿½ld,lï¿½b)");
+define("_ITEMS_PER_PAGE","Sorok szï¿½ma laponkï¿½nt");
 
 define("_MI","mi");
 define("_KM","km");
 define("_FT","ft");
 define("_M","m");
 define("_MPH","mph");
-define("_KM_PER_HR","km/ó");
+define("_KM_PER_HR","km/ï¿½");
 define("_FPM","fpm");
 define("_M_PER_SEC","m/mp");
 
@@ -508,12 +508,12 @@ define("_M_PER_SEC","m/mp");
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","Minden ország");
-define("_National_XC_Leagues_for","Nemzeti XC ligák: ");
-define("_Flights_per_Country","Repülések országonként");
-define("_Takeoffs_per_Country","Starthelyek országonként");
-define("_INDEX_HEADER","Üdvözlünk a Leonardo XC Ligában");
-define("_INDEX_MESSAGE","A fenti menürendszer vagy a lentebb kiemelt menüpontok segítségével navigálhatsz a lehetõségek közt.");
+define("_WORLD_WIDE","Minden orszï¿½g");
+define("_National_XC_Leagues_for","Nemzeti XC ligï¿½k: ");
+define("_Flights_per_Country","Repï¿½lï¿½sek orszï¿½gonkï¿½nt");
+define("_Takeoffs_per_Country","Starthelyek orszï¿½gonkï¿½nt");
+define("_INDEX_HEADER","ï¿½dvï¿½zlï¿½nk a Leonardo XC Ligï¿½ban");
+define("_INDEX_MESSAGE","A fenti menï¿½rendszer vagy a lentebb kiemelt menï¿½pontok segï¿½tsï¿½gï¿½vel navigï¿½lhatsz a lehetï¿½sï¿½gek kï¿½zt.");
 
 //--------------------------------------------
 // NEW 
@@ -622,4 +622,6 @@ define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
