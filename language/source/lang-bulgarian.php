@@ -18,8 +18,8 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Януари','Февруари','Март','Април','Май','Юни',
-					'Юли','Август','Септември','Октомври','Ноември','Декември');
+	$monthList=array('пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ',
+					'пїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
 }
@@ -28,370 +28,370 @@ setMonths();
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","Отворен прелет");
-define("_FREE_TRIANGLE","Свободен триъгълник");
-define("_FAI_TRIANGLE","FAI триъгълник");
+define("_FREE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FREE_TRIANGLE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FAI_TRIANGLE","FAI пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_SUBMIT_FLIGHT_ERROR","При качването на полета възникна грешка");
+define("_SUBMIT_FLIGHT_ERROR","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // list_pilots()
 define("_NUM","#");
-define("_PILOT","Пилот");
-define("_NUMBER_OF_FLIGHTS","Брой полети");
-define("_BEST_DISTANCE","Най-добро разстояние");
-define("_MEAN_KM","Средно разстояние за полет");
-define("_TOTAL_KM","Сумарно разстояние");
-define("_TOTAL_DURATION_OF_FLIGHTS","Сумарен нальот");
-define("_MEAN_DURATION","Средна продължителност на полета");
-define("_TOTAL_OLC_KM","Сумарно OLC разстояние");
-define("_TOTAL_OLC_SCORE","Сумарни OLC точки");
-define("_BEST_OLC_SCORE","Най-добър OLC резултат");
-define("_From","от");
+define("_PILOT","пїЅпїЅпїЅпїЅпїЅ");
+define("_NUMBER_OF_FLIGHTS","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_DISTANCE","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_KM","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_KM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_DURATION_OF_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_KM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_SCORE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_OLC_SCORE","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_From","пїЅпїЅ");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Време (ч:м)");
-define("_SHOW","Покажи");
+define("_DURATION_HOURS_MIN","пїЅпїЅпїЅпїЅпїЅ (пїЅ:пїЅ)");
+define("_SHOW","пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Полета ще бъде активиран след 1-2 минути. ");
-define("_TRY_AGAIN","Моля, опитайте отново по-късно");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 1-2 пїЅпїЅпїЅпїЅпїЅпїЅ. ");
+define("_TRY_AGAIN","пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ");
 
-define("_TAKEOFF_LOCATION","Място на старта");
-define("_TAKEOFF_TIME","Време на  старта");
-define("_LANDING_LOCATION","Място на приземяване");
-define("_LANDING_TIME","Време на приземяване");
-define("_OPEN_DISTANCE","Линейно разстояние");
-define("_MAX_DISTANCE","Макс. разстояние");
-define("_OLC_SCORE_TYPE","Тип OLC класиране");
-define("_OLC_DISTANCE","OLC разстояние");
-define("_OLC_SCORING","OLC точки");
-define("_MAX_SPEED","Макс. скорост");
-define("_MAX_VARIO","Макс. варио");
-define("_MEAN_SPEED","Средна скорост");
-define("_MIN_VARIO","Мин. варио");
-define("_MAX_ALTITUDE","Макс. височина (н.м.в)");
-define("_TAKEOFF_ALTITUDE","Височина на старта (н.м.в)");
-define("_MIN_ALTITUDE","Мин. височина (н.м.в)");
-define("_ALTITUDE_GAIN","Набрана височина");
-define("_FLIGHT_FILE","Полетен Файл");
-define("_COMMENTS","Коментари");
-define("_RELEVANT_PAGE","Допълнителна страница");
-define("_GLIDER","Летателен апарат");
-define("_PHOTOS","Фотографии");
-define("_MORE_INFO","Още информация");
-define("_UPDATE_DATA","Обнови данните");
-define("_UPDATE_MAP","Обнови картара");
-define("_UPDATE_3D_MAP","Обнови 3D-карта");
-define("_UPDATE_GRAPHS","Обнови графики");
-define("_UPDATE_SCORE","Обнови оценяването");
+define("_TAKEOFF_LOCATION","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TAKEOFF_TIME","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LANDING_LOCATION","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LANDING_TIME","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OPEN_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_DISTANCE","пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_SCORE_TYPE","пїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_DISTANCE","OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_SCORING","OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_SPEED","пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_VARIO","пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_SPEED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MIN_VARIO","пїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_ALTITUDE","пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ.пїЅ.пїЅ)");
+define("_TAKEOFF_ALTITUDE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ.пїЅ.пїЅ)");
+define("_MIN_ALTITUDE","пїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ.пїЅ.пїЅ)");
+define("_ALTITUDE_GAIN","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHT_FILE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_COMMENTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RELEVANT_PAGE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_GLIDER","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PHOTOS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MORE_INFO","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_DATA","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_MAP","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_3D_MAP","пїЅпїЅпїЅпїЅпїЅпїЅ 3D-пїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_GRAPHS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_SCORE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_TAKEOFF_COORDS","Координати на старта:");
-define("_NO_KNOWN_LOCATIONS","Неизвестно място ;-)");
-define("_FLYING_AREA_INFO","Сведения за района");
+define("_TAKEOFF_COORDS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:");
+define("_NO_KNOWN_LOCATIONS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ;-)");
+define("_FLYING_AREA_INFO","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo прелети");
-define("_RETURN_TO_TOP","Връщане нагоре");
+define("_PAGE_TITLE","Leonardo пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN_TO_TOP","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 // list flight
-define("_PILOT_FLIGHTS","Полети на пилота");
+define("_PILOT_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_DATE_SORT","Дата");
-define("_PILOT_NAME","Име на пилота");
-define("_TAKEOFF","Място на старта");
-define("_DURATION","Продължителност");
-define("_LINEAR_DISTANCE","Линейно разстояние");
-define("_OLC_KM","OLC разстояние");
-define("_OLC_SCORE","OLC точки");
-define("_DATE_ADDED","Последно добавяне");
+define("_DATE_SORT","пїЅпїЅпїЅпїЅ");
+define("_PILOT_NAME","пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TAKEOFF","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LINEAR_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_KM","OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_SCORE","OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_DATE_ADDED","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_SORTED_BY","Сортировка по:");
-define("_ALL_YEARS","Всички години");
-define("_SELECT_YEAR_MONTH","Избери година (и месец)");
-define("_ALL","Всички");
-define("_ALL_PILOTS","Покажи всички пилоти");
-define("_ALL_TAKEOFFS","Покажи всички стартове");
-define("_ALL_THE_YEAR","Всички години");
+define("_SORTED_BY","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ:");
+define("_ALL_YEARS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_YEAR_MONTH","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅ)");
+define("_ALL","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_PILOTS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_TAKEOFFS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_THE_YEAR","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Не сте указали полетен файл");
-define("_NO_SUCH_FILE","Указания файл не може да бъде открит в сървъра");
-define("_FILE_DOESNT_END_IN_IGC","Файлът няма .igc разширение");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Този файл не е .igc");
-define("_THERE_IS_SAME_DATE_FLIGHT","Вече има файл с такава дата и време");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Ако искате да го замените, първо");
-define("_DELETE_THE_OLD_ONE","изтрийте стария");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Вече има файл с такова име");
-define("_CHANGE_THE_FILENAME","Ако този полет е различен, то моля сменете името му и опитайте отново");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Вашия полет е записан в базата данни");
-define("_PRESS_HERE_TO_VIEW_IT","Натиснете тук, за да го видите");
-define("_WILL_BE_ACTIVATED_SOON","(ще бъде активен след 1-2 минути");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_NO_SUCH_FILE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FILE_DOESNT_END_IN_IGC","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ .igc пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THIS_ISNT_A_VALID_IGC_FILE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ .igc");
+define("_THERE_IS_SAME_DATE_FLIGHT","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ");
+define("_DELETE_THE_OLD_ONE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_CHANGE_THE_FILENAME","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_PRESS_HERE_TO_VIEW_IT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_WILL_BE_ACTIVATED_SOON","(пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 1-2 пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Публикувай няколко полета");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Само IGC файлове се обработват");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Запиши ZIP-файл<br>с полети");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Натиснете тук за да публикувате полетите");
+define("_SUBMIT_MULTIPLE_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","пїЅпїЅпїЅпїЅ IGC пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ ZIP-пїЅпїЅпїЅпїЅ<br>пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_FILE_DOESNT_END_IN_ZIP","Този файл не е с .zip разширение");
-define("_ADDING_FILE","Добавяне на файла");
-define("_ADDED_SUCESSFULLY","Успешно добавяне");
-define("_PROBLEM","Проблем");
-define("_TOTAL","Общо ");
-define("_IGC_FILES_PROCESSED","полета са обработени");
-define("_IGC_FILES_SUBMITED","полета са публикувани");
+define("_FILE_DOESNT_END_IN_ZIP","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅ .zip пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ADDING_FILE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_ADDED_SUCESSFULLY","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROBLEM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL","пїЅпїЅпїЅпїЅ ");
+define("_IGC_FILES_PROCESSED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_IGC_FILES_SUBMITED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // info
-define("_DEVELOPMENT","Разработка");
-define("_ANDREADAKIS_MANOLIS","Манолис Андреадакис");
-define("_PROJECT_URL","Страница на проекта");
-define("_VERSION","Версия");
-define("_MAP_CREATION","Създаване на карта");
-define("_PROJECT_INFO","Информация за проекта");
+define("_DEVELOPMENT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ANDREADAKIS_MANOLIS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_URL","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_VERSION","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAP_CREATION","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_INFO","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Главно меню");
-define("_MENU_DATE","Избери дата");
-define("_MENU_COUNTRY","Страна");
-define("_MENU_XCLEAGUE","XC Лига");
-define("_MENU_ADMIN","Админ");
+define("_MENU_MAIN_MENU","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_MENU_DATE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_MENU_COUNTRY","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_XCLEAGUE","XC пїЅпїЅпїЅпїЅ");
+define("_MENU_ADMIN","пїЅпїЅпїЅпїЅпїЅ");
 
-define("_MENU_COMPETITION_LEAGUE","Лига - всички категории");
+define("_MENU_COMPETITION_LEAGUE","пїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 define("_MENU_OLC","XC");
-define("_MENU_OPEN_DISTANCE","Oткрита дистанция");
-define("_MENU_DURATION","Нальот");
-define("_MENU_ALL_FLIGHTS","Покажи всички полети");
-define("_MENU_FLIGHTS","Полети");
-define("_MENU_TAKEOFFS","Места");
-define("_MENU_FILTER","Филтър");
-define("_MENU_MY_FLIGHTS","Мои полети");
-define("_MENU_MY_PROFILE","Мой профил");
-define("_MENU_MY_STATS","Моя статистика"); 
-define("_MENU_MY_SETTINGS","Мои настройки"); 
-define("_MENU_SUBMIT_FLIGHT","Добави полет");
-define("_MENU_SUBMIT_FROM_ZIP","Добави zip-файл с полети");
-define("_MENU_SHOW_PILOTS","Пилоти");
-define("_MENU_SHOW_LAST_ADDED","Покажи последните добавени");
-define("_FLIGHTS_STATS","Статистика на полетите");
+define("_MENU_OPEN_DISTANCE","OпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_ALL_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_TAKEOFFS","пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_FILTER","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_MY_FLIGHTS","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_MY_PROFILE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_MY_STATS","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); 
+define("_MENU_MY_SETTINGS","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); 
+define("_MENU_SUBMIT_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_SUBMIT_FROM_ZIP","пїЅпїЅпїЅпїЅпїЅпїЅ zip-пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_SHOW_PILOTS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_SHOW_LAST_ADDED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHTS_STATS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_SELECT_YEAR","Избери година");
-define("_SELECT_MONTH","Избери месец");
-define("_ALL_COUNTRIES","Покажи всички страни");
+define("_SELECT_YEAR","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_MONTH","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_COUNTRIES","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","Всички времена");
-define("_NUMBER_OF_FLIGHTS","Брой полети");
-define("_TOTAL_DISTANCE","Сумарно разстояние");
-define("_TOTAL_DURATION","Сумарнен налъот");
-define("_BEST_OPEN_DISTANCE","Най-добра отворена дистанция");
-define("_TOTAL_OLC_DISTANCE","Сумарно OLC разстояние");
-define("_TOTAL_OLC_SCORE","Сумарни OLC точки");
-define("_BEST_OLC_SCORE","Най-добра OLC оценка");
-define("_MEAN_DURATION","Средна продължителност");
-define("_MEAN_DISTANCE","Средно разстояние");
-define("_PILOT_STATISTICS_SORT_BY","Пилоти - сортирай по");
-define("_CATEGORY_FLIGHT_NUMBER","Категория 'Всеки ден на баира' - количество полети");
-define("_CATEGORY_TOTAL_DURATION","Категория 'DURACELL' - сумарен нальот");
-define("_CATEGORY_OPEN_DISTANCE","Категория 'Отворена дистанция'");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Няма пилоти за показване!");
+define("_ALL_TIMES","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NUMBER_OF_FLIGHTS","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_OPEN_DISTANCE","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_SCORE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_OLC_SCORE","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PILOT_STATISTICS_SORT_BY","пїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ");
+define("_CATEGORY_FLIGHT_NUMBER","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ' - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_CATEGORY_TOTAL_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 'DURACELL' - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_CATEGORY_OPEN_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ'");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
 
 	
 //--------------------------------------------
 // delete_flight.php
 //--------------------------------------------
 
-define("_THE_FLIGHT_HAS_BEEN_DELETED","Полета бе изтрит");
-define("_RETURN","Назад");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","ВНИМАНИЕ - искате да изтриете този полет");
-define("_THE_DATE","Дата ");
-define("_YES","ДА");
-define("_NO","НЕ");
+define("_THE_FLIGHT_HAS_BEEN_DELETED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN","пїЅпїЅпїЅпїЅпїЅ");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_DATE","пїЅпїЅпїЅпїЅ ");
+define("_YES","пїЅпїЅ");
+define("_NO","пїЅпїЅ");
 
 //--------------------------------------------
 // competition.php
 //--------------------------------------------
 
-define("_LEAGUE_RESULTS","Резултати в лигата");
-define("_N_BEST_FLIGHTS"," най-добри полети");
+define("_LEAGUE_RESULTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_N_BEST_FLIGHTS"," пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 define("_OLC","XC");
-define("_OLC_TOTAL_SCORE","Сумарни OLC точки");
-define("_KILOMETERS","Километри");
-define("_TOTAL_ALTITUDE_GAIN","Сумарен набор на височина");
-define("_TOTAL_KM","Общо км");
+define("_OLC_TOTAL_SCORE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_KILOMETERS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_ALTITUDE_GAIN","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_KM","пїЅпїЅпїЅпїЅ пїЅпїЅ");
 
 //--------------------------------------------
 // filter.php
 //--------------------------------------------
 
-define("_IS","е");
-define("_IS_NOT","не е");
-define("_OR","или");
-define("_AND","и");
-define("_FILTER_PAGE_TITLE","Филтрирай полети");
-define("_RETURN_TO_FLIGHTS","Върни се към полетите");
-define("_THE_FILTER_IS_ACTIVE","Филтърът е активен");
-define("_THE_FILTER_IS_INACTIVE","Филтърът е неактивен");
-define("_SELECT_DATE","Избери дата");
-define("_SHOW_FLIGHTS","Покажи полетите");
-define("_ALL2","ВСИЧКИ");
-define("_WITH_YEAR","година");
-define("_MONTH","Месец");
-define("_YEAR","Година");
-define("_FROM","От");
-define("_from","от");
-define("_TO","до");
-define("_SELECT_PILOT","Избери пилот");
-define("_THE_PILOT","Пилот");
-define("_THE_TAKEOFF","Старт");
-define("_SELECT_TAKEOFF","Избери старт");
-define("_THE_COUNTRY","Страна");
-define("_COUNTRY","Страна");
-define("_SELECT_COUNTRY","Избери страна");
-define("_OTHER_FILTERS","Други филтри");
-define("_LINEAR_DISTANCE_SHOULD_BE","Линейното разстояние трябва да е");
-define("_OLC_DISTANCE_SHOULD_BE","OLC разстоянието трябва да е");
-define("_OLC_SCORE_SHOULD_BE","OLC точките трябва да са");
-define("_DURATION_SHOULD_BE","Продължителността трябва да е");
-define("_ACTIVATE_CHANGE_FILTER","Активирай / промени филтър");
-define("_DEACTIVATE_FILTER","Деактивирай филтър");
-define("_HOURS","часа");
-define("_MINUTES","минути");
+define("_IS","пїЅ");
+define("_IS_NOT","пїЅпїЅ пїЅ");
+define("_OR","пїЅпїЅпїЅ");
+define("_AND","пїЅ");
+define("_FILTER_PAGE_TITLE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN_TO_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THE_FILTER_IS_ACTIVE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THE_FILTER_IS_INACTIVE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_DATE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_SHOW_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL2","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_WITH_YEAR","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MONTH","пїЅпїЅпїЅпїЅпїЅ");
+define("_YEAR","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FROM","пїЅпїЅ");
+define("_from","пїЅпїЅ");
+define("_TO","пїЅпїЅ");
+define("_SELECT_PILOT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_PILOT","пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_TAKEOFF","пїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_TAKEOFF","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_COUNTRY","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_COUNTRY","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_COUNTRY","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OTHER_FILTERS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LINEAR_DISTANCE_SHOULD_BE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ");
+define("_OLC_DISTANCE_SHOULD_BE","OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ");
+define("_OLC_SCORE_SHOULD_BE","OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ");
+define("_DURATION_SHOULD_BE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ");
+define("_ACTIVATE_CHANGE_FILTER","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DEACTIVATE_FILTER","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_HOURS","пїЅпїЅпїЅпїЅ");
+define("_MINUTES","пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // add_flight.php
 //--------------------------------------------
 
-define("_SUBMIT_FLIGHT","Добави полет");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(нужен е само IGC файл)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Публикувай <br>IGC файла на полета");
-define("_NOTE_TAKEOFF_NAME","Моля отбележете името на старта и страната");
-define("_COMMENTS_FOR_THE_FLIGHT","Коментари за полета");
-define("_PHOTO","Фото");
-define("_PHOTOS_GUIDELINES","Снимките трябва да са  .jpg формат и не по-големи от ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Натиснете тук за да публикувате полета");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Искате ли да публикувате повече полети наведнъж?");
-define("_PRESS_HERE","Натиснете тук");
+define("_SUBMIT_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ IGC пїЅпїЅпїЅпїЅ)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <br>IGC пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NOTE_TAKEOFF_NAME","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_COMMENTS_FOR_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PHOTO","пїЅпїЅпїЅпїЅ");
+define("_PHOTOS_GUIDELINES","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ  .jpg пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?");
+define("_PRESS_HERE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
 
-define("_IS_PRIVATE","Не показвай на друг");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Не показвай на друг");
-define("_INSERT_FLIGHT_AS_USER_ID","Добавяне на полет като потребител ID");
-define("_FLIGHT_IS_PRIVATE","Този полет не е за публично показване");
+define("_IS_PRIVATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_MAKE_THIS_FLIGHT_PRIVATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_INSERT_FLIGHT_AS_USER_ID","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ID");
+define("_FLIGHT_IS_PRIVATE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","Измени данните на полета");
-define("_IGC_FILE_OF_THE_FLIGHT","IGC файл");
-define("_DELETE_PHOTO","Изтрий");
-define("_NEW_PHOTO","нова снимка");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Натиснете тук, за да промените данните на полета");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","Запази промените");
-define("_RETURN_TO_FLIGHT","Върни се към полета");
+define("_CHANGE_FLIGHT_DATA","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_IGC_FILE_OF_THE_FLIGHT","IGC пїЅпїЅпїЅпїЅ");
+define("_DELETE_PHOTO","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_NEW_PHOTO","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN_TO_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // olc
 //--------------------------------------------
-define("_RETURN_TO_FLIGHT","Върни се към полета");
-define("_READY_FOR_SUBMISSION","Готово за публикуване");
-define("_OLC_MAP","Карта");
-define("_OLC_BARO","Барограф");
+define("_RETURN_TO_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_READY_FOR_SUBMISSION","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_MAP","пїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_BARO","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // pilot_profile.php
 //--------------------------------------------
-define("_Pilot_Profile","Профил на пилота");
-define("_back_to_flights","назад към полетите");
-define("_pilot_stats","статистика на пилота");
-define("_edit_profile","редактиране на профила");
-define("_flights_stats","статистика на полетите");
-define("_View_Profile","прегледай профила");
+define("_Pilot_Profile","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_back_to_flights","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_pilot_stats","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_edit_profile","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_flights_stats","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_View_Profile","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Personal_Stuff","Лични данни");
-define("_First_Name","Име");
-define("_Last_Name","Фамилия");
-define("_Birthdate","Дата на рождане");
-define("_dd_mm_yy","дд.мм.гг");
-define("_Sign","Зодия");
-define("_Marital_Status","Семейно положение");
-define("_Occupation","Занятие");
-define("_Web_Page","Уеб-страница");
-define("_N_A","няма информация");
-define("_Other_Interests","Други интереси");
-define("_Photo","Фото");
+define("_Personal_Stuff","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_First_Name","пїЅпїЅпїЅ");
+define("_Last_Name","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Birthdate","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_dd_mm_yy","пїЅпїЅ.пїЅпїЅ.пїЅпїЅ");
+define("_Sign","пїЅпїЅпїЅпїЅпїЅ");
+define("_Marital_Status","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Occupation","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Web_Page","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_N_A","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Other_Interests","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Photo","пїЅпїЅпїЅпїЅ");
 
-define("_Flying_Stuff","Летателни данни");
-define("_note_place_and_date","укажете страна и дата, където е уместно");
-define("_Flying_Since","Летя от");
-define("_Pilot_Licence","Лиценз на пилота");
-define("_Paragliding_training","Обучение");
-define("_Favorite_Location","Любимо място за летене");
-define("_Usual_Location","Обичайно място за летене");
-define("_Best_Flying_Memory","Най-добър летателен спомен");
-define("_Worst_Flying_Memory","Най-лош летателен спомен");
-define("_Personal_Distance_Record","Личен рекорд за разстояние");
-define("_Personal_Height_Record","Личен рекорд за височина");
-define("_Hours_Flown","Нальот в часове");
-define("_Hours_Per_Year","Годишен нальот");
+define("_Flying_Stuff","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_note_place_and_date","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Flying_Since","пїЅпїЅпїЅпїЅ пїЅпїЅ");
+define("_Pilot_Licence","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Paragliding_training","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Location","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Usual_Location","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Best_Flying_Memory","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Worst_Flying_Memory","пїЅпїЅпїЅ-пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Personal_Distance_Record","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Personal_Height_Record","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Hours_Flown","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Hours_Per_Year","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Equipment_Stuff","Данни за екипировката");
-define("_Glider","Производител и модел крило");
-define("_Harness","Подвесна система");
-define("_Reserve_chute","Запасен парашут");
-define("_Camera","Фотокамера");
-define("_Vario","Варио");
+define("_Equipment_Stuff","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Glider","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Harness","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Reserve_chute","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Camera","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Vario","пїЅпїЅпїЅпїЅпїЅ");
 define("_GPS","GPS");
-define("_Helmet","Шлем/Каска");
-define("_Camcorder","Видеокамера");
+define("_Helmet","пїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅ");
+define("_Camcorder","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Manouveur_Stuff","Данни за маньоври");
-define("_note_max_descent_rate","където е уместно, укажете достигнато максимално снижение");
-define("_Spiral","Спирала");
-define("_Bline","Б-срив");
-define("_Full_Stall","Пълен срив");
-define("_Other_Manouveurs_Acro","Други акро маньоври");
-define("_Sat","САТ");
-define("_Asymmetric_Spiral","Асиметрична спирала");
-define("_Spin","Негативна спирала");
+define("_Manouveur_Stuff","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_note_max_descent_rate","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Spiral","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Bline","пїЅ-пїЅпїЅпїЅпїЅ");
+define("_Full_Stall","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Other_Manouveurs_Acro","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Sat","пїЅпїЅпїЅ");
+define("_Asymmetric_Spiral","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Spin","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_General_Stuff","Общи данни");
-define("_Favorite_Singer","Любим певец (певица)");
-define("_Favorite_Movie","Любим филм");
-define("_Favorite_Internet_Site","Любима интернет страница");
-define("_Favorite_Book","Любима книга");
-define("_Favorite_Actor","Любим актьор / актриса");
+define("_General_Stuff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Singer","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ)");
+define("_Favorite_Movie","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Favorite_Internet_Site","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Book","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Actor","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Публикувайте нова снимка или променете старата");
-define("_Delete_Photo","Изтрий снимка");
-define("_Your_profile_has_been_updated","Вашия профил е обновен");
-define("_Submit_Change_Data","Запиши промените");
+define("_Upload_new_photo_or_change_old","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Delete_Photo","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Your_profile_has_been_updated","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Submit_Change_Data","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // Added by Martin Jursa, 26.04.2007 for pilot_profile and pilot_profile_edit
 //--------------------------------------------
-define("_Sex", "Пол");
-define("_Login_Stuff", "Промени данни за достъп (Login)");
-define("_PASSWORD_CONFIRMATION", "Потвърди парола");
-define("_EnterPasswordOnlyToChange", "Въведи парола само ако искаш да я промениш:");
+define("_Sex", "пїЅпїЅпїЅ");
+define("_Login_Stuff", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (Login)");
+define("_PASSWORD_CONFIRMATION", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_EnterPasswordOnlyToChange", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:");
 
-define("_PwdAndConfDontMatch", "Паролата и потвърждението и са различни.");
-define("_PwdTooShort", "Паролата е твърде кратка. Трябва да е с поне $passwordMinLength символа.");
-define("_PwdConfEmpty", "паролата не е потвърдена.");
-define("_PwdChanged", "Паролата беше променена.");
-define("_PwdNotChanged", "Паролата НЕ Е променена.");
-define("_PwdChangeProblem", "Появи се проблем при смяна на паролата.");
+define("_PwdAndConfDontMatch", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PwdTooShort", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅ $passwordMinLength пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PwdConfEmpty", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PwdChanged", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PwdNotChanged", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_PwdChangeProblem", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
 
-define("_EmailEmpty", "попълни e-mail адрес");
-define("_EmailInvalid", "e-mail адресът е невалиден.");
-define("_EmailSaved", "email адресът е записан");
-define("_EmailNotSaved", "e-mail адресът не е записан.");
-define("_EmailSaveProblem", "Появи се проблем при записване на  e-mail адреса.");
+define("_EmailEmpty", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ e-mail пїЅпїЅпїЅпїЅпїЅ");
+define("_EmailInvalid", "e-mail пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_EmailSaved", "email пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_EmailNotSaved", "e-mail пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_EmailSaveProblem", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ  e-mail пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
 // End 26.04.2007
 
@@ -400,76 +400,76 @@ define("_EmailSaveProblem", "Появи се проблем при записване на  e-mail адреса.")
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
-define("_hh_mm","чч:мм");
+define("_hh_mm","пїЅпїЅ:пїЅпїЅ");
 
-define("_Totals","Обобщение");
-define("_First_flight_logged","Първи регистриран полет");
-define("_Last_flight_logged","Последен регистриран полет");
-define("_Flying_period_covered","Период на полетите");
-define("_Total_Distance","Сумарно разстояние");
-define("_Total_OLC_Score","Сумарни OLC точки");
-define("_Total_Hours_Flown","Сумарен нальот");
-define("_Total_num_of_flights","Сумарно количество полетов ");
+define("_Totals","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_First_flight_logged","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Last_flight_logged","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Flying_period_covered","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Total_Distance","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Total_OLC_Score","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅ");
+define("_Total_Hours_Flown","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Total_num_of_flights","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
 
-define("_Personal_Bests","Лични рекорди");
-define("_Best_Open_Distance","Най-добро линейно разстояние");
-define("_Best_FAI_Triangle","Най-добър FAI триъгълник");
-define("_Best_Free_Triangle","Най-добър свободен триъгълник");
-define("_Longest_Flight","Най-дълъг полет");
-define("_Best_OLC_score","Най-добра OLC оценка");
-define("_Absolute_Height_Record","Абсолютен височинен рекорд");
-define("_Altitute_gain_Record","Рекорд за набор на височина");
+define("_Personal_Bests","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Best_Open_Distance","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Best_FAI_Triangle","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ FAI пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Best_Free_Triangle","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Longest_Flight","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Best_OLC_score","пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ OLC пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Absolute_Height_Record","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Altitute_gain_Record","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Mean_values","Средни стойности");
-define("_Mean_distance_per_flight","Средно разстояние за полет");
-define("_Mean_flights_per_Month","Среден брой полети за месец");
-define("_Mean_distance_per_Month","Средно разстояние за месец");
-define("_Mean_duration_per_Month","Среднен нальот за месец");
-define("_Mean_duration_per_flight","Среден нальот за полет");
-define("_Mean_flights_per_Year","Среден брой полети за година");
-define("_Mean_distance_per_Year","Средно разстояние за година");
-define("_Mean_duration_per_Year","Среден нальот за година");
+define("_Mean_values","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_distance_per_flight","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_flights_per_Month","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_distance_per_Month","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_duration_per_Month","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_duration_per_flight","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_flights_per_Year","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_distance_per_Year","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Mean_duration_per_Year","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Виж полети близо до тази точка");
-define("_Waypoint_Name","Име на точката");
-define("_Navigate_with_Google_Earth","Разгледай през Google Earth");
-define("_See_it_in_Google_Maps","Виж в Google Maps");
-define("_See_it_in_MapQuest","Виж в MapQuest");
-define("_COORDINATES","Координати");
-define("_FLIGHTS","Полети");
-define("_SITE_RECORD","Рекорд за мястото");
-define("_SITE_INFO","Информация за мястото");
-define("_SITE_REGION","Регион");
-define("_SITE_LINK","Връзки към повече информация");
-define("_SITE_DESCR","Описание на място / старт");
+define("_See_flights_near_this_point","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Waypoint_Name","пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Navigate_with_Google_Earth","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ Google Earth");
+define("_See_it_in_Google_Maps","пїЅпїЅпїЅ пїЅ Google Maps");
+define("_See_it_in_MapQuest","пїЅпїЅпїЅ пїЅ MapQuest");
+define("_COORDINATES","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHTS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_RECORD","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_INFO","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_REGION","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_LINK","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_DESCR","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","Виж още подробности");
-define("_KML_file_made_by","KML файла е създаден от");
+define("_See_more_details","пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_KML_file_made_by","KML пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ");
 
 //--------------------------------------------
 // add_waypoint.php
 //--------------------------------------------
-define("_ADD_WAYPOINT","Регистрирай старт");
-define("_WAYPOINT_ADDED","Старта е регистриран");
+define("_ADD_WAYPOINT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_WAYPOINT_ADDED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Рекорд на мястото<br>(открита дистанция)");
+define("_SITE_RECORD_OPEN_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ<br>(пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)");
 	
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Тип Крило");
+define("_GLIDER_TYPE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Парапланер',2=>'Делтапланер FAI1',4=>'Твърдо крило FAI5',8=>'Планер');
+	$gliderCatList=array(1=>'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',2=>'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ FAI1',4=>'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ FAI5',8=>'пїЅпїЅпїЅпїЅпїЅпїЅ');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -479,7 +479,7 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Спорт",2=>"Прототип",3=>"Тандем");
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"пїЅпїЅпїЅпїЅпїЅ",2=>"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",3=>"пїЅпїЅпїЅпїЅпїЅпїЅ");
 	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
 	global $CONF;
 	foreach($CONF['gliderClasses'] as $i=>$gClass) {
@@ -496,7 +496,7 @@ setClassList();
 //--------------------------------------------
 function setXCtypesList() {
 	global  $CONF_xc_types,$xcTypesList;
-	$xcTypesList=array(1=>"Прелет през 3 точки",2=>"Отворен триъгълник",4=>"Затворен триъгълник");
+	$xcTypesList=array(1=>"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅ",2=>"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",4=>"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
 }
 setXCtypesList();
@@ -505,172 +505,172 @@ setXCtypesList();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","Вашите настройки са обновени");
+define("_Your_settings_have_been_updated","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_THEME","Тема");
-define("_LANGUAGE","Език");
-define("_VIEW_CATEGORY","Виж категории");
-define("_VIEW_COUNTRY","Виж страни");
-define("_UNITS_SYSTEM" ,"Измервателна система");
-define("_METRIC_SYSTEM","Метрична (км, м)");
-define("_IMPERIAL_SYSTEM","Американска (мили, футове)");
-define("_ITEMS_PER_PAGE","брой записи за страница");
+define("_THEME","пїЅпїЅпїЅпїЅ");
+define("_LANGUAGE","пїЅпїЅпїЅпїЅ");
+define("_VIEW_CATEGORY","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_VIEW_COUNTRY","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UNITS_SYSTEM" ,"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_METRIC_SYSTEM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ, пїЅ)");
+define("_IMPERIAL_SYSTEM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ)");
+define("_ITEMS_PER_PAGE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 define("_MI","mi");
-define("_KM","км");
+define("_KM","пїЅпїЅ");
 define("_FT","ft");
-define("_M","м");
+define("_M","пїЅ");
 define("_MPH","mph");
-define("_KM_PER_HR","км/ч");
+define("_KM_PER_HR","пїЅпїЅ/пїЅ");
 define("_FPM","fpm");
-define("_M_PER_SEC","м/с");
+define("_M_PER_SEC","пїЅ/пїЅ");
 
 //--------------------------------------------
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","Целия свят");
-define("_National_XC_Leagues_for","Национални XC лиги за");
-define("_Flights_per_Country","Полети за страна");
-define("_Takeoffs_per_Country","Места за летене за страна");
-define("_INDEX_HEADER","Добре дошли в Leonardo XC лига");
-define("_INDEX_MESSAGE","Може да използвате &quot;Главно Меню&quot; за навигация или изпозвайте най-популярните връзки долу");
+define("_WORLD_WIDE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_National_XC_Leagues_for","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ XC пїЅпїЅпїЅпїЅ пїЅпїЅ");
+define("_Flights_per_Country","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Takeoffs_per_Country","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_INDEX_HEADER","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ Leonardo XC пїЅпїЅпїЅпїЅ");
+define("_INDEX_MESSAGE","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ &quot;пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ&quot; пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","Първа (Обща) Страница");
-define("_Display_ALL","Покажи ВСИЧКИ");
-define("_Display_NONE","Не показвай НИКОЙ");
-define("_Reset_to_default_view","Възстанови стандартен изглед");
-define("_No_Club","Без Клуб");
-define("_This_is_the_URL_of_this_page","Това е URL адреса на тази страница");
-define("_All_glider_types","Всички видове крила");
+define("_MENU_SUMMARY_PAGE","пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Display_ALL","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Display_NONE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Reset_to_default_view","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_No_Club","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_This_is_the_URL_of_this_page","пїЅпїЅпїЅпїЅ пїЅ URL пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_All_glider_types","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_MENU_SITES_GUIDE","Справочник за местата");
-define("_Site_Guide","Справочник за местата");
+define("_MENU_SITES_GUIDE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Site_Guide","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Search_Options","Опции за търсене");
-define("_Below_is_the_list_of_selected_sites","Отдолу е списъка с избрани места");
-define("_Clear_this_list","Изчисти този списък");
-define("_See_the_selected_sites_in_Google_Earth","Виж избраните места в Google Earth");
-define("_Available_Takeoffs","Налични стартове");
-define("_Search_site_by_name","Търси място според името");
-define("_give_at_least_2_letters","дай поне 2 букви");
-define("_takeoff_move_instructions_1","Може да преместите всички налични стартове в избрания списък от десния панел, като използвате >> ");
-define("_Takeoff_Details","Подробности за старта");
-
-
-define("_Takeoff_Info","Информация за старта");
-define("_XC_Info","XC инфо");
-define("_Flight_Info","Инфо за полета");
-
-define("_MENU_LOGOUT","Излез");
-define("_MENU_LOGIN","Влез");
-define("_MENU_REGISTER","Регистрирай потребител");
-define("_PROJECT_HELP","Помощ");
-define("_PROJECT_NEWS","Новини");
-define("_PROJECT_RULES","Правила");
+define("_Search_Options","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Below_is_the_list_of_selected_sites","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Clear_this_list","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_See_the_selected_sites_in_Google_Earth","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ Google Earth");
+define("_Available_Takeoffs","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Search_site_by_name","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_give_at_least_2_letters","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅпїЅпїЅ");
+define("_takeoff_move_instructions_1","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ >> ");
+define("_Takeoff_Details","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
+define("_Takeoff_Info","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_XC_Info","XC пїЅпїЅпїЅпїЅ");
+define("_Flight_Info","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Africa","Aфрика");
-define("_Europe","Eвропа");
-define("_Asia","Aзия");
-define("_Australia","Aвстралия");
-define("_North_Central_America","Северна/Централна Америка");
-define("_South_America","Южна Америка");
-
-define("_Recent","От скоро");
+define("_MENU_LOGOUT","пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_LOGIN","пїЅпїЅпїЅпїЅ");
+define("_MENU_REGISTER","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_HELP","пїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_NEWS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_RULES","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
-define("_Unknown_takeoff","Непознат старт");
-define("_Display_on_Google_Earth","Покажи в Google Earth");
+
+define("_Africa","AпїЅпїЅпїЅпїЅпїЅ");
+define("_Europe","EпїЅпїЅпїЅпїЅпїЅ");
+define("_Asia","AпїЅпїЅпїЅ");
+define("_Australia","AпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_North_Central_America","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_South_America","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+
+define("_Recent","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+
+
+define("_Unknown_takeoff","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Display_on_Google_Earth","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ Google Earth");
 define("_Use_Man_s_Module","Use Man's Module");
-define("_Line_Color","Цвят линия");
-define("_Line_width","Дебелина на линия");
-define("_unknown_takeoff_tooltip_1","Този полет е от непознат старт");
-define("_unknown_takeoff_tooltip_2","ако знаете от кой старт е този полет, то моля го въведете!");
+define("_Line_Color","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Line_width","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_unknown_takeoff_tooltip_1","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_unknown_takeoff_tooltip_2","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!");
 
-define("_EDIT_WAYPOINT","Редактирай информация за старт");
-define("_DELETE_WAYPOINT","Изтрий точката на старта");
-define("_SUBMISION_DATE","Дата на публикуване"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","пъти виждан"); // the times that this flight havs been viewed
+define("_EDIT_WAYPOINT","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_DELETE_WAYPOINT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SUBMISION_DATE","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"); // the times that this flight havs been viewed
 
 
-define("_takeoff_add_help_1","Ако знаете повече информация за старта, можете да я въведете. Ако не сте сигурен може да затворите този прозорец");
-define("_takeoff_add_help_2","Ако стартът на вашия полет е един от 'непознатите стартове', то няма нужда да го въвеждате отново. Просто затворете този прозорец.");
-define("_takeoff_add_help_3","ако виждаш името на старта отдолу, натисни го за да попълни автоматично полетата в ляво.");
-define("_Takeoff_Name","Име на старта");
-define("_In_Local_Language","На местен език");
-define("_In_English","На английски");
+define("_takeoff_add_help_1","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_takeoff_add_help_2","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_takeoff_add_help_3","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ.");
+define("_Takeoff_Name","пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_In_Local_Language","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_In_English","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Моля, въведи име и парола за да влезеш.");
-define("_SEND_PASSWORD","Забравих си паролата");
-define("_ERROR_LOGIN","Въвели сте неправилни или неактивни потребителско име или парола.");
-define("_AUTO_LOGIN","Искам да влизам автоматично при всяко посещение");
-define("_USERNAME","Име");
-define("_PASSWORD","Парола");
-define("_PROBLEMS_HELP","Ако имате проблем с влизането, моля обърнете се към администратора");
+define("_ENTER_PASSWORD","пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_SEND_PASSWORD","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ERROR_LOGIN","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
+define("_AUTO_LOGIN","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_USERNAME","пїЅпїЅпїЅ");
+define("_PASSWORD","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROBLEMS_HELP","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_LOGIN_TRY_AGAIN","Натисни %sТук%s за да опиташ отново");
-define("_LOGIN_RETURN","Натисниk %sТук%s за да се върнеш към Началото");
+define("_LOGIN_TRY_AGAIN","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %sпїЅпїЅпїЅ%s пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_LOGIN_RETURN","пїЅпїЅпїЅпїЅпїЅпїЅпїЅk %sпїЅпїЅпїЅ%s пїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 // end 2007/02/20
 
-define("_Category","Категория");
-define("_MEMBER_OF","Член на");
-define("_MemberID","Членски номер/ID");
-define("_EnterID","Въведи номер/ID");
-define("_Clubs_Leagues","Клубове / Лиги");
-define("_Pilot_Statistics","Пилотска статистика");
-define("_National_Rankings","Национални класации");
+define("_Category","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MEMBER_OF","пїЅпїЅпїЅпїЅ пїЅпїЅ");
+define("_MemberID","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/ID");
+define("_EnterID","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/ID");
+define("_Clubs_Leagues","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅ");
+define("_Pilot_Statistics","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_National_Rankings","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
 
 
 // new on 2007/03/08
-define("_Select_Club","Избери Клуб");
-define("_Close_window","Затвори прозорец");
-define("_EnterID","Въведи номер/ID");
-define("_Club","Клуб");
-define("_Sponsor","Спонсор");
+define("_Select_Club","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Close_window","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_EnterID","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/ID");
+define("_Club","пїЅпїЅпїЅпїЅ");
+define("_Sponsor","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Към текущия месец');
-define('_Today_is','Днес е');
-define('_Wk','седмица');
-define('_Click_to_scroll_to_previous_month','Натиси за да отидеш към предишен месец. Задръж бутона на мишката за да превъртиш автоматично.');
-define('_Click_to_scroll_to_next_month','Натисни за да отидеш към следващия месец. Задръж бутона на мишката, за да превъртиш автоматично.');
-define('_Click_to_select_a_month','Натисни за да избереш месец.');
-define('_Click_to_select_a_year','Натисни за да избереш година.');
-define('_Select_date_as_date.','Избери [date] като дата.'); // do not replace [date], it will be replaced by date.
+define('_Go_To_Current_Month','пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_Today_is','пїЅпїЅпїЅпїЅ пїЅ');
+define('_Wk','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Click_to_scroll_to_previous_month','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
+define('_Click_to_scroll_to_next_month','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
+define('_Click_to_select_a_month','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
+define('_Click_to_select_a_year','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
+define('_Select_date_as_date.','пїЅпїЅпїЅпїЅпїЅпїЅ [date] пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.'); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
 
 
 // New on 2007/05/18 (alternative GUI_filter)
-define("_Filter_NoSelection", "Няма избор");
-define("_Filter_CurrentlySelected", "Текущ избор");
-define("_Filter_DialogMultiSelectInfo", "Натисни Ctrl за да избереш повече.");
+define("_Filter_NoSelection", "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_CurrentlySelected", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_DialogMultiSelectInfo", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Ctrl пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
-define('_Filter_FilterTitleIncluding', 'Само избрани [неща]');
-define('_Filter_FilterTitleExcluding', 'Изключи [неща]');
-define('_Filter_DialogTitleIncluding', 'Избери  [неща]');
-define('_Filter_DialogTitleExcluding', 'Избери [неща]');
+define('_Filter_FilterTitleIncluding', 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ [пїЅпїЅпїЅпїЅ]');
+define('_Filter_FilterTitleExcluding', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ [пїЅпїЅпїЅпїЅ]');
+define('_Filter_DialogTitleIncluding', 'пїЅпїЅпїЅпїЅпїЅпїЅ  [пїЅпїЅпїЅпїЅ]');
+define('_Filter_DialogTitleExcluding', 'пїЅпїЅпїЅпїЅпїЅпїЅ [пїЅпїЅпїЅпїЅ]');
 
-define("_Filter_Items_pilot", "пилоти");
-define("_Filter_Items_nacclub", "клубове");
-define("_Filter_Items_country", "страни");
-define("_Filter_Items_takeoff", "стартове");
+define("_Filter_Items_pilot", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Items_nacclub", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Items_country", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Items_takeoff", "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Filter_Button_Select", "Избери");
-define("_Filter_Button_Delete", "Изтрий");
-define("_Filter_Button_Accept", "Приеми селекцията");
-define("_Filter_Button_Cancel", "Откажи");
+define("_Filter_Button_Select", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Button_Delete", "пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Button_Accept", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Filter_Button_Cancel", "пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 # menu bar
-define("_MENU_FILTER_NEW","Филтър **НОВА ВЕРСИЯ**");
+define("_MENU_FILTER_NEW","пїЅпїЅпїЅпїЅпїЅпїЅ **пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ**");
 
 // end 2007/05/18
 
@@ -679,101 +679,101 @@ define("_MENU_FILTER_NEW","Филтър **НОВА ВЕРСИЯ**");
 
 // New on 2007/05/23
 // second menu NACCclub selection
-define("_ALL_NACCLUBS", "Всички Клубове");
+define("_ALL_NACCLUBS", "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 // Note to translators: use the placeholder $nacname in your translation as it is, don"t translate it
-define("_SELECT_NACCLUB", 'Избери [nacname]-Клуб');
+define("_SELECT_NACCLUB", 'пїЅпїЅпїЅпїЅпїЅпїЅ [nacname]-пїЅпїЅпїЅпїЅ');
 
 // pilot profile
-define("_FirstOlcYear", "Първа година участие в OLC");
-define("_FirstOlcYearComment", "Моля изберете годината на първото ви участие в кое да е OLC, не само това.<br/>This field is relevant for the &quot;newcomer&quot;-rankings.");
+define("_FirstOlcYear", "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ OLC");
+define("_FirstOlcYearComment", "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅ OLC, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.<br/>This field is relevant for the &quot;newcomer&quot;-rankings.");
 
 //end 2007/05/23
 
 // New on 2007/11/06
-define("_Select_Brand","Избери марка");
-define("_All_Brands","Всички марки");
-define("_DAY","ДЕН");
-define('_Glider_Brand','Марка крило');
-define('_Or_Select_from_previous','или избери от предишните');
+define("_Select_Brand","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_All_Brands","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_DAY","пїЅпїЅпїЅ");
+define('_Glider_Brand','пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_Or_Select_from_previous','пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
-define('_Explanation_AddToBookmarks_IE', 'Добави тези настройки на филтъра, към любимите / favourites');
-define('_Msg_AddToBookmarks_IE', 'Натисни тук, за да добавиш тези настройки на филтъра към твоите отметки / bookmarks.');
-define('_Explanation_AddToBookmarks_nonIE', '(Запиши тази връзка към твоите отметки / bookmarks.)');
-define('_Msg_AddToBookmarks_nonIE', 'За да запишеш тези настройки на филтъра, използвай Save to bookmarks в твоя браузър.');
+define('_Explanation_AddToBookmarks_IE', 'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ / favourites');
+define('_Msg_AddToBookmarks_IE', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ / bookmarks.');
+define('_Explanation_AddToBookmarks_nonIE', '(пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ / bookmarks.)');
+define('_Msg_AddToBookmarks_nonIE', 'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Save to bookmarks пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
 
-define('_PROJECT_HELP','Помощ');
-define('_PROJECT_NEWS','Новини');
-define('_PROJECT_RULES','Правила  2007');
-define('_PROJECT_RULES2','Правила 2008');
+define('_PROJECT_HELP','пїЅпїЅпїЅпїЅпїЅ');
+define('_PROJECT_NEWS','пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_PROJECT_RULES','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ  2007');
+define('_PROJECT_RULES2','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2008');
 
 //end 2007/11/06
-define('_MEAN_SPEED1','Средна скорост');
-define('_External_Entry','Външно въвеждане / Entry');
+define('_MEAN_SPEED1','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_External_Entry','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ / Entry');
 
 // New on 2007/11/25
-define('_Altitude','Височина');
-define('_Speed','Скорост');
-define('_Distance_from_takeoff','Разстояние от старта');
+define('_Altitude','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Speed','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Distance_from_takeoff','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
 
 // New on 2007/12/03
-define('_LAST_DIGIT','последна цифра');
+define('_LAST_DIGIT','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
 
-define('_Filter_Items_nationality','националност');
-define('_Filter_Items_server','сървър');
+define('_Filter_Items_nationality','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Filter_Items_server','пїЅпїЅпїЅпїЅпїЅпїЅ');
 
 // New on 2007/12/15
-define('_Ext_text1','Този полет първоначално е публикуван на ');
-define('_Ext_text2','Връзка към пълни полетни карти');
-define('_Ext_text3','Връзка към оригинален полет');
+define('_Ext_text1','пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ ');
+define('_Ext_text2','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_Ext_text3','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
 
 
 // New on 2008/2/15
 define('_Male_short','M');
-define('_Female_short','Ж');
-define('_Male','Мъж');
-define('_Female','Жена');
-define('_Pilot_Statistics','Статистики на пилота');
+define('_Female_short','пїЅ');
+define('_Male','пїЅпїЅпїЅ');
+define('_Female','пїЅпїЅпїЅпїЅ');
+define('_Pilot_Statistics','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
 
 
 // New on 2008/2/19
-define('_Altitude_Short','Вис');
-define("_Vario_Short","Варио");
-define("_Time_Short","Време");
-define("_Info","Инфо");
-define("_Control","Контрол");
+define('_Altitude_Short','пїЅпїЅпїЅ');
+define("_Vario_Short","пїЅпїЅпїЅпїЅпїЅ");
+define("_Time_Short","пїЅпїЅпїЅпїЅпїЅ");
+define("_Info","пїЅпїЅпїЅпїЅ");
+define("_Control","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Zoom_to_flight","Увеличи към полет");
-define("_Follow_Glider","Следвай планер");
-define("_Show_Task","Покажи задача");
-define("_Show_Airspace","Покажи въздушно пространство");
-define("_Thermals","Термики");
+define("_Zoom_to_flight","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Follow_Glider","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Show_Task","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Show_Airspace","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Thermals","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // New on 2008/06/04
-define("_Show_Optimization_details","Покажи оптимизирани детайли");
-define("_MENU_SEARCH_PILOTS","Търси");
+define("_Show_Optimization_details","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_SEARCH_PILOTS","пїЅпїЅпїЅпїЅпїЅ");
 
 //New on 2008/05/17
-define('_MemberID_Missing', 'Липсва твоя членски номер / ID');
-define('_MemberID_NotNumeric', 'Членския номер / ID трябва да е номер');
+define('_MemberID_Missing', 'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ / ID');
+define('_MemberID_NotNumeric', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ / ID пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ');
 
-define('_FLIGHTADD_CONFIRMATIONTEXT', 'Чрез публикуване на тази форма, аз потвърждавам че спазвам всички законови изисквания засягащи този полет.');
-define('_FLIGHTADD_IGC_MISSING', 'Моля, избери твоя .igc-file');
-define('_FLIGHTADD_IGCZIP_MISSING', 'Моля, избери zip-файла съдържащ твоя .igc-файл');
-define('_FLIGHTADD_CATEGORY_MISSING', 'Моля, избери категория');
-define('_FLIGHTADD_BRAND_MISSING', 'Моля, избери марката на твоето крило');
-define('_FLIGHTADD_GLIDER_MISSING', 'Моля, въведи типа на твоето крило');
-define('_YOU_HAVENT_ENTERED_GLIDER', 'Не сте въвели марка на крилото');
+define('_FLIGHTADD_CONFIRMATIONTEXT', 'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
+define('_FLIGHTADD_IGC_MISSING', 'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ .igc-file');
+define('_FLIGHTADD_IGCZIP_MISSING', 'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ zip-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ .igc-пїЅпїЅпїЅпїЅ');
+define('_FLIGHTADD_CATEGORY_MISSING', 'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_FLIGHTADD_BRAND_MISSING', 'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_FLIGHTADD_GLIDER_MISSING', 'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_YOU_HAVENT_ENTERED_GLIDER', 'пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
-define('_BRAND_NOT_IN_LIST', 'Марката не е в списъка');
+define('_BRAND_NOT_IN_LIST', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
 
 
 /*------------------------------------------------------------
 Durval Henke www.xcbrasil.org
 ------------------------------------------------------------*/
-define("_Email_new_password","<p align='justify'>Сървърът изпрати писмо на пилота с новата парола и активационен ключ</p> <p align='justify'>Моля, провери си пощенската кутия и следвай инструкциите</p>");
-define("_informed_user_not_found","Информираният потребител не е открит в нашата база данни");
-define("_impossible_to_gen_new_pass","<p align='justify'>Съжаляваме, но не е възможно да генерираме парола за вас сега, защото вече има заявка която ще изтече <b>%s</b>. Може да направите нова заявка само след изтичане на определеното време.</p><p align='justify'>Ако нямате достъп до писмото, то се свържете с администратора на сървъра</p>");
-define("_Password_subject_confirm","Писмо потвърждение (нова парола)");
+define("_Email_new_password","<p align='justify'>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ</p> <p align='justify'>пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</p>");
+define("_informed_user_not_found","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_impossible_to_gen_new_pass","<p align='justify'>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ <b>%s</b>. пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</p><p align='justify'>пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</p>");
+define("_Password_subject_confirm","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)");
 define("_request_key_not_found", "the request key that you have informed was not found!");
 define("_request_key_invalid", "request key that you have informed is invalid!"); 
 define("_Email_allready_yours","The informed email is allready yours, nothing to do");
@@ -898,24 +898,24 @@ Note: This is auto-response. Do not send any email to this email address
 
 
 // New on 2008/11/26
-define('_MENU_AREA_GUIDE','Справочник за областите');
-define('_All_XC_types','_Всички XC типове');
-define('_xctype','XC типове');
+define('_MENU_AREA_GUIDE','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_All_XC_types','_пїЅпїЅпїЅпїЅпїЅпїЅ XC пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_xctype','XC пїЅпїЅпїЅпїЅпїЅпїЅ');
 
 
-define('_Flying_Areas','Летателни области');
-define('_Name_of_Area','Име на областа');
-define('_See_area_details','Виж подробности и стартове за тази област');
+define('_Flying_Areas','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Name_of_Area','пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_See_area_details','пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
 
-define('_choose_ge_module','Моля, избери модул за ползване <BR>за Google Earth Display');
-define('_ge_module_advanced_1','(най-много подробности, по-голям размер)');
-define('_ge_module_advanced_2','(много подробности, голям размер) ');
-define('_ge_module_Simple','Simple (само полет, малък размер)');
+define('_choose_ge_module','пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <BR>пїЅпїЅ Google Earth Display');
+define('_ge_module_advanced_1','(пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)');
+define('_ge_module_advanced_2','(пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ) ');
+define('_ge_module_Simple','Simple (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)');
 
-define('_Pilot_search_instructions','Въведи поне 3 букви от Първото или Последното име');
+define('_Pilot_search_instructions','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 3 пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
 
-define('_All_classes','Всички класове');
-define('_Class','Клас');
+define('_All_classes','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Class','пїЅпїЅпїЅпїЅ');
 
 /*
 
@@ -931,8 +931,8 @@ define('XC Score
 */
 
 // 2009-03-20 filter for photos
-define("_Photos_filter_off","Със/без снимки");
-define("_Photos_filter_on","Само със снимки");
+define("_Photos_filter_off","пїЅпїЅпїЅ/пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Photos_filter_on","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
 define("_SEASON","Season"); 
@@ -950,4 +950,6 @@ define("_Loading_thermals","Loading Thermals");
 define("_Layers","Layers"); 
 define("_Select_Area","Select Area"); 
 
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
