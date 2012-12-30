@@ -18,9 +18,9 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Tammikuu','Helmikuu','Maaliskuu','Huhtikuu','Toukokuu','Kesäkuu',
-					'Heinäkuu','Elokuu','Syyskuu','Lokakuu','Marraskuu','Joulukuu');
-	$monthListShort=array('TAMMI','HELMI','MAALIS','HUHTI','TOUKO','KESÄ','HEINÄ','ELO','SYYS','LOKA','MARRAS','JOULU');
+	$monthList=array('Tammikuu','Helmikuu','Maaliskuu','Huhtikuu','Toukokuu','Kesï¿½kuu',
+					'Heinï¿½kuu','Elokuu','Syyskuu','Lokakuu','Marraskuu','Joulukuu');
+	$monthListShort=array('TAMMI','HELMI','MAALIS','HUHTI','TOUKO','KESï¿½','HEINï¿½','ELO','SYYS','LOKA','MARRAS','JOULU');
 	$weekdaysList=array('Ma','Ti','Ke','To','Pe','La','Su') ;
 }
 setMonths();
@@ -37,27 +37,27 @@ define("_SUBMIT_FLIGHT_ERROR","Lennon tallentamisessa tapahtui virhe");
 // list_pilots()
 define("_NUM","#");
 define("_PILOT","Pilotti");
-define("_NUMBER_OF_FLIGHTS","Matkalentojen lukumäärä");
-define("_BEST_DISTANCE","Matkaennätys");
+define("_NUMBER_OF_FLIGHTS","Matkalentojen lukumï¿½ï¿½rï¿½");
+define("_BEST_DISTANCE","Matkaennï¿½tys");
 define("_MEAN_KM","Matkan keskipituus # km per lento");
-define("_TOTAL_KM","Matkojen pituus yhteensä");
-define("_TOTAL_DURATION_OF_FLIGHTS","Lentoaika yhteensä");
-define("_MEAN_DURATION","Keskimääräinen lentoaika");
-define("_TOTAL_OLC_KM","OLC matka yhteensä");
+define("_TOTAL_KM","Matkojen pituus yhteensï¿½");
+define("_TOTAL_DURATION_OF_FLIGHTS","Lentoaika yhteensï¿½");
+define("_MEAN_DURATION","Keskimï¿½ï¿½rï¿½inen lentoaika");
+define("_TOTAL_OLC_KM","OLC matka yhteensï¿½");
 define("_TOTAL_OLC_SCORE","OLC yhteispisteet");
-define("_BEST_OLC_SCORE","OLC piste-ennätys");
+define("_BEST_OLC_SCORE","OLC piste-ennï¿½tys");
 define("_From","Alkaen");
 
 // list_flights()
 define("_DURATION_HOURS_MIN","Lentoaika (h:m)");
-define("_SHOW","Näytä");
+define("_SHOW","Nï¿½ytï¿½");
 
 // show flight
 define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Lento aktivoituu 1-2 minuutin kuluessa. ");
-define("_TRY_AGAIN","Yritä myöhemmin uudestaan.");
+define("_TRY_AGAIN","Yritï¿½ myï¿½hemmin uudestaan.");
 define("_SEASON","KAUSI");
-define("_TAKEOFF_LOCATION","Lähtöpaikka");
-define("_TAKEOFF_TIME","Lähtöaika");
+define("_TAKEOFF_LOCATION","Lï¿½htï¿½paikka");
+define("_TAKEOFF_TIME","Lï¿½htï¿½aika");
 define("_LANDING_LOCATION","Laskupaikka");
 define("_LANDING_TIME","Laskuaika");
 define("_OPEN_DISTANCE","Vapaa matka");
@@ -70,20 +70,20 @@ define("_MAX_VARIO","Suurin laskeva");
 define("_MEAN_SPEED","Keskinopeus");
 define("_MIN_VARIO","Suurin nouseva");
 define("_MAX_ALTITUDE","Suurin korkeus (ASL)");
-define("_TAKEOFF_ALTITUDE","Lähtökorkeus (ASL)");
+define("_TAKEOFF_ALTITUDE","Lï¿½htï¿½korkeus (ASL)");
 define("_MIN_ALTITUDE","Pienin korkeus (ASL)");
-define("_ALTITUDE_GAIN","Korkeuden lisäys");
+define("_ALTITUDE_GAIN","Korkeuden lisï¿½ys");
 define("_FLIGHT_FILE","Lennon tiedosto");
 define("_COMMENTS","Huomautuksia");
-define("_RELEVANT_PAGE","Lisätietoja (URL)");
+define("_RELEVANT_PAGE","Lisï¿½tietoja (URL)");
 define("_GLIDER","Liidin");
 define("_PHOTOS","Valokuvia");
-define("_MORE_INFO","Lisätietoja");
-define("_UPDATE_DATA","Päivitä tiedot");
-define("_UPDATE_MAP","Päivitä kartta");
-define("_UPDATE_3D_MAP","Päivitä 3D kartta");
-define("_UPDATE_GRAPHS","Päivitä kaaviot");
-define("_UPDATE_SCORE","Päivitä pisteet");
+define("_MORE_INFO","Lisï¿½tietoja");
+define("_UPDATE_DATA","Pï¿½ivitï¿½ tiedot");
+define("_UPDATE_MAP","Pï¿½ivitï¿½ kartta");
+define("_UPDATE_3D_MAP","Pï¿½ivitï¿½ 3D kartta");
+define("_UPDATE_GRAPHS","Pï¿½ivitï¿½ kaaviot");
+define("_UPDATE_SCORE","Pï¿½ivitï¿½ pisteet");
 
 define("_TAKEOFF_COORDS","Lentopaikan koordinaatit:");
 define("_NO_KNOWN_LOCATIONS","Ei tunnettuja kohteita!");
@@ -93,7 +93,7 @@ define("_FLYING_AREA_INFO","Tietoja lentoalueesta");
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","Palaa ylös");
+define("_RETURN_TO_TOP","Palaa ylï¿½s");
 // list flight
 define("_PILOT_FLIGHTS","Lennot");
 
@@ -110,40 +110,40 @@ define("_SORTED_BY","Lajittele:");
 define("_ALL_YEARS","Kaikki vuodet");
 define("_SELECT_YEAR_MONTH","Valitse vuosi (ja kuukausi)");
 define("_ALL","Kaikki");
-define("_ALL_PILOTS","Näytä kaikki pilotit");
-define("_ALL_TAKEOFFS","Näytä kaikki lentopaikat");
+define("_ALL_PILOTS","Nï¿½ytï¿½ kaikki pilotit");
+define("_ALL_TAKEOFFS","Nï¿½ytï¿½ kaikki lentopaikat");
 define("_ALL_THE_YEAR","Koko vuosi");
 
 // add flight
 define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Lennon tiedosto puuttuu");
-define("_NO_SUCH_FILE","Tiedostoa ei löydy palvelimelta");
-define("_FILE_DOESNT_END_IN_IGC","Tiedostopäätteen pitää olla .igc");
+define("_NO_SUCH_FILE","Tiedostoa ei lï¿½ydy palvelimelta");
+define("_FILE_DOESNT_END_IN_IGC","Tiedostopï¿½ï¿½tteen pitï¿½ï¿½ olla .igc");
 define("_THIS_ISNT_A_VALID_IGC_FILE","Tiedosto ei ole validi .igc tiedosto");
-define("_THERE_IS_SAME_DATE_FLIGHT","Lento jolla on sama päivämäärä ja kellonaika on jo tallennettu");
+define("_THERE_IS_SAME_DATE_FLIGHT","Lento jolla on sama pï¿½ivï¿½mï¿½ï¿½rï¿½ ja kellonaika on jo tallennettu");
 define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Jos haluat korvata sen uudella tiedostolla");
 define("_DELETE_THE_OLD_ONE","niin poista ensin vanha tiedosto");
 define("_THERE_IS_SAME_FILENAME_FLIGHT","Lento jolla on sama tiedostonimi on jo tallennettu");
-define("_CHANGE_THE_FILENAME","Jos tämä on eri lento, niin vaihda tiedoston nimi ja yritä tallennusta uudestaan");
+define("_CHANGE_THE_FILENAME","Jos tï¿½mï¿½ on eri lento, niin vaihda tiedoston nimi ja yritï¿½ tallennusta uudestaan");
 define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Lentosi on tallennettu");
-define("_PRESS_HERE_TO_VIEW_IT","Paina tästä katsoaksesi lentoa");
+define("_PRESS_HERE_TO_VIEW_IT","Paina tï¿½stï¿½ katsoaksesi lentoa");
 define("_WILL_BE_ACTIVATED_SOON","(lento aktivoituu 1-2 minuutin kuluessa)");
 
 // add_from_zip
 define("_SUBMIT_MULTIPLE_FLIGHTS","Tallenna useita lentoja");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Vain IGC tiedostot käsitellään");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Vain IGC tiedostot kï¿½sitellï¿½ï¿½n");
 define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Tallenna ZIP tiedosto<br>jossa lennot ovat");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Paina tästä tallentaaksesi lennot");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Paina tï¿½stï¿½ tallentaaksesi lennot");
 
-define("_FILE_DOESNT_END_IN_ZIP","Tiedostopäätteen pitää olla .zip");
+define("_FILE_DOESNT_END_IN_ZIP","Tiedostopï¿½ï¿½tteen pitï¿½ï¿½ olla .zip");
 define("_ADDING_FILE","Tiedostoa tallennetaan");
 define("_ADDED_SUCESSFULLY","Tiedosto tallennettu");
 define("_PROBLEM","Ongelmatilanne");
-define("_TOTAL","Yhteensä ");
-define("_IGC_FILES_PROCESSED","tiedostoa on käsitelty");
+define("_TOTAL","Yhteensï¿½ ");
+define("_IGC_FILES_PROCESSED","tiedostoa on kï¿½sitelty");
 define("_IGC_FILES_SUBMITED","lentoa on tallennettu");
 
 // info
-define("_DEVELOPMENT","Kehittänyt");
+define("_DEVELOPMENT","Kehittï¿½nyt");
 define("_ANDREADAKIS_MANOLIS","Andreadakis Manolis");
 define("_PROJECT_URL","Projektin sivut");
 define("_VERSION","Versio");
@@ -151,8 +151,8 @@ define("_MAP_CREATION","Karttojen luonti");
 define("_PROJECT_INFO","Tietoa projektista");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Päävalikko");
-define("_MENU_DATE","Valitse päivä");
+define("_MENU_MAIN_MENU","Pï¿½ï¿½valikko");
+define("_MENU_DATE","Valitse pï¿½ivï¿½");
 define("_MENU_COUNTRY","Valitse maa");
 define("_MENU_XCLEAGUE","XC Liiga");
 define("_MENU_ADMIN","Admin");
@@ -161,9 +161,9 @@ define("_MENU_COMPETITION_LEAGUE","Liiga - kaikki luokat");
 define("_MENU_OLC","OLC");
 define("_MENU_OPEN_DISTANCE","Vapaa matka");
 define("_MENU_DURATION","Lentoaika");
-define("_MENU_ALL_FLIGHTS","Näytä kaikki lennot");
-define("_MENU_FLIGHTS","Näytä lennot");
-define("_MENU_TAKEOFFS","Näytä lentopaikat");
+define("_MENU_ALL_FLIGHTS","Nï¿½ytï¿½ kaikki lennot");
+define("_MENU_FLIGHTS","Nï¿½ytï¿½ lennot");
+define("_MENU_TAKEOFFS","Nï¿½ytï¿½ lentopaikat");
 define("_MENU_FILTER","Valinnat");
 define("_MENU_MY_FLIGHTS","Omat lennot");
 define("_MENU_MY_PROFILE","Oma profiili");
@@ -171,32 +171,32 @@ define("_MENU_MY_STATS","Omat tilastot");
 define("_MENU_MY_SETTINGS","Omat asetukset"); 
 define("_MENU_SUBMIT_FLIGHT","Tallenna lento");
 define("_MENU_SUBMIT_FROM_ZIP","Tallenna useita lentoja");
-define("_MENU_SHOW_PILOTS","Näytä pilotit");
-define("_MENU_SHOW_LAST_ADDED","Näytä viimeksi tallennetut");
+define("_MENU_SHOW_PILOTS","Nï¿½ytï¿½ pilotit");
+define("_MENU_SHOW_LAST_ADDED","Nï¿½ytï¿½ viimeksi tallennetut");
 define("_FLIGHTS_STATS","Lentotilastot");
 
 define("_SELECT_YEAR","Valitse vuosi");
 define("_SELECT_MONTH","Valitse kuukausi");
-define("_ALL_COUNTRIES","Näytä kaikki maat");
+define("_ALL_COUNTRIES","Nï¿½ytï¿½ kaikki maat");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","Kaikki yhteensä");
+define("_ALL_TIMES","Kaikki yhteensï¿½");
 define("_NUMBER_OF_FLIGHTS","Lentojen lkm");
-define("_TOTAL_DISTANCE","Matkat yhteensä");
-define("_TOTAL_DURATION","Lentoaika yhteensä");
+define("_TOTAL_DISTANCE","Matkat yhteensï¿½");
+define("_TOTAL_DURATION","Lentoaika yhteensï¿½");
 define("_BEST_OPEN_DISTANCE","Pisin matka");
-define("_TOTAL_OLC_DISTANCE","OLC matka yhteensä");
-define("_TOTAL_OLC_SCORE","OLC pisteet yhteensä");
+define("_TOTAL_OLC_DISTANCE","OLC matka yhteensï¿½");
+define("_TOTAL_OLC_SCORE","OLC pisteet yhteensï¿½");
 define("_BEST_OLC_SCORE","Parhaat OLC pisteet");
-define("_MEAN_DURATION","Keskimääräinen lentoaika");
-define("_MEAN_DISTANCE","Keskimääräinen matka");
+define("_MEAN_DURATION","Keskimï¿½ï¿½rï¿½inen lentoaika");
+define("_MEAN_DISTANCE","Keskimï¿½ï¿½rï¿½inen matka");
 define("_PILOT_STATISTICS_SORT_BY","Pilotit - Lajittele");
-define("_CATEGORY_FLIGHT_NUMBER","Lentojen lukumäärän mukaan");
+define("_CATEGORY_FLIGHT_NUMBER","Lentojen lukumï¿½ï¿½rï¿½n mukaan");
 define("_CATEGORY_TOTAL_DURATION","Lentojen yhteisajan mukaan");
 define("_CATEGORY_OPEN_DISTANCE","Matkan pituuden mukaan");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Pilotteja ei löytynyt");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Pilotteja ei lï¿½ytynyt");
 
 	
 //--------------------------------------------
@@ -218,9 +218,9 @@ define("_LEAGUE_RESULTS","Liigan tulokset");
 define("_N_BEST_FLIGHTS"," parasta lentoa");
 define("_OLC","OLC");
 define("_OLC_TOTAL_SCORE","OLC yhteispisteet");
-define("_KILOMETERS","Kilometriä");
-define("_TOTAL_ALTITUDE_GAIN","Korkeuden lisäys yhteensä");
-define("_TOTAL_KM","Matka yhteensä");
+define("_KILOMETERS","Kilometriï¿½");
+define("_TOTAL_ALTITUDE_GAIN","Korkeuden lisï¿½ys yhteensï¿½");
+define("_TOTAL_KM","Matka yhteensï¿½");
 
 //--------------------------------------------
 // filter.php
@@ -232,17 +232,17 @@ define("_OR","tai");
 define("_AND","ja");
 define("_FILTER_PAGE_TITLE","Valitse lennot");
 define("_RETURN_TO_FLIGHTS","Palaa lentoihin");
-define("_THE_FILTER_IS_ACTIVE","Valinnat päällä");
-define("_THE_FILTER_IS_INACTIVE","Valinnat pois päältä");
-define("_SELECT_DATE","Valitse päivä");
-define("_SHOW_FLIGHTS","Näytä lennot");
+define("_THE_FILTER_IS_ACTIVE","Valinnat pï¿½ï¿½llï¿½");
+define("_THE_FILTER_IS_INACTIVE","Valinnat pois pï¿½ï¿½ltï¿½");
+define("_SELECT_DATE","Valitse pï¿½ivï¿½");
+define("_SHOW_FLIGHTS","Nï¿½ytï¿½ lennot");
 define("_ALL2","Kaikki");
 define("_WITH_YEAR","Vuodesta");
 define("_MONTH","Kuukausi");
 define("_YEAR","Vuosi");
 define("_FROM","Alkaen");
 define("_from","alkaen");
-define("_TO","Päättyen");
+define("_TO","Pï¿½ï¿½ttyen");
 define("_SELECT_PILOT","Valitse pilotti");
 define("_THE_PILOT","Pilotti");
 define("_THE_TAKEOFF","Lentopaikka");
@@ -255,7 +255,7 @@ define("_LINEAR_DISTANCE_SHOULD_BE","Vapaa matka");
 define("_OLC_DISTANCE_SHOULD_BE","OLC matka");
 define("_OLC_SCORE_SHOULD_BE","OLC pisteet");
 define("_DURATION_SHOULD_BE","Lentoaika");
-define("_ACTIVATE_CHANGE_FILTER","Valinnat päälle");
+define("_ACTIVATE_CHANGE_FILTER","Valinnat pï¿½ï¿½lle");
 define("_DEACTIVATE_FILTER","Valinnat pois");
 define("_HOURS","tuntia");
 define("_MINUTES","minuuttia");
@@ -270,15 +270,15 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Tallenna<br>lennon IGC tiedosto");
 define("_NOTE_TAKEOFF_NAME","Merkitse lentopaikan nimi, sijainti ja maa");
 define("_COMMENTS_FOR_THE_FLIGHT","Huomautuksia");
 define("_PHOTO","Kuva");
-define("_PHOTOS_GUIDELINES","Kuvien tulee olla jpg muodossa ja pienempiä kuin ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Paina tästä tallentaaksesi lennon");
+define("_PHOTOS_GUIDELINES","Kuvien tulee olla jpg muodossa ja pienempiï¿½ kuin ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Paina tï¿½stï¿½ tallentaaksesi lennon");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Haluatko tallentaa useita lentoja kerrallaan?");
-define("_PRESS_HERE","Paina tästä");
+define("_PRESS_HERE","Paina tï¿½stï¿½");
 
-define("_IS_PRIVATE","Älä julkaise");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Älä julkaise");
-define("_INSERT_FLIGHT_AS_USER_ID","Tallenna lento käyttäjätunnuksella");
-define("_FLIGHT_IS_PRIVATE","Älä julkaise");
+define("_IS_PRIVATE","ï¿½lï¿½ julkaise");
+define("_MAKE_THIS_FLIGHT_PRIVATE","ï¿½lï¿½ julkaise");
+define("_INSERT_FLIGHT_AS_USER_ID","Tallenna lento kï¿½yttï¿½jï¿½tunnuksella");
+define("_FLIGHT_IS_PRIVATE","ï¿½lï¿½ julkaise");
 
 //--------------------------------------------
 // edit_flight.php
@@ -288,7 +288,7 @@ define("_CHANGE_FLIGHT_DATA","Muuta lennon tietoja");
 define("_IGC_FILE_OF_THE_FLIGHT","Lennon IGC tiedosto");
 define("_DELETE_PHOTO","Poista");
 define("_NEW_PHOTO","uusi kuva");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Paina tästä muuttaaksesi lennon tietoja");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Paina tï¿½stï¿½ muuttaaksesi lennon tietoja");
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","Muutokset tallennettu");
 define("_RETURN_TO_FLIGHT","Palaa takaisin lennon tietoihin");
 
@@ -309,16 +309,16 @@ define("_back_to_flights","palaa lentoihin");
 define("_pilot_stats","pilotin tilastot");
 define("_edit_profile","muuta tietoja");
 define("_flights_stats","lentojen tilastot");
-define("_View_Profile","Näytä tiedot");
+define("_View_Profile","Nï¿½ytï¿½ tiedot");
 
-define("_Personal_Stuff","Henkilötiedot");
+define("_Personal_Stuff","Henkilï¿½tiedot");
 define("_First_Name","Etunimi");
 define("_Last_Name","Sukunimi");
-define("_Birthdate","Syntymäaika");
+define("_Birthdate","Syntymï¿½aika");
 define("_dd_mm_yy","pp.kk.vv");
-define("_pilot_email","Sähköpostiosoite");
+define("_pilot_email","Sï¿½hkï¿½postiosoite");
 define("_Sign","Horoskooppimerkki");
-define("_Marital_Status","Siviilisääty");
+define("_Marital_Status","Siviilisï¿½ï¿½ty");
 define("_Occupation","Ammatti");
 define("_Web_Page","Web sivu");
 define("_N_A","N/A");
@@ -326,17 +326,17 @@ define("_Other_Interests","Muut kiinnostuksen kohteet");
 define("_Photo","Kuva");
 
 define("_Flying_Stuff","Lentohistoria");
-define("_note_place_and_date","lisää aika ja paikka tarpeen mukaan");
+define("_note_place_and_date","lisï¿½ï¿½ aika ja paikka tarpeen mukaan");
 define("_Flying_Since","Aloittanut ilmailun");
 define("_Pilot_Licence","Lentolupakirja");
 define("_Paragliding_training","Koulutus liitimelle");
-define("_Favorite_Location","Mieluiten lennän (paikka)");
-define("_Usual_Location","Yleensä lennän (paikka)");
+define("_Favorite_Location","Mieluiten lennï¿½n (paikka)");
+define("_Usual_Location","Yleensï¿½ lennï¿½n (paikka)");
 define("_Best_Flying_Memory","Paras lentomuistoni");
 define("_Worst_Flying_Memory","Huonoin lentomuistoni");
-define("_Personal_Distance_Record","Matkaennätys");
-define("_Personal_Height_Record","Oma korkeusennätys");
-define("_Hours_Flown","Tiimaa yhteensä");
+define("_Personal_Distance_Record","Matkaennï¿½tys");
+define("_Personal_Height_Record","Oma korkeusennï¿½tys");
+define("_Hours_Flown","Tiimaa yhteensï¿½");
 define("_Hours_Per_Year","Tiimaa / vuosi");
 
 define("_Equipment_Stuff","Varusteet");
@@ -346,14 +346,14 @@ define("_Reserve_chute","Pelastusvarjo");
 define("_Camera","Kamera");
 define("_Vario","Variometri");
 define("_GPS","GPS");
-define("_Helmet","Kypärä");
+define("_Helmet","Kypï¿½rï¿½");
 define("_Camcorder","Videokamera");
 
 define("_Manouveur_Stuff","Acroilut");
-define("_note_max_descent_rate","lisää maksimi vajoama tarpeen mukaan");
+define("_note_max_descent_rate","lisï¿½ï¿½ maksimi vajoama tarpeen mukaan");
 define("_Spiral","Spiraali");
 define("_Bline","B sakkaus");
-define("_Full_Stall","Täyssakkaus");
+define("_Full_Stall","Tï¿½yssakkaus");
 define("_Other_Manouveurs_Acro","Muut Acro harjoitukset");
 define("_Sat","Sat");
 define("_Asymmetric_Spiral","Asymmetric Spiral");
@@ -364,7 +364,7 @@ define("_Favorite_Singer","Lempilaulaja/yhtye");
 define("_Favorite_Movie","Lempielokuva");
 define("_Favorite_Internet_Site","Lempi<br>Internet sivusto");
 define("_Favorite_Book","Lempikirja");
-define("_Favorite_Actor","Lempinäyttelijä");
+define("_Favorite_Actor","Lempinï¿½yttelijï¿½");
 
 //--------------------------------------------
 // pilot_profile_edit.php
@@ -378,22 +378,22 @@ define("_Submit_Change_Data","Vahvista");
 // Added by Martin Jursa, 26.04.2007 for pilot_profile and pilot_profile_edit
 //--------------------------------------------
 define("_Sex", "Sukupuoli");
-define("_Login_Stuff", "Muuta käyttäjätunnuksen tietoja");
+define("_Login_Stuff", "Muuta kï¿½yttï¿½jï¿½tunnuksen tietoja");
 define("_PASSWORD_CONFIRMATION", "Vahvista salasana");
-define("_EnterPasswordOnlyToChange", "anna salasana vain jos haluat muuttaa sitä:");
+define("_EnterPasswordOnlyToChange", "anna salasana vain jos haluat muuttaa sitï¿½:");
 
-define("_PwdAndConfDontMatch", "Salasana ei täsmää.");
-define("_PwdTooShort", "Salasana on liian lyhyt. Salasanan pituus täytyy olla vähintään $passwordMinLength merkkiä.");
+define("_PwdAndConfDontMatch", "Salasana ei tï¿½smï¿½ï¿½.");
+define("_PwdTooShort", "Salasana on liian lyhyt. Salasanan pituus tï¿½ytyy olla vï¿½hintï¿½ï¿½n $passwordMinLength merkkiï¿½.");
 define("_PwdConfEmpty", "Vahvista salasana.");
 define("_PwdChanged", "Salasana on muutettu.");
 define("_PwdNotChanged", "Salasanaa EI OLE muutettu.");
 define("_PwdChangeProblem", "Salasanan vaihdossa tapahtui virhe.");
 
-define("_EmailEmpty", "Sähköpostiosoite täytyy antaa.");
-define("_EmailInvalid", "Sähköpostiosoite ei ole validi.");
-define("_EmailSaved", "Sähköpostiosoite on tallenettu");
-define("_EmailNotSaved", "Sähköpostiosoitetta ei ole tallennettu.");
-define("_EmailSaveProblem", "Sähköpostiosoitteen tallentamisessa tapahtui virhe.");
+define("_EmailEmpty", "Sï¿½hkï¿½postiosoite tï¿½ytyy antaa.");
+define("_EmailInvalid", "Sï¿½hkï¿½postiosoite ei ole validi.");
+define("_EmailSaved", "Sï¿½hkï¿½postiosoite on tallenettu");
+define("_EmailNotSaved", "Sï¿½hkï¿½postiosoitetta ei ole tallennettu.");
+define("_EmailSaveProblem", "Sï¿½hkï¿½postiosoitteen tallentamisessa tapahtui virhe.");
 
 // End 26.04.2007
 
@@ -403,15 +403,15 @@ define("_EmailSaveProblem", "Sähköpostiosoitteen tallentamisessa tapahtui virhe.
 define("_hh_mm","hh:mm");
 
 define("_Totals","Yhteenveto");
-define("_First_flight_logged","Ensimmäinen lento tallennettu");
+define("_First_flight_logged","Ensimmï¿½inen lento tallennettu");
 define("_Last_flight_logged","Viimeinen lento tallennettu");
 define("_Flying_period_covered","Lentokausi");
-define("_Total_Distance","Matkat yhteensä");
-define("_Total_OLC_Score","OLC pisteet yhteensä");
-define("_Total_Hours_Flown","Lentoaika yhteensä");
-define("_Total_num_of_flights","Lentojen lkm yhteensä ");
+define("_Total_Distance","Matkat yhteensï¿½");
+define("_Total_OLC_Score","OLC pisteet yhteensï¿½");
+define("_Total_Hours_Flown","Lentoaika yhteensï¿½");
+define("_Total_num_of_flights","Lentojen lkm yhteensï¿½ ");
 
-define("_Personal_Bests","Henkilökohtaiset parhaat");
+define("_Personal_Bests","Henkilï¿½kohtaiset parhaat");
 define("_Best_Open_Distance","Paras vapaa matka");
 define("_Best_FAI_Triangle","Paras FAI kolmio");
 define("_Best_Free_Triangle","Paras vapaa kolmio");
@@ -419,7 +419,7 @@ define("_Longest_Flight","Pisin lento");
 define("_Best_OLC_score","Parhaat OLC pisteet");
 
 define("_Absolute_Height_Record","Suurin absoluuttinen korkeus");
-define("_Altitute_gain_Record","Suurin korkeuden lisäys");
+define("_Altitute_gain_Record","Suurin korkeuden lisï¿½ys");
 define("_Mean_values","Keskiarvot");
 define("_Mean_distance_per_flight","Matkan pituus per lento");
 define("_Mean_flights_per_Month","Lentoja kuukaudessa");
@@ -433,35 +433,35 @@ define("_Mean_duration_per_Year","Lentoaika vuodessa");
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Näytä lennot lähellä tätä paikkaa");
+define("_See_flights_near_this_point","Nï¿½ytï¿½ lennot lï¿½hellï¿½ tï¿½tï¿½ paikkaa");
 define("_Waypoint_Name","Lentopaikan nimi");
-define("_Navigate_with_Google_Earth","Suunnista käyttäen Google Earthia");
-define("_See_it_in_Google_Maps","Näytä Google Maps ohjelmassa");
-define("_See_it_in_MapQuest","Näytä MapQuest ohjelmassa");
+define("_Navigate_with_Google_Earth","Suunnista kï¿½yttï¿½en Google Earthia");
+define("_See_it_in_Google_Maps","Nï¿½ytï¿½ Google Maps ohjelmassa");
+define("_See_it_in_MapQuest","Nï¿½ytï¿½ MapQuest ohjelmassa");
 define("_COORDINATES","Koordinaatit");
 define("_FLIGHTS","Lennot");
-define("_SITE_RECORD","Lentopaikan ennätys");
+define("_SITE_RECORD","Lentopaikan ennï¿½tys");
 define("_SITE_INFO","Tietoja lentopaikasta");
 define("_SITE_REGION","Alue");
-define("_SITE_LINK","Lisätietoja tästä linkistä");
+define("_SITE_LINK","Lisï¿½tietoja tï¿½stï¿½ linkistï¿½");
 define("_SITE_DESCR","Lentopaikan kuvaus");
 
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","Lisätietoja");
+define("_See_more_details","Lisï¿½tietoja");
 define("_KML_file_made_by","KML tiedoston tuotti");
 
 //--------------------------------------------
 // add_waypoint.php
 //--------------------------------------------
-define("_ADD_WAYPOINT","Lisää lentopaikka");
-define("_WAYPOINT_ADDED","Lentopaikka on lisätty");
+define("_ADD_WAYPOINT","Lisï¿½ï¿½ lentopaikka");
+define("_WAYPOINT_ADDED","Lentopaikka on lisï¿½tty");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Lentopaikan ennätys<br>(vapaa matka)");
+define("_SITE_RECORD_OPEN_DISTANCE","Lentopaikan ennï¿½tys<br>(vapaa matka)");
 	
 //--------------------------------------------
 // glider types
@@ -508,9 +508,9 @@ define("_Your_settings_have_been_updated","Your settings have been updated");
 
 define("_THEME","Teema");
 define("_LANGUAGE","Kieli");
-define("_VIEW_CATEGORY","Näytä ryhmä");
-define("_VIEW_COUNTRY","Näytä maa");
-define("_UNITS_SYSTEM" ,"Mittajärjestelmä");
+define("_VIEW_CATEGORY","Nï¿½ytï¿½ ryhmï¿½");
+define("_VIEW_COUNTRY","Nï¿½ytï¿½ maa");
+define("_UNITS_SYSTEM" ,"Mittajï¿½rjestelmï¿½");
 define("_METRIC_SYSTEM","Metrinen (km,m)");
 define("_IMPERIAL_SYSTEM","Imperiaalinen (miles,feet)");
 define("_ITEMS_PER_PAGE","Kohteita per sivu");
@@ -533,17 +533,17 @@ define("_National_XC_Leagues_for","Kansalliset XC liigat");
 define("_Flights_per_Country","Lentoja per maa");
 define("_Takeoffs_per_Country","Lentopaikkoja per maa");
 define("_INDEX_HEADER","Tervetuloa Leonardo XC liigaan");
-define("_INDEX_MESSAGE","Kohdasta &quot;Main menu&quot; löydät tärkeimmät valinnat.");
+define("_INDEX_MESSAGE","Kohdasta &quot;Main menu&quot; lï¿½ydï¿½t tï¿½rkeimmï¿½t valinnat.");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
 define("_MENU_SUMMARY_PAGE","Yhteenveto tuloksista");
-define("_Display_ALL","Näytä kaikki");
+define("_Display_ALL","Nï¿½ytï¿½ kaikki");
 define("_Display_NONE","Piilota kaikki");
-define("_Reset_to_default_view","Palauta oletusnäkymä");
+define("_Reset_to_default_view","Palauta oletusnï¿½kymï¿½");
 define("_No_Club","Ei kerhoa");
-define("_This_is_the_URL_of_this_page","Tämän sivun linkki(URL)");
+define("_This_is_the_URL_of_this_page","Tï¿½mï¿½n sivun linkki(URL)");
 define("_All_glider_types","Kaikki liidintyypit");
 
 define("_MENU_SITES_GUIDE","Lentopaikkaopas");
@@ -551,12 +551,12 @@ define("_Site_Guide","Lentopaikkaopas");
 
 define("_Search_Options","Hakuvalinnat");
 define("_Below_is_the_list_of_selected_sites","Valitut lentopaikat");
-define("_Clear_this_list","Tyhjennä lista");
-define("_See_the_selected_sites_in_Google_Earth","Näytä valitut lentopaikat Google Earthissa");
+define("_Clear_this_list","Tyhjennï¿½ lista");
+define("_See_the_selected_sites_in_Google_Earth","Nï¿½ytï¿½ valitut lentopaikat Google Earthissa");
 define("_Available_Takeoffs","Listatut lentopaikat");
-define("_Search_site_by_name","Hae lentopaikan nimellä");
-define("_give_at_least_2_letters","Vähintään 2 merkkiä");
-define("_takeoff_move_instructions_1","Voit siirtää listatut lentopaikat valitut lentopaikat listalle painamalla >> tai yksi kerrallaan painamalla > ");
+define("_Search_site_by_name","Hae lentopaikan nimellï¿½");
+define("_give_at_least_2_letters","Vï¿½hintï¿½ï¿½n 2 merkkiï¿½");
+define("_takeoff_move_instructions_1","Voit siirtï¿½ï¿½ listatut lentopaikat valitut lentopaikat listalle painamalla >> tai yksi kerrallaan painamalla > ");
 define("_Takeoff_Details","Lentopaikan tarkat tiedot");
 
 
@@ -565,11 +565,11 @@ define("_XC_Info","Tietoa matkalennoista");
 define("_Flight_Info","Tietoa lennoista");
 
 define("_MENU_LOGOUT","Kirjaudu ulos");
-define("_MENU_LOGIN","Kirjaudu sisään");
-define("_MENU_REGISTER","Rekisteröidy");
-define("_PROJECT_HELP","Kysymyksiä");
+define("_MENU_LOGIN","Kirjaudu sisï¿½ï¿½n");
+define("_MENU_REGISTER","Rekisterï¿½idy");
+define("_PROJECT_HELP","Kysymyksiï¿½");
 define("_PROJECT_NEWS","Uutta");
-define("_PROJECT_RULES","Säännöt");
+define("_PROJECT_RULES","Sï¿½ï¿½nnï¿½t");
 
 
 
@@ -578,47 +578,47 @@ define("_Europe","Eurooppa");
 define("_Asia","Aasia");
 define("_Australia","Australia");
 define("_North_Central_America","Pohjois/Keski Amerikka");
-define("_South_America","Etelä Amerikka");
+define("_South_America","Etelï¿½ Amerikka");
 
-define("_Recent","Viimeisimmät");
+define("_Recent","Viimeisimmï¿½t");
 
 
 define("_Unknown_takeoff","Tuntematon lentopaikka");
-define("_Display_on_Google_Earth","Näytä Google Earthissa");
-define("_Use_Man_s_Module","Käytä Man's Modulia");
-define("_Line_Color","Rivin väri");
+define("_Display_on_Google_Earth","Nï¿½ytï¿½ Google Earthissa");
+define("_Use_Man_s_Module","Kï¿½ytï¿½ Man's Modulia");
+define("_Line_Color","Rivin vï¿½ri");
 define("_Line_width","Rivin leveys");
-define("_unknown_takeoff_tooltip_1","Tämän lennon lentopaikka ei ole tunnettu");
-define("_unknown_takeoff_tooltip_2","Jos tiedät oikean lentopaikan, niin ole hyvä ja lisää se!");
+define("_unknown_takeoff_tooltip_1","Tï¿½mï¿½n lennon lentopaikka ei ole tunnettu");
+define("_unknown_takeoff_tooltip_2","Jos tiedï¿½t oikean lentopaikan, niin ole hyvï¿½ ja lisï¿½ï¿½ se!");
 define("_EDIT_WAYPOINT","Muuta lentopaikkaa");
 define("_DELETE_WAYPOINT","Poista lentopaikka");
 define("_SUBMISION_DATE","Tallennus pvm"); // the date a flight was submited to leonardo
 define("_TIMES_VIEWED","Katsottu krt"); // the times that this flight havs been viewed
 
 
-define("_takeoff_add_help_1","Lisää lentopaikka jos se on tiedossa. Jos et ole varma, niin voit sulkea tämän ikkunan");
-define("_takeoff_add_help_2","Jos lentopaikka on se joka näkyy 'Unknown Takeoff' yläpuolella, niin sinun ei tarvitse antaa sitä uudelleen. Voit vain sulkea ikkunan. ");
-define("_takeoff_add_help_3","Jos lentopaikan nimi näkyy alapuolella, niin klikkaamalla sitä voit täyttää vasemmalla olevat kentät automaattisesti.");
+define("_takeoff_add_help_1","Lisï¿½ï¿½ lentopaikka jos se on tiedossa. Jos et ole varma, niin voit sulkea tï¿½mï¿½n ikkunan");
+define("_takeoff_add_help_2","Jos lentopaikka on se joka nï¿½kyy 'Unknown Takeoff' ylï¿½puolella, niin sinun ei tarvitse antaa sitï¿½ uudelleen. Voit vain sulkea ikkunan. ");
+define("_takeoff_add_help_3","Jos lentopaikan nimi nï¿½kyy alapuolella, niin klikkaamalla sitï¿½ voit tï¿½yttï¿½ï¿½ vasemmalla olevat kentï¿½t automaattisesti.");
 define("_Takeoff_Name","Lentopaikan nimi");
-define("_In_Local_Language","Paikallisella kielellä");
+define("_In_Local_Language","Paikallisella kielellï¿½");
 define("_In_English","Englanniksi");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Anna käyttäjätunnus ja salasana kirjautuaksesi sisään.");
+define("_ENTER_PASSWORD","Anna kï¿½yttï¿½jï¿½tunnus ja salasana kirjautuaksesi sisï¿½ï¿½n.");
 define("_SEND_PASSWORD","Olen unohtanut salasanani");
-define("_ERROR_LOGIN","Virheellinen käyttäjätunnus tai salasana.");
-define("_AUTO_LOGIN","Kirjaudu sisään automaattisesti");
-define("_USERNAME","Käyttäjätunnus");
+define("_ERROR_LOGIN","Virheellinen kï¿½yttï¿½jï¿½tunnus tai salasana.");
+define("_AUTO_LOGIN","Kirjaudu sisï¿½ï¿½n automaattisesti");
+define("_USERNAME","Kï¿½yttï¿½jï¿½tunnus");
 define("_PASSWORD","Salasana");
-define("_PROBLEMS_HELP","Ota yhteyttä ylläpitäjään jos sinulla on ongelmia sisäänkirjautumisessa");
+define("_PROBLEMS_HELP","Ota yhteyttï¿½ yllï¿½pitï¿½jï¿½ï¿½n jos sinulla on ongelmia sisï¿½ï¿½nkirjautumisessa");
 
-define("_LOGIN_TRY_AGAIN","Yritä uudestaan painamalla %stästä%s");
-define("_LOGIN_RETURN","Palaa alkuun painamalla %stästä%s");
+define("_LOGIN_TRY_AGAIN","Yritï¿½ uudestaan painamalla %stï¿½stï¿½%s");
+define("_LOGIN_RETURN","Palaa alkuun painamalla %stï¿½stï¿½%s");
 // end 2007/02/20
 
-define("_Category","Ryhmä");
-define("_MEMBER_OF","Jäsenenä");
-define("_MemberID","Jäsentunnus");
+define("_Category","Ryhmï¿½");
+define("_MEMBER_OF","Jï¿½senenï¿½");
+define("_MemberID","Jï¿½sentunnus");
 define("_EnterID","Anna tunnus");
 define("_Clubs_Leagues","Kerhot / Liigat");
 define("_Pilot_Statistics","Pilottitilastot");
@@ -634,13 +634,13 @@ define("_Sponsor","Sponsori");
 
 // new on 2007/03/13
 define("_Go_To_Current_Month","Valitse kuluva kuukausi");
-define("_Today_is","Tänään on");
+define("_Today_is","Tï¿½nï¿½ï¿½n on");
 define("_Wk","Vko");
-define("_Click_to_scroll_to_previous_month","Selaa edelliseen kuukauteen. Pidä hiiren nappi painettuna selataksesi automaattisesti.");
-define("_Click_to_scroll_to_next_month","Selaa seuraavaan kuukauteen. Pidä hiiren nappi painettuna selataksesi automaattisesti.");
+define("_Click_to_scroll_to_previous_month","Selaa edelliseen kuukauteen. Pidï¿½ hiiren nappi painettuna selataksesi automaattisesti.");
+define("_Click_to_scroll_to_next_month","Selaa seuraavaan kuukauteen. Pidï¿½ hiiren nappi painettuna selataksesi automaattisesti.");
 define("_Click_to_select_a_month","Valitse kuukausi.");
 define("_Click_to_select_a_year","Valitse vuosi.");
-define("_Select_date_as_date.","Valitse [date] päivämääräksi."); // do not replace [date], it will be replaced by date.
+define("_Select_date_as_date.","Valitse [date] pï¿½ivï¿½mï¿½ï¿½rï¿½ksi."); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
 
 
@@ -649,19 +649,19 @@ define("_Filter_NoSelection", "Ei valintoja");
 define("_Filter_CurrentlySelected", "Nykyinen valinta");
 define("_Filter_DialogMultiSelectInfo", "Paina Ctrl valitaksesi useita.");
 
-define('_Filter_FilterTitleIncluding', 'Näytä valitut [items]');
+define('_Filter_FilterTitleIncluding', 'Nï¿½ytï¿½ valitut [items]');
 define('_Filter_FilterTitleExcluding', 'Piilota valitut [items]');
 define('_Filter_DialogTitleIncluding', 'Valitse [items]');
 define('_Filter_DialogTitleExcluding', 'Valitse [items]');
 
-define("_Filter_Items_pilot", "lentäjiä");
+define("_Filter_Items_pilot", "lentï¿½jiï¿½");
 define("_Filter_Items_nacclub", "kerhoja");
 define("_Filter_Items_country", "maita");
 define("_Filter_Items_takeoff", "lentopaikkoja");
 
 define("_Filter_Button_Select", "Valitse");
 define("_Filter_Button_Delete", "Poista");
-define("_Filter_Button_Accept", "Hyväksy valinta");
+define("_Filter_Button_Accept", "Hyvï¿½ksy valinta");
 define("_Filter_Button_Cancel", "Peruuta");
 
 # menu bar
@@ -680,7 +680,7 @@ define("_SELECT_NACCLUB", 'Valitse kerho [nacname]');
 
 // pilot profile
 define("_FirstOlcYear", "Online XC kilpailujen aloitusvuosi");
-define("_FirstOlcYearComment", "Valitse vuosi jolloin osallistuit ensimmäisen kerran mihin tahansa Online XC kilpailuun, ei vain tähän.<br/>Tällä tiedolla on merkitystä &quot;aloittelija&quot;-rankingeissä.");
+define("_FirstOlcYearComment", "Valitse vuosi jolloin osallistuit ensimmï¿½isen kerran mihin tahansa Online XC kilpailuun, ei vain tï¿½hï¿½n.<br/>Tï¿½llï¿½ tiedolla on merkitystï¿½ &quot;aloittelija&quot;-rankingeissï¿½.");
 
 //end 2007/05/23
 
@@ -689,17 +689,17 @@ define("_Select_Brand","Valitse valmistaja");
 define("_All_Brands","Kaikki valmistajat");
 define("_DAY","PVM");
 define('_Glider_Brand','Liitimen valmistaja');
-define('_Or_Select_from_previous','tai valitse edellisistä');
+define('_Or_Select_from_previous','tai valitse edellisistï¿½');
 
-define('_Explanation_AddToBookmarks_IE', 'Lisää nämä valinnat kirjanmerkkeihin');
-define('_Msg_AddToBookmarks_IE', 'Paina tästä lisätäksesi nämä valinnat selaimesi kirjanmerkkeihin.');
+define('_Explanation_AddToBookmarks_IE', 'Lisï¿½ï¿½ nï¿½mï¿½ valinnat kirjanmerkkeihin');
+define('_Msg_AddToBookmarks_IE', 'Paina tï¿½stï¿½ lisï¿½tï¿½ksesi nï¿½mï¿½ valinnat selaimesi kirjanmerkkeihin.');
 define('_Explanation_AddToBookmarks_nonIE', '(Tallenna kirjanmerkkeihin.)');
-define('_Msg_AddToBookmarks_nonIE', 'Käytä selaimesi tallenna kirjanmerkkeihin - toimintoa tallentaaksesi nämä valinnat kirjanmerkkeihin.');
+define('_Msg_AddToBookmarks_nonIE', 'Kï¿½ytï¿½ selaimesi tallenna kirjanmerkkeihin - toimintoa tallentaaksesi nï¿½mï¿½ valinnat kirjanmerkkeihin.');
 
-define('_PROJECT_HELP','Kysymyksiä');
+define('_PROJECT_HELP','Kysymyksiï¿½');
 define('_PROJECT_NEWS','Uutta');
-define('_PROJECT_RULES','Säännöt 2007');
-define('_PROJECT_RULES2','Säännöt 2008');
+define('_PROJECT_RULES','Sï¿½ï¿½nnï¿½t 2007');
+define('_PROJECT_RULES2','Sï¿½ï¿½nnï¿½t 2008');
 
 //end 2007/11/06
 define('_MEAN_SPEED1','Keskinopeus');
@@ -708,7 +708,7 @@ define('_External_Entry','Ulkopuolinen osallistuminen');
 // New on 2007/11/25
 define('_Altitude','Korkeus (ASL) ');
 define('_Speed','Nopeus');
-define('_Distance_from_takeoff','Etäisyys lähtöpaikasta');
+define('_Distance_from_takeoff','Etï¿½isyys lï¿½htï¿½paikasta');
 
 // New on 2007/12/03
 define('_LAST_DIGIT','viimeinen desimaali');
@@ -717,7 +717,9 @@ define('_Filter_Items_nationality','kansallisuus');
 define('_Filter_Items_server','palvelin');
 
 // New on 2007/12/15
-define('_Ext_text1','Tämä lento tallennettiin alunperin ');
+define('_Ext_text1','Tï¿½mï¿½ lento tallennettiin alunperin ');
 define('_Ext_text2','Linkki lennon karttoihin ja kaavioihin');
 
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
