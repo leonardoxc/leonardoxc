@@ -27,7 +27,7 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+	$monthList=array('Janeiro','Fevereiro','Marï¿½o','Abril','Maio','Junho',
 					'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro');
 	$monthListShort=array('JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 	$weekdaysList=array('Mon','Tue','Wed','Thu','Fri','Sat','Sun') ;
@@ -37,196 +37,196 @@ setMonths();
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","Distância livre");
-define("_FREE_TRIANGLE","Triângulo livre");
-define("_FAI_TRIANGLE","Triângulo FAI");
+define("_FREE_FLIGHT","Distï¿½ncia livre");
+define("_FREE_TRIANGLE","Triï¿½ngulo livre");
+define("_FAI_TRIANGLE","Triï¿½ngulo FAI");
 
 define("_SUBMIT_FLIGHT_ERROR","Ocorreu um problema com o envio do voo");
 
 // list_pilots()
 define("_NUM","#");
 define("_PILOT","Piloto");
-define("_NUMBER_OF_FLIGHTS","Número de vôos");
-define("_BEST_DISTANCE","Melhor distância");
-define("_MEAN_KM","Média km por vôo");
+define("_NUMBER_OF_FLIGHTS","Nï¿½mero de vï¿½os");
+define("_BEST_DISTANCE","Melhor distï¿½ncia");
+define("_MEAN_KM","Mï¿½dia km por vï¿½o");
 define("_TOTAL_KM","Km Totais voados");
-define("_TOTAL_DURATION_OF_FLIGHTS","Duração total dos vôos");
-define("_MEAN_DURATION","Duração média dos vôos");
-define("_TOTAL_OLC_KM","Distância OLC total");
-define("_TOTAL_OLC_SCORE","Pontuação OLC total");
-define("_BEST_OLC_SCORE","Melhor pontuação OLC");
+define("_TOTAL_DURATION_OF_FLIGHTS","Duraï¿½ï¿½o total dos vï¿½os");
+define("_MEAN_DURATION","Duraï¿½ï¿½o mï¿½dia dos vï¿½os");
+define("_TOTAL_OLC_KM","Distï¿½ncia OLC total");
+define("_TOTAL_OLC_SCORE","Pontuaï¿½ï¿½o OLC total");
+define("_BEST_OLC_SCORE","Melhor pontuaï¿½ï¿½o OLC");
 define("_From","de");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Duração (h:m)");
+define("_DURATION_HOURS_MIN","Duraï¿½ï¿½o (h:m)");
 define("_SHOW","Mostrar");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","O voo será ativado dentro de 1-2 minutos.");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","O voo serï¿½ ativado dentro de 1-2 minutos.");
 define("_TRY_AGAIN","Por favor tente de novo");
 
 define("_TAKEOFF_LOCATION","Decolagem");
 define("_TAKEOFF_TIME","Hora da decolagem");
 define("_LANDING_LOCATION","Pouso");
 define("_LANDING_TIME","Hora do pouso");
-define("_OPEN_DISTANCE","Distância livre");
-define("_MAX_DISTANCE","Distância máxima");
-define("_OLC_SCORE_TYPE","Tipo de pontuação OLC");
-define("_OLC_DISTANCE","Distância OLC");
-define("_OLC_SCORING","Pontuação OLC");
-define("_MAX_SPEED","Velocidade máxima");
+define("_OPEN_DISTANCE","Distï¿½ncia livre");
+define("_MAX_DISTANCE","Distï¿½ncia mï¿½xima");
+define("_OLC_SCORE_TYPE","Tipo de pontuaï¿½ï¿½o OLC");
+define("_OLC_DISTANCE","Distï¿½ncia OLC");
+define("_OLC_SCORING","Pontuaï¿½ï¿½o OLC");
+define("_MAX_SPEED","Velocidade mï¿½xima");
 define("_MAX_VARIO","Maior Ascendente");
-define("_MEAN_SPEED","Velocidade média");
+define("_MEAN_SPEED","Velocidade mï¿½dia");
 define("_MIN_VARIO","Maior descendente");
-define("_MAX_ALTITUDE","Altitude máxima");
+define("_MAX_ALTITUDE","Altitude mï¿½xima");
 define("_TAKEOFF_ALTITUDE","Altitude da decolagem");
-define("_MIN_ALTITUDE","Altitude mínima");
+define("_MIN_ALTITUDE","Altitude mï¿½nima");
 define("_ALTITUDE_GAIN","Ganho de altitude");
-define("_FLIGHT_FILE","Arquivo do vôo");
-define("_COMMENTS","Comentários");
-define("_RELEVANT_PAGE","Endereço da página web relacionada");
+define("_FLIGHT_FILE","Arquivo do vï¿½o");
+define("_COMMENTS","Comentï¿½rios");
+define("_RELEVANT_PAGE","Endereï¿½o da pï¿½gina web relacionada");
 define("_GLIDER","Asa");
 define("_PHOTOS","Fotos");
-define("_MORE_INFO","Informação adicional");
+define("_MORE_INFO","Informaï¿½ï¿½o adicional");
 define("_UPDATE_DATA","Atualizar dados");
 define("_UPDATE_MAP","Atualizar mapa");
 define("_UPDATE_3D_MAP","Atualizar mapa 3D");
-define("_UPDATE_GRAPHS","Atualizar gráficos");
-define("_UPDATE_SCORE","Atualizar pontuação");
+define("_UPDATE_GRAPHS","Atualizar grï¿½ficos");
+define("_UPDATE_SCORE","Atualizar pontuaï¿½ï¿½o");
 
 define("_TAKEOFF_COORDS","Coordenadas da decolagem:");
-define("_NO_KNOWN_LOCATIONS","Não existem locais conhecidos!");
-define("_FLYING_AREA_INFO","Informação do local de vôo");
+define("_NO_KNOWN_LOCATIONS","Nï¿½o existem locais conhecidos!");
+define("_FLYING_AREA_INFO","Informaï¿½ï¿½o do local de vï¿½o");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","Voltar para o início");
+define("_RETURN_TO_TOP","Voltar para o inï¿½cio");
 // list flight
-define("_PILOT_FLIGHTS","Vôos do piloto");
+define("_PILOT_FLIGHTS","Vï¿½os do piloto");
 
 define("_DATE_SORT","Data");
 define("_PILOT_NAME","Nome do piloto");
 define("_TAKEOFF","Decolagem");
-define("_DURATION","Duração");
-define("_LINEAR_DISTANCE","Distância em linha reta");
+define("_DURATION","Duraï¿½ï¿½o");
+define("_LINEAR_DISTANCE","Distï¿½ncia em linha reta");
 define("_OLC_KM","OLC km");
-define("_OLC_SCORE","Pontuação OLC");
-define("_DATE_ADDED","Último envio");
+define("_OLC_SCORE","Pontuaï¿½ï¿½o OLC");
+define("_DATE_ADDED","ï¿½ltimo envio");
 
 define("_SORTED_BY","Ordenar por:");
 define("_ALL_YEARS","Todos os anos");
-define("_SELECT_YEAR_MONTH","Selecionar ano e mês");
+define("_SELECT_YEAR_MONTH","Selecionar ano e mï¿½s");
 define("_ALL","Todos");
 define("_ALL_PILOTS","Mostrar todos os pilotos");
 define("_ALL_TAKEOFFS","Mostrar todas as decolagens");
 define("_ALL_THE_YEAR","Ano inteiro");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Você não enviou um arquivo de vôo");
-define("_NO_SUCH_FILE","O arquivo enviado não foi encontrado no servidor");
-define("_FILE_DOESNT_END_IN_IGC","O arquivo não tem extensão .igc");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Este não é um arquivo válido .igc");
-define("_THERE_IS_SAME_DATE_FLIGHT","Já existe um vôo com a mesma data e hora");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Se deseja substitui-lo deverá antes");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Vocï¿½ nï¿½o enviou um arquivo de vï¿½o");
+define("_NO_SUCH_FILE","O arquivo enviado nï¿½o foi encontrado no servidor");
+define("_FILE_DOESNT_END_IN_IGC","O arquivo nï¿½o tem extensï¿½o .igc");
+define("_THIS_ISNT_A_VALID_IGC_FILE","Este nï¿½o ï¿½ um arquivo vï¿½lido .igc");
+define("_THERE_IS_SAME_DATE_FLIGHT","Jï¿½ existe um vï¿½o com a mesma data e hora");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Se deseja substitui-lo deverï¿½ antes");
 define("_DELETE_THE_OLD_ONE","apagar o anterior");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Já existe um vôo arquivado com o mesmo nome");
-define("_CHANGE_THE_FILENAME","Se este vôo é diferente mude o nome do arquivo e tente novamente");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","O vôo foi enviado com sucesso");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","Jï¿½ existe um vï¿½o arquivado com o mesmo nome");
+define("_CHANGE_THE_FILENAME","Se este vï¿½o ï¿½ diferente mude o nome do arquivo e tente novamente");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","O vï¿½o foi enviado com sucesso");
 define("_PRESS_HERE_TO_VIEW_IT","Visualizar aqui");
-define("_WILL_BE_ACTIVATED_SOON","(Será ativado dentro de 1-2 minutos)");
+define("_WILL_BE_ACTIVATED_SOON","(Serï¿½ ativado dentro de 1-2 minutos)");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Enviar vários vôos");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Apenas serão processados arquivos IGC");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Enviar arquivo ZIP contendo os vôos");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Pressione aqui para enviar os vôos");
+define("_SUBMIT_MULTIPLE_FLIGHTS","Enviar vï¿½rios vï¿½os");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Apenas serï¿½o processados arquivos IGC");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Enviar arquivo ZIP contendo os vï¿½os");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Pressione aqui para enviar os vï¿½os");
 
-define("_FILE_DOESNT_END_IN_ZIP","O arquivo enviado não tem extensão .zip");
+define("_FILE_DOESNT_END_IN_ZIP","O arquivo enviado nï¿½o tem extensï¿½o .zip");
 define("_ADDING_FILE","Enviando arquivo");
 define("_ADDED_SUCESSFULLY","Envio terminado");
 define("_PROBLEM","Problema");
 define("_TOTAL","Total");
-define("_IGC_FILES_PROCESSED","Os vôos foram processados");
-define("_IGC_FILES_SUBMITED","Os vôos foram enviados");
+define("_IGC_FILES_PROCESSED","Os vï¿½os foram processados");
+define("_IGC_FILES_SUBMITED","Os vï¿½os foram enviados");
 
 // info
 define("_DEVELOPMENT","Desenvolvido por");
 define("_ANDREADAKIS_MANOLIS","Andreadakis Manolis");
 define("_PROJECT_URL","Website do projeto");
-define("_VERSION","Versão");
-define("_MAP_CREATION","Criação de mapas");
-define("_PROJECT_INFO","Informação sobre o projeto");
+define("_VERSION","Versï¿½o");
+define("_MAP_CREATION","Criaï¿½ï¿½o de mapas");
+define("_PROJECT_INFO","Informaï¿½ï¿½o sobre o projeto");
 
 // menu bar 
 define("_MENU_MAIN_MENU","Menu principal");
 define("_MENU_DATE","Selecionar data");
-define("_MENU_COUNTRY","Selecionar País");
+define("_MENU_COUNTRY","Selecionar Paï¿½s");
 define("_MENU_XCLEAGUE","Liga XC");
 define("_MENU_ADMIN","Admin");
 
 define("_MENU_COMPETITION_LEAGUE","Liga - todas as categorias");
 define("_MENU_OLC","OLC");
-define("_MENU_OPEN_DISTANCE","Distância livre");
-define("_MENU_DURATION","Duração");
-define("_MENU_ALL_FLIGHTS","Mostrar todos os vôos");
-define("_MENU_FLIGHTS","Vôos");
+define("_MENU_OPEN_DISTANCE","Distï¿½ncia livre");
+define("_MENU_DURATION","Duraï¿½ï¿½o");
+define("_MENU_ALL_FLIGHTS","Mostrar todos os vï¿½os");
+define("_MENU_FLIGHTS","Vï¿½os");
 define("_MENU_TAKEOFFS","Decolagem");
 define("_MENU_FILTER","Filtro");
-define("_MENU_MY_FLIGHTS","Meus vôos");
+define("_MENU_MY_FLIGHTS","Meus vï¿½os");
 define("_MENU_MY_PROFILE","Meu perfil");
-define("_MENU_MY_STATS","Minhas estatísticas"); 
-define("_MENU_MY_SETTINGS","Minhas definições"); 
-define("_MENU_SUBMIT_FLIGHT","Enviar vôo");
-define("_MENU_SUBMIT_FROM_ZIP","Enviar vôos zip");
+define("_MENU_MY_STATS","Minhas estatï¿½sticas"); 
+define("_MENU_MY_SETTINGS","Minhas definiï¿½ï¿½es"); 
+define("_MENU_SUBMIT_FLIGHT","Enviar vï¿½o");
+define("_MENU_SUBMIT_FROM_ZIP","Enviar vï¿½os zip");
 define("_MENU_SHOW_PILOTS","Mostrar pilotos");
 define("_MENU_SHOW_LAST_ADDED","Mostrar envios recentes");
-define("_FLIGHTS_STATS","Estatísticas do vôo");
+define("_FLIGHTS_STATS","Estatï¿½sticas do vï¿½o");
 
 define("_SELECT_YEAR","Selecionar ano");
-define("_SELECT_MONTH","Selecionar mês");
-define("_ALL_COUNTRIES","Mostrar todos os países");
+define("_SELECT_MONTH","Selecionar mï¿½s");
+define("_ALL_COUNTRIES","Mostrar todos os paï¿½ses");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
 define("_ALL_TIMES","Todos anos");
-define("_NUMBER_OF_FLIGHTS","Número de vôos");
-define("_TOTAL_DISTANCE","Distância total");
-define("_TOTAL_DURATION","Duração total");
-define("_BEST_OPEN_DISTANCE","Melhor distância");
-define("_TOTAL_OLC_DISTANCE","Distância total OLC");
-define("_TOTAL_OLC_SCORE","Pontuação total OLC");
-define("_BEST_OLC_SCORE","Melhor pontuação OLC");
-define("_MEAN_DURATION","Duração média");
-define("_MEAN_DISTANCE","Distância média");
+define("_NUMBER_OF_FLIGHTS","Nï¿½mero de vï¿½os");
+define("_TOTAL_DISTANCE","Distï¿½ncia total");
+define("_TOTAL_DURATION","Duraï¿½ï¿½o total");
+define("_BEST_OPEN_DISTANCE","Melhor distï¿½ncia");
+define("_TOTAL_OLC_DISTANCE","Distï¿½ncia total OLC");
+define("_TOTAL_OLC_SCORE","Pontuaï¿½ï¿½o total OLC");
+define("_BEST_OLC_SCORE","Melhor pontuaï¿½ï¿½o OLC");
+define("_MEAN_DURATION","Duraï¿½ï¿½o mï¿½dia");
+define("_MEAN_DISTANCE","Distï¿½ncia mï¿½dia");
 define("_PILOT_STATISTICS_SORT_BY","Pilotos - Ordenar por");
-define("_CATEGORY_FLIGHT_NUMBER","Categoria - Número de voos");
-define("_CATEGORY_TOTAL_DURATION","Categoria - Duração total");
-define("_CATEGORY_OPEN_DISTANCE","Categoría - Distância livre");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Não existem pilotos para mostrar!");
+define("_CATEGORY_FLIGHT_NUMBER","Categoria - Nï¿½mero de voos");
+define("_CATEGORY_TOTAL_DURATION","Categoria - Duraï¿½ï¿½o total");
+define("_CATEGORY_OPEN_DISTANCE","Categorï¿½a - Distï¿½ncia livre");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Nï¿½o existem pilotos para mostrar!");
 
 	
 //--------------------------------------------
 // delete_flight.php
 //--------------------------------------------
 
-define("_THE_FLIGHT_HAS_BEEN_DELETED","O vôo foi apagado");
+define("_THE_FLIGHT_HAS_BEEN_DELETED","O vï¿½o foi apagado");
 define("_RETURN","Voltar");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","ATENÇÃO - O vôo vai ser apagado");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","ATENï¿½ï¿½O - O vï¿½o vai ser apagado");
 define("_THE_DATE","Data");
 define("_YES","SIM");
-define("_NO","NÃO");
+define("_NO","Nï¿½O");
 
 //--------------------------------------------
 // competition.php
 //--------------------------------------------
 
 define("_LEAGUE_RESULTS","Resultados da liga");
-define("_N_BEST_FLIGHTS","Melhores vôos");
+define("_N_BEST_FLIGHTS","Melhores vï¿½os");
 define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","Pontuação total OLC");
+define("_OLC_TOTAL_SCORE","Pontuaï¿½ï¿½o total OLC");
 define("_KILOMETERS","Kms");
 define("_TOTAL_ALTITUDE_GAIN","Ganho total de altitude");
 define("_TOTAL_KM","Kms totais");
@@ -235,35 +235,35 @@ define("_TOTAL_KM","Kms totais");
 // filter.php
 //--------------------------------------------
 
-define("_IS","é");
-define("_IS_NOT","não é");
+define("_IS","ï¿½");
+define("_IS_NOT","nï¿½o ï¿½");
 define("_OR","ou");
 define("_AND","e");
-define("_FILTER_PAGE_TITLE","Filtro de vôos");
-define("_RETURN_TO_FLIGHTS","Voltar aos vôos");
-define("_THE_FILTER_IS_ACTIVE","O filtro está ativo");
-define("_THE_FILTER_IS_INACTIVE","O filtro está inativo");
+define("_FILTER_PAGE_TITLE","Filtro de vï¿½os");
+define("_RETURN_TO_FLIGHTS","Voltar aos vï¿½os");
+define("_THE_FILTER_IS_ACTIVE","O filtro estï¿½ ativo");
+define("_THE_FILTER_IS_INACTIVE","O filtro estï¿½ inativo");
 define("_SELECT_DATE","Seleccionar data");
-define("_SHOW_FLIGHTS","Mostrar vôos");
+define("_SHOW_FLIGHTS","Mostrar vï¿½os");
 define("_ALL2","TODOS");
 define("_WITH_YEAR","Com ano");
-define("_MONTH","Mês");
+define("_MONTH","Mï¿½s");
 define("_YEAR","Ano");
 define("_FROM","DE");
 define("_from","de");
-define("_TO","Até");
+define("_TO","Atï¿½");
 define("_SELECT_PILOT","Selecionar piloto");
 define("_THE_PILOT","O piloto");
 define("_THE_TAKEOFF","A decolagem");
 define("_SELECT_TAKEOFF","Selecionar decolagem");
-define("_THE_COUNTRY","O país");
-define("_COUNTRY","País");
-define("_SELECT_COUNTRY","Selecionar país");
+define("_THE_COUNTRY","O paï¿½s");
+define("_COUNTRY","Paï¿½s");
+define("_SELECT_COUNTRY","Selecionar paï¿½s");
 define("_OTHER_FILTERS","Outros filtros");
-define("_LINEAR_DISTANCE_SHOULD_BE","A distância livre deve ser");
-define("_OLC_DISTANCE_SHOULD_BE","A distância OLC deve ser");
-define("_OLC_SCORE_SHOULD_BE","A pontuação OLC deve ser");
-define("_DURATION_SHOULD_BE","A duração deve ser");
+define("_LINEAR_DISTANCE_SHOULD_BE","A distï¿½ncia livre deve ser");
+define("_OLC_DISTANCE_SHOULD_BE","A distï¿½ncia OLC deve ser");
+define("_OLC_SCORE_SHOULD_BE","A pontuaï¿½ï¿½o OLC deve ser");
+define("_DURATION_SHOULD_BE","A duraï¿½ï¿½o deve ser");
 define("_ACTIVATE_CHANGE_FILTER","Ativar / mudar FILTRO");
 define("_DEACTIVATE_FILTER","Desativar FILTRO");
 define("_HOURS","horas");
@@ -273,50 +273,50 @@ define("_MINUTES","minutos");
 // add_flight.php
 //--------------------------------------------
 
-define("_SUBMIT_FLIGHT","Enviar vôo");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(só é necessário o arquivo IGC)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Enviar o arquivo IGC do vôo");
-define("_NOTE_TAKEOFF_NAME","Por favor escreva o nome da decolagem e país");
-define("_COMMENTS_FOR_THE_FLIGHT","Comentários sobre o vôo");
+define("_SUBMIT_FLIGHT","Enviar vï¿½o");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(sï¿½ ï¿½ necessï¿½rio o arquivo IGC)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Enviar o arquivo IGC do vï¿½o");
+define("_NOTE_TAKEOFF_NAME","Por favor escreva o nome da decolagem e paï¿½s");
+define("_COMMENTS_FOR_THE_FLIGHT","Comentï¿½rios sobre o vï¿½o");
 define("_PHOTO","Foto");
 define("_PHOTOS_GUIDELINES","As fotos devem estar em formato jpg e ter tamhno inferior a ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Pressionar aqui para enviar o vôo");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","¿Pretende enviar diversos vôos simultaneamente?");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Pressionar aqui para enviar o vï¿½o");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","ï¿½Pretende enviar diversos vï¿½os simultaneamente?");
 define("_PRESS_HERE","Pressionar aqui");
 
-define("_IS_PRIVATE","Não mostrar ao público");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Não mostrar ao público");
-define("_INSERT_FLIGHT_AS_USER_ID","Introduzir o vôo como ID do utilizador");
-define("_FLIGHT_IS_PRIVATE","Este vôo é privado");
+define("_IS_PRIVATE","Nï¿½o mostrar ao pï¿½blico");
+define("_MAKE_THIS_FLIGHT_PRIVATE","Nï¿½o mostrar ao pï¿½blico");
+define("_INSERT_FLIGHT_AS_USER_ID","Introduzir o vï¿½o como ID do utilizador");
+define("_FLIGHT_IS_PRIVATE","Este vï¿½o ï¿½ privado");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","Mudar dados do vôo");
-define("_IGC_FILE_OF_THE_FLIGHT","Arquivo IGC do vôo");
+define("_CHANGE_FLIGHT_DATA","Mudar dados do vï¿½o");
+define("_IGC_FILE_OF_THE_FLIGHT","Arquivo IGC do vï¿½o");
 define("_DELETE_PHOTO","Apagar foto");
 define("_NEW_PHOTO","Nova foto");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Pressione aqui para modificar os dados do vôo");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","As modificações foram efetuadas com sucesso");
-define("_RETURN_TO_FLIGHT","Voltar ao vôo");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Pressione aqui para modificar os dados do vï¿½o");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","As modificaï¿½ï¿½es foram efetuadas com sucesso");
+define("_RETURN_TO_FLIGHT","Voltar ao vï¿½o");
 
 //--------------------------------------------
 // olc
 //--------------------------------------------
-define("_RETURN_TO_FLIGHT","Voltar ao vôo");
+define("_RETURN_TO_FLIGHT","Voltar ao vï¿½o");
 define("_READY_FOR_SUBMISSION","Pronto para envio");
 define("_OLC_MAP","Mapa");
-define("_OLC_BARO","Barógrafo");
+define("_OLC_BARO","Barï¿½grafo");
 
 //--------------------------------------------
 // pilot_profile.php
 //--------------------------------------------
 define("_Pilot_Profile","Perfil do piloto");
 define("_back_to_flights","Voltar");
-define("_pilot_stats","Estatísticas do piloto");
+define("_pilot_stats","Estatï¿½sticas do piloto");
 define("_edit_profile","Editar perfil");
-define("_flights_stats","Estatísticas do voo");
+define("_flights_stats","Estatï¿½sticas do voo");
 define("_View_Profile","Ver perfil");
 
 define("_Personal_Stuff","Dados pessoais");
@@ -326,44 +326,44 @@ define("_Birthdate","Data de nascimento");
 define("_dd_mm_yy","dd.mm.aa");
 define("_Sign","Signo");
 define("_Marital_Status","Estado Civil");
-define("_Occupation","Ocupação");
-define("_Web_Page","Página Web");
+define("_Occupation","Ocupaï¿½ï¿½o");
+define("_Web_Page","Pï¿½gina Web");
 define("_N_A","N/A");
 define("_Other_Interests","Outros Interesses");
 define("_Photo","Foto");
 
-define("_Flying_Stuff","Dados de vôo");
-define("_note_place_and_date","se possível acrescentar cidade, país e data");
+define("_Flying_Stuff","Dados de vï¿½o");
+define("_note_place_and_date","se possï¿½vel acrescentar cidade, paï¿½s e data");
 define("_Flying_Since","Voando desde");
-define("_Pilot_Licence","Licença de vôo");
-define("_Paragliding_training","Experiência de vôo");
-define("_Favorite_Location","Local de vôo favorito");
-define("_Usual_Location","Local de vôo habitual");
-define("_Best_Flying_Memory","Melhor experiência em vôo");
-define("_Worst_Flying_Memory","Pior experiência em vôo");
-define("_Personal_Distance_Record","Recorde pessoal de distância");
+define("_Pilot_Licence","Licenï¿½a de vï¿½o");
+define("_Paragliding_training","Experiï¿½ncia de vï¿½o");
+define("_Favorite_Location","Local de vï¿½o favorito");
+define("_Usual_Location","Local de vï¿½o habitual");
+define("_Best_Flying_Memory","Melhor experiï¿½ncia em vï¿½o");
+define("_Worst_Flying_Memory","Pior experiï¿½ncia em vï¿½o");
+define("_Personal_Distance_Record","Recorde pessoal de distï¿½ncia");
 define("_Personal_Height_Record","Recorde pessoal de altitude");
-define("_Hours_Flown","Horas de vôo");
+define("_Hours_Flown","Horas de vï¿½o");
 define("_Hours_Per_Year","Horas voadas anualmente");
 
 define("_Equipment_Stuff","Dados sobre o Equipamento");
 define("_Glider","Asa");
 define("_Harness","Selete");
-define("_Reserve_chute","Paraquedas de emergência");
-define("_Camera","Câmera fotográfica");
-define("_Vario","Vário");
+define("_Reserve_chute","Paraquedas de emergï¿½ncia");
+define("_Camera","Cï¿½mera fotogrï¿½fica");
+define("_Vario","Vï¿½rio");
 define("_GPS","GPS");
 define("_Helmet","Capacete");
-define("_Camcorder","Câmera de vídeo");
+define("_Camcorder","Cï¿½mera de vï¿½deo");
 
-define("_Manouveur_Stuff","Dados sobre manobras de vôo");
-define("_note_max_descent_rate","se possível acrescentar a taxa de queda máxima alcançada");
+define("_Manouveur_Stuff","Dados sobre manobras de vï¿½o");
+define("_note_max_descent_rate","se possï¿½vel acrescentar a taxa de queda mï¿½xima alcanï¿½ada");
 define("_Spiral","Espiral");
 define("_Bline","Estol de B");
 define("_Full_Stall","Full Stall");
 define("_Other_Manouveurs_Acro","Outras manobras Acro");
 define("_Sat","Sat");
-define("_Asymmetric_Spiral","Espiral assimétrica");
+define("_Asymmetric_Spiral","Espiral assimï¿½trica");
 define("_Spin","Negativa");
 
 define("_General_Stuff","Dados gerais");
@@ -387,48 +387,48 @@ define("_Submit_Change_Data","Enviar - Modificar dados");
 define("_hh_mm","hh:mm");
 
 define("_Totals","Totais");
-define("_First_flight_logged","Primeiro vôo introduzido");
-define("_Last_flight_logged","Último vôo introduzido");
-define("_Flying_period_covered","Período de vôo coberto");
-define("_Total_Distance","Distância total");
-define("_Total_OLC_Score","Pontuação total OLC");
-define("_Total_Hours_Flown","Total de horas de vôo");
-define("_Total_num_of_flights","Número total de vôos");
+define("_First_flight_logged","Primeiro vï¿½o introduzido");
+define("_Last_flight_logged","ï¿½ltimo vï¿½o introduzido");
+define("_Flying_period_covered","Perï¿½odo de vï¿½o coberto");
+define("_Total_Distance","Distï¿½ncia total");
+define("_Total_OLC_Score","Pontuaï¿½ï¿½o total OLC");
+define("_Total_Hours_Flown","Total de horas de vï¿½o");
+define("_Total_num_of_flights","Nï¿½mero total de vï¿½os");
 
 define("_Personal_Bests","Melhores resultados pessoais");
-define("_Best_Open_Distance","Melhor distância livre");
-define("_Best_FAI_Triangle","Melhor triângulo FAI");
-define("_Best_Free_Triangle","Mejor triângulo livre");
-define("_Longest_Flight","Vôo mais longo");
-define("_Best_OLC_score","Melhor pontuação OLC");
+define("_Best_Open_Distance","Melhor distï¿½ncia livre");
+define("_Best_FAI_Triangle","Melhor triï¿½ngulo FAI");
+define("_Best_Free_Triangle","Mejor triï¿½ngulo livre");
+define("_Longest_Flight","Vï¿½o mais longo");
+define("_Best_OLC_score","Melhor pontuaï¿½ï¿½o OLC");
 
 define("_Absolute_Height_Record","Recorde de altitude absoluta");
 define("_Altitute_gain_Record","Recorde de ganho de altitude");
-define("_Mean_values","Valores médios");
-define("_Mean_distance_per_flight","Distâncias médias por vôo");
-define("_Mean_flights_per_Month","Média de vôos por mês");
-define("_Mean_distance_per_Month","Média de distância por mês");
-define("_Mean_duration_per_Month","Média da duração de vôo por mês");
-define("_Mean_duration_per_flight","Média da duração por vôo");
-define("_Mean_flights_per_Year","Média de vôos por ano");
-define("_Mean_distance_per_Year","Média de distâncias por ano");
-define("_Mean_duration_per_Year","Média de duração de vôo por ano");
+define("_Mean_values","Valores mï¿½dios");
+define("_Mean_distance_per_flight","Distï¿½ncias mï¿½dias por vï¿½o");
+define("_Mean_flights_per_Month","Mï¿½dia de vï¿½os por mï¿½s");
+define("_Mean_distance_per_Month","Mï¿½dia de distï¿½ncia por mï¿½s");
+define("_Mean_duration_per_Month","Mï¿½dia da duraï¿½ï¿½o de vï¿½o por mï¿½s");
+define("_Mean_duration_per_flight","Mï¿½dia da duraï¿½ï¿½o por vï¿½o");
+define("_Mean_flights_per_Year","Mï¿½dia de vï¿½os por ano");
+define("_Mean_distance_per_Year","Mï¿½dia de distï¿½ncias por ano");
+define("_Mean_duration_per_Year","Mï¿½dia de duraï¿½ï¿½o de vï¿½o por ano");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Ver vôos próximos a este ponto");
+define("_See_flights_near_this_point","Ver vï¿½os prï¿½ximos a este ponto");
 define("_Waypoint_Name","Nome do Waypoint");
 define("_Navigate_with_Google_Earth","Navegar com o Google Earth");
 define("_See_it_in_Google_Maps","Ver no Google Maps");
 define("_See_it_in_MapQuest","Ver no MapQuest");
 define("_COORDINATES","Coordenadas");
-define("_FLIGHTS","Vôos");
+define("_FLIGHTS","Vï¿½os");
 define("_SITE_RECORD","Recorde local");
-define("_SITE_INFO","Informação sobre o local de vôo");
-define("_SITE_REGION","Região");
-define("_SITE_LINK","Link com mais informação");
-define("_SITE_DESCR","Descrição do local de vôo/Decolagem");
+define("_SITE_INFO","Informaï¿½ï¿½o sobre o local de vï¿½o");
+define("_SITE_REGION","Regiï¿½o");
+define("_SITE_LINK","Link com mais informaï¿½ï¿½o");
+define("_SITE_DESCR","Descriï¿½ï¿½o do local de vï¿½o/Decolagem");
 
 //--------------------------------------------
 // KML file
@@ -445,7 +445,7 @@ define("_WAYPOINT_ADDED","O waypoint foi acrescentado");
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Recorde local de (distância livre)");
+define("_SITE_RECORD_OPEN_DISTANCE","Recorde local de (distï¿½ncia livre)");
 	
 //--------------------------------------------
 // glider types
@@ -453,7 +453,7 @@ define("_SITE_RECORD_OPEN_DISTANCE","Recorde local de (distância livre)");
 define("_GLIDER_TYPE","Tipo de asa");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Parapente',2=>'Asa delta FAI1',4=>'Asa rígida FAI5',8=>'Planador');
+	$gliderCatList=array(1=>'Parapente',2=>'Asa delta FAI1',4=>'Asa rï¿½gida FAI5',8=>'Planador');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -493,11 +493,11 @@ define("_Your_settings_have_been_updated","Os seus dados foram atualizados");
 define("_THEME","Tema");
 define("_LANGUAGE","Idioma");
 define("_VIEW_CATEGORY","Ver categoria");
-define("_VIEW_COUNTRY","Ver país");
+define("_VIEW_COUNTRY","Ver paï¿½s");
 define("_UNITS_SYSTEM" ,"Unidades");
-define("_METRIC_SYSTEM","Métrico (km,m)");
-define("_IMPERIAL_SYSTEM","Imperial (milhas,pés)");
-define("_ITEMS_PER_PAGE","Itens por página");
+define("_METRIC_SYSTEM","Mï¿½trico (km,m)");
+define("_IMPERIAL_SYSTEM","Imperial (milhas,pï¿½s)");
+define("_ITEMS_PER_PAGE","Itens por pï¿½gina");
 
 define("_MI","mi");
 define("_KM","km");
@@ -514,86 +514,86 @@ define("_M_PER_SEC","m/sec");
 
 define("_WORLD_WIDE","Geral Internacional");
 define("_National_XC_Leagues_for","Ligas Nacionais");
-define("_Flights_per_Country","Vôos por País");
-define("_Takeoffs_per_Country","Descolagens por País");
-define("_INDEX_HEADER","Bem vindo à Liga XC Leonardo");
-define("_INDEX_MESSAGE","Utilize o menu principal para navegar ou as preferências a seguir.");
+define("_Flights_per_Country","Vï¿½os por Paï¿½s");
+define("_Takeoffs_per_Country","Descolagens por Paï¿½s");
+define("_INDEX_HEADER","Bem vindo ï¿½ Liga XC Leonardo");
+define("_INDEX_MESSAGE","Utilize o menu principal para navegar ou as preferï¿½ncias a seguir.");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","Primeira (Resumo) Página");
+define("_MENU_SUMMARY_PAGE","Primeira (Resumo) Pï¿½gina");
 define("_Display_ALL","Mostrar Tudo");
 define("_Display_NONE","Esconder Tudo");
-define("_Reset_to_default_view","Retornar à visualização pré definida");
+define("_Reset_to_default_view","Retornar ï¿½ visualizaï¿½ï¿½o prï¿½ definida");
 define("_No_Club","Sem Clube");
-define("_This_is_the_URL_of_this_page","Esta é a URL desta página");
+define("_This_is_the_URL_of_this_page","Esta ï¿½ a URL desta pï¿½gina");
 define("_All_glider_types","Todos os tiposde aeronaves");
 
-define("_MENU_SITES_GUIDE","Guia de locais de vôo");
+define("_MENU_SITES_GUIDE","Guia de locais de vï¿½o");
 define("_Site_Guide","Guia de Locais");
 
-define("_Search_Options","Opções de busca");
-define("_Below_is_the_list_of_selected_sites","Abaixo está a lista de locais selecionada");
+define("_Search_Options","Opï¿½ï¿½es de busca");
+define("_Below_is_the_list_of_selected_sites","Abaixo estï¿½ a lista de locais selecionada");
 define("_Clear_this_list","Limpar a lista");
 define("_See_the_selected_sites_in_Google_Earth","Ver os locais selecionados no Google Earth");
 define("_Available_Takeoffs","Decolagens Registradas");
 define("_Search_site_by_name","Procurar por nome");
-define("_give_at_least_2_letters","dê ao menos 2 (duas) letras");
-define("_takeoff_move_instructions_1","Você pode mover todas as decolagens registradas para a lista de seleção à direita do painel ao usar >> ou selecione uma usando o símbolo > ");
+define("_give_at_least_2_letters","dï¿½ ao menos 2 (duas) letras");
+define("_takeoff_move_instructions_1","Vocï¿½ pode mover todas as decolagens registradas para a lista de seleï¿½ï¿½o ï¿½ direita do painel ao usar >> ou selecione uma usando o sï¿½mbolo > ");
 define("_Takeoff_Details","Detalhes da decolagem");
 
 
-define("_Takeoff_Info","Informação da Decolagem");
-define("_XC_Info","Informações XC");
-define("_Flight_Info","Informações do vôo");
+define("_Takeoff_Info","Informaï¿½ï¿½o da Decolagem");
+define("_XC_Info","Informaï¿½ï¿½es XC");
+define("_Flight_Info","Informaï¿½ï¿½es do vï¿½o");
 
 define("_MENU_LOGOUT","Sair");
 define("_MENU_LOGIN","Entrar");
 define("_MENU_REGISTER","Abrir uma conta");
 
 
-define("_Africa","África");
+define("_Africa","ï¿½frica");
 define("_Europe","Europa");
-define("_Asia","Ásia");
-define("_Australia","Austrália");
-define("_North_Central_America","América do Norte e Central");
-define("_South_America","América do Sul");
+define("_Asia","ï¿½sia");
+define("_Australia","Austrï¿½lia");
+define("_North_Central_America","Amï¿½rica do Norte e Central");
+define("_South_America","Amï¿½rica do Sul");
 
 define("_Recent","Recente");
 
 
 define("_Unknown_takeoff","Decolagem desconhecida");
 define("_Display_on_Google_Earth","Mostrar no Google Earth");
-define("_Use_Man_s_Module","Usar o Módulo Man's");
+define("_Use_Man_s_Module","Usar o Mï¿½dulo Man's");
 define("_Line_Color","Cor da linha");
 define("_Line_width","Espessura da linha");
-define("_unknown_takeoff_tooltip_1","Vôo a partir de uma decolagem desconhecida");
-define("_unknown_takeoff_tooltip_2","Se voce sabe de qual Decolagem/local este vôo começou, por favor clique para inserir o nome !");
-define("_EDIT_WAYPOINT","Editar informações da Decolagem");
+define("_unknown_takeoff_tooltip_1","Vï¿½o a partir de uma decolagem desconhecida");
+define("_unknown_takeoff_tooltip_2","Se voce sabe de qual Decolagem/local este vï¿½o comeï¿½ou, por favor clique para inserir o nome !");
+define("_EDIT_WAYPOINT","Editar informaï¿½ï¿½es da Decolagem");
 define("_DELETE_WAYPOINT","Remover Decolagem");
 define("_SUBMISION_DATE","Data de Envio"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Quantidade de visualizações"); // the times that this flight havs been viewed
+define("_TIMES_VIEWED","Quantidade de visualizaï¿½ï¿½es"); // the times that this flight havs been viewed
 
 
-define("_takeoff_add_help_1","Você pode entrar com as informações da decolagem se a conhecer. Se não estiver certo é seguro fechar esta janela");
-define("_takeoff_add_help_2","Se o seu vôo é de uma destas decolagens acima da 'Decolagem desconhecida', então não é necessário entrar com ela novamente. Somente feche esta janela. ");
-define("_takeoff_add_help_3","Se você vê o nome da decolagem abaixo, clique sobre ele para auto preencher os campos à esquerda.");
+define("_takeoff_add_help_1","Vocï¿½ pode entrar com as informaï¿½ï¿½es da decolagem se a conhecer. Se nï¿½o estiver certo ï¿½ seguro fechar esta janela");
+define("_takeoff_add_help_2","Se o seu vï¿½o ï¿½ de uma destas decolagens acima da 'Decolagem desconhecida', entï¿½o nï¿½o ï¿½ necessï¿½rio entrar com ela novamente. Somente feche esta janela. ");
+define("_takeoff_add_help_3","Se vocï¿½ vï¿½ o nome da decolagem abaixo, clique sobre ele para auto preencher os campos ï¿½ esquerda.");
 define("_Takeoff_Name","Nome da decolagem");
-define("_In_Local_Language","Em Português");
-define("_In_English","Em Inglês");
+define("_In_Local_Language","Em Portuguï¿½s");
+define("_In_English","Em Inglï¿½s");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Indique seu usuário ou senha para entrar.");
+define("_ENTER_PASSWORD","Indique seu usuï¿½rio ou senha para entrar.");
 define("_SEND_PASSWORD","Esqueci a senha");
-define("_ERROR_LOGIN","Você indicou um nome de usuario incorreto / inativo ou senha inválida.");
+define("_ERROR_LOGIN","Vocï¿½ indicou um nome de usuario incorreto / inativo ou senha invï¿½lida.");
 define("_AUTO_LOGIN","Entrar automaticamente a cada visita");
-define("_USERNAME","Usuário");
+define("_USERNAME","Usuï¿½rio");
 define("_PASSWORD","Senha");
-define("_PROBLEMS_HELP","Se você tem problemas, entre em contato com o administrador");
+define("_PROBLEMS_HELP","Se vocï¿½ tem problemas, entre em contato com o administrador");
 
 define("_LOGIN_TRY_AGAIN","Clique %sAqui%s para tentar novamente");
-define("_LOGIN_RETURN","Clique %sAqui%s para retornar ao índice");
+define("_LOGIN_RETURN","Clique %sAqui%s para retornar ao ï¿½ndice");
 // end 2007/02/20
 
 define("_Category","Categorla");
@@ -601,7 +601,7 @@ define("_MEMBER_OF","Utilizador de");
 define("_MemberID","ID do utilizador");
 define("_EnterID","Entre com ID");
 define("_Clubs_Leagues","Clubes / Ligas");
-define("_Pilot_Statistics","Estatísticas do piloto");
+define("_Pilot_Statistics","Estatï¿½sticas do piloto");
 define("_National_Rankings","Ranking Nacional");
 
 
@@ -616,72 +616,75 @@ define("_Sponsor","Patrocinador");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','Mês corrente');
-define('_Today_is','Hoje é');
+define('_Go_To_Current_Month','Mï¿½s corrente');
+define('_Today_is','Hoje ï¿½');
 define('_Wk','Fd');
-define('_Click_to_scroll_to_previous_month','Clique para ir ao mês anterior. Clique e segure para ir automaticamente.');
-define('_Click_to_scroll_to_next_month','Click para ir ao próximo mês. Segure o botão do mouse para navegar automaticamente.');
-define('_Click_to_select_a_month','Selecionar o mês.');
+define('_Click_to_scroll_to_previous_month','Clique para ir ao mï¿½s anterior. Clique e segure para ir automaticamente.');
+define('_Click_to_scroll_to_next_month','Click para ir ao prï¿½ximo mï¿½s. Segure o botï¿½o do mouse para navegar automaticamente.');
+define('_Click_to_select_a_month','Selecionar o mï¿½s.');
 define('_Click_to_select_a_year','Selecionar o Ano.');
 define('_Select_date_as_date.','Selecionar Data.'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
 
 define("_SEASON","Temporada"); 
-define("_SUBMIT_TO_OLC","Submeter à OLC"); 
-define("_pilot_email","Endereço de E-mail"); 
+define("_SUBMIT_TO_OLC","Submeter ï¿½ OLC"); 
+define("_pilot_email","Endereï¿½o de E-mail"); 
 define("_Sex","Sexo"); 
 define("_Login_Stuff","Mudar dados de entrada"); 
 define("_PASSWORD_CONFIRMATION","Confirmar senha"); 
-define("_EnterPasswordOnlyToChange","Entre somente com a senha, se quiser mudá-la:"); 
-define("_PwdAndConfDontMatch","Senha e confirmação da senha não são iguais."); 
-define("_PwdTooShort","A Senha é muito curta, Deverar ter ao menos $passwordMinLength caracteres."); 
-define("_PwdConfEmpty","A senha não foi confirmada."); 
+define("_EnterPasswordOnlyToChange","Entre somente com a senha, se quiser mudï¿½-la:"); 
+define("_PwdAndConfDontMatch","Senha e confirmaï¿½ï¿½o da senha nï¿½o sï¿½o iguais."); 
+define("_PwdTooShort","A Senha ï¿½ muito curta, Deverar ter ao menos $passwordMinLength caracteres."); 
+define("_PwdConfEmpty","A senha nï¿½o foi confirmada."); 
 define("_PwdChanged","A Senha foi mudada."); 
-define("_PwdNotChanged","A senha NÃO foi mudada."); 
+define("_PwdNotChanged","A senha Nï¿½O foi mudada."); 
 define("_PwdChangeProblem","Ocorreu um problema mudando a senha."); 
-define("_EmailEmpty","O Endereço de e-mail não pode ser vazio."); 
-define("_EmailInvalid","O Endereço de e-mail é inválido."); 
-define("_EmailSaved","O Endereço de e-mail foi salvo"); 
-define("_EmailNotSaved","O endereço de e-mail NÃO foi salvo."); 
-define("_EmailSaveProblem","Ocorreu um problema ao salvar o endereço de e-mail."); 
+define("_EmailEmpty","O Endereï¿½o de e-mail nï¿½o pode ser vazio."); 
+define("_EmailInvalid","O Endereï¿½o de e-mail ï¿½ invï¿½lido."); 
+define("_EmailSaved","O Endereï¿½o de e-mail foi salvo"); 
+define("_EmailNotSaved","O endereï¿½o de e-mail Nï¿½O foi salvo."); 
+define("_EmailSaveProblem","Ocorreu um problema ao salvar o endereï¿½o de e-mail."); 
 define("_PROJECT_HELP","Ajuda"); 
 define("_PROJECT_NEWS","Novidades"); 
 define("_PROJECT_RULES","Regras 2007"); 
 define("_Filter_NoSelection","Nada Selecionado"); 
-define("_Filter_CurrentlySelected","Seleção Corrente"); 
-define("_Filter_DialogMultiSelectInfo","Pressione control para seleção Multipla."); 
+define("_Filter_CurrentlySelected","Seleï¿½ï¿½o Corrente"); 
+define("_Filter_DialogMultiSelectInfo","Pressione control para seleï¿½ï¿½o Multipla."); 
 define("_Filter_FilterTitleIncluding","Somente [itens] Selecionados"); 
 define("_Filter_FilterTitleExcluding","Excluir [itens]"); 
 define("_Filter_DialogTitleIncluding","Selecionar [itens]"); 
 define("_Filter_DialogTitleExcluding","Selecionar [itens]"); 
 define("_Filter_Items_pilot","pilotos"); 
 define("_Filter_Items_nacclub","clubes"); 
-define("_Filter_Items_country","Países"); 
+define("_Filter_Items_country","Paï¿½ses"); 
 define("_Filter_Items_takeoff","Decolagens"); 
 define("_Filter_Button_Select","Selecionar"); 
 define("_Filter_Button_Delete","Remover"); 
-define("_Filter_Button_Accept","Aceitar seleção"); 
+define("_Filter_Button_Accept","Aceitar seleï¿½ï¿½o"); 
 define("_Filter_Button_Cancel","Cancelar"); 
-define("_MENU_FILTER_NEW","Filtrar **VERSÃO NOVA**"); 
+define("_MENU_FILTER_NEW","Filtrar **VERSï¿½O NOVA**"); 
 define("_ALL_NACCLUBS","Todos os Clubes"); 
 define("_SELECT_NACCLUB","Selecione [nacname]-Clube"); 
-define("_FirstOlcYear","Primeiro ano de participação em uma Competição de XC online"); 
-define("_FirstOlcYearComment","Por favor, selecione o ano de sua primeira participação de uma competição de XC Online, que não esta.<br/>Este campo é relevante para &quot;newcomer&quot;-Classificação."); 
+define("_FirstOlcYear","Primeiro ano de participaï¿½ï¿½o em uma Competiï¿½ï¿½o de XC online"); 
+define("_FirstOlcYearComment","Por favor, selecione o ano de sua primeira participaï¿½ï¿½o de uma competiï¿½ï¿½o de XC Online, que nï¿½o esta.<br/>Este campo ï¿½ relevante para &quot;newcomer&quot;-Classificaï¿½ï¿½o."); 
 define("_Select_Brand","Selecione o cadastro"); 
 define("_All_Brands","Todos os cadastrados"); 
 define("_DAY","DIA"); 
 define("_Glider_Brand","Aeronave cadastrada"); 
 define("_Or_Select_from_previous","Ou selecione anteriores"); 
 define("_Explanation_AddToBookmarks_IE","Adicionar estes filtros para os Favoritos no IE"); 
-define("_Msg_AddToBookmarks_IE","Clique aqui para adicionar estas definições de filtro nos Favoritos do IE."); 
+define("_Msg_AddToBookmarks_IE","Clique aqui para adicionar estas definiï¿½ï¿½es de filtro nos Favoritos do IE."); 
 define("_Explanation_AddToBookmarks_nonIE","(Salvar este link nos Favoritos.)"); 
-define("_Msg_AddToBookmarks_nonIE","Para salvar estas definições de filtro no seu livro de favoritos, use a função Salvar nos favoritos do Navegador."); 
+define("_Msg_AddToBookmarks_nonIE","Para salvar estas definiï¿½ï¿½es de filtro no seu livro de favoritos, use a funï¿½ï¿½o Salvar nos favoritos do Navegador."); 
 define("_PROJECT_RULES2","Regras 2008"); 
-define("_MEAN_SPEED1","Velocidade média"); 
+define("_MEAN_SPEED1","Velocidade mï¿½dia"); 
 define("_External_Entry","Entradas Externas"); 
 define("_Altitude","Altitude"); 
 define("_Speed","Velocidade"); 
-define("_Distance_from_takeoff","Distância da decolagem"); 
-define("_LAST_DIGIT","Último dígito");
+define("_Distance_from_takeoff","Distï¿½ncia da decolagem"); 
+define("_LAST_DIGIT","ï¿½ltimo dï¿½gito");
+
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
