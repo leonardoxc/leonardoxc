@@ -441,7 +441,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // USE airspace checking
  $CONF_airspaceChecks=0; 
  // airspace infrigments will be show to admins and the owner of the track
- $CONF['airspace']['view']=='own';
+ $CONF['airspace']['view']='own';
  // display airspace in google maps
  $CONF['airspace']['enable']=1;
  
