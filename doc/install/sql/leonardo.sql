@@ -149,6 +149,8 @@ CREATE TABLE `leonardo_flights` (
   `glider` varchar(50) NOT NULL default '',
   `gliderBrandID` smallint(5) unsigned NOT NULL default '0',
   `comments` text NOT NULL,
+  `commentsNum` int(10) unsigned NOT NULL default '0',
+  `commentsEnabled` tinyint(1) NOT NULL default '0',
   `linkURL` varchar(200) NOT NULL default '',
   `hasPhotos` tinyint(3) unsigned NOT NULL default '0',
   `takeoffID` mediumint(9) NOT NULL default '0',
