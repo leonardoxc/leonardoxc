@@ -1639,13 +1639,13 @@ $kml_file_contents.="
 
         // get from google
         $imgStr=file_get_contents($staticMap);
-        echo "<br>".strlen($imgStr);
+        //echo "<br>".strlen($imgStr);
 
         $handle = fopen($this->getMapFilename(), "w");
         fwrite($handle, $imgStr);
         fclose($handle);
 
-        echo "<img src='".$this->getMapRelPath()."'>";
+        //echo "<img src='".$this->getMapRelPath()."'>";
 
         return $this->getMapRelPath();
     }
