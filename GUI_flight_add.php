@@ -37,6 +37,11 @@ AirTime
 ?>
 <style type="text/css">
 <!--
+
+.addGlider {
+    font-style: italic;
+}
+
 .box {
 	 background-color:#F4F0D5;
 	 border:1px solid #555555;
@@ -143,7 +148,13 @@ function submitForm() {
 			alert('<?=_FLIGHTADD_GLIDER_MISSING?>');
 			return false;
 		}
+		if ( $("#startType").val()==0 ) {
+			$("#startType").focus();
+			alert('<?=_FLIGHTADD_STARTTYPE_MISSING?>');
+			return false;
+		}
 	<? } ?>
+
 
 	// for testing
 	// alert('all tests passed'); 	return false;
@@ -152,6 +163,44 @@ function submitForm() {
 }
 
 var moduleRelPath='<?=$moduleRelPath?>';
+var gliderCerts=[];
+
+function addGlider(){
+    var brandID=$("#gliderBrandID").val();
+    window.open("<? echo $moduleRelPath ?>/GUI_EXT_add_glider.php?brandID="+brandID,
+            '_blank','scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=300,LEFT=150,TOP=100',false);
+
+}
+
+function selectBrand() {
+   var  gliderBrandID= $("#gliderBrandID").val();
+    $.getJSON(moduleRelPath+'/AJAX_gliders.php?op=gliders_list&brandID='+gliderBrandID, function(resJson) {
+            var options = '<option value=0></option>';
+            gliderCerts=[];
+            $.each(resJson.Records,function(k,v){
+                var gID= v.gliderID;
+                var gName= v.gliderName;
+                options+= '<option value="'+gID+'">'+gName+'</option>';
+                gliderCerts[gID]=v.gliderCert;
+            });
+            $("#gliderID").html(options);
+
+    });
+
+}
+
+
+function selectGlider() {
+    var gliderID= $("#gliderID").val();
+    var gliderName=$( "#gliderID option:selected" ).text();
+    var gliderCert=gliderCerts[gliderID];
+
+    $("#glider").val(gliderName);
+    $("#gliderCertCategory").val(gliderCert);
+    $("#gliderCertCategorySelect").val(gliderCert);
+    selectGliderCertCategory(0);
+}
+
 
 $(document).ready(
 		function(){
@@ -170,6 +219,7 @@ function setClub(NACid) {
 <? } ?>
 
 </script>
+
 
   <form name="inputForm" id="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();" >	
   <table class=main_text  width="700" height="400" border="0" align="center" cellpadding="4" cellspacing="2" >
@@ -245,7 +295,7 @@ function setClub(NACid) {
       <td valign="top" colspan=2>
       <span id='categoryPg'>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
-	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
+	  <select disabled="disabled" name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
       	<?
 			echo "<option value=0></option>\n";
 			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
@@ -264,8 +314,12 @@ function setClub(NACid) {
 	  
     </tr>
     <tr>
+    <td></td>
+      <td valign="top"><div colspan="3" ><?=_Cat_Info ?></div></td>
+      </tr>
+    <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
-      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
+      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" onchange="selectBrand();">
 					<option value=0></option>
 					<? 
 					$brandsListFilter=brands::getBrandsList();
@@ -274,20 +328,23 @@ function setClub(NACid) {
 					}					
 				?>
 				</select>
-				<?=_GLIDER ?>
-				 <input name="glider"  id="glider" type="text" size="20" >			</td>
+                <?=_GLIDER ?>
+                  <select name="gliderID" id="gliderID" onchange="selectGlider();">
+                      <option value=0></option>
+                  </select>
+
+				 <input  name="glider"  id="glider" type="hidden" >			</td>
 			</tr>	 
-				 		<? 
-			$gliders=  getUsedGliders($userID) ;
-			if (count($gliders) ||1) {
-				
-				 ?>
+
 			 <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Or_Select_from_previous ?></div></td>
-      <td colspan="3" valign="top"> 
+      <td colspan="3" valign="top">
+
 				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
 					<option value="0_"></option>
-					<? 
+
+					<?
+                        $gliders=  getUsedGliders($userID) ;
 						// gliderBrandID,glider,gliderCertCategory,cat,category	
 						foreach($gliders as $selGlider) {
 							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
@@ -309,7 +366,9 @@ function setClub(NACid) {
 						}
 					?>
 				</select>
-			<? } ?>				</td>
+                <br>
+                <a class='addGlider' href='javascript:addGlider();' ><?=_Cannot_find_your_glider ?></a>
+			</td>
     </tr>
 	<? if ( L_auth::isAdmin($userID)) { ?>
     <tr>
@@ -323,6 +382,7 @@ function setClub(NACid) {
 	
 		
     <tr>
+	  <td></td>
       <td colspan="4" valign="middle"><div align="left" class="styleItalic"><?=_COMMENTS_FOR_THE_FLIGHT?>
 	 </div>
 	  <div align="left">
@@ -429,6 +489,7 @@ function setClub(NACid) {
 		$filename=LEONARDO_ABS_PATH.'/'.$CONF['paths']['tmpigc'].'/'.$tmpFormFilename ;
 		// $filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
 		move_uploaded_file($tmpFilename, $filename );
+		//$filename = preg_replace('/[\s\W]+/','_',$filename); //P.Wild A.Rieck - patch to prevent nasty characters spoiling filenames
 		
 		//	echo $filename; 
 		$category=$_POST['category']+0;
@@ -497,8 +558,47 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 <br> If you are not sure about some of the information is OK to skip this step. <br><BR> <a
 				 href=\"javascript:user_add_takeoff(".$firstPoint->lat.",".$firstPoint->lon.",".$flight->takeoffID.")\">Register Takeoff</a><div id='takeoffAddPos'></div></div>";
 			echo $takeoffLink;
+			
+		}
+	//New 18.08.2013 P.Wild - Airspace warning before flight_show
+		$flight->checkAirspace(1);
+		if ((strpos($flight->airspaceCheckMsg,"HorDist"))) { // problem
+			
+			$checkLines=explode("\n",$flight->airspaceCheckMsg);
+			//if (strrchr($flight->airspaceCheckMsg,"Punkte")){
+			//	$adminPanel.="<br><strong>Deutschland Pokal</strong><BR>";
+				if ((strpos($flight->airspaceCheckMsg,"HorDist"))) {
+					$adminPanel.="<br><strong>Airspace PROBLEM</strong><BR>";
+					for($i=1;$i<count($checkLines); $i++) {
+						$adminPanel.=$checkLines[$i]."<br>";
+					}
+						
+					echo "<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>
+					$adminPanel<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br></div>";
+					$warningtext="<br><br><b>Der DHV-XC Server meldet ein Luftraumproblem f�r diesen Flug.</b><br><br>Wenn diese Meldung erfolgt sein sollte, obwohl eine Freigabe vorlag (z.B. wegen einer zeitlichen Deaktivierung eines kontrollierten Luftraumes (HX, EDR), einem aktiven Segelflugsektor oder einer Freigabe durch die Flugsicherung), kann der Flug mit dem unten stehenden Button �Freigabe best�tigen� durch dich frei gegeben werden. <br><br><i>Au�erdem muss der das Problem aufhebende Grund zwingend im Pilotenkommentar beschrieben werden.</i><br><br>Luftraumverletzungen sind verboten. Wenn die aufgezeichneten Positionsdaten mehr als 100 m horizontal oder vertikal in einem gesperrten Luftraum liegen, gilt eine Luftraumverletzung als nachgewiesen. In diesem Fall bitten wir mit dem unten stehenden zweiten Button �Flug l�schen� um die sofortige L�schung dieses Fluges vom Server.<br><br>Mit dem Abschicken dieser Daten best�tige ich, dass ich die f�r den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe. <br> ";
+					echo "<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>
+					$warningtext<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br></div>";
+					
 		}
 			
+		?>  	 
+       				
+       				<table>
+       				<tr>
+       			      <td>&nbsp;</td>
+       			      <td colspan="3"><p><form action="<?=getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))?>" method='post' ><input type="submit" value="<?=_PRESS_HERE_TO_CONFIRM_CLEARANCE ?>"></p></form></td>
+       			    
+       			      <td>&nbsp;</td>
+       			      <td colspan="3"><p><form action="<?=getLeonardoLink(array('op'=>'delete_flight','flightID'=>$flightID))."&confirmed=1"?>" method='post' ><input type="submit" value="<?=_PRESS_HERE_TO_DELETE_FLIGHT ?>"></p></form></td>
+       			    </tr>
+       		    	</table>
+       		    	
+       					
+       				<?php 	
+       				}
+       				
+		
+		else{	
 		?>  	 
 		  <p align="center"><span class="style111"><font face="Verdana, Arial, Helvetica, sans-serif"><?=_YOUR_FLIGHT_HAS_BEEN_SUBMITTED ?></font></span> <br>
 		  <br>
@@ -511,5 +611,6 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 
 }
 	
+}	
 	closeMain(); 
 ?>
