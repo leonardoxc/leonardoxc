@@ -124,6 +124,8 @@
             another inspiration            <a href="http://www.flightlog.org" target="_blank">http://www.flightlog.org</a></li>
           <li><strong>Emmanuel Chabani aka Man's </strong>for his Google Earth
             extended info Module.</li>
+          <li>The development of the 'friends' mod was done in memory of <strong>Petko Petkov</strong>
+          </li>
           <li><strong><a href="http://www.dhv.de" target="_blank">DHV</a></strong> for  sponsoring the development of <br />
             a) Custom rankings / National custom rankings / Club rankings <br />
             b) Airspace infrigments checking <br />

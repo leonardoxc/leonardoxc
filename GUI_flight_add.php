@@ -249,6 +249,14 @@ function setClub(NACid) {
         <label for='is_private'><?=_MAKE_THIS_FLIGHT_PRIVATE ?></label>
       </span>
         <input type="checkbox" name="is_private" id="is_private" value="1">
+
+	<span class="styleItalic">
+        <label for='is_friends_only'><?=_IS_FRIENDS_ONLY_ ?></label>
+      </span>
+		<input type="checkbox" name="is_friends_only" value="1"  >
+
+
+
 		<? } ?></td>
     </tr>
     <tr>
@@ -450,8 +458,10 @@ function setClub(NACid) {
 	if ($_POST['insert_as_user_id'] >0 && L_auth::isAdmin($userID) ) $flights_user_id=$_POST['insert_as_user_id']+0;
 	else $flights_user_id=$userID;
 
+	$is_private=0;
 	if ($_POST['is_private'] ==1 ) $is_private=1;
-	else $is_private=0;
+	if ($_POST['is_friends_only'] ==1 ) $is_private=4;
+
 
 	$gliderCat=$_POST['gliderCat']+0;
 

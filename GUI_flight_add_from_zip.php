@@ -146,6 +146,13 @@ function setClub(NACid) {
         <label for='is_private'><?=_MAKE_THIS_FLIGHT_PRIVATE ?></label>
       </span>
         <input type="checkbox" name="is_private" id="is_private" value="1">
+
+			  <span class="styleItalic">
+        <label for='is_friends_only'><?=_IS_FRIENDS_ONLY_ ?></label>
+      </span>
+			  <input type="checkbox" name="is_friends_only" value="1"  >
+
+
 		<? } ?></td>
     </tr>
     <tr>
@@ -308,6 +315,12 @@ function setClub(NACid) {
 
 	if (!$filename) addFlightError(_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE);
 
+
+	 $is_private=0;
+	 if ($_POST['is_private'] ==1 ) $is_private=1;
+	 if ($_POST['is_friends_only'] ==1 ) $is_private=4;
+
+
 	# modification martin jursa 17.05.2008: require glider and brandid
 	$glider=$_POST["glider"];
 	$gliderBrandID=$_POST["gliderBrandID"]+0;
@@ -380,6 +393,7 @@ function setClub(NACid) {
 			$alreadyValidatedInPage=0;
 			list($res,$flightID)=addFlightFromFile($igcFilename,0,$flights_user_id,
 								array('gliderBrandID'=>$gliderBrandID, 'cat'=>$gliderCat,
+									    'private'=>$is_private,
 										'glider'=>$glider,'category'=>$category,'allowDuplicates'=>1 ,
 										'gliderCertCategory'=>$gliderCertCategory,
 										'startType'=>$_POST["startType"]+0,
