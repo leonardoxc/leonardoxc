@@ -8,9 +8,8 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: syncWXC2.php,v 1.10 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: syncWXC2.php,v 1.8 2010/04/06 13:55:53 manolis Exp $                                                                 
 // patched by AR Version 2010/04/06 12:00:00, implemented commentInternal, extend invalid/disabled/non-public flight handling
-// patched by PW,AR Version 2010/07/08  13:18:00 adding "approved" handling at admin airspaceCheckMsg in case some airspaces are individual ok
 //************************************************************************
 /********** implements CIVL WXC synchronization protocol  ***************/	
 /************** Mon Jan 14 18:54:15 CET 2008, by mk *********************/
@@ -241,11 +240,23 @@ foreach ($xRow as $row) {
 		if($row['private'] > 0) {
 			$row['NacStatus'] = "d";
 		}
-		//in case of detected airspace violation, pilot might still have approval for that airspace... so we allow sync when word "approved" is set at comment first
-		if(($row['airspaceCheckFinal'] == "-1") && (strtolower(substr($row['airspaceCheckMsg'],0,8)!="approved")) ) {
+				
+		if($row['airspaceCheckFinal'] == "-1") { 
 			$row['NacStatus'] = "d";
 		}
-		
+		//Mod. 08.07.2010 P. Wild - allow BORDER-DE Flights (Luftr�ume 1837, 669(old)) to sync to WXC
+		if(substr($row['airspaceCheckMsg'],0,4)=="1837") {
+		$row['NacStatus'] = "o";
+		}
+		if(substr($row['airspaceCheckMsg'],0,3)=="419") {
+		$row['NacStatus'] = "o";
+		}
+		if(substr($row['airspaceCheckMsg'],0,3)=="416") {
+		$row['NacStatus'] = "o";
+		}
+		if(substr($row['airspaceCheckMsg'],0,3)=="669") {
+		$row['NacStatus'] = "o";
+		}
 		$row['GliderCat']=convertCat($row['cat'],$row['category']);
 		
 		if (  $row['serverID']==0 || $row['serverID']==$CONF_server_id ) $isLocal=1;
@@ -282,11 +293,7 @@ foreach ($xRow as $row) {
 		  'GliderCat','Glider','TakeoffTime','LandingTime','TakeoffName','TakeoffCountry','CommentInternal','FlightUrl');
 		foreach($row as $key => $value){
         	if(in_array($key,$WxcFields)){  
-				$valueSafe=$value;
-				if (in_array($key,array('PilotFirstName','PilotLastName','Glider','TakeoffName','CommentInternal') ) ) {
-					$valueSafe="<![CDATA[$value]]>";
-				}
-            	$FlighsXML[$item_ok].= "      <$key>$valueSafe</$key>\n";
+            	$FlighsXML[$item_ok].= '      '."<".$key.">".$value."</".$key.">"."\n";
       		}
       	}
       	$item_ok++;
@@ -339,20 +346,29 @@ function convertCat($cat,$category) {
 		case "4":
 			$GliderCat="5";    
 		break;
+		case "8":
+			$GliderCat="2";
+		break;
 		default:
 			$GliderCat="9";    // non free glider
 	}
 	
 	switch ($category){	
-		case "1":
+		case "1": //Sport
 			$GliderCat.="201";    
 		break;
-		case "2":
-			$GliderCat.="901";    
+		case "2": //Performance
+			$GliderCat.="301";    
 		break;
-		case "3":
-			$GliderCat.="902";    
-		break;			
+		case "3": //Tandem
+			$GliderCat.="102";    
+		break;
+		case "4": //Fun
+			$GliderCat.="101";
+			break;
+		case "5": //Standard
+			$GliderCat.="101";
+			break;
 		default :
 			$GliderCat.="901";    
 		break;	

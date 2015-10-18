@@ -8,14 +8,14 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flights_export.php,v 1.5 2012/09/04 09:38:57 manolis Exp $                                                                 
+// $Id: GUI_flights_export.php,v 1.4 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
 	
-	function replace_spacesXX($str) {
-		return str_replace(" ","&nbsp;",$str);
-	}
+// 	function replace_spaces($str) {
+// 		return str_replace(" ","&nbsp;",$str);
+// 	}
 
 	$legend="";
 	$legend="<b>ADMIN: Export IGC Tracklogs</b> ";

@@ -130,7 +130,7 @@ foreach($jobs as $job){
 				
 		}			
 		
-		$mailBody="PDF File is ready. <a href='$pdfFile'>Download it from here</a>\n";
+		$mailBody="PDF File is ready.<br>".$pdfFile;
 		
 		echo "PDF FILE: $pdfFile\n";
 		

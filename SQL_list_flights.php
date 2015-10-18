@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: SQL_list_flights.php,v 1.12 2012/09/12 19:41:03 manolis Exp $                                                                 
+// $Id: SQL_list_flights.php,v 1.10 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -135,19 +135,9 @@
 	}
 	
 	if ( ! ($pilotID>0 && $pilotID==$userID ) && !L_auth::isAdmin($userID) ) {
-
-		// only display to friends
-		/*	$where_clause .= " AND (private=0 OR
-				(
-					private=4 AND userServerID=0 AND $userID IN
-						( SELECT friendUserID FROM leonardo_friends WHERE userID=" . $flightsTable . ".userID )
-				)
-			)";
-	*/
-		// display 'friends only'  flights ot everybody but show limited info
-		$where_clause .= " AND (private=0 OR private=4 ) ";
-
-	}
+		$where_clause.=" AND private=0 ";
+	} 
+	
 	//----------------------------------------------------------
 	// Now the filter
 	//----------------------------------------------------------		
@@ -189,7 +179,7 @@
 	
 	
 	$queryCount="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
-	// echo "queryCount:$queryCount#<BR>";
+	// echo "queryCount:$query#<BR>";
 
 
 if (0) {

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_airspace_admin.php,v 1.9 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: FN_airspace_admin.php,v 1.8 2010/03/14 20:56:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -69,12 +69,12 @@ function putAirspaceToDB() {
 		$names[$AirspaceArea[$i]->Name]++;
 	
 		$id=$data[$AirspaceArea[$i]->Name][$serial]['id']+0;
-		$Comments=prep_for_DB($data[$AirspaceArea[$i]->Name][$serial]['Comments']);
+		$Comments=$data[$AirspaceArea[$i]->Name][$serial]['Comments'];
 		$disabled=$data[$AirspaceArea[$i]->Name][$serial]['disabled']+0;
 		
 	    //	print_r($AirspaceArea[$i]->Base);
 		$fields=" id, Name, serial, updated,  Type, Shape, Comments, disabled, minx, miny, maxx, maxy , Base , Top, ";
-		$values=" $id , '".prep_for_DB($AirspaceArea[$i]->Name)."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', $disabled ,
+		$values=" $id , '".$AirspaceArea[$i]->Name."' ,  $serial , 1, '".$AirspaceArea[$i]->Type."' , '".$AirspaceArea[$i]->Shape."', '".$Comments."', $disabled ,
 					".$AirspaceArea[$i]->minx.", ".$AirspaceArea[$i]->miny.", ".$AirspaceArea[$i]->maxx.",  ".$AirspaceArea[$i]->maxy." ,
 				 '".serialize($AirspaceArea[$i]->Base)."' ,'".serialize($AirspaceArea[$i]->Top)."' , ";
 		if ($AirspaceArea[$i]->Shape==1) { //area
@@ -246,7 +246,7 @@ function ParseLine($nLineType) {
 		break;
 
 	case k_nLtDA:
-		CalculateSector($TempString);
+		CalculateArc($TempString); //P.Wild changed from missing function calculate sector 15.09.2014
 		break;
 
 	case k_nLtDC:
@@ -421,7 +421,7 @@ function AddPoint($Temp) {
 
 function ReadAltitude($Text,$field) {
 	global $TempArea;
-	 DEBUG("checkAirspace",128,"ReadAltitude: $Text \n");
+	// DEBUG("checkAirspace",128,"ReadAltitude: $Text");
 
 	$fHasUnit=0;
 	$Text=trim(strtoupper($Text));
@@ -430,8 +430,6 @@ function ReadAltitude($Text,$field) {
 	preg_match("/(\d*)([ =]*)([A-Z]*)([ =]*)(\d*)([ =]*)([A-Z]*)([ =]*)/",$Text,$parts);
 	//print_r($parts);
 	//echo "<HR>";
-
-	DEBUG("checkAirspace",128,print_r($parts,1)."<BR>\n");
 
 	$TempArea->$field->Altitude = 0;
 	$TempArea->$field->FL = 0;
@@ -448,6 +446,8 @@ function ReadAltitude($Text,$field) {
       } else {
         $TempArea->$field->Altitude = $pToken;
       }
+    //}  else if ( $pToken=='SFC' || $pToken=='GND' ) {
+    // MANOLIS 2015.05.18 fix for 1000GND 
     }  else if ( $pToken=='SFC' || ( $pToken=='GND' && !$TempArea->$field->Altitude ) ) {
       $TempArea->$field->Base = abAGL;
       $TempArea->$field->FL = 0;
@@ -464,6 +464,8 @@ function ReadAltitude($Text,$field) {
       $fHasUnit = true;
     } else if ( $pToken=='MSL'){
       $TempArea->$field->Base = abMSL;
+    // } else if ( $pToken=='AGL'){
+    // MANOLIS 2015.05.18 fix for 1000GND 
     } else if ( $pToken=='AGL' || ( $pToken=='GND' && $TempArea->$field->Altitude>0 ) ){
       $TempArea->$field->Base = abAGL;
     } else if ( $pToken=='STD'){
@@ -487,7 +489,7 @@ function ReadAltitude($Text,$field) {
     $TempArea->$field->Base = abMSL;
   }
 
-	 DEBUG("checkAirspace",128,"ReadAltitude: FL=". $TempArea->$field->FL.", Alt:". $TempArea->$field->Altitude.", Base:". $TempArea->$field->Base."<BR>\n");
+	// DEBUG("checkAirspace",128,"ReadAltitude: FL=". $Alt->FL.", Alt:". $Alt->Altitude.", Base:". $Alt->Base." ");
 	//  return $Alt;
 }
 

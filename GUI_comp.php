@@ -51,7 +51,7 @@
 	// 1-> first bit -> means flight will not be counted anywhere!!!
 	$bitMask=2 & ~( $includeMask & 0x03 );
 	$where_clause.= " AND ( excludeFrom & $bitMask ) = 0 ";
-
+	$where_clause.= " AND category!=6 ";//mod 14.12.2011 ensure no flightbook entries get in scoring P. Wild
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
   $dontShowManufacturers=$ranksList[$rank]['dontShowManufacturers']; //P.Wild 16.7.08
@@ -136,7 +136,9 @@
 // show the general discription of the ranking
 
 // show the different subrankings/categories menu
+$n=0;
 foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
+  $n++;
   if ($lng==$ranksList[$rank]['localLanguage'])
   		$subrankTitle=$subrankArray['localName'];
   else
@@ -146,7 +148,8 @@ foreach($ranksList[$rank]['subranks'] as $subrankID=>$subrankArray) {
 	else $style="";
 	echo " <div class='menu1' $style ><a href='".getLeonardoLink(array('op'=>'comp','rank'=>$rank,'subrank'=>$subrankID))."'>$subrankTitle</a></div>";	
 }
-echo "<BR><BR>";
+if($n>12) {echo "<BR><BR><BR><BR>";}
+else {echo "<BR><BR>";} // P. Wild 26.10.2010 workaround for long lists and firefox
 
 
 # Martin Jursa, 02.03.2009: Hook for custom menu generated somewhere in the ranks code
@@ -209,7 +212,7 @@ var BT_default_width=500;
 		$formatFunction=$customFormatFunction;
 	else 
 		$formatFunction="formatOLCScore";	
-	
+	$customRankHeader=$ranksList[$rank]['subranks'][$subrank]['customRankHeader'];//mod. 02.03.2011 P.Wild
 	if ($customRankHeader) 
 		$rankHeader=$customRankHeader;
 	else 
@@ -253,8 +256,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    }
    echo "<table class='listTable listTableTabber' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($countHowMany+4)."'>$legend</td></tr>";
-   
-   ?>
+  ?>
    <tr>
    <td class="SortHeader" width="30"><? echo _NUM ?></td>
    <td class="SortHeader"><div align=left><? echo _PILOT ?></div></td>
@@ -264,7 +266,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    <? } ?>
    <td class="SortHeader" width="50">&nbsp;</td>
    </tr>
-   <? 
+   <?
 
 	  $i=1;
    	  foreach ($pilots as $pilotID=>$pilot) {
@@ -282,17 +284,10 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 	     $pilotIDinfo=str_replace("_","u",$pilotID);
 		 echo "<TR $bg>";
 		 echo "<TD>".($i)."</TD>"; 	
-	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>";
-
-	     if (!isPrint()) {
-			 echo "<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
+	     echo "<TD nowrap><div align=left id='$arrayName"."_$i' class='pilotLink'>".		 
+				"<a class='betterTip' id='tpa0_$pilotIDinfo' href=\"javascript:pilotTip.newTip('inline', 0, 13, '$arrayName"."_$i', 200, '".$pilotID."','".
 					addslashes($pilot['name'])."' )\"  onmouseout=\"pilotTip.hide()\">".$pilot['name']."</a>";
-	     } else {
-	     	 echo "<a class='betterTip' id='tpa0_$pilotIDinfo' href='".
-	     	 getLeonardoLink(array('op'=>'pilot_profile','pilotID'=>$pilotID)).
-	     	  "'  >".$pilot['name']."</a>";
-	     }
-	     			
+					
 		if ($pilot['NACid'] && $pilot['NACmemberID'] && $pilot['NACclubID'] &&
 				 $CONF['NAC']['display_club_details_on_pilot_list']
 		) {	
@@ -311,6 +306,8 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 		$pilotBrands=array();
 		if ($countHowMany>0) {
 			foreach ($pilot[$category]['flights'] as $flightID) {
+				
+				
 				$val=$pilot['flights'][$flightID][$key];
 	
 				$glider=$pilot['flights'][$flightID]['glider'];
@@ -319,20 +316,25 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 				$thisFlightBrandID=$pilot['flights'][$flightID]['brandID'];
 				if ($thisFlightBrandID) $pilotBrands[$thisFlightBrandID]++;
 	
-				$flightComment=$pilot['flights'][$flightID]['comment'];
-				
 				if (!$val)  $outVal="-";
 				else if ($formatFunction) $outVal=$formatFunction($val);
 				else $outVal=$val;
-				// $descr=_GLIDER.": $glider, "._COUNTRY.": $country";
+				 //$descr=_GLIDER.": $glider, "._COUNTRY.": $country";
+				
 				if ($val) {
-					if ($flightComment) $flightCommentStr="<br>($flightComment)";
-					else $flightCommentStr='';
-					echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal.$flightCommentStr."</a>";
+					if ($country=="Germany"){//P. Wild 6.12.2011 - Deutschland Flüge Fett hervorheben
+					echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'><b>".$outVal."</b></a>";
 					
 					//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
-					echo "</TD>"; 	 		  
-				} else echo "<TD>".$outVal."</TD>"; 	 		  
+					echo "</TD>"; 
+					}else{	 
+						echo "<TD><a class='betterTip' id='tpa2_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))."' alt='$descr' title='$descr'>".$outVal."</a>";
+							
+						//echo " <a class='betterTip' id='tpa2_$flightID' href='".$moduleRelPath."/GUI_EXT_flight_info.php?op=info_short&flightID=".$flightID."' title='$descr'>?</a>";
+						echo "</TD>";
+					}
+				} else echo "<TD>".$outVal."</TD>"; 	 
+				
 				$k++;
 				if ($k>=$countHowMany) break;
 			}
@@ -382,8 +384,9 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
   // $legend.=" (".$countHowMany." "._N_BEST_FLIGHTS.")";
    echo "<table class='listTable listTableTabber listTable2' cellpadding='2' cellspacing='0'>
    			<tr><td class='tableTitleExtra' colspan='".($pilotsMax+3)."'>$legend</td></tr>";
-   
-   ?>
+//echo "<br><br>".$legend."***".$header."<br><br>";
+ //  if ($legend=="Gesamtwertung PG"){
+  ?>
    <tr>
    <td class="SortHeader" width="30"><? echo _NUM ?></td>
    <td class="SortHeader"><div align=left><? echo _Club ?></div></td>
@@ -392,7 +395,7 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
    <? } ?>
    <td class="SortHeader" width="70"><? echo $header ?></td>
    </tr>
-   <? 
+  <?
 
 	  $i=1;
    	  foreach ($clubs as $clubID=>$club) {
@@ -408,9 +411,14 @@ function listClubs($legend,$header, $category, $key, $formatFunction="") {
 	     $i++;
 		 echo "<TR $bg>";
 		 echo "<TD>".($i-1+$startNum)."</TD>"; 	
-	     echo "<TD width='25%'><div align=left >".$clubNamesList[$clubID].
+	     if ($legend=="Gesamtwertung PG" || $legend=="Gesamtwertung HG"){ //mod. P.Wild 30.3.2011 - Bundesliga Layout
+         echo "<TD width='75%'><div align=left >".$clubNamesList[$clubID].
 				"</div></TD>";
-		 
+		 }
+         else{
+             echo "<TD width='25%'><div align=left >".$clubNamesList[$clubID].
+				"</div></TD>";
+		 }
 
 
 		unset($pilotBrands);

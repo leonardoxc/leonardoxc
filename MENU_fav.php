@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_fav.php,v 1.2 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: MENU_fav.php,v 1.1 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
  

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_conf_htaccess.php,v 1.21 2012/10/17 09:45:24 manolis Exp $                                                                 
+// $Id: GUI_conf_htaccess.php,v 1.20 2012/09/11 19:27:11 manolis Exp $                                                                 
 //
 //************************************************************************
 

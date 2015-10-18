@@ -137,7 +137,7 @@ if (! is_dir($thumbsDirAbs) ) {
 		}
 		 // GUS end
 
-		// now the filter!!!	
+		// now the filter!!!
 		$fltr=$_GET['fltr'];
 		if ($fltr) {
 			$filter=new LeonardoFilter();

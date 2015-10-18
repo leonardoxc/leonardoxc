@@ -16,6 +16,7 @@
 
 	$PREFS->themeName=makeSane($_POST['PREFS_themeName'],0);
 	$PREFS->itemsPerPage=makeSane($_POST['PREFS_itemsPerPage'],1);
+	$PREFS->gliderHistory=makeSane($_POST['PREFS_gliderHistory'],1);
 	$PREFS->metricSystem=makeSane($_POST['PREFS_metricSystem']);
 
 	$PREFS->language=makeSane($_POST['PREFS_language']);
@@ -55,7 +56,10 @@
 			}
 ?>	
 	  </select>	  </td>
-      <td width="1">&nbsp;</td>
+     <td></td>  
+      <td bgcolor="#EAEDEE"><div align="right"><? echo _gliderHistory ?></div></td>
+      <td> <input name="PREFS_gliderHistory" type="text" value="<? echo $PREFS->gliderHistory ?>" size="5" maxlength="120"></td>
+      
     </tr>
     <tr> 
       <td width="284" bgcolor="#EAEDEE"><div align="right"><? echo _LANGUAGE ?></div></td>

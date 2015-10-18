@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_flight.php,v 1.61 2012/06/02 08:40:12 manolis Exp $                                                                 
+// $Id: FN_flight.php,v 1.59 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -168,7 +168,10 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 		if ($varName=='NACclubID' || $varName=='NACid' || $varName=='comments' ) continue;
 		$flight->$varName=$varValue;
 	}
-
+//     if(!$gliderID) {
+//     	$gliderID=$argArray['gliderID']+0;//P. Wild 23.02.2015 	
+//     }
+//     echo "FLIGHTgliderid",$gliderID;
 	$comments=$argArray['comments'];
 	if ($comments) {		
 		$flight->commentsNum=1;
@@ -224,7 +227,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 
 
 	// echo $flight->DATE	." >  ". date("Y-m-d",time()+3600*10) ."<BR>";
-	// check for dates in the furure
+	// check for dates in the future
 	if ( $flight->DATE	> date("Y-m-d",time()+3600*10)  ) {
 		@unlink($flight->getIGCFilename(1));
 		@unlink($tmpIGCPath.".olc");
@@ -237,12 +240,14 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	
 	// Two week time limit check - P.Wild
 	/// Modification martin jursa 08.05.2007 cancel the upload if flight is too old
+	// Mod. 15.12.2011 Disable submit window for flightbook (category=6) entries P.Wild
 	if ($CONF_new_flights_submit_window>0) {
 		if (! L_auth::isAdmin($userID) ) {
-			if (  $flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 )  ) {
+			if ( $flight->category!=6 && ($flight->DATE	< date("Y-m-d", time() - $CONF_new_flights_submit_window*24*3600 ) ) ) {
 				@unlink($flight->getIGCFilename(1));
 				@unlink($tmpIGCPath.".olc");
-				@unlink($tmpIGCPath);
+				@unlink($tmpIGCPath); 
+				//$flight->category=$CONF['gliderClasses']['default_class'];// allow flight to be listed in flightbook but not in scoring 14.12.2011 P. Wild
 				$log->ResultDescription=getAddFlightErrMsg(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
 				if (!$log->put()) echo "Problem in logger<BR>";
 				return array(ADD_FLIGHT_ERR_OUTSIDE_SUBMIT_WINDOW,0);
@@ -409,23 +414,15 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	if ( $CONF_use_NAC ) {
 		require_once dirname(__FILE__)."/CL_NACclub.php";
 		list($pilotNACID,$pilotNACclubID)=NACclub::getPilotClub($userIDforFlight);
-		
-				
-		DEBUG("FLIGHT",1,"addFlightFromFile: pilotNACID:$pilotNACID, pilotNACclubID: $pilotNACclubID<br>");					
-		
 		if ( $CONF_NAC_list[$pilotNACID]['use_clubs'] ) {
 		
-			DEBUG("FLIGHT",1,"addFlightFromFile: use_clubs is on<br>");
 			if ( $argArray['NACclubID'] >0  && $argArray['NACid']>0 ) {
 				$flight->NACclubID=$argArray['NACclubID'];
 				$flight->NACid=$argArray['NACid'];
-				
-				DEBUG("FLIGHT",1,"addFlightFromFile: using arguments NACclubID NACid<br>");
 			} else {
-				DEBUG("FLIGHT",1,"addFlightFromFile: calculating  NACclubID NACid<br>");
+			
 				// check year -> we only put the club for the current season , so that results for previous seasons cannot be affected 
 				$currSeasonYear=$CONF_NAC_list[$pilotNACID]['current_year'];
-				DEBUG("FLIGHT",1,"addFlightFromFile: currSeasonYear:  $currSeasonYear<br>");
 				
 				if ($CONF_NAC_list[$pilotNACID]['periodIsNormal']) {
 					$seasonStart=($currSeasonYear-1)."-12-31";
@@ -435,9 +432,7 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 					$seasonEnd=$currSeasonYear.$CONF_NAC_list[$pilotNACID]['periodStart'];
 				}
 	
-				DEBUG("FLIGHT",1,"addFlightFromFile: seasonStart:$seasonStart , seasonEnd:$seasonEnd<br>");
-				if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 
-					DEBUG("FLIGHT",1,"addFlightFromFile: inside Season !!<br>");			
+				if ($flight->DATE > $seasonStart  && $flight->DATE <= $seasonEnd ) { 			
 					$flight->NACclubID=$pilotNACclubID;
 					$flight->NACid=$pilotNACID;
 				}
@@ -448,11 +443,18 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	
 	if ($CONF_use_validation) {
 		$ok=$flight->validate(0); // dont update DB
+		//Mod. 15.12.2012 Validation feedback P.Wild
+		//echo "ok=".$ok; //DEBUG
+		if ($ok!=1) echo "<span class='alert'><strong>"._G_REC_VALI_FAIL."</strong><br><BR></span>";
+		if ($ok==-1) echo "<span class='alert'><strong>"._G_REC_MISSING."</strong><br><BR></span>";
+		if ($ok==0) echo "<span class='alert'><strong>"._VALI_SRV_NO_RESP."</strong><br><BR></span>";
+		if ($ok==-2) echo "<span class='alert'><strong>"._NO_VALI_EXE."</strong><br><BR></span>";
 	}
 	
 	if ($CONF_airspaceChecks) {
 		$flight->checkAirspace(0); // dont update DB
 	}
+	
 
 	$flight->putFlightToDB(0);
 	
@@ -549,14 +551,11 @@ function addFlightFromFile($filename,$calledFromForm,$userIDstr,
 	
 	set_time_limit (200);
 	$flight->computeScore();
+	//echo "Score<br>";
 	$flight->updateTakeoffLanding();
-	
-	//	echo "TakeoffID:".$flight->takeoffID."<BR>";
-	if ( in_array($flight->takeoffID, $CONF['takeoffs']['private']) ) {
-		$flight->private=1;
-	}
+	//echo "Takeoff<br>";
 	$flight->putFlightToDB(1); // update
-	
+	//echo "Update<br>";
 	return array(1,$flight->flightID); // ALL OK;
 }
 

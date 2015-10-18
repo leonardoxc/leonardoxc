@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_pilot.php,v 1.55 2012/06/02 08:40:12 manolis Exp $                                                                 
+// $Id: FN_pilot.php,v 1.54 2010/03/21 22:51:58 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -65,8 +65,8 @@ function getPilotList($clubID=0) {
 function getUsedGliders($userID,$serverID=0) {
 	global $db;
 	global $flightsTable;
-
-	$query="SELECT glider,gliderBrandID,gliderCertCategory,cat,category from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider,gliderCertCategory,cat,category ORDER BY DATE DESC ";
+    //P. Wild 17.10.2014 add AND DATE >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) to shorten list
+	$query="SELECT glider,gliderBrandID,gliderCertCategory,cat,category from $flightsTable WHERE userID=$userID AND userServerID=$serverID AND DATE >'2015-01-30' AND  ( glider <> '' OR gliderBrandID <>0 ) GROUP BY gliderBrandID,glider,gliderCertCategory,cat,category ORDER BY DATE DESC ";
 	// echo $query;
 	$res= $db->sql_query($query);
     if($res <= 0){
@@ -124,7 +124,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 	global $countries,$langEncodings;
 	global $CONF_use_leonardo_names,$PREFS,$CONF,$CONF_server_id;
 
-	$query="SELECT Sex,Birthdate,LastName,FirstName,LastNameEn,FirstNameEn,countryCode,CIVL_ID,serverID
+	$query="SELECT Sex,Birthdate,LastName,FirstName,countryCode,CIVL_ID,serverID
 			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
 	$res= $db->sql_query($query);
 	// echo $query;
@@ -139,10 +139,7 @@ function getPilotInfo($pilotIDview,$serverID) {
 		if (!$pilot) return array('','','','','',-1);
 		
 		$firstName=$pilot['FirstName'];
-		$lastName=$pilot['LastName'];		
-		$firstNameEn=$pilot['FirstNameEn'];
-		$lastNameEn=$pilot['LastNameEn'];
-		
+		$lastName=$pilot['LastName'];
 		$pilotCountry=strtolower($pilot['countryCode']);
 		$Sex=$pilot['Sex'];
 		$Birthdate=$pilot['Birthdate'];
@@ -231,84 +228,6 @@ function getPilotInfo($pilotIDview,$serverID) {
 
 }
 
-
-function getPilotInfoEn($pilotIDview,$serverID) {
-	global $db,$pilotsTable,$opMode;
-	global $currentlang,$nativeLanguage,$langEncodings,$lang2iso,$langEncodings;
-	global $countries,$langEncodings;
-	global $CONF_use_leonardo_names,$PREFS,$CONF,$CONF_server_id;
-
-	$query="SELECT Sex,Birthdate,LastName,FirstName,LastNameEn,FirstNameEn,countryCode,CIVL_ID,serverID
-			FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID ";
-	$res= $db->sql_query($query);
-	// echo $query;
-
-
-	// Get real name from leonardo_pilots
-	// we must make sure the name can be displayed in the $currentlang encoding
-	//
-	if ($res) {
-		$pilot = $db->sql_fetchrow($res);
-		if (!$pilot) return array('','','','','','','',-1);
-		
-		$firstName=$pilot['FirstName'];
-		$lastName=$pilot['LastName'];		
-		$firstNameEn=$pilot['FirstNameEn'];
-		$lastNameEn=$pilot['LastNameEn'];
-		
-		$pilotCountry=strtolower($pilot['countryCode']);
-		$Sex=$pilot['Sex'];
-		$Birthdate=$pilot['Birthdate'];
-		$CIVL_ID=$pilot['CIVL_ID'];
-
-		if ( $lastName || $lastNameEn || $firstName || $firstNameEn) {
-			if (!$lastName) $lastName=$lastNameEn;
-			if (!$lastNameEn) $lastNameEn=$lastName;			
-			if (!$firstName) $firstName=$firstNameEn;
-			if (!$firstNameEn) $firstNameEn=$firstName;			
-			
-			return array($lastName,$firstName,$lastNameEn,$firstNameEn,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
-		}
-
-	}
-
-	// we dont have a local user , return !
-	if ($serverID!=0 && $serverID!=$CONF_server_id ) {
-		return array('','','','','','','',0);
-	}
-    
-	if (1) { // phpBB
-		$res= $db->sql_query("SELECT ".$CONF['userdb']['user_real_name_field']." FROM  ".$CONF['userdb']['users_table']." WHERE ".$CONF['userdb']['user_id_field']."=".$pilotIDview );
-		if ($res) {
-			$row= $db->sql_fetchrow($res);
-			$realName=$row[$CONF['userdb']['user_real_name_field']];
-
-			$str=$realName;
-			// we have some info on how to tranlitarate
-			// and the currentlang is not the native lang of the pilot.
-			$pilotLang="";
-			if ($pilotCountry && !countryHasLang($pilotCountry,$currentlang)  ) {
-				if ( ($pilotLang=array_search($pilotCountry,$lang2iso)) === NULL )
-					$pilotLang=$nativeLanguage;
-				//echo $pilotLang."#".$pilotCountry."$";
-			}
-
-			//	if all else fails translitarate using the nativeLangauge
-			if (!$pilotCountry && !$pilotLang && $langEncodings[$nativeLanguage]!=$langEncodings[$currentlang]) $pilotLang=$nativeLanguage;
-			// echo ">".$pilotLang."#".$pilotCountry."$";
-
-			$enc=$langEncodings[$pilotLang];
-			if ($enc) $str=transliterate($str,$enc);
-			//echo $realName."@";
-			// else return as is.
-		}
-	}
-	
-	list($lastName,$firstName)=split(" ",$str,2);
-	return array($lastName,$firstName,$lastName,$firstName,$pilotCountry,$Sex,$Birthdate,$CIVL_ID);
-
-}
-
 function getExternalLinkIconStr($serverID,$linkURL='',$typeOfLink=1) {
 	// $typeOfLink=1 img, 0->none, 2->text (*)
 	global $CONF,$CONF_server_id,$moduleRelPath;
@@ -335,15 +254,10 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 		$serverID=$parts[0];
 	}
 
-	if ($PREFS->nameOrder==1) {
-		$nOrder="CONCAT(FirstName,' ',LastName)";
-		$nOrderEn="CONCAT(FirstNameEn,' ',LastNameEn)";
-	} else {
-		$nOrder="CONCAT(LastName,' ',FirstName)";
-		$nOrderEn="CONCAT(LastNameEn,' ',FirstNameEn)";
-	}
+	if ($PREFS->nameOrder==1) $nOrder="CONCAT(FirstName,' ',LastName)";
+	else $nOrder="CONCAT(LastName,' ',FirstName)";
 
-	$query="SELECT $nOrder as realName ,$nOrderEn as realNameEn, countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
+	$query="SELECT $nOrder as realName ,countryCode,serverID,Sex FROM $pilotsTable WHERE pilotID=$pilotIDview  AND serverID=$serverID";
 	$res= $db->sql_query($query);
 	// echo $query;
 
@@ -355,11 +269,8 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 	if ($res) {
 		$pilot = $db->sql_fetchrow($res);
 		$realName=$pilot['realName'];
-		$realNameEn=$pilot['realNameEn'];
-		
 		$pilotCountry=strtolower($pilot['countryCode']);
 
-	
 		if ( strlen($realName)>1 && ($CONF_use_leonardo_names || $langEncodings[$currentlang]==$langEncodings[$nativeLanguage]) ) { // always return real name
 			$str=$realName;
 
@@ -377,14 +288,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			// echo ">$realName#$pilotLang#$pilotCountry#<br>";
 
 			$enc=$langEncodings[$pilotLang];
-			if ($enc) {
-				
-				if ( strlen($realNameEn)>1 ) {
-					$str=$realNameEn;
-				} else { 				
-					$str=transliterate($str,$enc);
-				}	
-			}
+			if ($enc) $str=transliterate($str,$enc);
 			//echo $realName."@";
 			// else return as is.
 
@@ -442,14 +346,7 @@ function getPilotRealName($pilotIDview,$serverID,$getAlsoCountry=0,$getAlsoExter
 			 // echo "($str)>".$pilotLang."#".$pilotCountry."$";
 
 			$enc=$langEncodings[$pilotLang];
-			if ($enc) {
-				if (strlen($realNameEn)>1) {
-					$str=$realNameEn;
-				} else { 				
-					$str=transliterate($str,$enc);
-				}	
-							
-			}
+			if ($enc) $str=transliterate($str,$enc);
 			//echo $realName."@";
 			// else return as is.
 		}

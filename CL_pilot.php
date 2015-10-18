@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_pilot.php,v 1.17 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: CL_pilot.php,v 1.16 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -31,7 +31,7 @@ class pilot{
 		$this->serverID=$this->serverID+0;
 		
 	    $this->valuesArray=array( "pilotID", "serverID", 
-"FirstName", "LastName","FirstNameEn", "LastNameEn","countryCode", 
+"FirstName", "LastName","countryCode", 
 "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
 "sponsor",  "Birthdate", "BirthdateHideMask",
 "Occupation", "MartialStatus", "OtherInterests", 
@@ -46,7 +46,7 @@ class pilot{
 		
 		
 	    $this->valuesArray1=array( "pilotID", "serverID", 
-			"FirstName", "LastName","FirstNameEn", "LastNameEn","countryCode", "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
+			"FirstName", "LastName","countryCode", "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
 			 "Birthdate", "BirthdateHideMask","Sex","PilotPhoto", "FirstOlcYear","clubID", 
 		);
 		

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_stats.php,v 1.12 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_stats.php,v 1.11 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -70,8 +70,7 @@
 		
 	
 		require_once dirname(__FILE__).'/SQL_list_flights.php';	
-		$pilotIDview=$pilotID;
-		$serverIDview=$serverID;
+		// $pilotIDview=$pilotID;
 		
 		require_once dirname(__FILE__)."/MENU_second_menu.php"; 
 		
@@ -80,15 +79,18 @@
 	
 	<div class='pilot_stats_div'>
 	<?php 
-	// echo "#$serverIDview $pilotIDview,#";
+
+//global $pilotIDview,$serverID;
+//print_r($_SESSION);
+//	echo "$pilotIDview,$serverID";
 	if (!isPrint()) {
-		$realName=getPilotRealName($pilotIDview,$serverIDview);	
+		$realName=getPilotRealName($pilotIDview,$serverID);	
 		$legend="<b>$realName</b> "._flights_stats;
 		$legendRight="<a href='".
-		  		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverIDview.'_'.$pilotIDview,'year'=>'0','country'=>''))
+		  		getLeonardoLink(array('op'=>'list_flights','pilotID'=>$serverID.'_'.$pilotIDview,'year'=>'0','country'=>''))
 		  		."'>"._PILOT_FLIGHTS."</a>";
 		$legendRight.=" | <a href='".
-		  		getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverIDview.'_'.$pilotIDview))	
+		  		getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>$serverID.'_'.$pilotIDview))	
 				."'>"._Pilot_Profile."</a>";
 		  
 		openMain("<div style='width:60%;font-size:12px;clear:none;display:block;float:left'>$legend</div><div align='right' style='width:40%; text-align:right;clear:none;display:block;float:right' bgcolor='#eeeeee'>$legendRight</div>",0,'');
@@ -98,7 +100,7 @@
 
    
   
-   $query = 'SELECT DISTINCT userID, max( LINEAR_DISTANCE ) AS bestDistance,
+   $query = 'SELECT DISTINCT userID, max( FLIGHT_KM ) AS bestDistance,
 			min(DATE) as firstFlightDate,max(DATE) as lastFlightDate,
 			(TO_DAYS(max(DATE)) - TO_DAYS(MIN(DATE))) as flyingPeriod,
 			max( DURATION ) AS maxDuration,
@@ -107,22 +109,22 @@
 			
 		   '
 		. ' count( * ) AS totalFlights, 
-			sum( LINEAR_DISTANCE ) AS totalDistance, 
+			sum( FLIGHT_KM ) AS totalDistance, 
 			sum( DURATION ) AS totalDuration, '
-		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
+		. ' sum( FLIGHT_KM )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcScore, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM '.$flightsTable.$extra_table_str
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause
         . ' GROUP BY userID'
         . ' ';
    //echo "<hr>stats query: $query<hr>";
         
 	$res= $db->sql_query($query);	
     if($res <= 0){
-      echo("<H3> Error in pilot stats query  </H3>\n");
+      echo("<H3> Error in pilot stats query </H3>\n");
       return;
     }  
     $row = mysql_fetch_assoc($res);
@@ -137,7 +139,7 @@
   /*
    * Break down per takeoff
    */
-    $query = 'SELECT DISTINCT takeoffID, max( LINEAR_DISTANCE ) AS bestDistance,
+    $query = 'SELECT DISTINCT takeoffID, max( FLIGHT_KM ) AS bestDistance,
 			min(DATE) as firstFlightDate,max(DATE) as lastFlightDate,
 			(TO_DAYS(max(DATE)) - TO_DAYS(MIN(DATE))) as flyingPeriod,
 			max( DURATION ) AS maxDuration,
@@ -146,15 +148,15 @@
 			
 		   '
 		. ' count( * ) AS totalFlights, 
-			sum( LINEAR_DISTANCE ) AS totalDistance, 
+			sum( FLIGHT_KM ) AS totalDistance, 
 			sum( DURATION ) AS totalDuration, '
-		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
+		. ' sum( FLIGHT_KM )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcScore, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM '.$flightsTable.$extra_table_str
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause
         . ' GROUP BY takeoffID'
         . ' ';
  	//echo "<hr>stats query: $query<hr>";
@@ -178,7 +180,7 @@
 	/*
    * Break down per glider
    */
-    $query = 'SELECT DISTINCT gliderBrandID,glider, max( LINEAR_DISTANCE ) AS bestDistance,
+    $query = 'SELECT DISTINCT gliderBrandID,glider, max( FLIGHT_KM ) AS bestDistance,
 			min(DATE) as firstFlightDate,max(DATE) as lastFlightDate,
 			(TO_DAYS(max(DATE)) - TO_DAYS(MIN(DATE))) as flyingPeriod,
 			max( DURATION ) AS maxDuration,
@@ -187,15 +189,15 @@
 			
 		   '
 		. ' count( * ) AS totalFlights, 
-			sum( LINEAR_DISTANCE ) AS totalDistance, 
+			sum( FLIGHT_KM ) AS totalDistance, 
 			sum( DURATION ) AS totalDuration, '
-		. ' sum( LINEAR_DISTANCE )/count( * ) as mean_distance, '
+		. ' sum( FLIGHT_KM )/count( * ) as mean_distance, '
 		. ' sum( DURATION )/count( * ) as mean_duration, '
 		. ' sum( FLIGHT_KM ) as totalOlcKm, '
 		. ' sum( FLIGHT_POINTS ) as totalOlcScore, '
 		. ' max( FLIGHT_POINTS ) as bestOlcScore '
         . ' FROM '.$flightsTable.$extra_table_str
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.$where_clause
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.$where_clause
         . ' GROUP BY gliderBrandID,glider'
         . ' ';
  	//echo "<hr>stats query: $query<hr>";
@@ -225,18 +227,18 @@
 <?php 
   
 function showStats($row,$groupBy,$where_clause,$where_clause2,$suffix='') {
-	global $CONF,$db, $flightsTable,$pilotIDview,$serverIDview,$extra_table_str;
+	global $CONF,$db, $flightsTable,$pilotIDview,$serverID,$extra_table_str;
 	   
 	  
   $suffixHash=md5($groupBy.$where_clause.$where_clause2.$suffix);
   
   $query = 'SELECT DISTINCT '.$groupBy.', max( FLIGHT_KM ) AS BestFreeTriangle '			
   		. ' FROM '.$flightsTable.$extra_table_str
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.
         $where_clause.$where_clause2.' AND  BEST_FLIGHT_TYPE = "FREE_TRIANGLE" '
         . ' GROUP BY '.$groupBy.' '
         . ' ';
-  //     echo "<hr>stats query: $query<hr>";
+   //     echo "<hr>stats query: $query<hr>";
         
   $res= $db->sql_query($query);
 		
@@ -250,7 +252,7 @@ function showStats($row,$groupBy,$where_clause,$where_clause2,$suffix='') {
 
   $query = 'SELECT DISTINCT '.$groupBy.', max( FLIGHT_KM ) AS BestFAITriangle '			
   		. ' FROM '.$flightsTable.$extra_table_str
-        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.
+        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.
         	$where_clause.$where_clause2.' AND  BEST_FLIGHT_TYPE = "FAI_TRIANGLE" '
         . ' GROUP BY '.$groupBy.' '
         . ' ';
@@ -305,7 +307,7 @@ function showStats($row,$groupBy,$where_clause,$where_clause2,$suffix='') {
 
 	    $query = 'SELECT count(*) as flightsCount, SUM(DURATION) as sum_duration, DATE_FORMAT(`DATE`,"%Y-%m") as flightDate '
 	        . ' FROM '.$flightsTable.$extra_table_str
-	        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverIDview.
+	        . ' WHERE '.$flightsTable.'.userID = '.$pilotIDview.' AND '.$flightsTable.'.userServerID = '.$serverID.
 	        $where_clause.$where_clause2
 	        . ' GROUP  BY DATE_FORMAT(DATE,"%Y-%m") '
 	        . ' ';

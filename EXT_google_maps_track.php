@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track.php,v 1.57 2012/09/07 21:54:04 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.55 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -67,11 +67,12 @@
 		$GMapType= $CONF['google_maps']['default_maptype'];
 	}
 
-	if ( ( $CONF_airspaceChecks && ( L_auth::isAdmin($userID) || $flight->belongsToUser($userID) )  ) || $CONF['thermals']['enable'] ) { 
+	if ( ( $CONF_airspaceChecks && L_auth::isAdmin($userID) ) || $CONF['thermals']['enable'] ) { 
 		// find min/max lat/lon
 		$filename=$flight->getIGCFilename();
+		// Here's where the problems start if your permissions are wrong. P. Wild 5.12.2011
 		$lines = file ($filename); 
-		if (!$lines) { echo "Cant read file"; return; }
+		if (!$lines) { echo "Cant read file ".$filename; return; }
 		$i=0;
 	
 		// find bounding box of flight
@@ -160,10 +161,10 @@
 			<table align="center" cellpadding="2" cellspacing="0">
 				<TR><td><div align="left"><?=_Time_Short?>:</div></td><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
 				<TR><td><div align="left"><?=_Speed?>:</div></td><TD><span id='speed' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
-                <? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
-                <TR><td><div align="left"><?=_Altitude_Short?> (Baro):</div></td><TD><span id='altV' class='infoString'>-</span></TD></TR>
-                <? } ?>
+				<TR><td><div align="left"><?=_Altitude_Short?> (GPS):</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
+                <?// if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+                <TR><td><div align="left"><?=_Altitude_Short?> (Baro):</div></td><TD><span  id='altV' class='infoString2'>-</span></TD></TR>
+                <?// } //deactivated 28.11.2011 P. Wild ?>
 				<TR><td><div align="left"><?=_Vario_Short?>:</div></td><TD><span id='vario' class='infoString'>-</span></TD></TR>
 		</table>
 		</fieldset>
@@ -201,7 +202,7 @@
 
   </tr>
 </table>
-
+<div id="pdmarkerwork"></div>
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
@@ -356,6 +357,7 @@ function initialize() {
 	
 	map.addControl(new GLargeMapControl());
 	map.addControl(new GMapTypeControl(),topRight);
+    map.addControl(new GScaleControl()); //P. Wild 9.12.2009
 	map.setCenter (new GLatLng(0,0), 4, <?=$GMapType?>);
 
 	displayTask(tp);
@@ -470,9 +472,9 @@ TODO move to API v3 !!!!
 		c.setShowLegend(false);
 		c.setLabelPrecision(0);
 		c.setHorizontalLabels(flight.labels);
-		<? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+		<? //if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
 		c.add('Altitude Baro',  '#6EC9E0', flight.elevV);
-		<? } ?>
+		<? //} ?>
 		c.add('Altitude',     '#FF3333', flight.elev);
 		c.add('Ground Elev',  '#C0AF9C', flight.elevGnd,CHART_AREA);
 		c.draw();

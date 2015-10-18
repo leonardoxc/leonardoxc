@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_comments_functions.php,v 1.11 2010/11/23 15:05:42 manolis Exp $                                                                 
+// $Id: EXT_comments_functions.php,v 1.10 2010/11/22 14:28:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -102,7 +102,7 @@
 			LeonardoMail::sendMail("[Leonardo] ".$CONF['site']['name']." - ". sprintf(_You_have_a_new_comment,$_SERVER['SERVER_NAME']),
 						$email_body,
 						$userEmail,
-						addslashes($userEmail),'','',true );
+						addslashes($userEmail),'noreply@xc.dhv.de','',true );
 			// echo "<pre>$email_body</pre>";		
 		}	
 			

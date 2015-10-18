@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_output.php,v 1.61 2012/10/04 05:59:26 manolis Exp $                                                                 
+// $Id: FN_output.php,v 1.60 2012/09/10 02:03:20 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -300,7 +300,6 @@ function getTZ($lat,$lon, $theDate) {
 	// else '' will be returned
 	require_once dirname(__FILE__).'/FN_timezones.php';
 	// $TZone=getTZforCountry($countryCode);
-	global $Countries2timeZones;
 	$TZone= $Countries2timeZones[strtoupper($countryCode)];
 
 	if (strtoupper($countryCode)=='AU' ){
@@ -465,7 +464,7 @@ function generate_flights_pagination($base_url, $num_items, $per_page, $start_it
 	{
 		global $themeRelPath;
 		$imgNext=leoHtml::img("icon_page_next.gif",0,0,'border','','icons1');	
-		$imgPrev=leoHtml::img("icon_page_next.gif",0,0,'border','','icons1');
+		$imgPrev=leoHtml::img("icon_page_previous.gif",0,0,'border','','icons1');//P.Wild 05.05.2015
 		if ( $on_page > 1 )
 			$page_string = ' <a href="' . append_sid($base_url . "&amp;page_num=" . ( $on_page - 1 )  ) . '">'.$imgPrev.'</a>&nbsp;&nbsp;'.$page_string;
 
@@ -599,7 +598,7 @@ with (pilotTip)
 	'</td></tr>'+
     '<tr><td class="infoBox">'+
 	
-	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotID'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
+	"<img src='<?=$moduleRelPath?>/img/icon_stats.gif' border=0 align='absmiddle'> <a href='<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'%4%')  )?>'><? echo _flights_stats ?></a>"+
 
 	'</td></tr>'+
     '<tr><td class="infoBox">'+

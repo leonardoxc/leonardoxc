@@ -1,14 +1,14 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, http://leonardo.thenet.gr
 //
-// Copyright (c) 2004-2010 by Andreadakis Manolis
+// Copyright (c) 2004-8 by Andreadakis Manolis
 //
 // This program is free software. You can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_airspace.php,v 1.9 2010/03/14 20:56:10 manolis Exp $                                                                 
+// $Id: FN_airspace.php,v 1.8 2008/11/29 22:46:06 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -473,9 +473,9 @@ function FindAirspaceArea($Longitude,$Latitude,$alt) {
   global $NumberOfAirspaceAreas,$AirspaceArea ;
   global $near;
   if($NumberOfAirspaceAreas == 0)  return array();
-
-  $areas=array();
+$areas=array();
   for($i=0;$i<$NumberOfAirspaceAreas;$i++) {
+    if ($AirspaceArea[$i]->Type=="CLASSE") return; //mod. P.Wild 04.04.2011 - insert Airspace Classes which don't require warnings here
     if(  $altInside=CheckAirspaceAltitude($AirspaceArea[$i]->Base->Altitude, $AirspaceArea[$i]->Top->Altitude,$alt) ) {
 
 	  if (($Latitude  > $AirspaceArea[$i]->miny) && ($Latitude  < $AirspaceArea[$i]->maxy) &&
@@ -485,10 +485,12 @@ function FindAirspaceArea($Longitude,$Latitude,$alt) {
 			if (InsideAirspaceArea($Longitude,$Latitude,$i)) { 
 			
 			  $distanceInside=RangeAirspaceArea($Longitude,$Latitude,$i);
+// Debug string edited 04.04.2011 P. Wild
+		 //DEBUG("FindAirspaceArea",255, 
+            //sprintf("Inside Area [%03s] alt %03sm by %05sm [%03d] Point: %0.5f,%0.5f <BR>",$AirspaceArea[$i]->id,$altInside,floor($distanceInside),$near[4], $Longitude,$Latitude )." ");
+//sprintf("Inside Area [%03s] alt %03sm by %05sm [%03d] Point: %0.5f,%0.5f (%0.5f,%0.5f)-(%0.5f,%0.5f)<BR>",$AirspaceArea[$i]->id,$altInside,floor($distanceInside),$near[4], $Longitude,$Latitude,$near[1],$near[0],$near[3],$near[2] )." ");
 
-			  DEBUG("FindAirspaceArea",255, 
-						sprintf("Inside Area [%03s] by %05sm [%03d] Point: %0.5f,%0.5f (%0.5f,%0.5f)-(%0.5f,%0.5f)<BR>",$i,floor($distanceInside),$near[4], $Longitude,$Latitude,$near[1],$near[0],$near[3],$near[2] )." ");
-//			  DEBUG("FindAirspaceArea",255, "[".$near[4]."] Point: $Longitude,$Latitude segment at ".$near[4]." ". $near[1].",".$near[0]."-".$near[3].",".$near[2]."<BR>" );
+			 // DEBUG("FindAirspaceArea",255, "[".$near[4]."] Point: $Longitude,$Latitude segment at ".$near[4]." ". $near[1].",".$near[0]."-".$near[3].",".$near[2]."<BR>" );
 			  $areas[]=array($i,$distanceInside,$altInside);
 			  
 			}
@@ -512,9 +514,14 @@ function FindAirspaceArea($Longitude,$Latitude,$alt) {
 /////////////////////////////////////////////////////////////////////////////////
 
 require_once dirname(__FILE__).'/CL_gpsPoint.php';
+require_once dirname(__FILE__).'/CL_flightData.php';
 
 function checkAirspace($filename) {
+	
 	$lines = file ($filename); 
+	//$flight=getFlightFromIGC($filename);
+	//echo $filename."<br>";
+	
 	if (!$lines) { echo "Cant read file"; return; }
 	$i=0;
 
@@ -578,6 +585,9 @@ function checkAirspace($filename) {
 	//	echo '<HR>';
 	//	echo '<HR>';
 	
+/*******************
+ * original version:
+ * *****************
 	$violations=array();
 
 	$i=0;
@@ -628,9 +638,176 @@ function checkAirspace($filename) {
 	//echo "ReadAltitude: mem usage: $m1 <BR>"; 
 
 	return $resStr1.$resStr;
+}*/
+/**
+ * DHV version, P. Wild
+ */
+	$violations=array();
+
+	$i=0;// B record number in igc file
+	$j=0;// B record number where german border is reached
+	$k=0;
+	$resStr='';
+	$resStr1='';
+	//$entryTime=0;
+	foreach($lines as $line) {
+		$line=trim($line);
+		if (strlen($line)==0) continue;
+		if ($line{0}=='B') {
+			if (strlen($line) < 23 ) continue;
+            if (substr($line,24,1)!="A") continue;  //P.Wild 14.4.2008 - bad igc record check
+          	$thisPoint=new gpsPoint($line,0);
+			$alt=$thisPoint->getAlt(1);	// prefer baro alt over gps alt 
+			if ($alt<=0) $alt=1; //Mod. 10.4.2012 - prevent negative altitudes from leaving airspace
+			if ($i<10 && $alt>4000){
+				$k++;
+				continue; //P.Wild 28.7.09 - throw away up to 10 start records if they have bad altitudes (>FL130)
+			}
+			if ($i==0) {	
+						$splat=$thisPoint->lat;
+ 						$splon=$thisPoint->lon;//set start point lat and lon
+						}
+			$cplat=$thisPoint->lat; //current point
+			$cplon=$thisPoint->lon;
+			// $insideArea=-1;
+			$insideAreas=array();
+			$insideAreas=FindAirspaceArea(-$thisPoint->lon,$thisPoint->lat,$alt);
+
+			if (count($insideAreas)>0) { //Start loop
+				
+				//echo "point [$i] INSIDE AIRSPACE areas: ";
+				//foreach($insideAreas as $areaInfo) echo $AirspaceArea[$areaInfo[0]]->Name." areaID[$areaInfo[0]] disInside[$areaInfo[1]] altInside[$areaInfo[2]]  ";
+				foreach($insideAreas as $areaInfo) {
+					
+					$areaID=$areaInfo[0];
+					$violations[$areaID]['entryTime']=0;
+					$violations[$areaID]['exitTime']=0;
+					$disInside=$areaInfo[1];
+					$altInside=$areaInfo[2];
+					if ( $disInside > $violations[$areaID]['maxDistance']  )  $violations[$areaID]['maxDistance'] = $disInside;
+					if ( $altInside > $violations[$areaID]['maxAlt']  )  $violations[$areaID]['maxAlt'] = $altInside;
+					//if ( $timeInside > $violations[$areaID]['Time']  )  $violations[$areaID]['Time'] = $timeInside;
+
+					if ((($AirspaceArea[$areaInfo[0]]->Name)=="BORDER-DE" || ($AirspaceArea[$areaInfo[0]]->Name)=="BORDER-DE-ALPS") && $j==0) { //if we haven't left DE then save the current point as the border point
+						$tmpnamechk=$AirspaceArea[$areaInfo[0]]->Name; //
+						$bplat=$thisPoint->lat;//border point coordinates
+						$bplon=$thisPoint->lon;
+						$bpalt=$thisPoint->getAlt(1);
+						$bpBrec=$line;
+						$bpTime=sec2Time24h( ( $thisPoint->getTime() )%(3600*24) );
+						}
+						else{//if we're not in Border-DE airspace i.e. it's a real problem, check times
+							if ($violations[$areaID]['entryTime']==0) {
+								$violations[$areaID]['entryTime']=sec2Time24h( ( $thisPoint->getTime() )%(3600*24) );
+								$violations[$areaID]['Durstart']=$thisPoint->getTime();
+							}
+							$violations[$areaID]['exitTime']=sec2Time24h( ( $thisPoint->getTime() )%(3600*24) );
+							$violations[$areaID]['Duration']=sec2Time24h( ( $thisPoint->getTime()-$violations[$areaID]['Durstart'] )%(3600*24) );
+						}
+					}
+				//echo "<BR>";
+			} 
+			
+			$i++; //jump to next B record
+		}
+		if ($j==0)	{
+			list($cbpdist, $cbptmp )= DistanceBearing($bplat, $bplon, $cplat, $cplon, 1,0);
+			if ($cbpdist>0){$j=$i;} // set 'we have left germany' flag
+			//now go to the next airspace and check for any other infrigements
+		}
+	}
+	$lplat=$thisPoint->lat;
+	$lplon=$thisPoint->lon;
+
+	//P. Wild 7.2.2008: splat,lon = startpoint, bplat,lon = bordercrossing point, lplat,lon = landing point
+	//list($lpdist, $lptmp )= DistanceBearing($bplat, $bplon, $lplat, $lplon, 1,0);
+	list($bpdist, $bptmp )= DistanceBearing($bplat, $bplon, $splat, $splon, 1,0);
+	$LP=" *DEBUG* ".$tmpnamechk." Records_checked=$i Border_point=$j last_alt=$alt spLon=$splon spLat=$splat bpLon=$bplon";
+	$LP.=" bpLat=$bplat bpalt=$bpalt lpLon=$lplon lpLat=$lplat   SPDist=$bpdist LPDist=$lpdist  Brecord ".$bpBrec."  bpTime ".$bpTime;
+	$LP.=" Violations=".count($violations). "  ";
+	$LP.="<br>";
+	
+	$v=0;
+	if (count($violations)>0) {
+		
+		foreach($violations as $i=>$violatedArea) {
+			$v++;
+			$resStr1.=$AirspaceArea[$i]->id.",";
+			$tmpresStr1[$v]=$resStr1;
+			if ($resStr1=="1," || $resStr1=="2,"){// checks that the airspace is  (BORDER-DE-ALPS) or (BORDER-DE)
+			//if ((strpos($AirspaceArea[$i]->id,'1') !== false)||(strpos($AirspaceArea[$i]->id,'2') !== false)){
+			
+				$k="Checking for points in DE";	
+			//inside BORDER-DE or BORDER-DE-ALPS Airspace
+				#Bugfix martin jursa 06.05.2008 to avoid airspace message="Punkte = 0.00 Punkte = XC Distanz",
+				# in case of j==1
+				if ($j==1){
+					// first point already outside DE
+					$resStr.="Punkte = 0.00 ";
+				}
+				elseif ($j>1){
+					// add optimization code to border point / entire flight here
+										
+					//create temp file and fill with igc lines up to border point
+					$tmp=array_search('uri', @array_flip(stream_get_meta_data($GLOBALS[mt_rand()]=tmpfile())));
+					
+					$m=0;
+					foreach ($lines as $line){
+						if (substr($line,0,1)=="B"){
+							$m++;
+						}
+						//Only count BRecords - mod. P.Wild 18.05.2015
+						
+						if ($m<$j) {							
+									$igclines.=$line;
+							}
+						}
+					
+					file_put_contents($tmp, $igclines."\n");
+					$LP.="j=$j m=$m<br>";
+					$tmpflight=new flight();
+					$tmpflight->getFlightFromIGC($tmp);
+					$tmpflight->userName="DPokal";
+					$tmpflight->computeScore();
+					$resStr.="Punkte = ".formatOLCScore($tmpflight->FLIGHT_POINTS).", ".formatDistanceOpen($tmpflight->FLIGHT_KM)." ".formatOLCScoreType($tmpflight->BEST_FLIGHT_TYPE);
+					$resStr.=", Grenze überflogen: ".$bpTime."(UTC), Höhe: ".$bpalt."m";
+					$resStr=strip_tags($resStr); //otherwise GUI_flight_edit gets messed up
+				}
+				else{
+					// if the flight stayed in DE
+					if ($resStr!=="Punkte = XC Distanz \n"){//Problem with double checks
+					$resStr.="Punkte = XC Distanz \n";
+					}
+				}
+			}
+			else{
+				$k="Not Checking for points";
+				if($resStr1!=="2,1,"){ 
+				
+				$resStr.="HorDist: ".floor($violatedArea['maxDistance'])."m, VertDist:".floor($violatedArea['maxAlt'])."m, Entered at ".$violatedArea['entryTime']."(UTC)<br>";
+				$resStr.='Airspace: '. $AirspaceArea[$i]->Name. ' ['.$AirspaceArea[$i]->Type.'] '.floor($AirspaceArea[$i]->Base->Altitude).'-'.floor($AirspaceArea[$i]->Top->Altitude)."m\n"; // COMMENT: '.$AirspaceArea[$i]->Comment."\n";
+				}
+			//" Left at ".$violatedArea['exitTime']."(UTC) Duration ".$violatedArea['Duration'].
+			}
+			
+			//End of Points checking
+			
+			//$resStr1=$AirspaceArea[$i]->id.",";
+			$LP.=$k." Violation No=".$v." j=".$j." resStr=".$resStr." resStr1=".$resStr1." tmpresStr1=".$tmpresStr1[$v]." *DEBUG END*<br><br>";
+			DEBUG("$LP",1,"$LP");
+			//DEBUG("$resStr1",1,"$resStr1");
+			//DEBUG("$igclines",1,"$igclines");
+		}
+		if ($resStr1) {
+			$resStr1=substr($resStr1,0,-1)."\n";//strip off comma
+			$resStr=trim($resStr);
+		}
+	}
+	//$m1=memory_get_usage();
+	//echo "ReadAltitude: mem usage: $m1 <BR>";
+
+	return $resStr1.$resStr;
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////////
 // Loading airspace
@@ -679,7 +856,7 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 	global $AirspaceArea,$NumberOfAirspaceAreas, $db,$airspaceTable ;
 	$AirspaceArea=array();
 	
-	$query="SELECT * FROM $airspaceTable WHERE disabled=0 AND 
+	$query="SELECT * FROM $airspaceTable WHERE disabled=0 AND Type != 'CLASSE' AND
 				 NOT ( maxx< $min_lon OR minx>$max_lon ) AND	 NOT ( maxy< $min_lat OR miny>$max_lat ) ";		 
 	$res= $db->sql_query($query);
 		
@@ -691,7 +868,7 @@ function getAirspaceFromDB($min_lon , $max_lon , $min_lat ,$max_lat) {
 	$i=0;
 	while ($row = mysql_fetch_assoc($res)){
 		if ($row['Shape']==1) $shape="Area"; else $shape="Circle";
-		DEBUG("getAirspaceFromDB",1, "Found $shape => ".$row['Name'].'<BR>');
+		DEBUG("getAirspaceFromDB",1, "Found $shape => ".$row['Name']." ID=".$row[id]." Type=".$row['Type'].'<BR>');
 		$AirspaceArea[$i]->id		=$row['id'];		
 		$AirspaceArea[$i]->Name		=$row['Name'];
 		$AirspaceArea[$i]->Type		=$row['Type'];

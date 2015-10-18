@@ -365,7 +365,7 @@ if ($op=="show_flight" ) {  // get the flight info now since we need to create m
         $deletedFlights=1;
     }
 
-    $flightID+=0;
+  $flightID+=0;
   $flight=0;
   if ($flightID>0) {
 	  $flight=new flight();
@@ -433,23 +433,6 @@ if ($clubID) {
 } else {
 	$clubName=_No_Club;
 }
-
-
-//-------------------------------------
-// get friends
-//-------------------------------------
-$queryFriends="SELECT * FROM leonardo_friends WHERE userID=$userID ";
-$resFriends= $db->sql_query($queryFriends);
-
-if($resFriends<= 0){
-	echo("<H3> Error in query: $queryFriends</H3>\n");
-	return;
-}
-$friendsIDs=array();
-while($rowFriends= $db->sql_fetchrow($resFriends) ){
-	$friendsIDs[$rowFriends['friendUserID']]=$rowFriends['friendUserID'];
-}
-
 
 require_once dirname(__FILE__)."/MENU_menu.php";
 
@@ -523,6 +506,8 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_sites.php";
 } else if ($op=="list_areas") {
 	require $LeoCodeBase."/GUI_list_areas.php";
+} else if ($op=="list_gliders") {
+	require $LeoCodeBase."/GUI_list_gliders.php";
 } else if ($op=="area_show") {
 	require $LeoCodeBase."/GUI_area_show.php";
 } else if ($op=="browser") {
@@ -602,11 +587,6 @@ if ($op=="index_full") {
 	// require $LeoCodeBase."/GUI_pilot_search.php";
 	// new code!
 	require $LeoCodeBase."/GUI_pilot_find.php";
-} else if ($op=="friends") {
-	// require $LeoCodeBase."/GUI_pilot_search.php";
-	// new code!
-	require $LeoCodeBase."/GUI_friends.php";
-
 } else if ($op=="pilot_find") {
 	require $LeoCodeBase."/GUI_pilot_find.php";
 } else if ($op=="pilot_profile") {
@@ -671,6 +651,12 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_stats.php";
 } else if ($op=="program_info") {
 	require $LeoCodeBase."/GUI_program_info.php";
+} else if ($op=="nutzung") {
+	require $LeoCodeBase."/GUI_nutzung.php";
+} else if ($op=="luftraum") {
+	require $LeoCodeBase."/GUI_luftraum.php";
+}else if ($op=="impressum") {
+	require $LeoCodeBase."/GUI_impressum.php";
 }
 
 exitPage(0);
@@ -703,21 +689,21 @@ function exitPage($exitNow=1){
    if ($opMode==1) {
 		CloseTable();
 		include("footer.php");
-   } else if (0 && ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ))  ) {
+   } else if ( ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ))  ) {
 		require_once dirname(__FILE__)."/GUI_footer.php";
-   }  else if ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ) ) {
+   }  /*else if ($opMode==3 || $opMode==4 || $opMode==6 || ($opMode==5 &&  $CONF_use_own_template ) ) {
 	    global $Ltemplate;
 		$Ltemplate->set_filenames(array('overall_footer' => 'tpl/overall_footer.html'));
 		$Ltemplate->assign_vars(array(
 			'SIDE_BLOCKS_HTML' => $side_blocks_html,
 			'CUSTOM_FOOTER_CODE'=> 	$CONF['footer']['custom_code'],
 		) );
-		$Ltemplate->pparse('overall_footer');
+		$Ltemplate->pparse('overall_footer');*/
 		
 		// Close our DB connection.
 		//$db->sql_close();
 
-   } 
+   //} 
 	if ($DBGlvl) {
 		// db execution time
 

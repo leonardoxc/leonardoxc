@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_igc2kmz.php,v 1.19 2011/01/31 15:04:47 manolis Exp $                                                                 
+// $Id: FN_igc2kmz.php,v 1.15 2010/03/22 14:27:45 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -25,27 +25,14 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	if ( is_file($kmzFile) ) return $version;
 
 	$python=$CONF['googleEarth']['igc2kmz']['python'];
-	putenv('PYTHON_EGG_CACHE='.dirname(__FILE__).'/data/tmp');
-	
+	putenv('PYTHON_EGG_CACHE=/tmp');
 	// put some env for python2.5?
 	// putenv("PATH=".$CONF['googleEarth']['igc2kmz']['python'] );
 	putenv("PATH=/usr/local/bin/" );
 	
 	
 	$path=realpath($CONF['googleEarth']['igc2kmz']['path']);
-	if (! defined('SQL_LAYER') )  define('SQL_LAYER','mysql');
-	
-	
-	
-	global $phpbb3AbsPath, $dbhost,$dbname,$dbuser,$dbpasswd;
-	$dbpasswdCon=$dbpasswd;
-	if (!$dbpasswdCon) $dbpasswdCon=$db->password;
-	
-	$dbhostCon=$dbhost;
-	if (!$dbhostCon) $dbhostCon=$db->server;
-	if (!$dbhostCon) $dbhostCon='localhost';
-
-	$engine=SQL_LAYER."://".$db->user.':'.$dbpasswdCon.'@'.$dbhostCon.'/'.$db->dbname;
+	$engine=constant('SQL_LAYER')."://".$db->user.':'.$db->password.'@'.$db->server.'/'.$db->dbname;
 	
 	$cmd="$python $path/bin/leonardo2kmz.py";
 	$cmd.=" --engine '$engine'";
@@ -54,20 +41,11 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	// $cmd.=" --igcpath '".dirname(__FILE__).'/'.$CONF['paths']['intermediate']."'";
 	// $cmd.=" --directory '".realpath(dirname(__FILE__).'/../..')."'";
 	$cmd.=" --url 'http://".$_SERVER['SERVER_NAME']."$baseInstallationPath'";
-	
-// 	$cmd.=" --icon '$baseInstallationPath/templates/basic/tpl/leonardo_logo.gif' ";
-//	$cmd.=" --photos_path '".$CONF['paths']['photos']."' ";
-//	$cmd.=" --photos_url '$baseInstallationPath/'".$CONF['paths']['photos']."'' ";
-
-	//DEFAULT_PHOTOS_PATH = 'data/flights/photos/%YEAR%/%PILOTID%'
-	//DEFAULT_PHOTOS_URL = '/modules/leonardo/data/flights/photos/%YEAR%/%PILOTID%'
-	
 	$cmd.=" --output '$kmzFile'";
 	$cmd.=" --tz-offset $timezone";
-	$cmd.=" --igc-path=".$CONF['paths']['intermediate']." "; // data/flights/intermediate/%YEAR%/%PILOTID%
+	$cmd.=" --igc-path=data/flights/intermediate/%YEAR%/%PILOTID% ";
 	$cmd.=" $flightID";
 	
-		
 	DEBUG('igc2kmz',1,"igc2kmz: $cmd <BR>");
 
 
@@ -75,11 +53,9 @@ function igc2kmz($file,$outputFile,$timezone,$flightID) {
 	
 	
 	if (0) {
-		//echo "timezone: $timezone<br>";
+		echo "timezone: $timezone<br>";
 		echo "cmd: $cmd<BR>";
 		print_r($res);
-		//print_r($db);
-		//echo "$dbhost ,	$dbname ,$dbuser ,$dbpasswd @";
 		exit;
 	}	
 	return $version;

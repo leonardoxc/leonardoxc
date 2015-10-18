@@ -21,9 +21,9 @@
 	background-color:#D8CEAE;
 	position:relative;
 	margin:0;
-	margin-left:3px;
+	margin-left:1px;
 	margin-bottom:10px;
-	padding:3px;
+	padding:1px;
 	border:1px solid #d3cfe4;;
 
 background-color: #ffb400;
@@ -65,8 +65,8 @@ margin-top:8px;
 	background-color: #f6f5fa;
 	border: 1px solid #d3cfe4;
 	padding: 3px 3px 3px 3px;
-	margin-left:2px;
-	margin-right:2px;
+	margin-left:0px;
+	margin-right:0px;
 	margin-bottom:0px;
 	margin-top:0px;
 }
@@ -279,14 +279,7 @@ function printPDF(url) {
 	<?php  } ?>
 }
 
-function printPDFdirect(url) {
-	<?php  if ($remote) { ?>
-		$("#pdfDiv").html('<iframe frameborder="0" scrolling="auto" width="650" height="auto" src="<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&direct=1&url='+url+'"></iframe>');
-	<?php  } else { ?>
-		$("#pdfDiv").html("<?=_Sending_Request?><BR><img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>").show();
-		$("#pdfDiv").load('<?=$CONF['pdf']['helperUrl']?>/EXT_helper.php?op1=create_pdf<?=$remote?>&direct=1&url='+url);
-	<?php  } ?>
-}
+
 <?php  } // end if $userID ?>
 
 function closePdfDiv(){
@@ -312,6 +305,9 @@ function toogleMenu(name) {
 
 $(document).ready(function(){
 
+	//$(".closeButton").livequery('click', function(e) {
+	//	// $(this).parent().parent().hide();
+	//});
 
 	$(".closeLayerButton").live('click', function(e) {
 		$(this).parent().slideToggle(200);
@@ -675,11 +671,31 @@ if (! $dontShowCountriesSelection ) {
 			<?=leoHtml::img("icon_settings.gif",0,0,'absmiddle',_MENU_MY_SETTINGS,'icons1')?>			
 			 <? echo $arrDownImg; ?></a>
     </div>
-    <?php  if ( in_array($op,array('list_flights','comp','competition')) && L_auth::isAdmin($userID)  ) { ?>
+<? if ( in_array($op,array('comp','competition'))   )//Changed 11.04.13 P.Wild
+	//($ranksList[$rank]['ausschreibung']!=="http://" && $ranksList[$rank]['ausschreibung'])
+	{?>
+    <div id='infoMenuID' class="menuButton">
+			<a href="#" onClick="toogleMenu('info');return false;">
+			 <?=leoHtml::img("icon_info.gif",0,0,'absmiddle',_Info,'icons1').""?>
+			 <? echo $arrDownImg; ?></a>
+    </div>
+<?}?>
+    <?php  if ( in_array($op,array('list_flights','comp','competition'))   ) { ?>
     <div id='pdfMenuID' class="menuButton">
 			<a href="#" onClick="toogleMenu('pdf');return false;">
 			 <?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?>
-			 <? echo $arrDownImg; ?></a>
+			 <? echo $arrDownImg; ?>
+			</a>
+			 
+    </div> 
+   <?php  }?>
+   <?php  if ( in_array($op,array('list_flights','comp','competition'))   ) { ?>
+    <div id='blogMenuID' class="menuButton">
+			<a href="#" onClick="toogleMenu('blog');return false;">
+			 <?=leoHtml::img("icon_blog.png",0,0,'absmiddle',_DHVXC_Blog,'','',0)?>
+			 <? echo $arrDownImg; ?>
+			</a>
+			 
     </div> 
    <?php  }?>
 
@@ -712,11 +728,29 @@ if (! $dontShowCountriesSelection ) {
 </div>
 </div>
 
-<?php  if ( in_array($op,array('list_flights','comp','competition')) && L_auth::isAdmin($userID) ) { ?>
+<div id="infoDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>
+<div class='content' style='padding:5px;'>
+        <? // P. Wild 08-06-2010
+            $kontakt=$ranksList[$rank]['kontakt'];
+			$ausschreibung=$ranksList[$rank]['ausschreibung'];
+        ?>
+		
+     <a  href='<?=$ausschreibung?>'><?="<b>Ausschreibung:</b>  ".$ausschreibung."<br><b> Kontakt:</b>  ".$kontakt?></a>
+</div>
+</div>
+<div id="blogDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>
+<div class='content' style='padding:1px;'>
+        <? // P. Wild 11.04.2013?>	
+       <a href='http://www.dhv.de/web/index.php?id=9728'><iframe frameborder="0" scrolling="auto" width="750" height="900" src='http://www.dhv.de/web/index.php?id=9728'></iframe></a>
+</div>
+</div>
+<?php  if ( in_array($op,array('list_flights','comp','competition'))  ) { ?>
 
 <div id="pdfDropDownID" class="secondMenuDropLayer"  >
 <div class='closeButton closeLayerButton'></div>
-<div class='content' style='padding:10px; text-align:center;'>
+<div class='content' style='padding:10px; text-align:left;'>
         <? 
         
         //$printArgs=array_merge( $_GET, array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
@@ -732,9 +766,48 @@ if (! $dontShowCountriesSelection ) {
             // $thisURL=str_replace('&','_',$thisURL);
             // echo $thisURL;
         ?>
+         <b>PDF Flugbuch erstellen</b><br><br>
+Schritt 1: Ihr wählt die gewünschten Flüge über die Filterfunktionen aus, die in beliebiger Reihenfolge sortiert werden können (z.B. nur die eigenen Flüge mit Fotos). Die ersten 20 Flüge, die ihr dann auf der „Flüge-Seite“ seht, werden weiter bearbeitet.<br>	
+Schritt 2: Jetzt auf das PDF-Symbol und „PDF erstellen“ klicken.<br>
+Schritt 3: Die Aufträge werden in der Reihenfolge ihres Eingehens vom Server bearbeitet, sobald die Seiten fertig gestellt sind, wird an die E-Mail-Adresse, mit der ihr im DHV-XC angemeldet seid, ein Download-Link verschickt.<br>
+Schritt 4: Über den klickbaren Link (oder durch Kopieren und Einfügen der URL in die Adresszeile eures Browsers) werdet ihr auf die PDF-Flugbuchseiten weiter geleitet, die dann ausgedruckt werden können.<br>
+         <br><br>
         <a  href='javascript:printPDF("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?></a>
         <?php  if (  L_auth::isAdmin($userID) ) { ?>
-        <a  href='javascript:printPDFdirect("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?> [*]</a>
+        <a  href='javascript:printPDFdirect("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?> [sofort]</a>
+        <?php } ?>
+        
+        <BR><BR>
+	<div id='pdfDiv'></div>
+</div>
+</div>
+<div id="pdfDropDownID" class="secondMenuDropLayer"  >
+<div class='closeButton closeLayerButton'></div>
+<div class='content' style='padding:10px; text-align:left;'>
+        <? 
+        
+        //$printArgs=array_merge( $_GET, array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
+         //                           'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) );
+        	$currentArgs=array('op'=>'useCurrent','takeoffID'=>($takeoffID+0), 'print'=>1,
+                                    'pilotID'=>$pilotID?($serverID+0).'_'.($pilotID+0):'0' ) ;
+        	
+        	if ($_GET['fltr']) $currentArgs['fltr']=$_GET['fltr'];
+        	if ($_GET['comp']) $currentArgs['comp']=$_GET['comp'];
+        	//if ($_GET['filter01']) $currentArgs['filter01']=$_GET['filter01'];
+        
+            $thisURL=urlencode( $_SERVER['SERVER_NAME'].getLeonardoLink($currentArgs,($CONF['links']['type']==1?2:0) ) );
+            // $thisURL=str_replace('&','_',$thisURL);
+            // echo $thisURL;
+        ?>
+         <b>PDF Flugbuch erstellen</b><br><br>
+Schritt 1: Ihr wählt die gewünschten Flüge über die Filterfunktionen aus, die in beliebiger Reihenfolge sortiert werden können (z.B. nur die eigenen Flüge mit Fotos). Die ersten 20 Flüge, die ihr dann auf der „Flüge-Seite“ seht, werden weiter bearbeitet.<br>	
+Schritt 2: Jetzt auf das PDF-Symbol und „PDF erstellen“ klicken.<br>
+Schritt 3: Die Aufträge werden in der Reihenfolge ihres Eingehens vom Server bearbeitet, sobald die Seiten fertig gestellt sind, wird an die E-Mail-Adresse, mit der ihr im DHV-XC angemeldet seid, ein Download-Link verschickt.<br>
+Schritt 4: Über den klickbaren Link (oder durch Kopieren und Einfügen der URL in die Adresszeile eures Browsers) werdet ihr auf die PDF-Flugbuchseiten weiter geleitet, die dann ausgedruckt werden können.<br>
+         <br><br>
+        <a  href='javascript:printPDF("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?></a>
+        <?php  if (  L_auth::isAdmin($userID) ) { ?>
+        <a  href='javascript:printPDFdirect("<?=$thisURL?>");'><?=leoHtml::img("icon_pdf.png",0,0,'absmiddle',_Print_a_pdf_booklet,'','',0)?> <?=_Print_a_pdf_booklet?> [sofort]</a>
         <?php } ?>
         
         <BR><BR>

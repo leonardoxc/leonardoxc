@@ -11,15 +11,17 @@
 // $Id: GUI_flight_edit.php,v 1.52 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
+// if ( in_array($userID,array(2,672) ) ) {
+	require_once "GUI_flight_edit_new.php";
 
-// require_once dirname(__FILE__).'/GUI_flight_edit_new.php'; return;
-  require_once dirname(__FILE__).'/CL_image.php';
+	return;
+//}  
+
+require_once dirname(__FILE__).'/CL_image.php';
   require_once dirname(__FILE__)."/CL_NACclub.php";
   require_once dirname(__FILE__)."/CL_user.php";
   $flight=new flight();
-
   $flight->getFlightFromDB($flightID);
-
 
   if ( 	$flight->belongsToUser($userID) ||	L_auth::isModerator($userID)  ) {
 
@@ -29,7 +31,6 @@
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
-
 		$newUserIDStr=$_POST["newUserID"];
 		if ($newUserIDStr) { // move this flight to a new userID
 			 $newUserIDStrPart=split('_',$newUserIDStr);
@@ -86,30 +87,21 @@
 			$flight->private = $flight->private & (~0x02 & 0xff ); 
 		}
 
-		if ($_REQUEST['is_friends_only']=="1") {
-			$flight->private = $flight->private | 0x04;
-		} else {
-			$flight->private = $flight->private & (~0x04 & 0xff );
-		}
-
 
 		// to change nac club
 		if ($CONF['NAC']['clubPerFlight'] ) {
 			$flight->NACclubID=$_REQUEST["NACclubID"]+0;
 			$flight->NACid=$_REQUEST["NACid"]+0;
 		}
-
+				
 		require_once dirname(__FILE__)."/CL_flightPhotos.php";
-
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
 
 		$photosChanged=false;
-
+		
 		$j= $flightPhotos->photosNum ;
-
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
-
 			$var_name="photo".$i."Filename";
 			$photoName=$_FILES[$var_name]['name'];
 			$photoFilename=$_FILES[$var_name]['tmp_name'];
@@ -147,7 +139,7 @@
 					}
 				}
 			}
-		}
+		} 
 
 		// now delete photos if requested
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
@@ -160,16 +152,14 @@
 		}
 		
 		if ( $photosChanged ){
-
 			// recompute geoTag info
 			$flightPhotos->computeGeoInfo();
-
+			
 			//delete igc2kmz.kmz file
 			require_once dirname(__FILE__).'/FN_igc2kmz.php';			
 			deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions
 		}
-
-
+		
 		$flight->putFlightToDB(1);
 
 		// $flightPhotos->putToDB();
@@ -188,8 +178,6 @@
 	if ( ($_GET['checkg']+0)==1) {
 		$grecord_res="[ G-record checking result: ".$flight->validate()." ]";		
 	}
-
-
 	?>
 
 <script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
@@ -334,22 +322,16 @@ require_once dirname(__FILE__).'/FN_editor.php';
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
   <?  openMain(_CHANGE_FLIGHT_DATA,0,"change_icon.png"); ?>
-
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
 <? if ($enablePrivateFlights || L_auth::isAdmin($userID) ) { ?>
     <tr>
       <td colspan=2 valign="top">  
 	  <div align="right">
-		  <? if ($enablePrivateFlights ) { ?>
-
-			  <input type="checkbox" name="is_friends_only" value="1" <? echo ($flight->private & 4)?"checked":"" ?> >
-			  <? echo  _IS_FRIENDS_ONLY_ ?>
-
+		  <? if ($enablePrivateFlights ) { ?>      	
               <input type="checkbox" name="is_private" value="1" <? echo ($flight->private & 1)?"checked":"" ?> >
-             <? echo  _IS_PRIVATE ?>
-
-		  <? } ?>
+             <? echo  _IS_PRIVATE ?>    
+		<? } ?>
 		<? if ( L_auth::isAdmin($userID) ) { ?>
               <input type="checkbox" name="is_disabled" value="1" <? echo ($flight->private & 2)?"checked":"" ?> >
              <? echo  "Disable Flight"; ?>    
@@ -603,7 +585,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 
         	</td>
     </tr>
-	<? if ($CONF_use_validation && L_auth::isAdmin($userID) ) {?>
+	<? if ($CONF_use_validation && (L_auth::isAdmin($userID) || $flight->belongsToUser($userID)) ) {?>
     <tr>
       <td colspan="2"  valign="top">
 	    <fieldset class="legendBox legend2">
@@ -616,7 +598,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				<?
 					if ($flight->grecord==0) $flight->validate();
 
-					if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
+					if ($flight->grecord<0) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
 					else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 					else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 					
@@ -631,9 +613,11 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				 	echo "<option $grecord_sel_2 value='-1'>Invalid or N/A</option>\n";
 				  	echo "<option $grecord_sel_3 value='0'>Not yet processed</option>\n";
 */
+if (L_auth::isAdmin($userID)){//Mod. 22.11.2011 P. Wild - G-Record re-check only for Admins
 				?>
 				<input type="hidden" name="grecord" value="<?=$flight->grecord?>">
 				<a href='<?=getLeonardoLink(array('op'=>'edit_flight','flightID'=>$flightID,'checkg'=>'1'))?>'>Re-check G-record</a>&nbsp;&nbsp;
+							
 				Validation <select name="validated">
 				<?
 					if ($flight->validated==1) $val_sel_1="selected";
@@ -645,7 +629,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 				?>
 				</select>
 				
-				<? echo $grecord_res ?>			</td>
+				<? echo $grecord_res ?>	<?}?>			</td>
 			</tr>
 		</table>	
 	    </div>
@@ -669,7 +653,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 					  $res= $db->sql_query($query);	
 					  # Error checking
 					  if($res <= 0){
-						 echo("<H3> Error in getting Comment for airspace from DB! $query</H3>\n");
+						 echo("<H3> ***Error in getting Comment for airspace from DB!*** <br> $query</H3>\n");
 						 exit();
 					  }
 						
@@ -685,13 +669,19 @@ require_once dirname(__FILE__).'/FN_editor.php';
 					// echo "#".$flight->airspaceCheck."#";
 					if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0 ) $flight->checkAirspace(1);
 					if ($flight->airspaceCheck==-1) { // problem
-						echo "<strong>PROBLEM!</strong><BR>";
+						//echo "<strong>Deutschland Pokal oder Luftraum Problem!</strong><BR>";
 						$checkLines=explode("\n",$flight->airspaceCheckMsg);
 						$area_ids=explode(",",$checkLines[0]);
 						for($i=1;$i<count($checkLines); $i++) {
+							if ($area_ids[$i-1]==419){
+								echo"<strong>Deutschland Pokal</strong><br>".$checkLines[$i]."<br>";
+								}
+							else{
+							echo "<strong>Luftraum Problem!</strong>";
 							echo $checkLines[$i];
 							echo "<BR>COMMENT: ".get_airspace_area_comment($area_ids[$i-1]);
 							echo " [ <a id='takeoffAddPos".$area_ids[$i-1]."' href='javascript:update_comment(".$area_ids[$i-1].");'>Update comment</a> ]<br>";
+							}
 						}
 						// echo "DETAILS:  <BR>";
 					} else {// clear
@@ -752,6 +742,14 @@ require_once dirname(__FILE__).'/FN_editor.php';
       <legend><? echo _RELEVANT_PAGE ?></legend>
 	  <div align="left">
 			http://<input name="linkURL" type="text" id="linkURL" size="90" value="<? echo  $flight->linkURL ?>">
+	    </div>
+	  </fieldset></td>
+    </tr>
+    <tr>
+      <td colspan="2"><fieldset class="legendBox legend3">
+      <legend><? echo "Luftige Begegnungen" ?></legend>
+	  <div align="left">
+			Bist Du zusammen mit Vogeln geflogen? Hast Du Fotos davon? Melde Deine Erfahrungen hier:<a href="http://www.luftige-begegnungen.de" target="_blank"><img src="templates/basic/tpl/sponsor/Luftige.gif" title="Luftige Begegnungen" align="right" border="0" width="120" height="37" alt="Luftige Begegnungen"></a>
 	    </div>
 	  </fieldset></td>
     </tr>

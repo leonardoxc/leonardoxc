@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_browser.php,v 1.12 2010/04/22 09:57:17 manolis Exp $                                                                 
+// $Id: EXT_google_maps_browser.php,v 1.11 2010/04/20 08:00:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -48,7 +48,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?=$lang_enc?>">
 <title>Leonardo XC flights browser</title>
 <link rel='stylesheet' type='text/css' href='<?=$themeRelPath?>/css/google_maps.css' />
-<script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_keyX ?>" type="text/javascript"></script>
+<script src="http://maps.google.com/maps?file=api&v=2.x&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/DHTML_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/gmaps.js" type="text/javascript"></script>
@@ -249,7 +249,7 @@ fieldset.legendBoxHidden {
 		if (!$calYear)  $calYear=date("Y");
 		$dateSelect=sprintf("%02d.%02d.%04d",$calDay,$calMonth,$calYear);
 		
-		// echo "$year $month, $day $dateSelect ####";exit;
+		// echo "$year $month, $day ####";exit;
  ?>
  
 			&nbsp; &nbsp; <input id="dateSelect" name="dateSelect" type="text" size="10" maxlength="10" value="<?=$dateSelect ?>" />

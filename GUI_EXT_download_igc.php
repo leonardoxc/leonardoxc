@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_download_igc.php,v 1.1 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.14 2011/01/16 21:38:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -31,39 +31,58 @@
 	setDEBUGfromGET();
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/lang-".$currentlang.".php";
 	require_once dirname(__FILE__)."/language/".CONF_LANG_ENCODING_TYPE."/countries-".$currentlang.".php";
-
+	
+	function isPFBRequest( $id, $checksum ) {//Added 02.12.2011 P. Wild
+		$teststring = "PFB*45".$id."96*XPF";
+		if ( md5($teststring) == strtolower($checksum) )
+		{
+			return True;
+		} else return False;
+	}
 
 	$filename=makeSane($_REQUEST['file'],2);
-	
+	 $filename=str_replace('//','/',$filename);
+//	 print_r($_SESSION);exit;
 	
 	$flightID=makeSane($_REQUEST['flightID'],1);
 	if ($flightID<=0 && !$filename ) exit;
 
 	$clientIP=getClientIpAddr();
 	
+	
+	if (isPFBRequest($_GET["flightID"],$_GET["cs"])) {//Added 02.12.2011 P. Wild
+		echo "PFB <br>";	
+		$authOK=1;
+		} else{
+			
+			
+			
 	if ( $flightID ) {
 		$flight=new flight();
 		$flight->getFlightFromDB($flightID);
 			
 		$authOK=0;		
+		//echo "#userID:$userID<BR>";
+		
 		if ( $flight->belongsToUser($userID) || L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ) {
 			$authOK=1;
 		}
 	} else if ($filename){
 		$authOK=0;		
-		$base_name=basename($filename);
+		$base_name=md5(basename($filename));
 		// echo $base_name."#";
 		if ( L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ||  $_SESSION['di'.$base_name]  ) {
 			$authOK=1;
 		}	
 	
 	}	
-	
+	}// end of PFB loop
 	if ($authOK ) {
 		$type='igc';
 		require_once dirname(__FILE__).'/download_igc.php';
 		return;
-	}			 	
+	}
+				 	
   ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>

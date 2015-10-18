@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_helper.php,v 1.2 2012/06/02 08:40:12 manolis Exp $                                                                 
+// $Id: EXT_takeoff.php,v 1.16 2010/07/13 11:06:46 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -34,10 +34,7 @@
 	// $SERVER_URL='';
 
 	if ($op=="create_pdf") {
-		$direct=$_GET['direct']+0;
-		$remote=$_GET['remote']+0;
-		
-		if ($userID <=0 || $remote) {
+		if ($userID <=0) {
 			//echo "Not valid user";
 			// exit;
 			$userID =makeSane($_GET['userIDnotify']);
@@ -50,7 +47,8 @@
 			$userEmail=LeoUser::getEmail($userID);
 		}
 		
-		
+		$direct=$_GET['direct']+0;
+		$remote=$_GET['remote']+0;
 		
 		unset($_GET['op1']);
 		unset($_GET['direct']);
@@ -87,12 +85,12 @@
 						$pdfUrls[$k]=substr($lines[$k],8);
 					}
 					if (substr($lines[$k],0,9)=='START PDF') {
-						 echo "Found start of pdf list, breaking <br>";
+						// echo "Found start of pdf list, breaking <br>";
 						break;
 					}
 				}
 				
-				print_r($pdfUrls);
+				//print_r($pdfUrls);
 				$tmpDir=md5($_SERVER['REQUEST_URI']);
 				 
 				$pdfFile=leoPdf::createPDFmulti($pdfUrls,$tmpDir);	
@@ -121,7 +119,7 @@
 		}
 		
 		
-		 echo "printing $url";
+		 //echo "printing $url";
 		
 		require_once "CL_job.php";
 		$jobArgs=array('userID'=>$userID,
@@ -135,10 +133,10 @@
 		$previousJobTime=leoJob::searchJob($jobArgs);
 		
 		if ($previousJobTime) {
-			echo "You have ordered the same PDF on GMT $previousJobTime<BR>";
+			echo "=_PreviousJob  $previousJobTime<BR>";
 		} else {
-			leoJob::addJob($jobArgs);
-			echo "PDF order has been send<BR><BR>Will send email to $userEmail when the pdf is created<BR><BR>";
+				leoJob::addJob($jobArgs); 
+			echo "Gesendet an: $userEmail <BR><BR>";
 	
 		}
 		

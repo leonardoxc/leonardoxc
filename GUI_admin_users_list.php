@@ -90,7 +90,7 @@ function makeUsersGrid() {
 	  }
 	],
     pager: jQuery('#pagerUsers'),
-    rowNum:10,
+    rowNum:50,
     rowList:[10,20,30,50,100],
     sortname: 'user_id',
     sortorder: "asc",

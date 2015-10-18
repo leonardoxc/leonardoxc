@@ -30,29 +30,18 @@
   	echo "<br><div align='center'>No such flight exists</div><br><BR>";
 	return;  
   }
-
-	//echo $flight->private." & ".$flight->flightIsViewableByUser($userID)." $$";
-
-  if ( ( $flight->private && $flight->private!=4 ) && ! $flight->belongsToUser($userID) && ! L_auth::isAdmin($userID) ) {
-		echo "<br><div align=center><h3>"._FLIGHT_IS_PRIVATE."</h3></div><br><BR>";
+  
+  if ( $flight->private && ! $flight->belongsToUser($userID) && ! L_auth::isAdmin($userID) ) {
+		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
 		return;
   }
 
-    //debug
-    //$mapUrl=$flight->createStaticMap(1);
-
   $flight->incViews();
 
-	//show limited info to non friends
-	if ( $flight->private==4 && ! $flight->flightIsViewableByUser($userID)  ) {
-		require dirname(__FILE__) . '/GUI_flight_show_ext.php';
-		return;
-	}
-
-	  if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){
-		require dirname(__FILE__).'/GUI_flight_show_ext.php';
-		return;
-	  }
+  if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){
+	require dirname(__FILE__).'/GUI_flight_show_ext.php';
+	return;
+  }
 
 
 	$Ltemplate ->set_filenames(array(
@@ -370,16 +359,6 @@ $(document).ready(function(){
 
   if ($CONF_airspaceChecks) {
 		if ($flight->airspaceCheck==0 || $flight->airspaceCheckFinal==0) $flight->checkAirspace(1);
-		
-   		if ($flight->airspaceCheckFinal==-1)    { 
-   			$vImg="icon_att4.gif"; 
-   			$vStr="Airspace Violation: ".$flight->airspaceCheckMsg; 
-   		}  else if ($flight->airspaceCheckFinal==1)  {
-   			$vImg="icon_ok.gif"; 
-   			$vStr="No Airspace Violations"; 
-   		}
-		$valiStr.="&nbsp;".leoHtml::img($vImg,12,12,'absmiddle',$vStr,'icons1 listIcons','',0);
-   		
   }
 
 	if ($flight->autoScore) { // means that there is manual optimization present
@@ -506,7 +485,7 @@ if ($flight->linkURL) {
  
  // now loaded dynamically via ajax on request
  
- /*
+ 
 //-------------------------------------------------------------------
 // get from paraglidingearth.com
 //-------------------------------------------------------------------
@@ -550,11 +529,31 @@ if ($flight->linkURL) {
 		$linkToInfoStr2.="</ul>";
   }
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
- */
+ 
+ 
+//-------------------------------------------------------------------
+// get from dhv.de
+//-------------------------------------------------------------------
+  	$takoffsList=getExtrernalServerTakeoffs(3,$firstPoint->lat,-$firstPoint->lon,50,5);
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr3=$linkToInfoHdr3="<a href='http://www.dhv.de/db2/geosearch.php' target=_blank>";
+		$linkToInfoHdr3.="<img src='".$moduleRelPath."/img/DHV_GelaendeDB.jpg' border=0> "._FLYING_AREA_INFO."</a>";
+			
+		$linkToInfoStr3="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				if ($takeoffItem['area']!='not specified')	$areaStr=" - ".$takeoffItem['area'];
+				else $areaStr="";
+				$linkToInfoStr3.="<li><a href='".$takeoffItem['url']."' target=_blank>".
+									$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].
+									") [~".formatDistance($takeoffItem['distance'],1)."]</a>";
+		}
+		$linkToInfoStr3.="</ul>";
+  	}
+	$xmlSites3=str_replace("<","&lt;",$xmlSites);
  
 $adminPanel="";
 if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 15.2.2008 extension
-	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
+	//$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";  //Deactivated due to DB performance 03.05.2010 P.Wild
 	$adminPanel.="<b>"._SUBMISION_DATE.":</b> ".$flight->dateAdded." :: ";
 
 
@@ -599,12 +598,12 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 	//for($k=1;$k<=5;$k++) { $vn="turnpoint$k"; echo " ".$flight->$vn." <BR>"; }
 
 	
-	if ($flight->airspaceCheckFinal==-1) { // problem
+	 if ($flight->airspaceCheckFinal==-1) { // problem
 			
 		$checkLines=explode("\n",$flight->airspaceCheckMsg);
 		if (strrchr($flight->airspaceCheckMsg,"Punkte")){
 			$adminPanel.="<br><strong>Deutschland Pokal</strong><BR>";		
-			if ((strrchr($flight->airspaceCheckMsg,"HorDist"))) {
+			if ((strpos($flight->airspaceCheckMsg,"HorDist"))) {
 				$adminPanel.="<br><strong>Airspace PROBLEM (Deutschland Pokal)</strong><BR>";
 			}
 		} else{
@@ -613,7 +612,7 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 		for($i=1;$i<count($checkLines); $i++) {
 			$adminPanel.=$checkLines[$i]."<br>";
 		}
-	}
+	} 
 	
 	if (L_auth::isAdmin($userID)) {
 		if ($CONF_show_DBG_XML  ) {
@@ -641,8 +640,27 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 }
 
 
+/*if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID)  ) {
+	if ($flight->airspaceCheckFinal==-1) { // problem
+		//$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+  //P. Wild - Deutschland  orig: 	$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+		$checkLines=explode("\n",$flight->airspaceCheckMsg);
+		if (strrchr($flight->airspaceCheckMsg,"Punkte")){
+			$adminPanel.="<br><strong>Deutschland Pokal</strong><BR>";
+if ((strrchr($flight->airspaceCheckMsg,"HorDist"))) {
+			$adminPanel.="<br><strong>Airspace PROBLEM (Deutschland Pokal)</strong><BR>";
+		}
+		}
+		else{
+		$adminPanel.= "<br><strong>Airspace PROBLEM</strong><BR>";
+		}
+		for($i=1;$i<count($checkLines); $i++) {
+			$adminPanel.=$checkLines[$i]."<br>";
+		}
+}
+}*/
 $commentsHtml="<div id='tabcomments' class='tab_content'>
-	<div id='comments_iframe_div' style='width:100%; height:600px; text-align:left;'>
+	<div id='comments_iframe_div' style='width:745px; height:600px; text-align:left;'>
 		<iframe id='comments_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".
@@ -699,7 +717,6 @@ if ( is_file($flight->getMapFilename() ) ) {
 
 if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	$flight->createEncodedPolyline();
-
 
 	if ( $CONF_google_maps_api_key  ) {
         if ($deletedFlights ) $deletedArg='&deleted=1';
@@ -769,7 +786,7 @@ $mapImg0.='</ul>';
 
 
 
-
+if ($PREFS->showcharts){
 if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
 	$chart1= "<br><br><img src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
 if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
@@ -778,7 +795,7 @@ if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
 	$chart3="<br><br><img src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
 if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
 	$chart4="<br><br><img src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
-
+}
 $extLinkLanguageStr="";
 if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
 

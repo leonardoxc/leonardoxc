@@ -8,11 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_editor.php,v 1.11 2010/11/23 11:41:06 manolis Exp $                                                                 
+// $Id: FN_editor.php,v 1.10 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
-// require_once dirname(__FILE__)."/js/fckeditor/fckeditor.php";
+require_once dirname(__FILE__)."/js/fckeditor/fckeditor.php";
 require_once dirname(__FILE__)."/CL_pilot.php";
 
 ?>
@@ -41,9 +41,7 @@ function createTextArea($userServerID,$userID,$name,$value,
 	// $oFCKeditor->Config['DefaultLanguage']=$lang2isoEditor[$currentlang];	
 	echo  "<script type='text/javascript'> $(document).ready(function(){ CKEDITOR.replace('$name'); } ); \n</script>\n";
 
-}		
-
-/* 				
+}						
 function createTextArea_OLD($userServerID,$userID,$name,$value,
 						$where,$toolbarSet,$allowUploads=false,$width=750,$height=800) {
 		global $CONF,$PREFS;
@@ -115,6 +113,5 @@ function createTextArea_OLD($userServerID,$userID,$name,$value,
 		$oFCKeditor->Create(); 
 
 }
-*/
 
 ?>

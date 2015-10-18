@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: download_igc.php,v 1.1 2011/05/18 13:31:48 manolis Exp $                                                                 
+// $Id: download.php,v 1.36 2010/09/16 09:44:26 manolis Exp $                                                                 
 //
 //************************************************************************
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -73,9 +73,8 @@
 			}
 		} else if ($file) {
 			$authOK=0;
-			
 			$base_name=md5(basename($file));
-            if (  L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ||  $_SESSION['di'.$base_name] ) {
+			if (  L_auth::isModerator($userID) || L_auth::canDownloadIGC($clientIP) ||  $_SESSION['di'.$base_name] ) {
 				$authOK=1;
 			} else {
 				if (substr($_REQUEST['captchaStr'], 10) != $_SESSION['captchaCodes'][$_SESSION['captchaAnswer']]) {
@@ -95,6 +94,7 @@
 		if ($flightID) {
 			$filename=$flight->getIGCFilename();
 		} else if ($file) {		
+		$file=str_replace('//','/',$file);
 			if ($CONF['config']['pathsVersion']==1) {
 				$filename=dirname(__FILE__).'/flights/'.str_replace("..","",$file);
 			} else {	
@@ -104,7 +104,7 @@
 		
 		
 		if ( !is_file($filename) ) {
-			echo "file not found $filename";
+			echo "File not found $filename";
 			return;
 		}
 		

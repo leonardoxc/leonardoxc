@@ -60,65 +60,98 @@ function generatePassword ($length ) {
   return $password;
 }
 
-function _search_user($str){  
-	global $db,$CONF;
-	$sql="select * from ".$CONF['userdb']['users_table']." where username='$str' or user_civlid='$str' or user_email='$str' ";
-	$res=$db->sql_query($sql);
-	$nr=$db->sql_numrows($res);
-	if($nr>1){
-		return false;
+/**
+ * Find the user trying identification by email, username and civl-id
+ *
+ * @param string $str
+ * @param string $msg
+ * @return mixed array or false
+ */
+function _search_user($str, & $msg){
+	global $db, $CONF, $pilotsTable;
+	$msg='';
+	if (is_numeric($str)) {
+		$keys=array('civlid', 'username');
+	}elseif (strpos($str, '@')!==false) {
+		$keys=array('email', 'username');
+	}else {
+		$keys=array('username');
 	}
-	return $res;
+	$res=false;
+	foreach ($keys as $key) {
+		switch ($key) {
+			case 'username':
+				$sql="select u.user_id, u.username, u.user_email, u.user_emailtime, p.CIVL_ID as user_civlid from ".$CONF['userdb']['users_table']." u INNER JOIN $pilotsTable p ON p.pilotID=u.user_id where u.username='".mysql_escape_string($str)."'";
+				break;
+
+			case 'email':
+				$sql="select u.user_id, u.username, u.user_email, u.user_emailtime, p.CIVL_ID as user_civlid from ".$CONF['userdb']['users_table']." u INNER JOIN $pilotsTable p ON p.pilotID=u.user_id where u.user_email='".mysql_escape_string($str)."'";
+				break;
+
+			case 'civlid':
+				$sql="select u.user_id, u.username, u.user_email, u.user_emailtime, p.CIVL_ID as user_civlid from ".$CONF['userdb']['users_table']." u INNER JOIN $pilotsTable p ON p.pilotID=u.user_id where p.CIVL_ID=".mysql_escape_string($str);
+				break;
+		}
+		$res=$db->sql_query($sql);
+		$nr=$db->sql_numrows($res);
+		if ($nr==1) {
+			break;
+		}elseif ($nr>1) {
+			$res=false;
+			$msg=_informed_user_found_but_duplicate;
+			break;
+		}elseif ($nr<1) {
+			$res=false;
+		}
+	}
+	$row=false;
+	if ($res) {
+		$row=$db->sql_fetchrow($res);
+	}
+	if (!$row && !$msg) {
+		$msg=_informed_user_not_found;
+	}
+	return $row;
 }
 
-if(isset($_POST['uce'])){
-    
+if(isset($_POST['uce']) && !empty($_POST['uce'])){
+
 	$str=addslashes($_POST['uce']);
 	//var_dump(_search_user($str));
-	if($res=mysql_fetch_assoc(_search_user($str))) {
+	$msg='';
+	$row=_search_user($str, $msg);
+	if($row) {
 		$ltime=time();
-		$emailtime=$res['user_emailtime'];
-		 // gen a new password with 6 char long;
-		 //$emailtime=0;
-		if(($emailtime+($CONF['userdb']['edit']['password_change_expire_time'])) < $ltime){
+		$emailtime=$row['user_emailtime'];
+		if (empty($emailtime) || (($emailtime+$CONF['userdb']['edit']['password_change_expire_time']) < $ltime)) {
 			//  print "$emailtime | $ltime";
-			
 			$actkey=md5(uniqid(rand(), true));
 			$newpass=generatePassword($CONF['userdb']['edit']['password_minlength']);
-			if ( function_exists('leonardo_hash') ) { 
-				$newPassword=leonardo_hash($newpass);
-			} else {
-				$newPassword=md5($newpass);
-			}
-			
-			$sql="UPDATE ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".$newPassword."',user_actkey='$actkey' where ".$CONF['userdb']['user_id_field']."=".$res['user_id'];
-			
+			$sql="UPDATE ".$CONF['userdb']['users_table']." set user_emailtime='".time()."', user_newpasswd='".md5($newpass)."', user_actkey='$actkey' where user_id=".$row['user_id'];
 			if($db->sql_query($sql)){
-				
-				$msg=  "<span class='ok'><b>"._Email_new_password."</b></span>";
-					  
+				$msg=_Email_new_password;
+				$confirmUrl=$_SERVER['HTTP_HOST'].$PHP_SELF.'?name=leonardo&op=send_password&rkey='.$actkey;
 				$email_body=sprintf(_Password_recovery_email,
-									$CONF['site']['name'],
-									$res['username'],$_SERVER['SERVER_NAME'],
-									$res['username'],$res['user_civlid'],
-									$newpass,
-									str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),
-									$actkey
-									);		
-																						
-				LeonardoMail::sendMail("[Leonardo] ".$CONF['site']['name']." - ". _Password_subject_confirm,
-						utf8_decode($email_body),
-						$res['user_email'],
-						addslashes($_POST['name']) );
-			
+										$row['username'],
+										$CONF_server_short_name,
+										$row['username'],
+										$row['user_civlid'],
+										$newpass,
+										$confirmUrl,
+										$CONF_server_short_name
+									);
+
+				//die($email_body);
+				LeonardoMail::sendMail('[Leonardo] - '. _Password_subject_confirm,utf8_decode($email_body),$row['user_email'],'', $CONF_admin_email );
+				//LeonardoMail::sendMail('[Leonardo] - '._Pilot_confirm_subscription_subject, utf8_decode($email_body),$_POST['email'], addslashes($_POST['name']), $CONF_admin_email);
 			}
-		
-		} else{
-			$expiretime=date("d/M/Y H:i:s",$emailtime+($CONF['userdb']['edit']['password_change_expire_time']));
-			$msg=  "<span class='alert'><b>".sprintf(_impossible_to_gen_new_pass,$expiretime)."</b></span>";
+		}else{
+			$expiretime=date("d/M/Y H:i:s", $emailtime+($CONF['userdb']['edit']['password_change_expire_time']));
+			$msg=sprintf(_impossible_to_gen_new_pass, $expiretime);
 		}
-	} else {
-		$msg= "<span class='alert'><b>"._informed_user_not_found."</b></span>";
+	}
+	if ($msg) {
+		$msg= "<span class='alert'><b>".$msg."</b></span>";
 	}
 }
 

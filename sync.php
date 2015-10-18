@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: sync.php,v 1.32 2012/01/16 07:21:23 manolis Exp $                                                                 
+// $Id: sync.php,v 1.31 2010/07/29 14:00:58 manolis Exp $                                                                 
 //
 //************************************************************************
 	if ($_GET['version']==2 && ( $_GET['op']=="latest" || !$_GET['op'])	) {
@@ -146,7 +146,7 @@
 					
 					
 					if ( ! $pilotNames[$pilotID]){
-						$pilotInfo=getPilotInfoEn($row['pilotID'],$row['serverID'] );
+						$pilotInfo=getPilotInfo($row['pilotID'],$row['serverID'] );
 						if (!$CONF_use_utf ) {
 							$NewEncoding = new ConvertCharset;
 							$lName=$NewEncoding->Convert($pilotInfo[0],$langEncodings[$nativeLanguage], "utf-8", $Entities);
@@ -157,12 +157,10 @@
 						}
 						$pilotNames[$pilotID]['lname']=$lName;
 						$pilotNames[$pilotID]['fname']=$fName;
-						$pilotNames[$pilotID]['lnameEn']=$pilotInfo[2];
-						$pilotNames[$pilotID]['fnameEn']=$pilotInfo[3];
-						$pilotNames[$pilotID]['country']=$pilotInfo[4];
-						$pilotNames[$pilotID]['sex']=$pilotInfo[5];
-						$pilotNames[$pilotID]['birthdate']=$pilotInfo[6];
-						$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[7];
+						$pilotNames[$pilotID]['country']=$pilotInfo[2];
+						$pilotNames[$pilotID]['sex']=$pilotInfo[3];
+						$pilotNames[$pilotID]['birthdate']=$pilotInfo[4];
+						$pilotNames[$pilotID]['CIVL_ID']=$pilotInfo[5];
 					} 
 
 					if ($item_num>0) $RSS_str.=' , ';
@@ -171,8 +169,6 @@
 "serverID":'.($row['serverID']?$row['serverID']:$CONF_server_id).',
 "LastName":"'.$pilotNames[$pilotID]['lname'].'",
 "FirstName":"'.$pilotNames[$pilotID]['fname'].'",
-"LastNameEn":"'.$pilotNames[$pilotID]['lnameEn'].'",
-"FirstNameEn":"'.$pilotNames[$pilotID]['fnameEn'].'",
 "countryCode": "'.$pilotNames[$pilotID]['country'].'",
 "Sex": "'.$pilotNames[$pilotID]['sex'].'",
 "Birthdate": "'.$pilotNames[$pilotID]['birthdate'].'",

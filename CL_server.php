@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_server.php,v 1.41 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: CL_server.php,v 1.40 2010/03/14 20:56:10 manolis Exp $                                                                 
 //
 //************************************************************************
 

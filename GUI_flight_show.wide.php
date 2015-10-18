@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_show.wide.php,v 1.2 2012/01/16 07:31:04 manolis Exp $                                                                 
+// $Id: GUI_flight_show.php,v 1.104 2010/11/21 20:37:33 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -342,7 +342,7 @@ $(document).ready(function(){
   if ($CONF_use_validation) {
 		if ($flight->grecord==0) $flight->validate(1);
 		
-		if ($flight->grecord==-1) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
+		if ($flight->grecord<0) 		{ $vImg="icon_valid_nok.gif"; $vStr="Invalid or N/A"; }
 		else if ($flight->grecord==0) 	{ $vImg="icon_valid_unknown.gif"; $vStr="Not yet processed"; }
 		else if ($flight->grecord==1) 	{$vImg="icon_valid_ok.gif"; $vStr="Valid"; }
 							

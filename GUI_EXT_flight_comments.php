@@ -8,14 +8,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_EXT_flight_comments.php,v 1.16 2012/09/04 09:38:57 manolis Exp $                                                                 
+// $Id: GUI_EXT_flight_comments.php,v 1.14 2011/01/16 21:38:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
 // nice exmple in action 
 //http://onerutter.com/open-source/jquery-facebook-like-plugin.html
-
-if ($_GET['flightID']) $flightID=0;
 
 if (! $flightID) {
  	require_once dirname(__FILE__)."/EXT_config_pre.php";
@@ -226,7 +224,7 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 	clear:none;
 }
 
-#rssButton, #translateButton , .translateLink {
+#rssButton, #blogButton, #translateButton , .translateLink {
 	cursor:pointer;cursor:hand;
 }
 
@@ -236,7 +234,7 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 }
 
 
-#rssBox, #translateBox {
+#rssBox, #blogBox, #translateBox {
 	display:none;
 	position:absolute;
 	width:150px;
@@ -244,7 +242,7 @@ a:hover {  text-decoration:underline; 	color:#d02b55; 	}
 	border:1px solid #CCCCCC;
 	background-color:#FEFFF4;
 }
-#rssBox { padding:8px; padding-right:3px;}
+#rssBox, #blogBox { padding:8px; padding-right:3px;}
 
 #submitErrorMessage {
 	position:absolute;
@@ -472,9 +470,23 @@ $(document).ready(function(){
 			css('top', offset.top +15).toggle();
 		return false;
 	});
+	$("#blogButton").click(function() {		
+		var offset = $("#blogButton").offset();
+		
+		if ( $("#blogBox").is(':visible')) {
+			$(".media_embed").css({visibility:'visible'}); 
+		} else {
+			$(".media_embed").css({visibility:'hidden'}); 
+		}	
+		$("#blogBox").
+			css('left',offset.left-$("#blogBox").width()+30).
+			css('top', offset.top +15).toggle();
+		return false;
+	});
 	
 	$(document).click(function(event) { // Close on external click
 		$("#rssBox").hide();
+		$("#blogBox").hide();
 		$("#translateBox").hide();
 		$(".media_embed").css({visibility:'visible'}); 
 	});
@@ -858,6 +870,14 @@ if ($userID>0) {
   }		
 		
  ?></td>
+<td>
+  <?
+  //Mod. P. Wild 19.02.2015
+  if (!$print ) {
+  	echo "<div id='blogButton'><img src='$moduleRelPath/img/icon_blog.png'></div>";
+  }		
+		
+ ?></td>
 </tr>
 </table>
 
@@ -867,7 +887,10 @@ if ($userID>0) {
 <div id='rssBox'>
 	<a href='<?=moduleRelPath()?>/rss.php?op=comments&flightID=<?=$flightID?>'><?=_RSS_for_the_comments?></a>
 </div>
-
+<div id='blogBox'>
+    <a target="_blank" href="mailto:blog@dhvxc.de?subject=Interessante%20Flug%3D<?=$flightID?>&amp;body=Hi%20Blogger!%20%0Ahttp%3A%2F%2Fxc.dhv.de%2Fxc%2Fmodules%2Fleonardo%2Findex.php%3Fname%3Dleonardo%26op%3Dshow_flight%26flightID%3D<?=$flightID?>%0ADiese%20Flug%20finde%20ich%20interessant%20weil%3A%0A"><?=_Mail_flight_to_blogger?></a>
+   
+    </div>
 <?php  } ?>
 
 

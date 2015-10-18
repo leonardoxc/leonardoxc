@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: MENU_top_menu.php,v 1.97 2012/11/18 22:27:56 manolis Exp $                                                                 
+// $Id: MENU_top_menu.php,v 1.95 2010/09/13 14:00:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -193,7 +193,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	 
 ?>
 
-<li class="smallItem long"><a class="smallItem" href='#'><?=$iconImg?></a>
+<li class="smallItem long"><a class="smallItem" href='#'><b><?=_Info?></b></a>
 	<ul class="long">
 
 <? if ( L_auth::isAdmin($userID) )  {  ?>
@@ -204,12 +204,11 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 				<li><a href="<?=getLeonardoLink(array('op'=>'users')) ?>">User Administration</a></li>
 				<? } ?>
                 <li class='li_space long'></li>
-                <li><a href="<?=getLeonardoLink(array('op'=>'admin_gliders')) ?>">[NEW] Glider DB Admin</a></li>
-                <li><a href="<?=getLeonardoLink(array('op'=>'admin_brands')) ?>">Brand Administration</a></li>
+                <li><a href="<?=getLeonardoLink(array('op'=>'admin_brands')) ?>">Brand Administration</a></li>               
 				<li class='li_space long'></li>
-                <li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
-                    'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
-                    'takeoffID'=>'0','country'=>'0','cat'=>'0>',
+				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
+				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
+				'takeoffID'=>'0','country'=>'0','cat'=>'0>',
                     'clubID'=>'0'))?>&deleted=1">DELETED Flights</a></li>
 
 				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
@@ -322,7 +321,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	  if ($currentlang==$tmpLang) {
  	    $current_flagImg=leoHtml::img($cCode.".gif",18,12,'',_LANGUAGE,'fl');
 	  }
-	  $langLiStr.="<li><a rel='nofollow' href='$flagLink'>$flagImg</a></li>\n";
+	  $langLiStr.="<li><a href='$flagLink'>$flagImg</a></li>\n";
 	} 
 ?>
 <li class="smallItem short"><a class="smallItem"  href='#'><?=$current_flagImg?></a>
@@ -374,8 +373,6 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 		<li><a href="<?=getLeonardoLink(array('op'=>'add_flight')) ?>"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'add_from_zip')) ?>"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
 		<li class='li_space'></li>
-		<li><a href="<?=getLeonardoLink(array('op'=>'friends') )?>"><?=leoHtml::img("icon_star.png",0,0,'absmiddle','','icons1','',0)?> <?=_My_Friends?></a></li>
-
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
         
@@ -384,7 +381,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
         <li><a href="<?=getLeonardoLink(array('op'=>'change_email')) ?>"><?=_MENU_CHANGE_EMAIL?></a></li>       
         <? } ?>
         
-		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotID'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile_stats','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_STATS ?></a></li>
 		<li class='li_space'></li>
 		<? } ?>
 		
@@ -401,11 +398,13 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	<ul>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights') )?>"><?=_MENU_FLIGHTS ?></a></li> 
         
-		<li><a href="<?=getLeonardoLink(array('op'=>'explore_ge') )?>"><?=leoHtml::img("icon_star.png",0,0,'absmiddle','','icons1','',0)?> <?=_Navigate_with_Google_Earth?></a></li>       
-        
+		<li><a href="http://xc.dhv.de/xc/modules/leonardo/download.php?type=explore_ge"><?=leoHtml::img("icon_star.png",0,0,'absmiddle','','icons1','',0)?> <?=_Navigate_with_Google_Earth?></a></li>       
+       <!-- <?=getLeonardoLink(array('op'=>'explore_ge') )?> origonal 22.09.2010 P.Wild -->
 		<li><a href="<?=getLeonardoLink(array('op'=>'browser') )?>"><?=_MENU_BROWSER?></a></li>       
+		<li><a href="http://dhvxc.dhv.de/modules/leonardo/index.php?name=leonardo&op=list_flights&takeoffID=0&country=0&year=0&month=0&season=0&pilotID=0"><?=_MENU_FLIGHTS ?> (International)</a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','sortOrder'=>'dateAdded','takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0','pilotID'=>'0')) ?>"><?=_MENU_SHOW_LAST_ADDED ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'filter') )?>"><?=_MENU_FILTER ?></a></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights&fltr=81800F') )?>"><?=_MENU_FILTER2 ?></a></li>
 		<li class='li_space'></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
 						'year'=>'0','month'=>'0','pilotID'=>'0','takeoffID'=>'0',
@@ -419,6 +418,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 		<li><a href="<?=getLeonardoLink(array('op'=>'sites') )?>"><?=_MENU_SITES_GUIDE ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_areas') )?>"><?=_MENU_AREA_GUIDE?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_takeoffs') )?>"><?=_MENU_TAKEOFFS ?></a></li>
+		<li><a href="http://www.dhv.de/db2/geostart.php"> DHV Gelände-Datenbank</a></li>
 	</ul>
 </li>
 
@@ -426,6 +426,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	<ul>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>0) )?>"><?=_MENU_SHOW_PILOTS ?></a></li>
    		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_search') )?>"><?=_MENU_SEARCH_PILOTS ?></a></li>
+   		<li><a href="<?=getLeonardoLink(array('op'=>'list_gliders') )?>"><?=_MENU_SHOW_GLIDERS ?></a></li>
 		<li class='li_h1'>.:: <?=_Pilot_Statistics?> ::.</li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>1,'sortOrder'=>'bestOlcScore') )?>"><?=_MENU_OLC ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_pilots','comp'=>1,'sortOrder'=>'bestDistance') )?>"><?=_MENU_OPEN_DISTANCE ?></a></li>
@@ -436,11 +437,28 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 <li class="long lastItem"><a href="#"><?=_MENU_XCLEAGUE." ".$arrDownImg?></a>
 	<ul class="long">
-		<li><a href="<?=getLeonardoLink(array('op'=>'competition') )?>"><?=_MENU_XCLEAGUE ?></a></li>
+		
 		<? 
 			if ( count($ranksList) ) {
-				echo "<li class='li_h1 long_li_h1'>.:: "._National_Rankings." ::.</li>";
+			
+				# martin jursa /silke pohl g�rres 01.04.2009: display a submenu of rankings
+				if (!isset($submenu1rankids)) $submenu1rankids=array();
+				if (!isset($submenu2rankids)) $submenu2rankids=array();
+				if (!isset($submenu3rankids)) $submenu3rankids=array();
+				if (!isset($submenu4rankids)) $submenu4rankids=array();
+				//echo "<li class='li_h1 long_li_h1'>.:: "._National_Rankings." ::.</li>";
+				$mainmenuhtml='';
+				$submenu1html='';
+				$submenu2html='';
+				$submenu3html='';
+				$submenu4html='';
 				foreach($ranksList as $rankID=>$rankArray) {
+				
+					// new option by manolis 2009-06-10 
+					if ($rankArray['visibleToModsOnly']==1 && ! L_auth::isModerator($userID) ){
+						continue;
+					}
+				
 					$rname=$rankArray['name'];
 					if ($rankArray['localLanguage']==$lng) $rname=$rankArray['localName'];
 					
@@ -465,12 +483,59 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 					$subrankkeys=array_keys($rankArray['subranks']);
 					$firstSubrank=$subrankkeys[0];
 					// $firstSubrank=$rankArray['subranks'][0]['id'];
-					
-					echo "<li><a href='".getLeonardoLink(
+					$menuitem='';
+					if (!empty($rankArray['spacerbefore']))	{
+						$menuitem.="<li class='li_space long'></li>";
+					}
+					//$menuitem.="<li><a href='".CONF_MODULE_ARG_MASTER."&op=comp&clubID=0&rank=$rankID&subrank=$firstSubrank$yearToForceStr'>".$rname."</a></li>";
+					$menuitem.="<li><a href='".getLeonardoLink(
 						array('op'=>'comp','clubID'=>'0',	'rank'=>$rankID,'subrank'=>$firstSubrank)+
 						$rankArgArray ). "'>".$rname."</a></li>";
-				
+					//Mod. P.Wild 20.01.2010 - Split into two lists
+					if (in_array($rankID, $submenu1rankids)) { 
+						$submenu1html.=$menuitem;
+					}elseif (in_array($rankID, $submenu2rankids)) {
+						$submenu2html.=$menuitem;
+					}elseif (in_array($rankID, $submenu3rankids)) {
+						$submenu3html.=$menuitem;
+					}elseif (in_array($rankID, $submenu4rankids)) {
+						$submenu4html.=$menuitem;
+					}else {
+						$mainmenuhtml.=$menuitem;
+					}
 				}			
+							
+				echo "<li class='li_h1 long_li_h1'>.:: "._GERMAN_CHAMPIONSHIPS." ::.</li>";
+				echo $mainmenuhtml;	
+				if ($submenu1html) {
+					echo "<li class='li_space long'></li>";
+					echo "<li><a href='#'>Vereinswertungen A-M ".$arrDownImg."</a>
+					<ul>";
+					echo $submenu1html;
+					echo "</ul>";
+				}
+				
+				if ($submenu2html) {
+					echo "<li class='li_space long'></li>";
+					echo "<li><a href='#'>Vereinswertungen O-Z ".$arrDownImg."</a>
+					<ul>";
+					echo $submenu2html;
+					echo "</ul>";
+				}
+				if ($submenu3html) {
+					echo "<li class='li_space long'></li>";
+					echo "<li><a href='#'>Herstellerwertung".$arrDownImg."</a>
+					<ul>";
+					echo $submenu3html;
+					echo "</ul>";
+				}
+				if ($submenu4html) {
+					echo "<li class='li_space long'></li>";
+					echo "<li><a href='#'>Länderwertung".$arrDownImg."</a>
+					<ul>";
+					echo $submenu4html;
+					echo "</ul>";
+				}	
 			}
 		?>
 	<?
@@ -491,6 +556,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 	}
 
 ?>
+		<li><a href="<?=getLeonardoLink(array('op'=>'competition') )?>"><?=_MENU_XCLEAGUE2 ?></a></li>
 	</ul>
 </li>
 		

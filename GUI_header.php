@@ -8,9 +8,11 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_header.php,v 1.19 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_header.php,v 1.18 2010/11/23 11:41:08 manolis Exp $                                                                 
 //
 //************************************************************************
+	//silke 25.05.2007
+	include_once('includes/banner_main.php');
 
 	require_once dirname(__FILE__).'/CL_template.php';
 	$Ltemplate = new LTemplate(dirname(__FILE__)."/templates/".$PREFS->themeName);
@@ -157,6 +159,16 @@ $Ltemplate->assign_vars(array(
 	'T_BODY_ALINK' => '#'.$theme['body_alink'],
 	'T_BODY_HLINK' => '#'.$theme['body_hlink'],
 	
+	//Silke 25.05.2007
+	'BANNER_LINKS_1' => $banner_links[0],
+	'BANNER_LINKS_2' => $banner_links[1],
+	'BANNER_LINKS_3' => $banner_links[2],
+	'BANNER_LINKS_4' => $banner_links[3],
+	'BANNER_LINKS_5' => $banner_links[4],
+	
+	//Silke 14.02.2008
+	'BANNER_LINKS' => '',
+	'BANNER_FILTER' => '',
 	)
 );
 

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_brands.php,v 1.20 2012/10/20 07:45:39 manolis Exp $                                                                 
+// $Id: FN_brands.php,v 1.17 2010/09/13 14:00:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -27,13 +27,13 @@
 	9=>'SOL',
 	10=>'Gradient',
 	11=>'FreeX',
-	12=>'ProDesign',
-	13=>'MacPara',
+	12=>'Pro-Design',
+	13=>'Mac Para',
 	14=>'UTurn',
 	15=>'Apco',
-	16=>'Wings Of Change',  // WOC
+	16=>'Woc',
 	17=>'Windtech',
-	18=>'Sky Paragliders',
+	18=>'Sky',
 	19=>'Ozone',
 	20=>'Aerodyne',
 	21=>'Aircross',
@@ -55,7 +55,7 @@
 	37=>'Paradelta',
 	38=>'WillsWing',
 	39=>'Moyes',
-	40=>'A.I.R.',
+	40=>'AIR',
 	41=>'Airborne',
 	42=>'Bautek',
 	43=>'Seedwings',
@@ -65,7 +65,7 @@
 	47=>'Airea',
 	48=>'La Mouette',
 	49=>'Impuls',
-	50=>'Team Impact',
+	50=>'Impact Team',
 	51=>'Guggenmos',
 	52=>'Flying Planet',
 	53=>'Enterprise Wings',
@@ -84,16 +84,13 @@
  	66=>'Skyman',
  	67=>'BGD',
  	68=>'Ikarus',
+ 	69=>'MCC Aviation',
+ 	70=>'Comet',
+ 	71=>'CP-Products',
+ 	72=>'Ailes de K',
+ 	73=>'Solar Wings',
 	80=>'Little Cloud',
-	81=>'JoJo Wings',
-	82=>'Sky Country',
-	83=>'Ynovar',
-	
-	90=>'Archaeopteryx',
-	91=>'Air Design',
-	92=>'Paramania',
-	
-	93=>'Triple Seven',
+ 	999=>'z.Zt. unbekannt'
  );
 
 ?>

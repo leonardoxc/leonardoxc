@@ -8,19 +8,19 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_hgt.php,v 1.8 2012/10/08 07:25:39 manolis Exp $                                                                 
+// $Id: CL_hgt.php,v 1.7 2010/03/14 20:56:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
 /*
-An HGT file covers an area of 1ï¿½x1ï¿½. Its south western corner can
+An HGT file covers an area of 1°x1°. Its south western corner can
  be deduced from its file name: for example, 
 
 n51e002.hgt covers the area between 
-N 51ï¿½ E 2ï¿½ and N 52ï¿½ E 3ï¿½, 
+N 51° E 2° and N 52° E 3°, 
 
 and s14w077.hgt covers
-S 14ï¿½ W 77ï¿½ to S 13ï¿½ W 76ï¿½. 
+S 14° W 77° to S 13° W 76°. 
 The file size depends on the resolution.
 
 If this is 1", there are 3601 rows of 3601 cells each; 
@@ -76,7 +76,7 @@ function getHeight($lat,$lon) {
 	if ( ! isset($openDEMfiles[$demFile])  )  {
 		// echo "Getting DEM file: $demFile<BR>";
 		if (!is_file($CONF_DEMpath.'/'.$demFile)) {
-			// echo "#not found ".$CONF_DEMpath.'/'.$demFile."#";			
+			// echo "#not found ".$CONF_DEMpath.'/'.$demFile."#";
 			return 0;
 		}
 		
@@ -85,7 +85,6 @@ function getHeight($lat,$lon) {
 		$list=$archive->extract(PCLZIP_OPT_EXTRACT_AS_STRING);
 		if ( $list == 0) { 
 			// 
-			// echo "unzip error<br>";
 			return 0;
 			// die("Error : ".$archive->errorInfo(true));
 		} else  {

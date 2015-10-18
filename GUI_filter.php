@@ -61,7 +61,7 @@ if (( $_REQUEST['setFilter']==1 || $_GET['fl_url']==1 ) && 0) { // form submitte
 } else { // form not submitted
 	global $filterVariables ;	
 	$filter->filterExport('filterVariables');
-	 print_r($filterVariables);
+	 //print_r($filterVariables);
 	if (is_array($filterVariables)) {
 		foreach ($filterVariables as $key => $value ) {
 			if (is_array($value) ) continue;

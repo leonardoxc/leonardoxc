@@ -16,7 +16,7 @@ require_once dirname(__FILE__)."/lib/mail/class.phpmailer.php";
 
 class LeonardoMail{
 
-function sendMail($Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='',$isHtml=false){
+function sendMail($Subject,$Content,$toEmail,$toName,$fromMail,$fromName='',$isHtml=false){
 	//echo " $Subject,$Content,$toEmail,$toName,$fromMail='',$fromName='' <BR>";
 	global $CONF,$CONF_admin_email;
 	

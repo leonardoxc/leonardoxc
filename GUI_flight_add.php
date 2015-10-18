@@ -8,10 +8,20 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add.php,v 1.45 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_flight_add.php,v 1.44 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
+//if ( in_array($userID,array(2,3,672,2,4,8,9,10,11,13,64,146,527,1574,2022,672,1662) ) ) {
+require_once "GUI_flight_add_new.php";
+
+return;
+//}
+if (0) {
+	echo"Wegen Server Wartung können Flüge derzeit nicht zum DHVXC Server hinzugefügt werden.<br>
+			Flights can currently not be uploaded to the DHVXC Server due to a hardware upgrade. ";
+	return;
+}
 	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
 	if (!$userID || $userID==-1) {
 		echo _You_are_not_login;
@@ -37,11 +47,6 @@ AirTime
 ?>
 <style type="text/css">
 <!--
-
-.addGlider {
-    font-style: italic;
-}
-
 .box {
 	 background-color:#F4F0D5;
 	 border:1px solid #555555;
@@ -155,7 +160,6 @@ function submitForm() {
 		}
 	<? } ?>
 
-
 	// for testing
 	// alert('all tests passed'); 	return false;
 	
@@ -163,44 +167,6 @@ function submitForm() {
 }
 
 var moduleRelPath='<?=$moduleRelPath?>';
-var gliderCerts=[];
-
-function addGlider(){
-    var brandID=$("#gliderBrandID").val();
-    window.open("<? echo $moduleRelPath ?>/GUI_EXT_add_glider.php?brandID="+brandID,
-            '_blank','scrollbars=no,resizable=yes,WIDTH=450,HEIGHT=300,LEFT=150,TOP=100',false);
-
-}
-
-function selectBrand() {
-   var  gliderBrandID= $("#gliderBrandID").val();
-    $.getJSON(moduleRelPath+'/AJAX_gliders.php?op=gliders_list&brandID='+gliderBrandID, function(resJson) {
-            var options = '<option value=0></option>';
-            gliderCerts=[];
-            $.each(resJson.Records,function(k,v){
-                var gID= v.gliderID;
-                var gName= v.gliderName;
-                options+= '<option value="'+gID+'">'+gName+'</option>';
-                gliderCerts[gID]=v.gliderCert;
-            });
-            $("#gliderID").html(options);
-
-    });
-
-}
-
-
-function selectGlider() {
-    var gliderID= $("#gliderID").val();
-    var gliderName=$( "#gliderID option:selected" ).text();
-    var gliderCert=gliderCerts[gliderID];
-
-    $("#glider").val(gliderName);
-    $("#gliderCertCategory").val(gliderCert);
-    $("#gliderCertCategorySelect").val(gliderCert);
-    selectGliderCertCategory(0);
-}
-
 
 $(document).ready(
 		function(){
@@ -219,7 +185,6 @@ function setClub(NACid) {
 <? } ?>
 
 </script>
-
 
   <form name="inputForm" id="inputForm" action="" enctype="multipart/form-data" method="post" onsubmit="return submitForm();" >	
   <table class=main_text  width="700" height="400" border="0" align="center" cellpadding="4" cellspacing="2" >
@@ -252,13 +217,13 @@ function setClub(NACid) {
 		<? } ?></td>
     </tr>
     <tr>
-      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_Type?></div></td>
+      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
       <td  valign="top"><select name="startType" id="startType">
         <?
 			foreach ( $CONF['startTypes'] as $s_id=>$s_type) {
 
-				if ($s_id==$CONF['defaultStartType']) $is_type_sel ="selected";
-				else $is_type_sel ="";
+				//if ($s_id==$CONF['defaultStartType']) $is_type_sel ="selected";	else // Mod. P.Wild 19.01.2011 - Start type mandatory
+				$is_type_sel ="";
 				echo "<option $is_type_sel value=$s_id>".$s_type."</option>\n";
 			}
 		?>
@@ -274,7 +239,7 @@ function setClub(NACid) {
 		<tr>
             <td>
 			<div align="right" class="styleItalic">
-				<? echo _MEMBER_OF ?> <strong><? echo $NACName ?></strong>
+				<? echo _MEMBER_OF ?> <strong><? echo $NACName ?></strong><br>
             </div>
 			</td>
             
@@ -282,9 +247,10 @@ function setClub(NACid) {
 				<div align="left">
 				<? echo _Club ?>
 
-				<input name="NACclub" id="NACclub" type="text" size="40" value="<?=$NACclub?>">
+				<input name="NACclub" id="NACclub" type="text" size="35" value="<?=$NACclub?>">
                 <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$defaultPilotNacClubID?>">
 				<input name="NACid" id="NACid" type="hidden" value="<?=$flightNacID?>">
+				<br>
 				[ <a href='#' onclick="setClub(<?=$flightNacID?>);return false;"><?=_Select_Club?></a> ]
 				</div>
 			</td>
@@ -295,7 +261,7 @@ function setClub(NACid) {
       <td valign="top" colspan=2>
       <span id='categoryPg'>
 	  <input name="gliderCertCategory" id="gliderCertCategory" type="hidden" value="0">
-	  <select disabled="disabled" name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
+	  <select name="gliderCertCategorySelect" id="gliderCertCategorySelect" onchange="selectGliderCertCategory(0)">
       	<?
 			echo "<option value=0></option>\n";
 			foreach ( $CONF_glider_certification_categories as $gl_id=>$gl_type) {
@@ -309,7 +275,8 @@ function setClub(NACid) {
 		</select>	        
 		<? if (0) { ?>
 	  <? echo _Category; ?> <span class='categorySpan' id='categoryDesc'>-</span>	  
-	  <? } ?>
+	  <? 
+		} ?>
 	  </td>
 	  
     </tr>
@@ -319,7 +286,7 @@ function setClub(NACid) {
       </tr>
     <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Glider_Brand ?></div></td>
-      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" onchange="selectBrand();">
+      <td colspan="3" valign="top"> <select name="gliderBrandID" id="gliderBrandID" >			
 					<option value=0></option>
 					<? 
 					$brandsListFilter=brands::getBrandsList();
@@ -328,23 +295,20 @@ function setClub(NACid) {
 					}					
 				?>
 				</select>
-                <?=_GLIDER ?>
-                  <select name="gliderID" id="gliderID" onchange="selectGlider();">
-                      <option value=0></option>
-                  </select>
-
-				 <input  name="glider"  id="glider" type="hidden" >			</td>
+				<?=_GLIDER ?>
+				 <input name="glider"  id="glider" type="text" size="20" >			</td>
 			</tr>	 
-
+				 		<? 
+			$gliders=  getUsedGliders($userID) ;
+			if (count($gliders) ||1) {
+				
+				 ?>
 			 <tr>
       <td valign="top"><div align="right" class="styleItalic"><?=_Or_Select_from_previous ?></div></td>
-      <td colspan="3" valign="top">
-
+      <td colspan="3" valign="top"> 
 				<select name="gliderSelect" id="gliderSelect" onchange="setValue(this);">			
 					<option value="0_"></option>
-
-					<?
-                        $gliders=  getUsedGliders($userID) ;
+					<? 
 						// gliderBrandID,glider,gliderCertCategory,cat,category	
 						foreach($gliders as $selGlider) {
 							if ($selGlider[0]!=0) $flightBrandName= $CONF['brands']['list'][$selGlider[0]];
@@ -366,9 +330,7 @@ function setClub(NACid) {
 						}
 					?>
 				</select>
-                <br>
-                <a class='addGlider' href='javascript:addGlider();' ><?=_Cannot_find_your_glider ?></a>
-			</td>
+			<? } ?>				</td>
     </tr>
 	<? if ( L_auth::isAdmin($userID)) { ?>
     <tr>
@@ -490,7 +452,7 @@ function setClub(NACid) {
 		// $filename=$flightsAbsPath."/".$flights_user_id."/".$tmpFormFilename;
 		move_uploaded_file($tmpFilename, $filename );
 		//$filename = preg_replace('/[\s\W]+/','_',$filename); //P.Wild A.Rieck - patch to prevent nasty characters spoiling filenames
-		
+
 		//	echo $filename; 
 		$category=$_POST['category']+0;
 		$comments=$_POST["comments"];
@@ -575,13 +537,13 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 						
 					echo "<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>
 					$adminPanel<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br></div>";
-					$warningtext="<br><br><b>Der DHV-XC Server meldet ein Luftraumproblem f�r diesen Flug.</b><br><br>Wenn diese Meldung erfolgt sein sollte, obwohl eine Freigabe vorlag (z.B. wegen einer zeitlichen Deaktivierung eines kontrollierten Luftraumes (HX, EDR), einem aktiven Segelflugsektor oder einer Freigabe durch die Flugsicherung), kann der Flug mit dem unten stehenden Button �Freigabe best�tigen� durch dich frei gegeben werden. <br><br><i>Au�erdem muss der das Problem aufhebende Grund zwingend im Pilotenkommentar beschrieben werden.</i><br><br>Luftraumverletzungen sind verboten. Wenn die aufgezeichneten Positionsdaten mehr als 100 m horizontal oder vertikal in einem gesperrten Luftraum liegen, gilt eine Luftraumverletzung als nachgewiesen. In diesem Fall bitten wir mit dem unten stehenden zweiten Button �Flug l�schen� um die sofortige L�schung dieses Fluges vom Server.<br><br>Mit dem Abschicken dieser Daten best�tige ich, dass ich die f�r den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe. <br> ";
+					$warningtext="<br><br><b>Der DHV-XC Server meldet ein Luftraumproblem für diesen Flug.</b><br><br>Wenn diese Meldung erfolgt sein sollte, obwohl eine Freigabe vorlag (z.B. wegen einer zeitlichen Deaktivierung eines kontrollierten Luftraumes (HX, EDR), einem aktiven Segelflugsektor oder einer Freigabe durch die Flugsicherung), kann der Flug mit dem unten stehenden Button „Freigabe bestätigen“ durch dich frei gegeben werden. <br><br><i>Außerdem muss der das Problem aufhebende Grund zwingend im Pilotenkommentar beschrieben werden.</i><br><br>Luftraumverletzungen sind verboten. Wenn die aufgezeichneten Positionsdaten mehr als 100 m horizontal oder vertikal in einem gesperrten Luftraum liegen, gilt eine Luftraumverletzung als nachgewiesen. In diesem Fall bitten wir mit dem unten stehenden zweiten Button „Flug löschen“ um die sofortige Löschung dieses Fluges vom Server.<br><br>Mit dem Abschicken dieser Daten bestätige ich, dass ich die für den eingereichten Flug geltenden luftrechtlichen Bestimmungen eingehalten habe. <br> ";
 					echo "<div align='center' id='attentionLinkPos' class='attentionLink box'><img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle>
 					$warningtext<img src='$moduleRelPath/img/icon_att3.gif' border=0 align=absmiddle><br></div>";
 					
-		}
-			
-		?>  	 
+				}
+			   
+       			?>
        				
        				<table>
        				<tr>
@@ -605,12 +567,12 @@ This is nothing to worry about, but you can easily provide this info <br>by clic
 		  <a href="<?=getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID))?>"><?=_PRESS_HERE_TO_VIEW_IT ?></a><br>
 		  <em><?=_WILL_BE_ACTIVATED_SOON ?></em> 
 		  <hr>	  
-		<?
+		<? 
+		}
+	
+
 	}
 
-
-}
-	
 }	
 	closeMain(); 
 ?>

@@ -1,4 +1,4 @@
-<?
+﻿<?
 //************************************************************************
 // Leonardo XC Server, http://www.leonardoxc.net
 //
@@ -182,6 +182,8 @@ if (0) {
 	$query="SELECT count(*) as itemNum FROM $flightsTable".$extra_table_str."  WHERE (1=1) ".$where_clause." ";
 	// echo "#count query#$query<BR>";
 
+
+
 	$res= $db->sql_query($query);
 	if($res <= 0){   
 	 echo("<H3> Error in count items query! $query</H3>\n");
@@ -308,21 +310,20 @@ if (0) {
 		$tmpDir=md5($_SERVER['REQUEST_URI']);
 		echo "START PDF\n";
 		$num=0;
-
+		
         $flightUrl="http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'0';
         // this only works in no seo urls
         $flightUrl=str_replace("list_flights","pilot_profile_stats",$flightUrl);
         //take care of seo urls
         $flightUrl=str_replace("/tracks/","/stats/",$flightUrl);
-
+		
         // take care of pilotIDview
         $flightUrl=str_replace("pilotID=","pilotIDview=",$flightUrl);
-
+			
         $flights[$num]=$flightUrl;
-        //       echo "<hr> url is ".$_SERVER['REQUEST_URI'].'<hr> path info is '.$_SERVER['PATH_INFO'].'<hr>';
-        echo "PDF URL:$flightUrl\n";
-
-
+		// echo "<hr> url is ".$_SERVER['REQUEST_URI'].'<hr> path info is '.$_SERVER['PATH_INFO'].'<hr>';
+		echo "PDF URL:$flightUrl\n";
+		
 		$num++;
 		while ($row = $db->sql_fetchrow($res)) { 
 			
@@ -621,10 +622,6 @@ function removeClubFlight(clubID,flightID) {
 			if ( $is_private & 0x02 ) { 
 				$privateIcon.="<img src='".$moduleRelPath."/img/icon_disabled.gif' align='absmiddle' width='13' height='13'>";
 			}
-
-		   if ( $is_private  & 0x04 ) {
-			   $privateIcon.="<img src='".$moduleRelPath."/img/locked.gif' align='absmiddle' width='13' height='13'>";
-		   }
 	   }
 	   	   
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
@@ -649,8 +646,7 @@ function removeClubFlight(clubID,flightID) {
 		$date2row.=$extLinkImgStr;
 		if ($date2row=='') $date2row.='&nbsp;';
 
-	   echo "\n\n<tr class='$sortRowClass $rowStr' id='row_$flightID'>\n";
-
+		echo "\n\n<tr class='$sortRowClass $rowStr' id='row_$flightID'>\n";
 
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
@@ -750,14 +746,7 @@ function removeClubFlight(clubID,flightID) {
 	   
 	   echo "</div></td>\n\t<TD><div align='center'>$gliderBrandImg</div></td>";
 
-		if ( L_auth::airspaceVisible($userID, $row["userID"],$row["userServerID"] ) ) {
-		/*
-		$CONF_airspaceChecks && 
-			( L_auth::isAdmin($userID) || $CONF['airspace']['view']=='public' ||   
-			( $CONF['airspace']['view']=='registered' && $userID >0 ) || 
-			( $CONF['airspace']['view']=='own' && $userID == $row["userID"] && $row["userServerID"]==$serverID )   
-		) 
-		) {*/
+		if ($CONF_airspaceChecks && L_auth::isAdmin($userID) ) {
 			if ( $row['airspaceCheckFinal']==-1 ) {
 				//original: $airspaceProblem=' bgcolor=#F7E5C9 ';
 				# peter Wild hack taking into account the deutschlandpokal-hack
@@ -776,16 +765,13 @@ function removeClubFlight(clubID,flightID) {
 						$airspaceProblem=' bgcolor=#FF0008 ';
 					}
 				} else {
-					
-					$airspaceColor='';
-					foreach($CONF['aispace']['list']['colors'] as $className=>$classColor) {
-						if ( strpos($tmpairspaceName, $className)!==false) { 
-							$airspaceColor=$classColor;
-							break;
-						}
-					}
-					if (!$airspaceColor) $airspaceColor=$CONF['aispace']['list']['colors']['ALLOTHER'];				
-					$airspaceProblem=" bgcolor=#$airspaceColor ";				
+					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					} else if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
+						$airspaceProblem=' bgcolor=#FF0008 ';
+					} else {
+						$airspaceProblem=' bgcolor=#FFFF00 ';
+					}	
 				}
 				# end hack
 			} else
@@ -810,8 +796,8 @@ function removeClubFlight(clubID,flightID) {
 			    leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon','',1)."</a>";
         
 
-
-            echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
+			
+		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
 					"' , '$currentlang')\"  onmouseout=\"geTip.hide()\">".
 					leoHtml::img("geicon.gif",0,0,'top',_Navigate_with_Google_Earth,'icons1 geIcon','ge_'.$i)."</a>";
 
@@ -855,13 +841,13 @@ function removeClubFlight(clubID,flightID) {
 		if ($hasComments ) 
 				echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'>".
 						leoHtml::img($commentsImgName,0,0,'',$row["commentsNum"].' '._COMMENTS,'icons1 commentDiv','',1)."</a>";
-
+		
        if (1) echo "<span class='preview'><a class='betterTip' id='tpa0_$flightID' href='javascript:nop()'>".
            leoHtml::img("icon_info.gif",0,0,'top',_SHOW,'icons1 previewDiv','',1)."</a></span>";
 
 
 
-       if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
+		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
  			 $extServerStr=$CONF['servers']['list'][$row['serverID']]['name'];
  			 $extServerStrShort=$CONF['servers']['list'][$row['serverID']]['short_name'];
 			 

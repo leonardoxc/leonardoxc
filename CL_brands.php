@@ -232,7 +232,7 @@ class brands {
         foreach ( $gliderList as $gliderID=>$row) {
             $tmpName=$row['gliderName'];
             // $tmpName=$row['gliderName'];
-            $similar_index = similar_text ( $gliderName, $tmpName , $percent  );
+            $similar_index = similar_text ( $gliderName, $tmpName , &$percent  );
 
            // echo "$percent <BR>";
             if ($percent>$threshold) {

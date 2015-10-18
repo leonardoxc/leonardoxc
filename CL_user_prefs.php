@@ -18,6 +18,7 @@ class UserPrefs {
  var $viewCat=0;
  var $viewCountry=0;
  var $itemsPerPage=35;
+ var $gliderHistory=0;
  var $metricSystem=1;
  var $googleMaps=1;
  var $nameOrder=1; // western -> firstName - LastName
@@ -50,6 +51,7 @@ class UserPrefs {
 		$this->themeName =$themeName ;
 		$this->language =$language ;
 		$this->itemsPerPage =$itemsPerPage ;
+		$this->gliderHistory =$gliderHistory ;
 		$this->metricSystem =$metricSystem ;
 		$this->viewCountry=$viewCountry;
 		$this->viewCat=$viewCat;
@@ -60,6 +62,9 @@ class UserPrefs {
 
 		if (isset($googleMaps))	$this->googleMaps=$googleMaps;
 		else $this->googleMaps=$CONF_googleMapsShow;
+		
+		if (isset($showcharts))	$this->showcharts=$showcharts;
+		else $this->showcharts=$CONF_showchartsnow;
 
 		if (isset($useEditor))	$this->useEditor=$useEditor;
 		else $this->useEditor=$CONF['default_user_prefs']['useEditor'];
@@ -83,10 +88,12 @@ class UserPrefs {
 	 $cookieStr="&themeName=".$this->themeName.
 		"&language=".$this->language. 
 		"&itemsPerPage=".$this->itemsPerPage. 
+		"&gliderHistory=".$this->gliderHistory.
 		"&metricSystem=".$this->metricSystem.
 		"&viewCountry=".$this->viewCountry.
 		"&viewCat=".$this->viewCat.
 		"&googleMaps=".$this->googleMaps.
+		"&showcharts=".$this->showcharts.
 		"&nameOrder=".$this->nameOrder.
 		"&visitorID=".$this->visitorID.
 		"&useEditor=".$this->useEditor.

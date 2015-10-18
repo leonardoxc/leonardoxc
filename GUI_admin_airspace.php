@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin_airspace.php,v 1.10 2012/10/25 18:39:52 manolis Exp $                                                                 
+// $Id: GUI_admin_airspace.php,v 1.9 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -29,7 +29,8 @@
 	if ($_GET['act']=='delete_all') {
 		DEBUG('AdminAirspace',1,"Deleting all airspace from DB<BR>");
 		
-		$query="TRUNCATE TABLE $airspaceTable	";
+		//$query="TRUNCATE TABLE $airspaceTable	";
+		$query="DELETE FROM $airspaceTable WHERE `id` > 4"; //Mod. P.Wild 23.04.2015 - preserve all BORDER-DE Airspace for comps. when updating
 		$res= $db->sql_query($query);
 		if(!$res ){
 			echo "<BR><BR>Problem in Deleting all airspace from DB<BR><BR>";
@@ -38,9 +39,7 @@
 		}
 		
 	} else if ($_GET['act']=='check_flights') {	
-		$airspaceChunk=$_GET['num'];
-		if (!$airspaceChunk) $airspaceChunk=50;
-		
+	
 		DEBUG('AdminAirspace',1,"Checking all flights for airspace violations<BR>");
 		echo "Checking all flights for airspace violations<BR>";
 		$query="SELECT ID,active from $flightsTable  WHERE airspaceCheck=0 OR airspaceCheckFinal=0 ";
@@ -64,7 +63,7 @@
 					
 				 }
 				$i++;
-				if ($i>$airspaceChunk) break;
+				if ($i>10) break;
 			 }
 		}
 		echo "<BR><br><BR>DONE !!!<BR>";
@@ -83,10 +82,7 @@
  <table class='simpleTable' width="100%" border=0 cellpadding="2" cellspacing="0">
    <tr>
      <td colspan="3"><strong>Actions :: <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=delete_all">Delete all airspace entries in the DB</a> :: 
-	  <a id='updateairspace' href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong>
-	  <input type='text' id='num' size=3 value='10'>
-	  
-	  </td>
+	  <a href="<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights">Check all (unchecked) flights</a></strong></td>
    </tr>
    <tr>
      <td colspan="3">&nbsp;</td>
@@ -120,13 +116,6 @@ function update_comment(area_id) {
 	MWJ_changeSize( 'takeoffAddID', 270,130 );
 	toggleVisible('takeoffAddID','takeoffAddPos'+area_id,14,-50,410,320);
 }
-
-$(document).ready(function() {
-	$("#num").change( function () {	  
-		var url='<?=CONF_MODULE_ARG?>&op=admin_airspace&act=check_flights&num='+$("#num").val();
-		$("#updateairspace").attr('href',url);		
-	});
-});
 </script>	
 <style type="text/css">
 .dropBox {

@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_area_admin.php,v 1.15 2010/04/21 07:55:50 manolis Exp $                                                                 
+// $Id: GUI_area_admin.php,v 1.12 2010/03/14 20:56:11 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -21,8 +21,7 @@ $areaAction=makeSane($_GET['areaAction']);
 
 
 if (!$areaID && $areaAction!='Add') { 
-
-	openMain("Administer Area (group of takeoffs)",0,''); 
+	open_inner_table("Administer Area (group of takeoffs)",800); echo "<tr><td>";
 	
 	
 	echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Add','areaID'=>0))."'>Add new Area</a><BR><BR>";
@@ -59,23 +58,20 @@ if (!$areaID && $areaAction!='Add') {
 	  echo "<a href='".getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Delete','areaID'=>$row['ID']))."'>Delete</a>";
 	  // echo "<a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Delete&areaID=".$row['ID']."'>Delete</a> ";
 
-	  if ($row['areaType']==0) 
-	  		echo " :: <a href='".
-					getLeonardoLink(array('op'=>'area_admin','areaAction'=>'administerTakeoffs','areaID'=>$row['ID']))."'>Add/Remove takeoffs</a> ";
+	  if ($row['areaType']==0) echo " :: <a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=administerTakeoffs&areaID=".$row['ID']."'>Add/Remove takeoffs</a> ";
 	  
 	  echo "</td></tr> \n";
 
 	}
 	
 	echo "</table>";
-	closeMain();
+	close_inner_table();  
 	return;
 
 } else if (in_array($areaAction,array('Add','Edit','Delete') )  ) {
-	openMain("$areaAction Area # $areaID",0,'');
+	open_inner_table("$areaAction Area # $areaID",800); echo "<tr><td>";
 
-	echo "<div align=center><a href='".
-		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 	
 	if ($_POST['formSubmitted'] ) { // do the action
 		if ($areaAction=='Delete') {	
@@ -101,8 +97,7 @@ if (!$areaID && $areaAction!='Add') {
 				echo "<BR>Problem in updating Area ! ";
 			}	
 			if ($areaAction=='Edit') 
-				echo "<div align=center><a href='".
-					getLeonardoLink(array('op'=>'area_admin','areaAction'=>'Edit','areaID'=>$areaID))."'>RETURN TO AREA</a> </div><BR>";
+				echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=Edit&areaID=$areaID'>RETURN TO AREA</a> </div><BR>";
 		}
 	
 
@@ -200,22 +195,20 @@ if (!$areaID && $areaAction!='Add') {
 <?
 	}
 	
-	closeMain();
+	close_inner_table();  
 
 } else if ($areaAction=='administerTakeoffs') {
-	openMain("Administer Takeoffs for Area # $areaID",0,'');
+	open_inner_table("Administer Takeoffs for Area # $areaID",800); echo "<tr><td>";
 
-	echo "<div align=center><a href='".
-		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 
 ?>
-<script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
+
 <script language="javascript">
 
-function removeTakeoffFromArea() {
+	function removeTakeoffFromArea() {
 		
-}
-	
+	}
 function  addTakeoffToArea ()  {		
 	$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");				
 	
@@ -233,30 +226,17 @@ $(document).ready(function(){
 	$('.stripeMe tr:even:gt(0)').addClass('alt');
 	$('.stripeMe tr:odd').addClass('alt2');
 
+
   
-	$(".removeTakeoff").live('click',function() {		
+	$(".removeTakeoff").click(function() {		
 		$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");				
 	  	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=removeFromArea&aID=<?=$areaID?>&tID="+$(this).attr("id") ); 
 		
 		$(this).parent().parent().addClass("deleted");
 	});
 	
-	$("#countryList").change(function(f) {
-		cCode=$("#countryList").val();
-		getTakeoffsForCountry(cCode);
-	});
 
-	<? if ($CONF['takeoffAreas']['defaultCountry'] ) { ?>
-		$("#countryList").val('<?=$CONF['takeoffAreas']['defaultCountry']?>');
-		getTakeoffsForCountry('<?=$CONF['takeoffAreas']['defaultCountry']?>');
-	<? } ?>
 });
-
-
-function getTakeoffsForCountry(cCode) {
-	$("#addList").removeOption(/./);
-	$("#addList").ajaxAddOption('<?=$moduleRelPath?>/EXT_takeoff.php?op=get_country_takeoffs&countryCode='+cCode);
-}
 </script>
 
 <style type="text/css">
@@ -282,7 +262,7 @@ tr.deleted td {
 tr.marked td {
 	background:#CDECBB;
 }
- 
+
 div#floatDiv , div#takeoffInfoDiv
 {
   width: 20%;
@@ -323,35 +303,48 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 } 
 -->
 </style>
- 
-        
+
+<div id ='floatDiv'>
+	<h3>Results</h3>
+	<div id ='resDiv'><BR /><BR /></div>
+</div>
 <form name="formFilter" method="post" action="">
   <br>
-  <table class="main_text"   border="0" align="left" cellpadding="2" cellspacing="0">
-    <tr>
-      <td><div align="right"><strong><? echo _SELECT_COUNTRY ?></strong></div></td>
-      <td>
-      <select id="countryList">
-      <?	  
-		asort($countries);
-     	foreach($countries as $cCode=>$cName) { 
-			echo "<option value='$cCode' >$cName</option>\n";		  
+  <table class=main_text width="564"  border="0" align="center" cellpadding="1" cellspacing="1">
+    <tr> 
+      <td width="205" bgcolor="#FF9966"><div align="right"><span class="whiteLetter"><strong><? echo _SELECT_TAKEOFF ?></strong></span></div></td>
+      <td width="352"><select name="addList" id="addList">
+        <option></option>
+        <? 
+			$countryCode="AU"; 
+		$query="SELECT * from $waypointsTable WHERE type=1000 AND countryCode='$countryCode' ORDER BY name ASC";
+		$res= $db->sql_query($query);	
+		if($res <= 0){
+			  echo("<H3>Error in geting takeoffs</H3>\n");
+		}
+	    while ($row = mysql_fetch_assoc($res)) { 
+			// echo "<option value='".$row['ID']."' >".$row['ID'].' - '.$row['name']."</option>\n";
+			$row2[$row['ID']]=$row['name'];	
+		}	  
+		asort($row2);
+		foreach($row2 as $id2=>$name2) { 
+			echo "<option value='".$id2."' >".$id2.' - '.$name2."</option>\n";
+		  
 		}	
-      ?>
-      </select>
-      </td>
+		?>
+      </select></td>
     </tr>
     <tr> 
-      <td><div align="right"><strong><? echo _SELECT_TAKEOFF ?></strong></div></td>
-      <td><select name="addList" id="addList">
-      </select>
-      <input type="button" name="SubmitButton" id="SubmitButton" onclick='addTakeoffToArea()' value="Add takeoff to Area" />
-      <input type="hidden" name="addTakeoffForm" value="1" /></td>
+      <td><div align="right"></div></td>
+      <td>&nbsp;</td>
     </tr>
+    <tr> 
+      <td colspan="2"><div align="center"> 
+          <input type="button" name="SubmitButton" id="SubmitButton" onclick='addTakeoffToArea()' value="Add takeoff to Area">
+		  <input type="hidden" name="addTakeoffForm" value="1" />
+          &nbsp; 
 
-
-    <tr>
-      <td colspan="2" bgcolor="#E3F2F1"><div id ='resDiv'><BR /><BR /></div></td>
+      </div></td>
     </tr>
   </table>
  
@@ -373,9 +366,8 @@ div#floatDiv h3, div#takeoffInfoDiv h3
 ?>
 </table>
 <?
-	echo "<div align=center><a href='".
-		getLeonardoLink(array('op'=>'area_admin','areaAction'=>'none','areaID'=>0))."'>RETURN TO LIST</a> </div><BR>";
+	echo "<div align=center><a href='".CONF_MODULE_ARG."&op=area_admin&areaAction=none&areaID=0'>RETURN TO LIST</a> </div><BR>";
 
-    closeMain();  
+  close_inner_table();  
 }
 ?>

@@ -46,10 +46,10 @@ function setCIVL_ID() {
 </script>
 <script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
 <?
-  openMain(sprintf(_Attention_mandatory_to_have_civlid,$CONF['site']['name']),0,''); 
+  openMain(sprintf(_Attention_mandatory_to_have_civlid,$CONF_server_short_name),0,''); 
 ?>
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
-<tr><th><?=sprintf(_Attention_mandatory_to_have_civlid,$CONF['site']['name']);?></th></tr> 
+<tr><th><?=sprintf(_Attention_mandatory_to_have_civlid,$CONF_server_short_name);?></th></tr> 
 
 <tr><td><?=_If_you_agree?></td></tr>
 <tr><td><?=sprintf(_Search_civl_by_name,"<a href='#' onclick='setCIVL_ID();return false;'>","</a>")?>

@@ -60,17 +60,17 @@
 
 		$count = 1;
 	
-		$content .="<span><b>Best scores for ".date("Y")."</b> </span>";
-	
+		$content .="<span><b>Best scores for Season ".date("Y")."</b> </span>";
+		$lastyear=date("Y")-1; //mod. P.Wild 14.01.2011 - show season instead of calendar year
 		foreach ( $CONF_glider_types as $gl_id=>$gl_type) {
 	
 			$query="SELECT * FROM $flightsTable
-					WHERE DATE_FORMAT( DATE, '%Y' ) =".date("Y")." AND cat =".$gl_id."
+					WHERE DATE>= '$lastyear.-09-15' AND cat =".$gl_id."
 					ORDER BY flight_points DESC
 					LIMIT 1 ";
 			$result1 = $db->sql_query($query);
 		
-			
+			//orig: WHERE DATE_FORMAT( DATE, '%Y' ) =".date("Y")." AND cat =".$gl_id."
 			// Listing Topics
 			while($row= $db->sql_fetchrow($result1)) {		
 				 $flightID=$row["ID"];

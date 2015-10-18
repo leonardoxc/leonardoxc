@@ -140,7 +140,7 @@ we have
 
 
 if (0) {
-	//echo leonardoFilter::getShort("10004",0);
+	//echo leonardoFilter::getShort("10004",0); 
 	$filter=new LeonardoFilter();
 	$filterString=$_GET['f'];
 	if (!$filterString) $filterString="80000260000820C100A64100A741gr_de_us_fr.402466_4672_17282_13461.".
@@ -556,11 +556,11 @@ function filterExport($arrayName) {
 			}	
 			continue;
 		}
-		if ( $op == 0x21) {
+		/* if ( $op == 0x21) {
 			if ($operand=='WEEKEND'){
 				$variablesArray['FILTER_WEEKEND']=	$operand;
-			}
-		}
+			} */
+		//} 
 		if ( $op == 0x22) {	
 		/*  [0] => 32
             [1] => FILTER_PilotBirthdate
@@ -674,9 +674,9 @@ function makeFilterString() {
 		}
 		
 		}
-		if ( ($op & 0xf0) ==  0x21) {
-			//$filterStr.=sprintf("%06X",$year|$month|$day);
-		}
+		// if ( ($op & 0xf0) ==  0x21) {
+		//	$filterStr.=sprintf("%06X",$year|$month|$day);
+		// }
 
 		return	$filterStr;
 	}

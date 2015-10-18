@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_program_info.php,v 1.20 2012/09/17 22:33:49 manolis Exp $                                                                 
+// $Id: GUI_program_info.php,v 1.19 2010/03/26 13:16:50 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -32,9 +32,8 @@
           <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest</a></li>
           <li><a href="http://www.xcbrasil.org" target="_blank">Brazilian Leonardo</a></li>
           <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL</a></li>
-          <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine Leonardo</a> </li>
-          <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentina XC Leonardo</a></li>
-          <li><a href="http://www.xcportugal.org/index.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
+          <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine XC</a> </li>
+          <li><a href="http://www.xcportugal.com/modules.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
           <li><a href="http://www.sky.gr/leonardo" target="_blank">Greek XC League</a></li>
           <li><a href="http://hang-gliding.eu" target="_blank">Greek HG League</a></li>   
           <li><a href="http://www.paraplanoff.net/leonardo">Russian XC Leonardo</a></li>       
@@ -47,7 +46,7 @@
           <li><a href="http://www.pg-leonardo.cz/leonardo" target="_blank">Czech Leonardo</a></li>
           <li><a href="http://www.holywind.net/index.php?option=leonardo" target="_blank">Isreali Leonardo</a></li>          
           <li><a href="http://forums.dowsett.ca/modules.php?name=leonardo" target="_blank">HPAC/ACVL Canadian League</a></li>
-          
+          <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentine Leonardo</a></li>
           <li><a href="http://www.vololibero.net/modules.php?name=leonardo&amp;op=list_flights" target="_blank">Italian Leonardo</a></li>
           <li><a href="http://www.foroparapente.com/leonardo" target="_blank">Chilian Leonardo</a></li>
           <li><a href="http://xc.aerospara.com/modules.php?name=leonardo" target="_blank">Ukrainian Leonardo</a></li>          

@@ -29,7 +29,7 @@ if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
     $flightsTable	=  $deletedFlightsTable;
     $deletedFlights=1;
 }
-
+	
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
@@ -65,7 +65,7 @@ if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
 		 $nearestWaypoint->getFromDB();
 
 		 $XML_str="<result>\n";
-		 $XML_str.="
+		$XML_str.="
 			<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Flight list</title>
 			<link>http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights')) ."</link>		
 			<date>". gmdate('D, d M Y H:i:s', time()) . " GMT</date>
@@ -255,7 +255,7 @@ if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
 				foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 					//$photoInfo['lat']=51.8;
 					//$photoInfo['lon']=14.0;
-
+					
 					if ($photoInfo['lat'] && $photoInfo['lon'] ) {
 						$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 						$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);

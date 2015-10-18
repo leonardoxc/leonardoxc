@@ -375,6 +375,26 @@ $gliderCat=" [ ".leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle',''
   }
   $xmlSites2=str_replace("<","&lt;",$xmlSites);
   
+//-------------------------------------------------------------------
+// get from dhv.de
+//-------------------------------------------------------------------
+  	$takoffsList=getExtrernalServerTakeoffs(3,$firstPoint->lat,-$firstPoint->lon,50,5);
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr2="<a href='http://www.dhv.de/db2/geosearch.php' target=_blank>";
+		$linkToInfoHdr2.="<img src='".$moduleRelPath."/img/DHV_GelaendeDB.jpg' border=0> "._FLYING_AREA_INFO."</a>";
+			
+		$linkToInfoStr2="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				if ($takeoffItem['area']!='not specified')	$areaStr=" - ".$takeoffItem['area'];
+				else $areaStr="";
+				$linkToInfoStr2.="<li><a href='".$takeoffItem['url']."' target=_blank>".
+									$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].
+									") [~".formatDistance($takeoffItem['distance'],1)."]</a>";
+		}
+		$linkToInfoStr2.="</ul>";
+  }
+  $xmlSites3=str_replace("<","&lt;",$xmlSites);
+  
 $adminPanel="";
 if (L_auth::isAdmin($userID) ) {
 	$adminPanel="<b>"._TIMES_VIEWED.":</b> ".$flight->timesViewed."  ";
@@ -426,7 +446,7 @@ if (L_auth::isAdmin($userID) ) {
 	if ($CONF_show_DBG_XML) {
 		$adminPanel.="<div id=xmlOutput style='display:none; text-align:left;'><hr>";
 		$adminPanel.="XML from paraglidingEarth.com<br>";
-		$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre></div>";
+		$adminPanel.="<pre>$xmlSites1</pre><hr>XML from paragliding365.com<br><pre>$xmlSites2</pre><hr>XML from dhv.de<br><pre>$xmlSites3</pre></div>";
 	}
 	
 	$adminPanel.="<div id='adminPanel' style='display:none; text-align:center;'><hr>";
@@ -462,13 +482,10 @@ $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 
-$privateFlightLegend="<img  src='$moduleRelPath/img/locked.gif' border=0 title='"._friends_text1."'>"._friends_text1." ";
-
 
 $Ltemplate->assign_vars(array(
 	'extFlightLegend'=> $extFlightLegend,
-	'privateFlightLegend'=> $privateFlightLegend,
-
+	
 	'M_PATH'=> $moduleRelPath,
 	'T_PATH'=> $moduleRelPath.'/templates/'.$PREFS->themeName,
 	
@@ -502,11 +519,6 @@ if ($comments) {
 if ($adminPanel) {
    	$Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
 }
-
-if ($flight->private==4) {
-	$Ltemplate->assign_block_vars('FRIENDS_ONLY_PANEL', array() );
-}
-
 
 $Ltemplate->pparse('body');
 

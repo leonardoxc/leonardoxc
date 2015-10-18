@@ -152,6 +152,29 @@
 		}
 		$linkToInfoStr2.="</ul>";
   }
+	
+  	// dhv.de
+	$takoffsList=getExtrernalServerTakeoffs(3,$waypointLat,-$waypointLon,20,5);
+	
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr3="<img src='".$moduleRelPath."/img/DHV_GelaendeDB.jpg' border=0>";
+		
+		$linkToInfoStr3="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				$distance=$takeoffItem['distance']; 
+				if ($takeoffItem['area']!='not specified')
+					$areaStr=" - ".$takeoffItem['area'];
+				else 
+					$areaStr="";
+					
+				$jsStr="fillInForm('".addslashes($takeoffItem['name'])."','".addslashes($takeoffItem['area'])."','".addslashes($takeoffItem['countryCode'])."');";
+				
+				$takeoffLink="<a href=\"javascript:$jsStr\">".$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].") [~".formatDistance($distance,1)."]</a>";
+
+				$linkToInfoStr3.="<li>$takeoffLink";
+		}
+		$linkToInfoStr3.="</ul>";
+  }
 ?> 
 <script language="javascript">
 function MWJ_findObj( oName, oFrame, oDoc ) {
@@ -201,6 +224,7 @@ function fillInForm(name,area,countrycode){
                 </font></td>
                 <td width="250" rowspan="8" valign="top"><div class="box"><?=_takeoff_add_help_3?></div>
                     <?
+				echo $linkToInfoHdr3.$linkToInfoStr3;
 				echo $linkToInfoHdr1.$linkToInfoStr1;
 				echo $linkToInfoHdr2.$linkToInfoStr2;	
 			

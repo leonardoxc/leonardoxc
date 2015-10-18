@@ -23,7 +23,7 @@
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	//	setDEBUGfromGET();
-
+	
 if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
     $flightsTable	=  $deletedFlightsTable;
     $deletedFlights=1;
@@ -41,8 +41,7 @@ if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
 	} 
 	$flightsNum=count($flightsList);
 	sort($flightsList);
-
-
+	
 	if ($flightsNum==0) exit;
 	
 	if ( $flightsNum==1) {
@@ -224,7 +223,6 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 </head>
 <body>
-
 
 <div id='chartDiv'>
 	<div id="chart" class="chart"></div>  			 
@@ -414,7 +412,6 @@ var landingString="<? echo _LANDING_LOCATION ?>";
 
 var GroundSfc="<? echo _GroundSFC ?>";
 var AltitudeStr="<? echo _Altitude_Short." (GPS)" ?>";
-
 var AltitudeStrBaro="<? echo _Altitude_Short." (Baro)" ?>";
 
 var altUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M:_FT) ; ?>";
@@ -431,13 +428,9 @@ var TimeStep = 10000; //  in millisecs
 var CurrTime=null;
 
 var airspaceCheck=<?php echo $airspaceCheck; ?>;
-<? if ( $isAdmin ) { ?>
+
 	var baroGraph=true;
-	userAccessPriv=true;
-<? } else { ?>
-	var baroGraph=false;
-	var userAccessPriv=false;
-<?php  } ?>
+	var userAccessPriv=true;
 
 var skywaysVisible=0;
 var map;
@@ -567,18 +560,17 @@ function initialize() {
 		
     var mapOptions= {
             zoom: 8,
+		zoomControl: true,
+		zoomControlOptions: {
+			position: google.maps.ControlPosition.LEFT_CENTER
+		},
+		scaleControl: true,
+		streetViewControl: true,
+		streetViewControlOptions: {
+			position: google.maps.ControlPosition.LEFT_CENTER
+		},
 
-			zoomControl: true,
-			zoomControlOptions: {
-				position: google.maps.ControlPosition.LEFT_CENTER
-			},
-			scaleControl: true,
-			streetViewControl: true,
-			streetViewControlOptions: {
-				position: google.maps.ControlPosition.LEFT_CENTER
-			},
-
-            mapTypeControlOptions: {
+		mapTypeControlOptions: {
                 mapTypeIds: [
 					"Relief",
 					google.maps.MapTypeId.ROADMAP,
@@ -772,7 +764,7 @@ function loadFlight(flightID) {
         flightsList[tracksNum0]=flightID;
         tracksNum0++;
 
-        flights[flightID]=[];
+		flights[flightID]=[];
 		flights[flightID]['data']=data;
 
 		// display the kml track
@@ -780,7 +772,6 @@ function loadFlight(flightID) {
 		//flights[flightID]['kmlLayer'].setMap(map);
 
 		var trackColor=trackColors[tracksNum];
-
 		if (flightsTotNum==1) {
 			trackColor=trackColors[2];
 		}

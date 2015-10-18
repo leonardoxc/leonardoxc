@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_admin.php,v 1.61 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_admin.php,v 1.59 2010/10/18 14:05:21 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -139,7 +139,6 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
-    echo "<li><a href='".CONF_MODULE_ARG."&op=admin_gliders'>Glider DB administration</a> ";
 //	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
 	echo "<hr>";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> Use it when you switch from running Leoanardo
@@ -188,19 +187,15 @@ echo "</ul><br><hr>";
 			return;
 		}
 		
-		$query="SELECT ID,serverID,userID,userServerID,comments,dateUpdated  from $flightsTable WHERE comments <>''";
+		$query="SELECT * from $flightsTable WHERE comments <>''";
 		$res= $db->sql_query($query);
 
 		$num=0;
 		
 		if($res == 0){
-			echo "Problem in query $query<BR>";
+			echo "Probem in query $query<BR>";
 			return;
 		}
-		
-		
-		$commentsDefaultLang=$lang2isoGoogle[$nativeLanguage];
-		if (!$commentsDefaultLang) $commentsDefaultLang='en';
 		
 		$fids='';
 		while ($row = mysql_fetch_assoc($res)) { 
@@ -211,7 +206,7 @@ echo "</ul><br><hr>";
 			
 			$query1="INSERT INTO $commentsTable 
 				(parentID,flightID,userID,userServerID,dateAdded,dateUpdated,active,title,text,languageCode ) 
-				VALUES( 0, '".$row['ID']."', '".$row['userID']."', '".$row['userServerID']."', '$now', '$now', 1, '', '".$row['comments']."', '$commentsDefaultLang') " ;
+				VALUES( 0, '".$row['ID']."', '".$row['userID']."', '".$row['userServerID']."', '$now', '$now', 1, '', '".$row['comments']."', 'en') " ;
 			$res1= $db->sql_query($query1);
 			if(!$res1){
 				echo "Problem in query:$query1<BR>";
@@ -776,8 +771,8 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 			 while ($row = mysql_fetch_assoc($res)) { 
 				 $flight=new flight();
 				 $flight->getFlightFromDB($row["ID"],1); // this computes takeoff/landing also
-				 $flight->updateTakeoffLanding();
-				 $flight->putFlightToDB(1);
+				 //$flight->updateTakeoffLanding();
+				 //$flight->putFlightToDB(1);
 				 unset($flight);
 				# martin jursa update batchOpProcessed field
 				setBatchBit($row["ID"]);
@@ -796,16 +791,6 @@ http://www.sky.gr/modules.php?name=leonardo&op=show_flight&flightID=645
 					$files_total++;
 
 					if (! $row['FIRST_POINT'] || ! $row['LAST_POINT']) {
-						$flight=new flight();
-  						$flight->getFlightFromDB($row['ID']);
-  						echo $flight->getIGCFilename()."<br>";
-						$flight->getFlightFromIGC( $flight->getIGCFilename() );
-						$flight->updateTakeoffLanding();
-						//$flight->createEncodedPolyline(1);
-						//$flight->makeJSON(1);
-						
-						$flight->putFlightToDB(1); // 1== UPDATE
-	
 						$not_set++;
 						continue;
 					}

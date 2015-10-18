@@ -61,8 +61,8 @@
 			."\'>"._SITE_INFO."</a><br>";
 		}	
 		
-	
-		$query="SELECT  MAX(MAX_LINEAR_DISTANCE) as record_km, ID  FROM $flightsTable  WHERE takeoffID =".$wpID." GROUP BY ID ORDER BY record_km DESC ";
+		
+		$query="SELECT  MAX(FLIGHT_KM) as record_km, ID  FROM $flightsTable  WHERE takeoffID =".$wpID." GROUP BY ID ORDER BY record_km DESC ";
 		
 		$flightNum=0;
 		$res= $db->sql_query($query);
@@ -75,16 +75,19 @@
 											'season'=>'0','pilotID'=>'0','country'=>'0','cat'=>'0'
 					))."\' target=\'_top\'>".
 		_See_flights_near_this_point." [ ".$flightNum." ]</a><br>";
-		echo "<img src=\'img/icon_trophy.gif\' align=\'absmiddle\' border=0> <b>"._SITE_RECORD."</b>:";
-
+			}
+		foreach ($CONF_glider_types  as $k => $v) {
+		$query="SELECT  MAX(FLIGHT_KM) as record_km, ID  FROM $flightsTable  WHERE cat=".$k." AND takeoffID =".$wpID." GROUP BY ID ORDER BY record_km DESC ";
+			$res= $db->sql_query($query);
 			$row = mysql_fetch_assoc($res);
-		
+			if ($row['record_km']>0){
+			echo "<img src=\'img/icon_trophy.gif\' align=\'absmiddle\' border=0> <b>"._SITE_RECORD."</b>:";
 			echo '<a target=\'_top\' href=\'http://'.$_SERVER['SERVER_NAME'].
 				getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID'])).'\'>'.
-			formatDistance($row['record_km'],1).'</a>';
-			} else {
-				echo " No flights from this location";
-			}
+			formatDistance($row['record_km'],1)." ".$gliderCatList[$k].'<br></a>';
+			} 
+			
+		}
 		} 
 		echo ' " } ';
 	} else if ($op=="getTakeoffsForArea") {

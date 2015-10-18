@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_logReplicator.php,v 1.56 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: CL_logReplicator.php,v 1.55 2010/03/14 20:56:10 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -192,8 +192,6 @@ class logReplicator {
 		//$pilot->FirstName=$pilotArray['userName'];
 		$pilot->FirstName=$pilotArray['pilotFirstName'];
 		$pilot->LastName=$pilotArray['pilotLastName'];
-		$pilot->FirstNameEn=$pilotArray['pilotFirstNameEn'];
-		$pilot->LastNameEn=$pilotArray['pilotLastNameEn'];
 		$pilot->countryCode =$pilotArray['pilotCountry'];
 		$pilot->Birthdate=$pilotArray['pilotBirthdate'];
 		$pilot->Sex=$pilotArray['pilotSex'];
@@ -259,7 +257,7 @@ class logReplicator {
 		} else if ( isset($e['serverID']) ){
 			$thisEntryServerID=$e['serverID'];
 		} else {
-			return array(0,"logReplicator::processEntry : ServerID for Log entry could not be determined " );
+			return array(0,"logReplicator::processEntry : ServerID for Log entry could not be determined ".$thisEntryServerID );			
 		}
 
 		if ($thisEntryServerID != $serverID ) { 
@@ -423,7 +421,7 @@ class logReplicator {
 					
 					if ($isFlightDup) {
 						return array(-1,"Flight already exists : $msg");
-
+						continue;
 					}
 				} 
 				
@@ -522,14 +520,10 @@ class logReplicator {
 						// get igc if required
 						if ($sync_mode & SYNC_INSERT_FLIGHT_LOCAL) {
 							echo " Geting IGC file : ";
-							if (!$e['tmpDir']) {
-								$e['tmpDir']='/tmp';
-							}
+							
 							$igcFileTmp=$e['tmpDir'].'/'.$actionData['flight']['id'].'.igc';
 							
 							if ( ! is_file($igcFileTmp) ) {
-								echo "igc file: $igcFileURL<BR>\n";
-								echo "tmpfile: $igcFileTmp<BR>\n";
 								echo "NOT in zip -> will fetch ...";
 								if (!$igcFileStr=fetchURL($igcFileURL,20) ) {
 									return array(0,"logReplicator::processEntry() : Cannot Fetch $igcFileURL");
@@ -563,11 +557,9 @@ class logReplicator {
 						// the 1st bit of 'private' , the others are used locally !!
 						if ($fieldName=='private') {
 							if ( $fieldValue & 0x01 ) {
-								$fieldValue = $extFlight->private | 0x01;
-							} else if ( $fieldValue & 0x04 ) { // visible to friends
-								$fieldValue= $extFlight->private | 0x04 ;
+								$fieldValue= $extFlight->private | 0x01 ;
 							} else {
-								$fieldValue= $extFlight->private & 0xFA  ;
+								$fieldValue= $extFlight->private & 0xFE  ;
 							}							
 						}
 						$extFlight->$fieldName=$fieldValue;

@@ -560,19 +560,6 @@
                 }
              }
 
-            $cat1=makeSane($_REQUEST['gliderType-1'],2);
-            $cat2=makeSane($_REQUEST['gliderType-2'],2);
-            $cat3=makeSane($_REQUEST['gliderType-3'],2);
-            if ($cat1 || $cat2 || $cat3)  {
-                $catList="";
-                if ( $cat1 ) $catList.="1,";
-                if ( $cat2 ) $catList.="2,";
-                if ( $cat3 ) $catList.="4,";
-                $catList=substr($catList,0,-1);
-                $where_clause.=" AND cat IN ( $catList) ";
-
-            }
-
              if ($count) $lim=" LIMIT $count ";
              else  $lim="";
 

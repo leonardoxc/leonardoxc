@@ -1,21 +1,21 @@
 <?
+/*die('<br><br><h4>Wegen Wartungsmaﬂnahmen ist die Registrierung zurzeit deaktiviert. Bitte es etwas sp‰ter nocheinmal versuchen</h4>
+<h4>Due to maintenance measures registration is currently deactivated. Please return later.</h4>');
+*/
+
+/*
+http://pe830/xc/modules/leonardo/index.php?name=leonardo&op=register&rkey=0274cf9931e72b564d1960832c689493
+*/
+/**
+ * Modifications by martin jursa, version 25.05.2009
+ */
+
 require_once $LeoCodeBase."/CL_mail.php";
-require_once $LeoCodeBase."/CL_NACclub.php";
-require_once dirname(__FILE__)."/CL_user.php";
-require_once dirname(__FILE__)."/lib/json/CL_json.php";
 
-// echo "http://".str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile).'?op=ref';
 
-openMain(sprintf(_Registration_Form,$CONF['site']['name'] ),0,'');
+$CONF['userdb']['users_temp_table']="leonardo_temp_users";
 
-// now defined in site/predefined/3/config.php
-//$CONF['userdb']['users_temp_table']="leonardo_temp_users";
-
-$sql="delete from ".$CONF['userdb']['users_temp_table']." where user_regdate <= '".(time()-(3*60*60))."'";
-$db->sql_query($sql); 
-
-// Activate the user account
-if( isset($_GET['rkey']) && !($_POST) ){ 
+if( isset($_GET['rkey']) && !($_POST) ){
 
 	$sql="select * from ".$CONF['userdb']['users_temp_table']." where user_actkey ='".$_GET['rkey']."'";
 	$result = $db->sql_query($sql);
@@ -23,67 +23,72 @@ if( isset($_GET['rkey']) && !($_POST) ){
 
 	if($user_exist!=1){
 		echo "<p align='center'>."._Server_did_not_found_registration."</p>";
-		closeMain();return;	
+		return;
 	}
-		
+
 	$user=$db->sql_fetchrow($result);
 
-	$sql1="insert into ". $CONF['userdb']['users_table'] .
-			" ( user_active, username,  user_password, user_session_time, user_regdate, user_email, user_actkey )
-			values  ( '1', '".$user['user_name']."' , '".leonardo_hash($user['user_password'])."',
-			'".$user['user_session_time']."', '".time()."', '".$user['user_email']."',  '".$user['user_actkey']."' )"; 
+	# martin jursa 13.05.2008: sql corrected, mysql_escape_string() added
+	$sql1="insert into ". $CONF['userdb']['users_table']." (
+		user_active, username, user_password,
+		user_session_time, user_regdate, user_email, user_actkey
+	)values  (
+		'1', '".mysql_escape_string($user['user_name'])."' , '".md5($user['user_password'])."',
+		'".$user['user_session_time']."', '".time()."', '".$user['user_email']."',  '".$user['user_actkey']."'
+	)";
 	// echo $sql1;
 	$res=$db->sql_query($sql1);
-	
+
 	if (!$res) {
-		echo "Problem in inserting user into DB: $sql1<BR>";
-		closeMain();return;	
+		//echo "Problem in inserting user into DB: $sql1<BR>";
+		echo "Problem in inserting user into DB<BR>";
+		return;
 	}
-	
+
 	$id=$db->sql_nextid();
 
 	if (!$id) {
 		echo "Could not get next ID from DB<BR>";
-		closeMain();return;	
+		return;
 	}
-	
-	$sql2="INSERT INTO $pilotsTable (pilotID, countryCode, CIVL_ID, CIVL_NAME,
-	 NACid,NACmemberID,NACclubID,
-	FirstName, LastName, NickName, Birthdate, BirthdateHideMask, Sex)
-	values ('$id','".$user['user_nation']."','".$user['user_civlid']."','".addslashes($user['civlname'])."',
 
-	'".addslashes($user['NACid'])."',
-	'".addslashes($user['NACmemberID'])."',
-	'".addslashes($user['NACclubID'])."',
+	# martin jursa 13.05.2008: sql corrected, mysql_escape_string() instead of addslashes()
+	$sql2="insert into $pilotsTable (
+		pilotID, countryCode, CIVL_ID,
+		FirstName, LastName,
+		Birthdate,
+		BirthdateHideMask, Sex
+	)values (
+		'$id','".$user['user_nation']."','".$user['user_civlid']."',
+		'".mysql_escape_string($user['user_firstname'])."','".mysql_escape_string($user['user_lastname'])."',
+		'". substr($user['user_birthdate'],6,2)."-".substr($user['user_birthdate'],4,2)."-".substr($user['user_birthdate'],0,4)."',
+		'xx.xx.xxxx','".$user['user_gender']."'
+	)";
+//echo "***2**".$sql2;
+	if(! $res=$db->sql_query($sql2)){
+		//echo "Problem in inserting pilot into DB: $sql2<BR>";
+		echo "Problem in inserting pilot into DB<BR>";
+		return;
+	}
 
-	'".addslashes($user['user_firstname'])."','".addslashes($user['user_lastname'])."','".addslashes($user['user_nickname'])."',
- '". addslashes($user['user_birthdate'])."','xx.xx.xxxx','".( $user['user_gender']==1?'F':'M') ."') "; 
- 
-	if(! $res=$db->sql_query($sql2)){
-		echo "Problem in inserting pilot into DB: $sql2<BR>";
-		closeMain();return;	
-	}
-	
-	$sql2="INSERT INTO $pilotsInfoTable (pilotID) values ('$id') "; 
-	if(! $res=$db->sql_query($sql2)){
-		echo "Problem in inserting pilot into DB: $sql2<BR>";
-		closeMain();return;	
-	}
-	
 	// all ok , delete from temp table!
 	$sql3="delete from ".$CONF['userdb']['users_temp_table']." where  user_actkey ='".$user['user_actkey']."'";
 	$in=$db->sql_query($sql3);
 ?>
 
 <br>
-<table align="center" width="500">
+<br>
+<table align="center" width="50%">
   <tr>
     <td><br>
+      <font class=content>
       <center>
-        <strong><?=_Email_confirm_success;?></strong>
+        <b>
+        <?=_Email_confirm_success;?>
+        </b>
       </center>
       <br>
-      <table align="center" width="80%">
+      <table align="center" width="70%">
         <tr class=header>
           <td><u>
             <?=_pilot_email;?>
@@ -92,147 +97,51 @@ if( isset($_GET['rkey']) && !($_POST) ){
         </tr>
         <tr class=header>
           <td><u>
+            CIVL-ID
+            </u> </td>
+          <td><?=$user['user_civlid'];?></td>
+        </tr>
+        <tr class=header>
+          <td><u>
             <?=_USERNAME;?>
             </u> </td>
           <td><?=$user['user_name'];?></td>
         </tr>
-        <tr class=header>
-          <td><u>
-            <?=_PILOT_NAME;?>
-            </u> </td>
-          <td><?=$user['user_lastname'].' '.$user['user_firstname'];?></td>
-        </tr>
       </table>
-	  
-      <div align="center">
-	    <br><br>        
-        <a href="<?=getLeonardoLink(array('op'=>'login') )?>"><?=_MENU_LOGIN;?></a>
-		<br><br>
-      </div>
-     </td>
+      <div align="center"><br>
+        <br>
+        <center>
+        <a href="?op=login">
+        <?=_MENU_LOGIN;?>
+        </a><br>
+        <br>
+      </div></td>
   </tr>
-
+  <tr>
+    <td class=header>&nbsp;</td>
+  </tr>
 </table>
-<?		
+<?
 
-	closeMain();return;	
+	return;
 }  // $_GET['rkey'];
 
-if($_POST['registerForm']==1){
-	$civlid=$_POST['civlid']+0;
-	$username=makeSane($_POST['username']);
-
-	// various queries in order of searching civlid, email through all database to avoid doubles;
-	if($r=_search($_POST['email'],$civlid,$username,'temp')) { 
- 
-		if ( ($r['user_civlid']==$civlid || $civlid==0) && $r['user_email']==$_POST['email'] ){
-			$actkey=$r['user_actkey'] ;       
-			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
-			print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
-			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],
-			$_SERVER['SERVER_NAME'],
-			str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),
-			$actkey );
-			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$r['user_email'],addslashes($_POST['firstname']));
-			unset($actkey);
-		} else if($r['user_email']==$_POST['email']  ){
-			$msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
-		} else if($r['user_civlid']==$civlid && $civlid ){
-			$msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
-		} else {
-			$msg="<p align ='center'>"._Pilot_have_pre_registration."</p>";
-		}
-
-		echo $msg; closeMain(); return;	
-	}
-
-    if( $CONF_use_NAC &&  $CONF['NAC']['id_mandatory'] ) {
-
-        if (!$_POST['NACid'] || ! $_POST['NACmemberID'] ) {
-            $msg= '<span class="alert">You must provide a valid NAC and NAC membership</span>';
-            echo $msg; closeMain(); return;
-        }
-
-
-    }
-
-	if($r=_search($_POST['email'],$civlid,$username,'pilots') && $civlid!=0 ){
-	 	//  var_dump($r);
-		$msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['CIVL_NAME']) ."</p>";	 
-		echo $msg; closeMain(); return;
-	}
-
-
-    if(!$r=_search($_POST['email'],$civlid,$username,'users')) {
-
-        $NACid=$_POST['NACid']+0;
-        $NACmemberID=$_POST['NACmemberID']+0;
-        if ($NACmemberID<=0) $NACid=0;
-
-        $NACclubID=$_POST['NACclubID']+0;
-        if ($NACid==0) $NACclubID=0;
-
-
-		 $actkey=md5(uniqid(rand(), true));
-		 $session_time=time();
-		 $sql="INSERT into ".$CONF['userdb']['users_temp_table']."(
-		 user_civlid,user_civlname,
-		 NACid,NACmemberID,NACclubID,
-		 user_name,user_firstname,user_lastname,user_nickname,
-		 user_password,user_nation,user_gender,user_birthdate,user_session_time,
-		 user_regdate,user_email,user_actkey )
-		 VALUES( 
-		 '".$civlid."'
-		 , '".addslashes($_POST['civlname'])."'
-
-		 , '".addslashes($NACid)."'
-		 , '".addslashes($NACmemberID)."'
-		  , '".addslashes($NACclubID)."'
-
-		 , '".addslashes($_POST['username'])."'
-		 , '".addslashes($_POST['firstname'])."'
-		 , '".addslashes($_POST['lastname'])."'
-		 , '".addslashes($_POST['nickname'])."'
-		 , '".addslashes($_POST['password'])."'
-		 , '".addslashes($_POST['nation'])."'			 
-		 , '".addslashes($_POST['gender'])."'
-		 , '".addslashes($_POST['birthdate'])."'
-		 , '".$session_time."'
-		 , '".time()."'
-		 , '".addslashes($_POST['email'])."'
-		 , '".$actkey."'
-		 )";
-		 if( $db->sql_query($sql)) {
-			$email_body=sprintf(_Pilot_confirm_subscription,$CONF['site']['name'],$r['user_name'],
-				$_SERVER['SERVER_NAME'],
-				str_replace('//','/',$_SERVER['SERVER_NAME'].getRelMainDir().'/'.$CONF_mainfile),$actkey );
-			LeonardoMail::sendMail('[Leonardo] - Confirmation email',utf8_decode($email_body),$_POST['email'],addslashes($_POST['firstname']));
-			
-			$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
-		 }
-    } else {
-		 // var_dump($r); 
-         $msg="<p align ='center'>". _User_already_registered."</p>"; 
-    }  
-	      
-	echo $msg; closeMain();return;	
-	
-}
 
 
 
-if( !isset($_POST['registerForm'])&& !isset($_GET['rkey'])){
 
-$calLang=$lang2iso[$currentlang];
+if(!isset($_POST['registerForm'])&& !isset($_GET['rkey'])){
+
+$passwordMinLength=!empty($CONF['userdb']['edit']['password_minlength']) ? $CONF['userdb']['edit']['password_minlength'] : 4;
+$msgPwdTooShort=sprintf(_PwdTooShort, $passwordMinLength);
 ?>
-<script language="javascript"> 
+<br>
+<br>
+<script language="javascript">
 
 var passwordMinLength='<?=$passwordMinLength?>';
-var _PwdTooShort='<?=_PwdTooShort?>';
+var _PwdTooShort='<?=$msgPwdTooShort?>';
 var _PwdAndConfDontMatch='<?=_PwdAndConfDontMatch?>';
-var _MANDATORY_NAME='<?=_MANDATORY_NAME?>';
-var _MANDATORY_FIRSTNAME='<?=_MANDATORY_NAME?>';
-var _MANDATORY_LASTNAME='<?=_MANDATORY_NAME?>';
 var _MANDATORY_FAI_NATION='<?=_MANDATORY_FAI_NATION?>';
 var _MANDATORY_GENDER='<?=_MANDATORY_GENDER?>';
 var _MANDATORY_BIRTH_DATE_INVALID='<?=_MANDATORY_BIRTH_DATE_INVALID?>';
@@ -240,98 +149,29 @@ var _EmailEmpty='<?=_EmailEmpty?>';
 var _EmailInvalid='<?=_EmailInvalid?>';
 var _MANDATORY_EMAIL_CONFIRM='<?=_MANDATORY_EMAIL_CONFIRM?>';
 var _MANDATORY_CIVL_ID='<?=_MANDATORY_CIVL_ID?>';
+var _MANDATORY_FIRSTNAME='<?=_MANDATORY_FIRSTNAME?>';
+var _MANDATORY_LASTNAME='<?=_MANDATORY_LASTNAME?>';
+var _MANDATORY_USERNAME='<?=_MANDATORY_USERNAME?>';
 
 function setCIVL_ID() {
-	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&CIVL_ID_field=civlid&name_field=civlname', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
+	window.open('<?=getRelMainDir();?>GUI_EXT_civl_name_search.php?id=check_membership&CIVL_ID_field=civlid', '_blank',    'scrollbars=yes,resizable=yes,WIDTH=650,HEIGHT=150,LEFT=100,TOP=100',true);
 }
-
-    var force_nac_id=<? echo $CONF['NAC']['id_mandatory'] +0 ; ?>;
-
-	var imgDir = '<?=moduleRelPath(); ?>/js/cal/';
-	var language = '<?=$calLang?>';
-	var startAt = 1;		// 0 - sunday ; 1 - monday
-	var visibleOnLoad=0;
-	var showWeekNumber = 1;	// 0 - don't show; 1 - show
-	var hideCloseButton=0;
-	var gotoString 		= {<?=$calLang?> : '<?=_Go_To_Current_Month?>'};
-	var todayString 	= {<?=$calLang?> : '<?=_Today_is?>'};
-	var weekString 		= {<?=$calLang?> : '<?=_Wk?>'};
-	var scrollLeftMessage 	= {<?=$calLang?> : '<?=_Click_to_scroll_to_previous_month?>'};
-	var scrollRightMessage 	= {<?=$calLang?>: '<?=_Click_to_scroll_to_next_month?>'};
-	var selectMonthMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_month?>'};
-	var selectYearMessage 	= {<?=$calLang?> : '<?=_Click_to_select_a_year?>'};
-	var selectDateMessage 	= {<?=$calLang?> : '<?=_Select_date_as_date?>' };
-	var	monthName 		= {<?=$calLang?> : new Array(<? foreach ($monthList as $m) echo "'$m',";?>'') };
-	var	monthName2 		= {<?=$calLang?> : new Array(<? foreach ($monthListShort as $m) echo "'$m',";?>'')};
-	var dayName = {<?=$calLang?> : new Array(<? foreach ($weekdaysList as $m) echo "'$m',";?>'') };
-
 </script>
-<script language="javascript" src='<?=getRelMainDir()?>js/civl_search.js'></script>
-<script language='javascript' src='<?=getRelMainDir()?>js/cal/popcalendar.js'></script>
-
-
-    <?
-
-    # Changes Martin Jursa 09.03.2007:
-    # in case certain fields are set by an external tool, these fields will be set readonly
-    # otherwise, they can be edited
-    # $possible_readonly_fields contains all the fields for which this readonly mechanism is available
-    $readonly_fields=$CONF['profile']['edit']['readonlyFields'];
-    //$readonly_fields=array('LastName', 'FirstName');
-    if ($CONF_use_NAC) {
-        $readonly_fields=array();
-        $list1=$list2=$list3='';
-        $possible_readonly_fields=array('NACmemberID', 'LastName', 'FirstName', 'Birthdate', 'CIVL_ID');
-        $list4="var all_readonly_fields  = '".implode(',', $possible_readonly_fields)."';\n";
-
-        foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-
-            $NAC_input_url=$NAC['input_url'];
-            if ( preg_match_all("/#([^#]+)#/",$NAC_input_url,$matches_tmp1) ) {
-                //print_r($matches_tmp1);
-                foreach($matches_tmp1[1] as $paramName) {
-                    //echo "!!$NAC_input_url@@$paramName@@".$pilot[$paramName]."^^";
-                    $NAC_input_url=str_replace('#'.$paramName.'#',$pilot[$paramName],$NAC_input_url);
-                }
-            }
-
-            $list1.="NAC_input_url[$NACid]  = '".json::prepStr($NAC_input_url)."';\n";
-            $ext_input=empty($NAC['external_input']) ? 0 : 1;
-            $list2.="NAC_external_input[$NACid]  = $ext_input;\n";
-            $use_clubs=$NAC['use_clubs']+0;
-            $list2.="NAC_use_clubs[$NACid]  = $use_clubs;\n";
-
-            $list2.="NAC_select_clubs[$NACid]  = ".( ( $NAC['club_change_period_active'] ||
-                    ($NAC['add_to_club_period_active'] && !$pilot['NACclubID'] )||
-                    L_auth::isAdmin($userID)|| L_auth::isModerator($userID) )? 1 : 0).";\n";
-
-            $externalfields=!empty($NAC['external_fields']) ? $NAC['external_fields'] : '';
-            if ($ext_input && !empty($NAC['external_fields'])) {
-                $list3.="NAC_external_fields[$NACid] = '$externalfields';\n";
-                if ($pilot['NACid']==$NACid) {
-                    $tmp_fields=explode(',', $externalfields);
-                    foreach ($tmp_fields as $fld) {
-                        if (in_array($fld, $possible_readonly_fields)) $readonly_fields[]=$fld;
-                    }
-                }
-            }
-        }
-
-    }
-    ?>
+<script language="javascript" src="<?=getRelMainDir();?>/js/civl_search.js"></script>
 <table width='500' cellspacing='2' cellpadding='2' align='center'>
   <tr>
-    <td align='left'>
+    <th><?=sprintf(_Registration_Form,$CONF_server_short_name);?></th>
+  </tr>
+  <tr>
+    <td align='left'><br>
       <ul>
         <li>
           <?=_Requirements?>
           :</li>
         <ul>
-        <? if ($CONF['profile']['edit']['force_civl_id']) {?>
           <li>
             <?=_Mandatory_CIVLID;?>
           </li>
-        <? } ?>  
           <li>
             <?=_Mandatory_valid_EMAIL;?>
           </li>
@@ -364,199 +204,45 @@ function setCIVL_ID() {
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td align="center"><form name='registrationForm' method="post" action="">
+    <td align="center"><form name='form2' method="post" action="">
         <input name="registerForm" type="hidden" value="1">
-        <table width="600" cellspacing='2' cellpadding='4'  >
+        <table width="600" cellspacing='2' cellpadding='2'  >
           <tr>
-            <td align="right" bgcolor="#FCFCF2"><a href="#" onclick="setCIVL_ID();return false;">
+            <td colspan='2' bgcolor="#DFDFD0">&nbsp;</td>
+          </tr>
+          <tr>
+            <td bgcolor="#DFDFD0"><a href="#" onclick="setCIVL_ID();return false;">
               <?=_MENU_SEARCH_PILOTS;?>
               CIVLID:</a></td>
-            <td bgcolor="#FCFCF2"><input type='text' name='civlid' id='civlid' value='' readonly="" size='8'>
-            <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
-            <font color="#FF2222">***</font>
-            <? } ?>
-            </td>
-          </tr>
-
-          <? if ($CONF_use_NAC && $CONF['NAC']['id_mandatory']) {
-              ?>
-          <tr>
-            <td width="250" align="right">
-           <?
-
-              echo _MEMBER_OF."</td><td>";
-
-              /*foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-                  $list1.="NAC_input_url[$NACid]  = '".$NAC['input_url']."';\n";
-                  $list2.="NAC_id_input_method[$NACid]  = '".$NAC['id_input_method']."';\n";
-              }
-              */
-              ?>
-              <script type="text/javascript" language="javascript">
-                  var NAC_input_url= [];
-                  var NAC_external_input= [];
-                  var NAC_external_fields= [];
-                  var NAC_use_clubs=[];
-                  var NAC_select_clubs=[];
-                  var NACid=0;
-                  <?=$list1.$list2.$list3.$list4 ?>
-                  var NAC_club_input_url="<? echo $moduleRelPath."/GUI_EXT_set_club.php"; ?>";
-
-                  function changeNAC() {
-                      var mid=MWJ_findObj("NACmemberID");
-                      mid.value="";
-
-                      var sl=MWJ_findObj("NACid");
-                      NACid= sl.options[sl.selectedIndex].value ;    // Which menu item is selected
-                      if (NACid==0) {
-                          MWJ_changeDisplay("mID","none");
-                      } else {
-                          MWJ_changeDisplay("mID","inline");
-                          if (NAC_external_input[NACid]) {
-                              MWJ_changeDisplay("mIDselect","block");
-                          }else {
-                              MWJ_changeDisplay("mIDselect","none");
-                          }
-                      }
-
-                      if (NAC_use_clubs[NACid]) {
-                          MWJ_changeDisplay("mClubSelect","block");
-                          if (NAC_select_clubs[NACid]) {
-                              MWJ_changeDisplay("mClubLink","inline");
-                          }
-                      } else  {
-                          MWJ_changeDisplay("mClubSelect","none");
-                          MWJ_changeDisplay("mClubLink","none");
-                      }
-
-                      var flds=all_readonly_fields.split(',');
-                      for (var i=0; i<flds.length; i++) {
-                      //    document.forms[0].elements[flds[i]].readOnly=false;
-                      }
-                      if (NACid!=0 && NAC_external_fields[NACid]) {
-                          flds=NAC_external_fields[NACid].split(',');
-                          for (var i=0; i<flds.length; i++) {
-                              document.forms[0].elements[flds[i]].readOnly=true;
-                          }
-                      }
-                  }
-
-                  function setID() {
-                      if 	(NACid>0) {
-                          window.open(NAC_input_url[NACid], '_blank',	'scrollbars=no,resizable=yes,WIDTH=700,HEIGHT=400,LEFT=100,TOP=100',false);
-                      }
-                  }
-
-                  function setClub() {
-                      if 	(NACid>0) {
-                          var NACclubID_fld	=MWJ_findObj("NACclubID");
-                          var NACclubID		=NACclubID_fld.value;
-                          window.open(NAC_club_input_url+'?NAC_ID='+NACid+'&clubID='+NACclubID, '_blank',	'scrollbars=no,resizable=yes,WIDTH=500,HEIGHT=420,LEFT=100,TOP=100',false);
-                      }
-                  }
-              </script>
-              <?
-              echo "<select name='NACid' id='NACid' onchange='changeNAC(this)'>";
-              echo "<option value='0'></option>";
-              foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-                  if ($pilot['NACid']==$NACid) $sel=" selected ";
-                  else $sel="";
-                  echo "<option $sel value='$NACid'>".
-                      ( $NAC['localLanguage']!=$currentlang?$NAC['name']:$NAC['localName'])."</option>\n";
-
-              }
-
-              echo "</select>";
-              echo '<font color="#FF2222">***</font>';
-              foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-                  if ($NAC['description']) {
-                      echo "<div style='background:#d0d0d0; padding:10px; ' >".$NAC['description']."</div> ";
-                  }
-              }
-
-              echo "<div id='mID' style='display:".(($pilot['NACid']==0) ? "none" : "inline")."'> ";
-              $memberid_readonly=in_array('NACmemberID', $readonly_fields) ? 'readonly' : '';
-              echo "<span style='white-space:nowrap'>"._MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' $memberid_readonly  /></span> ";
-
-              echo '<font color="#FF2222">***</font>';
-              echo "<div id='mIDselect' style='display:".($memberid_readonly ? "block" : "none")."'> ";
-              echo "[&nbsp;<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>&nbsp;]";
-              echo "</div>";
-
-
-              echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";
-              $NACclub=NACclub::getClubName($pilot['NACid'],$pilot['NACclubID']);
-
-              if ( $CONF_NAC_list[$pilot['NACid']]['club_change_period_active'] ||
-                  ( $CONF_NAC_list[$pilot['NACid']]['add_to_club_period_active']  && !$pilot['NACclubID'] ) ||
-                  L_auth::isAdmin($userID) || L_auth::isModerator($userID)
-              ) $showChangeClubLink="inline";
-              else $showChangeClubLink="none";
-              echo "<div id=\"mClubLink\" style=\"display: $showChangeClubLink\">[ <a href='#' onclick=\"setClub();return false;\">"._Select_Club."</a> ]</div>";
-              /*
-
-                              echo "[ <a href='#' onclick=\"setClub();return false;\">"._Select_CLub."</a> ]";
-                          } else {
-                              echo "";
-                          }
-              */
-              echo "<br><input  type='hidden' name='NACclubID' value='".$pilot['NACclubID']."' /> ";
-              echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
-
-              echo "</div>";
-
-              echo "</td></tr>";
-
-          } else { ?>
-              <input type="hidden" name="NACid" value="<?=$pilot['NACid']?>" />
-              <input type="hidden" name="NACmemberID" value="<?=$pilot['NACmemberID']?>" />
-              <input type="hidden" name="NACclubID" value="<?=$pilot['NACclubID']?>" />
-          <? }
-
-          ?>
-
-
-          <tr>
-            <td width="250" align="right">CIVL
-              <?=_PILOT_NAME;?></td>
-            <td width="350"><input class="TextoVermelho" size="44" maxlength="50" type="text" name="civlname" value=""  readonly="readonly"/>
-            <? if ($CONF['profile']['edit']['force_civl_id']) { ?>
-            <font color="#FF2222">***</font>
-            <? } ?>
-            </td>
+            <td bgcolor="#DFDFD0"><input type='text' name='civlid' id='civlid' value='' size='8' readonly><font color="#FF2222">***</font></td>
           </tr>
           <tr>
-            <td width="250" align="right" bgcolor="#FCFCF2"><?=_NICK_NAME;?></td>
-            <td width="350" bgcolor="#FCFCF2"><input class="TextoVermelho" maxlength="50" type="text" name="nickname" value=""/>
-            </td>
-          </tr>
-          <tr>
-            <td width="250" align="right"><?=_USERNAME;?></td>
-            <td width="350"><input class="TextoVermelho" maxlength="50" type="text" name="username" value=""/>
+            <td width="250" bgcolor="#DFDFD0">
+              <?=_USERNAME;?></td>
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="25" maxlength="50" type="text" name="name" value=""/>
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
-          <tr>
-            <td width="250" align="right" bgcolor="#FCFCF2" class="TextoP"><?=_LOCAL_PWD;?></td>
-            <td width="350" bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" maxlength="50" type="text" name="password" value="">
-              <font color="#FF2222">***</font></td>
-          </tr>
-          <tr>
-            <td width="250" align="right"><?=_LOCAL_PWD_2;?></td>
-            <td width="350"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value="">
-              <font color="#FF2222">***</font></td>
-          </tr>
-		  <tr>
-            <td width="250" align="right" bgcolor="#FCFCF2"><?=_First_Name;?>
+            <td width="250" bgcolor="#DFDFD0"><?=_First_Name;?>
               ,
               <?=_Last_Name;?></td>
-            <td width="350" bgcolor="#FCFCF2"><input class="TextoVermelho" size="20" maxlength="50" type="text" name="firstname" value="">
-              <input class="TextoVermelho" size="20" maxlength="50" type="text" name="lastname" value="">
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" size="10" maxlength="50" type="text" name="firstname" value="">
+              <input class="TextoVermelho" size="30" maxlength="50" type="text" name="lastname" value="">
               <font color="#FF2222">***</font></td>
           </tr>
-		  <tr>
-            <td width="250" align="right"><?=_Sex;?></td>
-            <td width="350"><select name="gender" class="TextoVermelho">
+          <tr>
+          <tr>
+            <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_LOCAL_PWD;?></td>
+            <td width="350" bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" maxlength="50" type="password" name="password" value="">
+              <font color="#FF2222">***</font></td>
+          </tr>
+          <tr>
+            <td width="250" bgcolor="#DFDFD0"><?=_LOCAL_PWD_2;?></td>
+            <td width="350" bgcolor="#DFDFD0"><input class="TextoVermelho" maxlength="50" type="password" name="password2" value="">
+              <font color="#FF2222">***</font></td>
+          </tr>
+          <td width="250" bgcolor="#DFDFD0"><?=_Sex;?></td>
+            <td width="350" bgcolor="#DFDFD0"><select name="gender" class="TextoVermelho">
                 <option value="M">
                 <?=_Male;?>
                 </option>
@@ -566,89 +252,307 @@ function setCIVL_ID() {
               </select>
               <font color="#FF2222">***</font></td>
           </tr>
+          <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_Birthdate;?></td>
+            <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="birthday_year" class="TextoVermelho">
+                <option value="" selected></option>
+                <option value="1930">1930</option>
+                <option value="1931">1931</option>
+                <option value="1932">1932</option>
+                <option value="1933">1933</option>
+                <option value="1934">1934</option>
+                <option value="1935">1935</option>
+                <option value="1936">1936</option>
+                <option value="1937">1937</option>
+                <option value="1938">1938</option>
+                <option value="1939">1939</option>
+                <option value="1940">1940</option>
+                <option value="1941">1941</option>
+                <option value="1942">1942</option>
+                <option value="1943">1943</option>
+                <option value="1944">1944</option>
+                <option value="1945">1945</option>
+                <option value="1946">1946</option>
+                <option value="1947">1947</option>
+                <option value="1948">1948</option>
+                <option value="1949">1949</option>
+                <option value="1950">1950</option>
+                <option value="1951">1951</option>
+                <option value="1952">1952</option>
+                <option value="1953">1953</option>
+                <option value="1954">1954</option>
+                <option value="1955">1955</option>
+                <option value="1956">1956</option>
+                <option value="1957">1957</option>
+                <option value="1958">1958</option>
+                <option value="1959">1959</option>
+                <option value="1960">1960</option>
+                <option value="1961">1961</option>
+                <option value="1962">1962</option>
+                <option value="1963">1963</option>
+                <option value="1964">1964</option>
+                <option value="1965">1965</option>
+                <option value="1966">1966</option>
+                <option value="1967">1967</option>
+                <option value="1968">1968</option>
+                <option value="1969">1969</option>
+                <option value="1970">1970</option>
+                <option value="1971">1971</option>
+                <option value="1972">1972</option>
+                <option value="1973">1973</option>
+                <option value="1974">1974</option>
+                <option value="1975">1975</option>
+                <option value="1976">1976</option>
+                <option value="1977">1977</option>
+                <option value="1978">1978</option>
+                <option value="1979">1979</option>
+                <option value="1980">1980</option>
+                <option value="1981">1981</option>
+                <option value="1982">1982</option>
+                <option value="1983">1983</option>
+                <option value="1984">1984</option>
+                <option value="1985">1985</option>
+                <option value="1986">1986</option>
+                <option value="1987">1987</option>
+                <option value="1988">1988</option>
+                <option value="1989">1989</option>
+                <option value="1990">1990</option>
+                <option value="1991">1991</option>
+                <option value="1992">1992</option>
+                <option value="1993">1993</option>
+                <option value="1994">1994</option>
+                <option value="1995">1995</option>
+                <option value="1996">1996</option>
+                <option value="1997">1997</option>
+                <option value="1998">1998</option>
+                <option value="1999">1999</option>
+              </select>
+              <select name="birthday_month" class="TextoVermelho">
+                <option value="" selected></option>
+                <option value="01">
+                <?=$monthListShort[0]?>
+                </option>
+                <option value="02">
+                <?=$monthListShort[1]?>
+                </option>
+                <option value="03">
+                <?=$monthListShort[2]?>
+                </option>
+                <option value="04">
+                <?=$monthListShort[3]?>
+                </option>
+                <option value="05">
+                <?=$monthListShort[4]?>
+                </option>
+                <option value="06">
+                <?=$monthListShort[5]?>
+                </option>
+                <option value="07">
+                <?=$monthListShort[6]?>
+                </option>
+                <option value="08">
+                <?=$monthListShort[7]?>
+                </option>
+                <option value="09">
+                <?=$monthListShort[8]?>
+                </option>
+                <option value="10">
+                <?=$monthListShort[9]?>
+                </option>
+                <option value="11">
+                <?=$monthListShort[10]?>
+                </option>
+                <option value="12">
+                <?=$monthListShort[11]?>
+                </option>
+              </select>
+              <select name="birthday_day" class="TextoVermelho">
+                <option value="" selected></option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+              </select>
+              <font color="#FF2222">***</font> </td>
+          </tr>
           <tr>
-            <td align="right" bgcolor="#FCFCF2"><?=_Birthdate?></td>
-            <td bgcolor="#FCFCF2"><input class="TextoVermelho" size="12" maxlength="12" type="text" name="birthdate" id="birthdate" value="" />
-			<a href="javascript:showCalendar(document.registrationForm.cal_button, document.registrationForm.birthdate, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_button' width="16" height="16" border="0" id="cal_button" /></a> 
+            <td bgcolor="#DFDFD0"><?=_pilot_email;?></td>
+            <td bgcolor="#DFDFD0"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" />
               <font color="#FF2222">***</font></td>
           </tr>
-		  <tr>
-            <td align="right"><?=_pilot_email;?></td>
-            <td><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email" value="" />
-              <font color="#FF2222">***</font></td>
-          </tr>
           <tr>
-            <td align="right" bgcolor="#FCFCF2"><?=_CONFIRM;?>
+            <td bgcolor="#DFDFD0"><?=_CONFIRM;?>
               <?=_pilot_email;?></td>
-            <td bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" />
+            <td bgcolor="#DFDFD0" class="TextoP"><input class="TextoVermelho" size="40" maxlength="50" type="text" name="email2" value="" />
               <font color="#FF2222">***</font></td>
           </tr>
-		  <tr>
-          <td width="250" align="right" class="TextoP"><?=_SELECT_COUNTRY;?></td>
-            <td width="350" class="TextoP"><select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
-              <option value=""></option>
+          <td width="250" bgcolor="#DFDFD0" class="TextoP"><?=_SELECT_COUNTRY;?></td>
+            <td width="350" bgcolor="#DFDFD0" class="TextoP"><select name="nation" id="nation" class="TextoVermelho" readonly="readonly"/>
+
               <?php
-	 			asort($countries);
-				foreach ($countries as $key => $value) {						
+					foreach ($countries as $key => $value) {
 						echo '<option value="'.$key.'">'.$value.'</option>';
-				}
-				?>
+					}
+
+/*
+ print "<option value='".F322('',1). $sel ."'>".F322('',3)."</option>\n";
+while(list($k,$e)=each($countries)){
+    print "<option value='".F322($k,1). $sel ."'>".$e."</option>\n";
+}
+*/
+?>
               </select>
             </td>
           </tr>
           <tr>
-            <td width="250">&nbsp;</td>
-            <td width="350">&nbsp;</td>
+            <td width="250" bgcolor="#DFDFD0">&nbsp;</td>
+            <td width="350" bgcolor="#DFDFD0">&nbsp;</td>
           </tr>
           <td width="600" colspan="2"><div align="center">
-                <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form(<?=$CONF['profile']['edit']['force_civl_id']+0?>);"/>
+                <input class="submit_button" type="button" name="Submit" value=" Submit " onclick="Submit_Form();"/>
               </div></td>
           </tr>
           <tr>
-            <td width="100%"  colspan="2" align="right"><font color="#FF2222">***</font>
+            <td width="100%" bgcolor="#DFDFD0"  colspan="2"><font color="#FF2222">***</font>
               <?=_REQUIRED_FIELD ;?></td>
           </tr>
         </table>
-      </form>
-	  </td>
+      </form></td>
   </tr>
 </table>
-<?  
- 
+<?
+}
+if($_POST['registerForm']==1){
+ // various queries in order of searching civlid, email through all database to avoid doubles;
+ if(!$r=_search($_POST['name'], $_POST['email'], $_POST['civlid'], 'temp')){
+
+     if(!$r=_search($_POST['name'], $_POST['email'], $_POST['civlid'], 'pilots')){
+
+         if(!$r=_search($_POST['name'], $_POST['email'], $_POST['civlid'], 'users')) {
+
+             $actkey=md5(uniqid(rand(), true));
+             $session_time=time();
+             $sql="INSERT into ".$CONF['userdb']['users_temp_table']."(
+             user_civlid,
+             user_name,
+             user_firstname,
+             user_lastname,
+             user_password,
+             user_nation,
+             user_gender,
+             user_birthdate,
+             user_session_time,
+             user_regdate,
+             user_email,
+             user_actkey)
+             VALUES(
+             '".$_POST['civlid']."'
+             , '".mysql_escape_string($_POST['name'])."'
+             , '".mysql_escape_string($_POST['firstname'])."'
+             , '".mysql_escape_string($_POST['lastname'])."'
+             , '".mysql_escape_string($_POST['password'])."'
+             , '".mysql_escape_string($_POST['nation'])."'
+             , '".mysql_escape_string($_POST['gender'])."'
+             , '".$_POST['birthday_year'].$_POST['birthday_month'].$_POST['birthday_day']."'
+             , '".$session_time."'
+             , '".time()."'
+             , '".mysql_escape_string($_POST['email'])."'
+             , '".$actkey."'
+             )";
+             if( $db->sql_query($sql))
+             {
+             	# martin jursa 13.05.2009: confirm url created here and not in lang const
+				$confirmUrl='http://'.$_SERVER['HTTP_HOST'].$PHP_SELF.'?name=leonardo&op=register&rkey='.$actkey;
+				$email_body=sprintf(_Pilot_confirm_subscription, $r['name'], $_SERVER['HTTP_HOST'], $confirmUrl, $CONF_server_short_name );
+				LeonardoMail::sendMail('[Leonardo] - '._Pilot_confirm_subscription_subject, utf8_decode($email_body), $_POST['email'], addslashes($_POST['name']), $CONF_admin_email); # martin jursa 13.05.2009: $CONF_admin_email added
+
+				$msg="<p align='center'>".sprintf(_Server_send_conf_email,$_POST['email'])."</p>";
+             }
+         } else {
+		     // var_dump($r);
+             $msg="<p align ='center'>". _User_already_registered."</p>";
+         }
+     } else{
+		 //  var_dump($r);
+		 $msg= "<p align ='center'>".sprintf(_Pilot_already_registered, $r['CIVL_ID'], $r['LastName']) ."</p>";
+     }
+
+
+} else {
+
+    if ($r['user_civlid']==$_POST['civlid'] && $r['user_email']==$_POST['email'] ){
+		$actkey=$r['user_actkey'] ;
+		$msg= "<p align ='center'>".sprintf(_Pilot_civlid_email_pre_registration,$r['user_name'])."</p>";
+		print "<p align ='center'>"._Pilot_have_pre_registration."</p>";
+     	# martin jursa 13.05.2009: confirm url created here and not in lang const
+		$confirmUrl='http://'.$_SERVER['HTTP_HOST'].$PHP_SELF.'?name=leonardo&op=register&rkey='.$actkey;
+		$email_body=sprintf(_Pilot_confirm_subscription, $r['user_name'], $_SERVER['HTTP_HOST'], $confirmUrl, $CONF_server_short_name );
+		LeonardoMail::sendMail('[Leonardo] - '._Pilot_confirm_subscription_subject,utf8_decode($email_body),$r['user_email'],addslashes($_POST['name']), $CONF_admin_email); # martin jursa 13.05.2009: $CONF_admin_email added
+		unset($actkey);
+    } else if($r['user_email']==$_POST['email'] || $r['user_civlid']!=$_POST['civlid']){
+		$msg= "<p align ='center'>".sprintf(_Pilot_email_used_in_pre_reg_dif_civlid,$r['user_name'])." </p>";
+    } else if($r['user_email']!=$_POST['email'] || $r['user_civlid']==$_POST['civlid']){
+	    $msg= "<p align ='center'>".sprintf(_Pilot_civlid_used_in_pre_reg_dif_email,$r['user_name'])."</p>";
+    }
+
+}
+ print $msg;
 }
 
+/**
+ * Check whether user exists in various tables
+ *
+ * @param string $username
+ * @param string $email
+ * @param string $civlid
+ * @param string $tb
+ * @return mixed array or false
+ */
+function _search($username, $email, $civlid, $tb){
+	global $db, $CONF, $pilotsTable;
+	$username=mysql_escape_string($username);
+	$email=mysql_escape_string($email);
+	$civlid=mysql_escape_string($civlid);
+	$query='';
+	switch ($tb) {
+		case 'temp':
+			$query="select * from ".$CONF['userdb']['users_temp_table']." where user_name ='$username' or user_civlid='$civlid' or user_email='$email'";
+			break;
 
-function _search($email,$civlid,$username,$tb){
-	global $db,$CONF,$pilotsTable;
+		case 'pilots':
+			$query="select * from $pilotsTable where CIVL_ID ='$civlid'";
+			break;
 
-	// return false;
-	
-	if($tb=='temp') {
-		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
-			$query="select * from ".$CONF['userdb']['users_temp_table']." where 
-					user_name ='$civlid' or user_civlid='$civlid' or user_email='$email' OR user_name='$username' "; 	
-		} else {
-			$query="select * from ".$CONF['userdb']['users_temp_table']." where user_email='$email' OR user_name='$username' "; 			
-		}
+		case 'users':
+			$query="select * from ".$CONF['userdb']['users_table']." where username ='$username' or user_email='$email'";
+			break;
 	}
-			
-	if($tb=='pilots') {
-		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
-			$query="select * from $pilotsTable where CIVL_ID ='$civlid'"; 
-		} else {
-			$query="select * from $pilotsTable where user_name='$username' "; 
-		}
-	}
-		
-	if($tb=='users') {
-		if ($CONF['profile']['edit']['force_civl_id'] || $civlid) {
-			$query="select * from ".$CONF['userdb']['users_table']." where 
-				username ='$civlid' or user_civlid='$civlid' or user_email='$email' OR user_name='$username'"; 
-		} else {
-			$query="select * from ".$CONF['userdb']['users_table']." where user_email='$email' OR user_name='$username'"; 
-		}
-	}
-		
 	if($query!=''){
 		$res=$db->sql_query($query);
 		$nr=$db->sql_numrows($res);

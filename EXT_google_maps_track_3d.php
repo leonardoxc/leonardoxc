@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: EXT_google_maps_track_3d.php,v 1.2 2012/09/07 21:54:04 manolis Exp $                                                                 
+// $Id: EXT_google_maps_track.php,v 1.55 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -159,18 +159,17 @@
 		</div>
 		<br>
 	
- 		<fieldset class="legendBox"><legend><?=_Info?></legend><BR />
+		<fieldset class="legendBox"><legend><?=_Info?></legend><BR />
 			<table align="center" cellpadding="2" cellspacing="0">
 				<TR><td><div align="left"><?=_Time_Short?>:</div></td><TD width=75><span id="timeText1" class='infoString'>-</span></TD></TR>
 				<TR><td><div align="left"><?=_Speed?>:</div></td><TD><span id='speed' class='infoString'>-</span></TD></TR>
-				<TR><td><div align="left"><?=_Altitude_Short?>:</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
-                <? if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
-                <TR><td><div align="left"><?=_Altitude_Short?> (Baro):</div></td><TD><span id='altV' class='infoString'>-</span></TD></TR>
-                <? } ?>
+				<TR><td><div align="left"><?=_Altitude_Short?> (GPS):</div></td><TD><span id='alt' class='infoString'>-</span></TD></TR>
+                <?// if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) { ?>
+                <TR><td><div align="left"><?=_Altitude_Short?> (Baro):</div></td><TD><span  id='altV' class='infoString2'>-</span></TD></TR>
+                <?// } //deactivated 28.11.2011 P. Wild ?>
 				<TR><td><div align="left"><?=_Vario_Short?>:</div></td><TD><span id='vario' class='infoString'>-</span></TD></TR>
 		</table>
 		</fieldset>
-
 
 		<fieldset class="legendBox"><legend><?=_Control?></legend><BR />
 	
@@ -204,7 +203,7 @@
 
   </tr>
 </table>
-
+<div id="pdmarkerwork"></div>
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 

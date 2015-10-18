@@ -8,10 +8,20 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_flight_add_from_zip.php,v 1.29 2012/01/16 07:21:22 manolis Exp $                                                                 
+// $Id: GUI_flight_add_from_zip.php,v 1.28 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 	# modification martin jursa 02.06.2009: keep user==-1 from uploading flights and place a message
+//if ( in_array($userID,array(3,672,2,4,8,9,10,11,13,64,146,527,1574,2022,672,1662) ) ) {
+	require_once "GUI_flight_add_from_zip_new.php";
+
+	return;
+//}
+if (0) {
+	echo"Wegen Server Wartung können Flüge derzeit nicht zum DHVXC Server hinzugefügt werden.<br>
+			Flights can currently not be uploaded to the DHVXC Server due to a hardware upgrade. ";
+	return;
+}
 	if (!$userID || $userID==-1) {
 		echo _You_are_not_login;
 		return;
@@ -87,6 +97,11 @@ function submitForm() {
 			alert('<?=_FLIGHTADD_GLIDER_MISSING?>');
 			return false;
 		}
+		if ( $("#startType").val()==0 ) {
+			$("#startType").focus();
+			alert('<?=_FLIGHTADD_STARTTYPE_MISSING?>');
+			return false;
+		}
 	<? } ?>
 
 	// for testing
@@ -149,7 +164,7 @@ function setClub(NACid) {
 		<? } ?></td>
     </tr>
     <tr>
-      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_Type?></div></td>
+      <td  valign="top"><div align="right" class="styleItalic"><?=_Start_type?></div></td>
       <td  valign="top"><select name="startType" id="startType">
         <?
 			foreach ( $CONF['startTypes'] as $s_id=>$s_type) {
@@ -182,6 +197,7 @@ function setClub(NACid) {
 				<input name="NACclub" id="NACclub" type="text" size="40" value="<?=$NACclub?>">
                 <input name="NACclubID" id="NACclubID" type="hidden" value="<?=$defaultPilotNacClubID?>">
 				<input name="NACid" id="NACid" type="hidden" value="<?=$flightNacID?>">
+				<br>
 				[ <a href='#' onclick="setClub(<?=$flightNacID?>);return false;"><?=_Select_Club?></a> ]
 				</div>
 			</td>

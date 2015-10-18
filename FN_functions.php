@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: FN_functions.php,v 1.84 2012/10/17 09:45:24 manolis Exp $                                                                 
+// $Id: FN_functions.php,v 1.81 2011/05/18 13:31:48 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -74,9 +74,6 @@ function toLatin1($str,$enc=""){
 
 }
 
-// GUS added condition
-if( !function_exists('fetchURL') )
-{
 function fetchURL( $url, $timeout=5) {
 	$url_parsed = parse_url(str_replace(' ','%20',$url) );
    $host = $url_parsed["host"];
@@ -122,8 +119,6 @@ function fetchURL( $url, $timeout=5) {
    fclose($fp);
   
    return $in;
-	}
-
 }
 
 /**
@@ -647,18 +642,51 @@ function findBrowserOS(){
 				"XML_url"=>"link",						
 				"XML_lat"=>"lat",
 				"XML_lon"=>"lng",
+			),
+			// DHV Flying sites
+			3=>array(
+				/* calling  method */
+				//"callUrl"=>"http://www.dhv.de/db3/service/site/search/type/takeoff?",
+				"callUrl"=>"http://www.dhv.de/db3/service/site/search/",
+// new 
+// http://www.dhv.de/db3/service/site/search/lat/55/lng/12/radius/70
+				"latArg"=>"lat",
+				"lonArg"=>"lng",
+				"limitKmArg"=>"radius",
+				"limitNumArg"=>"limit",
+					
+				/* parsing of results */
+				"XML_name"=>"name",
+				"XML_distance"=>"distance",
+				"XML_area"=>"region",
+				"XML_countryCode"=>"country",
+				"XML_url"=>"url",						
+				"XML_lat"=>"lat",
+				"XML_lon"=>"lng",
 			)
 			
 
 		);	
 				
 		
+if ($serverID==3) {
+//$lat=str_replace(".",",",$lat);
+//$lon=str_replace(".",",",$lon);
+//$lon=$lon;
+  $getXMLurl=$takeoffServers[$serverID]["callUrl"].
+                                        $takeoffServers[$serverID]["latArg"]."/$lat/".
+                                        $takeoffServers[$serverID]["lonArg"]."/$lon/".
+                                        $takeoffServers[$serverID]["limitKmArg"]."/$limitKm/".
+                                        $takeoffServers[$serverID]["limitNumArg"]."/$limitNum";
+
+//echo $getXMLurl;
+} else {
 		$getXMLurl=$takeoffServers[$serverID]["callUrl"].
 					$takeoffServers[$serverID]["latArg"]."=$lat&".
 					$takeoffServers[$serverID]["lonArg"]."=$lon&".
 					$takeoffServers[$serverID]["limitKmArg"]."=$limitKm&".
 					$takeoffServers[$serverID]["limitNumArg"]."=$limitNum";
-		
+	}	
 		//echo 	$getXMLurl;
 		
 		$xmlSites=fetchURL($getXMLurl);		
@@ -688,6 +716,12 @@ function findBrowserOS(){
 					else
 						$arrayToUse=$xmlArray['root']['flightareas'];
 				} else $arrayToUse=0;
+			} else if ($serverID==3) { //dhv.de
+				if (!empty($xmlArray['sites']['site'][0]) && is_array($xmlArray['sites']['site'][0]) ) {
+					$arrayToUse = $xmlArray['sites']['site'];
+				} else {
+					$arrayToUse = 0;
+				}
 			} else {
 				$arrayToUse=0;
 			}
@@ -1007,7 +1041,7 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 	// echo "#".$_SESSION['fltr'];
 	$filterArg='';
 	if ($_SESSION['fltr'] && !in_array("fltr",$argArray,true )) {
-		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots','pilot_profile_stats','explore_ge'))  ) {
+		if ( in_array($argArray['op'],array('comp','competition','list_takeoffs','list_flights','list_pilots','explore_ge'))  ) {
 			$filterArg.="&fltr=".$_SESSION['fltr'];				
 		}
 	}
@@ -1057,7 +1091,7 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 		
 	} else 	if ($linkType==3) { // SEO URLS 
 		global $op,$rank,$subrank;
-		global $year,$month,$day,$season,$serverID,$serverIDview,$pilotID,$pilotIDview;
+		global $year,$month,$day,$season,$serverID,$pilotID,$pilotIDview;
 		global $takeoffID,$country,$cat,$class,$xctype,$clubID;
 		global $nacid,$nacclubid,$brandID;
 
@@ -1112,13 +1146,9 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 			$args.='pilot/'.$argArray['pilotIDview'];
 			return $CONF['links']['baseURL'].'/'.$args;
 						
-		} else if ($opTmp=='pilot_profile_stats') {
-			
-			// $args.='pilot/'.($serverIDview+0).'_'.($pilotIDview).'/stats/';
-			$args.='stats/';
-			// $args.='pilot/'.$argArray['pilotIDview'].'/stats/';
-			
-			// return $CONF['links']['baseURL'].'/'.$args;
+		} else if ($opTmp=='pilot_profile_stats') {	
+			$args.='pilot/'.$argArray['pilotIDview'].'/stats/';
+			return $CONF['links']['baseURL'].'/'.$args;
 			
 		} else if ($opTmp=='show_waypoint') {
 			$args.='takeoff/'.$argArray['waypointIDview'];
@@ -1136,7 +1166,7 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 		}
 		
 		
-		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp','pilot_profile_stats');
+		$listings=array('list_flights','list_takeoffs','list_pilots','competition','comp');
 		$args2process=array('year','month','day','season','country','rank','subrank','cat','class','xctype','brandID',
 							'clubID','nacclubid','nacid','pilotID','takeoffID');
 		$args2Array=array();
@@ -1151,9 +1181,7 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 					$args2Array[$argName]=$argArray[$argName];				
 				}else {				
 					if ( $argName=='pilotID') {
-						//if ($opTmp!='pilot_profile_stats' ) {
-							$args2Array[$argName]=($serverID+0).'_'.($pilotID);
-						//}					
+						$args2Array[$argName]=($serverID+0).'_'.($pilotID);					
 					}else {
 						$args2Array[$argName]=${$argName};
 					}	
@@ -1216,7 +1244,7 @@ function getLeonardoLink($argArray,$forcedLinkType=0) {
 			
 			if ($opTmp!='comp' &&  $opTmp!='competition') {
 				
-				if ($opTmp!='list_pilots' )
+				if ($opTmp!='list_pilots')
 					$args.=',pilot:'.($args2Array['pilotID']?$args2Array['pilotID']:'all');			
 				if ( $opTmp!='list_takeoffs' )	
 					$args.=',takeoff:'.($args2Array['takeoffID']?$args2Array['takeoffID']:'all');

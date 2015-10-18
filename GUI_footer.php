@@ -17,9 +17,20 @@ require_once dirname(__FILE__).'/CL_template.php';
 $Ltemplate=new LTemplate(dirname(__FILE__).'/templates/'.$PREFS->themeName);
 
 $Ltemplate->set_filenames(array(
-	'body' => 'footer.html')
+		'overall_footer' => 'tpl/overall_footer.html')
 );
 
-$Ltemplate->pparse('body');
+global $banner_rechts;
+$Ltemplate->assign_vars(array(
+	//Silke 25.05.2007
+	'BANNER_RECHTS_1' => $banner_rechts[0],
+	'BANNER_RECHTS_2' => $banner_rechts[1],
+	'BANNER_RECHTS_3' => $banner_rechts[2],
+	'BANNER_RECHTS_4' => $banner_rechts[3],
+	'BANNER_RECHTS_5' => $banner_rechts[4],
+	)
+);
+
+$Ltemplate->pparse('overall_footer');
 
 ?>

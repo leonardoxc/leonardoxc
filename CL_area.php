@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: CL_area.php,v 1.7 2010/04/21 07:55:49 manolis Exp $                                                                 
+// $Id: CL_area.php,v 1.6 2010/03/14 20:56:09 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -96,20 +96,19 @@ class area{
 	function deleteArea() {
 		global $db,$areasTable,$areasTakeoffsTable ;
 
-		$res= $db->sql_query("DELETE FROM $areasTable WHERE ID=".$this->ID );
+		$res= $db->sql_query("DELETE * FROM $areasTable WHERE ID=".$this->ID );
   		if($res <= 0){   
 			 echo "Error deleting area from DB<BR>";
-		     return 0;
+		     return;
 	    }
 
-		$res= $db->sql_query("DELETE FROM $areasTakeoffsTable WHERE areaID=".$this->ID );
+		$res= $db->sql_query("DELETE * FROM $areasTakeoffsTable WHERE areaID".$this->ID );
   		if($res <= 0){   
 			 echo "Error removing takeoffs from area <BR>";
-		     return 0;
+		     return;
 	    }
 
 		$this->gotValues=0;
-		return 1;
     }
 	
 	function getFromDB() {

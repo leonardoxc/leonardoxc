@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_stat_flights.php,v 1.1 2012/01/16 07:31:04 manolis Exp $                                                                 
+// $Id: GUI_list_flights.php,v 1.124 2010/11/26 08:33:32 manolis Exp $                                                                 
 //
 //************************************************************************
 

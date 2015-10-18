@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: config.php,v 1.164 2012/11/05 07:37:13 manolis Exp $                                                                 
+// $Id: config.php,v 1.161 2011/01/16 21:38:37 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -19,8 +19,8 @@ setlocale(LC_NUMERIC, 'en_US') ;
 // This file contains default values and is overwritten on new updates -installs
 // Dont edit this file, edit site/config_custom.php instead
 
-  $CONF_version="4.0.0";
-  $CONF_releaseDate="2012/11/05";
+  $CONF_version="3.6.1";
+  $CONF_releaseDate="2011/01/16";
 
 // opMode 
 // 1 = PHPnuke module
@@ -267,6 +267,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  $takeoffRadious= 500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
+ $CONF_gliderHistory=0;
  $CONF_compItemsPerPage=100;
  $CONF_defaultThemeName="basic";
  $CONF_metricSystem=1; //  1=km,m     2=miles,feet
@@ -284,12 +285,12 @@ setlocale(LC_NUMERIC, 'en_US') ;
 
  // Available Types and subtypes of Gliders
  $CONF_glider_types=array(1=>"Paraglider",2=>"Flex wing FAI1",4=>"Rigid wing FAI5",8=>"Glider",
-				16=>"Paramotor",32=>"Trike", 64=>"Powered flight",256=>"HG Mosquito" );
+				16=>"Paramotor",32=>"Trike", 64=>"Powered flight" );
 // $CONF_glider_types=array(1=>"Paraglider");
 
 
- $CONF['startTypes']=array(1=>"Foot",2=>"Winch",4=>"Microlight tow",8=>"E-motor" );
- $CONF['defaultStartType']=1;
+ $CONF['startTypes']=array(0=>"",1=>"Fuß",2=>"Winde",4=>"UL Schlepp",8=>"E-Lift" );
+ $CONF['defaultStartType']=0;
 
 
  $CONF_glider_certification_categories =array(
@@ -437,20 +438,12 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // 1- > western -> firstName - LastName
  // 2- > eastern -> LastName - firstName 
  $CONF_defaultNameOrder=1; 
- 
+ $CONF_showchartsnow=1; //P.Wild 29.11.2011
  // USE airspace checking
  $CONF_airspaceChecks=0; 
- // airspace infrigments will be show to admins and the owner of the track
- $CONF['airspace']['view']=='own';
  // display airspace in google maps
  $CONF['airspace']['enable']=1;
  
- $CONF['aispace']['list']['colors']=array(
-	'CLASSC'=>'FF0008',
-	'CLASSD'=>'FF0008',
- 	'ALLOTHER'=>'FFFF00',
- );
-					
  // Will use the date('0') together with the timezone name for TZ detection
  // This is buggy in php 4.4.1 and before .
  $CONF_use_date_for_TZ_detection=1;
@@ -786,10 +779,12 @@ if (! $PREFS->getFromCookie() || !$PREFS->themeName  || !$PREFS->itemsPerPage ) 
 	$PREFS->viewCat=$CONF_default_cat_view;
 	$PREFS->viewCountry=0;
 	$PREFS->itemsPerPage=$CONF_itemsPerPage;
+	$PREFS->gliderHistory=$CONF_gliderHistory;
 	$PREFS->metricSystem=$CONF_metricSystem;
 
 	$PREFS->nameOrder=$CONF_defaultNameOrder;
 	$PREFS->googleMaps=$CONF_googleMapsShow;
+	$PREFS->showcharts=$CONF_showchartsnow;
 	$PREFS->useEditor=$CONF['default_user_prefs']['useEditor'];
 	
 	
@@ -802,8 +797,10 @@ if ($PREFS->showNews==-1) {
 if (isset($_REQUEST['updatePrefs1'])) {// submit form 	   		
 	$PREFS->themeName= $_POST['PREFS_themeName'];
 	$PREFS->itemsPerPage=$_POST['PREFS_itemsPerPage']+0;
+	$PREFS->gliderHistory=$_POST['PREFS_gliderHistory']+0;
 	$PREFS->metricSystem=$_POST['PREFS_metricSystem']+0;
 	$PREFS->googleMaps=$_POST['PREFS_googleMaps']+0;
+	$PREFS->showcharts=$_POST['PREFS_showcharts']+0;
 	$PREFS->nameOrder=$_POST['PREFS_nameOrder']+0;
 	$PREFS->useEditor=$_POST['PREFS_useEditor']+0;
 	
@@ -951,9 +948,5 @@ $CONF['takeoffs']['private']=array() ;
 if ($db) {
 	$db->sql_query("set sql_mode = ''");
 }
-
-// replace the php array with DB entries
-require_once dirname(__FILE__)."/CL_brands.php";
-brands::getBrandsListFromDB();
 
 ?>

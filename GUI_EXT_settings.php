@@ -30,10 +30,13 @@
 		$PREFS->itemsPerPage=makeSane($_REQUEST['PREFS_itemsPerPage'],1);
 		$PREFS->metricSystem=makeSane($_REQUEST['PREFS_metricSystem']);
 		$PREFS->googleMaps=makeSane($_REQUEST['PREFS_googleMaps'],1);
+		
+		$PREFS->showcharts=makeSane($_REQUEST['PREFS_showcharts'],1); //addition 08.11.2010 P.Wild
+		
 		$PREFS->nameOrder=makeSane($_REQUEST['PREFS_nameOrder'],1);
 		$PREFS->useEditor=makeSane($_REQUEST['PREFS_useEditor'],1);
 		$PREFS->showNews=makeSane($_REQUEST['PREFS_showNews'],1);
-		
+		$PREFS->gliderHistory=makeSane($_REQUEST['PREFS_gliderHistory'],1);
 			
 		$PREFS->language=makeSane($_REQUEST['PREFS_language']);
 		$_SESSION["lng"]= $PREFS->language;
@@ -90,10 +93,11 @@
 
 		} 
 		?> 
-      </select></td>
-      <td width="1">&nbsp;</td>
-      <td width="284" bgcolor="#EAEDEE">&nbsp;</td>
-      <td width="236">&nbsp;</td>
+      </select></td>  
+      <td></td>  
+      <td bgcolor="#EAEDEE"><div align="right"><? echo _gliderHistory ?></div></td>
+      <td> <input name="PREFS_gliderHistory" type="text" value="<? echo $PREFS->gliderHistory ?>" size="5" maxlength="120"></td>
+      
     </tr>
     <tr> 
       <td bgcolor="#E0E2F0"><div align="right"><? echo _VIEW_CATEGORY ?></div></td>
@@ -169,6 +173,19 @@
         <select name="PREFS_googleMaps">
           <option value="1" <? echo ($PREFS->googleMaps==1)?"selected":"" ?>><? echo _YES ?></option>
           <option value="0" <? echo ($PREFS->googleMaps==0)?"selected":"" ?>><? echo _NO ?></option>
+      </select></td>
+      <td>&nbsp;</td>
+      <td bgcolor="#E0E2F0">&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+	<? } ?>
+	<? if ($chartsActive) { ?>
+    <tr> 
+      <td bgcolor="#E0E2F0"><div align="right"><? echo "Charts"?></div></td>
+      <td>
+        <select name="PREFS_showcharts">
+          <option value="1" <? echo ($PREFS->showcharts==1)?"selected":"" ?>><? echo _YES ?></option>
+          <option value="0" <? echo ($PREFS->showcharts==0)?"selected":"" ?>><? echo _NO ?></option>
       </select></td>
       <td>&nbsp;</td>
       <td bgcolor="#E0E2F0">&nbsp;</td>

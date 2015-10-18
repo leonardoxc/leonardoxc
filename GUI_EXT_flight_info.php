@@ -298,7 +298,26 @@ if ($flight->commentsNum && 0) {
 		$linkToInfoStr2.="</ul>";
   }
   
-  echo $linkToInfoHdr1.$linkToInfoStr1.$linkToInfoHdr2.$linkToInfoStr2;
+//-------------------------------------------------------------------
+// get from dhv.de
+//-------------------------------------------------------------------
+  	$takoffsList=getExtrernalServerTakeoffs(3,$firstPoint->lat,-$firstPoint->lon,50,5);
+	if (count($takoffsList) >0 ) {
+		$linkToInfoHdr3="<a href='http://www.dhv.de/db2/geosearch.php' target=_blank>";
+		$linkToInfoHdr3.="<img src='".$moduleRelPath."/img/DHV_GelaendeDB.jpg' border=0> "._FLYING_AREA_INFO."</a>";
+			
+		$linkToInfoStr3="<ul>";
+		foreach ($takoffsList as $takeoffItem)  {
+				if ($takeoffItem['area']!='not specified')	$areaStr=" - ".$takeoffItem['area'];
+				else $areaStr="";
+				$linkToInfoStr3.="<li><a href='".$takeoffItem['url']."' target=_blank>".
+									$takeoffItem['name']."$areaStr (".$takeoffItem['countryCode'].
+									") [~".formatDistance($takeoffItem['distance'],1)."]</a>";
+		}
+		$linkToInfoStr3.="</ul>";
+  }
+  
+  echo $linkToInfoHdr3.$linkToInfoStr3.$linkToInfoHdr1.$linkToInfoStr1.$linkToInfoHdr2.$linkToInfoStr2;
   
 
 }

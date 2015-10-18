@@ -8,7 +8,7 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License.
 //
-// $Id: GUI_pilot_profile_edit.php,v 1.40 2012/06/02 08:40:12 manolis Exp $                                                                 
+// $Id: GUI_pilot_profile_edit.php,v 1.39 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
 
@@ -35,21 +35,9 @@
  	echo "<div>You dont have permission to edit this profile<br></div>";
     return;
   }
-
-    if (isset($_REQUEST['updateProfile']) && $CONF_use_NAC &&  $CONF['NAC']['id_mandatory'] ) {
-
-        if (!$_REQUEST['NACid'] || ! $_REQUEST['NACmemberID'] ) {
-            echo '<span class="alert">You must provide a valid NAC and NAC membership</span>';
-            unset($_REQUEST['updateProfile']);
-        }
-    }
-
+  
   if (isset($_REQUEST['updateProfile'])) {// submit form 
-
-
-     if (1) {
-         $message.='<span class="alert">aa</span>';
-     }
+	   		
 
 	if ($_REQUEST["PilotPhotoDelete"]=="1") {		// DELETE photo
 		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,1) );
@@ -100,23 +88,53 @@
 	} # end save password
 	
 	
+		# Martin Jursa 06.05.2008
+		# inform pilot in case his nac member id is missing or invalid
 	$NACid=$_POST['NACid']+0;
-	$NACmemberID=$_POST['NACmemberID']+0;
-	if ($NACmemberID<=0) $NACid=0;
+		if ($NACid) {
+			$NACmemberID=$_POST['NACmemberID'];
+			$errMsg1='';
+			if (empty($NACmemberID)) {
+				$errMsg1=_MemberID_Missing;
+			}elseif (!is_numeric($NACmemberID)) {
+				$errMsg1=_MemberID_NotNumeric;
+			}
+			$NACmemberID+=0; # type casting
+			if ($errMsg1) {
+				echo '<div style="font-weight:bold;margin:10px;">'.$errMsg1.'</div>';
+				$NACid=0;
+			}
+		}else {
+			$NACmemberID=0;
+		}
 
 	$NACclubID=$_POST['NACclubID']+0;
 	if ($NACid==0) $NACclubID=0;
 
-	// echo "$NACid , $NACmemberID, $NACclubID <BR>";
+/*		// echo "$NACid , $NACmemberID, $NACclubID <BR>";
 	if ($NACid==0 || $CONF_NAC_list[$NACid]['use_clubs'] ) {
 		// add_to_club_period_active
 		// echo "updating club-flights<BR>";
-		if ($CONF_NAC_list[$NACid]['club_change_period_active'] || $NACid==0)
+			if ($CONF_NAC_list[$NACid]['club_change_period_active'] || $NACid==0) {
 			NACclub::updatePilotFlights($pilotIDview,$NACid,$NACclubID);
+	}
+		}*/
+
+		// echo "$NACid , $NACmemberID, $NACclubID <BR>";
+		# Martin Jursa, 26.05.2008, logic change: club_change_period_active is handled inside updatePilotFlights
+		$clubsUsed=false;
+		foreach ($CONF_NAC_list as $key=>$NACconf) {
+			if (!empty($NACconf['use_clubs'])) {
+				$clubsUsed=true;
+				break;
+			}
+		}
+		if ($clubsUsed) {
+			//NACclub::updatePilotFlights($pilotIDview,$NACid,$NACclubID);  *** Deactivated P.Wild for season 2009: Vereinswechsel jederzeit erlaubt, aber alte Flüge bleiben unverändert.
 	}
 
 	$FirstOlcYear=$_POST['FirstOlcYear']+0;
-	if ($FirstOlcYear<=1995 ||  $FirstOlcYear>(date('Y')+0)) {
+	if ($FirstOlcYear<=1995 ||  $FirstOlcYear>(date('Y')+1)) {
 		$FirstOlcYear=0;
 	}
 	
@@ -131,9 +149,7 @@
 
 
    $query="UPDATE $pilotsTable SET
-   		`FirstNameEn` = '".prep_for_DB($_POST['FirstNameEn'])."',
-		`LastNameEn` = '".prep_for_DB($_POST['LastNameEn'])."',
-		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
+   		`FirstName` = '".prep_for_DB($_POST['FirstName'])."',
 		`LastName` = '".prep_for_DB($_POST['LastName'])."',
 		`countryCode` = '".prep_for_DB($_POST['countriesList'])."',
 		`NACid` = $NACid,
@@ -454,18 +470,13 @@
 
 			echo "</select>";
 
-    foreach  ($CONF_NAC_list as $NACid=>$NAC) {
-        if ($NAC['description']) {
-            echo "<div style='background:#d0d0d0; padding:10px; ' >".$NAC['description']."</div> ";
-        }
-    }
-
 			echo "<div id='mID' style='display:".(($pilot['NACid']==0) ? "none" : "inline")."'> ";
 			$memberid_readonly=in_array('NACmemberID', $readonly_fields) ? 'readonly' : '';
 			echo "<span style='white-space:nowrap'>"._MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' $memberid_readonly  /></span> ";
 			echo "<div id='mIDselect' style='display:".($memberid_readonly ? "block" : "none")."'> ";
 			echo "[&nbsp;<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>&nbsp;]";
 			echo "</div>";
+
 
 
 			echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";
@@ -488,7 +499,7 @@
 			echo "<input  type='text' size='50' name='NACclub' value='".$NACclub."' readonly /></div> ";
 
 			echo "</div>";
-
+			echo _Note;  //P. Wild 08.06.2010
 
 } else { ?>
           <input type="hidden" name="NACid" value="<?=$pilot['NACid']?>" />
@@ -516,19 +527,6 @@
 		</td>
       <td>&nbsp;</td>
     </tr>
-    
-    <tr>
-      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _First_Name ?> (EN)</div></td>
-      <td valign="top"><input name="FirstNameEn" type="text" value="<? echo $pilot['FirstNameEn'] ?>" size="25" maxlength="120" <?=$firstNameReadOnly?> ></td>
-      <td>&nbsp;</td>
-    </tr>
-    
-    <tr>
-      <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _Last_Name ?> (EN)</div></td>
-      <td valign="top"><input name="LastNameEn" type="text" value="<? echo $pilot['LastNameEn'] ?>" size="25" maxlength="120" <?=$lastNameReadOnly?> ></td>
-      <td>&nbsp;</td>
-    </tr>
-      
     <tr>
       <td valign="top" bgcolor="#E9EDF5"><div align="right"><? echo _COUNTRY ?></div></td>
       <td valign="top"><? echo getNationalityDropDown($pilot['countryCode'], in_array('countriesList', $readonly_fields)) ?></td>
@@ -592,19 +590,8 @@
     </td>
       <td>&nbsp;</td>
     </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Sign ?></div></td>
-      <td> <input name="Sign" type="text" value="<? echo $pilot['Sign'] ?>" size="25" maxlength="120"></td>
+    <td valign="top" bgcolor="#E9EDF5"> <div align="right"></div></td>
       <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Marital_Status ?></div></td>
-      <td> <input name="MartialStatus" type="text" value="<? echo $pilot['MartialStatus'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Occupation?></div></td>
-      <td> <input name="Occupation" type="text" value="<? echo $pilot['Occupation'] ?>" size="25" maxlength="120">      </td>
       <td>&nbsp;</td>
       <td colspan="2" bgcolor="#E9EDF5"><div align="right"><? echo _Upload_new_photo_or_change_old ?>
 	  </div></td>
@@ -680,50 +667,54 @@
 	  </tr>
 	</table>
   
-  <div class='infoHeader'><?=_Flying_Stuff." ("._note_place_and_date.")" ?></div>
+ <div class='infoHeader'><?=_Flying_Stuff." "?></div>
   <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
     <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
-      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120">      </td>
-      <td>&nbsp;</td>
-      <td width="150" bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Distance_Record?></div></td>
-      <td width="150"> <input name="personalDistance" type="text" value="<? echo $pilot['personalDistance'] ?>" size="25" maxlength="120"></td>
+    <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _FirstOlcYear ?></div></td>
+   <td colspan="3"><table cellpadding="0" cellpadding="0" border="0"><tr><td><select name="FirstOlcYear">
+<?
+		 $currentyear=date('Y');
+		 $currentdate=date('md');
+		 if ($currentdate>0915) $curryear=$currentyear+1;
+		 else $curryear=$currentyear;
+	 //P. Wild 14.10.2009 changed to automatic current season
+		$ys=array(0);
+		for ($y=$curryear; $y>=2000; $y--) $ys[]=$y;
+		foreach ($ys as $y) {
+			$selected=$y==$pilot['FirstOlcYear'] ? ' selected ' : '';
+			$text=$y==0 ? '' : $y;
+			echo "<option value=\"$y\"$selected>$text</option>\n";
+		}
+
+?>
+      </select></td>
+	  <td><div><?=_FirstOlcYearComment?><div></td>
     </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Pilot_Licence?></div></td>
-      <td> <input name="PilotLicence" type="text" value="<? echo $pilot['PilotLicence'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
+	  </table>
+      </td>
+
+    
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Height_Record?></div></td>
       <td> <input name="personalHeight" type="text" value="<? echo $pilot['personalHeight'] ?>" size="25" maxlength="120"></td>
     </tr>
     <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Paragliding_training?></div></td>
-      <td> <input name="Training" type="text" value="<? echo $pilot['Training'] ?>" size="25" maxlength="120"></td>
+      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Flying_Since ?></div></td>
+      <td> <input name="FlyingSince" type="text" value="<? echo $pilot['FlyingSince'] ?>" size="25" maxlength="120">      </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+
+      <td width="150" bgcolor="#E9EDF5"><div align="right"><? echo _Personal_Distance_Record?></div></td>
+      <td width="150"> <input name="personalDistance" type="text" value="<? echo $pilot['personalDistance'] ?>" size="25" maxlength="120"></td>
+    </tr>
+    <tr> 
+      <td bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Per_Year?></div></td>
+      <td> <input name="HoursPerYear" type="text" value="<? echo $pilot['HoursPerYear'] ?>" size="25" maxlength="120"></td>
+   
+      <td>&nbsp;</td>
       <td>&nbsp;</td>
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Flown?></div></td>
       <td> <input name="HoursFlown" type="text" value="<? echo $pilot['HoursFlown'] ?>" size="25" maxlength="120"></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Favorite_Location?></div></td>
-      <td> <input name="FavoriteLocation" type="text" value="<? echo $pilot['FavoriteLocation'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Hours_Per_Year?></div></td>
-      <td> <input name="HoursPerYear" type="text" value="<? echo $pilot['HoursPerYear'] ?>" size="25" maxlength="120"></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Usual_Location?></div></td>
-      <td> <input name="UsualLocation" type="text" value="<? echo $pilot['UsualLocation'] ?>" size="25" maxlength="120">      </td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr valign="top"> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Best_Flying_Memory ?></div></td>
-      <td colspan="4"><textarea name="BestMemory" cols="80" rows="3"><? echo $pilot['BestMemory'] ?></textarea></td>
-    </tr>
-    <tr> 
-      <td valign="top" bgcolor="#E9EDF5"> <div align="right"><? echo _Worst_Flying_Memory ?></div></td>
-      <td colspan="4" valign="top"><textarea name="WorstMemory" cols="80" rows="3"><? echo $pilot['WorstMemory'] ?></textarea></td>
+    
     </tr>
   </table>
 
@@ -752,71 +743,10 @@
       <td bgcolor="#E9EDF5"><div align="right"><? echo _Helmet?></div></td>
       <td> <input name="Helmet" type="text" value="<? echo $pilot['Helmet'] ?>" size="25" maxlength="120"></td>
     </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Camera?></div></td>
-      <td> <input name="camera" type="text" value="<? echo $pilot['camera'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Camcorder?></div></td>
-      <td> <input name="camcorder" type="text" value="<? echo $pilot['camcorder'] ?>" size="25" maxlength="120"></td>
-    </tr>
   </table>
 
-  <div class='infoHeader'><?=_Manouveur_Stuff.' ('._note_max_descent_rate.')'?>)</div>
-  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
-    <tr> 
-      <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Spiral?></div></td>
-      <td width='25%'> <input name="Spiral" type="text" value="<? echo $pilot['Spiral'] ?>" size="25" maxlength="80"></td>
-      <td width='1%'>&nbsp;</td>
-      <td width='25%' bgcolor="#E9EDF5"><div align="right"><? echo _Sat?></div></td>
-      <td width='25%'> <input name="Sat" type="text" value="<? echo $pilot['Sat'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Bline?></div></td>
-      <td> <input name="Bline" type="text" value="<? echo $pilot['Bline'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Asymmetric_Spiral?></div></td>
-      <td> <input name="AsymmetricSpiral" type="text" value="<? echo $pilot['AsymmetricSpiral'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Full_Stall?></div></td>
-      <td> <input name="FullStall" type="text" value="<? echo $pilot['FullStall'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Spin?></div></td>
-      <td> <input name="Spin" type="text" value="<? echo $pilot['Spin'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Other_Manouveurs_Acro?></div></td>
-      <td> <input name="OtherAcro" type="text" value="<? echo $pilot['OtherAcro'] ?>" size="25" maxlength="120"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
   
   
-  <div class='infoHeader'><?=_General_Stuff?></div>
-  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
-    <tr> 
-      <td width='24%' bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Singer?></div></td>
-      <td width='25%'> <input name="FavoriteSingers" type="text" value="<? echo $pilot['FavoriteSingers'] ?>" size="25" maxlength="80"></td>
-      <td width='1%'>&nbsp;</td>
-      <td width='25%' bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Book?></div></td>
-      <td width='24%'> <input name="FavoriteBooks" type="text" value="<? echo $pilot['FavoriteBooks'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Movie?></div></td>
-      <td> <input name="FavoriteMovies" type="text" value="<? echo $pilot['FavoriteMovies'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Actor?></div></td>
-      <td> <input name="FavoriteActors" type="text" value="<? echo $pilot['FavoriteActors'] ?>" size="25" maxlength="80"></td>
-    </tr>
-    <tr> 
-      <td bgcolor="#E9EDF5"><div align="right"><? echo _Favorite_Internet_Site?></div></td>
-      <td> <input name="FavoriteSite" type="text" value="<? echo $pilot['FavoriteSite'] ?>" size="25" maxlength="80"></td>
-      <td>&nbsp;</td>
-      <td bgcolor="#E9EDF5"><div align="right"></div></td>
-      <td></td>
-    </tr>
     <tr> 
       <td colspan="5"><div align="center"> 
           <hr>

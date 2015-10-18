@@ -62,20 +62,27 @@
           <td rowspan="3" class="col1_in">
 <b><? echo _SITE_RECORD ?></b>:
 	<?
-	 $query="SELECT  MAX(MAX_LINEAR_DISTANCE) as record_km, ID FROM $flightsTable  WHERE takeoffID =".$waypointIDview." GROUP BY ID ORDER BY record_km DESC ";
-
+	foreach ($CONF_glider_types  as $k => $v) { //P.Wild 16.05.2011 separate record categories
+    //echo "\$a[$k] => $v.\n";
+    //print_r( $gliderCatList);
+	 $query="SELECT  MAX(FLIGHT_KM) as record_km, ID, cat FROM $flightsTable  WHERE cat=".$k." AND takeoffID =".$waypointIDview." GROUP BY ID ORDER BY record_km DESC ";
+	//echo "<br>".$query."<br>";
 	 $flightNum=0;
      $res= $db->sql_query($query);
-     if($res > 0){
+     //print_r($res);
+     if($res > 0 ){
 		$flightNum=mysql_num_rows($res);
 		$row = mysql_fetch_assoc($res);
-
+		if ($row['record_km']>0){
 		echo "<a href='http://".$_SERVER['SERVER_NAME'].
 			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID']))."'>".
-			formatDistance($row['record_km'],1)."</a>";
+			formatDistance($row['record_km'],1)." ".$gliderCatList[$k]."<br></a>";
+		}
 	 } 
-
-
+	}
+  $query="SELECT MAX(FLIGHT_KM) as record_km, ID FROM $flightsTable  WHERE takeoffID =".$waypointIDview." GROUP BY ID ORDER BY record_km DESC ";
+  $res= $db->sql_query($query);
+  $flightNum=mysql_num_rows($res);
 ?>
 <p>
 <strong><? echo "<a href='".getLeonardoLink(array('op'=>'list_flights','takeoffID'=>$waypointIDview))."'>"._See_flights_near_this_point." [ ".$flightNum." ]</a>"; ?></strong>
