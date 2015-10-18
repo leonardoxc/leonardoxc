@@ -814,6 +814,8 @@ define("_SHOW_NEWS","Mostra News");
 //--------------------------------------------------------
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
+define("_IS_FRIENDS_ONLY_","Visible to Friends Only"); 
+define("_friends_text1","Map and charts are visible to Friends Only"); 
 define("_Pilot_confirm_subscription","===================================
 
 %s Leonardo new user

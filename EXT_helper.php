@@ -87,12 +87,12 @@
 						$pdfUrls[$k]=substr($lines[$k],8);
 					}
 					if (substr($lines[$k],0,9)=='START PDF') {
-						// echo "Found start of pdf list, breaking <br>";
+						 echo "Found start of pdf list, breaking <br>";
 						break;
 					}
 				}
 				
-				//print_r($pdfUrls);
+				print_r($pdfUrls);
 				$tmpDir=md5($_SERVER['REQUEST_URI']);
 				 
 				$pdfFile=leoPdf::createPDFmulti($pdfUrls,$tmpDir);	

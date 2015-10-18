@@ -26,6 +26,15 @@
 	require_once dirname(__FILE__)."/templates/".$PREFS->themeName."/theme.php";
 	setDEBUGfromGET();
 
+function cmp($a0, $b0)
+{
+	$a=$a0['score'];
+	$b=$b0['score'];
+	if ($a == $b) {
+		return 0;
+	}
+	return ($a < $b) ? -1 : 1;
+}
 
 	$op=makeSane($_GET['op']);	
 
@@ -80,7 +89,8 @@
 		if($res <= 0){   
 			echo("<H3> Error in query: $query</H3>\n");
 			return;			 
-		} 
+		}
+		$pilots=array();
 		while($row= $db->sql_fetchrow($res) ){
 			if ($row['countryCode']) $flag=	strtolower($row['countryCode']);
 			else $flag='unknown';
@@ -135,7 +145,7 @@
 				$photo=json::prepStr($photo);
 			}
 			if ($_GET['json']) {
-				$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.			
+				$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.
 			' "name":"'.json::prepStr($name).'",'.
 			' "flag":"'.json::prepStr($flagIcon).'",'.
 			' "photo":"'.$photo.'", '.
@@ -148,16 +158,6 @@
 			
 		}
 
-		function cmp($a0, $b0)
-		{
-			$a=$a0['score'];
-			$b=$b0['score'];
-		    if ($a == $b) {
-		        return 0;
-		    }
-		    return ($a < $b) ? -1 : 1;
-		}
-				
 		
 		usort($pilots, "cmp");
 		
@@ -185,8 +185,149 @@
 		return;
 
 	}
-	
-	if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
+
+if ($op=='findFriends'){
+	$hash=$_SESSION['sessionHashCode'];
+	if ( makeHash('EXT_pilot_functions') != $hash   ) {
+		if ( ! $CONF['bugs']['badSessions']) {
+			echo "Access Denied";
+			return;
+		}
+	}
+
+	require_once dirname(__FILE__).'/lib/json/CL_json.php';
+
+	if ($CONF_use_utf) {
+		$CONF_ENCODING='utf-8';
+	} else  {
+		$CONF_ENCODING=$langEncodings[$currentlang];
+	}
+
+	// header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
+
+	$pilotName0=stripslashes($_GET['q']);
+	$pilotName0=trim($pilotName0);
+
+	$pilotName=str_replace(" ", "%",$pilotName0);
+
+	/*
+    $parts=explode(" ",$pilotName );
+    foreach ($parts as $part ) {
+
+
+    }
+
+    $nameDistanceFromPrevious1=levenshtein (strtolower($lastIntName),strtolower($row2['intName']));
+    similar_text (strtolower($lastIntName),strtolower($row2['intName']),&$nameDistanceFromPrevious2);
+        */
+
+	$query="SELECT * FROM $pilotsTable WHERE
+			serverID=0 AND
+			(	FirstName LIKE '%$pilotName%' OR
+				LastName LIKE '%$pilotName%' OR
+				CONCAT(FirstName,' ',LastName) LIKE  '%$pilotName%'  OR
+				CONCAT(LastName,' ',FirstName) LIKE  '%$pilotName%'
+			)
+			LIMIT 200";
+
+	// echo "a|$query|0";
+	//return;
+	$res= $db->sql_query($query);
+
+	if($res <= 0){
+		echo("<H3> Error in query: $query</H3>\n");
+		return;
+	}
+	$pilots=array();
+	while($row= $db->sql_fetchrow($res) ){
+		if ($row['countryCode']) $flag=	strtolower($row['countryCode']);
+		else $flag='unknown';
+
+		$flagIcon="<img src='".moduleRelPath()."/img/fl/$flag.gif' border=0> ";
+		//$flagIcon="<img class='fl fl.sprite-$tmpLang' src='".moduleRelPath()."/img/space.gif' border=0> ";
+
+		if ($row['Sex']=='F') $sexIcon="<img src='".moduleRelPath()."/img/icon_female.gif' border=0> ";
+		else $sexIcon='';
+
+
+		$name=$row['FirstName'].' '.$row['LastName'];
+		$name=str_replace($pilotName,"<b>$pilotName</b>",$name);
+		$pilotName=strtoupper($pilotName{0}).substr($pilotName,1);
+		$name=str_replace($pilotName,"<b>$pilotName</b>",$name);
+
+		$pilotName0=strtolower($pilotName0);
+
+		$d1=levenshtein ($pilotName0,strtolower($row['FirstName'].' '.$row['LastName'] )  );
+		$d2=levenshtein ($pilotName0,strtolower($row['LastName'].' '.$row['FirstName']));
+		$d3=levenshtein ($pilotName0,strtolower($row['FirstName']));
+		$d4=levenshtein ($pilotName0,strtolower($row['LastName']));
+
+		$dmax=max(array($d1,$d2,$d3,$d4));
+		// similar_text (strtolower($lastIntName),strtolower($row2['intName']),&$nameDistanceFromPrevious2);
+
+
+		$html=$row['FirstName'].' '.$row['LastName'].'|'.$flagIcon.$sexIcon.$name.'|'.$row['serverID'].'u'.$row['pilotID']."\n";
+
+		$serverIDview=$row["serverID"];
+		$pilotIDview=$row["pilotID"];
+		$photo='';
+		if ($row['PilotPhoto']>0) {
+
+			//checkPilotPhoto($serverIDview,$pilotIDview);
+			$imgBigRel=getPilotPhotoRelFilename($serverIDview,$pilotIDview);
+			$imgBig=getPilotPhotoFilename($serverIDview,$pilotIDview);
+			// echo $imgBig."<BR>";
+			list($width, $height, $type, $attr) = getimagesize($imgBig);
+
+			//echo $imgBig."  $CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height <br>";
+			list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+
+
+			$photo="<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
+			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"
+			 border=0></a>";
+
+			$photo="<img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'>";
+		}
+		if( $_GET['json'] ){
+			$photo=json::prepStr($photo);
+		}
+		if ($_GET['json']) {
+			$json=' { "firstName":"'.json::prepStr($row["FirstName"]).'", "lastName":"'.json::prepStr($row["LastName"]).'", '.
+				' "name":"'.json::prepStr($name).'",'.
+				' "flag":"'.json::prepStr($flagIcon).'",'.
+				' "photo":"'.$photo.'", '.
+				' "sex":"'.json::prepStr($sexIcon).'", "userID":"'.json::prepStr($row["serverID"].'u'.$row["pilotID"]).'" } ';
+		} else {
+			$jsom='';
+		}
+		//$pilots[]=array("score"=>$dmax,"text"=>$html,"json"=>$json);
+		$pilots[]=array("id"=>$pilotIDview, "name"=>$name,"score"=>$dmax);
+
+	}
+
+	if (count($pilots)>0) {
+
+		usort($pilots, "cmp");
+
+		$i=0;
+		$count=$_GET['count'];
+		if (!$count) $count=15;
+		foreach ($pilots as $pilot) {
+			$pilotsFinal[]=$pilot;
+			$i++;
+			if ($i>$count) break;
+		}
+	} else {
+		$pilotsFinal=array();
+	}
+	echo json_encode($pilotsFinal);
+	return;
+
+
+}
+
+if ( !L_auth::isAdmin($userID) ) { echo "go away"; return; }
 
 	if ($op=='mapPilot'){	
 			$pilotID1=makeSane($_GET['pilotID1'],0);

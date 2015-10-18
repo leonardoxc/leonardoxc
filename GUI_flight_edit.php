@@ -11,11 +11,15 @@
 // $Id: GUI_flight_edit.php,v 1.52 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
+
+// require_once dirname(__FILE__).'/GUI_flight_edit_new.php'; return;
   require_once dirname(__FILE__).'/CL_image.php';
   require_once dirname(__FILE__)."/CL_NACclub.php";
   require_once dirname(__FILE__)."/CL_user.php";
   $flight=new flight();
+
   $flight->getFlightFromDB($flightID);
+
 
   if ( 	$flight->belongsToUser($userID) ||	L_auth::isModerator($userID)  ) {
 
@@ -25,6 +29,7 @@
 
 
 	if ($_REQUEST["changeFlight"]) {  // make changes
+
 		$newUserIDStr=$_POST["newUserID"];
 		if ($newUserIDStr) { // move this flight to a new userID
 			 $newUserIDStrPart=split('_',$newUserIDStr);
@@ -81,21 +86,30 @@
 			$flight->private = $flight->private & (~0x02 & 0xff ); 
 		}
 
+		if ($_REQUEST['is_friends_only']=="1") {
+			$flight->private = $flight->private | 0x04;
+		} else {
+			$flight->private = $flight->private & (~0x04 & 0xff );
+		}
+
 
 		// to change nac club
 		if ($CONF['NAC']['clubPerFlight'] ) {
 			$flight->NACclubID=$_REQUEST["NACclubID"]+0;
 			$flight->NACid=$_REQUEST["NACid"]+0;
 		}
-				
+
 		require_once dirname(__FILE__)."/CL_flightPhotos.php";
+
 		$flightPhotos=new flightPhotos($flight->flightID);
 		$flightPhotos->getFromDB();
 
 		$photosChanged=false;
-		
+
 		$j= $flightPhotos->photosNum ;
+
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
+
 			$var_name="photo".$i."Filename";
 			$photoName=$_FILES[$var_name]['name'];
 			$photoFilename=$_FILES[$var_name]['tmp_name'];
@@ -133,7 +147,7 @@
 					}
 				}
 			}
-		} 
+		}
 
 		// now delete photos if requested
 		for($i=0;$i<$CONF_photosPerFlight;$i++) {
@@ -146,14 +160,16 @@
 		}
 		
 		if ( $photosChanged ){
+
 			// recompute geoTag info
 			$flightPhotos->computeGeoInfo();
-			
+
 			//delete igc2kmz.kmz file
 			require_once dirname(__FILE__).'/FN_igc2kmz.php';			
 			deleteOldKmzFiles($flight->getKMLFilename(3),'xxx'); // delete all versions
 		}
-		
+
+
 		$flight->putFlightToDB(1);
 
 		// $flightPhotos->putToDB();
@@ -172,6 +188,8 @@
 	if ( ($_GET['checkg']+0)==1) {
 		$grecord_res="[ G-record checking result: ".$flight->validate()." ]";		
 	}
+
+
 	?>
 
 <script src="<?=$moduleRelPath?>/js/jquery.selectboxes.js" type="text/javascript"></script>
@@ -316,16 +334,22 @@ require_once dirname(__FILE__).'/FN_editor.php';
   <input type="hidden" name="changeFlight" value=1>
   <input type="hidden" name="flightID" value="<? echo $flightID ?>">
   <?  openMain(_CHANGE_FLIGHT_DATA,0,"change_icon.png"); ?>
+
   <table class=main_text width="100%" border="0" align="center" cellpadding="0" cellspacing="3" bgcolor="#E6EAE6" >
 
 <? if ($enablePrivateFlights || L_auth::isAdmin($userID) ) { ?>
     <tr>
       <td colspan=2 valign="top">  
 	  <div align="right">
-		  <? if ($enablePrivateFlights ) { ?>      	
+		  <? if ($enablePrivateFlights ) { ?>
+
+			  <input type="checkbox" name="is_friends_only" value="1" <? echo ($flight->private & 4)?"checked":"" ?> >
+			  <? echo  _IS_FRIENDS_ONLY_ ?>
+
               <input type="checkbox" name="is_private" value="1" <? echo ($flight->private & 1)?"checked":"" ?> >
-             <? echo  _IS_PRIVATE ?>    
-		<? } ?>
+             <? echo  _IS_PRIVATE ?>
+
+		  <? } ?>
 		<? if ( L_auth::isAdmin($userID) ) { ?>
               <input type="checkbox" name="is_disabled" value="1" <? echo ($flight->private & 2)?"checked":"" ?> >
              <? echo  "Disable Flight"; ?>    

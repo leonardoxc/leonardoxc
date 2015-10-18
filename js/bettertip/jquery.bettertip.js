@@ -7,8 +7,8 @@
 $(BT_init);
 
 var BT_default_width=350;
-var BT_open_wait = 500; //time in millis to wait before showing dialog
-var BT_close_wait = 0; //time in millis to wait before closing dialog
+// var BT_open_wait = 500; //time in millis to wait before showing dialog
+var BT_close_wait = 10; //time in millis to wait before closing dialog
 var BT_cache_enabled = true;
 var BT_events = new Array();
 var BT_titles = new Array();
@@ -17,18 +17,18 @@ var BT_open_wait = 50; //time in millis to wait before showing dialog
 
 
 function BT_init(){
-	
+
     $("a.betterTip").parent("div.betterTip")
     .hover(function(){BT_hoverIn($(this).children("a.betterTip")[0]); return false;},
     	   function(){BT_hoverOut($(this).children("a.betterTip")[0])})
     ;
-	
+
 	$("a.betterTip").filter(function(index){
     	return $(this).parent("div.betterTip").length == 0;
     }).hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
-	
-	
-	$("a.betterTip2").parent("div.betterTip2")
+
+
+    $("a.betterTip2").parent("div.betterTip2")
     .hover(function(){BT_hoverIn($(this).children("a.betterTip2")[0]); return false;},
     	   function(){BT_hoverOut($(this).children("a.betterTip2")[0])})
     ;
@@ -36,8 +36,7 @@ function BT_init(){
     $("a.betterTip2").filter(function(index){
     	return $(this).parent("div.betterTip2").length == 0;
     })
-	
-	
+
 	// .hover(function(){return false})
 	
     //.hover(function(){BT_hoverIn(this)}, function(){BT_hoverOut(this)});
@@ -198,7 +197,7 @@ function BT_show(id) {
 	var act_left = BT_getLeft(id);
 	var act_width = BT_getWidth(id);
 				
-	var left = act_left + act_width + 12;
+	var left = act_left + act_width + 12;	
 	var top = BT_getTop(id);
 
 	
@@ -214,7 +213,8 @@ function BT_show(id) {
 	if(docWidth < right || forceDisplayOnLeft )
 	{
 		arrowDir = "right";
-		left = act_left - 12 - tipWidth;
+		//left = act_left - 12 - tipWidth;
+		left = act_left - 20 - tipWidth;
 		arrowLeft = tipWidth;
 		arrowTop = -1;
 		

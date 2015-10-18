@@ -421,7 +421,7 @@ function AddPoint($Temp) {
 
 function ReadAltitude($Text,$field) {
 	global $TempArea;
-	// DEBUG("checkAirspace",128,"ReadAltitude: $Text");
+	 DEBUG("checkAirspace",128,"ReadAltitude: $Text \n");
 
 	$fHasUnit=0;
 	$Text=trim(strtoupper($Text));
@@ -430,6 +430,8 @@ function ReadAltitude($Text,$field) {
 	preg_match("/(\d*)([ =]*)([A-Z]*)([ =]*)(\d*)([ =]*)([A-Z]*)([ =]*)/",$Text,$parts);
 	//print_r($parts);
 	//echo "<HR>";
+
+	DEBUG("checkAirspace",128,print_r($parts,1)."<BR>\n");
 
 	$TempArea->$field->Altitude = 0;
 	$TempArea->$field->FL = 0;
@@ -446,7 +448,7 @@ function ReadAltitude($Text,$field) {
       } else {
         $TempArea->$field->Altitude = $pToken;
       }
-    }  else if ( $pToken=='SFC' || $pToken=='GND' ) {
+    }  else if ( $pToken=='SFC' || ( $pToken=='GND' && !$TempArea->$field->Altitude ) ) {
       $TempArea->$field->Base = abAGL;
       $TempArea->$field->FL = 0;
       $TempArea->$field->Altitude = 0;
@@ -462,7 +464,7 @@ function ReadAltitude($Text,$field) {
       $fHasUnit = true;
     } else if ( $pToken=='MSL'){
       $TempArea->$field->Base = abMSL;
-    } else if ( $pToken=='AGL'){
+    } else if ( $pToken=='AGL' || ( $pToken=='GND' && $TempArea->$field->Altitude>0 ) ){
       $TempArea->$field->Base = abAGL;
     } else if ( $pToken=='STD'){
       if ($TempArea->$field->Base != abUndef) {
@@ -485,7 +487,7 @@ function ReadAltitude($Text,$field) {
     $TempArea->$field->Base = abMSL;
   }
 
-	// DEBUG("checkAirspace",128,"ReadAltitude: FL=". $Alt->FL.", Alt:". $Alt->Altitude.", Base:". $Alt->Base." ");
+	 DEBUG("checkAirspace",128,"ReadAltitude: FL=". $TempArea->$field->FL.", Alt:". $TempArea->$field->Altitude.", Base:". $TempArea->$field->Base."<BR>\n");
 	//  return $Alt;
 }
 

@@ -86,7 +86,7 @@ class flightPhotos {
 		$gotTrack=0;
 		foreach ( $this->photos as $photoNum=>$photoInfo) {
 			if ($photoInfo['tm']==1) { // 1 -> we have alredy tried to get geotag info but failed
-				continue;
+				 continue;
 			}
 			
 			if (!$photoInfo['tm']) { // no attemp was made to get GeoInfo
@@ -95,6 +95,8 @@ class flightPhotos {
 				$this->photos[$photoNum]['lat']=$gpsData[0];
 				$this->photos[$photoNum]['lon']=$gpsData[1];
 				$this->photos[$photoNum]['tm']=$gpsData[2]; // warning tm in local time ...
+
+               // echo " Got EXIF data: $gpsData[0] $gpsData[1] $gpsData[2]<BR>";
 				$changed=1; // we got at least the tm				
 			}
 			
@@ -107,7 +109,7 @@ class flightPhotos {
 			if (!$this->photos[$photoNum]['lat'] && !$this->photos[$photoNum]['lon']) {
 				// try to get lat/lon depending on the position in track	
 				if (!$gotTrack) {
-					//echo "getting track!";	
+					//echo "getting track!";
 					$flight=new flight();
 					$flight->getFlightFromDB($this->flightID,0); //dont update takeoffs
 					list($trackLat,$trackLon,$trackTms,$trackAlt)=$flight->getXYValues(1,1); // get also TM and ALT
@@ -129,7 +131,7 @@ class flightPhotos {
 					$thisTm=$startTm+$tm;
 					if ( $photoTm<$thisTm && $photoTm>$lastTm ) {
 					
-						//echo "found position!!! tm=$thisTm<BR>";
+						// echo "found position!!! tm=$thisTm<BR>";
 						$this->photos[$photoNum]['lat']=$trackLat[$i];
 						$this->photos[$photoNum]['lon']=-$trackLon[$i];
 						$this->photos[$photoNum]['alt']=$trackAlt[$i];

@@ -630,6 +630,8 @@ define('_Select_date_as_date.','Seleccione [date] como fecha.'); // do not repla
 // Missing defines , autoreplaced values from 'english' 
 //--------------------------------------------------------
 define("_SEASON","Season"); 
+define("_IS_FRIENDS_ONLY_","Visible to Friends Only"); 
+define("_friends_text1","Map and charts are visible to Friends Only"); 
 define("_SUBMIT_TO_OLC","Submit to OLC"); 
 define("_pilot_email","Email Address"); 
 define("_Sex","Sex"); 

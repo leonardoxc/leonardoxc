@@ -49,6 +49,7 @@ class brands {
 		return $gliderBrandImg;
 	}
 
+
 	function getBrandImg($brandID,$gliderName='',$glidetCat=0){
 		global $moduleRelPath,$CONF_abs_path,$CONF;
 				
@@ -73,6 +74,73 @@ class brands {
 		return $gliderBrandImg;
 	}
 
+    static  function getGliderName($gliderID,$showBrand=0,$showCert=0,$showSize=1){
+        global $db,$CONF_glider_certification_categories;
+
+
+        $row=brands::getGliderInfo($gliderID);
+
+        if ($row['gliderName']) {
+            if ($showBrand) {
+                $gBrand=$row['brandName'];
+                if ($gBrand) $gBrand=$gBrand.' ';
+
+            }
+            if ($showSize) {
+                $gSize= $row['gliderSize'];
+                if ($gSize) $gSize=" - "+$gSize;
+            }
+            if ($showCert) {
+                $gCert= $row['gliderCert'];
+                if ($gCert) $gCert=" ["+$CONF_glider_certification_categories[$gCert]+"]";
+            }
+            return $row['gliderName']."$gSize$gCert";
+        }
+        return '';
+
+
+    }
+
+    static function getGliderInfo($gliderID){
+        global $db,$CONF_glider_certification_categories;
+
+
+        $query="SELECT * FROM  leonardo_gliders,leonardo_brands
+                Where leonardo_gliders.brandID	=leonardo_brands.brandID
+                    AND gliderID=$gliderID";
+        $res= $db->sql_query($query);
+        $rows = array();
+        if($res > 0){
+            if  ($row = mysql_fetch_assoc($res)) {
+
+                $info['brandName']=$row['brandName'];
+                $info['gliderSize']=$row['gliderSize'];
+                $info['gliderCert']=$row['gliderCert'];
+                $info['gliderName']=$row['gliderName'];
+                $info['brandID']=$row['brandID'];
+
+                return $info;
+            }
+        }
+        return array();
+
+
+    }
+
+    function getBrandsListFromDB(){
+        global $CONF,$db;
+        $CONF['brands']['list']=array();
+        $query="SELECT * FROM  leonardo_brands order by brandID ASC";
+        $res= $db->sql_query($query);
+        $rows = array();
+        if($res > 0){
+            while ($row = mysql_fetch_assoc($res)) {
+                $CONF['brands']['list'][$row['brandID']] = $row['brandName'];
+            }
+        }
+
+    }
+
 	function getBrandsList($forFilterUse=0){
 		global $CONF;
 		if ($forFilterUse && ! $CONF['brands']['showAll']) {	
@@ -96,6 +164,12 @@ class brands {
 		else return 0;
 	}
 
+    function removeBrandFromName($gliderDesc,$brandID){
+        global  $CONF;
+        $gliderDesc=str_ireplace($CONF['brands']['list'][$brandID],'',$gliderDesc);
+        return trim($gliderDesc);
+    }
+
 	function guessBrandID($gliderDesc){		
 		global  $CONF;
 		// if (!is_array($brandsList[$gliderType]) ) return 0;
@@ -117,6 +191,7 @@ class brands {
 	}
 
 	function sanitizeGliderName($gliderName) {
+        global $CONF;
 		$gliderNameNorm=trim( preg_replace("/[\/\-\,\.]/",' ',$gliderName) );
 		$gliderNameNorm=preg_replace("/( )+/",' ',$gliderNameNorm);
 		
@@ -136,6 +211,56 @@ class brands {
 		return $gliderNameNorm;
 	}
 
+
+    static function find_similar_gliders($gliderName,$threshold=50) {
+        global $db;
+        $max_percent=0;
+        $best_match_Name='';
+        $best_match_id=0;
+
+        $query="SELECT * FROM  leonardo_gliders, leonardo_brands WHERE leonardo_gliders.brandID	= leonardo_brands.brandID";
+        // echo $query;
+        $res= $db->sql_query($query);
+        $gliderList = array();
+        if($res > 0){
+            while ($row = mysql_fetch_assoc($res)) {
+                $gliderList[ $row['gliderID'] ] = $row;
+            }
+        }
+
+        $list=array();
+        foreach ( $gliderList as $gliderID=>$row) {
+            $tmpName=$row['gliderName'];
+            // $tmpName=$row['gliderName'];
+            $similar_index = similar_text ( $gliderName, $tmpName , $percent  );
+
+           // echo "$percent <BR>";
+            if ($percent>$threshold) {
+                $row['percent']=$percent;
+                $list[]=$row;
+            }
+/*
+            if ($percent>$max_percent) {
+                $max_percent=$percent;
+                $best_match_id=$gliderID;
+                $best_match_Name=$tmpName;
+            }
+*/
+        }
+        // echo count ($list);
+        usort($list,"percent_sort_compare");
+        return $list;
+        // return array($best_match_Name,$max_percent, $best_match_id);
+    }
+}
+
+function percent_sort_compare ($a,$b) {
+    if ($a['percent'] == $b['percent']) {
+        return 0;
+
+    }
+    //descending order
+    return ($a['percent'] < $b['percent']) ? 1 : -1;
 }
 
 ?>

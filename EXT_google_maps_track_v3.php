@@ -23,7 +23,12 @@
 	require_once dirname(__FILE__)."/FN_output.php";
 	require_once dirname(__FILE__)."/FN_pilot.php";
 	//	setDEBUGfromGET();
-	
+
+if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
+    $flightsTable	=  $deletedFlightsTable;
+    $deletedFlights=1;
+}
+
 	$flightIDstr=makeSane($_GET['id']);
 	$flightsListTmp=explode(",",$flightIDstr);
 	$flightsList=array();
@@ -36,7 +41,8 @@
 	} 
 	$flightsNum=count($flightsList);
 	sort($flightsList);
-	
+
+
 	if ($flightsNum==0) exit;
 	
 	if ( $flightsNum==1) {
@@ -219,6 +225,7 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 </head>
 <body>
 
+
 <div id='chartDiv'>
 	<div id="chart" class="chart"></div>  			 
 </div>
@@ -302,11 +309,12 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
  		<div id="trackInfoTpl" class='infoDisplay'>
 	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Time_Short?></div><div class='infoString time'>-</div></div>
 	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Speed?></div><div class='infoString speed'>-</div></div>
-	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Altitude_Short?></div><div class='infoString alt'>-</div></div>
-	 		<? if ($isAdmin) { ?>
+	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Altitude_Short?> (GPS)</div><div class='infoString alt'>-</div></div>
+	 		
 	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Altitude_Short?> (Baro)</div><div class='infoString altV'>-</div></div>	                
-	        <? } ?>
+	   
 	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_Vario_Short?></div><div class='infoString vario'>-</div></div>
+	 		<div class="infoDisplayItem"><div class='infoDisplayText'><?=_OVER_GROUND?></div><div class='infoString gnd'>-</div></div> 
 		</div>
 		</fieldset>
 
@@ -404,7 +412,9 @@ if (metricSystem==2) {
 var takeoffString="<? echo _TAKEOFF_LOCATION ?>";
 var landingString="<? echo _LANDING_LOCATION ?>";
 
-var AltitudeStr="<? echo _Altitude_Short ?>";
+var GroundSfc="<? echo _GroundSFC ?>";
+var AltitudeStr="<? echo _Altitude_Short." (GPS)" ?>";
+
 var AltitudeStrBaro="<? echo _Altitude_Short." (Baro)" ?>";
 
 var altUnits="<? echo ' '.(($PREFS->metricSystem==1)?_M:_FT) ; ?>";
@@ -557,8 +567,17 @@ function initialize() {
 		
     var mapOptions= {
             zoom: 8,
-            mapTypeControl: true,
-            scaleControl: true,            
+
+			zoomControl: true,
+			zoomControlOptions: {
+				position: google.maps.ControlPosition.LEFT_CENTER
+			},
+			scaleControl: true,
+			streetViewControl: true,
+			streetViewControlOptions: {
+				position: google.maps.ControlPosition.LEFT_CENTER
+			},
+
             mapTypeControlOptions: {
                 mapTypeIds: [
 					"Relief",
@@ -729,6 +748,13 @@ function addGEruler() {
 
 		
 }
+
+var flights=[];
+var MIN_START=86000;
+var MAX_END=0;
+
+var flightsList=[];
+
 function addOverlays(){
 	flightList.sort();
 	for( var i in flightList ) {
@@ -736,15 +762,17 @@ function addOverlays(){
 	}	
 }
 
-var flights=[];
-var MIN_START=86000;
-var MAX_END=0;
+
+var tracksNum0=0;
+var deleted=<? echo ($deletedFlights)?'1':'0'; ?>;
 
 function loadFlight(flightID) {
 
-	$.getJSON('EXT_flight.php?op=flight_info&flightID='+flightID, function(data) {
-		flights[flightID]=[];
-		
+	$.getJSON('EXT_flight.php?op=flight_info&flightID='+flightID+'&deleted='+deleted, function(data) {
+        flightsList[tracksNum0]=flightID;
+        tracksNum0++;
+
+        flights[flightID]=[];
 		flights[flightID]['data']=data;
 
 		// display the kml track
@@ -752,9 +780,13 @@ function loadFlight(flightID) {
 		//flights[flightID]['kmlLayer'].setMap(map);
 
 		var trackColor=trackColors[tracksNum];
+
 		if (flightsTotNum==1) {
 			trackColor=trackColors[2];
 		}
+        flights[flightID]['data']['color']=trackColor;
+
+
 		if (data.START_TIME < MIN_START)	MIN_START=data.START_TIME ;
 		if (data.END_TIME  > MAX_END) 	MAX_END=data.END_TIME ;
 

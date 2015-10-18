@@ -462,10 +462,13 @@ $extFlightLegend=_Ext_text1." <i>".$CONF['servers']['list'][$flight->serverID]['
 <img class='flagIcon' src='$moduleRelPath/img/icon_link.gif' border=0 title='"._External_Entry." '></a>";
 
 
+$privateFlightLegend="<img  src='$moduleRelPath/img/locked.gif' border=0 title='"._friends_text1."'>"._friends_text1." ";
+
 
 $Ltemplate->assign_vars(array(
 	'extFlightLegend'=> $extFlightLegend,
-	
+	'privateFlightLegend'=> $privateFlightLegend,
+
 	'M_PATH'=> $moduleRelPath,
 	'T_PATH'=> $moduleRelPath.'/templates/'.$PREFS->themeName,
 	
@@ -499,6 +502,11 @@ if ($comments) {
 if ($adminPanel) {
    	$Ltemplate->assign_block_vars('ADMIN_PANEL', array() );
 }
+
+if ($flight->private==4) {
+	$Ltemplate->assign_block_vars('FRIENDS_ONLY_PANEL', array() );
+}
+
 
 $Ltemplate->pparse('body');
 

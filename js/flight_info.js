@@ -49,6 +49,27 @@ function selectGliderCat() {
 	}	
 }
 
+
+
+function selectBrand2(gliderID) {
+    var  gliderBrandID= $("#gliderBrandID").val();
+    $.getJSON(moduleRelPath+'/AJAX_gliders.php?op=gliders_list&brandID='+gliderBrandID, function(resJson) {
+        var options = '<option value=0></option>';
+        gliderCerts=[];
+        $.each(resJson.Records,function(k,v){
+            var gID= v.gliderID;
+            var gName= v.gliderName;
+            options+= '<option value="'+gID+'">'+gName+'</option>';
+            gliderCerts[gID]=v.gliderCert;
+        });
+        $("#gliderID").html(options);
+        $("#gliderID").val(gliderID);
+        selectGlider();
+    });
+
+}
+
+
 function setValue(obj) {		
 	var n = obj.selectedIndex;    // Which menu item is selected
 	var val = obj[n].value;        // Return string value of menu item

@@ -92,7 +92,7 @@ we have
 */
 
 0x20=>array("FILTER_DATE"),
-// 0x21=>array("FILTER_DATE_range"),
+
 0x22=>array("FILTER_PilotBirthdate"),
 
 // multiple items inclusive
@@ -121,6 +121,7 @@ we have
 0x63=>array("FILTER_olc_type"),
 0x64=>array("FILTER_glider_cert"),	//
 0x65=>array("FILTER_start_type"),	// Start type
+0x66=>array("FILTER_WEEKEND"),  // either 0 or 1
 
 // greater then, less than , equal  items
 /* opID + 2 bytes (30 bits) range (0-16384) the 2 leftmost bits 
@@ -190,7 +191,7 @@ class leonardoFilter {
 		$op=$this->getByte($filterStr,$start);
 		if ($op<0 ) return 0; // something is wrtong with the data, stop here
 		
-		// echo "#".dechex($op)."#";  
+		// echo "#".dechex($op)."#";
 		
 		if ( ($op & 0xf0) ==  0x40) {
 		// multiple items inclusive
@@ -314,7 +315,7 @@ class leonardoFilter {
 
 			$resLen=8;
 			$operand=($val&0x00C00000) >> 22;
-			
+			//echo "####***********####".$operand;
 			if ( $operand==0) $operand="=";
 	 		else  if ( $operand==1) $operand="<=";			 
 			else  if ( $operand==2) $operand=">=";			
@@ -475,7 +476,7 @@ function filterImport($arrayName) {
 		
 	} // foreach
 
-	// echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>";	
+	// echo "$filterArray<HR><PRE>";	print_r($this->filterArray);	echo "</PRE>".$value;
 }
 
 
@@ -555,7 +556,11 @@ function filterExport($arrayName) {
 			}	
 			continue;
 		}
-		
+		if ( $op == 0x21) {
+			if ($operand=='WEEKEND'){
+				$variablesArray['FILTER_WEEKEND']=	$operand;
+			}
+		}
 		if ( $op == 0x22) {	
 		/*  [0] => 32
             [1] => FILTER_PilotBirthdate
@@ -657,10 +662,21 @@ function makeFilterString() {
 			
 				$filterStr.=sprintf("%06X",$year|$month|$day);			
 			}
+			/* if ( $item[2]=='WEEKEND') {
+				$year = ( ( $item[6]-1900) << 9 ) | 0x00000000 ;
+				$month= ($item[7] <<  5 ) | 0x00000000  ;
+				$day  = $item[8]  | 0x00000000 ;
+
+				$filterStr.=sprintf("%06X",$year|$month|$day);
+			} */
+
 			continue;
 		}
 		
-		} // foreach
+		}
+		if ( ($op & 0xf0) ==  0x21) {
+			//$filterStr.=sprintf("%06X",$year|$month|$day);
+		}
 
 		return	$filterStr;
 	}
@@ -675,7 +691,8 @@ function makeFilterString() {
 		
 		$nacclub_clauses=array();
 		$AND_clauses=array();
-					
+
+		// print_r($this->filterArray);
 		foreach ($this->filterArray as $i=>$item) {
 			$op=$item[0];
 			$opName=$item[1];			
@@ -701,13 +718,20 @@ function makeFilterString() {
 				} 
 				continue;
 			}
-			
+			if ($opName=="FILTER_WEEKEND"){
+				$filter_clause.=" AND (DAYOFWEEK(DATE)=1 OR DAYOFWEEK(DATE)=7) ";
+				$filterTextual.=" AND at the weekend";
+			}
+
 			
 			if ($opName=='FILTER_PilotBirthdate') {
 				$opType=$item[2];
-				$date1=sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]);
-				$date2=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]);
-				
+				//$date1=sprintf("%02d.%02d.%04d",$item[5],$item[4],$item[3]);
+				//$date2=sprintf("%02d.%02d.%04d",$item[8],$item[7],$item[6]);
+				//Changed 20.11.14 P. Wild
+				$date1=sprintf("%04d-%02d-%02d",$item[3],$item[4],$item[5]);
+				$date2=sprintf("%04d-%02d-%02d",$item[6],$item[7],$item[8]);
+
 				if ($opType=="between"){ // RANGE					
 					$filter_clause.=" AND (  $pilotsTable.Birthdate >= '$date1' AND $pilotsTable.Birthdate <= '$date2' ) ";
 				} else {
@@ -810,7 +834,7 @@ function makeFilterString() {
 		}
 		
 		$this->filterTextual=$filterTextual;
-		
+		//echo "<HR>SQL: $filter_clause <BR>";
 		return $filter_clause;		
 		
 	} // function

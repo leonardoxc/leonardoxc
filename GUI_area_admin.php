@@ -234,7 +234,7 @@ $(document).ready(function(){
 	$('.stripeMe tr:odd').addClass('alt2');
 
   
-	$(".removeTakeoff").livequery('click',function() {		
+	$(".removeTakeoff").live('click',function() {		
 		$("#resDiv").html("<img src='<?=$moduleRelPath?>/img/ajax-loader.gif'>");				
 	  	$("#resDiv").load("<?=$moduleRelPath?>/EXT_takeoff_functions.php?op=removeFromArea&aID=<?=$areaID?>&tID="+$(this).attr("id") ); 
 		

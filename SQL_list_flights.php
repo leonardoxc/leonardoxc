@@ -135,9 +135,19 @@
 	}
 	
 	if ( ! ($pilotID>0 && $pilotID==$userID ) && !L_auth::isAdmin($userID) ) {
-		$where_clause.=" AND private=0 ";
-	} 
-	
+
+		// only display to friends
+		/*	$where_clause .= " AND (private=0 OR
+				(
+					private=4 AND userServerID=0 AND $userID IN
+						( SELECT friendUserID FROM leonardo_friends WHERE userID=" . $flightsTable . ".userID )
+				)
+			)";
+	*/
+		// display 'friends only'  flights ot everybody but show limited info
+		$where_clause .= " AND (private=0 OR private=4 ) ";
+
+	}
 	//----------------------------------------------------------
 	// Now the filter
 	//----------------------------------------------------------		

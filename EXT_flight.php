@@ -25,7 +25,11 @@
 	require_once "FN_flight.php";
 	setDEBUGfromGET();
 
-	
+if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
+    $flightsTable	=  $deletedFlightsTable;
+    $deletedFlights=1;
+}
+
 	$op=makeSane($_REQUEST['op']);
 	if (!$op) $op="list_flights";	
 
@@ -246,11 +250,12 @@
 				$flightPhotos->computeGeoInfo();
 			
 				$imagesHtml="";
+                $photosStr='';
+                $pnum=0;
 				foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 					//$photoInfo['lat']=51.8;
 					//$photoInfo['lon']=14.0;
-					
-					$pnum=0;
+
 					if ($photoInfo['lat'] && $photoInfo['lon'] ) {
 						$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 						$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
@@ -271,7 +276,7 @@
 						// echo " 	drawPhoto(".$photoInfo['lat'].",".$photoInfo['lon'].",$photoNum,'$imgIconRel','$imgTarget',$width,$height); \n";
 						
 						if ($pnum>0) $photosStr.=" , \n";
-						$photosStr= ' { "lat":'.json::prepStr($photoInfo['lat']).', "lon":'.json::prepStr($photoInfo['lon']).
+						$photosStr.= ' { "lat":'.json::prepStr($photoInfo['lat']).', "lon":'.json::prepStr($photoInfo['lon']).
 							', "num" : '.$photoNum.', "icon": "'.json::prepStr($imgIconRel).'" ,"photo":"'.json::prepStr($imgTarget).'", "width": '.$width.
 							', "height": '.$height.' } ';
 						
@@ -280,7 +285,7 @@
 					}		
 					
 				}
-				if ($pnum>0) {
+				if ($pnum>0 || 1) {
 					$photosStr="[".$photosStr ."]";				
 				}
 			}

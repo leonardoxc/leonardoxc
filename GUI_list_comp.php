@@ -361,7 +361,7 @@
 <script type="text/javascript">
 
 var BT_base_url='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=info_short&flightID=';
-
+var BT_default_width=600;
 </script>
 
 <? echo makePilotPopup();  ?>

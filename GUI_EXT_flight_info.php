@@ -114,11 +114,19 @@ if ($op=='photos'){
 		$CONF_ENCODING=$langEncodings[$currentlang];
 	}
 
+    // google map cached
+    $mapUrl=$flight->createStaticMap(0);
+
 	header('Content-type: application/text; charset="'.$CONF_ENCODING.'"',true);
 
 //  echo "<pre class='short_info'>";
+
     echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
-	echo "<TR><TD width=160>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
+    echo "<tr><td valign='top'><img src='$mapUrl' width='250'></td><td valign='top'>";
+    echo "<table class='short_info' cellpadding='0' cellspacing='0' width='100%'>";
+
+
+	echo "<TR><TD width=150>"._DATE_SORT."</td><td>". formatDate($flight->DATE)."<td></tr>\n";
 
 	$gliderBrandImg=brands::getBrandText($flight->gliderBrandID,$flight->glider,$flight->cat);
 	echo "<TR><TD>"._GLIDER."</td><td>".leoHtml::img("icon_cat_".$flight->cat.".png",0,0,'absmiddle','','icons1','',0)." ".$gliderBrandImg."<td></tr>\n";
@@ -170,7 +178,7 @@ if ($flight->is3D()) {
 	echo "<TR><TD>"._TAKEOFF_ALTITUDE."</td><td>".formatAltitude($flight->TAKEOFF_ALT)."<td></tr>\n";
 }
 
-if ($flight->commentsNum) {
+if ($flight->commentsNum && 0) {
 	$flightComments=new flightComments($flightID);
 	$commentRow=$flightComments->getFirstFromDB();
 	$comment=leoHtml::cutString($commentRow['text'],300);
@@ -231,6 +239,7 @@ if ($flight->commentsNum) {
 		$i++;
 	}		
 	echo "</table>";
+    echo "</td></tr></table>\n";
 } else if ($op=='takeoffInfo'){
 	//$flightID=makeSane($_REQUEST['flightID'],1);
 	//$flightID+=0;

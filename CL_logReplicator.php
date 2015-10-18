@@ -192,6 +192,8 @@ class logReplicator {
 		//$pilot->FirstName=$pilotArray['userName'];
 		$pilot->FirstName=$pilotArray['pilotFirstName'];
 		$pilot->LastName=$pilotArray['pilotLastName'];
+		$pilot->FirstNameEn=$pilotArray['pilotFirstNameEn'];
+		$pilot->LastNameEn=$pilotArray['pilotLastNameEn'];
 		$pilot->countryCode =$pilotArray['pilotCountry'];
 		$pilot->Birthdate=$pilotArray['pilotBirthdate'];
 		$pilot->Sex=$pilotArray['pilotSex'];
@@ -257,7 +259,7 @@ class logReplicator {
 		} else if ( isset($e['serverID']) ){
 			$thisEntryServerID=$e['serverID'];
 		} else {
-			return array(0,"logReplicator::processEntry : ServerID for Log entry could not be determined ".$thisEntryServerID );			
+			return array(0,"logReplicator::processEntry : ServerID for Log entry could not be determined " );
 		}
 
 		if ($thisEntryServerID != $serverID ) { 
@@ -421,7 +423,7 @@ class logReplicator {
 					
 					if ($isFlightDup) {
 						return array(-1,"Flight already exists : $msg");
-						continue;
+
 					}
 				} 
 				
@@ -561,9 +563,11 @@ class logReplicator {
 						// the 1st bit of 'private' , the others are used locally !!
 						if ($fieldName=='private') {
 							if ( $fieldValue & 0x01 ) {
-								$fieldValue= $extFlight->private | 0x01 ;
+								$fieldValue = $extFlight->private | 0x01;
+							} else if ( $fieldValue & 0x04 ) { // visible to friends
+								$fieldValue= $extFlight->private | 0x04 ;
 							} else {
-								$fieldValue= $extFlight->private & 0xFE  ;
+								$fieldValue= $extFlight->private & 0xFA  ;
 							}							
 						}
 						$extFlight->$fieldName=$fieldValue;

@@ -352,9 +352,9 @@ border:0;
 
 .actionLink,   .actionLink a, .actionLink a:visited { color:#000066; text-align:left; text-decoration:none;}
 
-.smallInfo { display:block; margin:0; padding:0; width:70px; height:24px; clear:none; overflow:hidden; position:relative; z-index:0;}
+.smallInfo { display:block; margin:0; padding:0; width:86px; height:24px; clear:none; overflow:hidden; position:relative; z-index:0;}
 
-.actionLink { display: block; position:absolute; top:1px; left:54px; float:none; clear:none;  z-index:1;}
+.actionLink { display: block; position:absolute; top:1px; left:72px; float:none; clear:none;  z-index:1;}
 .geIcon 	{ display:block; position:absolute; top:1px; left:16px; float:none; clear:none; z-index:1;}
 .flightIcon { display:block; position:absolute; top:1px; left:0px; float:none; clear:none; z-index:1;}
 .photoIcon2 { display:block; position:absolute; top:1px; left:32px; float:none; clear:none; z-index:1;}
@@ -405,6 +405,7 @@ border:0;
 
 
 .commentDiv { display:block; position:absolute; top:0px; left:44px; float:none; clear:none; z-index:1;}
+.previewDiv { display:block; position:absolute; top:0px; left:58px; float:none; clear:none; z-index:1;}
 
 .checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px;
 	 float:none; clear:none; z-index:-1;

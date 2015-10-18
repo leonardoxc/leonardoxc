@@ -17,6 +17,12 @@
 
 	$Ltemplate = new LTemplate($LeoCodeBase.'/templates/'.$PREFS->themeName);
 
+    global $flightsTable,$deletedFlightsTable;
+    if ($_GET['deleted'] && L_auth::isAdmin($userID)  ) {
+        $flightsTable	=  $deletedFlightsTable;
+        $deletedFlights=1;
+    }
+
 
   $flightID+=0;
   $flight=new flight();
@@ -24,21 +30,29 @@
   	echo "<br><div align='center'>No such flight exists</div><br><BR>";
 	return;  
   }
-  
-  if ( $flight->private && ! $flight->belongsToUser($userID) && ! L_auth::isAdmin($userID) ) {
-		echo "<TD align=center>"._FLIGHT_IS_PRIVATE."</td>";
+
+	//echo $flight->private." & ".$flight->flightIsViewableByUser($userID)." $$";
+
+  if ( ( $flight->private && $flight->private!=4 ) && ! $flight->belongsToUser($userID) && ! L_auth::isAdmin($userID) ) {
+		echo "<br><div align=center><h3>"._FLIGHT_IS_PRIVATE."</h3></div><br><BR>";
 		return;
   }
 
     //debug
-    $mapUrl=$flight->createStaticMap(1);
+    //$mapUrl=$flight->createStaticMap(1);
 
   $flight->incViews();
 
-  if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){
-	require dirname(__FILE__).'/GUI_flight_show_ext.php';
-	return;
-  }
+	//show limited info to non friends
+	if ( $flight->private==4 && ! $flight->flightIsViewableByUser($userID)  ) {
+		require dirname(__FILE__) . '/GUI_flight_show_ext.php';
+		return;
+	}
+
+	  if ( $flight->externalFlightType & SYNC_INSERT_FLIGHT_LINK ){
+		require dirname(__FILE__).'/GUI_flight_show_ext.php';
+		return;
+	  }
 
 
 	$Ltemplate ->set_filenames(array(
@@ -686,10 +700,14 @@ if ( is_file($flight->getMapFilename() ) ) {
 if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 	$flight->createEncodedPolyline();
 
+
 	if ( $CONF_google_maps_api_key  ) {
+        if ($deletedFlights ) $deletedArg='&deleted=1';
+        else $deletedArg='';
+
 		 $googleMap="<div id='gmaps_div' style='display:block; width:100%; height:610px;'><iframe id='gmaps_iframe' align='left'
 		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
-		$flight->flightID."' ".
+		$flight->flightID.$deletedArg."' ".
 		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.

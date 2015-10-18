@@ -204,8 +204,14 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 				<li><a href="<?=getLeonardoLink(array('op'=>'users')) ?>">User Administration</a></li>
 				<? } ?>
                 <li class='li_space long'></li>
-                <li><a href="<?=getLeonardoLink(array('op'=>'admin_brands')) ?>">Brand Administration</a></li>               
+                <li><a href="<?=getLeonardoLink(array('op'=>'admin_gliders')) ?>">[NEW] Glider DB Admin</a></li>
+                <li><a href="<?=getLeonardoLink(array('op'=>'admin_brands')) ?>">Brand Administration</a></li>
 				<li class='li_space long'></li>
+                <li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
+                    'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
+                    'takeoffID'=>'0','country'=>'0','cat'=>'0>',
+                    'clubID'=>'0'))?>&deleted=1">DELETED Flights</a></li>
+
 				<li><a href="<?=getLeonardoLink(array('op'=>'list_flights',
 				'sortOrder'=>'takeoffVinicity','year'=>'0','month'=>'0','pilotID'=>'0',
 				'takeoffID'=>'0','country'=>'0','cat'=>'0>',
@@ -368,6 +374,8 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 		<li><a href="<?=getLeonardoLink(array('op'=>'add_flight')) ?>"><?=_MENU_SUBMIT_FLIGHT ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'add_from_zip')) ?>"><?=_MENU_SUBMIT_FROM_ZIP ?></a></li>
 		<li class='li_space'></li>
+		<li><a href="<?=getLeonardoLink(array('op'=>'friends') )?>"><?=leoHtml::img("icon_star.png",0,0,'absmiddle','','icons1','',0)?> <?=_My_Friends?></a></li>
+
 		<li><a href="<?=getLeonardoLink(array('op'=>'list_flights','pilotID'=>'0_'.$userID,'takeoffID'=>'0','country'=>'0','year'=>'0','month'=>'0','season'=>'0')) ?>"><?=_MENU_MY_FLIGHTS ?></a></li>
 		<li><a href="<?=getLeonardoLink(array('op'=>'pilot_profile','pilotIDview'=>'0_'.$userID)) ?>"><?=_MENU_MY_PROFILE ?></a></li>
         

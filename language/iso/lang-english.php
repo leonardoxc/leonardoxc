@@ -292,6 +292,9 @@ define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Press here to change the flight's dat
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","The changes have been applied");
 define("_RETURN_TO_FLIGHT","Return to flight");
 
+define("_IS_FRIENDS_ONLY_","Visible to Friends Only");
+define("_friends_text1","Map and charts are visible to Friends Only");
+
 //--------------------------------------------
 // olc
 //--------------------------------------------

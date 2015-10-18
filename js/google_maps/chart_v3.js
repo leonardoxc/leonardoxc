@@ -47,13 +47,18 @@ function toggleSyncStartsTimezone(cotrol){
 	}
 }
 
+var trackColorList=[];
+
 function drawChart() {
 	var d0 = [];
 	var d1 = [];
 	
 	var dataArray=[];
 	var optionsArray=[];
-	
+
+    var cnum=0;
+
+
 	var flightsNum=flights.length;
 	
 	chartDataSeries=[];
@@ -63,12 +68,18 @@ function drawChart() {
 	MAX_END=0;
 	
 	
-	for(var fnum in flights) {
+	for(var ii in flightsList) {
+        var fnum=flightsList[ii];
+
 		var data=flights[fnum].data;
 	
 		var flightID=data.flightID;
 		var StartTm=data.startTm;
-		
+
+        var trackColor=flights[fnum]['data']['color'];
+        trackColorList[cnum]=trackColor;
+        cnum++;
+
 		if (firstStartTm==null) { 
 			// this is the first track
 			firstStartTm=StartTm;
@@ -119,7 +130,7 @@ function drawChart() {
 	
 		if (flightsTotNum==1) {
 	 		// ground 	 		
-	 		optionsArray.push( { data:d0,label: "ground", lines: { 
+	 		optionsArray.push( { data:d0,label: "", lines: {
    			   		fill: true,			  
    			   		fillColor: "#AB7224"
   		   		}
@@ -150,7 +161,7 @@ function drawChart() {
 				},
 				shadowSize: 0
 			},
-			colors: trackColors ,
+			colors: trackColorList,
 			xaxis: { mode: "time",  show: true } ,
 			yaxis: { min: 0 },
 			crosshair: { mode: "x" },
@@ -161,7 +172,8 @@ function drawChart() {
 	        	borderWidth: 0,
 	            borderColor: "#454545",
 				autoHighlight: false 
-			}
+			},
+            legend: { show: true,  noColumns:3 }
 		}	
 	);
 	

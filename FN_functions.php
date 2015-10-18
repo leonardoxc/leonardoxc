@@ -74,6 +74,9 @@ function toLatin1($str,$enc=""){
 
 }
 
+// GUS added condition
+if( !function_exists('fetchURL') )
+{
 function fetchURL( $url, $timeout=5) {
 	$url_parsed = parse_url(str_replace(' ','%20',$url) );
    $host = $url_parsed["host"];
@@ -119,6 +122,8 @@ function fetchURL( $url, $timeout=5) {
    fclose($fp);
   
    return $in;
+	}
+
 }
 
 /**

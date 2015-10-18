@@ -35,9 +35,21 @@
  	echo "<div>You dont have permission to edit this profile<br></div>";
     return;
   }
-  
+
+    if (isset($_REQUEST['updateProfile']) && $CONF_use_NAC &&  $CONF['NAC']['id_mandatory'] ) {
+
+        if (!$_REQUEST['NACid'] || ! $_REQUEST['NACmemberID'] ) {
+            echo '<span class="alert">You must provide a valid NAC and NAC membership</span>';
+            unset($_REQUEST['updateProfile']);
+        }
+    }
+
   if (isset($_REQUEST['updateProfile'])) {// submit form 
-	   		
+
+
+     if (1) {
+         $message.='<span class="alert">aa</span>';
+     }
 
 	if ($_REQUEST["PilotPhotoDelete"]=="1") {		// DELETE photo
 		@unlink(getPilotPhotoFilename($serverIDview,$pilotIDview,1) );
@@ -442,13 +454,18 @@
 
 			echo "</select>";
 
+    foreach  ($CONF_NAC_list as $NACid=>$NAC) {
+        if ($NAC['description']) {
+            echo "<div style='background:#d0d0d0; padding:10px; ' >".$NAC['description']."</div> ";
+        }
+    }
+
 			echo "<div id='mID' style='display:".(($pilot['NACid']==0) ? "none" : "inline")."'> ";
 			$memberid_readonly=in_array('NACmemberID', $readonly_fields) ? 'readonly' : '';
 			echo "<span style='white-space:nowrap'>"._MemberID.": <input size='5' type='text' name='NACmemberID' value='".$pilot['NACmemberID']."' $memberid_readonly  /></span> ";
 			echo "<div id='mIDselect' style='display:".($memberid_readonly ? "block" : "none")."'> ";
 			echo "[&nbsp;<a href='#' onclick=\"setID();return false;\">"._EnterID."</a>&nbsp;]";
 			echo "</div>";
-
 
 
 			echo "<div align=left id='mClubSelect' style='display:".( $CONF_NAC_list[$pilot['NACid']]['use_clubs']?"block":"none" )."' >"._Club." ";

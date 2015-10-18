@@ -292,6 +292,12 @@ define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Натиснете тук, за да промените даннит
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","Запази промените");
 define("_RETURN_TO_FLIGHT","Върни се към полета");
 
+define("_IS_FRIENDS_ONLY_","Видим в Приятели Само");
+define("_friends_text1","Карта и графики са видими за приятели Само");
+define("_My_Friends","Моите приятели");
+define("_MENU_ADD_FRIENDS","Добавете вашите приятели");
+
+
 //--------------------------------------------
 // olc
 //--------------------------------------------

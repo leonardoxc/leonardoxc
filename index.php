@@ -359,7 +359,13 @@ if ($op=="login") {  // do some output buffering so that cookies can be set late
 }
 
 if ($op=="show_flight" ) {  // get the flight info now since we need to create meta tags
-  $flightID+=0;
+    global $flightsTable,$deletedFlightsTable;
+    if ($_GET['deleted'] && L_auth::isAdmin($userID)  ) {
+        $flightsTable	=  $deletedFlightsTable;
+        $deletedFlights=1;
+    }
+
+    $flightID+=0;
   $flight=0;
   if ($flightID>0) {
 	  $flight=new flight();
@@ -428,6 +434,23 @@ if ($clubID) {
 	$clubName=_No_Club;
 }
 
+
+//-------------------------------------
+// get friends
+//-------------------------------------
+$queryFriends="SELECT * FROM leonardo_friends WHERE userID=$userID ";
+$resFriends= $db->sql_query($queryFriends);
+
+if($resFriends<= 0){
+	echo("<H3> Error in query: $queryFriends</H3>\n");
+	return;
+}
+$friendsIDs=array();
+while($rowFriends= $db->sql_fetchrow($resFriends) ){
+	$friendsIDs[$rowFriends['friendUserID']]=$rowFriends['friendUserID'];
+}
+
+
 require_once dirname(__FILE__)."/MENU_menu.php";
 
 
@@ -448,7 +471,7 @@ if ( $RUN['view']=='print' && $RUN['view0']!='print0'  ) {
 		} else {
 			require_once dirname(__FILE__)."/CL_pdf.php";
 			$url="http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'0';
-			echo "Wil make pdf out of $url<BR>";
+			echo "Will make pdf out of $url<BR>";
 			
 			$pdfFile=leoPdf::createPDF($url,md5($url));
 			if ($pdfFile) {				
@@ -579,6 +602,11 @@ if ($op=="index_full") {
 	// require $LeoCodeBase."/GUI_pilot_search.php";
 	// new code!
 	require $LeoCodeBase."/GUI_pilot_find.php";
+} else if ($op=="friends") {
+	// require $LeoCodeBase."/GUI_pilot_search.php";
+	// new code!
+	require $LeoCodeBase."/GUI_friends.php";
+
 } else if ($op=="pilot_find") {
 	require $LeoCodeBase."/GUI_pilot_find.php";
 } else if ($op=="pilot_profile") {
@@ -604,6 +632,8 @@ if ($op=="index_full") {
 	require $LeoCodeBase."/GUI_admin_update_languages.php";
 } else if ($op=="admin_brands") {
 	require $LeoCodeBase."/GUI_admin_brands.php";
+} else if ($op=="admin_gliders") {
+    require $LeoCodeBase."/GUI_admin_gliders.php";
 } else if ($op=="admin_airspace") {
 	require $LeoCodeBase."/GUI_admin_airspace.php";
 } else if ($op=="admin_test") {

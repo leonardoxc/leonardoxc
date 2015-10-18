@@ -952,4 +952,8 @@ if ($db) {
 	$db->sql_query("set sql_mode = ''");
 }
 
+// replace the php array with DB entries
+require_once dirname(__FILE__)."/CL_brands.php";
+brands::getBrandsListFromDB();
+
 ?>

@@ -23,7 +23,7 @@ function drawAirspace(rec) {
 	for(var j=0;j<rec.points.length;j+=2) {
 		pts[j] = new GLatLng(rec.points[j],rec.points[j+1]);
 	}	
-	var poly = new GPolygon(pts,'#000000',1,1,rec.color,0.25); 
+	var poly = new GPolygon(pts,'#000000',1,1,rec.color,0.10); 
 	airspace_polys.push(poly); 
 	airspace_labels.push(rec.name+' ['+rec.type+'] ('+rec.base+'m-'+rec.top+'m)');
 	map.addOverlay(poly);

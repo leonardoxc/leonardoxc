@@ -186,7 +186,7 @@ BT_displayOnSide[2]='auto';
 var BT_widths=[];
 BT_widths[0]=500;
 BT_widths[1]=400;
-BT_widths[2]=400;
+BT_widths[2]=600;
 
 var BT_default_width=500;
 </script>

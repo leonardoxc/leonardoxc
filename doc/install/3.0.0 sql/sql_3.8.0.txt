@@ -13,3 +13,17 @@ CREATE TABLE leonardo_queue (
 # 2012-05-06 add english version of names
 ALTER TABLE `leonardo_pilots` ADD `FirstNameEn` VARCHAR( 40 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `LastName` ,
 ADD `LastNameEn` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `FirstNameEn` ;
+
+
+# 2013-09-22 
+#  add tables for glider DB
+
+ CREATE TABLE leonardo_brands (
+`brandID` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`brandName` VARCHAR( 100 ) NOT NULL
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci ;
+
+# 2014-11-20
+ALTER TABLE  `leonardo_temp_users` ADD  `NACid` INT UNSIGNED NOT NULL DEFAULT  '0',
+ADD  `NACmemberID` BIGINT UNSIGNED NOT NULL DEFAULT  '0',
+ADD  `NACclubID` BIGINT NOT NULL DEFAULT  '0';

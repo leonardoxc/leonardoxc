@@ -31,7 +31,7 @@ class pilot{
 		$this->serverID=$this->serverID+0;
 		
 	    $this->valuesArray=array( "pilotID", "serverID", 
-"FirstName", "LastName","countryCode", 
+"FirstName", "LastName","FirstNameEn", "LastNameEn","countryCode", 
 "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
 "sponsor",  "Birthdate", "BirthdateHideMask",
 "Occupation", "MartialStatus", "OtherInterests", 
@@ -46,7 +46,7 @@ class pilot{
 		
 		
 	    $this->valuesArray1=array( "pilotID", "serverID", 
-			"FirstName", "LastName","countryCode", "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
+			"FirstName", "LastName","FirstNameEn", "LastNameEn","countryCode", "NACid", "NACmemberID", "NACclubID", "CIVL_ID",
 			 "Birthdate", "BirthdateHideMask","Sex","PilotPhoto", "FirstOlcYear","clubID", 
 		);
 		

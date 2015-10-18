@@ -26,7 +26,7 @@ if ($phpver >= '4.0.4pl1' && strstr($_SERVER["HTTP_USER_AGENT"],'compatible')) {
         ob_start('ob_gzhandler');
     }
 } else if ($phpver > '4.0') {
-    if (strstr($HTTP_SERVER_VARS['HTTP_ACCEPT_ENCODING'], 'gzip')) {
+    if (strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) {
         if (extension_loaded('zlib')) {
             $do_gzip_compress = TRUE;
             ob_start();
@@ -44,9 +44,10 @@ if ($phpver >= 41) {
     $PHP_SELF = $_SERVER['PHP_SELF'];
 }
 
-if (!ini_get("register_globals")) {
-    import_request_variables('GPC');
-}
+// register globals is not needed, we disable this
+//if (!ini_get("register_globals")) {
+//    import_request_variables('GPC');
+//}
 
 
 foreach ($_GET as $secvalue) {

@@ -130,9 +130,12 @@ if (count($_POST) >0 ) {
 	$gliderCertCategory=$_POST['gliderCertCategory']+0;
 	$glider=$_POST['glider'];
 	$gliderBrandID=$_POST['gliderBrandID'];
-				
-		
-	// log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");				
+
+
+
+
+
+// log_msg("category=$category,cat=$cat,gliderCertCategory=$gliderCertCategory\r\n");
 	list($errCode,$flightID)=addFlightFromFile($filename,0,$userID,	
 		array('category'=>$category,
 				'cat'=>$cat,
@@ -148,7 +151,11 @@ if (count($_POST) >0 ) {
 		echo getAddFlightErrMsg($errCode,$flightID);
 	} else {
 		// echo "response=$flightID<br>";
-		echo _YOUR_FLIGHT_HAS_BEEN_SUBMITTED."<br><br><a href='http://".$_SERVER['SERVER_NAME'].
+        $flight=new flight();
+        $flight->getFlightFromDB($flightID);
+
+
+        echo _YOUR_FLIGHT_HAS_BEEN_SUBMITTED."<br><br><a href='http://".$_SERVER['SERVER_NAME'].
 		getLeonardoLink(array('op'=>'show_flight','flightID'=>$flightID)).
 		"'>"._PRESS_HERE_TO_VIEW_IT.'</a>';
 

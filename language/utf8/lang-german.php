@@ -1179,4 +1179,11 @@ define('_Compare_Selected_Flights', 'Ausgewählte Flüge vergleichen');
 define('_More', 'mehr');
 define('_Close', 'schliessen');
 
+//--------------------------------------------------------
+//--------------------------------------------------------
+// Missing defines , autoreplaced values from 'english' 
+//--------------------------------------------------------
+define("_IS_FRIENDS_ONLY_","Visible to Friends Only"); 
+define("_friends_text1","Map and charts are visible to Friends Only"); 
+
 ?>

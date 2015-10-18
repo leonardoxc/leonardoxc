@@ -82,6 +82,13 @@ function Submit_Form(force_civl_id){
 			msg=_MANDATORY_CIVL_ID;
 		}
 	}
+
+    if (force_nac_id) {
+        if(msg.length==0 && trim(document.registrationForm.NACmemberID.value).length==0){
+            msg="You must provide a Valid membership NAC ID";
+        }
+    }
+
     if(msg.length>0){
     	alert(msg);
     } else {

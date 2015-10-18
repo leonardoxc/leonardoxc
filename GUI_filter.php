@@ -61,7 +61,7 @@ if (( $_REQUEST['setFilter']==1 || $_GET['fl_url']==1 ) && 0) { // form submitte
 } else { // form not submitted
 	global $filterVariables ;	
 	$filter->filterExport('filterVariables');
-	// print_r($filterVariables);
+	 print_r($filterVariables);
 	if (is_array($filterVariables)) {
 		foreach ($filterVariables as $key => $value ) {
 			if (is_array($value) ) continue;
@@ -374,6 +374,15 @@ function setClass(classID,val) {
                       <input name="FILTER_to_day_text" type="text" size="10" maxlength="10" value="<?=$FILTER_to_day_text ?>" />
                     <a href="javascript:showCalendar(document.formFilter.cal_to_button, document.formFilter.FILTER_to_day_text, 'dd.mm.yyyy','<? echo $calLang ?>',0,-1,-1)"> <img src="<? echo $moduleRelPath ?>/img/cal.gif" name='cal_to_button' width="16" height="16" border="0" id="cal_to_button" /></a>					  </td>
                 </tr>
+				<tr>
+						<td colspan="2">
+							<div class="infoHeader"><? echo _WEEKEND?> </div>
+							<label>
+								<input name="FILTER_WEEKEND" type="checkbox"  value="1"
+									<? if ($FILTER_WEEKEND) echo "checked='checked' " ?> />
+
+								<? echo _WEEKEND ?></label>
+					</td>
                 <tr>
                   <td colspan="2" class="infoHeader"><? echo _PilotBirthdate ?></td>
                 </tr>

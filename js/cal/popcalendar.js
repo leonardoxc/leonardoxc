@@ -145,7 +145,8 @@
 			if (bPageLoaded) return;
 
 			// if (!ie) yearNow += 1900;
-			if (!ie && !ie7) yearNow += 1900;
+			//if (!ie && !ie7 ) yearNow += 1900;
+            yearNow += 1900;
 
 			crossobj=(dom)?document.getElementById('calendar').style : ie? document.all.calendar : document.calendar;
 			if (!visibleOnLoad ) hideCalendar();

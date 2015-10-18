@@ -11,7 +11,7 @@
 // $Id: CL_html.php,v 1.5 2010/11/21 14:26:01 manolis Exp $                                                                 
 //
 //************************************************************************
-
+ 
 class leoHtml {
 	function html() {
 
@@ -64,6 +64,9 @@ function img($imgName,$width=0,$height=0,$align='',$title='',$class='',$id='',$t
 			} else $dir=$class.'/';
 		} 
 		$imgUrl=$server_url.$moduleRelPath."/img/$dir$imgName";
+
+        // this is a bad hack for misconfigured dhv server
+        // has no impact on other servers
         $imgUrl=str_replace("http://xc.dhv.de.//img","http://xc.dhv.de/xc/modules/leonardo/img",$imgUrl);
         $imgUrl=str_replace("http://xc.dhv.de.//data","http://xc.dhv.de/xc/modules/leonardo/data",$imgUrl);
 

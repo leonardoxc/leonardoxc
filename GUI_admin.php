@@ -139,6 +139,7 @@ echo "<ul>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=updateNAC_Clubs'>Update/Fix NAC Club scoring</a> <BR>";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=makehash'>Make hashes for all flights</a> ";
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin_brands'>Detect / Guess glider brands</a> ";
+    echo "<li><a href='".CONF_MODULE_ARG."&op=admin_gliders'>Glider DB administration</a> ";
 //	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertWaypoints'>Convert waypoints from iso -> UTF8 </a> ";
 	echo "<hr>";	
 	echo "<li><a href='".CONF_MODULE_ARG."&op=admin&admin_op=convertTakeoffs'>Convert takeoffs from iso to utf8</a> Use it when you switch from running Leoanardo

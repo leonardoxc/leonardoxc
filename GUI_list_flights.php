@@ -16,9 +16,14 @@
 	// Support for filtering by NACclubs via $_REQUEST[nacclub] added
 	// computed column "SCORE_SPEED"=FLIGHT_KM/DURATION added
 	
+if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
+   $flightsTable	=  $deletedFlightsTable;
+   $deletedFlights=1;
+}
 
 	$legend="";
 	$legend="<b>"._MENU_FLIGHTS."</b> ";
+    if ($deletedFlights) $legend="<b>"._MENU_FLIGHTS." [ DELETED ]</b> ";
 
 if (0) {	
 	$sortOrder=makeSane($_REQUEST["sortOrder"]);
@@ -303,17 +308,21 @@ if (0) {
 		$tmpDir=md5($_SERVER['REQUEST_URI']);
 		echo "START PDF\n";
 		$num=0;
-		
-		$flightUrl=str_replace("list_flights","pilot_profile_stats","http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"]).'0';
-		//$flightUrl="http://".$_SERVER['SERVER_NAME'].getLeonardoLink(array('op'=>'list_flights','print'=>1) );
-		$flights[$num]=$flightUrl;
-		
-			
-		// echo "<hr> url is ".$_SERVER['REQUEST_URI'].'<hr> path info is '.$_SERVER['PATH_INFO'].'<hr>';
-		
-		
-		echo "PDF URL:$flightUrl\n";
-		
+
+        $flightUrl="http://".$_SERVER['SERVER_NAME'].$_SERVER["REQUEST_URI"].'0';
+        // this only works in no seo urls
+        $flightUrl=str_replace("list_flights","pilot_profile_stats",$flightUrl);
+        //take care of seo urls
+        $flightUrl=str_replace("/tracks/","/stats/",$flightUrl);
+
+        // take care of pilotIDview
+        $flightUrl=str_replace("pilotID=","pilotIDview=",$flightUrl);
+
+        $flights[$num]=$flightUrl;
+        //       echo "<hr> url is ".$_SERVER['REQUEST_URI'].'<hr> path info is '.$_SERVER['PATH_INFO'].'<hr>';
+        echo "PDF URL:$flightUrl\n";
+
+
 		$num++;
 		while ($row = $db->sql_fetchrow($res)) { 
 			
@@ -443,17 +452,17 @@ BT_base_urls[1]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=photos&flightID=
 BT_base_urls[2]='<?=$moduleRelPath?>/GUI_EXT_flight_info.php?op=comments&flightID=';
 
 var BT_displayOnSide=[];
-BT_displayOnSide[0]='auto';
+BT_displayOnSide[0]='left';
 BT_displayOnSide[1]='left';
 BT_displayOnSide[2]='left';
 
 var BT_widths=[];
-BT_widths[0]=400;
+BT_widths[0]=600;
 BT_widths[1]=450;
 BT_widths[2]=450;
 
-// BT_open_wait = 500; 
-BT_close_wait = 400; 
+//BT_open_wait = 500;
+//BT_close_wait = 2000;
 
 </script>
 
@@ -612,6 +621,10 @@ function removeClubFlight(clubID,flightID) {
 			if ( $is_private & 0x02 ) { 
 				$privateIcon.="<img src='".$moduleRelPath."/img/icon_disabled.gif' align='absmiddle' width='13' height='13'>";
 			}
+
+		   if ( $is_private  & 0x04 ) {
+			   $privateIcon.="<img src='".$moduleRelPath."/img/locked.gif' align='absmiddle' width='13' height='13'>";
+		   }
 	   }
 	   	   
   	   if ( $row["DATE"] != $currDate || $sortOrder!='DATE' ) {
@@ -636,7 +649,8 @@ function removeClubFlight(clubID,flightID) {
 		$date2row.=$extLinkImgStr;
 		if ($date2row=='') $date2row.='&nbsp;';
 
-		echo "\n\n<tr class='$sortRowClass $rowStr' id='row_$flightID'>\n";
+	   echo "\n\n<tr class='$sortRowClass $rowStr' id='row_$flightID'>\n";
+
 
 	   $duration=sec2Time($row['DURATION'],1);
 	   $linearDistance=formatDistanceOpen($row["LINEAR_DISTANCE"]);
@@ -750,13 +764,13 @@ function removeClubFlight(clubID,flightID) {
 				$tmpairspaceName=$row['airspaceCheckMsg'];
 				if (strrchr( $tmpairspaceName,"Punkte"))
 				{
-					$airspaceProblem=' bgcolor=#009cff ';
-					if (strrchr($tmpairspaceName,"HorDist")) {
-						$airspaceProblem=' bgcolor=#FFFF00 ';
+					$airspaceProblem=' bgcolor=#009cff ';//Blue
+					if (strpos($tmpairspaceName,"HorDist")) {
+						$airspaceProblem=' bgcolor=#FFFF00 ';//Yellow
 					}
 					//mod.31.12.08 different colours for bad infringements. P. Wild
 					if (strpos($tmpairspaceName, 'CLASSC')!==false) { 
-						$airspaceProblem=' bgcolor=#FF0008 ';
+						$airspaceProblem=' bgcolor=#FF0008 ';//Red
 					}
 					if (strpos($tmpairspaceName, 'CLASSD')!==false) { 
 						$airspaceProblem=' bgcolor=#FF0008 ';
@@ -786,10 +800,18 @@ function removeClubFlight(clubID,flightID) {
 			$isExternalFlight ==2 || 
 			$CONF['servers']['list'][$row['serverID']]['treat_flights_as_local']) { 
 			// add class='betterTip' for tooltip
-			echo "<a class='flightLink' id='tpa0_$flightID' href='".getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) )."'>".
-			leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon')."</a>";
-			
-		    echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
+
+
+            $flightLinkUrl=getLeonardoLink(array('op'=>'show_flight','flightID'=>$row["ID"]) );
+            global $deletedFlights;
+            if ($deletedFlights) $flightLinkUrl.="&deleted=1";
+
+            echo "<a class='flightLink' id='tpa3_$flightID' href='".$flightLinkUrl."'>".
+			    leoHtml::img("icon_look.gif",0,0,'top',_SHOW,'icons1 flightIcon','',1)."</a>";
+        
+
+
+            echo "<a href='javascript:nop()' onclick=\"geTip.newTip('inline', -315, -5, 'ge_$i', 300, '".$row["ID"].
 					"' , '$currentlang')\"  onmouseout=\"geTip.hide()\">".
 					leoHtml::img("geicon.gif",0,0,'top',_Navigate_with_Google_Earth,'icons1 geIcon','ge_'.$i)."</a>";
 
@@ -833,9 +855,13 @@ function removeClubFlight(clubID,flightID) {
 		if ($hasComments ) 
 				echo "<a class='betterTip' id='tpa2_$flightID' href='javascript:nop();'>".
 						leoHtml::img($commentsImgName,0,0,'',$row["commentsNum"].' '._COMMENTS,'icons1 commentDiv','',1)."</a>";
-		
 
-		if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
+       if (1) echo "<span class='preview'><a class='betterTip' id='tpa0_$flightID' href='javascript:nop()'>".
+           leoHtml::img("icon_info.gif",0,0,'top',_SHOW,'icons1 previewDiv','',1)."</a></span>";
+
+
+
+       if ($isExternalFlight && ! $CONF['servers']['list'][$row['serverID']]['treat_flights_as_local'] ) {
  			 $extServerStr=$CONF['servers']['list'][$row['serverID']]['name'];
  			 $extServerStrShort=$CONF['servers']['list'][$row['serverID']]['short_name'];
 			 
