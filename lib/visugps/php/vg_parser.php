@@ -54,7 +54,7 @@ function ParseIgc($trackFile, &$trackData)
     define('IGC_elevP', 10);
     define('IGC_elevG', 11);
 
-    if (preg_match('/HFDTE(\d{2})(\d{2})(\d{2})/mi', $trackFile, $m)) {
+    if (preg_match('/(?:HFDTE(?:DATE:)?)(\d{2})(\d{2})(\d{2})/mi', $trackFile, $m)) {
         $trackData['date']['day'] = intval($m[1]);
         $trackData['date']['month'] = intval($m[2]);
         $trackData['date']['year'] = intval($m[3]) + (($m[3] > 60)?1900:2000);
