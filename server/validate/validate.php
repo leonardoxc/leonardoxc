@@ -112,7 +112,8 @@
 		"vali-xtr"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"Validation check passed"),
 
 		// Skybean vario
-		"vali-xsb"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"Validation check passed"),
+		// IGCVALI:PASSED,1
+		"vali-xsb"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"IGCVALI:PASSED"),
 
 		//"vali-ewa"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 2
 		//"vali-fil"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
