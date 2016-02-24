@@ -31,7 +31,7 @@
           <li><a href="http://www.paraglidingforum.com/leonardo" target="_blank">International XC database</a></li>
           <li><a href="http://xc.dhv.de/xc/modules.php?name=leonardo" target="_blank">DHV XC Contest</a></li>
           <li><a href="http://www.xcbrasil.org" target="_blank">Brazilian Leonardo</a></li>
-          <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian ABVL</a></li>
+          <li><a href="http://www.portaldovoo.com.br/leonardo" target="_blank">Brazilian - Portal do Voo</a></li>
           <li><a href="http://cnd.favl.info/leonardo/" target="_blank">FAVL - Argentine Leonardo</a> </li>
           <li><a href="http://www.argentinaxc.com.ar" target="_blank">Argentina XC Leonardo</a></li>
           <li><a href="http://www.xcportugal.org/index.php?name=leonardo" target="_blank">Liga XC Portugal</a></li>
