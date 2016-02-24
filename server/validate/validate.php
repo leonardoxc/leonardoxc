@@ -104,6 +104,16 @@
 		"vali-xmr"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"),	// fail -> 1
 		// "vali-cu"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 67
 
+		// XC tracer
+		/*
+ 			Validation check passed, data indicated as correct
+			IGCVALI:PASSED,1
+		 */
+		"vali-xtr"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"Validation check passed"),
+
+		// Skybean vario
+		"vali-xsb"		=>array("name"=>"","ok_result"=>9999,"ok_string"=>"Validation check passed"),
+
 		//"vali-ewa"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 2
 		//"vali-fil"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 69
 		//"vali-gcs"			=>array("name"=>"","ok_result"=>99,"ok_string"=>"Validation check passed"), // fail -> 68
@@ -141,7 +151,8 @@
 		}
 
 		if ($valArray['ok_result']==9999) { // search for string instead
-			if (trim($output[0]==$valArray['ok_string']) ) {
+			$len=strlen($valArray['ok_string']);
+			if ( strtoupper( substr( trim($output[0]) ,0,$len) )  == strtoupper( $valArray['ok_string'])  ) {
 				$ok=1;
 				break;
 			}
