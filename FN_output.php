@@ -334,22 +334,34 @@ central
 }
 
 function getTZoffset($TZone,$tm) {
-	$oldTZ=getenv("TZ");
-	// echo "old:$oldTZ";
-	// DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm) [server TZ=$oldTZ] ".date("T/Z/I/O")."<BR>");
 
-	putenv("TZ=$TZone");
-$offset=date('O',$tm);
-	putenv("TZ=$TZone");
-$offset=date('O',$tm);
-	putenv("TZ=$TZone");
+	/*php 5.4 code */
+	$oldTZ=date_default_timezone_get();
+	date_default_timezone_set($TZone);
+
 	$offset=date('O',$tm);
-
-	$tTZ=getenv("TZ");
 	DEBUG('getTZoffset',128,"getTZoffset: offset from GMT :$offset [getenv TZ= $tTZ] ".date("T/Z/I/O")."<BR>");
 
-	putenv("TZ=$oldTZ");
+	date_default_timezone_set($oldTZ);
 
+	/*
+        $oldTZ=getenv("TZ");
+
+        // echo "old:$oldTZ";
+        // DEBUG('getTZoffset',128,"getTZoffset: $TZone  ($tm) [server TZ=$oldTZ] ".date("T/Z/I/O")."<BR>");
+
+        putenv("TZ=$TZone");
+    $offset=date('O',$tm);
+        putenv("TZ=$TZone");
+    $offset=date('O',$tm);
+        putenv("TZ=$TZone");
+        $offset=date('O',$tm);
+
+        $tTZ=getenv("TZ");
+        DEBUG('getTZoffset',128,"getTZoffset: offset from GMT :$offset [getenv TZ= $tTZ] ".date("T/Z/I/O")."<BR>");
+
+        putenv("TZ=$oldTZ");
+    */
 
 	if ( preg_match("/([-+])(\d\d)(\d\d)/",$offset,$matches) ) {
 		$secs=$matches[2]*3600+$matches[3]*60;
