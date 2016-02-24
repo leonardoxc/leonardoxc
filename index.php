@@ -438,6 +438,8 @@ if ($clubID) {
 //-------------------------------------
 // get friends
 //-------------------------------------
+$userID+=0;
+
 $queryFriends="SELECT * FROM leonardo_friends WHERE userID=$userID ";
 $resFriends= $db->sql_query($queryFriends);
 
