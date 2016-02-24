@@ -2181,7 +2181,8 @@ $kml_file_contents=
 			if  (strlen($line)==0) continue;
 
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
-					$dt=substr($line,5,6);
+					$line = str_replace('DATE:', '', strtoupper($line));
+                    $dt=substr($line,5,6);
 					$yr_last=substr($dt,4,2);
 					// case of YY=0 (1 digit) HFDTE08070
 					if ($yr_last=="0") $yr_last="00";
@@ -2793,7 +2794,8 @@ $kml_file_contents=
 			if (strtoupper(substr($line,0,3)) =="OLC"  ) continue; // it is an olc file , dont put the OLC... line in to the saned file
 
 			if (strtoupper(substr($line,0,5)) =="HFDTE"  || strtoupper(substr($line,0,5)) =="HPDTE"  ) {  // HFDTE170104  OR HPDTE310805
-				if ( $alreadyInPoints && $points>0 ) {
+				$line = str_replace('DATE:', '', strtoupper($line));
+                if ( $alreadyInPoints && $points>0 ) {
 					if ( $prevPoint->gpsTime < 86200 ) {
 						// if last good point is > 86200 (200 secs before day change at 86400) we dont treat this as a new track
 						$stopReadingPoints=1;
