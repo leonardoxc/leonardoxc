@@ -27,3 +27,12 @@ ADD `LastNameEn` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NU
 ALTER TABLE  `leonardo_temp_users` ADD  `NACid` INT UNSIGNED NOT NULL DEFAULT  '0',
 ADD  `NACmemberID` BIGINT UNSIGNED NOT NULL DEFAULT  '0',
 ADD  `NACclubID` BIGINT NOT NULL DEFAULT  '0';
+
+
+# 2016-04-18
+
+CREATE TABLE IF NOT EXISTS `leonardo_friends` (
+  `userID` int(10) unsigned NOT NULL,
+  `friendUserID` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`userID`,`friendUserID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
