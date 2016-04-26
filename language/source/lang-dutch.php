@@ -90,7 +90,7 @@ define("_UPDATE_3D_MAP","Update 3D Kaart");
 define("_UPDATE_GRAPHS","Update Grafieken");
 define("_UPDATE_SCORE","Update score's");
 
-define("_TAKEOFF_COORDS","Startplaats Coördinaten:");
+define("_TAKEOFF_COORDS","Startplaats Coï¿½rdinaten:");
 define("_NO_KNOWN_LOCATIONS","Er is geen bekende locatie!");
 define("_FLYING_AREA_INFO","Vlieggebied Info");
 
@@ -418,7 +418,7 @@ define("_Waypoint_Name","Waypoint Naam");
 define("_Navigate_with_Google_Earth","Bekijk met Google Earth");
 define("_See_it_in_Google_Maps","Bekijk in Google Maps");
 define("_See_it_in_MapQuest","Bekijk in MapQuest");
-define("_COORDINATES","Coördinaten");
+define("_COORDINATES","Coï¿½rdinaten");
 define("_FLIGHTS","Vluchten");
 define("_SITE_RECORD","Startplaats record");
 define("_SITE_INFO","Startplaats informatie");
@@ -623,4 +623,7 @@ define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
