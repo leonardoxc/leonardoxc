@@ -32,115 +32,115 @@ define("_FREE_FLIGHT","Prosti prelet");
 define("_FREE_TRIANGLE","Trikotnik");
 define("_FAI_TRIANGLE","FAI trikotnik");
 
-define("_SUBMIT_FLIGHT_ERROR","Pojavila se je te¾ava pri nalaganju leta");
+define("_SUBMIT_FLIGHT_ERROR","Pojavila se je teï¿½ava pri nalaganju leta");
 
 // list_pilots()
 define("_NUM","#");
 define("_PILOT","Pilot");
-define("_NUMBER_OF_FLIGHTS","©tevilo letov");
-define("_BEST_DISTANCE","Najdalj¹i prosti prelet");
-define("_MEAN_KM","Povpreèno ¹t. km na let");
+define("_NUMBER_OF_FLIGHTS","ï¿½tevilo letov");
+define("_BEST_DISTANCE","Najdaljï¿½i prosti prelet");
+define("_MEAN_KM","Povpreï¿½no ï¿½t. km na let");
 define("_TOTAL_KM","Skupaj preletenih km");
 define("_TOTAL_DURATION_OF_FLIGHTS","Skupno trajanje letov");
-define("_MEAN_DURATION","Povpreèno trajanje leta");
+define("_MEAN_DURATION","Povpreï¿½no trajanje leta");
 define("_TOTAL_OLC_KM","Skupna OLC razdalja");
-define("_TOTAL_OLC_SCORE","Skupaj OLC toèk");
-define("_BEST_OLC_SCORE","Najbolj¹i OLC rezultat");
+define("_TOTAL_OLC_SCORE","Skupaj OLC toï¿½k");
+define("_BEST_OLC_SCORE","Najboljï¿½i OLC rezultat");
 define("_From","od");
 
 // list_flights()
 define("_DURATION_HOURS_MIN","Trajanje (u:m)");
-define("_SHOW","Prika¾i");
+define("_SHOW","Prikaï¿½i");
 
 // show flight
 define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Let bo aktiviran v 1-2 minutah. ");
 define("_TRY_AGAIN","Prosim, ponovno poskusi kasneje");
 
-define("_TAKEOFF_LOCATION","Vzleti¹èe");
-define("_TAKEOFF_TIME","Èas vzleta");
+define("_TAKEOFF_LOCATION","Vzletiï¿½ï¿½e");
+define("_TAKEOFF_TIME","ï¿½as vzleta");
 define("_LANDING_LOCATION","Pristanek");
-define("_LANDING_TIME","Èas pristanka");
+define("_LANDING_TIME","ï¿½as pristanka");
 define("_OPEN_DISTANCE","Ravna razdalja");
-define("_MAX_DISTANCE","Naveèja razdalja");
+define("_MAX_DISTANCE","Naveï¿½ja razdalja");
 define("_OLC_SCORE_TYPE","OLC disciplina");
 define("_OLC_DISTANCE","OLC razdalja");
-define("_OLC_SCORING","OLC toèke");
-define("_MAX_SPEED","Najveèja hitrost");
-define("_MAX_VARIO","Najveèje dviganje");
-define("_MEAN_SPEED","Povpreèna hitrost");
-define("_MIN_VARIO","Najveèje spu¹èanje");
-define("_MAX_ALTITUDE","Dose¾ena vi¹ina (nm)");
-define("_TAKEOFF_ALTITUDE","Vi¹ina vzleti¹èa (nm)");
-define("_MIN_ALTITUDE","Najmanj¹a vi¹ina (nm)");
-define("_ALTITUDE_GAIN","Pridobljena vi¹ina");
+define("_OLC_SCORING","OLC toï¿½ke");
+define("_MAX_SPEED","Najveï¿½ja hitrost");
+define("_MAX_VARIO","Najveï¿½je dviganje");
+define("_MEAN_SPEED","Povpreï¿½na hitrost");
+define("_MIN_VARIO","Najveï¿½je spuï¿½ï¿½anje");
+define("_MAX_ALTITUDE","Doseï¿½ena viï¿½ina (nm)");
+define("_TAKEOFF_ALTITUDE","Viï¿½ina vzletiï¿½ï¿½a (nm)");
+define("_MIN_ALTITUDE","Najmanjï¿½a viï¿½ina (nm)");
+define("_ALTITUDE_GAIN","Pridobljena viï¿½ina");
 define("_FLIGHT_FILE","Datoteka z letom");
 define("_COMMENTS","Komentarji");
 define("_RELEVANT_PAGE","URL povezane strani");
 define("_GLIDER","Krilo");
 define("_PHOTOS","Fotografije");
 define("_MORE_INFO","Dodatno");
-define("_UPDATE_DATA","Osve¾i podatke");
+define("_UPDATE_DATA","Osveï¿½i podatke");
 define("_UPDATE_MAP","Posodobi zemljevid");
 define("_UPDATE_3D_MAP","Posodobi 3D zemljevid");
 define("_UPDATE_GRAPHS","Posodobi grafe");
 define("_UPDATE_SCORE","Posodobi rezultate");
 
-define("_TAKEOFF_COORDS","Koordinate vzleti¹èa");
+define("_TAKEOFF_COORDS","Koordinate vzletiï¿½ï¿½a");
 define("_NO_KNOWN_LOCATIONS","Ni znanih lokacij!");
-define("_FLYING_AREA_INFO","Informacije o podroèju letenja");
+define("_FLYING_AREA_INFO","Informacije o podroï¿½ju letenja");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","Leonardo XC stre¾nik");
+define("_PAGE_TITLE","Leonardo XC streï¿½nik");
 define("_RETURN_TO_TOP","Nazaj na vrh");
 // list flight
 define("_PILOT_FLIGHTS","Pilotovi leti");
 
 define("_DATE_SORT","Datum");
 define("_PILOT_NAME","Ime pilota");
-define("_TAKEOFF","Vzleti¹èe");
+define("_TAKEOFF","Vzletiï¿½ï¿½e");
 define("_DURATION","Trajanje");
 define("_LINEAR_DISTANCE","Ravna razdalja");
 define("_OLC_KM","OLC km");
-define("_OLC_SCORE","OLC toèke");
+define("_OLC_SCORE","OLC toï¿½ke");
 define("_DATE_ADDED","Zadnje prijave");
 
 define("_SORTED_BY","Urejeno po:");
 define("_ALL_YEARS","Vsa leta");
 define("_SELECT_YEAR_MONTH","Izberi leto (in mesec)");
 define("_ALL","Vse");
-define("_ALL_PILOTS","Prika¾i vse pilote");
-define("_ALL_TAKEOFFS","Prika¾i vsa vzleti¹èa");
+define("_ALL_PILOTS","Prikaï¿½i vse pilote");
+define("_ALL_TAKEOFFS","Prikaï¿½i vsa vzletiï¿½ï¿½a");
 define("_ALL_THE_YEAR","Celo leto");
 
 // add flight
 define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Nisi dodal datoteke z letom");
-define("_NO_SUCH_FILE","Tvoje datoteke ni na stre¾niku");
-define("_FILE_DOESNT_END_IN_IGC","Datoteka nima konènice .igc");
+define("_NO_SUCH_FILE","Tvoje datoteke ni na streï¿½niku");
+define("_FILE_DOESNT_END_IN_IGC","Datoteka nima konï¿½nice .igc");
 define("_THIS_ISNT_A_VALID_IGC_FILE","To ni veljavna IGC datoteka");
-define("_THERE_IS_SAME_DATE_FLIGHT","Let z enakim datumom in èasom ¾e obstaja");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Èe jo ¾eli¹ zamenjati, mora¹ najprej");
+define("_THERE_IS_SAME_DATE_FLIGHT","Let z enakim datumom in ï¿½asom ï¿½e obstaja");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","ï¿½e jo ï¿½eliï¿½ zamenjati, moraï¿½ najprej");
 define("_DELETE_THE_OLD_ONE","zbrisati staro");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Let z enakim imenom ¾e obstaja");
-define("_CHANGE_THE_FILENAME","Èe je to drug let, prosim spremeni ime in poskusi ponovno");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tvoj let je nalo¾en");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","Let z enakim imenom ï¿½e obstaja");
+define("_CHANGE_THE_FILENAME","ï¿½e je to drug let, prosim spremeni ime in poskusi ponovno");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tvoj let je naloï¿½en");
 define("_PRESS_HERE_TO_VIEW_IT","Za pregled klikni tu");
 define("_WILL_BE_ACTIVATED_SOON","(aktiviran bo v 1-2 minutah)");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Prijava veè letov");
+define("_SUBMIT_MULTIPLE_FLIGHTS","Prijava veï¿½ letov");
 define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Obdelane bodo le IGC datoteke");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Predlo¾i ZIP datoteko<br>z leti");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Predloï¿½i ZIP datoteko<br>z leti");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Za nalagnje letov klikni tukaj");
 
-define("_FILE_DOESNT_END_IN_ZIP","Predlo¾ena datoteka nima konènice ZIP");
+define("_FILE_DOESNT_END_IN_ZIP","Predloï¿½ena datoteka nima konï¿½nice ZIP");
 define("_ADDING_FILE","Nalagam datoteko");
-define("_ADDED_SUCESSFULLY","Uspe¹no prijavljeno");
-define("_PROBLEM","Te¾ava pri OLC prijavljanju");
+define("_ADDED_SUCESSFULLY","Uspeï¿½no prijavljeno");
+define("_PROBLEM","Teï¿½ava pri OLC prijavljanju");
 define("_TOTAL","Skupaj ");
 define("_IGC_FILES_PROCESSED","Leti so bili obdelani");
-define("_IGC_FILES_SUBMITED","leti so predlo¾eni");
+define("_IGC_FILES_SUBMITED","leti so predloï¿½eni");
 
 // info
 define("_DEVELOPMENT","Razvoj");
@@ -153,7 +153,7 @@ define("_PROJECT_INFO","Info o Projektu");
 // menu bar 
 define("_MENU_MAIN_MENU","Glavni meni");
 define("_MENU_DATE","Izberi datum");
-define("_MENU_COUNTRY","Izberi dr¾avo");
+define("_MENU_COUNTRY","Izberi drï¿½avo");
 define("_MENU_XCLEAGUE","XC Liga");
 define("_MENU_ADMIN","Admin");
 
@@ -161,9 +161,9 @@ define("_MENU_COMPETITION_LEAGUE","Liga - vse kategorije");
 define("_MENU_OLC","OLC");
 define("_MENU_OPEN_DISTANCE","Ravna razdalja");
 define("_MENU_DURATION","Trajanje");
-define("_MENU_ALL_FLIGHTS","Prika¾i vse lete");
+define("_MENU_ALL_FLIGHTS","Prikaï¿½i vse lete");
 define("_MENU_FLIGHTS","Leti");
-define("_MENU_TAKEOFFS","Vzleti¹èa");
+define("_MENU_TAKEOFFS","Vzletiï¿½ï¿½a");
 define("_MENU_FILTER","Filter");
 define("_MENU_MY_FLIGHTS","Moji leti");
 define("_MENU_MY_PROFILE","Moj profil");
@@ -172,28 +172,28 @@ define("_MENU_MY_SETTINGS","Moje nastavitve");
 define("_MENU_SUBMIT_FLIGHT","Prijava leta");
 define("_MENU_SUBMIT_FROM_ZIP","Prijava letov iz zipa");
 define("_MENU_SHOW_PILOTS","Piloti");
-define("_MENU_SHOW_LAST_ADDED","Prika¾i zadnje prijave");
+define("_MENU_SHOW_LAST_ADDED","Prikaï¿½i zadnje prijave");
 define("_FLIGHTS_STATS","Statistika letov");
 
 define("_SELECT_YEAR","Izberi leto");
 define("_SELECT_MONTH","Izberi mesec");
-define("_ALL_COUNTRIES","Prika¾i vse dr¾ave");
+define("_ALL_COUNTRIES","Prikaï¿½i vse drï¿½ave");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
 define("_ALL_TIMES","VSI LETI");
-define("_NUMBER_OF_FLIGHTS","©tevilo letov");
+define("_NUMBER_OF_FLIGHTS","ï¿½tevilo letov");
 define("_TOTAL_DISTANCE","Skupna razdalja");
 define("_TOTAL_DURATION","Skupno trajanje");
-define("_BEST_OPEN_DISTANCE","Najdalj¹i prelet");
+define("_BEST_OPEN_DISTANCE","Najdaljï¿½i prelet");
 define("_TOTAL_OLC_DISTANCE","Skupna OLC razdalja");
-define("_TOTAL_OLC_SCORE","Skupaj OLC toèk");
-define("_BEST_OLC_SCORE","Najbolj¹i OLC rezultat");
-define("_MEAN_DURATION","Povpreèno trajanje");
-define("_MEAN_DISTANCE","Povpreèna razdalja");
-define("_PILOT_STATISTICS_SORT_BY","Piloti - razvr¹èeno");
-define("_CATEGORY_FLIGHT_NUMBER","Kategorija 'FastJoe' - ©tevilo letov");
+define("_TOTAL_OLC_SCORE","Skupaj OLC toï¿½k");
+define("_BEST_OLC_SCORE","Najboljï¿½i OLC rezultat");
+define("_MEAN_DURATION","Povpreï¿½no trajanje");
+define("_MEAN_DISTANCE","Povpreï¿½na razdalja");
+define("_PILOT_STATISTICS_SORT_BY","Piloti - razvrï¿½ï¿½eno");
+define("_CATEGORY_FLIGHT_NUMBER","Kategorija 'FastJoe' - ï¿½tevilo letov");
 define("_CATEGORY_TOTAL_DURATION","Kategorija 'DURACELL' - Skupno trajanje vseh letov");
 define("_CATEGORY_OPEN_DISTANCE","Kategorija 'Ravna razdalja'");
 define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Ni nobenega pilota za prikaz!");
@@ -205,7 +205,7 @@ define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Ni nobenega pilota za prikaz!");
 
 define("_THE_FLIGHT_HAS_BEEN_DELETED","Ta let je bil zbrisan");
 define("_RETURN","Nazaj");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","POZOR - ta let bo¹ zbisal");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","POZOR - ta let boï¿½ zbisal");
 define("_THE_DATE","Date ");
 define("_YES","DA");
 define("_NO","NE");
@@ -215,11 +215,11 @@ define("_NO","NE");
 //--------------------------------------------
 
 define("_LEAGUE_RESULTS","Rezultati lige");
-define("_N_BEST_FLIGHTS"," najbolj¹ih letov");
+define("_N_BEST_FLIGHTS"," najboljï¿½ih letov");
 define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","Skupaj OLC toèke");
+define("_OLC_TOTAL_SCORE","Skupaj OLC toï¿½ke");
 define("_KILOMETERS","Kilometri");
-define("_TOTAL_ALTITUDE_GAIN","Skupaj pridobljena vi¹ina");
+define("_TOTAL_ALTITUDE_GAIN","Skupaj pridobljena viï¿½ina");
 define("_TOTAL_KM","Skupaj km");
 
 //--------------------------------------------
@@ -232,10 +232,10 @@ define("_OR","ali");
 define("_AND","in");
 define("_FILTER_PAGE_TITLE","Filter letov");
 define("_RETURN_TO_FLIGHTS","Nazaj na lete");
-define("_THE_FILTER_IS_ACTIVE","Filter je vkljuèen");
-define("_THE_FILTER_IS_INACTIVE","Filter je izkljuèen");
+define("_THE_FILTER_IS_ACTIVE","Filter je vkljuï¿½en");
+define("_THE_FILTER_IS_INACTIVE","Filter je izkljuï¿½en");
 define("_SELECT_DATE","Izberi datum");
-define("_SHOW_FLIGHTS","Prika¾i lete");
+define("_SHOW_FLIGHTS","Prikaï¿½i lete");
 define("_ALL2","VSE");
 define("_WITH_YEAR","Leto");
 define("_MONTH","Mesec");
@@ -245,18 +245,18 @@ define("_from","od");
 define("_TO","To");
 define("_SELECT_PILOT","Izberi pilota");
 define("_THE_PILOT","Pilot");
-define("_THE_TAKEOFF","Vzleti¹èe");
-define("_SELECT_TAKEOFF","Izberi vzleti¹èe");
-define("_THE_COUNTRY","Dr¾ava");
-define("_COUNTRY","Dr¾ava");
-define("_SELECT_COUNTRY","Izberi dr¾avo");
+define("_THE_TAKEOFF","Vzletiï¿½ï¿½e");
+define("_SELECT_TAKEOFF","Izberi vzletiï¿½ï¿½e");
+define("_THE_COUNTRY","Drï¿½ava");
+define("_COUNTRY","Drï¿½ava");
+define("_SELECT_COUNTRY","Izberi drï¿½avo");
 define("_OTHER_FILTERS","Ostali filtri");
 define("_LINEAR_DISTANCE_SHOULD_BE","Ravna razdalja naj bo");
 define("_OLC_DISTANCE_SHOULD_BE","OLC razdalja naj bo");
 define("_OLC_SCORE_SHOULD_BE","OLC rezultat naj bo");
 define("_DURATION_SHOULD_BE","Trajanje naj bo");
-define("_ACTIVATE_CHANGE_FILTER","Vkljuèi / spremeni FILTER");
-define("_DEACTIVATE_FILTER","Izkljuèi FILTER");
+define("_ACTIVATE_CHANGE_FILTER","Vkljuï¿½i / spremeni FILTER");
+define("_DEACTIVATE_FILTER","Izkljuï¿½i FILTER");
 define("_HOURS","ur");
 define("_MINUTES","min");
 
@@ -266,18 +266,18 @@ define("_MINUTES","min");
 
 define("_SUBMIT_FLIGHT","Prijava leta");
 define("_ONLY_THE_IGC_FILE_IS_NEEDED","(potrebna je le IGC datoteka)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Predlo¾i <br>IGC datoteko leta");
-define("_NOTE_TAKEOFF_NAME","Prosim, zapi¹i ime in dr¾avo vzleti¹èa");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Predloï¿½i <br>IGC datoteko leta");
+define("_NOTE_TAKEOFF_NAME","Prosim, zapiï¿½i ime in drï¿½avo vzletiï¿½ï¿½a");
 define("_COMMENTS_FOR_THE_FLIGHT","Komentarji za ta let");
 define("_PHOTO","Fotografija");
-define("_PHOTOS_GUIDELINES","Fotografije naj bodo v jpg formatu in manj¹e od ");
+define("_PHOTOS_GUIDELINES","Fotografije naj bodo v jpg formatu in manjï¿½e od ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Za nalagnje leta klikni tukaj");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","®eli¹ predlo¾iti veè letov naenkrat?");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","ï¿½eliï¿½ predloï¿½iti veï¿½ letov naenkrat?");
 define("_PRESS_HERE","Klikni tukaj");
 
-define("_IS_PRIVATE","Ne prika¾i javno");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Ne prika¾i javno");
-define("_INSERT_FLIGHT_AS_USER_ID","Vstavi let kot uporabni¹ki ID");
+define("_IS_PRIVATE","Ne prikaï¿½i javno");
+define("_MAKE_THIS_FLIGHT_PRIVATE","Ne prikaï¿½i javno");
+define("_INSERT_FLIGHT_AS_USER_ID","Vstavi let kot uporabniï¿½ki ID");
 define("_FLIGHT_IS_PRIVATE","To je zasebni let");
 
 //--------------------------------------------
@@ -286,7 +286,7 @@ define("_FLIGHT_IS_PRIVATE","To je zasebni let");
 
 define("_CHANGE_FLIGHT_DATA","Spremeni podatke o letu");
 define("_IGC_FILE_OF_THE_FLIGHT","IGC datoteka leta");
-define("_DELETE_PHOTO","Zbri¹i");
+define("_DELETE_PHOTO","Zbriï¿½i");
 define("_NEW_PHOTO","nova slika");
 define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Za spremembo podatkov o letu klikni tukaj");
 define("_THE_CHANGES_HAVE_BEEN_APPLIED","Spremembe so uveljavljene");
@@ -324,51 +324,51 @@ define("_Other_Interests","Ostali interesi");
 define("_Photo","Fotografija");
 
 define("_Flying_Stuff","O letenju");
-define("_note_place_and_date","èe se da, zapi¹i dr¾avo in datum");
+define("_note_place_and_date","ï¿½e se da, zapiï¿½i drï¿½avo in datum");
 define("_Flying_Since","Leti od");
 define("_Pilot_Licence","Licenca pilota");
 define("_Paragliding_training","Jadralnopadalsko urjenje");
-define("_Favorite_Location","Najljub¹a lokacija");
-define("_Usual_Location","Obièajna lokacija");
-define("_Best_Flying_Memory","Najbolj¹i letalni spomin");
-define("_Worst_Flying_Memory","Najslab¹i letalni spomin");
-define("_Personal_Distance_Record","Osebni dol¾inski rekord");
-define("_Personal_Height_Record","Osebni vi¹inski rekord");
+define("_Favorite_Location","Najljubï¿½a lokacija");
+define("_Usual_Location","Obiï¿½ajna lokacija");
+define("_Best_Flying_Memory","Najboljï¿½i letalni spomin");
+define("_Worst_Flying_Memory","Najslabï¿½i letalni spomin");
+define("_Personal_Distance_Record","Osebni dolï¿½inski rekord");
+define("_Personal_Height_Record","Osebni viï¿½inski rekord");
 define("_Hours_Flown","Ur letenja");
 define("_Hours_Per_Year","Ur na leto");
 
 define("_Equipment_Stuff","Oprema");
 define("_Glider","Krilo");
-define("_Harness","Sede¾");
+define("_Harness","Sedeï¿½");
 define("_Reserve_chute","Rezervno padalo");
 define("_Camera","Kamera");
 define("_Vario","Vario");
 define("_GPS","GPS");
-define("_Helmet","Èelada");
+define("_Helmet","ï¿½elada");
 define("_Camcorder","Kamkorder");
 
 define("_Manouveur_Stuff","Manevri");
-define("_note_max_descent_rate","èe se da, zapi¹i najhitrej¹e dose¾eno spu¹èanje");
+define("_note_max_descent_rate","ï¿½e se da, zapiï¿½i najhitrejï¿½e doseï¿½eno spuï¿½ï¿½anje");
 define("_Spiral","Spirala");
 define("_Bline","B Stall");
 define("_Full_Stall","Full Stall");
 define("_Other_Manouveurs_Acro","Ostali Akro manevri");
 define("_Sat","SAT");
-define("_Asymmetric_Spiral","Asimetrièna spirala");
+define("_Asymmetric_Spiral","Asimetriï¿½na spirala");
 define("_Spin","Spin");
 
-define("_General_Stuff","Splo¹no");
-define("_Favorite_Singer","Naljub¹i/a pevec/ka");
-define("_Favorite_Movie","Najljub¹i film");
-define("_Favorite_Internet_Site","Najljub¹a<br>spletna stran");
-define("_Favorite_Book","Najljub¹a knjiga");
-define("_Favorite_Actor","Najljub¹i igralec/ka");
+define("_General_Stuff","Sploï¿½no");
+define("_Favorite_Singer","Naljubï¿½i/a pevec/ka");
+define("_Favorite_Movie","Najljubï¿½i film");
+define("_Favorite_Internet_Site","Najljubï¿½a<br>spletna stran");
+define("_Favorite_Book","Najljubï¿½a knjiga");
+define("_Favorite_Actor","Najljubï¿½i igralec/ka");
 
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Nalo¾i novo sliko ali popravi staro");
-define("_Delete_Photo","Zbri¹i sliko");
+define("_Upload_new_photo_or_change_old","Naloï¿½i novo sliko ali popravi staro");
+define("_Delete_Photo","Zbriï¿½i sliko");
 define("_Your_profile_has_been_updated","Tvoj profil je obnovljen");
 define("_Submit_Change_Data","Podaj - spremeni podatke");
 
@@ -378,37 +378,37 @@ define("_Submit_Change_Data","Podaj - spremeni podatke");
 define("_hh_mm","uu:mm");
 
 define("_Totals","Skupaj");
-define("_First_flight_logged","Prvi zabele¾en let");
-define("_Last_flight_logged","Zadnji zabele¾en let");
+define("_First_flight_logged","Prvi zabeleï¿½en let");
+define("_Last_flight_logged","Zadnji zabeleï¿½en let");
 define("_Flying_period_covered","Zajeto obdobje");
 define("_Total_Distance","Skupna razdalja");
-define("_Total_OLC_Score","Skupaj OLC toèk");
+define("_Total_OLC_Score","Skupaj OLC toï¿½k");
 define("_Total_Hours_Flown","Skupaj preletenih ur");
-define("_Total_num_of_flights","Skupno ¹tevilo letov ");
+define("_Total_num_of_flights","Skupno ï¿½tevilo letov ");
 
-define("_Personal_Bests","Osebni dose¾ki");
-define("_Best_Open_Distance","Najdalj¹a ravna razdalja");
-define("_Best_FAI_Triangle","Najbolj¹i FAI trikotnik");
-define("_Best_Free_Triangle","Najbolj¹i trikotnik");
-define("_Longest_Flight","Najdalj¹i let");
-define("_Best_OLC_score","Najbolj¹i OLC rezultat");
+define("_Personal_Bests","Osebni doseï¿½ki");
+define("_Best_Open_Distance","Najdaljï¿½a ravna razdalja");
+define("_Best_FAI_Triangle","Najboljï¿½i FAI trikotnik");
+define("_Best_Free_Triangle","Najboljï¿½i trikotnik");
+define("_Longest_Flight","Najdaljï¿½i let");
+define("_Best_OLC_score","Najboljï¿½i OLC rezultat");
 
-define("_Absolute_Height_Record","Absolutni vi¹inski rekord");
-define("_Altitute_gain_Record","Rekord v pridobljeni vi¹ini");
-define("_Mean_values","Povpreène vrednosti");
-define("_Mean_distance_per_flight","Povpreèna razdalja na let");
-define("_Mean_flights_per_Month","Povpreèno letov na mesec");
-define("_Mean_distance_per_Month","Povpreèna razdalja na mesec");
-define("_Mean_duration_per_Month","Povpreèno trajanje na mesec");
-define("_Mean_duration_per_flight","Povpreèno trajanje na let");
-define("_Mean_flights_per_Year","Povpreèno letov na leto");
-define("_Mean_distance_per_Year","Povpreèna razdalja na leto");
-define("_Mean_duration_per_Year","Povpreèno trajanje na leto");
+define("_Absolute_Height_Record","Absolutni viï¿½inski rekord");
+define("_Altitute_gain_Record","Rekord v pridobljeni viï¿½ini");
+define("_Mean_values","Povpreï¿½ne vrednosti");
+define("_Mean_distance_per_flight","Povpreï¿½na razdalja na let");
+define("_Mean_flights_per_Month","Povpreï¿½no letov na mesec");
+define("_Mean_distance_per_Month","Povpreï¿½na razdalja na mesec");
+define("_Mean_duration_per_Month","Povpreï¿½no trajanje na mesec");
+define("_Mean_duration_per_flight","Povpreï¿½no trajanje na let");
+define("_Mean_flights_per_Year","Povpreï¿½no letov na leto");
+define("_Mean_distance_per_Year","Povpreï¿½na razdalja na leto");
+define("_Mean_duration_per_Year","Povpreï¿½no trajanje na leto");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Poglej lete blizu te toèke");
+define("_See_flights_near_this_point","Poglej lete blizu te toï¿½ke");
 define("_Waypoint_Name","Waypoint Name");
 define("_Navigate_with_Google_Earth","Poglej v Google Earth");
 define("_See_it_in_Google_Maps","Poglej v Google Maps");
@@ -418,8 +418,8 @@ define("_FLIGHTS","Leti");
 define("_SITE_RECORD","Rekord kraja");
 define("_SITE_INFO","Informacije o kraju");
 define("_SITE_REGION","Regija");
-define("_SITE_LINK","Povezava do veè informacij");
-define("_SITE_DESCR","Opis vzleti¹èa/kraja");
+define("_SITE_LINK","Povezava do veï¿½ informacij");
+define("_SITE_DESCR","Opis vzletiï¿½ï¿½a/kraja");
 
 //--------------------------------------------
 // KML file
@@ -430,13 +430,13 @@ define("_KML_file_made_by","KML je naredil");
 //--------------------------------------------
 // add_waypoint.php
 //--------------------------------------------
-define("_ADD_WAYPOINT","Registriraj vzleti¹èe");
-define("_WAYPOINT_ADDED","Vzleti¹èe je bilo registrirano!");
+define("_ADD_WAYPOINT","Registriraj vzletiï¿½ï¿½e");
+define("_WAYPOINT_ADDED","Vzletiï¿½ï¿½e je bilo registrirano!");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Rekord vzleti¹èa<br>(ravna razdalja)");
+define("_SITE_RECORD_OPEN_DISTANCE","Rekord vzletiï¿½ï¿½a<br>(ravna razdalja)");
 
 //--------------------------------------------
 // glider types
@@ -484,10 +484,10 @@ define("_Your_settings_have_been_updated","Tvoje nastavitve so obnovljene");
 define("_THEME","Tema");
 define("_LANGUAGE","Jezik");
 define("_VIEW_CATEGORY","Prikaz kategorije");
-define("_VIEW_COUNTRY","Prikaz dr¾ave");
+define("_VIEW_COUNTRY","Prikaz drï¿½ave");
 define("_UNITS_SYSTEM" ,"Enotni sistem");
-define("_METRIC_SYSTEM","Metrièni (km, m)");
-define("_IMPERIAL_SYSTEM","Imperialni (milje, èevlji)");
+define("_METRIC_SYSTEM","Metriï¿½ni (km, m)");
+define("_IMPERIAL_SYSTEM","Imperialni (milje, ï¿½evlji)");
 define("_ITEMS_PER_PAGE","Vrstic na stran");
 
 define("_MI","mi");
@@ -505,23 +505,23 @@ define("_M_PER_SEC","m/sek");
 
 define("_WORLD_WIDE","Ves Svet");
 define("_National_XC_Leagues_for","Nacionalna XC liga za");
-define("_Flights_per_Country","Leti po dr¾avi");
-define("_Takeoffs_per_Country","Vzleti¹èa po dr¾avi");
-define("_INDEX_HEADER","Dobrodo¹li v Leonardo XC ligo");
-define("_INDEX_MESSAGE","Za navigacijo lahko uporabi¹ &quot;Glavni meni&quot; ali pa uporabi osnovne mo¾nosti prikazane spodaj.");
+define("_Flights_per_Country","Leti po drï¿½avi");
+define("_Takeoffs_per_Country","Vzletiï¿½ï¿½a po drï¿½avi");
+define("_INDEX_HEADER","Dobrodoï¿½li v Leonardo XC ligo");
+define("_INDEX_MESSAGE","Za navigacijo lahko uporabiï¿½ &quot;Glavni meni&quot; ali pa uporabi osnovne moï¿½nosti prikazane spodaj.");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
 define("_MENU_SUMMARY_PAGE","Prva (skupna) stran");
-define("_Display_ALL","Prika¾i VSE");
-define("_Display_NONE","Ne prika¾i NIÈ");
+define("_Display_ALL","Prikaï¿½i VSE");
+define("_Display_NONE","Ne prikaï¿½i NIï¿½");
 define("_Reset_to_default_view","Povrni privzet pogled");
 define("_No_Club","Brez kluba");
 define("_This_is_the_URL_of_this_page","To je URL te strani");
 define("_All_glider_types","Vse vrste kril");
 
-define("_MENU_SITES_GUIDE","Vodiè po letalnih podroèjih");
+define("_MENU_SITES_GUIDE","Vodiï¿½ po letalnih podroï¿½jih");
 define("_Site_Guide","Site Guide");
 
 define("_Search_Options","Search Options");
@@ -617,4 +617,7 @@ define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
