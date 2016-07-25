@@ -1000,6 +1000,7 @@ define("_Compare_Selected_Flights","Compare Selected Flights");
 define("_More","More");
 define("_Close","Close");
 
-
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 
 ?>
