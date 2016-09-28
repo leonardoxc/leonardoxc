@@ -69,12 +69,17 @@ Prerequisites in order to install Leonardo
   Execute the file "waypoints.sql"  in the same way as above. This will 
   add the coordinates of 3800 major world cities to get you started.
 
+  For Standalone installations execute the file "standalone_extra_tables.sql".
 
 - STEP 3. Edit modules/leonardo/config.php
    The 3 variables that you NEED to change are
    1)  $opMode 
 	1 = for use with a PHPnuke portal
 	2 = for use with a phBB2 forum
+  3 = standalone -- still work in progress
+  4 = for use with discuz
+  5 = for use with joomla  1.0 and 1.5
+  6 = for use with phpbb3
 
    2) $admin_users -> set this to the user id's (from the phpnuke table of users) 
                  that will have admin previledges
@@ -93,6 +98,8 @@ Prerequisites in order to install Leonardo
    if you wish to add another user (lets say with user id 132) you should make this :
        $admin_users=array(230,132); 
 
+   For a Standalone instalation this ID will probably be 1 if you're the first user
+   to register.
 
    3) $OLCScoringServerPath -> set this to 
 	http://www.mysite.com/modules/leonardo/server/scoreOLC.php
