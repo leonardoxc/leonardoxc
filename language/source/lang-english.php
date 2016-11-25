@@ -88,6 +88,7 @@ define("_UPDATE_SCORE","Update scoring");
 define("_TAKEOFF_COORDS","Takeoff coordinates:");
 define("_NO_KNOWN_LOCATIONS","There are no known locations!");
 define("_FLYING_AREA_INFO","Flying area info");
+define("_Sync_Start_Times","Sync Start times");
 
 //--------------------------------------------
 // index.php
