@@ -1,0 +1,19 @@
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++
++	HUFFMAN STATIC COMPRESSION
++	A PHP Implementation
++
++	by Exaton (exaton@free.fr)
++
++	Released as Freeware.
++	Use & modify as you see fit, no guarantee provided.
++
++	See README file for version info.
++
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+To install, simply place all files (customlib.inc.php, compresslib.inc.php,
+compress.inc.php and expand.inc.php) in the same folder, from which other
+scripts will be able to include them.
+
+For use, see README file.

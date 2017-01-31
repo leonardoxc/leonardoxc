@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Leonardo &quot;Direct flight upload&quot;</title>
+<style>
+<!--
+.style2 {color: #003366}
+-->
+</style>
+</head>
+<body link="blue" vlink="purple"> 
+<div> 
+  <h1><b>Leonardo &quot;A</b><b>irspace checking&quot;</b></h1>
+  <h1>1.&nbsp; Import of &quot;openair files&quot;</h1>
+  <p>The admin must put the openair file (for example &quot;Air_Europe 2006.txt&quot;)
+    in the leonardo/data/airspace directory.<br>
+  (and creat this dir if it doesnt exist). </p>
+  <p>Then from the top menu -&gt; &quot;Admin&quot;-&gt; &quot;Administer Airspace checking&quot; and </p>
+  <p>1) &quot; Delete all airspace entries in the DB &quot; to be sure no previous data
+    exist, if it is the first run or you want to start all over.</p>
+  <p>2) Click on the &quot;Update / Import airspace into DB&quot; next to the airspace
+    file. This may take from 5 to 20 secs. </p>
+  <p>&nbsp;</p>
+  <p>NOTE: you can &quot;Update / Import airspace into DB&quot; the same file
+    over and over again, if the airspace names are the same in the new/updated
+    file<br>
+    the comments you have inserted in the DB will be preserved. </p>
+  <p>&nbsp;</p>
+  <h1>2. Use</h1>
+  <p>Airspace checking is automatic on flight submission. No message is displayed
+    to the end user.</p>
+  <p>On the flight list, flights with airspace violations have the last column
+    with a differfent background. </p>
+  <p>Also the initials of the &quot;checker&quot; are displayed if any.</p>
+  <p>Flights that havent been checked on submission (because they were submitted
+  before this functionallity became available) are  checke when ever the &quot;edit
+  flight&quot; or the &quot;show flight&quot; screen are displayed. In the &quot;edit flight&quot; more
+    info is displayed about the &quot;check&quot; and the admin has the option of manually
+    making the check &quot;pass&quot; or &quot;fail&quot;</p>
+  <p>Also by setting the option to &quot;Not yet proccessed&quot; and pressing &quot;submit
+    changes&quot; he will force the re-checking of the flight on the next time he
+    enters this screen.</p>
+  <p>He can also enter his initials or a comment in the relevant field. He can
+    enter for example &quot;SJ Premission for airspace was granted&quot;. In the flight
+    list only the first part till the first space will be displayed ie &quot;SJ&quot;</p>
+  <p>The vertical height inside the airspace area is always computed as the minimum
+    one between &quot;base&quot; and &quot;top&quot;. For example a flight inside an airspace of
+    base=1000m and top=2000m with a gps point having alitude1100 will produce
+    a 100m vertical violation. A point of 1900m will also produce a 100m violation </p>
+  <p>&nbsp;</p>
+  <h1>3. Disabling an airspace area.</h1>
+  <p>In the "update Comments" subwindow there is a "disable area" checkbox.<br>
+You just check it and press "update". The now "disabled" area will still be listed in the flight <br>
+(marked as disabled but still invalidating the flight) until a new recheck is forced. <br>
+When the re-check is forced the "disabled" area will disappear from the list.<br>
+<br>
+If this area was violated with other flights also, it will remain and invalidate these flights till a re-check is done for them.<br>
+<br>
+There is no option to delete an area from within the interface, if there REALLY a need to do so instead of "disable" it<br>
+the admin can delete the DB record directly. It is however adviced to use the "disable" functinality because it persists<br>
+(together with the "Comments" field) through new airspace file update. This means that if the new airspace file is imported <br>
+the next year, areas that were deleted will re-enter the DB where as  "disabled" areas will remain disabled (if they still exist in the new  file).<br>
+<br>
+All disabled areas are listed in the "Adminster Airspace checking" so the admin can edit their comments or re-activate them.<br>
+By re-activating an area all flights that violated this area must be manually be re-checked.  </p>
+  <p>&nbsp; </p>
+</div> 
+</body>
+</html>

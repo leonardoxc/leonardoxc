@@ -1,0 +1,31 @@
+
+vali-bra
+-----------------------------------
+---------- VALI-BRA V1.23 ---------
+--- for use with IQ-COMPEO only ---
+------- (c) Braeuniger GmbH -------
+-----------------------------------
+
+
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ !!!!!!!!!!!!!!! Data modified !!!!!!!!!!!!!!!!!
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+vali-mun
+Validation check failed
+
+vali-xgd
+FAILED
+
+vali-xmp
+Validation check failed
+
+vali-xmr
+FAILED
+
+
+valigpsdump 
+FAILED
+
+valig7to
+NOT valid

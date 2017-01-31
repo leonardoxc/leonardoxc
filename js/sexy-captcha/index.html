@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery.sexy-captcha-0.1.js"></script>
+		<link rel="stylesheet" type="text/css" media="all" href="css/sexy-captcha/styles.css" />
+	</head>
+	
+	<body>
+		<div style="font-family: arial; font-size: 12px; width: 433px; margin-bottom: 10px; padding: 0 10px;">Let's make sure you're human.  Drag or click the correct shape on the left to move it to the grey "drop area" on the right.</div>
+		<div class="myCaptcha"></div>
+		<script>
+			$(document).ready(function() {
+				$('.myCaptcha').sexyCaptcha('captcha.process.php');
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,871 @@
+
+h3 {
+display:block;
+clear:both;
+width:auto;
+font-size:14px;
+padding-left:20px;
+padding-right:20px;
+padding-top:15px;
+margin-top:10px;
+margin-bottom:5px;
+text-decoration:underline;
+color:#993300;
+}
+
+.short_info tr.hr td {
+	border-top:1px solid #cccccc;
+}
+
+.short_info td {
+	padding: 1px;
+	padding-top: 1px;
+	line-height:90%;
+	
+	font-size:11px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+}
+
+.short_info {
+	margin:0;
+	padding:1px;
+	font-size:11px;
+}
+
+.boldFont , .boldFont a {
+	font-weight:bold;	
+	text-decoration:underline;
+}
+
+sory.title {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #003366;
+}
+.titleWhite {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #ffffff;
+}
+
+.main_text , .main_text td , .main_text th , .main_text div {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	line-height:110%;
+}
+
+.main_text { color: #003366; }
+.main_text a:link, a:active, a:visited , a:hover {
+ text-decoration:underline;
+ font-weight:normal;
+}
+
+
+/* various styles for time,distance,score etc...
+*/
+.time_style {  color:#702440; }
+.score_type_style {  color:#004466; }
+.distance_style {  color:#ff0000;  font-weight:bold;}
+.altitude_style {  color:#008800; }
+.speed_style {  color:#880000; }
+.vario_style {  color:#000844; }
+
+
+.sp {
+line-height: 1.5em;
+}
+
+.sp2 {
+line-height: 1.3em;
+}
+
+.small_1 {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #003366;
+}
+
+.style1 { color: #ffffff; }
+.style2 {color: #111111 }
+.style111 {color: #003333}
+.whiteLetter {color: #EEEEEE }
+.style222 {
+	font-size: x-small;
+	font-style: italic;
+}
+.style333 {
+	color:  #006666;
+	font-weight: bold;
+}
+.smallLetter {font-size: 11px}
+.styleSmallRed {
+	font-size: x-small;
+	font-style: italic;
+	color: #FF0000;
+}   
+.styleItalic {font-style: italic}
+.Box {
+	padding:3px;
+	background-color:#eee;
+	border:1px dashed #999;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #003366;
+}
+
+
+.tableTitleExtra {
+font-weight:bold;
+background-color:#C5D0ED;
+}
+
+
+.tableTitle {
+	display:block;
+	height:22px;
+
+	margin-bottom:0px;
+	padding:0;
+	padding-left:5px;
+
+	font-weight:bold;
+	background-color:#7faad9;
+	color:#FFFFFF;
+
+	border-right-width: 2px; border-bottom-width: 0px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #DEC870; border-left-color: #E2E2E2;
+
+/*norad*/
+	border:0;
+	width:760px;
+
+}
+
+.tableTitle a {
+	color:#FFFFFF;
+}
+
+html>body .tableTitle {
+	width:754px;
+}
+
+
+.mainBox {
+	display:block;
+
+	height:25px;
+
+    background-color: #E3EEFB;
+/*norad */
+    background-color: #FFFFFF;
+/*
+	border-right-width: 1px; border-bottom-width: 1px; border-top-width: 0px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+*/
+	border:0;
+	padding: 1px 3px 3px 1px;
+	margin-bottom:10px;
+	width:760px;
+	
+}
+
+
+
+
+.tableHeader {
+	background-color:#C0C9DA;
+	height:22px;
+	margin-bottom:3px;
+	padding:0;
+}
+
+.tableInfo{
+	background-color:#C7DFC4;
+	height:auto;
+	width:750px;
+	padding:5px;
+}
+
+.titleDiv {
+	float:left;	
+	width:auto; 
+	margin:0px 0px 0px 0px;
+	padding:3px;
+	padding-left:5px;
+}
+
+.pagesDiv {
+	float:right;
+	width:auto; 	
+	margin:12px 0px 0px 0px;
+	text-align:right;
+	padding:3px;
+	padding-top:0;
+	overflow:visible;
+	
+	float:none;
+	display:block;
+	position:absolute;
+	bottom:2px;
+	right:10px;
+}
+.pagesDivSimple {
+	float:right;
+	width:auto; 	
+	margin:4px 0px 0px 0px;
+	text-align:right;
+	padding:3px;
+	padding-top:0;
+	overflow:visible;
+}
+
+.flightOpDiv {
+	float:left;
+	padding-left:5px;
+	width:auto; 
+	margin:0px 0px 0px 0px;
+	padding:3px;
+}
+.brandDiv {
+	float:right;
+	width:auto; 
+	padding-right:5px;
+	margin:0px 0px 0px 0px;
+	text-align:right;
+	padding:3px;
+}
+
+.listTableTitle {
+	background-color:#E4EDE7;
+	padding:3px;
+}
+
+
+/*-------------------------------------
+
+The main table that holds the list of flights/pilots/takeoffs 
+
+----------------------------------*/
+.listTable {
+	text-align:left;
+	width:760px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight:normal;
+	color: #003366;
+	border:1px;
+	border-style:solid;
+	border-color:#999999;
+	z-index:-1;
+/*norad*/
+/*	border:0; */
+}
+	
+.listTable a, .listTable a:visited  {
+
+	color:#333366;
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+.listTable TD {
+	vertical-align:middle;
+	border:0;
+	border-bottom-color:#DDDDDD; border-bottom-width:1px; border-bottom-style:solid;
+	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+/*norad*/
+	/*border:0;
+	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
+*/
+}
+ 
+.listTable2 TD {
+ 	vertical-align:top;
+	border-bottom-color:#AAAAAA; border-bottom-width:1px; border-bottom-style:solid;
+}
+
+.listTable3 TD {
+ 	vertical-align:top;
+	border:0;
+}
+
+.clubPilot , a:link.clubPilot ,  a.clubPilot , a:visited.clubPilot  { 
+	font-size:11px;
+	text-decoration:none;
+	color:#0066CC;
+
+}
+
+.simpleTable {
+	text-align:left;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #003366;
+	border:1px solid #555555;
+border:0;
+}
+	
+.simpleTable a, .simpleTable a:visited  {
+	color:#333366;
+	text-decoration:underline;
+}
+
+.simpleTable TD, .simpleTable TH {
+	vertical-align:middle;
+	border-bottom:1px solid #555555;
+	border-right:1px solid #555555;
+}
+
+.sitesTable TD, .sitesTable TH {
+	vertical-align:top;
+	border-bottom:1px solid #555555;
+	border-right:1px solid #555555;
+}
+
+/* some styles for the listTable items */
+.distance   { color:#4400aa; text-align:right; }
+.dateString div { color:#003366; text-align:right; font-size:9px; vertical-align:top; }
+.OLCScore   { color:#000066; text-align:right; }
+.listIcons { margin-right:1px;  }
+
+.displayIcons { margin:0; margin-right:0px; clear:none; display:inline;  }
+.photoIcon { margin:0; padding:0; clear:right; display:inline; }
+
+.flagIcon { margin-right:0.5em; vertical-align:middle; text-decoration:none; border: 0 none;  }
+.extIcon { margin:0; padding:0; vertical-align:middle; text-decoration:none; border: 0 none;  }
+
+.numeration { display:inline; }
+.numeration  a, .numeration  a:visited { color:#FFFFFF; }
+/*.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#8b8bad; font-size:10px; text-align:right; }*/
+.takeoffLink, .takeoffLink a, .takeoffLink a:visited { color:#70719A; font-size:10px; text-align:right; }
+.takeoffLink a, .takeoffLink  a:link , .takeoffLink  a:visited { 
+	 text-align:left; text-decoration:none; border-bottom:1px dashed #BEC0E2;
+}
+
+.pilotLink, .pilotLink  a, .pilotLink   a:link , .pilotLink   a:visited { color:#000066; text-align:left;  }
+
+.pilotLink a, .pilotLink  a:link , .pilotLink  a:visited { 
+	color:#000066; text-align:left; text-decoration:none; border-bottom:1px dashed #BEC0E2;
+}
+
+.actionLink,   .actionLink a, .actionLink a:visited { color:#000066; text-align:left; text-decoration:none;}
+
+.smallInfo { display:block; margin:0; padding:0; width:70px; height:24px; clear:none; overflow:hidden; position:relative; z-index:0;}
+
+.actionLink { display: block; position:absolute; top:1px; left:54px; float:none; clear:none;  z-index:1;}
+.geIcon 	{ display:block; position:absolute; top:1px; left:16px; float:none; clear:none; z-index:1;}
+.flightIcon { display:block; position:absolute; top:1px; left:0px; float:none; clear:none; z-index:1;}
+.photoIcon2 { display:block; position:absolute; top:1px; left:32px; float:none; clear:none; z-index:1;}
+
+.extLink 	{ display:block; position:absolute; top:13px; left:2px; float:none; clear:none; z-index:1;}
+.extLinkName { display:block; position:absolute; top:15px; left:12px; float:none; clear:none; z-index:-2; 
+	font-size:8px;
+	line-height:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#999999;
+}
+
+.extLinkDiv { 
+	display:block; position:absolute; top:0px; left:31px; float:none; clear:none; z-index:2; 
+	font-size:8px;
+	line-height:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#999999;
+}
+
+.extServerLogo { display:block; position:absolute; top:0px; left:1px; float:none; clear:none; z-index:2;}
+.extLinkIcon {display:block; position:absolute; top:14px; left:0px; float:none; clear:none; z-index:2; }
+
+.extLinkDescr { 
+	display:block; position:absolute; top:17px; left:10px; width:25px; height:8px; 
+	overflow:hidden; float:none; clear:none; z-index:2;
+	cursor:hand;
+	text-decoration:none;	
+}
+
+.extLinkDescr a , a.extLinkDescr , div.extLinkDescr  {
+	font-size:9px;
+	line-height:8px;
+	height:8px;
+	font-family:Arial, Helvetica, sans-serif;
+	text-decoration:none;	
+	color:#999999;
+	
+}
+
+
+.categoryListIcon {display:block; position:absolute; top:0px; left:0px; float:none; clear:none; z-index:22; }
+.categoryListIconDiv  { display:block; position:absolute; top:9px; left:9px; float:none; clear:none; z-index:22;  }
+.catListIcon { display:block; position:absolute; top:0px; left:0px; float:none; clear:none; z-index:1; }
+
+.catInfo { display:block; margin:0; padding:0; width:22px; height:22px; clear:none; overflow:hidden; position:relative; z-index:0;}
+
+
+
+.commentDiv { display:block; position:absolute; top:0px; left:44px; float:none; clear:none; z-index:1;}
+
+.checkedBy, td.checkedBy , div.checkedBy { display:block; position:absolute; top:12px; left:56px;
+	 float:none; clear:none; z-index:-1;
+
+	font-size:9px;
+	font-family:Arial, Helvetica, sans-serif;
+	line-height:9px;
+	background-color:#D6ECD5;
+}
+
+/* for the active page num in the numeration */
+.activePageNum {
+	display:inline;
+	color:#ffea00;
+	font-weight:bold;
+	font-size:1.1em;
+	vertical-align:bottom;
+}
+
+/*
+we put the behaviour file for ie
+table.listTable tr {
+   behavior: url('/modules/leonardo/templates/basic/hover.htc');
+}
+*/
+table.listTable tr:hover , table.listTable tr.sfhover {
+   background-color:#F6EF80;
+}
+
+
+/*------------------------
+ End of listTable rtelated items
+------------------------*/
+
+.SortHeader {
+	/*norad*/
+	background-color:#7faad9;
+	font-weight:bold;
+
+	vertical-align:top;
+	border:0;
+	border-top-color:#6AA2DF; border-top-width:0px; border-top-style:solid;
+	border-left-color:#ffffff;	border-left-width:1px; 	border-left-style:solid;
+	border:0;
+
+	color:#FFFFFF;
+	font-size:10px;
+
+	padding:3px;
+	padding-top:0px;
+
+	text-align:right;
+	text-decoration:none;
+}
+.activeSortHeader {
+	background-color:#F8C90C;
+	border-top-color:#FDECB3; border-top-width:3px; border-top-style:solid;
+}
+
+.SortHeader a, .SortHeader a:visited { color:#FFFFFF; }
+.activeSortHeader a, .activeSortHeader a:visited { color:#444444; }
+
+
+
+.attentionLink  a, .attentionLink  a:visited {
+	font-weight:bold;
+	color:#FF3300;
+}
+
+
+
+.headerRow { 
+	text-align:right;
+	color:#003366;
+}
+
+.alRight{ 
+	text-align:right;
+}
+
+.alLeft{ 
+	text-align:left;
+}
+
+.compFirstPlace  { text-align:right;background-color:#F5D523; }
+.compSecondPlace { text-align:right;background-color:#F5F073 ;}
+.compThirdPlace { text-align:right;background-color:#F3F0A5 ;}
+		 
+.l_row1 { 	text-align:right; background-color:#F9F9F9; }
+.l_row2 { 	text-align:right; background-color:#EDEEF1; }
+
+.l_row1Sorted { text-align:right; background-color:#d6d6d6; }
+
+
+/*-----------------------------------
+	Define some kind of boxes - containers
+-----------------------------------*/
+
+.shadowBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+}
+
+.shadowBox th {
+	background-color:#7FAAD9;
+	color:#FFFFFF;
+	padding:3px;
+}
+
+.infoBox { 
+	border-left-color:#DADADA; border-left-width:8px; border-left-style:solid;
+	border-right-color:#CCCCCC; border-right-width:3px; border-right-style:solid;
+	border-top-color:#CCCCCC; border-top-width:1px; border-top-style:solid;
+	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
+	margin:0;
+	padding:3px;
+	background-color:#EEEEEE;
+	font-size:11px;
+	text-decoration:none;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	width:220px;
+	text-align:left;
+}
+
+.tableBox { 
+	border-left-color:#CCCCCC; border-left-width:1px; border-left-style:solid;
+	border-right-color:#FFFFFF; border-right-width:1px; border-right-style:solid;
+	
+	border-top-color:#CCCCCC; border-top-width:1px; border-top-style:solid;
+	border-bottom-color:#FFFFFF; border-bottom-width:1px; border-bottom-style:solid;
+	
+	margin:0;
+	padding:3px;
+	background-color:#EEEEEE;
+
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	text-decoration:none;
+
+}
+
+
+.adminBox {
+background-color:#FCEBFB
+}
+
+.infoBoxHeader {
+	display:block;
+	clear:both;
+	
+	border:none;
+	border-top:1px solid #CCCCCC;
+	
+	font-size:12px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight:bold;
+		
+	text-align:center;
+	text-decoration:none;
+	
+	width:100%;
+	margin:0;
+	padding:0;
+	padding-bottom:3px;
+	padding-top:4px;
+
+	background-color:#404040;
+	color:#FFFFFF;
+	height:16px;
+}
+
+.infoBoxHeader .title {
+	display:inline; float:left; clear:left;
+	margin-left:10px;
+	font-weight:bold;
+}
+
+.infoBoxHeader td {color:#FFFFFF;}
+
+.dropBox .content {
+	padding:4px;
+	line-height:160%;
+	padding-bottom:10px;
+}
+
+.menu1 { 
+    display:block;
+    float:left;
+	background-color: #f6f5fa;
+	border: 1px solid #d3cfe4;
+	padding: 3px 3px 3px 3px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-bottom:0px;
+	margin-top:0px;
+}
+
+.menuLvl2 { 
+    display:block;
+    float:left;
+	background-color: #FFD88D;
+	border-width: 1px; 
+	border-style: solid; 
+	border-color: #000000; 
+	padding: 3px 3px 3px 3px;
+	margin-right:5px;
+	margin-bottom:1px;
+	margin-top:1px;
+}
+
+
+
+.dropDownBox {
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	/* MORE black */
+	/*	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;*/
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	font-size:11px;
+	text-decoration:none;
+	background-color:#FFFFFF;
+	z-index:1000;
+	position:relative;	
+}
+
+.dropDownBoxH2 {
+	background-color:#E7F8E2;
+	font-weight:bold;
+	text-decoration:underline;
+	text-align:center; 
+}
+
+table.dropDownBox td {
+	width:auto; 
+	padding-right:5px;
+	z-index:1000;
+}
+
+/* for the second drop down menu - testing  */
+#countriesList, #countriesList ul {
+	padding: 0;
+	margin: 0;
+	width : auto;	
+	background-color:#339999;
+}
+
+#countriesList li , #countriesList li a{
+	background-color:#FF6699;
+	list-style:circle;
+	border:1px;
+}
+
+
+#debugTitleDiv , #debugDiv {
+	font-family:"Courier New", Courier, monospace;
+	font-size:11px;
+	color:#000000;
+/*	position:absolute;
+	top:0;
+	left:0;*/
+	padding:4px;
+	border:1px solid #F1D8C5;
+	background-color:#EEF0EE;
+	display:block;
+	width:100px;
+}
+#debugDiv {
+/*	top:25;*/
+	display:none;	
+	display:block;	
+	width:auto;
+}
+
+
+.countryList2 a:link {
+	font-size:80%;	
+	border-right:1px solid #CCCCCC;
+}
+
+.closeButton {
+	cursor: hand;
+	cursor: pointer;
+	display:block;
+	width:14px;
+	height:14px;
+	float:right;
+	clear:none;
+	
+	margin:0;
+	margin-right:2px;
+	padding:0;
+	background:url('img/icon_x_white.gif') no-repeat left top ;	
+}
+
+
+.dropBox {
+	display:none;
+	position:absolute;
+
+	top:0px;
+/*	left: -999em;*/
+	width:auto;
+	height:auto;
+	
+/*	visibility:hidden;*/
+
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	
+	background-color:#FFFFFF;
+	padding: 1px 1px 1px 1px;
+	margin-bottom:0px;
+	z-index:10;
+
+}
+
+.brandImageDiv {
+	height:16px;
+	overflow:visible;
+	display:inline;
+}
+
+.debugBoxTop {
+	display:block;
+	float:left;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:200px;
+	font-size:9px;
+	background-color:#FFFFFF;
+	border:1px solid #888888;
+
+}
+
+
+.simpleList, .simpleList ul {
+	padding: 0px;
+	padding-left:18px;
+	margin: 0;
+	width : auto;		
+}
+.simpleList li {
+	padding: 1px;
+	padding-left:0;
+	list-style:circle;
+}
+.simpleList li a {
+padding:4px;
+padding-left:0;
+}
+
+
+
+span.alert, span.info, span.download, span.note , span.ok {
+	border-top-width: 3px;
+	border-top-style: solid;
+	border-bottom-width: 3px;
+	border-bottom-style: solid;
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-x-position: 10px;
+	background-y-position: 50%;
+
+	display: block;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 45px;
+	
+	margin-top: 15px;
+	margin-right: 0pt;
+	margin-bottom: 15px;
+	margin-left: 0pt;
+}
+
+
+span.note {
+	color: #b79000;
+	color:#9B772B;
+	border-top-color: #fde179;
+	
+	border-bottom-color: #fde179;
+	background-color: #fef6d8;
+	background-image: url(img/status-note.png);
+}
+
+span.alert {
+	color: #cc0000;
+	border-top-color: #fe7b7a;
+	border-bottom-color: #fe7b7a;
+	background-color: #ffd6d6;
+	background-image: url(img/status-alert.png);
+}
+
+span.info {
+	color: #0055bb;
+	border-top-color: #629de3;
+	border-bottom-color: #629de3;
+	background-color: #d8e5f8;
+	background-image: url(img/status-info.png);
+}
+
+span.download  {
+	color: #57861a;
+	border-top-color: #c2df88;
+	border-bottom-color: #c2df88;
+	background-color: #eef7dd;
+	background-image: url(img/status-download.png);
+}
+
+span.ok  {
+	color: #57861a;
+	border-top-color: #c2df88;
+	border-bottom-color: #c2df88;
+	background-color: #eef7dd;
+	background-image: url(img/icon_ok.gif);
+	background-image: url(img/status-ok.png);
+	
+}
+
+/* the headers in pilot profile screens*/
+.infoHeader {
+	border-bottom:1px solid #006699;
+	padding:5px;
+	margin-bottom:3px;
+	font-weight:bold;
+}
+
+.mb4 {
+	margin-bottom:2px;
+}
+
+.filterValuesText {
+	padding:2px;	
+	background-color:#E2F2D8;
+	font-size:11px;
+	font-weight:bold;
+}
+
+.greenButtonLink {
+	background: none repeat scroll 0 0 #679924;
+	border: 1px solid #E3E3E3;
+	border-radius: 5px 5px 5px 5px;
+	clear: both;	
+	font-size: 13px;
+	width: auto;
+	padding:3px;
+	padding-left:15px;
+	padding-right:15px;
+	color:#ffffff;
+	font-weight:bold;
+}
+
+a.greenButtonLink:link, a.greenButtonLink:active, a.greenButtonLink:visited, a.greenButtonLink:hover {	
+	color:#ffffff;
+	font-weight:bold;
+	text-decoration:none;	
+}

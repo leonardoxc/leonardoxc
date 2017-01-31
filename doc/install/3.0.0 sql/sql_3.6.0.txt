@@ -1,0 +1,30 @@
+
+#ALTER TABLE `leonardo_flights` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+
+#ALTER TABLE `leonardo_flights_deleted` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+
+CREATE TABLE IF NOT EXISTS `leonardo_comments` (
+`commentID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`parentID` BIGINT UNSIGNED NOT NULL ,
+`flightID` BIGINT NOT NULL ,
+`userID` MEDIUMINT NOT NULL ,
+`userServerID` MEDIUMINT( 0 ) DEFAULT '0' NOT NULL ,
+`guestName` VARCHAR( 50 ) NULL ,
+`guestEmail` VARCHAR( 255 ) NULL ,
+`guestPass` VARCHAR( 40 ) NULL ,
+`dateAdded` DATETIME NOT NULL ,
+`dateUpdated` DATETIME NOT NULL ,
+`active` TINYINT UNSIGNED DEFAULT '1' NOT NULL ,
+`title` VARCHAR( 255 ) NULL ,
+`text` TEXT NOT NULL ,
+`languageCode` VARCHAR( 15 ) NOT NULL ,
+PRIMARY KEY ( `commentID` ) ,
+INDEX ( `flightID` )
+) ENGINE = MyISAM ;
+
+
+#ALTER TABLE `leonardo_flights` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+
+#ALTER TABLE `leonardo_flights_deleted` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+
+ALTER TABLE `leonardo_pilots_info` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1';

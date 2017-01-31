@@ -1,0 +1,243 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Leonardo &quot;Direct flight upload&quot;</title>
+<style>
+<!--
+.style2 {color: #003366}
+-->
+</style>
+</head>
+<body link="blue" vlink="purple"> 
+<div> 
+  <h1><b>Leonardo &quot;Direct
+        flight upload&quot;</b></h1>
+  <h1>1.&nbsp; Interface</h1>
+  <p>In order to &quot;direct
+      upload&quot; a flight tracklog in a leonardo server:</p>
+  <ul type="disc">
+    <li>The client sends the flight claim
+        data with the HTTP POST command to the appropriate server URL. (see chapter
+      4) </li>
+    <li>The server answers with a normal
+          HTML page, which contains a reference number in the following format: <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><i>response=[A-Za-z0-9]{9}</i></b><br>
+      <br>
+    </li>
+  </ul>
+  <ul type="disc"><li>If the flight claim is correct and
+          accepted by the server, the answer contains additional the message <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><i>flight
+  scored</i></b></li>
+  </ul>
+  <h1>2. Parameters
+  of the HTTP POST request</h1>
+  <table width="657" border="1" cellpadding="3" cellspacing="0"> 
+    <tbody> 
+      <tr> 
+        <td width="71" valign="top"> <p><b>Name</b></p></td> 
+        <td width="362" valign="top"> <p><b>Description</b></p></td> 
+        <td width="198" valign="top"> <p><b>Example</b></p></td> 
+      </tr> 
+      <tr>
+        <td valign="top">user</td>
+        <td valign="top">The username of the pilot on the Leonardo
+        server </td>
+        <td valign="top">testuser</td>
+      </tr>
+      <tr>
+        <td valign="top">pass</td>
+        <td valign="top">The password of the pilot on the Leonardo
+        server</td>
+        <td valign="top">mypass</td>
+      </tr>
+      <tr> 
+        <td valign="top"> <p>igcfn</p></td> 
+        <td valign="top"> <p>The
+          filename of the IGC flight track file without extension. </p></td> 
+        <td valign="top"> <p>286a0ab1</p>
+        <p><em>or</em></p>
+        <p class="style2">2006_01_02_13_56 Nice flight at the beach</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>Klasse</p></td> 
+        <td valign="top"> <p>Competition
+                  class with one of the following values: <br> 
+            1 = Flexible Wing<br>
+    2 = Rigid Wing<br>
+    3 = Paraglider (open)<br>
+    4 = Paraglider (sport)<br>
+    5 = Paraglider (Tandem)<br> 
+            </p></td> 
+        <td valign="top"> <p>3</p></td> 
+      </tr> 
+      <tr> 
+        <td colspan="3" valign="top"> <p><b>OLC
+                    Classis: The coordinates of the waypoints 1 – 7. <br>
+            The questionmark
+            denote values in the range from [0..6]</b></p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?bh</p></td> 
+        <td valign="top"> <p>Latitude
+              - hemisphere N/S</p></td> 
+        <td valign="top"> <p>N</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?bg</p></td> 
+        <td valign="top"> <p>Latitude – degrees</p></td> 
+        <td valign="top"> <p>52</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?bm</p></td> 
+        <td valign="top"> <p>Latitude – full
+              minutes</p></td> 
+        <td valign="top"> <p>37</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?bmd</p></td> 
+        <td valign="top"> <p>Latitude – thousandth
+              part of the minutes</p></td> 
+        <td valign="top"> <p>690</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?lh</p></td> 
+        <td valign="top"> <p>Longitude
+              - hemisphere E/W</p></td> 
+        <td valign="top"> <p>E</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?lg</p></td> 
+        <td valign="top"> <p>Longitude – degrees</p></td> 
+        <td valign="top"> <p>52</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?lm</p></td> 
+        <td valign="top"> <p>Longitude – full
+              minutes</p></td> 
+        <td valign="top"> <p>37</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>w?lmd</p></td> 
+        <td valign="top"> <p>Longitude – thousandth
+              part of the minutes</p></td> 
+        <td valign="top"> <p>002</p></td> 
+      </tr> 
+      <tr> 
+        <td colspan="3" valign="top"> <p><b>FAI
+                    Triangle: The coordinates of the waypoints 1 – 5. <br>
+            The questionmark
+        denote values in the range from [0..4]</b></p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?bh</p></td> 
+        <td valign="top"> <p>Latitude
+              - hemisphere N/S</p></td> 
+        <td valign="top"> <p>N</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?bg</p></td> 
+        <td valign="top"> <p>Latitude – degrees</p></td> 
+        <td valign="top"> <p>52</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?bm</p></td> 
+        <td valign="top"> <p>Latitude – full
+              minutes</p></td> 
+        <td valign="top"> <p>37</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?bmd</p></td> 
+        <td valign="top"> <p>Latitude – thousandth
+              part of the minutes</p></td> 
+        <td valign="top"> <p>690</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?lh</p></td> 
+        <td valign="top"> <p>Longitude
+              - hemisphere E/W</p></td> 
+        <td valign="top"> <p>E</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?lg</p></td> 
+        <td valign="top"> <p>Longitude – degrees</p></td> 
+        <td valign="top"> <p>52</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?lm</p></td> 
+        <td valign="top"> <p>Longitude – full
+              minutes</p></td> 
+        <td valign="top"> <p>37</p></td> 
+      </tr> 
+      <tr> 
+        <td valign="top"> <p>fai?lmd</p></td> 
+        <td valign="top"> <p>Longitude – thousandth
+              part of the minutes</p></td> 
+        <td valign="top"> <p>002</p></td> 
+      </tr> 
+      <tr> 
+        <td colspan="3" valign="top"> <p>**** If
+              no turnpoints are supplied, Leonardo computes its own solution.****</p></td> 
+      </tr>
+      <tr>
+        <td valign="top">IGCigcIGC</td>
+        <td valign="top">The
+        contents of the corrosponding IGC flight track file (as it is).</td>
+        <td valign="top">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top">mindist</td>
+        <td valign="top"> **optional**<br> 
+          Leonardo will
+            see the pre-computed turnpoints and will prefer a smaller "free distance" score
+            if this gives &gt; " mindist" km instead of a triangle solution with
+            more points but &lt; "mindist" km. For example the DHV rules for
+            the german league set mindist=15 if not set or set to zero, the highest
+        score will always be prefered </td>
+        <td valign="top">15</td>
+      </tr>
+      <tr>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+        <td valign="top">&nbsp;</td>
+      </tr> 
+          </tbody> 
+        </table>
+  <h1>3. Notes for the IGC flight track file.</h1>
+  <p>No requirements consering valid G-records. Leonardo accepts both valid and
+    invalid tracklogs and this only does matter in some valuations.<br>
+  All fligths get listed in the daily scores regardlees of valid g-record. </p>
+  <p>No special restrictions for the filename. Any length of chars (not only
+    8). </p>
+  <h1>&nbsp;</h1>
+  <h1>4.  submission URL</h1>
+  <p>Each leonardo server has it's own submission url and it's own set of
+  users/passwords.</p>
+  <p>The submission URL of a leonardo server is usually:<br>
+    http://server_address/extra_path_if_present/modules/leonardo/flight_submit.php<br>
+    <br>
+    <strong>Some examples:</strong></p>
+  <p><br>
+    <br>
+    <strong>Leonardo on www.paraglidingforum.com runs on</strong></p>
+  <pre>http://www.paraglidingforum.com/modules.php?name=leonardo</pre>
+  <p> so the submission
+    url is </p>
+  <pre> http://www.paraglidingforum.com/modules/leonardo/flight_submit.php
+
+</pre> <p><strong>
+Leonardo on DHV runs on </strong></p>
+  <pre>
+     http://xc.dhv.de/xc/modules.php?name=leonardo</pre>
+  <p>    so the submission url is </p>
+  <pre>http://xc.dhv.de/xc/modules/leonardo/flight_submit.php</pre>
+  <p>(note the extra /xc/
+    ) <br>
+    </p>
+  <p><br>
+    a list of leonardo servers can be found on <br>
+    http://www.paraglidingforum.com/modules.php?name=leonardo&amp;op=program_info</p>
+  <p>&nbsp;</p>
+</div> 
+</body>
+</html>

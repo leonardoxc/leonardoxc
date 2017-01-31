@@ -1,0 +1,6 @@
+#AuthType Basic
+#AuthName "Dostep ograniczony na czas testow"
+#AuthUserFile "/etc/apache2/leo.passwd"
+#Require valid-user
+
+RedirectMatch 404 /\.git

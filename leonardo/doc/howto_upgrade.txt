@@ -1,0 +1,20 @@
+
+UPGRADE INSTRUCTIONS:
+
+UPGRADE instructions:
+1) unzip the new version in the modules dir but not in dir leonardo/ but something other like  leo/
+2) run the provided SQL on your main DB. ALL SQL upgrades are HARMLESS to existing data AND functionality
+3) MOVE the
+
+flights/
+maps/
+site/
+data/
+
+files from the leonardo/ dir to leo/ (no backup is really needed)
+4) by this time your new version will be available at /modules.php?name=leo.
+5) rename leonardo/ to leonardo_old/ ?(or anything you wish)
+6) rename leo/  to leonardo/ and you are done!
+7) test all features on new version, if big problems, revert to old by using the steps in reverse order. (NO NEED TO REVERSE SQL commands)
+
+This is a fail safe method, no need to duplicate/backup db, no data can be lost, the 2 versions can also run in paralell  using the same db but storing flights in different place ( not recommended !!!!)

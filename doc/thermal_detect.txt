@@ -1,0 +1,183 @@
+	function findThermals() {
+	  $this->getFlightPoints();		
+  	  $LASTTHERMALLIMIT = 120; // ignore 'thermal' within 120secs of end
+	  $MAXTHERMALS=200;
+      $i = 0;
+	  $i_max=0;
+	  $j;
+      // float lat1, long1, lat2, long2; // boundaries of thermal
+  	  $record_count=count( $this->GPSpoints );
+	  echo "POINTS : $record_count <BR>";
+      $i_max = $record_count;
+
+      while (++$i < $i_max && $thermal_count < $MAXTHERMALS ) {
+	      if ($this->GPSpoints[$i]->lat==0) continue; // skip bad gps records
+          if ($this->isThermalling($i))  {
+              $j = $i;
+              while ( ++$j<$record_count && ($this->GPSpoints[$j]->lat==0 || $this->isThermalling($j) )) {;} // scan to end of thermal
+                                           // skip last "thermal"
+			  if ( $this->GPSpoints[$j]->gpsTime  - $this->GPSpoints[$i]->gpsTime  < 60 ) continue;  // no thermals under 60 secs
+			  							   
+              if ($this->GPSpoints[$record_count-1]->gpsTime - $this->GPSpoints[$j]->gpsTime  <= $LASTTHERMALLIMIT) break;
+              $lat1 = $this->GPSpoints[$j]->lat;
+              $long1 = $this->GPSpoints[$j]->lon;
+              $lat2 = $lat1;
+              $long2 = $long1;
+              for ($k=$i; $k<$j; $k++)     // accumulate boundary lat/longs
+              {
+                  if ($this->GPSpoints[$k]->lat==0 ) continue; // skip bad gps records
+                  if ($this->GPSpoints[$k]->lat < $lat1)       $lat1 = $this->GPSpoints[$k]->lat;
+                  else {if ($this->GPSpoints[$k]->lat > $lat2) $lat2 = $this->GPSpoints[$k]->lat;}
+                  if ($this->GPSpoints[$k]->lon < $long1)       $long1 = $this->GPSpoints[$k]->lon;
+                  else {if ($this->GPSpoints[$k]->lon> $long2) $long2 = $this->GPSpoints[$k]->lon;}
+              } 
+			  
+			 // echo "FOUND thermal $lat1 $long1 [$i] -> $lat2 $long2 [$j] <br>";    
+			 $altGain=  $this->GPSpoints[$j]->getAlt() - $this->GPSpoints[$i]->getAlt()  ;
+			 $vario=$altGain /($this->GPSpoints[$j]->gpsTime - $this->GPSpoints[$i]->gpsTime  );
+			    echo "FOUND thermal [$i] -> [$j] ALT GAIN: $altGain m ,  VARIO: $vario m/sec<br>";             
+			  /*
+              $thermal[++$thermal_count] = new Climb(this);
+              $thermal[$thermal_count].lat1 = lat1;
+              $thermal[$thermal_count].long1 = long1;
+              $thermal[$thermal_count].lat2 = lat2;
+              $thermal[$thermal_count].long2 = long2;
+              $thermal[$thermal_count].start_index = i;
+              $thermal[$thermal_count].finish_index = j;
+			  */
+              $i = $j;
+            }
+        }
+      if ($thermal_count == $MAXTHERMALS) echo("Too many thermals");
+	  
+  }  
+
+  function isThermalling($i)  // true if thermalling at log index i
+  {
+      $j = $i;
+      $dist=0; 	      // distance travelled
+      $time_taken=0; 	  // time taken between samples
+      $in_thermal=0;
+
+	  $record_count =count ($this->GPSpoints);
+      if ($this->GPSpoints[$i]->lat ==0)   {
+	  	  echo ("Bad record in thermalling at $i");
+          return false;
+      }
+	  
+      while ($j < $record_count && $this->GPSpoints[++$j]->gpsTime  - $this->GPSpoints[$i]->gpsTime  < 60) {;}
+      if ($this->GPSpoints[$i]->lat ==0) {
+          while ($j < $record_count && $this->GPSpoints[$i]->lat  == 0) {;}
+          $j++;
+      }
+      if ($j == $record_count) return false;
+      $dist = $this->GPSpoints[$j]->calcDistance($this->GPSpoints[$i]);
+      $time_taken = $this->GPSpoints[$j]->gpsTime  - $this->GPSpoints[$i]->gpsTime ;
+	  if ( ( ($dist/$time_taken)*3.6 ) < 10 )    $in_thermal = true;
+	  else $in_thermal = false;
+      //if (time[i]>=44400 && time[i]<=44740)
+      //  System.out.println("thermalling("+IGCview.format_clock(time[i])+") = "+in_thermal+
+      //                     ", time_taken="+time_taken+", speed="+dist / time_taken * 3600 );
+      return $in_thermal;
+    }
+
+
+	function getFlightPoints() {	
+		set_time_limit (100);
+
+		$lines = file ($this->getIGCRelPath()); 
+		$linesNum =count($lines);
+
+		$points=0;
+		$outputBuffer="";
+
+		// process points
+		// filter bad ones
+		$p=0;
+		$getPointsNum=5 ; // + 4 points + this one 
+		for($i=0;$i<count($lines)-10 ;$i++) {		
+			$pointOK=1;
+			$line=trim($lines[$i]);
+			if  (strlen($line)==0) continue;
+			if  ($line{0}!='B') continue;
+
+			$neighboors=array();
+			$nextPointPos=$i;
+			for ($t1= 0 ;$t1 < $getPointsNum ;$t1++ ) {
+				$nextPointPos=$this->getNextPointPos($lines,$nextPointPos);
+				// echo "!".$nextPointPos."!";
+				$thisPoint=new gpsPoint( trim($lines[$nextPointPos]) ,$this->timezone );
+				$neighboors[$t1] = $thisPoint;
+			} // got all next points
+
+			// find mean values
+			$mean_speed=0;
+			$mean_vario=0;
+			for ($t1= 1 ;$t1 < $getPointsNum ;$t1++ ) {  // for 4 (5-1) points in a row 
+					// create arrays 
+					$T_distance[$t1] = $neighboors[$t1]->calcDistance($neighboors[$t1-1]);
+					$T_alt[$t1] = $neighboors[$t1]->getAlt();
+					$T_deltaseconds[$t1] = $neighboors[$t1]->getTime() -  $neighboors[$t1-1]->getTime() ;						
+					$T_speed[$t1] = ($T_deltaseconds[$t1])?$T_distance[$t1]*3.6/($T_deltaseconds[$t1]):0.0; /* in km/h */
+					if ($T_deltaseconds[$t1]) $T_vario[$t1]=($T_alt[$t1]-$neighboors[$t1-1]->getAlt() ) / $T_deltaseconds[$t1];
+
+					$mean_speed+=$T_speed[$t1];
+					$mean_vario+=$T_vario[$t1];
+			}
+			$mean_speed = $mean_speed/($getPointsNum-1);
+			$mean_vario = $mean_vario/($getPointsNum-1); // mean vario is wrong
+
+			if ($T_distance[1] < 0.5) {  // less than 0.5 m distance
+			 	$pointOK=0;
+				//echo "D";
+				//echo $T_distance[1]."*<br>";
+			}
+			if ( abs ($mean_speed - $T_speed[1] ) > 40 ) { // diff more than 40 km/h
+				$pointOK=0;
+				//echo "@";
+			}
+			//if ( abs ($mean_vario - $T_vario[1] ) > 6 ) {  // diff more than 6 m/sec
+			//	$pointOK=0; 
+				//echo "#";
+			//}
+			if ( $T_deltaseconds[1] == 0 ) {  $pointOK=0;  }
+			if ( $T_alt[1]   > $this->maxAllowedHeight ) {  $pointOK=0;  }
+			if ( abs($T_speed[1])  > $this->maxAllowedSpeed ) {  $pointOK=0;  
+				// echo "S"; 
+			}
+			if ( abs($T_vario[1])  > $this->maxAllowedVario ) {  $pointOK=0; 
+				// echo "V";
+			}
+			if ( $p<5 ) { // first 10 points need special care 
+				if ( abs($T_speed[1])  > ($this->maxAllowedSpeed *0.3) ) {  $pointOK=0; 
+					// echo "s"; 
+				}
+				if ( abs($T_vario[1])  > ($this->maxAllowedVario *0.3) ) {  $pointOK=0; 
+					//echo "v"; 
+				}
+			}
+			if (!$pointOK)  {
+				$lines[$i]{1}='X';
+			} else  {
+				$p++;
+			}
+		}
+
+		//	 
+		if ($p==0) return 0; // no valid points found
+
+		$alreadyInPoints=0;
+		$stopReadingPoints=0;
+			
+		$points=0;
+		foreach($lines as $line) {
+			$line=trim($line);
+			if  (strlen($line)==0) continue;		
+			if ($line{0}=='B' ) {
+				if ($line{1}=='X') continue ; // MARKED BAD from BEFORE 
+				$this->GPSpoints[$points++]=new gpsPoint($line,$this->timezone);				
+			}  
+		} // end main loop
+	}
+// igcview
+// http://www.forsterlewis.com

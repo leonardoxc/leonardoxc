@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+<style type="text/css">
+<!--
+.style2 {
+	color: #336600;
+	font-weight: bold;
+}
+.style4 {color: #336633; font-style: italic; font-weight: bold; }
+.style5 {
+	color: #FF0000;
+	font-style: italic;
+}
+.style6 {color: #FF0000}
+.style7 {
+	color: #009933;
+	font-weight: bold;
+}
+.style8 {color: #333399}
+-->
+</style>
+</head>
+
+<body>
+<h2><strong>UPGRADE TO V.2.9.0x INSTRUCTIONS: </strong></h2>
+<p>  <br />
+  1) Unzip the new version in the modules dir but not in dir leonardo/ but
+     something other like&nbsp; leo/</p>
+<blockquote>
+  <p>	If you are running phpbb copy also the following files (from the new
+    dir you just made ) </p>
+  <p>doc/install/phpbb2Files/mainfile.php -&gt; main phpbb dir<br />
+    doc/install/phpbb2Files/modules.php
+    -&gt; main phpbb dir<br />
+  doc/install/phpbb2Files/page_header_leonardo.php -&gt; includes/ dir under
+  the main phpbb dir<br />
+  doc/install/phpbb2Files/page_tail_leonardo.php -&gt; includes/ dir under
+  the main phpbb dir</p>
+  <p class="style6"><strong>BEFORE COPYING THESE 4 FILES MAKE A BACKUP OF THE ORGINAL TARGET FILES </strong></p>
+</blockquote>
+<hr />
+<p>2) run the provided SQL on your main DB. ALL SQL upgrades are HARMLESS   to existing data AND functionality </p>
+<blockquote>
+  <p>The SQL to run is in file /doc/install/upgrade_2.0.0_fixes/upgrade_2.0.0_fixes.sql</p>
+  <p>The problem is that some of the sql commands in this file are already executed
+    in your DB.</p>
+  <p class="style6">So you must find from which point on you must execute the commands by executing
+    each sql command by itself starting from the begining. Commands that are
+    already in the DB will give an error but they do no harm. When you find a
+    command that gives no error you can probably execute all the rest of the
+    commands in one go. </p>
+</blockquote>
+<hr />
+<p><br />
+3) copy the site/ files from provided zip file avalable at the download area.</p>
+<blockquote>
+  <p>Have a good look at them all and copy the config values from your current
+    site/ files.</p>
+  <p class="style6"><em>DO NOT copy over your site/ files but instead PLEASE take the time to go through
+    each new file and edit it to your old config values.<br />
+    This is beacuse new values have been added and some config values had their
+    name changed. </em></p>
+  <p class="style4">** By this time your new version will be available at  /modules.php?name=leo <br />
+    Test the basic functionality. because the  fligths/ and maps/ dir are not yet moved the fligth display screen<br />
+  will not display maps/ and charts. ** </p>
+  <p class="style4">&nbsp;</p>
+</blockquote>
+<p class="style5">THE FOLLOWING STEPS 4,5,6 MUST BE DONE AS FAST AS POSSBILE TOGETHER SO THAT
+NORMAL OPERATION IS NOT DISTURBED </p>
+<hr />
+<br />
+4) MOVE (or copy but it is not nessasary) the
+<blockquote>
+  <p><br />
+    flights/ <br />
+    maps/ <br />
+    data/ <br />
+    <br />
+    files from the leonardo/ dir to leo/ (no backup is really needed) </p>
+  <p><span class="style4">** By this time your new version will be available at  /modules.php?name=leo <br />
+    Test ALL the  functionality now that the   fligths/ and maps/ dir are moved
+        to the right place.. **</span></p>
+</blockquote>
+<hr />
+<p>  5) rename leonardo/ to leonardo_old/ ?(or anything you wish) <br />
+</p>
+<hr />
+<p>6) rename leo/&nbsp; to leonardo/ and you are done! </p>
+<blockquote>
+  <p>  <span class="style2">** Test again all features on new version, if big problems,<br />
+    </span><span class="style2">revert to old by   using the steps in reverse order. <br />
+  (NO NEED TO REVERSE SQL commands) **</span></p>
+</blockquote>
+<hr />
+<p><br />
+  <br />
+  This is a fail safe method, no need to duplicate/backup db, no data can   be lost, <br />
+  the 2 versions can also run in paralell&nbsp; using the same db but   storing
+      flights in<br /> 
+  different place ( not recommended !!!!) <br />
+</p>
+<h2><strong>ADDITIONAL STEPS </strong></h2>
+<h2 class="style6"><strong>Use only when the upgrade is done and WELL tested !!!! </strong></h2>
+<h2><strong>1. Add 3d maps so that ground elevation is plotted
+    in the altitude chart.</strong></h2>
+<p><strong>GET THE DEMs</strong></p>
+<blockquote>
+  <p>Get the zip files from the aera you want to cover from </p>
+  <p> 
+    <a href="ftp://e0srp01u.ecs.nasa.gov/srtm/version2/SRTM3/" target="_blank">ftp://e0srp01u.ecs.nasa.gov/srtm/version2/SRTM3/ </a></p>
+  <p>In order to figure out which zip files you need consult the map at</p>
+  <p><a href="ftp://e0srp01u.ecs.nasa.gov/srtm/version2/Documentation/Continent_def.gif" target="_blank">ftp://e0srp01u.ecs.nasa.gov/srtm/version2/Documentation/Continent_def.gif</a> </p>
+</blockquote>
+<p><br />
+  <br />
+<strong>SIZE:</strong></p>
+<blockquote>
+  <p>is a total of 13 gb for world wide coverage (5 gb for eurasia,
+  around 2GB for europe) </p>
+</blockquote>
+<p><strong>AUTO GRAB:</strong></p>
+<blockquote>
+  <p>    if you have a  linux shell you can try :</p>
+  <pre class="style8">    nohup wget&nbsp; --limit-rate=150k -q -b -nd -r ftp://e0srp01u.ecs.nasa.gov/srtm/version2/SRTM3/Eurasia/* &amp; 
+       </pre>
+</blockquote>
+<p><strong>NOTES: </strong></p>
+<ol>
+  <li> You must put these files in maps\hgt\ dir but there is a config value in
+  site/config_custom.php file that lets you change the location </li>
+  <li>    You must put the zip files with the exact filenames you got them </li>
+  <li> You must put them all in this dir (no subdirs). </li>
+  <li> Also after adding new 3d zip files remember to use<strong> "Clean
+          files related to Google maps (use it after installing new 3d maps)" </strong><br />
+    it deletes the relevant files used to display the ground altitude per
+flight that are then autocreated on demand. </li>
+</ol>
+<blockquote>
+  <p class="style6"><em>If you dont do that flights that
+        were previously submitted when no 3d files were available will not display
+        ground elevation</em></p>
+</blockquote>
+<h2>2. Clean up old files </h2>
+<p>Use the 3 options under the &quot;Clean up files&quot; category in the &quot;ADMIN&quot; menu</p>
+<p>This is needed so the old and google earth and maps files are deleted becuase
+  they are not compatible with the new code </p>
+<h2> 3. Detect the glider brands</h2>
+<p>In older version the pilots put the glider name and brand in one field which
+often caused trouble beacuse they left out or mispelled the brand of the glider.</p>
+<p>Starting from 2.9.0 the pilot enters the brand from a drop down menu and you
+must convert the mixed &quot;glider name + glider brand&quot; field into separate fields</p>
+<p class="style7">**** DONT WORRY IT IS EASY !!!! ***** </p>
+<p> 1. Select in admin menu : "Detect
+/ Guess glider brands" </p>
+<p>2. Follow the steps one by one , no changes will be done in the db except
+  for creating a temp table. </p>
+<p>3. In step 6a you must copy the output into an csv
+    (excel) file </p>
+<p>4. Open the csv file in an Exel and make any corrections there. </p>
+<blockquote>
+  <p> <br />
+    <strong>field A </strong>is the glider name as it should be ( with no brand
+    name , corrected abrevations , spellings etc...) <br />
+  so must correct this when wrong. <br />
+  <br />
+  <strong>field B </strong>is the brand id which you can find by look ing at file
+  FN_brands.php or in the file itself at column C <br />
+  you must correct this also when wrong <br />
+  <br />
+  <strong>field C </strong>is the brand name with 1-1 relationship with column
+  B <br />
+  change this also when correcting column B <br />
+  <br />
+  <strong>field D </strong> is the original field and mus not be changed in any
+  means. is the key on which later we will update the flights table <br />
+  <br />
+  you can sort the cvs in any way you like mainting the column order or course. <br />
+  <br />
+  When ready you feed the cvs (not excel) into&nbsp; the admin interface with
+  option <strong>6c </strong> to
+  get the required sql to run into the DB . </p>
+</blockquote>
+<p>5. Continue with steps 6c 6d Note that you must manually execute the sql
+  commands from step 6c in your DB </p>
+<p class="style6"><em>NOTE: when you execute the sql from step 6c your DB will become incompatible
+  with previous versions of leoanrdo.<br />
+  The incompatibility is that if you use older code with the new DB the glider
+  brands wont be displayed at all </em></p>
+<h2><span class="style6"><strong></strong></span><strong>4. Make the hashes </strong></h2>
+<p>Use the option <strong>&quot;Make
+  hashes for all flights&quot;</strong> under the <strong>&quot;Migration to newer
+  DB schemes operations&quot;</strong> in &quot;admin&quot; menu </p>
+<p>This is required so no flight can be netered twice in the system.</p>
+<h2>5. Do some house keeping </h2>
+<p> Use the <strong>&quot;Fix
+    Takeoff names&quot;</strong> from &quot;admin&quot; menu just in case. It wont do any harm anyway! </p>
+<h2>6. Rebuild the logs (MUST BE PERFORMED LAST ! ) </h2>
+<p>Use the 2 options under &quot;Sync Log oparations&quot;</p>
+<p>Use <strong>&quot;Clean
+sync-log&quot;</strong>  one time and then<br />
+Use <strong>&quot;Remake sync-log&quot;</strong> in batches of 500 until
+it reports no other flights </p>
+<p>This will prepare a log table that can be used to sync your server with other
+  leonardo servers. <br />
+  Contact me if you want to use this option with paraglidingforum. </p>
+<p>&nbsp;</p>
+<h2>EVEN MORE INSTRUCTIONS</h2>
+<h2>1. Language files</h2>
+<p><span class="style6"><em>You only need this if working on the source and want
+to add some new text to the interface </em></span></p>
+<p>Language files structure is changed in v.2.9.0. </p>
+<p>The files that you can edit are located in language/source/ folder. These
+  are descibed as source files because they are used to generate 2 versions<br />
+one in iso encoding and one in UTF encoding which are the ones really used. </p>
+<p>So when you want to add some new language string (if you are doing custom
+  development) you </p>
+<p>1.Add this string to your local language file in the source/
+    dir
+  and PLEASE add it also in the english language at least. </p>
+<p>2. Run the script &quot;Admionister Language translations&quot;. This will create files
+  in iso/ and utf8/ folders and also fill in the missing defines in the other
+  languages based on the defines found in the english file. </p>
+<p><strong>Example:</strong> your local
+    language is german and want to add a string _PLEASE_GIVE_A_CORRECT_EMAIL</p>
+<blockquote>
+  <p>Open the source/language-german.php and add at the end the line</p>
+  <p>	define(&quot;_PLEASE_GIVE_A_CORRECT_EMAIL&quot;,&quot;the german phrase&quot;);</p>
+  <p>AND also the language-english.php and add </p>
+  <p>define(&quot;_PLEASE_GIVE_A_CORRECT_EMAIL&quot;,&quot;PLEASE GIVE A CORRECTEMAIL&quot;);</p>
+  <p>By running the script the rest resulting files will have also the english
+    translation in place so at least it is displayed something meaningfull until
+  an proper translation is offer for this phrase to all other languages. </p>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+</body>
+</html>

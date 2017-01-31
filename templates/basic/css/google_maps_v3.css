@@ -1,0 +1,507 @@
+ 
+body, p, table,tr,td {font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
+
+body {margin:0px; background-color:#FFFFFF}
+
+.box {
+	background-color:#F4F0D5;
+	border:1px solid #555555;
+	padding:3px; 
+	margin-bottom:5px;
+}
+
+.boxTop {margin:0; }
+
+#msg {
+	position:absolute;
+	top:0;
+	left:0;
+	width:200px;
+	height:50px;
+	background:#ffffff;
+	z-index:99999;
+	display:none;
+}
+
+
+#map { 
+	 margin:0;
+	 padding:0;
+	 width:100% ;
+	height:100%;
+
+		
+	
+}
+			 
+#sidebar2 {   		
+	  display:block; 
+	  font-size: 11px;		  
+	  border: 1px solid #999999;
+	  height:100%;
+	  margin-left:10px;
+	  padding-left: 0.5em;
+	  padding-right: 0.5em;
+	  font-family: Helvetica, Arial, sans-serif;
+}
+
+.controls { margin: 0; padding: 0; font-size: 11px; text-align: left;  width: 100%;}
+.controls button { font-size: 11px;	margin:0px;	padding:0px;	border:1px solid darkred; background-color: #eee;}
+* html .controls button { margin: 0 2px 0 0px;  line-height: 12px; }
+
+.info img { float: left; }
+#zselect { padding-top: 1em; }
+v\:* {
+	  behavior:url(#default#VML);
+}
+     
+div.markerTooltip, div.markerDetail {
+	  color: black;
+	  font-weight: bold;
+	  background-color: white;
+	  white-space: nowrap;
+	  margin: 0;
+	  padding: 2px 4px;
+	  border: 1px solid black;
+}
+
+
+#placeDetails a:link, #placeDetails a:visited, #placeDetails a:active 
+{ 
+background-color: #2C2C2C;
+border: 1px solid #B4B4B4;
+color: #F0F0F0;
+display: block;
+font-size: 11px;
+margin: 0;
+padding: 2px 2px 2px 4px;
+text-decoration: none;
+}
+
+#animControl a:link, #animControl a:visited, #animControl a:active {
+	display:inline;
+	background:none;
+	padding:0;
+	color:#d0d0d0;
+	border:0;
+	
+}
+
+#animControl { margin-bottom:8px; }
+#animControl img {
+	vertical-align: middle;
+}
+#animControl button {
+	font-size: 14px;
+	font-weight: bold;
+	height: 22px;
+	margin-top: 0;
+}
+
+#placeDetails label {
+	font-size:12px;
+}
+
+fieldset.legendBox  { 
+	height:auto;
+	
+	border-style: solid; 
+	border-right-width: 1px; border-bottom-width: 1px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E5E5E5; border-left-color: #E5E5E5;
+
+	border:none;
+	display:block;
+	float:right;
+	clear:both;
+
+	padding:0;
+	padding-left:1px; 	
+	padding-bottom:4px;
+	
+	margin-bottom:0.5em;
+	margin-right:0px;
+	margin-left:2px;
+	text-align:left;
+	background-color:#FFFFFA;
+	
+	background:none;
+
+	width:100%;
+}
+
+
+
+.legendBox legend {
+	border:1px outset #E2E2E2;
+	
+	padding:0.13em 0.95em 0.13em 0.95em;
+	margin:0;
+	color:#000000;
+	font-weight:normal;
+	font-size:10px;
+	background-color:#EDEAD3;
+
+	background:#ffffff;
+	border:none;
+}
+
+.imgBox {
+	width:auto;
+	display:block;
+	float:right;
+	clear:both;
+	background-color:#F5F7F9;
+	padding:3px;
+	margin:3px;
+}
+.shadowBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+}
+
+
+#placeDetails {  
+    /* Place the div off the bottom right of the map */  
+    position: absolute;  
+    width: 150px;  
+    height:auto;
+    
+    bottom:30px;    
+    right: 0px;
+	
+	
+    padding-left: 9px;  
+    padding-right: 5px;  
+    /* Semi-transparent background */
+    background-color: #505050; 
+    background-color: rgba(0,0,0,0.6);  
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-left-radius: 10px;  
+    -moz-border-radius-topleft: 10px;  
+    -webkit-border-top-left-radius: 10px;  
+ }  
+  
+  #chartDiv { 
+  	position: absolute; 
+  	width:100%;
+	height:20%;
+  	top:80%;  
+   	overflow: hidden;  
+  		
+  }
+  
+  #chart {
+  	
+  	position: absolute;
+	top:0;
+	left:0; 
+  	width:100%;
+    height:100%;
+  	background-color: rgba(255,255,255,0.5);
+  }
+  
+	
+    #mapDiv {  
+    width: 100%;  
+    height:80%;
+    position: absolute;
+	top:0;
+	left:0;  
+    overflow: hidden;  
+  }
+  
+  #thermalControls img {  
+  	padding-left: 3px;
+    vertical-align: middle;
+  }
+  #thermalControls label { cursor:pointer; }  
+  
+.legendBox label { cursor:pointer; }  
+
+/* track info display */
+
+ 
+ 
+#trackInfoTpl{
+	display:none;	
+}
+
+.infoDisplay {
+	position:relative;
+	color:#FFFFFF;
+	font-size:11px;
+}
+.infoDisplay * {
+	color:#FFFFFF;
+	font-size:11px;
+}
+
+.infoDisplay{
+	position:relative;
+	 width:100% ;
+}
+
+.infoDisplayItem {
+	position:relative;
+	 width:100% ;
+	 float: left;
+}
+
+.infoDisplayText { 
+	float:left;
+	width:60px;
+}
+
+.infoString{
+	float:right;
+	clear:right;
+	
+	color:#FFFFFF;
+	font-size:11px;
+	font-weight:bold;
+}
+
+
+
+#trackCompareFinder {
+    /* Place the div off the bottom right of the map */  
+    position: relative;  
+	float:left;
+	width: auto;
+    height:auto;
+
+	padding:5px;
+    padding-left: 9px;  
+    padding-right: 5px;
+	
+    padding:0px;
+	margin-left:-4px;
+  
+    /* Semi-transparent background */
+    background-color: #505050;  
+    background-color: rgba(0,0,0,0.6);
+    background:none;
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-right-radius: 10px;  
+    -moz-border-radius-topright: 10px;  
+    -webkit-border-top-right-radius: 10px;  
+
+    border-bottom-right-radius: 10px;  
+    -moz-border-radius-bottomright: 10px;  
+    -webkit-border-bottom-right-radius: 10px;
+
+    display:block;
+}  
+
+#trackCompareFinder div {
+	padding:2px;
+}
+
+#trackFinderTplMulti {
+	display:none;
+}
+
+
+/* wide for multiple tracks
+*/
+#trackDetails {  
+    /* Place the div off the bottom right of the map */  
+    position: absolute;  
+
+	width: 400px;
+    height:auto;
+    bottom:30px;
+
+	padding:5px;
+    padding-left: 9px;  
+    padding-right: 5px;
+    
+    /* Semi-transparent background */
+    background-color: #505050;  
+    background-color: rgba(0,0,0,0.6);  
+    color: white;  
+    font-size: 80%;  
+    /* Rounded top left corner */  
+    border-top-right-radius: 10px;  
+    -moz-border-radius-topright: 10px;  
+    -webkit-border-top-right-radius: 10px;  
+
+    border-bottom-right-radius: 10px;  
+    -moz-border-radius-bottomright: 10px;  
+    -webkit-border-bottom-right-radius: 10px;  
+}  
+
+#trackInfoTplMulti {
+	display:none;
+}
+
+.trackDisplayItem {
+	position:relative;
+	
+
+	float: left;
+	border-bottom:1px solid  rgba(40,40,40,0.8);  
+}
+
+.trackDisplayItem .color	{
+	width:14px;
+	height:14px;
+	margin-right:3px;
+
+	border-radius: 2px;  
+    -moz-border-radius: 2px;  
+    -webkit-border-top: 2px;  
+}
+
+#trackCompareFinderHeader, #trackCompareFinderHeaderAct , 
+#trackCompareFinderHeaderClose, #trackCompareFinderHeaderMore  {
+ 	font-size:14px;
+	font-weight:bold;
+	text-align:center;
+	cursor:pointer;
+}
+
+
+#trackCompareFinderHeaderExpand { 
+	display:none;
+	width:380px;
+	overflow:hidden;
+}
+
+div#trackCompareFinderHeaderAct {
+	padding-left:20px;
+	padding-right:20px;
+}
+#trackCompareFinderHeaderAct {
+	float:right;
+	background: none repeat scroll 0 0 #175196;
+	border: 1px solid #E3E3E3;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px; 
+}
+
+#trackCompareFinderHeaderMore
+{
+    background: none repeat scroll 0 0 #EEC132;
+	border: 1px solid #E3E3E3;	
+	float: right;
+	clear:both;
+	font-size: 11px;
+	width: auto;
+	padding-left:10px;
+	padding-right:10px;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px;
+	display:none;
+
+}
+
+#trackCompareFinderHeaderClose {
+    background: none repeat scroll 0 0 #373737;
+	border: 1px solid #E3E3E3;
+	
+	float: left;
+	font-size: 11px;
+	width: 70px;
+	border-radius: 5px;  
+    -moz-border-radius: 5px;  
+    -webkit-border-top: 5px;
+
+}
+
+#trackCompareFinderHeader 	 {display: block;float:left; width:400px;}
+#trackCompareFinderList		 {display: none; clear:both; float:left; width:400px;}
+
+
+.trackDisplayItem .date		{
+background: none repeat scroll 0 0 #967D7D;
+background: none;
+text-align: left;
+width: 70px;
+}
+.trackDisplayItem .score	{
+background: none repeat scroll 0 0 rgba(144, 139, 164, 0.57);
+background: none;
+text-align: right;
+width: 55px;}
+.trackDisplayItem .info		{width:36px;}
+.trackDisplayItem .glider	{width:50px; ;text-align:center;}
+#trackCompareFinder .trackDisplayItem .name 	{width:115px;text-align:left;}
+.trackDisplayItem .tick		{width:20px;text-align:center;}
+
+.trackDisplayItem .tick	input { width:23px; height:23px; cursor:pointer;}
+
+.trackDisplayItem .name		{width:150px;}
+.trackDisplayItem .alt		{width:55px;}
+.trackDisplayItem .speed	{width:70px;}
+.trackDisplayItem .vario 	{width:75px;}
+
+
+.trackStr, .trackListStr {
+	float:left;
+	clear:none;
+	display:inline;
+ 	width:80px;
+	color:#FFFFFF;
+	font-size:10px;
+	font-weight:bold;
+	text-align:right;
+	border:1px solid #000000;
+	border:none;
+	padding:2px;
+}
+
+#timeDiv {
+	font-size:15px;
+	font-weight:bold;
+	text-align:center;
+}
+
+/* some fancy checkboxes */
+.label_check input,
+.label_radio input  { margin-right: 5px; }
+
+.has-js .label_check,
+.has-js .label_radio    { padding-left: 34px; }
+.has-js .label_radio    { background: url(img/radio-off.png) no-repeat; }
+.has-js .label_check    { background: url(img/check-off.png) no-repeat; }
+.has-js label.c_on      { background: url(img/check-on.png) no-repeat; }
+.has-js label.r_on      { background: url(img/radio-on.png) no-repeat; }
+.has-js .label_check input,
+.has-js .label_radio input  { position: absolute; left: -9999px; }
+
+ /* google maps control button styling */
+.controlButton {
+	-moz-user-select: none;
+	background: none repeat scroll 0 0 #CDD8FF;
+	border: 1px solid #717B87;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+	color: #000000;
+	cursor: pointer;
+	direction: ltr;
+	font-family: Arial,sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	margin-top: 5px;
+	min-width: 29px;
+	overflow: hidden;
+	padding: 1px 7px;
+	text-align: center;
+}
+
+.skywaysButton {
+	margin-right: 15px;
+	background: none repeat scroll 0 0 #F7DC59;	
+}
+
+.skywaysButtonPressed {
+	background: none repeat scroll 0 0 #D9AC1D;
+	color:white;
+}

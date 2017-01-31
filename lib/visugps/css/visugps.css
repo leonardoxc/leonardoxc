@@ -1,0 +1,121 @@
+/* Map */
+.vgps-info {
+ margin:0;
+ padding:0;
+ font:10px Verdana, Arial, sans-serif;
+}
+
+.vgps-info p {
+ margin:1 px;
+}
+
+#vgps-anim {
+ position: absolute;
+ margin: 2px 0px;
+ bottom: 2px;
+ right: 2px;
+ height: 2ex;
+ width: 10ex;
+ background-image: url("../img/play.gif");
+ background-repeat: no-repeat;
+ background-position: center left;
+}
+
+#vgps-play {
+ position: absolute;
+ right: 2px;
+ margin: 0;
+ padding: 0;
+ background: #eee;
+ height: 100%;
+ width: 6ex;
+ border: 0 solid #555;
+}
+
+/* Charts */
+
+#vgps-chartcont {
+/* background-color:#0000ff;*/
+ float:left;
+ display:block;
+
+ position: absolute;
+ bottom:0;
+
+ width: 100%;
+ height: 20%;
+ overflow: hidden;
+}
+
+#topDiv {
+	width:100%;
+	height:100%;	
+	/*min-width:800px;*/
+}
+
+
+#panel {
+	z-index:99;
+	/* background-color:#009933;*/
+	position: absolute;
+	display:block;float:right;clear:right;
+	
+	width:15%;
+	/* min-width:120px;*/
+	height:80%;
+	
+	right:0px;top:0px;
+	overflow: hidden;
+}
+#map {
+	z-index:100;
+	/* background-color:#ff0000;*/
+	position:absolute;
+	display:block;clear:left;float:left;
+	
+	width:100%;
+	/*min-width:680px;*/
+	height:80%;
+	top:0;
+	left:0;
+}
+
+
+.vgps-chart {
+ position:absolute;
+ width:100%;
+ height:100%;
+ top:0;
+ left:0;
+}
+
+.vgps-slider {
+ background: #eee;
+ height: 2ex;
+ width: 6ex;
+ border: 0px solid #555;
+ margin: 2px;
+ margin-right: 3px;
+ float: right;
+}
+
+.vgps-legend {
+ float: right;
+ font-weight: bold;
+ cursor: move;
+ width: 3ex;
+ margin-right: 1ex;
+}
+
+ul, li {
+ text-align:left;
+ font:10px Verdana, Arial, sans-serif;
+ list-style:none;
+ padding:0;
+ margin:0;
+ z-index: 100;
+}
+
+li {
+ clear:both;
+}

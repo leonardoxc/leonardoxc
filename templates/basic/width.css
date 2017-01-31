@@ -1,0 +1,20 @@
+/*
+.tableTitle 		{ width:760px; }
+.listTableTabber 	{ width:760px; }
+.listTable			{ width:760px; }
+.mainBox 			{ width:760px; }
+
+html>body .tableTitle { width:754px; }
+html>body .mainBox	{ width:756px; }
+.tableInfo			{ width:750px; }
+
+*/
+.tableTitle 		{ width:960px; }
+.listTableTabber 	{ width:960px; }
+.listTable			{ width:960px; }
+.mainBox 			{ width:960px; }
+
+html>body .tableTitle { width:954px; }
+html>body .mainBox	{ width:956px; }
+.tableInfo			{ width:950px; }
+

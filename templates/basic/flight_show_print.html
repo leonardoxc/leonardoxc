@@ -1,0 +1,485 @@
+<style type="text/css">
+<!--
+
+.helpTooltips {
+width:auto;
+display:inline;
+/*border-bottom:1px dashed #aaaaaa;*/
+text-decoration:underline;
+}
+
+.borderTop {
+	border-top:1px solid #cccccc;
+}
+.mapDiv{
+	padding-top:0px;
+	padding-bottom:0px;
+}
+.imgDiv{ display:none; clear:none; width:0;}
+
+.imgPanel {
+	width:auto;
+	display:block;
+}
+
+.imgBox {
+	width:auto;
+	display:block;
+/*	float:right;
+	clear:both;
+*/
+	float:left;
+	clear:none;
+
+	background-color:#F5F7F9;
+	padding:3px;
+	margin:3px;
+}
+
+fieldset.legendBox {
+	border-style: solid;
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	padding:0 1em .5em 0.4em;
+	margin-bottom:0.5em;
+	margin-right:5px;
+	margin-left:5px;
+	text-align:left;
+	background-color:#f4f4f4;
+}
+.legendBox legend {
+	border:1px outset #E2E2E2;
+	padding:0.2em 1.2em 0.2em 1.2em;
+	margin:0;
+	color:#000000;
+	font-weight:bold;
+	background-color:#D9E9F1;
+}
+
+
+.flightShowBoxHeader {
+	display:block;
+	clear:both;
+	border-style: solid;
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	/* MORE black */
+	/*	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;*/
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+
+	height:22px;
+
+	margin-bottom:0px;
+	margin-top:0px;
+
+	padding:0;
+	padding-left:5px;
+	padding-right:5px;
+
+	font-weight:bold;
+	background-color:#7FAAD9;
+	color:#FFFFFF;
+	width:760px;
+}
+
+html>body .flightShowBoxHeader {
+	width:747px;
+}
+
+.flightShowBox {
+	/*display:block;*/
+	border:none;
+
+	font-size:11px;
+	text-decoration:none;
+	text-align:left;
+	background-color:#FFFFFF;
+
+	padding:0;
+	margin:0;
+	width:760px;
+	clear:both;
+}
+
+
+html>body .flightShowBox {
+	width:760px;
+}
+
+.flightShadowBox {
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-style: solid; border-bottom-style: solid; border-top-style: solid; border-left-style: solid;
+	border-right-color: #999999; border-bottom-color: #999999; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	background-color:#f4f4f4;
+	background-color:#fbfbfb;
+}
+
+.flightShadowBox  th {
+	background-color:#D9E9F1;
+	color:#222255;
+	padding:3px;
+}
+
+.col1 th { 	background:none; background-color:#F1EAD9;  }
+.col2 th {	background:none; background-color:#D9DBF1;  }
+.col3 th { 	background:none; background-color:#E0F1D9;  }
+
+
+#geOptionsID { width:310px; background-color:#F3F5C5}
+#takeoffArea1 {width:320px; background-color:#F3F5C5}
+
+#IgcDownload {width:320px; background-color:#F3F5C5}
+
+.takeoffOptionsDropDown {width:410px; }
+
+.scoreInfoHeader {background-color: #4967A0 ; border-left-color: #4967A0 ; }
+.scoreInfoHeader  td {color:#FFFFFF}
+
+/* TAB CSS */
+
+ul.tabs {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+	height: 32px; /*--Set height of tabs--*/
+	border-bottom: 1px solid #999;
+	border-left: 1px solid #999;
+	width: 100%;	
+}
+ul.tabs li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	height: 31px; /*--Subtract 1px from the height of the unordered list--*/
+	line-height: 31px; /*--Vertically aligns the text within the tab--*/
+	border: 1px solid #999;
+	border-left: none;
+	margin-bottom: -1px; /*--Pull the list item down 1px--*/
+	overflow: hidden;
+	position: relative;
+	background: #e0e0e0;
+	
+}
+ul.tabs li a {
+	text-decoration: none;
+	color: #000;
+	display: block;
+	font-size: 1.2em;
+	padding: 0 20px;
+	border: 1px solid #fff; /*--Gives the bevel look with a 1px white border inside the list item--*/
+	outline: none;
+}
+ul.tabs li a:hover {
+	background: #ccc;
+}
+html ul.tabs li.active, html ul.tabs li.active a:hover  { /*--Makes sure that the active tab does not listen to the hover properties--*/
+	background: #fff;
+	border-bottom: 1px solid #fff; /*--Makes the active tab look like it's connected with its content--*/
+}
+
+
+
+.tab_container {
+	border: 1px solid #999;
+	border-top: none;
+	overflow: hidden;
+	clear: both;
+	float: left; width: 100%;
+	background: #fff;
+}
+.tab_content {
+	padding: 2px;
+	font-size: 1.2em;
+}
+
+.collapsed {
+	height:1px;
+	overflow:hidden;
+}
+
+.collapsedOff {
+	height:auto;
+	overflow:visible;
+}
+
+-->
+</style>
+
+<script language="javascript">
+var docTips = new TipObj('docTips');
+with (docTips)
+{
+ template = '<table bgcolor="#003366" cellpadding="1" cellspacing="0" width="%2%" border="0">' +
+  '<tr><td><table bgcolor="#6699CC" cellpadding="3" cellspacing="0" width="100%" border="0">' +
+  '<tr><td class="tipClass">%3%</td></tr></table></td></tr></table>';
+
+ tips.openDistance = new Array(80, 0, 'info1Pos', '<img src="{M_PATH}/img/help_openDistance.gif">');
+ tips.maxDistance = new Array(80, 0, 'info2Pos', '<img src="{M_PATH}/img/help_maxDistance.gif">');
+ tips.xcDistance= new Array(90, 0, 'info3Pos', '<img src="{M_PATH}/img/help_xcDistance.gif">');
+
+ showDelay = 10;
+ hideDelay = 200;
+ tipStick = 1;
+ //IESelectBoxFix = true;
+}
+
+var takeoffInfoLoaded=false;
+var IgcDownloadLoaded=false;
+
+function toggleTakeoffInfo() {
+	toggleDiv('takeoffArea1','takeoffArea1Pos',20,-221);
+	
+	if (!takeoffInfoLoaded) {
+		$("#takeoffAreaInfo").html("<div align='center'><img src='{M_PATH}/img/ajax-loader.gif'></div>");
+		$("#takeoffAreaInfo").load("{M_PATH}/GUI_EXT_flight_info.php?op=takeoffInfo&flightID={flightID}") ;
+		takeoffInfoLoaded=true;
+	}	
+	
+}
+
+function toggleIgcDownload() {
+	var url='{M_PATH}/GUI_EXT_download_igc.php?flightID={flightID}';
+	popupBox('IgcDownload',"IGC Download",url,440,140,-320,18);
+}
+
+jQuery(document).ready(function() {
+	//When page loads...
+	jQuery(".tab_content").hide(); //Hide all content	
+	$("#tabcomments").addClass("collapsed").show();
+	$("#tabgmaps").addClass("collapsed").show();
+	
+	// 
+	//jQuery("ul.tabs li:first").addClass("active").show(); //Activate first tab
+	//jQuery(".tab_content:first").show(); //Show first tab content
+	var menuTab='{activeTabName}';
+	if (menuTab!='') {
+		jQuery("#tab"+menuTab+"li").addClass("active").show(); //Activate first tab
+		jQuery("#tab"+menuTab).removeClass("collapsed").show(); //Show first tab content
+	} else {
+		$("ul.tabs:first").addClass("active").show(); //Activate first tab
+		$(".tab_container:first").removeClass("collapsed").show(); //Show first tab content
+	}
+	
+	//On Click Event
+	jQuery("ul.tabs li").click(function() {
+		jQuery("ul.tabs li").removeClass("active"); //Remove any "active" class
+		jQuery(this).addClass("active"); //Add "active" class to selected tab
+		jQuery(".tab_content").hide(); //Hide all tab content
+
+		var activeTab = jQuery(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+		
+		jQuery(activeTab).removeClass("collapsed");
+		jQuery(activeTab).fadeIn(); //Fade in the active ID content
+		return false;
+	});
+
+});
+
+
+</script>
+<div id="docTipsLayer" style="position: absolute; z-index: 10000; visibility: hidden;
+ left: 0px; top: 0px; width: 10px">&nbsp;</div>
+
+
+
+<div id="takeoffArea1" class="dropBox" >
+	<div class="infoBoxHeader">
+		<div class='title'>{#_FLYING_AREA_INFO}</div>
+		<div class='closeButton'></div>
+	</div>
+	<div id="takeoffAreaInfo" class='content main_text'>
+	{linkToInfoStr1xx}
+	</div>
+</div>
+
+
+
+
+<div class='flightShowBoxHeader' style='text-align:center; font-size:18px; display:none;'>
+	<div id='pilot_pos' class='titleDiv'>{legend}</div>
+	<div class='pagesDivSimple'>{legendRight}</div>
+</div>
+<!-- BEGIN EXT_FLIGHT -->
+<div class='flightShowBoxHeader' style="background-color:#BED59D">
+	<div id='pilot_pos' class='titleDiv'>{extFlightLegend}</div>
+	<div class='pagesDivSimple'></div>
+</div>
+<!-- END EXT_FLIGHT -->
+<table align="center"  cellpadding="0" cellspacing="0" class="flightShowBox" width="760">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><table width="100%" border="0" align="left" cellpadding="0">
+        <tr>
+          <td width="300"  valign="top"><table  class="main_text flightShadowBox col1" width="300" border="0" cellpadding="0">
+            <tr>
+              <th colspan="2">{#_Takeoff_Info}</th>
+            </tr>
+            <tr>
+              <td width="200"><div align="left">{#_TAKEOFF_LOCATION}</div></td>
+              <td width="100"><div align="right">{TAKEOFF_TIME}</div></td>
+            </tr>
+            <tr>
+              <td colspan="2" height='18'><div align="left">{TAKEOFF_LOCATION}</div></td>
+            </tr>
+            <tr>
+              <td class='borderTop'>{#_LANDING_LOCATION}</td>
+              <td class='borderTop'><div align="right">{LANDING_TIME}</div></td>
+            </tr>
+            <tr>
+              <td colspan="2"  height='18'><div align="left">{LANDING_LOCATION}</div></td>
+            </tr>
+          </table>            <table class="main_text flightShadowBox col1" width="300" border="0" cellpadding="0" style="margin-top:27px;">
+              <tr>
+                <th colspan="2">{#_XC_Info}</th>
+              </tr>
+              <tr>
+                <td width="149"><div id='info1Pos' align="left" class='helpTooltips' onmouseover="docTips.show('openDistance')"
+ onmouseout="docTips.hide()" >{#_OPEN_DISTANCE}</div></td>
+                <td width="142"><div align="right">{LINEAR_DISTANCE}</div></td>
+              </tr>
+              <tr>
+                <td><div id='info2Pos' align="left" class='helpTooltips' onmouseover="docTips.show('maxDistance')"
+ onmouseout="docTips.hide()" >{#_MAX_DISTANCE}</div></td>
+                <td><div align="right">{MAX_DISTANCE}</div></td>
+              </tr>
+              <tr>
+                <td><div id='info3Pos' align="left" class='helpTooltips' onmouseover="docTips.show('xcDistance')"
+ onmouseout="docTips.hide()" >{#_OLC_DISTANCE}</div></td>
+                <td><div align="right">{OLC_KM}</div></td>
+              </tr>
+              <tr>
+                <td><div align="left">{#_OLC_SCORING}</div></td>
+                <td><div align="right"><strong>{OLC_SCORE}</strong>{VALI}</div></td>
+              </tr>
+              <tr>
+                <td><div align="left">{#_OLC_SCORE_TYPE}</div></td>
+                <td><div align="right">{OLC_TYPE}</div></td>
+              </tr>
+            
+            </table></td>
+          <td width="280" valign="top" align="center">
+			<table align=center class="main_text flightShadowBox col2" width="270" border="0" cellpadding="0" style='clear:left;'>
+            <tr>
+              <th height=22>{gliderCat} </th>
+            </tr>
+            <tr>
+              <td><div align="left" style='height:28px;'>
+                <div align="center">{glider}</div>
+              </div></td>
+            </tr>
+          </table>
+			<table class="main_text flightShadowBox col2" width="270" border="0" cellpadding="0" style="margin-top:8px;">
+            <tr>
+              <th colspan="2">{#_Flight_Info}</th>
+            </tr>
+
+            <tr>
+              <td >{#_DURATION}</td>
+              <td width="70"><div align="right">{DURATION}</div></td>
+            </tr>
+            <tr>
+              <td class='borderTop'><div align="left">{#_MAX_VARIO}</div></td>
+              <td class='borderTop'><div align="right">{MAX_VARIO}</div></td>
+            </tr>
+            <tr>
+              <td><div align="left">{#_MIN_VARIO}</div></td>
+              <td><div align="right">{MIN_VARIO}</div></td>
+            </tr>
+            <tr>
+              <td class='borderTop'>{#_MAX_ALTITUDE}</td>
+              <td class='borderTop'><div align="right">{MAX_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MIN_ALTITUDE}</td>
+              <td><div align="right">{MIN_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_TAKEOFF_ALTITUDE}</td>
+              <td><div align="right">{TAKEOFF_ALT}</div></td>
+            </tr>
+            <tr>
+              <td>{#_ALTITUDE_GAIN}</td>
+              <td><div align="right">{ALTITUDE_GAIN}</div></td>
+            </tr>
+            <tr>
+              <td class='borderTop'>{#_MAX_SPEED}</td>
+              <td class='borderTop'><div align="right">{MAX_SPEED}</div></td>
+            </tr>
+            <tr>
+              <td>{#_MEAN_SPEED}</td>
+              <td><div align="right">{MEAN_SPEED}</div></td>
+            </tr>
+          </table></td>
+          <td align="right" valign="top">
+			<table width="170" class="main_text flightShadowBox col3" border="0" cellpadding="0">
+            <tr>
+              <th height="22"><div align="center">{#_DATE_SORT}</div></th>
+            </tr>
+            <tr>
+              <td>
+              <div aling=center  style="height:28px; font-size:22px; text-align:center">
+                  {FLIGHT_DATE}    
+                </div> 
+				</td>
+            </tr>
+			</table>
+			
+			<table width="170" class="main_text flightShadowBox col3" border="0" cellpadding="0" style="margin-top:8px;">
+            <tr>
+              <th height="22"><div align="center">{#_TAKEOFF_LOCATION}</div></th>
+            </tr>
+            <tr>
+              <td>
+              <div aling=center  style="height:52px; font-size:14px; text-align:center">
+                  {TAKEOFF_LOCATION}
+                </div> 
+				</td>
+            </tr>
+			</table>
+			
+			<table width="170" class="main_text flightShadowBox col3" border="0" cellpadding="0"  style="margin-top:8px;">
+            <tr>
+              <th height="22"><div align="center">{#_PILOT}</div></th>
+            </tr>
+            <tr>
+              <td>
+              <div aling=center  style="height:32px; font-size:14px; text-align:center">
+                 {legend}
+                </div> 
+				</td>
+            </tr>
+			</table>
+			
+	
+			
+			
+		</td>
+        </tr>
+      </table>
+	</td>
+    </tr>
+<!-- BEGIN COMMENTS -->
+    <tr>
+      <td >
+		<fieldset class="legendBox"><legend>{#_COMMENTS}</legend>{comments}</fieldset>
+	  </td>
+    </tr>
+<!-- END COMMENTS -->
+<!-- BEGIN ADMIN_PANEL -->
+    <tr>
+      <td ><fieldset class="legendBox"><legend>{#_MORE_INFO}</legend><div align="center">{ADMIN_PANEL}</div></fieldset></td>
+    </tr>
+<!-- END ADMIN_PANEL -->
+    <tr>
+      <td align="center" >
+		<div align=center class="mapDiv{2col}">
+			{MAP_IMG}
+		</div>
+		<div align=center class="mapDiv{2col}" id='chartsDiv' style='display:block'>
+				  {CHART_IMG1}{CHART_IMG2}{CHART_IMG3}{CHART_IMG4}
+        </div>
+		</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,25 @@
+#
+
+RewriteEngine On
+RewriteBase /
+
+# various operations on a flight
+RewriteRule ^flights/details/(\d*)$ /modules/leonardo/index.php?name=leonardo&op=show_flight&flightID=$1 [L,NC] 
+RewriteRule ^flights/ge/(\d*)$ /modules/leonardo/download.php?type=kml_trk&flightID=$1&lng=english&an=1 [L,NC]
+
+
+RewriteRule ^flights/(.*)$ /modules/leonardo/index.php?name=leonardo&op=list_flights&$1 [L] 
+
+# various operations on a pilot
+RewriteRule ^pilots/details/([\d_]*)$ /modules/leonardo/index.php?name=leonardo&op=pilot_profile&pilotIDview=$1 [L,NC] 
+RewriteRule ^pilots/stats/([\d_]*)$   /modules/leonardo/index.php?name=leonardo&op=pilot_profile_stats&pilotIDview=$1 [L,NC] 
+RewriteRule ^pilots/flights/([\d_]*)$ /modules/leonardo/index.php?name=leonardo&op=list_flights&pilotIDview=$1 [L,NC]
+
+RewriteRule ^pilots/(.*)$ /modules/leonardo/index.php?name=leonardo&op=list_pilots&$1 [L] 
+
+RewriteRule ^ranks/(.*)$ /modules/leonardo/index.php?name=leonardo&op=competition&$1 [L] 
+
+
+RewriteRule ^takeoffs/(.*)$ /modules/leonardo/index.php?name=leonardo&op=list_takeoffs&$1 [L] 
+
+RewriteRule ^(.*)$ /modules/leonardo/$1

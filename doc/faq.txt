@@ -1,0 +1,81 @@
+Leonardo F.A.Q.
+
+Q1. What are the prerequisites in order to install Leonardo
+Q2. Some flights have takeoffs that are way too far from the actual locations.
+Q3. I noticed that the Max Vario and Min Vario values are largely exaggerated (It shows up to +12.5 m/s)
+Q4. I have problems inserting pictures to a flight. Is there a permission issue?
+Q5. Is there a way to assign categories to the flights, so to make rankings for paraglider
+    pilots and for hang-gliding pilots, or to make contests for pilots - say - of the same 
+    region or club?
+Q6. The OLC submission does not work.
+
+
+
+Q1. What are the prerequisites in order to install Leonardo
+A1. 1. PHP
+    2. Mysql
+    3. PHP Nuke OR phpBB running
+    4. GD 2.0 or higher installed in PHP (most free hosting dont offer that)
+    5. Ability to compile and execute C programs in the web server
+    6. 1 -5 Gb Hard disk space on the webserver for the SAT Maps
+    7. Lots of Bandwidth
+    8. Good CPU on the Webserver
+    9. Lots of Memory on the webserver (512 Mininum 1 Gb recommended)
+    10. Basic - indermediate computer skills.
+
+
+Q2. Some flights have takeoffs that are way too far from the actual locations.
+A2. You (as an administrator of Leonardo) should put all new takeoffs in the database.
+    That way the takeoff location for each flight will be shown correctly.
+    log in as administrator, and while viewing a flight you (because of admin rights) 
+    can see the takeoff coorditanes so you can copy - paste them into a new record
+    on the leonardo_waypoints table.
+    Put in field "type" the value 1000 for takeoffs 
+
+    If the location dont show up after the addition of new takeoffs, go to
+    each flight logged in as a leonardo admin user and click on "update data" 
+    on the flight display screen.
+
+
+Q3. I noticed that the Max Vario and Min Vario values are largely exaggerated (It shows up to +12.5 m/s)
+A3. It is a problem of the gps giving wrong fixes. SOME MLRS do it when they have
+    poor reception. I have put a filter to cut extreme values but it needs a little refining.
+
+
+  
+Q4. I have problems inserting pictures to a flight. Is there a permission issue?
+A4. Check the flights folder AND all the subfolders within it. For each user there 
+    is a seperate subfolder with his user id. All subfolders should be read - write 
+    by the user that the webserver runs as. 
+
+Q5. Is there a way to assign categories to the flights, so to make rankings for paraglider
+    pilots and for hang-gliding pilots, or to make contests for pilots - say - of the same 
+    region or club?
+A5. It is on the todo list but it may take some time.
+
+
+
+Q6. The OLC submission does not work.
+A6. If a flight is not scored it cannot be submitted to OLC via leonardo.
+    You must make sure that the scoring is enabled (look in STEP 4 in the 
+    installation instructions).
+
+    There is one extra step for the flights to be submited to OLC
+    the table leonardo_pilots MUST be filled with the correct data for each pilot
+    who wants to use OLC submission. 
+
+    For a valid submission to OLC the pilot should already be registered 
+    in the OLC system.
+    This can be done at http://www2.onlinecontest.org/olcphp/2005/anm_teilnehmer.php?olc=holc-gr&spr=en 
+
+    If the registration of the pilot is done you as admin must edit the leonardo_pilots table:
+      olcFirstName      -> First/Given name as entered in the OLC 
+      olcLastName       -> Surname as entered in the OLC 
+      olcBirthDate      -> Date of birth in the dd.mm.yy format  as entered in the OLC 
+      olcCallSign       -> Pilot's callsign as entered in the OLC 
+      olcFilenameSuffix -> If the pilot has already submitted flights to OLC, 
+                           the 4 letters he used for the IGC filename.
+      olcAutoSubmit     -> If you wish this system to auto submit the pilot's flights to OLC, 
+                           and if so, what is the minimum OLC score you want to submit.
+
+

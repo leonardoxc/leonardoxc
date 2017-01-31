@@ -1,0 +1,43 @@
+CSS Sprite Generator is written and maintained by Ed Eliot, Stuart Colville & Cyril Doussin.
+
+Software Requirements
+---------------------
+
+* Apache
+* Mod Rewrite (optional)
+* PHP 5.2 or above (with Imagick or GD 2)
+* Image Magick binary (optional)
+* Command line ZIP binary
+* OptiPNG (optional)
+
+If Image Magick isn't present the tool falls back to GD 2 (bear in mind output quality won't be as good).
+
+Set Up
+------
+
+1. Copy "spritegen" directory to your server.
+2. Set up new Apache virtual host and configure document root to point to "htdocs" (preferably other files should not be accessible via the web server).
+3. Optionally add mod rewrite rules to Apache virtual host config (see "setup/spritegen.conf" for an example Apache virtual host config).
+4. Update values in "includes/conf/app.inc.php" to suit your environment. Once configured set $aConfig['setup'] = true;
+4. Ensure Apache can write to the cache folders you've specified in "includes/conf/app.inc.php".
+5. Load in browser and enjoy it!
+
+Translations
+------------
+
+We welcome additional translations for the tool. Please see http://spritegen.website-performance.org/section/your-language for more details.
+
+License
+-------
+
+For license information please see LICENSE.TXT.
+
+Contact Info
+------------
+
+If you have any questions about the tool you can contact us at spritegen@projectfondue.com or via http://projectfondue.com/.
+
+Donations
+---------
+
+Use of the tool is free although commercial users are encouraged to make a small donation to support continued development.

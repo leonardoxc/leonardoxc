@@ -1,0 +1,1 @@
+<label for="<?php echo $id; ?>"><input type="radio" name="<?php echo $name; ?>" value="<?php echo $value; ?>" id="<?php echo $id; ?>"<?php if ($current == $value): ?> checked="checked"<?php endif; ?>><?php echo $label; ?></label>

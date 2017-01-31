@@ -1,0 +1,236 @@
+
+	  
+#nav, #nav ul {
+	font-weight:normal;
+	float: left;
+	width: 760px;
+	clear:both;
+
+	list-style: none;
+	line-height: 1em;
+	background-color:#f6f5fa;
+	
+	padding: 0;
+	border: solid #d3cfe4;
+	border-width: 1px 1px;
+	border-left-width:0px;
+	margin: 0 0 0.3em 0;
+	z-index:-1;
+
+
+}
+#nav ul {
+	border-style: solid; 
+	border-right-width: 2px; border-bottom-width: 2px; border-top-width: 1px; border-left-width: 1px;
+	border-right-color: #555555; border-bottom-color: #555555; border-top-color: #E2E2E2; border-left-color: #E2E2E2;
+	overflow:visible;
+}
+
+#nav a {
+	font-weight:normal;
+	display: block;
+	width: 12em;
+	
+		
+	color: #7C6240;
+	color: #000022;
+	text-decoration: none;
+	
+padding-top:0.25em;
+padding-bottom:0.25em;
+padding-right:0;
+padding-left:0;
+
+padding:0;
+/*	padding: 0.25em 2em;*/
+}
+
+#nav li {
+	background-image: none;
+	font-weight:normal;
+
+	font-size:11px;
+	float: left;
+	
+	padding: 0;
+	width: 12.5em;
+	
+	width: 136px; /* */
+	
+	height:22px;
+	
+	/*border: solid #eda;*/
+	/*norad*/
+	border: solid #d3cfe4;
+
+	/*border-width: 0px 1px;*/
+	border-width:0px;
+	border-left-width:1px;
+}
+
+
+#nav>li {
+	border-width: 0px 0.5px;
+}
+
+/* the top items*/
+#nav li a {
+	border:none;
+	height:1.5em;	
+	height:22px;
+
+	vertical-align:middle;
+	text-align:center;
+	
+padding-top:0.25em;
+padding-bottom:0.25em;
+padding-right:0.2em;
+padding-left:0.2em;
+
+}
+#nav>li a {
+	height:18px;
+}
+
+/* the dropdown items */
+#nav li ul a {
+	border:none;
+	font-weight:normal;
+	text-align:left;
+	
+	height:16px;
+
+padding-top:0.3em;
+padding-bottom:0;
+padding-right:0.1em;
+padding-left:0.6em;
+}
+
+
+/* the dropdown container*/
+#nav li ul {
+	position: absolute;
+	left: -999em;
+	
+	width: 18em;
+	height: auto;
+
+	font-weight: normal;
+	margin: 0;
+	margin-top:-2px;
+	padding:0;
+	background-color:#FFFFFF;
+	z-index:1000;
+}
+
+#nav li li {
+	background-image: none;
+	padding-right: 1em;
+	width: 17em;
+	border:0;
+	background-color:#FFFFFF;
+}
+
+#nav li ul a {
+	width: 17em;
+	w\idth: 17em;
+}
+
+/* the second level menu  container */
+#nav li ul ul {
+/*	margin: -1.75em 0 0 14em;*/
+margin-top: -1.75em ;
+margin-left:8em;
+}
+
+
+#nav li:hover ul ul, #nav li:hover ul ul ul, #nav li.sfhover ul ul, #nav li.sfhover ul ul ul {
+	left: -999em;
+}
+
+#nav li:hover ul, #nav li li:hover ul, #nav li li li:hover ul, #nav li.sfhover ul, #nav li li.sfhover ul, #nav li li li.sfhover ul {
+	left: auto;
+}
+
+/* the last item of the top menu will fold on the right */
+#nav li.lastItem ul, #nav li li.lastItem ul, #nav li li li.lastItem ul {
+	margin-left:-8.5em;
+}
+
+#nav li:hover, #nav li.sfhover { background-color:#F8C90C; }
+
+
+#nav li ul .li_space ,#nav li .li_space ,  .li_space {
+	width: 18em; height:1px; overflow:hidden;
+	padding:0;	margin:0; background-color:#F8C90C;
+}
+
+#nav li ul .li_h1 {
+	padding:0.2em;
+	padding-left:1em;
+	margin:0;
+	background-color:#F0FBEF;
+
+	border-top: 1px dashed #9193AC;
+	border-bottom: 1px dashed #9193AC;
+
+	/*margin-right:4px;*/
+	/* this is for ie6 - */
+	overflow:hidden;
+	line-height:1.2em;
+	width: 18em;
+	height:auto;
+}
+
+/* this is not seen by ie6 - */
+#nav>li  ul .li_h1 { width: 16.8em; }
+
+
+/* more narrow dropdown items */
+#nav .short ul { width:12em; }
+#nav .short li { width:12em; padding:0px; height:auto; }
+#nav .short li a{
+	width:11.7em; 	height:auto; 	font-weight:normal;
+	padding-top:0em; padding-bottom:0em; padding-right:0.1em; padding-left:0.2em; 
+}
+#nav li ul .short_li_h1 {	width:12em; }
+/* this is not seen by ie6 - */
+#nav>li  ul .short_li_h1  { width: 10.8em; }
+
+
+
+/* more width on drop down items */
+
+#nav .long ul { width:21em;}
+#nav .long li { width:20em; }
+#nav .long li a { width:19.7em; }
+
+#nav li ul  .long { width:21em; }
+
+#nav li ul .long_li_h1 { width:21em; }
+/* this is not seen by ie6 - */
+#nav>li  ul .long_li_h1  { width: 19.8em; }
+
+
+
+
+#nav .smallItem , .smallItem {
+	width:32px;
+	height:22px;
+	vertical-align:middle;
+	padding-bottom:0;
+	margin-bottom:0;
+}
+
+#nav>li .smallItem {
+	height:20px;
+}
+
+/* fix for ie7 */
+#nav li:hover, #nav li.hover {
+  position:static;
+} 
+
+#nav li.lastItem , #nav li.lastItem a {
+	border-right:none;
+}

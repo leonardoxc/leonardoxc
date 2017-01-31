@@ -1,0 +1,5 @@
+thomastheussing@gmx.de
+
+The vali Program returns
+"OK" with errorlevel 2 if grecord is OK,
+"fail" with errorlevel 1 if grecord is not OK.

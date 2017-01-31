@@ -1,0 +1,16 @@
+
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `OtherInterests` `OtherInterests` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `BestMemory` `BestMemory` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `leonardo_pilots_info` CHANGE `WorstMemory` `WorstMemory` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+ALTER TABLE `leonardo_photos` ADD `tm` INT UNSIGNED NOT NULL DEFAULT '0',
+ADD `lat` FLOAT NOT NULL DEFAULT '0',
+ADD `lon` FLOAT NOT NULL DEFAULT '0',
+ADD `alt` SMALLINT NOT NULL DEFAULT '0';
+
+ALTER TABLE `leonardo_queue` ADD `userID` MEDIUMINT UNSIGNED NOT NULL DEFAULT '0' AFTER `jobID` ;
+
+ALTER TABLE `leonardo_queue` ADD INDEX ( `userID` , `jobType` , `param1` ( 150 ) , `param2` ( 150 ) ) ;

@@ -1,0 +1,140 @@
+WARNNG: this is the old manual method: use the instrutions on Maps_howto_auto.txt
+
+
+How to prepare Satellite maps for Leoanrdo.
+
+
+
+How to crop MrSID maps and use them as JPEG in Leonardo
+
+ 
+
+ILS GeoViewer v1.0 (get it from: http://www.landsystems.com/Download/Download.htm )
+
+ 
+The ILS GeoViewer demo version will run for a total of 4 hours in 30 minute 
+session blocks with full functionality. That means we can crop 8 maps minimum 
+because it does not check if the 30 minute session is over when it is cropping.
+
+ 
+
+Install and run GeoViewer.
+
+ 
+
+File -> New project
+
+ 
+
+Click on the [+] to add a new layer and select the .SID file you want (I select 
+the file: N-34-40_2000.SID for this example)
+
+ 
+
+Tools -> Export
+
+ 
+
+Res (m/pix): <note the number you see here> (I see 14,2500 for my file)
+
+ 
+
+Tiling
+
+Tile Cols: 10 (for my example)
+
+Tile Rows: 19 (for my example)
+
+ 
+
+change the above until you get the maximum number of pixels BUT
+below  2048 pixels  x 2048 pixels
+
+ 
+
+Parameters
+
+File Type: JPEG
+
+Colors: True Color
+
+ 
+JPEG Compr.: 10 times (depends on the quality you want)
+ 
+
+tick to Create World File(s)
+
+tick to Create TAB File(s)
+
+ 
+
+Click the [Export] button
+
+
+  
+ 
+  
+
+Create a folder like 28_5/UTM34/40n/    for my example and point it there,
+
+for filename I use N-34-40 for my example, click save and go for a coffee.
+
+
+The folder I created  28_5/UTM34/40n/   N-34-40_1 means:
+
+28_5 -> meters/pixels  the less meters/pixel the more detailed the map
+UTM34 -> the UTM zone of the MRSID tile (34 for Greece , 33 for Italy etc)
+40n -> (40 degrees latitude North)  the second number after the N form the filename (N-34-40 ...)
+(put s for South hemisphere)
+ 
+
+NOTE: Res (m/pix) How to use and change the "<note the number you see here>" number,
+
+for maps 1/1 (100%) let it as is,
+
+for maps 1/2 (50%) multiply that number by 2 and enter there the result, (I get 
+14,2500 x 2 = 28,5 for my example)
+
+for maps 1/4 (25%) multiply that number by 4 and enter there the result, (57 for 
+my example)
+
+for maps 1/8 (12.5%) multiply that number by 8 and enter there the result (114 
+for my example).
+
+ 
+
+This is the general idea.
+
+
+FINAL NOTE :
+
+you should prepare 3 directories : 
+14_25  ( to show small flights in great details)
+28_5   ( to show medium flights)
+57    ( to show big XC )
+
+
+You should prepare a maps directory in the modules/leonardo/  dir,  containing the above directory structure.
+This directory should be in the server , (or your home PC or test platform) 
+running leonardo. This is a one time only procedure to make the database, then you can move the 
+maps directory in another server.
+
+Open config.php and uncomment the line
+$mapsPath=dirname(__FILE__)."/maps";
+commenting out all other  $mapsPath lines. 
+
+
+Now  open with your browser the admin.php (http://mysite.com/modules.php?name=leonardo&op=admin )
+and click on the "Import Maps". this should prepare the database table "leonardo_maps".
+
+You are now ready to go, you can move the maps/ dir to another server if you wish but dont forget to
+edit config.php to point to the new path (examples included)
+
+
+All new flights will be drawn with maps (if there is a map fot that area) and you can 
+press "Update Flight Maps" form the admin menu (see above) to update ALL flights with the 
+current map set. Caution : this is time and CPU intensive task, so do it at a non peak hour.
+
+
+
+.

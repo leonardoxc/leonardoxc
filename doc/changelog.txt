@@ -1,0 +1,50 @@
+
+Changelog:
+
+
+2007.03.21 *****************
+
+- modified the support for Maxpunkte uploads. It can now work with Maxpunkte 5.1 beta 1
+  which will prefer a smaller "free distance" score if this gives > 15km instead of a 
+  triangle solution with more points but < 15 km
+
+- Better glider brand detection
+
+- Added hanglider brands and icons
+
+- Added 2 user settings in "my settings" stored in the cookie
+  1) toogle google maps on/off
+  2) order of displaying the names -> fist name / last name or  last name / fist name
+
+- Changed the cookie method , it should now work ok
+
+- Some changes in handling names from different charsets , which is not important for DHV leonardo
+
+- When a user adds a takeoff , and omits either "local" or "international-english" name 
+  it is auto-copied from the name he provided. i.e if he only gives the german name leonardo
+  sets the international name equal to the german one.
+- In some apache/php configuration the storing of leonardo cookies wouldn't work as indented. Fixed this
+
+
+2007.03.19 *****************
+
+- fixed the validation bugs (spaces in the igc filename, flights added didnt get 
+  validated automatically only after being edited)  Now the files are getting validated 
+  right on submission but even if this fails , a check is made every time the flight is 
+  displayed and a validation is tried on the fly. 
+  See also the admin menu -> "update g-record validation" to update all flights with unknown status
+
+- added a calendar in "list flights" to sleect individual days
+
+- added czech language (thx to Peter Volf volfik@yahoo.com)
+
+- added direct upload from maxpunkte
+
+- added pre-optimized igc file support ( files ending in .olc)
+
+- fixed the "more than 3 photos" bug
+
+- added some more security in the files that get uploaded to the server 
+  (i.e. before someone could upload a php file and execute arbitary code) 
+
+- added romanian language (thx Chyp Rian chyprian@yahoo.com )

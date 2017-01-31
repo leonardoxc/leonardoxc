@@ -1,0 +1,94 @@
+/* jqModal base Styling courtesy of;
+	Brice Burgess <bhb@iceburg.net> */
+
+/* The Window's CSS z-index value is respected (takes priority). If none is supplied,
+	the Window's z-index value will be set to 3000 by default (via jqModal.js). */
+	
+.jqmWindow {
+    display: none;
+    
+    position: fixed;
+    top: 110px;
+    left: 50%;
+    
+    margin-left: -300px;
+    width: 600px;
+    
+    background-color: #EEE;
+    color: #333;
+    border: 1px solid black;
+    padding: 12px;
+}
+
+.jqmOverlay { background-color: #333333; }
+
+/* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
+* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
+	width: expression(this.parentNode.offsetWidth+'px');
+	height: expression(this.parentNode.offsetHeight+'px');
+}
+
+/* Fixed posistioning emulation for IE6
+     Star selector used to hide definition from browsers other than IE6
+     For valid CSS, use a conditional include instead */
+* html .jqmWindow {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}
+
+
+/* liScroll style declarations */
+
+.tickercontainer { /* the outer div with the black border */
+	border:none;
+	background:none;
+	width: 760px; 
+	height: 16px; 
+	margin: 0; 
+	padding: 0;
+	padding-bottom:2px;
+}
+
+.ticksettings {
+background:url(../img/icon_settings.gif) no-repeat;
+margin-top:-6px;
+position: relative;
+float:right;clear:none;
+right: -3px;
+cursor: hand;
+cursor: pointer;
+top: 0px;
+width: 22px;
+height:18px;
+overflow: hidden;
+}
+
+
+ul.newsticker { /* that's your list */
+/*position: relative;
+left: 750px;*/
+font: 10px Verdana;
+list-style-type: none;
+margin: 0;
+padding: 0;
+
+}
+ul.newsticker li {
+float: left; /* important: display inline gives incorrect results when you check for elem's width */
+margin: 0;
+padding: 0;
+background: #fff;
+}
+ul.newsticker a {
+white-space: nowrap;
+padding: 0;
+color: #ff0000;
+font: bold 10px Verdana;
+margin: 0 10px 0 0;
+font: bold ;
+} 
+ul.newsticker span {
+margin: 0 10px 0 0;
+font: bold ;
+color:#3366CC;
+} 
