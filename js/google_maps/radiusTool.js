@@ -4,7 +4,7 @@
   var queryLineOptions = new Object();
 
 queryCenterOptions.icon = new GIcon();
-queryCenterOptions.icon.image = "http://jfno.net/images/centerArrow.png";
+queryCenterOptions.icon.image = "https://jfno.net/images/centerArrow.png";
 queryCenterOptions.icon.iconSize = new GSize(20,20);
 queryCenterOptions.icon.shadowSize = new GSize(0, 0);
 queryCenterOptions.icon.iconAnchor = new GPoint(10, 10);
@@ -12,7 +12,7 @@ queryCenterOptions.draggable = true;
 queryCenterOptions.bouncy = false;
 
 queryLineOptions.icon = new GIcon();
-queryLineOptions.icon.image = "http://jfno.net/images/resizeArrow.png";
+queryLineOptions.icon.image = "https://jfno.net/images/resizeArrow.png";
 queryLineOptions.icon.iconSize = new GSize(25,20);
 queryLineOptions.icon.shadowSize = new GSize(0, 0);
 queryLineOptions.icon.iconAnchor = new GPoint(12, 10);
@@ -142,7 +142,7 @@ GeoQuery.prototype.getHTML = function() {
 }
 
 GeoQuery.prototype.getDistHtml = function() {
-  result = "<img src='http://jfno.net/images/close.gif' onClick='myQueryControl.remove(" + this._control.getIndex(this) + ");'/>Radius ";
+  result = "<img src='https://jfno.net/images/close.gif' onClick='myQueryControl.remove(" + this._control.getIndex(this) + ");'/>Radius ";
    result = "Radius ";
    
   if (metric) {

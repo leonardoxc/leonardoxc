@@ -46,7 +46,7 @@
 
 <div class='gmaps_container' id='gmaps_container'>
 	<?  if ( $CONF_google_maps_api_key  ) { ?> 
-	<iframe src="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_browser.php"; ?>"
+	<iframe src="<? echo "https://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_browser.php"; ?>"
 	  	title="Google Map" width="100%" height="100%" scrolling="no" frameborder="0">
 	Sorry. If you're seeing this, your browser doesn't support IFRAMEs.
 	You should upgrade to a more current browser.
