@@ -25,9 +25,9 @@
 function createMarker(point,name,html,iconName) {    
 	var iconUrl='';
 	if (iconName=='start') {
-		iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon61.png";
+		iconUrl= "https://maps.google.com/mapfiles/kml/pal4/icon61.png";
 	} else {
-		iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon53.png";
+		iconUrl= "https://maps.google.com/mapfiles/kml/pal4/icon53.png";
 	}			
 	var marker = new google.maps.Marker({
 		position: point,       
@@ -183,14 +183,14 @@ function drawTakeoffs(jsonString){
 		var takeoffPoint= new google.maps.LatLng(results.waypoints[i].lat, results.waypoints[i].lon) ;
 		
 		if (results.waypoints[i].id ==takeoffID ) {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+			var iconUrl		= "https://maps.google.com/mapfiles/kml/pal2/icon5.png";
+			var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal2/icon5s.png";
 		} else if (results.waypoints[i].type<1000) {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+			var iconUrl		= "https://maps.google.com/mapfiles/kml/pal3/icon21.png";
+			var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal3/icon21s.png";
 		} else {
-			var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
-			var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
+			var iconUrl		= "https://maps.google.com/mapfiles/kml/pal2/icon13.png";
+			var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
 		}
 		
 		var takeoffMarker= createWaypoint(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);

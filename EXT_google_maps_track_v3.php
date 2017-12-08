@@ -368,7 +368,7 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 
 
 <div id='msg'>DEBUG</div>
-<div id='kk7Copyright' style='padding:3px;'>Skyways Layer &copy; <a href='http://thermal.kk7.ch' target='_blank'>thermal.kk7.ch</a></div>
+<div id='kk7Copyright' style='padding:3px;'>Skyways Layer &copy; <a href='https://thermal.kk7.ch' target='_blank'>thermal.kk7.ch</a></div>
 
 <div id="photoDiv" style="position:absolute;display:none;z-index:110;"></div>
 
@@ -484,7 +484,7 @@ function initializeGE(){
      	ge_problem='Google Earth Plugin is not supported on this system';
      	ge_problem_num=2;
 
-     	$('#mapDiv').html('<iframe width="100%" height="100%" src="http://www.google.com/earth/plugin/error.html#error=ERR_UNSUPPORTED_PLATFORM" frameBorder="0">');
+     	$('#mapDiv').html('<iframe width="100%" height="100%" src="https://www.google.com/earth/plugin/error.html#error=ERR_UNSUPPORTED_PLATFORM" frameBorder="0">');
   	  	addShim($("#control2d").get(0)); 
   	  	$("#control2d").addClass('control2dBig'); 	
      }
@@ -492,7 +492,7 @@ function initializeGE(){
      if (!google.earth.isInstalled()) {
     	  ge_problem='Google Earth Plugin is not installed on this system';
     	  ge_problem_num=3;
-    	  $('#mapDiv').html('<iframe width="100%" height="100%" src="http://www.google.com/earth/plugin/error.html#error=ERR_NOT_INSTALLED" frameBorder="0">');
+    	  $('#mapDiv').html('<iframe width="100%" height="100%" src="https://www.google.com/earth/plugin/error.html#error=ERR_NOT_INSTALLED" frameBorder="0">');
     	  addShim($("#control2d").get(0));
     	  $("#control2d").addClass('control2dBig'); 
      }
@@ -546,7 +546,7 @@ function initialize() {
 	mapType=google.maps.MapTypeId.<?php echo $GMapType ?>;
 	var reliefTypeOptions = {
 	  getTileUrl: function(a,b) {
-	    	return "http://maps-for-free.com/layer/relief/z" + b + "/row" + a.y + "/" + b + "_" + a.x + "-" + a.y + ".jpg";
+	    	return "https://maps-for-free.com/layer/relief/z" + b + "/row" + a.y + "/" + b + "_" + a.x + "-" + a.y + ".jpg";
 	    },
 	  maxZoom: 20,
 	  minZoom: 0,
@@ -587,7 +587,7 @@ function initialize() {
     skywaysOverlay= new google.maps.ImageMapType({
 	    getTileUrl: function(tile, zoom) {
 	    	var y= (1<<zoom)-tile.y-1;
-    		return "http://thermal.kk7.ch/php/tile.php?typ=skyways&t=all&z="+zoom+"&x="+tile.x+"&y="+y+"&src="+SERVER_NAME; 
+    		return "https://thermal.kk7.ch/php/tile.php?typ=skyways&t=all&z="+zoom+"&x="+tile.x+"&y="+y+"&src="+SERVER_NAME; 
 	    },
 	    tileSize: new google.maps.Size(256, 256),
 	    opacity:0.60,

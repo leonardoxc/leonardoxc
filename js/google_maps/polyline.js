@@ -24,11 +24,11 @@
 
 	if (normalMarker){ 
 		if (iconName=='start') {
-			iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon61.png";
-			shadowUrl="http://maps.google.com/mapfiles/kml/pal4/icon61s.png";
+			iconUrl= "https://maps.google.com/mapfiles/kml/pal4/icon61.png";
+			shadowUrl="https://maps.google.com/mapfiles/kml/pal4/icon61s.png";
 		} else {
-			iconUrl= "http://maps.google.com/mapfiles/kml/pal4/icon53.png";
-			shadowUrl="http://maps.google.com/mapfiles/kml/pal4/icon53s.png";
+			iconUrl= "https://maps.google.com/mapfiles/kml/pal4/icon53.png";
+			shadowUrl="https://maps.google.com/mapfiles/kml/pal4/icon53s.png";
 		}
 		
 		var baseIcon = new GIcon();
@@ -47,7 +47,7 @@
 		
 		//Icon.image = "http://maps.google.com/mapfiles/kml/pal3/icon60.png";
 		Icon.image =markerBg;
-		Icon.shadow = "http://maps.google.com/mapfiles/kml/pal3/icon61s.png";
+		Icon.shadow = "https://maps.google.com/mapfiles/kml/pal3/icon61s.png";
 		
 		Icon.iconSize=new GSize(24,24);
 		// Icon.iconSize=new GSize(16,16);			

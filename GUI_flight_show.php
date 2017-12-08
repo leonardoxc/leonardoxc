@@ -69,7 +69,7 @@ if (0) {
 	
 	$sLat=($max_lat-$min_lat)/2;
 	$sLon=($max_lon-$min_lon)/2;
-	echo "<img src='http://maps.google.com/staticmap?center=$cLat,$cLon&span=$sLat,$sLon&size=512x512&key=$CONF_google_maps_api_key&sensor=false&format=jpg&maptype=hybrid'><HR>";
+	echo "<img src='https://maps.google.com/staticmap?center=$cLat,$cLon&span=$sLat,$sLon&size=512x512&key=$CONF_google_maps_api_key&sensor=false&format=jpg&maptype=hybrid'><HR>";
 	//exit;
 }
 
@@ -627,7 +627,7 @@ if (L_auth::isAdmin($userID) || $flight->belongsToUser($userID) ) {  //P. Wild 1
 $commentsHtml="<div id='tabcomments' class='tab_content'>
 	<div id='comments_iframe_div' style='width:100%; height:600px; text-align:left;'>
 		<iframe id='comments_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
+		  SRC='https://".$_SERVER['SERVER_NAME'].getRelMainDir()."GUI_EXT_flight_comments.php?flightID=".
 		$flight->flightID."' ".
 	 " TITLE='Comments' width='100%' height='100%'  style='padding:0;margin:0;'
 		  scrolling='auto' frameborder='0'>Sorry. If you're seeing this, your browser doesn't support IFRAMEs.	You should upgrade to a more current browser.
@@ -685,7 +685,7 @@ if ( $CONF_google_maps_track==1 && $PREFS->googleMaps ) {
 
 	if ( $CONF_google_maps_api_key  ) {
 		 $googleMap="<div id='gmaps_div' style='display:block; width:100%; height:610px;'><iframe id='gmaps_iframe' align='left'
-		  SRC='http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
+		  SRC='https://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps_track_v3.php?id=".
 		$flight->flightID."' ".
 		 " TITLE='Google Map' width='100%' height='100%'
 		  scrolling='no' frameborder='0'>
