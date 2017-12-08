@@ -523,15 +523,15 @@ Triangle conform to the FAI definition
 	// choose how to send mail to users from the system
 	
 	$CONF['mail']['method']='system'; // use mail() function
-	/*
-	$CONF['mail']['method']='smtp';  // use an external mail server
-	$CONF['mail']['smtp']['host']='';
+	//20171205 zmiana smtp
+/*	$CONF['mail']['method']='smtp';  // use an external mail server
+	$CONF['mail']['smtp']['host']='127.0.0.1';
 	$CONF['mail']['smtp']['port']=25;
 	$CONF['mail']['smtp']['ssl']=false;
 	$CONF['mail']['smtp']['username']='';
 	$CONF['mail']['smtp']['password']='';
-	*/
 	
+*/	
 	$CONF['site']['name']="LeonardoXC";
 	
 	$CONF_force_civlid=0;

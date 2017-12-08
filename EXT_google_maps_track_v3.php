@@ -190,10 +190,10 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
  
 <? if ( $is3D ) { ?> 
 <script src="https://www.google.com/jsapi<?php echo $googleApiKeyStr ?>"></script>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry<?php echo $googleApiKeyStr ?>" type="text/JavaScript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry<?php echo $googleApiKeyStr ?>" type="text/JavaScript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/extensions.pack.js" type="text/javascript"></script>
 <? } else { ?>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry" type="text/JavaScript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry" type="text/JavaScript"></script>
 <? } ?>
 
 <script src="<?=$moduleRelPath?>/js/google_maps/jquery.js" type="text/javascript"></script>
