@@ -479,8 +479,10 @@ setlocale(LC_NUMERIC, 'en_US') ;
   $CONF['photos']['mid']['max_width']=600;
   $CONF['photos']['mid']['max_height']=600;
 
-  $CONF['photos']['normal']['max_width']=1600;
-  $CONF['photos']['normal']['max_height']=1600;
+  //$CONF['photos']['normal']['max_width']=3840;
+  //$CONF['photos']['normal']['max_height']=3840;
+  $CONF['photos']['normal']['max_width']=1920;
+  $CONF['photos']['normal']['max_height']=1920;
   
   $CONF['photos']['thumbs']['max_width']=130;
   $CONF['photos']['thumbs']['max_height']=130;
