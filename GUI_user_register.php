@@ -321,12 +321,12 @@ function setCIVL_ID() {
           <tr>
           <tr>
             <td width="250" align="right" bgcolor="#FCFCF2" class="TextoP"><?=_LOCAL_PWD;?></td>
-            <td width="350" bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" maxlength="50" type="text" name="password" value="">
+            <td width="350" bgcolor="#FCFCF2" class="TextoP"><input class="TextoVermelho" maxlength="50" type="password" name="password" value="">
               <font color="#FF2222">***</font></td>
           </tr>
           <tr>
             <td width="250" align="right"><?=_LOCAL_PWD_2;?></td>
-            <td width="350"><input class="TextoVermelho" maxlength="50" type="text" name="password2" value="">
+            <td width="350"><input class="TextoVermelho" maxlength="50" type="password" name="password2" value="">
               <font color="#FF2222">***</font></td>
           </tr>
 		  <tr>

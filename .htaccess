@@ -3,4 +3,9 @@
 #AuthUserFile "/etc/apache2/leo.passwd"
 #Require valid-user
 
+
+php_value upload_max_filesize 10M
+php_value post_max_size 50M
+
 RedirectMatch 404 /\.git
+RedirectMatch 404 /\.gitignore

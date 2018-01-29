@@ -752,13 +752,13 @@ define("_Mandatory_CIVLID","Należy mieć poprawne <b>CIVLID</b>");//Is mandator
 define("_Mandatory_valid_EMAIL","Należy podać poprawny <b>adres email</b> w celu aktywacji konta");//Is mandatory to provide a <b>Valid Email</b> for further comunications with admin server"); 
 define("_Email_periodic","Na podany adres e-mail wyślemy wiadomość, w przypadku braku reakcji konto zostanie zablokowane");//Periodically we will send you a confirmation e-mail to the provided e-mail address, if not answered, your registration account will be blocked"); 
 define("_Email_asking_conf","Wyślemy wiadomosć aktywacyjną na podany adres email");//We will send a confirmation e-mail to the provided email address"); 
-define("_Email_time_conf","W ciągu <b>3 godzin</b> musisz wykonać instrukcje z wysłanej wiadomości aktywacyjnej");//You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
-define("_After_conf_time"," Jeśli nie zdążysz dane jakie podałeś zostaną <b>usunięte</b> z naszej bazy danych");//After that time, your pre-registration will be <b>removed</b> from our database"); 
+define("_Email_time_conf","W ciągu <b>3 godzin</b> należy wykonać instrukcje wiadomości aktywacyjnej wysłanej na podany adres email");//You will have only <b>3 hours </b> after the finishing the pre-registration to answer the email"); 
+define("_After_conf_time"," Jeśli nie zdążysz tego zrobić dane jakie podałeś zostaną <b>usunięte</b> z naszej bazy danych");//After that time, your pre-registration will be <b>removed</b> from our database"); 
 define("_Only_after_time","<b>Tylko po tym czasie będziesz mógł ponownie rozpocząć proces rejestracji</b>");//<b>And only after we remove your pre-registration, you can do the pre registration again</b>"); 
 define("_Disable_Anti_Spam","<b>UWAGA!!! </b> wyłącz filtr anty spamowy dla wiadomości z adresu <b>%s</b>");//<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
 define("_If_you_agree","Jeśli zgadzasz sie, możesz kontynuować.");//If you agree with this requirements please go further."); 
 define("_Search_civl_by_name","%sSzukaj swojego nazwiska w bazie CIVL%s . Gdy klikniesz na odnośnik po lewej otworzy się okno w którym musisz wpisać co najmniej 3 litery imienia bądź nazwiska, system CIVL zwróci Twoje CIVLID, nazwisko oraz narodowość FAI.");//%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","Jeśli nie jesteś zarejestrowany w CIVL, musisz %sZarejestrować sie jako nowy pilot%s");//If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
+define("_Register_civl_as_new_pilot","Jeśli nie jesteś zarejestrowany w CIVL, możesz %szarejestrować się tam jako nowy pilot%s (jeśli nie chesz się tam rejestrować zacznij wypełniać formularz od pola pseudonim)");//If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
 define("_NICK_NAME","Pseudonim");//Nick Name"); 
 define("_LOCAL_PWD","Hasło");//Local Password"); 
 define("_LOCAL_PWD_2","Powtórz hasło");//Repeat Local Password"); 
