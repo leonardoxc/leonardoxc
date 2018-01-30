@@ -995,6 +995,7 @@ define("_Compare_Selected_Flights","Compare Selected Flights");
 define("_More","More");
 define("_Close","Close");
 
+define("_Accept_statute","I'm accepting usage rules");
 
 
 ?>

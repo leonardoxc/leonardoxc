@@ -56,6 +56,7 @@
           <li><a href="http://xc.rmhpa.org" target="_blank">Rocky Mountain Hang gliding & Paragliding Association</a></li>
           <li><a href="http://www.coloradoflyweek.com" target="_blank">Colorado Flying Week Server</a></li>
           <li><a href="http://www.xcweb.cz">El Speedo XC Leonardo(Czech)</a></li>
+          <li><a href="https://leonardo.pgxc.pl">Polish Leonardo XC server</a></li>
         </ul>
       </div></td>
     </tr>
