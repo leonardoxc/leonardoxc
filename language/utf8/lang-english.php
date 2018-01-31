@@ -995,7 +995,9 @@ define("_Compare_Selected_Flights","Compare Selected Flights");
 define("_More","More");
 define("_Close","Close");
 
-define("_Accept_statute","I'm accepting usage rules");
+define("_ACCEPT_STATUTE","I'm accepting privacy policy");
+define("_MANDATORY_STATUTE","You need to accept privacy policy");
+define("_Accept_statute","I'm accepting privacy policy");
 
 
 ?>
