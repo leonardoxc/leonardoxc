@@ -647,7 +647,7 @@ define("_EmailNotSaved","Adres email nie zostal zapisany.");//The email address 
 define("_EmailSaveProblem","Wystąpił problem podczas zapisywania adresu email.");//A problem occurred when saving the email address."); 
 define("_PROJECT_HELP","Pomoc");//Help"); 
 define("_PROJECT_NEWS","Nowości");//News"); 
-define("_PROJECT_RULES","Zasady 2007");//Regulations 2007"); 
+define("_PROJECT_RULES","Regulamin");//Regulations 2007"); 
 define("_Filter_NoSelection","Brak wyboru");//No selection"); 
 define("_Filter_CurrentlySelected","Obecny wybór");//Current selection"); 
 define("_Filter_DialogMultiSelectInfo","Naciśnij Ctrl aby dokonać wielokrotnego wyboru");//Press Ctrl for multiple selection."); 
@@ -758,7 +758,7 @@ define("_Only_after_time","<b>Tylko po tym czasie będziesz mógł ponownie rozp
 define("_Disable_Anti_Spam","<b>UWAGA!!! </b> wyłącz filtr anty spamowy dla wiadomości z adresu <b>%s</b>");//<b>ATTENTION!! Disable</b> the anti spam for emails originated from <b>%s</b>"); 
 define("_If_you_agree","Jeśli zgadzasz sie, możesz kontynuować.");//If you agree with this requirements please go further."); 
 define("_Search_civl_by_name","%sSzukaj swojego nazwiska w bazie CIVL%s . Gdy klikniesz na odnośnik po lewej otworzy się okno w którym musisz wpisać co najmniej 3 litery imienia bądź nazwiska, system CIVL zwróci Twoje CIVLID, nazwisko oraz narodowość FAI.");//%sSearch for your name in the CIVL database%s . When you click at this left link will be opened a new window , please fill only 3 letters from your First name or Last Name, then the CIVL will return your CIVLID, Name and FAI Nationality."); 
-define("_Register_civl_as_new_pilot","Jeśli nie jesteś zarejestrowany w CIVL, możesz %szarejestrować się tam jako nowy pilot%s (jeśli nie chesz się tam rejestrować zacznij wypełniać formularz od pola pseudonim)");//If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
+define("_Register_civl_as_new_pilot","Jeśli nie jesteś zarejestrowany w CIVL, możesz %szarejestrować się tam jako nowy pilot%s (jeśli nie chesz się tam rejestrować zacznij wypełniać formularz od pola pseudonim). <br><br> Zakładając konto w portalu w pełni akceptujesz <a href=\"https://leonardo.pgxc.pl/regulamin.pdf\" target=\"_blank\">regulamin</a>.");//If you are not registered in the CIVL database, please  %sREGISTER-ME AS A NEW PILOT%s"); 
 define("_NICK_NAME","Pseudonim");//Nick Name"); 
 define("_LOCAL_PWD","Hasło");//Local Password"); 
 define("_LOCAL_PWD_2","Powtórz hasło");//Repeat Local Password"); 

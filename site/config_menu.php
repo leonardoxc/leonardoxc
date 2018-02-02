@@ -38,6 +38,16 @@ $CONF_MENU['main_menu']['bottom']=array(
 			'link'=>'/leonardo/doc/XC_league_how-to.v2.pdf',
 			'target'=>'_blank',
 		),
+		array('name'=>_PROJECT_NEWS,
+			'linkType'=>'external', // leonardo or external
+			'link'=>'http://pgxc.pl/category/leonardoxc/',
+			'target'=>'_blank',
+		),		
+		array('name'=>_PROJECT_RULES,
+			'linkType'=>'external', // leonardo or external
+			'link'=>'https://leonardo.pgxc.pl/regulamin.pdf',
+			'target'=>'_blank',
+		),
 		/*
 		array('name'=>'Instructions',
 			'linkType'=>'leonardo', // leonardo or external
