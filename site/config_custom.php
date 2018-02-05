@@ -360,7 +360,8 @@ $CONF['auth']['download_igc']['allowed_ips']=array('78.46.202.91','78.46.202.94'
 	$CONF['googleEarth']['igc2kmz']['active']	=true;
 	$CONF['googleEarth']['igc2kmz']['visible'] = true;
 	$CONF['googleEarth']['igc2kmz']['version']	= 1.01;
-	$CONF['googleEarth']['igc2kmz']['python'] = '/usr/local/bin/python2.5';
+//	$CONF['googleEarth']['igc2kmz']['python'] = '/usr/local/bin/python2.5';
+	$CONF['googleEarth']['igc2kmz']['python'] = '/usr/bin/python';
 	// for windows ...
 	// $CONF['googleEarth']['igc2kmz']['python'] = 'c:\python25\python.exe';
 	$CONF['googleEarth']['igc2kmz']['path']=dirname(__FILE__).'/../lib/igc2kmz';
