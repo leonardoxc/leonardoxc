@@ -48,6 +48,11 @@ $CONF_MENU['main_menu']['bottom']=array(
 			'link'=>'https://leonardo.pgxc.pl/regulamin.pdf',
 			'target'=>'_blank',
 		),
+		array('name'=>'Klifowy Raport Pogodowy',
+			'linkType'=>'external', // leonardo or external
+			'link'=>'http://pgxc.pl/klifowy-raport-pogodowy/',
+			'target'=>'_blank',
+		),
 		/*
 		array('name'=>'Instructions',
 			'linkType'=>'leonardo', // leonardo or external
