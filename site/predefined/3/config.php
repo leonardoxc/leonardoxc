@@ -25,7 +25,9 @@ function moduleRelPath($intendedUse=0){
 	if ( $CONF['links']['type']==3 && $intendedUse!=2 ) {
 		return $CONF['links']['baseURL'];
 	} else  {
-		return './';	
+                //20180214 rgrubba module rel path fix
+                //return './';
+                return '';
 	}	
 }
 
