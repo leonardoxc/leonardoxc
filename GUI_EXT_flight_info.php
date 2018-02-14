@@ -53,15 +53,15 @@ if ($op=='photos'){
 		foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 			
 			if ($photoInfo['name222']) {
-				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
 				$imgStr="<img src='$imgIconRel'  class=\"photos\" border=\"0\">";		
 				echo "<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";		
 			}	
 			
 			
 			if ($photoInfo['name']) {
-				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
-				$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+				$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgBigRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum);
 		
 				$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 				$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);

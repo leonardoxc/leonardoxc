@@ -648,8 +648,8 @@ if ($flight->hasPhotos) {
 	foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 		
 		if ($photoInfo['name']) {
-			$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
-			$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+			$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+			$imgBigRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum);
 	
 			$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 			$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
@@ -664,6 +664,7 @@ if ($flight->hasPhotos) {
 				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
 			} else {
 				$imgStr="&nbsp;";
+				$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
 			}
 	
 			$imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";

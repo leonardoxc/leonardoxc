@@ -955,4 +955,6 @@ if ($db) {
 	$db->sql_query("set sql_mode = ''");
 }
 
+$cdnURL='https://files.leonardo.pgxc.pl';
+
 ?>
