@@ -10,7 +10,7 @@ php_value post_max_size 50M
 RedirectMatch 404 /\.git
 RedirectMatch 404 /\.gitignore
 
-RewriteEngine On
-RewriteCond %{REQUEST_URI} \.(jpg|png|css|js|pdf|igc|kml)$
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ https://files.leonardo.pgxc.pl/$1 [R=301,L] 
+#RewriteEngine On
+#RewriteCond %{REQUEST_URI} \.(jpg|png|css|js|pdf|igc|kml)$
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^(.*)$ https://files.leonardo.pgxc.pl/$1 [R=301,L] 

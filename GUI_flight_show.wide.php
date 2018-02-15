@@ -735,15 +735,23 @@ $mapImg0.='</ul>';
 
 
 
+// 20180215
+//if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
+//	$chart1= "<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
+//if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
+//	$chart2="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
+//if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
+//	$chart3="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
+//if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
+//	$chart4="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
+// dodaje cdn'a
 
-if ($flight->is3D() &&  is_file($flight->getChartfilename("alt",$PREFS->metricSystem))) 
-	$chart1= "<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("takeoff_distance",$PREFS->metricSystem)) )
-	$chart2="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
-if ( is_file($flight->getChartfilename("speed",$PREFS->metricSystem)) )
-	$chart3="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
-if ($flight->is3D() &&  is_file($flight->getChartfilename("vario",$PREFS->metricSystem))) 
-	$chart4="<br><br><img width='820px' height='200px' src='".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
+if ($flight->is3D()) 
+	$chart1= "<br><br><img width='820px' height='200px' src='$cdnURL".$flight->getChartRelPath("alt",$PREFS->metricSystem)."'>";
+	$chart2="<br><br><img width='820px' height='200px' src='$cdnURL".$flight->getChartRelPath("takeoff_distance",$PREFS->metricSystem)."'>";
+	$chart3="<br><br><img width='820px' height='200px' src='$cdnURL".$flight->getChartRelPath("speed",$PREFS->metricSystem)."'>";
+if ($flight->is3D()) 
+	$chart4="<br><br><img width='820px' height='200px' src='$cdnURL".$flight->getChartRelPath("vario",$PREFS->metricSystem)."'>";
 
 $extLinkLanguageStr="";
 if ( $CONF['servers']['list'][$flight->serverID]['isLeo'] ) $extLinkLanguageStr="&lng=$currentlang";
