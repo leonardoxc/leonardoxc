@@ -53,30 +53,49 @@ if ($op=='photos'){
 		foreach ( $flightPhotos->photos as $photoNum=>$photoInfo) {
 			
 			if ($photoInfo['name222']) {
-				$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				if(!is_file($imgIconRel)){
+					$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				}
 				$imgStr="<img src='$imgIconRel'  class=\"photos\" border=\"0\">";		
 				echo "<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";		
 			}	
 			
 			
 			if ($photoInfo['name']) {
-				$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
-				$imgBigRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum);
+				$imgIconRel=$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				if(!is_file($imgIconRel)){
+					$imgIconRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum).".icon.jpg";
+				}
+				$imgBigRel=$flightPhotos->getPhotoRelPath($photoNum);
+				if(!is_file($imgBigRel)){
+					$imgBigRel=$cdnURL.$flightPhotos->getPhotoRelPath($photoNum);
+				}
 		
 				$imgIcon=$flightPhotos->getPhotoAbsPath($photoNum).".icon.jpg";
 				$imgBig=$flightPhotos->getPhotoAbsPath($photoNum);
-							
-				if (file_exists($imgBig) ) {
+				
+				//20180215			
+				//if (file_exists($imgBig) ) {
+				//	list($width, $height, $type, $attr) = getimagesize($imgBig);
+				//	list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				//	$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+				//} else 	if (file_exists($imgIcon) ) {
+				//	list($width, $height, $type, $attr) = getimagesize($imgIcon);
+				//	list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
+				//	$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
+				//} else {
+				//	$imgStr="&nbsp;";
+				//}
+				// wylaczam sprawdzanie czy plik istnieje na dysku
+				//if (file_exists($imgBig) ) {
 					list($width, $height, $type, $attr) = getimagesize($imgBig);
 					list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
 					$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
-				} else 	if (file_exists($imgIcon) ) {
+
 					list($width, $height, $type, $attr) = getimagesize($imgIcon);
 					list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
 					$imgStr="<img src='$imgIconRel'  onmouseover=\"trailOn('$imgIconRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\"  class=\"photos\" border=\"0\">";
-				} else {
-					$imgStr="&nbsp;";
-				}
 		
 				$imagesHtml.="<a class='shadowBox imgBox' href='$imgBigRel' target=_blank>$imgStr</a>";
 			}			
