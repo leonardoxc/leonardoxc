@@ -531,14 +531,14 @@ function showStats($row,$groupBy,$where_clause,$where_clause2,$suffix='') {
 //		$cdnURL='https://files.leonardo.pgxc.pl';
 //	}	
 ?>
-    <td colspan="5" valign="top"><img src='https://files.leonardo.pgxc.pl<? echo getPilotStatsRelFilename($pilotIDview,'1'.$suffixHash); ?>' border=0></td>
+    <td colspan="5" valign="top"><img src='<? echo getPilotStatsRelFilename($pilotIDview,'1'.$suffixHash); ?>' border=0></td>
   </tr>
   </table>
   
  <div class='infoHeader'><?=_Total_Hours_Flown?></div>
  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
-    <td colspan="5" valign="top"><img src='https://files.leonardo.pgxc.pl<? echo getPilotStatsRelFilename($pilotIDview,'2'.$suffixHash); ?>' border=0></td>
+    <td colspan="5" valign="top"><img src='<? echo getPilotStatsRelFilename($pilotIDview,'2'.$suffixHash); ?>' border=0></td>
   </tr>
 </table>
 
