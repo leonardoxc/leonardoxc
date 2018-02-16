@@ -538,7 +538,11 @@
     <td>&nbsp;</td>
     <td width="90" colspan="2" rowspan="4" valign="top"><p align="right">
 	<? 	if ($pilot['PilotPhoto']>0) 
-			echo "<a href='".getPilotPhotoRelFilename($serverIDview,$pilotIDview)."' target='_blank'><img align=right src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."' border=0></a>";
+                        if (!file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
+                                $cdnURL='';
+                        }
+
+			echo "<a href='".$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview)."' target='_blank'><img align=right src='".$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."' border=0></a>";
 	?>
 	<strong><? echo _Photo ?></strong>
     <? if ($pilot['PilotPhoto']>0) 
