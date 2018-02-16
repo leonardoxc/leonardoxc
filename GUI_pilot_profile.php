@@ -145,7 +145,7 @@ function getPilotInfo(serverID,pilotID,update) {
 		?>
       <div align="center"><strong><? echo _Photo ?> </strong><br>
           <?
-			if (!file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
+			if (file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
 				$cdnURL='';
 			}
 			$imgBigRel=$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview);	

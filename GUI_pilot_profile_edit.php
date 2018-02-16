@@ -538,7 +538,7 @@
     <td>&nbsp;</td>
     <td width="90" colspan="2" rowspan="4" valign="top"><p align="right">
 	<? 	if ($pilot['PilotPhoto']>0) 
-                        if (!file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
+                        if (file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
                                 $cdnURL='';
                         }
 

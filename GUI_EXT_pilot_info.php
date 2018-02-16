@@ -169,7 +169,7 @@
     <td colspan="2" valign="top" bgcolor="006699"> <div align="left"><strong><font color="#FFA34F"><? echo _Flying_Stuff ?></font></strong></div></td>
     <td width="150" rowspan="9" valign="top"><? 
 	  	if ($pilot['PilotPhoto']>0) {
-                        if (!file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
+                        if (file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
                                 $cdnURL='';
                         }
 

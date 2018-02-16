@@ -524,6 +524,13 @@ function showStats($row,$groupBy,$where_clause,$where_clause2,$suffix='') {
  <div class='infoHeader'><?=_Total_num_of_flights?></div>
  <table  class=main_text  width="100%" border="0" cellpadding="3" cellspacing="3">
   <tr>
+<?	
+//	if (file_exists(getPilotStatsRelFilename($pilotIDview,'1'.$suffixHash))){
+//		$cdnURL='';
+//	else{
+//		$cdnURL='https://files.leonardo.pgxc.pl';
+//	}	
+?>
     <td colspan="5" valign="top"><img src='https://files.leonardo.pgxc.pl<? echo getPilotStatsRelFilename($pilotIDview,'1'.$suffixHash); ?>' border=0></td>
   </tr>
   </table>

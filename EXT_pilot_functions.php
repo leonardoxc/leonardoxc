@@ -116,8 +116,12 @@
 			if ($row['PilotPhoto']>0) {
 		
 				//checkPilotPhoto($serverIDview,$pilotIDview);
-	     		$imgBigRel=getPilotPhotoRelFilename($serverIDview,$pilotIDview);	
-				$imgBig=getPilotPhotoFilename($serverIDview,$pilotIDview);	
+	                        if (file_exists(getPilotPhotoRelFilename($serverIDview,$pilotIDview))){
+	                                $cdnURL='';
+        	                }
+
+	     			$imgBigRel=$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview);	
+				$imgBig=$cdnURL.getPilotPhotoFilename($serverIDview,$pilotIDview);	
 				// echo $imgBig."<BR>";
 				list($width, $height, $type, $attr) = getimagesize($imgBig);
 				
@@ -125,11 +129,11 @@
 				list($width, $height)=CLimage::getJPG_NewSize($CONF['photos']['mid']['max_width'], $CONF['photos']['mid']['max_height'], $width, $height);
 				
 				
-				$photo="<a href='$imgBigRel' target='_blank'><img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
+				$photo="<a href='$imgBigRel' target='_blank'><img src='".$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'
 			onmouseover=\"trailOn('$imgBigRel','','','','','','1','$width','$height','','.');\" onmouseout=\"hidetrail();\" 
 			 border=0></a>";					
 				
-				$photo="<img src='".getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'>";
+				$photo="<img src='".$cdnURL.getPilotPhotoRelFilename($serverIDview,$pilotIDview,1)."'>";
 			}
 			if( $_GET['json'] ){
 				$photo=json::prepStr($photo);
