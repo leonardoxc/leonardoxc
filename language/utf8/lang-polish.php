@@ -164,7 +164,7 @@ define("_MENU_OPEN_DISTANCE","Dystans otwarty");
 define("_MENU_DURATION","Czas");
 define("_MENU_ALL_FLIGHTS","Pokaż wszystkie loty");
 define("_MENU_FLIGHTS","Loty");
-define("_MENU_TAKEOFFS","Miejsca startu");
+define("_MENU_TAKEOFFS","Startowiska");
 define("_MENU_FILTER","Filtr");
 define("_MENU_MY_FLIGHTS","Moje loty");
 define("_MENU_MY_PROFILE","Mój profil");
@@ -508,7 +508,7 @@ define("_M_PER_SEC","m/s");
 define("_WORLD_WIDE","Cały świat");
 define("_National_XC_Leagues_for","Ligi narodowe");
 define("_Flights_per_Country","Liczba lotów na kraj");
-define("_Takeoffs_per_Country","Miejsca startu według krajów");
+define("_Takeoffs_per_Country","Startowiska według krajów");
 define("_INDEX_HEADER","Witamy na serwerze Leonardo XC League");
 define("_INDEX_MESSAGE","Do nawigacji służy &quot;Menu główne&quot; powyżej, a poniżej znajdują się najczęściej używane odnośniki.");
 
