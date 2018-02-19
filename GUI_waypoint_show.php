@@ -70,7 +70,7 @@
 		$flightNum=mysql_num_rows($res);
 		$row = mysql_fetch_assoc($res);
 
-		echo "<a href='http://".$_SERVER['SERVER_NAME'].
+		echo "<a href='https://".$_SERVER['SERVER_NAME'].
 			getLeonardoLink(array('op'=>'show_flight','flightID'=>$row['ID']))."'>".
 			formatDistance($row['record_km'],1)."</a>";
 	 } 
@@ -93,10 +93,10 @@
 		  ."'>"._Navigate_with_Google_Earth."</a>"; ?></strong></div></td>
         </tr>
         <tr align="center" class="col3_in">
-          <td><strong><? echo "<a href='http://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?></strong></td>
+          <td><strong><? echo "<a href='https://maps.google.com/maps?q=".$wpName."&ll=". $wpInfo->lat.",".-$wpInfo->lon."&spn=1.535440,2.885834&t=h&hl=en' target='_blank'>"._See_it_in_Google_Maps."</a>"; ?></strong></td>
         </tr>
         <tr align="center" class="col3_in">
-          <td><strong><? echo "<a href='http://www.mapquest.com/maps/map.adp?searchtype=address&formtype=address&latlongtype=decimal&latitude=".$wpInfo->lat."&longitude=".-$wpInfo->lon."' target='_blank'>"._See_it_in_MapQuest."</a>"; ?></strong></td>
+          <td><strong><? echo "<a href='https://www.mapquest.com/maps/map.adp?searchtype=address&formtype=address&latlongtype=decimal&latitude=".$wpInfo->lat."&longitude=".-$wpInfo->lon."' target='_blank'>"._See_it_in_MapQuest."</a>"; ?></strong></td>
         </tr>
       </table>
 <? if ($wpLocation || $wpInfo->description || $wpInfo->link) { ?>
@@ -137,7 +137,7 @@
 		<?  list($browser_agent,$browser_version)=getBrowser();
 			if ( $CONF_google_maps_api_key  ) { ?> 
 		<iframe align="center"
-		  SRC="<? echo "http://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpID=".$wpInfo->waypointID."&wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
+		  SRC="<? echo "https://".$_SERVER['SERVER_NAME'].getRelMainDir()."EXT_google_maps.php?wpID=".$wpInfo->waypointID."&wpName=".$wpInfo->intName."&lat=".$wpInfo->lat."&lon=".-$wpInfo->lon; ?>"
 		  TITLE="Google Map" width="710px" height="400px"
 		  scrolling="no" frameborder="0">
 		Sorry. If you're seeing this, your browser doesn't support IFRAMEs.

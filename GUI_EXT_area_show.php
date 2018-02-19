@@ -25,7 +25,7 @@
   <head>
     <title>Google Maps</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<script src="http://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
+	<script src="https://maps.google.com/maps?file=api&v=2&key=<?=$CONF_google_maps_api_key ?>" type="text/javascript"></script>
 	<script src="<?=$moduleRelPath?>/js/AJAX_functions.js" type="text/javascript"></script>
 	
 	
@@ -217,8 +217,8 @@ $area->getFromDB();
 	var takeoffPoint= new GLatLng(40, 22) ;
 	map.setCenter(takeoffPoint , 8);
 		
-	var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
-	var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";	
+	var iconUrl		= "https://maps.google.com/mapfiles/kml/pal2/icon5.png";
+	var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal2/icon5s.png";	
 			
 		
 	var takeoffMarkers=[];
@@ -233,14 +233,14 @@ $area->getFromDB();
 			//$("#resDiv").append('#'+results.waypoints[i].lat+'#'+ results.waypoints[i].lon+'#'+results.waypoints[i].id+'#'+
 			 //results.waypoints[i].name+'$');
 			if (results.waypoints[i].id ==wpID ) {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon5.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon5s.png";
+				var iconUrl		= "https://maps.google.com/mapfiles/kml/pal2/icon5.png";
+				var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal2/icon5s.png";
 			} else if (results.waypoints[i].type<1000) {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal3/icon21.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal3/icon21s.png";
+				var iconUrl		= "https://maps.google.com/mapfiles/kml/pal3/icon21.png";
+				var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal3/icon21s.png";
 			} else {
-				var iconUrl		= "http://maps.google.com/mapfiles/kml/pal2/icon13.png";
-				var shadowUrl	= "http://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
+				var iconUrl		= "https://maps.google.com/mapfiles/kml/pal2/icon13.png";
+				var shadowUrl	= "https://maps.google.com/mapfiles/kml/pal2/icon13s.png";		
 			}
 			
 			var takeoffMarker= createMarker(takeoffPoint,results.waypoints[i].id, results.waypoints[i].name,iconUrl,shadowUrl);
