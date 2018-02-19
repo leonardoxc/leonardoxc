@@ -360,7 +360,21 @@ if ($op=="list_areas") $page_title = 'lista rejonów do latania paralotnią';
 if ($op=="list_takeoffs") $page_title = 'lista startowisk paralotniowych';
 if ($op=="list_flights") $page_title = 'lista zgłoszonych lotów';
 if ($op=="pilot_profile_stats") $page_title = 'statystyki pilota';
+if ($op=="pilot_profile"){
+	$page_title = 'profil pilota paralotni - '.getPilotRealName($pilotIDview,0,0);
+}
 if ($op=="stats") $page_title = 'statystyki lotów zgłoszonych do portalu';
+if ($op=="show_flight"){
+ $flightID=makeSane($_REQUEST['flightID'],1);
+ $flight=new flight();
+  if ( ! $flight->getFlightFromDB($flightID) ) {
+        echo "<br><div align='center'>No such flight exists</div><br><BR>";
+        return;
+  }
+ $page_title = 'lot paralotnią z '.getWaypointName($flight->takeoffID); //.' do '.getWaypointName($flight->landingID);
+}
+
+
 if ($op=="competition") $page_title = 'zestawienie lotów pilotów portalu';
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 
