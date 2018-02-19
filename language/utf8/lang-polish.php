@@ -528,7 +528,7 @@ define("_This_is_the_URL_of_this_page","To jest adres tej strony");//This is the
 define("_All_glider_types","Wszystkie rodzaje");//All glider types");
 
 define("_MENU_SITES_GUIDE","Przewodnik");//Flying Sites Guide");
-define("_Site_Guide","Site Guide");
+define("_Site_Guide","Przewodnik po startowiskach");
 
 define("_Search_Options","Opcje wyszukiwania");//Search Options");
 define("_Below_is_the_list_of_selected_sites","Poniżej znajduje się lista wybranych startowisk");//Below is the list of selected sites");

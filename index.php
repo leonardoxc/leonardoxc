@@ -108,6 +108,7 @@ if ($CONF_use_utf) {
 
 $pagetitle = _PAGE_TITLE;
 
+
 if ($opMode==1 ) { // phpnuke
 	$user = $_REQUEST['user'];
 	if ( is_user($user)) {
@@ -352,6 +353,15 @@ if (  count($pilotPartsArray=split('_',$pilotID)) >1 ) {
 
 
 if ($op=="main") $op=$CONF_main_page;
+if ($op=="sites") $page_title = 'przewodnik po startowiskach paralotniowych';
+if ($op=="list_pilots") $page_title = 'lista pilotów paralotni portalu';
+if ($op=="pilot_search") $page_title = 'wyszukiwarka pilotów paralotni portalu';
+if ($op=="list_areas") $page_title = 'lista rejonów do latania paralotnią';
+if ($op=="list_takeoffs") $page_title = 'lista startowisk paralotniowych';
+if ($op=="list_flights") $page_title = 'lista zgłoszonych lotów';
+if ($op=="pilot_profile_stats") $page_title = 'statystyki pilota';
+if ($op=="stats") $page_title = 'statystyki lotów zgłoszonych do portalu';
+if ($op=="competition") $page_title = 'zestawienie lotów pilotów portalu';
 if ($op=="show_flight" && $flightID==0) $op=$CONF_main_page;
 
 if ($op=="login") {  // do some output buffering so that cookies can be set later on
