@@ -1,2 +1,5 @@
 User-agent: *
-Disallow: /data/pdf
+Disallow: /data/pdf/
+Disallow: *.pdf
+Disallow: *.igc
+Disallow: *.kml
