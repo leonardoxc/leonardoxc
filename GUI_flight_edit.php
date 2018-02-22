@@ -779,7 +779,7 @@ require_once dirname(__FILE__).'/FN_editor.php';
 	 <tr>
       <td><div align="right" class="style2"></div></td>
       <td>  <div align="center" class="style222">
-        <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb'; ?></div>
+        <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' KB'; ?></div>
       </div></td>
     </tr>
 <? if ( L_auth::isAdmin($userID) ) {?>

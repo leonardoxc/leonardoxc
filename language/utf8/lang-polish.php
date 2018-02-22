@@ -271,7 +271,7 @@ define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Prześlij plik<br>IGC");
 define("_NOTE_TAKEOFF_NAME","Podaj nazwę startowiska i kraj");
 define("_COMMENTS_FOR_THE_FLIGHT","Komentarz");
 define("_PHOTO","Zdjęcie");
-define("_PHOTOS_GUIDELINES","Zdjęcia powinny być w formacie jpg i nie większe niż ");
+define("_PHOTOS_GUIDELINES","Załączone zdjęcie powinno być w formacie jpg i przekraczać rozmiaru ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Kliknij, aby przesłać lot");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Chcesz przesłać kilka lotów za jednym razem?");
 define("_PRESS_HERE","Kliknij");

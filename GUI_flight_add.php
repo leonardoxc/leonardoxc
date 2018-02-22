@@ -359,7 +359,7 @@ function setClub(NACid) {
 	 <tr>
       <td><div align="right" class="styleItalic"></div></td>
       <td colspan="3">  <div align="center" class="style222">
-        <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' Kb';?></div>
+        <div align="left"><?=_PHOTOS_GUIDELINES.$CONF_max_photo_size.' KB';?></div>
       </div></td>
     </tr>
     <tr>

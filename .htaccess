@@ -2,10 +2,13 @@
 #AuthName "Dostep ograniczony na czas testow"
 #AuthUserFile "/etc/apache2/leo.passwd"
 #Require valid-user
+
 Options -Indexes
 
+ServerSignature Off
+
 php_value upload_max_filesize 10M
-php_value post_max_size 50M
+php_value post_max_size 200M
 
 RedirectMatch 404 /\.git
 RedirectMatch 404 /\.gitignore
