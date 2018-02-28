@@ -91,7 +91,6 @@
   
   // show the current subranking
   require dirname(__FILE__)."/data/ranks/$rank/GUI_rank_cat_$subrank.php";
-
   
   
   if ($ranksList[$rank]['entity']=='club') $listClubs=1;

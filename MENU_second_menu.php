@@ -401,7 +401,7 @@ $arrDownImg=leoHtml::img("icon_arrow_left.gif",0,0,'','','icons1');
 
 ?>
 
-
+<?php if (! $dontShowSecondMenu) { ?>
 <div class="mainBox secondMenu" align="left" style="margin-top:-1px;">
 
 <? if ($op=='list_flights') { ?>
@@ -632,8 +632,10 @@ if (! $dontShowCountriesSelection ) {
     </div>
 <? } ?>
 
+<?php if (! $dontShowDatesSelection ) { ?>
     <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><?=leoHtml::img("icon_date.gif",0,0,'absmiddle',_MENU_DATE,'icons1')?> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
     </div>
+<? } ?>
 
 <?	if ($showNacClubSelection || (count($clubsList) && $op!='comp')  ) { ?>
     <div id='clubMenuID' class="menuButton"><a href="#" onClick="toogleMenu('club');return false;">
@@ -678,7 +680,7 @@ if (! $dontShowCountriesSelection ) {
     </div> 
    <?php  }?>
 
-</div> <?php  // end of second menu div ?>
+</div> <?php } // end of second menu div ?>
 
 
 

@@ -4,9 +4,52 @@
 $ranksList=array();
 
 // sample custom ranks defintion
-/*
+
 $ranksList=array(
 
+201=>array('id'=>1,
+		 'type'=>'national',
+		 'entity'=>'pilot',
+		 'name'=>'Ultimate Polish Sea Cliffs',
+		 'localName'=>'Polskie klify nadmorskie',
+		 'localLanguage'=>'polish',
+		 'dontShowCatSelection'=>1, // no glider type selection menu on top
+ 		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
+		 'dontShowManufacturers'=>1,
+		 'dontShowDatesSelection'=>1,
+		 'dontShowSecondMenu'=>1,
+
+		// Martin Jursa 22.05.2007: Support for NAC club filtering 
+		'dontShowNacClubSelection'=>1, // NAC club selection menu on top
+		'forceNacId'=>0, // the only NAC ID to be used
+
+		  // Ths configures the top menu links to point to a specific year/season
+		 //'datesMenu'=>'seasons',	
+		 'datesMenu'=>0,	
+//		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
+		 'menuYear'=>0, // either force the menu item to point to this year or put zero  
+		 
+		 'useCustomYears'=>0, 
+		 'years'=>array ('use_calendar_years'=>0),
+		 'useCustomSeasons'=>0, // definition must follow !		 
+		 'seasons'=>array (
+			'use_season_years'=>0,	
+			'use_defined_seasons'=>0,
+			'seasons'=>array(
+				2018=>array('start'=>'1996-02-26','end'=>'2059-02-26'),	
+			)					 		 
+		 ),
+		 
+		 'subranks'=>array(
+			2=>array('id'=>2,
+				'name'=>'PG Open',
+				'localName'=>'PG Open',
+			),
+		),
+	),
+
+);
+/*
 1=>array('id'=>1,
 		 'type'=>'national',
 		 'entity'=>'pilot',
