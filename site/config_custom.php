@@ -123,7 +123,7 @@ $CONF['auth']['download_igc']['allowed_ips']=array('78.46.202.91','78.46.202.94'
  // ------------------------
  //  various config
  // ------------------------
- $takeoffRadious= 1000 ; // in m
+ $takeoffRadious= 1500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
  $CONF_compItemsPerPage=25;

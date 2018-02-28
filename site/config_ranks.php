@@ -15,28 +15,28 @@ $ranksList=array(
 		 'localLanguage'=>'polish',
 		 'dontShowCatSelection'=>1, // no glider type selection menu on top
  		 'dontShowCountriesSelection'=>1, // no glider type selection menu on top
-		 'dontShowManufacturers'=>1,
-		 'dontShowDatesSelection'=>1,
-		 'dontShowSecondMenu'=>1,
+//		 'dontShowManufacturers'=>1,
+//		 'dontShowDatesSelection'=>1,
+//		 'dontShowSecondMenu'=>1,
 
 		// Martin Jursa 22.05.2007: Support for NAC club filtering 
-		'dontShowNacClubSelection'=>1, // NAC club selection menu on top
-		'forceNacId'=>0, // the only NAC ID to be used
+		'dontShowNacClubSelection'=>0, // NAC club selection menu on top
+		'forceNacId'=>1, // the only NAC ID to be used
 
 		  // Ths configures the top menu links to point to a specific year/season
-		 //'datesMenu'=>'seasons',	
-		 'datesMenu'=>0,	
+//		 'datesMenu'=>'seasons',	
+		 'datesMenu'=>'seasons',	
 //		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
-		 'menuYear'=>0, // either force the menu item to point to this year or put zero  
+		 'menuYear'=>'current', // either force the menu item to point to this year or put zero  
 		 
-		 'useCustomYears'=>0, 
+		 'useCustomYears'=>1, 
 		 'years'=>array ('use_calendar_years'=>0),
-		 'useCustomSeasons'=>0, // definition must follow !		 
+		 'useCustomSeasons'=>1, // definition must follow !		 
 		 'seasons'=>array (
-			'use_season_years'=>0,	
-			'use_defined_seasons'=>0,
+			'use_season_years'=>1,	
+			'use_defined_seasons'=>1,
 			'seasons'=>array(
-				2018=>array('start'=>'1996-02-26','end'=>'2059-02-26'),	
+				2006=>array('start'=>'1986-02-26','end'=>'2159-02-26'),	
 			)					 		 
 		 ),
 		 

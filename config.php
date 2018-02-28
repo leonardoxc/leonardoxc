@@ -98,7 +98,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // get one key for your server at 
  // http://www.google.com/apis/maps/signup.html
  // else leave it blank
- $CONF_google_maps_api_key="";
+ $CONF_google_maps_api_key="AIzaSyAYfsSCuHMIYEamXdKok34VpXStqc06j1E";
 
 
  // use utf language files 
@@ -264,7 +264,7 @@ setlocale(LC_NUMERIC, 'en_US') ;
  // ------------------------
  //  various config
  // ------------------------
- $takeoffRadious= 500 ; // in m
+ $takeoffRadious= 1500 ; // in m
  $landingRadious= 1000 ; // in m
  $CONF_itemsPerPage=50 ;
  $CONF_compItemsPerPage=100;

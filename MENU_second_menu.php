@@ -333,6 +333,7 @@ $(document).ready(function(){
   $dateLegend="";
   $allTimesDisplay=0;
 
+//	print_r($CONF['seasons']['use_season_years']);
 	if ( $op!='comp' ) {
 		if (! $CONF['seasons']['use_season_years'] ) $season=0;
 	}
@@ -632,7 +633,7 @@ if (! $dontShowCountriesSelection ) {
     </div>
 <? } ?>
 
-<?php if (! $dontShowDatesSelection ) { ?>
+<? if (! $dontShowDatesSelection ) { ?>
     <div id='dateMenuID' class="menuButton"><a href="#" onClick="toogleMenu('date');return false;"><?=leoHtml::img("icon_date.gif",0,0,'absmiddle',_MENU_DATE,'icons1')?> <? echo "$dateLegend";?> <? echo $arrDownImg; ?></a>
     </div>
 <? } ?>

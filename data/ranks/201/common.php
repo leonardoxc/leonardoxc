@@ -52,7 +52,7 @@ while ($row = $db->sql_fetchrow($res)) {
      $i++;
 }
 
-	//$sortbyList=array('score');
+//	$sortbyList=array('score');
 	$sortbyList=array('takeoffID');
 	foreach ($sortbyList as $key) {
 		$code = '$a=$a1["'.$key.'"]; $b=$b1["'.$key.'"]; if ($a==$b) return 0; return ($a < $b) ? 1 : -1;';

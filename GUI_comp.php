@@ -43,7 +43,6 @@
   }
   $where_clause='';
   $where_clause.= dates::makeWhereClause(0,$season,$year,$month,0 );
-
   // BRANDS MOD  
   $where_clause.= brands::makeWhereClause($brandID);
 
@@ -55,6 +54,8 @@
   $dontShowCatSelection =$ranksList[$rank]['dontShowCatSelection'];
   $dontShowCountriesSelection=$ranksList[$rank]['dontShowCountriesSelection'];
   $dontShowManufacturers=$ranksList[$rank]['dontShowManufacturers']; //P.Wild 16.7.08
+  $dontShowSecondMenu=$ranksList[$rank]['dontShowSecondMenu']; //R.Grubba
+  $dontShowDatesSelection=$ranksList[$rank]['dontShowDatesSelection']; //R.Grubba
   
   
   	# Martin Jursa 22.05.2007 option NACclub Selection
@@ -237,7 +238,6 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    global $dateLegend;
 
    uasort($pilots,$sort_funcs_pilots[$category]);
-
    $legendRight=""; // show all pilots up to  $CONF_compItemsPerPage
    if ($tabID ==  makeSane($_GET['comp'],1)  ) $defaultTabStr=" tabbertabdefault";
    else  $defaultTabStr="";
@@ -266,6 +266,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
    <? 
 
 	  $i=1;
+//	print_r($pilots); something wrong with that array with rank 201 20180228
    	  foreach ($pilots as $pilotID=>$pilot) {
 	  	 if ($i< ( $startNum + 1) ) { $i++ ;  continue; }
 		 if ($i>( $startNum  + $CONF_compItemsPerPage) ) break;
@@ -311,6 +312,7 @@ function listCategory($legend,$header, $category, $key, $formatFunction="") {
 		if ($countHowMany>0) {
 			foreach ($pilot[$category]['flights'] as $flightID) {
 				$val=$pilot['flights'][$flightID][$key];
+				//print_r($category.' '.$flightID.' '.$val.' ');
 	
 				$glider=$pilot['flights'][$flightID]['glider'];
 				$country=$countries[$pilot['flights'][$flightID]['country']];
