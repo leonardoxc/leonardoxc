@@ -1,6 +1,6 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, https://github.com/leonardoxc/leonardoxc
 //
 // Copyright (c) 2004-2010 by Andreadakis Manolis
 //
@@ -37,7 +37,7 @@ $encoding="utf-8";
 $RSS_str="<?xml version=\"1.0\" encoding=\"$encoding\" ?>
 <rss version=\"0.92\">
 <channel>
-	<docs>http://www.leonardoxc.net</docs>
+	<docs>https://github.com/leonardoxc/leonardoxc</docs>
 	<title>Leonardo at ".$_SERVER['SERVER_NAME']." :: Latest comments</title>
 	<link>http://".$_SERVER['SERVER_NAME'].
 	str_replace("&","&amp;",

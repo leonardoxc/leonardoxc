@@ -1,6 +1,6 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, https://github.com/leonardoxc/leonardoxc
 //
 // Copyright (c) 2004-2010 by Andreadakis Manolis
 //
@@ -70,7 +70,7 @@
     </tr>
     <tr> 
       <td><div align="right"><? echo _PROJECT_URL ?>: </div></td>
-      <td><a href="http://www.leonardoxc.net" target="_blank">http://www.leonardoxc.net</a></td>
+      <td><a href="https://github.com/leonardoxc/leonardoxc" target="_blank">https://github.com/leonardoxc/leonardoxc</a></td>
     </tr>
     <tr>
       <td><div align="right">Scoring Optimization</div></td>

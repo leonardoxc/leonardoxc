@@ -1,6 +1,6 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, https://github.com/leonardoxc/leonardoxc
 //
 // Copyright (c) 2004-2010 by Andreadakis Manolis
 //
@@ -14,14 +14,14 @@
 
 
 /*
-An HGT file covers an area of 1°x1°. Its south western corner can
+An HGT file covers an area of 1ï¿½x1ï¿½. Its south western corner can
  be deduced from its file name: for example, 
 
 n51e002.hgt covers the area between 
-N 51° E 2° and N 52° E 3°, 
+N 51ï¿½ E 2ï¿½ and N 52ï¿½ E 3ï¿½, 
 
 and s14w077.hgt covers
-S 14° W 77° to S 13° W 76°. 
+S 14ï¿½ W 77ï¿½ to S 13ï¿½ W 76ï¿½. 
 The file size depends on the resolution.
 
 
