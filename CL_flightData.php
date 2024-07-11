@@ -1,6 +1,6 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, https://github.com/leonardoxc/leonardoxc
 //
 // Copyright (c) 2004-2010 by Andreadakis Manolis
 //
@@ -944,7 +944,7 @@ $resStr='{
 			"<tr><td>"._MIN_ALTITUDE."</td><td> ".formatAltitude($this->MIN_ALT)."</td></tr>".
 			"<tr bgcolor='#CCCCCC'><td>"._TAKEOFF_ALTITUDE."</td><td> ".formatAltitude($this->TAKEOFF_ALT)."</td></tr>".
 			"<tr><td>"._GLIDER."</td><td>".$this->glider."</td></tr>".
-			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='http://www.leonardoxc.net'>Leonardo</a></div></td></tr>";
+			"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>"._KML_file_made_by." <a href='https://github.com/leonardoxc/leonardoxc'>Leonardo</a></div></td></tr>";
 			if($ext) $str.=	"<tr bgcolor='#D7E1EE'><td></td><td><div align='right'>Extra analysis module by  Man\'s <a href='http://www.parawing.net'>GPS2GE V2.0</a></div></td></tr>";
 			$str.="<tr bgcolor='#D7E1EE'><td></td><td><div align='right'><a href='$getFlightKML&show_url=1'>URL of this KML file</div></td></tr>";
 

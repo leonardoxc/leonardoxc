@@ -1,6 +1,6 @@
 <?
 //************************************************************************
-// Leonardo XC Server, http://www.leonardoxc.net
+// Leonardo XC Server, https://github.com/leonardoxc/leonardoxc
 //
 // Copyright (c) 2004-2010 by Andreadakis Manolis
 //
@@ -57,7 +57,7 @@ $prList=array(
 	"Garmin tools"	=>array("AGAR"),
 	"MLR tools"		=>array("AMLR"),
 	"Aircotec Topnavigator"=>array("ATNA"),
-	"Bräuniger Gallileo"=>array("ABRA"),
+	"Brï¿½uniger Gallileo"=>array("ABRA"),
 	"Renschler"			=>array("AREN"),
 	"log_it RUAG Data Logger "=>array("ARUA"),
 
@@ -80,7 +80,7 @@ AXSY
 L ACTIVE LOG
 LXSY Version 2.82 digitally signed 4/6/2005 9:03:33 PM 
 
-L FlyChart® 4 for Windows
+L FlyChartï¿½ 4 for Windows
 L Version 4.32.25.18, August 29th 2004 
 
 
