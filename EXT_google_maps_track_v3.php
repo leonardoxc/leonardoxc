@@ -109,9 +109,9 @@ if ($_GET['deleted'] && L_auth::isAdmin($userID) ) {
 	// use the google earth plugin directly, not the hack
 	$useGE=1;	 
 	$is3D=$_GET['3d']+0;
-			
-	if ($CONF_google_api_key) {
-		$googleApiKeyStr="?key=$CONF_google_api_key";
+		
+	if ($CONF_google_maps_api_key) {
+		$googleApiKeyStr="&key=$CONF_google_maps_api_key";
 	} else {
 		$googleApiKeyStr='';
 	}
@@ -195,11 +195,11 @@ img.icons1 {   background: url(<?=$moduleRelPath?>/img/sprite_icons1.png) no-rep
 <link rel="stylesheet" type="text/css" href="<?=$moduleRelPath?>/templates/<?=$PREFS->themeName?>/sprites.css">
  
 <? if ( $is3D ) { ?> 
-<script src="https://www.google.com/jsapi<?php echo $googleApiKeyStr ?>"></script>
+<script src="https://www.google.com/jsapi?<?php echo $googleApiKeyStr ?>"></script>
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry<?php echo $googleApiKeyStr ?>" type="text/JavaScript"></script>
 <script src="<?=$moduleRelPath?>/js/google_maps/extensions.pack.js" type="text/javascript"></script>
 <? } else { ?>
-<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry" type="text/JavaScript"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry<?php echo $googleApiKeyStr ?>" type="text/JavaScript"></script>
 <? } ?>
 
 <script src="<?=$moduleRelPath?>/js/google_maps/jquery.js" type="text/javascript"></script>
@@ -998,5 +998,4 @@ function loadFlight(flightID) {
 }
 	
 </script>
-
 </body>
