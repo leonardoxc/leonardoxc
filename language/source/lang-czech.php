@@ -399,7 +399,7 @@ define("_Your_profile_has_been_updated","Tvuj profil byl upraven");
 define("_Submit_Change_Data","Predloz - Zmen Data");
 
 //--------------------------------------------
-// pilot_�lc_profile_edit.php
+// pilot_�lc_profile_edit.php
 //--------------------------------------------
 define("_edit_OLC_info","Uprav OLC info");
 define("_OLC_information","OLC informace");
@@ -671,5 +671,7 @@ define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
 
+define("_BREAKDOWN_PER_TAKEOFF","Statistiky podle startoviště");
+define("_BREAKDOWN_PER_GLIDER","Statistiky podle křídla");
 
 ?>
