@@ -733,7 +733,7 @@ define("_Email_allready_yours","The informed email is allready yours, nothing to
 define("_Email_allready_have_request","C'&egrave; gi&agrave; una richiesta di cambiamento a questa email, niente da fare");
 define("_Email_used_by_other","Questa email viene utilizzata in un altro pilota, niente da fare");
 define("_Email_used_by_other_request","Questa email &egrave; utilizzata in un'altro pilota in una richiesta di cambio email");
-define("_Email_canot_change_quickly","Non puoi cambiare la tua email così rapidamente, attendi la scadenza: %s");
+define("_Email_canot_change_quickly","Non puoi cambiare la tua email cosï¿½ rapidamente, attendi la scadenza: %s");
 define("_Email_sent_with_confirm","Noi ti inviamo un'email, dove ci confermerai il cambio di email");
 define("_Email_subject_confirm","Email di conferma (nuova email)");
 define("_Email_AndConfDontMatch","Email e conferma sono diverse.");
@@ -747,21 +747,21 @@ define("_New_Password","Nuova Password");
 define("_ChangePasswordForm","Modulo Cambio Password");
 define("_lost_password","Modulo Password Persa");
 define("_PASSWORD_RECOVERY_TOOL","Modulo Recupero Password");
-define("_PASSWORD_RECOVERY_TOOL_MESSAGE","Il server cercherà nel suo database per intero il testo inserito nella casella di testo, se e quando il server trova l'utente, e-mail, o civlid, Una mail saranno inviati per l'indirizzo di posta elettronica, con una nuova password e il link di attivazione. <Br > <br> Nota: solo dopo l'attivazione della nuova password tramite link di attivazione all'interno del corpo di posta elettronica, la nuova password sarà valida.<br><br>");
+define("_PASSWORD_RECOVERY_TOOL_MESSAGE","Il server cercherï¿½ nel suo database per intero il testo inserito nella casella di testo, se e quando il server trova l'utente, e-mail, o civlid, Una mail saranno inviati per l'indirizzo di posta elettronica, con una nuova password e il link di attivazione. <Br > <br> Nota: solo dopo l'attivazione della nuova password tramite link di attivazione all'interno del corpo di posta elettronica, la nuova password sarï¿½ valida.<br><br>");
 define("_username_civlid_email","Inserisci: CIVLID o Nome Utente o Indirizzo Email");
 define("_Recover_my_pass","Recupera la mia Password");
 define("_You_are_not_login","<BR><BR><center><br>Non sei loggato. <br><br>Fai il Login<BR><BR></center>");
 define("_Requirements","Requisiti");
 define("_Mandatory_CIVLID","E' obbligatorio avere un valido <b>CIVLID</b>");
 define("_Mandatory_valid_EMAIL","E' obbligatorio inserire una <b>Email Valida</b> per ulteriori comunicazioni con l'amministratore del server");
-define("_Email_periodic","Periodicamente invieremo una conferma via e-mail al vostro indirizzo e-mail, se non si risponde, l'account di registrazione verrà bloccato");
+define("_Email_periodic","Periodicamente invieremo una conferma via e-mail al vostro indirizzo e-mail, se non si risponde, l'account di registrazione verrï¿½ bloccato");
 define("_Email_asking_conf","Invieremo una email di conferma all'indirizzo e-mail comunicato");
 define("_Email_time_conf","Avrai solo <b>3 ore</b> dopo aver finito la pre-registrazione per rispondere alla email");
 define("_After_conf_time"," Dopo questo tempo, la tua pre-registrazione sar&agrave; <b>rimossa</b> dal nostro database");
 define("_Only_after_time","<b>E solo dopo che abbiamo rimosso la tua pre-registrazione, potrai pre-registrarti di nuovo</b>");
 define("_Disable_Anti_Spam","<b>ATTENZIONE!! Disabilita</b> l'anti-spam per le email originate da <b>%s</b>");
 define("_If_you_agree","Se siete d'accordo con questi requisiti, si prega di proseguire.");
-define("_Search_civl_by_name","%sCerca il tuo nome nel database CIVL %s . Quando si fa clic su questo link a sinistra si aprirà una nuova finestra, ti preghiamo di compilare solo 3 lettere dal tuo Nome o Cognome, il CIVL ti dar&agrave; il tuo CIVLID, Nome e nazionalit&agrave; FAI.");
+define("_Search_civl_by_name","%sCerca il tuo nome nel database CIVL %s . Quando si fa clic su questo link a sinistra si aprirï¿½ una nuova finestra, ti preghiamo di compilare solo 3 lettere dal tuo Nome o Cognome, il CIVL ti dar&agrave; il tuo CIVLID, Nome e nazionalit&agrave; FAI.");
 define("_Register_civl_as_new_pilot","Se non compari nel database CIVL, %sREGISTER-ME AS A NEW PILOT%s");
 define("_NICK_NAME","Nick Name");
 define("_LOCAL_PWD","Local Password");
@@ -775,11 +775,11 @@ define("_MANDATORY_GENDER","Comunica il tuo Sesso");
 define("_MANDATORY_BIRTH_DATE_INVALID","Data di nascita Non Valida");
 define("_MANDATORY_CIVL_ID","Comunica il tuo CIVLID");
 define("_Attention_mandatory_to_have_civlid","ATTENZIONE!! Per ora &egrave; Obbligatorio avere il CIVLID nel %s database");
-define("_Email_confirm_success","La registrazione è stata confermata con successo!");
+define("_Email_confirm_success","La registrazione ï¿½ stata confermata con successo!");
 define("_Success_login_civl_or_user","Successo, ora si pu&ograve; fare il login con il tuo CIVLID come nome utente, o continuare con il vecchio nome utente");
 define("_Server_did_not_found_registration","Registrazione non trovata, si prega di copiare e incollare nel vostro campo degli indirizzi del browser il link comunicato nell'e-mail che vi &egrave; stata inviata, forse il tempo di registrazione &egrave; scaduto");
 define("_Pilot_already_registered","Pilota gi&agrave; registrato con CIVLID %s e con nome %s");
-define("_User_already_registered","Utente già registrato con questa e-mail o nome");
+define("_User_already_registered","Utente giï¿½ registrato con questa e-mail o nome");
 define("_Pilot_civlid_email_pre_registration","Salve %s Questo Civl ID e l'e-mail &egrave; gi&agrave; utilizzato in una pre-registrazione");
 define("_Pilot_have_pre_registration"," Avete gi&agrave; una registrazione preliminare, ma non avete risposto alla nostra mail, abbiamo nuovamente inviato l'email di conferma per voi, avete 3 ore da adesso per rispondere alla email, altrimenti verrete rimosso dalla registrazione preliminare. Si prega di leggere la posta elettronica e seguire le procedure descritte all'interno, grazie");
 define("_Pre_registration_founded","Abbiamo gi&agrave; una pre-registrazione, con questo civlID ed e-mail, attendere 3 ore dopodich&egrave; tale registrazione verr&agrave; rimossa, per nessun motivo bisogna confermare l'email inviata, in quanto verrebe generata una doppia registrazione, ed i vecchi voli non saranno trasferiti al nuovo utente");
@@ -808,6 +808,7 @@ define("_GLIDER_CERT","Certificazione");
 define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Scegli la certificazione del tuo mezzo");
 define("_SHOW_NEWS","Mostra News");
 
-
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 
 ?>
