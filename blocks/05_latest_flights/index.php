@@ -10,7 +10,7 @@
 	$content .="<MARQUEE behavior= \"scroll\" align= \"center\" direction= \"up\" height=\"250\" scrollamount= \"2\" scrolldelay= \"20\" onmouseover='this.stop()' onmouseout='this.start()'>";
 	$content .="<center><font color=\"#666666\"><b>Latest $numToshow flights</b></font> ";
 	
-    $query="SELECT * ,$flightsTable.ID as ID FROM $flightsTable WHERE (1=1) ORDER BY DATE DESC LIMIT  $numToshow ";
+    $query="SELECT * ,$flightsTable.ID as ID FROM $flightsTable WHERE (private=0) ORDER BY DATE DESC LIMIT  $numToshow ";
 	$result1 = $db->sql_query($query);
 
 	$content .= "<br>";
