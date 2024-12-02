@@ -24,360 +24,360 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('йреаш','фбшеаш','ошх','афшйм','оай','йерй',
-					'йемй','аевеси','сфиобш','аечиебш','ребобш','гцобш');
-	$monthListShort=array('йре','фбш','ошс','афш','оай','йер','йем','аев','сфи','аеч','реб','гцо');
-	$weekdaysList=array('б','в','г','д','е','щ','а') ;
+	$monthList=array('пїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅпїЅ',
+					'пїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅпїЅ','пїЅпїЅпїЅпїЅпїЅ');
+	$monthListShort=array('пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ','пїЅпїЅпїЅ');
+	$weekdaysList=array('пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ','пїЅ') ;
 }
 setMonths();
 
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","ийсд зефщйъ");
-define("_FREE_TRIANGLE","ощемщ зефщй");
-define("_FAI_TRIANGLE","FAIощемщ ");
+define("_FREE_FLIGHT","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FREE_TRIANGLE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_FAI_TRIANGLE","FAIпїЅпїЅпїЅпїЅпїЅ ");
 
-define("_SUBMIT_FLIGHT_ERROR","двйщъ ийсд ма дсъййод бдцмзд ");
+define("_SUBMIT_FLIGHT_ERROR","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
 
 // list_pilots()
 define("_NUM","#");
-define("_PILOT","иййс");
-define("_NUMBER_OF_FLIGHTS","осфш ийсеъ");
-define("_BEST_DISTANCE","ойиб дошзч");
-define("_MEAN_KM"," # ооецтъ чймеоишйн мфй ийсд");
-define("_TOTAL_KM","сйлен дийсд ,чймеоиш");
-define("_TOTAL_DURATION_OF_FLIGHTS","сйлен щм ощк ийсеъ");
-define("_MEAN_DURATION"," ооецт щм ощк ийсеъ");
-define("_TOTAL_OLC_KM","OLC сйлен ошзч");
-define("_TOTAL_OLC_SCORE","OLC сйлен рчегеъ");
-define("_BEST_OLC_SCORE","OLC дрчегеъ ойиб");
-define("_From","оаъ");
+define("_PILOT","пїЅпїЅпїЅпїЅ");
+define("_NUMBER_OF_FLIGHTS","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_KM"," # пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TOTAL_KM","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ,пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_DURATION_OF_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_DURATION"," пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_KM","OLC пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_SCORE","OLC пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_BEST_OLC_SCORE","OLC пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_From","пїЅпїЅпїЅ");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","ощк (щ:г)");
-define("_SHOW","мдцйв");
+define("_DURATION_HOURS_MIN","пїЅпїЅпїЅ (пїЅ:пїЅ)");
+define("_SHOW","пїЅпїЅпїЅпїЅпїЅ");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","ийсд ъефтм бгчеъ дчшебеъ");
-define("_TRY_AGAIN","ра мрсеъ оаезш йеъш");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TRY_AGAIN","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
-define("_TAKEOFF_LOCATION","дошад");
-define("_TAKEOFF_TIME","жоп дошад");
-define("_LANDING_LOCATION","рзйъд");
-define("_LANDING_TIME","рзйъд жоп");
-define("_OPEN_DISTANCE","ошзч чеей");
-define("_MAX_DISTANCE","ошб дошзч");
-define("_OLC_SCORE_TYPE","OLCсев щм рчегеъ ");
-define("_OLC_DISTANCE","OLC ошзч");
-define("_OLC_SCORING","OLC рчегеъ");
-define("_MAX_SPEED", "ошб додйшеъ");
-define("_MAX_VARIO","ошб дешйе");
-define("_MEAN_SPEED","одйшеъ ооецтъ");
-define("_MIN_VARIO","ожтш дешйе");
-define("_MAX_ALTITUDE","ошб двебд отм фрй дйн");
-define("_TAKEOFF_ALTITUDE","вебд дошад отм фрй дйн");
-define("_MIN_ALTITUDE","ожтш вебд отм фрй дйн");
-define("_ALTITUDE_GAIN","вебд дшлещ");
-define("_FLIGHT_FILE","чебх ийсд");
-define("_COMMENTS","ъвебеъ");
-define("_RELEVANT_PAGE","шмеерий URL гу ");
-define("_GLIDER","гаеп");
-define("_PHOTOS","ъоереъ");
-define("_MORE_INFO","ойгт ресу");
-define("_UPDATE_DATA","тглеп ръерйн");
-define("_UPDATE_MAP","тглеп офд");
-define("_UPDATE_3D_MAP","тглеп офд ъмъ-оогйъ");
-define("_UPDATE_GRAPHS","тглеп ъшщйн");
-define("_UPDATE_SCORE","тглеп рчегеъ");
+define("_TAKEOFF_LOCATION","пїЅпїЅпїЅпїЅпїЅ");
+define("_TAKEOFF_TIME","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_LANDING_LOCATION","пїЅпїЅпїЅпїЅпїЅ");
+define("_LANDING_TIME","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_OPEN_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_MAX_DISTANCE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_SCORE_TYPE","OLCпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_OLC_DISTANCE","OLC пїЅпїЅпїЅпїЅ");
+define("_OLC_SCORING","OLC пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_SPEED", "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_VARIO","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MEAN_SPEED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MIN_VARIO","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MAX_ALTITUDE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_TAKEOFF_ALTITUDE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MIN_ALTITUDE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_ALTITUDE_GAIN","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHT_FILE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_COMMENTS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RELEVANT_PAGE","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ URL пїЅпїЅ ");
+define("_GLIDER","пїЅпїЅпїЅпїЅ");
+define("_PHOTOS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MORE_INFO","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_UPDATE_DATA","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_MAP","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_UPDATE_3D_MAP","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_GRAPHS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_UPDATE_SCORE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_TAKEOFF_COORDS",": чеаешгйриеъ дошад");
-define("_NO_KNOWN_LOCATIONS","дочен айре оелш!");
-define("_FLYING_AREA_INFO","ойгт тм ажеш ийсд");
+define("_TAKEOFF_COORDS",": пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_NO_KNOWN_LOCATIONS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
+define("_FLYING_AREA_INFO","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
-define("_PAGE_TITLE","XCмаершге ");
-define("_RETURN_TO_TOP","мзжеш мотмд");
+define("_PAGE_TITLE","XCпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_RETURN_TO_TOP","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 // list flight
-define("_PILOT_FLIGHTS","ийсеъ щм иййс");
+define("_PILOT_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
 
-define("_DATE_SORT","ъашйк");
-define("_PILOT_NAME","щн иййс");
-define("_TAKEOFF","дошад");
-define("_DURATION","ощк жоп");
-define("_LINEAR_DISTANCE","ошзч фъез");
-define("_OLC_KM"," чймеоишйнOLC");
-define("_OLC_SCORE","OLC рчегеъ");
-define("_DATE_ADDED","двщд дазшерд");
+define("_DATE_SORT","пїЅпїЅпїЅпїЅпїЅ");
+define("_PILOT_NAME","пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TAKEOFF","пїЅпїЅпїЅпїЅпїЅ");
+define("_DURATION","пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_LINEAR_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_OLC_KM"," пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅOLC");
+define("_OLC_SCORE","OLC пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_DATE_ADDED","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_SORTED_BY",":рбзш мфй");
-define("_ALL_YEARS","лм дщрйн");
-define("_SELECT_YEAR_MONTH","ра мбзеш щрд (вн зегщ)");
-define("_ALL","длем");
-define("_ALL_PILOTS","мдцйв лем диййсйн");
-define("_ALL_TAKEOFFS","мдцйв лем ддошаеъ");
-define("_ALL_THE_YEAR","лем дщрйн");
+define("_SORTED_BY",":пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_ALL_YEARS","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_YEAR_MONTH","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅ)");
+define("_ALL","пїЅпїЅпїЅпїЅ");
+define("_ALL_PILOTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_TAKEOFFS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_ALL_THE_YEAR","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","дчебц ийсд айре сефч");
-define("_NO_SUCH_FILE","чебх дсефч айре роца бщшъ");
-define("_FILE_DOESNT_END_IN_IGC",".igc дсйеоъ щм чебх дсефч айре оъайод ема ");
-define("_THIS_ISNT_A_VALID_IGC_FILE","айре оъайн .igcдчебх ");
-define("_THERE_IS_SAME_DATE_FLIGHT","дийсд тн аеъе ъашйк ежоп лбш роцъ");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","бочшд дзмфъ чебх, чегн ара");
-define("_DELETE_THE_OLD_ONE","мозеч дйщп йеъш");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","дийсд тн аеъе щн лбш роцъ");
-define("_CHANGE_THE_FILENAME","бочшд дийсд джаъ дйа ийсд азшъ ара мщреъ аъ дщн емрсеъ щеб!");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","дийсд дйъд девщд бдцмзд!");
-define("_PRESS_HERE_TO_VIEW_IT","ра мдчйщ лап мцфйд");
-define("_WILL_BE_ACTIVATED_SOON","(ъдйд оефтмъ бъек щъй гчеъ)");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_NO_SUCH_FILE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_FILE_DOESNT_END_IN_IGC",".igc пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ ");
+define("_THIS_ISNT_A_VALID_IGC_FILE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ .igcпїЅпїЅпїЅпїЅпїЅ ");
+define("_THERE_IS_SAME_DATE_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_DELETE_THE_OLD_ONE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_CHANGE_THE_FILENAME","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ!");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!");
+define("_PRESS_HERE_TO_VIEW_IT","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_WILL_BE_ACTIVATED_SOON","(пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ)");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","мдвйщ осфш ийсеъ");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","IGCйщ афщшеъ мдвйщ шч чбцйй ");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS"," щдлйм ийсеъ<br>ZIP мдвйщ чебх");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","ра мдчйщ лап мдвщъ ийсеъ");
+define("_SUBMIT_MULTIPLE_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","IGCпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS"," пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ<br>ZIP пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_FILE_DOESNT_END_IN_ZIP",".zipдсйеоъ щм чебх дсефч айре оъайод ема ");
-define("_ADDING_FILE","двщъ чебх");
-define("_ADDED_SUCESSFULLY","девщ бдцмзд");
-define("_PROBLEM","бтйд");
-define("_TOTAL","сйлен");
-define("_IGC_FILES_PROCESSED","ийсеъ дйе отебгеъ");
-define("_IGC_FILES_SUBMITED"," ийсеъ дйе девщеъ");
+define("_FILE_DOESNT_END_IN_ZIP",".zipпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ ");
+define("_ADDING_FILE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_ADDED_SUCESSFULLY","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROBLEM","пїЅпїЅпїЅпїЅ");
+define("_TOTAL","пїЅпїЅпїЅпїЅпїЅ");
+define("_IGC_FILES_PROCESSED","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_IGC_FILES_SUBMITED"," пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // info
-define("_DEVELOPMENT","фйъез");
-define("_ANDREADAKIS_MANOLIS","оремйс аргшагчйс");
-define("_PROJECT_URL","гу айришри оечгщ мфшейчи");
-define("_VERSION","вйшсд");
-define("_MAP_CREATION","фйъез офд");
-define("_PROJECT_INFO","ойгт тм фшейчи");
+define("_DEVELOPMENT","пїЅпїЅпїЅпїЅпїЅ");
+define("_ANDREADAKIS_MANOLIS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_PROJECT_URL","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_VERSION","пїЅпїЅпїЅпїЅпїЅ");
+define("_MAP_CREATION","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_PROJECT_INFO","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // menu bar 
-define("_MENU_MAIN_MENU","ъфшйи шащйъ");
-define("_MENU_DATE","ра мбзеш ъашйк");
-define("_MENU_COUNTRY","мбзеш ашх");
-define("_MENU_XCLEAGUE","XCавегд ");
-define("_MENU_ADMIN","ордм");
+define("_MENU_MAIN_MENU","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_DATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_COUNTRY","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MENU_XCLEAGUE","XCпїЅпїЅпїЅпїЅпїЅ ");
+define("_MENU_ADMIN","пїЅпїЅпїЅпїЅ");
 
-define("_MENU_COMPETITION_LEAGUE","авегд – лем дсевйн");
+define("_MENU_COMPETITION_LEAGUE","пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 define("_MENU_OLC","OLC");
-define("_MENU_OPEN_DISTANCE","ошзч фъез");
-define("_MENU_DURATION","ощк жоп");
-define("_MENU_ALL_FLIGHTS","мдцйв лем дийсеъ");
-define("_MENU_FLIGHTS","ийсеъ");
-define("_MENU_TAKEOFFS","дошаеъ");
-define("_MENU_FILTER","осрп");
-define("_MENU_MY_FLIGHTS","ийсеъ щмй");
-define("_MENU_MY_PROFILE","фшефйм щмй");
-define("_MENU_MY_STATS","сиийсийчд щмй"); 
-define("_MENU_MY_SETTINGS","двгшеъ щмй"); 
-define("_MENU_SUBMIT_FLIGHT","мдвйщ ийсд ");
-define("_MENU_SUBMIT_FROM_ZIP","ZIP мдвйщ ийсд очебх ");
-define("_MENU_SHOW_PILOTS","иййсйн");
-define("_MENU_SHOW_LAST_ADDED"," мдцйв аъ ийсеъ девщеъ базшерд ");
-define("_FLIGHTS_STATS","сиийсийчд ийсеъ");
+define("_MENU_OPEN_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_MENU_DURATION","пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MENU_ALL_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_TAKEOFFS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_FILTER","пїЅпїЅпїЅпїЅ");
+define("_MENU_MY_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MENU_MY_PROFILE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MENU_MY_STATS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"); 
+define("_MENU_MY_SETTINGS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"); 
+define("_MENU_SUBMIT_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ");
+define("_MENU_SUBMIT_FROM_ZIP","ZIP пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
+define("_MENU_SHOW_PILOTS","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_SHOW_LAST_ADDED"," пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_FLIGHTS_STATS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_SELECT_YEAR","мбзеш щрд");
-define("_SELECT_MONTH","мбзеш зегщ");
-define("_ALL_COUNTRIES","мдцйв лем дашцеъ");
+define("_SELECT_YEAR","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_SELECT_MONTH","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_ALL_COUNTRIES","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","бощк лм джоп");
-define("_NUMBER_OF_FLIGHTS","осфш ийсеъ");
-define("_TOTAL_DISTANCE","сйлен ошзч");
-define("_TOTAL_DURATION","сйлен ощк жоп");
-define("_BEST_OPEN_DISTANCE","ойиб дошзч");
-define("_TOTAL_OLC_DISTANCE","OLC сйлен ошзч");
-define("_TOTAL_OLC_SCORE","OLCсйлен рчегеъ ");
-define("_BEST_OLC_SCORE","OLCойиб дрчегеъ ");
-define("_MEAN_DURATION","ооецтъ ощк жоп");
-define("_MEAN_DISTANCE","ооецтъ ошзч");
-define("_PILOT_STATISTICS_SORT_BY","иййсйн – бзйшб мфй");
-define("_CATEGORY_FLIGHT_NUMBER","осфш ийсеъ 'FastJoe'-сев ");
-define("_CATEGORY_TOTAL_DURATION","ощк джоп сйлен'DURACELL' сев -");
-define("_CATEGORY_OPEN_DISTANCE","'Open Distance'сев -");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","айп иййсйн мдцвд!");
+define("_ALL_TIMES","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_NUMBER_OF_FLIGHTS","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_DISTANCE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TOTAL_DURATION","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_BEST_OPEN_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_DISTANCE","OLC пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_TOTAL_OLC_SCORE","OLCпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_BEST_OLC_SCORE","OLCпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_MEAN_DURATION","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_MEAN_DISTANCE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_PILOT_STATISTICS_SORT_BY","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_CATEGORY_FLIGHT_NUMBER","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 'FastJoe'-пїЅпїЅпїЅ ");
+define("_CATEGORY_TOTAL_DURATION","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ'DURACELL' пїЅпїЅпїЅ -");
+define("_CATEGORY_OPEN_DISTANCE","'Open Distance'пїЅпїЅпїЅ -");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!");
 
 	
 //--------------------------------------------
 // delete_flight.php
 //--------------------------------------------
 
-define("_THE_FLIGHT_HAS_BEEN_DELETED","дийсд розчд");
-define("_RETURN","мзжеш зжшд");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED"," ждйшеъ! дан бшцерк мозеч аъ дийсд? ");
-define("_THE_DATE","ъашйк");
-define("_YES","лп");
-define("_NO","ма");
+define("_THE_FLIGHT_HAS_BEEN_DELETED","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED"," пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ? ");
+define("_THE_DATE","пїЅпїЅпїЅпїЅпїЅ");
+define("_YES","пїЅпїЅ");
+define("_NO","пїЅпїЅ");
 
 //--------------------------------------------
 // competition.php
 //--------------------------------------------
 
-define("_LEAGUE_RESULTS","дъецаеъ щм авегд");
-define("_N_BEST_FLIGHTS","ойиб дийсеъ");
+define("_LEAGUE_RESULTS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_N_BEST_FLIGHTS","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 define("_OLC","OLC");
-define("_OLC_TOTAL_SCORE","OLCсйчен дрчегеъ ");
-define("_KILOMETERS","чймеоишйн");
-define("_TOTAL_ALTITUDE_GAIN","сйлен двебд оешез");
-define("_TOTAL_KM","сйлен дчймеоишйн");
+define("_OLC_TOTAL_SCORE","OLCпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_KILOMETERS","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_ALTITUDE_GAIN","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_TOTAL_KM","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // filter.php
 //--------------------------------------------
 
-define("_IS","роца");
-define("_IS_NOT","айре роца");
-define("_OR","ае");
-define("_AND","вн");
-define("_FILTER_PAGE_TITLE","ра мсрп ийсеъ");
-define("_RETURN_TO_FLIGHTS","ра мщеб мийсеъ");
-define("_THE_FILTER_IS_ACTIVE","досрп оефтм");
-define("_THE_FILTER_IS_INACTIVE","досрп обеим");
-define("_SELECT_DATE","ра мбзеш ъашйк");
-define("_SHOW_FLIGHTS","ра мдцйв ийсеъ");
-define("_ALL2","длем");
-define("_WITH_YEAR","бщрд");
-define("_MONTH","зегщ");
-define("_YEAR","щрд");
-define("_FROM","оаъ");
-define("_from","оаъ");
-define("_TO","ам");
-define("_SELECT_PILOT","ра мбзеш иййс");
-define("_THE_PILOT","диййс");
-define("_THE_TAKEOFF","ддошад");
-define("_SELECT_TAKEOFF","ра мбзеш аъ ддошад");
-define("_THE_COUNTRY","дашх");
-define("_COUNTRY","ашх");
-define("_SELECT_COUNTRY","ра мбзеш аъ дашх");
-define("_OTHER_FILTERS","осррйн азшйн");
-define("_LINEAR_DISTANCE_SHOULD_BE","ошзч чеей дцфей");
-define("_OLC_DISTANCE_SHOULD_BE"," дцфейOLCошзч ");
-define("_OLC_SCORE_SHOULD_BE","цфейеъ OLCрчегеъ ");
-define("_DURATION_SHOULD_BE","ощк жоп цфей");
-define("_ACTIVATE_CHANGE_FILTER","мдфтйм\мщреъ осрп");
-define("_DEACTIVATE_FILTER","мбим осрп");
-define("_HOURS","щтеъ");
-define("_MINUTES","гчеъ");
+define("_IS","пїЅпїЅпїЅпїЅ");
+define("_IS_NOT","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_OR","пїЅпїЅ");
+define("_AND","пїЅпїЅ");
+define("_FILTER_PAGE_TITLE","пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN_TO_FLIGHTS","пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THE_FILTER_IS_ACTIVE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_FILTER_IS_INACTIVE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_DATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SHOW_FLIGHTS","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_ALL2","пїЅпїЅпїЅпїЅ");
+define("_WITH_YEAR","пїЅпїЅпїЅпїЅ");
+define("_MONTH","пїЅпїЅпїЅпїЅ");
+define("_YEAR","пїЅпїЅпїЅ");
+define("_FROM","пїЅпїЅпїЅ");
+define("_from","пїЅпїЅпїЅ");
+define("_TO","пїЅпїЅ");
+define("_SELECT_PILOT","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_THE_PILOT","пїЅпїЅпїЅпїЅпїЅ");
+define("_THE_TAKEOFF","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SELECT_TAKEOFF","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_THE_COUNTRY","пїЅпїЅпїЅпїЅ");
+define("_COUNTRY","пїЅпїЅпїЅ");
+define("_SELECT_COUNTRY","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_OTHER_FILTERS","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_LINEAR_DISTANCE_SHOULD_BE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_OLC_DISTANCE_SHOULD_BE"," пїЅпїЅпїЅпїЅпїЅOLCпїЅпїЅпїЅпїЅ ");
+define("_OLC_SCORE_SHOULD_BE","пїЅпїЅпїЅпїЅпїЅпїЅ OLCпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_DURATION_SHOULD_BE","пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_ACTIVATE_CHANGE_FILTER","пїЅпїЅпїЅпїЅпїЅпїЅ\пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_DEACTIVATE_FILTER","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_HOURS","пїЅпїЅпїЅпїЅ");
+define("_MINUTES","пїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // add_flight.php
 //--------------------------------------------
 
-define("_SUBMIT_FLIGHT","мдвйщ ийсд");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(IGC гшещ шч чебх)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","<br>IGC мдвйщ чебх ийсд");
-define("_NOTE_TAKEOFF_NAME","ара мцййп щн очен дошад еашх");
-define("_COMMENTS_FOR_THE_FLIGHT","ъвебеъ ийсд");
-define("_PHOTO","ъоерд");
-define("_PHOTOS_GUIDELINES","ебвегм ма йеъш о jpg ъоереъ зййбеъ мдйеъ бчебх осев ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","мдвгщъ ийсд ара мдчйщ лап");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","дан бшцерк мдвйщ йеъш одийсд азъ бе-жорй?");
-define("_PRESS_HERE","ара мдчйщ лап");
+define("_SUBMIT_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(IGC пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","<br>IGC пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_NOTE_TAKEOFF_NAME","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_COMMENTS_FOR_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_PHOTO","пїЅпїЅпїЅпїЅпїЅ");
+define("_PHOTOS_GUIDELINES","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ jpg пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅ?");
+define("_PRESS_HERE","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
 
-define("_IS_PRIVATE","ма мдцйв мцйбеш");
-define("_MAKE_THIS_FLIGHT_PRIVATE","ма мдцйв мцйбеш");
-define("_INSERT_FLIGHT_AS_USER_ID","мщбх аъ дийсд лое ждеъ ощъощ");
-define("_FLIGHT_IS_PRIVATE","дийсд жаъ дйа ийсд фшийъ");
+define("_IS_PRIVATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MAKE_THIS_FLIGHT_PRIVATE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_INSERT_FLIGHT_AS_USER_ID","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHT_IS_PRIVATE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","мщреъ ръерй ийсд");
-define("_IGC_FILE_OF_THE_FLIGHT","IGC чебх ийсд ");
-define("_DELETE_PHOTO","мозеч");
-define("_NEW_PHOTO","ъоерд згщд");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","мщйрей ръерй ийсд ра мдчйщ лап");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","дщйрейн рчмие бдцмзд");
-define("_RETURN_TO_FLIGHT","мзжеш мийсд");
+define("_CHANGE_FLIGHT_DATA","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_IGC_FILE_OF_THE_FLIGHT","IGC пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ");
+define("_DELETE_PHOTO","пїЅпїЅпїЅпїЅпїЅ");
+define("_NEW_PHOTO","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_RETURN_TO_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // olc
 //--------------------------------------------
-define("_RETURN_TO_FLIGHT","мзжеш мийсд");
-define("_READY_FOR_SUBMISSION","оелп мдвщд");
-define("_SUBMIT_TO_OLC","OLCмдвйщ м");
-define("_OLC_MAP","офд");
-define("_OLC_BARO","шщн-мзх");
+define("_RETURN_TO_FLIGHT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_READY_FOR_SUBMISSION","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SUBMIT_TO_OLC","OLCпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_OLC_MAP","пїЅпїЅпїЅ");
+define("_OLC_BARO","пїЅпїЅпїЅ-пїЅпїЅпїЅ");
 
 //--------------------------------------------
 // pilot_profile.php
 //--------------------------------------------
-define("_Pilot_Profile","фшефйм иййс");
-define("_back_to_flights","ра мзжеш мийсеъ");
-define("_pilot_stats","сиийсийчъ иййс");
-define("_edit_profile","мтшек фшефйм");
-define("_flights_stats","сиийсийчъ ийсеъ");
-define("_View_Profile","мдцйв фшефйм");
+define("_Pilot_Profile","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_back_to_flights","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_pilot_stats","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_edit_profile","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_flights_stats","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_View_Profile","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_Personal_Stuff","ойгт фший");
-define("_First_Name","щн фший");
-define("_Last_Name","щн ощфзд");
-define("_Birthdate","ъашйк мйгд ");
+define("_Personal_Stuff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_First_Name","пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Last_Name","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Birthdate","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ");
 define("_dd_mm_yy","dd.mm.yy");
-define("_Sign","зъйод");
-define("_Marital_Status","оцб ощфзъй");
-define("_Occupation","очцет");
-define("_Web_Page","гу дбйъ");
-define("_N_A","ма жойп");
-define("_Other_Interests","ъзбйбйн");
-define("_Photo","ъоерд");
+define("_Sign","пїЅпїЅпїЅпїЅпїЅ");
+define("_Marital_Status","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Occupation","пїЅпїЅпїЅпїЅпїЅ");
+define("_Web_Page","пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_N_A","пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Other_Interests","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Photo","пїЅпїЅпїЅпїЅпїЅ");
 
-define("_Flying_Stuff","ойгт ийсъй");
-define("_note_place_and_date","ан шмеерий ра мцййп аъ дъашйк еочен дошад");
-define("_Flying_Since","бийсд оаж");
-define("_Pilot_Licence","шщйеп иййс");
-define("_Paragliding_training","моегйн дрелзйн");
-define("_Favorite_Location","аъш дзбйб");
-define("_Usual_Location","аъш очебм");
-define("_Best_Flying_Memory","ойиб джлшереъ ийс");
-define("_Worst_Flying_Memory"," джлшереъ ийс дчшйиййн");
-define("_Personal_Distance_Record","щйа ошзч фший");
-define("_Personal_Height_Record","щйа вебд фший");
-define("_Hours_Flown","щаеъ баеейш");
-define("_Hours_Per_Year","щаеъ ийс бщрд");
+define("_Flying_Stuff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_note_place_and_date","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Flying_Since","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Pilot_Licence","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Paragliding_training","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Location","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Usual_Location","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Best_Flying_Memory","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Worst_Flying_Memory"," пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Personal_Distance_Record","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Personal_Height_Record","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Hours_Flown","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Hours_Per_Year","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
-define("_Equipment_Stuff","ойгт цйег");
-define("_Glider","гаеп");
-define("_Harness","шйъод");
-define("_Reserve_chute","оцрз шжшбй");
-define("_Camera","оцмод");
-define("_Vario","ешйе");
-define("_GPS","отшлъ ойчен вмебмйъ");
-define("_Helmet","чсгд");
-define("_Camcorder","оцмоъ ейгае");
+define("_Equipment_Stuff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Glider","пїЅпїЅпїЅпїЅ");
+define("_Harness","пїЅпїЅпїЅпїЅпїЅ");
+define("_Reserve_chute","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Camera","пїЅпїЅпїЅпїЅпїЅ");
+define("_Vario","пїЅпїЅпїЅпїЅ");
+define("_GPS","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Helmet","пїЅпїЅпїЅпїЅ");
+define("_Camcorder","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_Manouveur_Stuff","ъошеп ойгт");
-define("_note_max_descent_rate","ан афщшй ра мцййп одшеъ йшйгд ");
-define("_Spiral","сфйшмд ");
+define("_Manouveur_Stuff","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_note_max_descent_rate","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
+define("_Spiral","пїЅпїЅпїЅпїЅпїЅпїЅ ");
 define("_Bline","Bline");
-define("_Full_Stall","джгчшеъ омад");
-define("_Other_Manouveurs_Acro","азшйн Acroдъшоерйн ");
+define("_Full_Stall","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Other_Manouveurs_Acro","пїЅпїЅпїЅпїЅпїЅ AcroпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
 define("_Sat","SAT");
-define("_Asymmetric_Spiral","сфйшмд асйоишйъ");
-define("_Spin","сфйшмд рвийбйъ");
+define("_Asymmetric_Spiral","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Spin","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_General_Stuff","ойгт лммй");
-define("_Favorite_Singer","жош дзбйб");
-define("_Favorite_Movie","чемрет дзбйб");
-define("_Favorite_Internet_Site"," дзбйб<br>аъш айришри ");
-define("_Favorite_Book","сфш дзбйб");
-define("_Favorite_Actor","щзчп дзбйб");
+define("_General_Stuff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Favorite_Singer","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Movie","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Internet_Site"," пїЅпїЅпїЅпїЅпїЅ<br>пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_Favorite_Book","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Favorite_Actor","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","мдтмеъ ъоерд згщд ае мдзмйу  аъ дчегоъ");
-define("_Delete_Photo","мозеч ъоерд");
-define("_Your_profile_has_been_updated","дфшефйм щмк дйд отеглп бдцмзд");
-define("_Submit_Change_Data","мдвйщ – мщреъ аъ дръеп");
+define("_Upload_new_photo_or_change_old","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ  пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Delete_Photo","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Your_profile_has_been_updated","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Submit_Change_Data","пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 
 //--------------------------------------------
@@ -385,74 +385,74 @@ define("_Submit_Change_Data","мдвйщ – мщреъ аъ дръеп");
 //--------------------------------------------
 define("_hh_mm","hh:mm");
 
-define("_Totals","сйлен");
-define("_First_flight_logged","ийсд шащерд дшщеод");
-define("_Last_flight_logged","ийсд азшерд дшщеод");
-define("_Flying_period_covered","счш дъчефд ийн");
-define("_Total_Distance","сйчен дошзч");
-define("_Total_OLC_Score","OLCсйлен дрчегеъ ");
-define("_Total_Hours_Flown","сйлен щаеъ ийс");
-define("_Total_num_of_flights","сйлен # ийсеъ ");
+define("_Totals","пїЅпїЅпїЅпїЅпїЅ");
+define("_First_flight_logged","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Last_flight_logged","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Flying_period_covered","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Total_Distance","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Total_OLC_Score","OLCпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_Total_Hours_Flown","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Total_num_of_flights","пїЅпїЅпїЅпїЅпїЅ # пїЅпїЅпїЅпїЅпїЅ ");
 
-define("_Personal_Bests","щйайн айщййн");
-define("_Best_Open_Distance","ойиб дошзч фъез");
-define("_Best_FAI_Triangle","FAIойиб дощемщ ");
-define("_Best_Free_Triangle","ойиб дощемщ зефщй");
-define("_Longest_Flight","ойиб дощк жоп ийсд");
-define("_Best_OLC_score","OLCойиб дрчегеъ ");
+define("_Personal_Bests","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Best_Open_Distance","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Best_FAI_Triangle","FAIпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_Best_Free_Triangle","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Longest_Flight","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Best_OLC_score","OLCпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
 
-define("_Absolute_Height_Record","щйа вебд оезми");
-define("_Altitute_gain_Record","щйа вебд дещв");
-define("_Mean_values","ооецт тшк");
-define("_Mean_distance_per_flight","ооецт дошзч мфй ийсд");
-define("_Mean_flights_per_Month","ооецт досфш ийсеъ мфй зегщ");
-define("_Mean_distance_per_Month","ооецт дошзч мфй зегщ");
-define("_Mean_duration_per_Month","ооецт дощк жоп ийсд мфй зегщ");
-define("_Mean_duration_per_flight","ооецт дощк жоп ийсд мфй щрд");
-define("_Mean_flights_per_Year","ооецт досфш ийсеъ мфй щрд");
-define("_Mean_distance_per_Year","ооецт дошзч мфй щрд");
-define("_Mean_duration_per_Year","ооецт дощк жоп ийсд мфй щрд");
+define("_Absolute_Height_Record","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Altitute_gain_Record","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Mean_values","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Mean_distance_per_flight","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Mean_flights_per_Month","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Mean_distance_per_Month","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Mean_duration_per_Month","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Mean_duration_per_flight","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Mean_flights_per_Year","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Mean_distance_per_Year","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Mean_duration_per_Year","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","мдцйв ийсеъ чшебеъ мрчегд жаъ");
-define("_Waypoint_Name","щн рчегъ дъййзсеъ");
-define("_Navigate_with_Google_Earth","Google Earthмрееи б");
-define("_See_it_in_Google_Maps","Google Mapsмцфеъ б");
-define("_See_it_in_MapQuest","MapQuestмцфеъ б");
-define("_COORDINATES","чеаешгйриеъ");
-define("_FLIGHTS","ийсеъ");
-define("_SITE_RECORD","щйайн даъш");
-define("_SITE_INFO","ойгт аъш");
-define("_SITE_REGION","ажеш");
-define("_SITE_LINK","чйцеш гшк мойгт ресу");
-define("_SITE_DESCR","очен дошад/ъйаеш аъш");
+define("_See_flights_near_this_point","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Waypoint_Name","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Navigate_with_Google_Earth","Google EarthпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_See_it_in_Google_Maps","Google MapsпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_See_it_in_MapQuest","MapQuestпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_COORDINATES","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_FLIGHTS","пїЅпїЅпїЅпїЅпїЅ");
+define("_SITE_RECORD","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_SITE_INFO","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_SITE_REGION","пїЅпїЅпїЅпїЅ");
+define("_SITE_LINK","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_SITE_DESCR","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
 
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","ра мцфеъ мфшийн ресфйн");
-define("_KML_file_made_by"," тщей тм йгйKML дчебх ");
+define("_See_more_details","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_KML_file_made_by"," пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅKML пїЅпїЅпїЅпїЅпїЅ ");
 
 //--------------------------------------------
 // add_waypoint.php WAY POINT IS NOT THE SAME THING THAT TAKEOFF!!!
 //--------------------------------------------
-define("_ADD_WAYPOINT","мдесйу аъ дочен дошад");
-define("_WAYPOINT_ADDED","ддошад шщеод бдцмзд");
+define("_ADD_WAYPOINT","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_WAYPOINT_ADDED","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","дщйа щм дочен дошад <br>(open distance)");
+define("_SITE_RECORD_OPEN_DISTANCE","пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ <br>(open distance)");
 	
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","сев щм гаеп");
+define("_GLIDER_TYPE","пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'оцрз шзйфд',2=>'лру оълеффъ  FAI1',4=>'лру чщд FAI5',8=>'вмщп');
+	$gliderCatList=array(1=>'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',2=>'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ  FAI1',4=>'пїЅпїЅпїЅ пїЅпїЅпїЅ FAI5',8=>'пїЅпїЅпїЅпїЅ');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -487,141 +487,143 @@ setXCtypesList();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","ддвгшеъ щмк дйе отеглреъ бдцмзд! ");
+define("_Your_settings_have_been_updated","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ! ");
 
-define("_THEME","реща");
-define("_LANGUAGE","щфд");
-define("_VIEW_CATEGORY","мдцйв сев");
-define("_VIEW_COUNTRY","мдцйв ашх");
-define("_UNITS_SYSTEM" ,"йзйгеъ огйгд");
-define("_METRIC_SYSTEM","оишй (чймеоиш, оиш");
-define("_IMPERIAL_SYSTEM","айофшйамй (оймйн,швм) ");
-define("_ITEMS_PER_PAGE","фшйийн бтоег");
+define("_THEME","пїЅпїЅпїЅпїЅ");
+define("_LANGUAGE","пїЅпїЅпїЅ");
+define("_VIEW_CATEGORY","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_VIEW_COUNTRY","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_UNITS_SYSTEM" ,"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_METRIC_SYSTEM","пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ");
+define("_IMPERIAL_SYSTEM","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ,пїЅпїЅпїЅ) ");
+define("_ITEMS_PER_PAGE","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_MI","ом");
-define("_KM","чо");
-define("_FT","фи");
-define("_M","о");
-define("_MPH","ом\щ");
-define("_KM_PER_HR","чо\щ");
-define("_FPM","фи\о");
-define("_M_PER_SEC","о\щрйд");
+define("_MI","пїЅпїЅ");
+define("_KM","пїЅпїЅ");
+define("_FT","пїЅпїЅ");
+define("_M","пїЅ");
+define("_MPH","пїЅпїЅ\пїЅ");
+define("_KM_PER_HR","пїЅпїЅ\пїЅ");
+define("_FPM","пїЅпїЅ\пїЅ");
+define("_M_PER_SEC","пїЅ\пїЅпїЅпїЅпїЅ");
 
 //--------------------------------------------
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","зебч темн");
-define("_National_XC_Leagues_for","XCдавегеъ маеойеъ ");
-define("_Flights_per_Country","ийсеъ млем ашх");
-define("_Takeoffs_per_Country","дошаеъ млем ашх");
-define("_INDEX_HEADER","XCбшелйн дбайн мавегд маершге ");
-define("_INDEX_MESSAGE"," лгй мрееи ае мбзеш омоид&quot;Main menu&quot;ра мдщъощ б
+define("_WORLD_WIDE","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_National_XC_Leagues_for","XCпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_Flights_per_Country","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Takeoffs_per_Country","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_INDEX_HEADER","XCпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_INDEX_MESSAGE"," пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ&quot;Main menu&quot;пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ
 ");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","шащеп (сйлен) гу");
-define("_Display_ALL","мдцйв длем");
-define("_Display_NONE","ма мдцйв щен гбш");
-define("_Reset_to_default_view","мдзжйш ъцевд бшйшъ озгм");
-define("_No_Club","айп оетгеп");
-define("_This_is_the_URL_of_this_page","жаъ длъебъ щм гу джд");
-define("_All_glider_types","лем севйн щм гаерйн");
+define("_MENU_SUMMARY_PAGE","пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅ) пїЅпїЅ");
+define("_Display_ALL","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Display_NONE","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_Reset_to_default_view","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_No_Club","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_This_is_the_URL_of_this_page","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ");
+define("_All_glider_types","пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
-define("_MENU_SITES_GUIDE","огшйк мочеоеъ дошад");
-define("_Site_Guide","огшйк маъш");
+define("_MENU_SITES_GUIDE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Site_Guide","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
-define("_Search_Options","двгшеъ зйфещ");
-define("_Below_is_the_list_of_selected_sites","мфрйк дшщйод щм аъшйн рбзшйн");
-define("_Clear_this_list","мозеч шщйод");
-define("_See_the_selected_sites_in_Google_Earth"," Google Earth ара мдцфйт тм аъшйн дрбзшйн б ");
-define("_Available_Takeoffs","дошаеъ жойреъ");
-define("_Search_site_by_name","мзфщ аъш мфй дщн");
-define("_give_at_least_2_letters","ба мцййп мфзеъ щъй аеъйеъ");
+define("_Search_Options","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_Below_is_the_list_of_selected_sites","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Clear_this_list","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_See_the_selected_sites_in_Google_Earth"," Google Earth пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ ");
+define("_Available_Takeoffs","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Search_site_by_name","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_give_at_least_2_letters","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 define("_takeoff_move_instructions_1","
-йщ мдтбйш лем дийсеъ мшщйод бцг йойп баоцтеъ дчщд аъ << ае шч ийсд рбзшъ баоцтеъ <");
-define("_Takeoff_Details","фшийн дошаеъ");
+пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ << пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ <");
+define("_Takeoff_Details","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
-define("_Takeoff_Info","ойгт дошаеъ");
-define("_XC_Info","XCойгт ");
-define("_Flight_Info","ойгт ийсд");
+define("_Takeoff_Info","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_XC_Info","XCпїЅпїЅпїЅпїЅ ");
+define("_Flight_Info","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
-define("_MENU_LOGOUT","йцйа отшлъ");
-define("_MENU_LOGIN","лрйсд мотшлъ");
-define("_MENU_REGISTER","фъйзъ зщбеп");
-
-
-define("_Africa","афшйчд");
-define("_Europe","айшефд");
-define("_Asia","асйд");
-define("_Australia","аесишмйд");
-define("_North_Central_America","цфеп – ошлж аошйчд");
-define("_South_America","гшен аошйчд");
-
-define("_Recent","мазшерд");
+define("_MENU_LOGOUT","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_LOGIN","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_MENU_REGISTER","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
 
-define("_Unknown_takeoff","очен дошад айре оелш!");
-define("_Display_on_Google_Earth","Google Earthмдцйв б");
-define("_Use_Man_s_Module","Man's Moduleмдщъощ б");
-define("_Line_Color","цбт че");
-define("_Line_width","шезб че");
-define("_unknown_takeoff_tooltip_1","мийсд жаъ йщ очен дошад айре оелш");
-define("_unknown_takeoff_tooltip_2","ан йгет мк дочен дошад щм ийсд дже ра мома фшийн!");
-define("_EDIT_WAYPOINT","мтшек ойгт дошад");
-define("_DELETE_WAYPOINT","мозеч дошад");
-define("_SUBMISION_DATE","ъашйк двщд"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED"," лоеъ цфйеъ тм дийсд"); // the times that this flight havs been viewed
+define("_Africa","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Europe","пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Asia","пїЅпїЅпїЅпїЅ");
+define("_Australia","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_North_Central_America","пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_South_America","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+
+define("_Recent","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 
-define("_takeoff_add_help_1"," OKан йгет мк ойгт дошад, ра мома аъ дфшийн. ан ма, ра мсвеш аъ дземеп тм йгй дчщд б");
-define("_takeoff_add_help_2"," айп цешк мдвйщ аеъд тег фтн. ра мсвеш аъ дзмеп'ийсд айрд оелшъ'ан дошад щм ийсък роцъ бшщйод отм ");
-define("_takeoff_add_help_3"," ан дошад щм ийсък роцъ бшщйод моъд ра мдчйщ тмйб моймеа аеиеоий  .");
-define("_Takeoff_Name","щн очен дошад");
-define("_In_Local_Language","бщфд очеойъ");
-define("_In_English","барвмйъ");
+define("_Unknown_takeoff","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ!");
+define("_Display_on_Google_Earth","Google EarthпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_Use_Man_s_Module","Man's ModuleпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ");
+define("_Line_Color","пїЅпїЅпїЅ пїЅпїЅ");
+define("_Line_width","пїЅпїЅпїЅпїЅ пїЅпїЅ");
+define("_unknown_takeoff_tooltip_1","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_unknown_takeoff_tooltip_2","пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!");
+define("_EDIT_WAYPOINT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_DELETE_WAYPOINT","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_SUBMISION_DATE","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED"," пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1"," OKпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅ пїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ");
+define("_takeoff_add_help_2"," пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ ");
+define("_takeoff_add_help_3"," пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ  .");
+define("_Takeoff_Name","пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_In_Local_Language","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_In_English","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","ра мдчйщ аъ дщн ощъощ есйсод тбеш лйрсд мотшлъ");
-define("_SEND_PASSWORD","щлзъд аъ сйсоък?");
-define("_ERROR_LOGIN","дсйсод айрд рлерд ещн ощъощ ае сйсод айрн оефтмйн");
-define("_AUTO_LOGIN","мафщш лрйсд аеиеоийъ лем бйчеш щмй");
-define("_USERNAME","щн ощъощ");
-define("_PASSWORD","сйсод");
-define("_PROBLEMS_HELP","ан ръчмъ ббтйд ра мдъчщш мордм отшлъ");
+define("_ENTER_PASSWORD","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_SEND_PASSWORD","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ?");
+define("_ERROR_LOGIN","пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_AUTO_LOGIN","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ");
+define("_USERNAME","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_PASSWORD","пїЅпїЅпїЅпїЅпїЅ");
+define("_PROBLEMS_HELP","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
 
-define("_LOGIN_TRY_AGAIN","мрйсйеп дзежш %sлап%s ра мдчйщ ");
-define("_LOGIN_RETURN"," мзжшд майргчс %sлап%s ра мдчйщ ");
+define("_LOGIN_TRY_AGAIN","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ %sпїЅпїЅпїЅ%s пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
+define("_LOGIN_RETURN"," пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %sпїЅпїЅпїЅ%s пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
 // end 2007/02/20
 
-define("_Category","сев");
-define("_MEMBER_OF","збш б- ");
-define("_MemberID","ждеъ збш ");
-define("_EnterID","ра мдлрйс ждеъ");
-define("_Clubs_Leagues","оетгерйн / авегеъ ");
-define("_Pilot_Statistics","сиийсийчд щм иййс");
-define("_National_Rankings","гйшев маеой ");
+define("_Category","пїЅпїЅпїЅ");
+define("_MEMBER_OF","пїЅпїЅпїЅ пїЅ- ");
+define("_MemberID","пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ ");
+define("_EnterID","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Clubs_Leagues","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅпїЅпїЅ ");
+define("_Pilot_Statistics","пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_National_Rankings","пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ");
 
 // new on 2007/03/08
-define("_Select_Club","ра мбзеш аъ доетгеп");
-define("_Close_window","ра мсвеш аъ дзмеп");
-define("_EnterID","ра мдлрйс ждеъ");
-define("_Club","доетгеп");
-define("_Sponsor"," реъп зсеъ");
+define("_Select_Club","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Close_window","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ");
+define("_EnterID","пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
+define("_Club","пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
+define("_Sponsor"," пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ");
 
 
 // new on 2007/03/13
-define('_Go_To_Current_Month','мдрйт мзегщ дрелзй');
-define('_Today_is','дъашйк щм дйен деа');
-define('_Wk','щбет');
-define('_Click_to_scroll_to_previous_month',' мтбшд мзегщ щтбш ра мдчйщ лап.мтбшд аеиеоийъ ра мдзжйч аъ дочщ тлбш ');
-define('_Click_to_scroll_to_next_month','тбшд мзегщ дба ра мдчйщ лап.мтбшд аеиеоийъ ра мдзжйч аъ дочщ тлбш ');
-define('_Click_to_select_a_month','ра мдчйщ мбзйшд зегщ релзй');
-define('_Click_to_select_a_year','.ра мдчйщ мбзйшд щрд релзйъ');
-define('_Select_date_as_date.','ъашйк [date] ра мбзеш '); // do not replace [date], it will be replaced by date.
+define('_Go_To_Current_Month','пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Today_is','пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
+define('_Wk','пїЅпїЅпїЅпїЅ');
+define('_Click_to_scroll_to_previous_month',' пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ');
+define('_Click_to_scroll_to_next_month','пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ');
+define('_Click_to_select_a_month','пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_Click_to_select_a_year','.пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_Select_date_as_date.','пїЅпїЅпїЅпїЅпїЅ [date] пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ '); // do not replace [date], it will be replaced by date.
 // end 2007/03/13
 
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
