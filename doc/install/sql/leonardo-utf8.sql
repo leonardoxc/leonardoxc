@@ -419,6 +419,8 @@ CREATE TABLE `leonardo_pilots` (
   `BirthdateHideMask` varchar(10) NOT NULL default 'xx.xx.xxxx',
   `PilotPhoto` varchar(30) NOT NULL default '',
   `FirstOlcYear` int(10) NOT NULL default '0',
+  `FirstNameEn` varchar(40) NOT NULL default '',
+  `LastNameEn` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`pilotID`,`serverID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -577,3 +579,55 @@ CREATE TABLE `leonardo_waypoints` (
   KEY `countryCode` (`countryCode`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
+-- from sql_3.1.0.txt
+ALTER TABLE `leonardo_photos` ADD `tm` INT UNSIGNED DEFAULT '0' NOT NULL;
+ALTER TABLE `leonardo_photos` ADD `lat` FLOAT DEFAULT '0' NOT NULL;
+ALTER TABLE `leonardo_photos` ADD `lon` FLOAT DEFAULT '0' NOT NULL;
+ALTER TABLE `leonardo_photos` ADD `alt` SMALLINT DEFAULT '0' NOT NULL;
+
+-- from sql_3.6.0.txt
+ALTER TABLE `leonardo_flights` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsNum` SMALLINT UNSIGNED DEFAULT '0' NOT NULL AFTER `comments` ;
+
+CREATE TABLE `leonardo_comments` (
+`commentID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT ,
+`parentID` BIGINT UNSIGNED NOT NULL ,
+`flightID` BIGINT NOT NULL ,
+`userID` MEDIUMINT NOT NULL ,
+`userServerID` MEDIUMINT( 0 ) DEFAULT '0' NOT NULL ,
+`guestName` VARCHAR( 50 ) NULL ,
+`guestEmail` VARCHAR( 255 ) NULL ,
+`guestPass` VARCHAR( 40 ) NULL ,
+`dateAdded` DATETIME NOT NULL ,
+`dateUpdated` DATETIME NOT NULL ,
+`active` TINYINT UNSIGNED DEFAULT '1' NOT NULL ,
+`title` VARCHAR( 255 ) NULL ,
+`text` TEXT NOT NULL ,
+`languageCode` VARCHAR( 15 ) NOT NULL ,
+PRIMARY KEY ( `commentID` ) ,
+INDEX ( `flightID` )
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+ALTER TABLE `leonardo_flights` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+ALTER TABLE `leonardo_flights_deleted` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1' AFTER `commentsNum` ;
+ALTER TABLE `leonardo_pilots_info` ADD `commentsEnabled` TINYINT UNSIGNED NOT NULL DEFAULT '1';
+
+-- from sql_3.8.0.txt
+CREATE TABLE leonardo_queue (
+`jobID` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`jobType` VARCHAR( 30 ) NOT NULL ,
+`priority` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+`timeCreated` DATETIME NOT NULL ,
+`timeProccessed` DATETIME NOT NULL ,
+`status` SMALLINT UNSIGNED NOT NULL DEFAULT '0',
+`param1` TEXT NOT NULL ,
+`param2` TEXT NOT NULL ,
+`param3` TEXT NOT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- indexes from 3.0.0 sql/sql.txt
+ALTER TABLE `leonardo_waypoints` ADD INDEX ( `countryCode` )  ;
+ALTER TABLE `leonardo_flights` DROP INDEX `userID` , ADD INDEX `userID` ( `userID` , `userServerID` ) ;
+ALTER TABLE `leonardo_pilots` ADD INDEX ( `FirstName` , `LastName` )  ; 
+ALTER TABLE `leonardo_thermals` ADD INDEX ( `class` ) ;
+ALTER TABLE `leonardo_thermals` ADD INDEX ( `latitude` , `longitude` ) ;
