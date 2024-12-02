@@ -127,7 +127,9 @@ define("_THERE_IS_SAME_FILENAME_FLIGHT","Let se stejnym jmenem jiz existuje");
 define("_CHANGE_THE_FILENAME","Pokud je to jiny let, zmen prosim nejdriv jmeno letu");
 define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tvuj let byl ulozen");
 define("_PRESS_HERE_TO_VIEW_IT","Klikni tady pro zobrazeni");
-define("_WILL_BE_ACTIVATED_SOON","Bude aktivovano behem nekolika minut");
+define("_WILL_BE_ACTIVATED_SOON","Bude aktivován během několika minut");
+define("_OUTSIDE_SUBMIT_WINDOW","Let je starší než je povoleno pro přihlášení");
+define("_PLEASE_SELECT_YOUR_GLIDER_CERTIFICATION","Prosím vložte certifikaci křídla.");
 
 // add_from_zip
 define("_SUBMIT_MULTIPLE_FLIGHTS","Predloz nekolik letu");
@@ -399,7 +401,7 @@ define("_Your_profile_has_been_updated","Tvuj profil byl upraven");
 define("_Submit_Change_Data","Predloz - Zmen Data");
 
 //--------------------------------------------
-// pilot_�lc_profile_edit.php
+// pilot_�lc_profile_edit.php
 //--------------------------------------------
 define("_edit_OLC_info","Uprav OLC info");
 define("_OLC_information","OLC informace");
