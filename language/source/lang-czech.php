@@ -89,6 +89,7 @@ define("_UPDATE_SCORE","Osvezit skore");
 define("_TAKEOFF_COORDS","Vzletove souradnice:");
 define("_NO_KNOWN_LOCATIONS","Nezname oblasti!");
 define("_FLYING_AREA_INFO","Informace o letove oblasti");
+define("_Compare_Flights","Porovnat lety");
 
 //--------------------------------------------
 // index.php
@@ -399,7 +400,7 @@ define("_Your_profile_has_been_updated","Tvuj profil byl upraven");
 define("_Submit_Change_Data","Predloz - Zmen Data");
 
 //--------------------------------------------
-// pilot_ïlc_profile_edit.php
+// pilot_ï¿½lc_profile_edit.php
 //--------------------------------------------
 define("_edit_OLC_info","Uprav OLC info");
 define("_OLC_information","OLC informace");
