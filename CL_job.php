@@ -52,7 +52,7 @@ class leoJob {
 		
 		
 		foreach ($args as $nameStr=>$valStr) {
-			if (in_array($nameStr,array('userID','jobType','param1','param2'))) {
+			if (in_array($nameStr,array('jobID','jobType','param1','param2'))) {
 				$query.= $nameStr."=";	
 				$query.= "'".prep_for_DB($valStr)."' AND ";
 			}	
