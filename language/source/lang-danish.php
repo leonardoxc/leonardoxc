@@ -40,7 +40,7 @@ define("_PILOT","Pilot");
 define("_NUMBER_OF_FLIGHTS","Antal flyvninger");
 define("_BEST_DISTANCE","Bedste distance");
 define("_MEAN_KM","Gennemsnitlig km per flyvning");
-define("_TOTAL_KM","Totalt fløjet km");
+define("_TOTAL_KM","Totalt flï¿½jet km");
 define("_TOTAL_DURATION_OF_FLIGHTS","Total flyvetid");
 define("_MEAN_DURATION","Gennemsnitlig flyvetid");
 define("_TOTAL_OLC_KM","Total OLC distance");
@@ -54,7 +54,7 @@ define("_SHOW","Vis");
 
 // show flight
 define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Flyvningen vil blive aktiveret om 1-2 minutter. ");
-define("_TRY_AGAIN","Prøv venligst igen lidt senere");
+define("_TRY_AGAIN","Prï¿½v venligst igen lidt senere");
 
 define("_TAKEOFF_LOCATION","Startsted");
 define("_TAKEOFF_TIME","Start tidspunkt");
@@ -69,25 +69,25 @@ define("_MAX_SPEED","Max hastighed");
 define("_MAX_VARIO","Max stig");
 define("_MEAN_SPEED","Middel hastighed");
 define("_MIN_VARIO","Max synk");
-define("_MAX_ALTITUDE","Max højde (ASL)");
-define("_TAKEOFF_ALTITUDE","Start højde (ASL)");
-define("_MIN_ALTITUDE","Laveste højde (ASL)");
-define("_ALTITUDE_GAIN","Højdevinding");
+define("_MAX_ALTITUDE","Max hï¿½jde (ASL)");
+define("_TAKEOFF_ALTITUDE","Start hï¿½jde (ASL)");
+define("_MIN_ALTITUDE","Laveste hï¿½jde (ASL)");
+define("_ALTITUDE_GAIN","Hï¿½jdevinding");
 define("_FLIGHT_FILE","Flyvningens log fil");
 define("_COMMENTS","Kommentarer");
 define("_RELEVANT_PAGE","Relevant link (URL)");
 define("_GLIDER","Glider");
 define("_PHOTOS","Billeder");
 define("_MORE_INFO","Ekstra");
-define("_UPDATE_DATA","Opdatér data");
-define("_UPDATE_MAP","Opdatér kort");
-define("_UPDATE_3D_MAP","Opdatér 3D kort");
-define("_UPDATE_GRAPHS","Opdatér grafer");
-define("_UPDATE_SCORE","Opdatér points beregning");
+define("_UPDATE_DATA","Opdatï¿½r data");
+define("_UPDATE_MAP","Opdatï¿½r kort");
+define("_UPDATE_3D_MAP","Opdatï¿½r 3D kort");
+define("_UPDATE_GRAPHS","Opdatï¿½r grafer");
+define("_UPDATE_SCORE","Opdatï¿½r points beregning");
 
 define("_TAKEOFF_COORDS","Start koordinater:");
 define("_NO_KNOWN_LOCATIONS","Der er ingen kendte lokationer!");
-define("_FLYING_AREA_INFO","Information om flyveområdet");
+define("_FLYING_AREA_INFO","Information om flyveomrï¿½det");
 
 //--------------------------------------------
 // index.php
@@ -106,24 +106,24 @@ define("_OLC_KM","OLC km");
 define("_OLC_SCORE","OLC points");
 define("_DATE_ADDED","Seneste indberetning");
 
-define("_SORTED_BY","Sortér efter:");
-define("_ALL_YEARS","Alle år");
-define("_SELECT_YEAR_MONTH","Vælg år (og måned)");
+define("_SORTED_BY","Sortï¿½r efter:");
+define("_ALL_YEARS","Alle ï¿½r");
+define("_SELECT_YEAR_MONTH","Vï¿½lg ï¿½r (og mï¿½ned)");
 define("_ALL","Alle");
 define("_ALL_PILOTS","Vis alle piloter");
 define("_ALL_TAKEOFFS","Vis alle startsteder");
-define("_ALL_THE_YEAR","Hele året");
+define("_ALL_THE_YEAR","Hele ï¿½ret");
 
 // add flight
 define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Du har ikke angivet nogen log fil for flyvningen");
-define("_NO_SUCH_FILE","Den fil du har angivet kan ikke findes på serveren");
+define("_NO_SUCH_FILE","Den fil du har angivet kan ikke findes pï¿½ serveren");
 define("_FILE_DOESNT_END_IN_IGC","Filen er ikke en .igc fil");
 define("_THIS_ISNT_A_VALID_IGC_FILE","Dette er ikke en gyldig .igc fil");
 define("_THERE_IS_SAME_DATE_FLIGHT","Der findes allerede en flyvning med samme dato og tid");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Hvis du vil erstatte den skal du først");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Hvis du vil erstatte den skal du fï¿½rst");
 define("_DELETE_THE_OLD_ONE","slette den gamle");
 define("_THERE_IS_SAME_FILENAME_FLIGHT","Der findes allerede en flyvning med samme filnavn");
-define("_CHANGE_THE_FILENAME","Vær venlig at omdøbe filen hvis dette er en anden flyvning");
+define("_CHANGE_THE_FILENAME","Vï¿½r venlig at omdï¿½be filen hvis dette er en anden flyvning");
 define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Din flyvning er indsendt");
 define("_PRESS_HERE_TO_VIEW_IT","Klik her for at se den");
 define("_WILL_BE_ACTIVATED_SOON","(den bliver aktiveret om 1-2 minutter)");
@@ -152,8 +152,8 @@ define("_PROJECT_INFO","Projektinformation");
 
 // menu bar 
 define("_MENU_MAIN_MENU","Hovedmenu");
-define("_MENU_DATE","Vælg dato");
-define("_MENU_COUNTRY","Vælg land");
+define("_MENU_DATE","Vï¿½lg dato");
+define("_MENU_COUNTRY","Vï¿½lg land");
 define("_MENU_XCLEAGUE","XC Liga");
 define("_MENU_ADMIN","Administration");
 
@@ -175,8 +175,8 @@ define("_MENU_SHOW_PILOTS","Piloter");
 define("_MENU_SHOW_LAST_ADDED","Vis seneste indsendelser");
 define("_FLIGHTS_STATS","Statistik over flyvninger");
 
-define("_SELECT_YEAR","Vælg år");
-define("_SELECT_MONTH","Vælg måned");
+define("_SELECT_YEAR","Vï¿½lg ï¿½r");
+define("_SELECT_MONTH","Vï¿½lg mï¿½ned");
 define("_ALL_COUNTRIES","Vis alle lande");
 //--------------------------------------------
 // list_pilots.php
@@ -192,7 +192,7 @@ define("_TOTAL_OLC_SCORE","Total OLC points");
 define("_BEST_OLC_SCORE","Bedste OLC points");
 define("_MEAN_DURATION","Middel flyvetid");
 define("_MEAN_DISTANCE","Middel distance");
-define("_PILOT_STATISTICS_SORT_BY","Piloter - Sortér efter");
+define("_PILOT_STATISTICS_SORT_BY","Piloter - Sortï¿½r efter");
 define("_CATEGORY_FLIGHT_NUMBER","Kategori 'FastJoe' - Antal flyvninger");
 define("_CATEGORY_TOTAL_DURATION","Kategory 'DURACELL' - Total flyvetid");
 define("_CATEGORY_OPEN_DISTANCE","Kategory 'Fri distance'");
@@ -219,7 +219,7 @@ define("_N_BEST_FLIGHTS"," bedste flyvninger");
 define("_OLC","OLC");
 define("_OLC_TOTAL_SCORE","OLC total points");
 define("_KILOMETERS","Kilometer");
-define("_TOTAL_ALTITUDE_GAIN","Total højdevinding");
+define("_TOTAL_ALTITUDE_GAIN","Total hï¿½jdevinding");
 define("_TOTAL_KM","Total km");
 
 //--------------------------------------------
@@ -230,33 +230,33 @@ define("_IS","er");
 define("_IS_NOT","er ikke");
 define("_OR","eller");
 define("_AND","og");
-define("_FILTER_PAGE_TITLE","Filtrér flyvninger");
+define("_FILTER_PAGE_TITLE","Filtrï¿½r flyvninger");
 define("_RETURN_TO_FLIGHTS","Tilbage til flyvninger");
 define("_THE_FILTER_IS_ACTIVE","Filteret er aktivt");
 define("_THE_FILTER_IS_INACTIVE","Filteret er inaktivt");
-define("_SELECT_DATE","Vælg dato");
+define("_SELECT_DATE","Vï¿½lg dato");
 define("_SHOW_FLIGHTS","Vis flyvninger");
 define("_ALL2","ALLE");
-define("_WITH_YEAR","Med år");
-define("_MONTH","Måned");
-define("_YEAR","År");
+define("_WITH_YEAR","Med ï¿½r");
+define("_MONTH","Mï¿½ned");
+define("_YEAR","ï¿½r");
 define("_FROM","Fra");
 define("_from","fra");
 define("_TO","Til");
-define("_SELECT_PILOT","Vælg pilot");
+define("_SELECT_PILOT","Vï¿½lg pilot");
 define("_THE_PILOT","Piloten");
 define("_THE_TAKEOFF","Startstedet");
-define("_SELECT_TAKEOFF","Vælg startsted");
+define("_SELECT_TAKEOFF","Vï¿½lg startsted");
 define("_THE_COUNTRY","Landet");
 define("_COUNTRY","Land");
-define("_SELECT_COUNTRY","Vælg land");
+define("_SELECT_COUNTRY","Vï¿½lg land");
 define("_OTHER_FILTERS","Andre filtre");
-define("_LINEAR_DISTANCE_SHOULD_BE","Den fri distance skal være");
-define("_OLC_DISTANCE_SHOULD_BE","OLC distancen skal være");
-define("_OLC_SCORE_SHOULD_BE","OLC points skal være");
-define("_DURATION_SHOULD_BE","Flyvetiden skal være");
-define("_ACTIVATE_CHANGE_FILTER","Aktivér / ændre FILTER");
-define("_DEACTIVATE_FILTER","Deaktivér FILTER");
+define("_LINEAR_DISTANCE_SHOULD_BE","Den fri distance skal vï¿½re");
+define("_OLC_DISTANCE_SHOULD_BE","OLC distancen skal vï¿½re");
+define("_OLC_SCORE_SHOULD_BE","OLC points skal vï¿½re");
+define("_DURATION_SHOULD_BE","Flyvetiden skal vï¿½re");
+define("_ACTIVATE_CHANGE_FILTER","Aktivï¿½r / ï¿½ndre FILTER");
+define("_DEACTIVATE_FILTER","Deaktivï¿½r FILTER");
 define("_HOURS","timer");
 define("_MINUTES","minutter");
 
@@ -267,29 +267,29 @@ define("_MINUTES","minutter");
 define("_SUBMIT_FLIGHT","Indsend flyvning");
 define("_ONLY_THE_IGC_FILE_IS_NEEDED","(kun IGC filen skal bruges)");
 define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Indsend<br>flyvningens IGC fil");
-define("_NOTE_TAKEOFF_NAME","Bemærk venligst navn og lokation på startstedet og landet");
+define("_NOTE_TAKEOFF_NAME","Bemï¿½rk venligst navn og lokation pï¿½ startstedet og landet");
 define("_COMMENTS_FOR_THE_FLIGHT","Kommentarer til flyvningen");
 define("_PHOTO","Billede");
-define("_PHOTOS_GUIDELINES","Billeder skal være i jpg format og mindre end ");
+define("_PHOTOS_GUIDELINES","Billeder skal vï¿½re i jpg format og mindre end ");
 define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Klik her for at indsende flyvningen");
 define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Vil du indsende flere flyvninger samtidigt?");
 define("_PRESS_HERE","Klik her");
 
 define("_IS_PRIVATE","Vis ikke offentligt");
 define("_MAKE_THIS_FLIGHT_PRIVATE","Vis ikke offentligt");
-define("_INSERT_FLIGHT_AS_USER_ID","Indsæt flyvning som bruger ID");
+define("_INSERT_FLIGHT_AS_USER_ID","Indsï¿½t flyvning som bruger ID");
 define("_FLIGHT_IS_PRIVATE","Denne flyvning er privat");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","Ændre flyvedata");
+define("_CHANGE_FLIGHT_DATA","ï¿½ndre flyvedata");
 define("_IGC_FILE_OF_THE_FLIGHT","Flyvningens IGC fil");
 define("_DELETE_PHOTO","Slet");
 define("_NEW_PHOTO","nyt billede");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Klik her for at ændre flyvningens data");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","Ændringerne er gennemført");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Klik her for at ï¿½ndre flyvningens data");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","ï¿½ndringerne er gennemfï¿½rt");
 define("_RETURN_TO_FLIGHT","Tilbage til flyvningen");
 
 //--------------------------------------------
@@ -306,53 +306,53 @@ define("_OLC_BARO","Barograf");
 define("_Pilot_Profile","Pilot profil");
 define("_back_to_flights","tilbage til flyvninger");
 define("_pilot_stats","pilot statistik");
-define("_edit_profile","ændre profil");
+define("_edit_profile","ï¿½ndre profil");
 define("_flights_stats","statistik over flyvninger");
 define("_View_Profile","Vis profil");
 
 define("_Personal_Stuff","Personlige ting");
 define("_First_Name"," Fornavn");
 define("_Last_Name","Efternavn");
-define("_Birthdate","Fødselsdag");
-define("_dd_mm_yy","dd.mm.åå");
+define("_Birthdate","Fï¿½dselsdag");
+define("_dd_mm_yy","dd.mm.ï¿½ï¿½");
 define("_Sign","Sign");
-define("_Marital_Status","Ægteskabelig status");
-define("_Occupation","Beskæftigelse");
+define("_Marital_Status","ï¿½gteskabelig status");
+define("_Occupation","Beskï¿½ftigelse");
 define("_Web_Page","Hjemmeside");
 define("_N_A","N/A");
 define("_Other_Interests","Andre interesser");
 define("_Photo","Billede");
 
-define("_Flying_Stuff","Flyvemæssige ting");
+define("_Flying_Stuff","Flyvemï¿½ssige ting");
 define("_note_place_and_date","hvis relevant angiv sted, land og dato");
-define("_Flying_Since","Har fløjet siden");
+define("_Flying_Since","Har flï¿½jet siden");
 define("_Pilot_Licence","Pilot licens");
 define("_Paragliding_training","Paragliding instruktion");
 define("_Favorite_Location","Favorit sted");
 define("_Usual_Location","Normalt sted");
 define("_Best_Flying_Memory","Bedste flyveoplevelse");
-define("_Worst_Flying_Memory","Værste flyveoplevelse");
+define("_Worst_Flying_Memory","Vï¿½rste flyveoplevelse");
 define("_Personal_Distance_Record","Personlig distance rekord");
-define("_Personal_Height_Record","Personlig højde rekord");
+define("_Personal_Height_Record","Personlig hï¿½jde rekord");
 define("_Hours_Flown","Flyvetimer");
-define("_Hours_Per_Year","Timer per år");
+define("_Hours_Per_Year","Timer per ï¿½r");
 
-define("_Equipment_Stuff","Udstyrsmæssige ting");
+define("_Equipment_Stuff","Udstyrsmï¿½ssige ting");
 define("_Glider","Glider");
-define("_Harness","Seletøj");
-define("_Reserve_chute","Reserveskærm");
+define("_Harness","Seletï¿½j");
+define("_Reserve_chute","Reserveskï¿½rm");
 define("_Camera","Kamera");
 define("_Vario","Vario");
 define("_GPS","GPS");
 define("_Helmet","Hjelm");
 define("_Camcorder","Videokamera");
 
-define("_Manouveur_Stuff","Manøvremæssige ting");
-define("_note_max_descent_rate","hvis relevant angiv maksimalt opnået synk");
+define("_Manouveur_Stuff","Manï¿½vremï¿½ssige ting");
+define("_note_max_descent_rate","hvis relevant angiv maksimalt opnï¿½et synk");
 define("_Spiral","Stejlspiral");
 define("_Bline","B-stall");
 define("_Full_Stall","Full stall");
-define("_Other_Manouveurs_Acro","Andre acro manøvrer");
+define("_Other_Manouveurs_Acro","Andre acro manï¿½vrer");
 define("_Sat","Sat");
 define("_Asymmetric_Spiral","Asymmetrisk spiral");
 define("_Spin","Spin");
@@ -367,10 +367,10 @@ define("_Favorite_Actor","Favorit skuespiller");
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Indsende nyt billede eller ændre det gamle");
+define("_Upload_new_photo_or_change_old","Indsende nyt billede eller ï¿½ndre det gamle");
 define("_Delete_Photo","Slet billede");
 define("_Your_profile_has_been_updated","Din profil er blevet opdateret");
-define("_Submit_Change_Data","Indsende - ændre oplysninger");
+define("_Submit_Change_Data","Indsende - ï¿½ndre oplysninger");
 
 //--------------------------------------------
 // pilot_profile_stats.php
@@ -378,7 +378,7 @@ define("_Submit_Change_Data","Indsende - ændre oplysninger");
 define("_hh_mm","tt:mm");
 
 define("_Totals","Totaler");
-define("_First_flight_logged","Første loggede flyvning");
+define("_First_flight_logged","Fï¿½rste loggede flyvning");
 define("_Last_flight_logged","Seneste loggede flyvning");
 define("_Flying_period_covered","Flyve periode registreret");
 define("_Total_Distance","Total distance");
@@ -390,27 +390,27 @@ define("_Personal_Bests","Personlig rekorder");
 define("_Best_Open_Distance","Bedste fri distance");
 define("_Best_FAI_Triangle","Bedste FAI trekant");
 define("_Best_Free_Triangle","Bedste fri trekant");
-define("_Longest_Flight","Længste flyvning");
+define("_Longest_Flight","Lï¿½ngste flyvning");
 define("_Best_OLC_score","Bedste OLC points");
 
-define("_Absolute_Height_Record","Absolut højde rekord");
-define("_Altitute_gain_Record","Højdevindingsrekord");
-define("_Mean_values","Gennemsnitsværdier");
+define("_Absolute_Height_Record","Absolut hï¿½jde rekord");
+define("_Altitute_gain_Record","Hï¿½jdevindingsrekord");
+define("_Mean_values","Gennemsnitsvï¿½rdier");
 define("_Mean_distance_per_flight","Gennemsnitlig distance per flyvning");
-define("_Mean_flights_per_Month","Gennemsnitlig flyvninger per måned");
-define("_Mean_distance_per_Month","Gennemsnitlig distance per måned");
-define("_Mean_duration_per_Month","Gennemsnitlig flyvetid per måned");
+define("_Mean_flights_per_Month","Gennemsnitlig flyvninger per mï¿½ned");
+define("_Mean_distance_per_Month","Gennemsnitlig distance per mï¿½ned");
+define("_Mean_duration_per_Month","Gennemsnitlig flyvetid per mï¿½ned");
 define("_Mean_duration_per_flight","Gennemsnitlig flyvetid per flyvning");
-define("_Mean_flights_per_Year","Gennemsnitlig antal flyvninger per år");
-define("_Mean_distance_per_Year","Gennemsnitlig distance per år");
-define("_Mean_duration_per_Year","Gennemsnitlig flyvetid per år");
+define("_Mean_flights_per_Year","Gennemsnitlig antal flyvninger per ï¿½r");
+define("_Mean_distance_per_Year","Gennemsnitlig distance per ï¿½r");
+define("_Mean_duration_per_Year","Gennemsnitlig flyvetid per ï¿½r");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Vis flyvninger nær dette punkt");
+define("_See_flights_near_this_point","Vis flyvninger nï¿½r dette punkt");
 define("_Waypoint_Name","Waypoint navn");
-define("_Navigate_with_Google_Earth","Navigér med Google Earth");
+define("_Navigate_with_Google_Earth","Navigï¿½r med Google Earth");
 define("_See_it_in_Google_Maps","Vis i Google Maps");
 define("_See_it_in_MapQuest","Vis i MapQuest");
 define("_COORDINATES","Koordinater");
@@ -617,4 +617,7 @@ define('_Click_to_select_a_year','Click to select a year.');
 define('_Select_date_as_date.','Select [date] as date.'); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
+
 ?>
