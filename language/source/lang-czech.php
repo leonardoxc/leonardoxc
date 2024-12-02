@@ -18,167 +18,167 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Leden','Unor','Brezen','Duben','Kveten','Cerven',               
-					   'Cervenec','Srpen','Zari','Rijen','Listopad','Prosinec');
+	$monthList=array('Leden','Únor','Březen','Duben','Květen','Červen',               
+					   'Červenec','Srpen','Září','Říjen','Listopad','Prosinec');
 
-	$monthListShort=array('LED','UNO','BRE','DUB','KVE','CRN','CRC','SRP','ZAR','RIJ','LIS','PRO');
-	$weekdaysList=array('Po','Ut','St','Ct','Pa','So','Ne') ;
+	$monthListShort=array('LED','ÚNO','BŘE','DUB','KVĚ','ČRN','ČRC','SRP','ZÁŘ','ŘÍJ','LIS','PRO');
+	$weekdaysList=array('Po','Út','St','Čt','Pá','So','Ně') ;
 }
 setMonths();
 
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","Volne letani");
-define("_FREE_TRIANGLE","Otevreny trojuhelnik");
-define("_FAI_TRIANGLE","FAI trojuhelnik");
+define("_FREE_FLIGHT","Volný let");
+define("_FREE_TRIANGLE","Otevřeny trojúhelník");
+define("_FAI_TRIANGLE","FAI trojúhelník");
 
-define("_SUBMIT_FLIGHT_ERROR","Byl problem s ulozenim letu");
+define("_SUBMIT_FLIGHT_ERROR","Byl problém s uložením letu");
 
 // list_pilots()
-define("_NUM","cislo");
+define("_NUM","číslo");
 define("_PILOT","Pilot");
-define("_NUMBER_OF_FLIGHTS","Pocet letu");
-define("_BEST_DISTANCE","Nejlepsi vzdalenost");
-define("_MEAN_KM","Prumerny let Km");
-define("_TOTAL_KM","Celkovy let Km");
-define("_TOTAL_DURATION_OF_FLIGHTS","Celkove trvani letu");
-define("_MEAN_DURATION","Prumerne trvani letu");
-define("_TOTAL_OLC_KM","Celkova OLC vzdalenost");
-define("_TOTAL_OLC_SCORE","Celkove OLC skore");
-define("_BEST_OLC_SCORE","Nejlepsi OLC skore");
+define("_NUMBER_OF_FLIGHTS","Počet letů");
+define("_BEST_DISTANCE","Nejlepší vzdálenost");
+define("_MEAN_KM","Průměrný let Km")í
+define("_TOTAL_KM","Celkový let Km");
+define("_TOTAL_DURATION_OF_FLIGHTS","Celkové trvání letu");
+define("_MEAN_DURATION","Průměrné trváni letu");
+define("_TOTAL_OLC_KM","Celková OLC vzdálenost");
+define("_TOTAL_OLC_SCORE","Celkové OLC skóre");
+define("_BEST_OLC_SCORE","Nejlepší OLC skóre");
 define("_From","z");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Trvani");
-define("_SHOW","Ukaz");
+define("_DURATION_HOURS_MIN","Trvání");
+define("_SHOW","Ukaž");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Let bude aktivovan behem nekolika minut. ");
-define("_TRY_AGAIN","Prosim zkuste pozdeji");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Let bude aktivován během několika minut. ");
+define("_TRY_AGAIN","Prosím zkuste to později");
 
-define("_TAKEOFF_LOCATION","Misto vzletu");
-define("_TAKEOFF_TIME","Cas vzletu");
-define("_LANDING_LOCATION","Misto pristani");
-define("_LANDING_TIME","Cas pristani");
-define("_OPEN_DISTANCE","Prima vzdalenost");
-define("_MAX_DISTANCE","Maximalni vzdalenost");
-define("_OLC_SCORE_TYPE","OLC score type");
-define("_OLC_DISTANCE","OLC vzdalenost");
-define("_OLC_SCORING","OLC skore");
+define("_TAKEOFF_LOCATION","Místo vzletu");
+define("_TAKEOFF_TIME","Čas vzletu");
+define("_LANDING_LOCATION","Místo přistání");
+define("_LANDING_TIME","Čas přistání");
+define("_OPEN_DISTANCE","Přímá vzdálenost");
+define("_MAX_DISTANCE","Maximální vzdálenost");
+define("_OLC_SCORE_TYPE","OLC typ skóre");
+define("_OLC_DISTANCE","OLC vzdálenost");
+define("_OLC_SCORING","OLC skóre");
 define("_MAX_SPEED","Max rychlost");
-define("_MAX_VARIO","Max vario");
-define("_MEAN_SPEED","Prumerna rychlost");
-define("_MIN_VARIO","Min vario");
-define("_MAX_ALTITUDE","Max nadmorska vyska");
-define("_TAKEOFF_ALTITUDE","Nadmorska vyska na vzletu");
-define("_MIN_ALTITUDE","Min nadmorska vyska");
-define("_ALTITUDE_GAIN","Nastoupani");
-define("_FLIGHT_FILE","Letovy soubor");
-define("_COMMENTS","Pripominky");
-define("_RELEVANT_PAGE","Podobna stranka URL");
-define("_GLIDER","Kluzak");
+define("_MAX_VARIO","Max vário");
+define("_MEAN_SPEED","Průměrná rychlost");
+define("_MIN_VARIO","Min vário");
+define("_MAX_ALTITUDE","Max nadmořská výška");
+define("_TAKEOFF_ALTITUDE","Nadmořská výška vzletu");
+define("_MIN_ALTITUDE","Min nadmořská výška");
+define("_ALTITUDE_GAIN","Nastoupání");
+define("_FLIGHT_FILE","Letový soubor");
+define("_COMMENTS","Komentáře");
+define("_RELEVANT_PAGE","Související stránka URL");
+define("_GLIDER","Kluzák");
 define("_PHOTOS","Fotky");
-define("_MORE_INFO","Informace navic");
-define("_UPDATE_DATA","Osvezit udaje");
-define("_UPDATE_MAP","Osvezit mapu");
-define("_UPDATE_3D_MAP","Osvezit 3D mapu");
-define("_UPDATE_GRAPHS","Osvezit grafy");
-define("_UPDATE_SCORE","Osvezit skore");
+define("_MORE_INFO","Více informací");
+define("_UPDATE_DATA","Aktualizovat údaje");
+define("_UPDATE_MAP","Aktualizovat mapu");
+define("_UPDATE_3D_MAP","Aktualizovat 3D mapu");
+define("_UPDATE_GRAPHS","Aktualizovat grafy");
+define("_UPDATE_SCORE","Aktualizovat skóre");
 
-define("_TAKEOFF_COORDS","Vzletove souradnice:");
-define("_NO_KNOWN_LOCATIONS","Nezname oblasti!");
-define("_FLYING_AREA_INFO","Informace o letove oblasti");
+define("_TAKEOFF_COORDS","Souřadnice vzletu:");
+define("_NO_KNOWN_LOCATIONS","Neznámé oblasti!");
+define("_FLYING_AREA_INFO","Informace o letové oblasti");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC server");
-define("_RETURN_TO_TOP","Navrat na zacatek");
+define("_RETURN_TO_TOP","Návrat na začátek");
 // list flight
 define("_PILOT_FLIGHTS","Pilotovy lety");
 
 define("_DATE_SORT","Datum");
-define("_PILOT_NAME","Pilotovo jmeno");
+define("_PILOT_NAME","Pilotovo jméno");
 define("_TAKEOFF","Vzlet");
-define("_DURATION","Trvani");
-define("_LINEAR_DISTANCE","Prima vzdalenost");
+define("_DURATION","Trvání");
+define("_LINEAR_DISTANCE","Příma vzdálenost");
 define("_OLC_KM","OLC km");
-define("_OLC_SCORE","OLC skore");
-define("_DATE_ADDED","Naposledy pridano");
+define("_OLC_SCORE","OLC skóre");
+define("_DATE_ADDED","Naposledy přidáno");
 
-define("_SORTED_BY","Utridit podle:");
-define("_ALL_YEARS","Vsechny roky");
-define("_SELECT_YEAR_MONTH","Vyber rok_mesic");
-define("_ALL","Vsichni");
-define("_ALL_PILOTS","Zobraz vsechny piloty");
-define("_ALL_TAKEOFFS","Zobraz vsechny vzlety");
-define("_ALL_THE_YEAR","Cely rok");
+define("_SORTED_BY","Setřídit podle:");
+define("_ALL_YEARS","Všechny roky");
+define("_SELECT_YEAR_MONTH","Výběr rok/měsíc");
+define("_ALL","Všichni");
+define("_ALL_PILOTS","Zobraz všechny piloty");
+define("_ALL_TAKEOFFS","Zobraz všechny vzlety");
+define("_ALL_THE_YEAR","Celý rok");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Nepredlozil jsi soubor");
-define("_NO_SUCH_FILE","Soubor ktery jsi predlozil nemuze byt nalezen");
-define("_FILE_DOESNT_END_IN_IGC","Soubor nekonci priponou .igc ");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Toto neni platny .igc soubor");
-define("_THERE_IS_SAME_DATE_FLIGHT","Let se stejnym datem a casem jiz existuje");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Pokud jej chces zamenit, nejdrive");
-define("_DELETE_THE_OLD_ONE","vymaz ten puvodni");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Let se stejnym jmenem jiz existuje");
-define("_CHANGE_THE_FILENAME","Pokud je to jiny let, zmen prosim nejdriv jmeno letu");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tvuj let byl ulozen");
-define("_PRESS_HERE_TO_VIEW_IT","Klikni tady pro zobrazeni");
-define("_WILL_BE_ACTIVATED_SOON","Bude aktivovano behem nekolika minut");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Nepředložil jsi soubor");
+define("_NO_SUCH_FILE","Soubor který jsi předložil nemůže být nalezen");
+define("_FILE_DOESNT_END_IN_IGC","Soubor nekončí příponou .igc ");
+define("_THIS_ISNT_A_VALID_IGC_FILE","Toto není platný .igc soubor");
+define("_THERE_IS_SAME_DATE_FLIGHT","Let se stejným datem a časem již existuje");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Pokud jej chceš zaměnit, nejdříve");
+define("_DELETE_THE_OLD_ONE","vymaž ten původní");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","Let se stejným jménem již existuje");
+define("_CHANGE_THE_FILENAME","Pokuď je to jiný let, zmeň prosím nejdřív jméno letu");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Tvůj let byl uložen");
+define("_PRESS_HERE_TO_VIEW_IT","Klikni zde pro zobrazení");
+define("_WILL_BE_ACTIVATED_SOON","Bude aktivováno během několika minut");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Predloz nekolik letu");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Jenom IGC soubory budou zpracovany");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Predloz ZIP soubor<br>s informaci o letech");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Klikni tady pro zpracovani letu");
+define("_SUBMIT_MULTIPLE_FLIGHTS","Předlož několik letů");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Jenom IGC soubory budou zpracovány");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Předlož ZIP soubor<br>s informacemi o letech");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Klikni tady pro zpracování letu");
 
-define("_FILE_DOESNT_END_IN_ZIP","Soubor ktery jsi predlozil nema priponu .zip");
-define("_ADDING_FILE","Pridat soubor");
-define("_ADDED_SUCESSFULLY","Pridan uspesne");
-define("_PROBLEM","Problem");
-define("_TOTAL","Dohromady ");
-define("_IGC_FILES_PROCESSED","soubory byly zpracovany");
-define("_IGC_FILES_SUBMITED","lety byly pridany");
+define("_FILE_DOESNT_END_IN_ZIP","Soubor který jsi předložil nemá příponu .zip");
+define("_ADDING_FILE","Přidat soubor");
+define("_ADDED_SUCESSFULLY","Přidán úspěšně");
+define("_PROBLEM","Problém");
+define("_TOTAL","Celkem ");
+define("_IGC_FILES_PROCESSED","soubory byly zpracovány");
+define("_IGC_FILES_SUBMITED","lety byly přidány");
 
 // info
-define("_DEVELOPMENT","Vytvoreni");
+define("_DEVELOPMENT","Vytvoření");
 define("_ANDREADAKIS_MANOLIS","Andreadakis Manolis");
 define("_PROJECT_URL","Projekt URL");
 define("_VERSION","Verze");
-define("_MAP_CREATION","Mapu vytvoril");
+define("_MAP_CREATION","Mapu vytvořil");
 define("_PROJECT_INFO","Informace o projektu");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Hlavni Menu");
+define("_MENU_MAIN_MENU","Hlavní Menu");
 define("_MENU_DATE","Vyber datum");
-define("_MENU_COUNTRY","Vyber stat");
+define("_MENU_COUNTRY","Vyber stát");
 define("_MENU_XCLEAGUE","XC Liga");
 define("_MENU_ADMIN","Admin");
 
-define("_MENU_COMPETITION_LEAGUE","Liga-vsechny kategorie");
+define("_MENU_COMPETITION_LEAGUE","Liga-všechny kategorie");
 define("_MENU_OLC","OLC");
-define("_MENU_OPEN_DISTANCE","otevrena vzdalenost");
-define("_MENU_DURATION","trvani");
-define("_MENU_ALL_FLIGHTS","zobraz vsechny lety");
+define("_MENU_OPEN_DISTANCE","otevřená vzdálenost");
+define("_MENU_DURATION","trvání");
+define("_MENU_ALL_FLIGHTS","zobraz všechny lety");
 define("_MENU_FLIGHTS","lety");
 define("_MENU_TAKEOFFS","vzlety");
 define("_MENU_FILTER","Filtr");
 define("_MENU_MY_FLIGHTS","moje lety");
-define("_MENU_MY_PROFILE","Muj profil");
-define("_MENU_MY_STATS","Moje udaje"); 
-define("_MENU_MY_SETTINGS","Moje zadani"); 
-define("_MENU_SUBMIT_FLIGHT","predloz let");
-define("_MENU_SUBMIT_FROM_ZIP","predloz lety ze zip");
+define("_MENU_MY_PROFILE","Můj profil");
+define("_MENU_MY_STATS","Moje údaje"); 
+define("_MENU_MY_SETTINGS","Moje zadání"); 
+define("_MENU_SUBMIT_FLIGHT","předlož let");
+define("_MENU_SUBMIT_FROM_ZIP","předlož lety v zip");
 define("_MENU_SHOW_PILOTS","Piloti");
-define("_MENU_SHOW_LAST_ADDED","zobraz pridane naposledy");
-define("_FLIGHTS_STATS","letove udaje");
+define("_MENU_SHOW_LAST_ADDED","zobraz přidané naposledy");
+define("_FLIGHTS_STATS","letové údaje");
 
 define("_SELECT_YEAR","vyber rok");
-define("_SELECT_MONTH","vyber mesic");
-define("_ALL_COUNTRIES","zobraz vsechny zeme");
+define("_SELECT_MONTH","vyber měsíc");
+define("_ALL_COUNTRIES","zobraz všechny země");
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
@@ -228,7 +228,7 @@ define("_TOTAL_KM","celkem km");
 //--------------------------------------------
 
 define("_IS","je");
-define("_IS_NOT","neni");
+define("_IS_NOT","není");
 define("_OR","nebo");
 define("_AND","a");
 define("_FILTER_PAGE_TITLE","Filtruj lety");
@@ -399,7 +399,7 @@ define("_Your_profile_has_been_updated","Tvuj profil byl upraven");
 define("_Submit_Change_Data","Predloz - Zmen Data");
 
 //--------------------------------------------
-// pilot_�lc_profile_edit.php
+// pilot_�lc_profile_edit.php
 //--------------------------------------------
 define("_edit_OLC_info","Uprav OLC info");
 define("_OLC_information","OLC informace");
