@@ -22,9 +22,10 @@ function kml2igc($filename){
 	//echo $lines;
 	//exit;
 	
-	if( ! preg_match("/<SecondsFromTimeOfFirstPoint>(.*)<\/SecondsFromTimeOfFirstPoint>/",$lines,$matches) ) {
-		return 0;
-	}
+  if( ! preg_match("/<SecondsFromTimeOfFirstPoint>(.*)<\/SecondsFromTimeOfFirstPoint>/",$lines,$matches) ) {
+    echo "<!-- ERROR (kml2igc): can't find SecondsFromTimeOfFirstPoint tag -->";
+    return 0;
+  }
 	
 	//	echo "match<BR>";
 	// echo $matches[1];
@@ -49,14 +50,21 @@ this one...
 
 */
 
-	if( ! preg_match("/<FsInfo.*time_of_first_point=\"([^\"]+)\".*hash=\"([^\"]+)\">/i",$lines,$matches) ) {
-		return 0;
-	}
+  if( ! preg_match("/<FsInfo.*time_of_first_point=\"([^\"]+)\"/i",$lines,$matches) ) {
+    echo "<!-- ERROR (kml2igc): can't find FsInfo#time_of_first_point -->";
+    return 0;
+  }
 
 	//echo "match start time<BR>";
 	// echo $matches[1];
 	$start_time_str=trim($matches[1]);
-	$hash_str=trim($matches[2]);
+
+  if( ! preg_match("/<FsInfo.*hash=\"([^\"]+)\">/i",$lines,$matches) ) {
+    echo "<!-- ERROR (kml2igc): can't find FsInfo#hash -->";
+    return 0;
+  }
+
+	$hash_str=trim($matches[1]);
 	// echo "$start_time_str  # $hash_str<BR>";
 				
 	// now search for this
@@ -65,9 +73,10 @@ this one...
 			<altitudeMode>absolute</altitudeMode>
 			<coordinates>
 	*/	
-	if(! preg_match("/<name>Tracklog<\/name> *<LineString> *<altitudeMode>absolute<\/altitudeMode> *<coordinates>(.*)<\/coordinates>/",$lines,$matches) ) {
-		return 0;
-	}
+  if(! preg_match("/<name>Tracklog<\/name> *<LineString> *<altitudeMode>absolute<\/altitudeMode> *<coordinates>(.*)<\/coordinates>/",$lines,$matches) ) {
+    echo "<!-- ERROR (kml2igc): can't find Tracklog > LineString > altitudeMode=absolute > coordinates -->";
+    return 0;
+  }
 	
 	//echo "match coordinates<BR>";
 	// echo $matches[1];
