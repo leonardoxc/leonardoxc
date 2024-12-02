@@ -18,368 +18,368 @@
 
 function setMonths() {
 	global  $monthList,	$monthListShort, $weekdaysList;
-	$monthList=array('Ιανουάριος','Φεβρουάριος','Μαρτιος','Απρίλιος','Μαϊος','Ιούνιος',
-				'Ιούλιος','Αύγουστος','Σεπτέμβριος','Οκτώβριος','Νοέμβριος','Δεκέμβριος');
-	$monthListShort=array('ΙΑΝ','ΦΕΒ','ΜΑΡ','ΑΠΡ','ΜΑΙ','ΙΟΥΝ','ΙΟΥΛ','ΑΥΓ','ΣΕΠ','ΟΚΤ','ΝΟΕ','ΔΕΚ');
-	$weekdaysList=array('Δευ','Τρι','Τετ','Πεμ','Παρ','Σαβ','Κυρ') ;
+	$monthList=array('οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½',
+				'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+	$monthListShort=array('οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½');
+	$weekdaysList=array('οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½','οΏ½οΏ½οΏ½') ;
 }
 setMonths();
 
 //--------------------------------------------
 // output.php
 //--------------------------------------------
-define("_FREE_FLIGHT","Ελεύθερη πτήση");
-define("_FREE_TRIANGLE","Τρίγωνο ελεύθερο");
-define("_FAI_TRIANGLE","Τρίγωνο FAI");
+define("_FREE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_FREE_TRIANGLE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_FAI_TRIANGLE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ FAI");
 
-define("_SUBMIT_FLIGHT_ERROR","Πρόβλημα κατα την υποβολή της πτήσης");
+define("_SUBMIT_FLIGHT_ERROR","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 // list_pilots()
 define("_NUM","A/A");
-define("_PILOT","Πιλότος");
-define("_NUMBER_OF_FLIGHTS","Αριθμός πτήσεων");
-define("_BEST_DISTANCE","Καλύτερη απόσταση");
-define("_MEAN_KM","Μέσος # km ανά πτήση");
-define("_TOTAL_KM","Συνολικά km πτήσεων");
-define("_TOTAL_DURATION_OF_FLIGHTS","Συνολική Διάρκεια πτήσεων");
-define("_MEAN_DURATION","Μέση διάρκεια πτήσης");
-define("_TOTAL_OLC_KM","Συνολική XC απόσταση");
-define("_TOTAL_OLC_SCORE","Συνολικοί XC βαθμοί");
-define("_BEST_OLC_SCORE","Καλύτερος XC βαθμός");
-define("_From","από");
+define("_PILOT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_NUMBER_OF_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_BEST_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEAN_KM","οΏ½οΏ½οΏ½οΏ½οΏ½ # km οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_KM","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ km οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_DURATION_OF_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEAN_DURATION","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_OLC_KM","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_OLC_SCORE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_BEST_OLC_SCORE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_From","οΏ½οΏ½οΏ½");
 
 // list_flights()
-define("_DURATION_HOURS_MIN","Διάρκεια (ωω:λλ)");
-define("_SHOW","Εμφάνιση");
+define("_DURATION_HOURS_MIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½:οΏ½οΏ½)");
+define("_SHOW","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 // show flight
-define("_FLIGHT_WILL_BE_ACTIVATED_SOON","Η πτήση θα ενεργοποιηθεί σε 1-2 λεπτά. ");
-define("_TRY_AGAIN","Ξαναδοκιμάστε σε λίγο");
-define("_SEASON","Χρονιά");
-define("_TAKEOFF_LOCATION","Απογείωση");
-define("_TAKEOFF_TIME","Ώρα απογείωσης");
-define("_LANDING_LOCATION","Προσγείωση");
-define("_LANDING_TIME","Ώρα προσγείωσης");
-define("_OPEN_DISTANCE","Απόσταση σε ευθεία");
-// define("_DURATION","Διάρκεια");
-define("_MAX_DISTANCE","Μέγιστη Απόσταση");
-define("_OLC_SCORE_TYPE","Τύπος XC βαθμολογίας");
-define("_OLC_DISTANCE","Απόσταση XC");
-define("_OLC_SCORING","Βαθμολογία XC");
-define("_MAX_SPEED","Μέγιστη ταχύτητα");
-define("_MAX_VARIO","Μέγιστο ανοδικό");
-define("_MEAN_SPEED","Μέση ταχύτητα");
-define("_MIN_VARIO","Μέγιστο καθοδικό");
-define("_MAX_ALTITUDE","Μέγιστo ύψος");
-define("_TAKEOFF_ALTITUDE","Ύψος απογείωσης");
-define("_MIN_ALTITUDE","Ελάχιστο ύψος");
-define("_ALTITUDE_GAIN","Απόκτηση ύψους");
-define("_FLIGHT_FILE","Αρχείο πτήσης");
-define("_COMMENTS","Σχόλια");
-define("_RELEVANT_PAGE","Σχετική σελίδα");
-define("_GLIDER","Αλεξίπτωτο");
-define("_PHOTOS","Φωτογραφίες");
-define("_MORE_INFO","Πρόσθετα");
-define("_UPDATE_DATA","Ανανέωση στοιχείων");
-define("_UPDATE_MAP","Ανανέωση χάρτη");
-define("_UPDATE_3D_MAP","Ανανέωση 3D χάρτη");
-define("_UPDATE_GRAPHS","Ανανέωση γραφημάτων");
-define("_UPDATE_SCORE","Ανανέωση βαθμολογίας");
+define("_FLIGHT_WILL_BE_ACTIVATED_SOON","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ 1-2 οΏ½οΏ½οΏ½οΏ½οΏ½. ");
+define("_TRY_AGAIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_SEASON","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TAKEOFF_LOCATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TAKEOFF_TIME","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LANDING_LOCATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LANDING_TIME","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OPEN_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+// define("_DURATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MAX_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_SCORE_TYPE","οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC");
+define("_OLC_SCORING","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC");
+define("_MAX_SPEED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MAX_VARIO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEAN_SPEED","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MIN_VARIO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MAX_ALTITUDE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½o οΏ½οΏ½οΏ½οΏ½");
+define("_TAKEOFF_ALTITUDE","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MIN_ALTITUDE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_ALTITUDE_GAIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_FLIGHT_FILE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_COMMENTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_RELEVANT_PAGE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_GLIDER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PHOTOS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MORE_INFO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UPDATE_DATA","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UPDATE_MAP","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UPDATE_3D_MAP","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 3D οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UPDATE_GRAPHS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UPDATE_SCORE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_TAKEOFF_COORDS","Συντεταγμένες απογείωσης:");
-define("_NO_KNOWN_LOCATIONS","Δεν υπάρχουν προς το παρόν γνωστές τοποθεσίες!");
-define("_FLYING_AREA_INFO","Απογειώσεις περιοχής");
+define("_TAKEOFF_COORDS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½:");
+define("_NO_KNOWN_LOCATIONS","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½!");
+define("_FLYING_AREA_INFO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // index.php
 //--------------------------------------------
 define("_PAGE_TITLE","Leonardo XC");
-define("_RETURN_TO_TOP","Επιστροφή στην αρχή");
+define("_RETURN_TO_TOP","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
 // list flight
-define("_PILOT_FLIGHTS","Πτήσεις πιλότου");
+define("_PILOT_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_DATE_SORT","Ημερομηνία");
-define("_PILOT_NAME","Ονομα Πιλότου");
-define("_TAKEOFF","Απογείωση");
-define("_DURATION","Διάρκεια");
-define("_LINEAR_DISTANCE","Ανοιχτή απόσταση");
-define("_OLC_KM","XC χιλ.");
-define("_OLC_SCORE","XC βαθμοί");
-define("_DATE_ADDED","Πρόσφατες υποβολές");
+define("_DATE_SORT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PILOT_NAME","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TAKEOFF","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DURATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LINEAR_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_KM","XC οΏ½οΏ½οΏ½.");
+define("_OLC_SCORE","XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DATE_ADDED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_SORTED_BY","Ταξινόμηση:");
-define("_ALL_YEARS","Όλες οι χρονιές");
-define("_SELECT_YEAR_MONTH","Επιλέξτε χρόνο ή και μήνα");
-define("_ALL","ΟΛΑ");
-define("_ALL_PILOTS","Όλοι οι πιλότοι");
-define("_ALL_TAKEOFFS","Όλες οι τοποθεσίες");
-define("_ALL_THE_YEAR","Όλο το έτος");
+define("_SORTED_BY","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½:");
+define("_ALL_YEARS","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SELECT_YEAR_MONTH","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_ALL","οΏ½οΏ½οΏ½");
+define("_ALL_PILOTS","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ALL_TAKEOFFS","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ALL_THE_YEAR","οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
 
 // add flight
-define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","Δεν δώσατε αρχείο πτήσης");
-define("_NO_SUCH_FILE","Το αρχείο σας δεν μπορει να βρεθεί (προβλημα του server)");
-define("_FILE_DOESNT_END_IN_IGC","Το αρχείο δεν έχει κατάληξη .igc");
-define("_THIS_ISNT_A_VALID_IGC_FILE","Το αρχείο igc δεν είναι έγκυρο");
-define("_THERE_IS_SAME_DATE_FLIGHT","Υπάρχει ήδη μια πτήση σας με αυτή την ημερομηνία και ώρα");
-define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","Αν θέλετε να την αντικαταστήσετε πρέπει πρώτα να");
-define("_DELETE_THE_OLD_ONE","σβήσετε την παλιά");
-define("_THERE_IS_SAME_FILENAME_FLIGHT","Υπάρχει ήδη μια πτήση σας με to ίδιο όνομα αρχείου");
-define("_CHANGE_THE_FILENAME","Αν η πτήση είναι διαφορετική τότε αλλάξτε το όνομα του αρχείου που προσπαθείτε να υποβάλετε");
-define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","Η  πτήση σας έχει καταχωρηθεί");
-define("_PRESS_HERE_TO_VIEW_IT","Πατήστε εδώ για να την δείτε");
-define("_WILL_BE_ACTIVATED_SOON","(θα ενεργοποιηθεί σε 1-2 λεπτά)");
+define("_YOU_HAVENT_SUPPLIED_A_FLIGHT_FILE","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_NO_SUCH_FILE","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ server)");
+define("_FILE_DOESNT_END_IN_IGC","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ .igc");
+define("_THIS_ISNT_A_VALID_IGC_FILE","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ igc οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THERE_IS_SAME_DATE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_IF_YOU_WANT_TO_SUBSTITUTE_IT","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½");
+define("_DELETE_THE_OLD_ONE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THERE_IS_SAME_FILENAME_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ to οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_CHANGE_THE_FILENAME","οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_YOUR_FLIGHT_HAS_BEEN_SUBMITTED","οΏ½  οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PRESS_HERE_TO_VIEW_IT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_WILL_BE_ACTIVATED_SOON","(οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ 1-2 οΏ½οΏ½οΏ½οΏ½οΏ½)");
 
 // add_from_zip
-define("_SUBMIT_MULTIPLE_FLIGHTS","Μαζική υποβολή πτήσεων");
-define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","Μόνο τα IGC αρχεία θα επεξεργαστουν");
-define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","Υποβάλετε το αρχείο ZIP<br>που περιέχει τις πτήσεις");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","Πατήστε εδώ για υποβολή των πτήσεων");
+define("_SUBMIT_MULTIPLE_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ONLY_THE_IGC_FILES_WILL_BE_PROCESSED","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ IGC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SUBMIT_THE_ZIP_FILE_CONTAINING_THE_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ ZIP<br>οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_FILE_DOESNT_END_IN_ZIP","Το αρχείο δεν έχει κατάληξη .zip");
-define("_ADDING_FILE","Καταχώρηση πτήσης");
-define("_ADDED_SUCESSFULLY","Η καταχώρηση ήταν επιτυχής");
-define("_PROBLEM","Πρόβλημα");
-define("_TOTAL","Συνολικά");
-define("_IGC_FILES_PROCESSED","πτήσεις επεξεργάστηκαν");
-define("_IGC_FILES_SUBMITED","πτήσεις καταχωρήθηκαν");
+define("_FILE_DOESNT_END_IN_ZIP","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ .zip");
+define("_ADDING_FILE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ADDED_SUCESSFULLY","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PROBLEM","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_IGC_FILES_PROCESSED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_IGC_FILES_SUBMITED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 // info
-define("_DEVELOPMENT","Κατασκευή");
-define("_ANDREADAKIS_MANOLIS","Ανδρεαδάκης Μανώλης");
-define("_PROJECT_URL","Σελίδα");
-define("_VERSION","Έκδοση");
-define("_MAP_CREATION","Δημιουργία Χαρτών");
-define("_PROJECT_INFO","Πληροφορίες για το πρόγραμμα");
+define("_DEVELOPMENT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ANDREADAKIS_MANOLIS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PROJECT_URL","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_VERSION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MAP_CREATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PROJECT_INFO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 // menu bar 
-define("_MENU_MAIN_MENU","Βασικές επιλογές");
-define("_MENU_DATE","Ημερομηνία");
-define("_MENU_COUNTRY","Χώρα");
+define("_MENU_MAIN_MENU","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_DATE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_COUNTRY","οΏ½οΏ½οΏ½οΏ½");
 define("_MENU_XCLEAGUE","XC League");
-define("_MENU_ADMIN","Διαχείρηση");
+define("_MENU_ADMIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
-define("_MENU_COMPETITION_LEAGUE","Κατάταξη - όλες οι κατηγορίες");
+define("_MENU_COMPETITION_LEAGUE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ - οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 define("_MENU_OLC","XC");
-define("_MENU_OPEN_DISTANCE","Ανοιχτή απόσταση");
-define("_MENU_DURATION","Διάρκεια");
-define("_MENU_ALL_FLIGHTS","Όλες οι πτήσεις");
-define("_MENU_FLIGHTS","Πτήσεις");
-define("_MENU_TAKEOFFS","Απογειώσεις");
-define("_MENU_FILTER","Φιλτράρισμα");
-define("_MENU_MY_FLIGHTS","Οι πτήσεις μου");
-define("_MENU_MY_PROFILE","Οι πληροφορίες μου");
-define("_MENU_MY_STATS","Τα στατιστικά μου"); 
-define("_MENU_MY_SETTINGS","Οι ρυθμίσεις μου"); 
-define("_MENU_SUBMIT_FLIGHT","Υποβολή πτήσης");
-define("_MENU_SUBMIT_FROM_ZIP","Υποβολή πτήσης από zip");
-define("_MENU_SHOW_PILOTS","Πιλότοι");
-define("_MENU_SHOW_LAST_ADDED","Τελευταίες προσθήκες");
-define("_FLIGHTS_STATS","Στατιστικά πτήσεων");
+define("_MENU_OPEN_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_DURATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_ALL_FLIGHTS","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_TAKEOFFS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_FILTER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_MY_FLIGHTS","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_MENU_MY_PROFILE","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_MENU_MY_STATS","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½"); 
+define("_MENU_MY_SETTINGS","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½"); 
+define("_MENU_SUBMIT_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_SUBMIT_FROM_ZIP","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ zip");
+define("_MENU_SHOW_PILOTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_SHOW_LAST_ADDED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_FLIGHTS_STATS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_SELECT_YEAR","Επιλογή έτους");
-define("_SELECT_MONTH","Επιλογή μήνα");
-define("_ALL_COUNTRIES","Όλες οι χώρες");
+define("_SELECT_YEAR","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SELECT_MONTH","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_ALL_COUNTRIES","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // list_pilots.php
 //--------------------------------------------
 
-define("_ALL_TIMES","Όλες οι χρονιές");
-define("_NUMBER_OF_FLIGHTS","Αριθμός πτήσεων");
-define("_TOTAL_DISTANCE","Συνολική απόσταση");
-define("_TOTAL_DURATION","Συνολική διάρκεια");
-define("_BEST_OPEN_DISTANCE","Καλύτερη απόσταση");
-define("_TOTAL_OLC_DISTANCE","Συνολική XC απόσταση");
-define("_TOTAL_OLC_SCORE","Συνολικοί XC βαθμοί");
-define("_BEST_OLC_SCORE","Καλύτερος XC βαθμός");
-define("_MEAN_DURATION","Μέση διάρκεια");
-define("_MEAN_DISTANCE","Μέση Απόσταση");
-define("_PILOT_STATISTICS_SORT_BY","Πιλότοι - Ταξινόμηση ανά");
-define("_CATEGORY_FLIGHT_NUMBER","Κατηγορία 'FastJoe' - Αριθμός πτήσεων");
-define("_CATEGORY_TOTAL_DURATION","Κατηγορία 'DURACELL' - Συνολική διάρκεια πτήσεων");
-define("_CATEGORY_OPEN_DISTANCE","Κατηγορία 'Open Distance'");
-define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","Δεν υπάρχουν προς το παρόν ενεργοί πιλότοι !");
+define("_ALL_TIMES","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_NUMBER_OF_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_DURATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_BEST_OPEN_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_OLC_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_OLC_SCORE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_BEST_OLC_SCORE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEAN_DURATION","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEAN_DISTANCE","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PILOT_STATISTICS_SORT_BY","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ - οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_CATEGORY_FLIGHT_NUMBER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 'FastJoe' - οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_CATEGORY_TOTAL_DURATION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 'DURACELL' - οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_CATEGORY_OPEN_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 'Open Distance'");
+define("_THERE_ARE_NO_PILOTS_TO_DISPLAY","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ !");
 
 	
 //--------------------------------------------
 // delete_flight.php
 //--------------------------------------------
 
-define("_THE_FLIGHT_HAS_BEEN_DELETED","Η πτήση διαγράφηκε");
-define("_RETURN","Επιστροφή");
-define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","ΠΡΟΣΟΧΗ - Θα διαγράψετε την παρακάτω πτήση ;");
-define("_THE_DATE","Ημερομηνία");
-define("_YES","ΝΑΙ");
-define("_NO","ΟΧΙ");
+define("_THE_FLIGHT_HAS_BEEN_DELETED","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_RETURN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_CAUTION_THE_FLIGHT_WILL_BE_DELETED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ - οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ ;");
+define("_THE_DATE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_YES","οΏ½οΏ½οΏ½");
+define("_NO","οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // competition.php
 //--------------------------------------------
 
-define("_LEAGUE_RESULTS","Αποτελέσματα Κατάταξης");
-define("_N_BEST_FLIGHTS"," καλύτερες πτήσεις");
+define("_LEAGUE_RESULTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_N_BEST_FLIGHTS"," οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 define("_OLC","XC");
-define("_OLC_TOTAL_SCORE","XC Συνολική βαθμολογία");
-define("_KILOMETERS","Χιλιόμετρα");
-define("_TOTAL_ALTITUDE_GAIN","Συνολική απόκτηση ύψους");
-define("_TOTAL_KM","Συνολικά χιλ.");
+define("_OLC_TOTAL_SCORE","XC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_KILOMETERS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_ALTITUDE_GAIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_TOTAL_KM","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½.");
 
 //--------------------------------------------
 // filter.php
 //--------------------------------------------
 
-define("_IS","να είναι");
-define("_IS_NOT","να μην είναι");
-define("_OR","ή");
-define("_AND","και");
-define("_FILTER_PAGE_TITLE","Φιλτράρισμα πτήσεων με κριτήρια");
-define("_RETURN_TO_FLIGHTS","Επιστροφή στις πτήσεις");
-define("_THE_FILTER_IS_ACTIVE","Το φιλτράρισμα είναι ενεργό");
-define("_THE_FILTER_IS_INACTIVE","Το φιλτράρισμα είναι ανενεργό");
-define("_SELECT_DATE","Επιλογή Ημερομηνίας");
-define("_SHOW_FLIGHTS","Να εμφανιστούν οι πτήσεις");
-define("_ALL2","ΟΛΕΣ");
-define("_WITH_YEAR","με το έτος");
-define("_MONTH","Μήνας");
-define("_YEAR","Έτος");
-define("_FROM","Από");
-define("_from","από");
-define("_TO","Έως");
-define("_SELECT_PILOT","Επιλογή Πιλότου");
-define("_THE_PILOT","Ο πιλότος");
-define("_THE_TAKEOFF","Η απογείωση");
-define("_SELECT_TAKEOFF","Επιλογή Απογείωσης");
-define("_THE_COUNTRY","H χώρα");
-define("_COUNTRY","Χώρα");
-define("_SELECT_COUNTRY","Επιλέξτε χώρα");
-define("_OTHER_FILTERS","Λοιπά στοιχεία");
-define("_LINEAR_DISTANCE_SHOULD_BE","Η απόσταση σε ευθεία να είναι");
-define("_OLC_DISTANCE_SHOULD_BE","Η απόσταση XC να είναι");
-define("_OLC_SCORE_SHOULD_BE","Η βαθμολογία XC να είναι");
-define("_DURATION_SHOULD_BE","Η διάρκεια να είναι");
-define("_ACTIVATE_CHANGE_FILTER","Ενεργοποίηση / αλλαγή ΦΙΛΤΡΟΥ");
-define("_DEACTIVATE_FILTER","Απενεργοποίηση ΦΙΛΤΡΟΥ");
-define("_HOURS","ώρες");
-define("_MINUTES","λεπτά");
+define("_IS","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_IS_NOT","οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OR","οΏ½");
+define("_AND","οΏ½οΏ½οΏ½");
+define("_FILTER_PAGE_TITLE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_RETURN_TO_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_FILTER_IS_ACTIVE","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_FILTER_IS_INACTIVE","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SELECT_DATE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SHOW_FLIGHTS","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ALL2","οΏ½οΏ½οΏ½οΏ½");
+define("_WITH_YEAR","οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_MONTH","οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_YEAR","οΏ½οΏ½οΏ½οΏ½");
+define("_FROM","οΏ½οΏ½οΏ½");
+define("_from","οΏ½οΏ½οΏ½");
+define("_TO","οΏ½οΏ½οΏ½");
+define("_SELECT_PILOT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_PILOT","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_TAKEOFF","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SELECT_TAKEOFF","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_COUNTRY","H οΏ½οΏ½οΏ½οΏ½");
+define("_COUNTRY","οΏ½οΏ½οΏ½οΏ½");
+define("_SELECT_COUNTRY","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_OTHER_FILTERS","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LINEAR_DISTANCE_SHOULD_BE","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_DISTANCE_SHOULD_BE","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_SCORE_SHOULD_BE","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DURATION_SHOULD_BE","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ACTIVATE_CHANGE_FILTER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ / οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DEACTIVATE_FILTER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_HOURS","οΏ½οΏ½οΏ½οΏ½");
+define("_MINUTES","οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // add_flight.php
 //--------------------------------------------
 
-define("_SUBMIT_FLIGHT","Υποβολή πτήσης");
-define("_ONLY_THE_IGC_FILE_IS_NEEDED","(μόνο το IGC αρχείο είναι υποχρεωτικό)");
-define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","Υποβάλετε το αρχείο<br>IGC της πτήσης");
-define("_NOTE_TAKEOFF_NAME","Αναφέρετε την ονομασία της απογείωσης");
-define("_COMMENTS_FOR_THE_FLIGHT","Σχόλια για την πτήση");
-define("_PHOTO","Φωτογραφία");
-define("_PHOTOS_GUIDELINES","Οι φωτογραφίες πρέπει να είναι jpg και μέχρι ");
-define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","Πατήστε εδώ για υποβολή της πτήσης");
-define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","Εχετε πολλές πτήσεις σε ένα αρχείο zip ?");
-define("_PRESS_HERE","Πατήστε εδώ");
+define("_SUBMIT_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_ONLY_THE_IGC_FILE_IS_NEEDED","(οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ IGC οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)");
+define("_SUBMIT_THE_IGC_FILE_FOR_THE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½<br>IGC οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_NOTE_TAKEOFF_NAME","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_COMMENTS_FOR_THE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PHOTO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PHOTOS_GUIDELINES","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ jpg οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ ");
+define("_PRESS_HERE_TO_SUBMIT_THE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DO_YOU_HAVE_MANY_FLIGHTS_IN_A_ZIPFILE","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ zip ?");
+define("_PRESS_HERE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
 
-define("_IS_PRIVATE","Όχι δημόσια θέα");
-define("_MAKE_THIS_FLIGHT_PRIVATE","Όχι δημόσια θέα");
-define("_INSERT_FLIGHT_AS_USER_ID","Εισαγωγή ως χρήστης (ID)");
-define("_FLIGHT_IS_PRIVATE","Η πτήση δεν είναι σε δημόσια θέα");
+define("_IS_PRIVATE","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_MAKE_THIS_FLIGHT_PRIVATE","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_INSERT_FLIGHT_AS_USER_ID","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (ID)");
+define("_FLIGHT_IS_PRIVATE","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // edit_flight.php
 //--------------------------------------------
 
-define("_CHANGE_FLIGHT_DATA","Αλλαγή στοιχείων πτήσης");
-define("_IGC_FILE_OF_THE_FLIGHT","Αρχείο IGC της πτήσης");
-define("_DELETE_PHOTO","Διαγραφή");
-define("_NEW_PHOTO","καινούργια");
-define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","Πατήστε εδώ για αλλαγή των στοιχείων της πτήσης");
-define("_THE_CHANGES_HAVE_BEEN_APPLIED","Οι αλλαγές στα στοιχεία έχουν γίνει");
-define("_RETURN_TO_FLIGHT","Επιστροφή στην πτήση");
+define("_CHANGE_FLIGHT_DATA","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_IGC_FILE_OF_THE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ IGC οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DELETE_PHOTO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_NEW_PHOTO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PRESS_HERE_TO_CHANGE_THE_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_THE_CHANGES_HAVE_BEEN_APPLIED","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_RETURN_TO_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // olc
 //--------------------------------------------
-define("_RETURN_TO_FLIGHT","Επιστροφή στην πτήση");
-define("_READY_FOR_SUBMISSION","Ετοιμη προς υποβολή");
-define("_OLC_MAP","Χάρτης");
-define("_OLC_BARO","Βαρόγραμα");
+define("_RETURN_TO_FLIGHT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_READY_FOR_SUBMISSION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_MAP","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_OLC_BARO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
 //--------------------------------------------
 // pilot_profile.php
 //--------------------------------------------
-define("_Pilot_Profile","Προφίλ Πιλότου");
-define("_back_to_flights","επιστροφή");
-define("_pilot_stats","στατιστικά πιλότου");
-define("_edit_profile","επεξεργασία");
-define("_flights_stats","στατιστικά πτήσεων");
-define("_View_Profile","Εμφάνιση προφίλ");
+define("_Pilot_Profile","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_back_to_flights","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_pilot_stats","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_edit_profile","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_flights_stats","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_View_Profile","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Personal_Stuff","Προσωπικά στοιχεία");
-define("_First_Name","Όνομα");
-define("_Last_Name","Επώνυμο");
-define("_Birthdate","Ημ. Γέννησης");
-define("_dd_mm_yy","ηη.μμ.εε");
-define("_Sign","Ζώδιο");
-define("_Marital_Status","Οικογενειακή κατάσταση");
-define("_Occupation","Επάγγελμα");
-define("_Web_Page","Web σελίδα");
+define("_Personal_Stuff","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_First_Name","οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Last_Name","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Birthdate","οΏ½οΏ½. οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_dd_mm_yy","οΏ½οΏ½.οΏ½οΏ½.οΏ½οΏ½");
+define("_Sign","οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Marital_Status","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Occupation","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Web_Page","Web οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 define("_N_A","N/A");
-define("_Other_Interests","¶λλα ενδιαφέροντα");
-define("_Photo","Φωτογραφία");
+define("_Other_Interests","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Photo","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Flying_Stuff","Πτητικά στοιχεία");
-define("_note_place_and_date","Δώστε τοποθεσία και χρόνο");
-define("_Flying_Since","Χρονολογία πρώτης πτήσης");
-define("_Pilot_Licence","Δίπλωμα πιλότου");
-define("_Paragliding_training","Εκπαιδεύση");
-define("_Favorite_Location","Αγαπημένη τοποθεσία");
-define("_Usual_Location","Συνηθισμένη τοποθεσία");
-define("_Best_Flying_Memory","Καλύτερη ανάμνηση");
-define("_Worst_Flying_Memory","Χειρότερη ανάμνηση");
-define("_Personal_Distance_Record","Προσωπικό ρεκόρ απόστασης");
-define("_Personal_Height_Record","Προσωπικό ρεκόρ ύψους");
-define("_Hours_Flown","Συνολικές ώρες πτήσης");
-define("_Hours_Per_Year","Ώρές ανα έτος");
+define("_Flying_Stuff","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_note_place_and_date","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Flying_Since","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Pilot_Licence","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Paragliding_training","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Favorite_Location","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Usual_Location","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Best_Flying_Memory","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Worst_Flying_Memory","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Personal_Distance_Record","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Personal_Height_Record","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Hours_Flown","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Hours_Per_Year","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
 
-define("_Equipment_Stuff","Εξοπλισμός");
-define("_Glider","Αλεξίπτωτο");
-define("_Harness","Ζώνη / Κάθισμα");
-define("_Reserve_chute","Εφεδρικό");
-define("_Camera","Φωτ. μηχανή");
-define("_Vario","Βάριο");
+define("_Equipment_Stuff","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Glider","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Harness","οΏ½οΏ½οΏ½οΏ½ / οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Reserve_chute","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Camera","οΏ½οΏ½οΏ½. οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Vario","οΏ½οΏ½οΏ½οΏ½οΏ½");
 define("_GPS","GPS");
-define("_Helmet","Κράνος");
-define("_Camcorder","Βίντεοκάμερα");
+define("_Helmet","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Camcorder","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Manouveur_Stuff","SIV - Ακροβατικά");
-define("_note_max_descent_rate","δώστε μέγιστο βαθμό καδόθου");
-define("_Spiral","Σπιράλ");
+define("_Manouveur_Stuff","SIV - οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_note_max_descent_rate","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Spiral","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 define("_Bline","Bline");
 define("_Full_Stall","Full Stall");
-define("_Other_Manouveurs_Acro","¶λλα");
+define("_Other_Manouveurs_Acro","οΏ½οΏ½οΏ½οΏ½");
 define("_Sat","Sat");
-define("_Asymmetric_Spiral","Ασύμμετρο σπιράλ");
-define("_Spin","Σπίν");
+define("_Asymmetric_Spiral","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Spin","οΏ½οΏ½οΏ½οΏ½");
 
-define("_General_Stuff","Γενικά");
-define("_Favorite_Singer","Αγαπημένος τραγουδιστής");
-define("_Favorite_Movie","Αγαπημένη ταινία");
-define("_Favorite_Internet_Site","Αγαπημένο <br>Internet Site");
-define("_Favorite_Book","Αγαπημένος βιβλίο");
-define("_Favorite_Actor","Αγαπημένος ηθοποιός");
+define("_General_Stuff","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Favorite_Singer","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Favorite_Movie","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Favorite_Internet_Site","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ <br>Internet Site");
+define("_Favorite_Book","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Favorite_Actor","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // pilot_profile_edit.php
 //--------------------------------------------
-define("_Upload_new_photo_or_change_old","Δώστε μια νέα φωτογραφία ή αλλάξτε την παλιά");
-define("_Delete_Photo","Διαγραφή φωτογραφίας");
-define("_Your_profile_has_been_updated","Το προφίλ σας έχει αλλαχτεί");
-define("_Submit_Change_Data","Αλλαγή στοιχείων");
+define("_Upload_new_photo_or_change_old","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Delete_Photo","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Your_profile_has_been_updated","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Submit_Change_Data","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // Added by Martin Jursa, 26.04.2007 for pilot_profile and pilot_profile_edit
 //--------------------------------------------
-define("_Sex", "Φύλο");
+define("_Sex", "οΏ½οΏ½οΏ½οΏ½");
 define("_Login_Stuff", "Change Login-Data");
 define("_PASSWORD_CONFIRMATION", "Confirm password");
 define("_EnterPasswordOnlyToChange", "Only enter the password, if you want to change it:");
@@ -400,77 +400,77 @@ define("_EmailSaveProblem", "A problem occurred when saving the email address.")
 //--------------------------------------------
 // pilot_profile_stats.php
 //--------------------------------------------
-define("_hh_mm","ωω:λλ");
+define("_hh_mm","οΏ½οΏ½:οΏ½οΏ½");
 
-define("_Totals","Συνολικά");
-define("_First_flight_logged","Πρώτη πτήση που καταχωρήθηκε");
-define("_Last_flight_logged","Τελευταία πτήση που καταχωρήθηκε");
-define("_Flying_period_covered","Πτήτική περίοδος<br>καταχωρημένων πτησεων");
-define("_Total_Distance","Συνολική απόσταση");
-define("_Total_OLC_Score","Συνολική βαθμολογία XC");
-define("_Total_Hours_Flown","Συνολικές ώρες πτήσης");
-define("_Total_num_of_flights","Συνολικός αριθμός πτήσεων");
+define("_Totals","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_First_flight_logged","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Last_flight_logged","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Flying_period_covered","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½<br>οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Total_Distance","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Total_OLC_Score","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC");
+define("_Total_Hours_Flown","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Total_num_of_flights","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Personal_Bests","Προσωπικά ρεκόρ");
-define("_Best_Open_Distance","Καλύτερη ανοιχτή απόσταση");
-define("_Best_FAI_Triangle","Καλύτερο FAI Τρίγωνο");
-define("_Best_Free_Triangle","Καλύτερο Ελέυθερο Τρίγωνο");
-define("_Longest_Flight","Μεγαλύτερη διάρκεια πτήσης");
-define("_Best_OLC_score","Καλύτερη βαθμολογία XC");
-define("_Absolute_Height_Record","Μέγιστο υψόμετρο απο θάλασσα");
-define("_Altitute_gain_Record","Μέγιστη απόκτηση ύψους απο την απογείωση");
+define("_Personal_Bests","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Best_Open_Distance","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Best_FAI_Triangle","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ FAI οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Best_Free_Triangle","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Longest_Flight","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Best_OLC_score","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC");
+define("_Absolute_Height_Record","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Altitute_gain_Record","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Mean_values","Μέσες τιμές");
-define("_Mean_distance_per_flight","Μέση απόσταση ανα πτήση");
-define("_Mean_flights_per_Month","Μέσος αριθμός πτήσεων ανα μήνα");
-define("_Mean_distance_per_Month","Μέση απόσταση ανα μήνα");
-define("_Mean_duration_per_Month","Μέση διάρκεια ανα μήνα");
-define("_Mean_duration_per_flight","Μέση διάρκεια ανα πτήση");
-define("_Mean_flights_per_Year","Μέσος αριθμός πτήσεων ανα έτος");
-define("_Mean_distance_per_Year","Μέση απόσταση ανα έτος");
-define("_Mean_duration_per_Year","Μέση διάρκεια ανα έτος");
+define("_Mean_values","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_distance_per_flight","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_flights_per_Month","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_distance_per_Month","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_duration_per_Month","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_duration_per_flight","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_flights_per_Year","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_distance_per_Year","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Mean_duration_per_Year","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // show_waypoint.php
 //--------------------------------------------
-define("_See_flights_near_this_point","Δείτε πτήσεις από αυτό το σημείο");
-define("_Waypoint_Name","Όνομα τοποθεσίας");
-define("_Navigate_with_Google_Earth","Δες το στο Google_Earth");
-define("_See_it_in_Google_Maps","Δες το στο Google_Maps");
-define("_See_it_in_MapQuest","Δες το στο MapQuest");
-define("_COORDINATES","Συντεταγμένες");
-define("_FLIGHTS","Πτήσεις");
-define("_SITE_RECORD","Ρεκόρ τοποθεσίας");
-define("_SITE_INFO","Πληροφορίες απογείωσης");
-define("_SITE_REGION","Περιοχή");
-define("_SITE_LINK","Περισσότερες πληροφορίες");
-define("_SITE_DESCR","Περιγραφή απογείωσης/μέρους");
+define("_See_flights_near_this_point","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Waypoint_Name","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Navigate_with_Google_Earth","οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ Google_Earth");
+define("_See_it_in_Google_Maps","οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ Google_Maps");
+define("_See_it_in_MapQuest","οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ MapQuest");
+define("_COORDINATES","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_FLIGHTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SITE_RECORD","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SITE_INFO","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SITE_REGION","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SITE_LINK","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SITE_DESCR","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½/οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // KML file
 //--------------------------------------------
-define("_See_more_details","Περισσότερες πληροφορίες");
-define("_KML_file_made_by","Δημιουργία KML αρχείου: ");
+define("_See_more_details","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_KML_file_made_by","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ KML οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½: ");
 
 //--------------------------------------------
 // add_waypoint.php
 //--------------------------------------------
-define("_ADD_WAYPOINT","Καταχώρηση απογείωσης");
-define("_WAYPOINT_ADDED","Η απογείωση καταχωρήθηκε");
+define("_ADD_WAYPOINT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_WAYPOINT_ADDED","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // list_takeoffs.php
 //--------------------------------------------
-define("_SITE_RECORD_OPEN_DISTANCE","Ρεκόρ απογείωσης<br>(ανοιχτή απόσταση)");
+define("_SITE_RECORD_OPEN_DISTANCE","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½<br>(οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)");
 	
 //--------------------------------------------
 // glider types
 //--------------------------------------------
-define("_GLIDER_TYPE","Τύπος πτητικής μηχανής");
+define("_GLIDER_TYPE","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 function setGliderCats() {
 	global  $CONF_glider_types,$gliderCatList;
-	$gliderCatList=array(1=>'Παραπέντε',2=>'Αετός FAI1',4=>'Αετός FAI5',8=>'Ανεμόπτερο',
-						16=>'Παραμοτέρ',32=>'Trike',64=>'Μηχανοκίνητη πτήση');
+	$gliderCatList=array(1=>'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½',2=>'οΏ½οΏ½οΏ½οΏ½οΏ½ FAI1',4=>'οΏ½οΏ½οΏ½οΏ½οΏ½ FAI5',8=>'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½',
+						16=>'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½',32=>'Trike',64=>'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½');
 	foreach ($CONF_glider_types as $gId=>$gName) if (!$gliderCatList[$gId]) $gliderCatList[$gId]=$gName;
 }
 setGliderCats();
@@ -479,7 +479,7 @@ setGliderCats();
 // class types
 //--------------------------------------------
 function setClassList() {
-	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport (έως και DHV 2)",2=>"Open (απο DHV 2/3)",3=>"Διθέσια");
+	$CONF_TEMP['gliderClasses'][1]['classes']=array(1=>"Sport (οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ DHV 2)",2=>"Open (οΏ½οΏ½οΏ½ DHV 2/3)",3=>"οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 	$CONF_TEMP['gliderClasses'][2]['classes']=array(1=>"Kingpost",2=>"Topless");
 	global $CONF;
 	foreach($CONF['gliderClasses'] as $i=>$gClass) {
@@ -496,7 +496,7 @@ setClassList();
 //--------------------------------------------
 function setXCtypesList() {
 	global  $CONF_xc_types,$xcTypesList;
-	$xcTypesList=array(1=>"XC με 3 πυλώνες",2=>"Τρίγωνο Ανοιχτό",4=>"Τρίγωνο FAI κλειστό");
+	$xcTypesList=array(1=>"XC οΏ½οΏ½ 3 οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½",2=>"οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½",4=>"οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ FAI οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 	foreach ($CONF_xc_types as $gId=>$gName) if (!$xcTypesList[$gId]) $xcTypesList[$gId]=$gName;
 }
 setXCtypesList(); 
@@ -505,162 +505,162 @@ setXCtypesList();
 // user prefs  & units
 //--------------------------------------------
 
-define("_Your_settings_have_been_updated","Οι ρυθμίσεις σας έχουν αποθηκευτεί");
+define("_Your_settings_have_been_updated","οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_THEME","Εμφάνιση");
-define("_LANGUAGE","Γλώσσα");
-define("_VIEW_CATEGORY","Θέαση κατηγορίας");
-define("_VIEW_COUNTRY","Θέαση χώρας");
-define("_UNITS_SYSTEM" ,"Σύστημα μονάδων");
-define("_METRIC_SYSTEM","Μετρικό (χιλ,μ)");
-define("_IMPERIAL_SYSTEM","Imperial (μίλια,πόδια)");
-define("_ITEMS_PER_PAGE","Πτήσεις ανά σελίδα");
+define("_THEME","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LANGUAGE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_VIEW_CATEGORY","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_VIEW_COUNTRY","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_UNITS_SYSTEM" ,"οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_METRIC_SYSTEM","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½οΏ½,οΏ½)");
+define("_IMPERIAL_SYSTEM","Imperial (οΏ½οΏ½οΏ½οΏ½οΏ½,οΏ½οΏ½οΏ½οΏ½οΏ½)");
+define("_ITEMS_PER_PAGE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 define("_MI","mi");
-define("_KM","χιλ");
+define("_KM","οΏ½οΏ½οΏ½");
 define("_FT","ft");
-define("_M","μ");
-define("_MPH","μαο");
-define("_KM_PER_HR","χιλ/ω");
+define("_M","οΏ½");
+define("_MPH","οΏ½οΏ½οΏ½");
+define("_KM_PER_HR","οΏ½οΏ½οΏ½/οΏ½");
 define("_FPM","fpm");
-define("_M_PER_SEC","μ/δευτ");
+define("_M_PER_SEC","οΏ½/οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // index page
 //--------------------------------------------
 
-define("_WORLD_WIDE","Παγκοσμίως");
-define("_National_XC_Leagues_for","Εθνικές κατατάξεις");
-define("_Flights_per_Country","Πτήσεις ανα Χώρα");
-define("_Takeoffs_per_Country","Απογειώσεις Χωρών");
-define("_INDEX_HEADER","Καλώς ήλθατε στον Leonardo XC League");
-define("_INDEX_MESSAGE","Μπορείτε να χρησιμοποιήσετε το μενού απο πάνω ή να επιλέξετε τις πιο συνηθισμένες επιλογές παρακάτω");
+define("_WORLD_WIDE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_National_XC_Leagues_for","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Flights_per_Country","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Takeoffs_per_Country","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_INDEX_HEADER","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ Leonardo XC League");
+define("_INDEX_MESSAGE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 //--------------------------------------------
 // NEW 
 //--------------------------------------------
-define("_MENU_SUMMARY_PAGE","Πρώτη Σελίδα (Περίληψη)");
-define("_Display_ALL","Εμφάνιση ΟΛΩΝ");
-define("_Display_NONE","Εμφάνιση ΟΛΩΝ");
-define("_Reset_to_default_view","Επαναφορά της αρχικής εμφάνισης");
-define("_No_Club","Κανένα club/ομάδα");
-define("_This_is_the_URL_of_this_page","Το URL αυτής της σελίδας");
-define("_All_glider_types","Όλες οι πτητικές συσκευές");
+define("_MENU_SUMMARY_PAGE","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)");
+define("_Display_ALL","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Display_NONE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Reset_to_default_view","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_No_Club","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ club/οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_This_is_the_URL_of_this_page","οΏ½οΏ½ URL οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_All_glider_types","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
-define("_MENU_SITES_GUIDE","Οδηγός απογειώσεων");
-define("_Site_Guide","Οδηγός απογειώσεων");
+define("_MENU_SITES_GUIDE","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Site_Guide","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Search_Options","Αναζήτηση");
-define("_Below_is_the_list_of_selected_sites","Λίστα των επιλεγμένων απογειώσεων");
-define("_Clear_this_list","Καθαρισμός της λίστας");
-define("_See_the_selected_sites_in_Google_Earth","Ανοιγμα των επιλεγμένων στο Google Earth");
-define("_Available_Takeoffs","Διαθέσιμες απογειώσεις");
-define("_Search_site_by_name","Αναζήτηση με όνομα");
-define("_give_at_least_2_letters","δώστε τουλάχιστον 2 γράμματα");
-define("_takeoff_move_instructions_1","Μετακινήστε τις όλες τις διαθέσιμες απογειώσεις στην λίστα δεξιά με το >> ή μόνο την επιλεγμένη με το > ");
-define("_Takeoff_Details","Στοιχεία απογείωσης");
-
-
-define("_Takeoff_Info","Πληροφορίες απογείωσης");
-define("_XC_Info","Πληροφορίες XC");
-define("_Flight_Info","Πληροφορίες Πτήσης");
-
-define("_MENU_LOGOUT","Αποσύνδεση");
-define("_MENU_LOGIN","Είσοδος");
-define("_MENU_REGISTER","¶νοιγμα λογαριασμού");
+define("_Search_Options","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Below_is_the_list_of_selected_sites","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Clear_this_list","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_See_the_selected_sites_in_Google_Earth","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ Google Earth");
+define("_Available_Takeoffs","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Search_site_by_name","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_give_at_least_2_letters","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 2 οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_takeoff_move_instructions_1","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½ >> οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½ > ");
+define("_Takeoff_Details","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
-define("_Africa","Αφρική");
-define("_Europe","Ευρώπη");
-define("_Asia","Ασία");
-define("_Australia","Αυστραλία");
-define("_North_Central_America","Βόρεια/Κεντρική Αμερική");
-define("_South_America","Νότια Αμερική");
+define("_Takeoff_Info","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_XC_Info","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ XC");
+define("_Flight_Info","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Recent","Πρόσφατα");
-
-
-define("_Unknown_takeoff","¶γνωστη απογείωση");
-define("_Display_on_Google_Earth","¶νοιγμα στο Google Earth");
-define("_Use_Man_s_Module","Με το Man's Module (αναλυτική απεικόνιση)");
-define("_Line_Color","Χρώμα γραμμής");
-define("_Line_width","Πάχος γραμμής");
-define("_unknown_takeoff_tooltip_1","Η πτήση αυτή ξεκίνησε από μη καταχωρημένη απογείωση");
-define("_unknown_takeoff_tooltip_2","Έαν ξέρετε το ονομα της απογείωσης πατήστε για να το συμπληρώσετε !");
-define("_EDIT_WAYPOINT","Αλλαγή στοιχείων απογείωσης");
-define("_DELETE_WAYPOINT","Διαγραφή απογείωσης");
-define("_SUBMISION_DATE","Ημ/νια υποβολής"); // the date a flight was submited to leonardo
-define("_TIMES_VIEWED","Αριθμός προβολών"); // the times that this flight havs been viewed
+define("_MENU_LOGOUT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_LOGIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MENU_REGISTER","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
-define("_takeoff_add_help_1","Μπορείτε να εισάγετε τις πληροφορίες για αυτήν την απογείωση εάν τις γνωρίζετε. Εάν όχι κλείστε το παράθυρο αυτό");
-define("_takeoff_add_help_2","Έάν η απογείωση που φαίνεται (Πάνω απο το 'άγνωστη απογείωση') είναι η σωστή τότε <strong>δεν πρέπει να την ξαναβάλετε</strong>. Απλώς κλείστε το παράθυρο αυτό.");
-define("_takeoff_add_help_3","Έάν δείτε το σωστό όνομα της απογείωσης κατω απο εδω πατήστε πάνω του για να συμπληρωθούν αυτόματα τα πεδία στα αριστερά.");
-define("_Takeoff_Name","Όνομα απογείωσης");
-define("_In_Local_Language","Στα ελληνικά");
-define("_In_English","Στα αγγλικά");
+define("_Africa","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Europe","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Asia","οΏ½οΏ½οΏ½οΏ½");
+define("_Australia","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_North_Central_America","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½/οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_South_America","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+
+define("_Recent","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+
+
+define("_Unknown_takeoff","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Display_on_Google_Earth","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ Google Earth");
+define("_Use_Man_s_Module","οΏ½οΏ½ οΏ½οΏ½ Man's Module (οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)");
+define("_Line_Color","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Line_width","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_unknown_takeoff_tooltip_1","οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_unknown_takeoff_tooltip_2","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ !");
+define("_EDIT_WAYPOINT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DELETE_WAYPOINT","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_SUBMISION_DATE","οΏ½οΏ½/οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); // the date a flight was submited to leonardo
+define("_TIMES_VIEWED","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); // the times that this flight havs been viewed
+
+
+define("_takeoff_add_help_1","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½. οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_takeoff_add_help_2","οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½') οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ <strong>οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½</strong>. οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½.");
+define("_takeoff_add_help_3","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½.");
+define("_Takeoff_Name","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_In_Local_Language","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_In_English","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 // New on 2007/02/20 - login screen
-define("_ENTER_PASSWORD","Δώστε το όνομα χρήστη και τον κωδικό σας.");
-define("_SEND_PASSWORD","Ξέχασα τον κωδικό μου");
-define("_ERROR_LOGIN","Δώσατε λάθος όνομα χρήστη ή κωδικό.");
-define("_AUTO_LOGIN","Αυτόματη εισαγωγή μου σε κάθε επίσκεψη");
-define("_USERNAME","Χρήστης");
-define("_PASSWORD","Κωδικός");
-define("_PROBLEMS_HELP","Εάν έχετε προβλήματα εισόδου επικοινωνήστε με τον διαχειριστή");
+define("_ENTER_PASSWORD","οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½.");
+define("_SEND_PASSWORD","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½");
+define("_ERROR_LOGIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½.");
+define("_AUTO_LOGIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_USERNAME","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PASSWORD","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_PROBLEMS_HELP","οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_LOGIN_TRY_AGAIN","Πατήστε %sΕδώ%s για να ξαναδοκιμάσετε");
-define("_LOGIN_RETURN","Πατήστε %sΕδώ%s για να γυρίσετε στην αρχική σελίδα");
+define("_LOGIN_TRY_AGAIN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ %sοΏ½οΏ½οΏ½%s οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_LOGIN_RETURN","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ %sοΏ½οΏ½οΏ½%s οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 // end 2007/02/20
 
-define("_Category","Κατηγορία");
-define("_MEMBER_OF","Μέλος ");
-define("_MemberID","Α/Α Μέλους");
-define("_EnterID","Εισαγωγή Α/Α");
-define("_Clubs_Leagues","Λέσχες / Κατατάξεις");
-define("_Pilot_Statistics","Στατιστικά πιλότων");
-define("_National_Rankings","Εθνικές κατατάξεις");
+define("_Category","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_MEMBER_OF","οΏ½οΏ½οΏ½οΏ½οΏ½ ");
+define("_MemberID","οΏ½/οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_EnterID","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½/οΏ½");
+define("_Clubs_Leagues","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ / οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Pilot_Statistics","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_National_Rankings","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
 // new on 2007/03/08
-define("_Select_Club","Επιλογή Λέσχης");
-define("_Close_window","Κλείσιμο παραθύρου");
-define("_Club","Λέσχη");
-define("_Sponsor","Σπόνσορας");
+define("_Select_Club","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Close_window","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Club","οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Sponsor","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
 // new on 2007/03/13
-define("_Go_To_Current_Month","Επιλογή τρέχοντος μήνα");
-define("_Today_is","Σήμερα είναι");
-define("_Wk","Εβδ");
-define("_Click_to_scroll_to_previous_month","Πατήστε για επιλογή του προηγούμενου μήνα");
-define("_Click_to_scroll_to_next_month","Πατήστε για επιλογή του επόμενου μήνα");
-define("_Click_to_select_a_month","Πατήστε για επιλογή μήνα");
-define("_Click_to_select_a_year","Πατήστε για επιλογή έτους");
-define("_Select_date_as_date.","Επιλογή [date] ως ημερομηνίας"); // do not replace [date], it will be replaced by date.
+define("_Go_To_Current_Month","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Today_is","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Wk","οΏ½οΏ½οΏ½");
+define("_Click_to_scroll_to_previous_month","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Click_to_scroll_to_next_month","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Click_to_select_a_month","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Click_to_select_a_year","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Select_date_as_date.","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ [date] οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); // do not replace [date], it will be replaced by date.
 
 // end 2007/03/13
 
 // New on 2007/05/18 (alternative GUI_filter)
-define("_Filter_NoSelection", "Χωρίς επιλογή");
-define("_Filter_CurrentlySelected", "Τρέχουσα επιλογή");
-define("_Filter_DialogMultiSelectInfo", "Κρατήστε πατημένπ το Ctrl<BR>για να επιλέξετε περισσότερα απο ένα.");
+define("_Filter_NoSelection", "οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_CurrentlySelected", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_DialogMultiSelectInfo", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ Ctrl<BR>οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½.");
 
-define('_Filter_FilterTitleIncluding', 'Επιλογή [items]');
-define('_Filter_FilterTitleExcluding', 'Αποκλεισμός [items]');
-define('_Filter_DialogTitleIncluding', 'Επιλογή [items]');
-define('_Filter_DialogTitleExcluding', 'Αποκλεισμός [items]');
+define('_Filter_FilterTitleIncluding', 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ [items]');
+define('_Filter_FilterTitleExcluding', 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ [items]');
+define('_Filter_DialogTitleIncluding', 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ [items]');
+define('_Filter_DialogTitleExcluding', 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ [items]');
 
-define("_Filter_Items_pilot", "πιλότων");
-define("_Filter_Items_nacclub", "λεσχών");
-define("_Filter_Items_country", "χωρών");
-define("_Filter_Items_takeoff", "απογειώσεων");
+define("_Filter_Items_pilot", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Items_nacclub", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Items_country", "οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Items_takeoff", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Filter_Button_Select", "Επιλογή");
-define("_Filter_Button_Delete", "Διαγραφή");
-define("_Filter_Button_Accept", "Αποδοχή επιλογών");
-define("_Filter_Button_Cancel", "Ακύρωση");
+define("_Filter_Button_Select", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Button_Delete", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Button_Accept", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Filter_Button_Cancel", "οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 # menu bar
 define("_MENU_FILTER_NEW","Filter **NEW VERSION**");
@@ -670,9 +670,9 @@ define("_MENU_FILTER_NEW","Filter **NEW VERSION**");
 
 // New on 2007/05/23
 // second menu NACCclub selection
-define("_ALL_NACCLUBS", "Όλες οι λέσχες");
+define("_ALL_NACCLUBS", "οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 // Note to translators: use the placeholder $nacname in your translation as it is, don"t translate it
-define("_SELECT_NACCLUB", 'Επιλογή λέσχης-[nacname]');
+define("_SELECT_NACCLUB", 'οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½-[nacname]');
 
 // pilot profile
 define("_FirstOlcYear", "First year of participation in an online XC contest");
@@ -681,149 +681,151 @@ define("_FirstOlcYearComment", "Please select the year of your first participati
 //end 2007/05/23
 
 // New on 2007/11/06
-define("_Select_Brand","Επιλογή εταιρείας");
-define("_All_Brands","Όλες οι εταιρείες");
-define("_DAY","Μέρα");
-define('_Glider_Brand','Εταιρεία');
-define('_Or_Select_from_previous','Ή επιλέξτε απο προηγούμενα');
+define("_Select_Brand","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_All_Brands","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_DAY","οΏ½οΏ½οΏ½οΏ½");
+define('_Glider_Brand','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Or_Select_from_previous','οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 define('_Explanation_AddToBookmarks_IE', 'Add these filter settings to your favourites');
 define('_Msg_AddToBookmarks_IE', 'Click here to add these filter settings to your bookmarks.');
 define('_Explanation_AddToBookmarks_nonIE', '(Save this link to your bookmarks.)');
 define('_Msg_AddToBookmarks_nonIE', 'To save these filter settings to your bookmarks, use the function Save to bookmarks of your browser.');
 
-define('_PROJECT_HELP','Βοήθεια');
-define('_PROJECT_NEWS','Νέα');
-define('_PROJECT_RULES','Κανόνες 2007');
-define('_PROJECT_RULES2','Κανόνες 2008');
+define('_PROJECT_HELP','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_PROJECT_NEWS','οΏ½οΏ½οΏ½');
+define('_PROJECT_RULES','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 2007');
+define('_PROJECT_RULES2','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 2008');
 
 //end 2007/11/06
-define('_MEAN_SPEED1','Μέση ταχύτητα');
-define('_External_Entry','Πτήση απο άλλο server');
+define('_MEAN_SPEED1','οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_External_Entry','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ server');
 
 // New on 2007/11/25
-define('_Altitude','Υψόμετρο');
-define('_Speed','Ταχύτητα');
-define('_Distance_from_takeoff','Αππόσταση απο απογείωση');
+define('_Altitude','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Speed','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Distance_from_takeoff','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 // New on 2007/12/03
-define('_LAST_DIGIT','τελευταίο ψηφίο');
+define('_LAST_DIGIT','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_Filter_Items_nationality','εθνικότητα');
+define('_Filter_Items_nationality','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 define('_Filter_Items_server','server');
 
 // New on 2007/12/15
-define('_Ext_text1','Αυτή η πτήση είχε αρχικά υποβληθεί στο ');
-define('_Ext_text2','Πατήστε εδώ για τους χάρτες και τα γραφήματα');
-define('_Ext_text3','Σύνδεσμος στην πρωτότυπη πτήση');
+define('_Ext_text1','οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ ');
+define('_Ext_text2','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Ext_text3','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 // New on 2008/2/15
-define('_Male_short','Α');
-define('_Female_short','Θ');
-define('_Male','¶νδρας');
-define('_Female','Γυνάικα');
-define('_Pilot_Statistics','Στατιστικά Πιλότων');
+define('_Male_short','οΏ½');
+define('_Female_short','οΏ½');
+define('_Male','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Female','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Pilot_Statistics','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 // New on 2008/2/19
-define('_Altitude_Short','Υψος');
+define('_Altitude_Short','οΏ½οΏ½οΏ½οΏ½');
 define("_Vario_Short","Vario");
-define("_Time_Short","Ώρα");
-define("_Info","Πληρ/ρίες");
-define("_Control","Έλεχγος");
+define("_Time_Short","οΏ½οΏ½οΏ½");
+define("_Info","οΏ½οΏ½οΏ½οΏ½/οΏ½οΏ½οΏ½οΏ½");
+define("_Control","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_Zoom_to_flight","Ζουμ στην πτήση");
-define("_Follow_Glider","Ακολούθηση πιλότου");
-define("_Show_Task","Εμφάνιση Τασκ");
-define("_Show_Airspace","Εμφάνιση Airspace");
+define("_Zoom_to_flight","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Follow_Glider","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
+define("_Show_Task","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½");
+define("_Show_Airspace","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ Airspace");
 
 // New on 2008/06/04
-define("_Show_Optimization_details","Αναλυτικά η βαθμολόγηση");
+define("_Show_Optimization_details","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
-define("_MENU_SEARCH_PILOTS","Εύρευση πιλότου");
+define("_MENU_SEARCH_PILOTS","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½");
 
 
 // New on 2008/11/26
-define('_MENU_AREA_GUIDE','Περιοχές πτήσεων');
-define('_All_XC_types','Όλοι οι τύποι XC');
-define('_xctype','Τύπος XC');
+define('_MENU_AREA_GUIDE','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_All_XC_types','οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ XC');
+define('_xctype','οΏ½οΏ½οΏ½οΏ½οΏ½ XC');
 
-define('_Flying_Areas','Περιοχές πτήσεων');
-define('_Name_of_Area','Όνομα περιοχής');
-define('_See_area_details','Δείτε περισσότερες πληροφορίες και τις απογειώσεις της περιοχής');
+define('_Flying_Areas','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Name_of_Area','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_See_area_details','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_choose_ge_module','Επιλέξτε τον τρόπο<BR>απεικόνησης στο Google Earth');
-define('_ge_module_advanced_1','(Αναλυτικότατος, μέγιστο μέγεθος)');
-define('_ge_module_advanced_2','(Αναλυτικός, μεγάλο μέγεθος) ');
-define('_ge_module_Simple','Απλός (Μόνο Task, μικρό μέγεθος)');
+define('_choose_ge_module','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½<BR>οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ Google Earth');
+define('_ge_module_advanced_1','(οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½, οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)');
+define('_ge_module_advanced_2','(οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½, οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½) ');
+define('_ge_module_Simple','οΏ½οΏ½οΏ½οΏ½οΏ½ (οΏ½οΏ½οΏ½οΏ½ Task, οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)');
 
-define('_Pilot_search_instructions','Πληκτρολογήστε τουλάχιστον 3 γράμματα απο το όνομα ή το επίθετο');
+define('_Pilot_search_instructions','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ 3 οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_All_classes','Όλες οι κλάσεις');
-define('_Class','Κλάση');
+define('_All_classes','οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Class','οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 // 2009-03-20 filter for photos
-define('_Photos_filter_off','Με/χωρίς φωτογραφίες');
-define('_Photos_filter_on','Μόνο με φωτογραφίες');
+define('_Photos_filter_off','οΏ½οΏ½/οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Photos_filter_on','οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 // 2010-03-14
-define('_See_The_filter','Περιγραφή του φίλτρου');
-define('_PilotBirthdate','Ημ. Γέννησης Πιλότου');
-define('_Start_Type','Τύπος απογείωσης');
-define('_GLIDER_CERT','Πιστοποίηση πτέρυγας');
+define('_See_The_filter','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_PilotBirthdate','οΏ½οΏ½. οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Start_Type','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_GLIDER_CERT','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_MENU_BROWSER','Πτήσεις σε Google Maps');
-define('_FLIGHT_BROSWER','Αναζήτηση της βάσης των πτήσεων και απογειώσεων μέσω Google Maps');
-define('_Load_Thermals','Εμφάνιση Θερμικών');
-define('_Loading_thermals','Προετοιμασία εμφάνισης Θερμικών');
+define('_MENU_BROWSER','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ Google Maps');
+define('_FLIGHT_BROSWER','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ Google Maps');
+define('_Load_Thermals','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Loading_thermals','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_Layers','Πρόσθετοι Χάρτες');
-define('_Select_Area','Επιλογή περιοχής');
+define('_Layers','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Select_Area','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 
 //2010-11-20 commenting system
-define('_Leave_a_comment','Σχολιάστε');
-define('_Reply','Απάντηση');
-define('_Translate','Μετάφραση');
-define('_Translate_to','Μετάφραση σε');
-define('_Submit_Comment','Υποβολή σχολίου');
-define('_Logged_in_as','Είστε συνδεδεμένος ώς:');
-define('_Name','Όνομα');
+define('_Leave_a_comment','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Reply','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Translate','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Translate_to','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½');
+define('_Submit_Comment','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Logged_in_as','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½:');
+define('_Name','οΏ½οΏ½οΏ½οΏ½οΏ½');
 define('_Email','Email');
-define('_Will_not_be_displayed','(Δεν θα εμφανιστεί)');
-define('_Please_type_something','Γράψτε το σχόλιο σας');
-define('_Please_enter_your_name','Δώστε το όνομα/ ψευδόνυμο σας');
-define('_Please_give_your_email','Δώστε το email σας, δεν θα εμφανιστεί πουθενά στην σελίδα');
-define('_RSS_for_the_comments','Αυτός ειναι ο δεσμός για την ροή RSS για τα σχόλια αυτής τηε πτήσης<BR>Κάντε το Copy - Paste στον αναγνώστη RSS');
+define('_Will_not_be_displayed','(οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½)');
+define('_Please_type_something','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½');
+define('_Please_enter_your_name','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½/ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½');
+define('_Please_give_your_email','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ email οΏ½οΏ½οΏ½, οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_RSS_for_the_comments','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ RSS οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½<BR>οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ Copy - Paste οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ RSS');
 
 // on profile
-define('_Comments_are_enabled_by_default_for_new_flights','Τα σχόλια είναι ενεργοποιημένα για τις νέες πτήσεις');
+define('_Comments_are_enabled_by_default_for_new_flights','οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
-define('_Comments_Enabled','Σχόλια ενεργοποιημένα');
-define('_Comments_are_enabled_for_this_flight','Τα σχόλια είναι ενεργοποιημένα για αυτή τη πτήση');
-define('_Comments_are_disabled_for_this_flight','Τα σχόλια είναι απενεργοποιημένα για αυτή τη πτήση');
-define('_ERROR_in_setting_the_comments_status','Προέκυψε ΛΑΘΟΣ στην λειτουργία');
-define('_Save_changes','Αποθήκευση αλλαγών');
-define('_Cancel','Ακύρωση');
-define('_Are_you_sure_you_want_to_delete_this_comment','Είστε σίγουρος οτι θέλετε να διαγράψετε αυτό το σχόλιο;');
+define('_Comments_Enabled','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Comments_are_enabled_for_this_flight','οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Comments_are_disabled_for_this_flight','οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_ERROR_in_setting_the_comments_status','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Save_changes','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Cancel','οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_Are_you_sure_you_want_to_delete_this_comment','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½;');
 
-define('_RSS_feed_for_comments','Ροή RSS για τα σχόλια');
-define('_RSS_feed_for_flights','Ροή RSS για τις πτήσεις');
-define('_RSS_of_pilots_flights','Ροή RSS για τις πτήσεις του πιλότου');
+define('_RSS_feed_for_comments','οΏ½οΏ½οΏ½ RSS οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_RSS_feed_for_flights','οΏ½οΏ½οΏ½ RSS οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
+define('_RSS_of_pilots_flights','οΏ½οΏ½οΏ½ RSS οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½');
 
 
-define('_You_have_a_new_comment','Έχεις ένα νέο σχόλιο στο %s');
-define('_New_comment_email_body','Έχεις ένα νέο σχόλιο στο %s<BR><BR><a href="%s">Κάνε Click εδώ για να διαβάσεις όλα τα σχόλια</a><hr>%s');
+define('_You_have_a_new_comment','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ %s');
+define('_New_comment_email_body','οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ %s<BR><BR><a href="%s">οΏ½οΏ½οΏ½οΏ½ Click οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½</a><hr>%s');
 
-define("_Thermals","Θερμικά"); 
-define("_Remove_From_Favorites","Αφαίρεση απο τις Επιλεγμένες"); 
-define("_Favorites","Επιλεγμένες πτήσεις"); 
-define("_Compare_flights_line_1","Επέλεξε τις πτήσεις τσεκάροντας το κουτάκι στα αριστερά τους"); 
-define("_Compare_flights_line_2","Μετά μπορείς να τις συγκρίνεις όλες μαζί σε Google Maps"); 
-define("_Compare_Favorite_Tracks","Σύγκριση επιλεγμένων πτήσεων"); 
-define("_Remove_all_favorites","Αφαίρεση όλων απο τις επιλεγμένες"); 
-define("_Find_and_Compare_Flights","Εύρεση και σύγκριση πτήσεων"); 
-define("_Compare_Selected_Flights","Σύγκριση επιλεγμένων πτήσεων"); 
-define("_More","Περισσότερα"); 
-define("_Close","Κλείσιμο"); 
+define("_Thermals","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Remove_From_Favorites","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Favorites","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Compare_flights_line_1","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½"); 
+define("_Compare_flights_line_2","οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½ Google Maps"); 
+define("_Compare_Favorite_Tracks","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Remove_all_favorites","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Find_and_Compare_Flights","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Compare_Selected_Flights","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½ οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_More","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
+define("_Close","οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½οΏ½"); 
 
+define("_BREAKDOWN_PER_TAKEOFF","Breakdown Per Takeoff");
+define("_BREAKDOWN_PER_GLIDER","Breakdown Per Glider");
 ?>
