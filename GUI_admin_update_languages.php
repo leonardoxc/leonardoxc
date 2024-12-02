@@ -23,12 +23,6 @@
 	openMain("ADMIN AREA :: Language translations",0,'');
 
 	echo "<br>";
-	echo "<ul>";
-
-
-	echo "<li><a href='".getLeonardoLink(array('op'=>'admin_languages','admin_op'=>'update') )."'>1. Proccess all language files and create/update files in 'utf8'/'iso' dirs</a><BR></a>";
-
-	echo "</ul><HR><br>";
 	define('LANG_ABS_PATH',dirname(__FILE__).'/language');
 
 	if ($admin_op=='update') {
@@ -39,8 +33,13 @@
 		// print_r($baseDefines);
 		//$availableLanguages=array('english', 'german');
 
-		foreach($availableLanguages as $lang) {
+    if($_REQUEST['update_lang'])
+      $updateLanguages = array($_REQUEST['update_lang']);
+    else
+      $updateLanguages = $availableLanguages;
 
+		foreach($updateLanguages as $lang) {
+			echo " * Processing source/lang-$lang.php...";
 
 			 $convert_to_utf_manually=0;
 
@@ -56,20 +55,18 @@
 			$FileName = LANG_ABS_PATH."/source/lang-$lang.php";
 
 			$langDefines=getDefinesAsArray("source/lang-$lang.php");
-			$definesMissing=array();
+	
 			foreach($baseDefines as $defineStr=>$translateStr) {
-				//	echo " $defineStr => $translateStr<BR>";
+			  // echo " $defineStr => $translateStr<BR>";
 				if (! $langDefines[$defineStr]){
-					echo "@@ $defineStr => $translateStr<BR>";
+					//echo "@@ $defineStr => $translateStr<BR>";
 					$definesMissing[$defineStr]=$translateStr;
 				}
 			}
-
 					
 			$File = file($FileName);
 			$NewFileOutput = implode("",$File);			
 			
-		
 			if ( count($definesMissing) ) {
 				// remove the  last line containng ? >
 				$NewFileOutput=substr($NewFileOutput,0,-3);
@@ -138,8 +135,14 @@
 
 	} // end if admin_op
 
+	echo "<ul>";
+	echo "<li><a href='".getLeonardoLink(array('op'=>'admin_languages','admin_op'=>'update') )."'>Process ALL language files and create/update files in 'utf8'/'iso' dirs</a></li>";
+	foreach($availableLanguages as $lang) {
+	  echo "<li><a href='".getLeonardoLink(array('op'=>'admin_languages','admin_op'=>'update','update_lang'=>$lang) )."'>Process only ".strtoupper($lang)." language files</a></li>";
+  }
+	echo "</ul><br>";
 
-    closeMain();
+  closeMain();
 
 /**
  * Get associative array of language constants, array key being the constant name
